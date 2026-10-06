@@ -4,13 +4,14 @@ Score = Σ weight × component, each component on 0..1 (weights from settings.ra
 - semantic:   how close the program is in meaning to the learner's goal, relative to the qualification's other
               programs (best 1, worst 0); 1 for all when there is no goal, no model, or only one program,
               because every listed program already teaches the chosen qualification
-- proximity:  1 at the learner's location, falling to 0 at settings.proximity_radius_km
+- proximity:  1 at the learner's location (rounded to about 10 km), falling to 0 at settings.proximity_radius_km
 - assessment: 1 when an open assessment with seats exists near the provider (same region if unmapped)
 - schedule:   1 starts within 60 days, 0.7 starts later, 0.5 open intake (no dates), 0.2 already running;
               finished programs are left out
 - preference: the share of the learner's stated preferences (delivery mode, scholarship) the program meets
 """
 import hashlib
+import hmac
 from datetime import date
 
 from sqlalchemy import func
@@ -25,6 +26,15 @@ from tesda_track.services.embeddings import Embedder
 from tesda_track.utils.helpers import normalize
 
 SOON_DAYS = 60
+# One decimal of a degree is about 11 km. Rounding before ranking means nothing finer is ever computed,
+# returned or stored, so stored scores can't be used to trilaterate where a learner is.
+LOCATION_DECIMALS = 1
+
+
+def goal_fingerprint(goal: str, secret: str) -> str:
+    """Keyed hash: counts repeated goals without storing them, and can't be reversed by guessing short sentences."""
+    key = hashlib.sha256(b"tesda-track ranking audit:" + secret.encode()).digest()
+    return hmac.new(key, normalize(goal).encode(), hashlib.sha256).hexdigest()
 
 
 def schedule_component(program: TrainingProgram, today: date) -> float | None:
@@ -86,8 +96,10 @@ def rank_programs(session: Session, request: TrainingRankingRequest, embedder: E
     settings = get_settings()
     weights = settings.ranking_weights
     qualification = catalog.get_active_qualification(session, request.qualification_code)
+    near_lat = round(request.near_lat, LOCATION_DECIMALS) if request.near_lat is not None else None
+    near_lon = round(request.near_lon, LOCATION_DECIMALS) if request.near_lon is not None else None
     rows = training.search_programs(session, ProgramSearch(
-        qualification_code=qualification.code, near_lat=request.near_lat, near_lon=request.near_lon, limit=100))
+        qualification_code=qualification.code, near_lat=near_lat, near_lon=near_lon, limit=100))
     semantic_used = embedder is not None and request.goal is not None
     similarities = embeddings.program_similarities(session, embedder, request.goal, [p.id for p, _ in rows]) \
         if semantic_used else {}
@@ -115,9 +127,8 @@ def rank_programs(session: Session, request: TrainingRankingRequest, embedder: E
     ranked = ranked[:request.limit]
     audit = RankingAudit(
         learner_id=learner.id if learner else None, qualification_id=qualification.id,
-        query_hash=hashlib.sha256(normalize(request.goal).encode()).hexdigest() if request.goal else None,
-        near_lat=round(request.near_lat, 1) if request.near_lat is not None else None,
-        near_lon=round(request.near_lon, 1) if request.near_lon is not None else None,
+        query_hash=goal_fingerprint(request.goal, settings.secret_key.get_secret_value()) if request.goal else None,
+        near_lat=near_lat, near_lon=near_lon,
         preferences={"delivery_mode": request.preferred_delivery_mode, "needs_scholarship": request.needs_scholarship},
         weights=weights.model_dump(), model=embedder.model_name if semantic_used else None,
         results=[{"program_id": item.program.id, "score": item.score, "components": item.components.model_dump()}

@@ -139,6 +139,10 @@ class ApiClient:
     def withdraw_application(self, token: str, application_id: str) -> dict:
         return self._request("POST", f"/api/v1/me/assessment-applications/{application_id}/withdraw", token)
 
+    # Administrator reports
+    def report(self, token: str, name: str, **params):
+        return self._request("GET", f"/api/v1/admin/reports/{name}", token, params=params)
+
     def certifications(self, token: str) -> list[dict]:
         return self._request("GET", "/api/v1/me/certifications", token)
 

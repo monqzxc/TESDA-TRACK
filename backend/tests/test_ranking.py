@@ -97,3 +97,33 @@ def test_deleting_an_account_anonymizes_its_audits(client, session, learner, mak
 def test_ranking_needs_a_known_qualification(client):
     response = client.post("/api/v1/recommendations/training", json={"qualification_code": "NOPE"})
     assert response.status_code == 404
+
+
+def test_goal_hash_is_keyed_so_it_cannot_be_reversed_by_guessing(client, session, make_program):
+    import hashlib
+
+    make_program()
+    audit = session.get(RankingAudit, rank(client, goal=GOAL)["audit_id"])
+    plain = hashlib.sha256(GOAL.lower().encode()).hexdigest()
+    assert audit.query_hash != plain, "an unkeyed hash of a short sentence can be reversed with a word list"
+    again = session.get(RankingAudit, rank(client, goal=GOAL)["audit_id"])
+    assert again.query_hash == audit.query_hash, "the same goal still hashes the same, for counting repeats"
+
+
+def test_precise_locations_never_shape_stored_results(client, session, make_program):
+    """Ranking from two points in the same ~10 km cell must store identical numbers (no trilateration)."""
+    make_program()
+    first = rank(client, near_lat=14.6760, near_lon=121.0437)
+    second = rank(client, near_lat=14.7240, near_lon=120.9610)
+    assert first["results"][0]["components"] == second["results"][0]["components"]
+    assert first["results"][0]["program"]["distance_km"] == second["results"][0]["program"]["distance_km"]
+    stored = [session.get(RankingAudit, r["audit_id"]).results for r in (first, second)]
+    assert stored[0] == stored[1]
+
+
+def test_learners_export_includes_their_rankings(client, learner, make_program):
+    make_program()
+    rank(client, headers=learner, goal=GOAL)
+    export = client.get("/api/v1/me/export", headers=learner).json()
+    assert [r["qualification_code"] for r in export["training_rankings"]] == ["SMAW-NC-II"]
+    assert "query_hash" not in export["training_rankings"][0]

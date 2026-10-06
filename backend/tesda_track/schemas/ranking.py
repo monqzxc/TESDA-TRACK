@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from pydantic import BaseModel, Field, model_validator
 
 from tesda_track.config import RankingWeights
@@ -35,6 +37,17 @@ class RankedProgram(BaseModel):
     score: int = Field(description="0-100: the weighted sum of the components")
     components: ScoreComponents
     explanation: list[str]
+
+
+class RankingAuditPublic(BaseModel):
+    """A learner's own ranking history, as included in their data export."""
+    qualification_code: str
+    created_at: datetime
+    near_lat: float | None
+    near_lon: float | None
+    preferences: dict
+    weights: dict
+    results: list
 
 
 class TrainingRanking(BaseModel):

@@ -5,8 +5,9 @@ from sqlmodel import Session, select
 
 from tesda_track.config import Settings
 from tesda_track.errors import AuthenticationError, ConflictError, InvalidRequestError, TooManyAttemptsError
-from tesda_track.models import Learner, utcnow
+from tesda_track.models import Learner, Qualification, RankingAudit, utcnow
 from tesda_track.schemas.accounts import LearnerPublic, RegisterRequest
+from tesda_track.schemas.ranking import RankingAuditPublic
 from tesda_track.schemas.records import AccountExport
 from tesda_track.security import burn_verification_time, hash_password, verify_password
 from tesda_track.services import (assessments, certifications, goals, pathways, readiness_checks,
@@ -85,4 +86,11 @@ def export(session: Session, learner: Learner) -> AccountExport:
         certifications=[certifications.to_public(c) for c in certifications.list_for(session, learner)],
         pathway_enrollments=[pathways.enrollment_public(e) for e in pathways.list_for(session, learner)],
         assessment_applications=[assessments.application_public(session, a)
-                                 for a in assessments.list_for(session, learner)])
+                                 for a in assessments.list_for(session, learner)],
+        training_rankings=[RankingAuditPublic(qualification_code=code, created_at=audit.created_at,
+                                              near_lat=audit.near_lat, near_lon=audit.near_lon,
+                                              preferences=audit.preferences, weights=audit.weights,
+                                              results=audit.results)
+                           for audit, code in session.exec(
+                               select(RankingAudit, Qualification.code).join(Qualification)
+                               .where(RankingAudit.learner_id == learner.id).order_by(RankingAudit.created_at))])

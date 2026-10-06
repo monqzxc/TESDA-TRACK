@@ -11,7 +11,7 @@ from tesda_track.config import get_settings
 from tesda_track.errors import AuthenticationError, DomainError
 from tesda_track.routers import (analysis, assessments, auth, certifications, goals, health, integrations, me,
                                  pathways, qualifications, readiness_checks, recommendation_sessions, recommendations,
-                                 training)
+                                 reports, training)
 from tesda_track.services.embeddings import get_embedder
 
 logger = logging.getLogger("tesda_track")
@@ -61,7 +61,7 @@ def create_app() -> FastAPI:
                    recommendation_sessions.router, readiness_checks.router, certifications.router,
                    pathways.router, pathways.learner_router, training.router, assessments.router,
                    assessments.learner_router, recommendations.router, pathways.admin_router, training.admin_router,
-                   assessments.admin_router, integrations.router):
+                   assessments.admin_router, integrations.router, reports.router):
         api.include_router(router)
     app.include_router(api)
     return app

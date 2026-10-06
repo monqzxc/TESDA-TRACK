@@ -67,7 +67,8 @@ def auth_token() -> str | None:
 def sign_in(email: str, password: str) -> None:
     token = api().sign_in(email, password)
     account = api().me(token)
-    st.session_state["auth"] = {"token": token, "name": account["full_name"], "email": account["email"]}
+    st.session_state["auth"] = {"token": token, "name": account["full_name"], "email": account["email"],
+                                "role": account["role"]}
 
 
 def sign_out() -> None:
@@ -536,6 +537,54 @@ def show_progress(qualifications: list[dict]) -> None:
         show_certifications(token, names)
 
 
+def show_reports(token: str, qualifications: list[dict]) -> None:
+    st.subheader("Pilot reports")
+    st.caption("Counts and averages only; no individual learner records are shown here.")
+    start, end = st.columns(2)
+    date_from = start.date_input("From (optional)", value=None, key="report_from")
+    date_to = end.date_input("To (optional)", value=None, key="report_to")
+    period = {name: value.isoformat() for name, value in (("date_from", date_from), ("date_to", date_to)) if value}
+    overview = api().report(token, "overview", **period)
+    funnel = api().report(token, "funnel", **period)
+    supply = api().report(token, "supply")
+    average = overview["average_readiness"]
+    with st.container(horizontal=True):
+        st.metric("Learners", overview["learners"], border=True)
+        st.metric("Saved recommendations", overview["recommendation_sessions"], border=True)
+        st.metric("Readiness checks", overview["readiness_checks"], border=True,
+                  help=f"Average readiness: {average:g}%" if average is not None else "No checks yet")
+        st.metric("Verified certifications", overview["certifications"]["verified"], border=True)
+        st.metric("Open assessment seats", sum(region["open_seats"] for region in supply), border=True)
+
+    st.markdown("#### Learner journey")
+    st.caption("Learners who reached each stage in the period.")
+    st.table({"Stage": ["Registered", "Saved a recommendation", "Checked readiness", "Applied for assessment",
+                        "Certified"],
+              "Learners": [funnel["registered"], funnel["saved_a_recommendation"], funnel["checked_readiness"],
+                           funnel["applied_for_assessment"], funnel["certified"]]})
+
+    st.markdown("#### Demand by qualification")
+    demand = api().report(token, "qualification-demand", **period)
+    st.dataframe([{"Qualification": row["qualification"]["name"], "Top match": row["top_match"],
+                   "Chosen": row["chosen"], "Readiness checks": row["readiness_checks"],
+                   "Average readiness": row["average_readiness"], "Applications": row["assessment_applications"],
+                   "Competent": row["competent"], "Certified": row["certified"]} for row in demand], hide_index=True)
+
+    st.markdown("#### Skill gaps")
+    names = {q["code"]: q["name"] for q in qualifications}
+    code = st.selectbox("Qualification", list(names), format_func=names.get, key="report_qualification")
+    gaps = api().report(token, "skill-gaps", qualification_code=code, **period)
+    st.caption("Share of answers that weren't \"I can do this confidently\". High rates suggest where training is needed.")
+    st.dataframe([{"Competency": f"{gap['position']}. {gap['name']}", "Answers": gap["answers"],
+                   "Gap rate": None if gap["gap_rate"] is None else f"{gap['gap_rate']:.0%}"} for gap in gaps],
+                 hide_index=True)
+
+    st.markdown("#### Training and assessment supply by region")
+    st.dataframe([{"Region": row["region"], "Providers": row["training_providers"], "Programs": row["training_programs"],
+                   "Upcoming assessments": row["upcoming_assessments"], "Open seats": row["open_seats"]}
+                  for row in supply], hide_index=True)
+
+
 def handle_api_error(error: ApiError) -> None:
     if error.status_code == 401 and st.session_state.get("auth"):
         sign_out()
@@ -566,9 +615,10 @@ def main() -> None:
         st.error(error.message)
         return
     # Dynamic tabs: only the selected tab's .open is True, so My progress loads only when viewed.
-    finder, library, training, progress = st.tabs(
-        ["Find my pathway", "Qualification library", "Training & assessment", "My progress"],
-        key="main_tabs", on_change="rerun")
+    is_admin = (st.session_state.get("auth") or {}).get("role") == "admin"
+    labels = ["Find my pathway", "Qualification library", "Training & assessment", "My progress"]
+    tabs = st.tabs(labels + (["Reports"] if is_admin else []), key="main_tabs", on_change="rerun")
+    finder, library, training, progress = tabs[:4]
     with finder:
         try:
             show_finder(qualifications)
@@ -578,6 +628,12 @@ def main() -> None:
         with training:
             try:
                 show_training(qualifications)
+            except ApiError as error:
+                handle_api_error(error)
+    if is_admin and tabs[4].open:
+        with tabs[4]:
+            try:
+                show_reports(auth_token(), qualifications)
             except ApiError as error:
                 handle_api_error(error)
     if progress.open:

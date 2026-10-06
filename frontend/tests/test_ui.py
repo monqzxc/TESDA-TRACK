@@ -209,3 +209,22 @@ def test_unreachable_api_shows_an_error_instead_of_crashing(monkeypatch):
     app = AppTest.from_file(str(APP_FILE), default_timeout=30).run()
     assert not app.exception
     assert any("can't reach" in error.value for error in app.error)
+
+
+def test_reports_tab_is_only_for_administrators(ui, training_data):
+    app = ui
+    assert "Reports" not in [tab.label for tab in app.tabs]
+    create_account(app)
+    assert "Reports" not in [tab.label for tab in app.tabs], "learners don't see reports"
+    click(app, "Sign out")
+
+    app.text_input(key="signin_email").set_value("admin@example.com")
+    app.text_input(key="signin_password").set_value("correct horse battery")
+    click(app, "Sign in")
+    assert "Reports" in [tab.label for tab in app.tabs]
+    rerun(app, "Reports")
+    metrics = {metric.label: metric.value for metric in app.metric}
+    assert metrics["Learners"] == "2", "the administrator and the learner who signed up"
+    assert metrics["Open assessment seats"] == "10"
+    supply = app.dataframe[-1].value
+    assert list(supply.loc[supply["Region"] == "National Capital Region", "Programs"]) == [1]

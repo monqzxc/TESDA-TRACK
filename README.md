@@ -28,7 +28,7 @@ The backend is built in five parts, in order:
 | 2 | Learner accounts and records | Done | Sign-in, saved recommendation sessions, readiness checks, goals, certifications, data export and deletion |
 | 3 | Pathways, training and assessment | Done | Regions, training providers and programs, assessment centers, schedules and applications, pathway progress, "near me" search with PostGIS |
 | 4 | Integrations and AI | Done | Semantic search with a local embedding model (pgvector), weighted training rankings with an audit trail, a PostgreSQL cache, and the Skills Bridge client |
-| 5 | Reporting and analytics | Planned | Reports for administrators |
+| 5 | Reporting and analytics | Done | Overview, learner funnel, demand by qualification, skill gaps per competency, and supply by region, for administrators |
 
 **How recommendations work.** Everything stays in PostgreSQL. There is no separate search engine and no
 cloud AI service, so learner text never leaves our server.
@@ -237,6 +237,21 @@ an administrator's email (as `username`) and password. Then use the admin endpoi
   `competent` result issues a verified certification to the learner automatically.
 - **Pathways:** steps sent with an `id` are kept, along with learners' progress on them. Steps you leave
   out are removed.
+
+## Reports
+
+Administrators see a **Reports** tab in the app. The same data is available at `/api/v1/admin/reports/*`,
+with optional `date_from` and `date_to` dates in Philippine time:
+
+| Report | What it answers |
+|--------|-----------------|
+| `overview` | How many learners, saved recommendations and readiness checks; the average readiness; applications by status; certifications |
+| `funnel` | How many learners registered, saved a recommendation, checked readiness, applied for assessment, and were certified |
+| `qualification-demand` | For each qualification: how often it was the top match or the learner's choice, readiness, applications, and results |
+| `skill-gaps?qualification_code=...` | For each competency: how learners rated themselves, and the share who weren't confident (the gap rate) |
+| `supply` | For each region right now: training providers, programs, upcoming assessments, and open seats |
+
+Reports return only counts and averages, never individual records.
 
 ## Tests
 

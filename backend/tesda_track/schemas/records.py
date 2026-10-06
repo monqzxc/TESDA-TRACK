@@ -11,6 +11,7 @@ from tesda_track.schemas.analysis import (AnswerCode, GoalText, Match, PathwayRe
 from tesda_track.schemas.catalog import QualificationSummary
 from tesda_track.schemas.delivery import AssessmentApplicationPublic
 from tesda_track.schemas.pathways import EnrollmentPublic
+from tesda_track.schemas.ranking import RankingAuditPublic
 
 QualificationCode = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=40)]
 GoalStatus = Literal["active", "achieved", "archived"]
@@ -127,3 +128,4 @@ class AccountExport(BaseModel):
     certifications: list[CertificationPublic]
     pathway_enrollments: list[EnrollmentPublic]
     assessment_applications: list[AssessmentApplicationPublic]
+    training_rankings: list[RankingAuditPublic]
