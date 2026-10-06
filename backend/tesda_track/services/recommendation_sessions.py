@@ -8,6 +8,7 @@ from tesda_track.schemas.analysis import Match, PathwayRecommendation, Profile
 from tesda_track.schemas.records import (RecommendationSessionCreate, RecommendationSessionPublic,
                                          RecommendationSessionUpdate)
 from tesda_track.services import analysis, catalog
+from tesda_track.services.embeddings import Embedder
 from tesda_track.services.ownership import get_owned, resolve_owned
 
 FOLLOW_UP_FIELDS = ("experience_years", "has_certification")
@@ -33,9 +34,9 @@ def get(session: Session, learner: Learner, record_id: uuid.UUID) -> Recommendat
 
 
 def start(session: Session, learner: Learner, request: RecommendationSessionCreate,
-          analyzed: analysis.GoalAnalysisResult) -> RecommendationSession:
+          analyzed: analysis.GoalAnalysisResult, embedder: Embedder | None = None) -> RecommendationSession:
     goal = resolve_owned(session, Goal, request.goal_id, learner, "Goal")
-    refined, matches = analysis.match(session, request.query, analyzed.profile)
+    refined, matches = analysis.match(session, request.query, analyzed.profile, embedder)
     record = RecommendationSession(
         learner_id=learner.id, goal_id=goal.id if goal else None, query=request.query,
         analysis_source=analyzed.source, analysis_profile=analyzed.profile.model_dump(mode="json"),
@@ -45,13 +46,14 @@ def start(session: Session, learner: Learner, request: RecommendationSessionCrea
     return record
 
 
-def update(session: Session, record: RecommendationSession, request: RecommendationSessionUpdate) -> RecommendationSession:
+def update(session: Session, record: RecommendationSession, request: RecommendationSessionUpdate,
+           embedder: Embedder | None = None) -> RecommendationSession:
     fields = request.model_fields_set
     # Start again from the original analysis so changed answers replace earlier ones.
     merged = dict(record.analysis_profile)
     for field in FOLLOW_UP_FIELDS:
         merged[field] = getattr(request, field) if field in fields else record.profile.get(field)
-    refined, matches = analysis.match(session, record.query, Profile.model_validate(merged))
+    refined, matches = analysis.match(session, record.query, Profile.model_validate(merged), embedder)
     if "qualification_code" in fields:
         code = request.qualification_code
         record.qualification = catalog.resolve_qualification(session, code) if code else None

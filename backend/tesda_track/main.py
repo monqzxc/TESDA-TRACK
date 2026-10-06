@@ -1,4 +1,6 @@
 import logging
+import threading
+from contextlib import asynccontextmanager
 
 from fastapi import APIRouter, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,17 +9,26 @@ from sqlalchemy.exc import OperationalError
 
 from tesda_track.config import get_settings
 from tesda_track.errors import AuthenticationError, DomainError
-from tesda_track.routers import (analysis, assessments, auth, certifications, goals, health, me, pathways,
-                                 qualifications, readiness_checks, recommendation_sessions, training)
+from tesda_track.routers import (analysis, assessments, auth, certifications, goals, health, integrations, me,
+                                 pathways, qualifications, readiness_checks, recommendation_sessions, recommendations,
+                                 training)
+from tesda_track.services.embeddings import get_embedder
 
 logger = logging.getLogger("tesda_track")
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Load the embedding model in the background so the first learner doesn't wait for it.
+    threading.Thread(target=get_embedder, name="embedding-warmup", daemon=True).start()
+    yield
 
 
 def create_app() -> FastAPI:
     settings = get_settings()
     logger.setLevel(settings.log_level)
     app = FastAPI(
-        title="TESDA-TRACK API", version="1.0.0",
+        title="TESDA-TRACK API", version="1.0.0", lifespan=lifespan,
         description="Training and assessment pathway recommendations backed by PostgreSQL.",
         docs_url="/api/docs" if settings.docs_enabled else None,
         openapi_url="/api/openapi.json" if settings.docs_enabled else None, redoc_url=None,
@@ -49,7 +60,8 @@ def create_app() -> FastAPI:
     for router in (qualifications.router, analysis.router, auth.router, me.router, goals.router,
                    recommendation_sessions.router, readiness_checks.router, certifications.router,
                    pathways.router, pathways.learner_router, training.router, assessments.router,
-                   assessments.learner_router, pathways.admin_router, training.admin_router, assessments.admin_router):
+                   assessments.learner_router, recommendations.router, pathways.admin_router, training.admin_router,
+                   assessments.admin_router, integrations.router):
         api.include_router(router)
     app.include_router(api)
     return app

@@ -19,7 +19,7 @@ SEAT_HOLDING = ("approved", "completed")
 ALLOWED_REVIEWS = {"pending": {"approved", "rejected"}, "approved": {"completed", "rejected"}}
 
 
-def _seats_taken():
+def seats_taken_subquery():
     return (select(func.count()).select_from(AssessmentApplication)
             .where(AssessmentApplication.schedule_id == AssessmentSchedule.id,
                    AssessmentApplication.status.in_(SEAT_HOLDING))
@@ -98,7 +98,7 @@ def update_schedule(session: Session, schedule: AssessmentSchedule, request: Ass
 def search_schedules(session: Session, search: NearbySearch) -> list[tuple[AssessmentSchedule, int, float | None]]:
     """Open schedules that haven't happened yet, at active centers."""
     distance = geo.distance_km(AssessmentCenter, search) if search.near_lat is not None else null()
-    query = (select(AssessmentSchedule, _seats_taken().label("taken"), distance.label("distance_km"))
+    query = (select(AssessmentSchedule, seats_taken_subquery().label("taken"), distance.label("distance_km"))
              .join(AssessmentCenter).join(Qualification, AssessmentSchedule.qualification_id == Qualification.id)
              .where(AssessmentSchedule.status == "open", AssessmentSchedule.scheduled_at > utcnow(),
                     AssessmentCenter.is_active, Qualification.is_active)

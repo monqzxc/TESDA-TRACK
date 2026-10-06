@@ -50,8 +50,8 @@ class ApiClient:
     def qualifications(self) -> list[dict]:
         return self._request("GET", "/api/v1/qualifications")
 
-    def analyze_goal(self, query: str, use_ai: bool = False) -> dict:
-        return self._request("POST", "/api/v1/analysis/goal", json={"query": query, "use_ai": use_ai})
+    def analyze_goal(self, query: str) -> dict:
+        return self._request("POST", "/api/v1/analysis/goal", json={"query": query})
 
     def match(self, query: str, profile: dict) -> dict:
         return self._request("POST", "/api/v1/analysis/matches", json={"query": query, "profile": profile})
@@ -82,8 +82,8 @@ class ApiClient:
         self._request("DELETE", "/api/v1/me", token)
 
     # Records of a signed-in learner
-    def start_session(self, token: str, query: str, use_ai: bool = False) -> dict:
-        return self._request("POST", "/api/v1/me/recommendations", token, json={"query": query, "use_ai": use_ai})
+    def start_session(self, token: str, query: str) -> dict:
+        return self._request("POST", "/api/v1/me/recommendations", token, json={"query": query})
 
     def update_session(self, token: str, session_id: str, **fields) -> dict:
         return self._request("PATCH", f"/api/v1/me/recommendations/{session_id}", token, json=fields)
@@ -113,8 +113,9 @@ class ApiClient:
     def regions(self) -> list[dict]:
         return self._request("GET", "/api/v1/regions")
 
-    def programs(self, **params) -> list[dict]:
-        return self._request("GET", "/api/v1/training-programs", params=params)
+    def rank_training(self, token: str | None = None, **body) -> dict:
+        """Ranked programs with score components; the goal goes in the body, never in a URL."""
+        return self._request("POST", "/api/v1/recommendations/training", token, json=body)
 
     def schedules(self, **params) -> list[dict]:
         return self._request("GET", "/api/v1/assessment-schedules", params=params)

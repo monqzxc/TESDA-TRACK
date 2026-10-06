@@ -2,6 +2,11 @@ from tesda_track.utils.helpers import contains, normalize
 
 
 def match_qualifications(query: str, profile: dict, qualifications: list[dict]) -> list[dict]:
+    return score_qualifications(query, profile, qualifications)[:3]
+
+
+def score_qualifications(query: str, profile: dict, qualifications: list[dict]) -> list[dict]:
+    """Keyword scores (0-95) for every qualification with any evidence, best first."""
     text = normalize(query)
     context = normalize(" ".join([profile.get("career_goal") or "", *profile.get("existing_skills", [])]))
     results = []
@@ -18,7 +23,7 @@ def match_qualifications(query: str, profile: dict, qualifications: list[dict]) 
         if score:
             results.append({"qualification": qualification, "score": score,
                             "reason": "Matched your words: " + ", ".join(hits) if hits else "Matched your reported career, skills, or sector."})
-    return sorted(results, key=lambda item: item["score"], reverse=True)[:3]
+    return sorted(results, key=lambda item: item["score"], reverse=True)
 
 
 def refine_profile(profile: dict) -> dict:

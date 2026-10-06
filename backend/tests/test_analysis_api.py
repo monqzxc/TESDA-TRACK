@@ -32,7 +32,7 @@ def test_matches_rank_qualifications_and_refine_intent(client):
     assert body["matches"][0] == {
         "qualification": {"code": "SMAW-NC-II", "name": "Shielded Metal Arc Welding (SMAW) NC II",
                           "sector": "Metals and Engineering"},
-        "score": 95, "reason": "Matched your words: welder"}
+        "score": 95, "reason": "Matched your words: welder", "components": None}
 
 
 def test_no_matches_for_unknown_careers(client):

@@ -46,7 +46,6 @@ class GoalPublic(BaseModel):
 
 class RecommendationSessionCreate(BaseModel):
     query: GoalText
-    use_ai: bool = Field(default=False, description="The learner agreed to have their text analyzed by an AI provider.")
     goal_id: uuid.UUID | None = None
 
 

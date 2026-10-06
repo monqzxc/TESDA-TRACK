@@ -5,19 +5,20 @@ from tesda_track.db import SessionDep
 from tesda_track.schemas.analysis import (GoalAnalysis, GoalRequest, MatchRequest, MatchResult, PathwayRecommendation,
                                           PathwayRequest, ReadinessRequest, ReadinessResult)
 from tesda_track.services import analysis
+from tesda_track.services.embeddings import EmbedderDep
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
 
 
 @router.post("/goal", response_model=GoalAnalysis)
-def analyze_goal(request: GoalRequest, session: SessionDep):
-    result = analysis.analyze_goal(session, request.query)
+def analyze_goal(request: GoalRequest, session: SessionDep, embedder: EmbedderDep):
+    result = analysis.analyze_goal(session, request.query, embedder)
     return GoalAnalysis(profile=result.profile, source=result.source)
 
 
 @router.post("/matches", response_model=MatchResult)
-def match_qualifications(request: MatchRequest, session: SessionDep):
-    profile, matches = analysis.match(session, request.query, request.profile)
+def match_qualifications(request: MatchRequest, session: SessionDep, embedder: EmbedderDep):
+    profile, matches = analysis.match(session, request.query, request.profile, embedder)
     return MatchResult(profile=profile, matches=matches)
 
 

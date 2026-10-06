@@ -26,7 +26,8 @@ services:
 
   migrate:
     build: ./backend
-    command: ["sh", "-c", "alembic upgrade head && python -m tesda_track.seed"]
+    # Embedding problems never block a deploy: search falls back to keywords until the next sync.
+    command: ["sh", "-c", "alembic upgrade head && python -m tesda_track.seed && (python -m tesda_track.embeddings sync || echo 'WARNING: embeddings not synced')"]
     environment: *backend-environment
     depends_on:
       db:

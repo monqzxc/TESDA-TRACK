@@ -24,7 +24,6 @@ class Profile(BaseModel):
 
 class GoalRequest(BaseModel):
     query: GoalText
-    use_ai: bool = Field(default=False, description="The learner agreed to have their text analyzed by an AI provider.")
 
 
 class GoalAnalysis(BaseModel):
@@ -37,10 +36,17 @@ class MatchRequest(BaseModel):
     profile: Profile
 
 
+class MatchComponents(BaseModel):
+    """Both parts on a 0..1 scale; present when semantic search contributed to the score."""
+    keyword: float
+    semantic: float
+
+
 class Match(BaseModel):
     qualification: QualificationSummary
     score: int
     reason: str
+    components: MatchComponents | None = None
 
 
 class MatchResult(BaseModel):

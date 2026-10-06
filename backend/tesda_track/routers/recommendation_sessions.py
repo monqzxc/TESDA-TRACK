@@ -8,6 +8,7 @@ from tesda_track.deps import CurrentLearner
 from tesda_track.schemas.records import (RecommendationSessionCreate, RecommendationSessionPublic,
                                          RecommendationSessionUpdate)
 from tesda_track.services import analysis, recommendation_sessions
+from tesda_track.services.embeddings import EmbedderDep
 
 router = APIRouter(prefix="/me/recommendations", tags=["recommendation history"])
 
@@ -20,9 +21,10 @@ def list_sessions(learner: CurrentLearner, session: SessionDep, limit: Annotated
 
 
 @router.post("", response_model=RecommendationSessionPublic, status_code=status.HTTP_201_CREATED)
-def start_session(request: RecommendationSessionCreate, learner: CurrentLearner, session: SessionDep):
-    analyzed = analysis.analyze_goal(session, request.query)
-    record = recommendation_sessions.start(session, learner, request, analyzed)
+def start_session(request: RecommendationSessionCreate, learner: CurrentLearner, session: SessionDep,
+                  embedder: EmbedderDep):
+    analyzed = analysis.analyze_goal(session, request.query, embedder)
+    record = recommendation_sessions.start(session, learner, request, analyzed, embedder)
     session.commit()
     return recommendation_sessions.to_public(record)
 
@@ -34,8 +36,9 @@ def get_session(session_id: uuid.UUID, learner: CurrentLearner, session: Session
 
 @router.patch("/{session_id}", response_model=RecommendationSessionPublic)
 def update_session(session_id: uuid.UUID, request: RecommendationSessionUpdate, learner: CurrentLearner,
-                   session: SessionDep):
-    record = recommendation_sessions.update(session, recommendation_sessions.get(session, learner, session_id), request)
+                   session: SessionDep, embedder: EmbedderDep):
+    record = recommendation_sessions.update(session, recommendation_sessions.get(session, learner, session_id), request,
+                                            embedder)
     session.commit()
     return recommendation_sessions.to_public(record)
 

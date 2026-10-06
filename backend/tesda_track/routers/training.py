@@ -7,7 +7,8 @@ from tesda_track.deps import require_admin
 from tesda_track.schemas.delivery import (ProgramSearch, RegionPublic, TrainingProgramCreate,
                                           TrainingProgramPublic, TrainingProgramUpdate, TrainingProviderCreate,
                                           TrainingProviderPublic, TrainingProviderUpdate)
-from tesda_track.services import sites, training
+from tesda_track.services import embeddings, sites, training
+from tesda_track.services.embeddings import EmbedderDep
 
 router = APIRouter(tags=["training"])
 admin_router = APIRouter(prefix="/admin", tags=["admin: training"], dependencies=[Depends(require_admin)])
@@ -56,14 +57,16 @@ def update_provider(provider_id: int, request: TrainingProviderUpdate, session: 
 
 
 @admin_router.post("/training-programs", response_model=TrainingProgramPublic, status_code=status.HTTP_201_CREATED)
-def create_program(request: TrainingProgramCreate, session: SessionDep):
+def create_program(request: TrainingProgramCreate, session: SessionDep, embedder: EmbedderDep):
     program = training.create_program(session, request)
+    embeddings.refresh_program(session, embedder, program)
     session.commit()
     return training.program_public(program)
 
 
 @admin_router.patch("/training-programs/{program_id}", response_model=TrainingProgramPublic)
-def update_program(program_id: int, request: TrainingProgramUpdate, session: SessionDep):
+def update_program(program_id: int, request: TrainingProgramUpdate, session: SessionDep, embedder: EmbedderDep):
     program = training.update_program(session, training.get_program(session, program_id, active_only=False), request)
+    embeddings.refresh_program(session, embedder, program)
     session.commit()
     return training.program_public(program)

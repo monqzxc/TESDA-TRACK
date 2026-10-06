@@ -27,23 +27,45 @@ The backend is built in five parts, in order:
 | 1 | Foundation | Done | FastAPI, SQLModel, PostgreSQL, Alembic, the qualification catalog |
 | 2 | Learner accounts and records | Done | Sign-in, saved recommendation sessions, readiness checks, goals, certifications, data export and deletion |
 | 3 | Pathways, training and assessment | Done | Regions, training providers and programs, assessment centers, schedules and applications, pathway progress, "near me" search with PostGIS |
-| 4 | Integrations and AI | Planned | Hybrid search inside PostgreSQL (see below) and the Skills Bridge client |
+| 4 | Integrations and AI | Done | Semantic search with a local embedding model (pgvector), weighted training rankings with an audit trail, a PostgreSQL cache, and the Skills Bridge client |
 | 5 | Reporting and analytics | Planned | Reports for administrators |
 
-**How recommendations will work (part 4).** Everything stays in PostgreSQL. There is no separate search
-engine and no cloud AI service, so learner text never leaves our server.
+**How recommendations work.** Everything stays in PostgreSQL. There is no separate search engine and no
+cloud AI service, so learner text never leaves our server.
 
-- **Meaning:** pgvector compares a learner's goal with qualifications. The embeddings come from one
-  local model, [`intfloat/multilingual-e5-small`](https://huggingface.co/intfloat/multilingual-e5-small),
-  which handles Filipino and Taglish and runs on a CPU.
-- **Distance:** PostGIS finds training providers and assessment centers near the learner.
-- **Keywords:** PostgreSQL full-text search matches exact terms.
-- **Ranking:** the final score is a weighted sum that can be configured, for example meaning 50,
-  distance 20, assessment availability 15, schedule 10 and preference 5. Each part of the score is
-  stored, so any recommendation can be explained and audited.
+- **Meaning:** pgvector compares a learner's goal with qualifications and training programs. The
+  embeddings come from one local model,
+  [`intfloat/multilingual-e5-small`](https://huggingface.co/intfloat/multilingual-e5-small), which
+  handles Filipino and Taglish and runs on a CPU. It catches goals that share no words with the catalog,
+  such as "marunong akong mag-ayos ng computer".
+- **Keywords:** the catalog's curated keyword lists (the original rules) still count, so a goal that
+  names a career directly always ranks that qualification first. Qualification matches blend both parts
+  (`MATCH_WEIGHT_KEYWORD`, 0.5 by default). PostgreSQL full-text search is the next step once the catalog
+  grows beyond a few hundred qualifications.
+- **Distance:** PostGIS measures how far training providers and assessment centers are from the
+  learner's region.
+- **Ranking training programs:** the score is a weighted sum: meaning 50, distance 20, an assessment
+  available nearby 15, start date 10, and the learner's stated preferences 5. Each response shows every
+  part with a plain-language explanation, and every ranking is saved in `ranking_audit`. The audit keeps a
+  hash of the goal, never the text, and a location rounded to about 10 km.
+- **Without the model:** if semantic search is off or the model can't load, everything falls back to the
+  keyword rules, and the app keeps working.
 
-Skills Bridge (skills-bridge.ph) has no public API yet. Its client stays disabled until we get API
-access from the Skills Bridge team.
+The model's raw similarities are close together for related and unrelated goals alike. For example,
+"I want to become a nurse" scores about as high as a real match. So a qualification counts by its
+**contrast**: how much more similar it is than the average of the other qualifications. In a first test
+with 16 goals, related goals that share no keyword with the catalog had a contrast of 0.032 or more, and
+unrelated goals 0.017 or less. The band `SEMANTIC_CONTRAST_FLOOR` (0.015) to `SEMANTIC_CONTRAST_CEILING`
+(0.035) sits between them. Recalibrate it once the pilot collects real goals and outcomes.
+`TESDA_MODEL_TESTS=1` runs the tests that guard it.
+
+The training weights (`RANKING_WEIGHTS__SEMANTIC`, `__PROXIMITY`, `__ASSESSMENT`, `__SCHEDULE`,
+`__PREFERENCE`) must add up to 1 and are set in `.env`.
+
+Skills Bridge (skills-bridge.ph) has no public API yet. The client
+(`backend/tesda_track/services/skills_bridge.py`) can make authenticated, cached requests, and its
+endpoint methods will be added once the Skills Bridge team shares API access and documentation. Set
+`SKILLS_BRIDGE_BASE_URL` and `SKILLS_BRIDGE_API_TOKEN` to turn it on.
 
 ## Requirements
 
@@ -90,13 +112,17 @@ changes reload instantly. The commands below work in PowerShell and Git Bash.
    .venv/Scripts/python -m pip install -r requirements-dev.txt
    ```
 
-4. **Create the tables and load the seed data:**
+4. **Create the tables, load the seed data, and embed the catalog:**
 
    ```bash
    cd backend
    ../.venv/Scripts/alembic upgrade head
    ../.venv/Scripts/python -m tesda_track.seed
+   ../.venv/Scripts/python -m tesda_track.embeddings sync
    ```
+
+   The first `embeddings sync` downloads the model (about 470 MB) into `EMBEDDING_CACHE_DIR`, which
+   takes a few minutes. Later runs only embed new or changed records.
 
 5. **Run the app.** Use two terminals, both starting from the repository root.
 
@@ -126,7 +152,9 @@ changes reload instantly. The commands below work in PowerShell and Git Bash.
 | Apply new migrations (after pulling) | `cd backend` then `../.venv/Scripts/alembic upgrade head` |
 | Create a migration | `cd backend` then `../.venv/Scripts/alembic revision --autogenerate --rev-id 0004 -m "short description"` |
 | Reload the seed data | `cd backend` then `../.venv/Scripts/python -m tesda_track.seed` |
+| Embed new or changed qualifications and programs | `cd backend` then `../.venv/Scripts/python -m tesda_track.embeddings sync` |
 | Run the tests | `.venv/Scripts/python -m pytest` |
+| Also test the real embedding model | `TESDA_MODEL_TESTS=1 .venv/Scripts/python -m pytest backend/tests/test_semantic.py` |
 
 Migrations are numbered `0001`, `0002`, and so on. Pass the next number with `--rev-id`, and read the
 generated file before applying it.
@@ -221,6 +249,9 @@ running. Each run rebuilds the schema with the Alembic migrations and loads the 
 inside a transaction that is rolled back. The UI tests drive the Streamlit app with `AppTest`, against
 the API served over HTTP.
 
+The tests don't load the embedding model. They use a small stand-in that treats texts sharing words as
+similar. Set `TESDA_MODEL_TESTS=1` to also check that the real model understands Taglish goals.
+
 ## Seed data
 
 `backend/seed/` is the source of truth for reference data:
@@ -241,8 +272,9 @@ cp .env.example .env        # set DOMAIN, SECRET_KEY, POSTGRES_PASSWORD, APP_DB_
 docker compose up -d --build
 ```
 
-Compose starts PostgreSQL, runs the migrations and the seed, then starts the API, the Streamlit app and
-Caddy. Only ports 80 and 443 are published. Caddy serves the app at `/` and the API at `/api/`
+Compose starts PostgreSQL, runs the migrations, the seed and the embedding sync, then starts the API, the
+Streamlit app and Caddy. The embedding model is built into the API image, so the server never needs to
+download it. If the sync fails, the deploy still goes ahead and matching falls back to keywords. Only ports 80 and 443 are published. Caddy serves the app at `/` and the API at `/api/`
 (interactive docs at `/api/docs`). Point the domain's DNS at the server before starting, so Caddy can
 obtain a certificate.
 

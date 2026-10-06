@@ -30,6 +30,14 @@ def get_current_learner(session: SessionDep, token: Annotated[str | None, Depend
 CurrentLearner = Annotated[Learner, Depends(get_current_learner)]
 
 
+def get_optional_learner(session: SessionDep, token: Annotated[str | None, Depends(oauth2_scheme)]) -> Learner | None:
+    """For endpoints that work signed out too; a token that is sent must still be valid."""
+    return get_current_learner(session, token) if token else None
+
+
+OptionalLearner = Annotated[Learner | None, Depends(get_optional_learner)]
+
+
 def require_admin(learner: CurrentLearner) -> Learner:
     if learner.role != "admin":
         raise PermissionDeniedError("This action requires an administrator account.")

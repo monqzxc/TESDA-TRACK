@@ -1,16 +1,21 @@
-"""Runs the rule-based services against the catalog stored in PostgreSQL."""
+"""Goal analysis and qualification matching: the rule-based services, optionally blended with semantic search."""
 from dataclasses import dataclass
 from typing import Literal
 
 from sqlmodel import Session
 
+from tesda_track.config import get_settings
 from tesda_track.errors import InvalidRequestError
 from tesda_track.models import Qualification
-from tesda_track.schemas.analysis import Match, PathwayRecommendation, Profile, ReadinessResult
-from tesda_track.services import catalog, pathways
+from tesda_track.schemas.analysis import Match, MatchComponents, PathwayRecommendation, Profile, ReadinessResult
+from tesda_track.services import catalog, embeddings, pathways
+from tesda_track.services.embeddings import Embedder
 from tesda_track.services.intent_service import analyze_user_query
-from tesda_track.services.recommendation_service import match_qualifications, recommend_pathway, refine_profile
+from tesda_track.services.recommendation_service import recommend_pathway, refine_profile, score_qualifications
 from tesda_track.services.skill_gap_service import calculate_skill_gap
+
+KEYWORD_SCALE = 95  # the highest score the keyword rules give
+SEMANTIC_REASON = "Similar in meaning to your goal."
 
 
 @dataclass(frozen=True)
@@ -19,8 +24,46 @@ class GoalAnalysisResult:
     source: Literal["rules", "ai"]
 
 
-def analyze_goal(session: Session, query: str) -> GoalAnalysisResult:
-    return GoalAnalysisResult(analyze_goal_with_rules(session, query), "rules")
+def semantic_strength(value: float, floor: float, ceiling: float) -> float:
+    """Map a value onto 0..1: nothing at or below the floor, everything at or above the ceiling."""
+    return min(max((value - floor) / (ceiling - floor), 0.0), 1.0)
+
+
+def hybrid_score(keyword_score: float, semantic: float, keyword_weight: float) -> int:
+    return round(100 * (keyword_weight * keyword_score / KEYWORD_SCALE + (1 - keyword_weight) * semantic))
+
+
+def _semantic_strengths(session: Session, embedder: Embedder, query: str) -> dict[int, float]:
+    """Each qualification's contrast (similarity minus the others' average), mapped onto the calibrated band."""
+    settings = get_settings()
+    similarities = embeddings.qualification_similarities(session, embedder, query)
+    if len(similarities) < 2:
+        return {}
+    total, count = sum(similarities.values()), len(similarities)
+    return {qualification_id: semantic_strength(similarity - (total - similarity) / (count - 1),
+                                                settings.semantic_contrast_floor, settings.semantic_contrast_ceiling)
+            for qualification_id, similarity in similarities.items()}
+
+
+def analyze_goal(session: Session, query: str, embedder: Embedder | None = None) -> GoalAnalysisResult:
+    """Rules first; when they find no career at all, the closest qualification in meaning fills the gap."""
+    profile = analyze_goal_with_rules(session, query)
+    if embedder is None or profile.career_goal is not None or profile.intent != "unknown":
+        return GoalAnalysisResult(profile, "rules")
+    settings = get_settings()
+    strengths = _semantic_strengths(session, embedder, query)
+    candidates = [q for q in catalog.active_qualifications(session) if q.id in strengths]
+    if not candidates:
+        return GoalAnalysisResult(profile, "rules")
+    best = max(candidates, key=lambda q: strengths[q.id])
+    if hybrid_score(0, strengths[best.id], settings.match_weight_keyword) < settings.match_min_score:
+        return GoalAnalysisResult(profile, "rules")
+    years = profile.experience_years
+    intent = ("training_and_assessment" if years == 0
+              else "assessment_recommendation" if years is not None and years >= 3 else "training_recommendation")
+    inferred = profile.model_copy(update={"career_goal": best.possible_jobs[0], "possible_sector": best.sector.name,
+                                          "intent": intent})
+    return GoalAnalysisResult(inferred, "ai")
 
 
 def analyze_goal_with_rules(session: Session, query: str) -> Profile:
@@ -28,13 +71,31 @@ def analyze_goal_with_rules(session: Session, query: str) -> Profile:
     return Profile.model_validate(analyze_user_query(query, qualifications))
 
 
-def match(session: Session, query: str, profile: Profile) -> tuple[Profile, list[Match]]:
+def match(session: Session, query: str, profile: Profile,
+          embedder: Embedder | None = None) -> tuple[Profile, list[Match]]:
     refined = Profile.model_validate(refine_profile(profile.model_dump()))
     qualifications = catalog.active_qualifications(session)
-    by_code = {q.code: q for q in qualifications}
-    results = match_qualifications(query, refined.model_dump(), [catalog.rule_view(q) for q in qualifications])
-    return refined, [Match(qualification=catalog.summary(by_code[r["qualification"]["code"]]), score=r["score"],
-                           reason=r["reason"]) for r in results]
+    keyword = {r["qualification"]["code"]: r for r in score_qualifications(
+        query, refined.model_dump(), [catalog.rule_view(q) for q in qualifications])}
+    if embedder is None:
+        by_code = {q.code: q for q in qualifications}
+        return refined, [Match(qualification=catalog.summary(by_code[code]), score=r["score"], reason=r["reason"])
+                         for code, r in list(keyword.items())[:3]]
+    settings = get_settings()
+    strengths = _semantic_strengths(session, embedder, query)
+    matches = []
+    for qualification in qualifications:
+        evidence = keyword.get(qualification.code)
+        keyword_score = evidence["score"] if evidence else 0
+        semantic = strengths.get(qualification.id, 0.0)
+        score = hybrid_score(keyword_score, semantic, settings.match_weight_keyword)
+        if score >= settings.match_min_score:
+            matches.append(Match(qualification=catalog.summary(qualification), score=score,
+                                 reason=evidence["reason"] if evidence else SEMANTIC_REASON,
+                                 components=MatchComponents(keyword=round(keyword_score / KEYWORD_SCALE, 3),
+                                                            semantic=round(semantic, 3))))
+    matches.sort(key=lambda m: m.score, reverse=True)
+    return refined, matches[:3]
 
 
 def pathway(session: Session, profile: Profile, qualification_code: str) -> PathwayRecommendation:

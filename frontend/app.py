@@ -24,6 +24,8 @@ ANSWER_OPTIONS = {"I can do this confidently": "confident", "I have some experie
 DELIVERY_LABELS = {"institution_based": "Institution-based", "enterprise_based": "Enterprise-based",
                    "community_based": "Community-based", "online": "Online"}
 RESULT_LABELS = {"competent": "Competent", "not_yet_competent": "Not yet competent"}
+RANKING_LABELS = {"semantic": "fit with your goal", "proximity": "distance", "assessment": "assessment nearby",
+                  "schedule": "start date", "preference": "your preferences"}
 PHILIPPINE_TIME = timezone(timedelta(hours=8))
 PRIVACY_NOTICE = ("TESDA-TRACK keeps your name, email, goals, recommendations, readiness checks and certifications "
                   "so you can follow your progress. They are used only to run this pilot and are never sold. "
@@ -382,14 +384,19 @@ def format_when(iso_timestamp: str) -> str:
 
 def show_training(qualifications: list[dict]) -> None:
     st.subheader("Find training and assessment near you")
-    st.write("Pick a qualification and your region to see training programs and upcoming assessments, nearest first.")
+    st.write("Pick a qualification and your region. Programs are ranked by how well they fit your goal, distance, "
+             "nearby assessments, start dates and your preferences.")
     names = {q["code"]: q["name"] for q in qualifications}
     regions = {region["code"]: region for region in load_regions(api_base_url())}
     left, right = st.columns(2)
     code = left.selectbox("Qualification", list(names), format_func=names.get, key="training_qualification")
     region_code = right.selectbox("Your region (optional)", [None, *regions], key="training_region",
                                   format_func=lambda c: "Any region" if c is None else regions[c]["name"],
-                                  help="Only used to sort results by distance. It isn't saved.")
+                                  help="Only used to sort results by distance. Only a rounded location is kept.")
+    preferred_mode = left.selectbox("Preferred way to train (optional)", [None, *DELIVERY_LABELS],
+                                    key="training_mode",
+                                    format_func=lambda m: "No preference" if m is None else DELIVERY_LABELS[m])
+    needs_scholarship = right.checkbox("I need a scholarship", key="training_scholarship")
     params = {"qualification_code": code}
     if region_code:
         params.update(near_lat=regions[region_code]["latitude"], near_lon=regions[region_code]["longitude"])
@@ -398,21 +405,27 @@ def show_training(qualifications: list[dict]) -> None:
     with programs_column:
         st.markdown("#### Training programs")
         with st.container(key="program_results"):
-            programs = api().programs(**params)
-            for program in programs:
-                provider = program["provider"]
+            ranking = api().rank_training(token, **params, goal=st.session_state.get("original_query"),
+                                          preferred_delivery_mode=preferred_mode, needs_scholarship=needs_scholarship)
+            for item in ranking["results"]:
+                program, provider = item["program"], item["program"]["provider"]
                 with st.container(border=True):
                     st.markdown(f"**{program['title']}**")
-                    details = [provider["name"], provider["city"] or regions[provider["region_code"]]["name"],
+                    details = [f"{item['score']}% fit", provider["name"],
+                               provider["city"] or regions[provider["region_code"]]["name"],
                                DELIVERY_LABELS[program["delivery_mode"]]]
                     if program["duration_hours"]:
                         details.append(f"{program['duration_hours']} hours")
-                    if program["distance_km"] is not None:
-                        details.append(f"about {program['distance_km']:,.0f} km away")
                     st.caption(" · ".join(details))
                     if program["scholarship_available"]:
                         st.caption("Scholarship available")
-            if not programs:
+                    with st.expander("Why this program?"):
+                        for reason in item["explanation"]:
+                            st.markdown(f"- {reason}")
+                        st.caption("Score parts: " + ", ".join(
+                            f"{RANKING_LABELS[name]} {value:.0%} × {ranking['weights'][name]:.0%}"
+                            for name, value in item["components"].items()))
+            if not ranking["results"]:
                 st.caption("No programs are listed for this qualification yet.")
     with schedules_column:
         st.markdown("#### Upcoming assessments")

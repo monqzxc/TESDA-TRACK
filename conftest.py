@@ -23,7 +23,8 @@ os.environ.update({
     "DATABASE_URL": _test_url,
     "ENVIRONMENT": "test",
     "SECRET_KEY": "test-only-secret-key-that-is-long-enough-0123456789",
-    "ANTHROPIC_API_KEY": "",
+    # Tests use an injected test embedder; the real model is exercised only by opt-in tests.
+    "SEMANTIC_SEARCH_ENABLED": "false",
     "SKILLS_BRIDGE_BASE_URL": "",
     "SKILLS_BRIDGE_API_TOKEN": "",
 })

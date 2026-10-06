@@ -181,6 +181,8 @@ def test_training_tab_lists_nearby_programs_and_learner_applies(ui, training_dat
     rerun(app, tab)
     titles = [md.value for md in app.container(key="program_results").markdown if md.value.startswith("**")]
     assert titles == ["**SMAW NC II Manila batch**", "**SMAW NC II Cebu batch**"], "nearest first, not creation order"
+    fits = [c.value for c in app.container(key="program_results").caption if "% fit" in c.value]
+    assert len(fits) == 2, "each ranked program shows its score"
     assert any("Manila Assessment Center" in md.value for md in app.container(key="schedule_results").markdown)
     assert not any(button.label == "Apply" for button in app.button), "applying needs an account"
 

@@ -1,7 +1,46 @@
 """Backend fixtures for accounts. Database, app and client fixtures live in the repository-root conftest."""
+import math
+import re
+import zlib
+
 import pytest
 
 PASSWORD = "correct horse battery"
+STOP_WORDS = {"query", "passage", "i", "a", "an", "the", "and", "to", "of", "in", "for", "my", "want", "be", "is",
+              "it", "with", "on", "at", "as", "sector", "jobs", "skills", "keywords", "competencies", "delivery"}
+
+
+class WordEmbedder:
+    """Test stand-in for the embedding model: a hashed bag of words, so texts that share words are similar."""
+    model_name = "test-bag-of-words"
+
+    def _vector(self, text: str) -> list[float]:
+        vector = [0.0] * 384
+        for word in re.findall(r"[a-z]+", text.lower()):
+            if word not in STOP_WORDS:
+                vector[zlib.crc32(word.encode()) % 384] += 1.0
+        norm = math.sqrt(sum(v * v for v in vector)) or 1.0
+        return [v / norm for v in vector]
+
+    def embed_queries(self, texts: list[str]) -> list[list[float]]:
+        return [self._vector(text) for text in texts]
+
+    def embed_passages(self, texts: list[str]) -> list[list[float]]:
+        return [self._vector(text) for text in texts]
+
+
+@pytest.fixture
+def semantic(app, session, monkeypatch):
+    """Turn semantic search on with the test embedder and a similarity band suited to it."""
+    from tesda_track.config import get_settings
+    from tesda_track.services import embeddings
+
+    embedder = WordEmbedder()
+    monkeypatch.setattr(get_settings(), "semantic_contrast_floor", 0.0)
+    monkeypatch.setattr(get_settings(), "semantic_contrast_ceiling", 0.5)
+    app.dependency_overrides[embeddings.get_embedder] = lambda: embedder
+    embeddings.sync(session, embedder)
+    return embedder
 
 
 @pytest.fixture

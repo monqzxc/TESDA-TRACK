@@ -10,7 +10,7 @@ def point(model):
 
 
 def _reference(search: NearbySearch):
-    return func.geography(func.ST_SetSRID(func.ST_MakePoint(search.near_lon, search.near_lat), 4326))
+    return point_at(search.near_lat, search.near_lon)
 
 
 def distance_km(model, search: NearbySearch):
@@ -19,3 +19,7 @@ def distance_km(model, search: NearbySearch):
 
 def within_radius(model, search: NearbySearch):
     return func.ST_DWithin(point(model), _reference(search), search.radius_km * 1000.0)
+
+
+def point_at(latitude: float, longitude: float):
+    return func.geography(func.ST_SetSRID(func.ST_MakePoint(longitude, latitude), 4326))
