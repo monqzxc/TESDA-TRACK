@@ -14,9 +14,17 @@ def ui(live_api):
     return app
 
 
-def click(app, label):
-    next(button for button in app.button if button.label.startswith(label)).click().run()
+def rerun(app, tab=None):
+    """AppTest doesn't model tabs as widgets, so every rerun falls back to the first tab unless we re-select it."""
+    if tab:
+        app.session_state["main_tabs"] = tab
+    app.run()
     assert not app.exception
+
+
+def click(app, label, tab=None):
+    next(button for button in app.button if button.label.startswith(label)).click()
+    rerun(app, tab)
 
 
 def readiness(app):
@@ -135,6 +143,58 @@ def test_registration_requires_consent(ui):
     click(app, "Create account")
     assert any("privacy notice" in error.value for error in app.sidebar.error)
     assert not any("Signed in as" in md.value for md in app.sidebar.markdown)
+
+
+def recommend_welding_readiness_path(app):
+    click(app, "Become a welder")
+    click(app, "Get Recommendation")
+    app.selectbox(key="follow_experience").select("More than 3 years").run()
+    app.selectbox(key="follow_certification").select("No").run()
+
+
+def test_learner_follows_the_curated_pathway_and_ticks_off_steps(ui):
+    app = ui
+    recommend_welding_readiness_path(app)
+    assert any("Turn your experience into a certificate" in md.value for md in app.markdown)
+    assert not any(button.label == "Follow this pathway" for button in app.button), "signed-out learners can't follow"
+
+    create_account(app)
+    rerun(app, "Find my pathway")
+    click(app, "Follow this pathway")
+    assert any("My progress" in success.value for success in app.success)
+
+    rerun(app, "My progress")
+    steps = [box for box in app.checkbox if box.key and box.key.startswith("step_")]
+    assert len(steps) == 4 and not any(box.value for box in steps)
+    steps[0].check()
+    rerun(app, "My progress")
+    assert any("25% complete" in caption.value for caption in app.caption)
+
+
+def test_training_tab_lists_nearby_programs_and_learner_applies(ui, training_data):
+    app = ui
+    tab = "Training & assessment"
+    rerun(app, tab)
+    app.selectbox(key="training_qualification").select("SMAW-NC-II")
+    rerun(app, tab)
+    app.selectbox(key="training_region").select("NCR")
+    rerun(app, tab)
+    titles = [md.value for md in app.container(key="program_results").markdown if md.value.startswith("**")]
+    assert titles == ["**SMAW NC II Manila batch**", "**SMAW NC II Cebu batch**"], "nearest first, not creation order"
+    assert any("Manila Assessment Center" in md.value for md in app.container(key="schedule_results").markdown)
+    assert not any(button.label == "Apply" for button in app.button), "applying needs an account"
+
+    create_account(app)
+    rerun(app, tab)
+    click(app, "Apply", tab)
+    assert any("application" in success.value.lower() for success in app.success)
+
+    rerun(app, "My progress")
+    applications = [md.value for md in app.container(key="my_applications").markdown]
+    assert any("Pending" in value for value in applications)
+    click(app, "Withdraw", "My progress")
+    applications = [md.value for md in app.container(key="my_applications").markdown]
+    assert any("Withdrawn" in value for value in applications)
 
 
 def test_library_lists_catalog_from_the_api(ui):

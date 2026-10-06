@@ -7,8 +7,8 @@ from sqlalchemy.exc import OperationalError
 
 from tesda_track.config import get_settings
 from tesda_track.errors import AuthenticationError, DomainError
-from tesda_track.routers import (analysis, auth, certifications, goals, health, me, qualifications, readiness_checks,
-                                 recommendation_sessions)
+from tesda_track.routers import (analysis, assessments, auth, certifications, goals, health, me, pathways,
+                                 qualifications, readiness_checks, recommendation_sessions, training)
 
 logger = logging.getLogger("tesda_track")
 
@@ -46,8 +46,11 @@ def create_app() -> FastAPI:
 
     app.include_router(health.router)
     api = APIRouter(prefix="/api/v1")
-    for module in (qualifications, analysis, auth, me, goals, recommendation_sessions, readiness_checks, certifications):
-        api.include_router(module.router)
+    for router in (qualifications.router, analysis.router, auth.router, me.router, goals.router,
+                   recommendation_sessions.router, readiness_checks.router, certifications.router,
+                   pathways.router, pathways.learner_router, training.router, assessments.router,
+                   assessments.learner_router, pathways.admin_router, training.admin_router, assessments.admin_router):
+        api.include_router(router)
     app.include_router(api)
     return app
 

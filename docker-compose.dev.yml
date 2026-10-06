@@ -1,0 +1,20 @@
+# Local development database (same image as production), on 127.0.0.1:5433:
+#   docker compose -f docker-compose.dev.yml up -d
+# Creates tesda_track and tesda_track_test; set APP_DB_PASSWORD and POSTGRES_PASSWORD in .env.
+name: tesda-track-dev
+
+services:
+  db:
+    build: ./deploy/postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD:?Set APP_DB_PASSWORD in .env}
+      CREATE_TEST_DATABASE: "true"
+    ports:
+      - "127.0.0.1:5433:5432"
+    volumes:
+      - devdata:/var/lib/postgresql/data
+
+volumes:
+  devdata:

@@ -9,7 +9,8 @@ from tesda_track.models import Learner, utcnow
 from tesda_track.schemas.accounts import LearnerPublic, RegisterRequest
 from tesda_track.schemas.records import AccountExport
 from tesda_track.security import burn_verification_time, hash_password, verify_password
-from tesda_track.services import certifications, goals, readiness_checks, recommendation_sessions
+from tesda_track.services import (assessments, certifications, goals, pathways, readiness_checks,
+                                  recommendation_sessions)
 
 
 def normalize_email(email: str) -> str:
@@ -81,4 +82,7 @@ def export(session: Session, learner: Learner) -> AccountExport:
         recommendation_sessions=[recommendation_sessions.to_public(s)
                                  for s in recommendation_sessions.list_for(session, learner, limit=10_000, offset=0)],
         readiness_checks=[readiness_checks.to_public(c) for c in readiness_checks.list_for(session, learner, None)],
-        certifications=[certifications.to_public(c) for c in certifications.list_for(session, learner)])
+        certifications=[certifications.to_public(c) for c in certifications.list_for(session, learner)],
+        pathway_enrollments=[pathways.enrollment_public(e) for e in pathways.list_for(session, learner)],
+        assessment_applications=[assessments.application_public(session, a)
+                                 for a in assessments.list_for(session, learner)])

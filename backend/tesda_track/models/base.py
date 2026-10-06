@@ -13,6 +13,11 @@ SQLModel.metadata.naming_convention = {
 }
 
 
+def one_of(column: str, values: tuple[str, ...]) -> str:
+    """SQL for a CHECK constraint limiting a text column to fixed values."""
+    return f"{column} IN ({', '.join(repr(v) for v in values)})"
+
+
 def utcnow() -> datetime:
     return datetime.now(timezone.utc)
 

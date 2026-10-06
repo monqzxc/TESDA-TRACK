@@ -29,6 +29,11 @@ os.environ.update({
 })
 
 
+def pytest_report_header(config):
+    url = make_url(_test_url)
+    return f"test database: {url.host}:{url.port}/{url.database} (schema rebuilt every run)"
+
+
 @pytest.fixture(scope="session")
 def engine():
     from alembic import command

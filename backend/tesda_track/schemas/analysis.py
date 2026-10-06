@@ -3,6 +3,7 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, Field, StringConstraints
 
 from tesda_track.schemas.catalog import QualificationSummary
+from tesda_track.schemas.pathways import PathwayPublic
 
 GoalText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=1000)]
 ShortText = Annotated[str, StringConstraints(strip_whitespace=True, max_length=200)]
@@ -56,6 +57,7 @@ class PathwayRecommendation(BaseModel):
     recommendation: Route
     reason: str
     next_step: str
+    pathway: PathwayPublic | None = Field(default=None, description="Curated steps for this route, when defined")
 
 
 class ReadinessRequest(BaseModel):

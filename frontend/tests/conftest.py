@@ -1,8 +1,40 @@
 import threading
 import time
+from datetime import datetime, timedelta, timezone
 
 import pytest
 import uvicorn
+
+
+@pytest.fixture
+def training_data(client, session):
+    """A welding program in Manila and one in Cebu, plus an upcoming assessment in Manila."""
+    from tesda_track.cli import create_or_promote_admin
+
+    create_or_promote_admin(session, email="admin@example.com", full_name="Admin", password="correct horse battery")
+    session.flush()
+    token = client.post("/api/v1/auth/token",
+                        data={"username": "admin@example.com", "password": "correct horse battery"}).json()
+    admin = {"Authorization": f"Bearer {token['access_token']}"}
+
+    def post(path, body):
+        response = client.post(f"/api/v1/admin/{path}", headers=admin, json=body)
+        assert response.status_code == 201, response.text
+        return response.json()
+
+    manila = post("training-providers", {"name": "Manila Welding Institute", "region_code": "NCR",
+                                         "city": "Manila", "latitude": 14.5995, "longitude": 120.9842})
+    cebu = post("training-providers", {"name": "Cebu Skills Center", "region_code": "VII",
+                                       "city": "Cebu City", "latitude": 10.3157, "longitude": 123.8854})
+    for provider, title in ((cebu, "SMAW NC II Cebu batch"), (manila, "SMAW NC II Manila batch")):
+        post("training-programs", {"provider_id": provider["id"], "qualification_code": "SMAW-NC-II", "title": title,
+                                   "delivery_mode": "institution_based", "duration_hours": 268})
+    center = post("assessment-centers", {"name": "Manila Assessment Center", "region_code": "NCR", "city": "Manila",
+                                         "latitude": 14.5995, "longitude": 120.9842})
+    schedule = post("assessment-schedules", {
+        "center_id": center["id"], "qualification_code": "SMAW-NC-II", "slots": 10,
+        "scheduled_at": (datetime.now(timezone.utc) + timedelta(days=21)).isoformat()})
+    return {"schedule": schedule}
 
 
 @pytest.fixture

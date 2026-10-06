@@ -109,6 +109,35 @@ class ApiClient:
     def update_goal(self, token: str, goal_id: str, **fields) -> dict:
         return self._request("PATCH", f"/api/v1/me/goals/{goal_id}", token, json=fields)
 
+    # Pathways, training and assessment
+    def regions(self) -> list[dict]:
+        return self._request("GET", "/api/v1/regions")
+
+    def programs(self, **params) -> list[dict]:
+        return self._request("GET", "/api/v1/training-programs", params=params)
+
+    def schedules(self, **params) -> list[dict]:
+        return self._request("GET", "/api/v1/assessment-schedules", params=params)
+
+    def follow_pathway(self, token: str, pathway_id: int) -> dict:
+        return self._request("POST", "/api/v1/me/pathways", token, json={"pathway_id": pathway_id})
+
+    def my_pathways(self, token: str) -> list[dict]:
+        return self._request("GET", "/api/v1/me/pathways", token)
+
+    def set_step_status(self, token: str, enrollment_id: str, step_id: int, status: str) -> dict:
+        return self._request("PATCH", f"/api/v1/me/pathways/{enrollment_id}/steps/{step_id}", token,
+                             json={"status": status})
+
+    def apply_for_assessment(self, token: str, schedule_id: int) -> dict:
+        return self._request("POST", "/api/v1/me/assessment-applications", token, json={"schedule_id": schedule_id})
+
+    def my_applications(self, token: str) -> list[dict]:
+        return self._request("GET", "/api/v1/me/assessment-applications", token)
+
+    def withdraw_application(self, token: str, application_id: str) -> dict:
+        return self._request("POST", f"/api/v1/me/assessment-applications/{application_id}/withdraw", token)
+
     def certifications(self, token: str) -> list[dict]:
         return self._request("GET", "/api/v1/me/certifications", token)
 

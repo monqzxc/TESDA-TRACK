@@ -1,5 +1,6 @@
 import json
 import os
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import streamlit as st
@@ -20,6 +21,10 @@ PATH_LABELS = {
 }
 ANSWER_OPTIONS = {"I can do this confidently": "confident", "I have some experience": "some_experience",
                   "I am not familiar with this": "not_familiar"}
+DELIVERY_LABELS = {"institution_based": "Institution-based", "enterprise_based": "Enterprise-based",
+                   "community_based": "Community-based", "online": "Online"}
+RESULT_LABELS = {"competent": "Competent", "not_yet_competent": "Not yet competent"}
+PHILIPPINE_TIME = timezone(timedelta(hours=8))
 PRIVACY_NOTICE = ("TESDA-TRACK keeps your name, email, goals, recommendations, readiness checks and certifications "
                   "so you can follow your progress. They are used only to run this pilot and are never sold. "
                   "You can download or permanently delete your data at any time from this sidebar.")
@@ -41,6 +46,11 @@ def api() -> ApiClient:
 @st.cache_data(ttl="5m")
 def load_qualifications(base_url: str) -> list[dict]:
     return get_api(base_url).qualifications()
+
+
+@st.cache_data(ttl="1h")
+def load_regions(base_url: str) -> list[dict]:
+    return get_api(base_url).regions()
 
 
 def use_example(query: str) -> None:
@@ -178,6 +188,22 @@ def save_session_progress(profile: dict, qualification_code: str) -> None:
         saved["synced"] = state
 
 
+def show_curated_pathway(curated: dict) -> None:
+    st.markdown(f"**{curated['title']}**")
+    st.caption(curated["description"])
+    for step in curated["steps"]:
+        st.markdown(f"{step['position']}. {step['title']}")
+    token = auth_token()
+    if token and st.button("Follow this pathway", key=f"follow_{curated['id']}"):
+        try:
+            api().follow_pathway(token, curated["id"])
+            st.success("Added to My progress. Tick off each step as you complete it.")
+        except ApiError as error:
+            if error.status_code != 409:
+                raise
+            st.info("You're already following this pathway. Find it under My progress.")
+
+
 def show_recommendations(qualifications: list[dict]) -> None:
     profile = st.session_state["analysis"].copy()
     experience_description = None
@@ -244,6 +270,8 @@ def show_recommendations(qualifications: list[dict]) -> None:
         st.subheader(PATH_LABELS[pathway["recommendation"]])
         st.write(pathway["reason"])
         st.info(pathway["next_step"])
+        if pathway.get("pathway"):
+            show_curated_pathway(pathway["pathway"])
         st.caption("Your experience should be relevant to the selected qualification. Update your goal when exploring a different field.")
 
     show_readiness(qualification)
@@ -348,6 +376,112 @@ def show_certifications(token: str, names: dict[str, str]) -> None:
             st.warning("Enter the certificate title first.")
 
 
+def format_when(iso_timestamp: str) -> str:
+    return datetime.fromisoformat(iso_timestamp).astimezone(PHILIPPINE_TIME).strftime("%b %d, %Y, %I:%M %p")
+
+
+def show_training(qualifications: list[dict]) -> None:
+    st.subheader("Find training and assessment near you")
+    st.write("Pick a qualification and your region to see training programs and upcoming assessments, nearest first.")
+    names = {q["code"]: q["name"] for q in qualifications}
+    regions = {region["code"]: region for region in load_regions(api_base_url())}
+    left, right = st.columns(2)
+    code = left.selectbox("Qualification", list(names), format_func=names.get, key="training_qualification")
+    region_code = right.selectbox("Your region (optional)", [None, *regions], key="training_region",
+                                  format_func=lambda c: "Any region" if c is None else regions[c]["name"],
+                                  help="Only used to sort results by distance. It isn't saved.")
+    params = {"qualification_code": code}
+    if region_code:
+        params.update(near_lat=regions[region_code]["latitude"], near_lon=regions[region_code]["longitude"])
+    token = auth_token()
+    programs_column, schedules_column = st.columns(2, gap="large")
+    with programs_column:
+        st.markdown("#### Training programs")
+        with st.container(key="program_results"):
+            programs = api().programs(**params)
+            for program in programs:
+                provider = program["provider"]
+                with st.container(border=True):
+                    st.markdown(f"**{program['title']}**")
+                    details = [provider["name"], provider["city"] or regions[provider["region_code"]]["name"],
+                               DELIVERY_LABELS[program["delivery_mode"]]]
+                    if program["duration_hours"]:
+                        details.append(f"{program['duration_hours']} hours")
+                    if program["distance_km"] is not None:
+                        details.append(f"about {program['distance_km']:,.0f} km away")
+                    st.caption(" · ".join(details))
+                    if program["scholarship_available"]:
+                        st.caption("Scholarship available")
+            if not programs:
+                st.caption("No programs are listed for this qualification yet.")
+    with schedules_column:
+        st.markdown("#### Upcoming assessments")
+        with st.container(key="schedule_results"):
+            schedules = api().schedules(**params)
+            for schedule in schedules:
+                with st.container(border=True):
+                    st.markdown(f"**{format_when(schedule['scheduled_at'])}** · {schedule['center']['name']}")
+                    details = [f"{schedule['seats_left']} of {schedule['slots']} seats left"]
+                    if schedule["fee"] is not None:
+                        details.append(f"₱{float(schedule['fee']):,.2f} fee")
+                    if schedule["distance_km"] is not None:
+                        details.append(f"about {schedule['distance_km']:,.0f} km away")
+                    st.caption(" · ".join(details))
+                    if token and schedule["seats_left"] > 0 and st.button("Apply", key=f"apply_{schedule['id']}"):
+                        try:
+                            api().apply_for_assessment(token, schedule["id"])
+                            st.success("Application sent. Track it under My progress.")
+                        except ApiError as error:
+                            if error.status_code not in (409, 422):
+                                raise
+                            st.warning(error.message)
+            if not schedules:
+                st.caption("No upcoming assessments are open for this qualification yet.")
+            elif not token:
+                st.caption("Sign in to apply for an assessment.")
+
+
+def show_my_pathways(token: str) -> None:
+    st.subheader("My pathways")
+    enrollments = [e for e in api().my_pathways(token) if e["status"] != "withdrawn"]
+    for enrollment in enrollments:
+        with st.container(border=True):
+            st.markdown(f"**{enrollment['pathway']['title']}**")
+            st.caption(f"{enrollment['pathway']['qualification']['name']} · {enrollment['completion_percent']}% complete")
+            st.progress(enrollment["completion_percent"] / 100)
+            for step in enrollment["steps"]:
+                done = step["status"] == "completed"
+                checked = st.checkbox(f"{step['position']}. {step['title']}", value=done,
+                                      key=f"step_{enrollment['id']}_{step['id']}")
+                if checked != done:
+                    api().set_step_status(token, enrollment["id"], step["id"], "completed" if checked else "not_started")
+                    st.rerun()
+    if not enrollments:
+        st.caption("Follow a recommended pathway from Find my pathway to track it here.")
+
+
+def show_my_applications(token: str) -> None:
+    st.subheader("My assessment applications")
+    with st.container(key="my_applications"):
+        applications = api().my_applications(token)
+        for application in applications:
+            schedule = application["schedule"]
+            with st.container(border=True):
+                st.markdown(f"**{schedule['qualification']['name']}** · {format_when(schedule['scheduled_at'])}")
+                details = [schedule["center"]["name"], application["status"].title()]
+                if application["result"]:
+                    details.append(RESULT_LABELS[application["result"]])
+                st.markdown(" · ".join(details))
+                if application["reviewer_note"]:
+                    st.caption(application["reviewer_note"])
+                if application["status"] in ("pending", "approved") and st.button(
+                        "Withdraw", key=f"withdraw_{application['id']}"):
+                    api().withdraw_application(token, application["id"])
+                    st.rerun()
+        if not applications:
+            st.caption("Apply for an assessment from the Training & assessment tab.")
+
+
 def show_progress(qualifications: list[dict]) -> None:
     token = auth_token()
     if not token:
@@ -377,6 +511,11 @@ def show_progress(qualifications: list[dict]) -> None:
                 st.markdown(" · ".join(details) or "No matching qualification yet")
         if not sessions:
             st.caption("Goals you submit while signed in appear here.")
+    pathways_column, applications_column = st.columns(2, gap="large")
+    with pathways_column:
+        show_my_pathways(token)
+    with applications_column:
+        show_my_applications(token)
     goals_column, certifications_column = st.columns(2, gap="large")
     with goals_column:
         show_goals(token, names)
@@ -414,13 +553,20 @@ def main() -> None:
         st.error(error.message)
         return
     # Dynamic tabs: only the selected tab's .open is True, so My progress loads only when viewed.
-    finder, library, progress = st.tabs(["Find my pathway", "Qualification library", "My progress"],
-                                        key="main_tabs", on_change="rerun")
+    finder, library, training, progress = st.tabs(
+        ["Find my pathway", "Qualification library", "Training & assessment", "My progress"],
+        key="main_tabs", on_change="rerun")
     with finder:
         try:
             show_finder(qualifications)
         except ApiError as error:
             handle_api_error(error)
+    if training.open:
+        with training:
+            try:
+                show_training(qualifications)
+            except ApiError as error:
+                handle_api_error(error)
     if progress.open:
         with progress:
             try:

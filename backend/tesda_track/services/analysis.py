@@ -7,7 +7,7 @@ from sqlmodel import Session
 from tesda_track.errors import InvalidRequestError
 from tesda_track.models import Qualification
 from tesda_track.schemas.analysis import Match, PathwayRecommendation, Profile, ReadinessResult
-from tesda_track.services import catalog
+from tesda_track.services import catalog, pathways
 from tesda_track.services.intent_service import analyze_user_query
 from tesda_track.services.recommendation_service import match_qualifications, recommend_pathway, refine_profile
 from tesda_track.services.skill_gap_service import calculate_skill_gap
@@ -39,7 +39,11 @@ def match(session: Session, query: str, profile: Profile) -> tuple[Profile, list
 
 def pathway(session: Session, profile: Profile, qualification_code: str) -> PathwayRecommendation:
     qualification = catalog.get_active_qualification(session, qualification_code)
-    return PathwayRecommendation.model_validate(recommend_pathway(profile.model_dump(), catalog.rule_view(qualification)))
+    recommendation = PathwayRecommendation.model_validate(
+        recommend_pathway(profile.model_dump(), catalog.rule_view(qualification)))
+    curated = pathways.for_route(session, qualification, recommendation.recommendation)
+    recommendation.pathway = pathways.to_public(curated) if curated else None
+    return recommendation
 
 
 def readiness(session: Session, qualification_code: str, answers: dict[int, str]) -> ReadinessResult:

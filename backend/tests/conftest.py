@@ -44,6 +44,57 @@ def admin(session, login):
     return login("admin@example.com")
 
 
+MANILA = (14.5995, 120.9842)
+
+
+def _post(client, headers, path, body):
+    response = client.post(path, headers=headers, json=body)
+    assert response.status_code == 201, response.text
+    return response.json()
+
+
+@pytest.fixture
+def make_provider(client, admin):
+    def make_provider(name="Manila Welding Institute", region_code="NCR", location=MANILA, **extra):
+        body = {"name": name, "region_code": region_code, **extra}
+        if location:
+            body.update(latitude=location[0], longitude=location[1])
+        return _post(client, admin, "/api/v1/admin/training-providers", body)
+    return make_provider
+
+
+@pytest.fixture
+def make_program(client, admin, make_provider):
+    def make_program(provider=None, qualification_code="SMAW-NC-II", **extra):
+        provider = provider or make_provider()
+        body = {"provider_id": provider["id"], "qualification_code": qualification_code,
+                "title": "SMAW NC II Batch 1", "delivery_mode": "institution_based", **extra}
+        return _post(client, admin, "/api/v1/admin/training-programs", body)
+    return make_program
+
+
+@pytest.fixture
+def make_center(client, admin):
+    def make_center(name="Manila Assessment Center", region_code="NCR", location=MANILA, **extra):
+        body = {"name": name, "region_code": region_code, **extra}
+        if location:
+            body.update(latitude=location[0], longitude=location[1])
+        return _post(client, admin, "/api/v1/admin/assessment-centers", body)
+    return make_center
+
+
+@pytest.fixture
+def make_schedule(client, admin, make_center):
+    def make_schedule(center=None, qualification_code="SMAW-NC-II", days_ahead=14, slots=2, **extra):
+        from datetime import datetime, timedelta, timezone
+
+        center = center or make_center()
+        body = {"center_id": center["id"], "qualification_code": qualification_code, "slots": slots,
+                "scheduled_at": (datetime.now(timezone.utc) + timedelta(days=days_ahead)).isoformat(), **extra}
+        return _post(client, admin, "/api/v1/admin/assessment-schedules", body)
+    return make_schedule
+
+
 @pytest.fixture
 def competency_ids(client):
     def competency_ids(code):

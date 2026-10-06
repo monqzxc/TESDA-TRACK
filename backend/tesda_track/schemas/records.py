@@ -9,6 +9,8 @@ from tesda_track.schemas.accounts import LearnerPublic
 from tesda_track.schemas.analysis import (AnswerCode, GoalText, Match, PathwayRecommendation, Profile,
                                           ReadinessRequest, ReadinessResult)
 from tesda_track.schemas.catalog import QualificationSummary
+from tesda_track.schemas.delivery import AssessmentApplicationPublic
+from tesda_track.schemas.pathways import EnrollmentPublic
 
 QualificationCode = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=40)]
 GoalStatus = Literal["active", "achieved", "archived"]
@@ -124,3 +126,5 @@ class AccountExport(BaseModel):
     recommendation_sessions: list[RecommendationSessionPublic]
     readiness_checks: list[ReadinessCheckPublic]
     certifications: list[CertificationPublic]
+    pathway_enrollments: list[EnrollmentPublic]
+    assessment_applications: list[AssessmentApplicationPublic]

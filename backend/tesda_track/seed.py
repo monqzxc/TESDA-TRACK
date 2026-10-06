@@ -1,8 +1,9 @@
 """Sync reference data from backend/seed/ into the database: python -m tesda_track.seed
 
-The seed files are the source of truth for the qualification catalog. Rows that disappear from
-the files are archived (is_active = false) rather than deleted, so learner records that point
-at them stay valid.
+The seed files are the source of truth for regions and the qualification catalog. Catalog rows that
+disappear from the files are archived (is_active = false) rather than deleted, so learner records that
+point at them stay valid. Default pathways are only created where missing, never overwritten, because
+administrators curate them afterwards.
 """
 import argparse
 import json
@@ -15,7 +16,7 @@ from typing import Literal
 from pydantic import BaseModel, Field, TypeAdapter, ValidationError
 from sqlmodel import Session, select
 
-from tesda_track.models import Competency, Qualification, Sector
+from tesda_track.models import ROUTES, STEP_KINDS, Competency, Pathway, PathwayStep, Qualification, Region, Sector
 
 SEED_DIR = Path(__file__).resolve().parents[1] / "seed"
 logger = logging.getLogger(__name__)
@@ -39,6 +40,26 @@ class QualificationEntry(BaseModel):
     career_keywords: list[str] = Field(min_length=1)
     possible_jobs: list[str] = Field(min_length=1)
     competencies: list[CompetencyEntry] = Field(min_length=1)
+
+
+class RegionEntry(BaseModel):
+    code: str = Field(min_length=1, max_length=20)
+    name: str = Field(min_length=1, max_length=120)
+    center_city: str = Field(min_length=1, max_length=120)
+    latitude: float = Field(ge=-90, le=90)
+    longitude: float = Field(ge=-180, le=180)
+
+
+class PathwayStepTemplate(BaseModel):
+    kind: Literal[STEP_KINDS]
+    title: str = Field(min_length=1, max_length=200)
+    description: str = ""
+
+
+class PathwayTemplate(BaseModel):
+    title: str = Field(min_length=1, max_length=200)
+    description: str = ""
+    steps: list[PathwayStepTemplate] = Field(min_length=1)
 
 
 @dataclass
@@ -114,9 +135,57 @@ def _sync_competencies(qualification: Qualification, entries: list[CompetencyEnt
             report.archived += 1
 
 
+def sync_regions(session: Session, raw: object) -> SyncReport:
+    try:
+        entries = TypeAdapter(list[RegionEntry]).validate_python(raw)
+    except ValidationError as error:
+        raise SeedError(f"Invalid regions: {error}") from error
+    report = SyncReport()
+    existing = {region.code: region for region in session.exec(select(Region))}
+    for position, entry in enumerate(entries, start=1):
+        values = {**entry.model_dump(exclude={"code"}), "position": position}
+        region = existing.get(entry.code)
+        if region is None:
+            session.add(Region(code=entry.code, **values))
+            report.created += 1
+        elif _assign(region, values):
+            report.updated += 1
+    session.flush()
+    return report
+
+
+def create_missing_pathways(session: Session, raw: object) -> SyncReport:
+    try:
+        templates = {route: PathwayTemplate.model_validate(raw[route]) for route in ROUTES}
+    except (KeyError, TypeError, ValidationError) as error:
+        raise SeedError(f"Invalid pathway templates: {error}") from error
+    report = SyncReport()
+    existing = set(session.exec(select(Pathway.qualification_id, Pathway.route)))
+    for qualification in session.exec(select(Qualification).where(Qualification.is_active).order_by(Qualification.id)):
+        for route, template in templates.items():
+            if (qualification.id, route) in existing:
+                continue
+            fill = lambda text: text.replace("{qualification}", qualification.name)  # noqa: E731
+            session.add(Pathway(
+                qualification=qualification, route=route, title=fill(template.title),
+                description=fill(template.description),
+                steps=[PathwayStep(position=n, kind=step.kind, title=fill(step.title), description=fill(step.description))
+                       for n, step in enumerate(template.steps, start=1)]))
+            report.created += 1
+    session.flush()
+    return report
+
+
+def _read(seed_dir: Path, name: str) -> object:
+    return json.loads((seed_dir / name).read_text(encoding="utf-8"))
+
+
 def seed_all(session: Session, seed_dir: Path = SEED_DIR) -> dict[str, SyncReport]:
-    raw = json.loads((seed_dir / "qualifications.json").read_text(encoding="utf-8"))
-    return {"qualifications": sync_catalog(session, parse_catalog(raw))}
+    return {
+        "regions": sync_regions(session, _read(seed_dir, "regions.json")),
+        "qualifications": sync_catalog(session, parse_catalog(_read(seed_dir, "qualifications.json"))),
+        "pathways": create_missing_pathways(session, _read(seed_dir, "pathways.json")),
+    }
 
 
 def main() -> None:

@@ -4,8 +4,9 @@ from fastapi import APIRouter, Response, status
 from tesda_track.db import SessionDep
 from tesda_track.deps import CurrentLearner
 from tesda_track.schemas.accounts import LearnerPublic, LearnerUpdate, PasswordChange
+from tesda_track.schemas.progress import ProgressSummary
 from tesda_track.schemas.records import AccountExport
-from tesda_track.services import accounts
+from tesda_track.services import accounts, progress
 
 router = APIRouter(prefix="/me", tags=["account"])
 
@@ -28,6 +29,11 @@ def change_password(request: PasswordChange, learner: CurrentLearner, session: S
     accounts.change_password(session, learner, request.current_password, request.new_password)
     session.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.get("/progress", response_model=ProgressSummary)
+def my_progress(learner: CurrentLearner, session: SessionDep):
+    return progress.summary(session, learner)
 
 
 @router.get("/export", response_model=AccountExport)

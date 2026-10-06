@@ -10,14 +10,13 @@ x-backend-environment: &backend-environment
 
 services:
   db:
-    image: postgres:17-alpine
+    build: ./deploy/postgres
     restart: unless-stopped
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
       APP_DB_PASSWORD: ${APP_DB_PASSWORD:?Set APP_DB_PASSWORD in .env}
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./deploy/postgres:/docker-entrypoint-initdb.d:ro
     healthcheck:
       # TCP check: during first-run initialization PostgreSQL only listens on its socket.
       test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres -d tesda_track"]

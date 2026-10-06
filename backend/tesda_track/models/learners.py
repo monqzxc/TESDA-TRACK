@@ -7,7 +7,7 @@ from sqlalchemy import CheckConstraint, DateTime, String, Text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Field, Relationship, SQLModel
 
-from tesda_track.models.base import Timestamped, timestamp_field
+from tesda_track.models.base import Timestamped, one_of, timestamp_field
 from tesda_track.models.catalog import Qualification
 
 ROLES = ("learner", "admin")
@@ -17,12 +17,8 @@ ANSWER_CODES = ("confident", "some_experience", "not_familiar")
 CERTIFICATION_SOURCES = ("self_reported", "assessment")
 
 
-def _in(column: str, values: tuple[str, ...]) -> str:
-    return f"{column} IN ({', '.join(repr(v) for v in values)})"
-
-
 class Learner(Timestamped, table=True):
-    __table_args__ = (CheckConstraint(_in("role", ROLES), name="role_valid"),)
+    __table_args__ = (CheckConstraint(one_of("role", ROLES), name="role_valid"),)
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     email: str = Field(sa_type=String(254), unique=True)
@@ -38,7 +34,7 @@ class Learner(Timestamped, table=True):
 
 
 class Goal(Timestamped, table=True):
-    __table_args__ = (CheckConstraint(_in("status", GOAL_STATUSES), name="status_valid"),)
+    __table_args__ = (CheckConstraint(one_of("status", GOAL_STATUSES), name="status_valid"),)
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     learner_id: uuid.UUID = Field(foreign_key="learner.id", ondelete="CASCADE", index=True)
@@ -52,7 +48,7 @@ class Goal(Timestamped, table=True):
 
 class RecommendationSession(Timestamped, table=True):
     __tablename__ = "recommendation_session"
-    __table_args__ = (CheckConstraint(_in("analysis_source", ANALYSIS_SOURCES), name="analysis_source_valid"),)
+    __table_args__ = (CheckConstraint(one_of("analysis_source", ANALYSIS_SOURCES), name="analysis_source_valid"),)
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     learner_id: uuid.UUID = Field(foreign_key="learner.id", ondelete="CASCADE", index=True)
@@ -89,7 +85,7 @@ class ReadinessCheck(SQLModel, table=True):
 
 class ReadinessAnswer(SQLModel, table=True):
     __tablename__ = "readiness_answer"
-    __table_args__ = (CheckConstraint(_in("answer", ANSWER_CODES), name="answer_valid"),)
+    __table_args__ = (CheckConstraint(one_of("answer", ANSWER_CODES), name="answer_valid"),)
 
     readiness_check_id: uuid.UUID = Field(foreign_key="readiness_check.id", ondelete="CASCADE", primary_key=True)
     competency_id: int = Field(foreign_key="competency.id", ondelete="RESTRICT", primary_key=True, index=True)
@@ -98,7 +94,7 @@ class ReadinessAnswer(SQLModel, table=True):
 
 class Certification(Timestamped, table=True):
     __table_args__ = (
-        CheckConstraint(_in("source", CERTIFICATION_SOURCES), name="source_valid"),
+        CheckConstraint(one_of("source", CERTIFICATION_SOURCES), name="source_valid"),
         CheckConstraint("expires_on IS NULL OR issued_on IS NULL OR expires_on >= issued_on", name="dates_ordered"),
     )
 
@@ -112,5 +108,8 @@ class Certification(Timestamped, table=True):
     expires_on: date | None = None
     verified: bool = False
     source: str = Field(default="self_reported", sa_type=String(20))
+    # Set when the certification was issued from a completed assessment; verified records come from here.
+    assessment_application_id: uuid.UUID | None = Field(
+        default=None, foreign_key="assessment_application.id", ondelete="SET NULL", unique=True)
 
     qualification: Optional[Qualification] = Relationship()
