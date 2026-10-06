@@ -1,12 +1,12 @@
-﻿import re
+import re
 
-from utils.helpers import contains, load_qualifications, normalize
+from tesda_track.utils.helpers import contains, normalize
 
 
-def analyze_user_query(query: str) -> dict:
-    """Rule-based interpretation; replace this function with an LLM later."""
+def analyze_user_query(query: str, qualifications: list[dict]) -> dict:
+    """Rule-based interpretation; the AI analyzer falls back to this."""
     text = normalize(query)
-    matches = [q for q in load_qualifications()
+    matches = [q for q in qualifications
                if any(contains(text, word) for word in q["career_keywords"])]
     qualification = matches[0] if matches else None
     years = re.search(r"(\d+(?:\.\d+)?)\s*(?:\+\s*)?(?:years?|yrs?)\b", text)

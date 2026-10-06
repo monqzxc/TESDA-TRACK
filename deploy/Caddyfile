@@ -1,0 +1,13 @@
+# Caddy obtains and renews HTTPS certificates for $DOMAIN automatically (localhost uses a local CA).
+{$DOMAIN} {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+	handle {
+		reverse_proxy web:8501
+	}
+}

@@ -1,11 +1,9 @@
+import os
 from pathlib import Path
 
 import streamlit as st
 
-from services.intent_service import analyze_user_query
-from services.recommendation_service import match_qualifications, recommend_pathway
-from services.skill_gap_service import ANSWER_VALUES, calculate_skill_gap
-from utils.helpers import load_qualifications
+from api_client import ApiClient, ApiError, ApiUnavailableError
 
 
 EXAMPLES = {
@@ -19,6 +17,26 @@ PATH_LABELS = {
     "ASSESSMENT_READINESS": "Assessment Readiness Check",
     "SKILL_GAP_CHECK": "Skill Gap Check",
 }
+ANSWER_OPTIONS = {"I can do this confidently": "confident", "I have some experience": "some_experience",
+                  "I am not familiar with this": "not_familiar"}
+
+
+def api_base_url() -> str:
+    return os.environ.get("API_BASE_URL", "http://127.0.0.1:8000")
+
+
+@st.cache_resource
+def get_api(base_url: str) -> ApiClient:
+    return ApiClient(base_url)
+
+
+def api() -> ApiClient:
+    return get_api(api_base_url())
+
+
+@st.cache_data(ttl="5m")
+def load_qualifications(base_url: str) -> list[dict]:
+    return get_api(base_url).qualifications()
 
 
 def use_example(query: str) -> None:
@@ -32,8 +50,8 @@ def show_readiness(qualification: dict) -> None:
     with st.form(f"skills_{code}"):
         answers = {}
         for index, competency in enumerate(qualification["competencies"], start=1):
-            answers[str(competency["id"])] = st.radio(
-                f"{index}. {competency['name']}", list(ANSWER_VALUES), index=None,
+            answers[competency["id"]] = st.radio(
+                f"{index}. {competency['name']}", list(ANSWER_OPTIONS), index=None,
                 key=f"competency_{code}_{competency['id']}", horizontal=True,
                 help=f"Sample {competency['category'].lower()} competency",
             )
@@ -42,10 +60,14 @@ def show_readiness(qualification: dict) -> None:
     results = st.session_state.setdefault("readiness_results", {})
     if analyze:
         try:
-            results[code] = calculate_skill_gap(qualification, answers)
-        except ValueError as error:
+            results[code] = api().readiness(code, {competency_id: ANSWER_OPTIONS[label]
+                                                   for competency_id, label in answers.items() if label})
+        except ApiUnavailableError as error:
             results.pop(code, None)
-            st.warning(str(error))
+            st.error(error.message)
+        except ApiError as error:
+            results.pop(code, None)
+            st.warning(error.message)
     result = results.get(code)
     if result:
         with st.container(border=True):
@@ -71,6 +93,7 @@ def show_readiness(qualification: dict) -> None:
 
 def show_recommendations(qualifications: list[dict]) -> None:
     profile = st.session_state["analysis"].copy()
+    experience_description = None
     st.divider()
     if profile["experience_years"] is None or profile["has_certification"] is None:
         with st.container(border=True):
@@ -85,17 +108,16 @@ def show_recommendations(qualifications: list[dict]) -> None:
                 )
                 profile["experience_years"] = {"No experience": 0, "Less than 1 year": 0.5, "1–3 years": 2, "More than 3 years": 4}.get(experience)
                 if experience != "Choose an answer":
-                    profile["experience_description"] = experience
+                    experience_description = experience
             if profile["has_certification"] is None:
                 certification = certification_column.selectbox(
                     "Do you currently hold a related certification?",
                     ["Choose an answer", "Yes", "No", "I'm not sure"], key="follow_certification",
                 )
                 profile["has_certification"] = {"Yes": True, "No": False}.get(certification)
-    if profile["experience_years"] == 0:
-        profile["intent"] = "training_and_assessment"
-    elif profile["experience_years"] is not None and profile["experience_years"] >= 3 and profile["has_certification"] is False:
-        profile["intent"] = "assessment_recommendation"
+    # The API re-derives the intent from the follow-up answers and ranks the qualifications.
+    result = api().match(st.session_state["original_query"], profile)
+    profile, matches = result["profile"], result["matches"]
 
     with st.container(border=True):
         st.subheader("AI Understanding")
@@ -103,12 +125,11 @@ def show_recommendations(qualifications: list[dict]) -> None:
         columns = st.columns(4)
         years = profile["experience_years"]
         columns[0].markdown(f"**Career goal**\n\n{profile['career_goal'] or 'Still exploring'}")
-        columns[1].markdown(f"**Experience**\n\n{profile.get('experience_description') or (f'{years:g} years' if years is not None else 'Not specified')}")
+        columns[1].markdown(f"**Experience**\n\n{experience_description or (f'{years:g} years' if years is not None else 'Not specified')}")
         columns[2].markdown("**Certification**\n\n" + {True: "Reported certification", False: "None", None: "Not specified"}[profile["has_certification"]])
         columns[3].markdown("**Detected intent**\n\n" + profile["intent"].replace("_", " ").title())
         st.caption("Reported skills: " + (", ".join(profile["existing_skills"]) or "Not yet established"))
 
-    matches = match_qualifications(st.session_state["original_query"], profile, qualifications)
     st.subheader("Recommended Qualifications")
     if matches:
         for column, match in zip(st.columns(len(matches)), matches):
@@ -129,7 +150,7 @@ def show_recommendations(qualifications: list[dict]) -> None:
     )
     qualification = next(q for q in qualifications if q["code"] == selected_code)
     st.caption("Sample career options: " + ", ".join(qualification["possible_jobs"]))
-    pathway = recommend_pathway(profile, qualification)
+    pathway = api().pathway(profile, selected_code)
     with st.container(border=True):
         st.caption("YOUR RECOMMENDED PATH")
         st.subheader(PATH_LABELS[pathway["recommendation"]])
@@ -149,22 +170,23 @@ def show_finder(qualifications: list[dict]) -> None:
         st.write("Share a career goal, a skill you'd like to learn, or experience you want to turn into a qualification.")
         st.caption("NEED AN IDEA? START WITH AN EXAMPLE")
         for column, (label, example) in zip(st.columns(3), EXAMPLES.items()):
-            column.button(label, on_click=use_example, args=(example,), use_container_width=True)
+            column.button(label, on_click=use_example, args=(example,), width="stretch")
         with st.form("career_query"):
             query = st.text_area(
                 "What would you like to learn or achieve?", height=140, key="goal_query",
                 placeholder="For example: I've worked as a welder for 5 years, but I don't have a certification.",
             )
-            submitted = st.form_submit_button("Get Recommendation →", type="primary", use_container_width=True)
+            submitted = st.form_submit_button("Get Recommendation →", type="primary", width="stretch")
         if submitted:
             if not query.strip():
                 st.warning("Describe your career goal or skills to get started.")
             else:
+                analysis = api().analyze_goal(query)
                 # A new goal starts a new questionnaire, including all saved results.
                 for key in list(st.session_state):
                     if key.startswith(("follow_", "competency_", "qualification_")) or key == "readiness_results":
                         del st.session_state[key]
-                st.session_state["analysis"] = analyze_user_query(query)
+                st.session_state["analysis"] = analysis["profile"]
                 st.session_state["original_query"] = query.strip()
         if "analysis" in st.session_state:
             st.caption("Showing results for your last submitted goal:")
@@ -195,13 +217,16 @@ def main() -> None:
     <div class="hero-label">AI-Based Training and Assessment Recommendation</div></div>
     <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="growth-arrow">↗</div><div class="art-label">YOUR POTENTIAL, IN PROGRESS</div></div></section>""", unsafe_allow_html=True)
     try:
-        qualifications = load_qualifications()
-    except (OSError, ValueError) as error:
-        st.error(f"Could not load sample qualification data: {error}")
+        qualifications = load_qualifications(api_base_url())
+    except ApiError as error:
+        st.error(error.message)
         return
     finder, library = st.tabs(["Find my pathway", "Qualification library"])
     with finder:
-        show_finder(qualifications)
+        try:
+            show_finder(qualifications)
+        except ApiError as error:
+            st.error(error.message)
     with library:
         st.subheader("Explore your possibilities")
         st.write("A quick look at the five qualifications available in this prototype.")

@@ -1,4 +1,4 @@
-from utils.helpers import contains, normalize
+from tesda_track.utils.helpers import contains, normalize
 
 
 def match_qualifications(query: str, profile: dict, qualifications: list[dict]) -> list[dict]:
@@ -19,6 +19,17 @@ def match_qualifications(query: str, profile: dict, qualifications: list[dict]) 
             results.append({"qualification": qualification, "score": score,
                             "reason": "Matched your words: " + ", ".join(hits) if hits else "Matched your reported career, skills, or sector."})
     return sorted(results, key=lambda item: item["score"], reverse=True)[:3]
+
+
+def refine_profile(profile: dict) -> dict:
+    """Re-derive the intent once follow-up answers fill in experience and certification."""
+    refined = dict(profile)
+    years = refined.get("experience_years")
+    if years == 0:
+        refined["intent"] = "training_and_assessment"
+    elif years is not None and years >= 3 and refined.get("has_certification") is False:
+        refined["intent"] = "assessment_recommendation"
+    return refined
 
 
 def recommend_pathway(user_profile: dict, qualification: dict) -> dict:

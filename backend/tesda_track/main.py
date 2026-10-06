@@ -1,0 +1,53 @@
+import logging
+
+from fastapi import APIRouter, FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from sqlalchemy.exc import OperationalError
+
+from tesda_track.config import get_settings
+from tesda_track.errors import DomainError
+from tesda_track.routers import analysis, health, qualifications
+
+logger = logging.getLogger("tesda_track")
+
+
+def create_app() -> FastAPI:
+    settings = get_settings()
+    logger.setLevel(settings.log_level)
+    app = FastAPI(
+        title="TESDA-TRACK API", version="1.0.0",
+        description="Training and assessment pathway recommendations backed by PostgreSQL.",
+        docs_url="/api/docs" if settings.docs_enabled else None,
+        openapi_url="/api/openapi.json" if settings.docs_enabled else None, redoc_url=None,
+    )
+    if settings.cors_origins:
+        app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins, allow_methods=["*"],
+                           allow_headers=["Authorization", "Content-Type"])
+
+    @app.exception_handler(DomainError)
+    async def domain_error(request: Request, error: DomainError):
+        return JSONResponse({"detail": error.detail}, status_code=error.status_code)
+
+    @app.exception_handler(OperationalError)
+    async def database_unavailable(request: Request, error: OperationalError):
+        # Request bodies are never logged: they can contain learners' personal information.
+        logger.error("Database unavailable during %s %s: %s", request.method, request.url.path,
+                     type(error.orig).__name__)
+        return JSONResponse({"detail": "The service is temporarily unavailable. Please try again shortly."},
+                            status_code=503)
+
+    @app.exception_handler(Exception)
+    async def unexpected_error(request: Request, error: Exception):
+        logger.exception("Unhandled error during %s %s", request.method, request.url.path)
+        return JSONResponse({"detail": "Something went wrong on our side. Please try again."}, status_code=500)
+
+    app.include_router(health.router)
+    api = APIRouter(prefix="/api/v1")
+    for module in (qualifications, analysis):
+        api.include_router(module.router)
+    app.include_router(api)
+    return app
+
+
+app = create_app()

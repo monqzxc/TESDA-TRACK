@@ -1,5 +1,4 @@
-ANSWER_VALUES = {"I can do this confidently": 1.0, "I have some experience": 0.5,
-                 "I am not familiar with this": 0.0}
+ANSWER_VALUES = {"confident": 1.0, "some_experience": 0.5, "not_familiar": 0.0}
 
 
 def calculate_skill_gap(qualification: dict, learner_answers: dict) -> dict:

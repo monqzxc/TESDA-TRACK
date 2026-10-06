@@ -1,0 +1,4 @@
+# Local development and tests: both services plus the test runner.
+-r backend/requirements.txt
+-r frontend/requirements.txt
+pytest==9.1.1
