@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 
@@ -19,6 +20,9 @@ PATH_LABELS = {
 }
 ANSWER_OPTIONS = {"I can do this confidently": "confident", "I have some experience": "some_experience",
                   "I am not familiar with this": "not_familiar"}
+PRIVACY_NOTICE = ("TESDA-TRACK keeps your name, email, goals, recommendations, readiness checks and certifications "
+                  "so you can follow your progress. They are used only to run this pilot and are never sold. "
+                  "You can download or permanently delete your data at any time from this sidebar.")
 
 
 def api_base_url() -> str:
@@ -43,6 +47,69 @@ def use_example(query: str) -> None:
     st.session_state["goal_query"] = query
 
 
+def auth_token() -> str | None:
+    account = st.session_state.get("auth")
+    return account["token"] if account else None
+
+
+def sign_in(email: str, password: str) -> None:
+    token = api().sign_in(email, password)
+    account = api().me(token)
+    st.session_state["auth"] = {"token": token, "name": account["full_name"], "email": account["email"]}
+
+
+def sign_out() -> None:
+    for key in ("auth", "recommendation_session", "data_export"):
+        st.session_state.pop(key, None)
+
+
+def show_account() -> None:
+    account = st.session_state.get("auth")
+    if account:
+        st.markdown(f"Signed in as **{account['name']}**")
+        st.caption(account["email"])
+        st.button("Sign out", on_click=sign_out, key="sign_out", width="stretch")
+        with st.expander("Your data"):
+            st.caption("Download everything TESDA-TRACK stores about you, or delete your account.")
+            if st.button("Prepare my data export", key="prepare_export"):
+                st.session_state["data_export"] = json.dumps(api().export_my_data(account["token"]), indent=2)
+            if "data_export" in st.session_state:
+                st.download_button("Download my data (JSON)", st.session_state["data_export"],
+                                   file_name="tesda-track-my-data.json", mime="application/json")
+            confirmed = st.checkbox("I understand this permanently deletes my account and saved records.",
+                                    key="confirm_delete")
+            if st.button("Delete my account", key="delete_account", disabled=not confirmed):
+                api().delete_account(account["token"])
+                sign_out()
+                st.success("Your account and saved records were deleted.")
+        return
+    with st.form("sign_in"):
+        st.markdown("**Sign in to save your progress**")
+        email = st.text_input("Email", key="signin_email")
+        password = st.text_input("Password", type="password", key="signin_password")
+        if st.form_submit_button("Sign in", type="primary", width="stretch"):
+            try:
+                sign_in(email, password)
+                st.rerun()
+            except ApiError as error:
+                st.error(error.message)
+    with st.expander("New here? Create an account"):
+        with st.form("register"):
+            full_name = st.text_input("Full name", key="register_name")
+            email = st.text_input("Email", key="register_email")
+            password = st.text_input("Password", type="password", key="register_password",
+                                     help="At least 10 characters.")
+            st.caption(PRIVACY_NOTICE)
+            consent = st.checkbox("I agree to the privacy notice", key="register_consent")
+            if st.form_submit_button("Create account", width="stretch"):
+                try:
+                    api().register(email, password, full_name, consent)
+                    sign_in(email, password)
+                    st.rerun()
+                except ApiError as error:
+                    st.error(error.message)
+
+
 def show_readiness(qualification: dict) -> None:
     code = qualification["code"]
     st.subheader("Assessment Readiness")
@@ -59,13 +126,20 @@ def show_readiness(qualification: dict) -> None:
 
     results = st.session_state.setdefault("readiness_results", {})
     if analyze:
+        answer_codes = {competency_id: ANSWER_OPTIONS[label] for competency_id, label in answers.items() if label}
+        token = auth_token()
         try:
-            results[code] = api().readiness(code, {competency_id: ANSWER_OPTIONS[label]
-                                                   for competency_id, label in answers.items() if label})
+            if token:
+                saved = st.session_state.get("recommendation_session")
+                results[code] = api().submit_readiness(token, code, answer_codes, saved["id"] if saved else None)
+            else:
+                results[code] = api().readiness(code, answer_codes)
         except ApiUnavailableError as error:
             results.pop(code, None)
             st.error(error.message)
         except ApiError as error:
+            if error.status_code == 401:
+                raise
             results.pop(code, None)
             st.warning(error.message)
     result = results.get(code)
@@ -89,6 +163,19 @@ def show_readiness(qualification: dict) -> None:
             if not result["skill_gaps"]:
                 gaps.caption("No self-reported gaps.")
         st.caption("This self-reported score is NOT an official competency assessment result. Formal assessment is subject to official eligibility and requirements.")
+
+
+def save_session_progress(profile: dict, qualification_code: str) -> None:
+    """Keep a signed-in learner's saved session in step with their follow-up answers and chosen qualification."""
+    saved = st.session_state.get("recommendation_session")
+    token = auth_token()
+    if not saved or not token:
+        return
+    state = {"experience_years": profile["experience_years"], "has_certification": profile["has_certification"],
+             "qualification_code": qualification_code}
+    if saved.get("synced") != state:
+        api().update_session(token, saved["id"], **state)
+        saved["synced"] = state
 
 
 def show_recommendations(qualifications: list[dict]) -> None:
@@ -151,6 +238,7 @@ def show_recommendations(qualifications: list[dict]) -> None:
     qualification = next(q for q in qualifications if q["code"] == selected_code)
     st.caption("Sample career options: " + ", ".join(qualification["possible_jobs"]))
     pathway = api().pathway(profile, selected_code)
+    save_session_progress(profile, selected_code)
     with st.container(border=True):
         st.caption("YOUR RECOMMENDED PATH")
         st.subheader(PATH_LABELS[pathway["recommendation"]])
@@ -181,13 +269,21 @@ def show_finder(qualifications: list[dict]) -> None:
             if not query.strip():
                 st.warning("Describe your career goal or skills to get started.")
             else:
-                analysis = api().analyze_goal(query)
+                token = auth_token()
+                if token:
+                    record = api().start_session(token, query)
+                    profile, saved = record["profile"], {"id": record["id"], "synced": None}
+                else:
+                    profile, saved = api().analyze_goal(query)["profile"], None
                 # A new goal starts a new questionnaire, including all saved results.
                 for key in list(st.session_state):
                     if key.startswith(("follow_", "competency_", "qualification_")) or key == "readiness_results":
                         del st.session_state[key]
-                st.session_state["analysis"] = analysis["profile"]
+                st.session_state["analysis"] = profile
                 st.session_state["original_query"] = query.strip()
+                st.session_state["recommendation_session"] = saved
+        st.caption("Your results are saved to My progress." if auth_token()
+                   else "Sign in from the sidebar to save your results and track your progress.")
         if "analysis" in st.session_state:
             st.caption("Showing results for your last submitted goal:")
             st.write(st.session_state["original_query"])
@@ -207,6 +303,95 @@ def show_finder(qualifications: list[dict]) -> None:
         <h3>A starting point that fits you</h3><p>Share your goal above to discover a qualification, a suggested pathway, and a personal skills check.</p></div>""", unsafe_allow_html=True)
 
 
+def show_goals(token: str, names: dict[str, str]) -> None:
+    st.subheader("My goals")
+    for goal in api().goals(token):
+        with st.container(border=True):
+            st.markdown(f"**{goal['title']}**")
+            target = goal["target_qualification"]
+            st.caption(goal["status"].title() + (f" · {target['name']}" if target else ""))
+            if goal["status"] == "active" and st.button("Mark achieved", key=f"achieve_{goal['id']}"):
+                api().update_goal(token, goal["id"], status="achieved")
+                st.rerun()
+    with st.form("add_goal", clear_on_submit=True):
+        title = st.text_input("New goal", key="goal_title", placeholder="For example: Earn my SMAW NC II this year")
+        target = st.selectbox("Target qualification (optional)", [None, *names], key="goal_target",
+                              format_func=lambda code: "None" if code is None else names[code])
+        if st.form_submit_button("Add goal"):
+            if title.strip():
+                api().add_goal(token, title, target)
+                st.rerun()
+            st.warning("Describe your goal first.")
+
+
+def show_certifications(token: str, names: dict[str, str]) -> None:
+    st.subheader("My certifications")
+    for certification in api().certifications(token):
+        with st.container(border=True):
+            st.markdown(f"**{certification['title']}**")
+            details = [certification["issuing_body"], "Verified" if certification["verified"] else "Self-reported"]
+            if certification["certificate_number"]:
+                details.append(f"No. {certification['certificate_number']}")
+            st.caption(" · ".join(details))
+    with st.form("add_certification", clear_on_submit=True):
+        title = st.text_input("Certificate title", key="certificate_title", placeholder="For example: SMAW NC I")
+        qualification = st.selectbox("Related qualification (optional)", [None, *names], key="certificate_qualification",
+                                     format_func=lambda code: "None" if code is None else names[code])
+        number = st.text_input("Certificate number (optional)", key="certificate_number")
+        issued_on = st.date_input("Issued on (optional)", value=None, key="certificate_issued_on")
+        if st.form_submit_button("Add certification"):
+            if title.strip():
+                api().add_certification(token, title=title, qualification_code=qualification,
+                                        certificate_number=number or None,
+                                        issued_on=issued_on.isoformat() if issued_on else None)
+                st.rerun()
+            st.warning("Enter the certificate title first.")
+
+
+def show_progress(qualifications: list[dict]) -> None:
+    token = auth_token()
+    if not token:
+        st.info("Sign in to save your recommendations and readiness checks and see your progress here.")
+        return
+    names = {q["code"]: q["name"] for q in qualifications}
+    st.subheader("Readiness over time")
+    checks = api().readiness_checks(token)
+    if checks:
+        st.dataframe([{"Date": check["created_at"][:10], "Qualification": check["qualification"]["name"],
+                       "Score": check["score"], "Level": check["level"]} for check in checks],
+                     hide_index=True, key="readiness_history")
+    else:
+        st.caption("Complete an Assessment Readiness check while signed in to start your history.")
+    st.subheader("Recommendation history")
+    with st.container(key="recommendation_history"):
+        sessions = api().sessions(token)
+        for record in sessions:
+            with st.container(border=True):
+                st.caption(record["created_at"][:10])
+                st.markdown(f"**{record['query']}**")
+                qualification = record["selected_qualification"] or (
+                    record["matches"][0]["qualification"] if record["matches"] else None)
+                details = [qualification["name"]] if qualification else []
+                if record["pathway"]:
+                    details.append(PATH_LABELS[record["pathway"]["recommendation"]])
+                st.markdown(" · ".join(details) or "No matching qualification yet")
+        if not sessions:
+            st.caption("Goals you submit while signed in appear here.")
+    goals_column, certifications_column = st.columns(2, gap="large")
+    with goals_column:
+        show_goals(token, names)
+    with certifications_column:
+        show_certifications(token, names)
+
+
+def handle_api_error(error: ApiError) -> None:
+    if error.status_code == 401 and st.session_state.get("auth"):
+        sign_out()
+        st.session_state["flash"] = "Your session has expired. Please sign in again."
+        st.rerun()
+    st.error(error.message)
+
+
 def main() -> None:
     st.set_page_config(page_title="TESDA-TRACK | Find your pathway", page_icon="🌱", layout="wide")
     styles = Path(__file__).with_name("styles.css").read_text(encoding="utf-8")
@@ -216,17 +401,32 @@ def main() -> None:
     <h1>Your next step<br>starts here.</h1><p>Turn your career goals and experience into a clearer training or assessment pathway.</p>
     <div class="hero-label">AI-Based Training and Assessment Recommendation</div></div>
     <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="growth-arrow">↗</div><div class="art-label">YOUR POTENTIAL, IN PROGRESS</div></div></section>""", unsafe_allow_html=True)
+    with st.sidebar:
+        if "flash" in st.session_state:
+            st.warning(st.session_state.pop("flash"))
+        try:
+            show_account()
+        except ApiError as error:
+            handle_api_error(error)
     try:
         qualifications = load_qualifications(api_base_url())
     except ApiError as error:
         st.error(error.message)
         return
-    finder, library = st.tabs(["Find my pathway", "Qualification library"])
+    # Dynamic tabs: only the selected tab's .open is True, so My progress loads only when viewed.
+    finder, library, progress = st.tabs(["Find my pathway", "Qualification library", "My progress"],
+                                        key="main_tabs", on_change="rerun")
     with finder:
         try:
             show_finder(qualifications)
         except ApiError as error:
-            st.error(error.message)
+            handle_api_error(error)
+    if progress.open:
+        with progress:
+            try:
+                show_progress(qualifications)
+            except ApiError as error:
+                handle_api_error(error)
     with library:
         st.subheader("Explore your possibilities")
         st.write("A quick look at the five qualifications available in this prototype.")

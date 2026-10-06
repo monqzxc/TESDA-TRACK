@@ -2,7 +2,7 @@
 from sqlalchemy.orm import selectinload
 from sqlmodel import Session, select
 
-from tesda_track.errors import NotFoundError
+from tesda_track.errors import InvalidRequestError, NotFoundError
 from tesda_track.models import Competency, Qualification
 from tesda_track.schemas.catalog import CompetencyPublic, QualificationPublic, QualificationSummary
 
@@ -22,6 +22,14 @@ def get_active_qualification(session: Session, code: str) -> Qualification:
     if qualification is None:
         raise NotFoundError(f"Qualification '{code}' was not found.")
     return qualification
+
+
+def resolve_qualification(session: Session, code: str) -> Qualification:
+    """For codes inside request bodies: an unknown code is invalid input (422) rather than a missing page."""
+    try:
+        return get_active_qualification(session, code)
+    except NotFoundError as error:
+        raise InvalidRequestError(error.detail) from None
 
 
 def active_competencies(qualification: Qualification) -> list[Competency]:

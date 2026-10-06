@@ -6,8 +6,9 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.exc import OperationalError
 
 from tesda_track.config import get_settings
-from tesda_track.errors import DomainError
-from tesda_track.routers import analysis, health, qualifications
+from tesda_track.errors import AuthenticationError, DomainError
+from tesda_track.routers import (analysis, auth, certifications, goals, health, me, qualifications, readiness_checks,
+                                 recommendation_sessions)
 
 logger = logging.getLogger("tesda_track")
 
@@ -27,7 +28,8 @@ def create_app() -> FastAPI:
 
     @app.exception_handler(DomainError)
     async def domain_error(request: Request, error: DomainError):
-        return JSONResponse({"detail": error.detail}, status_code=error.status_code)
+        headers = {"WWW-Authenticate": "Bearer"} if isinstance(error, AuthenticationError) else None
+        return JSONResponse({"detail": error.detail}, status_code=error.status_code, headers=headers)
 
     @app.exception_handler(OperationalError)
     async def database_unavailable(request: Request, error: OperationalError):
@@ -44,7 +46,7 @@ def create_app() -> FastAPI:
 
     app.include_router(health.router)
     api = APIRouter(prefix="/api/v1")
-    for module in (qualifications, analysis):
+    for module in (qualifications, analysis, auth, me, goals, recommendation_sessions, readiness_checks, certifications):
         api.include_router(module.router)
     app.include_router(api)
     return app

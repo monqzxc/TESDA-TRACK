@@ -7,6 +7,10 @@
 		Referrer-Policy "strict-origin-when-cross-origin"
 		-Server
 	}
+	# The API is public for signed-in clients and API docs; /health stays internal.
+	handle /api/* {
+		reverse_proxy api:8000
+	}
 	handle {
 		reverse_proxy web:8501
 	}

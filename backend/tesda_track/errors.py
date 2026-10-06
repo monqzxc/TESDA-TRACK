@@ -23,3 +23,14 @@ class InvalidRequestError(DomainError):
 
 class PermissionDeniedError(DomainError):
     status_code = 403
+
+
+class AuthenticationError(DomainError):
+    status_code = 401
+
+    def __init__(self, detail: str = "Incorrect email or password."):
+        super().__init__(detail)
+
+
+class TooManyAttemptsError(DomainError):
+    status_code = 429

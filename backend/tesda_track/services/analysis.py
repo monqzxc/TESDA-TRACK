@@ -1,12 +1,26 @@
 """Runs the rule-based services against the catalog stored in PostgreSQL."""
+from dataclasses import dataclass
+from typing import Literal
+
 from sqlmodel import Session
 
 from tesda_track.errors import InvalidRequestError
+from tesda_track.models import Qualification
 from tesda_track.schemas.analysis import Match, PathwayRecommendation, Profile, ReadinessResult
 from tesda_track.services import catalog
 from tesda_track.services.intent_service import analyze_user_query
 from tesda_track.services.recommendation_service import match_qualifications, recommend_pathway, refine_profile
 from tesda_track.services.skill_gap_service import calculate_skill_gap
+
+
+@dataclass(frozen=True)
+class GoalAnalysisResult:
+    profile: Profile
+    source: Literal["rules", "ai"]
+
+
+def analyze_goal(session: Session, query: str) -> GoalAnalysisResult:
+    return GoalAnalysisResult(analyze_goal_with_rules(session, query), "rules")
 
 
 def analyze_goal_with_rules(session: Session, query: str) -> Profile:
@@ -29,7 +43,10 @@ def pathway(session: Session, profile: Profile, qualification_code: str) -> Path
 
 
 def readiness(session: Session, qualification_code: str, answers: dict[int, str]) -> ReadinessResult:
-    qualification = catalog.get_active_qualification(session, qualification_code)
+    return score_readiness(catalog.get_active_qualification(session, qualification_code), answers)
+
+
+def score_readiness(qualification: Qualification, answers: dict[int, str]) -> ReadinessResult:
     try:
         result = calculate_skill_gap(catalog.rule_view(qualification), answers)
     except ValueError as error:

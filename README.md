@@ -48,6 +48,23 @@ Browser ──HTTPS──▶ Caddy ──▶ Streamlit (frontend/) ──HTTP─
    cd frontend && ../.venv/Scripts/streamlit run app.py                         # http://localhost:8501
    ```
 
+## Accounts
+
+Learners can use the pathway finder without an account. Signing in (sidebar) saves recommendation
+sessions, readiness checks, goals and certifications under **My progress**. Registration requires
+agreeing to the privacy notice; learners can download all their data or permanently delete their
+account from the sidebar (the API cascades the deletion to every record they own).
+
+Create the first administrator from the backend directory:
+
+```bash
+../.venv/Scripts/python -m tesda_track.cli create-admin --email you@example.com --name "Your Name"
+# Docker: docker compose run --rm -e TESDA_ADMIN_PASSWORD=... api python -m tesda_track.cli create-admin --email ...
+```
+
+Passwords are hashed with Argon2. Access tokens are JWTs signed with `SECRET_KEY`; changing a password
+revokes every existing token, and five failed sign-ins lock an account for 15 minutes.
+
 ## Tests
 
 ```bash
@@ -72,7 +89,8 @@ docker compose up -d --build
 ```
 
 Compose starts PostgreSQL, runs migrations and the catalog seed, then starts the API, the Streamlit app
-and Caddy. Only ports 80/443 are published. Point the domain's DNS at the server before starting so
+and Caddy. Only ports 80/443 are published: Caddy serves the app at `/` and the API at `/api/`
+(interactive docs at `/api/docs`). Point the domain's DNS at the server before starting so
 Caddy can obtain a certificate.
 
 ## Privacy

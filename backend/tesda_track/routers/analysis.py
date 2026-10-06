@@ -11,7 +11,8 @@ router = APIRouter(prefix="/analysis", tags=["analysis"])
 
 @router.post("/goal", response_model=GoalAnalysis)
 def analyze_goal(request: GoalRequest, session: SessionDep):
-    return GoalAnalysis(profile=analysis.analyze_goal_with_rules(session, request.query), source="rules")
+    result = analysis.analyze_goal(session, request.query)
+    return GoalAnalysis(profile=result.profile, source=result.source)
 
 
 @router.post("/matches", response_model=MatchResult)

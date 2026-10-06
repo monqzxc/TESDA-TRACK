@@ -63,3 +63,54 @@ class ApiClient:
     def readiness(self, qualification_code: str, answers: dict[int, str]) -> dict:
         return self._request("POST", "/api/v1/analysis/readiness",
                              json={"qualification_code": qualification_code, "answers": answers})
+
+    # Accounts
+    def register(self, email: str, password: str, full_name: str, privacy_consent: bool) -> dict:
+        return self._request("POST", "/api/v1/auth/register", json={
+            "email": email, "password": password, "full_name": full_name, "privacy_consent": privacy_consent})
+
+    def sign_in(self, email: str, password: str) -> str:
+        return self._request("POST", "/api/v1/auth/token", data={"username": email, "password": password})["access_token"]
+
+    def me(self, token: str) -> dict:
+        return self._request("GET", "/api/v1/me", token)
+
+    def export_my_data(self, token: str) -> dict:
+        return self._request("GET", "/api/v1/me/export", token)
+
+    def delete_account(self, token: str) -> None:
+        self._request("DELETE", "/api/v1/me", token)
+
+    # Records of a signed-in learner
+    def start_session(self, token: str, query: str, use_ai: bool = False) -> dict:
+        return self._request("POST", "/api/v1/me/recommendations", token, json={"query": query, "use_ai": use_ai})
+
+    def update_session(self, token: str, session_id: str, **fields) -> dict:
+        return self._request("PATCH", f"/api/v1/me/recommendations/{session_id}", token, json=fields)
+
+    def sessions(self, token: str, limit: int = 10) -> list[dict]:
+        return self._request("GET", "/api/v1/me/recommendations", token, params={"limit": limit})
+
+    def submit_readiness(self, token: str, qualification_code: str, answers: dict[int, str],
+                         session_id: str | None = None) -> dict:
+        return self._request("POST", "/api/v1/me/readiness-checks", token, json={
+            "qualification_code": qualification_code, "answers": answers, "recommendation_session_id": session_id})
+
+    def readiness_checks(self, token: str) -> list[dict]:
+        return self._request("GET", "/api/v1/me/readiness-checks", token)
+
+    def goals(self, token: str) -> list[dict]:
+        return self._request("GET", "/api/v1/me/goals", token)
+
+    def add_goal(self, token: str, title: str, target_qualification_code: str | None = None) -> dict:
+        return self._request("POST", "/api/v1/me/goals", token,
+                             json={"title": title, "target_qualification_code": target_qualification_code})
+
+    def update_goal(self, token: str, goal_id: str, **fields) -> dict:
+        return self._request("PATCH", f"/api/v1/me/goals/{goal_id}", token, json=fields)
+
+    def certifications(self, token: str) -> list[dict]:
+        return self._request("GET", "/api/v1/me/certifications", token)
+
+    def add_certification(self, token: str, **fields) -> dict:
+        return self._request("POST", "/api/v1/me/certifications", token, json=fields)
