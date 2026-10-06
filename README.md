@@ -293,6 +293,10 @@ download it. If the sync fails, the deploy still goes ahead and matching falls b
 (interactive docs at `/api/docs`). Point the domain's DNS at the server before starting, so Caddy can
 obtain a certificate.
 
+The first build is slow. It installs the Python packages and downloads the embedding model into the API
+image. On the slow connection we tested, that took about 45 minutes. Later builds reuse Docker's cache.
+The API and the migration job share one image (`tesda-track-backend`), so it's built only once.
+
 To try the full stack on your own machine, stop Laragon's Apache or Nginx first, because Caddy needs
 ports 80 and 443. Then set `DOMAIN=localhost` and open https://localhost. It runs as a separate Compose
 project (`tesda-track`), with its own database volume.

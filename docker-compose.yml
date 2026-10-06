@@ -25,7 +25,9 @@ services:
       retries: 30
 
   migrate:
-    build: ./backend
+    # Same image as the API (built once, by the api service below).
+    image: tesda-track-backend:latest
+    pull_policy: never
     # Embedding problems never block a deploy: search falls back to keywords until the next sync.
     command: ["sh", "-c", "alembic upgrade head && python -m tesda_track.seed && (python -m tesda_track.embeddings sync || echo 'WARNING: embeddings not synced')"]
     environment: *backend-environment
@@ -36,6 +38,7 @@ services:
 
   api:
     build: ./backend
+    image: tesda-track-backend:latest
     restart: unless-stopped
     environment: *backend-environment
     depends_on:
