@@ -19,6 +19,7 @@ class SkillsBridgeMCPClient:
     PROTOCOL = "2025-03-26"
     ALLOWED_TOOLS = {"match_skills", "occupation_curriculum_profile", "graph_query"}
     MAX_RESPONSE_BYTES = 2_000_000
+    CLOSE_TIMEOUT_SECONDS = 3
 
     def __init__(self, settings: Settings, transport: httpx.BaseTransport | None = None):
         self.settings = settings
@@ -43,11 +44,21 @@ class SkillsBridgeMCPClient:
             self._rpc("notifications/initialized", notification=True)
             return self
         except Exception:
-            self.http.close()
+            self._close()
             raise
 
     def __exit__(self, *_):
         if self.http:
+            self._close()
+
+    def _close(self) -> None:
+        """End the server-side session, if the server started one, then close the connection."""
+        try:
+            if "Mcp-Session-Id" in self.http.headers:
+                self.http.delete(str(self.settings.skills_bridge_mcp_url), timeout=self.CLOSE_TIMEOUT_SECONDS)
+        except httpx.HTTPError:
+            pass  # Best effort: the server expires idle sessions itself.
+        finally:
             self.http.close()
 
     def _rpc(self, method: str, params: dict | None = None, *, notification: bool = False) -> dict:

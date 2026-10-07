@@ -87,6 +87,7 @@ def test_admin_sees_integration_status(client, admin, learner):
     assert status["semantic_search"]["qualifications_total"] == 5
     assert status["skills_bridge"] == {"configured": False, "detail": "Set SKILLS_BRIDGE_BASE_URL and "
                                                                        "SKILLS_BRIDGE_API_TOKEN once API access is granted."}
+    assert status["skills_bridge_mcp"]["rate_limit_per_minute"] == get_settings().skills_bridge_rate_limit_per_minute
 
 
 def test_admin_status_counts_embedded_records(client, admin, semantic):
@@ -108,3 +109,31 @@ def test_admin_triggers_an_embedding_sync(client, admin, semantic, session):
 
 def test_embedding_sync_needs_semantic_search(client, admin):
     assert client.post("/api/v1/admin/embeddings/sync", headers=admin).status_code == 409
+
+
+def test_skills_bridge_lookups_are_cached_in_postgres(app, client, session, monkeypatch):
+    from tesda_track.routers.skills_bridge import bridge_client
+
+    monkeypatch.setattr(get_settings(), "skills_bridge_cache_ttl_seconds", 3600)
+    calls = []
+
+    class Bridge:
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_):
+            pass
+
+        def match_skills(self, skills, limit):
+            calls.append(skills)
+            return {"input": {"skills": skills}, "occupations": [{"occupation_id": 486, "title": "Welder"}]}
+
+    app.dependency_overrides[bridge_client] = Bridge
+    first = client.post("/api/v1/skills-bridge/matches", json={"skills": ["Hinang"]})
+    second = client.post("/api/v1/skills-bridge/matches", json={"skills": ["Hinang"]})
+    assert first.status_code == second.status_code == 200
+    assert first.json() == second.json()
+    assert calls == [["Hinang"]]
+    [entry] = session.exec(select(CacheEntry).where(CacheEntry.key.startswith("sbmcp:"))).all()
+    assert "hinang" not in entry.key.lower()
+    assert entry.expires_at > utcnow() + timedelta(minutes=59)

@@ -59,10 +59,14 @@ class Settings(BaseSettings):
     skills_bridge_api_token: SecretStr | None = None
     skills_bridge_timeout_seconds: float = Field(default=10, gt=0)
     skills_bridge_cache_ttl_seconds: int = Field(default=3600, ge=0)
-    # Public read-only MCP integration, separate from the legacy REST adapter.
+    # Public read-only MCP integration, separate from the legacy REST adapter. Its responses are cached for
+    # skills_bridge_cache_ttl_seconds (0 turns caching off).
     skills_bridge_mcp_enabled: bool = True
     skills_bridge_mcp_url: HttpUrl = "https://mcp.skills-bridge.ph/mcp"
     skills_bridge_mcp_token: SecretStr | None = None
+    skills_bridge_rate_limit_per_minute: int = Field(default=20, ge=1, description="Lookups per client address")
+    skills_bridge_upstream_per_minute: int = Field(default=120, ge=1,
+                                                   description="Uncached lookups sent to Skills Bridge, all clients")
 
     @model_validator(mode="after")
     def semantic_band_ordered(self):

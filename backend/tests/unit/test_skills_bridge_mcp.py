@@ -6,8 +6,9 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from tesda_track.config import Settings
-from tesda_track.routers.skills_bridge import bridge_client, router
+from tesda_track.config import Settings, get_settings
+from tesda_track.db import get_session
+from tesda_track.routers.skills_bridge import BridgeLimits, bridge_cache, bridge_client, router
 from tesda_track.services.skills_bridge_mcp import SkillsBridgeMCPClient, SkillsBridgeMCPError
 
 
@@ -17,12 +18,17 @@ def settings(**kwargs):
 
 
 class MCPServer:
-    def __init__(self, *, sse=False, text=False, tool_result=None):
+    def __init__(self, *, sse=False, text=False, tool_result=None, session_id="test-session"):
         self.sse, self.text = sse, text
         self.tool_result = tool_result or (lambda name, args: {"input": args, "occupations": []})
+        self.session_headers = {"Mcp-Session-Id": session_id} if session_id else {}
         self.requests = []
+        self.deletes = []
 
     def __call__(self, request):
+        if request.method == "DELETE":
+            self.deletes.append(request)
+            return httpx.Response(204)
         body = json.loads(request.content)
         self.requests.append((request, body))
         assert request.method == "POST"
@@ -42,8 +48,8 @@ class MCPServer:
             # Provider framing and an unrelated event before the matching response.
             content = ': keepalive\r\r\nevent: message\r\r\ndata: {"jsonrpc":"2.0","method":"progress"}\r\r\n\r\r\n'
             content += 'event: message\r\r\ndata: ' + json.dumps(message) + '\r\r\n\r\r\n'
-            return httpx.Response(200, text=content, headers={"Content-Type": "text/event-stream", "Mcp-Session-Id": "test-session"})
-        return httpx.Response(200, json=message, headers={"Mcp-Session-Id": "test-session"})
+            return httpx.Response(200, text=content, headers={"Content-Type": "text/event-stream", **self.session_headers})
+        return httpx.Response(200, json=message, headers=self.session_headers)
 
 
 @pytest.mark.parametrize("sse,text", [(False, False), (False, True), (True, False), (True, True)])
@@ -64,6 +70,58 @@ def test_optional_mcp_credential_is_separate(token, expected):
     with SkillsBridgeMCPClient(settings(skills_bridge_mcp_token=token), httpx.MockTransport(server)):
         pass
     assert server.requests[0][0].headers.get("authorization") == expected
+
+
+def test_session_is_ended_with_delete_when_the_server_issued_one():
+    server = MCPServer()
+    with SkillsBridgeMCPClient(settings(), httpx.MockTransport(server)) as client:
+        client.match_skills(["Welding"])
+        assert not server.deletes
+    assert len(server.deletes) == 1
+    assert str(server.deletes[0].url) == "https://bridge.example.test/mcp"
+    assert server.deletes[0].headers["Mcp-Session-Id"] == "test-session"
+    assert client.http.is_closed
+
+
+def test_no_delete_without_a_session_id():
+    server = MCPServer(session_id=None)
+    with SkillsBridgeMCPClient(settings(), httpx.MockTransport(server)) as client:
+        client.match_skills(["Welding"])
+    assert not server.deletes
+    assert client.http.is_closed
+
+
+def test_failed_delete_does_not_hide_the_result():
+    server = MCPServer()
+
+    def handler(request):
+        if request.method == "DELETE":
+            raise httpx.ConnectError("private upstream detail", request=request)
+        return server(request)
+
+    with SkillsBridgeMCPClient(settings(), httpx.MockTransport(handler)) as client:
+        data = client.match_skills(["Welding"])
+    assert data["input"]["skills"] == ["Welding"]
+    assert client.http.is_closed
+
+
+def test_session_is_ended_when_the_handshake_fails_after_it_started():
+    server = MCPServer()
+
+    def handler(request):
+        response = server(request)
+        if request.method == "POST" and json.loads(request.content)["method"] == "initialize":
+            message = response.json()
+            message["result"]["protocolVersion"] = "unsupported"
+            return httpx.Response(200, json=message, headers=server.session_headers)
+        return response
+
+    client = SkillsBridgeMCPClient(settings(), httpx.MockTransport(handler))
+    with pytest.raises(SkillsBridgeMCPError, match="protocol"):
+        with client:
+            pass
+    assert len(server.deletes) == 1
+    assert client.http.is_closed
 
 
 def test_disabled_never_connects():
@@ -167,6 +225,7 @@ class FakeClient:
     def __init__(self):
         self.calls = []
         self.fail = False
+        self.warnings = []
 
     def __enter__(self):
         if self.fail:
@@ -186,15 +245,36 @@ class FakeClient:
 
     def occupation(self, occupation_id):
         self.calls.append(occupation_id)
-        return {"profile": {"occupation": {"occupation_id": occupation_id}}}
+        return {"profile": {"occupation": {"occupation_id": occupation_id}}, "warnings": self.warnings}
+
+
+class DictCache:
+    """Stands in for the PostgreSQL cache, which backend/tests/test_integrations.py covers."""
+    def __init__(self):
+        self.values = {}
+
+    def get(self, key):
+        return self.values.get(key)
+
+    def put(self, key, value):
+        self.values[key] = value
+
+
+def make_api(**overrides):
+    app = FastAPI()
+    app.include_router(router, prefix="/api/v1")
+    app.state.skills_bridge_limits = BridgeLimits()
+    fake, response_cache = FakeClient(), DictCache()
+    test_settings = settings(**overrides)
+    app.dependency_overrides[get_settings] = lambda: test_settings
+    app.dependency_overrides[bridge_client] = lambda: fake
+    app.dependency_overrides[bridge_cache] = lambda: response_cache
+    return app, fake, response_cache
 
 
 @pytest.fixture
 def api():
-    app = FastAPI()
-    app.include_router(router, prefix="/api/v1")
-    fake = FakeClient()
-    app.dependency_overrides[bridge_client] = lambda: fake
+    app, fake, _ = make_api()
     with TestClient(app) as client:
         yield client, fake
 
@@ -235,3 +315,84 @@ def test_provider_failure_is_isolated_service_unavailable(api):
     response = client.post("/api/v1/skills-bridge/matches", json={"skills": ["JavaScript"]})
     assert response.status_code == 503
     assert "Skills Bridge" in response.json()["detail"]
+
+
+def test_repeated_lookups_are_served_from_the_cache(api):
+    client, fake = api
+    first = client.post("/api/v1/skills-bridge/matches", json={"skills": ["Welding"]})
+    second = client.post("/api/v1/skills-bridge/matches", json={"skills": ["Welding"]})
+    assert first.status_code == second.status_code == 200
+    # The cached copy keeps the time it was really retrieved.
+    assert first.json() == second.json()
+    client.post("/api/v1/skills-bridge/matches", json={"skills": ["Welding"], "limit": 3})
+    client.post("/api/v1/skills-bridge/occupations/search", json={"occupations": ["Welding"]})
+    client.get("/api/v1/skills-bridge/occupations/133")
+    client.get("/api/v1/skills-bridge/occupations/133")
+    assert fake.calls == [(["Welding"], 6), (["Welding"], 3), ("search", ["Welding"], 6), 133]
+
+
+def test_cache_keys_do_not_contain_search_terms():
+    app, _, response_cache = make_api()
+    with TestClient(app) as client:
+        client.post("/api/v1/skills-bridge/matches", json={"skills": ["Pagluluto ng adobo"]})
+    [key] = response_cache.values
+    assert key.startswith("sbmcp:") and "adobo" not in key.lower()
+
+
+def test_failures_and_partial_results_are_not_cached(api):
+    client, fake = api
+    fake.fail = True
+    assert client.post("/api/v1/skills-bridge/matches", json={"skills": ["Welding"]}).status_code == 503
+    fake.fail = False
+    assert client.post("/api/v1/skills-bridge/matches", json={"skills": ["Welding"]}).status_code == 200
+    fake.warnings = ["The skills details could not be loaded."]
+    client.get("/api/v1/skills-bridge/occupations/133")
+    client.get("/api/v1/skills-bridge/occupations/133")
+    assert fake.calls == [(["Welding"], 6), 133, 133]
+
+
+class NoDatabase:
+    def __getattr__(self, name):
+        pytest.fail("A turned-off cache must not use the database")
+
+
+def test_cache_can_be_turned_off():
+    app, fake, _ = make_api(skills_bridge_cache_ttl_seconds=0)
+    app.dependency_overrides.pop(bridge_cache)
+    app.dependency_overrides[get_session] = NoDatabase
+    with TestClient(app) as client:
+        for _ in range(2):
+            assert client.post("/api/v1/skills-bridge/matches", json={"skills": ["Welding"]}).status_code == 200
+    assert len(fake.calls) == 2
+
+
+def test_each_client_gets_a_limited_number_of_lookups():
+    app, fake, _ = make_api(skills_bridge_rate_limit_per_minute=2)
+    with TestClient(app, client=("203.0.113.5", 50000)) as client:
+        for _ in range(2):
+            assert client.post("/api/v1/skills-bridge/matches", json={"skills": ["Welding"]}).status_code == 200
+        response = client.get("/api/v1/skills-bridge/occupations/133")
+    assert response.status_code == 429
+    assert "minute" in response.json()["detail"]
+    assert 1 <= int(response.headers["Retry-After"]) <= 60
+    assert fake.calls == [(["Welding"], 6)]
+    with TestClient(app, client=("203.0.113.6", 50000)) as other:
+        assert other.get("/api/v1/skills-bridge/occupations/133").status_code == 200
+
+
+def test_overall_provider_budget_still_serves_cached_lookups():
+    app, fake, _ = make_api(skills_bridge_upstream_per_minute=1)
+    with TestClient(app) as client:
+        assert client.post("/api/v1/skills-bridge/matches", json={"skills": ["Welding"]}).status_code == 200
+        busy = client.post("/api/v1/skills-bridge/matches", json={"skills": ["Cookery"]})
+        assert busy.status_code == 429
+        assert "Skills Bridge" in busy.json()["detail"] and "Retry-After" in busy.headers
+        assert client.post("/api/v1/skills-bridge/matches", json={"skills": ["Welding"]}).status_code == 200
+    assert fake.calls == [(["Welding"], 6)]
+
+
+def test_invalid_requests_do_not_use_up_the_limit():
+    app, _, _ = make_api(skills_bridge_rate_limit_per_minute=1)
+    with TestClient(app) as client:
+        assert client.post("/api/v1/skills-bridge/matches", json={"skills": []}).status_code == 422
+        assert client.post("/api/v1/skills-bridge/matches", json={"skills": ["Welding"]}).status_code == 200

@@ -38,7 +38,10 @@ def integration_status(session: SessionDep, embedder: EmbedderDep):
         if skills_bridge.is_configured(settings) else {"configured": False, "detail": skills_bridge.NOT_CONFIGURED}
     return {"semantic_search": semantic, "skills_bridge": bridge,
             "skills_bridge_mcp": {"enabled": settings.skills_bridge_mcp_enabled,
-                                  "url": str(settings.skills_bridge_mcp_url)}}
+                                  "url": str(settings.skills_bridge_mcp_url),
+                                  "cache_ttl_seconds": settings.skills_bridge_cache_ttl_seconds,
+                                  "rate_limit_per_minute": settings.skills_bridge_rate_limit_per_minute,
+                                  "upstream_per_minute": settings.skills_bridge_upstream_per_minute}}
 
 
 @router.post("/embeddings/sync")

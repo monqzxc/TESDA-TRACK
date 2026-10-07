@@ -33,6 +33,7 @@ def create_app() -> FastAPI:
         docs_url="/api/docs" if settings.docs_enabled else None,
         openapi_url="/api/openapi.json" if settings.docs_enabled else None, redoc_url=None,
     )
+    app.state.skills_bridge_limits = skills_bridge.BridgeLimits()
     if settings.cors_origins:
         app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins, allow_methods=["*"],
                            allow_headers=["Authorization", "Content-Type"])
