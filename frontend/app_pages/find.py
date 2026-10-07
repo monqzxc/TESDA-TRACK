@@ -3,7 +3,7 @@ import streamlit as st
 
 from api_client import ApiError
 from portal import session
-from portal.account import account_dialog
+from portal.account import sign_in_prompt
 from portal.components import stepper
 from portal.journey import (ANSWERS, CATEGORY_HELP, CERTIFICATE, EXAMPLES, EXPERIENCE, ROUTE_TITLES,
                             group_competencies, plain)
@@ -245,8 +245,7 @@ def show_pathway(journey: dict) -> None:
             st.button("Follow this pathway", key="follow_pathway", icon=":material/bookmark_add:",
                       on_click=follow_pathway, args=(curated["id"],))
         else:
-            st.button("Sign in to follow this pathway", key="follow_pathway_sign_in", type="tertiary",
-                      icon=":material/login:", on_click=account_dialog)
+            sign_in_prompt("Sign in to follow this pathway", "follow_pathway_sign_in", "find")
         notice = st.session_state.pop("pathway_notice", None)
         if notice:
             st.success(notice, icon=":material/bookmark_added:")

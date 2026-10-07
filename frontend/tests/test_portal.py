@@ -14,7 +14,7 @@ from api_client import ApiClient, ApiError, ApiUnavailableError, UNAVAILABLE_MES
 
 APP_FILE = Path(__file__).resolve().parents[1] / "portal_app.py"
 PAGE = {name: f"app_pages/{name}.py" for name in
-        ("find", "qualifications", "training", "progress", "skills_bridge", "reports")}
+        ("find", "qualifications", "training", "progress", "skills_bridge", "reports", "account")}
 
 
 def competency(id, name, category, position):
@@ -194,8 +194,9 @@ def test_reports_page_is_registered_only_for_administrators(api):
 
 
 @pytest.mark.parametrize("page", ["find", "qualifications", "training", "progress", "skills_bridge"])
-def test_every_learner_page_opens_signed_out(api, page):
-    assert portal(page=page).button(key="open_sign_in"), "a sign-in button is always within reach"
+def test_learner_pages_have_no_sign_in_form(api, page):
+    app = portal(page=page)
+    assert not [box for box in app.text_input if box.key == "signin_email"], "signing in has its own page"
 
 
 # --- Step 1: goal ---------------------------------------------------------------------------------------------------
@@ -405,24 +406,47 @@ def test_training_remembers_region_across_pages(api):
 
 # --- My progress and accounts ---------------------------------------------------------------------------------------
 
-def test_progress_signed_out_offers_sign_in_that_validates_locally(api, monkeypatch):
+def sign_in_as_juan(app, monkeypatch):
+    app.switch_page(PAGE["account"]).run()  # AppTest doesn't follow the app's own st.switch_page on the next run
+    monkeypatch.setattr(ApiClient, "sign_in", lambda self, email, password: "fresh-token")
+    monkeypatch.setattr(ApiClient, "me", lambda self, token: {"full_name": "Juan Dela Cruz",
+                                                              "email": "juan@example.test", "role": "learner"})
+    app.text_input(key="signin_email").set_value("juan@example.test")
+    app.text_input(key="signin_password").set_value("correct horse battery")
+    return press(app, "signin_submit")
+
+
+def test_sign_in_page_validates_before_asking_the_api(api, monkeypatch):
     monkeypatch.setattr(ApiClient, "sign_in", lambda *args: pytest.fail("invalid input must not reach the API"))
-    app = portal(page="progress")
-    app.text_input(key="progress_signin_email").set_value("not-an-email")
-    press(app, "progress_signin_submit")
+    app = portal(page="account")
+    app.text_input(key="signin_email").set_value("not-an-email")
+    press(app, "signin_submit")
     assert any("email address" in error.value for error in app.error)
 
 
-def test_signing_in_from_progress_shows_saved_records(api, monkeypatch):
-    monkeypatch.setattr(ApiClient, "sign_in", lambda self, email, password: "fresh-token")
-    monkeypatch.setattr(ApiClient, "me", lambda self, token: {"full_name": "Juan Dela Cruz", "email": "juan@example.test",
-                                                              "role": "learner"})
-    app = portal(page="progress")
-    app.text_input(key="progress_signin_email").set_value("juan@example.test")
-    app.text_input(key="progress_signin_password").set_value("correct horse battery")
-    press(app, "progress_signin_submit")
+def test_sign_in_prompt_brings_the_learner_back_to_their_pathway(api, monkeypatch):
+    app = press(answer_details(ask(portal())), "to_pathway")
+    press(app, "follow_pathway_sign_in")
+    assert app.text_input(key="signin_email"), "the prompt opens the Sign in page"
+    sign_in_as_juan(app, monkeypatch)
     assert app.session_state["auth"]["token"] == "fresh-token"
+    assert app.button(key="follow_pathway"), "back on the pathway, now able to follow it"
+
+
+def test_signing_in_from_progress_shows_saved_records(api, monkeypatch):
+    app = press(portal(page="progress"), "progress_sign_in")
+    sign_in_as_juan(app, monkeypatch)
     assert "Continue where you left off" in text(app)
+
+
+def test_deleting_the_account_signs_out_and_says_so(api, monkeypatch):
+    deleted = []
+    monkeypatch.setattr(ApiClient, "delete_account", lambda self, token: deleted.append(token))
+    app = portal("learner", "account")
+    app.checkbox(key="account_confirm_delete").check().run()
+    press(app, "account_delete")
+    assert deleted == ["portal-test-token"] and "auth" not in app.session_state
+    assert "deleted" in text(app)
 
 
 def test_continue_card_ticks_off_the_next_pathway_step(api):
@@ -438,10 +462,11 @@ def test_continue_card_ticks_off_the_next_pathway_step(api):
 
 def test_signing_out_clears_the_learners_results(api):
     app = finish_readiness(portal("learner"))
+    app.switch_page(PAGE["account"]).run()
     press(app, "account_sign_out")
     assert "auth" not in app.session_state
     assert "journey" not in app.session_state and not app.session_state["readiness_results"]
-    assert app.button(key="open_sign_in")
+    assert app.text_input(key="signin_email")
 
 
 def test_expired_session_returns_to_sign_in(api, monkeypatch):
