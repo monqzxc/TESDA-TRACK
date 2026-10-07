@@ -2,7 +2,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, Field, SecretStr, model_validator
+from pydantic import BaseModel, Field, HttpUrl, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Local development reads the repository-root .env; containers get real environment variables.
@@ -54,11 +54,15 @@ class Settings(BaseSettings):
     ranking_weights: RankingWeights = RankingWeights()
     proximity_radius_km: float = Field(default=100, gt=0, description="Distance at which proximity counts for nothing")
 
-    # Skills Bridge (https://skills-bridge.ph) has no public API yet; these enable the client once access is granted.
+    # Legacy REST adapter; optional and independent of the public MCP integration below.
     skills_bridge_base_url: str | None = None
     skills_bridge_api_token: SecretStr | None = None
     skills_bridge_timeout_seconds: float = Field(default=10, gt=0)
     skills_bridge_cache_ttl_seconds: int = Field(default=3600, ge=0)
+    # Public read-only MCP integration, separate from the legacy REST adapter.
+    skills_bridge_mcp_enabled: bool = True
+    skills_bridge_mcp_url: HttpUrl = "https://mcp.skills-bridge.ph/mcp"
+    skills_bridge_mcp_token: SecretStr | None = None
 
     @model_validator(mode="after")
     def semantic_band_ordered(self):

@@ -7,6 +7,10 @@ x-backend-environment: &backend-environment
   DATABASE_URL: postgresql+psycopg://tesda_track:${APP_DB_PASSWORD:?Set APP_DB_PASSWORD in .env}@db:5432/tesda_track
   SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY in .env}
   LOG_LEVEL: ${LOG_LEVEL:-INFO}
+  SKILLS_BRIDGE_MCP_ENABLED: ${SKILLS_BRIDGE_MCP_ENABLED:-true}
+  SKILLS_BRIDGE_MCP_URL: ${SKILLS_BRIDGE_MCP_URL:-https://mcp.skills-bridge.ph/mcp}
+  SKILLS_BRIDGE_MCP_TOKEN: ${SKILLS_BRIDGE_MCP_TOKEN:-}
+  SKILLS_BRIDGE_TIMEOUT_SECONDS: ${SKILLS_BRIDGE_TIMEOUT_SECONDS:-10}
 
 services:
   db:

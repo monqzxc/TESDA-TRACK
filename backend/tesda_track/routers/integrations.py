@@ -36,7 +36,9 @@ def integration_status(session: SessionDep, embedder: EmbedderDep):
     }
     bridge = {"configured": True, "base_url": settings.skills_bridge_base_url} \
         if skills_bridge.is_configured(settings) else {"configured": False, "detail": skills_bridge.NOT_CONFIGURED}
-    return {"semantic_search": semantic, "skills_bridge": bridge}
+    return {"semantic_search": semantic, "skills_bridge": bridge,
+            "skills_bridge_mcp": {"enabled": settings.skills_bridge_mcp_enabled,
+                                  "url": str(settings.skills_bridge_mcp_url)}}
 
 
 @router.post("/embeddings/sync")
