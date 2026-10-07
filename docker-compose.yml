@@ -59,6 +59,8 @@ services:
     restart: unless-stopped
     environment:
       API_BASE_URL: http://api:8000
+      # Only Caddy reaches this container; trust its X-Forwarded-For so the app sees each learner's address.
+      FORWARDED_ALLOW_IPS: "*"
     depends_on:
       api:
         condition: service_healthy

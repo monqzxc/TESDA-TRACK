@@ -6,22 +6,30 @@ from fastapi import APIRouter, FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import OperationalError
+from sqlmodel import Session
 
 from tesda_track.config import get_settings
+from tesda_track.db import get_engine
 from tesda_track.errors import AuthenticationError, DomainError
 from tesda_track.routers import (analysis, assessments, auth, certifications, goals, health, integrations, me,
                                  pathways, qualifications, readiness_checks, recommendation_sessions, recommendations,
                                  reports, skills_bridge, training)
+from tesda_track.services import cache
 from tesda_track.services.embeddings import get_embedder
 
 logger = logging.getLogger("tesda_track")
+CACHE_PURGE_INTERVAL_SECONDS = 600
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Load the embedding model in the background so the first learner doesn't wait for it.
     threading.Thread(target=get_embedder, name="embedding-warmup", daemon=True).start()
+    stop = threading.Event()
+    threading.Thread(target=cache.purge_until_stopped, name="cache-purge", daemon=True,
+                     args=(lambda: Session(get_engine()), stop, CACHE_PURGE_INTERVAL_SECONDS)).start()
     yield
+    stop.set()
 
 
 def create_app() -> FastAPI:

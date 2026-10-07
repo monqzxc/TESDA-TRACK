@@ -8,10 +8,16 @@
 		-Server
 	}
 	# The API is public for signed-in clients and API docs; /health stays internal.
+	# X-Forwarded-For is set to the connecting address, never passed on from the client; the API's
+	# per-client limits rely on it.
 	handle /api/* {
-		reverse_proxy api:8000
+		reverse_proxy api:8000 {
+			header_up X-Forwarded-For {remote_host}
+		}
 	}
 	handle {
-		reverse_proxy web:8501
+		reverse_proxy web:8501 {
+			header_up X-Forwarded-For {remote_host}
+		}
 	}
 }

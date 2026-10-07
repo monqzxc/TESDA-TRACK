@@ -396,3 +396,18 @@ def test_invalid_requests_do_not_use_up_the_limit():
     with TestClient(app) as client:
         assert client.post("/api/v1/skills-bridge/matches", json={"skills": []}).status_code == 422
         assert client.post("/api/v1/skills-bridge/matches", json={"skills": ["Welding"]}).status_code == 200
+
+
+@pytest.mark.parametrize("first,second,shared", [
+    ("2001:db8::1", "2001:db8::2", True),              # one IPv6 host can use its whole /64
+    ("2001:db8::1", "2001:db8:0:1::1", False),
+    ("::ffff:203.0.113.5", "203.0.113.5", True),
+    ("203.0.113.5", "203.0.113.6", False),
+])
+def test_clients_are_counted_by_address_and_ipv6_network(first, second, shared):
+    app, _, _ = make_api(skills_bridge_rate_limit_per_minute=1)
+    with TestClient(app, client=(first, 50000)) as client:
+        assert client.get("/api/v1/skills-bridge/occupations/133").status_code == 200
+    with TestClient(app, client=(second, 50000)) as client:
+        status = client.get("/api/v1/skills-bridge/occupations/133").status_code
+    assert status == (429 if shared else 200)

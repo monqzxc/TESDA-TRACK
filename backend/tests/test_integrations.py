@@ -41,6 +41,29 @@ def test_purge_removes_only_expired_entries(session):
     assert cache.get(session, "new") == 2
 
 
+def test_expired_entries_are_purged_in_the_background(session):
+    """Expired entries can hold terms sent to Skills Bridge, so they must be deleted, not only ignored."""
+    import threading
+    from contextlib import nullcontext
+
+    cache.put(session, "old", {"skills": ["Hinang"]}, ttl_seconds=60)
+    cache.put(session, "new", 2, ttl_seconds=60)
+    session.exec(select(CacheEntry).where(CacheEntry.key == "old")).one().expires_at = utcnow() - timedelta(seconds=1)
+    session.flush()
+    stop, rounds = threading.Event(), []
+
+    def open_session():
+        rounds.append(1)
+        if len(rounds) == 1:
+            raise RuntimeError("database briefly unavailable")  # the loop must survive this
+        stop.set()
+        return nullcontext(session)
+
+    cache.purge_until_stopped(open_session, stop, interval_seconds=0)
+    assert len(rounds) == 2
+    assert [entry.key for entry in session.exec(select(CacheEntry)).all()] == ["new"]
+
+
 @pytest.fixture
 def skills_bridge_settings(monkeypatch):
     settings = get_settings()
