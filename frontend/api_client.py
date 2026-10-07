@@ -35,12 +35,19 @@ class ApiClient:
     def __init__(self, base_url: str, timeout: float = 30):
         self._http = httpx.Client(base_url=base_url, timeout=timeout)
 
-    def _request(self, method: str, path: str, token: str | None = None, **kwargs) -> Any:
-        headers = {"Authorization": f"Bearer {token}"} if token else None
+    def _request(self, method: str, path: str, token: str | None = None,
+                 bridge_request: bool = False, client_ip: str | None = None, **kwargs) -> Any:
+        headers = {"Authorization": f"Bearer {token}"} if token else {}
+        if client_ip:
+            # Streamlit calls the API server-side, so without this every learner would share one rate limit.
+            headers["X-Forwarded-For"] = client_ip
         try:
             response = self._http.request(method, path, headers=headers, **kwargs)
         except httpx.TransportError as error:
             raise ApiUnavailableError(UNAVAILABLE_MESSAGE) from error
+        if bridge_request and response.status_code == 503:
+            # This router returns curated provider errors; other server errors stay generic.
+            raise ApiError(_detail(response), response.status_code)
         if response.status_code >= 500:
             raise ApiUnavailableError(UNAVAILABLE_MESSAGE, response.status_code)
         if response.status_code >= 400:
@@ -49,6 +56,19 @@ class ApiClient:
 
     def qualifications(self) -> list[dict]:
         return self._request("GET", "/api/v1/qualifications")
+
+    def bridge_matches(self, skills: list[str], client_ip: str | None = None) -> dict:
+        return self._request("POST", "/api/v1/skills-bridge/matches", json={"skills": skills},
+                             bridge_request=True, client_ip=client_ip, timeout=60)
+
+    def bridge_occupations(self, occupations: list[str], client_ip: str | None = None) -> dict:
+        return self._request("POST", "/api/v1/skills-bridge/occupations/search",
+                             json={"occupations": occupations}, bridge_request=True, client_ip=client_ip,
+                             timeout=60)
+
+    def bridge_occupation(self, occupation_id: int, client_ip: str | None = None) -> dict:
+        return self._request("GET", f"/api/v1/skills-bridge/occupations/{occupation_id}",
+                             bridge_request=True, client_ip=client_ip, timeout=60)
 
     def analyze_goal(self, query: str) -> dict:
         return self._request("POST", "/api/v1/analysis/goal", json={"query": query})
@@ -116,6 +136,10 @@ class ApiClient:
     def rank_training(self, token: str | None = None, **body) -> dict:
         """Ranked programs with score components; the goal goes in the body, never in a URL."""
         return self._request("POST", "/api/v1/recommendations/training", token, json=body)
+
+    def training_programs(self, **params) -> list[dict]:
+        """Public training listings, optionally filtered to a qualification and region."""
+        return self._request("GET", "/api/v1/training-programs", params=params)
 
     def schedules(self, **params) -> list[dict]:
         return self._request("GET", "/api/v1/assessment-schedules", params=params)
