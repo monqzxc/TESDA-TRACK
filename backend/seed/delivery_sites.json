@@ -1,0 +1,197 @@
+{
+  "metadata": {
+    "source": "TESDA-TRACK development fixture",
+    "notice": "These are deterministic sample sites centred on regional coordinates. They are not verified T2MIS records and must be replaced with an approved import before production use."
+  },
+  "sites": [
+    {
+      "provider": {
+        "name": "[Seed] NCR Skills Institute",
+        "region_code": "NCR",
+        "city": "Manila",
+        "address": "Regional coordinate fixture · verify exact campus with TESDA",
+        "latitude": 14.5995,
+        "longitude": 120.9842,
+        "contact_email": "seed-ncr@tesda-track.invalid",
+        "contact_phone": "+63 2 0000 0001",
+        "website": "https://www.tesda.gov.ph/"
+      },
+      "assessment_center": {
+        "name": "[Seed] NCR Assessment Center",
+        "region_code": "NCR",
+        "city": "Manila",
+        "address": "Regional coordinate fixture · verify exact assessment site with TESDA",
+        "latitude": 14.6008,
+        "longitude": 120.9831,
+        "contact_email": "seed-ncr-assessment@tesda-track.invalid",
+        "contact_phone": "+63 2 0000 0002"
+      },
+      "offerings": [
+        {"qualification_code": "MMAW-NC-II", "title": "Manual Metal Arc Welding (MMAW) NC II · Seed cohort", "duration_hours": 436, "cost": 0, "scholarship_available": true, "start_days": 14, "duration_days": 180, "slots": 25, "assessment_days": 55, "assessment_slots": 15, "assessment_fee": 750},
+        {"qualification_code": "CSS-NC-II", "title": "Computer Systems Servicing NC II · Seed cohort", "duration_hours": 436, "cost": 8500, "start_days": 21, "duration_days": 160, "slots": 30, "assessment_days": 65, "assessment_slots": 20, "assessment_fee": 600},
+        {"qualification_code": "PROGRAMMING-NC-III", "title": "Programming (.Net Technology) NC III · Seed cohort", "duration_hours": 320, "cost": 12000, "start_days": 28, "duration_days": 150, "slots": 20, "assessment_days": 75, "assessment_slots": 12, "assessment_fee": 900},
+        {"qualification_code": "WEB-DEVELOPMENT-NC-III", "title": "Web Development NC III · Seed cohort", "duration_hours": 320, "cost": 12000, "start_days": 35, "duration_days": 150, "slots": 20, "assessment_days": 82, "assessment_slots": 12, "assessment_fee": 900},
+        {"qualification_code": "EIM-NC-II", "title": "Electrical Installation and Maintenance NC II · Seed cohort", "duration_hours": 268, "cost": 6500, "scholarship_available": true, "start_days": 18, "duration_days": 140, "slots": 25, "assessment_days": 60, "assessment_slots": 15, "assessment_fee": 600},
+        {"qualification_code": "CAREGIVING-NC-II-5", "title": "Caregiving NC II · Seed cohort", "duration_hours": 786, "cost": 16000, "start_days": 25, "duration_days": 210, "slots": 25, "assessment_days": 95, "assessment_slots": 15, "assessment_fee": 1000}
+      ]
+    },
+    {
+      "provider": {
+        "name": "[Seed] Central Luzon Technical Skills Hub",
+        "region_code": "III",
+        "province": "Pampanga",
+        "city": "San Fernando",
+        "address": "Regional coordinate fixture · verify exact campus with TESDA",
+        "latitude": 15.0286,
+        "longitude": 120.6898,
+        "contact_email": "seed-central-luzon@tesda-track.invalid",
+        "contact_phone": "+63 45 000 0001",
+        "website": "https://www.tesda.gov.ph/"
+      },
+      "assessment_center": {
+        "name": "[Seed] Central Luzon Assessment Center",
+        "region_code": "III",
+        "province": "Pampanga",
+        "city": "San Fernando",
+        "address": "Regional coordinate fixture · verify exact assessment site with TESDA",
+        "latitude": 15.0301,
+        "longitude": 120.6884,
+        "contact_email": "seed-central-luzon-assessment@tesda-track.invalid",
+        "contact_phone": "+63 45 000 0002"
+      },
+      "offerings": [
+        {"qualification_code": "MMAW-NC-II", "title": "Manual Metal Arc Welding (MMAW) NC II · Seed cohort", "duration_hours": 436, "cost": 0, "scholarship_available": true, "start_days": 16, "duration_days": 180, "slots": 30, "assessment_days": 60, "assessment_slots": 20, "assessment_fee": 750},
+        {"qualification_code": "GMAW-NC-II", "title": "Gas Metal Arc Welding (GMAW) NC II · Seed cohort", "duration_hours": 436, "cost": 9500, "start_days": 30, "duration_days": 180, "slots": 20, "assessment_days": 90, "assessment_slots": 15, "assessment_fee": 750},
+        {"qualification_code": "EIM-NC-II", "title": "Electrical Installation and Maintenance NC II · Seed cohort", "duration_hours": 268, "cost": 6500, "start_days": 20, "duration_days": 140, "slots": 25, "assessment_days": 65, "assessment_slots": 15, "assessment_fee": 600},
+        {"qualification_code": "AUTOMOTIVE-SERVICING-NC-II", "title": "Automotive Servicing NC II · Seed cohort", "duration_hours": 676, "cost": 15000, "start_days": 24, "duration_days": 210, "slots": 25, "assessment_days": 105, "assessment_slots": 15, "assessment_fee": 900},
+        {"qualification_code": "COOKERY-NC-II", "title": "Cookery NC II · Seed cohort", "duration_hours": 316, "cost": 8000, "start_days": 22, "duration_days": 140, "slots": 25, "assessment_days": 70, "assessment_slots": 15, "assessment_fee": 600}
+      ]
+    },
+    {
+      "provider": {
+        "name": "[Seed] CALABARZON Career Training Center",
+        "region_code": "IV-A",
+        "province": "Laguna",
+        "city": "Calamba",
+        "address": "Regional coordinate fixture · verify exact campus with TESDA",
+        "latitude": 14.2117,
+        "longitude": 121.1653,
+        "contact_email": "seed-calabarzon@tesda-track.invalid",
+        "contact_phone": "+63 49 000 0001",
+        "website": "https://www.tesda.gov.ph/"
+      },
+      "assessment_center": {
+        "name": "[Seed] CALABARZON Assessment Center",
+        "region_code": "IV-A",
+        "province": "Laguna",
+        "city": "Calamba",
+        "address": "Regional coordinate fixture · verify exact assessment site with TESDA",
+        "latitude": 14.2131,
+        "longitude": 121.1638,
+        "contact_email": "seed-calabarzon-assessment@tesda-track.invalid",
+        "contact_phone": "+63 49 000 0002"
+      },
+      "offerings": [
+        {"qualification_code": "MMAW-NC-II", "title": "Manual Metal Arc Welding (MMAW) NC II · Seed cohort", "duration_hours": 436, "cost": 0, "scholarship_available": true, "start_days": 12, "duration_days": 180, "slots": 25, "assessment_days": 50, "assessment_slots": 15, "assessment_fee": 750},
+        {"qualification_code": "CSS-NC-II", "title": "Computer Systems Servicing NC II · Seed cohort", "duration_hours": 436, "cost": 8500, "start_days": 18, "duration_days": 160, "slots": 25, "assessment_days": 60, "assessment_slots": 15, "assessment_fee": 600},
+        {"qualification_code": "PROGRAMMING-NC-III", "title": "Programming (.Net Technology) NC III · Seed cohort", "duration_hours": 320, "cost": 12000, "start_days": 32, "duration_days": 150, "slots": 20, "assessment_days": 82, "assessment_slots": 12, "assessment_fee": 900},
+        {"qualification_code": "COOKERY-NC-II", "title": "Cookery NC II · Seed cohort", "duration_hours": 316, "cost": 8000, "start_days": 20, "duration_days": 140, "slots": 25, "assessment_days": 68, "assessment_slots": 15, "assessment_fee": 600},
+        {"qualification_code": "FBS-NC-II", "title": "Food and Beverage Services NC II · Seed cohort", "duration_hours": 356, "cost": 8000, "start_days": 26, "duration_days": 140, "slots": 25, "assessment_days": 74, "assessment_slots": 15, "assessment_fee": 600}
+      ]
+    },
+    {
+      "provider": {
+        "name": "[Seed] Central Visayas Digital & Trade Institute",
+        "region_code": "VII",
+        "province": "Cebu",
+        "city": "Cebu City",
+        "address": "Regional coordinate fixture · verify exact campus with TESDA",
+        "latitude": 10.3157,
+        "longitude": 123.8854,
+        "contact_email": "seed-central-visayas@tesda-track.invalid",
+        "contact_phone": "+63 32 000 0001",
+        "website": "https://www.tesda.gov.ph/"
+      },
+      "assessment_center": {
+        "name": "[Seed] Central Visayas Assessment Center",
+        "region_code": "VII",
+        "province": "Cebu",
+        "city": "Cebu City",
+        "address": "Regional coordinate fixture · verify exact assessment site with TESDA",
+        "latitude": 10.3171,
+        "longitude": 123.8839,
+        "contact_email": "seed-central-visayas-assessment@tesda-track.invalid",
+        "contact_phone": "+63 32 000 0002"
+      },
+      "offerings": [
+        {"qualification_code": "MMAW-NC-II", "title": "Manual Metal Arc Welding (MMAW) NC II · Seed cohort", "duration_hours": 436, "cost": 0, "scholarship_available": true, "start_days": 20, "duration_days": 180, "slots": 25, "assessment_days": 65, "assessment_slots": 15, "assessment_fee": 750},
+        {"qualification_code": "CSS-NC-II", "title": "Computer Systems Servicing NC II · Seed cohort", "duration_hours": 436, "cost": 8500, "start_days": 25, "duration_days": 160, "slots": 25, "assessment_days": 70, "assessment_slots": 15, "assessment_fee": 600},
+        {"qualification_code": "WEB-DEVELOPMENT-NC-III", "title": "Web Development NC III · Seed cohort", "duration_hours": 320, "cost": 12000, "start_days": 35, "duration_days": 150, "slots": 20, "assessment_days": 88, "assessment_slots": 12, "assessment_fee": 900},
+        {"qualification_code": "BARTENDING-NC-II", "title": "Bartending NC II · Seed cohort", "duration_hours": 356, "cost": 8000, "start_days": 22, "duration_days": 140, "slots": 25, "assessment_days": 70, "assessment_slots": 15, "assessment_fee": 600},
+        {"qualification_code": "CAREGIVING-NC-II-5", "title": "Caregiving NC II · Seed cohort", "duration_hours": 786, "cost": 16000, "start_days": 28, "duration_days": 210, "slots": 25, "assessment_days": 110, "assessment_slots": 15, "assessment_fee": 1000}
+      ]
+    },
+    {
+      "provider": {
+        "name": "[Seed] Northern Mindanao Skills Campus",
+        "region_code": "X",
+        "province": "Misamis Oriental",
+        "city": "Cagayan de Oro",
+        "address": "Regional coordinate fixture · verify exact campus with TESDA",
+        "latitude": 8.4542,
+        "longitude": 124.6319,
+        "contact_email": "seed-northern-mindanao@tesda-track.invalid",
+        "contact_phone": "+63 88 000 0001",
+        "website": "https://www.tesda.gov.ph/"
+      },
+      "assessment_center": {
+        "name": "[Seed] Northern Mindanao Assessment Center",
+        "region_code": "X",
+        "province": "Misamis Oriental",
+        "city": "Cagayan de Oro",
+        "address": "Regional coordinate fixture · verify exact assessment site with TESDA",
+        "latitude": 8.4557,
+        "longitude": 124.6305,
+        "contact_email": "seed-northern-mindanao-assessment@tesda-track.invalid",
+        "contact_phone": "+63 88 000 0002"
+      },
+      "offerings": [
+        {"qualification_code": "MMAW-NC-II", "title": "Manual Metal Arc Welding (MMAW) NC II · Seed cohort", "duration_hours": 436, "cost": 0, "scholarship_available": true, "start_days": 15, "duration_days": 180, "slots": 25, "assessment_days": 58, "assessment_slots": 15, "assessment_fee": 750},
+        {"qualification_code": "EIM-NC-II", "title": "Electrical Installation and Maintenance NC II · Seed cohort", "duration_hours": 268, "cost": 6500, "start_days": 22, "duration_days": 140, "slots": 25, "assessment_days": 68, "assessment_slots": 15, "assessment_fee": 600},
+        {"qualification_code": "CSS-NC-II", "title": "Computer Systems Servicing NC II · Seed cohort", "duration_hours": 436, "cost": 8500, "start_days": 24, "duration_days": 160, "slots": 25, "assessment_days": 70, "assessment_slots": 15, "assessment_fee": 600},
+        {"qualification_code": "COOKERY-NC-II", "title": "Cookery NC II · Seed cohort", "duration_hours": 316, "cost": 8000, "start_days": 18, "duration_days": 140, "slots": 25, "assessment_days": 65, "assessment_slots": 15, "assessment_fee": 600}
+      ]
+    },
+    {
+      "provider": {
+        "name": "[Seed] Davao Career Pathways Center",
+        "region_code": "XI",
+        "province": "Davao del Sur",
+        "city": "Davao City",
+        "address": "Regional coordinate fixture · verify exact campus with TESDA",
+        "latitude": 7.1907,
+        "longitude": 125.4553,
+        "contact_email": "seed-davao@tesda-track.invalid",
+        "contact_phone": "+63 82 000 0001",
+        "website": "https://www.tesda.gov.ph/"
+      },
+      "assessment_center": {
+        "name": "[Seed] Davao Assessment Center",
+        "region_code": "XI",
+        "province": "Davao del Sur",
+        "city": "Davao City",
+        "address": "Regional coordinate fixture · verify exact assessment site with TESDA",
+        "latitude": 7.1922,
+        "longitude": 125.4538,
+        "contact_email": "seed-davao-assessment@tesda-track.invalid",
+        "contact_phone": "+63 82 000 0002"
+      },
+      "offerings": [
+        {"qualification_code": "MMAW-NC-II", "title": "Manual Metal Arc Welding (MMAW) NC II · Seed cohort", "duration_hours": 436, "cost": 0, "scholarship_available": true, "start_days": 17, "duration_days": 180, "slots": 25, "assessment_days": 62, "assessment_slots": 15, "assessment_fee": 750},
+        {"qualification_code": "PROGRAMMING-NC-III", "title": "Programming (.Net Technology) NC III · Seed cohort", "duration_hours": 320, "cost": 12000, "start_days": 28, "duration_days": 150, "slots": 20, "assessment_days": 80, "assessment_slots": 12, "assessment_fee": 900},
+        {"qualification_code": "CSS-NC-II", "title": "Computer Systems Servicing NC II · Seed cohort", "duration_hours": 436, "cost": 8500, "start_days": 23, "duration_days": 160, "slots": 25, "assessment_days": 70, "assessment_slots": 15, "assessment_fee": 600},
+        {"qualification_code": "CAREGIVING-NC-II-5", "title": "Caregiving NC II · Seed cohort", "duration_hours": 786, "cost": 16000, "start_days": 30, "duration_days": 210, "slots": 25, "assessment_days": 112, "assessment_slots": 15, "assessment_fee": 1000}
+      ]
+    }
+  ]
+}
