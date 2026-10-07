@@ -1,8 +1,12 @@
+from pathlib import Path
+
 import pytest
 from sqlmodel import select
 
 from tesda_track.models import Pathway, Qualification
-from tesda_track.seed import SEED_DIR, seed_all
+from tesda_track.seed import seed_all
+
+TEST_SEED_DIR = Path(__file__).resolve().parent / "seed"
 
 
 def pathways_for(client, code, **params):
@@ -27,7 +31,7 @@ def test_every_qualification_gets_a_default_pathway_per_route(client):
 def test_reseeding_keeps_admin_edits_and_adds_pathways_for_new_qualifications(client, admin, session):
     pathway = pathways_for(client, "SMAW-NC-II", route="SKILL_GAP_CHECK")[0]
     client.put(f"/api/v1/admin/pathways/{pathway['id']}", headers=admin, json={"title": "Welding upskilling"})
-    reports = seed_all(session, SEED_DIR)
+    reports = seed_all(session, TEST_SEED_DIR)
     assert reports["pathways"].created == 0
     assert pathways_for(client, "SMAW-NC-II", route="SKILL_GAP_CHECK")[0]["title"] == "Welding upskilling"
 

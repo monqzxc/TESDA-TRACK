@@ -7,6 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 from sqlalchemy import make_url, text
 
 ROOT = Path(__file__).resolve().parent
+TEST_SEED_DIR = ROOT / "backend" / "tests" / "seed"
 
 
 class _TestEnvironment(BaseSettings):
@@ -42,7 +43,7 @@ def engine():
     from sqlmodel import Session
 
     from tesda_track.db import get_engine
-    from tesda_track.seed import SEED_DIR, seed_all
+    from tesda_track.seed import seed_all
 
     engine = get_engine()
     with engine.begin() as connection:
@@ -54,7 +55,8 @@ def engine():
         config.attributes["connection"] = connection
         command.upgrade(config, "head")
     with Session(engine) as session:
-        seed_all(session, SEED_DIR)
+        # A small, fixed catalog: tests don't change when the real catalog in backend/seed grows.
+        seed_all(session, TEST_SEED_DIR)
         session.commit()
     yield engine
     engine.dispose()

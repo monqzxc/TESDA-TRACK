@@ -8,7 +8,7 @@ from tesda_track.services.intent_service import analyze_user_query
 from tesda_track.services.recommendation_service import match_qualifications, recommend_pathway, refine_profile
 from tesda_track.services.skill_gap_service import calculate_skill_gap
 
-SEED_FILE = Path(__file__).resolve().parents[1] / "seed" / "qualifications.json"
+SEED_FILE = Path(__file__).resolve().parent / "seed" / "qualifications.json"
 
 
 @pytest.fixture(scope="module")

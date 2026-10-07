@@ -1,0 +1,2306 @@
+[
+ {
+  "title": "2D Animation NC III",
+  "download_id": 123,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "2D Animation NC III",
+  "download_id": 1838,
+  "superseded": true,
+  "level": "NC III"
+ },
+ {
+  "title": "2D Game Art Development NC III",
+  "download_id": 464,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "3D Animation NC III",
+  "download_id": 251,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "3D Animation NC III",
+  "download_id": 1839,
+  "superseded": true,
+  "level": "NC III"
+ },
+ {
+  "title": "3D Game Art Development NC III",
+  "download_id": 477,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "5-Axis CNC Machine Operation NC III",
+  "download_id": 1901,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Able Seafarer Deck NC II (II-5)",
+  "download_id": 727,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Able Seafarer Engine NC II (III-5)",
+  "download_id": 728,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Agricultural Crops Production NC I",
+  "download_id": 49,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Agricultural Crops Production NC II",
+  "download_id": 766,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Agricultural Crops Production NC III",
+  "download_id": 115,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Agricultural Machinery Operation NC II",
+  "download_id": 1787,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Agricultural Machinery Servicing (4-Wheel Tractor) NC III",
+  "download_id": 1881,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Agroentrepreneurship NC II",
+  "download_id": 1793,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Agroentrepreneurship NC III",
+  "download_id": 1794,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Agroentrepreneurship NC IV",
+  "download_id": 1795,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Air Duct Servicing NC II",
+  "download_id": 210,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Animal Health Care and Management NC III",
+  "download_id": 250,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Animal Production (Poultry-Chicken) NC II",
+  "download_id": 769,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Animal Production (Ruminants) NC II",
+  "download_id": 768,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Animal Production (Swine) NC II",
+  "download_id": 767,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Animation NC II",
+  "download_id": 38,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Animation NC II",
+  "download_id": 1840,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Aquaculture (Grow-Out Operation) NC II",
+  "download_id": 2241,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Aquaculture (Hatchery Operation) NC II",
+  "download_id": 2247,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Aquaculture (Tilapia Culture) NC II",
+  "download_id": 2240,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Aquaculture NC II",
+  "download_id": 11,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Artificial Insemination (Large Ruminants) NC II",
+  "download_id": 465,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Artificial Insemination (Swine) NC II",
+  "download_id": 466,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Assistive Rehabilitation Technology Services (Orthotics) NC II",
+  "download_id": 2390,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Assistive Rehabilitation Technology Services (Prosthetics) NC II",
+  "download_id": 2389,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Assistive Rehabilitation Technology Services (Wheelchair) NC II",
+  "download_id": 2391,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Attractions and Theme Parks Operations NC II",
+  "download_id": 245,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Audio Production Services NC I",
+  "download_id": 2230,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Auto Engine Rebuilding NC II",
+  "download_id": 25,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Automotive Body Painting/Finishing NC I",
+  "download_id": 24,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Automotive Body Painting/Finishing NC III",
+  "download_id": 185,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Automotive Body Repairing NC II",
+  "download_id": 2254,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Automotive Diagnosis (Chassis) NC III",
+  "download_id": 2790,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Automotive Diagnosis (Electrical) NC III",
+  "download_id": 2791,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Automotive Diagnosis (Engine) NC III",
+  "download_id": 2792,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Automotive Electrical Assembly NC II",
+  "download_id": 384,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Automotive Electrical Assembly NC III",
+  "download_id": 279,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Automotive Mechanical Assembly NC II",
+  "download_id": 385,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Automotive Mechanical Assembly NC III",
+  "download_id": 365,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Automotive Painting NC II",
+  "download_id": 2255,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Automotive Servicing (Chassis Repair) NC II",
+  "download_id": 2248,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Automotive Servicing (Electrical Repair) NC II",
+  "download_id": 2249,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Automotive Servicing (Engine Repair) NC II",
+  "download_id": 2250,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Automotive Servicing NC I",
+  "download_id": 186,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Automotive Servicing NC I",
+  "download_id": 1850,
+  "superseded": true,
+  "level": "NC I"
+ },
+ {
+  "title": "Automotive Servicing NC II",
+  "download_id": 27,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Automotive Servicing NC III",
+  "download_id": 418,
+  "superseded": true,
+  "level": "NC III"
+ },
+ {
+  "title": "Automotive Servicing NC IV",
+  "download_id": 116,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Automotive Wiring Harness Assembly NC II",
+  "download_id": 301,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Bamboo Processing (Engineered-Bamboo) NC II",
+  "download_id": 1882,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Bamboo Production NC II",
+  "download_id": 1833,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Barangay Health Services NC II",
+  "download_id": 1886,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Barangay Health Services NC II",
+  "download_id": 1887,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Barbering NC II",
+  "download_id": 447,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Barbering NC II",
+  "download_id": 2393,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Barista NC II",
+  "download_id": 739,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Bartending NC II",
+  "download_id": 28,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Beauty Care (Nail Care) Services NC II",
+  "download_id": 457,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Beauty Care (Nail Enhancement Technology) Services NC III",
+  "download_id": 2242,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Beauty Care (Skin Care) Services NC II",
+  "download_id": 51,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Beauty Care NC II",
+  "download_id": 1896,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Beauty Care NC III",
+  "download_id": 52,
+  "superseded": true,
+  "level": "NC III"
+ },
+ {
+  "title": "Beauty Care Services (Nail Care) NC II",
+  "download_id": 2411,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Beauty Care Services (Nail Care) NC III",
+  "download_id": 458,
+  "superseded": true,
+  "level": "NC III"
+ },
+ {
+  "title": "Beekeeping NC II",
+  "download_id": 2252,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Biogas Plant Installation NC III",
+  "download_id": 2225,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Biomedical Equipment Servicing NC II",
+  "download_id": 119,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Bookkeeping NC III",
+  "download_id": 242,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Bread and Pastry Production NC II",
+  "download_id": 306,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Broadband Installation (Fixed Wireless Systems) NC II",
+  "download_id": 414,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Cable TV Installation NC II",
+  "download_id": 244,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Cable TV Operation and Maintenance NC III",
+  "download_id": 387,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "CAD/CAM Operation NC III",
+  "download_id": 307,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Caregiving (Clients with Special Needs) NC II",
+  "download_id": 2243,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Caregiving (Elderly) NC II",
+  "download_id": 2244,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Caregiving (Grade Schooler to Adolescent) NC II",
+  "download_id": 2245,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Caregiving (Newborn to Pre-Schooler) NC II",
+  "download_id": 2246,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Caregiving NC II",
+  "download_id": 252,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Carpentry NC II",
+  "download_id": 29,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Carpentry NC II",
+  "download_id": 1871,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Carpentry NC III",
+  "download_id": 187,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Carpentry NC III",
+  "download_id": 1872,
+  "superseded": true,
+  "level": "NC III"
+ },
+ {
+  "title": "Chemical Process Operations NC III",
+  "download_id": 1788,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III",
+  "download_id": 1900,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "CNC Lathe Machine Operation NC II",
+  "download_id": 308,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "CNC Lathe Machine Operation NC III",
+  "download_id": 309,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "CNC Milling Machine Operation NC II",
+  "download_id": 50,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "CNC Milling Machine Operation NC III",
+  "download_id": 310,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Commercial Air-conditioning Installation and Servicing NC III",
+  "download_id": 2445,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Commercial Cooking NC III",
+  "download_id": 253,
+  "superseded": true,
+  "level": "NC III"
+ },
+ {
+  "title": "Commercial Cooking NC IV",
+  "download_id": 254,
+  "superseded": true,
+  "level": "NC IV"
+ },
+ {
+  "title": "Commercial Refrigeration Installation and Servicing NC III",
+  "download_id": 2444,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Community Nutrition Services NC II",
+  "download_id": 2517,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Computer Systems Servicing NC II",
+  "download_id": 763,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Construction Lift Passenger/Material Elevator Operation NC II",
+  "download_id": 467,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Construction Painting NC II",
+  "download_id": 188,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Construction Painting NC III",
+  "download_id": 180,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Consumer Electronics Servicing NC III",
+  "download_id": 193,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Consumer Electronics Servicing NC IV",
+  "download_id": 153,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Contact Center Services NC II",
+  "download_id": 196,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Contact Tracing NC II",
+  "download_id": 2441,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Cookery NC II",
+  "download_id": 30,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "COOPERATIVE DEVELOPMENT AND MANAGEMENT LEVEL IV",
+  "download_id": 2253,
+  "superseded": false,
+  "level": null
+ },
+ {
+  "title": "Customer Services NC II",
+  "download_id": 411,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Cyber Threat Mitigation NC II",
+  "download_id": 2789,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Cyber Threat Monitoring NC I",
+  "download_id": 2788,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Dental Hygiene Level IV",
+  "download_id": 438,
+  "superseded": false,
+  "level": null
+ },
+ {
+  "title": "Dental Hygiene Level IV",
+  "download_id": 1889,
+  "superseded": true,
+  "level": null
+ },
+ {
+  "title": "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+  "download_id": 439,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+  "download_id": 436,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Dental Laboratory Technology Services NC I",
+  "download_id": 290,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Dental Technology NC IV",
+  "download_id": 441,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Die Designing NC IV",
+  "download_id": 1898,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Diesel Power Plant Maintenance NC III",
+  "download_id": 415,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Diesel Power Plant Operation and Maintenance NC II",
+  "download_id": 416,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Diesel Power Plant Operation and Maintenance NC III",
+  "download_id": 417,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Domestic Work NC II",
+  "download_id": 2458,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Domestic Work NC II",
+  "download_id": 82,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Dressmaking NC II",
+  "download_id": 33,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Driving (Articulated Vehicle) NC III",
+  "download_id": 53,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Driving (Passenger Bus/Straight Truck) NC III",
+  "download_id": 446,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Driving NC II",
+  "download_id": 34,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Drying and Milling Plant Servicing NC III",
+  "download_id": 1796,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Early Childhood Care and Development Services NC III",
+  "download_id": 2693,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Electric Discharge Machine (EDM) Sinking Operation NC II",
+  "download_id": 1902,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Electric Power Distribution Line Construction NC II",
+  "download_id": 1852,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Electric Power Distribution Operation and Maintenance NC III",
+  "download_id": 1853,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Electric Power Distribution Operation and Maintenance NC IV",
+  "download_id": 1854,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Electrical Installation and Maintenance NC II",
+  "download_id": 412,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Electrical Installation and Maintenance NC III",
+  "download_id": 366,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Electrical Installation and Maintenance NC IV",
+  "download_id": 407,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Electronic Products Assembly and Servicing NC II",
+  "download_id": 764,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Electronics Back-end Operation NC II",
+  "download_id": 1778,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Electronics Front-of-line Operation NC II",
+  "download_id": 1779,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Electronics/Semiconductor Production Line Machine Servicing NC III",
+  "download_id": 1834,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Emergency Medical Services NC II",
+  "download_id": 205,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Emergency Medical Services NC III",
+  "download_id": 2256,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Events Management Services NC III",
+  "download_id": 246,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Fashion Design (Apparel) NC III",
+  "download_id": 459,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Film and Video Postproduction NC III",
+  "download_id": 2392,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Fish Capture NC I",
+  "download_id": 54,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Fish Capture NC II",
+  "download_id": 23,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Fish Products Packaging NC II",
+  "download_id": 257,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Fishing Gear Repair and Maintenance NC III",
+  "download_id": 258,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Fishport/Wharf Operation NC I",
+  "download_id": 233,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Flux-Cored Arc Welding (FCAW) NC I",
+  "download_id": 128,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Flux-Cored Arc Welding (FCAW) NC II",
+  "download_id": 219,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Flux-Cored Arc Welding (FCAW) NC III",
+  "download_id": 206,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Food and Beverage Services NC II",
+  "download_id": 2794,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Food and Beverage Services NC II",
+  "download_id": 35,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Food and Beverage Services NC III",
+  "download_id": 69,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Food and Beverage Services NC III",
+  "download_id": 1873,
+  "superseded": true,
+  "level": "NC III"
+ },
+ {
+  "title": "Food and Beverage Services NC IV",
+  "download_id": 256,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Food and Beverage Services NC IV",
+  "download_id": 1874,
+  "superseded": true,
+  "level": "NC IV"
+ },
+ {
+  "title": "Food Processing NC I",
+  "download_id": 2396,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Food Processing NC I",
+  "download_id": 381,
+  "superseded": true,
+  "level": "NC I"
+ },
+ {
+  "title": "Food Processing NC II",
+  "download_id": 2450,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Food Processing NC II",
+  "download_id": 2453,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Food Processing NC III",
+  "download_id": 199,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Food Processing NC IV",
+  "download_id": 382,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Food Production (Bread and Patisserie) NC II",
+  "download_id": 2795,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Food Production (Professional Cookery) NC III",
+  "download_id": 2227,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Food Production (Professional Cookery) NC IV",
+  "download_id": 2228,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Footwear Making NC II",
+  "download_id": 64,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Forging NC II",
+  "download_id": 304,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Forging NC III",
+  "download_id": 305,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Foundry Melting/Casting NC II",
+  "download_id": 234,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Foundry Melting/Casting NC III",
+  "download_id": 367,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Foundry Molding NC II",
+  "download_id": 235,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Foundry Molding NC III",
+  "download_id": 368,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Foundry Pattern Making NC II",
+  "download_id": 390,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Foundry Pattern Making NC III",
+  "download_id": 369,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Front Office Services NC II",
+  "download_id": 56,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Front Office Services NC III",
+  "download_id": 2231,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Front Office Services NC IV",
+  "download_id": 2232,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Furniture Making (Finishing) NC II",
+  "download_id": 343,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Game Programming NC III",
+  "download_id": 478,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Garbage Collection NC I",
+  "download_id": 782,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Gas Metal Arc Welding (GMAW) NC I",
+  "download_id": 192,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Gas Metal Arc Welding (GMAW) NC II",
+  "download_id": 191,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Gas Metal Arc Welding (GMAW) NC III",
+  "download_id": 207,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Gas Tungsten Arc Welding (GTAW) NC II",
+  "download_id": 112,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Gas Tungsten Arc Welding (GTAW) NC IV",
+  "download_id": 202,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Gas Welding NC I",
+  "download_id": 190,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "GAS Welding NC II",
+  "download_id": 129,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Grains Production NC II",
+  "download_id": 1785,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Hairdressing NC II",
+  "download_id": 57,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Hairdressing NC II",
+  "download_id": 2394,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Hairdressing NC III",
+  "download_id": 58,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Hairdressing NC III",
+  "download_id": 2395,
+  "superseded": true,
+  "level": "NC III"
+ },
+ {
+  "title": "Handloom Weaving (Backstrap) NC II",
+  "download_id": 2833,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Handloom Weaving (Upright) NC II",
+  "download_id": 2226,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II",
+  "download_id": 1782,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Health Care Services NC II",
+  "download_id": 59,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Heat Treatment NC II",
+  "download_id": 370,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II",
+  "download_id": 237,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Backhoe Loader) NC II",
+  "download_id": 386,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Bulldozer) NC II",
+  "download_id": 66,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Concrete Pump) NC II",
+  "download_id": 238,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Container Stacker) NC II",
+  "download_id": 454,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Crawler Crane) NC II",
+  "download_id": 255,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Crawler Crane) NC III",
+  "download_id": 2222,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Heavy Equipment Operation (Forklift) NC II",
+  "download_id": 2217,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Forklift) NC II",
+  "download_id": 259,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Gantry Crane) NC II",
+  "download_id": 388,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Hydraulic Excavator) NC II",
+  "download_id": 2219,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Hydraulic Excavator) NC II",
+  "download_id": 260,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Motor Grader) NC II",
+  "download_id": 261,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Overhead and Gantry Crane) NC III",
+  "download_id": 2224,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Heavy Equipment Operation (Paver) NC II",
+  "download_id": 239,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II",
+  "download_id": 455,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II",
+  "download_id": 2218,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II",
+  "download_id": 389,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Road Roller) NC II",
+  "download_id": 456,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Rough Terrain Crane) NC III",
+  "download_id": 2221,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Heavy Equipment Operation (Rough-Terrain Crane) NC II",
+  "download_id": 263,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Screed) NC I",
+  "download_id": 236,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Heavy Equipment Operation (Tower Crane) NC II",
+  "download_id": 378,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Tower Crane) NC III",
+  "download_id": 2223,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Heavy Equipment Operation (Transit Mixer) NC II",
+  "download_id": 241,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Truck Mounted Crane) NC II",
+  "download_id": 379,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Operation (Truck Mounted Crane) NC III",
+  "download_id": 2220,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Heavy Equipment Operation (Wheel Loader) NC II",
+  "download_id": 380,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Heavy Equipment Servicing (Mechanical) NC II",
+  "download_id": 211,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Hilot (Wellness Massage) NC II",
+  "download_id": 408,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Horticulture NC III",
+  "download_id": 179,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Housekeeping NC II",
+  "download_id": 765,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Housekeeping NC III",
+  "download_id": 247,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Housekeeping NC IV",
+  "download_id": 248,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Ice Plant Refrigeration Servicing NC III",
+  "download_id": 209,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Illustration NC II",
+  "download_id": 371,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Instrumentation and Control Servicing NC II",
+  "download_id": 154,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Instrumentation and Control Servicing NC III",
+  "download_id": 155,
+  "superseded": true,
+  "level": "NC III"
+ },
+ {
+  "title": "Instrumentation and Control Servicing NC IV",
+  "download_id": 156,
+  "superseded": true,
+  "level": "NC IV"
+ },
+ {
+  "title": "Jewelry Making (Fine Jewelry) NC II",
+  "download_id": 443,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Jewelry Making (Fine Jewelry) NC III",
+  "download_id": 444,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Laboratory and Metrology/Calibration Services NC II",
+  "download_id": 291,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Laboratory and Metrology/Calibration Services NC III",
+  "download_id": 300,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II",
+  "download_id": 2443,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Land-Based Transport Refrigeration Servicing NC II",
+  "download_id": 1783,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Landscape Installation and Maintenance (Softscape) NC II",
+  "download_id": 322,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Lifeguard Services NC II",
+  "download_id": 778,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Lifeguard Services NC III",
+  "download_id": 779,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Lighting for Live Performances NC II",
+  "download_id": 2229,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Line Construction (Electric Power Distribution) NC II",
+  "download_id": 445,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Local Guiding Services NC II",
+  "download_id": 46,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Machining NC I",
+  "download_id": 120,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Machining NC I",
+  "download_id": 1890,
+  "superseded": true,
+  "level": "NC I"
+ },
+ {
+  "title": "Machining NC II",
+  "download_id": 70,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Machining NC III",
+  "download_id": 121,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Manual Metal Arc Welding (MMAW) NC I",
+  "download_id": 2518,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Manual Metal Arc Welding (MMAW) NC II",
+  "download_id": 2519,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Manual Metal Arc Welding (MMAW) NC III",
+  "download_id": 2520,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Manual Metal Arc Welding (MMAW) NC IV",
+  "download_id": 2521,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Marine Electricity NC II",
+  "download_id": 409,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Masonry NC I",
+  "download_id": 117,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Masonry NC I",
+  "download_id": 1875,
+  "superseded": true,
+  "level": "NC I"
+ },
+ {
+  "title": "Masonry NC II",
+  "download_id": 42,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Masonry NC II",
+  "download_id": 1876,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Masonry NC III",
+  "download_id": 118,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Masonry NC III",
+  "download_id": 1877,
+  "superseded": true,
+  "level": "NC III"
+ },
+ {
+  "title": "Massage Therapy NC II",
+  "download_id": 181,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Mechanical Drafting NC I",
+  "download_id": 342,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Mechatronics Servicing NC II",
+  "download_id": 195,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Mechatronics Servicing NC III",
+  "download_id": 157,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Mechatronics Servicing NC IV",
+  "download_id": 133,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Medical Coding and Claims Processing NC III",
+  "download_id": 463,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Medical Transcription NC II",
+  "download_id": 184,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Metal Stamping NC II",
+  "download_id": 303,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Microfinance Technology NC II",
+  "download_id": 440,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Microfinance Technology NC IV",
+  "download_id": 479,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Microinsurance Services (Mutual Benefit) NC II",
+  "download_id": 2233,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Milking Operation NC II",
+  "download_id": 1797,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Mobile Phones and Handheld Gadgets Servicing NC III",
+  "download_id": 2341,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Mold Designing NC IV",
+  "download_id": 1897,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Mold Making NC III",
+  "download_id": 1899,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Moldmaking NC II",
+  "download_id": 302,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Motorcycle/Small Engine Servicing NC II",
+  "download_id": 72,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II",
+  "download_id": 2237,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+  "download_id": 2238,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV",
+  "download_id": 2239,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Ophthalmic Lens Services NC II",
+  "download_id": 344,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Organic Agriculture Production NC II",
+  "download_id": 480,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Painting Machine Operation NC II",
+  "download_id": 316,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Performing Arts (Ballroom Dancing) NC II",
+  "download_id": 345,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Performing Arts (Dance) NC II",
+  "download_id": 60,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Performing Arts (Magician) NC II",
+  "download_id": 2451,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Performing Arts (Song) NC II",
+  "download_id": 61,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Pest Management (Vegetables) NC II",
+  "download_id": 262,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Pharmacy Services NC III",
+  "download_id": 410,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Photography NC II",
+  "download_id": 243,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Pipefitting (Metallic) NC II",
+  "download_id": 1870,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Pipefitting NC II",
+  "download_id": 1878,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Plant Maintenance NC I",
+  "download_id": 340,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Plastic Machine Operation NC II",
+  "download_id": 318,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Plastic Machine Operation NC III",
+  "download_id": 372,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Plumbing NC I",
+  "download_id": 203,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Plumbing NC II",
+  "download_id": 65,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Plumbing NC III",
+  "download_id": 204,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Press Machine Operation NC I",
+  "download_id": 265,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Pressurized Irrigation System Installation and Maintenance NC II",
+  "download_id": 1883,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Printing Services (Prepress Technical Operations) NC I",
+  "download_id": 2782,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Printing Services (Prepress Technical Operations) NC II",
+  "download_id": 2783,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Process Inspection NC II",
+  "download_id": 319,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Process Inspection NC III",
+  "download_id": 293,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Programming (.Net Technology) NC III",
+  "download_id": 1802,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Programming (JAVA) NC III",
+  "download_id": 2397,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Programming (JAVA) NC III",
+  "download_id": 1803,
+  "superseded": true,
+  "level": "NC III"
+ },
+ {
+  "title": "Programming (Oracle Database) NC III",
+  "download_id": 1804,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Public Employment Services NC IV",
+  "download_id": 2236,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "PV System Design NC III",
+  "download_id": 373,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "PV Systems Installation NC II",
+  "download_id": 406,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "PV Systems Servicing NC III",
+  "download_id": 374,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Pyrotechnics NC II",
+  "download_id": 43,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "RAC Servicing (DomRAC) NC II",
+  "download_id": 2442,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "RAC Servicing (DomRAC) NC II",
+  "download_id": 462,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "RAC Servicing (PACU-CRE) NC III",
+  "download_id": 44,
+  "superseded": true,
+  "level": "NC III"
+ },
+ {
+  "title": "Rating Forming Part of a Navigational Watch NC II (II-4)",
+  "download_id": 729,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Rating Forming Part of an Engineering Watch NC II (III-4)",
+  "download_id": 730,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Real Estate Services NC II",
+  "download_id": 1884,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Reinforcing Steel Works NC II",
+  "download_id": 264,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Rice Machinery Operations NC II",
+  "download_id": 391,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Rigging NC I",
+  "download_id": 240,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Rubber Processing NC II",
+  "download_id": 468,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Rubber Production NC II",
+  "download_id": 2340,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Rubber Production NC II",
+  "download_id": 469,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Sanitary Landfill Operations NC II",
+  "download_id": 780,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Sanitary Landfill Operations NC III",
+  "download_id": 781,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Scaffold Erection NC II",
+  "download_id": 1879,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Scaffolding Works NC II (Supported Type Scaffold)",
+  "download_id": 1869,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Seaweed Production NC II",
+  "download_id": 1789,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Security Services NC I",
+  "download_id": 62,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Security Services NC II",
+  "download_id": 376,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Semiconductor Back-End Operation NC II",
+  "download_id": 1780,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Semiconductor Front-of-Line Operation NC II",
+  "download_id": 1781,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Shielded Metal Arc Welding (SMAW) NC I",
+  "download_id": 122,
+  "superseded": true,
+  "level": "NC I"
+ },
+ {
+  "title": "Shielded Metal Arc Welding (SMAW) NC II",
+  "download_id": 216,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Shielded Metal Arc Welding (SMAW) NC III",
+  "download_id": 124,
+  "superseded": true,
+  "level": "NC III"
+ },
+ {
+  "title": "Shielded Metal Arc Welding (SMAW) NC IV",
+  "download_id": 208,
+  "superseded": true,
+  "level": "NC IV"
+ },
+ {
+  "title": "Ships' Catering NC III (Ships' Cooks)",
+  "download_id": 720,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Ship's Catering Services NC I",
+  "download_id": 718,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Slaughtering Operations (Large Animal) NC II",
+  "download_id": 114,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Slaughtering Operations (Swine) NC II",
+  "download_id": 1784,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Speed Limitation Device Servicing NC II",
+  "download_id": 2251,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Structural Erection NC II",
+  "download_id": 320,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Submerged Arc Welding (SAW) NC I",
+  "download_id": 131,
+  "superseded": false,
+  "level": "NC I"
+ },
+ {
+  "title": "Submerged Arc Welding (SAW) NC II",
+  "download_id": 132,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Sugarcane Production NC II",
+  "download_id": 1786,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "System Formworks Installation NC II",
+  "download_id": 470,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Tailoring NC II",
+  "download_id": 67,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Technical Drafting NC II",
+  "download_id": 437,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II",
+  "download_id": 460,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Telecom OSP Installation (Fiber Optic Cable) NC II",
+  "download_id": 461,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Tile Setting NC II",
+  "download_id": 377,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Tile Setting NC II",
+  "download_id": 1880,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Tinsmithing (Automotive Manufacturing) NC II",
+  "download_id": 321,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Tool and Die Making NC II",
+  "download_id": 341,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Tour Guiding Services NC III",
+  "download_id": 2522,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Tour Packaging (Fit Ad Hoc Domestic) Services NC II",
+  "download_id": 1885,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Tourism Promotion Services NC II",
+  "download_id": 249,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Trainers Methodology Level I (In-Company Trainer)",
+  "download_id": 1841,
+  "superseded": false,
+  "level": null
+ },
+ {
+  "title": "Trainers Methodology Level I (Trainer/Assessor)",
+  "download_id": 686,
+  "superseded": false,
+  "level": null
+ },
+ {
+  "title": "Trainers Methodology Level II (Training Designer/Developer)",
+  "download_id": 687,
+  "superseded": false,
+  "level": null
+ },
+ {
+  "title": "Transmission Line Installation and Maintenance NC II",
+  "download_id": 1843,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Transmission Line Installation and Maintenance NC II",
+  "download_id": 419,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Transmission Line Installation and Maintenance NC III",
+  "download_id": 1842,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Transmission Line Installation and Maintenance NC III",
+  "download_id": 413,
+  "superseded": true,
+  "level": "NC III"
+ },
+ {
+  "title": "Transmission Line Installation and Maintenance NC IV",
+  "download_id": 1835,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Transport RAC Servicing NC II",
+  "download_id": 68,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Travel Services NC II",
+  "download_id": 1903,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Travel Services NC II",
+  "download_id": 1891,
+  "superseded": true,
+  "level": "NC II"
+ },
+ {
+  "title": "Visual Graphic Design NC III",
+  "download_id": 383,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Visual Graphic Design NC III",
+  "download_id": 1837,
+  "superseded": true,
+  "level": "NC III"
+ },
+ {
+  "title": "Warehousing Services NC II",
+  "download_id": 1801,
+  "superseded": false,
+  "level": "NC II"
+ },
+ {
+  "title": "Warehousing Services NC III",
+  "download_id": 2234,
+  "superseded": false,
+  "level": "NC III"
+ },
+ {
+  "title": "Warehousing Services NC IV",
+  "download_id": 2235,
+  "superseded": false,
+  "level": "NC IV"
+ },
+ {
+  "title": "Web Development NC III",
+  "download_id": 1836,
+  "superseded": false,
+  "level": "NC III"
+ }
+]

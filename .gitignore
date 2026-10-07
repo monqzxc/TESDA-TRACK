@@ -4,3 +4,6 @@ __pycache__/
 .env
 .pytest_cache/
 .models/
+backend/seed/sources/tr-pdfs/
+T2MISDB.bak
+*.bak

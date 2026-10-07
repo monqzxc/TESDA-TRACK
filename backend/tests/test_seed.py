@@ -5,12 +5,16 @@ import pytest
 from sqlmodel import select
 
 from tesda_track.models import Competency, Qualification, Sector
-from tesda_track.seed import SEED_DIR, SeedError, parse_catalog, sync_catalog
+from pathlib import Path
+
+from tesda_track.seed import SeedError, parse_catalog, sync_catalog
+
+TEST_SEED_DIR = Path(__file__).resolve().parent / "seed"
 
 
 @pytest.fixture
 def entries():
-    return json.loads((SEED_DIR / "qualifications.json").read_text(encoding="utf-8"))
+    return json.loads((TEST_SEED_DIR / "qualifications.json").read_text(encoding="utf-8"))
 
 
 def qualification(session, code):

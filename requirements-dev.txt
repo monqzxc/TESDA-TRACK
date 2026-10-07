@@ -2,3 +2,5 @@
 -r backend/requirements.txt
 -r frontend/requirements.txt
 pytest==9.1.1
+# Reads TESDA Training Regulation PDFs (python -m tesda_track.training_regulations build).
+pymupdf==1.28.2
