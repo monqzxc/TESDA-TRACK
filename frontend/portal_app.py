@@ -15,6 +15,7 @@ session.init_state()
 
 PAGES = {
     "find": st.Page("app_pages/find.py", title="Find my path", icon=":material/route:", default=True),
+    "qualifications": st.Page("app_pages/qualifications.py", title="Qualifications", icon=":material/school:"),
     "training": st.Page("app_pages/training.py", title="Training & assessment", icon=":material/location_on:"),
 }
 signed_in = session.account()
