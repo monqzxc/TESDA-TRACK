@@ -43,11 +43,12 @@ class Settings(BaseSettings):
     embedding_model: str = "intfloat/multilingual-e5-small"
     embedding_cache_dir: str | None = Field(default=None, description="Where the model files live (downloaded once)")
     # E5 similarities sit in a narrow band (about 0.75-0.85) for related and unrelated goals alike, so a
-    # qualification counts by its contrast: its similarity minus the average of the others. Contrast below
-    # the floor counts for nothing, above the ceiling fully. Calibrated on 16 sample goals (related goals
-    # with no shared keyword scored >= 0.032, unrelated goals <= 0.017); recalibrate with pilot data.
-    semantic_contrast_floor: float = 0.015
-    semantic_contrast_ceiling: float = 0.035
+    # qualification counts by its z-score: how many standard deviations its similarity stands above the
+    # catalog's. Below the floor it counts for nothing, above the ceiling fully. Calibrated on 32 sample goals
+    # against the 319-qualification catalog: goals with no TVET match scored z <= 3.5, most related goals
+    # >= 4. Favors precision; recalibrate with pilot data.
+    semantic_z_floor: float = 3.0
+    semantic_z_ceiling: float = 5.0
     match_weight_keyword: float = Field(default=0.5, ge=0, le=1)
     match_min_score: int = Field(default=20, ge=0, le=100, description="Hide qualification matches scoring below this")
     ranking_weights: RankingWeights = RankingWeights()
@@ -61,8 +62,8 @@ class Settings(BaseSettings):
 
     @model_validator(mode="after")
     def semantic_band_ordered(self):
-        if self.semantic_contrast_ceiling <= self.semantic_contrast_floor:
-            raise ValueError("semantic_contrast_ceiling must be greater than semantic_contrast_floor.")
+        if self.semantic_z_ceiling <= self.semantic_z_floor:
+            raise ValueError("semantic_z_ceiling must be greater than semantic_z_floor.")
         return self
 
     @model_validator(mode="after")

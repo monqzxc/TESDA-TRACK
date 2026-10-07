@@ -36,8 +36,9 @@ def semantic(app, session, monkeypatch):
     from tesda_track.services import embeddings
 
     embedder = WordEmbedder()
-    monkeypatch.setattr(get_settings(), "semantic_contrast_floor", 0.0)
-    monkeypatch.setattr(get_settings(), "semantic_contrast_ceiling", 0.5)
+    # Five qualifications can't produce a z-score above about 1.8, so the band is lower than in production.
+    monkeypatch.setattr(get_settings(), "semantic_z_floor", 0.0)
+    monkeypatch.setattr(get_settings(), "semantic_z_ceiling", 1.0)
     app.dependency_overrides[embeddings.get_embedder] = lambda: embedder
     embeddings.sync(session, embedder)
     return embedder

@@ -33,16 +33,24 @@ def hybrid_score(keyword_score: float, semantic: float, keyword_weight: float) -
     return round(100 * (keyword_weight * keyword_score / KEYWORD_SCALE + (1 - keyword_weight) * semantic))
 
 
-def _semantic_strengths(session: Session, embedder: Embedder, query: str) -> dict[int, float]:
-    """Each qualification's contrast (similarity minus the others' average), mapped onto the calibrated band."""
-    settings = get_settings()
-    similarities = embeddings.qualification_similarities(session, embedder, query)
+def z_scores(similarities: dict[int, float]) -> dict[int, float]:
+    """How many standard deviations each similarity stands above the catalog's average; empty if all are alike."""
     if len(similarities) < 2:
         return {}
-    total, count = sum(similarities.values()), len(similarities)
-    return {qualification_id: semantic_strength(similarity - (total - similarity) / (count - 1),
-                                                settings.semantic_contrast_floor, settings.semantic_contrast_ceiling)
-            for qualification_id, similarity in similarities.items()}
+    values = list(similarities.values())
+    mean = sum(values) / len(values)
+    deviation = (sum((value - mean) ** 2 for value in values) / len(values)) ** 0.5
+    if deviation < 1e-9:
+        return {}
+    return {key: (value - mean) / deviation for key, value in similarities.items()}
+
+
+def _semantic_strengths(session: Session, embedder: Embedder, query: str) -> dict[int, float]:
+    """Each qualification's z-score against the whole catalog, mapped onto the calibrated band."""
+    settings = get_settings()
+    similarities = embeddings.qualification_similarities(session, embedder, query)
+    return {qualification_id: semantic_strength(z, settings.semantic_z_floor, settings.semantic_z_ceiling)
+            for qualification_id, z in z_scores(similarities).items()}
 
 
 def analyze_goal(session: Session, query: str, embedder: Embedder | None = None) -> GoalAnalysisResult:
@@ -75,8 +83,11 @@ def match(session: Session, query: str, profile: Profile,
           embedder: Embedder | None = None) -> tuple[Profile, list[Match]]:
     refined = Profile.model_validate(refine_profile(profile.model_dump()))
     qualifications = catalog.active_qualifications(session)
+    # With semantic search on, keywords count only as direct evidence in the learner's own words: the
+    # career/sector bonuses would otherwise reward every qualification near a career the model inferred.
+    evidence_profile = refined.model_dump() if embedder is None else {}
     keyword = {r["qualification"]["code"]: r for r in score_qualifications(
-        query, refined.model_dump(), [catalog.rule_view(q) for q in qualifications])}
+        query, evidence_profile, [catalog.rule_view(q) for q in qualifications])}
     if embedder is None:
         by_code = {q.code: q for q in qualifications}
         return refined, [Match(qualification=catalog.summary(by_code[code]), score=r["score"], reason=r["reason"])

@@ -5,7 +5,7 @@ from sqlmodel import func, select
 
 from tesda_track.models import Qualification, QualificationEmbedding, TrainingProgramEmbedding
 from tesda_track.services import embeddings
-from tesda_track.services.analysis import hybrid_score, semantic_strength
+from tesda_track.services.analysis import hybrid_score, semantic_strength, z_scores
 
 # Shares "install", "operating", "systems" and "software" with Computer Systems Servicing, but no catalog keyword.
 HARDWARE_GOAL = "I install operating systems and software"
@@ -32,9 +32,17 @@ def test_programs_are_embedded_when_created(session, semantic, make_program):
     assert stored is not None and stored.model == "test-bag-of-words"
 
 
-@pytest.mark.parametrize("contrast, strength", [(0.015, 0.0), (0.005, 0.0), (0.025, 0.5), (0.035, 1.0), (0.09, 1.0)])
-def test_contrast_is_mapped_onto_the_calibrated_band(contrast, strength):
-    assert semantic_strength(contrast, floor=0.015, ceiling=0.035) == pytest.approx(strength)
+@pytest.mark.parametrize("z, strength", [(3.0, 0.0), (2.0, 0.0), (4.0, 0.5), (5.0, 1.0), (7.0, 1.0)])
+def test_z_score_is_mapped_onto_the_calibrated_band(z, strength):
+    assert semantic_strength(z, floor=3.0, ceiling=5.0) == pytest.approx(strength)
+
+
+def test_z_scores_measure_how_far_each_similarity_stands_out():
+    # mean 0.6, population standard deviation sqrt(0.03) = 0.1732
+    scores = z_scores({1: 0.9, 2: 0.5, 3: 0.5, 4: 0.5})
+    assert scores[1] == pytest.approx(1.732, abs=0.001) and scores[2] == pytest.approx(-0.577, abs=0.001)
+    assert z_scores({1: 0.8, 2: 0.8}) == {}, "identical similarities carry no signal"
+    assert z_scores({1: 0.8}) == {}
 
 
 @pytest.mark.parametrize("keyword, semantic, weight, score", [
@@ -58,7 +66,7 @@ def test_semantic_search_matches_goals_that_share_no_keywords(client, semantic):
     matches = client.post("/api/v1/analysis/matches",
                           json={"query": HARDWARE_GOAL, "profile": analysis["profile"]}).json()["matches"]
     assert matches[0]["qualification"]["code"] == "CSS-NC-II"
-    assert matches[0]["components"]["keyword"] > 0, "the inferred career goal now counts as context"
+    assert matches[0]["components"]["keyword"] == 0, "a career the model inferred is not keyword evidence"
     assert matches[0]["components"]["semantic"] > 0
 
 
@@ -78,38 +86,37 @@ def test_unrelated_goals_still_find_nothing(client, semantic):
     assert response.json()["matches"] == []
 
 
+# Goals that share no keyword with the catalog, and goals with no TVET equivalent. They guard the z-score band
+# against the real 319-qualification catalog, which is what learners see.
+RELATED_GOALS = {
+    "I like fixing laptops and setting up wifi": "Computer Systems Servicing NC II",
+    "I want to take care of elderly people abroad": "Caregiving (Elderly) NC II",
+    "I want to install solar panels on houses": "PV Systems Installation NC II",
+    "I want to work in a call center": "Contact Center Services NC II",
+    "I want to learn how to make bread and cakes": "Food Production (Bread and Patisserie) NC II",
+    "marunong akong mag-ayos ng laptop at internet": "Computer Systems Servicing NC II",
+    "nagluluto ako ng ulam para sa karinderya": "Cookery NC II",
+    "gusto kong maging karpintero": "Carpentry NC II",
+}
+NO_TVET_MATCH = ["I want to be an astronaut", "gusto kong maging abogado", "gusto kong maging pulis",
+                 "I want to be a politician", "I want to play professional basketball"]
+
+
 @pytest.mark.skipif(not os.environ.get("TESDA_MODEL_TESTS"), reason="set TESDA_MODEL_TESTS=1 to run the real model")
-@pytest.mark.parametrize("goal, code", [
-    ("marunong akong mag-ayos ng computer at internet", "CSS-NC-II"),
-    ("nagtatrabaho ako sa talyer, nagwe-welding ng gate", "SMAW-NC-II"),
-    ("I like fixing laptops and setting up wifi", "CSS-NC-II"),
-])
-def test_real_model_understands_taglish_and_paraphrases(session, goal, code):
+def test_real_model_on_the_real_catalog(session):
     from tesda_track.config import get_settings
-
-    embedder = embeddings.E5Embedder(get_settings().embedding_model, get_settings().embedding_cache_dir)
-    embeddings.sync(session, embedder)
-    similarities = embeddings.qualification_similarities(session, embedder, goal)
-    best = max(similarities, key=similarities.get)
-    assert session.get(Qualification, best).code == code
-
-
-@pytest.mark.skipif(not os.environ.get("TESDA_MODEL_TESTS"), reason="set TESDA_MODEL_TESTS=1 to run the real model")
-@pytest.mark.parametrize("goal, code", [
-    ("marunong akong mag-ayos ng laptop at internet", "CSS-NC-II"),
-    ("nagluluto ako ng ulam para sa karinderya", "COOKERY-NC-II"),
-    ("I like fixing laptops and setting up wifi", "CSS-NC-II"),
-    ("I want to become a nurse", None),
-    ("gusto kong maging abogado", None),
-    ("I want to be an astronaut", None),
-])
-def test_real_model_calibration_matches_related_goals_only(session, goal, code):
-    """Guards the contrast band: goals with no catalog keyword still match; unrelated goals don't."""
-    from tesda_track.config import get_settings
+    from tesda_track.seed import SEED_DIR, seed_all
     from tesda_track.services import analysis
 
-    embedder = embeddings.E5Embedder(get_settings().embedding_model, get_settings().embedding_cache_dir)
+    settings = get_settings()
+    seed_all(session, SEED_DIR)  # the real catalog, inside this test's rolled-back transaction
+    embedder = embeddings.E5Embedder(settings.embedding_model, settings.embedding_cache_dir)
     embeddings.sync(session, embedder)
-    profile = analysis.analyze_goal(session, goal, embedder).profile
-    _, matches = analysis.match(session, goal, profile, embedder)
-    assert (matches[0].qualification.code if matches else None) == code
+
+    def best_match(goal):
+        profile = analysis.analyze_goal(session, goal, embedder).profile
+        _, matches = analysis.match(session, goal, profile, embedder)
+        return matches[0].qualification.name if matches else None
+
+    assert {goal: best_match(goal) for goal in RELATED_GOALS} == RELATED_GOALS
+    assert {goal: best_match(goal) for goal in NO_TVET_MATCH} == {goal: None for goal in NO_TVET_MATCH}

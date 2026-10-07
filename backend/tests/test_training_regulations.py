@@ -106,7 +106,7 @@ def test_jobs_follow_the_competent_to_be_sentence():
 def test_sector_comes_from_the_cover_including_wrapped_lines():
     cover = ["CAREGIVING NC II", "HEALTH, SOCIAL, AND OTHER COMMUNITY", "DEVELOPMENT SERVICES SECTOR",
              "Technical Education and Skills Development Authority"]
-    assert parse_sector(cover) == "Health, Social, and Other Community Development Services"
+    assert parse_sector(cover) == "Health, Social and Other Community Development Services"
     assert parse_sector(["COOKERY NC II", "TRAINING", "REGULATIONS", "TOURISM SECTOR", "(HOTEL AND RESTAURANT)"]) \
         == "Tourism"
     assert parse_sector(["SOME TITLE NC II", "INFORMATION AND COMMUNICATION TECHNOLOGY SECTOR"]) \
@@ -137,7 +137,7 @@ def test_entry_combines_parsed_units_jobs_and_sector():
                         ["CAREGIVING NC II", "HEALTH, SOCIAL, AND OTHER COMMUNITY", "DEVELOPMENT SERVICES SECTOR"],
                         set())
     assert entry["code"] == "CAREGIVING-NC-II" and entry["name"] == "Caregiving NC II"
-    assert entry["sector"] == "Health, Social, and Other Community Development Services"
+    assert entry["sector"] == "Health, Social and Other Community Development Services"
     assert entry["skill_label"] == "Caregiving"
     assert entry["possible_jobs"] == ["Caregiver of an infant / toddler", "Caregiver of an elderly"]
     assert entry["competencies"][0] == {"id": 1, "name": "Participate in workplace communication", "category": "Basic"}
@@ -218,3 +218,106 @@ def test_table_of_contents_heading_is_not_part_of_the_sector():
     assert parse_sector(["2D ANIMATION NC III", "TABLE OF CONTENTS", "ICT SECTOR"]) \
         == "Information and Communication Technology"
     assert parse_sector(["X NC II", "HUMAN HEALTH/HEALTH CARE SECTOR"]) == "Human Health/Health Care"
+
+
+# MMAW NC II / Carpentry NC III: two-column tables extracted column by column, so a run of codes comes
+# before the run of titles, and one heading even follows its codes. "CODE NO." headings sit in between.
+TWO_COLUMNS = """
+CODE NO.
+BASIC COMPETENCIES
+400311210
+Participate in workplace communication
+400311321
+400311322
+Apply critical thinking and problem-solving techniques in
+the workplace
+Work in a diverse environment
+CODE NO.
+COMMON COMPETENCIES
+MEE721202
+Interpret Drawings and Sketches
+Interpret Drawings and Sketches
+CODE NO.
+CON711309
+CON711310
+CORE COMPETENCIES
+Install wall and ceiling framing
+Construct stairs
+A person who has achieved this Qualification is competent to be:
+\uf0b7 Carpenter
+SECTION 2 COMPETENCY STANDARDS
+"""
+
+# EIM NC III: "Units of Competency" headings, "qualified to be", lettered job list ending in ", or".
+UNITS_OF_COMPETENCY = """
+Code No
+Basic Units of Competency
+500311109
+Lead workplace communication
+Code No
+Core  Units of Competency
+ELC741304
+Perform roughing-in and wiring activities for three-phase distribution
+system for power, lighting  and motor control panel.
+A candidate who has achieved all these competencies is qualified to be:
+a.  Industrial Electrician
+b.  Electrical Leadman, or
+c.  Electrical Foreman
+SECTION 2 COMPETENCY STANDARDS
+"""
+
+
+def test_two_column_tables_pair_codes_and_titles_in_order():
+    assert parse_units(lines(TWO_COLUMNS)) == [
+        ("Basic", "Participate in workplace communication"),
+        ("Basic", "Apply critical thinking and problem-solving techniques in the workplace"),
+        ("Basic", "Work in a diverse environment"),
+        ("Common", "Interpret Drawings and Sketches"),
+        ("Core", "Install wall and ceiling framing"),
+        ("Core", "Construct stairs"),
+    ]
+
+
+def test_units_of_competency_headings_and_lettered_job_lists():
+    assert parse_units(lines(UNITS_OF_COMPETENCY)) == [
+        ("Basic", "Lead workplace communication"),
+        ("Core", "Perform roughing-in and wiring activities for three-phase distribution system for power, "
+                 "lighting and motor control panel"),
+    ]
+    assert parse_jobs(lines(UNITS_OF_COMPETENCY)) == ["Industrial Electrician", "Electrical Leadman",
+                                                      "Electrical Foreman"]
+
+
+def test_sector_variants_from_different_years_collapse_to_one_name():
+    from tesda_track.training_regulations import canonical_sector
+
+    for variant in ("Human Health / Health Care", "Human Health/Ealth Care", "Human Health /Health Care"):
+        assert canonical_sector(variant) == "Human Health/Health Care"
+    for variant in ("Electrical & Electronics", "Electronics"):
+        assert canonical_sector(variant) == "Electrical and Electronics"
+    for variant in ("Automotive", "Automotive/Land Transport", "Automotive and Land Transport"):
+        assert canonical_sector(variant) == "Automotive and Land Transportation"
+    assert canonical_sector("Social and Other Community Development Services") == \
+        "Health, Social and Other Community Development Services"
+    assert canonical_sector("Hvac/R") == "Heating, Ventilation, Air Conditioning and Refrigeration Technology"
+
+
+def test_sector_falls_back_to_the_competency_map_sentence():
+    text = ["SECTION 1 METAL STAMPING NC II QUALIFICATION",
+            "This Qualification is packaged from the competency map of the Metals and Engineering",
+            "Sector as shown in Annex A."]
+    entry = build_entry({"title": "Metal Stamping NC II", "download_id": 9}, text + lines(COOKERY), ["METAL STAMPING NC II"],
+                        set())
+    assert entry["sector"] == "Metals and Engineering"
+
+
+def test_local_keywords_are_added_and_unknown_names_reported():
+    from tesda_track.training_regulations import add_keywords
+
+    catalog = [{"name": "Cookery NC II", "career_keywords": ["cookery", "cook"]},
+               {"name": "Plumbing NC II", "career_keywords": ["plumbing"]}]
+    unknown = add_keywords(catalog, {"_comment": "ignored", "cookery nc ii": ["kusinero", "cook"],
+                                     "Plumbing NC II": ["tubero"], "Nonexistent NC II": ["x"]})
+    assert catalog[0]["career_keywords"] == ["cookery", "cook", "kusinero"]
+    assert catalog[1]["career_keywords"] == ["plumbing", "tubero"]
+    assert unknown == ["Nonexistent NC II"]

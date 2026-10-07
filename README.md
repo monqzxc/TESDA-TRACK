@@ -37,11 +37,11 @@ cloud AI service, so learner text never leaves our server.
   embeddings come from one local model,
   [`intfloat/multilingual-e5-small`](https://huggingface.co/intfloat/multilingual-e5-small), which
   handles Filipino and Taglish and runs on a CPU. It catches goals that share no words with the catalog,
-  such as "marunong akong mag-ayos ng computer".
-- **Keywords:** the catalog's curated keyword lists (the original rules) still count, so a goal that
-  names a career directly always ranks that qualification first. Qualification matches blend both parts
-  (`MATCH_WEIGHT_KEYWORD`, 0.5 by default). PostgreSQL full-text search is the next step once the catalog
-  grows beyond a few hundred qualifications.
+  such as "I want to take care of elderly people abroad".
+- **Keywords:** each qualification's keywords (its name, its jobs, and the Filipino words in
+  `backend/seed/sources/keywords_tl.json`) count as direct evidence, so a goal that names a trade, in
+  English or Filipino, finds it reliably. Qualification matches blend both parts (`MATCH_WEIGHT_KEYWORD`,
+  0.5 by default). PostgreSQL full-text search is a possible next step for searching unit descriptions.
 - **Distance:** PostGIS measures how far training providers and assessment centers are from the
   learner's region.
 - **Ranking training programs:** the score is a weighted sum: meaning 50, distance 20, an assessment
@@ -51,13 +51,17 @@ cloud AI service, so learner text never leaves our server.
 - **Without the model:** if semantic search is off or the model can't load, everything falls back to the
   keyword rules, and the app keeps working.
 
-The model's raw similarities are close together for related and unrelated goals alike. For example,
-"I want to become a nurse" scores about as high as a real match. So a qualification counts by its
-**contrast**: how much more similar it is than the average of the other qualifications. In a first test
-with 16 goals, related goals that share no keyword with the catalog had a contrast of 0.032 or more, and
-unrelated goals 0.017 or less. The band `SEMANTIC_CONTRAST_FLOOR` (0.015) to `SEMANTIC_CONTRAST_CEILING`
-(0.035) sits between them. Recalibrate it once the pilot collects real goals and outcomes.
-`TESDA_MODEL_TESTS=1` runs the tests that guard it.
+The model's raw similarities are close together for related and unrelated goals alike, so a
+qualification counts by its **z-score**: how many standard deviations its similarity stands above the
+whole catalog's. I tested 32 sample goals against the 319-qualification catalog:
+
+- Goals with no TVET equivalent (astronaut, lawyer, police, politician) scored 3.5 or less.
+- Most related goals scored 4 or more.
+
+The band `SEMANTIC_Z_FLOOR` (3.0) to `SEMANTIC_Z_CEILING` (5.0) favors precision. A goal the model
+isn't sure about gets no match rather than a wrong one, and the Filipino keywords cover common trades the
+model misses. Recalibrate the band once the pilot collects real goals and outcomes.
+`TESDA_MODEL_TESTS=1` runs the tests that guard it against the real catalog.
 
 The training weights (`RANKING_WEIGHTS__SEMANTIC`, `__PROXIMITY`, `__ASSESSMENT`, `__SCHEDULE`,
 `__PREFERENCE`) must add up to 1 and are set in `.env`.
@@ -272,13 +276,63 @@ similar. Set `TESDA_MODEL_TESTS=1` to also check that the real model understands
 `backend/seed/` is the source of truth for reference data:
 
 - `regions.json`: Philippine regions and the coordinates of each region's center
-- `qualifications.json`: qualifications and their competencies
+- `qualifications.json`: qualifications and their units of competency, built from TESDA's Training
+  Regulations (see below)
 - `pathways.json`: a default pathway template for each recommendation route
 
 After editing a file, run `python -m tesda_track.seed` (Docker does this on every deploy). Qualifications
 removed from the file are archived, not deleted, so saved learner records keep their references. Every
 active qualification that lacks a pathway gets one from the templates. Seeding never overwrites a pathway
 an administrator has edited.
+
+The tests use their own fixed copy of these files in `backend/tests/seed/` (five qualifications), so the
+real catalog can grow without changing test results.
+
+### The qualification catalog comes from TESDA Training Regulations
+
+Each current TESDA Training Regulation (TR) becomes one qualification. Section 1 of every TR lists its
+basic, common and core units of competency and the jobs it leads to; those become the readiness-check
+competencies, the career goals and the search keywords. Rebuild the catalog when TESDA publishes new TRs:
+
+```bash
+cd backend
+../.venv/Scripts/python -m tesda_track.training_regulations list
+../.venv/Scripts/python -m tesda_track.training_regulations download --email you@example.com
+../.venv/Scripts/python -m tesda_track.training_regulations build
+../.venv/Scripts/python -m tesda_track.seed
+../.venv/Scripts/python -m tesda_track.embeddings sync
+```
+
+- `list` collects TESDA's public list of TRs into `seed/sources/training_regulations.json`.
+- `download` fetches the PDFs through TESDA's download form, which asks for your email address, a purpose
+  and a country for every file. It goes one file at a time and skips files it already has. The PDFs stay
+  in `seed/sources/tr-pdfs/`, which git ignores.
+- `build` reads Section 1 of each PDF and writes `seed/qualifications.json`. It needs PyMuPDF
+  (`requirements-dev.txt`).
+- The five hand-tuned qualifications in `seed/sources/curated.json` keep their codes, career goals and
+  keywords, and take their units of competency from the TR. Edit that file to tune others.
+- `seed/sources/keywords_tl.json` adds the Filipino words learners use for a trade (kusinero, tubero,
+  magsasaka). `build` lists any name in it that isn't in the catalog, so a typo doesn't go unnoticed.
+
+TESDA superseded Shielded Metal Arc Welding (SMAW) with Manual Metal Arc Welding (MMAW), so the welding
+qualification is now MMAW NC II. It still answers to "SMAW", and seeding archives the old SMAW entry so
+saved records keep working.
+
+## Demo data
+
+To try the app with realistic activity, load clearly fictional demo data into your local database:
+
+```bash
+cd backend
+../.venv/Scripts/python -m tesda_track.demo load --learners 40
+../.venv/Scripts/python -m tesda_track.demo remove
+```
+
+`load` adds two "[Demo]" training providers with programs and one "[Demo]" assessment center with
+upcoming schedules in every region. It also adds demo learners (`learnerNNN@demo.tesda-track.invalid`, who
+can't sign in) with goals, readiness checks and assessment applications, so the reports have something to
+show. Loading again replaces the earlier demo data, and `remove` deletes all of it. It is refused when
+`ENVIRONMENT=production`, so real learners never see invented providers or schedules.
 
 ## Deployment (own server or VM)
 
