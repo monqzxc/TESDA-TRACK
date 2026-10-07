@@ -189,6 +189,9 @@ def show_matches(journey: dict) -> None:
         result = session.api().match(journey["query"], answered_profile(journey))
     except ApiError as error:
         session.handle_api_error(error)
+        with st.container(horizontal=True, horizontal_alignment="distribute"):
+            st.button("Back", key="back_to_goal", icon=":material/arrow_back:", on_click=set_step, args=(1,))
+            st.button("Try again", key="retry_matches", type="primary", icon=":material/refresh:")
         return
     journey["matched_profile"] = result["profile"]
     matches = result["matches"][:3]
@@ -222,6 +225,9 @@ def show_pathway(journey: dict) -> None:
         save_progress(journey, profile, code)
     except ApiError as error:
         session.handle_api_error(error)
+        with st.container(horizontal=True, horizontal_alignment="distribute"):
+            st.button("Back", key="back_to_matches", icon=":material/arrow_back:", on_click=set_step, args=(2,))
+            st.button("Try again", key="retry_pathway", type="primary", icon=":material/refresh:")
         return
     st.subheader(ROUTE_TITLES.get(recommendation["recommendation"], "Your recommended path"))
     st.markdown(f"For **{qualification['name']}**")

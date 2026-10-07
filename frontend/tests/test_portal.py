@@ -227,13 +227,32 @@ def test_matches_use_plain_labels_and_ask_only_the_missing_details(api):
     assert calls(api, "match")[-1][1]["experience_years"] == 4 and calls(api, "match")[-1][1]["has_certification"] is False
 
 
-def test_matching_outage_shows_an_error_instead_of_crashing(api, monkeypatch):
-    def unavailable(self, query, profile):
-        raise ApiUnavailableError(UNAVAILABLE_MESSAGE, 503)
+def fail_match_once(monkeypatch):
+    real, attempts = ApiClient.match, []
 
-    monkeypatch.setattr(ApiClient, "match", unavailable)
+    def flaky(self, query, profile):
+        attempts.append(1)
+        if len(attempts) == 1:
+            raise ApiUnavailableError(UNAVAILABLE_MESSAGE, 503)
+        return real(self, query, profile)
+
+    monkeypatch.setattr(ApiClient, "match", flaky)
+
+
+def test_matching_outage_shows_an_error_instead_of_crashing(api, monkeypatch):
+    fail_match_once(monkeypatch)
     app = ask(portal())
     assert any(error.value == UNAVAILABLE_MESSAGE for error in app.error)
+    press(app, "retry_matches")
+    assert [button for button in app.button if button.key == "choose_SMAW-NC-II"]
+
+
+def test_matching_outage_lets_the_learner_go_back(api, monkeypatch):
+    fail_match_once(monkeypatch)
+    app = ask(portal())
+    assert any(error.value == UNAVAILABLE_MESSAGE for error in app.error)
+    press(app, "back_to_goal")
+    assert [button for button in app.button if button.key == "find_matches"]
 
 
 def test_goal_with_markdown_characters_is_kept_as_typed(api):
