@@ -327,14 +327,14 @@ def finish_readiness(app):
 def test_results_open_training_with_the_chosen_qualification(api):
     app = press(finish_readiness(portal()), "find_training")
     assert app.selectbox(key="training_qualification").value == "SMAW-NC-II"
-    assert calls(api, "rank_training")[-1]["qualification_code"] == "SMAW-NC-II"
-    assert calls(api, "rank_training")[-1]["goal"] == "I've worked as a welder for 5 years but I don't have an NC."
+    assert calls(api, "rank_training")[-1][0]["qualification_code"] == "SMAW-NC-II"
+    assert calls(api, "rank_training")[-1][0]["goal"] == "I've worked as a welder for 5 years but I don't have an NC."
 
 
 def test_results_open_assessment_schedules_view(api):
     app = press(finish_readiness(portal()), "see_assessments")
     assert app.button_group(key="training_view").value == "Assessment schedules"
-    assert calls(api, "schedules")[-1]["qualification_code"] == "SMAW-NC-II"
+    assert calls(api, "schedules")[-1][0]["qualification_code"] == "SMAW-NC-II"
 
 
 def test_a_new_goal_starts_over_without_old_answers(api):
@@ -401,7 +401,7 @@ def test_training_remembers_region_across_pages(api):
     app.switch_page(PAGE["find"]).run()
     app.switch_page(PAGE["training"]).run()
     assert app.selectbox(key="training_region").value == "NCR"
-    assert calls(api, "rank_training")[-1]["near_lat"] == 14.60
+    assert calls(api, "rank_training")[-1][0]["near_lat"] == 14.60
 
 
 # --- My progress and accounts ---------------------------------------------------------------------------------------
