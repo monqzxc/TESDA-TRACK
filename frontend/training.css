@@ -1,0 +1,58 @@
+/* Training & assessment center finder. Loaded only on that page; the app-wide layer is styles.css. */
+
+/* Three panels need more room than the reading pages. */
+.block-container:has(.st-key-page_training) { max-width: 1500px; }
+
+.st-key-training_toolbar { padding-bottom: 1.1rem; }
+.st-key-training_toolbar [data-testid="stTextInput"] input { min-height: 44px; }
+
+/* Filters */
+.st-key-training_filters_panel [data-testid="stForm"] { padding: 1.1rem 1.15rem 1.25rem; box-shadow: 0 2px 8px #102a5605; }
+.st-key-training_filters_panel [data-testid="stIconMaterial"] { color: var(--track-navy, #102a56); }
+/* Both center types side by side, as in the design. */
+.st-key-training_kinds [data-testid="stButtonGroup"] { flex-wrap: nowrap; }
+.st-key-training_kinds button { min-height: 40px; padding-inline: 0.5rem; font-size: 0.8125rem; white-space: nowrap; }
+
+/* Results */
+.st-key-center_results { background: #fff; border-radius: 16px; box-shadow: 0 2px 8px #102a5605; }
+.st-key-center_results_head [data-testid="stMarkdownContainer"] p { margin: 0; color: var(--track-muted, #52647e); }
+
+[class*="st-key-center_row_"] {
+  position: relative;
+  padding: 0.75rem 0.5rem;
+  border-bottom: 1px solid #eef2f8;
+  border-radius: 12px;
+  transition: background-color 0.15s ease;
+}
+[class*="st-key-center_row_"]:hover { background: #f5f8fe; }
+[class*="st-key-center_row_"]:has(button:focus-visible) { outline: 3px solid #438bf5; outline-offset: 2px; }
+[class*="st-key-center_row_"] [data-testid="stMarkdownContainer"] strong { color: var(--track-navy, #102a56); }
+
+/* The whole card opens the center; the chevron button is the target, stretched over the card. */
+[class*="st-key-center_open_"],
+[class*="st-key-center_open_"] .stButton,
+[class*="st-key-center_open_"] button { position: static !important; }
+[class*="st-key-center_open_"] button::after { content: ""; position: absolute; inset: 0; border-radius: 12px; }
+[class*="st-key-center_open_"] button:focus-visible { outline: none; }
+[class*="st-key-center_open_"] button [data-testid="stMarkdownContainer"] {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+[class*="st-key-center_open_"] [data-testid="stIconMaterial"] { font-size: 1.4rem; color: #8a9bb4; }
+
+/* Selected center */
+.st-key-center_detail [data-testid="stMarkdownContainer"] strong { color: var(--track-navy, #102a56); }
+.st-key-center_detail hr { margin: 0.75rem 0; }
+
+@media (max-width: 640px) {
+  .st-key-training_toolbar { justify-content: flex-start; }
+  [class*="st-key-center_row_"] { padding-inline: 0.25rem; }
+  /* On a phone the stacked columns read map, results, then the longer filter form. */
+  .st-key-training_workspace [data-testid="stHorizontalBlock"] > *:has(.st-key-center_map) { order: 1; }
+  .st-key-training_workspace [data-testid="stHorizontalBlock"] > *:has(.st-key-center_results) { order: 2; }
+  .st-key-training_workspace [data-testid="stHorizontalBlock"] > *:has(.st-key-training_filters_panel) { order: 3; }
+}

@@ -9,6 +9,7 @@ import streamlit as st
 from api_client import ApiClient, ApiError, ApiUnavailableError
 from presentation import brand, empty_state, footer, journey, section_header
 from skills_bridge_view import show_skills_bridge
+from training_view import show_training as show_center_finder
 
 
 EXAMPLES = {
@@ -24,8 +25,6 @@ PATH_LABELS = {
 }
 ANSWER_OPTIONS = {"I can do this confidently": "confident", "I have some experience": "some_experience",
                   "I am not familiar with this": "not_familiar"}
-DELIVERY_LABELS = {"institution_based": "Institution-based", "enterprise_based": "Enterprise-based",
-                   "community_based": "Community-based", "online": "Online"}
 RESULT_LABELS = {"competent": "Competent", "not_yet_competent": "Not yet competent"}
 PHILIPPINE_TIME = timezone(timedelta(hours=8))
 PRIVACY_NOTICE = ("TESDA-TRACK keeps your name, email, goals, recommendations, readiness checks and certifications "
@@ -422,81 +421,10 @@ def format_when(iso_timestamp: str) -> str:
 
 
 def show_training(qualifications: list[dict]) -> None:
-    section_header("TRAINING & ASSESSMENT", "Bring your next step closer.",
-                   "Explore programs and assessment schedules that fit your qualification and location.")
-    names = {q["code"]: q["name"] for q in qualifications}
-    regions = {region["code"]: region for region in load_regions(api_base_url())}
-    with st.container(border=True, key="training_filters"):
-        left, right = st.columns(2)
-        code = left.selectbox("Qualification", list(names), format_func=names.get, key="training_qualification")
-        region_code = right.selectbox("Your region (optional)", [None, *regions], key="training_region",
-                                  format_func=lambda c: "Any region" if c is None else regions[c]["name"],
-                                  help="Only used to sort results by distance. Only a rounded location is kept.")
-        preferred_mode = left.selectbox("Preferred way to train (optional)", [None, *DELIVERY_LABELS],
-                                    key="training_mode",
-                                    format_func=lambda m: "No preference" if m is None else DELIVERY_LABELS[m])
-        needs_scholarship = right.checkbox("I need a scholarship", key="training_scholarship")
-    params = {"qualification_code": code}
-    if region_code:
-        params.update(near_lat=regions[region_code]["latitude"], near_lon=regions[region_code]["longitude"])
-    token = auth_token()
-    programs_column, schedules_column = st.columns(2, gap="medium")
-    with programs_column:
-        st.markdown("#### Training programs")
-        with st.container(key="program_results"):
-            ranking = api().rank_training(token, **params, goal=st.session_state.get("original_query"),
-                                          preferred_delivery_mode=preferred_mode, needs_scholarship=needs_scholarship)
-            st.caption(f"{len(ranking['results'])} programs · Sorted by fit with your preferences")
-            for index, item in enumerate(ranking["results"]):
-                program, provider = item["program"], item["program"]["provider"]
-                with st.container(border=True, key=f"card_training_{index}"):
-                    st.badge(f"{item['score']}% fit", color="blue", icon=":material/auto_awesome:")
-                    st.markdown(f"**{program['title']}**")
-                    details = [f"{item['score']}% fit", provider["name"],
-                               provider["city"] or regions[provider["region_code"]]["name"],
-                               DELIVERY_LABELS[program["delivery_mode"]]]
-                    if program["duration_hours"]:
-                        details.append(f"{program['duration_hours']} hours")
-                    st.caption(" · ".join(details))
-                    if program.get("starts_on"):
-                        st.caption(f"Starts {program['starts_on']}")
-                    if program["scholarship_available"]:
-                        st.badge("Scholarship available", color="green", icon=":material/school:")
-                    with st.expander("Why this program?", icon=":material/info:"):
-                        for reason in item["explanation"]:
-                            st.markdown(f"- {reason}")
-                        st.caption("Fit considers your goal, location, schedule, and training preferences.")
-            if not ranking["results"]:
-                empty_state("More opportunities ahead", "No programs are listed for this qualification yet. Explore another qualification or check back later.", "learn")
-    with schedules_column:
-        st.markdown("#### Upcoming assessments")
-        with st.container(key="schedule_results"):
-            schedules = api().schedules(**params)
-            st.caption(f"{len(schedules)} upcoming schedules · Philippine time (UTC+8)")
-            for schedule in schedules:
-                with st.container(border=True, key=f"card_schedule_{schedule['id']}"):
-                    st.badge("Seats available" if schedule["seats_left"] > 0 else "Fully booked",
-                             color="green" if schedule["seats_left"] > 0 else "orange",
-                             icon=":material/event_seat:")
-                    st.markdown(f"**{format_when(schedule['scheduled_at'])}** · {schedule['center']['name']}")
-                    details = [f"{schedule['seats_left']} of {schedule['slots']} seats left"]
-                    if schedule["fee"] is not None:
-                        details.append(f"₱{float(schedule['fee']):,.2f} fee")
-                    if schedule["distance_km"] is not None:
-                        details.append(f"about {schedule['distance_km']:,.0f} km away")
-                    st.caption(" · ".join(details))
-                    if token and schedule["seats_left"] > 0 and st.button("Apply", key=f"apply_{schedule['id']}", type="primary", icon=":material/arrow_forward:", width="stretch"):
-                        try:
-                            api().apply_for_assessment(token, schedule["id"])
-                            st.success("Application sent. Track it under My progress.")
-                        except ApiError as error:
-                            if error.status_code not in (409, 422):
-                                raise
-                            st.warning(error.message)
-            if not schedules:
-                empty_state("No upcoming assessments yet", "Try another qualification or return later for new schedules.", "award")
-            elif not token:
-                st.caption("Sign in to apply for an assessment.")
+    chosen = st.session_state.get("qualification_selected")
+    show_center_finder(qualifications, api(), load_regions(api_base_url()), auth_token(),
+                       goal=st.session_state.get("original_query"), on_sign_in=open_account,
+                       default_qualifications=[chosen] if chosen else [])
 
 
 def show_my_pathways(token: str) -> None:

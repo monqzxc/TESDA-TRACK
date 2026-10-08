@@ -46,6 +46,9 @@ def offline_api(monkeypatch):
         monkeypatch.setattr(ApiClient, method, lambda self, token, _method=method: deepcopy(state[_method]))
     monkeypatch.setattr(ApiClient, "rank_training", lambda self, *args, **kwargs: {"results": [], "weights": {}})
     monkeypatch.setattr(ApiClient, "schedules", lambda self, **kwargs: [])
+    monkeypatch.setattr(ApiClient, "training_programs", lambda self, **kwargs: [])
+    monkeypatch.setattr(ApiClient, "training_providers", lambda self: [])
+    monkeypatch.setattr(ApiClient, "assessment_centers", lambda self: [])
 
     def report(self, token, name, **params):
         state["reports"].append(name)
@@ -68,7 +71,8 @@ def offline_api(monkeypatch):
 def run_page(app, tab=None):
     # Navigate through the actual sidebar once the app has been rendered.
     # Seed only the first view, so tests can isolate a page without hidden requests.
-    if tab and not app.sidebar.button:
+    # The app stores the open page on every run, so its absence means nothing has rendered yet.
+    if tab and "main_tabs" not in app.session_state:
         app.session_state["main_tabs"] = tab
     elif tab and app.session_state["main_tabs"] != tab:
         next(button for button in app.sidebar.button if button.label == tab).click()
@@ -195,9 +199,8 @@ def test_progress_renders_saved_records_and_completions(offline_api):
 
 def test_training_without_listings_has_empty_states(offline_api):
     app = run_page(new_app(), "Training & assessment")
-    assert app.selectbox(key="training_qualification")
-    assert "No programs" in page_text(app)
-    assert "No upcoming assessments" in page_text(app)
+    assert app.multiselect(key="training_qualifications")
+    assert "No centers match your search" in page_text(app)
     assert not any(button.label == "Apply" for button in app.button)
 
 

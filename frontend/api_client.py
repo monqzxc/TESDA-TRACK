@@ -35,6 +35,11 @@ class ApiClient:
     def __init__(self, base_url: str, timeout: float = 30):
         self._http = httpx.Client(base_url=base_url, timeout=timeout)
 
+    @property
+    def base_url(self) -> str:
+        """Identifies the service, e.g. to keep cached responses from different services apart."""
+        return str(self._http.base_url)
+
     def _request(self, method: str, path: str, token: str | None = None,
                  bridge_request: bool = False, client_ip: str | None = None, **kwargs) -> Any:
         headers = {"Authorization": f"Bearer {token}"} if token else {}
@@ -136,6 +141,14 @@ class ApiClient:
     def rank_training(self, token: str | None = None, **body) -> dict:
         """Ranked programs with score components; the goal goes in the body, never in a URL."""
         return self._request("POST", "/api/v1/recommendations/training", token, json=body)
+
+    def training_providers(self) -> list[dict]:
+        """Every active training provider, with its location when one is on file."""
+        return self._request("GET", "/api/v1/training-providers")
+
+    def assessment_centers(self) -> list[dict]:
+        """Every active assessment center, with its location when one is on file."""
+        return self._request("GET", "/api/v1/assessment-centers")
 
     def training_programs(self, **params) -> list[dict]:
         """Public training listings, optionally filtered to a qualification and region."""

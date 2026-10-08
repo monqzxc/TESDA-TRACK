@@ -1,9 +1,16 @@
+import sys
 import threading
 import time
 from datetime import datetime, timedelta, timezone
 
 import pytest
 import uvicorn
+
+
+@pytest.fixture(autouse=True)
+def fresh_component_modules():
+    """AppTest gives every app its own custom-component registry; re-importing registers the map there."""
+    sys.modules.pop("training_view", None)
 
 
 @pytest.fixture
