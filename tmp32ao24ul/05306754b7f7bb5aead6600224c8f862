@@ -1,0 +1,8 @@
+
+from training_view import show_training
+class API:
+    def rank_training(self, *args, **kwargs):
+        return {"results": []}
+    def schedules(self, **kwargs):
+        return []
+show_training([{"code": "TEST", "name": "Test qualification"}], API(), [{"code":"NCR", "name":"Metro Manila", "latitude":14.6, "longitude":121.0}], None)
