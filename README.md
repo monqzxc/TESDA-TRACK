@@ -30,8 +30,9 @@ The backend is built in five parts, in order:
 | 4 | Integrations and AI | Done | Semantic search with a local embedding model (pgvector), weighted training rankings with an audit trail, a PostgreSQL cache, and the Skills Bridge client |
 | 5 | Reporting and analytics | Done | Overview, learner funnel, demand by qualification, skill gaps per competency, and supply by region, for administrators |
 
-**How recommendations work.** Everything stays in PostgreSQL. There is no separate search engine and no
-cloud AI service, so learner text never leaves our server.
+**How pathway recommendations work.** Goals are processed locally with PostgreSQL and a local embedding
+model. The separate Skills Bridge tab sends only the skill or role terms extracted from a learner's explicit
+short request to that service.
 
 - **Meaning:** pgvector compares a learner's goal with qualifications and training programs. The
   embeddings come from one local model,
@@ -66,10 +67,64 @@ model misses. Recalibrate the band once the pilot collects real goals and outcom
 The training weights (`RANKING_WEIGHTS__SEMANTIC`, `__PROXIMITY`, `__ASSESSMENT`, `__SCHEDULE`,
 `__PREFERENCE`) must add up to 1 and are set in `.env`.
 
-Skills Bridge (skills-bridge.ph) has no public API yet. The client
-(`backend/tesda_track/services/skills_bridge.py`) can make authenticated, cached requests, and its
-endpoint methods will be added once the Skills Bridge team shares API access and documentation. Set
-`SKILLS_BRIDGE_BASE_URL` and `SKILLS_BRIDGE_API_TOKEN` to turn it on.
+### Skills Bridge
+
+The **Skills Bridge** tab connects to the public read-only MCP endpoint at
+[mcp.skills-bridge.ph/mcp](https://mcp.skills-bridge.ph/mcp), through FastAPI. It distinguishes target job
+titles from capabilities: “welder” and “programmer” use the bounded occupation-title lookup, while “welding”,
+“JavaScript”, and “network configuration” use `match_skills`. It then supports related qualifications, a
+preview of up to 50 occupation skills, and the international mappings actually returned by the provider.
+Input-match scores are not readiness assessments; international mappings are not certification equivalencies.
+No qualifications are imported into the local catalog.
+
+The integration is enabled by default and currently needs no token. Set `SKILLS_BRIDGE_MCP_ENABLED=false`
+to disable it. `SKILLS_BRIDGE_MCP_URL`, optional `SKILLS_BRIDGE_MCP_TOKEN`, and
+`SKILLS_BRIDGE_TIMEOUT_SECONDS` configure the connection. Restart the backend after changing settings.
+The legacy REST settings are separate and are not required for MCP.
+
+- `POST /api/v1/skills-bridge/matches`: accepts 1–25 extracted capability terms, each at most 80 characters.
+- `POST /api/v1/skills-bridge/occupations/search`: finds occupations by title, Skills Bridge's exact title or alias
+  match first (`occupation_curriculum_profile`), then titles containing the term (`graph_search`). Every term keeps
+  a place among the results.
+- `GET /api/v1/skills-bridge/occupations/{id}`: retrieves the occupation's promulgated qualifications and bounded
+  skills/mapping previews.
+
+Only extracted skill or role terms and public occupation IDs leave the backend. Account details and saved learner
+records are not forwarded. The application owns all tool names. Terms travel only as plain tool arguments, and the
+only Cypher sent is two fixed reads keyed by an occupation ID, so nothing a learner types becomes a query. Responses
+are cut down to the fields the portal shows before they are cached or returned. POST carries read-only MCP requests;
+when the server issues an `Mcp-Session-Id`, the client ends that session with a DELETE after each lookup.
+Upstream errors remain local to the Skills Bridge panel, and no request is sent just by opening its tab.
+
+Lookups are cached in PostgreSQL for `SKILLS_BRIDGE_CACHE_TTL_SECONDS` (an hour by default). Cache keys are
+hashes, so search terms are stored only inside the cached response, never with who asked, and the API deletes
+expired entries every 10 minutes. A cached answer keeps its original `retrieved_at`.
+
+Each client address may make `SKILLS_BRIDGE_RATE_LIMIT_PER_MINUTE` lookups a minute (20; IPv6 clients count per
+/64 network), and all clients together may send `SKILLS_BRIDGE_UPSTREAM_PER_MINUTE` uncached lookups (120). Over
+either limit the API answers 429 with a `Retry-After` header, while cached answers keep being served. Learners
+behind one public address, such as a training center's network, share the per-client limit, so raise it for
+such sites. The overall cap protects Skills Bridge rather than availability: clients on several addresses can
+use it up for a minute, which only delays new lookups in the Skills Bridge panel.
+
+Caddy sets `X-Forwarded-For` to the connecting address (a client cannot supply its own), the API and the
+Streamlit app trust it, and the app passes each learner's address on to the API. The limits are kept in memory,
+so they assume the single API process the Dockerfile starts.
+
+Database-free checks (run these separately from the database integration suite):
+
+```bash
+.venv/Scripts/python -m pytest --confcutdir=backend/tests/unit backend/tests/unit
+.venv/Scripts/python -m pytest --confcutdir=frontend/tests frontend/tests/test_frontend_states.py frontend/tests/test_skills_bridge_ui.py
+```
+
+### Frontend presentation
+
+Native Streamlit theme settings live in `frontend/.streamlit/config.toml`; scoped layout and responsive
+styles live in `frontend/styles.css`. `frontend/presentation.py` provides escaped branding and reusable
+page elements. The finder, qualification library, training, progress, account dialogs, and reports use
+the same spacing, blue palette, accessible form controls, and empty/error states. Inactive tabs do not
+make page-specific requests, and switching tabs preserves entered goals and filters.
 
 ## Requirements
 
@@ -279,11 +334,14 @@ similar. Set `TESDA_MODEL_TESTS=1` to also check that the real model understands
 - `qualifications.json`: qualifications and their units of competency, built from TESDA's Training
   Regulations (see below)
 - `pathways.json`: a default pathway template for each recommendation route
+- `delivery_sites.json`: clearly marked development fixtures with regional coordinates, linked training
+  offerings and upcoming assessment schedules. These records are not verified T2MIS data.
 
 After editing a file, run `python -m tesda_track.seed` (Docker does this on every deploy). Qualifications
 removed from the file are archived, not deleted, so saved learner records keep their references. Every
 active qualification that lacks a pathway gets one from the templates. Seeding never overwrites a pathway
-an administrator has edited.
+an administrator has edited. The delivery fixture is skipped when `ENVIRONMENT=production`; replace it
+with an approved T2MIS import before exposing provider listings to real learners.
 
 The tests use their own fixed copy of these files in `backend/tests/seed/` (five qualifications), so the
 real catalog can grow without changing test results.
