@@ -1,11 +1,14 @@
 import json
 import os
+from html import escape
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import streamlit as st
 
 from api_client import ApiClient, ApiError, ApiUnavailableError
+from presentation import brand, empty_state, footer, journey, section_header
+from skills_bridge_view import show_skills_bridge
 
 
 EXAMPLES = {
@@ -24,12 +27,10 @@ ANSWER_OPTIONS = {"I can do this confidently": "confident", "I have some experie
 DELIVERY_LABELS = {"institution_based": "Institution-based", "enterprise_based": "Enterprise-based",
                    "community_based": "Community-based", "online": "Online"}
 RESULT_LABELS = {"competent": "Competent", "not_yet_competent": "Not yet competent"}
-RANKING_LABELS = {"semantic": "fit with your goal", "proximity": "distance", "assessment": "assessment nearby",
-                  "schedule": "start date", "preference": "your preferences"}
 PHILIPPINE_TIME = timezone(timedelta(hours=8))
 PRIVACY_NOTICE = ("TESDA-TRACK keeps your name, email, goals, recommendations, readiness checks and certifications "
                   "so you can follow your progress. They are used only to run this pilot and are never sold. "
-                  "You can download or permanently delete your data at any time from this sidebar.")
+                  "You can download or permanently delete your data from Your data & privacy in your account panel.")
 
 
 def api_base_url() -> str:
@@ -69,63 +70,98 @@ def sign_in(email: str, password: str) -> None:
     account = api().me(token)
     st.session_state["auth"] = {"token": token, "name": account["full_name"], "email": account["email"],
                                 "role": account["role"]}
+    st.session_state["account_dialog_open"] = False
 
 
 def sign_out() -> None:
-    for key in ("auth", "recommendation_session", "data_export"):
-        st.session_state.pop(key, None)
+    st.session_state["account_dialog_open"] = False
+    for key in list(st.session_state):
+        if key in {"auth", "recommendation_session", "data_export", "analysis", "original_query", "readiness_results", "goal_query"} or key.startswith(("follow_", "competency_", "qualification_", "step_", "bridge_")):
+            st.session_state.pop(key, None)
 
 
-def show_account() -> None:
+def show_account(key_prefix: str = "") -> None:
     account = st.session_state.get("auth")
     if account:
+        initial = escape(account["name"][:1].upper())
+        st.html(f'<div class="account-avatar">{initial}</div>')
         st.markdown(f"Signed in as **{account['name']}**")
         st.caption(account["email"])
-        st.button("Sign out", on_click=sign_out, key="sign_out", width="stretch")
-        with st.expander("Your data"):
+        st.badge("Administrator" if account["role"] == "admin" else "Learner account", icon=":material/verified_user:", color="blue")
+        st.button("Sign out", on_click=sign_out, key=f"{key_prefix}sign_out", width="stretch", icon=":material/logout:")
+        with st.expander("Your data & privacy", icon=":material/shield:"):
             st.caption("Download everything TESDA-TRACK stores about you, or delete your account.")
-            if st.button("Prepare my data export", key="prepare_export"):
+            if st.button("Prepare my data export", key=f"{key_prefix}prepare_export"):
                 st.session_state["data_export"] = json.dumps(api().export_my_data(account["token"]), indent=2)
             if "data_export" in st.session_state:
                 st.download_button("Download my data (JSON)", st.session_state["data_export"],
-                                   file_name="tesda-track-my-data.json", mime="application/json")
+                                   file_name="tesda-track-my-data.json", mime="application/json", key=f"{key_prefix}download_export")
             confirmed = st.checkbox("I understand this permanently deletes my account and saved records.",
-                                    key="confirm_delete")
-            if st.button("Delete my account", key="delete_account", disabled=not confirmed):
+                                    key=f"{key_prefix}confirm_delete")
+            if st.button("Delete my account", key=f"{key_prefix}delete_account", disabled=not confirmed):
                 api().delete_account(account["token"])
                 sign_out()
-                st.success("Your account and saved records were deleted.")
-        return
-    with st.form("sign_in"):
-        st.markdown("**Sign in to save your progress**")
-        email = st.text_input("Email", key="signin_email")
-        password = st.text_input("Password", type="password", key="signin_password")
-        if st.form_submit_button("Sign in", type="primary", width="stretch"):
-            try:
-                sign_in(email, password)
+                st.session_state["flash"] = "Your account and saved records were deleted."
                 st.rerun()
+        return
+    with st.form(f"{key_prefix}sign_in", border=False):
+        st.subheader("Welcome back")
+        st.caption("Sign in to save your progress and pick up where you left off.")
+        email = st.text_input("Email", key=f"{key_prefix}signin_email", placeholder="you@example.com")
+        password = st.text_input("Password", type="password", key=f"{key_prefix}signin_password", placeholder="Enter your password")
+        if st.form_submit_button("Sign in", type="primary", width="stretch", icon=":material/login:"):
+            try:
+                if not email.strip() or "@" not in email or not password:
+                    st.error("Enter your email address and password to sign in.")
+                else:
+                    with st.spinner("Signing you in…"):
+                        sign_in(email.strip(), password)
+                    st.rerun()
             except ApiError as error:
                 st.error(error.message)
-    with st.expander("New here? Create an account"):
-        with st.form("register"):
-            full_name = st.text_input("Full name", key="register_name")
-            email = st.text_input("Email", key="register_email")
-            password = st.text_input("Password", type="password", key="register_password",
+    with st.expander("New here? Create an account", icon=":material/person_add:"):
+        with st.form(f"{key_prefix}register", border=False):
+            full_name = st.text_input("Full name", key=f"{key_prefix}register_name")
+            email = st.text_input("Email", key=f"{key_prefix}register_email")
+            password = st.text_input("Password", type="password", key=f"{key_prefix}register_password",
                                      help="At least 10 characters.")
             st.caption(PRIVACY_NOTICE)
-            consent = st.checkbox("I agree to the privacy notice", key="register_consent")
+            consent = st.checkbox("I agree to the privacy notice", key=f"{key_prefix}register_consent")
             if st.form_submit_button("Create account", width="stretch"):
                 try:
-                    api().register(email, password, full_name, consent)
-                    sign_in(email, password)
-                    st.rerun()
+                    if not consent:
+                        st.error("Please agree to the privacy notice to create your account.")
+                    elif not full_name.strip() or "@" not in email or len(password) < 10:
+                        st.error("Enter your name, a valid email address, and a password with at least 10 characters.")
+                    else:
+                        with st.spinner("Creating your account…"):
+                            api().register(email.strip(), password, full_name.strip(), consent)
+                            sign_in(email.strip(), password)
+                        st.rerun()
                 except ApiError as error:
                     st.error(error.message)
+    st.html('<div class="sidebar-note"><strong>Just exploring?</strong><p>You can find a pathway and browse qualifications without an account.</p></div>')
+
+
+def open_account() -> None:
+    st.session_state["account_dialog_open"] = True
+
+
+def close_account() -> None:
+    st.session_state["account_dialog_open"] = False
+
+
+@st.dialog("Your account", on_dismiss=close_account)
+def show_account_dialog() -> None:
+    try:
+        show_account("dialog_")
+    except ApiError as error:
+        handle_api_error(error)
 
 
 def show_readiness(qualification: dict) -> None:
     code = qualification["code"]
-    st.subheader("Assessment Readiness")
+    section_header("KNOW YOUR STARTING POINT", "Assessment readiness", "Recognize your strengths and discover what to build on.", level=2)
     st.write("What can you already do? Rate each sample competency to find your strengths and next steps.")
     with st.form(f"skills_{code}"):
         answers = {}
@@ -157,7 +193,7 @@ def show_readiness(qualification: dict) -> None:
             st.warning(error.message)
     result = results.get(code)
     if result:
-        with st.container(border=True):
+        with st.container(border=True, key=f"card_readiness_{code}"):
             score, guidance = st.columns([1, 3])
             score.metric("Your readiness", f"{result['score']:g}%")
             guidance.subheader(result["level"])
@@ -212,7 +248,7 @@ def show_recommendations(qualifications: list[dict]) -> None:
     experience_description = None
     st.divider()
     if profile["experience_years"] is None or profile["has_certification"] is None:
-        with st.container(border=True):
+        with st.container(border=True, key="card_followup"):
             st.subheader("A little more about you")
             st.caption("These details help us suggest a suitable starting point.")
             experience_column, certification_column = st.columns(2)
@@ -235,9 +271,9 @@ def show_recommendations(qualifications: list[dict]) -> None:
     result = api().match(st.session_state["original_query"], profile)
     profile, matches = result["profile"], result["matches"]
 
-    with st.container(border=True):
-        st.subheader("AI Understanding")
-        st.caption("Here's what the prototype understood from your submitted goal and follow-up answers.")
+    with st.container(border=True, key="card_understanding"):
+        st.subheader("Your starting point")
+        st.caption("Based on your submitted goal and the details you've shared.")
         columns = st.columns(4)
         years = profile["experience_years"]
         columns[0].markdown(f"**Career goal**\n\n{profile['career_goal'] or 'Still exploring'}")
@@ -246,13 +282,13 @@ def show_recommendations(qualifications: list[dict]) -> None:
         columns[3].markdown("**Detected intent**\n\n" + profile["intent"].replace("_", " ").title())
         st.caption("Reported skills: " + (", ".join(profile["existing_skills"]) or "Not yet established"))
 
-    st.subheader("Recommended Qualifications")
+    st.subheader("Qualifications for you")
     if matches:
         for column, match in zip(st.columns(len(matches)), matches):
-            with column, st.container(border=True):
+            with column, st.container(border=True, key=f"card_match_{match['qualification']['code']}"):
                 st.caption(match["qualification"]["sector"].upper())
                 st.markdown(f"**{match['qualification']['name']}**")
-                st.metric("Prototype Match Score", f"{match['score']}%")
+                st.metric("Goal match", f"{match['score']}%")
                 st.progress(match["score"] / 100)
                 st.caption(match["reason"])
     else:
@@ -268,7 +304,7 @@ def show_recommendations(qualifications: list[dict]) -> None:
     st.caption("Sample career options: " + ", ".join(qualification["possible_jobs"]))
     pathway = api().pathway(profile, selected_code)
     save_session_progress(profile, selected_code)
-    with st.container(border=True):
+    with st.container(border=True, key="card_recommended_path"):
         st.caption("YOUR RECOMMENDED PATH")
         st.subheader(PATH_LABELS[pathway["recommendation"]])
         st.write(pathway["reason"])
@@ -278,34 +314,37 @@ def show_recommendations(qualifications: list[dict]) -> None:
         st.caption("Your experience should be relevant to the selected qualification. Update your goal when exploring a different field.")
 
     show_readiness(qualification)
-    with st.expander("Developer View"):
-        st.json({"profile": profile, "pathway": pathway})
+    if (st.session_state.get("auth") or {}).get("role") == "admin":
+        with st.expander("Recommendation diagnostics", icon=":material/code:"):
+            st.json({"profile": profile, "pathway": pathway})
 
 
 def show_finder(qualifications: list[dict]) -> None:
-    goal, guide = st.columns([2, 1], gap="large")
-    with goal:
-        st.subheader("Tell us where you want to go")
-        st.write("Share a career goal, a skill you'd like to learn, or experience you want to turn into a qualification.")
-        st.caption("NEED AN IDEA? START WITH AN EXAMPLE")
-        for column, (label, example) in zip(st.columns(3), EXAMPLES.items()):
-            column.button(label, on_click=use_example, args=(example,), width="stretch")
-        with st.form("career_query"):
+    goal, guide = st.columns([1.6, 1], gap="large")
+    with goal, st.container(key="finder_panel"):
+        section_header("", "What would you like to achieve?",
+                       "Tell us about a career, a skill, or experience you'd like to turn into a qualification.")
+        st.html('<p class="example-label">NEED AN IDEA? START WITH AN EXAMPLE</p>')
+        with st.container(horizontal=True, gap="small", key="goal_examples"):
+            for label, example in EXAMPLES.items():
+                st.button(label, on_click=use_example, args=(example,), width="content")
+        with st.form("career_query", border=False):
             query = st.text_area(
-                "What would you like to learn or achieve?", height=140, key="goal_query",
+                "What would you like to learn or achieve?", height=155, key="goal_query",
                 placeholder="For example: I've worked as a welder for 5 years, but I don't have a certification.",
             )
-            submitted = st.form_submit_button("Get Recommendation →", type="primary", width="stretch")
+            submitted = st.form_submit_button("Get Recommendation", type="primary", width="stretch", icon=":material/arrow_forward:")
         if submitted:
             if not query.strip():
                 st.warning("Describe your career goal or skills to get started.")
             else:
                 token = auth_token()
-                if token:
-                    record = api().start_session(token, query)
-                    profile, saved = record["profile"], {"id": record["id"], "synced": None}
-                else:
-                    profile, saved = api().analyze_goal(query)["profile"], None
+                with st.spinner("Finding a starting point for you…"):
+                    if token:
+                        record = api().start_session(token, query)
+                        profile, saved = record["profile"], {"id": record["id"], "synced": None}
+                    else:
+                        profile, saved = api().analyze_goal(query)["profile"], None
                 # A new goal starts a new questionnaire, including all saved results.
                 for key in list(st.session_state):
                     if key.startswith(("follow_", "competency_", "qualification_")) or key == "readiness_results":
@@ -313,31 +352,27 @@ def show_finder(qualifications: list[dict]) -> None:
                 st.session_state["analysis"] = profile
                 st.session_state["original_query"] = query.strip()
                 st.session_state["recommendation_session"] = saved
-        st.caption("Your results are saved to My progress." if auth_token()
-                   else "Sign in from the sidebar to save your results and track your progress.")
+        if auth_token():
+            st.caption("Your results are saved to My progress.")
+        elif "analysis" in st.session_state:
+            st.button("Sign in to save your progress", key="open_account_finder", type="tertiary",
+                      icon=":material/bookmark_border:", on_click=open_account)
         if "analysis" in st.session_state:
             st.caption("Showing results for your last submitted goal:")
             st.write(st.session_state["original_query"])
     with guide:
-        st.markdown("""<aside class="journey-card">
-        <div class="eyebrow">A CLEARER WAY FORWARD</div>
-        <h3>One goal. Your next step.</h3>
-        <div class="journey-step"><span>01</span><div><strong>Share your goal</strong><p>Tell us what you want to achieve.</p></div></div>
-        <div class="journey-step"><span>02</span><div><strong>Discover your pathway</strong><p>Explore training and assessment options.</p></div></div>
-        <div class="journey-step"><span>03</span><div><strong>Check your skills</strong><p>See your strengths and what to learn next.</p></div></div>
-        <div class="journey-note">5 sample qualifications · Start at your own pace</div>
-        </aside>""", unsafe_allow_html=True)
+        journey(len(qualifications))
     if "analysis" in st.session_state:
         show_recommendations(qualifications)
-    else:
-        st.markdown("""<div class="empty-state"><span class="empty-icon">↗</span>
-        <h3>A starting point that fits you</h3><p>Share your goal above to discover a qualification, a suggested pathway, and a personal skills check.</p></div>""", unsafe_allow_html=True)
 
 
 def show_goals(token: str, names: dict[str, str]) -> None:
     st.subheader("My goals")
-    for goal in api().goals(token):
-        with st.container(border=True):
+    goals = api().goals(token)
+    if not goals:
+        st.caption("A small goal is a good place to start. Add your first one below.")
+    for goal in goals:
+        with st.container(border=True, key=f"card_goal_{goal['id']}"):
             st.markdown(f"**{goal['title']}**")
             target = goal["target_qualification"]
             st.caption(goal["status"].title() + (f" · {target['name']}" if target else ""))
@@ -357,8 +392,11 @@ def show_goals(token: str, names: dict[str, str]) -> None:
 
 def show_certifications(token: str, names: dict[str, str]) -> None:
     st.subheader("My certifications")
-    for certification in api().certifications(token):
-        with st.container(border=True):
+    certifications = api().certifications(token)
+    if not certifications:
+        st.caption("Keep the qualifications you've earned in one place.")
+    for index, certification in enumerate(certifications):
+        with st.container(border=True, key=f"card_certificate_{index}"):
             st.markdown(f"**{certification['title']}**")
             details = [certification["issuing_body"], "Verified" if certification["verified"] else "Self-reported"]
             if certification["certificate_number"]:
@@ -384,33 +422,35 @@ def format_when(iso_timestamp: str) -> str:
 
 
 def show_training(qualifications: list[dict]) -> None:
-    st.subheader("Find training and assessment near you")
-    st.write("Pick a qualification and your region. Programs are ranked by how well they fit your goal, distance, "
-             "nearby assessments, start dates and your preferences.")
+    section_header("TRAINING & ASSESSMENT", "Bring your next step closer.",
+                   "Explore programs and assessment schedules that fit your qualification and location.")
     names = {q["code"]: q["name"] for q in qualifications}
     regions = {region["code"]: region for region in load_regions(api_base_url())}
-    left, right = st.columns(2)
-    code = left.selectbox("Qualification", list(names), format_func=names.get, key="training_qualification")
-    region_code = right.selectbox("Your region (optional)", [None, *regions], key="training_region",
+    with st.container(border=True, key="training_filters"):
+        left, right = st.columns(2)
+        code = left.selectbox("Qualification", list(names), format_func=names.get, key="training_qualification")
+        region_code = right.selectbox("Your region (optional)", [None, *regions], key="training_region",
                                   format_func=lambda c: "Any region" if c is None else regions[c]["name"],
                                   help="Only used to sort results by distance. Only a rounded location is kept.")
-    preferred_mode = left.selectbox("Preferred way to train (optional)", [None, *DELIVERY_LABELS],
+        preferred_mode = left.selectbox("Preferred way to train (optional)", [None, *DELIVERY_LABELS],
                                     key="training_mode",
                                     format_func=lambda m: "No preference" if m is None else DELIVERY_LABELS[m])
-    needs_scholarship = right.checkbox("I need a scholarship", key="training_scholarship")
+        needs_scholarship = right.checkbox("I need a scholarship", key="training_scholarship")
     params = {"qualification_code": code}
     if region_code:
         params.update(near_lat=regions[region_code]["latitude"], near_lon=regions[region_code]["longitude"])
     token = auth_token()
-    programs_column, schedules_column = st.columns(2, gap="large")
+    programs_column, schedules_column = st.columns(2, gap="medium")
     with programs_column:
         st.markdown("#### Training programs")
         with st.container(key="program_results"):
             ranking = api().rank_training(token, **params, goal=st.session_state.get("original_query"),
                                           preferred_delivery_mode=preferred_mode, needs_scholarship=needs_scholarship)
-            for item in ranking["results"]:
+            st.caption(f"{len(ranking['results'])} programs · Sorted by fit with your preferences")
+            for index, item in enumerate(ranking["results"]):
                 program, provider = item["program"], item["program"]["provider"]
-                with st.container(border=True):
+                with st.container(border=True, key=f"card_training_{index}"):
+                    st.badge(f"{item['score']}% fit", color="blue", icon=":material/auto_awesome:")
                     st.markdown(f"**{program['title']}**")
                     details = [f"{item['score']}% fit", provider["name"],
                                provider["city"] or regions[provider["region_code"]]["name"],
@@ -418,22 +458,26 @@ def show_training(qualifications: list[dict]) -> None:
                     if program["duration_hours"]:
                         details.append(f"{program['duration_hours']} hours")
                     st.caption(" · ".join(details))
+                    if program.get("starts_on"):
+                        st.caption(f"Starts {program['starts_on']}")
                     if program["scholarship_available"]:
-                        st.caption("Scholarship available")
-                    with st.expander("Why this program?"):
+                        st.badge("Scholarship available", color="green", icon=":material/school:")
+                    with st.expander("Why this program?", icon=":material/info:"):
                         for reason in item["explanation"]:
                             st.markdown(f"- {reason}")
-                        st.caption("Score parts: " + ", ".join(
-                            f"{RANKING_LABELS[name]} {value:.0%} × {ranking['weights'][name]:.0%}"
-                            for name, value in item["components"].items()))
+                        st.caption("Fit considers your goal, location, schedule, and training preferences.")
             if not ranking["results"]:
-                st.caption("No programs are listed for this qualification yet.")
+                empty_state("More opportunities ahead", "No programs are listed for this qualification yet. Explore another qualification or check back later.", "learn")
     with schedules_column:
         st.markdown("#### Upcoming assessments")
         with st.container(key="schedule_results"):
             schedules = api().schedules(**params)
+            st.caption(f"{len(schedules)} upcoming schedules · Philippine time (UTC+8)")
             for schedule in schedules:
-                with st.container(border=True):
+                with st.container(border=True, key=f"card_schedule_{schedule['id']}"):
+                    st.badge("Seats available" if schedule["seats_left"] > 0 else "Fully booked",
+                             color="green" if schedule["seats_left"] > 0 else "orange",
+                             icon=":material/event_seat:")
                     st.markdown(f"**{format_when(schedule['scheduled_at'])}** · {schedule['center']['name']}")
                     details = [f"{schedule['seats_left']} of {schedule['slots']} seats left"]
                     if schedule["fee"] is not None:
@@ -441,7 +485,7 @@ def show_training(qualifications: list[dict]) -> None:
                     if schedule["distance_km"] is not None:
                         details.append(f"about {schedule['distance_km']:,.0f} km away")
                     st.caption(" · ".join(details))
-                    if token and schedule["seats_left"] > 0 and st.button("Apply", key=f"apply_{schedule['id']}"):
+                    if token and schedule["seats_left"] > 0 and st.button("Apply", key=f"apply_{schedule['id']}", type="primary", icon=":material/arrow_forward:", width="stretch"):
                         try:
                             api().apply_for_assessment(token, schedule["id"])
                             st.success("Application sent. Track it under My progress.")
@@ -450,7 +494,7 @@ def show_training(qualifications: list[dict]) -> None:
                                 raise
                             st.warning(error.message)
             if not schedules:
-                st.caption("No upcoming assessments are open for this qualification yet.")
+                empty_state("No upcoming assessments yet", "Try another qualification or return later for new schedules.", "award")
             elif not token:
                 st.caption("Sign in to apply for an assessment.")
 
@@ -459,7 +503,7 @@ def show_my_pathways(token: str) -> None:
     st.subheader("My pathways")
     enrollments = [e for e in api().my_pathways(token) if e["status"] != "withdrawn"]
     for enrollment in enrollments:
-        with st.container(border=True):
+        with st.container(border=True, key=f"card_enrollment_{enrollment['id']}"):
             st.markdown(f"**{enrollment['pathway']['title']}**")
             st.caption(f"{enrollment['pathway']['qualification']['name']} · {enrollment['completion_percent']}% complete")
             st.progress(enrollment["completion_percent"] / 100)
@@ -480,7 +524,9 @@ def show_my_applications(token: str) -> None:
         applications = api().my_applications(token)
         for application in applications:
             schedule = application["schedule"]
-            with st.container(border=True):
+            with st.container(border=True, key=f"card_application_{application['id']}"):
+                status = application["status"]
+                st.badge(status.replace("_", " ").title(), color={"approved": "green", "pending": "orange", "withdrawn": "gray", "rejected": "red"}.get(status, "blue"))
                 st.markdown(f"**{schedule['qualification']['name']}** · {format_when(schedule['scheduled_at'])}")
                 details = [schedule["center"]["name"], application["status"].title()]
                 if application["result"]:
@@ -493,28 +539,38 @@ def show_my_applications(token: str) -> None:
                     api().withdraw_application(token, application["id"])
                     st.rerun()
         if not applications:
-            st.caption("Apply for an assessment from the Training & assessment tab.")
+            st.caption("Apply for an assessment from Training & assessment.")
 
 
 def show_progress(qualifications: list[dict]) -> None:
+    section_header("MY PROGRESS", "Every step counts.", "Your recommendations, readiness checks, and achievements, together in one place.")
     token = auth_token()
     if not token:
+        empty_state("Your journey deserves a place to grow", "Create an account or sign in using the account panel to keep your goals and progress together.", "growth")
         st.info("Sign in to save your recommendations and readiness checks and see your progress here.")
+        st.button("Sign in or create an account", type="primary", icon=":material/login:",
+                  key="open_account_progress", on_click=open_account)
         return
     names = {q["code"]: q["name"] for q in qualifications}
-    st.subheader("Readiness over time")
     checks = api().readiness_checks(token)
+    sessions = api().sessions(token)
+    with st.container(horizontal=True, key="progress_summary"):
+        st.metric("Saved recommendations", len(sessions), border=True, help="Your recent recommendation history.")
+        st.metric("Readiness checks", len(checks), border=True)
+        st.metric("Latest readiness", f"{checks[0]['score']:g}%" if checks else "—", border=True,
+                  help="Your most recent self-reported skills check, not an official assessment.")
+    st.subheader("Readiness over time")
     if checks:
         st.dataframe([{"Date": check["created_at"][:10], "Qualification": check["qualification"]["name"],
                        "Score": check["score"], "Level": check["level"]} for check in checks],
-                     hide_index=True, key="readiness_history")
+                     hide_index=True, key="readiness_history", width="stretch",
+                     column_config={"Score": st.column_config.ProgressColumn("Readiness", min_value=0, max_value=100, format="%d%%")})
     else:
         st.caption("Complete an Assessment Readiness check while signed in to start your history.")
     st.subheader("Recommendation history")
     with st.container(key="recommendation_history"):
-        sessions = api().sessions(token)
-        for record in sessions:
-            with st.container(border=True):
+        for index, record in enumerate(sessions):
+            with st.container(border=True, key=f"card_history_{index}"):
                 st.caption(record["created_at"][:10])
                 st.markdown(f"**{record['query']}**")
                 qualification = record["selected_qualification"] or (
@@ -525,12 +581,12 @@ def show_progress(qualifications: list[dict]) -> None:
                 st.markdown(" · ".join(details) or "No matching qualification yet")
         if not sessions:
             st.caption("Goals you submit while signed in appear here.")
-    pathways_column, applications_column = st.columns(2, gap="large")
+    pathways_column, applications_column = st.columns(2, gap="medium")
     with pathways_column:
         show_my_pathways(token)
     with applications_column:
         show_my_applications(token)
-    goals_column, certifications_column = st.columns(2, gap="large")
+    goals_column, certifications_column = st.columns(2, gap="medium")
     with goals_column:
         show_goals(token, names)
     with certifications_column:
@@ -538,51 +594,78 @@ def show_progress(qualifications: list[dict]) -> None:
 
 
 def show_reports(token: str, qualifications: list[dict]) -> None:
-    st.subheader("Pilot reports")
-    st.caption("Counts and averages only; no individual learner records are shown here.")
+    section_header("ADMINISTRATOR WORKSPACE", "A clearer view of learner progress.",
+                   "Explore pilot activity, qualification demand, and training opportunities. Counts and averages only.")
     start, end = st.columns(2)
     date_from = start.date_input("From (optional)", value=None, key="report_from")
     date_to = end.date_input("To (optional)", value=None, key="report_to")
+    if date_from and date_to and date_from > date_to:
+        st.warning("Choose an end date on or after the start date.")
+        return
     period = {name: value.isoformat() for name, value in (("date_from", date_from), ("date_to", date_to)) if value}
     overview = api().report(token, "overview", **period)
     funnel = api().report(token, "funnel", **period)
     supply = api().report(token, "supply")
     average = overview["average_readiness"]
-    with st.container(horizontal=True):
-        st.metric("Learners", overview["learners"], border=True)
-        st.metric("Saved recommendations", overview["recommendation_sessions"], border=True)
-        st.metric("Readiness checks", overview["readiness_checks"], border=True,
-                  help=f"Average readiness: {average:g}%" if average is not None else "No checks yet")
-        st.metric("Verified certifications", overview["certifications"]["verified"], border=True)
-        st.metric("Open assessment seats", sum(region["open_seats"] for region in supply), border=True)
+    first_row = st.columns(3)
+    first_row[0].metric("Learners", overview["learners"], border=True)
+    first_row[1].metric("Saved recommendations", overview["recommendation_sessions"], border=True)
+    first_row[2].metric("Readiness checks", overview["readiness_checks"], border=True)
+    second_row = st.columns(3)
+    second_row[0].metric("Average readiness", f"{average:g}%" if average is not None else "—", border=True,
+                         help="Average self-reported readiness in the selected period.")
+    second_row[1].metric("Verified certifications", overview["certifications"]["verified"], border=True)
+    second_row[2].metric("Open assessment seats", sum(region["open_seats"] for region in supply), border=True,
+                         help="Current availability across all listed regions, independent of the date filter.")
 
-    st.markdown("#### Learner journey")
-    st.caption("Learners who reached each stage in the period.")
-    st.table({"Stage": ["Registered", "Saved a recommendation", "Checked readiness", "Applied for assessment",
-                        "Certified"],
-              "Learners": [funnel["registered"], funnel["saved_a_recommendation"], funnel["checked_readiness"],
-                           funnel["applied_for_assessment"], funnel["certified"]]})
+    with st.container(border=True, key="card_report_journey"):
+        st.subheader("Learner journey")
+        st.caption("Learners who reached each stage in the selected period.")
+        journey_data = {"Stage": ["Registered", "Saved a recommendation", "Checked readiness", "Applied for assessment", "Certified"],
+                        "Learners": [funnel["registered"], funnel["saved_a_recommendation"], funnel["checked_readiness"],
+                                     funnel["applied_for_assessment"], funnel["certified"]]}
+        if any(journey_data["Learners"]):
+            st.bar_chart(journey_data, x="Stage", y="Learners", horizontal=True, sort=False, height=260,
+                         alt="Number of learners at each stage, from registration to certification.")
+            with st.expander("View journey counts", icon=":material/table_chart:"):
+                st.table(journey_data, alt="Learner counts by journey stage")
+        else:
+            st.caption("No learner activity in this period. Try a wider date range.")
 
     st.markdown("#### Demand by qualification")
     demand = api().report(token, "qualification-demand", **period)
-    st.dataframe([{"Qualification": row["qualification"]["name"], "Top match": row["top_match"],
+    if demand:
+        st.dataframe([{"Qualification": row["qualification"]["name"], "Top match": row["top_match"],
                    "Chosen": row["chosen"], "Readiness checks": row["readiness_checks"],
                    "Average readiness": row["average_readiness"], "Applications": row["assessment_applications"],
-                   "Competent": row["competent"], "Certified": row["certified"]} for row in demand], hide_index=True)
+                   "Competent": row["competent"], "Certified": row["certified"]} for row in demand], hide_index=True,
+                     alt="Qualification demand and outcomes", column_config={
+                         "Average readiness": st.column_config.ProgressColumn(min_value=0, max_value=100, format="%d%%")})
+    else:
+        st.caption("No qualification activity in this period. Demand will appear as learners explore pathways.")
 
     st.markdown("#### Skill gaps")
     names = {q["code"]: q["name"] for q in qualifications}
-    code = st.selectbox("Qualification", list(names), format_func=names.get, key="report_qualification")
-    gaps = api().report(token, "skill-gaps", qualification_code=code, **period)
-    st.caption("Share of answers that weren't \"I can do this confidently\". High rates suggest where training is needed.")
-    st.dataframe([{"Competency": f"{gap['position']}. {gap['name']}", "Answers": gap["answers"],
-                   "Gap rate": None if gap["gap_rate"] is None else f"{gap['gap_rate']:.0%}"} for gap in gaps],
-                 hide_index=True)
+    if names:
+        code = st.selectbox("Qualification", list(names), format_func=names.get, key="report_qualification")
+        gaps = api().report(token, "skill-gaps", qualification_code=code, **period)
+        st.caption("Share of answers that weren't \"I can do this confidently\". High rates suggest where training is needed.")
+        if gaps:
+            st.dataframe([{"Competency": f"{gap['position']}. {gap['name']}", "Answers": gap["answers"],
+                           "Gap rate": None if gap["gap_rate"] is None else f"{gap['gap_rate']:.0%}"} for gap in gaps],
+                         hide_index=True, alt="Self-reported skill gaps by competency")
+        else:
+            st.caption("No readiness responses for this qualification in the selected period.")
+    else:
+        st.caption("Skill gap details will be available when qualifications are added to the catalog.")
 
     st.markdown("#### Training and assessment supply by region")
-    st.dataframe([{"Region": row["region"], "Providers": row["training_providers"], "Programs": row["training_programs"],
+    if supply:
+        st.dataframe([{"Region": row["region"], "Providers": row["training_providers"], "Programs": row["training_programs"],
                    "Upcoming assessments": row["upcoming_assessments"], "Open seats": row["open_seats"]}
-                  for row in supply], hide_index=True)
+                      for row in supply], hide_index=True, alt="Training providers, programs, and assessment seats by region")
+    else:
+        st.caption("No training or assessment supply is listed yet.")
 
 
 def handle_api_error(error: ApiError) -> None:
@@ -590,73 +673,135 @@ def handle_api_error(error: ApiError) -> None:
         sign_out()
         st.session_state["flash"] = "Your session has expired. Please sign in again."
         st.rerun()
-    st.error(error.message)
+    st.error(error.message, icon=":material/error:")
+
+
+def reset_library_filters() -> None:
+    st.session_state["library_search"] = ""
+    st.session_state["library_sector"] = "All sectors"
+
+
+def explore_qualification(name: str) -> None:
+    use_example(f"I want to pursue {name}.")
+    st.session_state["main_tabs"] = "Find my pathway"
+
+
+def show_library(qualifications: list[dict]) -> None:
+    section_header("QUALIFICATION LIBRARY", "Find what sparks your interest.",
+                   "Explore qualifications, possible careers, and the skills you'll build along the way.")
+    with st.container(border=True, key="library_filters"):
+        search, sector = st.columns([2, 1])
+        query = search.text_input("Search qualifications or careers", key="library_search", placeholder="Try welding, cookery, or computers", icon=":material/search:")
+        selected_sector = sector.selectbox("Sector", ["All sectors", *sorted({q["sector"] for q in qualifications})], key="library_sector")
+    filtered = [q for q in qualifications if (selected_sector == "All sectors" or q["sector"] == selected_sector)
+                and query.casefold().strip() in " ".join([q["name"], q["code"], q["sector"], *q["possible_jobs"]]).casefold()]
+    st.caption(f"{len(filtered)} of {len(qualifications)} qualifications" + (" · Filtered results" if query or selected_sector != "All sectors" else " · Find your next possibility"))
+    if query or selected_sector != "All sectors":
+        st.button("Clear filters", key="clear_library_filters", on_click=reset_library_filters, icon=":material/filter_alt_off:")
+    if not filtered:
+        empty_state("No qualifications found", "Try a different career or keyword, or clear your filters to explore all qualifications.", "search")
+    for start in range(0, len(filtered), 2):
+        for column, qualification in zip(st.columns(2, gap="medium"), filtered[start:start + 2]):
+            with column, st.container(border=True, key=f"card_library_{qualification['code']}"):
+                st.badge(qualification["sector"], color="blue")
+                st.markdown(f"### {qualification['name']}")
+                st.caption("POSSIBLE CAREERS")
+                st.write(", ".join(qualification["possible_jobs"]))
+                with st.expander(f"View {len(qualification['competencies'])} sample competencies", icon=":material/checklist:"):
+                    for competency in qualification["competencies"]:
+                        st.write(f"• {competency['name']}")
+                st.button("Explore this pathway", key=f"explore_{qualification['code']}", width="stretch",
+                          icon=":material/arrow_forward:", on_click=explore_qualification, args=(qualification["name"],))
+
+
+def show_service_unavailable(error: ApiError) -> None:
+    with st.container(border=True, key="service_unavailable"):
+        empty_state("Let's get you reconnected", "Your next step is still here. We need to reconnect to load qualifications and recommendations.", "cloud")
+        st.error(error.message, icon=":material/cloud_off:")
+        if st.button("Try again", key="retry_service", type="primary", icon=":material/refresh:"):
+            load_qualifications.clear()
+            load_regions.clear()
+            st.rerun()
+        st.caption("If this continues, please return a little later.")
+
+
+NAVIGATION = [
+    ("Find my pathway", "home", "finder"),
+    ("Qualification library", "school", "library"),
+    ("Training & assessment", "menu_book", "training"),
+    ("My progress", "bar_chart", "progress"),
+    ("Skills Bridge", "hub", "bridge"),
+]
+
+
+def navigate(page: str) -> None:
+    st.session_state["main_tabs"] = page
+
+
+def show_sidebar(selected: str, is_admin: bool) -> None:
+    with st.sidebar:
+        brand(sidebar=True)
+        with st.container(key="primary_navigation"):
+            for label, symbol, key in NAVIGATION + ([("Reports", "analytics", "reports")] if is_admin else []):
+                st.button(label, key=f"nav_{key}", icon=f":material/{symbol}:",
+                          type="primary" if label == selected else "secondary", width="stretch",
+                          on_click=navigate, args=(label,))
+        with st.container(key="sidebar_account"):
+            account = st.session_state.get("auth")
+            label = account["name"] if account else "Sign in"
+            st.button(label, key="open_account_sidebar", icon=":material/account_circle:",
+                      width="stretch", on_click=open_account)
+            st.caption("Manage your account" if account else "Access your account")
 
 
 def main() -> None:
-    st.set_page_config(page_title="TESDA-TRACK | Find your pathway", page_icon="🌱", layout="wide")
-    styles = Path(__file__).with_name("styles.css").read_text(encoding="utf-8")
-    st.markdown(f"<style>{styles}</style>", unsafe_allow_html=True)
-    st.markdown("""<header class="brand-bar"><div class="brand"><span class="brand-icon">↗</span> TESDA<span class="brand-light">TRACK</span></div><span class="prototype-badge">CAREER PATHWAY PROTOTYPE</span></header>
-    <section class="hero"><div class="hero-copy"><div class="eyebrow">BUILD SKILLS. OPEN POSSIBILITIES.</div>
-    <h1>Your next step<br>starts here.</h1><p>Turn your career goals and experience into a clearer training or assessment pathway.</p>
-    <div class="hero-label">AI-Based Training and Assessment Recommendation</div></div>
-    <div class="hero-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="growth-arrow">↗</div><div class="art-label">YOUR POTENTIAL, IN PROGRESS</div></div></section>""", unsafe_allow_html=True)
-    with st.sidebar:
-        if "flash" in st.session_state:
-            st.warning(st.session_state.pop("flash"))
-        try:
-            show_account()
-        except ApiError as error:
-            handle_api_error(error)
+    st.set_page_config(page_title="TESDA Track | Your next step", page_icon=":material/route:", layout="wide")
+    st.html(Path(__file__).with_name("styles.css"))
+    # Retain drafts and filters when a page is not rendered. Button keys are
+    # deliberately excluded: Streamlit owns trigger-widget state.
+    for key in list(st.session_state):
+        if (key == "goal_query" or key.startswith(("follow_", "competency_", "qualification_", "training_", "library_", "report_", "bridge_"))) and "_button_" not in key:
+            st.session_state[key] = st.session_state[key]
+    is_admin = (st.session_state.get("auth") or {}).get("role") == "admin"
+    selected = st.session_state.get("main_tabs", "Find my pathway")
+    allowed = [item[0] for item in NAVIGATION] + (["Reports"] if is_admin else [])
+    if selected not in allowed:
+        selected = "Find my pathway"
+    st.session_state["main_tabs"] = selected
+    show_sidebar(selected, is_admin)
+    if "flash" in st.session_state:
+        st.warning(st.session_state.pop("flash"))
+    # A full rerun must also restore an open account dialog (including validation
+    # errors); dismissing or completing sign-in clears this flag.
+    if st.session_state.get("account_dialog_open"):
+        show_account_dialog()
     try:
         qualifications = load_qualifications(api_base_url())
     except ApiError as error:
-        st.error(error.message)
+        show_service_unavailable(error)
         return
-    # Dynamic tabs: only the selected tab's .open is True, so My progress loads only when viewed.
-    is_admin = (st.session_state.get("auth") or {}).get("role") == "admin"
-    labels = ["Find my pathway", "Qualification library", "Training & assessment", "My progress"]
-    tabs = st.tabs(labels + (["Reports"] if is_admin else []), key="main_tabs", on_change="rerun")
-    finder, library, training, progress = tabs[:4]
-    with finder:
+    renderers = {
+        "Find my pathway": lambda: show_finder(qualifications),
+        "Qualification library": lambda: show_library(qualifications),
+        "Training & assessment": lambda: show_training(qualifications),
+        "My progress": lambda: show_progress(qualifications),
+        "Skills Bridge": lambda: show_skills_bridge(api(), qualifications),
+        "Reports": lambda: show_reports(auth_token(), qualifications),
+    }
+    page_key = next((key for label, _, key in NAVIGATION if label == selected), "reports")
+    with st.container(key=f"page_{page_key}"):
         try:
-            show_finder(qualifications)
+            if not qualifications and selected in allowed[:3]:
+                empty_state("New possibilities are on the way", "There are no qualifications in the catalog yet. Please check back later.", "learn")
+                if st.button("Refresh catalog", icon=":material/refresh:"):
+                    load_qualifications.clear()
+                    st.rerun()
+            else:
+                renderers[selected]()
         except ApiError as error:
             handle_api_error(error)
-    if training.open:
-        with training:
-            try:
-                show_training(qualifications)
-            except ApiError as error:
-                handle_api_error(error)
-    if is_admin and tabs[4].open:
-        with tabs[4]:
-            try:
-                show_reports(auth_token(), qualifications)
-            except ApiError as error:
-                handle_api_error(error)
-    if progress.open:
-        with progress:
-            try:
-                show_progress(qualifications)
-            except ApiError as error:
-                handle_api_error(error)
-    with library:
-        st.subheader("Explore your possibilities")
-        st.write("A quick look at the five qualifications available in this prototype.")
-        for start in range(0, len(qualifications), 3):
-            for column, qualification in zip(st.columns(3), qualifications[start:start + 3]):
-                with column, st.container(border=True):
-                    st.caption(qualification["sector"].upper())
-                    st.markdown(f"### {qualification['name']}")
-                    st.write(", ".join(qualification["possible_jobs"]))
-                    with st.expander(f"View {len(qualification['competencies'])} sample competencies"):
-                        for competency in qualification["competencies"]:
-                            st.write(f"• {competency['name']}")
-        st.caption("To explore a pathway, describe one of these careers in the Find my pathway tab.")
-    st.divider()
-    st.caption("PROTOTYPE · Uses Python rules and sample data. Match scores are illustrative. Readiness is self-reported and is not an official competency assessment result.")
+    if selected != "Find my pathway" or "analysis" in st.session_state:
+        footer()
 
 
 if __name__ == "__main__":

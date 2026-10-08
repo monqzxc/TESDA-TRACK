@@ -15,15 +15,23 @@ def ui(live_api):
 
 
 def rerun(app, tab=None):
-    """AppTest doesn't model tabs as widgets, so every rerun falls back to the first tab unless we re-select it."""
-    if tab:
-        app.session_state["main_tabs"] = tab
+    """Use the same sidebar navigation as a learner when changing views."""
+    if tab and app.session_state["main_tabs"] != tab:
+        next(button for button in app.sidebar.button if button.label == tab).click()
     app.run()
     assert not app.exception
 
 
+def open_account(app):
+    app.button(key="open_account_sidebar").click()
+    rerun(app)
+
+
 def click(app, label, tab=None):
-    next(button for button in app.button if button.label.startswith(label)).click()
+    if label == "Sign out":
+        open_account(app)
+    next(button for button in app.button if button.label.startswith(label)
+         and (label not in {"Sign in", "Create account"} or "dialog_" in (button.key or ""))).click()
     rerun(app, tab)
 
 
@@ -33,7 +41,7 @@ def readiness(app):
 
 def test_pathway_finder_flow(ui):
     app = ui
-    assert [tab.label for tab in app.tabs][:2] == ["Find my pathway", "Qualification library"]
+    assert [button.label for button in app.sidebar.button][:2] == ["Find my pathway", "Qualification library"]
     click(app, "Get Recommendation")
     assert any("Describe your career goal" in warning.value for warning in app.warning)
     assert "analysis" not in app.session_state
@@ -87,10 +95,11 @@ def test_pathway_finder_flow(ui):
 
 
 def create_account(app, email="juan@example.com", password="correct horse battery"):
-    app.text_input(key="register_name").set_value("Juan Dela Cruz")
-    app.text_input(key="register_email").set_value(email)
-    app.text_input(key="register_password").set_value(password)
-    app.checkbox(key="register_consent").check()
+    open_account(app)
+    app.text_input(key="dialog_register_name").set_value("Juan Dela Cruz")
+    app.text_input(key="dialog_register_email").set_value(email)
+    app.text_input(key="dialog_register_password").set_value(password)
+    app.checkbox(key="dialog_register_consent").check()
     click(app, "Create account")
 
 
@@ -101,7 +110,7 @@ def test_signed_in_learner_results_are_saved_to_progress(ui):
     assert any("Sign in to save" in info.value for info in app.info)
 
     create_account(app)
-    assert any("Signed in as" in md.value for md in app.sidebar.markdown)
+    assert "Juan Dela Cruz" in app.button(key="open_account_sidebar").label
     app.session_state["main_tabs"] = "Find my pathway"
     click(app, "Become a welder")
     click(app, "Get Recommendation")
@@ -122,27 +131,30 @@ def test_signed_in_learner_results_are_saved_to_progress(ui):
     assert any("Assessment Readiness Check" in value for value in history), "the saved session keeps its pathway"
 
     click(app, "Sign out")
-    assert app.text_input(key="signin_email")
+    open_account(app)
+    assert app.text_input(key="dialog_signin_email")
 
 
 def test_sign_in_with_wrong_password_shows_an_error(ui):
     app = ui
     create_account(app)
     click(app, "Sign out")
-    app.text_input(key="signin_email").set_value("juan@example.com")
-    app.text_input(key="signin_password").set_value("not the password")
+    open_account(app)
+    app.text_input(key="dialog_signin_email").set_value("juan@example.com")
+    app.text_input(key="dialog_signin_password").set_value("not the password")
     click(app, "Sign in")
-    assert any(error.value == "Incorrect email or password." for error in app.sidebar.error)
+    assert any(error.value == "Incorrect email or password." for error in app.error)
 
 
 def test_registration_requires_consent(ui):
     app = ui
-    app.text_input(key="register_name").set_value("Juan Dela Cruz")
-    app.text_input(key="register_email").set_value("juan@example.com")
-    app.text_input(key="register_password").set_value("correct horse battery")
+    open_account(app)
+    app.text_input(key="dialog_register_name").set_value("Juan Dela Cruz")
+    app.text_input(key="dialog_register_email").set_value("juan@example.com")
+    app.text_input(key="dialog_register_password").set_value("correct horse battery")
     click(app, "Create account")
-    assert any("privacy notice" in error.value for error in app.sidebar.error)
-    assert not any("Signed in as" in md.value for md in app.sidebar.markdown)
+    assert any("privacy notice" in error.value for error in app.error)
+    assert "auth" not in app.session_state
 
 
 def recommend_welding_readiness_path(app):
@@ -200,6 +212,7 @@ def test_training_tab_lists_nearby_programs_and_learner_applies(ui, training_dat
 
 
 def test_library_lists_catalog_from_the_api(ui):
+    rerun(ui, "Qualification library")
     headings = [m.value for m in ui.markdown if m.value.startswith("### ")]
     assert "### Cookery NC II" in headings and len(headings) == 5
 
@@ -213,15 +226,16 @@ def test_unreachable_api_shows_an_error_instead_of_crashing(monkeypatch):
 
 def test_reports_tab_is_only_for_administrators(ui, training_data):
     app = ui
-    assert "Reports" not in [tab.label for tab in app.tabs]
+    assert "Reports" not in [button.label for button in app.sidebar.button]
     create_account(app)
-    assert "Reports" not in [tab.label for tab in app.tabs], "learners don't see reports"
+    assert "Reports" not in [button.label for button in app.sidebar.button], "learners don't see reports"
     click(app, "Sign out")
 
-    app.text_input(key="signin_email").set_value("admin@example.com")
-    app.text_input(key="signin_password").set_value("correct horse battery")
+    open_account(app)
+    app.text_input(key="dialog_signin_email").set_value("admin@example.com")
+    app.text_input(key="dialog_signin_password").set_value("correct horse battery")
     click(app, "Sign in")
-    assert "Reports" in [tab.label for tab in app.tabs]
+    assert "Reports" in [button.label for button in app.sidebar.button]
     rerun(app, "Reports")
     metrics = {metric.label: metric.value for metric in app.metric}
     assert metrics["Learners"] == "2", "the administrator and the learner who signed up"

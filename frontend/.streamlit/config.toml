@@ -1,7 +1,51 @@
+# Native widget theme, adapted from Streamlit's Fluent template.
+# Local system fonts keep the application usable without a font CDN.
 [theme]
 base = "light"
-primaryColor = "#176852"
-backgroundColor = "#ffffff"
-secondaryBackgroundColor = "#f0f5f1"
-textColor = "#223c32"
-font = "sans serif"
+primaryColor = "#175CD3"
+backgroundColor = "#F5F7FB"
+secondaryBackgroundColor = "#EDF2F9"
+textColor = "#102A56"
+linkColor = "#175CD3"
+linkUnderline = true
+borderColor = "#D4DEEC"
+showWidgetBorder = true
+showSidebarBorder = true
+baseRadius = "0.75rem"
+buttonRadius = "0.75rem"
+font = "'Segoe UI', Arial, sans-serif"
+headingFont = "'Segoe UI', Arial, sans-serif"
+codeFont = "Consolas, monospace"
+baseFontSize = 16
+baseFontWeight = 400
+headingFontSizes = ["2.5rem", "1.75rem", "1.375rem", "1.125rem", "1rem", "0.875rem"]
+headingFontWeights = [700, 700, 650, 600, 600, 600]
+codeFontSize = "0.875rem"
+codeTextColor = "#24466F"
+codeBackgroundColor = "#EDF2F9"
+blueColor = "#175CD3"
+greenColor = "#0D9488"
+greenBackgroundColor = "#E3F5EE"
+greenTextColor = "#11664C"
+redColor = "#CF3446"
+redBackgroundColor = "#FEEDF0"
+redTextColor = "#9E2436"
+yellowColor = "#B77914"
+yellowBackgroundColor = "#FFF5DF"
+yellowTextColor = "#805315"
+orangeColor = "#B65B14"
+violetColor = "#7054BF"
+grayColor = "#60728B"
+dataframeBorderColor = "#DFE7F2"
+dataframeHeaderBackgroundColor = "#EAF0F9"
+dataframeHeaderTextColor = "#102A56"
+chartCategoricalColors = ["#175CD3", "#0D9488", "#7054BF", "#BD791E", "#CF5064", "#5281B8"]
+
+[theme.sidebar]
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F2F5FA"
+textColor = "#102A56"
+primaryColor = "#175CD3"
+borderColor = "#D4DEEC"
+codeBackgroundColor = "#F2F5FA"
+headingFontSizes = ["1.75rem", "1.5rem", "1.25rem", "1.125rem", "1rem", "0.875rem"]
