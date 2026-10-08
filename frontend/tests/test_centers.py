@@ -149,8 +149,10 @@ def test_unknown_or_too_short_places_resolve_to_nothing(text):
     (Filters(kinds=("assessment",)), {"assessment-1", "assessment-2"}),
     (Filters(region_code="III"), {"training-1", "assessment-1"}),
     (Filters(province="Cebu"), {"training-3"}),
-    (Filters(text="welding manila"), {"training-2"}),
+    (Filters(text="welding manila"), {"training-2", "assessment-2"}),
     (Filters(text="TARLAC"), {"training-1", "assessment-1"}),
+    (Filters(text="computer systems"), {"training-1", "training-3", "assessment-1"}),
+    (Filters(text="batch 3"), {"training-2"}),
     (Filters(), {"training-1", "training-2", "training-3", "training-4", "assessment-1", "assessment-2"}),
 ])
 def test_site_filters_pick_matching_centers(filters, expected):
@@ -237,7 +239,7 @@ def test_map_points_carry_only_what_the_map_shows():
     assert tarlac == {
         "id": "training-1", "kind": "training", "name": "Tarlac Skills Institute", "place": "Tarlac City, Tarlac",
         "region": "Central Luzon", "latitude": 15.4755, "longitude": 120.5963,
-        "distance_km": pytest.approx(105.9, abs=0.1)}
+        "distance_km": pytest.approx(105.9, abs=0.1), "address": None, "phone": None, "email": None}
 
 
 def test_provinces_lists_each_known_province_once():

@@ -168,8 +168,11 @@ def filter_centers(centers: list[dict], filters: Filters, today: date) -> list[d
                 or (filters.province and center.get("province") != filters.province)):
             continue
         if words:
+            # A center is found by where it is or by what it offers.
+            offered = [text for listing in center["programs"] + center["schedules"]
+                       for text in (listing.get("title"), listing["qualification"]["name"])]
             haystack = _key(" ".join(filter(None, (center["name"], place_label(center), center["region"],
-                                                   center.get("address")))))
+                                                   center.get("address"), *offered))))
             if not all(word in haystack for word in words):
                 continue
         if center["kind"] == TRAINING and narrows_programs:
@@ -228,11 +231,12 @@ def summary(center: dict, today: date) -> str:
 
 
 def map_points(centers: list[dict], today: date) -> list[dict]:
-    """What the map needs to pin a center; centers without coordinates are left off."""
+    """What the map needs to pin a center and fill its popup; centers without coordinates are left off."""
     return [{"id": center["id"], "kind": center["kind"], "name": center["name"], "place": place_label(center),
              "region": center["region"], "latitude": center["latitude"], "longitude": center["longitude"],
              "distance_km": None if center["distance_km"] is None else round(center["distance_km"], 1),
-             "summary": summary(center, today)}
+             "summary": summary(center, today), "address": center.get("address"), "phone": center.get("phone"),
+             "email": center.get("email")}
             for center in centers if center["latitude"] is not None]
 
 
