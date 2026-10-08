@@ -61,6 +61,8 @@ services:
       API_BASE_URL: http://api:8000
       # Only Caddy reaches this container; trust its X-Forwarded-For so the app sees each learner's address.
       FORWARDED_ALLOW_IPS: "*"
+      # Road routes for Directions; set ROUTING_URL empty in .env to use Google Maps links instead.
+      ROUTING_URL: ${ROUTING_URL-https://routing.openstreetmap.de/routed-car}
     depends_on:
       api:
         condition: service_healthy

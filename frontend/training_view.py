@@ -13,6 +13,7 @@ from api_client import ApiClient, ApiError
 from centers import (ASSESSMENT, KIND_LABELS, PHILIPPINE_TIME, TRAINING, Filters, build_centers, filter_centers,
                      find_place, friendly_day, map_points, place_label, provinces, sort_centers, summary,
                      with_distances)
+from directions import RouteClient, RouteError, travel_time
 from presentation import section_header
 
 DELIVERY_LABELS = {"institution_based": "In a training center", "enterprise_based": "At a workplace",
@@ -24,8 +25,9 @@ KIND_COLORS = {TRAINING: "blue", ASSESSMENT: "green"}
 GLYPHS = {TRAINING: '<path d="M12 6.5 4.5 10 12 13.5 19.5 10 12 6.5Z M7.5 11.6v3.1c2.6 1.7 6.4 1.7 9 0v-3.1 M19.5 10v4.2"/>',
           ASSESSMENT: '<circle cx="12" cy="9.6" r="3.7"/><path d="m9.5 12.6-1.3 4.9 3.8-1.8 3.8 1.8-1.3-4.9"/>'}
 TILE_COLORS = {TRAINING: ("#eaf1fd", "#175cd3"), ASSESSMENT: ("#e3f5ee", "#0d9488")}
-LOCATION_HELP = ("Your browser asks first. We round your location to about 1 km, use it only to measure "
-                 "distances, and never save it.")
+LOCATION_HELP = ("Your browser asks first. We round your location to about 1 km and never save it. We use it to "
+                 "measure distances and, when you ask for directions, share it with an OpenStreetMap routing service "
+                 "to plan the route.")
 LOCATION_ERRORS = {
     "denied": "Location access was declined. Search a place or choose a region instead.",
     "unavailable": "Your location couldn't be found. Search a place or choose a region instead.",
@@ -59,7 +61,8 @@ _CENTER_MAP = st.components.v2.component(
     css="""
     :host { display: block; font-family: var(--st-font, "Segoe UI", Arial, sans-serif); }
     .map-shell { position: relative; height: 700px; overflow: hidden; border: 1px solid #dfe7f2; border-radius: 16px;
-                 background: #aad3df; box-shadow: 0 2px 8px #102a5608; }
+                 background: #aad3df; box-shadow: 0 2px 8px #102a5608;
+                 scroll-margin-top: 72px; }  /* clear of the app's fixed header when a route scrolls it into view */
     #center-map { position: absolute; inset: 0; }
     .map-shell .leaflet-container { font-family: inherit; font-size: 12px; background: #aad3df; }
     .map-status { position: absolute; z-index: 800; top: 12px; left: 60px; right: 12px; padding: 9px 12px;
@@ -104,6 +107,8 @@ _CENTER_MAP = st.components.v2.component(
     .map-shell .leaflet-bar a { width: 36px; height: 36px; line-height: 36px; color: #102a56; }
     .map-shell .locate-control a { display: grid; place-items: center; }
     .map-shell .locate-control svg { width: 18px; height: 18px; }
+    .map-shell .route-label { padding: 4px 10px; border: 0; border-radius: 999px; background: #102a56; color: #fff;
+                              font-size: 12px; font-weight: 700; box-shadow: 0 2px 8px #102a5640; }
     @media (max-width: 640px) { .map-shell { height: 440px; } .map-legend { font-size: 11px; gap: 10px; } }
     """,
     js="""
@@ -117,6 +122,8 @@ _CENTER_MAP = st.components.v2.component(
     const COLORS = { training: '#175cd3', assessment: '#0d9488' }
     let GLYPHS = { training: '', assessment: '' }  // sent by Python with the data, so pins match the result tiles
     const CROSSHAIR = '<svg viewBox="0 0 24 24" fill="none" stroke="#102a56" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="6.5"/><circle cx="12" cy="12" r="2" fill="#102a56"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>'
+    // The routing service asks to be credited, with a way to report mistakes in the map it routes on.
+    const ROUTE_CREDIT = 'Route by <a href="https://project-osrm.org/" target="_blank" rel="noopener noreferrer">OSRM</a> · <a href="https://www.openstreetmap.org/fixthemap" target="_blank" rel="noopener noreferrer">Fix the map</a>'
     const views = new WeakMap()
 
     const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character =>
@@ -161,10 +168,14 @@ _CENTER_MAP = st.components.v2.component(
                          iconSize: [34, 44], iconAnchor: [17, 43], popupAnchor: [0, -38] })
     }
 
-    function popupHtml(center) {
+    function popupHtml(center, canRoute) {
       const kind = kindOf(center.kind)
       const destination = encodeURIComponent(`${center.latitude},${center.longitude}`)
       const distance = center.distance_km == null ? '' : `<span>${kilometres(center.distance_km)} away</span>`
+      // From the learner's own location the route is drawn on this map; otherwise Google Maps finds one.
+      const directions = canRoute
+        ? `<button type="button" data-route="${escapeHtml(center.id)}">Directions</button>`
+        : `<a href="https://www.google.com/maps/dir/?api=1&destination=${destination}" target="_blank" rel="noopener noreferrer">Directions ↗</a>`
       return `<div class="popup">
         <div class="popup-tile ${kind}">${tileSvg(kind)}</div>
         <div><div class="popup-name">${escapeHtml(center.name)}</div>
@@ -173,7 +184,7 @@ _CENTER_MAP = st.components.v2.component(
         <div class="popup-meta">${distance}<span>${escapeHtml(center.summary)}</span></div>
         <div class="popup-actions">
           <button type="button" data-details>View details ›</button>
-          <a href="https://www.google.com/maps/dir/?api=1&destination=${destination}" target="_blank" rel="noopener noreferrer">Directions ↗</a>
+          ${directions}
         </div></div>`
     }
 
@@ -204,6 +215,7 @@ _CENTER_MAP = st.components.v2.component(
       map.on('focus click', () => map.scrollWheelZoom.enable())
       map.on('blur', () => map.scrollWheelZoom.disable())
       const view = { map, L, markers: new Map(), selected: null, fingerprint: null, framing: null, asked: false,
+                     canRoute: false, routeKey: null, routeLayer: null, shell: root.querySelector('.map-shell'),
                      status: root.querySelector('.map-status'), emit: () => {} }
       const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -227,10 +239,16 @@ _CENTER_MAP = st.components.v2.component(
       } })
       map.addControl(new Locate())
       map.on('popupopen', event => {
-        const details = event.popup.getElement()?.querySelector('[data-details]')
+        const popup = event.popup.getElement()
+        const details = popup?.querySelector('[data-details]')
         if (details) details.onclick = () => {
           // Beside the map on wide screens, below it on phones.
           document.querySelector('.st-key-center_detail')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+        }
+        const directions = popup?.querySelector('[data-route]')
+        if (directions) directions.onclick = () => {
+          setStatus(view, 'Finding a route…')
+          view.emit('route', directions.dataset.route)
         }
       })
       new ResizeObserver(() => map.invalidateSize()).observe(element)
@@ -265,7 +283,8 @@ _CENTER_MAP = st.components.v2.component(
         const kind = kindOf(center.kind)
         const marker = L.marker([center.latitude, center.longitude], { icon: pinIcon(L, kind, false),
           title: center.name, alt: `${center.name}, ${kind === 'assessment' ? 'assessment center' : 'training center'}` })
-        marker.bindPopup(popupHtml(center), { maxWidth: 280, autoPanPadding: [24, 24] })
+        // Built as it opens, so Directions follow the learner's location being on or off.
+        marker.bindPopup(() => popupHtml(center, view.canRoute), { maxWidth: 280, autoPanPadding: [24, 24] })
         marker.on('click', () => {
           markSelected(view, center.id)
           view.emit('picked', center.id)
@@ -307,6 +326,44 @@ _CENTER_MAP = st.components.v2.component(
       map.fitBounds(L.latLngBounds(points), { padding: [48, 48], maxZoom: 13 })
     }
 
+    function revealMap(view) {
+      // Directions asked for below the map, as on phones, would otherwise be drawn out of sight.
+      const box = view.shell.getBoundingClientRect()
+      const onScreen = Math.min(box.bottom, window.innerHeight) - Math.max(box.top, 0)
+      if (onScreen < box.height * 0.75) view.shell.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    }
+
+    function drawRoute(view, route) {
+      const { L, map } = view
+      const key = route && JSON.stringify([route.center_id, route.origin, route.destination, route.path.length])
+      if (key === view.routeKey) return
+      view.routeKey = key
+      if (view.routeLayer) {
+        view.routeLayer.remove()
+        map.attributionControl.removeAttribution(ROUTE_CREDIT)
+        view.routeLayer = null
+      }
+      if (!route) return
+      const still = { interactive: false, lineJoin: 'round' }
+      // Dotted where there's no road: from the approximate location to the nearest road, and from the last road on.
+      const dotted = { ...still, color: COLORS.training, weight: 3, opacity: 0.8, dashArray: '1 7', lineCap: 'round' }
+      const line = L.polyline(route.path, { ...still, color: COLORS.training, weight: 6, opacity: 0.95 })
+      view.routeLayer = L.layerGroup([
+        L.polyline([route.origin, route.start], dotted),
+        L.polyline([route.end, route.destination], dotted),
+        L.polyline(route.path, { ...still, color: '#fff', weight: 10, opacity: 0.9 }),
+        line,
+        // The center's own pin can be folded into a cluster at this zoom; this copy always marks the end.
+        L.marker(route.destination, { icon: pinIcon(L, kindOf(route.kind), true), interactive: false, keyboard: false,
+                                      zIndexOffset: 2000 }),
+      ]).addTo(map)
+      line.bindTooltip(escapeHtml(route.label), { permanent: true, direction: 'center', className: 'route-label' })
+      map.attributionControl.addAttribution(ROUTE_CREDIT)
+      map.closePopup()
+      map.fitBounds(L.latLngBounds([route.origin, route.destination, ...route.path]), { padding: [56, 56], maxZoom: 16 })
+      revealMap(view)
+    }
+
     export default function (component) {
       const { parentElement: root, data, setTriggerValue } = component
       let disposed = false
@@ -318,10 +375,12 @@ _CENTER_MAP = st.components.v2.component(
           views.set(root, view)
         }
         view.emit = setTriggerValue
+        view.canRoute = Boolean(data?.can_route)
         if (data?.glyphs) GLYPHS = data.glyphs
         const centers = (data?.centers || []).filter(center =>
           Number.isFinite(center.latitude) && Number.isFinite(center.longitude))
         const reference = data?.reference || null
+        const route = data?.route || null
         const fingerprint = JSON.stringify(centers.map(center => [center.id, center.latitude, center.longitude, center.distance_km, center.summary]))
         if (fingerprint !== view.fingerprint) {
           drawMarkers(view, centers)
@@ -330,15 +389,17 @@ _CENTER_MAP = st.components.v2.component(
         const framing = JSON.stringify([centers.map(center => center.id), reference])
         drawReference(view, reference)
         if (framing !== view.framing) {
-          frame(view, centers, reference)
+          if (!route) frame(view, centers, reference)  // a drawn route keeps the view on itself
           view.framing = framing
         }
         const selected = data?.selected || null
         if (selected !== view.selected) {
           markSelected(view, selected)
-          if (selected) showSelected(view, selected)
-          else view.map.closePopup()
+          if (!selected) view.map.closePopup()
+          else if (!route) showSelected(view, selected)
         }
+        drawRoute(view, route)
+        if (view.status.textContent === 'Finding a route…') setStatus(view, '')
         if (!centers.length) setStatus(view, 'No centers match this search yet.')
         else if (view.status.textContent === 'No centers match this search yet.') setStatus(view, '')
         if (!data?.want_location) view.asked = false
@@ -410,7 +471,7 @@ def _defaults(qualification_codes: list[str]) -> dict:
             "training_region": None, "training_province": None, "training_qualifications": qualification_codes,
             "training_mode": None, "training_availability": None, "training_scholarship": False,
             "training_use_location_top": False, "training_search": "", "training_sort": "nearest",
-            "training_selected": None, "training_list_limit": LIST_STEP}
+            "training_selected": None, "training_route": None, "training_list_limit": LIST_STEP}
 
 
 def _draft() -> dict:
@@ -424,6 +485,9 @@ def _set_location_wanted(wanted: bool) -> None:
     st.session_state.pop("training_location_error", None)
     if not wanted:
         st.session_state.pop("training_location", None)
+        # Routes start at the learner's location, so they go with it.
+        st.session_state["training_route"] = None
+        st.session_state.pop("training_routes", None)
 
 
 def _toggle_location_from_toolbar() -> None:
@@ -477,6 +541,30 @@ def _on_location_failed() -> None:
     code = _map_event("location_failed")
     _set_location_wanted(False)
     st.session_state["training_location_error"] = code if code in LOCATION_ERRORS else "unavailable"
+
+
+def _show_route(center_id: str | None) -> None:
+    st.session_state["training_route"] = center_id
+
+
+def _on_route_asked() -> None:
+    """Directions in a pin's popup: open that center and draw the road route to it."""
+    center_id = _map_event("route")
+    if isinstance(center_id, str):
+        st.session_state["training_selected"] = st.session_state["training_route"] = center_id
+
+
+def _route(router: RouteClient, location: dict, center: dict) -> dict:
+    """The road route from the learner's location to a center, kept for the session so the router is asked once."""
+    origin = {"latitude": location["latitude"], "longitude": location["longitude"]}
+    destination = {"latitude": center["latitude"], "longitude": center["longitude"]}
+    memo = st.session_state.setdefault("training_routes", {})
+    memo_key = json.dumps([origin, destination])
+    if memo_key not in memo:
+        memo[memo_key] = router.route(origin, destination)
+        while len(memo) > 8:
+            memo.pop(next(iter(memo)))
+    return memo[memo_key]
 
 
 def _fit(api_client: ApiClient, token: str | None, code: str, goal: str | None, place: dict | None,
@@ -687,7 +775,7 @@ def _schedule_cards(center: dict, api_client: ApiClient, token: str | None,
 
 
 def _detail(center: dict, api_client: ApiClient, token: str | None, fits: dict[int, dict], today: date,
-            on_sign_in: Callable[[], None] | None) -> None:
+            on_sign_in: Callable[[], None] | None, can_route: bool = False, route: dict | None = None) -> None:
     with st.container(key="center_detail"):
         st.button("All results", key="training_button_back", icon=":material/arrow_back:", type="tertiary",
                   on_click=_select, args=(None,))
@@ -707,11 +795,25 @@ def _detail(center: dict, api_client: ApiClient, token: str | None, fits: dict[i
             st.caption(line)
         with st.container(horizontal=True, gap="small"):
             if center["latitude"] is not None:
-                st.link_button("Directions", f"https://www.google.com/maps/dir/?api=1&destination="
-                                             f"{center['latitude']},{center['longitude']}", icon=":material/directions:")
+                google_maps = (f"https://www.google.com/maps/dir/?api=1&destination="
+                               f"{center['latitude']},{center['longitude']}")
+                if not can_route:
+                    st.link_button("Directions", google_maps, icon=":material/directions:")
+                elif route:
+                    st.button("Hide route", key="training_button_hide_route", icon=":material/close:",
+                              on_click=_show_route, args=(None,))
+                else:
+                    st.button("Directions", key="training_button_route", icon=":material/directions:",
+                              on_click=_show_route, args=(center["id"],))
+                if can_route:
+                    st.link_button("Google Maps", google_maps, icon=":material/map:")
             website = center.get("website") or ""
             if website.startswith(("https://", "http://")):
                 st.link_button("Website", website, icon=":material/open_in_new:")
+        if route:
+            st.markdown(f":material/route: **{_kilometres(route['distance_km'])} by road** · "
+                        f"about {travel_time(route['duration_min'])} by car")
+            st.caption("From your approximate location, without traffic. Google Maps has turn-by-turn directions.")
         st.divider()
         if center["kind"] == TRAINING:
             _program_cards(center, fits, today)
@@ -721,8 +823,12 @@ def _detail(center: dict, api_client: ApiClient, token: str | None, fits: dict[i
 
 def show_training(qualifications: list[dict], api_client: ApiClient, regions: list[dict] | dict,
                   token: str | None, goal: str | None = None, on_sign_in: Callable[[], None] | None = None,
-                  default_qualifications: Iterable[str] = ()) -> None:
-    """The center finder: filters, a map whose pins can be selected, results, and the selected center's details."""
+                  default_qualifications: Iterable[str] = (), router: RouteClient | None = None) -> None:
+    """The center finder: filters, a map whose pins can be selected, results, and the selected center's details.
+
+    With a `router`, Directions draw the road route from the learner's own location; without one, or without a
+    location, they open Google Maps.
+    """
     regions = {region["code"]: region for region in regions} if isinstance(regions, list) else regions
     names = {qualification["code"]: qualification["name"] for qualification in qualifications}
     for key, value in _defaults([code for code in default_qualifications if code in names]).items():
@@ -767,6 +873,18 @@ def show_training(qualifications: list[dict], api_client: ApiClient, regions: li
     centers = sort_centers(with_distances(filter_centers(everything, filters, today), reference), order, today)
     selected = next((center for center in centers if center["id"] == state["training_selected"]), None)
     state["training_selected"] = selected["id"] if selected else None
+    # A route belongs to the center being viewed and starts at the learner's own location.
+    can_route = bool(router and location)
+    if not (can_route and selected and selected["latitude"] is not None
+            and state["training_route"] == selected["id"]):
+        state["training_route"] = None
+    route = None
+    if state["training_route"]:
+        try:
+            route = _route(router, location, selected)
+        except RouteError as error:
+            state["training_route"] = None
+            state["training_notice"] = ("warning", error.message)
 
     with st.container(key="training_workspace"):
         filters_column, map_column, results_column = st.columns([1, 1.7, 1.28], gap="small")
@@ -778,9 +896,16 @@ def show_training(qualifications: list[dict], api_client: ApiClient, regions: li
                           "reference": reference and {key: reference[key] for key in
                                                       ("latitude", "longitude", "label", "mine")},
                           "want_location": bool(applied["training_use_location"] and not location),
+                          "can_route": can_route,
+                          "route": route and {
+                              "center_id": selected["id"], "kind": selected["kind"], "path": route["path"],
+                              "origin": [location["latitude"], location["longitude"]],
+                              "destination": [selected["latitude"], selected["longitude"]],
+                              "start": route["start"], "end": route["end"],
+                              "label": f"{travel_time(route['duration_min'])} · {_kilometres(route['distance_km'])}"},
                           "glyphs": GLYPHS},
                     key=MAP_KEY, on_picked_change=_on_center_picked, on_located_change=_on_located,
-                    on_location_failed_change=_on_location_failed)
+                    on_location_failed_change=_on_location_failed, on_route_change=_on_route_asked)
     with results_column, st.container(border=True, key="center_results"):
         notice = state.pop("training_notice", None)
         if notice:
@@ -796,6 +921,6 @@ def show_training(qualifications: list[dict], api_client: ApiClient, regions: li
                     except ApiError as error:
                         if error.status_code == 401:
                             raise
-            _detail(selected, api_client, token, fits, today, on_sign_in)
+            _detail(selected, api_client, token, fits, today, on_sign_in, can_route=can_route, route=route)
         else:
             _results(centers, reference, today, truncated)

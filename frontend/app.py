@@ -7,6 +7,7 @@ from pathlib import Path
 import streamlit as st
 
 from api_client import ApiClient, ApiError, ApiUnavailableError
+from directions import DEFAULT_ROUTING_URL, RouteClient
 from presentation import FAVICON, brand, empty_state, footer, journey, section_header
 from skills_bridge_view import show_skills_bridge
 from training_view import show_training as show_center_finder
@@ -43,6 +44,17 @@ def get_api(base_url: str) -> ApiClient:
 
 def api() -> ApiClient:
     return get_api(api_base_url())
+
+
+def routing_url() -> str:
+    """Where Directions get road routes. Empty turns them off, leaving links to Google Maps."""
+    return os.environ.get("ROUTING_URL", DEFAULT_ROUTING_URL).strip()
+
+
+@st.cache_resource
+def get_router(url: str) -> RouteClient:
+    # One client for every learner, so the routing service's request limit holds across sessions.
+    return RouteClient(url)
 
 
 @st.cache_data(ttl="5m")
@@ -422,9 +434,11 @@ def format_when(iso_timestamp: str) -> str:
 
 def show_training(qualifications: list[dict]) -> None:
     chosen = st.session_state.get("qualification_selected")
+    routing = routing_url()
     show_center_finder(qualifications, api(), load_regions(api_base_url()), auth_token(),
                        goal=st.session_state.get("original_query"), on_sign_in=open_account,
-                       default_qualifications=[chosen] if chosen else [])
+                       default_qualifications=[chosen] if chosen else [],
+                       router=get_router(routing) if routing else None)
 
 
 def show_my_pathways(token: str) -> None:

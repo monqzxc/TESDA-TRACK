@@ -14,6 +14,7 @@ import pytest
 from streamlit.testing.v1 import AppTest
 
 from api_client import ApiClient, ApiUnavailableError, UNAVAILABLE_MESSAGE
+from directions import RouteClient, RouteError
 
 APP_FILE = Path(__file__).resolve().parents[1] / "app.py"
 PAGE = "Training & assessment"
@@ -93,6 +94,7 @@ def api(monkeypatch):
         return {"id": "application-1", "status": "pending"}
 
     monkeypatch.setattr(ApiClient, "_request", blocked_request)
+    monkeypatch.setattr(RouteClient, "route", blocked_request)
     monkeypatch.setattr(ApiClient, "qualifications", lambda self: deepcopy(CATALOG))
     monkeypatch.setattr(ApiClient, "regions", lambda self: deepcopy(REGIONS))
     monkeypatch.setattr(ApiClient, "training_providers", lambda self: deepcopy([TARLAC, MANILA]))
@@ -321,3 +323,155 @@ def test_a_site_outage_shows_a_message_instead_of_crashing(api, monkeypatch):
     monkeypatch.setattr(ApiClient, "training_providers", unavailable)
     app = open_page()
     assert any(UNAVAILABLE_MESSAGE in message.value for message in [*app.error, *app.warning])
+
+
+# Directions: the road route from the learner's own location, drawn on the map.
+
+ROUTE = {"path": [[15.47003, 120.59001], [15.47288, 120.59348], [15.47551, 120.59629]], "distance_km": 1.2401,
+         "duration_min": 3.405, "start": [15.47003, 120.59001], "end": [15.47551, 120.59629]}
+
+
+@pytest.fixture
+def routes(api, monkeypatch):
+    """A fake road router. The list records the origin and destination of every route asked for."""
+    monkeypatch.delenv("ROUTING_URL", raising=False)
+    asked = []
+
+    def route(self, origin, destination):
+        asked.append((origin, destination))
+        return deepcopy(ROUTE)
+
+    monkeypatch.setattr(RouteClient, "route", route)
+    return asked
+
+
+def open_located():
+    """The page once the browser has shared the learner's location (rounded, as the map sends it)."""
+    return open_page(training_use_location=True, training_use_location_top=True,
+                     training_location={"latitude": 15.47, "longitude": 120.59})
+
+
+def map_event(app, event, value):
+    """Act on the map as its JavaScript does: one trigger event, sent with the next run.
+
+    The browser sends the component's own (empty) state too; without it the event never reaches the callbacks.
+    """
+    [element] = app.get("bidi_component")
+    states = app._tree.get_widget_states()
+    states.widgets.add(id=element.proto.id, json_value="{}")
+    states.widgets.add(id=f"$$STREAMLIT_INTERNAL_KEY_{element.proto.id}__events",
+                       json_trigger_value=json.dumps([{"event": event, "value": value}]))
+    app = app._run(states)
+    assert not app.exception
+    return app
+
+
+def links(block):
+    return {element.proto.label: element.proto.url for element in block.get("link_button")}
+
+
+def button_keys(app):
+    return [button.key for button in app.button]
+
+
+def show_route(app, center_id):
+    open_center(app, center_id)
+    return run(app.button(key="training_button_route").click())
+
+
+def test_directions_draw_the_road_route_from_my_location(api, routes):
+    app = open_located()
+    open_center(app, "training-1")
+    assert map_data(app)["route"] is None, "only once asked for"
+    run(app.button(key="training_button_route").click())
+    assert routes == [({"latitude": 15.47, "longitude": 120.59}, {"latitude": 15.4755, "longitude": 120.5963})]
+    route = map_data(app)["route"]
+    assert (route["center_id"], route["path"]) == ("training-1", ROUTE["path"])
+    assert (route["origin"], route["destination"]) == ([15.47, 120.59], [15.4755, 120.5963])
+    assert "3 min" in route["label"] and "1.2 km" in route["label"]
+    detail = text(app.container(key="center_detail"))
+    assert "1.2 km by road" in detail and "about 3 min by car" in detail
+
+
+def test_a_route_is_asked_for_once_per_trip(api, routes):
+    app = open_located()
+    show_route(app, "training-1")
+    run(app)
+    run(app.button(key="training_button_hide_route").click())
+    run(app.button(key="training_button_route").click())
+    assert len(routes) == 1, "reruns and showing it again reuse the route instead of asking the public router again"
+    assert map_data(app)["route"]["center_id"] == "training-1"
+
+
+def test_without_my_location_directions_open_google_maps(api, routes):
+    app = open_page()
+    open_center(app, "training-1")
+    assert "training_button_route" not in button_keys(app)
+    assert links(app.container(key="center_detail"))["Directions"] == \
+        "https://www.google.com/maps/dir/?api=1&destination=15.4755,120.5963"
+    assert map_data(app)["can_route"] is False
+
+
+def test_hiding_the_route_takes_it_off_the_map(api, routes):
+    app = open_located()
+    show_route(app, "training-1")
+    run(app.button(key="training_button_hide_route").click())
+    assert map_data(app)["route"] is None
+    assert "training_button_route" in button_keys(app)
+
+
+def test_leaving_a_center_drops_its_route(api, routes):
+    app = open_located()
+    show_route(app, "training-1")
+    run(app.button(key="training_button_back").click())
+    assert map_data(app)["route"] is None
+    open_center(app, "training-1")
+    assert map_data(app)["route"] is None, "coming back shows the center, not the old route"
+
+
+def test_turning_my_location_off_drops_the_route_and_forgets_it(api, routes):
+    app = open_located()
+    show_route(app, "training-1")
+    run(app.toggle(key="training_use_location_top").set_value(False))
+    assert map_data(app)["route"] is None
+    app = map_event(run(app.toggle(key="training_use_location_top").set_value(True)), "located",
+                    {"latitude": 15.47, "longitude": 120.59})
+    run(app.button(key="training_button_route").click())
+    assert len(routes) == 2, "routes start at the learner's location, so they're forgotten with it"
+
+
+def test_directions_in_a_map_popup_open_that_center_with_its_route(api, routes):
+    app = open_located()
+    assert map_data(app)["can_route"] is True, "the popups offer Directions"
+    app = map_event(app, "route", "training-2")
+    assert map_data(app)["selected"] == "training-2"
+    assert map_data(app)["route"]["destination"] == [14.5995, 120.9842]
+    assert "Manila Welding Institute" in text(app.container(key="center_detail"))
+
+
+def test_a_routing_failure_is_explained_and_google_maps_stays_a_click_away(api, monkeypatch):
+    monkeypatch.delenv("ROUTING_URL", raising=False)
+    attempts = []
+
+    def unavailable(self, origin, destination):
+        attempts.append(destination)
+        raise RouteError("Directions can't be loaded right now.")
+
+    monkeypatch.setattr(RouteClient, "route", unavailable)
+    app = open_located()
+    show_route(app, "training-1")
+    assert "Directions can't be loaded right now." in text(app.container(key="center_results"))
+    assert map_data(app)["route"] is None
+    assert links(app.container(key="center_detail"))["Google Maps"].startswith("https://www.google.com/maps/dir/")
+    run(app)
+    assert len(attempts) == 1, "a failed route isn't retried on every rerun; each try can wait out the timeout"
+    assert "training_button_route" in button_keys(app), "the learner can try again"
+
+
+def test_directions_stay_with_google_maps_when_routing_is_switched_off(api, monkeypatch):
+    monkeypatch.setenv("ROUTING_URL", "")
+    app = open_located()
+    open_center(app, "training-1")
+    assert "training_button_route" not in button_keys(app)
+    assert "Directions" in links(app.container(key="center_detail"))
+    assert map_data(app)["can_route"] is False
