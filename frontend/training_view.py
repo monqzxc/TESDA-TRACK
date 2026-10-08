@@ -35,6 +35,10 @@ PAGE_SIZE = 100  # the largest page the listing endpoints return
 MAX_PAGES = 10
 LIST_STEP = 20
 MAP_KEY = "center_map"
+# The filter panel's widgets hold a draft; Search copies it here, and the results follow this copy.
+APPLIED = "training_applied"
+FILTER_KEYS = ("training_kinds", "training_use_location", "training_place", "training_region", "training_province",
+               "training_qualifications", "training_mode", "training_availability", "training_scholarship")
 _MARKDOWN = re.compile(r"([\\`*_{}\[\]()#+\-.!|>~:$<])")
 _STYLES = Path(__file__).with_name("training.css")
 
@@ -409,8 +413,14 @@ def _defaults(qualification_codes: list[str]) -> dict:
             "training_selected": None, "training_list_limit": LIST_STEP}
 
 
+def _draft() -> dict:
+    return {key: st.session_state[key] for key in FILTER_KEYS}
+
+
 def _set_location_wanted(wanted: bool) -> None:
+    """The toolbar toggle and the map apply at once, so the location choice skips the draft."""
     st.session_state["training_use_location"] = st.session_state["training_use_location_top"] = wanted
+    st.session_state[APPLIED] = {**st.session_state.get(APPLIED, _draft()), "training_use_location": wanted}
     st.session_state.pop("training_location_error", None)
     if not wanted:
         st.session_state.pop("training_location", None)
@@ -421,6 +431,7 @@ def _toggle_location_from_toolbar() -> None:
 
 
 def _apply_filters() -> None:
+    st.session_state[APPLIED] = _draft()
     _set_location_wanted(st.session_state["training_use_location"])
     st.session_state["training_selected"] = None
     st.session_state["training_list_limit"] = LIST_STEP
@@ -429,6 +440,7 @@ def _apply_filters() -> None:
 def _clear_filters() -> None:
     for key, value in _defaults([]).items():
         st.session_state[key] = value
+    st.session_state[APPLIED] = _draft()
     _set_location_wanted(False)
 
 
@@ -517,10 +529,12 @@ def _header() -> None:
 
 def _filters(names: dict[str, str], regions: dict, province_options: list[str], place_text: str,
              place: dict | None, waiting_for_location: bool) -> None:
-    with st.container(key="training_filters_panel"), st.form("center_filters", enter_to_submit=True):
+    # Not a form: choosing a region has to rerun the page so the province list can follow it. The results
+    # still wait for Search, because they're drawn from the applied copy of these filters.
+    with st.container(key="training_filters_panel", border=True):
         with st.container(horizontal=True, horizontal_alignment="distribute", vertical_alignment="center"):
             st.markdown("**Filters**")
-            st.form_submit_button("Clear all", key="training_button_clear", type="tertiary", on_click=_clear_filters)
+            st.button("Clear all", key="training_button_clear", type="tertiary", on_click=_clear_filters)
         _label(":material/layers:", "Type")
         st.segmented_control("Center type", [TRAINING, ASSESSMENT], selection_mode="multi",
                              format_func=KIND_LABELS.get, key="training_kinds", label_visibility="collapsed",
@@ -532,15 +546,18 @@ def _filters(names: dict[str, str], regions: dict, province_options: list[str], 
             st.caption(f":material/location_off: {LOCATION_ERRORS.get(error, LOCATION_ERRORS['unavailable'])}")
         elif waiting_for_location:
             st.caption(":material/my_location: Waiting for your browser to share your location…")
+        # Enter searches, as it did when the panel was a form.
         st.text_input("Search location", key="training_place", placeholder="Enter city, province, or region",
-                      icon=":material/pin_drop:", help="Distances are measured from this place when your own "
-                                                       "location is off.")
+                      icon=":material/pin_drop:", on_change=_apply_filters,
+                      help="Distances are measured from this place when your own location is off.")
         if place_text.strip() and not place:
             st.caption(f"We couldn't find “{plain(place_text.strip())}”. Try a city, province or region name.")
         st.selectbox("Region", list(regions), index=None, format_func=lambda code: regions[code]["name"],
                      key="training_region", placeholder="Select region")
         st.selectbox("Province", province_options, index=None, key="training_province",
-                     placeholder="Select province" if province_options else "No provinces listed yet",
+                     placeholder="Select province" if province_options
+                     else "No provinces listed for this region" if st.session_state["training_region"]
+                     else "No provinces listed yet",
                      disabled=not province_options)
         _label(":material/work:", "Qualification / skills / job")
         st.multiselect("Qualification", list(names), format_func=names.get, key="training_qualifications",
@@ -552,8 +569,8 @@ def _filters(names: dict[str, str], regions: dict, province_options: list[str], 
                      key="training_availability", placeholder="Select availability",
                      help="Programs with a flexible start count as available.")
         st.checkbox("Scholarship available", key="training_scholarship", help="Applies to training centers.")
-        st.form_submit_button("Search", key="training_button_search", type="primary", icon=":material/search:",
-                              width="stretch", on_click=_apply_filters)
+        st.button("Search", key="training_button_search", type="primary", icon=":material/search:",
+                  width="stretch", on_click=_apply_filters)
 
 
 def _center_row(center: dict, today: date) -> None:
@@ -710,14 +727,17 @@ def show_training(qualifications: list[dict], api_client: ApiClient, regions: li
     names = {qualification["code"]: qualification["name"] for qualification in qualifications}
     for key, value in _defaults([code for code in default_qualifications if code in names]).items():
         st.session_state.setdefault(key, value)
+    st.session_state.setdefault(APPLIED, _draft())
     st.html(_STYLES)
     _header()
-    state = st.session_state
-    state["training_qualifications"] = [code for code in state["training_qualifications"] if code in names]
-    if state["training_region"] not in regions:
-        state["training_region"] = None
+    state, applied = st.session_state, st.session_state[APPLIED]
+    for values in (state, applied):
+        values["training_qualifications"] = [code for code in values["training_qualifications"] if code in names]
+        if values["training_region"] not in regions:
+            values["training_region"] = None
     try:
-        providers, assessment_centers, programs, schedules, truncated = _load(api_client, state["training_qualifications"])
+        providers, assessment_centers, programs, schedules, truncated = _load(api_client,
+                                                                              applied["training_qualifications"])
     except ApiError as error:
         if error.status_code == 401:
             raise
@@ -729,19 +749,20 @@ def show_training(qualifications: list[dict], api_client: ApiClient, regions: li
         return
     today = datetime.now(PHILIPPINE_TIME).date()
     everything = build_centers(providers, assessment_centers, programs, schedules, regions)
-    province_options = provinces(everything)
-    if state["training_province"] not in province_options:
-        state["training_province"] = None
-    location = state.get("training_location") if state["training_use_location"] else None
-    place_text = state["training_place"] or ""
+    for values in (state, applied):
+        if values["training_province"] not in provinces(everything, values["training_region"]):
+            values["training_province"] = None
+    province_options = provinces(everything, state["training_region"])
+    location = state.get("training_location") if applied["training_use_location"] else None
+    place_text = applied["training_place"] or ""
     place = find_place(place_text, everything, regions) if place_text.strip() else None
     reference = ({**location, "label": "your location", "mine": True} if location
                  else {**place, "mine": False} if place else None)
-    filters = Filters(kinds=tuple(state["training_kinds"] or ()), region_code=state["training_region"],
-                      province=state["training_province"], text=state["training_search"] or "",
-                      qualification_codes=tuple(state["training_qualifications"]),
-                      delivery_mode=state["training_mode"], within_days=state["training_availability"],
-                      scholarship=state["training_scholarship"])
+    filters = Filters(kinds=tuple(applied["training_kinds"] or ()), region_code=applied["training_region"],
+                      province=applied["training_province"], text=state["training_search"] or "",
+                      qualification_codes=tuple(applied["training_qualifications"]),
+                      delivery_mode=applied["training_mode"], within_days=applied["training_availability"],
+                      scholarship=applied["training_scholarship"])
     order = state["training_sort"] if reference or state["training_sort"] != "nearest" else "name"
     centers = sort_centers(with_distances(filter_centers(everything, filters, today), reference), order, today)
     selected = next((center for center in centers if center["id"] == state["training_selected"]), None)
@@ -751,12 +772,12 @@ def show_training(qualifications: list[dict], api_client: ApiClient, regions: li
         filters_column, map_column, results_column = st.columns([1, 1.7, 1.28], gap="small")
     with filters_column:
         _filters(names, regions, province_options, place_text, place,
-                 waiting_for_location=bool(state["training_use_location"] and not location))
+                 waiting_for_location=bool(applied["training_use_location"] and not location))
     with map_column:
         _CENTER_MAP(data={"centers": map_points(centers, today), "selected": state["training_selected"],
                           "reference": reference and {key: reference[key] for key in
                                                       ("latitude", "longitude", "label", "mine")},
-                          "want_location": bool(state["training_use_location"] and not location),
+                          "want_location": bool(applied["training_use_location"] and not location),
                           "glyphs": GLYPHS},
                     key=MAP_KEY, on_picked_change=_on_center_picked, on_located_change=_on_located,
                     on_location_failed_change=_on_location_failed)
@@ -768,10 +789,10 @@ def show_training(qualifications: list[dict], api_client: ApiClient, regions: li
             fits = {}
             if selected["kind"] == TRAINING:
                 for code in sorted({program["qualification"]["code"] for program in selected["programs"]}
-                                   & set(state["training_qualifications"])):
+                                   & set(applied["training_qualifications"])):
                     try:
                         fits |= _fit(api_client, token, code, goal, None if location else place,
-                                     state["training_mode"], state["training_scholarship"])
+                                     applied["training_mode"], applied["training_scholarship"])
                     except ApiError as error:
                         if error.status_code == 401:
                             raise

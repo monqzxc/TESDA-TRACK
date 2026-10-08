@@ -162,6 +162,20 @@ def test_type_filter_applies_when_searching(api):
     assert [point["id"] for point in map_data(app)["centers"]] == ["assessment-7"]
 
 
+def test_provinces_follow_the_chosen_region_before_searching(api):
+    app = open_page()
+    run(app.selectbox(key="training_region").set_value("III"))
+    assert app.selectbox(key="training_province").options == ["Tarlac"]
+    run(app.selectbox(key="training_province").set_value("Tarlac"))
+    run(app.selectbox(key="training_region").set_value("NCR"))
+    province = app.selectbox(key="training_province")
+    assert province.options == [] and province.disabled, "Tarlac isn't in the National Capital Region"
+    assert province.value is None, "a province from another region is dropped"
+    assert len(row_ids(app)) == 3, "results wait for Search"
+    search(app)
+    assert row_ids(app) == ["assessment-7", "training-2"]
+
+
 def test_a_qualification_keeps_only_centers_that_offer_it(api):
     app = open_page()
     app.multiselect(key="training_qualifications").select("CSS-NC-II")
@@ -213,6 +227,12 @@ def test_a_searched_place_orders_centers_by_distance_from_it(api):
     assert row_ids(app)[0] == "training-1"
     assert "from Tarlac" in text(app.container(key="center_results"))
     assert map_data(app)["reference"]["label"] == "Tarlac"
+
+
+def test_enter_in_the_place_box_searches(api):
+    app = open_page()
+    run(app.text_input(key="training_place").input("Tarlac"))
+    assert row_ids(app)[0] == "training-1"
 
 
 def test_an_unknown_place_is_reported_and_filters_nothing(api):

@@ -7,7 +7,13 @@
 .st-key-training_toolbar [data-testid="stTextInput"] input { min-height: 44px; }
 
 /* Filters */
-.st-key-training_filters_panel [data-testid="stForm"] { padding: 1.1rem 1.15rem 1.25rem; box-shadow: 0 2px 8px #102a5605; }
+.st-key-training_filters_panel {
+  padding: 1.1rem 1.15rem 1.25rem;
+  background: var(--track-surface, #fff);
+  border-color: var(--track-border, #dfe7f2);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #102a5605;
+}
 .st-key-training_filters_panel [data-testid="stIconMaterial"] { color: var(--track-navy, #102a56); }
 /* Both center types side by side, as in the design. */
 .st-key-training_kinds [data-testid="stButtonGroup"] { flex-wrap: nowrap; }
