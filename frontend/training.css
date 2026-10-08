@@ -1,7 +1,53 @@
 /* Training & assessment center finder. Loaded only on that page; the app-wide layer is styles.css. */
 
-/* Three panels need more room than the reading pages. */
+/* The map and the results need more room than the reading pages. */
 .block-container:has(.st-key-page_training) { max-width: 1500px; }
+
+/* Map beside the results; when that is too tight for both, the results go below the map. */
+.st-key-training_workspace { container: training-workspace / inline-size; }
+@container training-workspace (max-width: 959px) {
+  .st-key-training_workspace > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] { flex-wrap: wrap; }
+  .st-key-training_workspace > [data-testid="stLayoutWrapper"] > [data-testid="stHorizontalBlock"] > [data-testid="stColumn"] {
+    flex: 1 1 100% !important;
+    width: 100% !important;
+  }
+}
+
+/* The filters float over the map's left edge. Where the map is too narrow for that, they sit below it. */
+.st-key-training_map_stage { position: relative; container: training-map / inline-size; }
+.st-key-training_map_stage > .st-key-center_map { order: -1; }
+@container training-map (min-width: 640px) {
+  .st-key-training_map_stage > [data-testid="stLayoutWrapper"]:has(> .st-key-training_filters_panel) {
+    position: absolute;
+    z-index: 2;
+    top: 12px;
+    left: 12px;
+    width: 300px;
+    max-height: calc(100% - 24px);
+    display: flex;
+    flex-direction: column;
+  }
+  .st-key-training_map_stage .st-key-training_filters_panel {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    padding-bottom: 0;
+    border-radius: 14px;
+    box-shadow: 0 10px 28px #102a5626;
+  }
+  /* Search stays in reach while the longer filters scroll beneath it. */
+  .st-key-training_map_stage .st-key-training_button_search {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    padding: 0.75rem 0 1.15rem;
+    margin-top: -0.75rem;
+    background: var(--track-surface, #fff);
+  }
+  /* Read by the map so its pins, routes and popups stay clear of the panel: 12px + 300px + 12px. */
+  .st-key-training_map_stage > .st-key-center_map { --map-overlay-inset: 324px; }
+}
 
 .st-key-training_toolbar { padding-bottom: 1.1rem; }
 .st-key-training_toolbar [data-testid="stTextInput"] input { min-height: 44px; }
@@ -57,8 +103,4 @@
 @media (max-width: 640px) {
   .st-key-training_toolbar { justify-content: flex-start; }
   [class*="st-key-center_row_"] { padding-inline: 0.25rem; }
-  /* On a phone the stacked columns read map, results, then the longer filter form. */
-  .st-key-training_workspace [data-testid="stHorizontalBlock"] > *:has(.st-key-center_map) { order: 1; }
-  .st-key-training_workspace [data-testid="stHorizontalBlock"] > *:has(.st-key-center_results) { order: 2; }
-  .st-key-training_workspace [data-testid="stHorizontalBlock"] > *:has(.st-key-training_filters_panel) { order: 3; }
 }

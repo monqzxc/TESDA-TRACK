@@ -60,16 +60,19 @@ _CENTER_MAP = st.components.v2.component(
     """,
     css="""
     :host { display: block; font-family: var(--st-font, "Segoe UI", Arial, sans-serif); }
+    /* --map-overlay-inset is how far the page's filter panel reaches over the map's left edge (0 when it doesn't). */
     .map-shell { position: relative; height: 700px; overflow: hidden; border: 1px solid #dfe7f2; border-radius: 16px;
-                 background: #aad3df; box-shadow: 0 2px 8px #102a5608;
+                 background: #aad3df; box-shadow: 0 2px 8px #102a5608; isolation: isolate;
                  scroll-margin-top: 72px; }  /* clear of the app's fixed header when a route scrolls it into view */
     #center-map { position: absolute; inset: 0; }
     .map-shell .leaflet-container { font-family: inherit; font-size: 12px; background: #aad3df; }
-    .map-status { position: absolute; z-index: 800; top: 12px; left: 60px; right: 12px; padding: 9px 12px;
+    .map-status { position: absolute; z-index: 800; top: 12px; left: calc(var(--map-overlay-inset, 0px) + 12px);
+                  right: 58px; padding: 9px 12px;
                   border-radius: 10px; background: #ffffffee; color: #52647e; font-size: 13px;
                   box-shadow: 0 2px 10px #102a5614; pointer-events: none; }
     .map-status[hidden] { display: none; }
-    .map-legend { position: absolute; z-index: 800; left: 12px; bottom: 14px; display: flex; gap: 16px; flex-wrap: wrap;
+    .map-legend { position: absolute; z-index: 800; left: calc(var(--map-overlay-inset, 0px) + 12px); bottom: 14px;
+                  display: flex; gap: 16px; flex-wrap: wrap;
                   padding: 10px 14px; border-radius: 10px; background: #fff; color: #52647e; font-size: 12px;
                   box-shadow: 0 2px 10px #102a5614; }
     .map-legend span { display: inline-flex; align-items: center; gap: 6px; }
@@ -206,17 +209,29 @@ _CENTER_MAP = st.components.v2.component(
       }, { enableHighAccuracy: false, maximumAge: 300000, timeout: 10000 })
     }
 
+    // The filter panel can float over the map's left edge. Framing and popups keep clear of it; the popups share
+    // one padding array, which Leaflet reads each time a popup opens, so a resize moves them all.
+    function syncInset(view) {
+      view.inset = parseFloat(getComputedStyle(view.shell).getPropertyValue('--map-overlay-inset')) || 0
+      view.popupPadding[0] = view.inset + 24
+    }
+
+    const padded = (view, padding) => ({ paddingTopLeft: [view.inset + padding, padding],
+                                         paddingBottomRight: [padding, padding] })
+
     function createView(root, L) {
       const element = root.querySelector('#center-map')
-      const map = L.map(element, { zoomSnap: 0.5, scrollWheelZoom: false, tap: true })
+      const map = L.map(element, { zoomSnap: 0.5, scrollWheelZoom: false, tap: true, zoomControl: false })
       map.attributionControl.setPrefix('<a href="https://leafletjs.com" target="_blank" rel="noopener noreferrer">Leaflet</a>')
       map.fitBounds(PHILIPPINES)
+      // Top right, away from the filter panel.
+      L.control.zoom({ position: 'topright' }).addTo(map)
       // The page scrolls past the map; wheel zoom only after the map is clicked into.
       map.on('focus click', () => map.scrollWheelZoom.enable())
       map.on('blur', () => map.scrollWheelZoom.disable())
       const view = { map, L, markers: new Map(), selected: null, fingerprint: null, framing: null, asked: false,
                      canRoute: false, routeKey: null, routeLayer: null, shell: root.querySelector('.map-shell'),
-                     status: root.querySelector('.map-status'), emit: () => {} }
+                     status: root.querySelector('.map-status'), inset: 0, popupPadding: [24, 24], emit: () => {} }
       const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map)
@@ -228,7 +243,7 @@ _CENTER_MAP = st.components.v2.component(
               html: `<div class="center-cluster"><span>${cluster.getChildCount()}</span></div>` }) })
         : L.featureGroup()
       view.group.addTo(map)
-      const Locate = L.Control.extend({ options: { position: 'topleft' }, onAdd() {
+      const Locate = L.Control.extend({ options: { position: 'topright' }, onAdd() {
         const box = L.DomUtil.create('div', 'leaflet-bar locate-control')
         const button = L.DomUtil.create('a', '', box)
         Object.assign(button, { href: '#', title: 'Show centers near me', innerHTML: CROSSHAIR })
@@ -251,7 +266,10 @@ _CENTER_MAP = st.components.v2.component(
           view.emit('route', directions.dataset.route)
         }
       })
-      new ResizeObserver(() => map.invalidateSize()).observe(element)
+      new ResizeObserver(() => {
+        map.invalidateSize()
+        syncInset(view)
+      }).observe(element)
       return view
     }
 
@@ -284,7 +302,8 @@ _CENTER_MAP = st.components.v2.component(
         const marker = L.marker([center.latitude, center.longitude], { icon: pinIcon(L, kind, false),
           title: center.name, alt: `${center.name}, ${kind === 'assessment' ? 'assessment center' : 'training center'}` })
         // Built as it opens, so Directions follow the learner's location being on or off.
-        marker.bindPopup(() => popupHtml(center, view.canRoute), { maxWidth: 280, autoPanPadding: [24, 24] })
+        marker.bindPopup(() => popupHtml(center, view.canRoute), { maxWidth: 280, autoPanPadding: [24, 24],
+                                                                   autoPanPaddingTopLeft: view.popupPadding })
         marker.on('click', () => {
           markSelected(view, center.id)
           view.emit('picked', center.id)
@@ -312,8 +331,10 @@ _CENTER_MAP = st.components.v2.component(
     function frame(view, centers, reference) {
       const { L, map } = view
       if (!centers.length) {
-        if (reference) map.setView([reference.latitude, reference.longitude], 9)
-        else map.fitBounds(PHILIPPINES)
+        if (reference) {
+          map.setView([reference.latitude, reference.longitude], 9)
+          map.panBy([-view.inset / 2, 0], { animate: false })  // centered in the part the filter panel leaves open
+        } else map.fitBounds(PHILIPPINES, padded(view, 0))
         return
       }
       let points = centers.map(center => [center.latitude, center.longitude])
@@ -323,7 +344,7 @@ _CENTER_MAP = st.components.v2.component(
           .sort((a, b) => a.distance_km - b.distance_km).slice(0, 6)
         points = [[reference.latitude, reference.longitude], ...nearest.map(center => [center.latitude, center.longitude])]
       }
-      map.fitBounds(L.latLngBounds(points), { padding: [48, 48], maxZoom: 13 })
+      map.fitBounds(L.latLngBounds(points), { ...padded(view, 48), maxZoom: 13 })
     }
 
     function revealMap(view) {
@@ -360,7 +381,7 @@ _CENTER_MAP = st.components.v2.component(
       line.bindTooltip(escapeHtml(route.label), { permanent: true, direction: 'center', className: 'route-label' })
       map.attributionControl.addAttribution(ROUTE_CREDIT)
       map.closePopup()
-      map.fitBounds(L.latLngBounds([route.origin, route.destination, ...route.path]), { padding: [56, 56], maxZoom: 16 })
+      map.fitBounds(L.latLngBounds([route.origin, route.destination, ...route.path]), { ...padded(view, 56), maxZoom: 16 })
       revealMap(view)
     }
 
@@ -375,6 +396,7 @@ _CENTER_MAP = st.components.v2.component(
           views.set(root, view)
         }
         view.emit = setTriggerValue
+        syncInset(view)
         view.canRoute = Boolean(data?.can_route)
         if (data?.glyphs) GLYPHS = data.glyphs
         const centers = (data?.centers || []).filter(center =>
@@ -887,11 +909,11 @@ def show_training(qualifications: list[dict], api_client: ApiClient, regions: li
             state["training_notice"] = ("warning", error.message)
 
     with st.container(key="training_workspace"):
-        filters_column, map_column, results_column = st.columns([1, 1.7, 1.28], gap="small")
-    with filters_column:
+        map_column, results_column = st.columns([2.7, 1.3], gap="small")
+    # The filters float over the map's left edge, or drop below the map when it is narrow (training.css).
+    with map_column, st.container(key="training_map_stage"):
         _filters(names, regions, province_options, place_text, place,
                  waiting_for_location=bool(applied["training_use_location"] and not location))
-    with map_column:
         _CENTER_MAP(data={"centers": map_points(centers, today), "selected": state["training_selected"],
                           "reference": reference and {key: reference[key] for key in
                                                       ("latitude", "longitude", "label", "mine")},
