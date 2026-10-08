@@ -18,9 +18,13 @@ def settings(**kwargs):
 
 
 class MCPServer:
+    """Answers like mcp.skills-bridge.ph: it echoes a protocol version it supports and returns each tool result
+    both as JSON text and as structured content (``text=True`` drops the structured copy)."""
+    PROTOCOLS = {"2025-06-18", "2025-03-26"}
+
     def __init__(self, *, sse=False, text=False, tool_result=None, session_id="test-session"):
         self.sse, self.text = sse, text
-        self.tool_result = tool_result or (lambda name, args: {"input": args, "occupations": []})
+        self.tool_result = tool_result or (lambda name, args: MATCH_SKILLS)
         self.session_headers = {"Mcp-Session-Id": session_id} if session_id else {}
         self.requests = []
         self.deletes = []
@@ -37,12 +41,16 @@ class MCPServer:
             assert "id" not in body
             return httpx.Response(202)
         if body["method"] == "initialize":
-            result = {"protocolVersion": "2025-03-26", "capabilities": {"tools": {}},
-                      "serverInfo": {"name": "test", "version": "1"}}
+            requested = body["params"]["protocolVersion"]
+            result = {"protocolVersion": requested if requested in self.PROTOCOLS else "2025-06-18",
+                      "capabilities": {"tools": {"listChanged": True}},
+                      "serverInfo": {"name": "sbp-analytics", "version": "3.4.3"}}
         else:
             assert body["method"] == "tools/call"
             data = self.tool_result(body["params"]["name"], body["params"]["arguments"])
-            result = {"content": [{"type": "text", "text": json.dumps(data)}]} if self.text else {"structuredContent": data}
+            result = {"content": [{"type": "text", "text": json.dumps(data)}], "isError": False}
+            if not self.text:
+                result["structuredContent"] = data
         message = {"jsonrpc": "2.0", "id": body["id"], "result": result}
         if self.sse:
             # Provider framing and an unrelated event before the matching response.
@@ -52,16 +60,147 @@ class MCPServer:
         return httpx.Response(200, json=message, headers=self.session_headers)
 
 
+def tool_calls(server):
+    return [(body["params"]["name"], body["params"]["arguments"])
+            for _, body in server.requests if body["method"] == "tools/call"]
+
+
+# Response shapes captured from mcp.skills-bridge.ph (sbp-analytics 3.4.3) on 2026-10-07, shortened.
+MATCH_SKILLS = {
+    "input": {"skills": ["welding", "blueprint reading"], "skill_ids": []},
+    "promulgated_only": True,
+    "resolution": [
+        {"term": "welding", "source": "name", "matched_skills": 133, "truncated": False, "best_similarity": 1.0,
+         "strength": "strong", "sample": [{"skill_id": 13628, "name": "Performing Tack welding", "similarity": 1.0}]},
+        {"term": "blueprint reading", "source": "name", "matched_skills": 8, "truncated": False,
+         "best_similarity": 1.0, "strength": "strong",
+         "sample": [{"skill_id": 3, "name": "Blueprint Reading", "similarity": 1.0}]}],
+    "unmatched": [],
+    "qualifications": [{
+        "qualification_id": 371, "code": "HEA-NC3-0008", "title": "Ice Plant Refrigeration Servicing",
+        "kind": "training_regulation", "kind_label": "Training Regulation", "level": "nc_3", "level_label": "NC III",
+        "status": "promulgated", "sector": "Heating, Ventilation, Air-Conditioning and Refrigeration",
+        "review_due_at": "2029-10-04", "score": 0.833, "terms_matched": ["welding", "blueprint reading"],
+        "terms_missing": [], "matched_skills": 5, "total_skills": 225, "skill_share": 0.022,
+        "evidence": [{"term": "welding", "skills": ["Inspecting welding tools and equipment"]},
+                     {"term": "blueprint reading", "skills": ["Measuring tools and blueprint reading"]}],
+        "occupations": [{"occupation_id": 760, "title": "Ice Plant Refrigeration Technician"}]}],
+    "occupations": [{
+        "occupation_id": 760, "title": "Ice Plant Refrigeration Technician", "code": None, "psoc_code": None,
+        "psoc_title": None, "sector": "Heating, Ventilation, Air-Conditioning and Refrigeration", "score": 0.833,
+        "terms_matched": ["welding", "blueprint reading"], "terms_missing": [], "via": ["standards"],
+        "matched_skills": 5, "open_posts": 0,
+        "qualifications": [{"qualification_id": 371, "code": "HEA-NC3-0008",
+                            "title": "Ice Plant Refrigeration Servicing", "level_label": "NC III",
+                            "status": "promulgated", "terms_matched": 2}]}],
+    "note": "score (0-1) is the share of input skills an entry covers.",
+}
+WELDER = {  # occupation_curriculum_profile(occupation_name="welder"): an exact title
+    "occupation": {"occupation_id": 37, "title": "Welder", "code": None, "psoc_code": "7212",
+                   "psoc_title": "WELDERS AND FLAME CUTTERS", "sector": "Metals and Engineering",
+                   "description": None, "is_verified": True},
+    "demand": {"open_posts": 2, "total_posts": 5, "open_workers": 4,
+               "monthly_trend": [{"period": "2026-10", "label": "Oct", "value": 2}]},
+    "has_promulgated_standard": True,
+    "standards": [{"qualification_id": 162, "code": "MET-NC2-0004", "title": "Gas Welding",
+                   "kind": "training_regulation", "kind_label": "Training Regulation", "level": "nc_2",
+                   "level_label": "NC II", "status": "promulgated", "promulgated_at": "2026-10-04T10:28:48",
+                   "review_due_at": "2029-10-04"}],
+    "pathway": [{"level": "nc_2", "label": "NC II", "promulgated": True, "any_status": True}],
+    "top_skills": [{"skill_id": 13628, "name": "Performing Tack welding", "type": "technical", "category": "hard",
+                    "demand": 2, "is_covered": True}],
+    "area_demand": [{"region": "National Capital Region", "posts": 2, "workers": 4}],
+}
+PROFILE_BY_NAME = {
+    "welder": WELDER,
+    "programmer": {"error": "No exact occupation match for 'programmer'. Pick one and retry with its occupation_id.",
+                   "did_you_mean": [{"occupation_id": 776, "title": "CNC Programmer", "open_posts": 0},
+                                    {"occupation_id": 184, "title": "Java Programmer", "open_posts": 1}]},
+    "xyzzy plumbus": {"error": "No occupation matches 'xyzzy plumbus'."},
+}
+GRAPH_SEARCH = {
+    "welder": {"results": [{"type": "skill", "id": 14142, "label": "Use of arc welder"},
+                           {"type": "occupation", "id": 421, "label": "Gas Welder (Oxy-Acetylene)"},
+                           {"type": "occupation", "id": 37, "label": "Welder"}]},
+    "programmer": {"results": [{"type": "occupation", "id": 776, "label": "CNC Programmer"},
+                               {"type": "occupation", "id": 184, "label": "Java Programmer"},
+                               {"type": "occupation", "id": 367,
+                                "label": "Mechatronics and Automation Programmer-Technician"},
+                               {"type": "qualification", "id": 60, "label": "INF-NC3-0006"}]},
+    "xyzzy plumbus": {"results": []},
+}
+
+
+def title_lookup(name, args):
+    if name == "occupation_curriculum_profile" and set(args) == {"occupation_name"}:
+        return PROFILE_BY_NAME[args["occupation_name"]]
+    if name == "graph_search" and set(args) == {"term"}:
+        return GRAPH_SEARCH[args["term"]]
+    raise AssertionError(f"Unexpected Skills Bridge call: {name} {args}")
+
+
+FRONT_END_DEVELOPER = {  # occupation_curriculum_profile(occupation_id=133)
+    "occupation": {"occupation_id": 133, "title": "Front-end Web Developer", "code": None, "psoc_code": "3514",
+                   "psoc_title": "WEB TECHNICIANS", "sector": "Information and Communications Technology",
+                   "description": None, "is_verified": True},
+    "demand": {"open_posts": 1, "total_posts": 1, "open_workers": 10,
+               "monthly_trend": [{"period": "2026-10", "label": "Oct", "value": 1}]},
+    "has_promulgated_standard": True,
+    "standards": [
+        {"qualification_id": 47, "code": "INF-NC3-0004", "title": "Web Development", "kind": "training_regulation",
+         "kind_label": "Training Regulation", "level": "nc_3", "level_label": "NC III", "status": "promulgated",
+         "promulgated_at": "2026-09-10T05:51:29", "review_due_at": "2029-09-10"},
+        {"qualification_id": 60, "code": "INF-NC3-0006", "title": "Programming (Java)", "kind": "training_regulation",
+         "kind_label": "Training Regulation", "level": "nc_3", "level_label": "NC III", "status": "draft",
+         "promulgated_at": None, "review_due_at": None},
+        {"qualification_id": 287, "code": "INF-NC3-0009", "title": "Programming (Java)",
+         "kind": "training_regulation", "kind_label": "Training Regulation", "level": "nc_3",
+         "level_label": "NC III", "status": "superseded", "promulgated_at": "2026-10-04T10:46:17",
+         "review_due_at": "2029-10-04"}],
+    "pathway": [{"level": "nc_3", "label": "NC III", "promulgated": True, "any_status": True}],
+    "top_skills": [],
+    "area_demand": [{"region": "National Capital Region", "posts": 1, "workers": 10}],
+}
+
+
+def graph_rows(cypher, rows):
+    return {"error": None, "cypher": cypher, "columns": list(rows[0]) if rows else [], "rows": rows,
+            "truncated": False}
+
+
 @pytest.mark.parametrize("sse,text", [(False, False), (False, True), (True, False), (True, True)])
 def test_handshake_and_read_only_skill_lookup(sse, text):
     server = MCPServer(sse=sse, text=text)
     with SkillsBridgeMCPClient(settings(skills_bridge_api_token="legacy-secret"), httpx.MockTransport(server)) as client:
         data = client.match_skills(["JavaScript"], 3)
-    assert data["input"] == {"skills": ["JavaScript"], "limit": 3, "promulgated_only": True}
+    assert tool_calls(server) == [("match_skills", {"skills": ["JavaScript"], "limit": 3, "promulgated_only": True})]
+    assert data["qualifications"][0]["code"] == "HEA-NC3-0008"
     assert [body["method"] for _, body in server.requests] == ["initialize", "notifications/initialized", "tools/call"]
+    negotiated = server.requests[0][1]["params"]["protocolVersion"]
+    assert all(request.headers["MCP-Protocol-Version"] == negotiated for request, _ in server.requests)
     assert all("authorization" not in request.headers for request, _ in server.requests)
     assert server.requests[-1][0].headers["Mcp-Session-Id"] == "test-session"
     assert client.http.is_closed
+
+
+def test_skill_matches_pass_on_only_what_the_portal_shows():
+    server = MCPServer(tool_result=lambda name, args: MATCH_SKILLS)
+    with SkillsBridgeMCPClient(settings(), httpx.MockTransport(server)) as client:
+        result = client.match_skills(["welding", "blueprint reading"], 3)
+    assert result == {
+        "unmatched": [],
+        "resolution": [{"term": "welding", "matched_skills": 133, "strength": "strong"},
+                       {"term": "blueprint reading", "matched_skills": 8, "strength": "strong"}],
+        "occupations": [{"occupation_id": 760, "title": "Ice Plant Refrigeration Technician",
+                         "sector": "Heating, Ventilation, Air-Conditioning and Refrigeration", "score": 0.833,
+                         "terms_matched": ["welding", "blueprint reading"], "open_posts": 0}],
+        "qualifications": [{"code": "HEA-NC3-0008", "title": "Ice Plant Refrigeration Servicing",
+                            "level_label": "NC III", "status": "promulgated", "review_due_at": "2029-10-04",
+                            "terms_matched": ["welding", "blueprint reading"], "skill_share": 0.022,
+                            "evidence": [{"term": "welding", "skills": ["Inspecting welding tools and equipment"]},
+                                         {"term": "blueprint reading",
+                                          "skills": ["Measuring tools and blueprint reading"]}]}],
+    }
 
 
 @pytest.mark.parametrize("token,expected", [("", None), ("mcp-secret", "Bearer mcp-secret")])
@@ -101,7 +240,7 @@ def test_failed_delete_does_not_hide_the_result():
 
     with SkillsBridgeMCPClient(settings(), httpx.MockTransport(handler)) as client:
         data = client.match_skills(["Welding"])
-    assert data["input"]["skills"] == ["Welding"]
+    assert data["occupations"][0]["occupation_id"] == 760
     assert client.http.is_closed
 
 
@@ -132,38 +271,54 @@ def test_disabled_never_connects():
             pass
 
 
-@pytest.mark.parametrize("sse", [False, True])
-def test_batched_protocol_responses(sse):
-    server = MCPServer()
+def test_occupation_titles_are_sent_only_as_plain_tool_arguments():
+    hostile = "welder' }) DETACH DELETE o //"
 
-    def handler(request):
-        response = server(request)
-        if response.status_code == 202:
-            return response
-        batch = [{"jsonrpc": "2.0", "method": "notifications/progress"}, response.json()]
-        if sse:
-            return httpx.Response(200, text="data: " + json.dumps(batch) + "\n\n",
-                                  headers={"Content-Type": "text/event-stream"})
-        return httpx.Response(200, json=batch)
+    def tools(name, args):
+        if name == "occupation_curriculum_profile":
+            return {"error": f"No occupation matches '{args['occupation_name']}'."}
+        return {"results": []}
 
-    with SkillsBridgeMCPClient(settings(), httpx.MockTransport(handler)) as client:
-        assert client.match_skills(["JavaScript"])["occupations"] == []
-
-
-def test_occupation_search_uses_bounded_graph_query_for_job_terms():
-    def tool(name, args):
-        assert name == "graph_query"
-        query = args["cypher"]
-        assert "Occupation" in query and "welder" in query and "programmer" in query
-        assert "LIMIT 6" in query and "DELETE" not in query
-        return {"rows": [{"occupation_id": 7, "title": "Welder", "sector": "Metals"}]}
-
-    server = MCPServer(tool_result=tool)
+    server = MCPServer(tool_result=tools)
     with SkillsBridgeMCPClient(settings(), httpx.MockTransport(server)) as client:
-        result = client.search_occupations(["welder", "programmer"])
-    assert result["occupations"][0]["title"] == "Welder"
-    assert result["unmatched"] == ["programmer"]
-    assert result["resolution"][0]["matched_occupations"] == 1
+        client.search_occupations(["welder", hostile])
+    assert tool_calls(server) == [
+        ("occupation_curriculum_profile", {"occupation_name": "welder"}), ("graph_search", {"term": "welder"}),
+        ("occupation_curriculum_profile", {"occupation_name": hostile}), ("graph_search", {"term": hostile})]
+
+
+def test_exact_title_comes_first_and_every_term_is_accounted_for():
+    server = MCPServer(tool_result=title_lookup)
+    with SkillsBridgeMCPClient(settings(), httpx.MockTransport(server)) as client:
+        result = client.search_occupations(["welder", "programmer", "xyzzy plumbus"])
+    # Open posts appear only where Skills Bridge counted them; graph_search hits carry no count.
+    assert result == {
+        "unmatched": ["xyzzy plumbus"],
+        "resolution": [{"term": "welder", "matched_occupations": 2, "strength": "exact"},
+                       {"term": "programmer", "matched_occupations": 3, "strength": "partial"},
+                       {"term": "xyzzy plumbus", "matched_occupations": 0, "strength": "unmatched"}],
+        "occupations": [
+            {"occupation_id": 37, "title": "Welder", "sector": "Metals and Engineering", "score": 1.0,
+             "terms_matched": ["welder"], "open_posts": 2},
+            {"occupation_id": 776, "title": "CNC Programmer", "sector": None, "score": 0.8,
+             "terms_matched": ["programmer"], "open_posts": 0},
+            {"occupation_id": 184, "title": "Java Programmer", "sector": None, "score": 0.8,
+             "terms_matched": ["programmer"], "open_posts": 1},
+            {"occupation_id": 421, "title": "Gas Welder (Oxy-Acetylene)", "sector": None, "score": 0.733,
+             "terms_matched": ["welder"]},
+            {"occupation_id": 367, "title": "Mechatronics and Automation Programmer-Technician", "sector": None,
+             "score": 0.7, "terms_matched": ["programmer"]},
+        ],
+    }
+
+
+def test_each_term_keeps_a_place_within_the_limit():
+    server = MCPServer(tool_result=title_lookup)
+    with SkillsBridgeMCPClient(settings(), httpx.MockTransport(server)) as client:
+        result = client.search_occupations(["welder", "programmer"], limit=3)
+    # By score alone the third place would go to Java Programmer, leaving welder with one result.
+    assert [item["title"] for item in result["occupations"]] == [
+        "Welder", "CNC Programmer", "Gas Welder (Oxy-Acetylene)"]
 
 
 @pytest.mark.parametrize("failure", ["http", "timeout", "invalid_json", "wrong_id", "protocol", "oversize", "rpc_error"])
@@ -189,17 +344,44 @@ def test_protocol_and_transport_failures_are_safe_and_close_client(failure):
     assert client.http.is_closed
 
 
+def test_occupation_details_keep_current_standards_and_shown_fields():
+    def tool(name, args):
+        if name == "occupation_curriculum_profile":
+            return FRONT_END_DEVELOPER
+        if "NEEDS_SKILL" in args["cypher"]:
+            return graph_rows(args["cypher"], [{"skill_id": 2274, "name": "HTML5, CSS3 and JavaScript",
+                                                "type": "digital", "weight": 3}])
+        return graph_rows(args["cypher"], [{"benchmark_id": 2671, "title": "webmaster", "status": "confirmed",
+                                            "score": 1.0, "source": "esco", "standard": "ESCO v1.2.1",
+                                            "sample_skills": ["use markup languages"]}])
+    server = MCPServer(tool_result=tool)
+    with SkillsBridgeMCPClient(settings(), httpx.MockTransport(server)) as client:
+        result = client.occupation(133)
+    # Draft and superseded standards are left out, as match_skills leaves them out with promulgated_only.
+    assert result == {
+        "profile": {"occupation": {"occupation_id": 133, "title": "Front-end Web Developer",
+                                   "sector": "Information and Communications Technology"},
+                    "standards": [{"code": "INF-NC3-0004", "title": "Web Development", "level_label": "NC III",
+                                   "status": "promulgated", "review_due_at": "2029-09-10"}]},
+        "skills": [{"skill_id": 2274, "name": "HTML5, CSS3 and JavaScript", "type": "digital"}],
+        "benchmarks": [{"title": "webmaster", "status": "confirmed", "source": "esco", "standard": "ESCO v1.2.1",
+                        "sample_skills": ["use markup languages"]}],
+        "warnings": [],
+    }
+
+
 def test_occupation_uses_only_bounded_application_queries_and_keeps_partial_results():
     def tool(name, args):
         if name == "occupation_curriculum_profile":
-            return {"occupation": {"occupation_id": 133, "title": "Front-end Web Developer"}}
+            assert args == {"occupation_id": 133}
+            return FRONT_END_DEVELOPER
         assert name == "graph_query" and set(args) == {"cypher"}
         assert "{id: 133}" in args["cypher"]
         if "NEEDS_SKILL" in args["cypher"]:
             assert "LIMIT 50" in args["cypher"]
-            return {"rows": [{"skill_id": 1, "name": "JavaScript", "weight": 1}]}
+            return graph_rows(args["cypher"], [{"skill_id": 1, "name": "JavaScript", "type": "digital", "weight": 1}])
         assert "LIMIT 20" in args["cypher"]
-        return {"error": "private graph detail"}
+        return {"error": "private graph detail", "cypher": args["cypher"]}
     server = MCPServer(tool_result=tool)
     with SkillsBridgeMCPClient(settings(), httpx.MockTransport(server)) as client:
         result = client.occupation(133)
@@ -214,11 +396,12 @@ def test_occupation_uses_only_bounded_application_queries_and_keeps_partial_resu
     assert len(server.requests) == 5
 
 
-def test_unknown_occupation_does_not_query_graph():
-    server = MCPServer(tool_result=lambda name, args: {"did_you_mean": []})
+def test_unknown_occupation_is_an_empty_profile_not_an_outage():
+    server = MCPServer(tool_result=lambda name, args: {"error": "Occupation 999 not found."})
     with SkillsBridgeMCPClient(settings(), httpx.MockTransport(server)) as client:
         result = client.occupation(999)
-    assert result["skills"] == [] and len(server.requests) == 3
+    assert result == {"profile": {}, "skills": [], "benchmarks": [], "warnings": []}
+    assert tool_calls(server) == [("occupation_curriculum_profile", {"occupation_id": 999})]
 
 
 class FakeClient:
