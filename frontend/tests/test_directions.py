@@ -8,7 +8,7 @@ import time
 import httpx
 import pytest
 
-from directions import RouteClient, RouteError, travel_time
+from directions import RouteClient, RouteError, profile_urls, travel_time
 
 ROUTER = "https://router.example.test/routed-car"
 MY_PLACE = {"latitude": 15.47, "longitude": 120.59}
@@ -48,6 +48,30 @@ def test_a_route_is_asked_for_in_longitude_latitude_order_and_returned_as_map_po
     assert (route["start"], route["end"]) == ([15.47003, 120.59001], [15.47551, 120.59629]), "where the roads begin"
     assert route["distance_km"] == pytest.approx(1.2401)
     assert route["duration_min"] == pytest.approx(3.405)
+
+
+def test_each_travel_mode_asks_its_own_router():
+    paths = []
+
+    def answer(request):
+        paths.append(request.url.path)
+        return httpx.Response(200, json=FOUND)
+
+    client = router(answer, min_interval=0)
+    assert client.modes == ["car", "bike", "foot"]
+    for mode in client.modes:
+        client.route(MY_PLACE, TARLAC_CENTER, mode)
+    assert [path.split("/route/")[0] for path in paths] == ["/routed-car", "/routed-bike", "/routed-foot"]
+
+
+@pytest.mark.parametrize("url, modes", [
+    ("https://routing.openstreetmap.de/routed-car/", {"car": "https://routing.openstreetmap.de/routed-car",
+                                                      "bike": "https://routing.openstreetmap.de/routed-bike",
+                                                      "foot": "https://routing.openstreetmap.de/routed-foot"}),
+    ("http://osrm:5000", {"car": "http://osrm:5000"}),
+], ids=["public router", "self-hosted"])
+def test_only_the_public_routers_naming_brings_bicycle_and_walking_routes(url, modes):
+    assert profile_urls(url) == modes
 
 
 def test_no_road_to_the_center_is_reported_as_such():
@@ -91,6 +115,28 @@ def test_back_to_back_requests_wait_out_the_minimum_interval():
     client.route(MY_PLACE, TARLAC_CENTER)
     client.route(TARLAC_CENTER, MY_PLACE)
     assert sent[1] - sent[0] >= 0.25, "the public router allows one request a second"
+
+
+def test_requests_from_several_threads_start_a_turn_apart_and_then_run_side_by_side():
+    from concurrent.futures import ThreadPoolExecutor
+    from threading import Event
+
+    started, release = [], Event()
+
+    def answer(request):
+        started.append(time.monotonic())
+        if len(started) == 3:
+            release.set()
+        release.wait(2)  # a slow router: no answer comes back until every request has started
+        return httpx.Response(200, json=FOUND)
+
+    client = router(answer, min_interval=0.2)
+    begun = time.monotonic()
+    with ThreadPoolExecutor(3) as pool:
+        list(pool.map(lambda mode: client.route(MY_PLACE, TARLAC_CENTER, mode), client.modes))
+    gaps = [later - earlier for earlier, later in zip(sorted(started), sorted(started)[1:])]
+    assert all(gap >= 0.15 for gap in gaps), "starts stay a turn apart"
+    assert time.monotonic() - begun < 1.5, "a slow answer doesn't hold back the next request"
 
 
 @pytest.mark.parametrize("minutes, words", [(0.2, "1 min"), (3.4, "3 min"), (20.4, "20 min"), (59.6, "1 hr"),
