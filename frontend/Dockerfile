@@ -4,8 +4,8 @@ ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 PIP_DISABLE_
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-COPY .streamlit ./.streamlit
-COPY app.py api_client.py styles.css ./
+# Every module, stylesheet and asset the app loads; .dockerignore keeps tests, caches and secrets out.
+COPY . .
 RUN useradd --system --uid 10001 --create-home app
 USER app
 EXPOSE 8501
