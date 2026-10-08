@@ -17,6 +17,7 @@ PAGES = {
     "find": st.Page("app_pages/find.py", title="Find my path", icon=":material/route:", default=True),
     "qualifications": st.Page("app_pages/qualifications.py", title="Qualifications", icon=":material/school:"),
     "training": st.Page("app_pages/training.py", title="Training & assessment", icon=":material/location_on:"),
+    "progress": st.Page("app_pages/progress.py", title="My progress", icon=":material/trending_up:"),
 }
 signed_in = session.account()
 account_page = st.Page("app_pages/account.py", url_path="account",
