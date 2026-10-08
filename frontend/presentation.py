@@ -1,9 +1,16 @@
 """Small, escaped presentation components; interactive controls stay in Streamlit."""
 from html import escape
 from base64 import b64encode
+from functools import cache
+from io import BytesIO
+from pathlib import Path
 import re
 
+from PIL import Image
 import streamlit as st
+
+ASSETS = Path(__file__).with_name("assets")
+FAVICON = ASSETS / "tesda-track-favicon.png"
 
 
 def html_with_vectors(markup: str) -> None:
@@ -32,9 +39,20 @@ def icon(name: str, color: str = "#175CD3") -> str:
             f'stroke-linejoin="round" aria-hidden="true">{paths.get(name, paths["route"])}</svg>')
 
 
+@cache
+def logo_data_uri(size: int = 96) -> str:
+    # The brand is resent on every rerun, so embed a high-DPI copy of the
+    # 320px logo (about 12 KB) rather than the 60 KB original.
+    logo = Image.open(ASSETS / "TESDA-TRACK-logo.png")
+    logo.thumbnail((size, size), Image.LANCZOS)
+    png = BytesIO()
+    logo.save(png, format="PNG", optimize=True)
+    return "data:image/png;base64," + b64encode(png.getvalue()).decode("ascii")
+
+
 def brand(sidebar: bool = False) -> None:
-    html_with_vectors(f'<div class="{"sidebar-brand" if sidebar else "brand-bar"}">'
-            f'<div class="brand"><span class="brand-icon">{icon("route", "#FFFFFF")}</span>'
+    st.html(f'<div class="{"sidebar-brand" if sidebar else "brand-bar"}">'
+            f'<div class="brand"><span class="brand-icon"><img src="{logo_data_uri()}" alt=""></span>'
             'TESDA<span class="brand-light">TRACK</span></div>'
             + ('<div class="brand-tagline">Your skills. Your next chapter.</div>' if sidebar else
                '<span class="prototype-badge">LEARNER PORTAL · PILOT</span>') + '</div>')

@@ -7,7 +7,7 @@ from pathlib import Path
 import streamlit as st
 
 from api_client import ApiClient, ApiError, ApiUnavailableError
-from presentation import brand, empty_state, footer, journey, section_header
+from presentation import FAVICON, brand, empty_state, footer, journey, section_header
 from skills_bridge_view import show_skills_bridge
 from training_view import show_training as show_center_finder
 
@@ -683,7 +683,7 @@ def show_sidebar(selected: str, is_admin: bool) -> None:
 
 
 def main() -> None:
-    st.set_page_config(page_title="TESDA Track | Your next step", page_icon=":material/route:", layout="wide")
+    st.set_page_config(page_title="TESDA Track | Your next step", page_icon=str(FAVICON), layout="wide")
     st.html(Path(__file__).with_name("styles.css"))
     # Retain drafts and filters when a page is not rendered. Button keys are
     # deliberately excluded: Streamlit owns trigger-widget state.

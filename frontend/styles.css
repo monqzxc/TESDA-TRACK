@@ -81,19 +81,16 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
   line-height: 1.15;
   white-space: nowrap;
 }
+/* The logo artwork carries its own rounded blue tile. */
 .brand-icon {
   display: inline-grid;
   place-items: center;
   width: 40px;
   height: 40px;
   margin-right: 0.4rem;
-  color: white;
-  background: var(--track-blue);
-  border-radius: 12px;
   flex-shrink: 0;
 }
-.brand-icon svg,
-.brand-icon img { display: block; width: 27px; height: 27px; }
+.brand-icon img { display: block; width: 100%; height: 100%; }
 .brand-light { color: var(--track-blue); font-weight: 400; }
 .brand-tagline {
   display: block;
@@ -122,7 +119,7 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
 .prototype-badge::before { content: ""; width: 6px; height: 6px; background: var(--track-teal); border-radius: 50%; }
 .sidebar-brand { margin: 0.2rem 0 1.8rem; }
 .sidebar-brand .brand { font-size: 1.3rem; }
-.sidebar-brand .brand-icon { width: 36px; height: 36px; border-radius: 10px; }
+.sidebar-brand .brand-icon { width: 36px; height: 36px; }
 .sidebar-note {
   margin-top: 1.2rem;
   padding: 1rem;
@@ -305,9 +302,7 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
   .sidebar-note { padding: 0.9rem; font-size: 0.875rem; }
   .brand-bar { gap: 0.6rem; margin-bottom: 1.1rem; }
   .brand { font-size: 1.2rem; }
-  .brand-icon { width: 34px; height: 34px; border-radius: 10px; margin-right: 0.2rem; }
-  .brand-icon svg,
-  .brand-icon img { width: 24px; height: 24px; }
+  .brand-icon { width: 34px; height: 34px; margin-right: 0.2rem; }
   .brand-tagline { font-size: 0.55rem; letter-spacing: 0.06em; }
   .prototype-badge { padding: 0.35rem 0.5rem; font-size: 0.5625rem; letter-spacing: 0; }
   .prototype-badge::before { display: none; }

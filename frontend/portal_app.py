@@ -9,7 +9,7 @@ from portal.components import DISCLAIMER, service_unavailable
 
 HERE = Path(__file__).resolve().parent
 
-st.set_page_config(page_title="TESDA Track", page_icon=":material/route:", layout="centered")
+st.set_page_config(page_title="TESDA Track", page_icon=str(HERE / "assets" / "tesda-track-favicon.png"), layout="centered")
 st.logo(str(HERE / "assets" / "logo.svg"), icon_image=str(HERE / "assets" / "mark.svg"), size="large")
 session.init_state()
 
