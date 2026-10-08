@@ -183,11 +183,19 @@ def test_learner_follows_the_curated_pathway_and_ticks_off_steps(ui):
     assert any("25% complete" in caption.value for caption in app.caption)
 
 
+def listed_centers(app):
+    """The name of every listed center, by its id: the one shown in full first, then the others."""
+    ids = [button.key.removeprefix("center_open_") for button in app.button
+           if (button.key or "").startswith("center_open_")]
+    blocks = [app.container(key="center_feature_body"), *(app.container(key=f"center_row_{id_}") for id_ in ids[1:])]
+    return {id_: next(md.value for md in block.markdown if md.value.startswith("**")).strip("*")
+            for id_, block in zip(ids, blocks)}
+
+
 def open_center(app, name, tab):
-    """Open a result card by the center name it shows."""
-    rows = [button.key for button in app.button if (button.key or "").startswith("center_open_")]
-    names = [md.value for md in app.container(key="center_list").markdown if md.value.startswith("**")]
-    app.button(key=rows[names.index(f"**{name}**")]).click()
+    """Open a listed center by the name it shows."""
+    centers = listed_centers(app)
+    app.button(key=f"center_open_{next(id_ for id_, shown in centers.items() if shown == name)}").click()
     rerun(app, tab)
 
 
@@ -197,18 +205,14 @@ def test_training_tab_finds_nearby_centers_and_learner_applies(ui, training_data
     rerun(app, tab)
     app.multiselect(key="training_qualifications").select("SMAW-NC-II")
     app.text_input(key="training_place").input("Manila")
-    app.button(key="training_button_search").click()
     rerun(app, tab)
-    names = [md.value for md in app.container(key="center_list").markdown if md.value.startswith("**")]
-    assert names == ["**Manila Assessment Center**", "**Manila Welding Institute**", "**Cebu Skills Center**"], \
-        "nearest to Manila first, not creation order"
+    assert list(listed_centers(app).values()) == ["Manila Assessment Center", "Manila Welding Institute",
+                                                  "Cebu Skills Center"], "nearest to Manila first, not creation order"
 
     open_center(app, "Manila Welding Institute", tab)
     detail = app.container(key="center_detail")
     assert any("SMAW NC II Manila batch" in md.value for md in detail.markdown)
     assert any("% fit" in md.value for md in detail.markdown), "the ranked program shows its score"
-    app.button(key="training_button_back").click()
-    rerun(app, tab)
 
     open_center(app, "Manila Assessment Center", tab)
     assert not any(button.label == "Apply" for button in app.button), "applying needs an account"

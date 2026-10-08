@@ -46,6 +46,22 @@ def api() -> ApiClient:
     return get_api(api_base_url())
 
 
+# Local development reads the repository-root .env, as the API does; containers get real environment variables.
+ROOT_ENV_FILE = Path(__file__).resolve().parents[1] / ".env"
+
+
+@st.cache_resource
+def basemap_key() -> str:
+    """The CARTO basemaps key for the center map. Empty keeps the map on OpenStreetMap tiles."""
+    key = os.environ.get("CARTO_API")
+    if key is None and ROOT_ENV_FILE.is_file():
+        for line in ROOT_ENV_FILE.read_text(encoding="utf-8").splitlines():
+            name, _, value = line.partition("=")
+            if name.strip() == "CARTO_API":
+                key = value.strip().strip("'\"")
+    return (key or "").strip()
+
+
 def routing_url() -> str:
     """Where Directions get road routes. Empty turns them off, leaving links to Google Maps."""
     return os.environ.get("ROUTING_URL", DEFAULT_ROUTING_URL).strip()
@@ -438,7 +454,7 @@ def show_training(qualifications: list[dict]) -> None:
     show_center_finder(qualifications, api(), load_regions(api_base_url()), auth_token(),
                        goal=st.session_state.get("original_query"), on_sign_in=open_account,
                        default_qualifications=[chosen] if chosen else [],
-                       router=get_router(routing) if routing else None)
+                       router=get_router(routing) if routing else None, basemap_key=basemap_key())
 
 
 def show_my_pathways(token: str) -> None:

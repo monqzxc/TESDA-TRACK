@@ -63,6 +63,8 @@ services:
       FORWARDED_ALLOW_IPS: "*"
       # Road routes for Directions; set ROUTING_URL empty in .env to use Google Maps links instead.
       ROUTING_URL: ${ROUTING_URL-https://routing.openstreetmap.de/routed-car}
+      # CARTO basemaps key for the center map; without it the map uses OpenStreetMap tiles.
+      CARTO_API: ${CARTO_API-}
     depends_on:
       api:
         condition: service_healthy

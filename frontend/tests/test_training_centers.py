@@ -125,7 +125,8 @@ def run(target):
 
 
 def search(app):
-    return run(app.button(key="training_button_search").click())
+    """Filters apply as they change; this runs the app with the changes made so far."""
+    return run(app)
 
 
 def open_center(app, center_id):
@@ -133,8 +134,14 @@ def open_center(app, center_id):
 
 
 def row_ids(app):
+    """Every listed center in order: the featured one first, then the others."""
     return [button.key.removeprefix("center_open_") for button in app.button
             if (button.key or "").startswith("center_open_")]
+
+
+def featured(app):
+    """The center shown in full above the others."""
+    return row_ids(app)[0]
 
 
 def text(block):
@@ -152,7 +159,7 @@ def map_data(app):
 def test_every_center_is_listed_and_pinned_when_nothing_is_filtered(api):
     app = open_page()
     assert row_ids(app) == ["assessment-7", "training-2", "training-1"], "by name until there's a place to measure from"
-    assert "Showing 3 results" in text(app.container(key="center_results"))
+    assert "All results (3)" in [heading.value for heading in app.container(key="center_results").subheader]
     assert {point["id"] for point in map_data(app)["centers"]} == {"assessment-7", "training-2", "training-1"}
 
 
@@ -173,9 +180,7 @@ def test_provinces_follow_the_chosen_region_before_searching(api):
     province = app.selectbox(key="training_province")
     assert province.options == [] and province.disabled, "Tarlac isn't in the National Capital Region"
     assert province.value is None, "a province from another region is dropped"
-    assert len(row_ids(app)) == 3, "results wait for Search"
-    search(app)
-    assert row_ids(app) == ["assessment-7", "training-2"]
+    assert row_ids(app) == ["assessment-7", "training-2"], "filters apply as soon as they change"
 
 
 def test_a_qualification_keeps_only_centers_that_offer_it(api):
@@ -186,15 +191,80 @@ def test_a_qualification_keeps_only_centers_that_offer_it(api):
     assert ("programs", "CSS-NC-II", 0) in api["pages"], "listings are fetched for the chosen qualification"
 
 
-def test_selecting_a_center_shows_its_details_and_back_returns_to_the_list(api):
+def test_the_first_result_is_shown_in_full_until_a_center_is_selected(api):
+    app = open_page()
+    assert featured(app) == "assessment-7" and "Manila Assessment Center" in text(app.container(key="center_detail"))
+    assert map_data(app)["selected"] is None, "no pin is opened for the learner"
+
+
+def test_selecting_a_center_shows_it_in_full_above_the_others(api):
     app = open_page()
     open_center(app, "training-1")
     detail = text(app.container(key="center_detail"))
     assert "Tarlac Skills Institute" in detail and "Computer Systems Servicing NC II (11)" in detail
     assert map_data(app)["selected"] == "training-1"
-    run(app.button(key="training_button_back").click())
-    assert row_ids(app) == ["assessment-7", "training-2", "training-1"]
-    assert map_data(app)["selected"] is None
+    assert row_ids(app) == ["training-1", "assessment-7", "training-2"], "the others keep their order below"
+
+
+def test_view_on_map_opens_the_center_again_even_when_it_is_already_selected(api):
+    app = open_page()
+    focus = map_data(app)["focus"]
+    run(app.button(key="training_button_focus").click())
+    assert map_data(app)["selected"] == "assessment-7", "the featured first result becomes the selected one"
+    run(app.button(key="training_button_focus").click())
+    assert map_data(app)["focus"] == focus + 2, "each click asks the map to show the center"
+
+
+def test_a_center_can_be_found_by_a_program_it_offers(api):
+    app = open_page()
+    run(app.text_input(key="training_search").input("computer systems"))
+    assert row_ids(app) == ["training-1"]
+
+
+def test_more_than_two_programs_wait_behind_view_all(api, monkeypatch):
+    extra = [program(14 + number, MANILA, "SMAW-NC-II", days=40 + number) for number in range(2)]
+    monkeypatch.setattr(ApiClient, "training_programs", lambda self, qualification_code=None, limit=20, offset=0,
+                        **params: deepcopy([*PROGRAMS, *extra][offset:offset + limit]))
+    app = open_page()
+    open_center(app, "training-2")
+    assert "Training programs (4)" in [heading.value for heading in app.container(key="center_detail").subheader]
+    assert len([button for button in app.button if (button.key or "").startswith("program_open_")]) == 2
+    run(app.button(key="training_button_all").click())
+    assert len([button for button in app.button if (button.key or "").startswith("program_open_")]) == 4
+
+
+def test_a_programs_chevron_opens_its_details(api):
+    app = open_page()
+    open_center(app, "training-1")
+    run(app.button(key="program_open_11").click())
+    assert app.session_state["training_program"] == 11
+    details = "\n".join(block.value for block in app.markdown)
+    assert "**Where:** Tarlac Skills Institute" in details and "**Slots:** 25 learners" in details
+
+
+def test_saving_a_center_from_its_popup_marks_it_in_the_results(api):
+    app = map_event(open_page(), "saved", "training-2")
+    assert map_data(app)["saved"] == ["training-2"]
+    assert "Saved" in text(app.container(key="center_badges_training-2"))
+    app = map_event(app, "saved", "training-2")
+    assert map_data(app)["saved"] == [], "a second press takes it back"
+
+
+def test_filter_sections_count_what_they_filter(api):
+    app = open_page()
+    app.segmented_control(key="training_kinds").set_value(["assessment"])
+    app.selectbox(key="training_region").set_value("NCR")
+    app = run(app)
+    head = text(app.container(key="training_filters_head"))
+    assert ":blue-badge[2]" in head, "one center type and one region"
+
+
+def test_the_filter_panel_folds_away_and_back(api):
+    app = open_page()
+    run(app.button(key="training_button_fold").click())
+    assert not [element for element in app.segmented_control if element.key == "training_kinds"]
+    run(app.button(key="training_button_fold").click())
+    assert app.segmented_control(key="training_kinds")
 
 
 def test_a_batch_already_under_way_says_it_started(api):
@@ -331,15 +401,19 @@ ROUTE = {"path": [[15.47003, 120.59001], [15.47288, 120.59348], [15.47551, 120.5
          "duration_min": 3.405, "start": [15.47003, 120.59001], "end": [15.47551, 120.59629]}
 
 
+# The walking route is longer; every mode shares the car's path so the tests can read it.
+WALK = {**ROUTE, "distance_km": 1.1, "duration_min": 14.2}
+
+
 @pytest.fixture
 def routes(api, monkeypatch):
-    """A fake road router. The list records the origin and destination of every route asked for."""
+    """A fake router for each travel mode. The list records the origin, destination and mode of every route."""
     monkeypatch.delenv("ROUTING_URL", raising=False)
     asked = []
 
-    def route(self, origin, destination):
-        asked.append((origin, destination))
-        return deepcopy(ROUTE)
+    def route(self, origin, destination, mode="car"):
+        asked.append((origin, destination, mode))
+        return deepcopy(WALK if mode == "foot" else ROUTE)
 
     monkeypatch.setattr(RouteClient, "route", route)
     return asked
@@ -379,18 +453,71 @@ def show_route(app, center_id):
     return run(app.button(key="training_button_route").click())
 
 
-def test_directions_draw_the_road_route_from_my_location(api, routes):
+def test_directions_draw_a_route_for_each_travel_mode_from_my_location(api, routes):
     app = open_located()
     open_center(app, "training-1")
     assert map_data(app)["route"] is None, "only once asked for"
     run(app.button(key="training_button_route").click())
-    assert routes == [({"latitude": 15.47, "longitude": 120.59}, {"latitude": 15.4755, "longitude": 120.5963})]
+    trip = ({"latitude": 15.47, "longitude": 120.59}, {"latitude": 15.4755, "longitude": 120.5963})
+    assert sorted(routes, key=str) == sorted([(*trip, "car"), (*trip, "bike"), (*trip, "foot")], key=str), \
+        "one route per mode, asked side by side"
     route = map_data(app)["route"]
-    assert (route["center_id"], route["path"]) == ("training-1", ROUTE["path"])
+    assert (route["center_id"], route["selected"]) == ("training-1", "car")
     assert (route["origin"], route["destination"]) == ([15.47, 120.59], [15.4755, 120.5963])
-    assert "3 min" in route["label"] and "1.2 km" in route["label"]
+    car, bike, walk = route["options"]
+    assert (car["mode"], car["path"]) == ("car", ROUTE["path"])
+    assert "3 min" in car["label"] and "1.2 km" in car["label"]
+    assert (walk["mode"], walk["label"]) == ("foot", "14 min · 1.1 km")
     detail = text(app.container(key="center_detail"))
-    assert "1.2 km by road" in detail and "about 3 min by car" in detail
+    assert "1.2 km" in detail and "about 3 min by car" in detail
+
+
+def test_choosing_another_travel_mode_keeps_the_routes(api, routes):
+    app = show_route(open_located(), "training-1")
+    run(app.segmented_control(key="training_travel_mode").set_value("foot"))
+    assert map_data(app)["route"]["selected"] == "foot"
+    assert "about 14 min on foot" in text(app.container(key="center_detail"))
+    app = map_event(app, "travel_mode", "bike")
+    assert map_data(app)["route"]["selected"] == "bike", "a route's label on the map picks it too"
+    assert len(routes) == 3, "switching modes asks the router nothing more"
+
+
+def test_a_long_trip_adds_an_estimated_flight(api, routes):
+    davao = {"latitude": 7.07, "longitude": 125.61}
+    app = open_page(training_use_location=True, training_use_location_top=True, training_location=davao)
+    show_route(app, "training-1")
+    options = {option["mode"]: option for option in map_data(app)["route"]["options"]}
+    assert list(options) == ["car", "bike", "foot", "plane"]
+    assert options["plane"]["label"].startswith("~"), "the flight time is marked as an estimate"
+    run(app.segmented_control(key="training_travel_mode").set_value("plane"))
+    detail = text(app.container(key="center_detail"))
+    assert "Francisco Bangoy International Airport (DVO)" in detail and "Clark International Airport (CRK)" in detail
+    assert "not an airline schedule" in detail
+
+
+def test_a_short_trip_has_no_flight(api, routes):
+    app = show_route(open_located(), "training-1")
+    assert "plane" not in [option["mode"] for option in map_data(app)["route"]["options"]]
+
+
+def test_a_mode_without_a_route_is_left_out(api, monkeypatch):
+    monkeypatch.delenv("ROUTING_URL", raising=False)
+    asked = []
+
+    def route(self, origin, destination, mode="car"):
+        asked.append(mode)
+        if mode == "bike":
+            raise RouteError("No road route was found to this center.")
+        return deepcopy(ROUTE)
+
+    monkeypatch.setattr(RouteClient, "route", route)
+    app = show_route(open_located(), "training-1")
+    assert [option["mode"] for option in map_data(app)["route"]["options"]] == ["car", "foot"]
+    run(app)
+    assert sorted(asked) == ["bike", "car", "foot"], "the missing route isn't asked for again on every rerun"
+    assert "No bike route could be loaded" in text(app.container(key="center_detail"))
+    run(app.button(key="training_button_retry_routes").click())
+    assert sorted(asked) == ["bike", "bike", "car", "foot"], "Try again asks only for the missing route"
 
 
 def test_a_route_is_asked_for_once_per_trip(api, routes):
@@ -399,7 +526,7 @@ def test_a_route_is_asked_for_once_per_trip(api, routes):
     run(app)
     run(app.button(key="training_button_hide_route").click())
     run(app.button(key="training_button_route").click())
-    assert len(routes) == 1, "reruns and showing it again reuse the route instead of asking the public router again"
+    assert len(routes) == 3, "reruns and showing it again reuse the routes instead of asking the public router again"
     assert map_data(app)["route"]["center_id"] == "training-1"
 
 
@@ -407,7 +534,7 @@ def test_without_my_location_directions_open_google_maps(api, routes):
     app = open_page()
     open_center(app, "training-1")
     assert "training_button_route" not in button_keys(app)
-    assert links(app.container(key="center_detail"))["Directions"] == \
+    assert links(app.container(key="center_detail"))["Get directions"] == \
         "https://www.google.com/maps/dir/?api=1&destination=15.4755,120.5963"
     assert map_data(app)["can_route"] is False
 
@@ -423,7 +550,7 @@ def test_hiding_the_route_takes_it_off_the_map(api, routes):
 def test_leaving_a_center_drops_its_route(api, routes):
     app = open_located()
     show_route(app, "training-1")
-    run(app.button(key="training_button_back").click())
+    open_center(app, "training-2")
     assert map_data(app)["route"] is None
     open_center(app, "training-1")
     assert map_data(app)["route"] is None, "coming back shows the center, not the old route"
@@ -437,7 +564,7 @@ def test_turning_my_location_off_drops_the_route_and_forgets_it(api, routes):
     app = map_event(run(app.toggle(key="training_use_location_top").set_value(True)), "located",
                     {"latitude": 15.47, "longitude": 120.59})
     run(app.button(key="training_button_route").click())
-    assert len(routes) == 2, "routes start at the learner's location, so they're forgotten with it"
+    assert len(routes) == 6, "routes start at the learner's location, so they're forgotten with it"
 
 
 def test_directions_in_a_map_popup_open_that_center_with_its_route(api, routes):
@@ -446,6 +573,7 @@ def test_directions_in_a_map_popup_open_that_center_with_its_route(api, routes):
     app = map_event(app, "route", "training-2")
     assert map_data(app)["selected"] == "training-2"
     assert map_data(app)["route"]["destination"] == [14.5995, 120.9842]
+    assert featured(app) == "training-2"
     assert "Manila Welding Institute" in text(app.container(key="center_detail"))
 
 
@@ -453,8 +581,8 @@ def test_a_routing_failure_is_explained_and_google_maps_stays_a_click_away(api, 
     monkeypatch.delenv("ROUTING_URL", raising=False)
     attempts = []
 
-    def unavailable(self, origin, destination):
-        attempts.append(destination)
+    def unavailable(self, origin, destination, mode="car"):
+        attempts.append(mode)
         raise RouteError("Directions can't be loaded right now.")
 
     monkeypatch.setattr(RouteClient, "route", unavailable)
@@ -464,8 +592,10 @@ def test_a_routing_failure_is_explained_and_google_maps_stays_a_click_away(api, 
     assert map_data(app)["route"] is None
     assert links(app.container(key="center_detail"))["Google Maps"].startswith("https://www.google.com/maps/dir/")
     run(app)
-    assert len(attempts) == 1, "a failed route isn't retried on every rerun; each try can wait out the timeout"
+    assert len(attempts) == 3, "failed routes aren't retried on every rerun; each try can wait out the timeout"
     assert "training_button_route" in button_keys(app), "the learner can try again"
+    run(app.button(key="training_button_route").click())
+    assert len(attempts) == 6, "and asking again tries every mode again"
 
 
 def test_directions_stay_with_google_maps_when_routing_is_switched_off(api, monkeypatch):
@@ -473,5 +603,5 @@ def test_directions_stay_with_google_maps_when_routing_is_switched_off(api, monk
     app = open_located()
     open_center(app, "training-1")
     assert "training_button_route" not in button_keys(app)
-    assert "Directions" in links(app.container(key="center_detail"))
+    assert "Get directions" in links(app.container(key="center_detail"))
     assert map_data(app)["can_route"] is False
