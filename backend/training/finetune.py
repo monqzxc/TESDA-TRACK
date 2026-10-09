@@ -22,7 +22,6 @@ from training.catalog import load_catalog
 from training.pairs import eval_exclusions, training_pairs
 
 BASE_MODEL = "intfloat/multilingual-e5-small"
-DIMENSIONS = 384
 HELD_OUT = 0.05
 MIN_PARITY = 0.999
 
@@ -84,15 +83,11 @@ def export_onnx(folder: Path) -> Path:
 
 def parity(model, folder: Path, texts: list[str]) -> float:
     """The lowest cosine between fastembed's vectors for the exported folder and sentence-transformers' own."""
-    from fastembed import TextEmbedding
-    from fastembed.common.model_description import ModelSource, PoolingType
+    from tesda_track.services.embeddings import E5Embedder
 
-    # Registered the way tesda_track.services.embeddings registers CUSTOM_MODELS; the files come from the folder.
-    name = f"tesda-track/{folder.name}"
-    if not any(m["model"] == name for m in TextEmbedding.list_supported_models()):
-        TextEmbedding.add_custom_model(model=name, pooling=PoolingType.MEAN, normalization=True,
-                                       sources=ModelSource(hf=BASE_MODEL), dim=DIMENSIONS, model_file="onnx/model.onnx")
-    onnx = np.asarray(list(TextEmbedding(name, specific_model_path=str(folder)).embed(texts)), dtype=np.float64)
+    # The loader the API uses; its model is called directly because the texts already carry E5's prefixes.
+    embedder = E5Embedder(f"tesda-track/{folder.name}", model_path=str(folder))
+    onnx = np.asarray(list(embedder._model.embed(texts)), dtype=np.float64)
     reference = np.asarray(model.encode(texts, normalize_embeddings=True), dtype=np.float64)
     return float(np.min(np.sum(onnx * reference, axis=1)))
 

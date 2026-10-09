@@ -159,3 +159,48 @@ def test_match_params_come_from_settings():
     from tesda_track.services.analysis import MatchParams
 
     assert MatchParams.from_settings(get_settings()) == MatchParams(3.0, 5.0, 0.5, 20)
+
+
+def test_calibration_travels_with_a_fine_tuned_model(tmp_path):
+    import json
+
+    from tesda_track.services.analysis import MatchParams
+    from tesda_track.services.embeddings import read_calibration
+
+    (tmp_path / "calibration.json").write_text(json.dumps(
+        {"z_floor": 2.0, "z_ceiling": 3.5, "keyword_weight": 0.4, "min_score": 25}))
+    assert read_calibration(str(tmp_path)) == MatchParams(2.0, 3.5, 0.4, 25)
+
+
+@pytest.mark.parametrize("content", ['{"z_floor": 3, "z_ceiling": 2, "keyword_weight": 0.5, "min_score": 20}',
+                                     '{"z_floor": 2}', "not json"])
+def test_invalid_calibration_is_ignored(tmp_path, content):
+    from tesda_track.services.embeddings import read_calibration
+
+    (tmp_path / "calibration.json").write_text(content)
+    assert read_calibration(str(tmp_path)) is None
+    assert read_calibration(str(tmp_path / "missing")) is None
+
+
+def test_a_missing_model_folder_leaves_keyword_matching_on(monkeypatch, tmp_path):
+    from tesda_track.config import get_settings
+    from tesda_track.services import embeddings
+
+    monkeypatch.setattr(get_settings(), "semantic_search_enabled", True)
+    monkeypatch.setattr(get_settings(), "embedding_model", "tesda-track/test-missing")
+    monkeypatch.setattr(get_settings(), "embedding_model_path", str(tmp_path / "missing"))
+    monkeypatch.setattr(embeddings, "_embedder", None)
+    monkeypatch.setattr(embeddings, "_load_failed", False)
+    assert embeddings.get_embedder() is None
+
+
+def test_an_embedder_calibration_overrides_the_settings(client, semantic):
+    from tesda_track.config import get_settings
+    from tesda_track.services.analysis import MatchParams, match_params
+
+    assert match_params(semantic) == MatchParams.from_settings(get_settings())
+    semantic.calibration = MatchParams(0.0, 1.0, 0.5, 101)
+    matches = client.post("/api/v1/analysis/matches", json={"query": "I want to be a welder.", "profile": {
+        "career_goal": None, "possible_sector": None, "existing_skills": [], "experience_years": None,
+        "has_certification": None, "intent": "unknown"}}).json()["matches"]
+    assert matches == [], "a minimum score above 100 hides everything"

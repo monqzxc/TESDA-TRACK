@@ -34,6 +34,11 @@ class MatchParams:
                    settings.match_min_score)
 
 
+def match_params(embedder: Embedder | None) -> MatchParams:
+    """A fine-tuned model's own calibration when it has one, else the settings'."""
+    return getattr(embedder, "calibration", None) or MatchParams.from_settings(get_settings())
+
+
 @dataclass(frozen=True)
 class GoalAnalysisResult:
     profile: Profile
@@ -92,7 +97,7 @@ def analyze_goal(session: Session, query: str, embedder: Embedder | None = None)
     profile = Profile.model_validate(analyze_user_query(query, current.rule_views))
     if embedder is None or profile.career_goal is not None or profile.intent != "unknown":
         return GoalAnalysisResult(profile, "rules")
-    params = MatchParams.from_settings(get_settings())
+    params = match_params(embedder)
     semantic_by_id = strengths(embeddings.qualification_similarities(session, embedder, query), params)
     candidates = [item for item in current.items if item.id in semantic_by_id]
     if not candidates:
@@ -121,7 +126,7 @@ def match(session: Session, query: str, profile: Profile,
         by_code = {item.code: item for item in current.items}
         return refined, [Match(qualification=by_code[code].summary, score=r["score"], reason=r["reason"])
                          for code, r in list(keyword.items())[:3]]
-    params = MatchParams.from_settings(get_settings())
+    params = match_params(embedder)
     similarities = embeddings.qualification_similarities(session, embedder, query)
     return refined, score_matches(current.items, keyword, similarities, params)
 

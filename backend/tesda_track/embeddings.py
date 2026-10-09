@@ -8,11 +8,12 @@ DEFAULT_MODEL = "intfloat/multilingual-e5-small"
 
 
 def download() -> None:
-    """Fetch the model files without needing database settings (runs during the Docker build)."""
+    """Fetch the model files (or warm up a local fine-tuned model) without needing database settings (runs during the Docker build)."""
     from tesda_track.services.embeddings import E5Embedder
 
-    model = os.environ.get("EMBEDDING_MODEL", DEFAULT_MODEL)
-    embedder = E5Embedder(model, os.environ.get("EMBEDDING_CACHE_DIR"))
+    model = os.environ.get("EMBEDDING_MODEL") or DEFAULT_MODEL
+    model_path = os.environ.get("EMBEDDING_MODEL_PATH") or None  # a local model is only warmed up, never downloaded
+    embedder = E5Embedder(model, os.environ.get("EMBEDDING_CACHE_DIR"), model_path)
     embedder.embed_passages(["warm-up"])
     print(f"{model} is ready.")
 

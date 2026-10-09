@@ -42,6 +42,8 @@ class Settings(BaseSettings):
     semantic_search_enabled: bool = True
     embedding_model: str = "intfloat/multilingual-e5-small"
     embedding_cache_dir: str | None = Field(default=None, description="Where the model files live (downloaded once)")
+    embedding_model_path: str | None = Field(
+        default=None, description="Folder of a fine-tuned model (onnx/model.onnx, tokenizer files, calibration.json)")
     # E5 similarities sit in a narrow band (about 0.75-0.85) for related and unrelated goals alike, so a
     # qualification counts by its z-score: how many standard deviations its similarity stands above the
     # catalog's. Below the floor it counts for nothing, above the ceiling fully. Calibrated on 32 sample goals
@@ -75,10 +77,12 @@ class Settings(BaseSettings):
         return self
 
     @model_validator(mode="after")
-    def cache_dir_from_repository_root(self):
-        """A relative EMBEDDING_CACHE_DIR means the same folder whichever directory the API starts from."""
+    def paths_from_repository_root(self):
+        """A relative EMBEDDING_CACHE_DIR or EMBEDDING_MODEL_PATH means the same folder whichever directory the API starts from."""
         if self.embedding_cache_dir and not Path(self.embedding_cache_dir).is_absolute():
             self.embedding_cache_dir = str((ROOT_ENV_FILE.parent / self.embedding_cache_dir).resolve())
+        if self.embedding_model_path and not Path(self.embedding_model_path).is_absolute():
+            self.embedding_model_path = str((ROOT_ENV_FILE.parent / self.embedding_model_path).resolve())
         return self
 
 

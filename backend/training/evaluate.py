@@ -114,12 +114,10 @@ def main() -> None:
     parser.add_argument("--params", nargs=4, type=float, metavar=("FLOOR", "CEILING", "WEIGHT", "MIN"))
     parser.add_argument("--json", type=Path, default=None, help="write the numbers to this file")
     args = parser.parse_args()
-    if args.model_path:
-        raise SystemExit("needs Task 6")
 
     settings = get_settings()
-    model = args.model or settings.embedding_model
-    embedder = E5Embedder(model, settings.embedding_cache_dir)
+    model = args.model or (f"tesda-track/{args.model_path.name}" if args.model_path else settings.embedding_model)
+    embedder = E5Embedder(model, settings.embedding_cache_dir, str(args.model_path) if args.model_path else None)
     qualifications, items = load_catalog()
     passages = embedder.embed_passages([qualification_text(q) for q in qualifications])
     goals = json.loads(GOALS_PATH.read_text(encoding="utf-8"))

@@ -183,6 +183,10 @@ changes reload instantly. The commands below work in PowerShell and Git Bash.
    The first `embeddings sync` downloads the model (about 470 MB) into `EMBEDDING_CACHE_DIR`, which
    takes a few minutes. Later runs only embed new or changed records.
 
+   To serve a fine-tuned model instead (`backend/models/README.md`), set `EMBEDDING_MODEL` and
+   `EMBEDDING_MODEL_PATH` in `.env`, then run `python -m tesda_track.embeddings sync` again: embeddings are stored
+   per model, so matching has no semantic signal until it has run after any model change.
+
 5. **Run the app.** Use two terminals, both starting from the repository root.
 
    ```bash
@@ -401,7 +405,8 @@ docker compose up -d --build
 
 Compose starts PostgreSQL, runs the migrations, the seed and the embedding sync, then starts the API, the
 Streamlit app and Caddy. The embedding model is built into the API image, so the server never needs to
-download it. If the sync fails, the deploy still goes ahead and matching falls back to keywords. Only ports 80 and 443 are published. Caddy serves the app at `/` and the API at `/api/`
+download it. After changing `EMBEDDING_MODEL` or `EMBEDDING_MODEL_PATH`, rebuild (`docker compose up -d --build`);
+the migrate step runs `embeddings sync` for the new model. If the sync fails, the deploy still goes ahead and matching falls back to keywords. Only ports 80 and 443 are published. Caddy serves the app at `/` and the API at `/api/`
 (interactive docs at `/api/docs`). Point the domain's DNS at the server before starting, so Caddy can
 obtain a certificate.
 
