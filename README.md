@@ -183,8 +183,8 @@ changes reload instantly. The commands below work in PowerShell and Git Bash.
    The first `embeddings sync` downloads the model (about 470 MB) into `EMBEDDING_CACHE_DIR`, which
    takes a few minutes. Later runs only embed new or changed records.
 
-   To serve a fine-tuned model instead (`backend/models/README.md`), set `EMBEDDING_MODEL` and
-   `EMBEDDING_MODEL_PATH` in `.env`, then run `python -m tesda_track.embeddings sync` again: embeddings are stored
+   To serve a fine-tuned model instead (`backend/models/README.md`), set both `EMBEDDING_MODEL` (the
+   model's own name, e.g. `tesda-track/<folder>`, never the base model's) and `EMBEDDING_MODEL_PATH` in `.env`, then run `python -m tesda_track.embeddings sync` again: embeddings are stored
    per model, so matching has no semantic signal until it has run after any model change.
 
 5. **Run the app.** Use two terminals, both starting from the repository root.

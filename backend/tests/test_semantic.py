@@ -194,6 +194,21 @@ def test_a_missing_model_folder_leaves_keyword_matching_on(monkeypatch, tmp_path
     assert embeddings.get_embedder() is None
 
 
+def test_a_fine_tuned_folder_under_the_base_model_name_is_refused(monkeypatch, tmp_path, caplog):
+    from tesda_track.config import DEFAULT_EMBEDDING_MODEL, get_settings
+    from tesda_track.services import embeddings
+
+    (tmp_path / "onnx").mkdir()
+    (tmp_path / "onnx" / "model.onnx").write_bytes(b"")
+    monkeypatch.setattr(get_settings(), "semantic_search_enabled", True)
+    monkeypatch.setattr(get_settings(), "embedding_model", DEFAULT_EMBEDDING_MODEL)
+    monkeypatch.setattr(get_settings(), "embedding_model_path", str(tmp_path))
+    monkeypatch.setattr(embeddings, "_embedder", None)
+    monkeypatch.setattr(embeddings, "_load_failed", False)
+    assert embeddings.get_embedder() is None
+    assert "set EMBEDDING_MODEL to the fine-tuned model's own name" in caplog.text
+
+
 def test_an_embedder_calibration_overrides_the_settings(client, semantic):
     from tesda_track.config import get_settings
     from tesda_track.services.analysis import MatchParams, match_params

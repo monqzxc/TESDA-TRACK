@@ -20,7 +20,7 @@ from fastapi import Depends
 from sqlalchemy.orm import selectinload
 from sqlmodel import Session, select
 
-from tesda_track.config import get_settings
+from tesda_track.config import DEFAULT_EMBEDDING_MODEL, get_settings
 from tesda_track.models import (Qualification, QualificationEmbedding, TrainingProgram, TrainingProgramEmbedding)
 from tesda_track.models.semantic import EMBEDDING_DIMENSIONS
 
@@ -50,6 +50,10 @@ class E5Embedder:
             _register(model_name)
             self._model = TextEmbedding(model_name, cache_dir=cache_dir)
             return
+        if model_name == DEFAULT_EMBEDDING_MODEL:
+            # Vectors from two models under one name would pass the sync's hash check and silently mix.
+            raise ValueError(f"EMBEDDING_MODEL_PATH is set but EMBEDDING_MODEL is still {model_name}; set "
+                             "EMBEDDING_MODEL to the fine-tuned model's own name, e.g. tesda-track/<folder>")
         if not (Path(model_path) / "onnx" / "model.onnx").is_file():
             raise FileNotFoundError(f"No fine-tuned model at {model_path} (expected onnx/model.onnx)")
         _register_local(model_name)

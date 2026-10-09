@@ -7,6 +7,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Local development reads the repository-root .env; containers get real environment variables.
 ROOT_ENV_FILE = Path(__file__).resolve().parents[2] / ".env"
+DEFAULT_EMBEDDING_MODEL = "intfloat/multilingual-e5-small"
 
 
 class RankingWeights(BaseModel):
@@ -40,7 +41,7 @@ class Settings(BaseSettings):
 
     # Semantic search: one local embedding model; learner text never leaves the server.
     semantic_search_enabled: bool = True
-    embedding_model: str = "intfloat/multilingual-e5-small"
+    embedding_model: str = DEFAULT_EMBEDDING_MODEL
     embedding_cache_dir: str | None = Field(default=None, description="Where the model files live (downloaded once)")
     embedding_model_path: str | None = Field(
         default=None, description="Folder of a fine-tuned model (onnx/model.onnx, tokenizer files, calibration.json)")
