@@ -58,3 +58,25 @@ def test_evaluation_and_calibration_run_the_api_scoring_offline():
                                                         "keyword_weight": [0.5], "min_score": [20]})
     assert best.rejection == 1.0 and isinstance(params, MatchParams)
     assert any("Welding" in name for name in results[0].shown)
+
+
+def test_calibration_can_require_a_minimum_rejection():
+    _, items = load_catalog()
+    a, b, c, d = (item.id for item in items[:4])
+    two_stand_out = {a: 0.7, b: 0.7, c: 0.5, d: 0.5}  # z-score 1.0 for a and b
+    one_stands_out = {a: 0.9, b: 0.5, c: 0.5, d: 0.5}  # z-score 1.732 for a
+
+    def goal(accept, similarities):
+        return evaluate.Prepared({"goal": "g", "accept": accept, "lang": "en", "split": "dev"}, {}, similarities)
+
+    prepared = [goal([items[0].summary.name, items[1].summary.name], two_stand_out),
+                goal([], one_stands_out), goal([], two_stand_out)]
+    grid = {"z_floor": [0.0, 1.2, 2.0], "z_span": [0.5], "keyword_weight": [0.0], "min_score": [50]}
+    params, best = evaluate.calibrate(prepared, items, grid)
+    assert params.z_floor == 0.0 and (best.top1, best.rejection) == (1.0, 0.0), "the objective alone matches all"
+    params, best = evaluate.calibrate(prepared, items, grid, min_rejection=0.9)
+    assert params.z_floor == 2.0 and (best.top1, best.rejection) == (0.0, 1.0)
+
+    grid["z_floor"] = [0.0, 1.2]  # nothing rejects 0.9 now: the combination rejecting the most wins
+    params, best = evaluate.calibrate(prepared, items, grid, min_rejection=0.9)
+    assert params.z_floor == 1.2 and best.rejection == 0.5

@@ -110,7 +110,9 @@ def test_real_model_on_the_real_catalog(session):
 
     settings = get_settings()
     seed_all(session, SEED_DIR)  # the real catalog, inside this test's rolled-back transaction
-    embedder = embeddings.E5Embedder(settings.embedding_model, settings.embedding_cache_dir)
+    # Built like get_embedder, so a configured fine-tuned model and its calibration.json are what gets tested.
+    embedder = embeddings.E5Embedder(settings.embedding_model, settings.embedding_cache_dir,
+                                     settings.embedding_model_path)
     embeddings.sync(session, embedder)
 
     def best_match(goal):
@@ -158,7 +160,7 @@ def test_match_params_come_from_settings():
     from tesda_track.config import get_settings
     from tesda_track.services.analysis import MatchParams
 
-    assert MatchParams.from_settings(get_settings()) == MatchParams(3.0, 4.5, 0.4, 15)
+    assert MatchParams.from_settings(get_settings()) == MatchParams(3.0, 5.0, 0.5, 20)
 
 
 def test_calibration_travels_with_a_fine_tuned_model(tmp_path):

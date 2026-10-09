@@ -47,15 +47,15 @@ class Settings(BaseSettings):
         default=None, description="Folder of a fine-tuned model (onnx/model.onnx, tokenizer files, calibration.json)")
     # E5 similarities sit in a narrow band (about 0.75-0.85) for related and unrelated goals alike, so a
     # qualification counts by its z-score: how many standard deviations its similarity stands above the
-    # catalog's. Below the floor it counts for nothing, above the ceiling fully. These four numbers were chosen by
-    # `python -m training.evaluate --calibrate` on the 123 dev goals in backend/training/data/eval_goals.json; on
-    # the 120 held-out test goals they raised top-1 from 0.333 to 0.434 and the objective from 0.553 to 0.586 over
-    # the earlier 3.0/5.0/0.5/20, while rejection of goals with no TVET match fell from 0.857 to 0.762. See
-    # docs/ml/2026-10-09-matching-model-evaluation.md; recalibrate with pilot data.
+    # catalog's. Below the floor it counts for nothing, above the ceiling fully. Calibrated on 32 sample goals
+    # against the 319-qualification catalog: goals with no TVET match scored z <= 3.5, most related goals
+    # >= 4. Favors precision; recalibrate with pilot data. Rechecked in docs/ml/2026-10-09-matching-model-evaluation.md:
+    # no parameters calibrated on its dev goals beat these on the held-out goals by more than 0.02 objective while
+    # rejecting at least 0.8 of the goals with no TVET match. A fine-tuned model brings its own in calibration.json.
     semantic_z_floor: float = 3.0
-    semantic_z_ceiling: float = 4.5
-    match_weight_keyword: float = Field(default=0.4, ge=0, le=1)
-    match_min_score: int = Field(default=15, ge=0, le=100, description="Hide qualification matches scoring below this")
+    semantic_z_ceiling: float = 5.0
+    match_weight_keyword: float = Field(default=0.5, ge=0, le=1)
+    match_min_score: int = Field(default=20, ge=0, le=100, description="Hide qualification matches scoring below this")
     ranking_weights: RankingWeights = RankingWeights()
     proximity_radius_km: float = Field(default=100, gt=0, description="Distance at which proximity counts for nothing")
 

@@ -13,7 +13,7 @@ from pathlib import Path
 import numpy as np
 
 from tesda_track.config import get_settings
-from tesda_track.services.analysis import MatchParams, score_matches
+from tesda_track.services.analysis import MatchParams, match_params, score_matches
 from tesda_track.services.catalog import CatalogItem
 from tesda_track.services.embeddings import E5Embedder, qualification_text
 from tesda_track.services.recommendation_service import score_qualifications
@@ -87,14 +87,24 @@ def evaluate(prepared: list[Prepared], items: list[CatalogItem], params: MatchPa
             for p in prepared]
 
 
-def calibrate(prepared: list[Prepared], items: list[CatalogItem], grid: dict[str, list]) -> tuple[MatchParams, Metrics]:
-    """The parameters with the best objective on these goals; ties go to the combination listed first."""
+def calibrate(prepared: list[Prepared], items: list[CatalogItem], grid: dict[str, list],
+              min_rejection: float | None = None) -> tuple[MatchParams, Metrics]:
+    """The parameters with the best objective on these goals; ties go to the combination listed first.
+
+    With min_rejection, only combinations rejecting at least that share of the no-TVET goals compete, since the
+    objective alone will trade wrong matches for right ones. If none does, the one rejecting the most wins."""
+    def rank(m: Metrics) -> tuple:
+        if min_rejection is None:
+            return (m.objective,)
+        qualifies = m.rejection >= min_rejection
+        return (qualifies, m.objective if qualifies else m.rejection, m.objective)
+
     best: tuple[MatchParams, Metrics] | None = None
     for floor, span, weight, minimum in itertools.product(grid["z_floor"], grid["z_span"], grid["keyword_weight"],
                                                           grid["min_score"]):
         params = MatchParams(floor, floor + span, weight, minimum)
         result = metrics(evaluate(prepared, items, params))
-        if best is None or result.objective > best[1].objective:
+        if best is None or rank(result) > rank(best[1]):
             best = (params, result)
     return best
 
@@ -107,17 +117,21 @@ def _format(label: str, m: Metrics) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    parser.add_argument("--model", default=None, help="embedding model name (default: the settings' model)")
+    parser.add_argument("--model", default=None, help="embedding model name (default: the settings' model and folder)")
     parser.add_argument("--model-path", type=Path, default=None, help="folder of a fine-tuned model")
     parser.add_argument("--split", choices=["dev", "test", "all"], default="test")
     parser.add_argument("--calibrate", action="store_true", help="search the score parameters on the dev split")
+    parser.add_argument("--min-rejection", type=float, default=None,
+                        help="with --calibrate, consider only parameters that reject at least this share of dev "
+                             "goals with no TVET match")
     parser.add_argument("--params", nargs=4, type=float, metavar=("FLOOR", "CEILING", "WEIGHT", "MIN"))
     parser.add_argument("--json", type=Path, default=None, help="write the numbers to this file")
     args = parser.parse_args()
 
     settings = get_settings()
     model = args.model or (f"tesda-track/{args.model_path.name}" if args.model_path else settings.embedding_model)
-    embedder = E5Embedder(model, settings.embedding_cache_dir, str(args.model_path) if args.model_path else None)
+    model_path = args.model_path or (None if args.model else settings.embedding_model_path)
+    embedder = E5Embedder(model, settings.embedding_cache_dir, str(model_path) if model_path else None)
     qualifications, items = load_catalog()
     passages = embedder.embed_passages([qualification_text(q) for q in qualifications])
     goals = json.loads(GOALS_PATH.read_text(encoding="utf-8"))
@@ -125,11 +139,13 @@ def main() -> None:
     by_split = {name: [p for p in prepared if p.goal["split"] == name] for name in ("dev", "test")}
 
     params = (MatchParams(args.params[0], args.params[1], args.params[2], int(args.params[3])) if args.params
-              else MatchParams.from_settings(settings))
+              else match_params(embedder))  # like the API: a fine-tuned model's calibration.json, else the settings
     if args.calibrate:
         started = time.perf_counter()
-        params, dev = calibrate(by_split["dev"], items, DEFAULT_GRID)
+        params, dev = calibrate(by_split["dev"], items, DEFAULT_GRID, args.min_rejection)
         print(f"Calibrated on dev in {time.perf_counter() - started:.0f}s")
+        if args.min_rejection is not None and dev.rejection < args.min_rejection:
+            print(f"No parameters reach rejection {args.min_rejection} on dev; using those that reject the most")
         shown = {"dev": dev, "test": metrics(evaluate(by_split["test"], items, params))}
     else:
         shown = {name: metrics(evaluate(by_split[name], items, params)) for name in ("dev", "test")}
@@ -141,7 +157,8 @@ def main() -> None:
         print(_format(name, m))
     if args.json:
         args.json.parent.mkdir(parents=True, exist_ok=True)
-        numbers = {"model": model, "params": asdict(params), "metrics": {n: asdict(m) for n, m in shown.items()}}
+        numbers = {"model": model, "params": asdict(params), "min_rejection": args.min_rejection,
+                   "metrics": {n: asdict(m) for n, m in shown.items()}}
         args.json.write_text(json.dumps(numbers, indent=2), encoding="utf-8", newline="\n")
 
 

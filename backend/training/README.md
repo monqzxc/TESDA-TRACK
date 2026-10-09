@@ -2,7 +2,8 @@
 
 Offline tools for the embedding model that matches learner goals to qualifications. Nothing here runs in the
 API: the API image copies only `tesda_track`, `migrations` and `seed`, and installs only
-`backend/requirements.txt`. The API keeps running `intfloat/multilingual-e5-small` on CPU through fastembed.
+`backend/requirements.txt`. The API runs `intfloat/multilingual-e5-small`, or a fine-tuned copy from
+`backend/models/` (see `docs/ml/2026-10-09-matching-model-evaluation.md`), on CPU through fastembed.
 
 | File | What it does |
 | --- | --- |
@@ -26,13 +27,16 @@ evaluation stays held out. The catalog gives 18,428 pairs.
 The main environment (`.venv`) is enough. From `backend/`:
 
 ```bash
-../.venv/Scripts/python -m training.evaluate --split all             # the settings' model and parameters
+../.venv/Scripts/python -m training.evaluate --split all             # the configured model and its parameters
 ../.venv/Scripts/python -m training.evaluate --split all --calibrate # search the score parameters on dev, report test
+../.venv/Scripts/python -m training.evaluate --calibrate --min-rejection 0.9 # ...rejecting 90% of dev no-TVET goals
 ../.venv/Scripts/python -m training.evaluate --params 2.5 4.0 0.5 25 # try FLOOR CEILING WEIGHT MIN
 ```
 
-Add `--json runs/<name>.json` to keep the numbers (`training/runs/` is git-ignored). Calibrate on `dev` only and
-judge on `test`.
+Add `--json training/runs/<name>.json` to keep the numbers (`training/runs/` is git-ignored). Calibrate on `dev`
+only and judge on `test`. The objective (0.4 × top-1 + 0.2 × top-3 + 0.4 × rejection) will trade wrong matches
+for right ones, so calibrate with `--min-rejection`; if no parameters reach it, the output says so and uses the
+ones that reject the most.
 
 ## Fine-tune
 
