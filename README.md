@@ -62,7 +62,11 @@ whole catalog's. I tested 32 sample goals against the 319-qualification catalog:
 The band `SEMANTIC_Z_FLOOR` (3.0) to `SEMANTIC_Z_CEILING` (5.0) favors precision. A goal the model
 isn't sure about gets no match rather than a wrong one, and the Filipino keywords cover common trades the
 model misses. Recalibrate the band once the pilot collects real goals and outcomes.
-`TESDA_MODEL_TESTS=1` runs the tests that guard it against the real catalog.
+`TESDA_MODEL_TESTS=1` runs a guard test against the real catalog. It currently fails on 2 of its 13 goals with the
+adopted local model (a solar-panel goal ranks Carpentry first; "work in a call center" scores 21, under the minimum
+of 25) and passes with the base model; see `docs/ml/2026-10-09-matching-model-evaluation.md`. Three job titles
+(Mechanical Drafting NC I, Machining NC III, FCAW NC III) were corrected after the model was trained, and they were
+present in its training data; the model was not retrained.
 
 The pilot serves a copy of the model fine-tuned on the TESDA catalog, `tesda-track/tesda-e5-small-v1`,
 with its own band in `calibration.json`: on held-out goals it ranked the right qualification first more
@@ -335,7 +339,9 @@ inside a transaction that is rolled back. The UI tests drive the Streamlit app w
 the API served over HTTP.
 
 The tests don't load the embedding model. They use a small stand-in that treats texts sharing words as
-similar. Set `TESDA_MODEL_TESTS=1` to also check that the real model understands Taglish goals.
+similar. Set `TESDA_MODEL_TESTS=1` to also run the real-model guard test; with the adopted local model it
+currently fails on 2 of 13 goals (see `docs/ml/2026-10-09-matching-model-evaluation.md`), and it passes with the
+base model.
 
 ## Seed data
 

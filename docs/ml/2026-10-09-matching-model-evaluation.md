@@ -9,8 +9,16 @@ beats the base model on the objective (0.660 vs 0.561), rejects 20 of 21 goals w
 improves top-1 in English, Taglish and Filipino. The base model's defaults stay 3.0 / 5.0 / 0.5 / 20; they apply
 whenever the fine-tuned folder is not configured.
 
+**A regression to know about:** the real-model guard test (`TESDA_MODEL_TESTS=1`, 13 goals) fails on 2 goals with the
+adopted model and passes all 13 with the base model. "I want to install solar panels on houses" ranks Carpentry NC III
+above PV Systems Installation NC II, and "I want to work in a call center" scores 21, under the minimum of 25 (details
+under "The real-model guard test"). The held-out numbers above do not show these two.
+
 The decision came from a second round. The first round (below) calibrated on the objective alone and did not adopt;
-its rules were inconsistent, and the second round fixed them before any new test numbers were looked at.
+its rules were inconsistent, and the second round fixed them before any new test numbers were looked at. That second
+round was prompted by round 1's test-split result, which rejected too many no-TVET goals (the rejection rate below
+0.8). So the adoption margin comes from a second look at the test split. No parameters were selected on the test
+split (they were calibrated on dev only), but the test split was not untouched when the decision was made.
 
 ## Data
 
@@ -118,14 +126,18 @@ wrongly matches 1 no-TVET test goal instead of 3.
 
 `TESDA_MODEL_TESTS=1 pytest backend/tests/test_semantic.py -k real_model` now builds its embedder like the API, so it
 runs the configured model and its `calibration.json` against the real catalog. With the adopted model, 6 of its 8
-related goals and all 5 no-TVET goals pass; the expectations were not changed. The two failures:
+related goals pass and 2 fail; the expectations were not changed. The test stops at the related-goals assertion, so
+its no-TVET assertion was not reached. The 5 no-TVET goals were checked separately with the same scoring and the
+final configuration (`backend/training/runs/probes-round2.json`, "fine-tuned-constrained (final)"): all 5 get no
+match and no keyword hit (astronaut, abogado, pulis, politician, professional basketball). The two failures:
 
 - "I want to install solar panels on houses": no match. The fine-tuned model puts Carpentry NC III closest (z 3.85)
   and PV Systems Installation NC II second (z 3.18), so this is the model's ranking, not the band.
 - "I want to work in a call center": no match. Contact Center Services NC II is closest (z 4.52), but at the 4.0–5.5
   band it scores 21, under the minimum of 25.
 
-The base model at its defaults passes all 13.
+The base model at its defaults passes all 13. This is a regression of the adopted model against the guard test; it is
+left failing rather than loosening the expectations.
 
 ## "I want to become Bob the Builder"
 
