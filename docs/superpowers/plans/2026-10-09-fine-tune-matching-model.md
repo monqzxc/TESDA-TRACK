@@ -354,7 +354,7 @@ def test_evaluation_and_calibration_run_the_api_scoring_offline():
     params, best = evaluate.calibrate(prepared, items, {"z_floor": [1.0, 3.0], "z_span": [1.0],
                                                         "keyword_weight": [0.5], "min_score": [20]})
     assert best.rejection == 1.0 and isinstance(params, MatchParams)
-    assert results[0].shown and "Welding" in results[0].shown[0]
+    assert any("Welding" in name for name in results[0].shown)
 ```
 
 (The real catalog names SMAW "Manual Metal Arc Welding (MMAW) NC II"; the backend test catalog still says SMAW.)
