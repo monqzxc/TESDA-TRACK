@@ -14191,7 +14191,7 @@
    "Plate Welder (FCAW)",
    "FCAW Plate Welder (Alloy Steel )",
    "Pipe Welder (FCAW)",
-   "FCAW Pipe Welder (Alloy Steel) fcaw nc iii"
+   "FCAW Pipe Welder (Alloy Steel)"
   ],
   "competencies": [
    {
@@ -22244,14 +22244,14 @@
    "precision grinding machine operator",
    "lathe operator",
    "bench worker",
-   "milling machine operator machiii"
+   "milling machine operator"
   ],
   "possible_jobs": [
    "Machinist",
    "Precision grinding machine operator",
    "Lathe operator",
    "Bench worker/fitter",
-   "Milling machine operator machiii"
+   "Milling machine operator"
   ],
   "competencies": [
    {
@@ -23226,10 +23226,10 @@
   "skill_label": "Mechanical Drafting",
   "career_keywords": [
    "mechanical drafting",
-   "mechanical draftsman echanical drafting"
+   "mechanical draftsman"
   ],
   "possible_jobs": [
-   "Mechanical Draftsman echanical drafting"
+   "Mechanical Draftsman"
   ],
   "competencies": [
    {

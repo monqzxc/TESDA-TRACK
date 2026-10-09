@@ -216,8 +216,13 @@ def parse_units(lines: list[str]) -> list[tuple[str, str]]:
 
 
 def _wraps(previous: str, line: str) -> bool:
-    """Whether a line without a bullet continues the job title before it, e.g. after an unclosed bracket."""
-    return previous.count("(") > previous.count(")") or previous.endswith(("/", "-", ",")) or line[:1].islower()
+    """Whether a line without a bullet continues the job title before it.
+
+    Only when that title is visibly unfinished (an unclosed bracket, or a trailing "/", "-" or ","), or the line is
+    a lower-case "positions for:" lead-in; a lower-case line otherwise is a page-footer fragment, not a title.
+    """
+    return (previous.count("(") > previous.count(")") or previous.endswith(("/", "-", ","))
+            or (line[:1].islower() and line.endswith(":")))
 
 
 def parse_jobs(lines: list[str]) -> list[str]:
