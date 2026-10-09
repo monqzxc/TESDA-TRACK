@@ -16,8 +16,10 @@ API: the API image copies only `tesda_track`, `migrations` and `seed`, and insta
 keywords come from `seed/sources/keywords_tl.json`) and the hand-written goals. Never learner, worker, T2MIS
 or TSP records. The training queries are each qualification's name, skill, jobs, keywords and Core competencies
 (Basic and Common units such as "Participate in workplace communication" are shared by many qualifications, so
-they are left out), plus short English and Filipino phrasings ("I want to work as a cook", "gusto kong maging
-cook"). Any query that equals an evaluation goal is dropped, so the evaluation stays held out.
+they are left out), plus short English and Filipino phrasings ("I want to work as a Chef", "gusto kong maging
+Chef"). Each query appears as written in the catalog and in lower case, because the tokenizer is cased and the API
+embeds goals as learners type them. Any query that equals an evaluation goal (ignoring case) is dropped, so the
+evaluation stays held out. The catalog gives 18,428 pairs.
 
 ## Evaluate and calibrate
 
@@ -54,16 +56,23 @@ Then, from `backend/`:
 ```
 
 Options: `--epochs 3`, `--batch-size 64`, `--mini-batch-size 8` (lower it if GPU memory runs out; it does not
-change the result), `--lr 2e-5`, `--seed 42`, `--max-steps N` (a short smoke run). It trains with in-batch
+change the result), `--lr 2e-5`, `--seed 42`, `--max-steps N` (a short smoke run), `--resume`. It trains with in-batch
 negatives (`CachedMultipleNegativesRankingLoss`, no duplicate texts in a batch), uses fp16 on a CUDA GPU, and
 reports the loss on 5% of the pairs held out from training. Use a GPU: a step of 64 pairs took about 2.5 s on
-a 4 GB laptop RTX 3050 (a full 3-epoch run is about 430 steps, roughly 20 minutes) but about 3 minutes on a
+a 4 GB laptop RTX 3050 (a full 3-epoch run is about 820 steps, roughly 35 minutes) but about 3 minutes on a
 4-core laptop CPU, which makes CPU training impractical beyond a few smoke steps.
+
+**Interruptions.** The script saves a checkpoint in `<output>/checkpoints/` at the end of every epoch. If a run
+stops, start it again with the same options plus `--resume` to continue from that checkpoint; without `--resume`
+it refuses to overwrite an unfinished run. The checkpoints are deleted once the model has been exported and
+verified.
 
 The output folder (git-ignored, like everything in `backend/models/` except its README) holds the
 sentence-transformers model, `onnx/model.onnx` (what fastembed runs) and `training.json` (base model, settings,
-pair counts, held-out loss, date and git commit). The script exits with an error if fastembed's vectors for the
-exported model differ from sentence-transformers' (cosine below 0.999 on ten catalog texts).
+pair counts, held-out loss, date and git commit). `training.json` is written only after the parity check passes,
+so a folder that has it holds a finished, verified model. The check fails, and the script exits with an error, if
+fastembed's vectors for the exported model differ from sentence-transformers' (cosine below 0.999 on ten catalog
+texts).
 
 The ONNX export uses `torch.onnx` directly: no optimum release supports transformers 5, so sentence-transformers'
 ONNX backend can't be used.

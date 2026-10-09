@@ -1,13 +1,15 @@
 """Fine-tune the matching model on catalog pairs, export it to ONNX and check fastembed reproduces it.
 
 Run from backend/ inside .venv-train:  python -m training.finetune --output models/<name>
+(add --resume to continue an interrupted run from its last epoch checkpoint).
 Dev-only: torch and sentence-transformers are imported inside main(), so this module imports without them.
 """
 import argparse
 import json
 import random
+import re
+import shutil
 import subprocess
-import tempfile
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -113,6 +115,7 @@ def main() -> None:
     parser.add_argument("--lr", type=float, default=2e-5)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--max-steps", type=int, default=None, help="stop early (smoke runs)")
+    parser.add_argument("--resume", action="store_true", help="continue from the checkpoint in <output>/checkpoints")
     args = parser.parse_args()
 
     import torch
@@ -120,6 +123,17 @@ def main() -> None:
                                        SentenceTransformerTrainingArguments)
     from sentence_transformers.base.sampler import BatchSamplers
     from sentence_transformers.sentence_transformer.losses import CachedMultipleNegativesRankingLoss
+    from transformers.trainer_utils import get_last_checkpoint
+
+    output = args.output.resolve()
+    checkpoints = output / "checkpoints"
+    checkpoint = get_last_checkpoint(str(checkpoints)) if checkpoints.is_dir() else None
+    if args.resume and checkpoint is None:
+        raise SystemExit(f"--resume: no checkpoint in {checkpoints}")
+    if checkpoint and not args.resume:
+        raise SystemExit(f"{checkpoints} holds an unfinished run: add --resume to continue it, or delete the folder")
+    # training.json marks a finished, verified model: drop any old one until this run passes the parity check.
+    (output / "training.json").unlink(missing_ok=True)
 
     qualifications, _ = load_catalog()
     pairs = training_pairs(qualifications, eval_exclusions())
@@ -131,37 +145,43 @@ def main() -> None:
     model = SentenceTransformer(BASE_MODEL)
     model.max_seq_length = 512
     loss = CachedMultipleNegativesRankingLoss(model, mini_batch_size=args.mini_batch_size)
-    with tempfile.TemporaryDirectory() as scratch:
-        training_args = SentenceTransformerTrainingArguments(
-            output_dir=scratch, num_train_epochs=args.epochs, max_steps=args.max_steps or -1,
-            per_device_train_batch_size=args.batch_size, per_device_eval_batch_size=args.batch_size,
-            learning_rate=args.lr, warmup_steps=0.1, fp16=cuda, batch_sampler=BatchSamplers.NO_DUPLICATES,
-            eval_strategy="no", save_strategy="no", logging_steps=10, report_to="none", seed=args.seed)
-        trainer = SentenceTransformerTrainer(model=model, args=training_args, train_dataset=_dataset(train),
-                                             eval_dataset=_dataset(held_out), loss=loss)
-        # The held-out loss is measured outside train() so the steps/s below count training only.
-        before = trainer.evaluate()["eval_loss"]
-        started = time.perf_counter()
-        result = trainer.train()
-        seconds = time.perf_counter() - started
-        after = trainer.evaluate()["eval_loss"]
-    print(f"Trained {result.global_step} steps in {seconds:.0f}s ({result.global_step / seconds:.3f} steps/s); "
-          f"held-out loss {before:.4f} -> {after:.4f}")
+    # A checkpoint at the end of every epoch, so an interrupted run loses at most one epoch.
+    training_args = SentenceTransformerTrainingArguments(
+        output_dir=str(checkpoints), num_train_epochs=args.epochs, max_steps=args.max_steps or -1,
+        per_device_train_batch_size=args.batch_size, per_device_eval_batch_size=args.batch_size,
+        learning_rate=args.lr, warmup_steps=0.1, fp16=cuda, batch_sampler=BatchSamplers.NO_DUPLICATES,
+        eval_strategy="no", save_strategy="epoch", save_total_limit=1, logging_steps=10, report_to="none",
+        seed=args.seed)
+    trainer = SentenceTransformerTrainer(model=model, args=training_args, train_dataset=_dataset(train),
+                                         eval_dataset=_dataset(held_out), loss=loss)
+    # The held-out loss is measured outside train() so the steps/s below count training only.
+    before = trainer.evaluate()["eval_loss"]
+    resumed_at = int(re.search(r"(\d+)$", checkpoint).group(1)) if checkpoint else 0
+    if checkpoint:
+        print(f"Resuming from {checkpoint} (step {resumed_at})")
+    started = time.perf_counter()
+    result = trainer.train(resume_from_checkpoint=checkpoint)
+    seconds = time.perf_counter() - started
+    after = trainer.evaluate()["eval_loss"]
+    steps = result.global_step - resumed_at
+    print(f"Trained {steps} steps in {seconds:.0f}s ({steps / max(seconds, 1e-9):.3f} steps/s), {result.global_step} "
+          f"in all; held-out loss {before:.4f} -> {after:.4f}")
 
-    output = args.output.resolve()
     model.save_pretrained(str(output))
     export_onnx(output)
     cosine = parity(model, output, parity_texts(qualifications))
+    print(f"Saved {output} (ONNX at onnx/model.onnx); fastembed parity: lowest cosine {cosine:.6f}")
+    if cosine < MIN_PARITY:
+        raise SystemExit(f"fastembed parity {cosine:.6f} is below {MIN_PARITY}: the ONNX export does not match")
     metadata = {"base_model": BASE_MODEL, "seed": args.seed, "epochs": args.epochs, "max_steps": args.max_steps,
                 "batch_size": args.batch_size, "mini_batch_size": args.mini_batch_size, "learning_rate": args.lr,
                 "pairs": len(pairs), "train_pairs": len(train), "held_out_pairs": len(held_out),
                 "held_out_loss": {"before": before, "after": after}, "steps": result.global_step,
-                "train_seconds": round(seconds, 1), "device": "cuda" if cuda else "cpu", "parity_cosine": cosine,
-                "date": datetime.now(timezone.utc).isoformat(timespec="seconds"), "git_commit": _git_commit()}
+                "resumed_at_step": resumed_at, "train_seconds": round(seconds, 1), "device": "cuda" if cuda else "cpu",
+                "parity_cosine": cosine, "date": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                "git_commit": _git_commit()}
     (output / "training.json").write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8", newline="\n")
-    print(f"Saved {output} (ONNX at onnx/model.onnx); fastembed parity: lowest cosine {cosine:.6f}")
-    if cosine < MIN_PARITY:
-        raise SystemExit(f"fastembed parity {cosine:.6f} is below {MIN_PARITY}: the ONNX export does not match")
+    shutil.rmtree(checkpoints, ignore_errors=True)
 
 
 if __name__ == "__main__":

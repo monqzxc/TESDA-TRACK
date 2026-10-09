@@ -1,8 +1,8 @@
 """(query, passage) pairs for fine-tuning, built from catalog text only.
 
 Each qualification's passage is exactly what the API embeds; its queries are the names, jobs, keywords and
-core competencies a learner might type, plus a few English and Filipino goal phrasings over the jobs and keywords.
-Evaluation goals are excluded so the held-out numbers stay honest.
+core competencies a learner might type, plus a few English and Filipino goal phrasings over the jobs and keywords,
+each as written in the catalog and in lower case. Evaluation goals are excluded so the held-out numbers stay honest.
 """
 import json
 from pathlib import Path
@@ -23,7 +23,9 @@ def _queries(qualification: Qualification) -> list[str]:
     queries = [qualification.name, qualification.skill_label or "", *terms,
                *(c.name for c in qualification.competencies if c.is_active and c.category == "Core"),
                *(template.format(x=term) for term in terms for template in TEMPLATES)]
-    return list(dict.fromkeys(normalize(query) for query in queries if query.strip()))
+    # The tokenizer is cased and the API embeds the goal as typed, so both "Chef" and "chef" need training signal.
+    written = [" ".join(query.split()) for query in queries if query.strip()]
+    return list(dict.fromkeys(form for query in written for form in (query, normalize(query))))
 
 
 def training_pairs(qualifications: list[Qualification], exclude: set[str]) -> list[tuple[str, str]]:
@@ -31,7 +33,7 @@ def training_pairs(qualifications: list[Qualification], exclude: set[str]) -> li
     pairs = []
     for qualification in qualifications:
         passage = qualification_text(qualification)
-        pairs.extend((query, passage) for query in _queries(qualification) if query not in exclude)
+        pairs.extend((query, passage) for query in _queries(qualification) if normalize(query) not in exclude)
     return pairs
 
 
