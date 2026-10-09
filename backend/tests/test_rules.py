@@ -5,10 +5,12 @@ from pathlib import Path
 import pytest
 
 from tesda_track.services.intent_service import analyze_user_query
-from tesda_track.services.recommendation_service import match_qualifications, recommend_pathway, refine_profile
+from tesda_track.services.recommendation_service import (
+    match_qualifications, recommend_pathway, refine_profile, score_qualifications)
 from tesda_track.services.skill_gap_service import calculate_skill_gap
 
 SEED_FILE = Path(__file__).resolve().parent / "seed" / "qualifications.json"
+CATALOG_FILE = Path(__file__).resolve().parents[1] / "seed" / "qualifications.json"  # the real 319-qualification catalog
 
 
 @pytest.fixture(scope="module")
@@ -114,3 +116,21 @@ def test_incomplete_answers_are_rejected(welding):
 def test_unknown_answer_value_is_rejected(welding):
     with pytest.raises(ValueError):
         calculate_skill_gap(welding, {str(c["id"]): "I can do this confidently" for c in welding["competencies"]})
+
+
+@pytest.mark.parametrize("query", ["i want to be bob the builder", "I want to be a builder"])
+def test_builder_goal_gets_keyword_evidence_from_the_whole_word(query):
+    rules = [
+        {"code": "CARPENTRY", "name": "Carpentry NC II", "sector": "Construction", "career_keywords": ["karpintero", "builder"]},
+        {"code": "ENGINE", "name": "Engine Rebuilding NC II", "sector": "Automotive", "career_keywords": ["rebuilder"]},
+    ]
+    hits = score_qualifications(query, {}, [{**r, "possible_jobs": []} for r in rules])
+    assert [(h["qualification"]["code"], h["reason"]) for h in hits] == [("CARPENTRY", "Matched your words: builder")]
+
+
+def test_catalog_carpentry_and_masonry_answer_to_builder():
+    catalog = {q["code"]: q for q in json.loads(CATALOG_FILE.read_text(encoding="utf-8"))}
+    for code in ("CARPENTRY-NC-II", "MASONRY-NC-II"):
+        assert "builder" in catalog[code]["career_keywords"]
+    hits = score_qualifications("i want to be bob the builder", {}, list(catalog.values()))
+    assert {h["qualification"]["code"] for h in hits} == {"CARPENTRY-NC-II", "MASONRY-NC-II"}

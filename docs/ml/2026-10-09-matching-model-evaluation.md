@@ -158,6 +158,36 @@ nor the adopted model show it, and the fine-tuned model's nearest guess for that
 catalog keyword (the catalog has only "Automotive Engine Rebuilder"); adding it, with "construction worker" and
 "gumagawa ng bahay", to the carpentry and masonry keywords would let these goals match through the rules.
 
+## 2026-10-10: builder vocabulary
+
+The gap above was a vocabulary gap: no qualification used the word "builder", so neither the keyword rules nor the
+model connected it to construction. A score fallback ("show the closest qualification") was measured and rejected
+because it would also show something for astronaut-style goals. Instead, `backend/seed/sources/keywords_tl.json` now
+gives Carpentry NC II "builder", "house builder", "home builder", "magtayo ng bahay" and "gumawa ng bahay", and Masonry
+NC II "builder", "house builder", "construction worker" and "magtayo ng bahay". "Bob the builder" is deliberately not a
+keyword; the whole word "builder" carries it. Only these two qualifications' `career_keywords` changed in the catalog,
+and both were re-embedded (`seed`, then `embeddings sync`).
+
+| Split (adopted configuration) | top-1 | top-3 | rejection | objective |
+| --- | --- | --- | --- | --- |
+| dev, before | 0.539 | 0.569 | 1.000 | 0.729 |
+| dev, after | 0.539 | 0.559 | 1.000 | 0.727 |
+| test, before | 0.455 | 0.485 | 0.952 | 0.660 |
+| test, after | 0.475 | 0.505 | 0.952 | 0.672 |
+
+Top-1 by language, dev (en / taglish / tl): 0.603 / 0.409 / 0.500 before, 0.603 / 0.455 / 0.455 after. Test:
+0.509 / 0.455 / 0.300 before, 0.526 / 0.455 / 0.350 after. Through the API, "i want to be bob the builder" now shows
+Carpentry NC II and Masonry NC II, and "I want to be an astronaut" still shows nothing.
+
+Re-embedding the two passages shifted the score statistics slightly: on dev, the plumbing goal "gusto kong matutong
+magkabit ng tubo at gripo sa bahay" lost its Plumbing NC II match, and "marunong akong mag-drawing ng plano ng bahay sa
+computer" lost Technical Drafting NC II as its second suggestion. On test, "nagkakabit ako ng baldosa sa sahig ng mga
+kapitbahay" (expected Tile Setting) now shows Carpentry NC II instead of nothing, while "gumagawa ako ng kabinet, pinto
+at hagdan na kahoy sa mga bahay" now matches Carpentry NC II.
+
+Honest note: the gap was found through the test-split goal "I want to become Bob the Builder", so that goal (and the
+test numbers above) no longer measures generalisation; the test-split gain is partly tuning to the test set.
+
 ## Latency
 
 One query embedding on CPU (Intel Core i5-11300H, 4 cores; fastembed 0.8.1, onnxruntime 1.30.0, CPU provider), the

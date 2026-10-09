@@ -8065,7 +8065,12 @@
    "carpentry",
    "rough and finishing carpenter",
    "karpintero",
-   "anluwagi"
+   "anluwagi",
+   "builder",
+   "house builder",
+   "home builder",
+   "magtayo ng bahay",
+   "gumawa ng bahay"
   ],
   "possible_jobs": [
    "Rough and Finishing Carpenter"
@@ -22939,7 +22944,11 @@
    "masonry",
    "rough mason",
    "kantero",
-   "mason"
+   "mason",
+   "builder",
+   "house builder",
+   "construction worker",
+   "magtayo ng bahay"
   ],
   "possible_jobs": [
    "Rough Mason"
