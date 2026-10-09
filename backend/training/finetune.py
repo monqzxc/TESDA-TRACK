@@ -26,6 +26,23 @@ HELD_OUT = 0.05
 MIN_PARITY = 0.999
 
 
+def check_output_folder(output: Path, resume: bool, checkpoint: str | None) -> None:
+    """Refuse a folder that already holds a model, so one folder and name never mix two vector spaces.
+
+    Stored embeddings are keyed by model name and text, and calibration.json lives in the folder, so a retrain under
+    the same name would keep stale vectors and scores. Only an unfinished run may continue, with --resume.
+    """
+    if resume and checkpoint is None:
+        raise SystemExit(f"--resume: no checkpoint in {output / 'checkpoints'}")
+    if checkpoint and not resume:
+        raise SystemExit(f"{output / 'checkpoints'} holds an unfinished run: add --resume to continue it, "
+                         "or delete the folder")
+    if (output / "onnx" / "model.onnx").exists() or (output / "training.json").exists():
+        if not (resume and checkpoint):
+            raise SystemExit(f"{output} already holds a finished model: train into a new folder and give the model "
+                             "a new name, e.g. tesda-e5-small-v2")
+
+
 def split_pairs(pairs: list[tuple[str, str]], seed: int) -> tuple[list[tuple[str, str]], list[tuple[str, str]]]:
     """A seeded 5% of the pairs for the evaluation loss; every qualification keeps most of its pairs for training."""
     shuffled = list(pairs)
@@ -123,10 +140,7 @@ def main() -> None:
     output = args.output.resolve()
     checkpoints = output / "checkpoints"
     checkpoint = get_last_checkpoint(str(checkpoints)) if checkpoints.is_dir() else None
-    if args.resume and checkpoint is None:
-        raise SystemExit(f"--resume: no checkpoint in {checkpoints}")
-    if checkpoint and not args.resume:
-        raise SystemExit(f"{checkpoints} holds an unfinished run: add --resume to continue it, or delete the folder")
+    check_output_folder(output, args.resume, checkpoint)
     # training.json marks a finished, verified model: drop any old one until this run passes the parity check.
     (output / "training.json").unlink(missing_ok=True)
 

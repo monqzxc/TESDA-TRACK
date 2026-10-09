@@ -71,6 +71,11 @@ stops, start it again with the same options plus `--resume` to continue from tha
 it refuses to overwrite an unfinished run. The checkpoints are deleted once the model has been exported and
 verified.
 
+**One new folder and model name per retrain.** The script refuses an output folder that already holds a finished
+model (`onnx/model.onnx` or `training.json`): stored embeddings are keyed by model name and text, and
+`calibration.json` lives in the folder, so reusing a name would keep stale vectors and scores. Train into a new
+folder and give the model a new name, e.g. `models/tesda-e5-small-v2` served as `tesda-track/tesda-e5-small-v2`.
+
 The output folder (git-ignored, like everything in `backend/models/` except its README) holds the
 sentence-transformers model, `onnx/model.onnx` (what fastembed runs) and `training.json` (base model, settings,
 pair counts, held-out loss, date and git commit). `training.json` is written only after the parity check passes,

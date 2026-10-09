@@ -1,7 +1,11 @@
 # Fine-tuned matching models
 
-Each folder here is one model written by `python -m training.finetune --output backend/models/<name>`
-(see `backend/training/`). Folders are git-ignored; only this file is tracked.
+Each folder here is one model written by `python -m training.finetune --output models/<name>`
+run from `backend/` (see `backend/training/`). Folders are git-ignored; only this file is tracked.
+
+One new folder and model name per retrain (e.g. `tesda-e5-small-v2`): `training.finetune` refuses a folder that
+already holds a finished model, because stored embeddings are keyed by model name and the folder's calibration
+belongs to the old vectors.
 
 A serving folder holds `onnx/model.onnx`, the tokenizer and config files, `training.json`, and optionally
 `calibration.json` (score parameters tuned with the model; the API uses them instead of the settings' values).
