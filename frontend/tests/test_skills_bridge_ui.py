@@ -35,17 +35,17 @@ DETAIL = {"source": "Skills Bridge", "retrieved_at": "2026-10-07T01:00:00+00:00"
 def bridge(offline_api, monkeypatch):
     state = {"calls": [], "match": deepcopy(MATCH), "details": deepcopy(DETAIL), "fail": False}
 
-    def matches(self, skills):
+    def matches(self, skills, client_ip=None):
         state["calls"].append(("matches", skills))
         if state["fail"]:
             raise ApiError("Skills Bridge is unavailable right now.", 503)
         return deepcopy(state["match"])
 
-    def occupations(self, terms):
+    def occupations(self, terms, client_ip=None):
         state["calls"].append(("occupations", terms))
         return deepcopy(OCCUPATION_MATCH)
 
-    def details(self, occupation_id):
+    def details(self, occupation_id, client_ip=None):
         state["calls"].append(("occupation", occupation_id))
         return deepcopy(state["details"])
 
@@ -88,9 +88,11 @@ def test_delivery_map_contract_sorts_and_deduplicates_sites():
                               "latitude": 14.6008, "longitude": 120.9831}, "distance_km": None}]
     location = _location_from_state({"latitude": 14.60, "longitude": 120.98, "accuracy": 12})
     sites = _delivery_sites(programs, schedules, location)
-    assert [site["kind"] for site in sites] == ["training", "assessment"]
+    # Nearest first: the center is about 0.3 km from the point, the provider about 0.5 km.
+    assert [site["kind"] for site in sites] == ["assessment", "training"]
     assert all(site["distance_km"] is not None for site in sites)
-    assert sites[0]["id"] == "training-1"
+    assert sites[0]["id"] == "assessment-2"
+    assert sites[1]["id"] == "training-1"
     assert _location_from_state({"latitude": 140, "longitude": 120}) is None
 
 

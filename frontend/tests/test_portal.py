@@ -14,7 +14,7 @@ from api_client import ApiClient, ApiError, ApiUnavailableError, UNAVAILABLE_MES
 
 APP_FILE = Path(__file__).resolve().parents[1] / "portal_app.py"
 PAGE = {name: f"app_pages/{name}.py" for name in
-        ("find", "qualifications", "training", "progress", "skills_bridge", "reports", "account")}
+        ("find", "qualifications", "training", "progress", "account")}
 
 
 def competency(id, name, category, position):
@@ -185,15 +185,7 @@ def answer_details(app, experience="More than 3 years", certificate="No"):
 
 # --- Navigation -----------------------------------------------------------------------------------------------------
 
-def test_reports_page_is_registered_only_for_administrators(api):
-    with pytest.raises(ValueError):
-        portal("learner").switch_page(PAGE["reports"])
-    admin = portal("admin", "reports")
-    metrics = {metric.label: metric.value for metric in admin.metric}
-    assert metrics["Learners"] == "12"
-
-
-@pytest.mark.parametrize("page", ["find", "qualifications", "training", "progress", "skills_bridge"])
+@pytest.mark.parametrize("page", ["find", "qualifications", "training", "progress"])
 def test_learner_pages_have_no_sign_in_form(api, page):
     app = portal(page=page)
     assert not [box for box in app.text_input if box.key == "signin_email"], "signing in has its own page"
@@ -495,14 +487,3 @@ def test_service_outage_offers_a_retry_that_recovers(api, monkeypatch):
     assert any(error.value == UNAVAILABLE_MESSAGE for error in app.error)
     press(app, "retry_service")
     assert not app.error and app.text_area(key="goal_query")
-
-
-def test_report_date_range_is_checked_before_asking_the_api(api):
-    from datetime import date
-
-    app = portal("admin", "reports")
-    before = len(calls(api, "report"))
-    app.date_input(key="report_from").set_value(date(2026, 10, 7))
-    app.date_input(key="report_to").set_value(date(2026, 10, 1)).run()
-    assert any("on or after" in warning.value for warning in app.warning)
-    assert len(calls(api, "report")) == before

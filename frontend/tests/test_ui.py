@@ -280,3 +280,25 @@ def test_reports_tab_is_only_for_administrators(ui, training_data):
     assert metrics["Open assessment seats"] == "10"
     supply = app.dataframe[-1].value
     assert list(supply.loc[supply["Region"] == "National Capital Region", "Programs"]) == [1]
+
+
+def test_report_date_range_is_checked_before_asking_the_api(ui, training_data, monkeypatch):
+    from datetime import date
+
+    from api_client import ApiClient
+
+    app = ui
+    open_account(app)
+    app.text_input(key="dialog_signin_email").set_value("admin@example.com")
+    app.text_input(key="dialog_signin_password").set_value("correct horse battery")
+    click(app, "Sign in")
+    rerun(app, "Reports")
+    asked = []
+    original = ApiClient.report
+    monkeypatch.setattr(ApiClient, "report", lambda self, *args, **params: (
+        asked.append(params), original(self, *args, **params))[1])
+    app.date_input(key="report_from").set_value(date(2026, 10, 7))
+    app.date_input(key="report_to").set_value(date(2026, 10, 1)).run()
+    assert not app.exception
+    assert any("on or after" in warning.value for warning in app.warning)
+    assert asked == []
