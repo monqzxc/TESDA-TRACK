@@ -472,8 +472,7 @@
    "restaurant",
    "server",
    "food and beverage services",
-   "❑ waiter",
-   "❑ food and beverage service attendant",
+   "food and beverage service attendant",
    "serbidor",
    "serbidora"
   ],
@@ -1534,7 +1533,7 @@
    "leading hand"
   ],
   "possible_jobs": [
-   "Independent Farmer (Owner / Operator in a smaller operation",
+   "Independent Farmer (Owner / Operator in a smaller operation)",
    "Leading hand"
   ],
   "competencies": [
@@ -2119,12 +2118,10 @@
   "skill_label": "Air Duct Servicing",
   "career_keywords": [
    "air duct servicing",
-   "❑ tinsmith",
-   "training regulation - air duct servicing nc ii"
+   "tinsmith"
   ],
   "possible_jobs": [
-   "❑ Tinsmith (HVAC/R Worker)",
-   "TRAINING REGULATION - AIR DUCT SERVICING NC II"
+   "Tinsmith (HVAC/R Worker)"
   ],
   "competencies": [
    {
@@ -3172,10 +3169,10 @@
   "skill_label": "Assistive Rehabilitation Technology Services",
   "career_keywords": [
    "assistive rehabilitation technology services",
-   "❑ orthotic technician"
+   "orthotic technician"
   ],
   "possible_jobs": [
-   "❑ Orthotic Technician"
+   "Orthotic Technician"
   ],
   "competencies": [
    {
@@ -3292,10 +3289,10 @@
   "skill_label": "Assistive Rehabilitation Technology Services",
   "career_keywords": [
    "assistive rehabilitation technology services",
-   "❑ prosthetic technician"
+   "prosthetic technician"
   ],
   "possible_jobs": [
-   "❑ Prosthetic Technician"
+   "Prosthetic Technician"
   ],
   "competencies": [
    {
@@ -3407,10 +3404,10 @@
   "skill_label": "Assistive Rehabilitation Technology Services",
   "career_keywords": [
    "assistive rehabilitation technology services",
-   "❑ wheelchair technician"
+   "wheelchair technician"
   ],
   "possible_jobs": [
-   "❑ Wheelchair Technician"
+   "Wheelchair Technician"
   ],
   "competencies": [
    {
@@ -3617,20 +3614,20 @@
   "skill_label": "Audio Production Services",
   "career_keywords": [
    "audio production services",
-   "❑ audio stagehand",
-   "❑ live sound assistant",
-   "❑ studio recording assistant",
-   "❑ broadcast technical assistant",
-   "❑ boom operator",
-   "❑ dubbing assistant"
+   "audio stagehand",
+   "live sound assistant",
+   "studio recording assistant",
+   "broadcast technical assistant",
+   "boom operator",
+   "dubbing assistant"
   ],
   "possible_jobs": [
-   "❑ Audio Stagehand",
-   "❑ Live Sound Assistant",
-   "❑ Studio Recording Assistant",
-   "❑ Broadcast Technical Assistant",
-   "❑ Boom operator",
-   "❑ Dubbing Assistant"
+   "Audio Stagehand",
+   "Live Sound Assistant",
+   "Studio Recording Assistant",
+   "Broadcast Technical Assistant",
+   "Boom operator",
+   "Dubbing Assistant"
   ],
   "competencies": [
    {
@@ -4144,10 +4141,10 @@
   "skill_label": "Automotive Diagnosis",
   "career_keywords": [
    "automotive diagnosis",
-   "❑ automotive chassis diagnosis specialist"
+   "automotive chassis diagnosis specialist"
   ],
   "possible_jobs": [
-   "❑ Automotive Chassis Diagnosis Specialist"
+   "Automotive Chassis Diagnosis Specialist"
   ],
   "competencies": [
    {
@@ -4274,10 +4271,10 @@
   "skill_label": "Automotive Diagnosis",
   "career_keywords": [
    "automotive diagnosis",
-   "❑ electrical diagnosis technician"
+   "electrical diagnosis technician"
   ],
   "possible_jobs": [
-   "❑ Electrical Diagnosis Technician"
+   "Electrical Diagnosis Technician"
   ],
   "competencies": [
    {
@@ -4404,10 +4401,10 @@
   "skill_label": "Automotive Diagnosis",
   "career_keywords": [
    "automotive diagnosis",
-   "❑ automotive engine control specialist"
+   "automotive engine control specialist"
   ],
   "possible_jobs": [
-   "❑ Automotive Engine Control Specialist"
+   "Automotive Engine Control Specialist"
   ],
   "competencies": [
    {
@@ -5066,14 +5063,14 @@
   "skill_label": "Automotive Servicing",
   "career_keywords": [
    "automotive servicing",
-   "❑ automotive service specialist",
-   "❑ automotive chassis specialist",
-   "❑ chassis repair personnel"
+   "automotive service specialist",
+   "automotive chassis specialist",
+   "chassis repair personnel"
   ],
   "possible_jobs": [
-   "❑ Automotive Service Specialist (Chassis)",
-   "❑ Automotive Chassis Specialist",
-   "❑ Chassis Repair Personnel"
+   "Automotive Service Specialist (Chassis)",
+   "Automotive Chassis Specialist",
+   "Chassis Repair Personnel"
   ],
   "competencies": [
    {
@@ -5205,12 +5202,12 @@
   "skill_label": "Automotive Servicing",
   "career_keywords": [
    "automotive servicing",
-   "❑ electrical technician",
-   "❑ aircon technician"
+   "electrical technician",
+   "aircon technician"
   ],
   "possible_jobs": [
-   "❑ Electrical Technician (Automotive)",
-   "❑ Aircon Technician (Automotive)"
+   "Electrical Technician (Automotive)",
+   "Aircon Technician (Automotive)"
   ],
   "competencies": [
    {
@@ -5342,17 +5339,17 @@
   "skill_label": "Automotive Servicing",
   "career_keywords": [
    "automotive servicing",
-   "❑ engine repair specialist",
-   "❑ engine repair technician",
-   "❑ engine technician",
+   "engine repair specialist",
+   "engine repair technician",
+   "engine technician",
    "mekaniko",
    "kotse",
    "sasakyan"
   ],
   "possible_jobs": [
-   "❑ Engine Repair Specialist",
-   "❑ Engine Repair Technician",
-   "❑ Engine Technician"
+   "Engine Repair Specialist",
+   "Engine Repair Technician",
+   "Engine Technician"
   ],
   "competencies": [
    {
@@ -5464,20 +5461,20 @@
   "skill_label": "Automotive Servicing",
   "career_keywords": [
    "automotive servicing",
-   "❑ pre-delivery inspector",
-   "❑ periodic maintenance personnel",
-   "❑ periodic maintenance associate",
-   "❑ junior technician",
-   "❑ maintenance technician",
-   "❑ auto – service personnel"
+   "pre-delivery inspector",
+   "periodic maintenance personnel",
+   "periodic maintenance associate",
+   "junior technician",
+   "maintenance technician",
+   "auto – service personnel"
   ],
   "possible_jobs": [
-   "❑ Pre-delivery inspector / Check lister",
-   "❑ Periodic maintenance personnel/staff",
-   "❑ Periodic maintenance associate",
-   "❑ Junior technician",
-   "❑ Maintenance technician",
-   "❑ Auto – service personnel"
+   "Pre-delivery inspector / Check lister",
+   "Periodic maintenance personnel/staff",
+   "Periodic maintenance associate",
+   "Junior technician",
+   "Maintenance technician",
+   "Auto – service personnel"
   ],
   "competencies": [
    {
@@ -6160,11 +6157,13 @@
   "skill_label": "Barbering",
   "career_keywords": [
    "barbering",
-   "assistant barber"
+   "assistant barber",
+   "barber"
   ],
   "possible_jobs": [
    "Assistant Barber (Scalp and Hair Treatment and Basic Hair Coloring)",
-   "Assistant Barber (Men’s Haircutting, Shave and Style Beard and Mustache, Chair"
+   "Assistant Barber (Men’s Haircutting, Shave and Style Beard and Mustache, Chair Manipulative Relaxing Services)",
+   "Barber"
   ],
   "competencies": [
    {
@@ -6271,12 +6270,11 @@
   "skill_label": "Barista",
   "career_keywords": [
    "barista",
-   "❑ barista",
    "kape",
    "coffee shop"
   ],
   "possible_jobs": [
-   "❑ Barista"
+   "Barista"
   ],
   "competencies": [
    {
@@ -6363,12 +6361,12 @@
   "skill_label": "Bartending",
   "career_keywords": [
    "bartending",
-   "❑ bartender",
-   "❑ bar utility"
+   "bartender",
+   "bar utility"
   ],
   "possible_jobs": [
-   "❑ Bartender/Barkeeper",
-   "❑ Bar Utility/Back"
+   "Bartender/Barkeeper",
+   "Bar Utility/Back"
   ],
   "competencies": [
    {
@@ -6656,13 +6654,13 @@
   "skill_label": "Beauty Care Services",
   "career_keywords": [
    "beauty care services",
-   "❑ beauty therapy assistant"
+   "beauty therapy assistant"
   ],
   "possible_jobs": [
-   "❑ Beauty Therapy Assistant (Facial Cleansing)",
-   "❑ Beauty Therapy Assistant (Hair Removal)",
-   "❑ Beauty Therapy Assistant (Body Scrub)",
-   "❑ Beauty Therapy Assistant (Full)"
+   "Beauty Therapy Assistant (Facial Cleansing)",
+   "Beauty Therapy Assistant (Hair Removal)",
+   "Beauty Therapy Assistant (Body Scrub)",
+   "Beauty Therapy Assistant (Full)"
   ],
   "competencies": [
    {
@@ -7144,12 +7142,10 @@
   "skill_label": "Cable TV Installation",
   "career_keywords": [
    "cable tv installation",
-   "cable tv installer",
-   "training regulations – cable television"
+   "cable tv installer"
   ],
   "possible_jobs": [
-   "Cable TV Installer",
-   "TRAINING REGULATIONS – CABLE TELEVISION (CATV) INCSTALLATION NC II"
+   "Cable TV Installer"
   ],
   "competencies": [
    {
@@ -7215,16 +7211,14 @@
    "catv systems technician",
    "catv headend technician",
    "catv outside plant technician",
-   "catv system operator",
-   "training regulations – catv operation & maintenance nc iii"
+   "catv system operator"
   ],
   "possible_jobs": [
    "CATV System Supervisor",
    "CATV Systems Technician",
    "CATV Headend Technician",
    "CATV Outside Plant Technician",
-   "CATV System Operator",
-   "TRAINING REGULATIONS – CATV OPERATION & MAINTENANCE NC III"
+   "CATV System Operator"
   ],
   "competencies": [
    {
@@ -8994,16 +8988,18 @@
   "skill_label": "Commercial Air-conditioning Installation and Servicing",
   "career_keywords": [
    "commercial air-conditioning installation and servicing",
-   "❑ commercial air-conditioning unit installer",
-   "❑ commercial air-conditioning unit maintenance technician",
+   "commercial air-conditioning unit installer",
+   "commercial air-conditioning unit maintenance technician",
+   "commercial air-conditioning service technician",
    "aircon",
    "air con",
    "airconditioning",
    "aircon technician"
   ],
   "possible_jobs": [
-   "❑ Commercial Air-Conditioning Unit Installer",
-   "❑ Commercial Air-Conditioning Unit Maintenance Technician"
+   "Commercial Air-Conditioning Unit Installer",
+   "Commercial Air-Conditioning Unit Maintenance Technician",
+   "Commercial Air-Conditioning Service Technician (HVAC/R Technician)"
   ],
   "competencies": [
    {
@@ -9130,14 +9126,14 @@
   "skill_label": "Commercial Refrigeration Installation and Servicing",
   "career_keywords": [
    "commercial refrigeration installation and servicing",
-   "❑ commercial refrigeration equipment installer",
-   "❑ commercial refrigeration equipment maintenance technician",
-   "❑ commercial refrigeration technician"
+   "commercial refrigeration equipment installer",
+   "commercial refrigeration equipment maintenance technician",
+   "commercial refrigeration technician"
   ],
   "possible_jobs": [
-   "❑ Commercial Refrigeration Equipment Installer",
-   "❑ Commercial Refrigeration Equipment Maintenance Technician",
-   "❑ Commercial Refrigeration Technician (HVAC/R Technician)"
+   "Commercial Refrigeration Equipment Installer",
+   "Commercial Refrigeration Equipment Maintenance Technician",
+   "Commercial Refrigeration Technician (HVAC/R Technician)"
   ],
   "competencies": [
    {
@@ -9264,12 +9260,12 @@
   "skill_label": "Community Nutrition Services",
   "career_keywords": [
    "community nutrition services",
-   "❑ barangay nutrition scholar",
-   "❑ community nutrition services worker"
+   "barangay nutrition scholar",
+   "community nutrition services worker"
   ],
   "possible_jobs": [
-   "❑ Barangay Nutrition Scholar",
-   "❑ Community Nutrition Services Worker"
+   "Barangay Nutrition Scholar",
+   "Community Nutrition Services Worker"
   ],
   "competencies": [
    {
@@ -9634,15 +9630,13 @@
    "consumer electronics products assembly supervisor",
    "domestic appliance senior technician",
    "cellular phone senior technician",
-   "audio-video senior technician",
-   "training regulations - consumer electronics servicing nc iii"
+   "audio-video senior technician"
   ],
   "possible_jobs": [
    "Consumer Electronics Products Assembly Supervisor",
    "Domestic Appliance Senior Technician",
    "Cellular Phone Senior Technician",
-   "Audio-Video Senior Technician",
-   "TRAINING REGULATIONS - CONSUMER ELECTRONICS SERVICING NC III"
+   "Audio-Video Senior Technician"
   ],
   "competencies": [
    {
@@ -9737,15 +9731,13 @@
    "consumer electronics product assembly supervisor",
    "domestic appliance service technician supervisor",
    "cellular phone service technician supervisor",
-   "audio-video service technician supervisor",
-   "training regulations - consumer electronics servicing nc iv"
+   "audio-video service technician supervisor"
   ],
   "possible_jobs": [
    "Consumer Electronics Product Assembly Supervisor",
    "Domestic Appliance Service Technician Supervisor",
    "Cellular Phone Service Technician Supervisor",
-   "Audio-video Service Technician Supervisor",
-   "TRAINING REGULATIONS - CONSUMER ELECTRONICS SERVICING NC IV"
+   "Audio-video Service Technician Supervisor"
   ],
   "competencies": [
    {
@@ -9835,7 +9827,7 @@
    "inbound"
   ],
   "possible_jobs": [
-   "Inbound/Outbound Contact Center Service Agent, including entry-level"
+   "Inbound/Outbound Contact Center Service Agent"
   ],
   "competencies": [
    {
@@ -9900,7 +9892,7 @@
    "contact tracer"
   ],
   "possible_jobs": [
-   "Contact Tracer (Local Government Unit: Province/ City/ Municipality/"
+   "Contact Tracer (Local Government Unit: Province/ City/ Municipality/ Barangay)"
   ],
   "competencies": [
    {
@@ -11048,10 +11040,10 @@
   "skill_label": "Diesel Power Plant Maintenance",
   "career_keywords": [
    "diesel power plant maintenance",
-   "❑ diesel power plant senior operation maintenance technician"
+   "diesel power plant senior operation maintenance technician"
   ],
   "possible_jobs": [
-   "❑ Diesel power plant senior operation maintenance technician"
+   "Diesel power plant senior operation maintenance technician"
   ],
   "competencies": [
    {
@@ -11282,26 +11274,23 @@
   "skill_label": "Domestic Work",
   "career_keywords": [
    "domestic work",
-   "❑ domestic worker",
-   "❑ houseboy",
-   "❑ housemaid",
-   "❑ housekeeper",
-   "❑ hand-launderer",
-   "❑ helper",
-   "❑ cleaner",
-   "domestic work nc ii – socdow222",
+   "domestic worker",
+   "houseboy",
+   "housemaid",
+   "housekeeper",
+   "hand-launderer",
+   "cleaner",
    "kasambahay",
    "katulong"
   ],
   "possible_jobs": [
-   "❑ Domestic Worker",
-   "❑ Houseboy",
-   "❑ Housemaid",
-   "❑ Housekeeper",
-   "❑ Hand-launderer",
-   "❑ Helper, Kitchen",
-   "❑ Cleaner, Hotel",
-   "Domestic Work NC II – SOCDOW222"
+   "Domestic Worker",
+   "Houseboy",
+   "Housemaid",
+   "Housekeeper",
+   "Hand-launderer",
+   "Helper, Kitchen",
+   "Cleaner, Hotel"
   ],
   "competencies": [
    {
@@ -11904,10 +11893,10 @@
   "skill_label": "Early Childhood Care and Development Services",
   "career_keywords": [
    "early childhood care and development services",
-   "❑ child development worker"
+   "child development worker"
   ],
   "possible_jobs": [
-   "❑ Child Development Worker/Teacher"
+   "Child Development Worker/Teacher"
   ],
   "competencies": [
    {
@@ -12543,8 +12532,7 @@
    "audio-video service technician",
    "industrial electronic technician",
    "electronic production line assembler",
-   "factory production worker",
-   "training regulations –electronic products assembly and servicing nc ii"
+   "factory production worker"
   ],
   "possible_jobs": [
    "Electronic Products Assembler",
@@ -12552,8 +12540,7 @@
    "Audio-Video Service Technician",
    "Industrial Electronic Technician",
    "Electronic Production Line Assembler",
-   "Factory Production Worker",
-   "TRAINING REGULATIONS –ELECTRONIC PRODUCTS ASSEMBLY AND SERVICING NC II"
+   "Factory Production Worker"
   ],
   "competencies": [
    {
@@ -13041,10 +13028,10 @@
   "skill_label": "Emergency Medical Services",
   "career_keywords": [
    "emergency medical services",
-   "❑ emergency medical technician"
+   "emergency medical technician"
   ],
   "possible_jobs": [
-   "❑ Emergency Medical Technician"
+   "Emergency Medical Technician"
   ],
   "competencies": [
    {
@@ -14204,7 +14191,7 @@
    "Plate Welder (FCAW)",
    "FCAW Plate Welder (Alloy Steel )",
    "Pipe Welder (FCAW)",
-   "FCAW Pipe Welder (Alloy Steel)"
+   "FCAW Pipe Welder (Alloy Steel) fcaw nc iii"
   ],
   "competencies": [
    {
@@ -14306,18 +14293,18 @@
   "skill_label": "Food and Beverage Services",
   "career_keywords": [
    "food and beverage services",
-   "❑ assistant head water",
-   "❑ head waiter",
-   "❑ maitre d’hotel",
-   "❑ captain waiter",
-   "❑ banquet head waiter"
+   "assistant head water",
+   "head waiter",
+   "maitre d’hotel",
+   "captain waiter",
+   "banquet head waiter"
   ],
   "possible_jobs": [
-   "❑ Assistant Head Water/Waitress",
-   "❑ Head Waiter/Waitress",
-   "❑ Maitre d’Hotel",
-   "❑ Captain Waiter/Waitress",
-   "❑ Banquet Head Waiter/Waitress"
+   "Assistant Head Water/Waitress",
+   "Head Waiter/Waitress",
+   "Maitre d’Hotel",
+   "Captain Waiter/Waitress",
+   "Banquet Head Waiter/Waitress"
   ],
   "competencies": [
    {
@@ -14439,22 +14426,20 @@
   "skill_label": "Food and Beverage Services",
   "career_keywords": [
    "food and beverage services",
-   "❑ assistant restaurant manager",
-   "❑ catering supervisor",
-   "❑ banquet supervisor",
-   "❑ f&b supervisor",
-   "❑ restaurant supervisor",
-   "❑ outlet supervisor",
-   "tesda-sop-qso-01-f08"
+   "assistant restaurant manager",
+   "catering supervisor",
+   "banquet supervisor",
+   "f&b supervisor",
+   "restaurant supervisor",
+   "outlet supervisor"
   ],
   "possible_jobs": [
-   "❑ Assistant Restaurant Manager",
-   "❑ Catering Supervisor",
-   "❑ Banquet Supervisor",
-   "❑ F&B Supervisor",
-   "❑ Restaurant Supervisor",
-   "❑ Outlet Supervisor",
-   "TESDA-SOP-QSO-01-F08"
+   "Assistant Restaurant Manager",
+   "Catering Supervisor",
+   "Banquet Supervisor",
+   "F&B Supervisor",
+   "Restaurant Supervisor",
+   "Outlet Supervisor"
   ],
   "competencies": [
    {
@@ -14694,24 +14679,24 @@
   "skill_label": "Food Processing",
   "career_keywords": [
    "food processing",
-   "❑ food processing worker",
-   "❑ food production worker",
-   "❑ packing staff",
-   "❑ quality control staff",
-   "may also be known by specific products:",
-   "❑ tocino maker",
-   "❑ tinapa maker",
-   "❑ dried-fish processor"
+   "food processing worker",
+   "food production worker",
+   "packing staff",
+   "quality control staff",
+   "tocino maker",
+   "tinapa maker",
+   "dried-fish processor",
+   "cured-meat processor"
   ],
   "possible_jobs": [
-   "❑ Food Processing Worker",
-   "❑ Food Production Worker/Staff",
-   "❑ Packing Staff /Packer",
-   "❑ Quality Control Staff",
-   "May also be known by specific products:",
-   "❑ Tocino Maker",
-   "❑ Tinapa Maker",
-   "❑ Dried-fish Processor"
+   "Food Processing Worker",
+   "Food Production Worker/Staff",
+   "Packing Staff /Packer",
+   "Quality Control Staff",
+   "Tocino Maker",
+   "Tinapa Maker",
+   "Dried-fish Processor",
+   "Cured-meat Processor"
   ],
   "competencies": [
    {
@@ -15061,18 +15046,18 @@
   "skill_label": "Food Production",
   "career_keywords": [
    "food production",
-   "❑ kitchen hand",
-   "❑ commis - pastry",
-   "❑ baker",
+   "kitchen hand",
+   "commis - pastry",
+   "baker",
    "panadero",
    "panadera",
    "panaderya",
    "tinapay"
   ],
   "possible_jobs": [
-   "❑ Kitchen Hand",
-   "❑ Commis - Pastry",
-   "❑ Baker"
+   "Kitchen Hand",
+   "Commis - Pastry",
+   "Baker"
   ],
   "competencies": [
    {
@@ -15209,11 +15194,8 @@
    "banquet head cook"
   ],
   "possible_jobs": [
-   "❑",
    "Kitchen Supervisor",
-   "❑",
    "Head Chef",
-   "❑",
    "Banquet Head Cook/Chef"
   ],
   "competencies": [
@@ -15361,12 +15343,12 @@
   "skill_label": "Food Production",
   "career_keywords": [
    "food production",
-   "❑ sous chef",
-   "❑ executive sous chef"
+   "sous chef",
+   "executive sous chef"
   ],
   "possible_jobs": [
-   "❑ Sous Chef",
-   "❑ Executive Sous Chef"
+   "Sous Chef",
+   "Executive Sous Chef"
   ],
   "competencies": [
    {
@@ -16428,14 +16410,14 @@
   "skill_label": "Front Office Services",
   "career_keywords": [
    "front office services",
-   "❑ front office assistant manager",
-   "❑ night auditor",
-   "❑ guest relations manager"
+   "front office assistant manager",
+   "night auditor",
+   "guest relations manager"
   ],
   "possible_jobs": [
-   "❑ Front Office Assistant Manager",
-   "❑ Night Auditor",
-   "❑ Guest Relations Manager"
+   "Front Office Assistant Manager",
+   "Night Auditor",
+   "Guest Relations Manager"
   ],
   "competencies": [
    {
@@ -17726,24 +17708,24 @@
   "skill_label": "Handloom Weaving",
   "career_keywords": [
    "handloom weaving",
-   "❑ backstrap warper",
-   "❑ backstrap weaver",
-   "❑ backstrap production controller",
-   "❑ backstrap support weaver",
-   "❑ post-production officer",
-   "❑ packaging specialist",
-   "❑ finisher",
-   "❑ quality control officer"
+   "backstrap warper",
+   "backstrap weaver",
+   "backstrap production controller",
+   "backstrap support weaver",
+   "post-production officer",
+   "packaging specialist",
+   "finisher",
+   "quality control officer"
   ],
   "possible_jobs": [
-   "❑ Backstrap warper",
-   "❑ Backstrap Weaver",
-   "❑ Backstrap production controller",
-   "❑ Backstrap support weaver",
-   "❑ Post-production officer",
-   "❑ Packaging specialist",
-   "❑ Finisher",
-   "❑ Quality control officer"
+   "Backstrap warper",
+   "Backstrap Weaver",
+   "Backstrap production controller",
+   "Backstrap support weaver",
+   "Post-production officer",
+   "Packaging specialist",
+   "Finisher",
+   "Quality control officer"
   ],
   "competencies": [
    {
@@ -17860,14 +17842,14 @@
   "skill_label": "Handloom Weaving",
   "career_keywords": [
    "handloom weaving",
-   "❑ handloom weaver",
-   "❑ handloom weaving specialist",
-   "❑ handloom operator"
+   "handloom weaver",
+   "handloom weaving specialist",
+   "handloom operator"
   ],
   "possible_jobs": [
-   "❑ Handloom Weaver",
-   "❑ Handloom Weaving Specialist",
-   "❑ Handloom Operator"
+   "Handloom Weaver",
+   "Handloom Weaving Specialist",
+   "Handloom Operator"
   ],
   "competencies": [
    {
@@ -18621,10 +18603,10 @@
   "skill_label": "Heavy Equipment Operation",
   "career_keywords": [
    "heavy equipment operation",
-   "❑ crawler crane operator"
+   "crawler crane operator"
   ],
   "possible_jobs": [
-   "❑ Crawler crane operator"
+   "Crawler crane operator"
   ],
   "competencies": [
    {
@@ -18726,10 +18708,10 @@
   "skill_label": "Heavy Equipment Operation",
   "career_keywords": [
    "heavy equipment operation",
-   "❑ forklift operator"
+   "forklift operator"
   ],
   "possible_jobs": [
-   "❑ Forklift operator"
+   "Forklift operator"
   ],
   "competencies": [
    {
@@ -18831,10 +18813,10 @@
   "skill_label": "Heavy Equipment Operation",
   "career_keywords": [
    "heavy equipment operation",
-   "❑ hydraulic excavator operator"
+   "hydraulic excavator operator"
   ],
   "possible_jobs": [
-   "❑ Hydraulic excavator operator"
+   "Hydraulic excavator operator"
   ],
   "competencies": [
    {
@@ -19016,10 +18998,10 @@
   "skill_label": "Heavy Equipment Operation",
   "career_keywords": [
    "heavy equipment operation",
-   "❑ overhead and gantry crane operator"
+   "overhead and gantry crane operator"
   ],
   "possible_jobs": [
-   "❑ Overhead and gantry crane operator"
+   "Overhead and gantry crane operator"
   ],
   "competencies": [
    {
@@ -19281,10 +19263,10 @@
   "skill_label": "Heavy Equipment Operation",
   "career_keywords": [
    "heavy equipment operation",
-   "❑ rigid on-highway dump truck operator"
+   "rigid on-highway dump truck operator"
   ],
   "possible_jobs": [
-   "❑ Rigid on-highway dump truck operator"
+   "Rigid on-highway dump truck operator"
   ],
   "competencies": [
    {
@@ -19466,10 +19448,10 @@
   "skill_label": "Heavy Equipment Operation",
   "career_keywords": [
    "heavy equipment operation",
-   "❑ rough terrain crane operator"
+   "rough terrain crane operator"
   ],
   "possible_jobs": [
-   "❑ Rough terrain crane operator"
+   "Rough terrain crane operator"
   ],
   "competencies": [
    {
@@ -19641,10 +19623,10 @@
   "skill_label": "Heavy Equipment Operation",
   "career_keywords": [
    "heavy equipment operation",
-   "❑ tower crane operator"
+   "tower crane operator"
   ],
   "possible_jobs": [
-   "❑ Tower crane operator"
+   "Tower crane operator"
   ],
   "competencies": [
    {
@@ -19826,10 +19808,10 @@
   "skill_label": "Heavy Equipment Operation",
   "career_keywords": [
    "heavy equipment operation",
-   "❑ truck mounted crane operator"
+   "truck mounted crane operator"
   ],
   "possible_jobs": [
-   "❑ Truck mounted crane operator"
+   "Truck mounted crane operator"
   ],
   "competencies": [
    {
@@ -20179,7 +20161,7 @@
    "leading hand"
   ],
   "possible_jobs": [
-   "Independent Farmer (Owner / Operator in a smaller operation",
+   "Independent Farmer (Owner / Operator in a smaller operation)",
    "Leading hand"
   ],
   "competencies": [
@@ -20400,18 +20382,18 @@
   "skill_label": "Housekeeping",
   "career_keywords": [
    "housekeeping",
-   "❑ housekeeping supervisor",
-   "❑ public area supervisor",
-   "❑ linen",
-   "❑ laundry supervisor",
-   "❑ floor supervisor"
+   "housekeeping supervisor",
+   "public area supervisor",
+   "linen",
+   "laundry supervisor",
+   "floor supervisor"
   ],
   "possible_jobs": [
-   "❑ Housekeeping Supervisor",
-   "❑ Public Area Supervisor",
-   "❑ Linen/Uniform Supervisor",
-   "❑ Laundry Supervisor",
-   "❑ Floor Supervisor"
+   "Housekeeping Supervisor",
+   "Public Area Supervisor",
+   "Linen/Uniform Supervisor",
+   "Laundry Supervisor",
+   "Floor Supervisor"
   ],
   "competencies": [
    {
@@ -20528,22 +20510,20 @@
   "skill_label": "Housekeeping",
   "career_keywords": [
    "housekeeping",
-   "❑ housekeeping assistant manager",
-   "❑ housekeeping manager",
-   "❑ head housekeeper",
-   "❑ assistant housekeeper administrator",
-   "❑ assistant executive housekeeper",
-   "❑ laundry manager",
-   "draft"
+   "housekeeping assistant manager",
+   "housekeeping manager",
+   "head housekeeper",
+   "assistant housekeeper administrator",
+   "assistant executive housekeeper",
+   "laundry manager"
   ],
   "possible_jobs": [
-   "❑ Housekeeping Assistant Manager",
-   "❑ Housekeeping Manager",
-   "❑ Head Housekeeper",
-   "❑ Assistant Housekeeper Administrator",
-   "❑ Assistant Executive Housekeeper",
-   "❑ Laundry Manager",
-   "DRAFT"
+   "Housekeeping Assistant Manager",
+   "Housekeeping Manager",
+   "Head Housekeeper",
+   "Assistant Housekeeper Administrator",
+   "Assistant Executive Housekeeper",
+   "Laundry Manager"
   ],
   "competencies": [
    {
@@ -20665,10 +20645,10 @@
   "skill_label": "Ice Plant Refrigeration Servicing",
   "career_keywords": [
    "ice plant refrigeration servicing",
-   "❑ ice plant refrigeration technician"
+   "ice plant refrigeration technician"
   ],
   "possible_jobs": [
-   "❑ Ice Plant Refrigeration Technician"
+   "Ice Plant Refrigeration Technician"
   ],
   "competencies": [
    {
@@ -21249,7 +21229,6 @@
    "mobile air-conditioning"
   ],
   "possible_jobs": [
-   "❑",
    "Mobile Air-Conditioning (MAC) Technician"
   ],
   "competencies": [
@@ -21790,16 +21769,16 @@
   "skill_label": "Lighting for Live Performances",
   "career_keywords": [
    "lighting for live performances",
-   "❑ lighting technician",
-   "❑ lighting operator",
-   "❑ lights crew",
-   "❑ lighting electrician"
+   "lighting technician",
+   "lighting operator",
+   "lights crew",
+   "lighting electrician"
   ],
   "possible_jobs": [
-   "❑ Lighting Technician",
-   "❑ Lighting Operator",
-   "❑ Lights Crew",
-   "❑ Lighting Electrician"
+   "Lighting Technician",
+   "Lighting Operator",
+   "Lights Crew",
+   "Lighting Electrician"
   ],
   "competencies": [
    {
@@ -21916,10 +21895,10 @@
   "skill_label": "Local Guiding Services",
   "career_keywords": [
    "local guiding services",
-   "❑ local guide"
+   "local guide"
   ],
   "possible_jobs": [
-   "❑ Local Guide"
+   "Local Guide"
   ],
   "competencies": [
    {
@@ -22265,14 +22244,14 @@
    "precision grinding machine operator",
    "lathe operator",
    "bench worker",
-   "milling machine operator"
+   "milling machine operator machiii"
   ],
   "possible_jobs": [
    "Machinist",
    "Precision grinding machine operator",
    "Lathe operator",
    "Bench worker/fitter",
-   "Milling machine operator"
+   "Milling machine operator machiii"
   ],
   "competencies": [
    {
@@ -22856,12 +22835,12 @@
   "skill_label": "Masonry",
   "career_keywords": [
    "masonry",
-   "❑ helper mason",
-   "❑ construction helper"
+   "helper mason",
+   "construction helper"
   ],
   "possible_jobs": [
-   "❑ Helper Mason",
-   "❑ Construction Helper"
+   "Helper Mason",
+   "Construction Helper"
   ],
   "competencies": [
    {
@@ -23247,10 +23226,10 @@
   "skill_label": "Mechanical Drafting",
   "career_keywords": [
    "mechanical drafting",
-   "mechanical draftsman"
+   "mechanical draftsman echanical drafting"
   ],
   "possible_jobs": [
-   "Mechanical Draftsman"
+   "Mechanical Draftsman echanical drafting"
   ],
   "competencies": [
    {
@@ -24779,16 +24758,12 @@
   "skill_label": "Multimodal Transport Operations and Logistics Services",
   "career_keywords": [
    "multimodal transport operations and logistics services",
-   "❑ documentation clerk",
-   "❑ liaison personnel*",
-   "tesda-sop-qso-01-f08",
-   "mtol services nc ii"
+   "documentation clerk",
+   "liaison personnel"
   ],
   "possible_jobs": [
-   "❑ Documentation Clerk",
-   "❑ Liaison Personnel*",
-   "TESDA-SOP-QSO-01-F08",
-   "MTOL SERVICES NC II"
+   "Documentation Clerk",
+   "Liaison Personnel"
   ],
   "competencies": [
    {
@@ -24910,14 +24885,10 @@
   "skill_label": "Multimodal Transport Operations and Logistics Services",
   "career_keywords": [
    "multimodal transport operations and logistics services",
-   "❑ import coordinator",
-   "tesda-sop-qso-01-f08",
-   "mtol services nc iii"
+   "import coordinator"
   ],
   "possible_jobs": [
-   "❑ Import Coordinator",
-   "TESDA-SOP-QSO-01-F08",
-   "MTOL SERVICES NC III"
+   "Import Coordinator"
   ],
   "competencies": [
    {
@@ -24979,12 +24950,10 @@
   "skill_label": "Multimodal Transport Operations and Logistics Services",
   "career_keywords": [
    "multimodal transport operations and logistics services",
-   "❑ seafreight import supervisor",
-   "mtol services nc iii"
+   "seafreight import supervisor"
   ],
   "possible_jobs": [
-   "❑ Seafreight Import Supervisor",
-   "MTOL SERVICES NC III"
+   "Seafreight Import Supervisor"
   ],
   "competencies": [
    {
@@ -25364,7 +25333,7 @@
   ],
   "possible_jobs": [
    "Ballroom Dancer",
-   "Ballroom Dance Teacher/Instructor*",
+   "Ballroom Dance Teacher/Instructor",
    "Requires trainer qualification (TQII-certified)"
   ],
   "competencies": [
@@ -26656,10 +26625,10 @@
   "skill_label": "Printing Services",
   "career_keywords": [
    "printing services",
-   "❑ junior prepress technician"
+   "junior prepress technician"
   ],
   "possible_jobs": [
-   "❑ Junior Prepress Technician"
+   "Junior Prepress Technician"
   ],
   "competencies": [
    {
@@ -26766,10 +26735,10 @@
   "skill_label": "Printing Services",
   "career_keywords": [
    "printing services",
-   "❑ senior prepress technician"
+   "senior prepress technician"
   ],
   "possible_jobs": [
-   "❑ Senior Prepress Technician"
+   "Senior Prepress Technician"
   ],
   "competencies": [
    {
@@ -27659,10 +27628,10 @@
   "skill_label": "RAC Servicing",
   "career_keywords": [
    "rac servicing",
-   "❑ domestic refrigeration and air-conditioning technician"
+   "domestic refrigeration and air-conditioning technician"
   ],
   "possible_jobs": [
-   "❑ Domestic Refrigeration and Air-conditioning Technician"
+   "Domestic Refrigeration and Air-conditioning Technician"
   ],
   "competencies": [
    {
@@ -27986,7 +27955,6 @@
    "real estate salesperson"
   ],
   "possible_jobs": [
-   "❑",
    "Real Estate Salesperson"
   ],
   "competencies": [
@@ -28182,11 +28150,21 @@
   "career_keywords": [
    "rice machinery operations",
    "rice land preparation machinery operator",
-   "rice crop establishment machinery operator"
+   "rice crop establishment machinery operator",
+   "rice crop care machinery operator",
+   "rice harvesting and threshing machinery operator",
+   "rice drying machinery operator",
+   "rice mill machinery operator",
+   "rice machinery operator"
   ],
   "possible_jobs": [
    "Rice Land Preparation Machinery Operator (Hand Tractor, 4-Wheel Tractor)",
-   "Rice Crop Establishment Machinery Operator (Manual Seeder, Motorized Seeder"
+   "Rice Crop Establishment Machinery Operator (Manual Seeder, Motorized Seeder Rice Transplanter)",
+   "Rice Crop Care Machinery Operator (Irrigation Pump, Cultivator, Sprayer, Fertilizer Applicator)",
+   "Rice Harvesting and Threshing Machinery Operator (Reaper, Stripper, Combine Thresher)",
+   "Rice Drying Machinery Operator (Batch, Continuous Flow Dryer)",
+   "Rice Mill Machinery Operator (Single-Pass, Multi-Pass)",
+   "Rice Machinery Operator"
   ],
   "competencies": [
    {
@@ -28853,12 +28831,12 @@
   "skill_label": "Security Services",
   "career_keywords": [
    "security services",
-   "❑ security guard",
-   "❑ watchman"
+   "security guard",
+   "watchman"
   ],
   "possible_jobs": [
-   "❑ Security Guard",
-   "❑ Watchman"
+   "Security Guard",
+   "Watchman"
   ],
   "competencies": [
    {
@@ -30141,12 +30119,12 @@
   "skill_label": "Technical Drafting",
   "career_keywords": [
    "technical drafting",
-   "❑ draftsman",
-   "❑ cad operator"
+   "draftsman",
+   "cad operator"
   ],
   "possible_jobs": [
-   "❑ Draftsman",
-   "❑ CAD operator"
+   "Draftsman",
+   "CAD operator"
   ],
   "competencies": [
    {
@@ -30622,10 +30600,10 @@
   "skill_label": "Tour Guiding Services",
   "career_keywords": [
    "tour guiding services",
-   "❑ regional tour guide"
+   "regional tour guide"
   ],
   "possible_jobs": [
-   "❑ Regional Tour Guide"
+   "Regional Tour Guide"
   ],
   "competencies": [
    {
@@ -30722,16 +30700,14 @@
   "skill_label": "Tour Packaging Services",
   "career_keywords": [
    "tour packaging services",
-   "❑ tour packaging staff",
-   "❑ tour operations costing staff",
-   "❑ staff assistant",
-   "tesda-sop-qso-01-f08"
+   "tour packaging staff",
+   "tour operations costing staff",
+   "staff assistant"
   ],
   "possible_jobs": [
-   "❑ Tour Packaging Staff",
-   "❑ Tour Operations Costing Staff",
-   "❑ Staff Assistant for Tours",
-   "TESDA-SOP-QSO-01-F08"
+   "Tour Packaging Staff",
+   "Tour Operations Costing Staff",
+   "Staff Assistant for Tours"
   ],
   "competencies": [
    {
@@ -30833,18 +30809,16 @@
   "skill_label": "Tourism Promotion Services",
   "career_keywords": [
    "tourism promotion services",
-   "❑ tourist information officer",
-   "❑ tourism desk officer",
-   "❑ travel adviser",
-   "❑ concierge agent",
-   "tesda-sop-qso-01-f08"
+   "tourist information officer",
+   "tourism desk officer",
+   "travel adviser",
+   "concierge agent"
   ],
   "possible_jobs": [
-   "❑ Tourist Information Officer (LGU)",
-   "❑ Tourism Desk Officer (LGU)",
-   "❑ Travel Adviser/Consultant (Tourism Enterprise)",
-   "❑ Concierge Agent (Tourism Enterprise)",
-   "TESDA-SOP-QSO-01-F08"
+   "Tourist Information Officer (LGU)",
+   "Tourism Desk Officer (LGU)",
+   "Travel Adviser/Consultant (Tourism Enterprise)",
+   "Concierge Agent (Tourism Enterprise)"
   ],
   "competencies": [
    {
@@ -31526,20 +31500,18 @@
   "skill_label": "Travel Services",
   "career_keywords": [
    "travel services",
-   "❑ counter staff",
-   "❑ reservations staff",
-   "❑ travel documentation staff",
-   "❑ ticketing staff",
-   "❑ travel counselor",
-   "tesda-sop-qso-01-f08"
+   "counter staff",
+   "reservations staff",
+   "travel documentation staff",
+   "ticketing staff",
+   "travel counselor"
   ],
   "possible_jobs": [
-   "❑ Counter Staff",
-   "❑ Reservations Staff",
-   "❑ Travel Documentation Staff",
-   "❑ Ticketing Staff",
-   "❑ Travel Counselor",
-   "TESDA-SOP-QSO-01-F08"
+   "Counter Staff",
+   "Reservations Staff",
+   "Travel Documentation Staff",
+   "Ticketing Staff",
+   "Travel Counselor"
   ],
   "competencies": [
    {
@@ -31873,17 +31845,21 @@
    "supply chain specialist",
    "logistics admin. officer",
    "supply chain documentation officer",
-   "warehouse admin. officer"
+   "warehouse admin. officer",
+   "warehouse receipt officer",
+   "warehouse dispatch officer",
+   "warehouse processing clerk",
+   "inventory specialist"
   ],
   "possible_jobs": [
-   "❑",
    "Supply Chain Specialist",
-   "❑",
    "Logistics Admin. Officer",
-   "❑",
    "Supply Chain Documentation Officer",
-   "❑",
-   "Warehouse Admin. Officer"
+   "Warehouse Admin. Officer",
+   "Warehouse Receipt Officer",
+   "Warehouse Dispatch Officer",
+   "Warehouse Processing Clerk",
+   "Inventory Specialist"
   ],
   "competencies": [
    {
@@ -32008,17 +31984,21 @@
    "warehouse supervisor",
    "logistics supervisor",
    "distribution supervisor",
-   "supply chain supervisor"
+   "supply chain supervisor",
+   "materials supervisor",
+   "supply chain officer",
+   "materials management supervisor",
+   "inventory planning and control officer"
   ],
   "possible_jobs": [
-   "❑",
    "Warehouse Supervisor",
-   "❑",
    "Logistics Supervisor",
-   "❑",
    "Distribution Supervisor",
-   "❑",
-   "Supply Chain Supervisor"
+   "Supply Chain Supervisor",
+   "Materials Supervisor",
+   "Supply Chain Officer",
+   "Materials Management Supervisor",
+   "Inventory Planning and Control Officer"
   ],
   "competencies": [
    {

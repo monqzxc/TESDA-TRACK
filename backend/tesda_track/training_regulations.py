@@ -136,8 +136,12 @@ _ENUMERATION = re.compile(r"^(?:[a-z]|\d{1,2})[.)]\s+")
 # Unit codes look like 500311105, HCS323201, TRS512328 or MTM83417; text extraction sometimes splits them
 # ("HC S323307", "AFF 610301").
 _UNIT = re.compile(r"^((?:[A-Z]\s?){0,5}\d(?:\s?\d){4,8})(?:\s+(.*))?$")
-_PAGE_FURNITURE = re.compile(r"(^TR\b.*\bNC\b)|Promulgated|^(Revised|Amended)\b|^-?\s*\d{1,3}\s*-?$|^Page \d+", re.I)
-_BULLET = re.compile(r"^[\s-•●▪◦■□➢✓*·-]+")
+# Page headers and footers, page numbers, ruled lines and web addresses.
+_PAGE_FURNITURE = re.compile(r"(^(TR|TRAINING REGULATIONS?)\b.*\bNC\b)|Promulgated|^(Revised|Amended)\b"
+                             r"|^-?\s*\d{1,3}\s*-?$|^Page \d+|^[-_=.\u2013\u2014\s]{3,}$|\bhttps?://", re.I)
+# Bullets as the PDFs extract them: dashes, arrows, geometric shapes, dingbats such as "❑", and the
+# private-use glyphs of symbol fonts.
+_BULLET = re.compile(r"^[\s*\-\u00b7\u2013\u2014\u2022\u2023\u2043\u2190-\u21ff\u25a0-\u25ff\u2600-\u27bf\ue000-\uf8ff]+")
 _SMALL_WORDS = {"and", "of", "the", "for", "in", "on", "to", "or", "a", "an"}
 _GENERIC_JOBS = {"worker", "assistant", "helper", "operator", "technician", "staff", "attendant", "servicer",
                  "trainer", "supervisor", "specialist", "aide"}
@@ -211,6 +215,11 @@ def parse_units(lines: list[str]) -> list[tuple[str, str]]:
             if title and category in ("Basic", "Common", "Core")]
 
 
+def _wraps(previous: str, line: str) -> bool:
+    """Whether a line without a bullet continues the job title before it, e.g. after an unclosed bracket."""
+    return previous.count("(") > previous.count(")") or previous.endswith(("/", "-", ",")) or line[:1].islower()
+
+
 def parse_jobs(lines: list[str]) -> list[str]:
     """Job titles listed after "A person who has achieved this Qualification is competent to be ...:"."""
     cleaned = [_clean(line) for line in lines]
@@ -229,6 +238,7 @@ def parse_jobs(lines: list[str]) -> list[str]:
             bulleted = pending_bullet or bool(_BULLET.match(following) or _ENUMERATION.match(following))
             title = _clean(_ENUMERATION.sub("", _BULLET.sub("", following)))
             title = re.sub(r"[,;]?\s*\b(or|and)$|[,;.]$", "", title).strip()  # "Electrical Leadman, or"
+            title = title.rstrip("*").strip()  # a footnote mark
             if not title:  # a bullet on its own line; its job title is on the next line
                 pending_bullet = True
                 continue
@@ -237,11 +247,19 @@ def parse_jobs(lines: list[str]) -> list[str]:
                 break
             if bulleted_list is None:
                 bulleted_list = bulleted
+            if bulleted_list and not bulleted and jobs and _wraps(jobs[-1], title):
+                jobs[-1] = f"{jobs[-1]} {title}"
+                if jobs[-1].endswith(":"):  # "Service Agent, including entry-level positions for:" + a sub-list
+                    jobs[-1] = jobs[-1].split(",")[0]
+                    break
+                continue
+            if bulleted_list and not bulleted and title.endswith(":"):  # "May also be known by specific products:"
+                continue
             # A bulleted list ends at the first line without a bullet; a plain list at the first sentence.
             if (bulleted_list and not bulleted) or (not bulleted and (len(title) > 60 or title.endswith("."))):
                 break
             jobs.append(title)
-        return jobs[:8]
+        return [job + ")" * (job.count("(") - job.count(")")) for job in jobs[:8]]  # some TRs never close one
     return []
 
 

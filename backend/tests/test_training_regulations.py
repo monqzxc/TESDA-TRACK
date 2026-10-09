@@ -180,6 +180,81 @@ def test_bullets_on_their_own_lines_and_footers_after_the_list():
     assert parse_jobs(lines(SEAFARER)) == ["AB Deck", "Deck Rating"]
 
 
+
+# Barbering NC II: a job title wrapped onto a line without a bullet, and the list going on after it.
+BARBERING = """
+A person who has achieved this Qualification is competent to be:
+\uf071 Assistant Barber (Scalp and Hair Treatment and Basic Hair Coloring)
+\uf071 Assistant Barber (Men’s Haircutting, Shave and Style Beard and Mustache, Chair
+Manipulative Relaxing Services)
+\uf071 Barber
+TR – Barbering NC II Revision 01
+SECTION 2 COMPETENCY STANDARDS
+"""
+# Refrigeration TRs: "❑" dingbat bullets and a footnote mark.
+REFRIGERATION = """
+A person who has achieved these competencies is Qualified to be a:
+❑ Commercial Refrigeration Equipment Installer
+❑ Commercial Refrigeration Technician (HVAC/R Technician)*
+Commercial Refrigeration Installation and Servicing NC III (HVCCRE321) Promulgated: June 8, 2021
+SECTION 2 COMPETENCY STANDARDS
+"""
+# Electronic Products Assembly and Servicing NC II: a ruled line and a page header right after the list.
+ELECTRONICS = """
+A person who has achieved this Qualification is competent to be:
+\uf0b7 Electronic Products Assembler
+\uf0b7 Factory Production Worker
+------------------------------------------------------------------------------------------
+TRAINING REGULATIONS –ELECTRONIC PRODUCTS ASSEMBLY AND SERVICING NC II
+Page 2
+SECTION 2:
+"""
+
+# Contact Center Services NC II: a wrapped job title that introduces a sub-list of its specialisms.
+CONTACT_CENTER = """
+A person who has achieved this Qualification is competent to be:
+\uf0b7
+Inbound/Outbound Contact Center Service Agent, including entry-level
+positions for:
+\uf0b7
+Inbound
+\uf0b7
+Sales
+SECTION 2 COMPETENCY STANDARDS
+"""
+# Agricultural Crops Production NC III: a bracket the TR never closes, and a web address in the footer.
+FARMING = """
+A person who has achieved this Qualification is competent to be:
+\uf071 Independent Farmer (Owner / Operator in a smaller operation
+\uf071 Leading hand
+http://www.tesda.gov.ph/downloads/default.asp / secjr
+SECTION 2 COMPETENCY STANDARDS
+"""
+
+# Food Processing NC II: a plain sub-heading inside a bulleted list, then a form number after it.
+FOOD_PROCESSING = """
+A person who has achieved this Qualification is competent to be:
+❑ Food Processing Worker
+May also be known by specific products:
+❑ Tocino Maker
+❑ Tinapa Maker
+TESDA-SOP-QSO-01-F08
+SECTION 2 COMPETENCY STANDARDS
+"""
+
+
+def test_job_titles_come_out_clean():
+    assert parse_jobs(lines(BARBERING)) == [
+        "Assistant Barber (Scalp and Hair Treatment and Basic Hair Coloring)",
+        "Assistant Barber (Men’s Haircutting, Shave and Style Beard and Mustache, Chair Manipulative Relaxing Services)",
+        "Barber"]
+    assert parse_jobs(lines(REFRIGERATION)) == ["Commercial Refrigeration Equipment Installer",
+                                                "Commercial Refrigeration Technician (HVAC/R Technician)"]
+    assert parse_jobs(lines(ELECTRONICS)) == ["Electronic Products Assembler", "Factory Production Worker"]
+    assert parse_jobs(lines(CONTACT_CENTER)) == ["Inbound/Outbound Contact Center Service Agent"]
+    assert parse_jobs(lines(FOOD_PROCESSING)) == ["Food Processing Worker", "Tocino Maker", "Tinapa Maker"]
+    assert parse_jobs(lines(FARMING)) == ["Independent Farmer (Owner / Operator in a smaller operation)", "Leading hand"]
+
 def test_sector_spellings_are_unified():
     from tesda_track.training_regulations import canonical_sector
 
