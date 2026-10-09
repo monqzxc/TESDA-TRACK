@@ -39,6 +39,24 @@ def readiness(app):
     return [metric.value for metric in app.metric if metric.label == "Your readiness"]
 
 
+def test_reruns_reuse_the_last_matches_and_pathway(ui, monkeypatch):
+    from api_client import ApiClient
+
+    calls = []
+    for name in ("match", "pathway"):
+        def counted(self, *args, _name=name, _call=getattr(ApiClient, name)):
+            calls.append(_name)
+            return _call(self, *args)
+        monkeypatch.setattr(ApiClient, name, counted)
+    app = ui
+    click(app, "Become a welder")
+    click(app, "Get Recommendation")
+    assert calls == ["match", "pathway"]
+    rerun(app)
+    assert calls == ["match", "pathway"], "a rerun with nothing changed doesn't ask the API again"
+    app.selectbox(key="follow_experience").select("More than 3 years").run()
+    assert calls == ["match", "pathway", "match", "pathway"], "a changed answer does"
+
 def test_pathway_finder_flow(ui):
     app = ui
     assert [button.label for button in app.sidebar.button][:2] == ["Find my pathway", "Qualification library"]
@@ -111,7 +129,7 @@ def test_signed_in_learner_results_are_saved_to_progress(ui):
 
     create_account(app)
     assert "Juan Dela Cruz" in app.button(key="open_account_sidebar").label
-    app.session_state["main_tabs"] = "Find my pathway"
+    rerun(app, "Find my pathway")
     click(app, "Become a welder")
     click(app, "Get Recommendation")
     app.selectbox(key="follow_experience").select("More than 3 years").run()

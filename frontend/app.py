@@ -83,6 +83,19 @@ def load_regions(base_url: str) -> list[dict]:
     return get_api(base_url).regions()
 
 
+def remembered(name: str, request: dict, fetch) -> dict:
+    """The answer to the last identical request, so a rerun from any widget doesn't ask the API again.
+
+    Only the latest request per name is kept. The analysis endpoints are stateless: the same request gets the same
+    answer.
+    """
+    memo = st.session_state.setdefault("analysis_memo", {})
+    key = json.dumps(request, sort_keys=True)
+    if memo.get(name, {}).get("key") != key:
+        memo[name] = {"key": key, "response": fetch()}
+    return memo[name]["response"]
+
+
 def use_example(query: str) -> None:
     st.session_state["goal_query"] = query
 
@@ -103,7 +116,7 @@ def sign_in(email: str, password: str) -> None:
 def sign_out() -> None:
     st.session_state["account_dialog_open"] = False
     for key in list(st.session_state):
-        if key in {"auth", "recommendation_session", "data_export", "analysis", "original_query", "readiness_results", "goal_query"} or key.startswith(("follow_", "competency_", "qualification_", "step_", "bridge_")):
+        if key in {"auth", "recommendation_session", "data_export", "analysis", "original_query", "readiness_results", "goal_query", "analysis_memo"} or key.startswith(("follow_", "competency_", "qualification_", "step_", "bridge_")):
             st.session_state.pop(key, None)
 
 
@@ -260,7 +273,8 @@ def show_curated_pathway(curated: dict) -> None:
     for step in curated["steps"]:
         st.markdown(f"{step['position']}. {step['title']}")
     token = auth_token()
-    if token and st.button("Follow this pathway", key=f"follow_{curated['id']}"):
+    # Not "follow_...": main() re-assigns those keys to keep follow-up answers, and button state can't be assigned.
+    if token and st.button("Follow this pathway", key=f"pathway_follow_{curated['id']}"):
         try:
             api().follow_pathway(token, curated["id"])
             st.success("Added to My progress. Tick off each step as you complete it.")
@@ -295,7 +309,8 @@ def show_recommendations(qualifications: list[dict]) -> None:
                 )
                 profile["has_certification"] = {"Yes": True, "No": False}.get(certification)
     # The API re-derives the intent from the follow-up answers and ranks the qualifications.
-    result = api().match(st.session_state["original_query"], profile)
+    query = st.session_state["original_query"]
+    result = remembered("match", {"query": query, "profile": profile}, lambda: api().match(query, profile))
     profile, matches = result["profile"], result["matches"]
 
     with st.container(border=True, key="card_understanding"):
@@ -329,7 +344,8 @@ def show_recommendations(qualifications: list[dict]) -> None:
     )
     qualification = next(q for q in qualifications if q["code"] == selected_code)
     st.caption("Sample career options: " + ", ".join(qualification["possible_jobs"]))
-    pathway = api().pathway(profile, selected_code)
+    pathway = remembered("pathway", {"profile": profile, "code": selected_code},
+                         lambda: api().pathway(profile, selected_code))
     save_session_progress(profile, selected_code)
     with st.container(border=True, key="card_recommended_path"):
         st.caption("YOUR RECOMMENDED PATH")
