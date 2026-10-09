@@ -45,6 +45,16 @@ def test_options_are_ranked_by_the_weighted_components(client, make_provider, ma
     assert any("km" in reason for reason in first["explanation"])
 
 
+
+def test_providers_without_a_location_count_assessments_in_their_region(client, make_provider, make_program,
+                                                                        make_schedule):
+    manila = make_program(provider=make_provider(name="Unmapped Manila school", location=None), title="NCR batch")
+    cebu = make_program(provider=make_provider(name="Unmapped Cebu school", region_code="VII", location=None),
+                        title="Cebu batch")
+    make_schedule()  # Manila assessment center, in NCR
+    assessment = {r["program"]["id"]: r["components"]["assessment"] for r in rank(client)["results"]}
+    assert assessment == {manila["id"]: 1, cebu["id"]: 0}
+
 def test_stated_preferences_add_their_share(client, make_program):
     online = make_program(title="Online batch", delivery_mode="online", scholarship_available=True)
     classroom = make_program(title="Classroom batch")

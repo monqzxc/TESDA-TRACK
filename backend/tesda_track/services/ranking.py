@@ -14,11 +14,12 @@ import hashlib
 import hmac
 from datetime import date
 
-from sqlalchemy import func
+from sqlalchemy import and_, func, or_
 from sqlmodel import Session, select
 
 from tesda_track.config import get_settings
-from tesda_track.models import AssessmentCenter, AssessmentSchedule, Learner, RankingAudit, TrainingProgram, utcnow
+from tesda_track.models import (AssessmentCenter, AssessmentSchedule, Learner, RankingAudit, TrainingProgram,
+                                TrainingProvider, utcnow)
 from tesda_track.schemas.delivery import ProgramSearch
 from tesda_track.schemas.ranking import RankedProgram, ScoreComponents, TrainingRanking, TrainingRankingRequest
 from tesda_track.services import assessments, catalog, embeddings, geo, training
@@ -60,18 +61,23 @@ def preference_component(program: TrainingProgram, request: TrainingRankingReque
     return sum(checks) / len(checks) if checks else 0.0
 
 
-def assessment_nearby(session: Session, program: TrainingProgram, radius_km: float) -> bool:
-    provider = program.provider
-    query = (select(func.count()).select_from(AssessmentSchedule).join(AssessmentCenter)
-             .where(AssessmentSchedule.qualification_id == program.qualification_id,
+def providers_near_assessment(session: Session, qualification_id: int, provider_ids: set[int],
+                              radius_km: float) -> set[int]:
+    """The providers with an open assessment that still has seats nearby (in the same region if unmapped).
+
+    One query for all of them, rather than one per program.
+    """
+    if not provider_ids:
+        return set()
+    nearby = or_(and_(TrainingProvider.latitude.is_not(None),
+                      func.ST_DWithin(geo.point(AssessmentCenter), geo.point(TrainingProvider), radius_km * 1000)),
+                 and_(TrainingProvider.latitude.is_(None), AssessmentCenter.region_code == TrainingProvider.region_code))
+    query = (select(TrainingProvider.id).distinct().join(AssessmentCenter, nearby)
+             .join(AssessmentSchedule, AssessmentSchedule.center_id == AssessmentCenter.id)
+             .where(TrainingProvider.id.in_(provider_ids), AssessmentSchedule.qualification_id == qualification_id,
                     AssessmentSchedule.status == "open", AssessmentSchedule.scheduled_at > utcnow(),
                     AssessmentCenter.is_active, assessments.seats_taken_subquery() < AssessmentSchedule.slots))
-    if provider.latitude is not None:
-        query = query.where(func.ST_DWithin(geo.point(AssessmentCenter),
-                                            geo.point_at(provider.latitude, provider.longitude), radius_km * 1000))
-    else:
-        query = query.where(AssessmentCenter.region_code == provider.region_code)
-    return session.exec(query).one() > 0
+    return set(session.exec(query))
 
 
 def _explain(program: TrainingProgram, distance_km: float | None, components: ScoreComponents,
@@ -104,6 +110,8 @@ def rank_programs(session: Session, request: TrainingRankingRequest, embedder: E
     similarities = embeddings.program_similarities(session, embedder, request.goal, [p.id for p, _ in rows]) \
         if semantic_used else {}
     low, high = (min(similarities.values()), max(similarities.values())) if similarities else (0.0, 0.0)
+    with_assessment = providers_near_assessment(session, qualification.id, {p.provider_id for p, _ in rows},
+                                                settings.proximity_radius_km)
     today = date.today()
     ranked = []
     for program, distance in rows:
@@ -117,7 +125,7 @@ def rank_programs(session: Session, request: TrainingRankingRequest, embedder: E
         components = ScoreComponents(
             semantic=round(semantic, 3),
             proximity=round(proximity_component(distance, settings.proximity_radius_km), 3),
-            assessment=1.0 if assessment_nearby(session, program, settings.proximity_radius_km) else 0.0,
+            assessment=1.0 if program.provider_id in with_assessment else 0.0,
             schedule=schedule, preference=preference_component(program, request))
         score = round(100 * sum(getattr(weights, name) * value for name, value in components.model_dump().items()))
         ranked.append(RankedProgram(program=training.program_public(program, distance), score=score,
