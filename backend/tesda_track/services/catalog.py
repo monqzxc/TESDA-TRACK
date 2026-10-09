@@ -49,6 +49,13 @@ class CatalogSnapshot:
         return [item.rules for item in self.items]
 
 
+def catalog_item(qualification: Qualification) -> CatalogItem:
+    """One qualification as the plain values the snapshot and the offline evaluation work with."""
+    return CatalogItem(id=qualification.id, code=qualification.code, sector=qualification.sector.name,
+                       possible_jobs=tuple(qualification.possible_jobs), rules=rule_view(qualification),
+                       summary=summary(qualification), public=to_public(qualification))
+
+
 _snapshot: CatalogSnapshot | None = None
 
 
@@ -58,9 +65,7 @@ def snapshot(session: Session) -> CatalogSnapshot:
     version = tuple(session.exec(_CATALOG_VERSION).one())
     current = _snapshot
     if current is None or current.version != version:
-        items = tuple(CatalogItem(id=q.id, code=q.code, sector=q.sector.name, possible_jobs=tuple(q.possible_jobs),
-                                  rules=rule_view(q), summary=summary(q), public=to_public(q))
-                      for q in active_qualifications(session))
+        items = tuple(catalog_item(q) for q in active_qualifications(session))
         current = _snapshot = CatalogSnapshot(version, items)
     return current
 

@@ -120,3 +120,42 @@ def test_real_model_on_the_real_catalog(session):
 
     assert {goal: best_match(goal) for goal in RELATED_GOALS} == RELATED_GOALS
     assert {goal: best_match(goal) for goal in NO_TVET_MATCH} == {goal: None for goal in NO_TVET_MATCH}
+
+
+def _item(id, code):
+    from tesda_track.schemas.catalog import QualificationPublic, QualificationSummary
+    from tesda_track.services.catalog import CatalogItem
+
+    summary = QualificationSummary(code=code, name=code.title(), sector="Sector")
+    return CatalogItem(id=id, code=code, sector="Sector", possible_jobs=("Job",), rules={}, summary=summary,
+                       public=QualificationPublic(**summary.model_dump(), possible_jobs=["Job"], competencies=[]))
+
+
+def test_score_matches_blends_keyword_evidence_and_semantic_strength():
+    from tesda_track.services.analysis import MatchParams, score_matches
+
+    items = [_item(1, "A"), _item(2, "B"), _item(3, "C"), _item(4, "D")]
+    keyword = {"B": {"score": 95, "reason": "Matched your words: b"}}
+    similarities = {1: 0.9, 2: 0.5, 3: 0.5, 4: 0.5}  # z-scores 1.732 for A, -0.577 for the rest
+    params = MatchParams(z_floor=0.0, z_ceiling=1.0, keyword_weight=0.5, min_score=20)
+    matches = score_matches(items, keyword, similarities, params)
+    assert [(m.qualification.code, m.score) for m in matches] == [("A", 50), ("B", 50)]
+    assert matches[1].reason == "Matched your words: b" and matches[0].reason == "Similar in meaning to your goal."
+    assert (matches[0].components.keyword, matches[0].components.semantic) == (0, 1.0)
+
+
+def test_score_matches_drops_weak_matches_and_keeps_the_best_three():
+    from tesda_track.services.analysis import MatchParams, score_matches
+
+    items = [_item(i, f"Q{i}") for i in range(1, 6)]
+    keyword = {f"Q{i}": {"score": 55 + 10 * i, "reason": "r"} for i in range(1, 6)}
+    params = MatchParams(z_floor=3.0, z_ceiling=5.0, keyword_weight=0.5, min_score=35)
+    codes = [m.qualification.code for m in score_matches(items, keyword, {}, params)]
+    assert codes == ["Q5", "Q4", "Q3"], "Q1 scores 34, under the minimum"
+
+
+def test_match_params_come_from_settings():
+    from tesda_track.config import get_settings
+    from tesda_track.services.analysis import MatchParams
+
+    assert MatchParams.from_settings(get_settings()) == MatchParams(3.0, 5.0, 0.5, 20)

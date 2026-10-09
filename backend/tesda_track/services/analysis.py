@@ -1,4 +1,5 @@
 """Goal analysis and qualification matching: the rule-based services, optionally blended with semantic search."""
+from collections.abc import Sequence
 from dataclasses import dataclass
 from typing import Literal
 
@@ -9,6 +10,7 @@ from tesda_track.errors import InvalidRequestError
 from tesda_track.models import Qualification
 from tesda_track.schemas.analysis import Match, MatchComponents, PathwayRecommendation, Profile, ReadinessResult
 from tesda_track.services import catalog, embeddings, pathways
+from tesda_track.services.catalog import CatalogItem
 from tesda_track.services.embeddings import Embedder
 from tesda_track.services.intent_service import analyze_user_query
 from tesda_track.services.recommendation_service import recommend_pathway, refine_profile, score_qualifications
@@ -16,6 +18,20 @@ from tesda_track.services.skill_gap_service import calculate_skill_gap
 
 KEYWORD_SCALE = 95  # the highest score the keyword rules give
 SEMANTIC_REASON = "Similar in meaning to your goal."
+
+
+@dataclass(frozen=True)
+class MatchParams:
+    """The numbers that turn evidence into a score; explicit so the offline evaluation can try others."""
+    z_floor: float
+    z_ceiling: float
+    keyword_weight: float
+    min_score: int
+
+    @classmethod
+    def from_settings(cls, settings) -> "MatchParams":
+        return cls(settings.semantic_z_floor, settings.semantic_z_ceiling, settings.match_weight_keyword,
+                   settings.match_min_score)
 
 
 @dataclass(frozen=True)
@@ -45,12 +61,29 @@ def z_scores(similarities: dict[int, float]) -> dict[int, float]:
     return {key: (value - mean) / deviation for key, value in similarities.items()}
 
 
-def _semantic_strengths(session: Session, embedder: Embedder, query: str) -> dict[int, float]:
+def strengths(similarities: dict[int, float], params: MatchParams) -> dict[int, float]:
     """Each qualification's z-score against the whole catalog, mapped onto the calibrated band."""
-    settings = get_settings()
-    similarities = embeddings.qualification_similarities(session, embedder, query)
-    return {qualification_id: semantic_strength(z, settings.semantic_z_floor, settings.semantic_z_ceiling)
+    return {qualification_id: semantic_strength(z, params.z_floor, params.z_ceiling)
             for qualification_id, z in z_scores(similarities).items()}
+
+
+def score_matches(items: Sequence[CatalogItem], keyword: dict[str, dict], similarities: dict[int, float],
+                  params: MatchParams, limit: int = 3) -> list[Match]:
+    """The hybrid score for every qualification, strongest first; the API and the offline evaluation share it."""
+    semantic_by_id = strengths(similarities, params)
+    matches = []
+    for item in items:
+        evidence = keyword.get(item.code)
+        keyword_score = evidence["score"] if evidence else 0
+        semantic = semantic_by_id.get(item.id, 0.0)
+        score = hybrid_score(keyword_score, semantic, params.keyword_weight)
+        if score >= params.min_score:
+            matches.append(Match(qualification=item.summary, score=score,
+                                 reason=evidence["reason"] if evidence else SEMANTIC_REASON,
+                                 components=MatchComponents(keyword=round(keyword_score / KEYWORD_SCALE, 3),
+                                                            semantic=round(semantic, 3))))
+    matches.sort(key=lambda m: m.score, reverse=True)
+    return matches[:limit]
 
 
 def analyze_goal(session: Session, query: str, embedder: Embedder | None = None) -> GoalAnalysisResult:
@@ -59,13 +92,13 @@ def analyze_goal(session: Session, query: str, embedder: Embedder | None = None)
     profile = Profile.model_validate(analyze_user_query(query, current.rule_views))
     if embedder is None or profile.career_goal is not None or profile.intent != "unknown":
         return GoalAnalysisResult(profile, "rules")
-    settings = get_settings()
-    strengths = _semantic_strengths(session, embedder, query)
-    candidates = [item for item in current.items if item.id in strengths]
+    params = MatchParams.from_settings(get_settings())
+    semantic_by_id = strengths(embeddings.qualification_similarities(session, embedder, query), params)
+    candidates = [item for item in current.items if item.id in semantic_by_id]
     if not candidates:
         return GoalAnalysisResult(profile, "rules")
-    best = max(candidates, key=lambda q: strengths[q.id])
-    if hybrid_score(0, strengths[best.id], settings.match_weight_keyword) < settings.match_min_score:
+    best = max(candidates, key=lambda q: semantic_by_id[q.id])
+    if hybrid_score(0, semantic_by_id[best.id], params.keyword_weight) < params.min_score:
         return GoalAnalysisResult(profile, "rules")
     years = profile.experience_years
     intent = ("training_and_assessment" if years == 0
@@ -88,21 +121,9 @@ def match(session: Session, query: str, profile: Profile,
         by_code = {item.code: item for item in current.items}
         return refined, [Match(qualification=by_code[code].summary, score=r["score"], reason=r["reason"])
                          for code, r in list(keyword.items())[:3]]
-    settings = get_settings()
-    strengths = _semantic_strengths(session, embedder, query)
-    matches = []
-    for item in current.items:
-        evidence = keyword.get(item.code)
-        keyword_score = evidence["score"] if evidence else 0
-        semantic = strengths.get(item.id, 0.0)
-        score = hybrid_score(keyword_score, semantic, settings.match_weight_keyword)
-        if score >= settings.match_min_score:
-            matches.append(Match(qualification=item.summary, score=score,
-                                 reason=evidence["reason"] if evidence else SEMANTIC_REASON,
-                                 components=MatchComponents(keyword=round(keyword_score / KEYWORD_SCALE, 3),
-                                                            semantic=round(semantic, 3))))
-    matches.sort(key=lambda m: m.score, reverse=True)
-    return refined, matches[:3]
+    params = MatchParams.from_settings(get_settings())
+    similarities = embeddings.qualification_similarities(session, embedder, query)
+    return refined, score_matches(current.items, keyword, similarities, params)
 
 
 def pathway(session: Session, profile: Profile, qualification_code: str) -> PathwayRecommendation:
