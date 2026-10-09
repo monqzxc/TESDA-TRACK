@@ -1,0 +1,1875 @@
+[
+ {
+  "goal": "gusto kong maging karpintero",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to become Bob the Builder",
+  "accept": [
+   "Carpentry NC II",
+   "Masonry NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong maging builder ng bahay",
+  "accept": [
+   "Masonry NC II",
+   "Carpentry NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I like building things out of wood, like shelves and a dog house for our yard",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gumagawa ako ng kabinet, pinto at hagdan na kahoy sa mga bahay",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "3 years na akong helper sa construction, ako ang naghahalo ng semento at naglalatag ng hollow blocks",
+  "accept": [
+   "Masonry NC II"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I lay hollow blocks and plaster walls for a small contractor",
+  "accept": [
+   "Masonry NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "marunong akong magpalitada ng pader",
+  "accept": [
+   "Masonry NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to learn to lay tiles in bathrooms and kitchens",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "nagkakabit ako ng baldosa sa sahig ng mga kapitbahay",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I fix leaking pipes and clogged sinks around the neighborhood",
+  "accept": [
+   "Plumbing NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong matutong magkabit ng tubo at gripo sa bahay",
+  "accept": [
+   "Plumbing NC II",
+   "Plumbing NC I"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto ko maging plumber gaya ni Mario sa video game",
+  "accept": [
+   "Plumbing NC II",
+   "Plumbing NC I"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I wire houses: outlets, switches and breakers. I've done it for 5 years but I have no license",
+  "accept": [
+   "Electrical Installation and Maintenance NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong matutong magkabit ng saksakan at ilaw sa mga bagong bahay",
+  "accept": [
+   "Electrical Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "electrical helper ako sa construction, gusto ko magka-NC II para makapag-abroad",
+  "accept": [
+   "Electrical Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to maintain the three-phase motors and control panels in a factory",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I paint houses and I want to take on bigger buildings",
+  "accept": [
+   "Construction Painting NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "pintor ako ng bahay at gusto ko ng certificate",
+  "accept": [
+   "Construction Painting NC II"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I want to operate a backhoe at construction sites",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II",
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong mag-operate ng forklift sa bodega",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to run the tall cranes that lift steel up a high-rise",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong magpatakbo ng pison sa paggawa ng kalsada",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I tie steel bars for columns and beams before the concrete is poured",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to put up and take down scaffolds at building sites",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I draw house plans in AutoCAD for a small contractor",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "marunong akong mag-drawing ng plano ng bahay sa computer",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to install solar panels on houses",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "nagkakabit kami ng solar panel sa bubong, gusto ko magka-certificate",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I want to work out how many solar panels and batteries a house needs and draw the setup",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I install steel pipes for factories and refineries",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to learn how to weld steel",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC I"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "marunong akong maghinang ng bakal, gate at grills ang gawa ko",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "2 years na ako sa welding shop, gusto ko mag-welder sa shipyard sa Korea",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to learn TIG welding",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "MIG welding ang gamit ko sa paggawa ng trailer, gusto ko ng certification",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I cut and join metal with an oxy-acetylene torch",
+  "accept": [
+   "GAS Welding NC II",
+   "Gas Welding NC I"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "lathe operator ako sa machine shop, gumagawa ng piyesa ng makina",
+  "accept": [
+   "Machining NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to program and run CNC lathes in a factory",
+  "accept": [
+   "CNC Lathe Machine Operation NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong matutong gumawa ng molde para sa mga produktong plastik",
+  "accept": [
+   "Mold Making NC III",
+   "Moldmaking NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I fix and maintain the machines in our factory when they break down",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to make dies for stamping metal parts",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "nag-aayos ako ng motor ng mga tricycle sa amin",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to fix scooters and dirt bikes",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I repair water pump engines and grass cutters",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "ako ang nag-o-overhaul ng makina ng mga jeep sa talyer namin",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I want to work as a car mechanic",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to build and tune engines like Dom in Fast and Furious",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II",
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I fix brakes, clutches and suspension on cars",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "hilig kong ayusin ang aircon at mga ilaw ng kotse",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II",
+   "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I want to repaint cars and fix dents after accidents",
+  "accept": [
+   "Automotive Body Repairing NC II",
+   "Automotive Painting NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong mamasada ng taxi o maging family driver",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I can drive and I want a professional license so I can work as a driver abroad",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to drive a bus between provinces",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "trailer truck ang gusto kong imaneho papuntang pier",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "nag-aayos ako ng aircon ng kapitbahay",
+  "accept": [
+   "RAC Servicing (DomRAC) NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to repair refrigerators and window-type air conditioners",
+  "accept": [
+   "RAC Servicing (DomRAC) NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "marunong akong maglinis at mag-recharge ng freon ng split-type aircon",
+  "accept": [
+   "RAC Servicing (DomRAC) NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to maintain the big air conditioning systems of malls and office buildings",
+  "accept": [
+   "Commercial Air-conditioning Installation and Servicing NC III"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "technician ako ng mga chiller at freezer sa supermarket",
+  "accept": [
+   "Commercial Refrigeration Installation and Servicing NC III"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to fix the aircon of buses and vans",
+  "accept": [
+   "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "nag-aayos ako ng refrigeration ng mga reefer van na nagde-deliver ng frozen goods",
+  "accept": [
+   "Land-Based Transport Refrigeration Servicing NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I like fixing laptops and setting up wifi",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "marunong akong mag-ayos ng laptop at internet",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I set up the network and printers in our school office",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "ako ang taga-reformat at taga-install ng Windows ng mga kaklase ko",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I want to build websites for small businesses",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto ko matutong mag-code ng apps gamit ang Java",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I want to make my own mobile games",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "mahilig akong mag-drawing ng characters para sa games",
+  "accept": [
+   "2D Game Art Development NC III",
+   "3D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to draw cartoons that move, frame by frame",
+  "accept": [
+   "2D Animation NC III",
+   "Animation NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong gumawa ng mga 3D na karakter at i-animate sila",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I design logos and posters for my friends' small shops",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gumagawa ako ng layout ng tarpaulin at logo sa printing shop",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to work in a call center",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "magaling ako mag-English, gusto kong maging agent sa BPO",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to answer customer calls on the night shift for an American company",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to protect company computers from hackers",
+  "accept": [
+   "Cyber Threat Mitigation NC II",
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "nagkakabit ako ng fiber internet sa mga bahay para sa isang internet provider",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I install cable TV lines and boxes in subdivisions",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to code medical bills for insurance claims in the US",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I type up what doctors say in their voice recordings",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "nag-aayos ako ng sirang TV, radyo at electric fan",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I repair washing machines, rice cookers and other appliances",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I repair cellphones: cracked screens, charging ports and software problems",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto ko mag-repair ng cellphone at tablet",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to work in a semiconductor plant in Laguna assembling chips",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to program PLCs and fix automated machines in a factory",
+  "accept": [
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "ako ang nagse-set up at nag-aayos ng mga makina sa linya ng isang semiconductor plant",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I want to cut men's hair and shave beards",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong magbukas ng sariling barberya sa amin",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I want to work in a salon doing hair color and rebonding",
+  "accept": [
+   "Hairdressing NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "magaling akong maggupit at magkulay ng buhok",
+  "accept": [
+   "Hairdressing NC II",
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to style hair for beauty pageant contestants",
+  "accept": [
+   "Hairdressing NC III",
+   "Hairdressing NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I do manicure and pedicure as a home service",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "ginagawan ko ng nail art ang mga kaibigan ko, gusto ko itong gawing negosyo",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II",
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I want to do facials and waxing at a spa",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "marunong akong humilot, gusto kong magtrabaho sa spa",
+  "accept": [
+   "Hilot (Wellness Massage) NC II",
+   "Massage Therapy NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to work for a family in Hong Kong: cleaning, cooking and doing the laundry",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong mamasukan sa abroad bilang tagalinis at tagalaba ng bahay",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I want to guard the entrance of a mall or a bank",
+  "accept": [
+   "Security Services NC II",
+   "Security Services NC I"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong mag-gwardiya sa pabrika o sa bangko",
+  "accept": [
+   "Security Services NC II",
+   "Security Services NC I"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to help the nurses in a hospital: changing beds and moving patients",
+  "accept": [
+   "Health Care Services NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I like taking care of people",
+  "accept": [
+   "Caregiving NC II",
+   "Health Care Services NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong sumakay sa ambulansya at tumulong sa mga naaksidente",
+  "accept": [
+   "Emergency Medical Services NC II",
+   "Emergency Medical Services NC III"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I want to keep the books for small businesses",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "ako ang nagtatala ng kita at gastos ng tindahan ng tita ko",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I want to sell houses and lots",
+  "accept": [
+   "Real Estate Services NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I'm a strong swimmer and I want to watch over swimmers at a resort pool",
+  "accept": [
+   "Lifeguard Services NC II",
+   "Lifeguard Services NC III"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "bokalista ako ng banda tuwing Sabado, gusto ko mag-perform sa cruise ship",
+  "accept": [
+   "Performing Arts (Song) NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to dance in shows abroad, like in Japan",
+  "accept": [
+   "Performing Arts (Dance) NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong gumawa ng pustiso",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to grind and fit lenses for eyeglasses at an optical shop",
+  "accept": [
+   "Ophthalmic Lens Services NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to teach and take care of little kids at a daycare center",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa kooperatiba na nagpapautang sa maliliit na negosyante",
+  "accept": [
+   "Microfinance Technology NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I want to take care of elderly people abroad",
+  "accept": [
+   "Caregiving (Elderly) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong mag-alaga ng matatanda sa Canada",
+  "accept": [
+   "Caregiving (Elderly) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "ako ang nag-aalaga sa lola kong naka-wheelchair, gusto ko itong gawing trabaho",
+  "accept": [
+   "Caregiving (Elderly) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to look after babies and toddlers as a nanny",
+  "accept": [
+   "Caregiving (Newborn to Pre-Schooler) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "nag-aalaga ako ng batang may autism, gusto ko ng training para dito",
+  "accept": [
+   "Caregiving (Clients with Special Needs) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I want to give body massages on a cruise ship",
+  "accept": [
+   "Massage Therapy NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong tumulong sa health center ng barangay namin at mag-monitor ng mga buntis at bata",
+  "accept": [
+   "Barangay Health Services NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to work in a drugstore helping the pharmacist",
+  "accept": [
+   "Pharmacy Services NC III"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "tinitimbang ko ang mga bata sa barangay para malaman kung malnourished sila",
+  "accept": [
+   "Community Nutrition Services NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to make artificial legs for people who lost a limb",
+  "accept": [
+   "Assistive Rehabilitation Technology Services (Prosthetics) NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "nagluluto ako ng ulam para sa karinderya",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to prepare meals in a hotel kitchen",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to be like the cooks on MasterChef",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "masarap daw akong magluto sabi ng pamilya ko",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to learn how to make bread and cakes",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong magtayo ng sariling bakery ng pandesal",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I decorate birthday cakes and cupcakes to order",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to make frappes and lattes like they do at Starbucks",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "marunong akong gumawa ng latte at cappuccino",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I mix cocktails at a resort bar",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to serve food to guests at a fine-dining restaurant",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong maging taga-serve ng pagkain sa isang hotel sa Dubai",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I want to work at the reception desk of a hotel, checking guests in",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to clean and prepare hotel rooms for guests",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "room attendant ako sa isang resort, gusto ko mag-apply sa cruise ship",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to show tourists around the old churches in our town",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong ipasyal ang mga turista sa mga isla dito sa amin sa Palawan",
+  "accept": [
+   "Local Guiding Services NC II",
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I want to book flights and process travel papers for clients",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to organize weddings and debuts",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong mag-organize ng mga kasal at birthday party",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I want to work at a theme park running the rides",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "nagtatanim kami ng gulay sa probinsya, gusto kong matuto ng mas maayos na paraan",
+  "accept": [
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to grow organic vegetables and make my own compost",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "nag-aalaga ako ng baboy sa likod-bahay",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I want to raise laying hens and sell eggs",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong mag-alaga ng kambing at baka",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to raise tilapia in fishponds",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II",
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "mangingisda ako, gusto kong matutong mag-maintain ng bangka at makina nito",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to keep bees and sell honey",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "nagtatanim kami ng palay, gusto kong matutong gumamit ng hand tractor at harvester",
+  "accept": [
+   "Rice Machinery Operations NC II",
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I want to do landscaping and garden upkeep for subdivisions",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "nagtatanim at nag-aani kami ng damong-dagat",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I want to grow rice and corn with better yields",
+  "accept": [
+   "Grains Production NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to work at a dairy farm milking cows",
+  "accept": [
+   "Milking Operation NC II",
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gumagawa ako ng tocino at longganisa para ibenta",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I make dried fish and smoked fish to sell at the market",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong gumawa ng jam at atsara bilang negosyo",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I want to work in a slaughterhouse butchering pigs",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "nananahi ako ng damit sa bahay gamit ang makinang de-padyak",
+  "accept": [
+   "Dressmaking NC II",
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to sew men's suits and barong",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to design my own clothing line",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "nagre-repair ako ng damit at nag-a-alter ng pantalon sa palengke",
+  "accept": [
+   "Dressmaking NC II",
+   "Tailoring NC II"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "pangarap kong makasakay ng barko at magtrabaho sa deck",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)",
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to work in the engine room of a cargo ship",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)",
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to cook for the crew on a cargo ship",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong maging taga-serve ng pagkain at taga-linis sa barko",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I want to repair the electrical systems on ships",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to climb electric posts and fix power lines for our electric cooperative",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II",
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong maging lineman sa electric cooperative namin",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II",
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to run the diesel generators at an island power plant",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to work on the high-voltage transmission towers",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to work in a warehouse picking and packing orders",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "taga-inventory ako sa bodega at gusto kong maging supervisor",
+  "accept": [
+   "Warehousing Services NC III",
+   "Warehousing Services NC IV"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I want to process import papers at a freight forwarder",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "mahilig akong gumuhit ng komiks",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to calibrate measuring instruments in a laboratory",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to collect garbage for the municipality",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to work at the counter in a supermarket and help shoppers",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "saleslady ako sa mall, gusto ko ng certificate",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I take photos at weddings and I want to go pro",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "mahilig akong kumuha ng litrato gamit ang camera ko",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to set up the sound system for concerts and events",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to edit videos for films and online shows",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "naghahabi ng tela ang lola ko at gusto kong ituloy ito",
+  "accept": [
+   "Handloom Weaving (Upright) NC II",
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I run the stage lights at our church and at concerts",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to make gold rings and necklaces",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II",
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I varnish and spray-finish wooden furniture",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "nagbabarnis ako ng mga silya at mesa sa furniture shop",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I already have my NC II in welding and now I want to teach it at a training center",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I train the new hires at our company",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gumagawa kami ng paputok tuwing Bagong Taon sa Bulacan",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to run the process equipment in a chemical plant",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to work on the assembly line of a car factory",
+  "accept": [
+   "Automotive Mechanical Assembly NC II",
+   "Automotive Electrical Assembly NC II"
+  ],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to crimp and tape the wires that go into cars at a factory",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "panday ako, gumagawa ng itak at kutsilyo",
+  "accept": [
+   "Forging NC II"
+  ],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "nagtatrabaho ako sa pabrika ng plastik at ako ang nagpapatakbo ng injection molding machine",
+  "accept": [
+   "Plastic Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to be an astronaut",
+  "accept": [],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong maging abogado",
+  "accept": [],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong maging pulis",
+  "accept": [],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to be a politician",
+  "accept": [],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to play professional basketball",
+  "accept": [],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to become a doctor and open my own clinic",
+  "accept": [],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to fly planes for an airline",
+  "accept": [],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong maging sundalo",
+  "accept": [],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I want to be a judge",
+  "accept": [],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong maging pari",
+  "accept": [],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong maging sikat na artista sa teleserye",
+  "accept": [],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I want to study volcanoes as a scientist",
+  "accept": [],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to be a professional chess player",
+  "accept": [],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to be president of the Philippines",
+  "accept": [],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to be a psychologist",
+  "accept": [],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to be a marine biologist",
+  "accept": [],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong maging senador",
+  "accept": [],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to read the news on TV",
+  "accept": [],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong maging professional gamer sa esports",
+  "accept": [],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to be a professional boxer",
+  "accept": [],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong maging scientist sa NASA",
+  "accept": [],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I want to trade stocks for a living",
+  "accept": [],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to write novels",
+  "accept": [],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong maging mayor ng bayan namin",
+  "accept": [],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I want to be a crime scene investigator",
+  "accept": [],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto ko mag-artista sa Hollywood",
+  "accept": [],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong maging NBI agent",
+  "accept": [],
+  "lang": "taglish",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong maging superhero tulad ni Darna",
+  "accept": [],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to be a Jedi knight like in Star Wars",
+  "accept": [],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong maging professional volleyball player",
+  "accept": [],
+  "lang": "taglish",
+  "split": "test"
+ },
+ {
+  "goal": "I want to be a physicist",
+  "accept": [],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to be a diplomat at the United Nations",
+  "accept": [],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "I want to be an economist",
+  "accept": [],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong maging hukom balang araw",
+  "accept": [],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to be a philosophy professor",
+  "accept": [],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong mag-aral ng medisina at maging surgeon",
+  "accept": [],
+  "lang": "taglish",
+  "split": "dev"
+ }
+]
