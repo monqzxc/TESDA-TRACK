@@ -9,3 +9,4 @@ T2MISDB.bak
 *.bak
 worker_profiles_*.csv
 30_DATABASE_SCHEMA_MERMAID.md
+backend/training/runs/
