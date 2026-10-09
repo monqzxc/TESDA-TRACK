@@ -1,9 +1,12 @@
 .venv/
+.venv-train/
 __pycache__/
 *.pyc
 .env
 .pytest_cache/
 .models/
+backend/models/*
+!backend/models/README.md
 backend/seed/sources/tr-pdfs/
 T2MISDB.bak
 *.bak
