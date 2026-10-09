@@ -1,7 +1,7 @@
 """(query, passage) pairs for fine-tuning, built from catalog text only.
 
 Each qualification's passage is exactly what the API embeds; its queries are the names, jobs, keywords and
-competencies a learner might type, plus a few English and Filipino goal phrasings over the jobs and keywords.
+core competencies a learner might type, plus a few English and Filipino goal phrasings over the jobs and keywords.
 Evaluation goals are excluded so the held-out numbers stay honest.
 """
 import json
@@ -18,8 +18,10 @@ TEMPLATES = ("I want to be a {x}", "I want to work as a {x}", "gusto kong maging
 
 def _queries(qualification: Qualification) -> list[str]:
     terms = [*qualification.possible_jobs, *qualification.career_keywords]
+    # Core units only: Basic and Common units ("Participate in workplace communication") are shared by dozens of
+    # qualifications, so they say nothing about which one a learner means.
     queries = [qualification.name, qualification.skill_label or "", *terms,
-               *(c.name for c in qualification.competencies if c.is_active),
+               *(c.name for c in qualification.competencies if c.is_active and c.category == "Core"),
                *(template.format(x=term) for term in terms for template in TEMPLATES)]
     return list(dict.fromkeys(normalize(query) for query in queries if query.strip()))
 

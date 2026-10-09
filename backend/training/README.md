@@ -13,10 +13,11 @@ API: the API image copies only `tesda_track`, `migrations` and `seed`, and insta
 | `finetune.py` | Fine-tunes the model on those pairs, exports ONNX and checks that fastembed reproduces it |
 
 **Data.** Training and evaluation use only TESDA catalog text (`seed/qualifications.json`, whose Filipino
-keywords come from `seed/sources/keywords_tl.json`) and the hand-written goals. Never learner, worker, T2MIS or TSP records. The
-training queries are each qualification's name, skill, jobs, keywords and competencies, plus short English and
-Filipino phrasings ("I want to work as a cook", "gusto kong maging cook"). Any query that equals an evaluation
-goal is dropped, so the evaluation stays held out.
+keywords come from `seed/sources/keywords_tl.json`) and the hand-written goals. Never learner, worker, T2MIS
+or TSP records. The training queries are each qualification's name, skill, jobs, keywords and Core competencies
+(Basic and Common units such as "Participate in workplace communication" are shared by many qualifications, so
+they are left out), plus short English and Filipino phrasings ("I want to work as a cook", "gusto kong maging
+cook"). Any query that equals an evaluation goal is dropped, so the evaluation stays held out.
 
 ## Evaluate and calibrate
 
@@ -56,7 +57,7 @@ Options: `--epochs 3`, `--batch-size 64`, `--mini-batch-size 8` (lower it if GPU
 change the result), `--lr 2e-5`, `--seed 42`, `--max-steps N` (a short smoke run). It trains with in-batch
 negatives (`CachedMultipleNegativesRankingLoss`, no duplicate texts in a batch), uses fp16 on a CUDA GPU, and
 reports the loss on 5% of the pairs held out from training. Use a GPU: a step of 64 pairs took about 2.5 s on
-a 4 GB laptop RTX 3050 (a full 3-epoch run is about 590 steps, roughly 25 minutes) but about 3 minutes on a
+a 4 GB laptop RTX 3050 (a full 3-epoch run is about 430 steps, roughly 20 minutes) but about 3 minutes on a
 4-core laptop CPU, which makes CPU training impractical beyond a few smoke steps.
 
 The output folder (git-ignored, like everything in `backend/models/` except its README) holds the

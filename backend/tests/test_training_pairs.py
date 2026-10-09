@@ -17,3 +17,12 @@ def test_evaluation_goals_never_become_training_queries():
     exclude = eval_exclusions()
     assert exclude, "the evaluation set is loaded"
     assert not {normalize(query) for query, _ in training_pairs(qualifications, exclude)} & exclude
+
+
+def test_only_core_competencies_become_queries():
+    qualifications, _ = load_catalog()
+    queries = {query for query, _ in training_pairs(qualifications, exclude=set())}
+    cookery = {query for query, passage in training_pairs(qualifications, exclude=set())
+               if passage.startswith("Cookery NC II.")}
+    assert "participate in workplace communication" not in queries  # a Basic unit of 178 qualifications
+    assert "prepare stocks, sauces and soups" in cookery  # a Core unit of Cookery NC II
