@@ -42,7 +42,7 @@ short request to that service.
 - **Keywords:** each qualification's keywords (its name, its jobs, and the Filipino words in
   `backend/seed/sources/keywords_tl.json`) count as direct evidence, so a goal that names a trade, in
   English or Filipino, finds it reliably. Qualification matches blend both parts (`MATCH_WEIGHT_KEYWORD`,
-  0.5 by default). PostgreSQL full-text search is a possible next step for searching unit descriptions.
+  0.4 by default). PostgreSQL full-text search is a possible next step for searching unit descriptions.
 - **Distance:** PostGIS measures how far training providers and assessment centers are from the
   learner's region.
 - **Ranking training programs:** the score is a weighted sum: meaning 50, distance 20, an assessment
@@ -54,14 +54,11 @@ short request to that service.
 
 The model's raw similarities are close together for related and unrelated goals alike, so a
 qualification counts by its **z-score**: how many standard deviations its similarity stands above the
-whole catalog's. I tested 32 sample goals against the 319-qualification catalog:
-
-- Goals with no TVET equivalent (astronaut, lawyer, police, politician) scored 3.5 or less.
-- Most related goals scored 4 or more.
-
-The band `SEMANTIC_Z_FLOOR` (3.0) to `SEMANTIC_Z_CEILING` (5.0) favors precision. A goal the model
-isn't sure about gets no match rather than a wrong one, and the Filipino keywords cover common trades the
-model misses. Recalibrate the band once the pilot collects real goals and outcomes.
+whole catalog's. The band `SEMANTIC_Z_FLOOR` (3.0) to `SEMANTIC_Z_CEILING` (4.5), the keyword weight (0.4)
+and `MATCH_MIN_SCORE` (15) were calibrated on 123 hand-written goals and checked on 120 held-out ones
+(`backend/training/`); see [the evaluation](docs/ml/2026-10-09-matching-model-evaluation.md). A goal the
+model isn't sure about gets no match rather than a wrong one, and the Filipino keywords cover common trades
+the model misses. Recalibrate once the pilot collects real goals and outcomes.
 `TESDA_MODEL_TESTS=1` runs the tests that guard it against the real catalog.
 
 The training weights (`RANKING_WEIGHTS__SEMANTIC`, `__PROXIMITY`, `__ASSESSMENT`, `__SCHEDULE`,

@@ -158,7 +158,7 @@ def test_match_params_come_from_settings():
     from tesda_track.config import get_settings
     from tesda_track.services.analysis import MatchParams
 
-    assert MatchParams.from_settings(get_settings()) == MatchParams(3.0, 5.0, 0.5, 20)
+    assert MatchParams.from_settings(get_settings()) == MatchParams(3.0, 4.5, 0.4, 15)
 
 
 def test_calibration_travels_with_a_fine_tuned_model(tmp_path):
