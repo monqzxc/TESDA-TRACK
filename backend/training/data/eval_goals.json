@@ -371,7 +371,8 @@
  {
   "goal": "ako ang nag-o-overhaul ng makina ng mga jeep sa talyer namin",
   "accept": [
-   "Automotive Servicing (Engine Repair) NC II"
+   "Automotive Servicing (Engine Repair) NC II",
+   "Auto Engine Rebuilding NC II"
   ],
   "lang": "taglish",
   "split": "test"
@@ -1397,7 +1398,8 @@
  {
   "goal": "I want to cook for the crew on a cargo ship",
   "accept": [
-   "Ships' Catering NC III (Ships' Cooks)"
+   "Ships' Catering NC III (Ships' Cooks)",
+   "Cookery NC II"
   ],
   "lang": "en",
   "split": "dev"
@@ -1439,7 +1441,8 @@
  {
   "goal": "I want to run the diesel generators at an island power plant",
   "accept": [
-   "Diesel Power Plant Operation and Maintenance NC II"
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
   ],
   "lang": "en",
   "split": "dev"
@@ -1871,5 +1874,41 @@
   "accept": [],
   "lang": "taglish",
   "split": "dev"
+ },
+ {
+  "goal": "I want to diagnose patients and prescribe medicine",
+  "accept": [],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong gumawa ng batas para sa bansa",
+  "accept": [],
+  "lang": "tl",
+  "split": "dev"
+ },
+ {
+  "goal": "I want to study the stars and planets with big telescopes",
+  "accept": [],
+  "lang": "en",
+  "split": "dev"
+ },
+ {
+  "goal": "gusto kong mag-imbestiga ng krimen at manghuli ng mga kriminal",
+  "accept": [],
+  "lang": "tl",
+  "split": "test"
+ },
+ {
+  "goal": "I want to fly fighter jets for the air force",
+  "accept": [],
+  "lang": "en",
+  "split": "test"
+ },
+ {
+  "goal": "gusto kong mag-defend ng mga kliyente sa korte",
+  "accept": [],
+  "lang": "taglish",
+  "split": "test"
  }
 ]
