@@ -29,6 +29,21 @@ def test_archived_qualifications_and_competencies_are_hidden(client, session):
     assert client.get("/api/v1/qualifications/FBS-NC-II").status_code == 404
 
 
+
+def test_catalog_is_read_once_and_again_whenever_it_changes(client, session):
+    from tesda_track.services import catalog
+
+    first = catalog.snapshot(session)
+    assert catalog.snapshot(session) is first, "an unchanged catalog is not read again"
+    savepoint = session.begin_nested()
+    smaw = session.exec(select(Qualification).where(Qualification.code == "SMAW-NC-II")).one()
+    smaw.competencies[0].name = "Follow shipyard safety rules"
+    session.flush()
+    body = client.get("/api/v1/qualifications").json()
+    assert body[0]["competencies"][0]["name"] == "Follow shipyard safety rules"
+    savepoint.rollback()
+    assert catalog.snapshot(session).items[0].public == first.items[0].public, "a rolled-back change is undone"
+
 def test_gets_one_qualification_by_code(client):
     response = client.get("/api/v1/qualifications/CSS-NC-II")
     assert response.status_code == 200

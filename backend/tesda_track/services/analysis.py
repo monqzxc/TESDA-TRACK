@@ -55,12 +55,13 @@ def _semantic_strengths(session: Session, embedder: Embedder, query: str) -> dic
 
 def analyze_goal(session: Session, query: str, embedder: Embedder | None = None) -> GoalAnalysisResult:
     """Rules first; when they find no career at all, the closest qualification in meaning fills the gap."""
-    profile = analyze_goal_with_rules(session, query)
+    current = catalog.snapshot(session)
+    profile = Profile.model_validate(analyze_user_query(query, current.rule_views))
     if embedder is None or profile.career_goal is not None or profile.intent != "unknown":
         return GoalAnalysisResult(profile, "rules")
     settings = get_settings()
     strengths = _semantic_strengths(session, embedder, query)
-    candidates = [q for q in catalog.active_qualifications(session) if q.id in strengths]
+    candidates = [item for item in current.items if item.id in strengths]
     if not candidates:
         return GoalAnalysisResult(profile, "rules")
     best = max(candidates, key=lambda q: strengths[q.id])
@@ -69,39 +70,34 @@ def analyze_goal(session: Session, query: str, embedder: Embedder | None = None)
     years = profile.experience_years
     intent = ("training_and_assessment" if years == 0
               else "assessment_recommendation" if years is not None and years >= 3 else "training_recommendation")
-    inferred = profile.model_copy(update={"career_goal": best.possible_jobs[0], "possible_sector": best.sector.name,
+    inferred = profile.model_copy(update={"career_goal": best.possible_jobs[0], "possible_sector": best.sector,
                                           "intent": intent})
     return GoalAnalysisResult(inferred, "ai")
-
-
-def analyze_goal_with_rules(session: Session, query: str) -> Profile:
-    qualifications = [catalog.rule_view(q) for q in catalog.active_qualifications(session)]
-    return Profile.model_validate(analyze_user_query(query, qualifications))
 
 
 def match(session: Session, query: str, profile: Profile,
           embedder: Embedder | None = None) -> tuple[Profile, list[Match]]:
     refined = Profile.model_validate(refine_profile(profile.model_dump()))
-    qualifications = catalog.active_qualifications(session)
+    current = catalog.snapshot(session)
     # With semantic search on, keywords count only as direct evidence in the learner's own words: the
     # career/sector bonuses would otherwise reward every qualification near a career the model inferred.
     evidence_profile = refined.model_dump() if embedder is None else {}
-    keyword = {r["qualification"]["code"]: r for r in score_qualifications(
-        query, evidence_profile, [catalog.rule_view(q) for q in qualifications])}
+    keyword = {r["qualification"]["code"]: r for r in score_qualifications(query, evidence_profile,
+                                                                            current.rule_views)}
     if embedder is None:
-        by_code = {q.code: q for q in qualifications}
-        return refined, [Match(qualification=catalog.summary(by_code[code]), score=r["score"], reason=r["reason"])
+        by_code = {item.code: item for item in current.items}
+        return refined, [Match(qualification=by_code[code].summary, score=r["score"], reason=r["reason"])
                          for code, r in list(keyword.items())[:3]]
     settings = get_settings()
     strengths = _semantic_strengths(session, embedder, query)
     matches = []
-    for qualification in qualifications:
-        evidence = keyword.get(qualification.code)
+    for item in current.items:
+        evidence = keyword.get(item.code)
         keyword_score = evidence["score"] if evidence else 0
-        semantic = strengths.get(qualification.id, 0.0)
+        semantic = strengths.get(item.id, 0.0)
         score = hybrid_score(keyword_score, semantic, settings.match_weight_keyword)
         if score >= settings.match_min_score:
-            matches.append(Match(qualification=catalog.summary(qualification), score=score,
+            matches.append(Match(qualification=item.summary, score=score,
                                  reason=evidence["reason"] if evidence else SEMANTIC_REASON,
                                  components=MatchComponents(keyword=round(keyword_score / KEYWORD_SCALE, 3),
                                                             semantic=round(semantic, 3))))

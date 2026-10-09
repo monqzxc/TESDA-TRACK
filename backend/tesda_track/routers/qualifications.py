@@ -9,7 +9,7 @@ router = APIRouter(prefix="/qualifications", tags=["catalog"])
 
 @router.get("", response_model=list[QualificationPublic])
 def list_qualifications(session: SessionDep):
-    return [catalog.to_public(q) for q in catalog.active_qualifications(session)]
+    return [item.public for item in catalog.snapshot(session).items]
 
 
 @router.get("/{code}", response_model=QualificationPublic)
