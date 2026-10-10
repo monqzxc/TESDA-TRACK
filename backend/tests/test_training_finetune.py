@@ -43,3 +43,27 @@ def test_every_pair_gets_one_negative_that_is_not_its_own_passage():
     assert missing == 1 and len(triplets) == 2
     assert triplets[0][2] in {qualification_text(welding), qualification_text(baking)}
     assert all(t[2] != t[1] for t in triplets)
+
+
+def test_sibling_levels_are_dropped_as_negatives_unless_the_query_names_a_level_or_allowed():
+    from tesda_track.services.embeddings import qualification_text
+    from training.catalog import load_catalog
+    from training.finetune import attach_negatives
+
+    qualifications, _ = load_catalog()
+    by_name = {q.name: q for q in qualifications}
+    cook2, cook3 = by_name["Flux-Cored Arc Welding (FCAW) NC II"], by_name["Flux-Cored Arc Welding (FCAW) NC III"]
+    other = by_name["Cookery NC II"]
+    pairs = [("welder", qualification_text(cook2)), ("welder nc ii", qualification_text(cook2))]
+    rows = [{"query": q, "positive_name": cook2.name, "negative_name": n}
+            for q in ("welder", "welder nc ii") for n in (cook3.name, other.name)]
+    sibling = qualification_text(cook3)
+    for seed in range(10):
+        triplets, missing = attach_negatives(pairs, rows, qualifications, seed)
+        assert missing == 0 and triplets[0][2] == qualification_text(other)  # no level cue: sibling dropped
+        assert triplets[1][2] in {sibling, qualification_text(other)}  # level named: sibling allowed
+    only_sibling = [{"query": "welder", "positive_name": cook2.name, "negative_name": cook3.name}]
+    triplets, missing = attach_negatives(pairs[:1], only_sibling, qualifications, 1)
+    assert missing == 1 and triplets[0][2] not in {sibling, qualification_text(cook2)}
+    triplets, missing = attach_negatives(pairs[:1], only_sibling, qualifications, 1, allow_sibling=True)
+    assert missing == 0 and triplets[0][2] == sibling

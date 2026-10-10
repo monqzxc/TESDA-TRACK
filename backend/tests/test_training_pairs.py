@@ -18,7 +18,8 @@ def test_evaluation_goals_never_become_training_queries():
     qualifications, _ = load_catalog()
     exclude = eval_exclusions()
     assert exclude, "the evaluation set is loaded"
-    assert not {normalize(query) for query, _ in training_pairs(qualifications, exclude)} & exclude
+    # Counts only: a failure must not print goal text.
+    assert len({normalize(query) for query, _ in training_pairs(qualifications, exclude)} & exclude) == 0
 
 
 def test_only_core_competencies_become_queries():
@@ -33,6 +34,7 @@ def test_only_core_competencies_become_queries():
 # --- v2: synthetic queries, augmentation, evaluation exclusions -------------------------------------------------------
 
 import json  # noqa: E402
+import zlib  # noqa: E402
 from pathlib import Path  # noqa: E402
 
 import pytest  # noqa: E402
@@ -66,7 +68,9 @@ def test_synthetic_queries_equal_to_an_excluded_goal_are_dropped():
 
 def test_augmented_copies_are_excluded_like_other_queries():
     query = "gusto ko magluto sa barko"
-    typo = augment(query, 0)
+    typo = augment(query, zlib.crc32(query.encode("utf-8")))  # the seed training_pairs uses
+    assert typo
+    assert typo in {q for q, _ in _synthetic_pairs({COOKERY: [query]}, augment_share=1.0)}
     pairs = _synthetic_pairs({COOKERY: [query]}, exclude={typo}, augment_share=1.0)
     assert typo not in {q for q, _ in pairs}
 
@@ -135,5 +139,27 @@ def test_no_training_query_equals_any_goal_in_any_file():
     qualifications, _ = load_catalog()
     keys = _v1_dev_sealed_raw()
     assert keys
-    all_pairs = training_pairs(qualifications, keys, load_synthetic())
-    assert not {normalize(q) for q, _ in all_pairs} & keys
+    # The production path: exclusions from the loader, synthetic from the committed files. Counts only, never text.
+    all_pairs = training_pairs(qualifications, eval_exclusions(), load_synthetic())
+    assert len({normalize(q) for q, _ in all_pairs} & keys) == 0
+
+
+def test_text_speak_gets_a_fair_share_of_variants():
+    outputs = [augment("ako ay gustong magluto ng pagkain", seed) for seed in range(300)]
+    speak = sum(("aq" in o.split() or "gsto" in o) for o in outputs if o)
+    assert 60 <= speak <= 150
+
+
+def test_family_and_level_cues():
+    from training.pairs import family, names_a_level
+
+    assert family("Cookery NC II") == family("Cookery NC III") == "Cookery"
+    assert family("Rigging NC II (II-5)") == "Rigging"
+    assert names_a_level("may NC II na ako") and names_a_level("nc3") and names_a_level("level 2")
+    assert not names_a_level("gusto kong maging chef") and not names_a_level("ncaa sports")
+
+
+def test_load_synthetic_rejects_values_that_are_not_lists_of_strings(tmp_path):
+    (tmp_path / "A.json").write_text(json.dumps({COOKERY: "one string"}), encoding="utf-8")
+    with pytest.raises(ValueError, match="list of strings"):
+        load_synthetic(tmp_path)

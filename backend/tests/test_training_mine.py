@@ -53,3 +53,9 @@ def test_write_negatives_is_lf_json(tmp_path):
     write_negatives([{"query": "a", "positive_name": "b", "negative_name": "c"}], path)
     assert json.loads(path.read_text(encoding="utf-8"))[0]["negative_name"] == "c"
     assert b"\r" not in path.read_bytes()
+
+
+def test_owners_are_keyed_by_normalised_query():
+    pairs = [("Food", "Cookery NC II"), ("food", "Baking NC II")]
+    rows = mine_negatives(pairs, PASSAGES, Toy(), k=3)
+    assert {r["negative_name"] for r in rows} == {"Welding NC II", "Driving NC II"}

@@ -12,6 +12,7 @@ from pathlib import Path
 import numpy as np
 
 from tesda_track.services.embeddings import qualification_text
+from tesda_track.utils.helpers import normalize
 
 
 def mine_negatives(pairs: list[tuple[str, str]], passages: dict[str, str], embedder, k: int = 2,
@@ -19,22 +20,25 @@ def mine_negatives(pairs: list[tuple[str, str]], passages: dict[str, str], embed
     """pairs are (query, qualification name); passages maps name -> passage text. Returns k rows per pair."""
     names = list(passages)
     matrix = np.asarray(embedder.embed_passages([passages[n] for n in names]), dtype=np.float32)
+    # Keyed by normalised text: "Chef" and "chef" are one query to the model's users and must share their owners.
     owners: dict[str, set[str]] = {}
+    texts: dict[str, str] = {}
     for query, name in pairs:
-        owners.setdefault(query, set()).add(name)
+        owners.setdefault(normalize(query), set()).add(name)
+        texts.setdefault(normalize(query), query)
     queries = list(owners)
     index = {name: i for i, name in enumerate(names)}
     top: dict[str, list[str]] = {}
     for start in range(0, len(queries), batch):
         chunk = queries[start:start + batch]
-        scores = np.asarray(embedder.embed_queries(chunk), dtype=np.float32) @ matrix.T
+        scores = np.asarray(embedder.embed_queries([texts[q] for q in chunk]), dtype=np.float32) @ matrix.T
         for row, query in zip(scores, chunk):
             row = row.copy()
             row[[index[n] for n in owners[query]]] = -np.inf
             best = np.argsort(-row)[:k]
             top[query] = [names[i] for i in best if np.isfinite(row[i])]
     return [{"query": query, "positive_name": name, "negative_name": negative}
-            for query, name in pairs for negative in top[query]]
+            for query, name in pairs for negative in top[normalize(query)]]
 
 
 def write_negatives(rows: list[dict], path: Path) -> None:
@@ -51,8 +55,9 @@ def main() -> None:
     parser.add_argument("--model-path", type=Path, required=True, help="e.g. models/tesda-e5-small-v1")
     parser.add_argument("--model-name", help="default: tesda-track/<folder name>")
     parser.add_argument("--output", type=Path, required=True)
-    parser.add_argument("--k", type=int, default=2)
-    parser.add_argument("--limit", type=int, default=None, help="mine only the first N pairs (smoke runs)")
+    parser.add_argument("--k", type=int, default=3,
+                        help="negatives per pair; 3 so a pair keeps some after sibling levels are filtered at training")
+    parser.add_argument("--limit", type=int, default=None, help="mine about N pairs, sampled evenly (smoke runs)")
     args = parser.parse_args()
 
     qualifications, _ = load_catalog()

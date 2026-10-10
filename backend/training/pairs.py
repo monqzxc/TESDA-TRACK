@@ -8,6 +8,7 @@ numbers stay honest.
 """
 import json
 import random
+import re
 import zlib
 from pathlib import Path
 
@@ -15,7 +16,6 @@ from tesda_track.models import Qualification
 from tesda_track.services.embeddings import qualification_text
 from tesda_track.utils.helpers import normalize
 
-GOALS_PATH = Path(__file__).resolve().parent / "data" / "eval_goals.json"
 SYNTHETIC_DIR = Path(__file__).resolve().parent / "data" / "synthetic"
 TEMPLATES = ("I want to be a {x}", "I want to work as a {x}", "gusto kong maging {x}", "may karanasan ako bilang {x}",
              "marunong ako sa {x}")
@@ -36,7 +36,19 @@ def _queries(qualification: Qualification) -> list[str]:
 # Whole-word text-speak that Filipino learners really type (case-insensitive match, lower-case output).
 TEXT_SPEAK = {"ako": "aq", "ko": "q", "gusto": "gsto", "kasi": "kc", "maging": "mging", "para": "pra",
               "marunong": "mrunong", "work": "wrk", "want": "wnt", "you": "u", "because": "bcs"}
+LEVEL_SUFFIX = re.compile(r"\s+(?:NC|Level)\s+(?:I{1,3}|IV|V)\b.*$", re.IGNORECASE)
+# A query that asks for a level: "NC II", "nc3", "level 2", "antas IV". Without one, sibling levels are all right answers.
+LEVEL_CUE = re.compile(r"\b(?:nc|level|antas)\s*(?:i{1,3}|iv|[1-4])\b", re.IGNORECASE)
 MIN_TYPO_WORD = 5  # shorter words are too easy to turn into a different word
+
+
+def family(name: str) -> str:
+    """A qualification name without its NC level: "Cookery NC II" and "Cookery NC III" share the family "Cookery"."""
+    return LEVEL_SUFFIX.sub("", name).strip()
+
+
+def names_a_level(query: str) -> bool:
+    return bool(LEVEL_CUE.search(query))
 
 
 def augment(query: str, seed: int) -> str | None:
@@ -46,18 +58,24 @@ def augment(query: str, seed: int) -> str | None:
     least five letters. Deterministic for a given (query, seed); never equal to the query and never empty."""
     rng = random.Random(f"{seed}:{query}")
     words = query.split(" ")
-    candidates = []
+    candidates, speak = [], []
     for position, word in enumerate(words):
         if word.casefold() in TEXT_SPEAK:
-            candidates.append((position, TEXT_SPEAK[word.casefold()]))
+            speak.append((position, TEXT_SPEAK[word.casefold()]))
         if len(word) >= MIN_TYPO_WORD and word.isalpha():
             for index in range(1, len(word) - 1):  # keep the first letter: people rarely mistype it
                 candidates.append((position, word[:index] + word[index + 1:]))  # drop
                 candidates.append((position, word[:index] + word[index] + word[index:]))  # double
                 if word[index] != word[index + 1]:
                     candidates.append((position, word[:index] + word[index + 1] + word[index] + word[index + 2:]))  # swap
-    rng.shuffle(candidates)
-    for position, replacement in candidates:
+    # Pick the kind of edit first, so text-speak gets about a third of the variants rather than being drowned by the
+    # many possible letter edits; fall back to the other kind when the chosen one has nothing.
+    kinds = [speak, candidates] if rng.random() < 1 / 3 else [candidates, speak]
+    ordered = []
+    for kind in kinds:
+        rng.shuffle(kind)
+        ordered += kind
+    for position, replacement in ordered:
         variant = " ".join([*words[:position], replacement, *words[position + 1:]])
         if variant.strip() and variant != query:
             return variant
@@ -100,6 +118,8 @@ def load_synthetic(directory: Path = SYNTHETIC_DIR) -> dict[str, list[str]]:
         for name, queries in json.loads(path.read_text(encoding="utf-8")).items():
             if name not in known:
                 raise ValueError(f"{path.name}: unknown qualification {name!r}")
+            if not isinstance(queries, list) or not all(isinstance(q, str) for q in queries):
+                raise ValueError(f"{path.name}: {name!r} must map to a list of strings")
             merged.setdefault(name, []).extend(queries)
     return {name: list(dict.fromkeys(queries)) for name, queries in merged.items()}
 

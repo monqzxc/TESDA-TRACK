@@ -20,7 +20,7 @@ import numpy as np
 from tesda_track.models import Qualification
 from tesda_track.services.embeddings import qualification_text
 from training.catalog import load_catalog
-from training.pairs import eval_exclusions, load_synthetic, training_pairs
+from training.pairs import eval_exclusions, family, load_synthetic, names_a_level, training_pairs
 
 BASE_MODEL = "intfloat/multilingual-e5-small"
 HELD_OUT = 0.05
@@ -60,16 +60,22 @@ def parity_texts(qualifications: list[Qualification]) -> list[str]:
 
 
 def attach_negatives(pairs: list[tuple[str, str]], rows: list[dict], qualifications: list[Qualification],
-                     seed: int) -> tuple[list[tuple[str, str, str]], int]:
+                     seed: int, allow_sibling: bool = False) -> tuple[list[tuple[str, str, str]], int]:
     """(query, passage, negative passage) for every pair, plus how many had no mined negative.
 
     One dataset needs the same columns in every row, so each pair gets exactly one negative: a seeded pick among its
     mined ones. A pair with none mined (query not in the mining file) gets a random other qualification's passage,
-    which is no harder than an in-batch negative, so those pairs still train like plain pairs."""
+    which is no harder than an in-batch negative, so those pairs still train like plain pairs.
+
+    Another level of the positive's own family ("Cookery NC III" for "Cookery NC II") is often a correct answer, so
+    it is dropped as a negative unless the query names a level or allow_sibling is set."""
     passage_of = {q.name: qualification_text(q) for q in qualifications}
     name_of = {passage: name for name, passage in passage_of.items()}
     mined: dict[tuple[str, str], list[str]] = {}
     for row in rows:
+        sibling = family(row["negative_name"]) == family(row["positive_name"])
+        if sibling and not allow_sibling and not names_a_level(row["query"]):
+            continue
         if row["negative_name"] in passage_of:
             mined.setdefault((row["query"], row["positive_name"]), []).append(passage_of[row["negative_name"]])
     rng = random.Random(seed)
@@ -79,7 +85,8 @@ def attach_negatives(pairs: list[tuple[str, str]], rows: list[dict], qualificati
         options = mined.get((query, name_of[passage]))
         if not options:
             missing += 1
-            options = [passage_of[n] for n in rng.sample(names, 2) if passage_of[n] != passage][:1]
+            others = [n for n in rng.sample(names, 3) if allow_sibling or family(n) != family(name_of[passage])]
+            options = [passage_of[n] for n in others if passage_of[n] != passage][:1] or [passage_of[names[0]]]
         triplets.append((query, passage, rng.choice(options)))
     return triplets, missing
 
@@ -157,6 +164,10 @@ def main() -> None:
     parser.add_argument("--max-steps", type=int, default=None, help="stop early (smoke runs)")
     parser.add_argument("--hard-negatives", type=Path, default=None,
                         help="file from `python -m training.mine`: train on (query, positive, hard negative) triplets")
+    parser.add_argument("--allow-sibling-negatives", action="store_true",
+                        help="keep other levels of the positive's own family as hard negatives (default: drop them "
+                             "unless the query names a level)")
+    parser.add_argument("--augment-share", type=float, default=0.15, help="share of synthetic queries given a typo copy")
     parser.add_argument("--no-synthetic", action="store_true", help="catalog-only pairs, without data/synthetic")
     parser.add_argument("--resume", action="store_true", help="continue from the checkpoint in <output>/checkpoints")
     args = parser.parse_args()
@@ -177,14 +188,18 @@ def main() -> None:
 
     qualifications, _ = load_catalog()
     synthetic = {} if args.no_synthetic else load_synthetic()
-    pairs = training_pairs(qualifications, eval_exclusions(), synthetic)
+    exclusions = eval_exclusions()
+    pairs = training_pairs(qualifications, exclusions, synthetic, args.augment_share)
+    plain = len(training_pairs(qualifications, exclusions, synthetic, 0))
+    synthetic_pairs = plain - len(training_pairs(qualifications, exclusions))
+    augmented_pairs = len(pairs) - plain
     train, held_out = split_pairs(pairs, args.seed)
     negatives_hash = unmined = None
     if args.hard_negatives:
         raw = args.hard_negatives.read_bytes()
         negatives_hash = hashlib.sha256(raw).hexdigest()
-        train, unmined = attach_negatives(train, json.loads(raw), qualifications, args.seed)
-        held_out, _ = attach_negatives(held_out, json.loads(raw), qualifications, args.seed)
+        train, unmined = attach_negatives(train, json.loads(raw), qualifications, args.seed, args.allow_sibling_negatives)
+        held_out, _ = attach_negatives(held_out, json.loads(raw), qualifications, args.seed, args.allow_sibling_negatives)
         print(f"Hard negatives from {args.hard_negatives} (sha256 {negatives_hash[:12]}): "
               f"{unmined} of {len(train)} train pairs had none mined and got a random negative")
     cuda = torch.cuda.is_available()
@@ -225,6 +240,8 @@ def main() -> None:
     metadata = {"base_model": BASE_MODEL, "seed": args.seed, "epochs": args.epochs, "max_steps": args.max_steps,
                 "batch_size": args.batch_size, "mini_batch_size": args.mini_batch_size, "learning_rate": args.lr,
                 "pairs": len(pairs), "synthetic_queries": sum(len(v) for v in synthetic.values()),
+                "synthetic_pairs": synthetic_pairs, "augment_share": args.augment_share,
+                "augmented_pairs": augmented_pairs, "allow_sibling_negatives": args.allow_sibling_negatives,
                 "hard_negatives_sha256": negatives_hash, "pairs_without_mined_negative": unmined, "train_pairs": len(train), "held_out_pairs": len(held_out),
                 "held_out_loss": {"before": before, "after": after}, "steps": result.global_step,
                 "resumed_at_step": resumed_at, "train_seconds": round(seconds, 1), "device": "cuda" if cuda else "cpu",

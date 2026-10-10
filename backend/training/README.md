@@ -31,14 +31,14 @@ and the v2 dev and sealed goals (normalised); sealed text is reduced to keys and
 ### Hard negatives
 
 ```bash
-../.venv/Scripts/python -m training.mine --model-path models/tesda-e5-small-v1 --output training/runs/hard-negatives.json --k 2
+../.venv/Scripts/python -m training.mine --model-path models/tesda-e5-small-v1 --output training/runs/hard-negatives.json --k 3
 ```
 
 For every training query, the top-k qualifications by similarity that are not among the query's own (a query that
 belongs to several qualifications excludes all of them). `--limit N` mines a sample. It embeds with fastembed on CPU.
 `finetune --hard-negatives <file>` then trains on (query, positive, negative) triplets with the same cached MNRL
-loss: each pair gets one negative (a seeded pick among its mined ones), and a pair with none mined gets a random
-other qualification's passage. `training.json` records the synthetic count and the file's SHA-256.
+loss: each pair gets one negative (a seeded pick among its mined ones, `--k 3` by default). Another level of the positive's own family ("Cookery NC III" for "Cookery NC II") is often a correct answer, so it is dropped unless the query names a level ("NC II", "level 2"); `--allow-sibling-negatives` keeps them, and a pair with none mined gets a random
+other qualification's passage. `training.json` records the synthetic and augmented counts, the augment share, the sibling flag and the file's SHA-256.
 
 ## Evaluate and calibrate
 
@@ -94,7 +94,7 @@ Options: `--epochs 3`, `--batch-size 64`, `--mini-batch-size 8` (lower it if GPU
 change the result), `--lr 2e-5`, `--seed 42`, `--max-steps N` (a short smoke run), `--hard-negatives FILE`, `--no-synthetic`, `--resume`. It trains with in-batch
 negatives (`CachedMultipleNegativesRankingLoss`, no duplicate texts in a batch), uses fp16 on a CUDA GPU, and
 reports the loss on 5% of the pairs held out from training. Use a GPU: a step of 64 pairs took about 2.5 s on
-a 4 GB laptop RTX 3050 (a full 3-epoch run is about 820 steps, roughly 35 minutes) but about 3 minutes on a
+a 4 GB laptop RTX 3050 (a full 3-epoch run on the 24,640 pairs is about 1,100 steps, roughly 45 minutes; with Smart App Control blocking torch on this laptop, it now trains on Google Colab) but about 3 minutes on a
 4-core laptop CPU, which makes CPU training impractical beyond a few smoke steps.
 
 **Interruptions.** The script saves a checkpoint in `<output>/checkpoints/` at the end of every epoch. If a run
