@@ -1,0 +1,1978 @@
+[
+ {
+  "goal": "I want to make leg braces and supports for people who have trouble walking",
+  "accept": [
+   "Assistive Rehabilitation Technology Services (Orthotics) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "orthotic technician",
+  "accept": [
+   "Assistive Rehabilitation Technology Services (Orthotics) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong gumawa ng artipisyal na paa para sa mga naputulan",
+  "accept": [
+   "Assistive Rehabilitation Technology Services (Prosthetics) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I lost my leg in an accident and now I want to build prosthetic limbs for others like me",
+  "accept": [
+   "Assistive Rehabilitation Technology Services (Prosthetics) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "nag-aayos ako ng gulong at preno ng wheelchair sa center namin, wala pa akong NC",
+  "accept": [
+   "Assistive Rehabilitation Technology Services (Wheelchair) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "wheelchair repair tech",
+  "accept": [
+   "Assistive Rehabilitation Technology Services (Wheelchair) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging barangay health worker",
+  "accept": [
+   "Barangay Health Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I volunteer at our barangay health center weighing babies and recording vaccines, how do I get certified?",
+  "accept": [
+   "Barangay Health Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task",
+   "experience",
+   "certification"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "bhw po sa barangay namin gusto ko magkaNC",
+  "accept": [
+   "Barangay Health Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "certification",
+   "typo"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging barbero",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to give men's haircuts and shaves in my own shop",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "BARBERSHOP SA PROBINSYA GUSTO KO BUKSAN ✂️💈",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task",
+   "typo"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "barber",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "sampung taon na akong naggugupit ng buhok ng mga lalaki sa kanto pero wala akong sertipiko",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "magaling ako mag-manicure at pedicure, gusto kong magtayo ng nail salon",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to be a manicurist",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "kuko",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto q mging nail tech ung nglalagay ng nailpolish",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "typo"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I do gel and acrylic nail extensions at home already and want an NC III",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience",
+   "certification",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong matutong mag-acrylic nails at nail art para sa mga kliyente",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III",
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to do facials and body scrubs at a spa",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging beauty therapist, facial at pagtanggal ng buhok sa katawan",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "pag-aalaga ng mukha",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "skincare specialist abroad, magtrabaho sa spa sa Dubai",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging bookkeeper",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I keep the sari-sari store's ledger and want to do accounting work for small businesses",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task",
+   "experience"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "accounting clerk",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gsto ko mging bokkeper sa isang kumpanya",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "typo"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I'd like to take care of elderly patients abroad",
+  "accept": [
+   "Caregiving (Elderly) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "abroad",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "mag-alaga ng matatanda sa Japan",
+  "accept": [
+   "Caregiving (Elderly) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "abroad",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "inaalagaan ko si lola na may sakit, gusto kong gawing trabaho ang pag-aalaga ng senior citizens",
+  "accept": [
+   "Caregiving (Elderly) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "nanny para sa baby at toddler",
+  "accept": [
+   "Caregiving (Newborn to Pre-Schooler) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to look after infants and preschoolers at a daycare or in a home",
+  "accept": [
+   "Caregiving (Newborn to Pre-Schooler) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "nag-aalaga ako ng pamangkin kong 4 na taong gulang, gusto kong maging propesyonal na yaya",
+  "accept": [
+   "Caregiving (Newborn to Pre-Schooler) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to care for school-age kids and teenagers after class hours",
+  "accept": [
+   "Caregiving (Grade Schooler to Adolescent) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "alaga sa mga batang nag-aaral at mga teenager",
+  "accept": [
+   "Caregiving (Grade Schooler to Adolescent) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "my younger brother has autism and I want to learn to care for people with special needs",
+  "accept": [
+   "Caregiving (Clients with Special Needs) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "mag-alaga ng may kapansanan sa Canada",
+  "accept": [
+   "Caregiving (Clients with Special Needs) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "abroad",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "caregiver",
+  "accept": [
+   "Caregiving NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto ko maging caregiver sa Canada, may NC II na ba ako agad pagkatapos",
+  "accept": [
+   "Caregiving NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "certification",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto ko maging tagapag-alaga ng may sakit sa ibang bansa",
+  "accept": [
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "abroad",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "cargiver po sana ako nkakbit sa abroad",
+  "accept": [
+   "Caregiving NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "typo",
+   "abroad"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to be like the nurse who looks after people at home, I like caring for others but I don't know the right course",
+  "accept": [
+   "Caregiving NC II",
+   "Health Care Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging barangay nutrition scholar",
+  "accept": [
+   "Community Nutrition Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to teach mothers in the community about feeding children and healthy meals",
+  "accept": [
+   "Community Nutrition Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "bns",
+  "accept": [
+   "Community Nutrition Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to work as a contact tracer for the city health office",
+  "accept": [
+   "Contact Tracing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "tumatawag ako sa mga close contact ng may COVID para sa LGU, gusto ko ng sertipiko",
+  "accept": [
+   "Contact Tracing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task",
+   "certification",
+   "experience"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to become a dental hygienist",
+  "accept": [
+   "Dental Hygiene Level IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maglinis ng ngipin at tumulong sa dentista sa klinika",
+  "accept": [
+   "Dental Hygiene Level IV"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "dental hygiene",
+  "accept": [
+   "Dental Hygiene Level IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong gumawa ng pustiso at retainer",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I make removable partial dentures at a dental lab and want an NC",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task",
+   "experience",
+   "certification"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong gumawa ng dental crown at bridge sa laboratoryo",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "pagawa ng pustiso",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I'm starting out and want to be a dental lab assistant",
+  "accept": [
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "dental tech na may NC IV",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "certification"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to run a dental lab as a supervisor, I already hold lower dental laboratory certificates",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "certification",
+   "experience"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong magtrabaho bilang kasambahay",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to work as a household helper and housekeeper abroad",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "katulong sa bahay sa Hong Kong",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "housemaid",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "limang taon na akong labandera at tagaluto ng amo ko, gusto ko ng NC",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "certification",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to be a day care teacher",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong magturo sa day care center ng mga batang 3 hanggang 5 taong gulang",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "child development worker na may NC III",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "certification"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "guro sa daycare",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to be a first responder and work in an ambulance",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong magbigay ng first aid sa aksidente at sumakay sa ambulansya",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "emergency medical technician",
+  "accept": [
+   "Emergency Medical Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "may EMS NC II na ako, gusto ko ng EMT NC III",
+  "accept": [
+   "Emergency Medical Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "rescuer sa MMDRRMO, nagbibigay ako ng CPR pero wala pang NC",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to cut, color and perm women's hair at a salon",
+  "accept": [
+   "Hairdressing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging hairdresser",
+  "accept": [
+   "Hairdressing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "may NC II na ako sa hairdressing, gusto ko ng NC III para maging senior stylist",
+  "accept": [
+   "Hairdressing NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "hair stylist sa cruise ship",
+  "accept": [
+   "Hairdressing NC II",
+   "Hairdressing NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "buhok",
+  "accept": [
+   "Hairdressing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "slon owner gsto q mgcolor at mgrebond ng buhok 💇‍♀️",
+  "accept": [
+   "Hairdressing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging nursing aide sa ospital",
+  "accept": [
+   "Health Care Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I can't afford nursing school but I want to work with patients in a hospital",
+  "accept": [
+   "Health Care Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "health aide",
+  "accept": [
+   "Health Care Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto ko mag-alaga ng pasyente sa ospital, di ako makakapag-nursing, anong pwede",
+  "accept": [
+   "Health Care Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I used to help the nurses as a hospital utility for 3 years but I have no certificate",
+  "accept": [
+   "Health Care Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "hilot",
+  "accept": [
+   "Hilot (Wellness Massage) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging manghihilot gamit ang tradisyonal na paraan",
+  "accept": [
+   "Hilot (Wellness Massage) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "my lola is a traditional hilot healer and I want to learn and be certified",
+  "accept": [
+   "Hilot (Wellness Massage) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "certification"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "hilot at ventosa para sa pagod at pananakit ng katawan",
+  "accept": [
+   "Hilot (Wellness Massage) NC II",
+   "Massage Therapy NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging lifeguard sa swimming pool",
+  "accept": [
+   "Lifeguard Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to watch over swimmers at a beach resort",
+  "accept": [
+   "Lifeguard Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "lifeguard sa surf resort sa La Union, may NC II na ako",
+  "accept": [
+   "Lifeguard Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "like Baywatch, I want to rescue swimmers",
+  "accept": [
+   "Lifeguard Services NC II",
+   "Lifeguard Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "lifgard",
+  "accept": [
+   "Lifeguard Services NC II",
+   "Lifeguard Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "typo",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to be a massage therapist",
+  "accept": [
+   "Massage Therapy NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "masahista sa spa abroad",
+  "accept": [
+   "Massage Therapy NC II",
+   "Hilot (Wellness Massage) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "nagmamasahe ako ng kapitbahay pero wala pa akong NC",
+  "accept": [
+   "Massage Therapy NC II",
+   "Hilot (Wellness Massage) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "mssge thrpist",
+  "accept": [
+   "Massage Therapy NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "typo",
+   "short",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging loan officer sa microfinance",
+  "accept": [
+   "Microfinance Technology NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to collect weekly loan payments from small borrowers and help them start businesses",
+  "accept": [
+   "Microfinance Technology NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "pautang sa maliliit na negosyante tuwing linggo, gusto kong trabahuhin",
+  "accept": [
+   "Microfinance Technology NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to process insurance policies and claims for low-income members",
+  "accept": [
+   "Microinsurance Services (Mutual Benefit) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "insurance processor",
+  "accept": [
+   "Microinsurance Services (Mutual Benefit) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa microinsurance, mag-asikaso ng polisiya sa mga miyembro",
+  "accept": [
+   "Microinsurance Services (Mutual Benefit) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to make eyeglasses and fit lenses",
+  "accept": [
+   "Ophthalmic Lens Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging optician sa optical shop",
+  "accept": [
+   "Ophthalmic Lens Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "salamin sa mata",
+  "accept": [
+   "Ophthalmic Lens Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to teach ballroom dancing",
+  "accept": [
+   "Performing Arts (Ballroom Dancing) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "sayaw na ballroom, cha-cha at waltz gusto kong ikompetisyon",
+  "accept": [
+   "Performing Arts (Ballroom Dancing) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging professional dancer sa mga show",
+  "accept": [
+   "Performing Arts (Dance) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to dance on stage like those performers on TV",
+  "accept": [
+   "Performing Arts (Dance) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "dancer abroad",
+  "accept": [
+   "Performing Arts (Dance) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "abroad",
+   "job_title",
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging singer at vocalist ng banda",
+  "accept": [
+   "Performing Arts (Song) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I love singing and want to perform as a backup singer at events",
+  "accept": [
+   "Performing Arts (Song) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto q mging singr 🎤🎶",
+  "accept": [
+   "Performing Arts (Song) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to work as a pharmacy assistant at a drugstore",
+  "accept": [
+   "Pharmacy Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "tumutulong ako sa botika ng tita ko magbenta at mag-ayos ng gamot, gusto ko ng NC III",
+  "accept": [
+   "Pharmacy Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "certification",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "assistant sa pharmacy",
+  "accept": [
+   "Pharmacy Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to prepare artwork and plates before printing at a printing press",
+  "accept": [
+   "Printing Services (Prepress Technical Operations) NC I",
+   "Printing Services (Prepress Technical Operations) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging prepress operator sa palimbagan",
+  "accept": [
+   "Printing Services (Prepress Technical Operations) NC I",
+   "Printing Services (Prepress Technical Operations) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "prepress",
+  "accept": [
+   "Printing Services (Prepress Technical Operations) NC I",
+   "Printing Services (Prepress Technical Operations) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to manage the PESO office and help people find jobs for the LGU",
+  "accept": [
+   "Public Employment Services NC IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging PESO manager sa munisipyo",
+  "accept": [
+   "Public Employment Services NC IV"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to sell houses and lots as a real estate agent",
+  "accept": [
+   "Real Estate Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong magbenta ng lupa at bahay, maging real estate salesperson",
+  "accept": [
+   "Real Estate Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "property agent",
+  "accept": [
+   "Real Estate Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "rel estate agnt gusto ko",
+  "accept": [
+   "Real Estate Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to be a security guard",
+  "accept": [
+   "Security Services NC I",
+   "Security Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging guwardiya sa mall",
+  "accept": [
+   "Security Services NC I",
+   "Security Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "bantay",
+  "accept": [
+   "Security Services NC I",
+   "Security Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "three years working as a watchman in a subdivision, no license or NC yet",
+  "accept": [
+   "Security Services NC I",
+   "Security Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "security guard sa Saudi, kailangan ba ng NC",
+  "accept": [
+   "Security Services NC I",
+   "Security Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "job_title",
+   "certification"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Matagal na akong walang trabaho mula nang magsara ang pinagtrabahuhan kong pabrika, tatlo ang anak ko at ako lang ang naghahanapbuhay, kaya naisip kong mag-aral ng kursong mabilis matapos na may kasiguraduhang trabaho, at ang gusto ko talaga ay mag-alaga ng matatanda dahil inalagaan ko ang nanay ko hanggang sa huli",
+  "accept": [
+   "Caregiving (Elderly) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "long",
+   "experience"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I grew up helping at my aunt's small salon in the province, sweeping hair, washing heads and handing tools, and after finishing senior high school I realized this is what I actually enjoy, so now I want to be properly trained and certified to cut, color and style hair for customers and maybe open my own salon someday",
+  "accept": [
+   "Hairdressing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "long",
+   "experience",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Dati akong nagtatrabaho sa isang dental clinic bilang taga-linis ng gamit, tapos nakita ko kung paano gumawa ng pustiso ang technician sa laboratoryo at na-amaze ako, kaya ngayon gusto kong matuto at magkaroon ng sertipiko para makapagtrabaho ako sa dental lab, kahit simula sa assistant lang muna",
+  "accept": [
+   "Dental Laboratory Technology Services NC I",
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "long",
+   "experience",
+   "certification"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Every weekend our barangay holds a medical mission where I help weigh children, record blood pressure and refer patients to the doctor, and the health workers there told me I should get formal training and certification so the barangay can hire me as a regular health worker",
+  "accept": [
+   "Barangay Health Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "long",
+   "task",
+   "certification"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Nasa abroad na ang kapatid ko at nagbibigay siya ng tulong sa amin, pero gusto ko ring sumunod bilang tagapangalaga ng mga batang may espesyal na pangangailangan dahil may pamangkin akong ganoon, at nakita ko kung gaano kailangan ng mga pamilya ang tamang pag-aalaga at kung gaano ito kaginhawa kung may tamang pagsasanay",
+  "accept": [
+   "Caregiving (Clients with Special Needs) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "long",
+   "abroad",
+   "indirect"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong gumawa ng korona at tulay ng ngipin sa dental laboratory",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "pustiso at dental crown, laboratoryo ng ngipin",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging tagapag-alaga ng sanggol at batang paslit",
+  "accept": [
+   "Caregiving (Newborn to Pre-Schooler) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging guro sa daycare para sa maliliit na bata",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong magmasahe at maghilot sa mga pagod na kliyente",
+  "accept": [
+   "Massage Therapy NC II",
+   "Hilot (Wellness Massage) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong magbukas ng barberya na gumugupit ng buhok ng mga lalaki",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong mag-ayos ng kuko at paa ng mga kliyente sa salon",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "nagbebenta ako ng bahay at lupa sa probinsya, gusto ko ng lisensya o NC",
+  "accept": [
+   "Real Estate Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "certification",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging bantay sa bangko o gusali",
+  "accept": [
+   "Security Services NC I",
+   "Security Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging taga-benta sa botika at mag-ayos ng reseta",
+  "accept": [
+   "Pharmacy Services NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong mag-ayos ng salamin ng mata at gumawa ng lente",
+  "accept": [
+   "Ophthalmic Lens Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong kumanta sa mga kasalan at handaan",
+  "accept": [
+   "Performing Arts (Song) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging mananayaw sa entablado",
+  "accept": [
+   "Performing Arts (Dance) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong sumagip ng mga lumalangoy sa dagat at resort",
+  "accept": [
+   "Lifeguard Services NC II",
+   "Lifeguard Services NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "lifeguard sa pool",
+  "accept": [
+   "Lifeguard Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging taga-ayos ng papel ng insurance ng mga miyembro",
+  "accept": [
+   "Microinsurance Services (Mutual Benefit) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong sumagot sa mga emergency at magdala ng pasyente sa ospital",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto ko mging katulong ng nars sa ospital",
+  "accept": [
+   "Health Care Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "typo"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gsto ko mging kasmbahay sa abrod",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "abroad",
+   "typo"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "HILOT TLGA GUSTO KO MATUTUNAN 🙏",
+  "accept": [
+   "Hilot (Wellness Massage) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "barbero 💈 gsto q po",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto ko mging bookeper sa tindahan nmin",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "sekyu",
+  "accept": [
+   "Security Services NC I",
+   "Security Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "DENTAL HYGIENIST GUSTO KO 🦷",
+  "accept": [
+   "Dental Hygiene Level IV"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto q mging dancr sa mga shows 💃",
+  "accept": [
+   "Performing Arts (Dance) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "mg-aalga ng matanda sa jpan gusto ko",
+  "accept": [
+   "Caregiving (Elderly) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "abroad",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "ambulance emt gsto ko po",
+  "accept": [
+   "Emergency Medical Services NC II",
+   "Emergency Medical Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to be like Nurse Joy from Pokemon who heals everyone at the clinic",
+  "accept": [
+   "Health Care Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "indirect",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging parang si Edward Scissorhands pero gupit lang ng buhok, sa salon ng mga babae",
+  "accept": [
+   "Hairdressing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "indirect",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to be like Mary Poppins, looking after small kids at home",
+  "accept": [
+   "Caregiving (Newborn to Pre-Schooler) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "indirect",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gusto kong maging tulad ng mga bayani sa pelikula na sumasagip ng buhay, yung rumeresponde sa aksidente sakay ng ambulansya",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "indirect",
+   "task"
+  ],
+  "group": "G4"
+ }
+]

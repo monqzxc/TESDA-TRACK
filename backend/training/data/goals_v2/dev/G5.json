@@ -1,0 +1,1675 @@
+[
+ {
+  "goal": "I want to be a barista in a coffee shop",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong matutong gumawa ng latte art at magtimpla ng kape",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "barista",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto q mging barista sa starbaks",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to mix cocktails and work behind the bar of a hotel",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging bartender sa isang resto bar",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "magaling akong magshake ng drinks, gusto ko na lang gawing trabaho",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "bartndr",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to cook in a restaurant but I have no certificate yet",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task",
+   "certification"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging cook sa karinderya at kalaunan sa hotel",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "magluto",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to be like the chefs on MasterChef",
+  "accept": [
+   "Cookery NC II",
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "3 taon na akong nagluluto sa kantina, wala pa akong NC",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "GUSTO KO MAG-COOK SA BARKO NG TURISTA 🍳",
+  "accept": [
+   "Cookery NC II",
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "abroad"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to bake bread, pandesal, and cakes for a bakery",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging panadero at gumawa ng sariling tinapay",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "pastry chef",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto ko mag bake ng cakes at pastries, gaya ng pamangkin kong baker na nag-aral sa tesda",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "may NC II na ako sa cookery, gusto ko naman ng NC III para maging head chef",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to be second in command of a five-star hotel kitchen, running the cooks and the menu",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging sous chef na namamahala ng buong kusina ng hotel",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV",
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "kitchen supervisor ang gusto kong marating after 6 years ng pagiging cook",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong magwaiter sa restaurant",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to serve guests at the tables of a hotel restaurant",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "weyter",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "nagse-serve ako ng pagkain at inumin sa mga kumakain, gusto ko ng sertipiko",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task",
+   "certification"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "may NC II na ako sa food and beverage services at gusto kong maging head waiter",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to help manage a restaurant and lead the staff who set up and serve at big banquets",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging OFW na waiter sa cruise ship",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "front desk receptionist sa hotel ang gusto ko",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to check in guests and handle reservations at a hotel front desk",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong ako ang mamahala sa front desk ng hotel, pati ang pag-check ng kita tuwing gabi at pag-asikaso ng reklamo ng mga bisita",
+  "accept": [
+   "Front Office Services NC IV"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "ako na ang nasa front desk ng hotel at may NC II na, gusto kong mamuno ng team",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "recepsyonist sa otel",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maglinis ng mga kwarto sa hotel at mag-ayos ng kama",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to be a room attendant in a resort",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "housekeeping supervisor ang target ko, 3 taon na akong room attendant",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to manage the housekeeping department of a hotel as head housekeeper",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "maid sa hotel sa Dubai ang gusto ko, kailangan daw ng housekeeping NC",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "certification"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "housekeping",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to guide tourists around my hometown and tell them its history",
+  "accept": [
+   "Local Guiding Services NC II",
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging tour guide sa buong Pilipinas",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "tour guide",
+  "accept": [
+   "Local Guiding Services NC II",
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong ipakilala ang bayan namin sa mga turista bilang local guide",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to plan and price domestic tour packages for a travel agency",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa travel agency para mag-book ng flights at hotel",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "ticketing staff sa airline counter",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "travl agent",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong sumagot sa mga tanong ng mga turista sa tourism office ng munisipyo",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to promote tourism in my province and answer visitors' questions at the tourism office",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong magpatakbo ng mga rides sa amusement park",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to work at a theme park as a ride operator or games operator",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong mag-organize ng kasal, conference, at mga event",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "events coordinator",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I dream of being a wedding planner who handles venue, suppliers and guests",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging marino at sumakay ng barko",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)",
+   "Rating Forming Part of a Navigational Watch NC II (II-4)",
+   "Able Seafarer Engine NC II (III-5)",
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "abroad"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to work as an able seaman on the deck of a ship",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "AB deck",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "en",
+  "tags": [
+   "short"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong sumakay ng barko abroad bilang deck crew na nagmamaniobra at nagbabantay sa tulay",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)",
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "seaman",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)",
+   "Able Seafarer Engine NC II (III-5)",
+   "Rating Forming Part of a Navigational Watch NC II (II-4)",
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to work in the engine room of a vessel as an able seafarer engine",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa makina ng barko, mag-maintain ng engine at pumps",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)",
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "rating sa engineering watch, may sea service na ako ng 6 months",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto ko maging bahagi ng navigational watch sa barko, magbantay at magtimon",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong mag-ayos ng kuryente at wiring sa barko bilang baguhan sa crew",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to repair electrical wiring and motors of ships",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "marin elektrisyan",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging messman sa barko, taga-serve ng pagkain ng crew",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "abroad"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to be a ship's cook preparing meals for the crew at sea",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "kusinero sa barko, 4 na taon na akong cook sa carinderia",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)",
+   "Cookery NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to work in a warehouse receiving and counting goods",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa bodega na nagche-check ng mga dumating na paninda at kumukuha ng order para sa delivery",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "bodegero",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "warehouse supervisor ang gusto kong marating, matagal na ako sa bodega",
+  "accept": [
+   "Warehousing Services NC IV",
+   "Warehousing Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "may NC II na ako sa warehousing, gusto ko ng NC III para maging logistics officer",
+  "accept": [
+   "Warehousing Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to handle supply chain documents and dispatch for a logistics company",
+  "accept": [
+   "Warehousing Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong mag-asikaso ng mga kargang galing ibang bansa na dumarating sa pier sa pamamagitan ng barko",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to prepare the paperwork for goods that arrive from overseas by sea",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to lead the team that handles cargo shipped in from other countries by sea, NC IV level",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "certification",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "liason sa pier para sa dokumento ng container",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging palero o mangolekta ng basura sa barangay",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to collect garbage for the city as a garbage collector",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to oversee a sanitary landfill as a site foreman",
+  "accept": [
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong mamahala sa tapunan ng basura ng lungsod, yung sanitary landfill",
+  "accept": [
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to run a stamping press that cuts and forms metal parts in a factory",
+  "accept": [
+   "Metal Stamping NC II",
+   "Press Machine Operation NC I"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "press operator sa pabrika ng metal",
+  "accept": [
+   "Metal Stamping NC II",
+   "Press Machine Operation NC I"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa laboratoryo na nagka-calibrate ng mga instrumento",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II",
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to be a metrology technician who checks measuring instruments",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II",
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging microfinance team leader na namamahala sa mga loan officer",
+  "accept": [
+   "Microfinance Technology NC IV"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to supervise microfinance loan officers who serve small borrowers",
+  "accept": [
+   "Microfinance Technology NC IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong mag-drawing ng komiks at gawing trabaho",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to be a cartoonist or book illustrator",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "kartunist",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "typo"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging cashier o sales clerk sa mall",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to work as a service crew at a fast-food chain",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "tindera",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto ko magtrabaho sa tindahan na nag-aasikaso ng customer at nag-aayos ng paninda",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "promodiser sa grocery, 2 years na akong ganito pero wala pang NC",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to be a retail customer service staff in Japan or Singapore",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "abroad"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "custmer service",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong magtahi ng damit at maging mananahi",
+  "accept": [
+   "Dressmaking NC II",
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to sew dresses and gowns for clients",
+  "accept": [
+   "Dressmaking NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging sastre na gumagawa ng pantalon at barong",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to be a tailor and make suits to measure",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "5 years na akong sewer sa pabrika ng damit pero wala akong sertipiko",
+  "accept": [
+   "Dressmaking NC II",
+   "Tailoring NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "mananahi",
+  "accept": [
+   "Dressmaking NC II",
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging fashion designer na gumagawa ng sketches ng collection",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to design clothing lines like a Project Runway designer",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "fashn desing",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to train other workers in my company on their jobs",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging trainer at assessor sa TESDA",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to teach at a TESDA training center and assess competencies",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong gumawa ng curriculum at training design para sa mga kurso",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "instructional designer",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "wala akong NC trainer pero 10 taon na akong guro sa vocational, gusto ko maging TESDA trainer",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "trainor",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)",
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong gumawa ng mga tour package at kalkulahin ang presyo para sa mga biyahero sa loob ng bansa",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "tour packaging, gusto kong matuto kung paano mag-ayos ng itinerary para sa mga turista sa Pilipinas",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging kusinero sa hotel",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "nagtitimpla ako ng kape sa umaga para sa mga kapitbahay, gusto kong gawing hanapbuhay",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa hotel bilang taga-salubong at taga-check in ng mga bisita",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "GUSTO KO MAGING MARINO 🚢⚓",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)",
+   "Rating Forming Part of a Navigational Watch NC II (II-4)",
+   "Able Seafarer Engine NC II (III-5)",
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging OFW bilang tagapagluto sa barko sa ibang bansa",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "tl",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong magbantay at magbilang ng mga paninda sa bodega ng kumpanya",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong magtinda at maging kahera sa tindahan",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto ko magturo ng skills sa mga kapwa ko manggagawa sa pabrika",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong magtahi ng uniporme at kurtina para sa kapitbahay",
+  "accept": [
+   "Dressmaking NC II",
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging waiter pero wala pa akong NC",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "certification",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging tagalinis ng mga kwarto sa hotel",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong mag-ayos ng booking ng ticket sa eroplano at barko para sa mga kliyente",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "kapeng barako, gusto ko mag barista",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong mag-organize ng mga kasalan at handaan",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "5 taon na akong nagbebenta sa palengke, gusto kong magkaroon ng sertipiko sa pagbebenta",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "Matagal na akong nagtatrabaho bilang helper sa isang hotel sa Maynila, taga-linis ng lobby at mga kwarto, at nakikita ko kung paano nag-aasikaso ang mga staff sa mga bisita. Gusto ko sana magkaroon ng maayos na sertipiko para mapromote ako at balang araw makapag-abroad bilang room attendant.",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "long",
+   "experience",
+   "abroad"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "When I was a child my grandmother ran a small bakery and I used to help her knead dough every morning before school. Now that I have finished high school and have no money for college, I want to turn that skill into a real career, baking bread and pastries professionally and maybe opening my own shop someday.",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "long"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "Ang tatay ko ay seaman noong kabataan niya at lagi niyang kinukuwento ang mga bansang napuntahan niya. Ngayon na tapos na ako sa senior high at gusto ko ring sumunod sa kanya, gusto kong sumakay sa barko bilang bahagi ng deck crew, pero hindi ko alam kung saan magsisimula at kung anong kurso ang kailangan ko.",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)",
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "tl",
+  "tags": [
+   "long",
+   "abroad",
+   "indirect"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "Kasalukuyan akong nagtatrabaho bilang bodegero sa isang kumpanya na nagdi-distribute ng mga produkto sa mga grocery, taga-bilang at taga-ayos ng stocks sa shelf at taga-labas ng items para sa delivery. Gusto ko sanang magkaroon ng NC para mas tumaas ang sweldo ko at tuluyang maging warehouse checker.",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "long",
+   "experience",
+   "certification"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I have always loved telling stories about the places in my province, from old churches to hidden waterfalls, and friends often ask me to bring their visiting relatives around for a small fee. I would like to do this formally and get a certificate so that I can be a recognized guide for tourists in my town.",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "long",
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "I want to be like Remy from Ratatouille, cooking for guests in a restaurant",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "indirect",
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging parang si Jack Sparrow, sasakay ng barko at maglalayag sa dagat bilang crew",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)",
+   "Rating Forming Part of a Navigational Watch NC II (II-4)",
+   "Able Seafarer Engine NC II (III-5)",
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "tags": [
+   "indirect",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto kong maging parang si Tom Cruise sa Cocktail na nagtitimpla at nagsasalin ng inumin sa bar",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "indirect",
+   "task"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "gusto q mging kusinero sa hotl",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G5"
+ },
+ {
+  "goal": "BARTENDER PO GUSTO KO 🍸",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G5"
+ }
+]
