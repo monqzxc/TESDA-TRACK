@@ -1,0 +1,1343 @@
+[
+ {
+  "goal": "Gusto kong matutong magkabit ng kable, saksakan, switch at ilaw sa mga bagong gawang bahay.",
+  "accept": [
+   "Electrical Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "I want to learn to frame roofs, hang door jambs and window frames, and build wooden stairs and cabinets for houses.",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "KARPINTERO AKO 15 TAON NA PERO WALA PA AKONG NC ANO PO BA ANG DAPAT KUNIN",
+  "accept": [
+   "Carpentry NC II",
+   "Carpentry NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "typo"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "May NC II na ako sa Carpentry. Gusto ko nang mag-level up para matutunan ang laminate flooring, decorative moldings at acoustical ceiling.",
+  "accept": [
+   "Carpentry NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "3 years na akong operator ng passenger hoist sa isang high-rise na construction site, pero wala pa akong certificate.",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Ayokong magpintura ng kotse; gusto kong maging pintor ng mga gusali — pader, kisame at bakod.",
+  "accept": [
+   "Construction Painting NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Construction painter ako na may NC II. Gusto ko namang matutong mag-estimate ng kailangang pintura at mag-tint ng kulay para sa mga kliyente.",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Senior mechanic ako sa isang diesel power plant sa isla. Ako ang nag-o-overhaul ng makina at nagse-service ng alternator. Anong NC ang bagay sa akin?",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "I grew up on a small island where all our electricity comes from one diesel power plant, and every time it breaks down the whole town goes dark for days. I just finished senior high school, I am good with engines, and I want to work at that plant tending the diesel engines and keeping them running.",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "long",
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Gusto kong maging lineman ng electric cooperative — magtayo ng poste, umakyat, at magkabit ng linya papunta sa mga bahay.",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "I've been a distribution line worker for four years doing new service connections. Now I want the certificate for replacing old poles, installing three-phase lines and clearing trees along the lines.",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Halos sampung taon na akong lead lineman sa isang electric coop. Ako na ang nagche-check ng mga bagong install na transformer at nagtu-troubleshoot kapag may fault sa linya, lalo na pagkatapos ng bagyo. Gusto ko na sanang ma-promote bilang line supervisor, kaya anong certification ang kailangan ko para dun?",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "long",
+   "experience",
+   "certification"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "lineman",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II",
+   "Transmission Line Installation and Maintenance NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Gusto kong matutong magbarnis at mag-spray ng lacquer sa mga muwebles na gawa sa kahoy.",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Gusto kong mag-operate ng articulated dump truck sa quarry, yung nababaluktot sa gitna kapag lumiliko.",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "I want to drive the machine that has a loader bucket in front and a digging arm at the back, the kind used to dig trenches on road jobs.",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "As a kid I spent hours pushing toy trucks around in the sand. Now I want to drive the real thing: the big yellow machine on tracks with a huge blade in front that pushes earth.",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Gusto kong magpatakbo ng makinang nagbobomba ng semento hanggang sa itaas ng ginagawang gusali.",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "I want to operate a reach stacker that lifts and stacks shipping containers at the port.",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Matagal na akong katulong ng operator ng crawler crane; gusto ko nang ako mismo ang magpatakbo nito.",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "GUSTO KO PO MAGING FORKLIFT OPERATOR SA DUBAI 🙏",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "abroad",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "excavater operater",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "typo",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Gusto kong magpatakbo ng grader na nagpapantay at humuhubog ng kalsada bago ito aspaltuhin.",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Lagi akong nananalo sa claw machine sa mall, kaya naisip ko na mag-operate ng totoong crane na tumatakbo sa riles sa kisame ng pabrika.",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "I want to become an asphalt paver operator on road projects.",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Helper ako sa minahan; gusto kong maging operator ng rigid dump truck na pang-off-road, yung sobrang laki ng gulong.",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "I drive a ten-wheeler dump truck hauling sand and gravel to construction sites, but I have no NC yet.",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II",
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Ayaw ko na sa pagsasaka. Gusto kong maging operator ng pison sa paggawa ng kalsada.",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Five years na akong rigger; ngayon gusto ko namang mag-operate ng rough terrain crane sa construction.",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Ako yung nasa likod ng paver na nag-a-adjust ng kapal at lapad ng aspalto. Gusto kong ma-certify bilang screed operator.",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "I want to be a tower crane operator in Saudi Arabia, working on high-rise projects.",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Limang taon na akong nagmamaneho ng trak na panghalo ng semento papunta sa mga buhos, pero wala pa akong sertipiko.",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II",
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "boom truck operator",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "payloader operator",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "I don't want to operate heavy equipment. I want to be the mechanic who fixes their engines, hydraulics and undercarriage.",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "negation",
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Gusto kong matutong magpakintab at magtubog sa ginto ng mga alahas, at gumawa ng mga simpleng piyesa ng singsing at kuwintas.",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "I already have Jewelry Making NC II and work as a polisher. Next I want to learn stone setting, wax modeling, casting and engraving.",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "certification"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "kantero",
+  "accept": [
+   "Masonry NC I",
+   "Masonry NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Labinsiyam na taong gulang po ako at huminto sa pag-aaral noong Grade 10 para makatulong sa pamilya. Paminsan-minsan sumasama ako sa tiyuhin ko sa construction bilang taga-halo ng semento at taga-buhat ng hollow blocks. Gusto ko pong matuto nang maayos para balang araw ay maging tunay na mason.",
+  "accept": [
+   "Masonry NC I",
+   "Masonry NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "long",
+   "experience"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "I've been a rough mason with NC II for six years and want to move up to finishing work, like straight-to-finish floor concreting and fixing uneven concrete walls.",
+  "accept": [
+   "Masonry NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "certification",
+   "experience"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Gusto kong mag-pipefitter sa Saudi, yung nagkakabit ng mga bakal na tubo sa mga planta ng langis.",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Marunong akong magpalit ng gripo at mag-ayos ng tumatagas na tubo sa mga kapitbahay, kaya gusto ko nang maging ganap na tubero.",
+  "accept": [
+   "Plumbing NC I",
+   "Plumbing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task",
+   "experience"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Plumber ako na may NC II. Gusto ko nang matutong mag-install ng centralized hot at cold water system at ng mga pump sa building.",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "I want to be the person who sizes solar power systems for customers and prepares the bill of materials and installation drawings.",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "gusto ko magkabit ng solar panal sa bubong ng mga bahay tapos subukan kung gumagana",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task",
+   "typo"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "3 years na akong nag-i-install ng solar panels. Ayoko na sa installation; gusto ko naman ang pag-diagnose at pag-repair ng mga sirang solar system.",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "negation",
+   "experience"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Gusto kong mag-abroad bilang steelman sa Dubai; marunong na akong magputol, magbaluktot at magtali ng bakal.",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "experience",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Ayoko pang maging operator ng crane; mas gusto ko munang maging rigger na nagkakabit ng karga at sumesenyas sa operator.",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Gusto kong magtrabaho sa sanitary landfill bilang spotter — ako ang magtuturo sa mga trak kung saan itatapon ang basura.",
+  "accept": [
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Tinatawag nila akong Spider-Man sa site kasi hindi ako takot sa taas. Gusto kong maging scaffolder na nagtatayo at nagbabaklas ng scaffolding.",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "indirect",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "I want to lift, position and bolt together the steel beams and columns that make up warehouse frames.",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Gusto kong mag-install at magtanggal ng system formworks, yung mga aluminum na hulmahan ng buhos sa mga high-rise.",
+  "accept": [
+   "System Formworks Installation NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Sa mga teleserye, laging astig yung nagdo-drawing ng plano ng bahay sa malaking papel. Gusto ko ng ganung trabaho, pero sa computer na.",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "gsto q mg tile setter s australia, ung ngkakabit ng tiles s banyo at kusina",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "abroad",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "I want to work on high-voltage transmission towers, inspecting and maintaining the lines.",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Five years na akong transmission lineman na may NC II. Gusto ko nang maging senior lineman na nagtatayo ng bagong tower at ng emergency restoration structures.",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification",
+   "experience"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Plumbing o kaya tile setting, para ako na mismo ang mag-renovate ng mga banyo.",
+  "accept": [
+   "Plumbing NC I",
+   "Plumbing NC II",
+   "Tile Setting NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "multi"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Carpentry or masonry, whichever gets me hired faster on house construction.",
+  "accept": [
+   "Carpentry NC II",
+   "Masonry NC I",
+   "Masonry NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "forklift o backhoe operator, kahit alin basta may trabaho",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II",
+   "Heavy Equipment Operation (Backhoe Loader) NC II",
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "multi",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "I'm torn between installing solar panels and becoming a house electrician.",
+  "accept": [
+   "PV Systems Installation NC II",
+   "Electrical Installation and Maintenance NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "Adik ako sa Harvest Moon at sa mga farming game, kaya gusto ko nang magtanim ng totoong gulay sa bukid namin.",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "magsasaka po",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "I've worked ten years on other people's farms. Now I want to run my own peanut, mung bean and cassava farm: prepare the land, plan the fertilizer, control weeds and save my own seed.",
+  "accept": [
+   "Agricultural Crops Production NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Gusto kong maging operator ng traktora at iba pang makinarya sa malalawak na taniman ng mais at tubo.",
+  "accept": [
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task",
+   "job_title"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Mekaniko ako ng mga traktora ng kooperatiba namin; gusto kong magka-NC sa pag-diagnose at pag-repair ng engine, hydraulics at transmission ng 4-wheel tractor.",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "I want to start a small farm business: find buyers, plan what to plant, handle the money and sell our harvest at the market.",
+  "accept": [
+   "Agroentrepreneurship NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Lider ako ng samahan ng mga magsasaka sa amin; gusto kong pangunahan ang sabayang pagbebenta ng ani at hikayatin ang mga kasapi na magsanay.",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "For years I have helped our farmers' association sell together and keep a steady supply for a supermarket buyer. Now other villages ask me to help them set up the same kind of enterprise, so I want to become a facilitator who trains farmer groups, links them with buyers and the local government, and monitors how their agribusiness is doing.",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "long",
+   "experience"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "gusto q mging livestock health technician, mgbabakuna at mgpupurga ng baka at baboy",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title",
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "mag aalaga ng manok 🐔🐔 pang negosyo po sana",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Ayoko sa babuyan; kambing at baka ang gusto kong alagaan para sa gatas at karne.",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation",
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "magbababoy",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "I want to raise milkfish and prawns in brackish-water ponds until they reach harvest size.",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Gusto kong magtrabaho sa hatchery ng bangus — mag-alaga ng mga inahing isda, magpaitlog, at magpalaki ng semilya.",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "tilapia farming",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Gusto kong maging AI technician para sa mga baka at kalabaw ng mga magsasaka sa amin.",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "I want to collect boar semen and inseminate sows and gilts on a pig breeding farm.",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Gusto kong gumawa ng engineered bamboo — mag-kiln dry at mag-laminate ng kawayan para gawing tabla at sahig.",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Gusto kong magtanim ng kawayan, mag-alaga ng mga punla nito, at mag-ani para ibenta.",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Ever since Winnie the Pooh I've been obsessed with honey. I want to keep my own bee colonies and harvest it.",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Twelve years na akong foreman sa pagpapatayo ng mga bodega at bahay. Nitong huli, maraming nag-aalaga ng baboy dito sa probinsya ang nagpapagawa ng biogas digester para hindi na mangamoy ang dumi at magamit pa ang gas sa pagluluto. Gusto kong ako na ang mag-lead ng ganitong mga proyekto, mula site preparation hanggang piping.",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "long",
+   "experience"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "I want to work as a process operator in a chemical plant, running and monitoring the equipment and testing product samples.",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Technician ako sa rice mill at dryer ng kooperatiba namin; gusto kong magka-NC sa pagse-service ng mga ito.",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Gusto kong sumakay sa fishing vessel sa Taiwan bilang deckhand.",
+  "accept": [
+   "Fish Capture NC I"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Mangingisda na ako mula pagkabata, kasama ang tatay ko sa maliit naming bangkang de-motor. Ngayon ako na ang nagpapatakbo nito, pero gusto kong matutunan nang tama ang paglalatag ng lambat at bubo, ang pag-aayos ng makina ng bangka, at ang pagbasa ng panahon bago pumalaot para ligtas kami.",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "long",
+   "experience"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "I want a job packing processed fish at a fish plant, sealing it in cans, glass bottles and vacuum bags.",
+  "accept": [
+   "Fish Products Packaging NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Matagal na akong nag-aayos ng lambat sa daungan; gusto ko nang maging pinuno ng grupo ng mga tagapag-ayos ng lambat.",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Gusto kong magtrabaho sa pantalan ng isda — magbaba ng huli mula sa mga bangka at mag-uri-uri ng mga isda.",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Ayoko sa kusina ng restaurant; gusto kong gumawa ng tocino, longganisa at tinapa para ibenta.",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation",
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "May NC II na ako sa Food Processing at line operator na ako ngayon sa planta; gusto ko nang kumuha ng NC III.",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "I'm a food packaging line leader with NC III and I want to qualify as a production supervisor who runs GMP and HACCP audits.",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "certification"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Gusto kong matutong magtanim ng palay at mais nang tama, mula sa pagpili ng binhi hanggang sa anihan.",
+  "accept": [
+   "Grains Production NC II",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "May maliit akong manggahan at gulayan; gusto kong matuto ng grafting at budding at ng tamang pag-aalaga ng mga puno ng prutas.",
+  "accept": [
+   "Horticulture NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Ayoko magtrabaho sa opisina. I want to be a landscape gardener for resorts — planting, pruning and lawn care.",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "negation",
+   "job_title"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Gusto kong maging tagagatas ng mga baka sa isang gatasan sa New Zealand.",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "abroad",
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Gusto kong mag-organic farming: gumawa ng sariling compost at fermented na pataba, at magtanim ng gulay nang walang kemikal.",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Worms and aphids keep wrecking my vegetable farm. I want to learn proper pest control, including biological methods and safe spraying.",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Gusto kong mag-install ng drip at sprinkler irrigation sa mga greenhouse at taniman.",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "I want to be the one who makes the fireworks that light up the sky every New Year's Eve.",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Gusto kong mag-operate ng combine harvester, rice transplanter at dryer sa palayan.",
+  "accept": [
+   "Rice Machinery Operations NC II",
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Latex receiver ako sa planta ng goma; gusto ko ring matutong gumawa ng blanket rubber sheet at magpatuyo nito.",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Gusto kong matutong kumuha ng dagta sa mga puno ng goma at mag-alaga ng punlaan nito.",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Gusto kong magtanim ng damong-dagat sa baybayin at ibilad ito para ibenta.",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "I want to work as a butcher in a beef processing plant in Canada.",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Marunong na akong maghasa ng kutsilyo at maglinis ng karne; gusto kong magtrabaho sa katayan ng baboy.",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Gusto kong matutong magtanim at mag-ani ng tubo para ibenta sa asukarera.",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Gusto kong mag-alaga ng baboy o kaya manok para sa negosyo.",
+  "accept": [
+   "Animal Production (Swine) NC II",
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "multi"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "Tilapia o bangus sa palaisdaan, pareho kong gustong alagaan.",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II",
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "multi"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "I'd like to do beekeeping and organic vegetable farming together on my land.",
+  "accept": [
+   "Beekeeping NC II",
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "i want to be a draftman, doing autocad drawings of house plans",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "pde b ko mag aral ng electrical wiring khit HS grad lng? gusto ko mging electrician",
+  "accept": [
+   "Electrical Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G1"
+ },
+ {
+  "goal": "wanna start beekeping, like my own apiary w/ a few hives",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "typo",
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "GUSTO KO PO MAG SEAWEED FARMING SA ISLA NAMIN PRA MAY INCOME",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "task"
+  ],
+  "group": "G2"
+ },
+ {
+  "goal": "gsto ko mgtrbaho s katayan ng baka at kalabaw",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "task"
+  ],
+  "group": "G2"
+ }
+]
