@@ -8,6 +8,7 @@ from tesda_track.models.learners import (ANSWER_CODES, GOAL_STATUSES, ROLES, Cer
                                          ReadinessAnswer, ReadinessCheck, RecommendationSession)
 from tesda_track.models.pathways import (ENROLLMENT_STATUSES, ROUTES, STEP_KINDS, STEP_STATUSES, Pathway,
                                          PathwayEnrollment, PathwayStep, StepProgress)
+from tesda_track.models.stats import MatchDailyStat
 from tesda_track.models.semantic import (EMBEDDING_DIMENSIONS, CacheEntry, QualificationEmbedding, RankingAudit,
                                          TrainingProgramEmbedding)
 
@@ -16,7 +17,7 @@ __all__ = [
     "ANSWER_CODES", "APPLICATION_STATUSES", "ASSESSMENT_RESULTS", "COMPETENCY_CATEGORIES", "DELIVERY_MODES",
     "ENROLLMENT_STATUSES", "GOAL_STATUSES", "ROLES", "ROUTES", "SCHEDULE_STATUSES", "STEP_KINDS", "STEP_STATUSES",
     "AssessmentApplication", "AssessmentCenter", "AssessmentSchedule", "Certification", "Competency", "Goal",
-    "Learner", "Pathway", "PathwayEnrollment", "PathwayStep", "Qualification", "ReadinessAnswer", "ReadinessCheck",
+    "Learner", "MatchDailyStat", "Pathway", "PathwayEnrollment", "PathwayStep", "Qualification", "ReadinessAnswer", "ReadinessCheck",
     "RecommendationSession", "Region", "Sector", "StepProgress", "Timestamped", "TrainingProgram",
     "TrainingProvider", "one_of", "utcnow",
 ]

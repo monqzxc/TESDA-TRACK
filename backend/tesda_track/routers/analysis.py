@@ -1,10 +1,10 @@
-"""Stateless analysis: nothing a learner types here is stored or logged."""
+"""Analysis: nothing a learner types here is stored or logged; matching only adds to anonymous daily totals."""
 from fastapi import APIRouter
 
 from tesda_track.db import SessionDep
 from tesda_track.schemas.analysis import (GoalAnalysis, GoalRequest, MatchRequest, MatchResult, PathwayRecommendation,
                                           PathwayRequest, ReadinessRequest, ReadinessResult)
-from tesda_track.services import analysis
+from tesda_track.services import analysis, match_stats
 from tesda_track.services.embeddings import EmbedderDep
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
@@ -19,6 +19,7 @@ def analyze_goal(request: GoalRequest, session: SessionDep, embedder: EmbedderDe
 @router.post("/matches", response_model=MatchResult)
 def match_qualifications(request: MatchRequest, session: SessionDep, embedder: EmbedderDep):
     profile, matches = analysis.match(session, request.query, request.profile, embedder)
+    match_stats.record(session, no_match=not matches)
     return MatchResult(profile=profile, matches=matches)
 
 

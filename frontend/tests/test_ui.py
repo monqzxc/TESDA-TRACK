@@ -278,6 +278,7 @@ def test_reports_tab_is_only_for_administrators(ui, training_data):
     metrics = {metric.label: metric.value for metric in app.metric}
     assert metrics["Learners"] == "2", "the administrator and the learner who signed up"
     assert metrics["Open assessment seats"] == "10"
+    assert metrics["Goals searched"] == "0" and metrics["No-match rate"] == "—"
     supply = app.dataframe[-1].value
     assert list(supply.loc[supply["Region"] == "National Capital Region", "Programs"]) == [1]
 
@@ -302,3 +303,18 @@ def test_report_date_range_is_checked_before_asking_the_api(ui, training_data, m
     assert not app.exception
     assert any("on or after" in warning.value for warning in app.warning)
     assert asked == []
+
+
+@pytest.mark.parametrize("goal, expected", [
+    ("Magkano ang assessment?", "Training & assessment"),
+    ("saan may training sa Cebu", "Training & assessment"),
+    ("how do i apply", "Training & assessment"),
+    ("astronaut", "for example"),
+    ("hello", "for example"),
+    ("I want to be an astronaut on the moon", "describe a more specific career goal"),
+])
+def test_a_goal_without_a_match_gets_guidance_for_its_kind(ui, goal, expected):
+    app = ui
+    app.text_area(key="goal_query").set_value(goal)
+    click(app, "Get Recommendation")
+    assert any(expected in info.value for info in app.info), [info.value for info in app.info]

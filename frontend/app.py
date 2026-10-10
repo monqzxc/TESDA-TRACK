@@ -284,6 +284,22 @@ def show_curated_pathway(curated: dict) -> None:
             st.info("You're already following this pathway. Find it under My progress.")
 
 
+QUESTION_STARTS = ("saan", "kailan", "magkano", "paano", "where", "when", "how much", "how do i")
+EXAMPLE_GOALS = "\"I want to be a welder\" or \"Gusto kong maging barista\""
+
+
+def no_match_message(query: str) -> str:
+    """Tell a learner what to try next, judged from the wording alone; nothing is stored or sent anywhere."""
+    text = query.strip().lower()
+    if "?" in text or text.startswith(QUESTION_STARTS):
+        return ("That sounds like a question about schedules, fees or centres. Open Training & assessment in the "
+                "sidebar to find assessment centres, schedules and training programs. To find a qualification, "
+                "tell us the job you want.")
+    if len(text.split()) <= 2:
+        return f"That's a little short for us to work with. Try describing the job you want, for example {EXAMPLE_GOALS}."
+    return "We couldn't find a clear match. Choose a sample qualification below, or describe a more specific career goal."
+
+
 def show_recommendations(qualifications: list[dict]) -> None:
     profile = st.session_state["analysis"].copy()
     experience_description = None
@@ -334,7 +350,7 @@ def show_recommendations(qualifications: list[dict]) -> None:
                 st.progress(match["score"] / 100)
                 st.caption(match["reason"])
     else:
-        st.info("We couldn't find a clear match. Choose a sample qualification below, or describe a more specific career goal.")
+        st.info(no_match_message(st.session_state["original_query"]))
     codes = [item["qualification"]["code"] for item in matches]
     options = sorted(qualifications, key=lambda item: codes.index(item["code"]) if item["code"] in codes else len(codes))
     selected_code = st.selectbox(
@@ -605,6 +621,16 @@ def show_reports(token: str, qualifications: list[dict]) -> None:
                 st.table(journey_data, alt="Learner counts by journey stage")
         else:
             st.caption("No learner activity in this period. Try a wider date range.")
+
+    matching = api().report(token, "matching", **period)
+    with st.container(border=True, key="card_report_matching"):
+        st.subheader("Goal matching")
+        st.caption("Anonymous daily totals. Nothing a learner typed is kept.")
+        columns = st.columns(3)
+        columns[0].metric("Goals searched", matching["requests"], border=True)
+        columns[1].metric("Without a match", matching["no_match"], border=True)
+        rate = matching["no_match_rate"]
+        columns[2].metric("No-match rate", f"{rate:.0%}" if rate is not None else "—", border=True)
 
     st.markdown("#### Demand by qualification")
     demand = api().report(token, "qualification-demand", **period)

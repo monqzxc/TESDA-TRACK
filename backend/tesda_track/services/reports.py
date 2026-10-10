@@ -4,15 +4,15 @@ from datetime import date, datetime, time, timedelta, timezone
 from sqlalchemy import distinct, func, or_
 from sqlmodel import Session, select
 
-from tesda_track.models import (AssessmentApplication, AssessmentCenter, AssessmentSchedule, Certification, Learner,
+from tesda_track.models import (MatchDailyStat, AssessmentApplication, AssessmentCenter, AssessmentSchedule, Certification, Learner,
                                 RankingAudit, ReadinessAnswer, ReadinessCheck, RecommendationSession, Region,
                                 TrainingProgram, TrainingProvider, utcnow)
 from tesda_track.schemas.progress import CertificationCounts
-from tesda_track.schemas.reports import (CompetencyGap, DateRange, Funnel, Overview, QualificationDemand,
+from tesda_track.schemas.reports import (CompetencyGap, DateRange, Funnel, MatchingDay, MatchingReport, Overview, QualificationDemand,
                                          RegionSupply)
 from tesda_track.services import assessments, catalog
+from tesda_track.services.match_stats import PHILIPPINE_TIME
 
-PHILIPPINE_TIME = timezone(timedelta(hours=8))
 
 
 def _within(column, period: DateRange):
@@ -137,3 +137,18 @@ def supply(session: Session) -> list[RegionSupply]:
                                  training_programs=programs.get(region.code, 0),
                                  upcoming_assessments=upcoming, open_seats=int(seats)))
     return rows
+
+
+def matching(session: Session, period: DateRange) -> MatchingReport:
+    """Goal-matching requests and how many found nothing, per Philippine-time day (anonymous totals)."""
+    conditions = []
+    if period.date_from:
+        conditions.append(MatchDailyStat.date >= period.date_from)
+    if period.date_to:
+        conditions.append(MatchDailyStat.date <= period.date_to)
+    rows = session.exec(select(MatchDailyStat).where(*conditions).order_by(MatchDailyStat.date)).all()
+    requests = sum(row.requests for row in rows)
+    no_match = sum(row.no_match for row in rows)
+    return MatchingReport(
+        requests=requests, no_match=no_match, no_match_rate=no_match / requests if requests else None,
+        days=[MatchingDay(date=row.date, requests=row.requests, no_match=row.no_match) for row in rows])

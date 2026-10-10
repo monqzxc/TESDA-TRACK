@@ -59,6 +59,8 @@ def offline_api(monkeypatch):
         if name == "funnel":
             return {"registered": 12, "saved_a_recommendation": 8, "checked_readiness": 6,
                     "applied_for_assessment": 3, "certified": 2}
+        if name == "matching":
+            return {"requests": 40, "no_match": 10, "no_match_rate": 0.25, "days": []}
         if name == "supply":
             return [{"region": "National Capital Region", "training_providers": 2,
                      "training_programs": 3, "upcoming_assessments": 1, "open_seats": 10}]
@@ -212,7 +214,7 @@ def test_reports_render_only_for_admin_when_opened(offline_api):
     metrics = {metric.label: metric.value for metric in app.metric}
     assert metrics["Learners"] == "12"
     assert metrics["Open assessment seats"] == "10"
-    assert set(offline_api["reports"]) == {"overview", "funnel", "supply", "qualification-demand", "skill-gaps"}
+    assert set(offline_api["reports"]) == {"overview", "funnel", "matching", "supply", "qualification-demand", "skill-gaps"}
 
 
 def test_expired_session_returns_to_sign_in(offline_api, monkeypatch):
@@ -326,7 +328,7 @@ def test_report_date_range_is_validated_before_request_and_can_be_corrected(offl
     run_page(app, "Reports")
     assert not app.warning
     dated_calls = [(name, params) for name, params in offline_api["report_params"] if name != "supply"]
-    assert len(dated_calls) == 4
+    assert len(dated_calls) == 5
     assert all(params["date_from"] == "2026-10-07" and params["date_to"] == "2026-10-07"
                for name, params in dated_calls)
 
@@ -339,6 +341,8 @@ def test_reports_handle_no_activity_without_fabricating_scores(offline_api, monk
         if name == "funnel":
             return {"registered": 0, "saved_a_recommendation": 0, "checked_readiness": 0,
                     "applied_for_assessment": 0, "certified": 0}
+        if name == "matching":
+            return {"requests": 0, "no_match": 0, "no_match_rate": None, "days": []}
         return []
 
     monkeypatch.setattr(ApiClient, "report", empty_report)
@@ -347,6 +351,7 @@ def test_reports_handle_no_activity_without_fabricating_scores(offline_api, monk
     assert metrics["Learners"] == "0"
     assert metrics["Readiness checks"] == "0"
     assert metrics["Open assessment seats"] == "0"
+    assert metrics["No-match rate"] == "—", "no requests means no rate, not 0%"
     assert not app.error
 
 

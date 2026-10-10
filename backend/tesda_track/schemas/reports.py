@@ -1,3 +1,4 @@
+import datetime as dt
 from datetime import date
 
 from pydantic import BaseModel, ConfigDict, model_validator
@@ -63,6 +64,19 @@ class Funnel(BaseModel):
     checked_readiness: int
     applied_for_assessment: int
     certified: int
+
+
+class MatchingDay(BaseModel):
+    date: dt.date
+    requests: int
+    no_match: int
+
+
+class MatchingReport(BaseModel):
+    requests: int
+    no_match: int
+    no_match_rate: float | None
+    days: list[MatchingDay]
 
 
 class RegionSupply(BaseModel):
