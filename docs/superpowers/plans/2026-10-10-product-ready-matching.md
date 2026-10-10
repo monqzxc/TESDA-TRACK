@@ -172,6 +172,17 @@ Plateau rule: stop when two consecutive rounds each improve the dev objective by
 
 - [ ] Log every round in `docs/ml/rounds.md` (aggregates only) and commit the log after each round.
 
+### Task 8a: Colab training path (added 2026-10-10)
+
+Windows Smart App Control (On) blocks PyTorch's DLLs on the dev laptop (WinError 4551), so training moves to Google Colab (user's choice); serving, evaluation, calibration and mining stay local (onnxruntime is unaffected).
+
+**Files:** Create `backend/training/bundle.py`, `backend/training/colab/train_colab.ipynb`; modify `backend/training/pairs.py` (exclusions from hashes), `backend/training/README.md`; tests `backend/tests/test_training_bundle.py`.
+
+- `python -m training.bundle --output training/runs/colab-bundle.zip [--hard-negatives training/runs/<file>.json]` (main env) packs exactly what training needs: `backend/tesda_track/` (no `__pycache__`), `backend/seed/qualifications.json`, `backend/training/*.py`, `backend/training/data/synthetic/*.json`, `backend/training/requirements.txt`, the optional hard-negative file, and `exclusions.json` = sorted sha256 hex digests of `normalize(goal)` for every v1, dev and sealed goal. No goal files, no `.env`, no models. Prints the zip size.
+- `training.pairs.eval_exclusions()` uses `data/exclusions.json` (hashes) when the goal files are absent, and drops a query when `sha256(normalize(query))` is in it; locally it keeps reading the goal files. Tests: the bundle contains no file under `data/goals_v2/` or `eval_goals.json`; every goal's hash is in `exclusions.json`; pairs built from the hashes equal pairs built from the goal files.
+- Notebook (Colab, T4): check the GPU; upload the bundle (`google.colab.files.upload`) or read it from Drive; unzip; `pip install` the pinned training requirements that Colab lacks (keep Colab's preinstalled CUDA torch; pin sentence-transformers 6.1.0, transformers 5.19.0, fastembed 0.8.1, onnx, and backend/requirements.txt minus psycopg extras if they fail); set dummy `DATABASE_URL`/`SECRET_KEY` env vars for `tesda_track.config`; a parameter cell (`ROUND = "v2"`, `EPOCHS = 3`, `LR = 2e-5`, `HARD_NEGATIVES = True/False`, `MINI_BATCH = 16`); run `python -m training.finetune --output models/tesda-e5-small-<ROUND> ...` with checkpoints written to Drive when mounted (so a Colab disconnect can `--resume`); zip only the serving files (`onnx/`, tokenizer/config files, `training.json`; never `model.safetensors`, `checkpoints/`) and download it. Markdown cells explain each step for a non-ML user.
+- Locally after download: unzip into `backend/models/tesda-e5-small-<ROUND>/`, then `training.evaluate --model tesda-track/tesda-e5-small-<ROUND> --model-path models/tesda-e5-small-<ROUND> --set dev --calibrate --min-rejection 0.9`.
+
 ### Task 9 (conditional): e5-base candidate
 
 Runs only if Task 8 ends at a plateau below the dev targets. Download `intfloat/multilingual-e5-base` (resumable), train with the best R-config, evaluate the same way. If it beats the best small model on dev objective by > 0.02, write a sub-plan for the 768-dimension migration (embedding columns, config, Docker) before implementing it; otherwise record the result and stop.
