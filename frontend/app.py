@@ -284,14 +284,16 @@ def show_curated_pathway(curated: dict) -> None:
             st.info("You're already following this pathway. Find it under My progress.")
 
 
-QUESTION_STARTS = ("saan", "kailan", "magkano", "paano", "where", "when", "how much", "how do i")
+QUESTION_WORDS = ("saan", "kailan", "magkano", "paano", "where", "when")
+QUESTION_PHRASES = ("how much", "how do i")
 EXAMPLE_GOALS = "\"I want to be a welder\" or \"Gusto kong maging barista\""
 
 
 def no_match_message(query: str) -> str:
     """Tell a learner what to try next, judged from the wording alone; nothing is stored or sent anywhere."""
     text = query.strip().lower()
-    if "?" in text or text.startswith(QUESTION_STARTS):
+    words = text.split()
+    if "?" in text or (words and words[0].strip(",.!") in QUESTION_WORDS) or text.startswith(QUESTION_PHRASES):
         return ("That sounds like a question about schedules, fees or centres. Open Training & assessment in the "
                 "sidebar to find assessment centres, schedules and training programs. To find a qualification, "
                 "tell us the job you want.")

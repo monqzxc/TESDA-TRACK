@@ -1,5 +1,5 @@
 """Analysis: nothing a learner types here is stored or logged; matching only adds to anonymous daily totals."""
-from fastapi import APIRouter
+from fastapi import APIRouter, BackgroundTasks
 
 from tesda_track.db import SessionDep
 from tesda_track.schemas.analysis import (GoalAnalysis, GoalRequest, MatchRequest, MatchResult, PathwayRecommendation,
@@ -17,9 +17,10 @@ def analyze_goal(request: GoalRequest, session: SessionDep, embedder: EmbedderDe
 
 
 @router.post("/matches", response_model=MatchResult)
-def match_qualifications(request: MatchRequest, session: SessionDep, embedder: EmbedderDep):
+def match_qualifications(request: MatchRequest, session: SessionDep, embedder: EmbedderDep,
+                         background: BackgroundTasks):
     profile, matches = analysis.match(session, request.query, request.profile, embedder)
-    match_stats.record(session, no_match=not matches)
+    background.add_task(match_stats.record, no_match=not matches)
     return MatchResult(profile=profile, matches=matches)
 
 

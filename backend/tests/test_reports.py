@@ -104,6 +104,20 @@ def test_date_range_limits_what_is_counted(client, admin, session, activity):
                       params={"date_from": "2026-05-01", "date_to": "2026-04-01"}).status_code == 422
 
 
+@pytest.fixture(autouse=True)
+def clean_match_stats(engine):
+    """The counter commits on its own session, so these tests start and end with an empty table."""
+    from sqlalchemy import text
+
+    def clear():
+        with engine.begin() as connection:
+            connection.execute(text("DELETE FROM match_daily_stat"))
+
+    clear()
+    yield
+    clear()
+
+
 def welder_profile(client, query):
     return client.post("/api/v1/analysis/goal", json={"query": query}).json()["profile"]
 
@@ -157,8 +171,7 @@ def test_concurrent_match_counts_are_not_lost(engine):
 
     def record_many(_):
         for _ in range(5):
-            with Session(engine) as own:
-                match_stats.record(own, no_match=True)
+            match_stats.record(no_match=True)
 
     try:
         with ThreadPoolExecutor(8) as pool:
@@ -171,3 +184,20 @@ def test_concurrent_match_counts_are_not_lost(engine):
             for row in cleanup.exec(select(MatchDailyStat)).all():
                 cleanup.delete(row)
             cleanup.commit()
+
+
+def test_a_failing_counter_never_breaks_matching(client, monkeypatch, caplog):
+    from tesda_track.services import match_stats
+
+    class Broken:
+        def __enter__(self):
+            raise RuntimeError("relation match_daily_stat does not exist")
+
+        def __exit__(self, *exc):
+            return False
+
+    monkeypatch.setattr(match_stats, "Session", lambda engine: Broken())
+    query = "I want to be a welder."
+    response = client.post("/api/v1/analysis/matches", json={"query": query, "profile": welder_profile(client, query)})
+    assert response.status_code == 200 and response.json()["matches"]
+    assert "Could not count" in caplog.text and "welder" not in caplog.text
