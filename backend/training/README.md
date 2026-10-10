@@ -116,3 +116,29 @@ texts).
 
 The ONNX export uses `torch.onnx` directly: no optimum release supports transformers 5, so sentence-transformers'
 ONNX backend can't be used.
+
+## Train on Google Colab
+
+Windows Smart App Control blocks PyTorch's DLLs on the dev laptop (`WinError 4551`), so fine-tuning runs on a free
+Colab T4 GPU. Evaluation, calibration, mining and serving stay local (onnxruntime is not blocked).
+
+**Before.** From `backend/`, build the bundle (main environment, no torch):
+
+```bash
+../.venv/Scripts/python -m training.bundle --output training/runs/colab-bundle.zip --hard-negatives training/runs/hard-negatives-v3.json
+```
+
+The zip (under 1 MB) holds the `tesda_track` package, the catalog, the training code, `data/synthetic/*.json`, the
+hard-negative file and `data/exclusions.json`, the SHA-256 of every v1, dev and sealed goal's normalised text. It holds
+no goal files, `.env` or model. In the bundle `eval_exclusions()` uses those hashes, and the pairs come out identical.
+Open `backend/training/colab/train_colab.ipynb` in Colab (Runtime, T4 GPU), run it top to bottom with `SMOKE = True`
+first (6 steps, checks the ONNX export and the fastembed parity), then `SMOKE = False`. Keep `USE_DRIVE = True` so a
+disconnect can continue (`--resume` is added automatically). The notebook downloads `tesda-e5-small-<ROUND>.zip`
+with only the serving files (never `model.safetensors` or checkpoints).
+
+**After.** Use a new `<ROUND>` for every run (v2, v3, ...). From `backend/`:
+
+```bash
+mkdir models/tesda-e5-small-v2 && unzip ~/Downloads/tesda-e5-small-v2.zip -d models/tesda-e5-small-v2
+../.venv/Scripts/python -m training.evaluate --model tesda-track/tesda-e5-small-v2 --model-path models/tesda-e5-small-v2 --set dev --calibrate --min-rejection 0.9
+```

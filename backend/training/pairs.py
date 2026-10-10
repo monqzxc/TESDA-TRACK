@@ -6,6 +6,7 @@ each as written in the catalog and in lower case. Synthetic goal-style queries w
 share of them gets one typo or text-speak copy. Evaluation goals (v1, dev and sealed) are excluded so the held-out
 numbers stay honest.
 """
+import hashlib
 import json
 import random
 import re
@@ -86,7 +87,7 @@ def _in_share(query: str, share: float) -> bool:
     return zlib.crc32(query.encode("utf-8")) % 10_000 < share * 10_000
 
 
-def training_pairs(qualifications: list[Qualification], exclude: set[str],
+def training_pairs(qualifications: list[Qualification], exclude: "set[str] | HashedExclusions",
                    synthetic: dict[str, list[str]] | None = None, augment_share: float = 0.15
                    ) -> list[tuple[str, str]]:
     """Every query of every qualification with its passage, minus queries that equal an excluded goal.
@@ -124,8 +125,38 @@ def load_synthetic(directory: Path = SYNTHETIC_DIR) -> dict[str, list[str]]:
     return {name: list(dict.fromkeys(queries)) for name, queries in merged.items()}
 
 
-def eval_exclusions() -> set[str]:
-    """Normalised v1 (dev and test), v2 dev and sealed goals. Sealed text is only reduced to keys, never shown."""
+DATA_DIR = Path(__file__).resolve().parent / "data"
+EXCLUSIONS_PATH = DATA_DIR / "exclusions.json"
+
+
+def exclusion_hash(text: str) -> str:
+    return hashlib.sha256(normalize(text).encode("utf-8")).hexdigest()
+
+
+class HashedExclusions:
+    """Evaluation goals known only by the SHA-256 of their normalised text (the Colab bundle ships no goal text).
+
+    Supports `normalized_query in exclusions`, which is all training_pairs needs."""
+
+    def __init__(self, hashes):
+        self.hashes = frozenset(hashes)
+
+    def __contains__(self, normalized: str) -> bool:
+        return hashlib.sha256(normalized.encode("utf-8")).hexdigest() in self.hashes
+
+    def __bool__(self) -> bool:
+        return bool(self.hashes)
+
+    def __len__(self) -> int:
+        return len(self.hashes)
+
+
+def eval_exclusions():
+    """Normalised v1 (dev and test), v2 dev and sealed goals. Sealed text is only reduced to keys, never shown.
+
+    Where the goal files are absent (the Colab bundle) the hashes in data/exclusions.json are used instead."""
+    if not (DATA_DIR / "eval_goals.json").exists():
+        return HashedExclusions(json.loads(EXCLUSIONS_PATH.read_text(encoding="utf-8")))
     from training import goals
 
     return {normalize(g["goal"]) for split in ("dev", "test_v1", "sealed") for g in goals.load(split)}
