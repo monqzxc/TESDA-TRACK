@@ -7,6 +7,7 @@
   --track-border: #dfe7f2;
   --track-surface: #ffffff;
   --track-soft: #eef4ff;
+  --track-page: #f5f7fb; /* config.toml backgroundColor, for surfaces that cover scrolling content */
 }
 
 .block-container { max-width: 1240px; padding: 3.8rem 2.5rem 2rem; }
@@ -46,8 +47,7 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
 .st-key-library_filters,
 .st-key-progress_summary,
 .st-key-service_unavailable { background: var(--track-surface); border-radius: 18px; }
-.st-key-finder_panel { padding: 1.4rem; box-shadow: 0 3px 16px #102a5605; }
-.st-key-finder_panel [data-testid="stForm"] { padding: 0; }
+.st-key-finder_panel { padding: 1.4rem; border: 1px solid var(--track-border); box-shadow: 0 3px 16px #102a5605; }
 .st-key-training_filters,
 .st-key-library_filters,
 .st-key-progress_summary { padding: 1.25rem; }
@@ -68,32 +68,80 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
 [class*="st-key-card_"] p { overflow-wrap: anywhere; }
 [class*="st-key-card_"] [data-testid="stMetric"] { box-shadow: none; }
 
-/* Find my pathway shows one numbered step at a time. Button types mark each tab:
-   primary is the current step, tertiary a finished one, secondary one still ahead. */
+/* Find my pathway: the journey banner and step tabs stay pinned below Streamlit's 60px toolbar while the step
+   scrolls under them. A script in app.py adds body.finder-compact once the learner scrolls down. */
+[data-testid="stMain"]:has(.st-key-finder_header) {
+  overflow-x: hidden; /* a step sliding in mustn't flash a horizontal scrollbar */
+  overflow-anchor: none; /* compacting the header must not move the scroll position, or it would undo itself */
+}
+/* Sticky goes on the wrapper Streamlit puts around every keyed container: the container alone is exactly as tall
+   as its wrapper, so it would have nowhere to stick. */
+[data-testid="stLayoutWrapper"]:has(> .st-key-finder_header) { position: sticky; top: 3.75rem; z-index: 20; }
+.st-key-finder_header {
+  gap: 0;
+  padding-bottom: 0.75rem;
+  background: var(--track-page);
+  transition: padding 0.3s ease, box-shadow 0.3s ease;
+}
+body.finder-compact .st-key-finder_header { padding: 0.5rem 0; box-shadow: 0 14px 16px -18px #102a5659; }
+
+/* One numbered step at a time, in a bar of arrow-shaped segments with a › between them. Button types mark
+   each tab: primary is the current step, tertiary a finished one, secondary one still ahead. */
 .st-key-finder_steps {
-  padding: 0.35rem;
-  margin-bottom: 0.9rem;
+  padding: 0;
+  gap: 0;
+  margin-top: 0.75rem;
+  overflow: hidden;
   background: var(--track-surface);
   border: 1px solid var(--track-border);
   border-radius: 16px;
   box-shadow: 0 2px 8px #102a5604;
+  transition: margin 0.3s ease;
+}
+body.finder-compact .st-key-finder_steps { margin-top: 0.5rem; }
+.st-key-finder_steps [class*="st-key-finder_tab_"] { position: relative; }
+.st-key-finder_steps [class*="st-key-finder_tab_"]:not(.st-key-finder_tab_4)::after {
+  content: "›";
+  position: absolute;
+  top: 50%;
+  right: -0.7rem;
+  z-index: 2;
+  transform: translateY(-55%);
+  color: #8fa1bb;
+  font-size: 1.5rem;
+  line-height: 1;
+  pointer-events: none;
 }
 .st-key-finder_steps [data-testid="stButton"] button {
-  min-height: 48px;
-  padding: 0.5rem 0.85rem;
+  min-height: 56px;
+  padding: 0.5rem 1.5rem;
   border: 0;
-  border-radius: 12px;
+  border-radius: 0;
   background: transparent;
   color: var(--track-muted);
 }
 .st-key-finder_steps [data-testid="stIconMaterial"] { font-size: 1.35rem; }
+/* The current step is an arrow pointing on to the next one; after the first, it also takes the previous point.
+   Streamlit renders a new button when its type changes, so these animations play as a tab becomes current or done. */
 .st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-primary"] {
   background: var(--track-navy);
   color: white;
-  box-shadow: 0 2px 8px #102a5626;
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 0 100%, 22px 50%);
+  animation: finder-tab-in 0.3s ease-out backwards;
+}
+.st-key-finder_steps .st-key-finder_tab_1 [data-testid="stButton"] button[data-testid="stBaseButton-primary"] {
+  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 0 100%);
+}
+.st-key-finder_steps .st-key-finder_tab_4 [data-testid="stButton"] button[data-testid="stBaseButton-primary"] {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 22px 50%);
 }
 .st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-tertiary"] { color: var(--track-navy); }
-.st-key-finder_steps [data-testid="stBaseButton-tertiary"] [data-testid="stIconMaterial"] { color: var(--track-teal); }
+.st-key-finder_steps [data-testid="stBaseButton-tertiary"] [data-testid="stIconMaterial"] {
+  color: var(--track-teal);
+  animation: finder-tick 0.45s ease-out backwards;
+}
+@keyframes finder-tab-in { from { transform: scale(0.94); opacity: 0.55; } }
+@keyframes finder-tick { 0% { transform: scale(0.3); opacity: 0; } 65% { transform: scale(1.25); opacity: 1; } }
 .st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-secondary"]:hover:not(:disabled),
 .st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-tertiary"]:hover { background: var(--track-soft); color: var(--track-navy); }
 .st-key-finder_steps [data-testid="stButton"] button:disabled { opacity: 0.5; }
@@ -108,10 +156,26 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
 .goal-summary span { display: block; color: #356297; font-size: 0.625rem; font-weight: 700; letter-spacing: 0.12em; line-height: 1.6; }
 .goal-summary p { margin: 0.1rem 0 0; color: var(--track-navy); font-size: 0.9375rem; font-weight: 600; line-height: 1.45; overflow-wrap: anywhere; }
 .st-key-finder_nav { margin-top: 0.75rem; padding-top: 1rem; border-top: 1px solid var(--track-border); }
-/* Scrolled-to steps clear Streamlit's top toolbar. The script itself has nothing to show; don't let it add a gap. */
-.st-key-finder_steps,
-.st-key-readiness_questions { scroll-margin-top: 4.5rem; }
-[data-testid="stElementContainer"]:has(script[data-run]) { display: none; }
+/* A new readiness part opens just below the toolbar and the compact pinned header. */
+.st-key-readiness_questions { scroll-margin-top: 12.75rem; }
+/* The finder's scripts have nothing to show; don't let them add gaps. */
+[data-testid="stElementContainer"]:has(script[data-finder]) { display: none; }
+
+/* Each step slides in from the side the learner moved towards (the sign of --finder-shift). app.py flips the
+   key's _0/_1 ending on every move, which swaps the animation name and so restarts it. A readiness part only
+   gets a moving key on the run it changes, so opening the step doesn't slide it twice. */
+@keyframes finder-enter-0 { from { opacity: 0; transform: translateX(var(--finder-shift)); } }
+@keyframes finder-enter-1 { from { opacity: 0; transform: translateX(var(--finder-shift)); } }
+[class*="st-key-finder_body_"],
+[class*="st-key-readiness_part_"] { --finder-shift: 32px; animation: 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) backwards; }
+[class*="st-key-finder_body_back"],
+.st-key-readiness_part_back { --finder-shift: -32px; }
+.st-key-finder_body_forward_0,
+.st-key-finder_body_back_0,
+.st-key-readiness_part_forward,
+.st-key-readiness_part_back { animation-name: finder-enter-0; }
+.st-key-finder_body_forward_1,
+.st-key-finder_body_back_1 { animation-name: finder-enter-1; }
 
 /* Compact wordmark with a geometric training mark. */
 .brand-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
@@ -269,26 +333,100 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
 .section-heading h3 { color: var(--track-navy); font-size: 1.5rem; line-height: 1.25; padding: 0; margin: 0.3rem 0 0.55rem; }
 .section-heading p { color: var(--track-muted); font-size: 0.9375rem; line-height: 1.6; margin: 0; max-width: 660px; }
 
-.journey-card { border: 1px solid #dce7f7; border-radius: 18px; padding: 1.6rem; background: linear-gradient(150deg, #edf4ff, #f4f9ff 70%); }
+/* The banner above every Find my pathway step: the heading, then its four steps in a row, one per tab, each in
+   its own colour. */
+.journey-card {
+  display: grid;
+  gap: 1rem;
+  border: 1px solid #dce7f7;
+  border-radius: 18px;
+  padding: 1.2rem 1.5rem 1.15rem;
+  background: linear-gradient(150deg, #edf4ff, #f7faff 70%);
+  transition: padding 0.3s ease, row-gap 0.3s ease;
+}
 .journey-card .eyebrow { color: #356297; }
-.journey-card h3 { color: var(--track-navy); font-size: 1.4rem; line-height: 1.25; margin: 0.55rem 0 1.5rem; padding: 0; }
-.journey-step { display: flex; gap: 0.85rem; margin-bottom: 1.25rem; }
-.journey-step > span {
+.journey-card h3 { color: var(--track-navy); font-size: 1.5rem; font-weight: 750; letter-spacing: -0.035em; line-height: 1.15; margin: 0.3rem 0 0; padding: 0; }
+.journey-card h3 span { color: var(--track-blue); }
+.journey-lead { color: var(--track-muted); font-size: 0.9375rem; line-height: 1.55; margin: 0.45rem 0 0; max-width: 640px; }
+.journey-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; padding-top: 1rem; border-top: 1px solid #d5e2f6; }
+.journey-step { display: flex; flex-direction: column; align-items: flex-start; gap: 0.55rem; min-width: 0; }
+.journey-step:nth-child(1) { --step-color: #175cd3; --step-tint: #e0eaff; }
+.journey-step:nth-child(2) { --step-color: #6248b3; --step-tint: #ece6fb; }
+.journey-step:nth-child(3) { --step-color: #0b7d72; --step-tint: #dcf3ee; }
+.journey-step:nth-child(4) { --step-color: #a14f10; --step-tint: #fcebd9; }
+.journey-number {
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: 30px;
-  height: 30px;
-  color: var(--track-blue);
-  background: #e0eaff;
-  border: 1px solid #cbdcfa;
-  border-radius: 9px;
-  font-size: 0.75rem;
-  font-weight: 700;
+  width: 32px;
+  height: 26px;
+  border-radius: 8px;
+  color: var(--step-color);
+  background: var(--step-tint);
+  font-size: 0.6875rem;
+  font-weight: 750;
 }
-.journey-step strong { color: var(--track-navy); font-size: 0.875rem; line-height: 1.5; }
-.journey-step p { color: var(--track-muted); font-size: 0.8125rem; line-height: 1.65; margin: 0.2rem 0 0; }
-.journey-note { padding-top: 1rem; border-top: 1px solid #d5e2f6; color: var(--track-muted); font-size: 0.75rem; line-height: 1.7; }
+.journey-step-body { display: flex; align-items: flex-start; gap: 0.65rem; min-width: 0; }
+.journey-step-body > img { width: 28px; height: 28px; flex-shrink: 0; }
+.journey-step strong { color: var(--track-navy); font-size: 0.9375rem; line-height: 1.4; }
+.journey-step p { color: var(--track-muted); font-size: 0.8125rem; line-height: 1.5; margin: 0.15rem 0 0; }
+/* Pinned and scrolled: the banner shrinks to one line of the four steps' icons and titles. */
+.journey-head,
+.journey-number,
+.journey-step p { overflow: hidden; transition: max-height 0.3s ease, opacity 0.2s ease, margin 0.3s ease, padding 0.3s ease; }
+.journey-head { max-height: 10rem; }
+.journey-number { max-height: 2rem; }
+.journey-step p { max-height: 7rem; } /* room for any wrap above 1100px; the caps only exist to animate */
+.journey-steps,
+.journey-step { transition: padding 0.3s ease, border-color 0.3s ease, gap 0.3s ease; }
+body.finder-compact .journey-card { row-gap: 0; padding: 0.5rem 1rem; }
+body.finder-compact .journey-head,
+body.finder-compact .journey-number,
+body.finder-compact .journey-step p { max-height: 0; opacity: 0; margin: 0; padding: 0; }
+body.finder-compact .journey-steps { padding-top: 0; border-top-color: transparent; }
+body.finder-compact .journey-step { gap: 0; }
+body.finder-compact .journey-step-body { align-items: center; }
+body.finder-compact .journey-step-body > img { width: 22px; height: 22px; }
+
+/* Your goal: the step's heading, its two rows of ideas and the last goal, as one card. */
+.step-heading { display: flex; align-items: center; gap: 1.1rem; margin-bottom: 0.4rem; }
+.step-heading-icon { display: grid; place-items: center; flex-shrink: 0; width: 64px; height: 64px; border-radius: 16px; background: #e6efff; }
+.step-heading-icon img { width: 34px; height: 34px; }
+.step-heading .section-kicker { color: var(--track-muted); letter-spacing: 0.1em; }
+.step-heading h1 { color: var(--track-navy); font-size: 1.6rem; line-height: 1.2; margin: 0.15rem 0 0.3rem; padding: 0; }
+.step-heading p { color: var(--track-muted); font-size: 0.9375rem; line-height: 1.5; margin: 0; }
+.goal-label { margin: 0; color: #3e5272; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; }
+.goal-label-rule { display: flex; align-items: center; gap: 0.9rem; }
+.goal-label-rule::after { content: ""; flex: 1; height: 1px; background: var(--track-border); }
+.goal-samples-label { margin: 0; color: var(--track-muted); font-size: 0.875rem; }
+.st-key-goal_examples [data-testid="stButton"] button {
+  min-height: 48px;
+  padding: 0.55rem 1.35rem;
+  border: 1px solid #c8dafa;
+  border-radius: 999px;
+  background: #eaf2ff;
+  color: var(--track-blue);
+}
+.st-key-goal_examples [data-testid="stButton"] button p { font-size: 1rem; font-weight: 700; }
+.st-key-goal_examples [data-testid="stButton"] button:hover { background: #dce9ff; border-color: #9fbff3; color: #0f4fbf; }
+.st-key-goal_samples [data-testid="stButton"] button {
+  min-height: 40px;
+  padding: 0.3rem 0.95rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: #edf1f7;
+  color: #3e5272;
+}
+.st-key-goal_samples [data-testid="stButton"] button p { font-size: 0.875rem; font-weight: 500; }
+.st-key-goal_samples [data-testid="stIconMaterial"] { color: var(--track-blue); }
+.st-key-goal_samples [data-testid="stButton"] button:hover { background: #e3e9f3; border-color: #cfd9e8; }
+.st-key-goal_last { padding: 0.85rem 1rem; background: #f3f7fd; border: 1px solid #dfe8f5; border-radius: 14px; }
+.goal-last { display: flex; align-items: center; gap: 0.9rem; min-width: 0; }
+.goal-last-icon { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: #e3ecfa; }
+.goal-last-icon img { width: 24px; height: 24px; }
+.goal-last strong { color: var(--track-navy); font-size: 0.875rem; font-weight: 650; }
+.goal-last p { margin: 0.1rem 0 0; color: #3e5272; font-size: 0.9375rem; line-height: 1.5; overflow-wrap: anywhere; }
+.st-key-goal_last [data-testid="stButton"] button { background: var(--track-surface); }
 
 .empty-state { margin-top: 1rem; border: 1px dashed #c8d6e9; border-radius: 16px; padding: 2rem 1.5rem; text-align: center; background: #f9fbfe; }
 .empty-icon { display: grid; place-items: center; width: 46px; height: 46px; margin: 0 auto 0.9rem; color: var(--track-blue); background: #eaf1fd; border-radius: 13px; }
@@ -323,6 +461,10 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
   .hero h1 { font-size: 2.55rem; }
   .feature-strip { gap: 0.9rem; }
   .feature-item { gap: 0.6rem; }
+  /* Four columns get too narrow for the descriptions; the titles carry the journey. */
+  .journey-step p { display: none; }
+  .journey-card h3 { font-size: 1.3rem; }
+  .st-key-finder_steps [data-testid="stButton"] button { padding: 0.5rem 1rem; }
 }
 @media (max-width: 800px) {
   .hero { padding: 1.8rem; min-height: 250px; }
@@ -338,7 +480,7 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
   .feature-copy strong { font-size: 0.8125rem; }
   .feature-copy p,
   .feature-copy span { font-size: 0.8125rem; }
-  .journey-card { padding: 1.4rem; }
+  .journey-card { padding: 1rem 1.1rem 0.8rem; }
 }
 @media (max-width: 520px) {
   .block-container { padding: 3.8rem 1rem 1.5rem; }
@@ -366,16 +508,48 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
   [data-testid="stTabs"] [role="tablist"] { gap: 1.2rem; }
   [data-testid="stTabs"] [role="tab"] { font-size: 0.875rem; }
   /* Two step tabs per row on phones. */
+  /* Two step tabs per row on phones, so plain rounded tabs: arrows and chevrons would point at nothing. */
+  .st-key-finder_steps { padding: 0.35rem; gap: 0.35rem; }
   .st-key-finder_steps [class*="st-key-finder_tab_"] { flex: 1 1 calc(50% - 0.5rem); min-width: 0; }
-  .st-key-finder_steps [data-testid="stButton"] button { min-height: 44px; padding: 0.4rem 0.5rem; font-size: 0.8125rem; }
+  .st-key-finder_steps [class*="st-key-finder_tab_"]::after { display: none; }
+  .st-key-finder_steps [data-testid="stButton"] button { min-height: 44px; padding: 0.4rem 0.5rem; border-radius: 12px; font-size: 0.8125rem; }
+  .st-key-finder_steps [class*="st-key-finder_tab_"] [data-testid="stButton"] button[data-testid="stBaseButton-primary"] { clip-path: none; }
   .st-key-finder_panel,
   .st-key-training_filters,
   .st-key-library_filters,
   .st-key-progress_summary,
   .st-key-service_unavailable { padding: 1.1rem; border-radius: 14px; }
   .empty-state { padding: 1.6rem 1rem; }
-  .journey-step p,
-  .journey-note { font-size: 0.875rem; }
+  /* Phones keep the journey to its headline and four numbered titles, two by two. */
+  .journey-card { gap: 0.6rem; border-radius: 14px; }
+  .journey-card h3 { font-size: 1.15rem; }
+  .journey-lead,
+  .journey-step-body > img,
+  .journey-step p { display: none; }
+  .journey-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem 0.75rem; padding-top: 0.6rem; }
+  .journey-step { flex-direction: row; align-items: center; gap: 0.5rem; }
+  .journey-number { width: 28px; }
+  .journey-step strong { display: block; font-size: 0.75rem; line-height: 1.35; }
+  /* One swipeable row of sample goals instead of six stacked rows; the cut-off last pill shows there's more. */
+  .st-key-goal_samples { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .st-key-goal_samples::-webkit-scrollbar { display: none; }
+  .st-key-goal_samples > * { flex-shrink: 0; }
+  .step-heading { align-items: flex-start; gap: 0.8rem; }
+  .step-heading-icon { width: 48px; height: 48px; border-radius: 12px; }
+  .step-heading-icon img { width: 26px; height: 26px; }
+  .step-heading h1 { font-size: 1.3rem; }
+  .st-key-goal_examples [data-testid="stButton"] button { min-height: 44px; padding: 0.45rem 1rem; }
+  .st-key-goal_examples [data-testid="stButton"] button p { font-size: 0.9375rem; }
+  /* Pinned and scrolled on phones: the banner slides away, and the tabs become one row of numbers with only the
+     current step named. */
+  .journey-card { max-height: 16rem; overflow: hidden; transition: max-height 0.3s ease, opacity 0.2s ease, padding 0.3s ease, border-width 0.3s ease; }
+  body.finder-compact .journey-card { max-height: 0; opacity: 0; padding-block: 0; border-width: 0; }
+  body.finder-compact .st-key-finder_steps { margin-top: 0; flex-wrap: nowrap; }
+  /* Streamlit sizes stretch-width buttons with width: 100%, which would give every tab a whole row. */
+  body.finder-compact .st-key-finder_steps [class*="st-key-finder_tab_"] { flex: 0 0 auto; width: auto; min-width: 0; }
+  body.finder-compact .st-key-finder_steps [class*="st-key-finder_tab_"]:has([data-testid="stBaseButton-primary"]) { flex: 1 1 0; }
+  body.finder-compact .st-key-finder_steps button:not([data-testid="stBaseButton-primary"]) [data-testid="stMarkdownContainer"] { display: none; }
+  .st-key-readiness_questions { scroll-margin-top: 8.75rem; }
   .section-heading h1,
   .section-heading h2,
   .section-heading h3 { font-size: 1.35rem; }
@@ -384,4 +558,8 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero *, .brand *, .feature-strip * { animation: none !important; transition: none !important; }
+  .st-key-finder_header,
+  .st-key-finder_header *,
+  [class*="st-key-finder_body_"],
+  [class*="st-key-readiness_part_"] { animation: none !important; transition: none !important; }
 }

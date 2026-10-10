@@ -33,6 +33,13 @@ def icon(name: str, color: str = "#175CD3") -> str:
         "growth": '<path d="M4 19V5m0 14h16M7 14l5-5 4 3 5-7m-5 0h5v5"/>',
         "search": '<circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/>',
         "cloud": '<path d="M7 18H6a4 4 0 0 1-1-8 7 7 0 0 1 13-2 5 5 0 0 1 0 10h-1M12 13v4m0 3v1"/>',
+        "target": '<circle cx="11" cy="13" r="8"/><circle cx="11" cy="13" r="4"/><path d="m11 13 9-9m-4 0h4v4"/>',
+        "person": '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/>',
+        "compass": '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2Z"/>',
+        "bars": '<rect x="4" y="13" width="4" height="7" rx="1"/><rect x="10" y="8" width="4" height="12" rx="1"/>'
+                '<rect x="16" y="3" width="4" height="17" rx="1"/>',
+        "document": '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z"/>'
+                    '<path d="M14 3v5h5M9 13h6M9 17h6"/>',
     }
     return ('<svg viewBox="0 0 24 24" width="24" height="24" fill="none" '
             f'stroke="{color}" stroke-width="1.7" stroke-linecap="round" '
@@ -103,13 +110,38 @@ def empty_state(title: str, description: str, symbol: str = "route") -> None:
             f'<h3>{escape(title)}</h3><p>{escape(description)}</p></div>')
 
 
-def journey(count: int) -> None:
-    html_with_vectors(f'''<aside class="journey-card"><div class="eyebrow">YOUR JOURNEY, SIMPLIFIED</div>
-    <h3>A little direction.<br>A world of possibilities.</h3>
-    <div class="journey-step"><span>01</span><div><strong>Tell us your goal</strong><p>Start with what you want to do, or what you already know.</p></div></div>
-    <div class="journey-step"><span>02</span><div><strong>Explore your pathway</strong><p>Discover qualifications and a suggested next step.</p></div></div>
-    <div class="journey-step"><span>03</span><div><strong>Build your confidence</strong><p>Check your readiness and find skills to develop.</p></div></div>
-    <div class="journey-note">{count} qualifications to explore · At your own pace</div></aside>''')
+# The banner's four steps, one per Find my pathway tab, each with its own colour (styles.css tints the number).
+JOURNEY_STEPS = [
+    ("target", "#175CD3", "Tell us your goal", "Start with what you want to do, or what you already know."),
+    ("person", "#7054BF", "A little thing about you", "Share your experience so we can find the right fit."),
+    ("bars", "#0D9488", "Build your confidence", "Check your readiness and find skills to develop."),
+    ("compass", "#B65B14", "Explore a pathway", "See whether training or an NC assessment comes next."),
+]
+
+
+def journey() -> None:
+    """A banner above every Find my pathway step: the heading, then its four steps in a row."""
+    steps = "".join(
+        f'<div class="journey-step"><span class="journey-number">{number:02d}</span><div class="journey-step-body">'
+        f'{icon(symbol, color)}<div><strong>{title}</strong><p>{text}</p></div></div></div>'
+        for number, (symbol, color, title, text) in enumerate(JOURNEY_STEPS, start=1))
+    html_with_vectors('<aside class="journey-card"><div class="journey-head"><div class="eyebrow">YOUR JOURNEY, SIMPLIFIED</div>'
+                      '<h3>A little direction.<br><span>A world of possibilities.</span></h3>'
+                      '<p class="journey-lead">Discover TESDA qualifications, find the right training, and take the next '
+                      'step toward the career you want.</p></div>'
+                      f'<div class="journey-steps">{steps}</div></aside>')
+
+
+def step_heading(kicker: str, title: str, description: str, symbol: str) -> None:
+    """A step's opening: its icon in a tile beside the kicker, title and description."""
+    html_with_vectors(f'<div class="step-heading"><span class="step-heading-icon">{icon(symbol)}</span><div>'
+                      f'<div class="section-kicker">{escape(kicker)}</div><h1>{escape(title)}</h1>'
+                      f'<p>{escape(description)}</p></div></div>')
+
+
+def last_goal(query: str) -> None:
+    html_with_vectors(f'<div class="goal-last"><span class="goal-last-icon">{icon("document")}</span><div>'
+                      f'<strong>Your last submitted goal</strong><p>{escape(query)}</p></div></div>')
 
 
 def footer() -> None:

@@ -45,17 +45,19 @@ def open_step(app, number):
     rerun(app)
 
 
-def shows_pathway(app, label):
-    return any(title.value == label for title in app.subheader)
+def asks_because(app, reason):
+    """The readiness check opens with why we ask: the route the learner's experience suggests."""
+    return any(reason in md.value for md in app.markdown)
 
 
-def rate_welding_skills(app):
-    """The test catalog's SMAW NC II has one Basic competency, then five Core ones: three confident in all."""
-    open_step(app, 4)
+def rate_welding_skills(app, confident=3):
+    """The test catalog's SMAW NC II has one Basic competency, then five Core ones. The first `confident` are
+    rated confident and the rest "some experience": three make 75%, all six make 100%."""
+    open_step(app, 3)
     app.radio[0].set_value("I can do this confidently")
     click(app, "Next: Core skills")
-    for index, radio in enumerate(app.radio):
-        radio.set_value("I can do this confidently" if index < 2 else "I have some experience")
+    for index, radio in enumerate(app.radio, start=1):
+        radio.set_value("I can do this confidently" if index < confident else "I have some experience")
     click(app, "Analyze My Skills")
 
 
@@ -96,9 +98,7 @@ def test_pathway_finder_flow(ui):
     app.selectbox(key="follow_certification").select("No").run()
     assert not app.exception
     open_step(app, 3)
-    assert shows_pathway(app, "Assessment Readiness Check")
-
-    open_step(app, 4)
+    assert asks_because(app, "may cover several competencies"), "experience without a certificate"
     assert len(app.radio) == 1, "Basic skills come first, on their own"
     app.radio[0].set_value("I can do this confidently")
     click(app, "Next: Core skills")
@@ -110,7 +110,9 @@ def test_pathway_finder_flow(ui):
         radio.set_value("I can do this confidently" if index < 2 else "I have some experience")
     click(app, "Analyze My Skills")
     assert readiness(app) == ["75%"], "the Basic answer from the first part counts too"
-    assert any(title.value == "Moderate Readiness" for title in app.subheader)
+    assert any(md.value == "**Moderate Readiness**" for md in app.markdown)
+    assert any(title.value == "Take focused training, then the NC assessment" for title in app.subheader)
+    assert any("Close your skill gaps" in md.value for md in app.markdown), "the moderate route's pathway"
 
     app.run()
     assert readiness(app) == ["75%"]
@@ -119,13 +121,14 @@ def test_pathway_finder_flow(ui):
     open_step(app, 4)
     assert readiness(app) == ["75%"]
     open_step(app, 3)
-    assert shows_pathway(app, "Skill Gap Check")
+    assert asks_because(app, "makes a competency check useful"), "a certificate holder"
 
     open_step(app, 2)
     app.selectbox(key="qualification_selected").select("CSS-NC-II").run()
     open_step(app, 4)
     assert not readiness(app)
-    assert all(radio.value is None for radio in app.radio)
+    open_step(app, 3)
+    assert app.radio and all(radio.value is None for radio in app.radio)
     open_step(app, 2)
     app.selectbox(key="qualification_selected").select("SMAW-NC-II").run()
     open_step(app, 4)
@@ -148,7 +151,8 @@ def test_pathway_finder_flow(ui):
     assert app.selectbox(key="follow_certification").value == "Choose an answer"
     open_step(app, 4)
     assert not readiness(app)
-    assert all(radio.value is None for radio in app.radio)
+    open_step(app, 3)
+    assert app.radio and all(radio.value is None for radio in app.radio)
 
 
 def create_account(app, email="juan@example.com", password="correct horse battery"):
@@ -222,8 +226,10 @@ def recommend_welding_readiness_path(app):
 def test_learner_follows_the_curated_pathway_and_ticks_off_steps(ui):
     app = ui
     recommend_welding_readiness_path(app)
-    open_step(app, 3)
-    assert any("Turn your experience into a certificate" in md.value for md in app.markdown)
+    rate_welding_skills(app, confident=6)
+    assert readiness(app) == ["100%"]
+    assert any("Turn your experience into a certificate" in md.value for md in app.markdown), \
+        "high readiness: the pathway straight to assessment"
     assert not any(button.label == "Follow this pathway" for button in app.button), "signed-out learners can't follow"
 
     create_account(app)

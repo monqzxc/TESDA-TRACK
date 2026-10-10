@@ -48,6 +48,13 @@ def test_site_lists_come_from_the_public_site_endpoints(call, path):
     assert (requests[0].method, requests[0].url.path) == ("GET", path)
 
 
+def test_curated_pathways_are_looked_up_by_qualification_and_route():
+    requests = []
+    client_seeing(requests, body=[]).pathways("SMAW-NC-II", "ASSESSMENT_READINESS")
+    assert (requests[0].method, requests[0].url.path) == ("GET", "/api/v1/pathways")
+    assert dict(requests[0].url.params) == {"qualification_code": "SMAW-NC-II", "route": "ASSESSMENT_READINESS"}
+
+
 def test_clients_for_different_services_report_different_base_urls():
     assert ApiClient("http://one.test").base_url != ApiClient("http://two.test").base_url
 

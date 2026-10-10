@@ -7,16 +7,28 @@ from pathlib import Path
 import streamlit as st
 
 from api_client import ApiClient, ApiError, ApiUnavailableError
+from centers import ASSESSMENT, TRAINING
 from directions import DEFAULT_ROUTING_URL, RouteClient
-from presentation import FAVICON, brand, empty_state, footer, journey, section_header
+from presentation import FAVICON, brand, empty_state, footer, journey, last_goal, section_header, step_heading
 from skills_bridge_view import show_skills_bridge
 from training_view import show_training as show_center_finder
 
 
+# Your goal's ideas: each button puts its goal in the box. Examples are the big pills, samples the small ones.
 EXAMPLES = {
     "Become a welder": "I want to be a welder.",
+    "Work in a hotel": "I want to work in a hotel but I don't know which qualification is suitable for me.",
+    "Improve my digital skills": "I want to improve my digital skills and work with computers.",
+    "Work on construction projects": "I want to work on construction projects.",
+}
+SAMPLE_GOALS = {
+    "I want to become a chef": "I want to become a chef.",
+    "I want to work abroad": "I want to work abroad.",
+    "I want to learn caregiving": "I want to learn caregiving.",
+    "I want to be a barista": "I want to be a barista.",
+    "I want to improve my computer skills": "I want to improve my computer skills.",
+    # The one idea that shows the assessment route: experience without a certificate.
     "Get my skills certified": "I've worked as a welder for 5 years but I don't have an NC.",
-    "Explore hotel careers": "I want to work in a hotel but I don't know which qualification is suitable for me.",
 }
 PATH_LABELS = {
     "ADDITIONAL_QUESTIONS": "Let's fill in a few details",
@@ -27,8 +39,15 @@ PATH_LABELS = {
 ANSWER_OPTIONS = {"I can do this confidently": "confident", "I have some experience": "some_experience",
                   "I am not familiar with this": "not_familiar"}
 RESULT_LABELS = {"competent": "Competent", "not_yet_competent": "Not yet competent"}
-# Find my pathway shows one of these at a time; the step bar numbers them.
-FINDER_STEPS = ["Your goal", "Your matches", "Your pathway", "Readiness check"]
+# Find my pathway shows one of these at a time; the step bar numbers them. The readiness check comes before the
+# recommendation because its result decides between training and an NC assessment.
+FINDER_STEPS = ["Your goal", "Your matches", "Readiness check", "Your recommendation"]
+# The first word of a readiness level picks the bottom line: (headline, curated pathway route, centers, button).
+VERDICTS = {
+    "high": ("Apply for the NC assessment", "ASSESSMENT_READINESS", ASSESSMENT, "See assessment schedules"),
+    "moderate": ("Take focused training, then the NC assessment", "SKILL_GAP_CHECK", TRAINING, "Find training near you"),
+    "low": ("Take training first", "TRAINING_AND_ASSESSMENT", TRAINING, "Find training near you"),
+}
 EXPERIENCE_OPTIONS = {"No experience": 0, "Less than 1 year": 0.5, "1–3 years": 2, "More than 3 years": 4}
 CERTIFICATION_OPTIONS = {"Yes": True, "No": False}
 CATEGORY_HELP = {
@@ -218,17 +237,46 @@ def competency_parts(competencies: list[dict]) -> list[tuple[str, list[dict]]]:
 
 
 def set_readiness_part(code: str, part: int) -> None:
-    st.session_state.setdefault("readiness_part", {})[code] = part
+    parts = st.session_state.setdefault("readiness_part", {})
+    # Read once by the next run, so only a change of part slides the questions in, not opening the step.
+    st.session_state["readiness_moved"] = "forward" if part >= parts.get(code, 0) else "back"
+    parts[code] = part
     st.session_state["finder_scroll_to"] = "readiness_questions"
 
 
-def scroll_to(container_key: str) -> None:
-    """Bring a keyed container to the top of the screen. Streamlit keeps the scroll position when content changes,
-    so a step opened from the buttons at the bottom of the last one would otherwise open halfway down."""
+def scroll_to(target: str) -> None:
+    """Scroll to the top of the page, or bring a keyed container just below the sticky header. Streamlit keeps the
+    scroll position when content changes, so a step opened from the buttons at the bottom of the last one would
+    otherwise open halfway down."""
+    if target == "top":
+        action = 'document.querySelector(\'[data-testid="stMain"]\')?.scrollTo({top: 0})'
+    else:
+        action = f'document.querySelector(".st-key-{target}")?.scrollIntoView({{block: "start"}})'
     # A new attribute each time makes Streamlit insert, and so run, the script again.
     run = st.session_state["finder_scroll_runs"] = st.session_state.get("finder_scroll_runs", 0) + 1
-    st.html(f'<script data-run="{run}">document.querySelector(".st-key-{container_key}")'
-            '?.scrollIntoView({block: "start"});</script>', unsafe_allow_javascript=True)
+    st.html(f'<script data-finder data-run="{run}" data-scroll="{target}">{action};</script>',
+            unsafe_allow_javascript=True)
+
+
+# Compacts the sticky header once the learner scrolls down, and restores it at the top. Streamlit scrolls the
+# stMain section, not the window. Shrinking the header shortens the page, so it only compacts with room to spare
+# and only expands again at the very top; otherwise each change could undo the other.
+COMPACT_ON_SCROLL = """(() => {
+  const main = document.querySelector('[data-testid="stMain"]');
+  if (!main || window.finderCompactScroller === main) return;
+  window.finderCompactScroller = main;
+  main.addEventListener('scroll', () => {
+    const compact = document.body.classList.contains('finder-compact');
+    const room = main.scrollHeight - main.clientHeight;
+    if (!document.querySelector('.st-key-finder_header')) document.body.classList.remove('finder-compact');
+    else if (!compact && main.scrollTop > 60 && room > 280) document.body.classList.add('finder-compact');
+    else if (compact && main.scrollTop < 8) document.body.classList.remove('finder-compact');
+  }, {passive: true});
+})();"""
+
+
+def compact_on_scroll() -> None:
+    st.html(f"<script data-finder>{COMPACT_ON_SCROLL}</script>", unsafe_allow_javascript=True)
 
 
 def show_readiness(qualification: dict) -> None:
@@ -246,7 +294,10 @@ def show_readiness(qualification: dict) -> None:
     part = min(st.session_state.get("readiness_part", {}).get(code, 0), len(parts) - 1)
     category, competencies = parts[part]
     first_number = 1 + sum(len(items) for _, items in parts[:part])
-    with st.container(key="readiness_questions"), st.form(f"skills_{code}"):
+    moved = st.session_state.pop("readiness_moved", None)
+    with (st.container(key="readiness_questions"),
+          st.container(key=f"readiness_part_{moved}" if moved else "readiness_part"),
+          st.form(f"skills_{code}")):
         st.markdown(f"**Part {part + 1} of {len(parts)} · {category} skills**" if len(parts) > 1 else f"**{category} skills**")
         st.caption(CATEGORY_HELP.get(category, "What can you already do? Rate each sample competency."))
         for number, competency in enumerate(competencies, start=first_number):
@@ -283,15 +334,63 @@ def show_readiness(qualification: dict) -> None:
                 raise
             results.pop(code, None)
             st.warning(error.message)
-    result = results.get(code)
-    if result:
-        with st.container(border=True, key=f"card_readiness_{code}"):
-            score, guidance = st.columns([1, 3])
-            score.metric("Your readiness", f"{result['score']:g}%")
-            guidance.subheader(result["level"])
-            guidance.write(result["recommendation"])
-            st.progress(result["score"] / 100)
-            st.caption("Based on your last submitted answers for this qualification. After editing answers, select Analyze My Skills to update.")
+        else:
+            # The result decides the recommendation, so it opens straight away.
+            go_to_step(4)
+            st.rerun()
+
+
+def verdict_for(result: dict) -> tuple[str, str, str, str]:
+    """The bottom line for a readiness result: (headline, curated pathway route, centers to visit, button)."""
+    return VERDICTS.get(result["level"].split()[0].lower(), VERDICTS["moderate"])
+
+
+def open_training(code: str, kind: str) -> None:
+    """Training & assessment, already showing the centers that fit the recommendation, for this qualification."""
+    st.session_state["training_kinds"] = [kind]
+    st.session_state["training_qualifications"] = [code]
+    navigate("Training & assessment")
+
+
+def show_why_we_ask(context: dict) -> None:
+    """Opens the readiness check: the route the learner's experience suggests, and so why their skills matter."""
+    profile, code = context["profile"], context["qualification"]["code"]
+    pathway = remembered("pathway", {"profile": profile, "code": code}, lambda: api().pathway(profile, code))
+    with st.container(border=True, key="card_why_we_ask"):
+        st.caption("WHY WE ASK")
+        st.write(pathway["reason"])
+        st.caption(pathway["next_step"] + " Your experience should be relevant to the selected qualification.")
+
+
+def show_recommendation(context: dict) -> None:
+    qualification = context["qualification"]
+    code = qualification["code"]
+    result = st.session_state.get("readiness_results", {}).get(code)
+    if not result:
+        with st.container(border=True, key="card_recommendation_pending"):
+            st.subheader("Finish your readiness check to see your recommendation")
+            st.caption(f"Whether training or an NC assessment comes next for {qualification['name']} depends on "
+                       "the skills you rate.")
+            st.button("Go to the readiness check", key="finder_to_readiness", type="primary",
+                      icon=":material/arrow_back:", on_click=go_to_step, args=(3,))
+        return
+    headline, route, kind, action = verdict_for(result)
+    with st.container(border=True, key=f"card_readiness_{code}"):
+        st.caption("RECOMMENDED FOR YOU")
+        st.subheader(headline)
+        st.caption(f"For {qualification['name']}")
+        score, guidance = st.columns([1, 3])
+        score.metric("Your readiness", f"{result['score']:g}%")
+        guidance.markdown(f"**{result['level']}**")
+        guidance.write(result["recommendation"])
+        st.progress(result["score"] / 100)
+        # The action sits with the verdict; the skill lists can run to dozens, so they fold away, open when there
+        # are gaps to work on.
+        st.button(action, key="finder_next", type="primary", icon=":material/arrow_forward:", icon_position="right",
+                  on_click=open_training, args=(code, kind))
+        with st.expander(f"Your strengths ({len(result['strengths'])}) and skills to improve "
+                         f"({len(result['skill_gaps'])})", expanded=bool(result["skill_gaps"]),
+                         icon=":material/checklist:"):
             strengths, gaps = st.columns(2)
             strengths.markdown("**Strengths**")
             for name in result["strengths"]:
@@ -303,7 +402,19 @@ def show_readiness(qualification: dict) -> None:
                 gaps.write(f"• {name}")
             if not result["skill_gaps"]:
                 gaps.caption("No self-reported gaps.")
-        st.caption("This self-reported score is NOT an official competency assessment result. Formal assessment is subject to official eligibility and requirements.")
+        st.caption("Based on your last submitted answers for this qualification. To update it, change your answers "
+                   "in the readiness check and select Analyze My Skills.")
+    st.caption("This self-reported score is NOT an official competency assessment result. Formal assessment is "
+               "subject to official eligibility and requirements.")
+    # The curated pathway for the verdict's route, so its steps agree with the recommendation above.
+    curated = remembered("curated_pathway", {"code": code, "route": route}, lambda: api().pathways(code, route))
+    if curated:
+        with st.container(border=True, key="card_recommended_path"):
+            st.caption("YOUR PATHWAY")
+            show_curated_pathway(curated[0])
+    if (st.session_state.get("auth") or {}).get("role") == "admin":
+        with st.expander("Recommendation diagnostics", icon=":material/code:"):
+            st.json({"profile": context["profile"], "readiness": result, "route": route})
 
 
 def save_session_progress(profile: dict, qualification_code: str) -> None:
@@ -336,9 +447,19 @@ def show_curated_pathway(curated: dict) -> None:
             st.info("You're already following this pathway. Find it under My progress.")
 
 
+def current_step() -> int:
+    """The step on screen: Your goal until there is a goal."""
+    return st.session_state.get("finder_step", 1) if "analysis" in st.session_state else 1
+
+
 def go_to_step(step: int) -> None:
+    # The direction picks which way the new step slides in; the count gives every move a new container key,
+    # which restarts the animation even when two moves in a row go the same way.
+    count = st.session_state.get("finder_motion", ("forward", 0))[1] + 1
+    st.session_state["finder_motion"] = ("forward" if step >= current_step() else "back", count)
     st.session_state["finder_step"] = step
-    st.session_state["finder_scroll_to"] = "finder_steps"
+    # The page top, so the new step opens with the full banner and tabs.
+    st.session_state["finder_scroll_to"] = "top"
 
 
 def finder_context(qualifications: list[dict]) -> dict:
@@ -418,24 +539,6 @@ def show_matches(context: dict) -> None:
     st.caption("Sample career options: " + ", ".join(context["qualification"]["possible_jobs"]))
 
 
-def show_pathway(context: dict) -> None:
-    profile, qualification = context["profile"], context["qualification"]
-    code = qualification["code"]
-    pathway = remembered("pathway", {"profile": profile, "code": code}, lambda: api().pathway(profile, code))
-    with st.container(border=True, key="card_recommended_path"):
-        st.caption("YOUR RECOMMENDED PATH")
-        st.subheader(PATH_LABELS[pathway["recommendation"]])
-        st.caption(f"For {qualification['name']}")
-        st.write(pathway["reason"])
-        st.info(pathway["next_step"])
-        if pathway.get("pathway"):
-            show_curated_pathway(pathway["pathway"])
-        st.caption("Your experience should be relevant to the selected qualification. Update your goal when exploring a different field.")
-    if (st.session_state.get("auth") or {}).get("role") == "admin":
-        with st.expander("Recommendation diagnostics", icon=":material/code:"):
-            st.json({"profile": profile, "pathway": pathway})
-
-
 def show_step_bar(current: int, unlocked: bool) -> None:
     """Numbered tabs, one per step: finished ones are ticked, later ones open once there's a goal."""
     with st.container(horizontal=True, gap="small", key="finder_steps"):
@@ -452,14 +555,12 @@ def show_step_nav(step: int, checked_readiness: bool = False) -> None:
     with st.container(horizontal=True, horizontal_alignment="distribute" if step > 1 else "right", key="finder_nav"):
         if step > 1:
             st.button("Back", key="finder_back", icon=":material/arrow_back:", on_click=go_to_step, args=(step - 1,))
+        # The recommendation's own button is its next step. On the readiness check the questions' buttons lead
+        # until there's a result, so moving on stays quieter.
         if step < len(FINDER_STEPS):
-            st.button(f"Next: {FINDER_STEPS[step]}", key="finder_next", type="primary", icon=":material/arrow_forward:",
-                      icon_position="right", on_click=go_to_step, args=(step + 1,))
-        else:
-            # Until the check has results, its own buttons are the next action; leaving for training stays quieter.
-            st.button("Next: Find training near you", key="finder_next", type="primary" if checked_readiness else "secondary",
-                      icon=":material/arrow_forward:", icon_position="right",
-                      on_click=navigate, args=("Training & assessment",))
+            quiet = step == 3 and not checked_readiness
+            st.button(f"Next: {FINDER_STEPS[step]}", key="finder_next", type="secondary" if quiet else "primary",
+                      icon=":material/arrow_forward:", icon_position="right", on_click=go_to_step, args=(step + 1,))
 
 
 def show_goal_summary() -> None:
@@ -477,42 +578,55 @@ def show_goal_summary() -> None:
 
 def show_finder(qualifications: list[dict]) -> None:
     has_goal = "analysis" in st.session_state
-    step = st.session_state.get("finder_step", 1) if has_goal else 1
+    step = current_step()
     scroll_target = st.session_state.pop("finder_scroll_to", None)
-    show_step_bar(step, has_goal)
-    if step == 1:
-        show_goal(qualifications)
-        if has_goal:
-            show_step_nav(step)
-    else:
-        show_goal_summary()
-        context = finder_context(qualifications)
-        if step == 2:
-            show_matches(context)
-        elif step == 3:
-            show_pathway(context)
+    # Sticky in styles.css: the journey banner and the step tabs stay in view while the step scrolls under them.
+    with st.container(key="finder_header"):
+        journey()
+        show_step_bar(step, has_goal)
+        compact_on_scroll()
+    direction, count = st.session_state.get("finder_motion", ("forward", 0))
+    with st.container(key=f"finder_body_{direction}_{count % 2}"):
+        if step == 1:
+            show_goal()
+            if has_goal:
+                show_step_nav(step)
         else:
-            show_readiness(context["qualification"])
-        show_step_nav(step, context["qualification"]["code"] in st.session_state.get("readiness_results", {}))
+            show_goal_summary()
+            context = finder_context(qualifications)
+            if step == 2:
+                show_matches(context)
+            elif step == 3:
+                show_why_we_ask(context)
+                show_readiness(context["qualification"])
+            else:
+                show_recommendation(context)
+            show_step_nav(step, context["qualification"]["code"] in st.session_state.get("readiness_results", {}))
     if scroll_target:
         scroll_to(scroll_target)
 
 
-def show_goal(qualifications: list[dict]) -> None:
-    goal, guide = st.columns([1.6, 1], gap="large")
-    with goal, st.container(key="finder_panel"):
-        section_header("", "What would you like to achieve?",
-                       "Tell us about a career, a skill, or experience you'd like to turn into a qualification.")
-        st.html('<p class="example-label">NEED AN IDEA? START WITH AN EXAMPLE</p>')
+def show_goal() -> None:
+    with st.container(key="finder_panel"):
+        step_heading(f"STEP 1 OF {len(FINDER_STEPS)}", "What would you like to achieve?",
+                     "Tell us about a career, a skill, or an experience you'd like to turn into a qualification.", "target")
+        st.html('<p class="goal-label">NEED AN IDEA? START WITH AN EXAMPLE</p>')
         with st.container(horizontal=True, gap="small", key="goal_examples"):
             for label, example in EXAMPLES.items():
                 st.button(label, on_click=use_example, args=(example,), width="content")
-        with st.form("career_query", border=False):
-            query = st.text_area(
-                "What would you like to learn or achieve?", height=155, key="goal_query",
-                placeholder="For example: I've worked as a welder for 5 years, but I don't have a certification.",
-            )
-            submitted = st.form_submit_button("Get Recommendation", type="primary", width="stretch", icon=":material/arrow_forward:")
+        st.html('<p class="goal-label goal-label-rule">OR TELL US IN YOUR OWN WORDS</p>')
+        # No form: the sample goals sit between the box and its button, and a form's Ctrl+Enter would press the
+        # first of them, replacing what the learner typed.
+        query = st.text_area(
+            "What would you like to learn or achieve?", height=110, key="goal_query", max_chars=500,
+            label_visibility="collapsed",
+            placeholder="Example: I want to work in a hotel but I don't know which qualification is suitable for me.",
+        )
+        st.html('<p class="goal-samples-label">You can also try these sample goals:</p>')
+        with st.container(horizontal=True, gap="small", key="goal_samples"):
+            for label, goal in SAMPLE_GOALS.items():
+                st.button(label, on_click=use_example, args=(goal,), width="content", icon=":material/search:")
+        submitted = st.button("Get Recommendation", type="primary", width="stretch", icon=":material/arrow_forward:")
         if submitted:
             if not query.strip():
                 st.warning("Describe your career goal or skills to get started.")
@@ -528,10 +642,10 @@ def show_goal(qualifications: list[dict]) -> None:
                 for key in list(st.session_state):
                     if key.startswith(("follow_", "competency_", "qualification_")) or key in ("readiness_results", "readiness_part"):
                         del st.session_state[key]
+                go_to_step(2)  # before the goal is stored, so it moves on from the step on screen
                 st.session_state["analysis"] = profile
                 st.session_state["original_query"] = query.strip()
                 st.session_state["recommendation_session"] = saved
-                go_to_step(2)
                 st.rerun()
         if auth_token():
             st.caption("Your results are saved to My progress.")
@@ -539,10 +653,11 @@ def show_goal(qualifications: list[dict]) -> None:
             st.button("Sign in to save your progress", key="open_account_finder", type="tertiary",
                       icon=":material/bookmark_border:", on_click=open_account)
         if "analysis" in st.session_state:
-            st.caption("Showing results for your last submitted goal:")
-            st.write(st.session_state["original_query"])
-    with guide:
-        journey(len(qualifications))
+            last = st.session_state["original_query"]
+            with st.container(horizontal=True, vertical_alignment="center", key="goal_last"):
+                last_goal(last)
+                st.button("Use again", key="finder_use_again", icon=":material/refresh:", on_click=use_example,
+                          args=(last,))
 
 
 def show_goals(token: str, names: dict[str, str]) -> None:
