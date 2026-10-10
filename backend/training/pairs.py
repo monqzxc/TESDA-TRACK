@@ -100,8 +100,8 @@ def training_pairs(qualifications: list[Qualification], exclude: "set[str] | Has
         queries = _queries(qualification)
         for raw in (synthetic or {}).get(qualification.name, []):
             query = " ".join(raw.split())
-            if not query:
-                continue
+            if not query or normalize(query) in exclude:
+                continue  # an excluded goal gets no typo copy either, so the bundle can omit it entirely
             queries += [query, normalize(query)]
             if _in_share(query, augment_share) and (typo := augment(query, zlib.crc32(query.encode("utf-8")))):
                 queries.append(typo)

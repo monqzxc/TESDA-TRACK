@@ -68,3 +68,34 @@ def test_the_notebook_is_valid_and_has_the_expected_steps():
     for cell in nb["cells"]:
         if cell["cell_type"] == "code":
             compile("".join(cell["source"]), "cell", "exec")
+
+
+def _plain_hits(built, hashes):
+    """How many strings in the bundle's synthetic and mined files equal an evaluation goal (a count, never text)."""
+    hits = 0
+    for name, data in built.items():
+        if "/synthetic/" in name:
+            hits += sum(bundle_module.exclusion_hash(q) in hashes for qs in json.loads(data).values() for q in qs)
+        elif "/runs/" in name:
+            hits += sum(bundle_module.exclusion_hash(r["query"]) in hashes for r in json.loads(data))
+    return hits
+
+
+def test_bundle_holds_no_plaintext_goal_text(tmp_path):
+    negatives = tmp_path / "hn.json"
+    source = bundle_module.BACKEND / "training" / "runs" / "hard-negatives-v3.json"
+    negatives.write_text(source.read_text(encoding="utf-8") if source.exists() else "[]", encoding="utf-8")
+    path = bundle_module.build(tmp_path / "b.zip", negatives)
+    with zipfile.ZipFile(path) as z:
+        built = {n: z.read(n) for n in z.namelist()}
+    hashes = set(json.loads(built["backend/training/data/exclusions.json"]))
+    assert _plain_hits(built, hashes) == 0
+    # and the cleaned synthetic files give exactly the same pairs as the committed ones
+    synthetic = {}
+    for name, data in built.items():
+        if "/synthetic/" in name:
+            for qualification, queries in json.loads(data).items():
+                synthetic.setdefault(qualification, []).extend(queries)
+    qualifications, _ = load_catalog()
+    assert training_pairs(qualifications, HashedExclusions(hashes), synthetic) == \
+        training_pairs(qualifications, eval_exclusions(), load_synthetic())

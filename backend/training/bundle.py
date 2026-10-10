@@ -3,7 +3,8 @@
 Run from backend/ in the main environment:
     python -m training.bundle --output training/runs/colab-bundle.zip [--hard-negatives training/runs/<file>.json]
 The zip holds the API package, the catalog, the training code, the synthetic queries, the optional hard-negative file
-and data/exclusions.json (SHA-256 of every evaluation goal's normalised text). It holds no goal text, .env or model.
+and data/exclusions.json (SHA-256 of every evaluation goal's normalised text). Synthetic queries and mined rows that
+equal an evaluation goal are left out, so it holds no goal text, .env or model.
 """
 import argparse
 import json
@@ -39,14 +40,33 @@ def bundle_files() -> list[Path]:
     return files
 
 
+def _clean_synthetic(text: str, hashes: set[str]) -> str:
+    """The synthetic file without any query that equals an evaluation goal, so the zip holds no goal text."""
+    data = json.loads(text)
+    return json.dumps({name: [q for q in queries if exclusion_hash(q) not in hashes] for name, queries in data.items()},
+                      ensure_ascii=False, indent=1) + "\n"
+
+
+def _clean_negatives(text: str, hashes: set[str]) -> str:
+    rows = [r for r in json.loads(text) if exclusion_hash(r["query"]) not in hashes]
+    return json.dumps(rows, ensure_ascii=False, indent=1) + "\n"
+
+
 def build(output: Path, hard_negatives: Path | None = None) -> Path:
     output.parent.mkdir(parents=True, exist_ok=True)
+    hashes = exclusion_hashes()
+    known = set(hashes)
     with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED) as bundle:
         for path in bundle_files():
-            bundle.write(path, f"backend/{path.relative_to(BACKEND).as_posix()}")
+            name = f"backend/{path.relative_to(BACKEND).as_posix()}"
+            if path.parent.name == "synthetic":
+                bundle.writestr(name, _clean_synthetic(path.read_text(encoding="utf-8"), known))
+            else:
+                bundle.write(path, name)
         if hard_negatives:
-            bundle.write(hard_negatives, f"backend/training/runs/{hard_negatives.name}")
-        bundle.writestr("backend/training/data/exclusions.json", json.dumps(exclusion_hashes(), indent=0) + "\n")
+            bundle.writestr(f"backend/training/runs/{hard_negatives.name}",
+                            _clean_negatives(hard_negatives.read_text(encoding="utf-8"), known))
+        bundle.writestr("backend/training/data/exclusions.json", json.dumps(hashes, indent=0) + "\n")
     return output
 
 

@@ -139,6 +139,6 @@ with only the serving files (never `model.safetensors` or checkpoints).
 **After.** Use a new `<ROUND>` for every run (v2, v3, ...). From `backend/`:
 
 ```bash
-mkdir models/tesda-e5-small-v2 && unzip ~/Downloads/tesda-e5-small-v2.zip -d models/tesda-e5-small-v2
-../.venv/Scripts/python -m training.evaluate --model tesda-track/tesda-e5-small-v2 --model-path models/tesda-e5-small-v2 --set dev --calibrate --min-rejection 0.9
+mkdir models/tesda-e5-small-<ROUND> && unzip ~/Downloads/tesda-e5-small-<ROUND>.zip -d models/tesda-e5-small-<ROUND>
+../.venv/Scripts/python -m training.evaluate --model tesda-track/tesda-e5-small-<ROUND> --model-path models/tesda-e5-small-<ROUND> --set dev --calibrate --min-rejection 0.9
 ```
