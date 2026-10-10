@@ -68,6 +68,51 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
 [class*="st-key-card_"] p { overflow-wrap: anywhere; }
 [class*="st-key-card_"] [data-testid="stMetric"] { box-shadow: none; }
 
+/* Find my pathway shows one numbered step at a time. Button types mark each tab:
+   primary is the current step, tertiary a finished one, secondary one still ahead. */
+.st-key-finder_steps {
+  padding: 0.35rem;
+  margin-bottom: 0.9rem;
+  background: var(--track-surface);
+  border: 1px solid var(--track-border);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #102a5604;
+}
+.st-key-finder_steps [data-testid="stButton"] button {
+  min-height: 48px;
+  padding: 0.5rem 0.85rem;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--track-muted);
+}
+.st-key-finder_steps [data-testid="stIconMaterial"] { font-size: 1.35rem; }
+.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-primary"] {
+  background: var(--track-navy);
+  color: white;
+  box-shadow: 0 2px 8px #102a5626;
+}
+.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-tertiary"] { color: var(--track-navy); }
+.st-key-finder_steps [data-testid="stBaseButton-tertiary"] [data-testid="stIconMaterial"] { color: var(--track-teal); }
+.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-secondary"]:hover:not(:disabled),
+.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-tertiary"]:hover { background: var(--track-soft); color: var(--track-navy); }
+.st-key-finder_steps [data-testid="stButton"] button:disabled { opacity: 0.5; }
+.st-key-finder_goal_summary {
+  padding: 0.55rem 0.6rem 0.55rem 1rem;
+  margin-bottom: 0.4rem;
+  background: var(--track-soft);
+  border: 1px solid #d8e5fb;
+  border-radius: 14px;
+}
+.goal-summary { min-width: 0; }
+.goal-summary span { display: block; color: #356297; font-size: 0.625rem; font-weight: 700; letter-spacing: 0.12em; line-height: 1.6; }
+.goal-summary p { margin: 0.1rem 0 0; color: var(--track-navy); font-size: 0.9375rem; font-weight: 600; line-height: 1.45; overflow-wrap: anywhere; }
+.st-key-finder_nav { margin-top: 0.75rem; padding-top: 1rem; border-top: 1px solid var(--track-border); }
+/* Scrolled-to steps clear Streamlit's top toolbar. The script itself has nothing to show; don't let it add a gap. */
+.st-key-finder_steps,
+.st-key-readiness_questions { scroll-margin-top: 4.5rem; }
+[data-testid="stElementContainer"]:has(script[data-run]) { display: none; }
+
 /* Compact wordmark with a geometric training mark. */
 .brand-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
 .brand {
@@ -320,6 +365,9 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
   .feature-copy span { font-size: 0.875rem; }
   [data-testid="stTabs"] [role="tablist"] { gap: 1.2rem; }
   [data-testid="stTabs"] [role="tab"] { font-size: 0.875rem; }
+  /* Two step tabs per row on phones. */
+  .st-key-finder_steps [class*="st-key-finder_tab_"] { flex: 1 1 calc(50% - 0.5rem); min-width: 0; }
+  .st-key-finder_steps [data-testid="stButton"] button { min-height: 44px; padding: 0.4rem 0.5rem; font-size: 0.8125rem; }
   .st-key-finder_panel,
   .st-key-training_filters,
   .st-key-library_filters,

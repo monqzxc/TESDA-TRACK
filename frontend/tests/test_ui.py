@@ -39,6 +39,26 @@ def readiness(app):
     return [metric.value for metric in app.metric if metric.label == "Your readiness"]
 
 
+def open_step(app, number):
+    """Use the finder's numbered step tabs, as a learner does."""
+    app.button(key=f"finder_tab_{number}").click()
+    rerun(app)
+
+
+def shows_pathway(app, label):
+    return any(title.value == label for title in app.subheader)
+
+
+def rate_welding_skills(app):
+    """The test catalog's SMAW NC II has one Basic competency, then five Core ones: three confident in all."""
+    open_step(app, 4)
+    app.radio[0].set_value("I can do this confidently")
+    click(app, "Next: Core skills")
+    for index, radio in enumerate(app.radio):
+        radio.set_value("I can do this confidently" if index < 2 else "I have some experience")
+    click(app, "Analyze My Skills")
+
+
 def test_reruns_reuse_the_last_matches_and_pathway(ui, monkeypatch):
     from api_client import ApiClient
 
@@ -51,10 +71,14 @@ def test_reruns_reuse_the_last_matches_and_pathway(ui, monkeypatch):
     app = ui
     click(app, "Become a welder")
     click(app, "Get Recommendation")
+    assert calls == ["match"], "Your matches doesn't need the pathway yet"
+    open_step(app, 3)
     assert calls == ["match", "pathway"]
     rerun(app)
     assert calls == ["match", "pathway"], "a rerun with nothing changed doesn't ask the API again"
+    open_step(app, 2)
     app.selectbox(key="follow_experience").select("More than 3 years").run()
+    open_step(app, 3)
     assert calls == ["match", "pathway", "match", "pathway"], "a changed answer does"
 
 def test_pathway_finder_flow(ui):
@@ -71,43 +95,58 @@ def test_pathway_finder_flow(ui):
     app.selectbox(key="follow_experience").select("More than 3 years").run()
     app.selectbox(key="follow_certification").select("No").run()
     assert not app.exception
-    assert any(title.value == "Assessment Readiness Check" for title in app.subheader)
+    open_step(app, 3)
+    assert shows_pathway(app, "Assessment Readiness Check")
 
+    open_step(app, 4)
+    assert len(app.radio) == 1, "Basic skills come first, on their own"
+    app.radio[0].set_value("I can do this confidently")
+    click(app, "Next: Core skills")
+    assert len(app.radio) == 5
     click(app, "Analyze My Skills")
     assert any("answer every competency" in warning.value for warning in app.warning)
     assert not readiness(app)
-    assert len(app.radio) == 6
     for index, radio in enumerate(app.radio):
-        radio.set_value("I can do this confidently" if index < 3 else "I have some experience")
+        radio.set_value("I can do this confidently" if index < 2 else "I have some experience")
     click(app, "Analyze My Skills")
-    assert readiness(app) == ["75%"]
+    assert readiness(app) == ["75%"], "the Basic answer from the first part counts too"
     assert any(title.value == "Moderate Readiness" for title in app.subheader)
 
     app.run()
     assert readiness(app) == ["75%"]
+    open_step(app, 2)
     app.selectbox(key="follow_certification").select("Yes").run()
+    open_step(app, 4)
     assert readiness(app) == ["75%"]
-    assert any(title.value == "Skill Gap Check" for title in app.subheader)
+    open_step(app, 3)
+    assert shows_pathway(app, "Skill Gap Check")
 
+    open_step(app, 2)
     app.selectbox(key="qualification_selected").select("CSS-NC-II").run()
+    open_step(app, 4)
     assert not readiness(app)
     assert all(radio.value is None for radio in app.radio)
+    open_step(app, 2)
     app.selectbox(key="qualification_selected").select("SMAW-NC-II").run()
+    open_step(app, 4)
     assert readiness(app) == ["75%"]
     assert any("last submitted answers" in caption.value for caption in app.caption)
 
+    click(app, "Change goal")
     app.text_area(key="goal_query").set_value(" ")
     click(app, "Get Recommendation")
     assert any("Describe your career goal" in warning.value for warning in app.warning)
     assert app.session_state["original_query"] == "I want to be a welder."
+    open_step(app, 4)
     assert readiness(app) == ["75%"]
 
+    open_step(app, 1)
     app.text_area(key="goal_query").set_value("I want to fix computers.")
     click(app, "Get Recommendation")
     assert app.selectbox(key="qualification_selected").value == "CSS-NC-II"
     assert app.selectbox(key="follow_experience").value == "Choose an answer"
     assert app.selectbox(key="follow_certification").value == "Choose an answer"
-    assert not app.session_state["readiness_results"]
+    open_step(app, 4)
     assert not readiness(app)
     assert all(radio.value is None for radio in app.radio)
 
@@ -134,9 +173,7 @@ def test_signed_in_learner_results_are_saved_to_progress(ui):
     click(app, "Get Recommendation")
     app.selectbox(key="follow_experience").select("More than 3 years").run()
     app.selectbox(key="follow_certification").select("No").run()
-    for index, radio in enumerate(app.radio):
-        radio.set_value("I can do this confidently" if index < 3 else "I have some experience")
-    click(app, "Analyze My Skills")
+    rate_welding_skills(app)
     assert readiness(app) == ["75%"]
 
     app.session_state["main_tabs"] = "My progress"
@@ -185,6 +222,7 @@ def recommend_welding_readiness_path(app):
 def test_learner_follows_the_curated_pathway_and_ticks_off_steps(ui):
     app = ui
     recommend_welding_readiness_path(app)
+    open_step(app, 3)
     assert any("Turn your experience into a certificate" in md.value for md in app.markdown)
     assert not any(button.label == "Follow this pathway" for button in app.button), "signed-out learners can't follow"
 

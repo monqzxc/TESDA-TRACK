@@ -27,6 +27,15 @@ PATH_LABELS = {
 ANSWER_OPTIONS = {"I can do this confidently": "confident", "I have some experience": "some_experience",
                   "I am not familiar with this": "not_familiar"}
 RESULT_LABELS = {"competent": "Competent", "not_yet_competent": "Not yet competent"}
+# Find my pathway shows one of these at a time; the step bar numbers them.
+FINDER_STEPS = ["Your goal", "Your matches", "Your pathway", "Readiness check"]
+EXPERIENCE_OPTIONS = {"No experience": 0, "Less than 1 year": 0.5, "1–3 years": 2, "More than 3 years": 4}
+CERTIFICATION_OPTIONS = {"Yes": True, "No": False}
+CATEGORY_HELP = {
+    "Basic": "Workplace skills every qualification shares, like teamwork and safety.",
+    "Common": "Skills shared by the trades in this sector.",
+    "Core": "The technical skills of this qualification.",
+}
 PHILIPPINE_TIME = timezone(timedelta(hours=8))
 PRIVACY_NOTICE = ("TESDA-TRACK keeps your name, email, goals, recommendations, readiness checks and certifications "
                   "so you can follow your progress. They are used only to run this pilot and are never sold. "
@@ -199,23 +208,66 @@ def show_account_dialog() -> None:
         handle_api_error(error)
 
 
+def competency_parts(competencies: list[dict]) -> list[tuple[str, list[dict]]]:
+    """Basic, then Common, then Core competencies (then any other category), each in catalog order."""
+    groups: dict[str, list[dict]] = {}
+    for competency in competencies:
+        groups.setdefault(competency["category"], []).append(competency)
+    order = [category for category in CATEGORY_HELP if category in groups]
+    return [(category, groups[category]) for category in order + [c for c in groups if c not in CATEGORY_HELP]]
+
+
+def set_readiness_part(code: str, part: int) -> None:
+    st.session_state.setdefault("readiness_part", {})[code] = part
+    st.session_state["finder_scroll_to"] = "readiness_questions"
+
+
+def scroll_to(container_key: str) -> None:
+    """Bring a keyed container to the top of the screen. Streamlit keeps the scroll position when content changes,
+    so a step opened from the buttons at the bottom of the last one would otherwise open halfway down."""
+    # A new attribute each time makes Streamlit insert, and so run, the script again.
+    run = st.session_state["finder_scroll_runs"] = st.session_state.get("finder_scroll_runs", 0) + 1
+    st.html(f'<script data-run="{run}">document.querySelector(".st-key-{container_key}")'
+            '?.scrollIntoView({block: "start"});</script>', unsafe_allow_javascript=True)
+
+
 def show_readiness(qualification: dict) -> None:
     code = qualification["code"]
-    section_header("KNOW YOUR STARTING POINT", "Assessment readiness", "Recognize your strengths and discover what to build on.", level=2)
-    st.write("What can you already do? Rate each sample competency to find your strengths and next steps.")
-    with st.form(f"skills_{code}"):
-        answers = {}
-        for index, competency in enumerate(qualification["competencies"], start=1):
-            answers[competency["id"]] = st.radio(
-                f"{index}. {competency['name']}", list(ANSWER_OPTIONS), index=None,
-                key=f"competency_{code}_{competency['id']}", horizontal=True,
-                help=f"Sample {competency['category'].lower()} competency",
-            )
-        analyze = st.form_submit_button("Analyze My Skills", type="primary")
+    section_header("KNOW YOUR STARTING POINT", "Assessment readiness",
+                   f"{qualification['name']}: recognize your strengths and discover what to build on.", level=2)
+    parts = competency_parts(qualification["competencies"])
+    if not parts:
+        st.caption("No sample competencies are listed for this qualification yet.")
+        return
+    # One category at a time; answers live in session state, so every part's answers are sent together.
+    keys = {competency["id"]: f"competency_{code}_{competency['id']}" for competency in qualification["competencies"]}
+    rated = sum(1 for key in keys.values() if st.session_state.get(key))
+    st.progress(rated / len(keys), text=f"{rated} of {len(keys)} skills rated")
+    part = min(st.session_state.get("readiness_part", {}).get(code, 0), len(parts) - 1)
+    category, competencies = parts[part]
+    first_number = 1 + sum(len(items) for _, items in parts[:part])
+    with st.container(key="readiness_questions"), st.form(f"skills_{code}"):
+        st.markdown(f"**Part {part + 1} of {len(parts)} · {category} skills**" if len(parts) > 1 else f"**{category} skills**")
+        st.caption(CATEGORY_HELP.get(category, "What can you already do? Rate each sample competency."))
+        for number, competency in enumerate(competencies, start=first_number):
+            st.radio(f"{number}. {competency['name']}", list(ANSWER_OPTIONS), index=None,
+                     key=keys[competency["id"]], horizontal=True)
+        analyze = False
+        with st.container(horizontal=True, horizontal_alignment="distribute"):
+            if part > 0:
+                st.form_submit_button("Previous part", key="readiness_previous", icon=":material/arrow_back:",
+                                      on_click=set_readiness_part, args=(code, part - 1))
+            if part < len(parts) - 1:
+                st.form_submit_button(f"Next: {parts[part + 1][0]} skills", key="readiness_next", type="primary",
+                                      icon=":material/arrow_forward:", icon_position="right",
+                                      on_click=set_readiness_part, args=(code, part + 1))
+            else:
+                analyze = st.form_submit_button("Analyze My Skills", type="primary")
 
     results = st.session_state.setdefault("readiness_results", {})
     if analyze:
-        answer_codes = {competency_id: ANSWER_OPTIONS[label] for competency_id, label in answers.items() if label}
+        answer_codes = {competency_id: ANSWER_OPTIONS[st.session_state[key]]
+                        for competency_id, key in keys.items() if st.session_state.get(key)}
         token = auth_token()
         try:
             if token:
@@ -284,47 +336,69 @@ def show_curated_pathway(curated: dict) -> None:
             st.info("You're already following this pathway. Find it under My progress.")
 
 
-def show_recommendations(qualifications: list[dict]) -> None:
+def go_to_step(step: int) -> None:
+    st.session_state["finder_step"] = step
+    st.session_state["finder_scroll_to"] = "finder_steps"
+
+
+def finder_context(qualifications: list[dict]) -> dict:
+    """The learner's profile with their follow-up answers, the ranked matches and the chosen qualification.
+
+    Steps 2-4 all need these, but only Your matches shows the widgets, so the answers are read from session state.
+    """
     profile = st.session_state["analysis"].copy()
-    experience_description = None
-    st.divider()
-    if profile["experience_years"] is None or profile["has_certification"] is None:
-        with st.container(border=True, key="card_followup"):
-            st.subheader("A little more about you")
-            st.caption("These details help us suggest a suitable starting point.")
-            experience_column, certification_column = st.columns(2)
-            if profile["experience_years"] is None:
-                label = "Do you already have welding experience?" if profile["career_goal"] == "Welder" else "How much experience do you have in your intended field?"
-                experience = experience_column.selectbox(
-                    label, ["Choose an answer", "No experience", "Less than 1 year", "1–3 years", "More than 3 years"],
-                    key="follow_experience",
-                )
-                profile["experience_years"] = {"No experience": 0, "Less than 1 year": 0.5, "1–3 years": 2, "More than 3 years": 4}.get(experience)
-                if experience != "Choose an answer":
-                    experience_description = experience
-            if profile["has_certification"] is None:
-                certification = certification_column.selectbox(
-                    "Do you currently hold a related certification?",
-                    ["Choose an answer", "Yes", "No", "I'm not sure"], key="follow_certification",
-                )
-                profile["has_certification"] = {"Yes": True, "No": False}.get(certification)
+    experience = st.session_state.get("follow_experience")
+    asked_experience = profile["experience_years"] is None
+    if asked_experience:
+        profile["experience_years"] = EXPERIENCE_OPTIONS.get(experience)
+    if profile["has_certification"] is None:
+        profile["has_certification"] = CERTIFICATION_OPTIONS.get(st.session_state.get("follow_certification"))
     # The API re-derives the intent from the follow-up answers and ranks the qualifications.
     query = st.session_state["original_query"]
     result = remembered("match", {"query": query, "profile": profile}, lambda: api().match(query, profile))
-    profile, matches = result["profile"], result["matches"]
+    codes = [item["qualification"]["code"] for item in result["matches"]]
+    options = sorted(qualifications, key=lambda item: codes.index(item["code"]) if item["code"] in codes else len(codes))
+    # Before Your matches first shows the picker, its choice is the top match, as the picker itself defaults to.
+    selected_code = st.session_state.get("qualification_selected")
+    qualification = next((q for q in options if q["code"] == selected_code), options[0])
+    save_session_progress(result["profile"], qualification["code"])
+    return {"profile": result["profile"], "matches": result["matches"], "options": options,
+            "qualification": qualification,
+            "experience_description": experience if asked_experience and experience in EXPERIENCE_OPTIONS else None}
 
-    with st.container(border=True, key="card_understanding"):
+
+def show_matches(context: dict) -> None:
+    asked = st.session_state["analysis"]
+    needs_answers = asked["experience_years"] is None or asked["has_certification"] is None
+    # Side by side when there are questions, so the matches below stay close to the top.
+    questions, summary = st.columns(2, gap="medium") if needs_answers else (None, st.container())
+    if needs_answers:
+        with questions, st.container(border=True, height="stretch", key="card_followup"):
+            st.subheader("A little more about you")
+            st.caption("These details help us suggest a suitable starting point.")
+            if asked["experience_years"] is None:
+                label = "Do you already have welding experience?" if asked["career_goal"] == "Welder" else "How much experience do you have in your intended field?"
+                st.selectbox(label, ["Choose an answer", *EXPERIENCE_OPTIONS], key="follow_experience")
+            if asked["has_certification"] is None:
+                st.selectbox("Do you currently hold a related certification?",
+                             ["Choose an answer", "Yes", "No", "I'm not sure"], key="follow_certification")
+
+    profile = context["profile"]
+    years = profile["experience_years"]
+    facts = [("Career goal", profile["career_goal"] or "Still exploring"),
+             ("Experience", context["experience_description"] or (f"{years:g} years" if years is not None else "Not specified")),
+             ("Certification", {True: "Reported certification", False: "None", None: "Not specified"}[profile["has_certification"]]),
+             ("Detected intent", profile["intent"].replace("_", " ").title())]
+    with summary, st.container(border=True, height="stretch", key="card_understanding"):
         st.subheader("Your starting point")
         st.caption("Based on your submitted goal and the details you've shared.")
-        columns = st.columns(4)
-        years = profile["experience_years"]
-        columns[0].markdown(f"**Career goal**\n\n{profile['career_goal'] or 'Still exploring'}")
-        columns[1].markdown(f"**Experience**\n\n{experience_description or (f'{years:g} years' if years is not None else 'Not specified')}")
-        columns[2].markdown("**Certification**\n\n" + {True: "Reported certification", False: "None", None: "Not specified"}[profile["has_certification"]])
-        columns[3].markdown("**Detected intent**\n\n" + profile["intent"].replace("_", " ").title())
+        for row in (facts[:2], facts[2:]) if needs_answers else (facts,):
+            for column, (label, value) in zip(st.columns(len(row)), row):
+                column.markdown(f"**{label}**\n\n{value}")
         st.caption("Reported skills: " + (", ".join(profile["existing_skills"]) or "Not yet established"))
 
     st.subheader("Qualifications for you")
+    matches = context["matches"]
     if matches:
         for column, match in zip(st.columns(len(matches)), matches):
             with column, st.container(border=True, key=f"card_match_{match['qualification']['code']}"):
@@ -335,34 +409,96 @@ def show_recommendations(qualifications: list[dict]) -> None:
                 st.caption(match["reason"])
     else:
         st.info("We couldn't find a clear match. Choose a sample qualification below, or describe a more specific career goal.")
-    codes = [item["qualification"]["code"] for item in matches]
-    options = sorted(qualifications, key=lambda item: codes.index(item["code"]) if item["code"] in codes else len(codes))
-    selected_code = st.selectbox(
+    options = context["options"]
+    st.selectbox(
         "Select a qualification to explore", [q["code"] for q in options],
         format_func=lambda code: next(q["name"] for q in options if q["code"] == code),
         key="qualification_selected",
     )
-    qualification = next(q for q in qualifications if q["code"] == selected_code)
-    st.caption("Sample career options: " + ", ".join(qualification["possible_jobs"]))
-    pathway = remembered("pathway", {"profile": profile, "code": selected_code},
-                         lambda: api().pathway(profile, selected_code))
-    save_session_progress(profile, selected_code)
+    st.caption("Sample career options: " + ", ".join(context["qualification"]["possible_jobs"]))
+
+
+def show_pathway(context: dict) -> None:
+    profile, qualification = context["profile"], context["qualification"]
+    code = qualification["code"]
+    pathway = remembered("pathway", {"profile": profile, "code": code}, lambda: api().pathway(profile, code))
     with st.container(border=True, key="card_recommended_path"):
         st.caption("YOUR RECOMMENDED PATH")
         st.subheader(PATH_LABELS[pathway["recommendation"]])
+        st.caption(f"For {qualification['name']}")
         st.write(pathway["reason"])
         st.info(pathway["next_step"])
         if pathway.get("pathway"):
             show_curated_pathway(pathway["pathway"])
         st.caption("Your experience should be relevant to the selected qualification. Update your goal when exploring a different field.")
-
-    show_readiness(qualification)
     if (st.session_state.get("auth") or {}).get("role") == "admin":
         with st.expander("Recommendation diagnostics", icon=":material/code:"):
             st.json({"profile": profile, "pathway": pathway})
 
 
+def show_step_bar(current: int, unlocked: bool) -> None:
+    """Numbered tabs, one per step: finished ones are ticked, later ones open once there's a goal."""
+    with st.container(horizontal=True, gap="small", key="finder_steps"):
+        for number, label in enumerate(FINDER_STEPS, start=1):
+            done = number < current
+            # The button type carries the state to styles.css: primary is current, tertiary is finished.
+            st.button(label, key=f"finder_tab_{number}", on_click=go_to_step, args=(number,), width="stretch",
+                      icon=":material/check_circle:" if done else f":material/counter_{number}:",
+                      type="primary" if number == current else "tertiary" if done else "secondary",
+                      disabled=number > 1 and not unlocked)
+
+
+def show_step_nav(step: int, checked_readiness: bool = False) -> None:
+    with st.container(horizontal=True, horizontal_alignment="distribute" if step > 1 else "right", key="finder_nav"):
+        if step > 1:
+            st.button("Back", key="finder_back", icon=":material/arrow_back:", on_click=go_to_step, args=(step - 1,))
+        if step < len(FINDER_STEPS):
+            st.button(f"Next: {FINDER_STEPS[step]}", key="finder_next", type="primary", icon=":material/arrow_forward:",
+                      icon_position="right", on_click=go_to_step, args=(step + 1,))
+        else:
+            # Until the check has results, its own buttons are the next action; leaving for training stays quieter.
+            st.button("Next: Find training near you", key="finder_next", type="primary" if checked_readiness else "secondary",
+                      icon=":material/arrow_forward:", icon_position="right",
+                      on_click=navigate, args=("Training & assessment",))
+
+
+def show_goal_summary() -> None:
+    with st.container(horizontal=True, vertical_alignment="center", key="finder_goal_summary"):
+        st.html(f'<div class="goal-summary"><span>YOUR GOAL</span><p>{escape(st.session_state["original_query"])}</p></div>',
+                width="stretch")
+        st.button("Change goal", key="finder_change_goal", type="tertiary", icon=":material/edit:",
+                  on_click=go_to_step, args=(1,))
+        if auth_token():
+            st.caption("Saved to My progress")
+        else:
+            st.button("Sign in to save", key="open_account_finder", type="tertiary",
+                      icon=":material/bookmark_border:", on_click=open_account)
+
+
 def show_finder(qualifications: list[dict]) -> None:
+    has_goal = "analysis" in st.session_state
+    step = st.session_state.get("finder_step", 1) if has_goal else 1
+    scroll_target = st.session_state.pop("finder_scroll_to", None)
+    show_step_bar(step, has_goal)
+    if step == 1:
+        show_goal(qualifications)
+        if has_goal:
+            show_step_nav(step)
+    else:
+        show_goal_summary()
+        context = finder_context(qualifications)
+        if step == 2:
+            show_matches(context)
+        elif step == 3:
+            show_pathway(context)
+        else:
+            show_readiness(context["qualification"])
+        show_step_nav(step, context["qualification"]["code"] in st.session_state.get("readiness_results", {}))
+    if scroll_target:
+        scroll_to(scroll_target)
+
+
+def show_goal(qualifications: list[dict]) -> None:
     goal, guide = st.columns([1.6, 1], gap="large")
     with goal, st.container(key="finder_panel"):
         section_header("", "What would you like to achieve?",
@@ -390,11 +526,13 @@ def show_finder(qualifications: list[dict]) -> None:
                         profile, saved = api().analyze_goal(query)["profile"], None
                 # A new goal starts a new questionnaire, including all saved results.
                 for key in list(st.session_state):
-                    if key.startswith(("follow_", "competency_", "qualification_")) or key == "readiness_results":
+                    if key.startswith(("follow_", "competency_", "qualification_")) or key in ("readiness_results", "readiness_part"):
                         del st.session_state[key]
                 st.session_state["analysis"] = profile
                 st.session_state["original_query"] = query.strip()
                 st.session_state["recommendation_session"] = saved
+                go_to_step(2)
+                st.rerun()
         if auth_token():
             st.caption("Your results are saved to My progress.")
         elif "analysis" in st.session_state:
@@ -405,8 +543,6 @@ def show_finder(qualifications: list[dict]) -> None:
             st.write(st.session_state["original_query"])
     with guide:
         journey(len(qualifications))
-    if "analysis" in st.session_state:
-        show_recommendations(qualifications)
 
 
 def show_goals(token: str, names: dict[str, str]) -> None:
@@ -657,6 +793,7 @@ def reset_library_filters() -> None:
 
 def explore_qualification(name: str) -> None:
     use_example(f"I want to pursue {name}.")
+    go_to_step(1)
     st.session_state["main_tabs"] = "Find my pathway"
 
 
