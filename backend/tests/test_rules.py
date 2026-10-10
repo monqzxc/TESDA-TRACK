@@ -134,3 +134,77 @@ def test_catalog_carpentry_and_masonry_answer_to_builder():
         assert "builder" in catalog[code]["career_keywords"]
     hits = score_qualifications("i want to be bob the builder", {}, list(catalog.values()))
     assert {h["qualification"]["code"] for h in hits} == {"CARPENTRY-NC-II", "MASONRY-NC-II"}
+
+
+# --- typo-tolerant keywords ---
+
+@pytest.fixture(scope="module")
+def catalog_rules():
+    return json.loads(CATALOG_FILE.read_text(encoding="utf-8"))
+
+
+def _codes(goal, rules):
+    return {h["qualification"]["code"] for h in score_qualifications(goal, {}, rules)}
+
+
+@pytest.mark.parametrize("goal, code", [
+    ("gusto q mging weldr", "MMAW-NC-II"),
+    ("karpentero", "CARPENTRY-NC-II"),
+    ("CAREGIVR", "CAREGIVING-NC-II"),
+    ("I WANT TO BE A WELDR", "MMAW-NC-II"),
+    ("karpentero \U0001f528\U0001f528", "CARPENTRY-NC-II"),
+])
+def test_misspelled_keyword_still_matches(catalog_rules, goal, code):
+    assert code in _codes(goal, catalog_rules)
+
+
+def test_fuzzy_reason_names_the_typed_word_and_the_keyword():
+    rules = [{"code": "W", "name": "Welding NC II", "sector": "Metals", "career_keywords": ["welder", "tig welding"]}]
+    hits = score_qualifications("i want to be a weldr", {}, rules)
+    assert [(h["score"], h["reason"]) for h in hits] == [(65, "Matched your words: weldr (welder)")]
+    assert _codes("tig weldng", rules) == set()  # multi-word keywords stay exact
+
+
+def test_fuzzy_hit_counts_like_exact_hit():
+    rules = [{"code": "W", "name": "Welding NC II", "sector": "Metals", "career_keywords": ["welder"]}]
+    assert score_qualifications("weldr", {}, rules)[0]["score"] == score_qualifications("welder", {}, rules)[0]["score"]
+
+
+def test_fuzzy_feeds_the_intent_profile():
+    rules = [{"code": "W", "name": "Welding NC II", "sector": "Metals", "skill_label": "welding",
+              "career_keywords": ["welder"], "possible_jobs": ["Welder"]}]
+    assert analyze_user_query("i want to be a weldr", rules)["career_goal"] == "Welder"
+
+
+@pytest.mark.parametrize("goal", [
+    "book", "I want to read a book", "the reason I want a job",
+    "nurses are great", "a hello and a thank you", "magkano ang assessment", "asdfgh", "stable na trabaho",
+])
+def test_near_words_do_not_create_matches(goal):
+    rules = [
+        {"code": "COOK", "name": "Cookery NC II", "sector": "Tourism", "career_keywords": ["cook", "cookery"]},
+        {"code": "MASON", "name": "Masonry NC II", "sector": "Construction", "career_keywords": ["mason", "masonry"]},
+        {"code": "BOOKKEEP", "name": "Bookkeeping NC III", "sector": "Other", "career_keywords": ["bookkeeper"]},
+    ]
+    assert _codes(goal, rules) == set()
+
+
+def test_inflected_word_is_within_one_edit():
+    rules = [{"code": "N", "name": "Health Care NC II", "sector": "Health", "career_keywords": ["nurse"]}]
+    assert _codes("we need nurses", rules) == {"N"}
+
+
+def test_fuzzy_adds_no_matches_on_goals_that_must_be_rejected(catalog_rules):
+    dev = Path(__file__).resolve().parents[1] / "training" / "data" / "goals_v2" / "dev"
+    goals = [g for f in sorted(dev.glob("*.json")) for g in json.loads(f.read_text(encoding="utf-8"))
+             if not g["accept"]]
+    if not goals:
+        pytest.skip("no dev goals present")
+    fuzzy = [g["goal"] for g in goals
+             if any("(" in h["reason"] for h in score_qualifications(g["goal"], {}, catalog_rules))]
+    assert len(fuzzy) <= max(1, len(goals) // 100), f"{len(fuzzy)} of {len(goals)} reject goals got fuzzy hits"
+
+
+@pytest.mark.parametrize("goal", ["I want to be an airline pilot", "I'm looking for work", "the reason I need a job"])
+def test_catalog_near_words_pilot_looking_reason_do_not_match(catalog_rules, goal):
+    assert _codes(goal, catalog_rules) == set()

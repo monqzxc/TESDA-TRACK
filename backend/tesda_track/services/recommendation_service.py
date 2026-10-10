@@ -1,4 +1,4 @@
-from tesda_track.utils.helpers import contains, normalize
+from tesda_track.utils.helpers import contains, fuzzy_matches, normalize
 
 
 def match_qualifications(query: str, profile: dict, qualifications: list[dict]) -> list[dict]:
@@ -10,9 +10,11 @@ def score_qualifications(query: str, profile: dict, qualifications: list[dict]) 
     text = normalize(query)
     context = normalize(" ".join([profile.get("career_goal") or "", *profile.get("existing_skills", [])]))
     results = []
+    near = fuzzy_matches(text, qualifications)
     # ponytail: transparent keyword scores, not semantic confidence; embeddings can improve recall.
     for qualification in qualifications:
         hits = [word for word in qualification["career_keywords"] if contains(text, word)]
+        hits += [f"{near[word]} ({word})" for word in qualification["career_keywords"] if word in near]
         score = min(95, 55 + 10 * len(hits)) if hits else 0
         if any(contains(context, word) for word in qualification["career_keywords"]):
             score = min(95, score + 15)

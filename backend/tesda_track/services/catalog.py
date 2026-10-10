@@ -1,5 +1,6 @@
 """Catalog queries, plus conversion into the dict shape the rule-based services expect."""
 from dataclasses import dataclass
+from functools import cached_property
 
 from sqlalchemy import text
 from sqlalchemy.orm import selectinload
@@ -44,7 +45,7 @@ class CatalogSnapshot:
     version: tuple
     items: tuple[CatalogItem, ...]
 
-    @property
+    @cached_property  # the same list every request, so the typo index built from it is built once per snapshot
     def rule_views(self) -> list[dict]:
         return [item.rules for item in self.items]
 
