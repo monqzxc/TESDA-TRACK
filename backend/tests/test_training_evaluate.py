@@ -80,3 +80,28 @@ def test_calibration_can_require_a_minimum_rejection():
     grid["z_floor"] = [0.0, 1.2]  # nothing rejects 0.9 now: the combination rejecting the most wins
     params, best = evaluate.calibrate(prepared, items, grid, min_rejection=0.9)
     assert params.z_floor == 1.2 and best.rejection == 0.5
+
+
+def tagged(accept, shown, tags, lang="en"):
+    return evaluate.GoalResult(goal={"goal": "g", "accept": accept, "lang": lang, "tags": tags}, shown=shown)
+
+
+def test_metrics_break_down_by_tag():
+    results = [tagged(["A"], ["A"], ["typo"]), tagged(["A"], ["B"], ["typo"]), tagged([], [], ["non_goal"])]
+    by_tag = evaluate.metrics(results).by_tag
+    assert by_tag["typo"] == {"n": 2, "top1": 0.5, "top3": 0.5}
+    assert by_tag["non_goal"] == {"n": 1, "rejection": 1.0}
+
+
+def test_errors_list_misses_and_false_matches_only():
+    results = [tagged(["A"], ["A"], ["typo"]), tagged(["A"], ["B"], ["typo"]),
+               tagged([], [], ["non_goal"]), tagged([], ["C"], ["vague"])]
+    found = evaluate.errors(results)
+    assert [(e["tags"], e["accept"], e["shown"]) for e in found] == [(["typo"], ["A"], ["B"]), (["vague"], [], ["C"])]
+    assert set(found[0]) == {"goal", "lang", "tags", "accept", "shown"}
+
+
+def test_the_sealed_set_needs_final():
+    with pytest.raises(SystemExit) as stop:
+        evaluate.main(["--set", "sealed"])
+    assert stop.value.code != 0

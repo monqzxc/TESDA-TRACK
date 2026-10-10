@@ -9,7 +9,8 @@ API: the API image copies only `tesda_track`, `migrations` and `seed`, and insta
 | --- | --- |
 | `catalog.py` | Loads `seed/qualifications.json` as in-memory qualifications, so nothing needs a database |
 | `data/eval_goals.json` | Hand-written learner goals (English, Filipino, Taglish, and goals with no TVET match), each in the `dev` or `test` split |
-| `evaluate.py` | Scores the goals with the API's own matching code and reports top-1, top-3, MRR and rejection rate |
+| `goals.py` | Loads and validates the goal sets: `dev` (v1 dev + `data/goals_v2/dev/*.json`), `test_v1` (v1 test), `sealed` (`data/goals_v2/sealed/*.json`) |
+| `evaluate.py` | Scores the goals with the API's own matching code and reports top-1, top-3, MRR and rejection rate, overall, per language and per scenario tag |
 | `pairs.py` | Builds (query, passage) training pairs from the catalog |
 | `finetune.py` | Fine-tunes the model on those pairs, exports ONNX and checks that fastembed reproduces it |
 
@@ -27,14 +28,25 @@ evaluation stays held out. The catalog gives 18,428 pairs.
 The main environment (`.venv`) is enough. From `backend/`:
 
 ```bash
-../.venv/Scripts/python -m training.evaluate --split all             # the configured model and its parameters
-../.venv/Scripts/python -m training.evaluate --split all --calibrate # search the score parameters on dev, report test
-../.venv/Scripts/python -m training.evaluate --calibrate --min-rejection 0.9 # ...rejecting 90% of dev no-TVET goals
+../.venv/Scripts/python -m training.evaluate --set test_v1           # the configured model and its parameters
+../.venv/Scripts/python -m training.evaluate --set dev --json training/runs/dev.json   # also writes "errors"
+../.venv/Scripts/python -m training.evaluate --calibrate --min-rejection 0.9 # calibrate on dev, report test_v1
 ../.venv/Scripts/python -m training.evaluate --params 2.5 4.0 0.5 25 # try FLOOR CEILING WEIGHT MIN
+../.venv/Scripts/python -m training.evaluate --set sealed --final    # once per candidate, at the end
 ```
 
+`--set dev|test_v1|sealed` picks the goals (default `test_v1`); `--split dev|test|all` still works as an alias
+(`test` = `test_v1`, `all` = dev and test_v1). `--calibrate` always calibrates on `dev`, then reports the
+requested set. `--set sealed` needs `--final` and prints a warning: the sealed set is evaluated once per candidate
+and never used for tuning. Output includes a line per scenario tag (`n`, top-1/top-3 for goals with matches,
+rejection for no-TVET goals). With `--json`, a `dev` run also lists `errors`: goals whose top result is wrong and
+no-TVET goals that got a match, each with the goal, language, tags, accepted names and what was shown.
+
+Goal files in `goals_v2/` are JSON lists of `{goal, accept, lang, tags, group}`; the loader rejects unknown tags,
+languages or qualification names, and duplicate goals (the sealed copy wins: delete the dev one).
+
 Add `--json training/runs/<name>.json` to keep the numbers (`training/runs/` is git-ignored). Calibrate on `dev`
-only and judge on `test`. The objective (0.4 × top-1 + 0.2 × top-3 + 0.4 × rejection) will trade wrong matches
+only and judge on a held-out set. The objective (0.4 × top-1 + 0.2 × top-3 + 0.4 × rejection) will trade wrong matches
 for right ones, so calibrate with `--min-rejection`; if no parameters reach it, the output says so and uses the
 ones that reject the most.
 
