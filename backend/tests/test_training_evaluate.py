@@ -98,7 +98,8 @@ def test_errors_list_misses_and_false_matches_only():
                tagged([], [], ["non_goal"]), tagged([], ["C"], ["vague"])]
     found = evaluate.errors(results)
     assert [(e["tags"], e["accept"], e["shown"]) for e in found] == [(["typo"], ["A"], ["B"]), (["vague"], [], ["C"])]
-    assert set(found[0]) == {"goal", "lang", "tags", "accept", "shown"}
+    assert set(found[0]) == {"goal", "lang", "tags", "accept", "shown", "rank"} and found[0]["rank"] is None
+    assert evaluate.errors([tagged(["A"], ["B", "A"], ["typo"])])[0]["rank"] == 2
 
 
 def test_the_sealed_set_needs_final():

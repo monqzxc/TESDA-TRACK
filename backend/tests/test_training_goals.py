@@ -63,3 +63,22 @@ def test_a_duplicate_inside_dev_raises(tree):
 
 def test_sealed_is_empty_when_the_directory_is_missing(tree):
     assert goals.load("sealed") == []
+
+
+def test_dev_and_test_v1_loads_reject_a_goal_that_duplicates_a_sealed_one(tree):
+    tree("dev", "d.json", [goal("A B")])
+    tree("sealed", "s.json", [goal("a b")])
+    with pytest.raises(ValueError, match=r"delete the dev copy in dev/d\.json") as stop:
+        goals.load("dev")
+    assert "also in the sealed set" in str(stop.value)
+    tree("sealed", "s.json", [goal("v1 test goal")])
+    tree("dev", "d.json", [goal("fine")])
+    with pytest.raises(ValueError, match="also in the sealed set"):
+        goals.load("test_v1")
+
+
+def test_two_duplicates_inside_sealed_get_the_plain_message(tree):
+    tree("sealed", "s.json", [goal("x y"), goal("X  y")])
+    with pytest.raises(ValueError, match=r"duplicate goal .* in sealed/s\.json and sealed/s\.json") as stop:
+        goals.load("sealed")
+    assert "dev copy" not in str(stop.value)

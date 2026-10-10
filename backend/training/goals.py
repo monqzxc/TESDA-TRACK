@@ -1,8 +1,8 @@
 """Evaluation goal sets: the v1 file plus the v2 dev and sealed directories, validated on load.
 
 dev = v1 dev goals + goals_v2/dev/*.json; test_v1 = v1 test goals; sealed = goals_v2/sealed/*.json.
-The sealed directory is read only when the sealed set is requested (the harness's --final mode), so dev work
-never touches it; duplicates against it are therefore checked when the sealed set is loaded."""
+Loading dev or test_v1 also reads the sealed files, only to reject a goal that duplicates a sealed one (the
+sealed goals are reduced to normalised keys and never returned or printed)."""
 import json
 import re
 from pathlib import Path
@@ -72,23 +72,30 @@ def _read(split: str, names: set[str]) -> list[dict]:
 
 
 def load(split: str) -> list[dict]:
-    """The goals of one set, validated. A goal that appears twice, in this or another set, raises ValueError."""
+    """The goals of one set, validated. A goal that appears twice, in this or another set, raises ValueError.
+
+    Loading dev or test_v1 also reads the sealed files, but only to build a set of normalised keys that is
+    compared with the goals being loaded; sealed goals are never returned, printed or logged."""
     if split not in SETS:
         raise ValueError(f"unknown goal set {split!r}; choose from {', '.join(SETS)}")
     names = {q.name for q in load_catalog()[0]}
     own = _read(split, names)
-    others = [(other, _read(other, names)) for other in SETS
-              if other != split and (split == "sealed" or other != "sealed")]
     seen: dict[str, tuple[str, dict]] = {}
-    for name, goals in others + [(split, own)]:
+    for name, goals in [(o, _read(o, names)) for o in SETS if o not in (split, "sealed")] + [(split, own)]:
         for goal in goals:
             key = normalise(goal["goal"])
             if key in seen:
                 first_set, first = seen[key]
-                if "sealed" in (name, first_set):
+                if (name == "sealed") != (first_set == "sealed"):
                     dev_copy = first if name == "sealed" else goal
-                    raise ValueError(f"duplicate goal {goal['goal']!r} is also in the sealed set: delete the dev "
+                    raise ValueError(f"duplicate goal {dev_copy['goal']!r} is also in the sealed set: delete the dev "
                                      f"copy in {dev_copy['source']}")
                 raise ValueError(f"duplicate goal {goal['goal']!r} in {first['source']} and {goal['source']}")
             seen[key] = (name, goal)
+    if split != "sealed":
+        sealed_keys = {normalise(g["goal"]) for g in _read("sealed", names)}
+        for goal in own:
+            if normalise(goal["goal"]) in sealed_keys:
+                raise ValueError(f"duplicate goal {goal['goal']!r} is also in the sealed set: delete the dev "
+                                 f"copy in {goal['source']}")
     return own

@@ -80,13 +80,15 @@ def metrics(results: list[GoalResult]) -> Metrics:
 
 
 def errors(results: list[GoalResult]) -> list[dict]:
-    """Related goals whose top result is wrong, and no-TVET goals that got a match."""
+    """Related goals whose top result is wrong, and no-TVET goals that got a match. rank is the 1-based position
+    of the first accepted name in shown, or None."""
     found = []
     for r in results:
         wrong = bool(r.shown) if not r.goal["accept"] else not (r.shown and r.shown[0] in r.goal["accept"])
         if wrong:
             found.append({"goal": r.goal["goal"], "lang": r.goal["lang"], "tags": r.goal.get("tags", []),
-                          "accept": r.goal["accept"], "shown": r.shown})
+                          "accept": r.goal["accept"], "shown": r.shown,
+                          "rank": next((i for i, n in enumerate(r.shown, 1) if n in r.goal["accept"]), None)})
     return found
 
 

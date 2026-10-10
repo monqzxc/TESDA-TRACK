@@ -43,7 +43,9 @@ rejection for no-TVET goals). With `--json`, a `dev` run also lists `errors`: go
 no-TVET goals that got a match, each with the goal, language, tags, accepted names and what was shown.
 
 Goal files in `goals_v2/` are JSON lists of `{goal, accept, lang, tags, group}`; the loader rejects unknown tags,
-languages or qualification names, and duplicate goals (the sealed copy wins: delete the dev one).
+languages or qualification names, and duplicate goals (the sealed copy wins: delete the dev one). Loading `dev` or `test_v1` reads the sealed files
+only to compare normalised goal text, so a dev goal that duplicates a sealed one is rejected; sealed goals are
+never returned or printed. Each error entry has a `rank` (1-based position of the first accepted name shown, or null).
 
 Add `--json training/runs/<name>.json` to keep the numbers (`training/runs/` is git-ignored). Calibrate on `dev`
 only and judge on a held-out set. The objective (0.4 × top-1 + 0.2 × top-3 + 0.4 × rejection) will trade wrong matches
