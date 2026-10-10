@@ -2,9 +2,13 @@
 
 Each qualification's passage is exactly what the API embeds; its queries are the names, jobs, keywords and
 core competencies a learner might type, plus a few English and Filipino goal phrasings over the jobs and keywords,
-each as written in the catalog and in lower case. Evaluation goals are excluded so the held-out numbers stay honest.
+each as written in the catalog and in lower case. Synthetic goal-style queries written from the catalog (data/synthetic/*.json) add realistic phrasings, and a seeded
+share of them gets one typo or text-speak copy. Evaluation goals (v1, dev and sealed) are excluded so the held-out
+numbers stay honest.
 """
 import json
+import random
+import zlib
 from pathlib import Path
 
 from tesda_track.models import Qualification
@@ -12,6 +16,7 @@ from tesda_track.services.embeddings import qualification_text
 from tesda_track.utils.helpers import normalize
 
 GOALS_PATH = Path(__file__).resolve().parent / "data" / "eval_goals.json"
+SYNTHETIC_DIR = Path(__file__).resolve().parent / "data" / "synthetic"
 TEMPLATES = ("I want to be a {x}", "I want to work as a {x}", "gusto kong maging {x}", "may karanasan ako bilang {x}",
              "marunong ako sa {x}")
 
@@ -28,14 +33,79 @@ def _queries(qualification: Qualification) -> list[str]:
     return list(dict.fromkeys(form for query in written for form in (query, normalize(query))))
 
 
-def training_pairs(qualifications: list[Qualification], exclude: set[str]) -> list[tuple[str, str]]:
-    """Every query of every qualification with its passage, minus queries that equal an excluded goal."""
+# Whole-word text-speak that Filipino learners really type (case-insensitive match, lower-case output).
+TEXT_SPEAK = {"ako": "aq", "ko": "q", "gusto": "gsto", "kasi": "kc", "maging": "mging", "para": "pra",
+              "marunong": "mrunong", "work": "wrk", "want": "wnt", "you": "u", "because": "bcs"}
+MIN_TYPO_WORD = 5  # shorter words are too easy to turn into a different word
+
+
+def augment(query: str, seed: int) -> str | None:
+    """One plausible typo variant of the query, or None when nothing sensible can change.
+
+    Either a text-speak substitution of a whole word, or one dropped, doubled or swapped letter inside a word of at
+    least five letters. Deterministic for a given (query, seed); never equal to the query and never empty."""
+    rng = random.Random(f"{seed}:{query}")
+    words = query.split(" ")
+    candidates = []
+    for position, word in enumerate(words):
+        if word.casefold() in TEXT_SPEAK:
+            candidates.append((position, TEXT_SPEAK[word.casefold()]))
+        if len(word) >= MIN_TYPO_WORD and word.isalpha():
+            for index in range(1, len(word) - 1):  # keep the first letter: people rarely mistype it
+                candidates.append((position, word[:index] + word[index + 1:]))  # drop
+                candidates.append((position, word[:index] + word[index] + word[index:]))  # double
+                if word[index] != word[index + 1]:
+                    candidates.append((position, word[:index] + word[index + 1] + word[index] + word[index + 2:]))  # swap
+    rng.shuffle(candidates)
+    for position, replacement in candidates:
+        variant = " ".join([*words[:position], replacement, *words[position + 1:]])
+        if variant.strip() and variant != query:
+            return variant
+    return None
+
+
+def _in_share(query: str, share: float) -> bool:
+    return zlib.crc32(query.encode("utf-8")) % 10_000 < share * 10_000
+
+
+def training_pairs(qualifications: list[Qualification], exclude: set[str],
+                   synthetic: dict[str, list[str]] | None = None, augment_share: float = 0.15
+                   ) -> list[tuple[str, str]]:
+    """Every query of every qualification with its passage, minus queries that equal an excluded goal.
+
+    synthetic maps a qualification name to extra queries, used as written and lower-cased; a seeded hash of the query
+    picks the augment_share of them that also get one typo/text-speak copy."""
     pairs = []
     for qualification in qualifications:
         passage = qualification_text(qualification)
-        pairs.extend((query, passage) for query in _queries(qualification) if normalize(query) not in exclude)
+        queries = _queries(qualification)
+        for raw in (synthetic or {}).get(qualification.name, []):
+            query = " ".join(raw.split())
+            if not query:
+                continue
+            queries += [query, normalize(query)]
+            if _in_share(query, augment_share) and (typo := augment(query, zlib.crc32(query.encode("utf-8")))):
+                queries.append(typo)
+        pairs.extend((query, passage) for query in dict.fromkeys(queries) if normalize(query) not in exclude)
     return pairs
 
 
-def eval_exclusions(path: Path = GOALS_PATH) -> set[str]:
-    return {normalize(goal["goal"]) for goal in json.loads(path.read_text(encoding="utf-8"))}
+def load_synthetic(directory: Path = SYNTHETIC_DIR) -> dict[str, list[str]]:
+    """data/synthetic/*.json merged by qualification name; an unknown name raises, so a typo cannot go unnoticed."""
+    from training.catalog import load_catalog
+
+    known = {q.name for q in load_catalog()[0]}
+    merged: dict[str, list[str]] = {}
+    for path in sorted(directory.glob("*.json")):
+        for name, queries in json.loads(path.read_text(encoding="utf-8")).items():
+            if name not in known:
+                raise ValueError(f"{path.name}: unknown qualification {name!r}")
+            merged.setdefault(name, []).extend(queries)
+    return {name: list(dict.fromkeys(queries)) for name, queries in merged.items()}
+
+
+def eval_exclusions() -> set[str]:
+    """Normalised v1 (dev and test), v2 dev and sealed goals. Sealed text is only reduced to keys, never shown."""
+    from training import goals
+
+    return {normalize(g["goal"]) for split in ("dev", "test_v1", "sealed") for g in goals.load(split)}

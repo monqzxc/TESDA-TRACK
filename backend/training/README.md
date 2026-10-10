@@ -11,7 +11,9 @@ API: the API image copies only `tesda_track`, `migrations` and `seed`, and insta
 | `data/eval_goals.json` | Hand-written learner goals (English, Filipino, Taglish, and goals with no TVET match), each in the `dev` or `test` split |
 | `goals.py` | Loads and validates the goal sets: `dev` (v1 dev + `data/goals_v2/dev/*.json`), `test_v1` (v1 test), `sealed` (`data/goals_v2/sealed/*.json`) |
 | `evaluate.py` | Scores the goals with the API's own matching code and reports top-1, top-3, MRR and rejection rate, overall, per language and per scenario tag |
-| `pairs.py` | Builds (query, passage) training pairs from the catalog |
+| `pairs.py` | Builds (query, passage) training pairs from the catalog, `data/synthetic/*.json` and typo augmentation |
+| `mine.py` | Mines hard negatives (main env, CPU): the closest wrong qualifications for every training query |
+| `data/synthetic/G1..G6.json` | Goal-style queries per qualification (`{"exact name": ["query", ...]}`), written from the catalog by agents |
 | `finetune.py` | Fine-tunes the model on those pairs, exports ONNX and checks that fastembed reproduces it |
 
 **Data.** Training and evaluation use only TESDA catalog text (`seed/qualifications.json`, whose Filipino
@@ -21,7 +23,22 @@ or TSP records. The training queries are each qualification's name, skill, jobs,
 they are left out), plus short English and Filipino phrasings ("I want to work as a Chef", "gusto kong maging
 Chef"). Each query appears as written in the catalog and in lower case, because the tokenizer is cased and the API
 embeds goals as learners type them. Any query that equals an evaluation goal (ignoring case) is dropped, so the
-evaluation stays held out. The catalog gives 18,428 pairs.
+evaluation stays held out. The catalog alone gives 18,309 pairs. `data/synthetic/*.json` adds goal-style queries
+(as written and lower-cased; an unknown qualification name raises), and 15% of them (chosen by a hash of the query)
+also get one deterministic typo or text-speak copy (`pairs.augment`), giving 24,640 pairs. Exclusions cover the v1 goals
+and the v2 dev and sealed goals (normalised); sealed text is reduced to keys and never printed.
+
+### Hard negatives
+
+```bash
+../.venv/Scripts/python -m training.mine --model-path models/tesda-e5-small-v1 --output training/runs/hard-negatives.json --k 2
+```
+
+For every training query, the top-k qualifications by similarity that are not among the query's own (a query that
+belongs to several qualifications excludes all of them). `--limit N` mines a sample. It embeds with fastembed on CPU.
+`finetune --hard-negatives <file>` then trains on (query, positive, negative) triplets with the same cached MNRL
+loss: each pair gets one negative (a seeded pick among its mined ones), and a pair with none mined gets a random
+other qualification's passage. `training.json` records the synthetic count and the file's SHA-256.
 
 ## Evaluate and calibrate
 
@@ -74,7 +91,7 @@ Then, from `backend/`:
 ```
 
 Options: `--epochs 3`, `--batch-size 64`, `--mini-batch-size 8` (lower it if GPU memory runs out; it does not
-change the result), `--lr 2e-5`, `--seed 42`, `--max-steps N` (a short smoke run), `--resume`. It trains with in-batch
+change the result), `--lr 2e-5`, `--seed 42`, `--max-steps N` (a short smoke run), `--hard-negatives FILE`, `--no-synthetic`, `--resume`. It trains with in-batch
 negatives (`CachedMultipleNegativesRankingLoss`, no duplicate texts in a batch), uses fp16 on a CUDA GPU, and
 reports the loss on 5% of the pairs held out from training. Use a GPU: a step of 64 pairs took about 2.5 s on
 a 4 GB laptop RTX 3050 (a full 3-epoch run is about 820 steps, roughly 35 minutes) but about 3 minutes on a

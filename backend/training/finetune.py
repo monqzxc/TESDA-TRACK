@@ -5,6 +5,7 @@ Run from backend/ inside .venv-train:  python -m training.finetune --output mode
 Dev-only: torch and sentence-transformers are imported inside main(), so this module imports without them.
 """
 import argparse
+import hashlib
 import json
 import random
 import re
@@ -19,7 +20,7 @@ import numpy as np
 from tesda_track.models import Qualification
 from tesda_track.services.embeddings import qualification_text
 from training.catalog import load_catalog
-from training.pairs import eval_exclusions, training_pairs
+from training.pairs import eval_exclusions, load_synthetic, training_pairs
 
 BASE_MODEL = "intfloat/multilingual-e5-small"
 HELD_OUT = 0.05
@@ -43,7 +44,7 @@ def check_output_folder(output: Path, resume: bool, checkpoint: str | None) -> N
                              "a new name, e.g. tesda-e5-small-v2")
 
 
-def split_pairs(pairs: list[tuple[str, str]], seed: int) -> tuple[list[tuple[str, str]], list[tuple[str, str]]]:
+def split_pairs(pairs: list[tuple], seed: int) -> tuple[list[tuple], list[tuple]]:
     """A seeded 5% of the pairs for the evaluation loss; every qualification keeps most of its pairs for training."""
     shuffled = list(pairs)
     random.Random(seed).shuffle(shuffled)
@@ -58,11 +59,38 @@ def parity_texts(qualifications: list[Qualification]) -> list[str]:
             [f"query: {q.name.lower()}" for q in sample[5:]])
 
 
-def _dataset(pairs: list[tuple[str, str]]):
+def attach_negatives(pairs: list[tuple[str, str]], rows: list[dict], qualifications: list[Qualification],
+                     seed: int) -> tuple[list[tuple[str, str, str]], int]:
+    """(query, passage, negative passage) for every pair, plus how many had no mined negative.
+
+    One dataset needs the same columns in every row, so each pair gets exactly one negative: a seeded pick among its
+    mined ones. A pair with none mined (query not in the mining file) gets a random other qualification's passage,
+    which is no harder than an in-batch negative, so those pairs still train like plain pairs."""
+    passage_of = {q.name: qualification_text(q) for q in qualifications}
+    name_of = {passage: name for name, passage in passage_of.items()}
+    mined: dict[tuple[str, str], list[str]] = {}
+    for row in rows:
+        if row["negative_name"] in passage_of:
+            mined.setdefault((row["query"], row["positive_name"]), []).append(passage_of[row["negative_name"]])
+    rng = random.Random(seed)
+    names = list(passage_of)
+    triplets, missing = [], 0
+    for query, passage in pairs:
+        options = mined.get((query, name_of[passage]))
+        if not options:
+            missing += 1
+            options = [passage_of[n] for n in rng.sample(names, 2) if passage_of[n] != passage][:1]
+        triplets.append((query, passage, rng.choice(options)))
+    return triplets, missing
+
+
+def _dataset(pairs: list[tuple]):
     from datasets import Dataset
 
-    return Dataset.from_dict({"anchor": [f"query: {query}" for query, _ in pairs],
-                              "positive": [f"passage: {passage}" for _, passage in pairs]})
+    columns = {"anchor": [f"query: {row[0]}" for row in pairs], "positive": [f"passage: {row[1]}" for row in pairs]}
+    if pairs and len(pairs[0]) == 3:
+        columns["negative"] = [f"passage: {row[2]}" for row in pairs]
+    return Dataset.from_dict(columns)
 
 
 def export_onnx(folder: Path) -> Path:
@@ -127,6 +155,9 @@ def main() -> None:
     parser.add_argument("--lr", type=float, default=2e-5)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--max-steps", type=int, default=None, help="stop early (smoke runs)")
+    parser.add_argument("--hard-negatives", type=Path, default=None,
+                        help="file from `python -m training.mine`: train on (query, positive, hard negative) triplets")
+    parser.add_argument("--no-synthetic", action="store_true", help="catalog-only pairs, without data/synthetic")
     parser.add_argument("--resume", action="store_true", help="continue from the checkpoint in <output>/checkpoints")
     args = parser.parse_args()
 
@@ -145,8 +176,17 @@ def main() -> None:
     (output / "training.json").unlink(missing_ok=True)
 
     qualifications, _ = load_catalog()
-    pairs = training_pairs(qualifications, eval_exclusions())
+    synthetic = {} if args.no_synthetic else load_synthetic()
+    pairs = training_pairs(qualifications, eval_exclusions(), synthetic)
     train, held_out = split_pairs(pairs, args.seed)
+    negatives_hash = unmined = None
+    if args.hard_negatives:
+        raw = args.hard_negatives.read_bytes()
+        negatives_hash = hashlib.sha256(raw).hexdigest()
+        train, unmined = attach_negatives(train, json.loads(raw), qualifications, args.seed)
+        held_out, _ = attach_negatives(held_out, json.loads(raw), qualifications, args.seed)
+        print(f"Hard negatives from {args.hard_negatives} (sha256 {negatives_hash[:12]}): "
+              f"{unmined} of {len(train)} train pairs had none mined and got a random negative")
     cuda = torch.cuda.is_available()
     print(f"{len(pairs)} pairs from {len(qualifications)} qualifications: {len(train)} train, "
           f"{len(held_out)} held out; device {'cuda' if cuda else 'cpu'}")
@@ -184,7 +224,8 @@ def main() -> None:
         raise SystemExit(f"fastembed parity {cosine:.6f} is below {MIN_PARITY}: the ONNX export does not match")
     metadata = {"base_model": BASE_MODEL, "seed": args.seed, "epochs": args.epochs, "max_steps": args.max_steps,
                 "batch_size": args.batch_size, "mini_batch_size": args.mini_batch_size, "learning_rate": args.lr,
-                "pairs": len(pairs), "train_pairs": len(train), "held_out_pairs": len(held_out),
+                "pairs": len(pairs), "synthetic_queries": sum(len(v) for v in synthetic.values()),
+                "hard_negatives_sha256": negatives_hash, "pairs_without_mined_negative": unmined, "train_pairs": len(train), "held_out_pairs": len(held_out),
                 "held_out_loss": {"before": before, "after": after}, "steps": result.global_step,
                 "resumed_at_step": resumed_at, "train_seconds": round(seconds, 1), "device": "cuda" if cuda else "cpu",
                 "parity_cosine": cosine, "date": datetime.now(timezone.utc).isoformat(timespec="seconds"),
