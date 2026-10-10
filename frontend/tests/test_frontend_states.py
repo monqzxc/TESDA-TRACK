@@ -364,6 +364,7 @@ def test_the_readiness_result_decides_between_training_and_an_nc(offline_api, mo
     assert app.session_state["main_tabs"] == "Training & assessment"
     assert app.session_state["training_kinds"] == [kind], "the centers that fit the verdict"
     assert app.session_state["training_qualifications"] == ["SMAW-NC-II"]
+    assert app.text_input(key="training_search").value == "Welding", "the qualification's keyword fills the search box"
 
 
 def scroll_targets(app):

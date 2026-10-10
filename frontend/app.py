@@ -11,7 +11,7 @@ from centers import ASSESSMENT, TRAINING
 from directions import DEFAULT_ROUTING_URL, RouteClient
 from presentation import FAVICON, brand, empty_state, footer, journey, last_goal, section_header, step_heading
 from skills_bridge_view import show_skills_bridge
-from training_view import show_training as show_center_finder
+from training_view import short_name, show_training as show_center_finder
 
 
 # Your goal's ideas: each button puts its goal in the box. Examples are the big pills, samples the small ones.
@@ -345,10 +345,12 @@ def verdict_for(result: dict) -> tuple[str, str, str, str]:
     return VERDICTS.get(result["level"].split()[0].lower(), VERDICTS["moderate"])
 
 
-def open_training(code: str, kind: str) -> None:
-    """Training & assessment, already showing the centers that fit the recommendation, for this qualification."""
+def open_training(qualification: dict, kind: str) -> None:
+    """Training & assessment, already showing the centers that fit the recommendation: the qualification's keyword
+    in the search box, where learners can see and change it, and the qualification and center type as filters."""
     st.session_state["training_kinds"] = [kind]
-    st.session_state["training_qualifications"] = [code]
+    st.session_state["training_qualifications"] = [qualification["code"]]
+    st.session_state["training_search"] = short_name(qualification["name"])
     navigate("Training & assessment")
 
 
@@ -387,7 +389,7 @@ def show_recommendation(context: dict) -> None:
         # The action sits with the verdict; the skill lists can run to dozens, so they fold away, open when there
         # are gaps to work on.
         st.button(action, key="finder_next", type="primary", icon=":material/arrow_forward:", icon_position="right",
-                  on_click=open_training, args=(code, kind))
+                  on_click=open_training, args=(qualification, kind))
         with st.expander(f"Your strengths ({len(result['strengths'])}) and skills to improve "
                          f"({len(result['skill_gaps'])})", expanded=bool(result["skill_gaps"]),
                          icon=":material/checklist:"):

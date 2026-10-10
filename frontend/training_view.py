@@ -704,7 +704,7 @@ def _peso(amount) -> str:
     return f"₱{float(amount):,.2f}"
 
 
-def _short_name(name: str) -> str:
+def short_name(name: str) -> str:
     """A qualification without its level or abbreviation, for one-line summaries."""
     return _LEVEL.sub("", name).strip() or name
 
@@ -1071,7 +1071,7 @@ def _filters(names: dict[str, str], regions: dict, province_options: list[str], 
             st.multiselect("Qualification", list(names), format_func=names.get, key="training_qualifications",
                            placeholder="Search by qualification, skill or job title", label_visibility="collapsed")
         if not section.open:
-            chosen = [_short_name(names[code]) for code in state["training_qualifications"]]
+            chosen = [short_name(names[code]) for code in state["training_qualifications"]]
             _section_summary("qualification", ", ".join(chosen) or "Any qualification", empty=not chosen)
 
         with st.popover(f"More filters{_badge(counts['more'])}", icon=":material/tune:", width="stretch",
