@@ -67,3 +67,23 @@ def test_sibling_levels_are_dropped_as_negatives_unless_the_query_names_a_level_
     assert missing == 1 and triplets[0][2] not in {sibling, qualification_text(cook2)}
     triplets, missing = attach_negatives(pairs[:1], only_sibling, qualifications, 1, allow_sibling=True)
     assert missing == 0 and triplets[0][2] == sibling
+
+
+def test_random_fallback_never_picks_an_owner_of_the_query_or_a_sibling():
+    from tesda_track.services.embeddings import qualification_text
+    from training.catalog import load_catalog
+    from training.finetune import attach_negatives
+    from training.pairs import family
+
+    qualifications, _ = load_catalog()
+    by_name = {q.name: q for q in qualifications}
+    a, b = by_name["Cookery NC II"], by_name["Flux-Cored Arc Welding (FCAW) NC II"]
+    sibling = by_name["Flux-Cored Arc Welding (FCAW) NC III"]
+    pairs = [("Shared Goal", qualification_text(a)), ("shared goal", qualification_text(b))]
+    forbidden = {qualification_text(a), qualification_text(b), qualification_text(sibling)}
+    for seed in range(200):
+        triplets, missing = attach_negatives(pairs, [], qualifications, seed)
+        assert missing == 2
+        assert all(t[2] not in forbidden for t in triplets)
+        again, _ = attach_negatives(pairs, [], qualifications, seed)
+        assert again == triplets

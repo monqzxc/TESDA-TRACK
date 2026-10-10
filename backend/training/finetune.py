@@ -20,6 +20,7 @@ import numpy as np
 from tesda_track.models import Qualification
 from tesda_track.services.embeddings import qualification_text
 from training.catalog import load_catalog
+from tesda_track.utils.helpers import normalize
 from training.pairs import eval_exclusions, family, load_synthetic, names_a_level, training_pairs
 
 BASE_MODEL = "intfloat/multilingual-e5-small"
@@ -64,7 +65,7 @@ def attach_negatives(pairs: list[tuple[str, str]], rows: list[dict], qualificati
     """(query, passage, negative passage) for every pair, plus how many had no mined negative.
 
     One dataset needs the same columns in every row, so each pair gets exactly one negative: a seeded pick among its
-    mined ones. A pair with none mined (query not in the mining file) gets a random other qualification's passage,
+    mined ones. A pair with none mined gets a random passage of a qualification that does not own the query,
     which is no harder than an in-batch negative, so those pairs still train like plain pairs.
 
     Another level of the positive's own family ("Cookery NC III" for "Cookery NC II") is often a correct answer, so
@@ -78,15 +79,24 @@ def attach_negatives(pairs: list[tuple[str, str]], rows: list[dict], qualificati
             continue
         if row["negative_name"] in passage_of:
             mined.setdefault((row["query"], row["positive_name"]), []).append(passage_of[row["negative_name"]])
+    # Every qualification a query belongs to is a correct answer, so none may be its random negative either.
+    owners: dict[str, set[str]] = {}
+    for query, passage in pairs:
+        owners.setdefault(normalize(query), set()).add(name_of[passage])
+    for row in rows:
+        owners.setdefault(normalize(row["query"]), set()).add(row["positive_name"])
     rng = random.Random(seed)
-    names = list(passage_of)
+    names = sorted(passage_of)
     triplets, missing = [], 0
     for query, passage in pairs:
         options = mined.get((query, name_of[passage]))
         if not options:
             missing += 1
-            others = [n for n in rng.sample(names, 3) if allow_sibling or family(n) != family(name_of[passage])]
-            options = [passage_of[n] for n in others if passage_of[n] != passage][:1] or [passage_of[names[0]]]
+            own = owners[normalize(query)]
+            own_families = {family(n) for n in own}
+            skip_family = not (allow_sibling or names_a_level(query))
+            candidates = [n for n in names if n not in own and not (skip_family and family(n) in own_families)]
+            options = [passage_of[rng.choice(candidates)]]
         triplets.append((query, passage, rng.choice(options)))
     return triplets, missing
 

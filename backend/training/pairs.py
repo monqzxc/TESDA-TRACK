@@ -45,7 +45,7 @@ MIN_TYPO_WORD = 5  # shorter words are too easy to turn into a different word
 
 def family(name: str) -> str:
     """A qualification name without its NC level: "Cookery NC II" and "Cookery NC III" share the family "Cookery"."""
-    return LEVEL_SUFFIX.sub("", name).strip()
+    return LEVEL_SUFFIX.sub("", name).strip().casefold()
 
 
 def names_a_level(query: str) -> bool:

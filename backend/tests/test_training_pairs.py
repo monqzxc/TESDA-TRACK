@@ -153,8 +153,9 @@ def test_text_speak_gets_a_fair_share_of_variants():
 def test_family_and_level_cues():
     from training.pairs import family, names_a_level
 
-    assert family("Cookery NC II") == family("Cookery NC III") == "Cookery"
-    assert family("Rigging NC II (II-5)") == "Rigging"
+    assert family("Cookery NC II") == family("Cookery NC III") == "cookery"
+    assert family("GAS Welding NC II") == family("Gas Welding NC I")
+    assert family("Rigging NC II (II-5)") == "rigging"
     assert names_a_level("may NC II na ako") and names_a_level("nc3") and names_a_level("level 2")
     assert not names_a_level("gusto kong maging chef") and not names_a_level("ncaa sports")
 
