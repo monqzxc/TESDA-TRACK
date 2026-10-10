@@ -208,3 +208,44 @@ def test_fuzzy_adds_no_matches_on_goals_that_must_be_rejected(catalog_rules):
 @pytest.mark.parametrize("goal", ["I want to be an airline pilot", "I'm looking for work", "the reason I need a job"])
 def test_catalog_near_words_pilot_looking_reason_do_not_match(catalog_rules, goal):
     assert _codes(goal, catalog_rules) == set()
+
+
+@pytest.mark.parametrize("goal", [
+    "I finished high school", "wedding planner", "take care of my baby", "my machines are old", "the lines were long",
+    "i like to bake", "we serve food", "maghinang", "bakery near me", "cooling system", "baryo namin",
+])
+def test_ordinary_words_are_not_typos(catalog_rules, goal):
+    from tesda_track.utils.helpers import fuzzy_matches, normalize
+    assert fuzzy_matches(normalize(goal), catalog_rules) == {}
+    assert not any("(" in h["reason"] for h in score_qualifications(goal, {}, catalog_rules))
+    assert analyze_user_query(goal, catalog_rules)["career_goal"] is None
+
+
+def test_typos_still_hit_once_per_goal_word(catalog_rules):
+    from tesda_track.utils.helpers import fuzzy_matches
+    for goal, keyword in [("weldr", "welder"), ("karpentero", "karpintero"), ("caregivr", "caregiver"),
+                          ("bilder", "builder"), ("electrcian", "electrician")]:
+        assert fuzzy_matches(goal, catalog_rules) == {keyword: goal}
+    assert len(fuzzy_matches("weldr welder", catalog_rules)) == 1
+
+
+def test_fuzzy_hits_on_dev_goals_never_come_from_excluded_words(catalog_rules):
+    from tesda_track.utils.helpers import COMMON_WORDS, FuzzyKeywords, normalize
+    dev = Path(__file__).resolve().parents[1] / "training" / "data" / "goals_v2" / "dev"
+    files = sorted(dev.glob("*.json"))
+    if not files:
+        pytest.skip("no dev goals present")
+    fuzzy = FuzzyKeywords(catalog_rules)
+    hit_words = {}
+    for f in files:
+        for g in json.loads(f.read_text(encoding="utf-8")):
+            for keyword, word in fuzzy.matches(normalize(g["goal"])).items():
+                hit_words[word] = keyword
+    print("still fuzzy-hit:", sorted(f"{w}->{k}" for w, k in hit_words.items()))
+    assert not set(hit_words) & (COMMON_WORDS | fuzzy.known)
+
+
+def test_rule_views_is_one_list_per_snapshot(client, session):
+    from tesda_track.services import catalog
+    snap = catalog.snapshot(session)
+    assert snap.rule_views is snap.rule_views

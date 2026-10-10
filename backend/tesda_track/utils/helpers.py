@@ -50,29 +50,66 @@ def _edit_distance(a: str, b: str) -> int:
     return previous[-1]
 
 
+# Everyday English and Tagalog words that sit one or two edits from a trade word but are not trade words
+# (finished/finisher, wedding/welding, baby/baboy, bake/baker, serve/server, cooling/cooking, baryo/barko ...).
+COMMON_WORDS = frozenset("""
+    finished finish finishing wedding weddings baby babies bake baked bakes serve served serves serving lines cooling
+    baryo barrio barako machines machine nagtatayo nagtatali maghinang trabaho working worked works looking pilot
+    school graduate graduated studied study student students person people house home water travel
+    """.split())
+_SUFFIXES = ("ings", "ing", "ers", "ed", "er", "es", "s", "e")
+
+
+def _stem(word: str) -> str:
+    for suffix in _SUFFIXES:
+        if word.endswith(suffix) and len(word) - len(suffix) >= 3:
+            return word[:-len(suffix)]
+    return word
+
+
 class FuzzyKeywords:
     def __init__(self, qualifications: list[dict]):
         keywords = {k for q in qualifications for k in q["career_keywords"]}
-        # A goal word that is itself a catalog keyword word is never treated as a typo of another keyword.
-        self.known = {w for k in keywords for w in _WORD.findall(k)}
+        # Every word of the catalog's own text (names, jobs, skill labels, keywords, competencies) is a real word,
+        # never a typo of another keyword.
+        texts = [t for q in qualifications
+                 for t in (q.get("name"), q.get("skill_label"), *q.get("possible_jobs", []), *q["career_keywords"],
+                           *(c["name"] for c in q.get("competencies", [])))
+                 if t]
+        self.known = {w for t in texts for w in _WORD.findall(t.lower())} | COMMON_WORDS
         self.index: dict[str, set[str]] = {}
         for keyword in keywords:
             if len(keyword) >= _MIN_LETTERS and keyword.isalpha():
                 for variant in _deletions(keyword, _allowed_edits(keyword)):
                     self.index.setdefault(variant, set()).add(keyword)
 
+    def candidate(self, word: str) -> str | None:
+        """The one keyword `word` is a typo of (the closest), or None."""
+        if len(word) < _MIN_LETTERS - 1 or len(word) > 40 or word in self.known:
+            return None
+        best = None
+        for variant in _deletions(word, 2 if len(word) >= 7 else 1):
+            for keyword in self.index.get(variant, ()):
+                # Short keywords keep their first letter: that is where pilot/hilot and looking/cooking differ.
+                if word[0] != keyword[0] and len(keyword) < 9:
+                    continue
+                # A difference that is only an ending (finished/finisher, serve/server) is another word, not a typo;
+                # a plain plural of the keyword (nurses/nurse) still matches.
+                if _stem(word) == _stem(keyword) and word not in (keyword + "s", keyword + "es"):
+                    continue
+                distance = _edit_distance(word, keyword)
+                if distance <= _allowed_edits(keyword) and (best is None or (distance, keyword) < best):
+                    best = (distance, keyword)
+        return best[1] if best else None
+
     def matches(self, text: str) -> dict[str, str]:
-        """Keyword -> the goal word that is a near-miss of it (exact matches are left to `contains`)."""
+        """Keyword -> the goal word that is a near-miss of it (exact matches are left to `contains`). At most one
+        keyword per goal word, so a typo cannot stack hits."""
         found: dict[str, str] = {}
-        for word in set(_WORD.findall(text)):
-            if len(word) < _MIN_LETTERS - 1 or len(word) > 40 or word in self.known:
-                continue
-            for variant in _deletions(word, 2 if len(word) >= 7 else 1):
-                for keyword in self.index.get(variant, ()):
-                    # Short keywords keep their first letter: that is where pilot/hilot and looking/cooking differ.
-                    if (keyword not in found and (word[0] == keyword[0] or len(keyword) >= 9)
-                            and _edit_distance(word, keyword) <= _allowed_edits(keyword)):
-                        found[keyword] = word
+        for word in sorted(set(_WORD.findall(text))):
+            keyword = self.candidate(word)
+            if keyword is not None:
+                found.setdefault(keyword, word)
         return found
 
 
