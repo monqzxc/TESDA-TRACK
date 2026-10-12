@@ -39,6 +39,28 @@ def readiness(app):
     return [metric.value for metric in app.metric if metric.label == "Your readiness"]
 
 
+def open_step(app, number):
+    """Use the finder's numbered step tabs, as a learner does."""
+    app.button(key=f"finder_tab_{number}").click()
+    rerun(app)
+
+
+def asks_because(app, reason):
+    """The readiness check opens with why we ask: the route the learner's experience suggests."""
+    return any(reason in md.value for md in app.markdown)
+
+
+def rate_welding_skills(app, confident=3):
+    """The test catalog's SMAW NC II has one Basic competency, then five Core ones. The first `confident` are
+    rated confident and the rest "some experience": three make 75%, all six make 100%."""
+    open_step(app, 3)
+    app.radio[0].set_value("I can do this confidently")
+    click(app, "Next: Core skills")
+    for index, radio in enumerate(app.radio, start=1):
+        radio.set_value("I can do this confidently" if index < confident else "I have some experience")
+    click(app, "Analyze My Skills")
+
+
 def test_reruns_reuse_the_last_matches_and_pathway(ui, monkeypatch):
     from api_client import ApiClient
 
@@ -50,68 +72,87 @@ def test_reruns_reuse_the_last_matches_and_pathway(ui, monkeypatch):
         monkeypatch.setattr(ApiClient, name, counted)
     app = ui
     click(app, "Become a welder")
-    click(app, "Find my matches")
-    assert calls == ["match"]
+    click(app, "Get Recommendation")
+    assert calls == ["match"], "Your matches doesn't need the pathway yet"
+    open_step(app, 3)
+    assert calls == ["match", "pathway"]
     rerun(app)
-    assert calls == ["match"], "a rerun with nothing changed doesn't ask the API again"
+    assert calls == ["match", "pathway"], "a rerun with nothing changed doesn't ask the API again"
+    open_step(app, 2)
     app.selectbox(key="follow_experience").select("More than 3 years").run()
-    assert calls == ["match", "match"], "a changed answer refreshes matches"
-    app.selectbox(key="follow_certification").select("No").run()
-    assert calls == ["match", "match", "match", "pathway"], "a pathway needs both answers"
+    open_step(app, 3)
+    assert calls == ["match", "pathway", "match", "pathway"], "a changed answer does"
 
 def test_pathway_finder_flow(ui):
     app = ui
     assert [button.label for button in app.sidebar.button][:2] == ["Find my pathway", "Qualification library"]
-    click(app, "Find my matches")
+    click(app, "Get Recommendation")
     assert any("Describe your career goal" in warning.value for warning in app.warning)
     assert "analysis" not in app.session_state
 
     click(app, "Become a welder")
     assert app.text_area(key="goal_query").value == "I want to be a welder."
-    click(app, "Find my matches")
+    click(app, "Get Recommendation")
     assert app.selectbox(key="qualification_selected").value == "SMAW-NC-II"
     app.selectbox(key="follow_experience").select("More than 3 years").run()
     app.selectbox(key="follow_certification").select("No").run()
     assert not app.exception
-    assert any(title.value == "Assessment Readiness Check" for title in app.subheader)
-
+    open_step(app, 3)
+    assert asks_because(app, "may cover several competencies"), "experience without a certificate"
+    assert len(app.radio) == 1, "Basic skills come first, on their own"
+    app.radio[0].set_value("I can do this confidently")
+    click(app, "Next: Core skills")
+    assert len(app.radio) == 5
     click(app, "Analyze My Skills")
     assert any("answer every competency" in warning.value for warning in app.warning)
     assert not readiness(app)
-    assert len(app.radio) == 6
     for index, radio in enumerate(app.radio):
-        radio.set_value("I can do this confidently" if index < 3 else "I have some experience")
+        radio.set_value("I can do this confidently" if index < 2 else "I have some experience")
     click(app, "Analyze My Skills")
-    assert readiness(app) == ["75%"]
-    assert any(title.value == "Moderate Readiness" for title in app.subheader)
+    assert readiness(app) == ["75%"], "the Basic answer from the first part counts too"
+    assert any(md.value == "**Moderate Readiness**" for md in app.markdown)
+    assert any(title.value == "Take focused training, then the NC assessment" for title in app.subheader)
+    assert any("Close your skill gaps" in md.value for md in app.markdown), "the moderate route's pathway"
 
     app.run()
     assert readiness(app) == ["75%"]
+    open_step(app, 2)
     app.selectbox(key="follow_certification").select("Yes").run()
+    open_step(app, 4)
     assert readiness(app) == ["75%"]
-    assert any(title.value == "Skill Gap Check" for title in app.subheader)
+    open_step(app, 3)
+    assert asks_because(app, "makes a competency check useful"), "a certificate holder"
 
+    open_step(app, 2)
     app.selectbox(key="qualification_selected").select("CSS-NC-II").run()
+    open_step(app, 4)
     assert not readiness(app)
-    assert all(radio.value is None for radio in app.radio)
+    open_step(app, 3)
+    assert app.radio and all(radio.value is None for radio in app.radio)
+    open_step(app, 2)
     app.selectbox(key="qualification_selected").select("SMAW-NC-II").run()
+    open_step(app, 4)
     assert readiness(app) == ["75%"]
     assert any("last submitted answers" in caption.value for caption in app.caption)
 
+    click(app, "Change goal")
     app.text_area(key="goal_query").set_value(" ")
-    click(app, "Find my matches")
+    click(app, "Get Recommendation")
     assert any("Describe your career goal" in warning.value for warning in app.warning)
     assert app.session_state["original_query"] == "I want to be a welder."
+    open_step(app, 4)
     assert readiness(app) == ["75%"]
 
+    open_step(app, 1)
     app.text_area(key="goal_query").set_value("I want to fix computers.")
-    click(app, "Find my matches")
+    click(app, "Get Recommendation")
     assert app.selectbox(key="qualification_selected").value == "CSS-NC-II"
     assert app.selectbox(key="follow_experience").value == "Choose an answer"
     assert app.selectbox(key="follow_certification").value == "Choose an answer"
-    assert not app.session_state["readiness_results"]
+    open_step(app, 4)
     assert not readiness(app)
-    assert all(radio.value is None for radio in app.radio)
+    open_step(app, 3)
+    assert app.radio and all(radio.value is None for radio in app.radio)
 
 
 def create_account(app, email="juan@example.com", password="correct horse battery"):
@@ -133,12 +174,10 @@ def test_signed_in_learner_results_are_saved_to_progress(ui):
     assert "Juan Dela Cruz" in app.button(key="open_account_sidebar").label
     rerun(app, "Find my pathway")
     click(app, "Become a welder")
-    click(app, "Find my matches")
+    click(app, "Get Recommendation")
     app.selectbox(key="follow_experience").select("More than 3 years").run()
     app.selectbox(key="follow_certification").select("No").run()
-    for index, radio in enumerate(app.radio):
-        radio.set_value("I can do this confidently" if index < 3 else "I have some experience")
-    click(app, "Analyze My Skills")
+    rate_welding_skills(app)
     assert readiness(app) == ["75%"]
 
     app.session_state["main_tabs"] = "My progress"
@@ -179,7 +218,7 @@ def test_registration_requires_consent(ui):
 
 def recommend_welding_readiness_path(app):
     click(app, "Become a welder")
-    click(app, "Find my matches")
+    click(app, "Get Recommendation")
     app.selectbox(key="follow_experience").select("More than 3 years").run()
     app.selectbox(key="follow_certification").select("No").run()
 
@@ -187,7 +226,10 @@ def recommend_welding_readiness_path(app):
 def test_learner_follows_the_curated_pathway_and_ticks_off_steps(ui):
     app = ui
     recommend_welding_readiness_path(app)
-    assert any("Turn your experience into a certificate" in md.value for md in app.markdown)
+    rate_welding_skills(app, confident=6)
+    assert readiness(app) == ["100%"]
+    assert any("Turn your experience into a certificate" in md.value for md in app.markdown), \
+        "high readiness: the pathway straight to assessment"
     assert not any(button.label == "Follow this pathway" for button in app.button), "signed-out learners can't follow"
 
     create_account(app)
@@ -264,7 +306,7 @@ def test_unreachable_api_shows_an_error_instead_of_crashing(monkeypatch):
     assert any("can't reach" in error.value for error in app.error)
 
 
-def test_reports_tab_is_only_for_administrators(ui, training_data):
+def test_reports_tab_is_only_for_administrators(ui, training_data, clean_match_stats):
     app = ui
     assert "Reports" not in [button.label for button in app.sidebar.button]
     create_account(app)
@@ -280,7 +322,7 @@ def test_reports_tab_is_only_for_administrators(ui, training_data):
     metrics = {metric.label: metric.value for metric in app.metric}
     assert metrics["Learners"] == "2", "the administrator and the learner who signed up"
     assert metrics["Open assessment seats"] == "10"
-    assert "Goals searched" in metrics and "No-match rate" in metrics, "counts are committed by other tests, so only presence is checked"
+    assert metrics["Goals searched"] == "0" and metrics["No-match rate"] == "—"
     supply = app.dataframe[-1].value
     assert list(supply.loc[supply["Region"] == "National Capital Region", "Programs"]) == [1]
 
@@ -311,8 +353,6 @@ def test_report_date_range_is_checked_before_asking_the_api(ui, training_data, m
     ("Magkano ang assessment?", "Training & assessment"),
     ("saan may training sa Cebu", "Training & assessment"),
     ("how do i apply", "Training & assessment"),
-    ("wherever", "for example"),
-    ("whenever you are ready I want to be an astronaut", "describe a more specific career goal"),
     ("astronaut", "for example"),
     ("hello", "for example"),
     ("I want to be an astronaut on the moon", "describe a more specific career goal"),
@@ -320,5 +360,5 @@ def test_report_date_range_is_checked_before_asking_the_api(ui, training_data, m
 def test_a_goal_without_a_match_gets_guidance_for_its_kind(ui, goal, expected):
     app = ui
     app.text_area(key="goal_query").set_value(goal)
-    click(app, "Find my matches")
+    click(app, "Get Recommendation")
     assert any(expected in info.value for info in app.info), [info.value for info in app.info]

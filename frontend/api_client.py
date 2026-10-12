@@ -89,6 +89,10 @@ class ApiClient:
         return self._request("POST", "/api/v1/analysis/readiness",
                              json={"qualification_code": qualification_code, "answers": answers})
 
+    def pathways(self, qualification_code: str, route: str) -> list[dict]:
+        """The curated pathways for a qualification on one recommendation route."""
+        return self._request("GET", "/api/v1/pathways", params={"qualification_code": qualification_code, "route": route})
+
     # Accounts
     def register(self, email: str, password: str, full_name: str, privacy_consent: bool) -> dict:
         return self._request("POST", "/api/v1/auth/register", json={

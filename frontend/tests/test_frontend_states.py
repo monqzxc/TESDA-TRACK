@@ -49,6 +49,13 @@ def offline_api(monkeypatch):
     monkeypatch.setattr(ApiClient, "training_programs", lambda self, **kwargs: [])
     monkeypatch.setattr(ApiClient, "training_providers", lambda self: [])
     monkeypatch.setattr(ApiClient, "assessment_centers", lambda self: [])
+    state["pathways"], state["pathway_lookups"] = [], []
+
+    def pathways(self, qualification_code, route):
+        state["pathway_lookups"].append((qualification_code, route))
+        return deepcopy(state["pathways"])
+
+    monkeypatch.setattr(ApiClient, "pathways", pathways)
 
     def report(self, token, name, **params):
         state["reports"].append(name)
@@ -101,7 +108,7 @@ def new_app(role=None):
 
 
 def page_text(app):
-    native = [element.value for kind in ("markdown", "caption", "info", "warning", "error", "header", "subheader")
+    native = [element.value for kind in ("markdown", "caption", "info", "warning", "error", "subheader")
               for element in getattr(app, kind)]
     return "\n".join([*native, *(element.proto.body for element in app.get("html"))])
 
@@ -110,6 +117,46 @@ def library_names(app):
     # Restrict to the qualification cards; selectbox options include the full catalog.
     return {item["name"] for item in CATALOG
             if any(item["name"] in node.value for node in app.markdown)}
+
+
+def mock_finder(monkeypatch, readiness_calls=None):
+    """A welding goal with unknown experience, matched to Welding NC II on an Assessment Readiness path."""
+    profile = {"career_goal": "Welder", "experience_years": None, "has_certification": None,
+               "intent": "training", "existing_skills": []}
+    monkeypatch.setattr(ApiClient, "analyze_goal", lambda self, query: {"profile": deepcopy(profile)})
+    monkeypatch.setattr(ApiClient, "match", lambda self, query, updated: {"profile": updated, "matches": [
+        {"qualification": CATALOG[0], "score": 90, "reason": "Matches your welding goal."}]})
+    monkeypatch.setattr(ApiClient, "pathway", lambda self, updated, code: {
+        "recommendation": "ASSESSMENT_READINESS", "reason": "Build on your experience.",
+        "next_step": "Check your current skills."})
+
+    def readiness(self, code, answers):
+        if readiness_calls is not None:
+            readiness_calls.append((code, answers))
+        return {"score": 100, "level": "High readiness", "recommendation": "Explore an assessment.",
+                "strengths": ["Weld safely"], "skill_gaps": []}
+
+    monkeypatch.setattr(ApiClient, "readiness", readiness)
+
+
+def submit_goal(app, goal="I want to be a welder."):
+    app.text_area(key="goal_query").set_value(goal)
+    next(button for button in app.button if button.label == "Get Recommendation").click()
+    return run_page(app)
+
+
+def open_step(app, number):
+    app.button(key=f"finder_tab_{number}").click()
+    return run_page(app)
+
+
+def press(app, key):
+    app.button(key=key).click()
+    return run_page(app)
+
+
+def shown_selectboxes(app):
+    return {box.key for box in app.selectbox}
 
 
 def test_service_outage_keeps_sign_in_and_retry_recovers(offline_api, monkeypatch):
@@ -231,33 +278,18 @@ def test_expired_session_returns_to_sign_in(offline_api, monkeypatch):
 
 
 def test_finder_answers_survive_tab_switch_without_hidden_requests(offline_api, monkeypatch):
-    profile = {"career_goal": "Welder", "experience_years": None, "has_certification": None,
-               "intent": "training", "existing_skills": []}
+    mock_finder(monkeypatch)
     calls = []
-    monkeypatch.setattr(ApiClient, "analyze_goal", lambda self, query: {"profile": deepcopy(profile)})
-
-    def match(self, query, updated_profile):
-        calls.append("match")
-        return {"profile": updated_profile, "matches": [
-            {"qualification": CATALOG[0], "score": 90, "reason": "Matches your welding goal."}]}
-
-    def pathway(self, updated_profile, code):
-        calls.append("pathway")
-        return {"recommendation": "ASSESSMENT_READINESS", "reason": "Build on your experience.",
-                "next_step": "Check your current skills."}
-
-    monkeypatch.setattr(ApiClient, "match", match)
-    monkeypatch.setattr(ApiClient, "pathway", pathway)
-    monkeypatch.setattr(ApiClient, "readiness", lambda self, code, answers: {
-        "score": 100, "level": "High readiness", "recommendation": "Explore an assessment.",
-        "strengths": ["Weld safely"], "skill_gaps": []})
-    app = run_page(new_app())
-    app.text_area(key="goal_query").set_value("I want to be a welder.")
-    next(button for button in app.button if button.label.startswith("Find my matches")).click()
-    run_page(app)
+    for name in ("match", "pathway"):
+        def counted(self, *args, _name=name, _call=getattr(ApiClient, name)):
+            calls.append(_name)
+            return _call(self, *args)
+        monkeypatch.setattr(ApiClient, name, counted)
+    app = submit_goal(run_page(new_app()))
     app.selectbox(key="follow_experience").select("More than 3 years")
     app.selectbox(key="follow_certification").select("No")
     run_page(app)
+    open_step(app, 3)
     app.radio(key="competency_SMAW-NC-II_1").set_value("I can do this confidently")
     next(button for button in app.button if button.label == "Analyze My Skills").click()
     run_page(app)
@@ -265,15 +297,219 @@ def test_finder_answers_survive_tab_switch_without_hidden_requests(offline_api, 
     run_page(app, "Qualification library")
     assert len(calls) == before_switch, "hidden finder must not call analysis endpoints"
     run_page(app, "Find my pathway")
-    assert app.text_area(key="goal_query").value == "I want to be a welder."
+    assert [metric.value for metric in app.metric if metric.label == "Your readiness"] == ["100%"], \
+        "the learner returns to their recommendation"
+    open_step(app, 3)
+    assert app.radio(key="competency_SMAW-NC-II_1").value == "I can do this confidently"
+    open_step(app, 2)
     assert app.selectbox(key="follow_experience").value == "More than 3 years"
     assert app.selectbox(key="follow_certification").value == "No"
-    assert app.radio(key="competency_SMAW-NC-II_1").value == "I can do this confidently"
-    assert [metric.value for metric in app.metric if metric.label == "Your readiness"] == ["100%"]
+    open_step(app, 1)
+    assert app.text_area(key="goal_query").value == "I want to be a welder."
+    open_step(app, 2)
     app.button(key="open_account_finder").click()
     run_page(app)
     assert app.text_input(key="dialog_signin_email")
     assert app.text_input(key="dialog_signin_password")
+
+
+def test_finder_shows_one_numbered_step_at_a_time(offline_api, monkeypatch):
+    mock_finder(monkeypatch)
+    app = run_page(new_app())
+    assert [app.button(key=f"finder_tab_{number}").disabled for number in range(1, 5)] == [False, True, True, True]
+    assert app.text_area(key="goal_query")
+
+    submit_goal(app)
+    assert not any(app.button(key=f"finder_tab_{number}").disabled for number in range(1, 5))
+    assert "check_circle" in app.button(key="finder_tab_1").proto.icon, "a finished step is ticked"
+    assert app.selectbox(key="qualification_selected").value == "SMAW-NC-II"
+    assert not app.text_area, "the submitted goal shrinks to a summary"
+    assert not app.radio
+
+    press(app, "finder_next")
+    assert app.radio(key="competency_SMAW-NC-II_1"), "step 3 is the readiness check"
+    assert "Build on your experience." in page_text(app), "it opens with why we ask"
+    assert "qualification_selected" not in shown_selectboxes(app)
+
+    press(app, "finder_next")
+    assert not app.radio
+    assert "Finish your readiness check" in page_text(app), "the recommendation waits for the check"
+    press(app, "finder_to_readiness")
+    assert app.radio(key="competency_SMAW-NC-II_1")
+
+    press(app, "finder_back")
+    assert app.selectbox(key="qualification_selected"), "back from the readiness check is Your matches"
+
+
+@pytest.mark.parametrize("score, level, verdict, action, kind, route", [
+    (85, "High Readiness", "NC assessment", "See assessment schedules", "assessment", "ASSESSMENT_READINESS"),
+    (65, "Moderate Readiness", "focused training", "Find training near you", "training", "SKILL_GAP_CHECK"),
+    (30, "Low Readiness", "training first", "Find training near you", "training", "TRAINING_AND_ASSESSMENT"),
+])
+def test_the_readiness_result_decides_between_training_and_an_nc(offline_api, monkeypatch, score, level, verdict,
+                                                                  action, kind, route):
+    mock_finder(monkeypatch)
+    monkeypatch.setattr(ApiClient, "readiness", lambda self, code, answers: {
+        "score": score, "level": level, "recommendation": "The API's advice.", "strengths": [],
+        "skill_gaps": ["Weld safely"]})
+    offline_api["pathways"] = [{"id": 7, "title": "A pathway for this verdict", "description": "Steps to follow.",
+                                "steps": [{"position": 1, "title": "First step"}]}]
+    app = open_step(submit_goal(run_page(new_app())), 3)
+    app.radio(key="competency_SMAW-NC-II_1").set_value("I have some experience")
+    click_label(app, "Analyze My Skills")
+    assert app.button(key="finder_tab_4").proto.type == "primary", "analyzing opens the recommendation"
+    assert verdict in page_text(app)
+    assert offline_api["pathway_lookups"][-1] == ("SMAW-NC-II", route), "the pathway shown agrees with the verdict"
+    assert "A pathway for this verdict" in page_text(app)
+    assert app.button(key="finder_next").label == action
+    press(app, "finder_next")
+    assert app.session_state["main_tabs"] == "Training & assessment"
+    assert app.session_state["training_kinds"] == [kind], "the centers that fit the verdict"
+    assert app.session_state["training_qualifications"] == ["SMAW-NC-II"]
+    assert app.text_input(key="training_search").value == "Welding", "the qualification's keyword fills the search box"
+
+
+def scroll_targets(app):
+    """Where the page scrolls on this run: "top", or the key of the container brought to the top of the screen."""
+    return [html.proto.body.split('data-scroll="')[1].split('"')[0]
+            for html in app.get("html") if 'data-scroll="' in html.proto.body]
+
+
+def motion(app, prefix):
+    """The direction a step slides in from, and the key's run parity, read from its container."""
+    for direction in ("forward", "back"):
+        for parity in (0, 1):
+            try:
+                app.container(key=f"{prefix}_{direction}_{parity}")
+            except KeyError:
+                continue
+            return direction, parity
+    return None
+
+
+def test_a_new_step_or_part_opens_at_the_top_of_the_screen(offline_api, monkeypatch):
+    offline_api["catalog"][0]["competencies"] = [
+        {"id": 11, "name": "Work in a team", "category": "Basic"},
+        {"id": 13, "name": "Weld carbon steel plates", "category": "Core"}]
+    mock_finder(monkeypatch)
+    app = submit_goal(run_page(new_app()))
+    assert scroll_targets(app) == ["top"], "a new step opens with the full banner and tabs"
+    app.selectbox(key="follow_experience").select("More than 3 years")
+    run_page(app)
+    assert scroll_targets(app) == [], "answering a question leaves the page where it is"
+    press(app, "finder_next")
+    assert scroll_targets(app) == ["top"]
+    open_step(app, 3)
+    press(app, "readiness_next")
+    assert scroll_targets(app) == ["readiness_questions"]
+
+
+def test_the_banner_and_tabs_stay_together_in_one_sticky_header(offline_api, monkeypatch):
+    mock_finder(monkeypatch)
+    app = run_page(new_app())
+    for number in (1, 2, 3, 4):
+        if number == 2:
+            submit_goal(app)
+        elif number > 2:
+            open_step(app, number)
+        header = app.container(key="finder_header")
+        assert [button.key for button in header.button] == [f"finder_tab_{n}" for n in range(1, 5)], f"step {number}"
+        bodies = [html.proto.body for html in header.get("html")]
+        assert any("YOUR JOURNEY, SIMPLIFIED" in body for body in bodies), f"step {number} keeps the journey in view"
+        assert any("finder-compact" in body for body in bodies), f"step {number} compacts the header on scroll"
+
+
+def test_each_step_slides_in_from_the_direction_the_learner_moved(offline_api, monkeypatch):
+    mock_finder(monkeypatch)
+    app = submit_goal(run_page(new_app()))
+    entered = motion(app, "finder_body")
+    assert entered[0] == "forward"
+    press(app, "finder_next")
+    after_next = motion(app, "finder_body")
+    assert after_next[0] == "forward" and after_next != entered, "a new key each time restarts the animation"
+    press(app, "finder_back")
+    after_back = motion(app, "finder_body")
+    assert after_back[0] == "back" and after_back[1] != after_next[1]
+    open_step(app, 4)
+    assert motion(app, "finder_body")[0] == "forward", "jumping ahead with a tab slides forward too"
+    settled = motion(app, "finder_body")
+    run_page(app)
+    assert motion(app, "finder_body") == settled, "a rerun on the same step doesn't replay the animation"
+
+
+def click_label(app, label):
+    next(button for button in app.button if button.label == label).click()
+    return run_page(app)
+
+
+def test_example_and_sample_goals_fill_the_goal_box(offline_api):
+    app = run_page(new_app())
+    goal = app.text_area(key="goal_query")
+    assert goal.proto.max_chars == 500, "the counter and limit stay well inside the API's 1,000 characters"
+    click_label(app, "Improve my digital skills")
+    assert app.text_area(key="goal_query").value == "I want to improve my digital skills and work with computers."
+    click_label(app, "I want to become a chef")
+    assert app.text_area(key="goal_query").value == "I want to become a chef."
+    click_label(app, "Get my skills certified")
+    assert app.text_area(key="goal_query").value == "I've worked as a welder for 5 years but I don't have an NC."
+
+
+def test_use_again_puts_the_last_goal_back_in_the_box(offline_api, monkeypatch):
+    mock_finder(monkeypatch)
+    app = run_page(new_app())
+    assert not any(button.key == "finder_use_again" for button in app.button), "nothing to reuse before a first goal"
+    submit_goal(app)
+    press(app, "finder_change_goal")
+    app.text_area(key="goal_query").set_value("I want to bake bread.")
+    run_page(app)
+    press(app, "finder_use_again")
+    assert app.text_area(key="goal_query").value == "I want to be a welder."
+
+
+def test_change_goal_reopens_the_last_goal_and_keeps_the_results(offline_api, monkeypatch):
+    mock_finder(monkeypatch)
+    app = submit_goal(run_page(new_app()))
+    open_step(app, 3)
+    press(app, "finder_change_goal")
+    assert app.text_area(key="goal_query").value == "I want to be a welder."
+    press(app, "finder_next")
+    assert app.selectbox(key="qualification_selected").value == "SMAW-NC-II"
+
+
+def test_readiness_questions_come_in_parts_and_keep_earlier_answers(offline_api, monkeypatch):
+    offline_api["catalog"][0]["competencies"] = [
+        {"id": 11, "name": "Work in a team", "category": "Basic"},
+        {"id": 12, "name": "Apply safety practices", "category": "Common"},
+        {"id": 13, "name": "Weld carbon steel plates", "category": "Core"},
+        {"id": 14, "name": "Read welding symbols", "category": "Common"}]
+    calls = []
+    mock_finder(monkeypatch, calls)
+    app = open_step(submit_goal(run_page(new_app())), 3)
+
+    def shown():
+        return [radio.key.removeprefix("competency_SMAW-NC-II_") for radio in app.radio]
+
+    assert shown() == ["11"]
+    assert not any(button.label == "Analyze My Skills" for button in app.button)
+    app.radio(key="competency_SMAW-NC-II_11").set_value("I can do this confidently")
+    press(app, "readiness_next")
+    assert shown() == ["12", "14"], "Common skills come together, after Basic"
+    assert app.container(key="readiness_part_forward"), "the next part slides in from the right"
+    app.radio(key="competency_SMAW-NC-II_12").set_value("I have some experience")
+    app.radio(key="competency_SMAW-NC-II_14").set_value("I am not familiar with this")
+    press(app, "readiness_next")
+    assert shown() == ["13"]
+    press(app, "readiness_previous")
+    assert app.container(key="readiness_part_back"), "the previous part slides in from the left"
+    assert app.radio(key="competency_SMAW-NC-II_12").value == "I have some experience"
+    press(app, "readiness_next")
+    assert app.button(key="finder_next").proto.type == "secondary", "finishing the check leads, not leaving it"
+    app.radio(key="competency_SMAW-NC-II_13").set_value("I can do this confidently")
+    next(button for button in app.button if button.label == "Analyze My Skills").click()
+    run_page(app)
+    assert calls == [("SMAW-NC-II", {11: "confident", 12: "some_experience", 13: "confident", 14: "not_familiar"})]
+    assert [metric.value for metric in app.metric if metric.label == "Your readiness"] == ["100%"]
+    assert app.button(key="finder_next").proto.type == "primary", "with results, training is the next step"
 
 
 def test_sign_out_clears_saved_personal_results(offline_api):
@@ -300,6 +536,15 @@ def test_library_explore_opens_finder_with_the_chosen_goal(offline_api):
     assert app.session_state["main_tabs"] == "Find my pathway"
     assert app.text_area(key="goal_query").value == "I want to pursue Computer Systems Servicing NC II."
     assert "analysis" not in app.session_state, "exploring should let the learner review their goal before submitting"
+
+
+def test_library_explore_shows_the_goal_step_over_earlier_results(offline_api, monkeypatch):
+    mock_finder(monkeypatch)
+    app = open_step(submit_goal(run_page(new_app())), 3)
+    run_page(app, "Qualification library")
+    app.button(key="explore_CSS-NC-II").click()
+    run_page(app)
+    assert app.text_area(key="goal_query").value == "I want to pursue Computer Systems Servicing NC II."
 
 
 def test_empty_catalog_can_be_refreshed_when_qualifications_arrive(offline_api):
@@ -410,14 +655,9 @@ def test_new_recommendation_resets_readiness_and_rejected_answers_can_recover(of
     monkeypatch.setattr(ApiClient, "pathway", lambda self, profile, code: {
         "recommendation": "TRAINING_AND_ASSESSMENT", "reason": "Start with training.",
         "next_step": "Explore a program."})
-    app = run_page(new_app())
-    app.text_area(key="goal_query").set_value("I want to be a welder.")
-    next(button for button in app.button if button.label == "Find my matches").click()
-    run_page(app)
+    app = submit_goal(run_page(new_app()))
     assert app.selectbox(key="qualification_selected").value == "SMAW-NC-II"
-    app.selectbox(key="follow_experience").select("No experience")
-    app.selectbox(key="follow_certification").select("No")
-    run_page(app)
+    open_step(app, 3)
     next(button for button in app.button if button.label == "Analyze My Skills").click()
     run_page(app)
     assert any("answer every competency" in warning.value for warning in app.warning)
@@ -428,14 +668,14 @@ def test_new_recommendation_resets_readiness_and_rejected_answers_can_recover(of
     assert readiness_calls[-1] == ("SMAW-NC-II", {1: "some_experience"})
     assert [metric.value for metric in app.metric if metric.label == "Your readiness"] == ["50%"]
     assert not app.warning
-    app.text_area(key="goal_query").set_value("I want to repair computers.")
-    next(button for button in app.button if button.label == "Find my matches").click()
-    run_page(app)
-    assert app.selectbox(key="qualification_selected").value == "CSS-NC-II"
-    assert not app.radio, "the skills check follows the starting-point questions"
+    press(app, "finder_change_goal")
+    submit_goal(app, "I want to repair computers.")
+    assert app.selectbox(key="qualification_selected").value == "CSS-NC-II", "a new goal opens its matches"
     assert app.selectbox(key="follow_experience").value == "Choose an answer"
-    assert app.session_state["readiness_results"] == {}
-    assert not any(metric.label == "Your readiness" for metric in app.metric)
+    open_step(app, 3)
+    assert app.radio(key="competency_CSS-NC-II_2").value is None
+    open_step(app, 4)
+    assert not any(metric.label == "Your readiness" for metric in app.metric), "no result carried over to the new goal"
 
 
 @pytest.mark.parametrize("tab,trigger", [
@@ -508,119 +748,3 @@ def test_account_deletion_returns_immediately_to_signed_out_controls(offline_api
     assert "account and saved records were deleted" in page_text(app)
     open_account(app)
     assert app.text_input(key="dialog_signin_email")
-
-
-def test_starting_points_adapt_prompts_without_overwriting_a_draft(offline_api):
-    app = run_page(new_app())
-    app.text_area(key="goal_query").set_value("My own career idea")
-    run_page(app)
-    app.button(key="starting_point_certify").click()
-    run_page(app)
-    assert app.text_area(key="goal_query").value == "My own career idea"
-    assert "What work do you already know how to do?" in page_text(app)
-    next(button for button in app.button if button.label == "Experienced welder").click()
-    run_page(app)
-    assert "5 years" in app.text_area(key="goal_query").value
-    assert "analysis" not in app.session_state
-    run_page(app, "Qualification library")
-    run_page(app, "Find my pathway")
-    assert app.session_state["finder_starting_point"] == "certify"
-    assert "5 years" in app.text_area(key="goal_query").value
-    app.button(key="starting_point_explore").click()
-    run_page(app)
-    assert "What kind of work interests you?" in page_text(app)
-    assert "5 years" in app.text_area(key="goal_query").value
-
-
-def test_match_cards_choose_a_qualification_and_continue_to_filtered_training(offline_api, monkeypatch):
-    profile = {"career_goal": "Technical work", "experience_years": 0, "has_certification": False,
-               "intent": "training", "existing_skills": []}
-    monkeypatch.setattr(ApiClient, "analyze_goal", lambda self, query: {"profile": profile})
-    monkeypatch.setattr(ApiClient, "match", lambda self, query, updated: {
-        "profile": updated, "matches": [{"qualification": item, "score": 80, "reason": "Related to your goal."}
-                                          for item in CATALOG[:2]]})
-    monkeypatch.setattr(ApiClient, "pathway", lambda self, updated, code: {
-        "recommendation": "TRAINING_AND_ASSESSMENT", "reason": "Start with training.", "next_step": "Find a program."})
-    monkeypatch.setattr(ApiClient, "readiness", lambda self, code, answers: {
-        "score": 50, "level": "Building readiness", "recommendation": "Keep learning.",
-        "strengths": [], "skill_gaps": ["Repair computers"]})
-    app = run_page(new_app())
-    app.text_area(key="goal_query").set_value("I want to do technical work.")
-    next(button for button in app.button if button.label == "Find my matches").click()
-    run_page(app)
-    app.button(key="match_pick_CSS-NC-II").click()
-    run_page(app)
-    assert app.selectbox(key="qualification_selected").value == "CSS-NC-II"
-    app.radio(key="competency_CSS-NC-II_2").set_value("I have some experience")
-    next(button for button in app.button if button.label == "Analyze My Skills").click()
-    run_page(app)
-    app.button(key="finder_assessment").click()
-    run_page(app)
-    assert app.session_state["main_tabs"] == "Training & assessment"
-    assert app.session_state["training_qualifications"] == ["CSS-NC-II"]
-    assert app.session_state["training_kinds"] == ["assessment"]
-
-
-def test_unmatched_goal_waits_for_a_deliberate_qualification_choice(offline_api, monkeypatch):
-    profile = {"career_goal": None, "experience_years": None, "has_certification": None,
-               "intent": "training", "existing_skills": []}
-    monkeypatch.setattr(ApiClient, "analyze_goal", lambda self, query: {"profile": profile})
-    monkeypatch.setattr(ApiClient, "match", lambda self, query, updated: {"profile": updated, "matches": []})
-    # Unmocked pathway requests are blocked by offline_api: no unrelated recommendation should be made.
-    app = run_page(new_app())
-    app.text_area(key="goal_query").set_value("I want to fly to the moon.")
-    app.button(key="finder_submit").click()
-    run_page(app)
-    assert app.selectbox(key="qualification_selected").value is None
-    assert "Choose a qualification above" in page_text(app)
-    app.button(key="finder_restart").click()
-    run_page(app)
-    assert "analysis" not in app.session_state
-    assert app.text_area(key="goal_query").value == ""
-    assert app.button(key="starting_point_learn")
-
-
-@pytest.mark.parametrize("experience,certificate", [(None, None), (0, None), (None, False)])
-def test_pathway_questions_lead_directly_to_a_complete_recommendation(offline_api, monkeypatch, experience, certificate):
-    profile = {"career_goal": "Cook", "experience_years": experience, "has_certification": certificate,
-               "intent": "training", "existing_skills": []}
-    calls = []
-    monkeypatch.setattr(ApiClient, "analyze_goal", lambda self, query: {"profile": deepcopy(profile)})
-    monkeypatch.setattr(ApiClient, "match", lambda self, query, updated: {
-        "profile": updated, "matches": [{"qualification": CATALOG[2], "score": 80, "reason": "Cooking work."}]})
-
-    def pathway(self, updated, code):
-        calls.append((deepcopy(updated), code))
-        return {"recommendation": "TRAINING_AND_ASSESSMENT", "reason": "Start with training.",
-                "next_step": "Find a cookery program."}
-
-    monkeypatch.setattr(ApiClient, "pathway", pathway)
-    app = run_page(new_app())
-    app.text_area(key="goal_query").set_value("I want to work as a cook.")
-    app.button(key="finder_submit").click()
-    run_page(app)
-    assert "Tell us about your experience" in page_text(app)
-    assert "Your pathway will appear automatically" in page_text(app)
-    assert "Answer the follow-up questions" not in page_text(app)
-    assert not calls
-    assert not app.radio
-    if experience is None:
-        app.selectbox(key="follow_experience").select("No experience")
-        run_page(app)
-        if certificate is None:
-            assert not calls
-            assert "Still needed: whether you have a certificate" in page_text(app)
-    if certificate is None:
-        app.selectbox(key="follow_certification").select("No")
-        run_page(app)
-    assert calls[-1][0]["experience_years"] == 0
-    assert calls[-1][0]["has_certification"] is False
-    assert calls[-1][1] == "COOKERY-NC-II"
-    assert "Find a cookery program." in page_text(app)
-    assert app.radio
-    field = "follow_experience" if experience is None else "follow_certification"
-    app.selectbox(key=field).select("Choose an answer")
-    run_page(app)
-    assert "Tell us about your experience" in page_text(app)
-    assert "Find a cookery program." not in page_text(app)
-    assert not app.radio

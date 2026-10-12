@@ -76,6 +76,19 @@ def session(engine):
 
 
 @pytest.fixture
+def clean_match_stats(engine):
+    """The goal-matching counter commits on its own session, so a test asserting its totals starts and ends with
+    an empty table rather than whatever earlier tests searched."""
+    def clear():
+        with engine.begin() as connection:
+            connection.execute(text("DELETE FROM match_daily_stat"))
+
+    clear()
+    yield
+    clear()
+
+
+@pytest.fixture
 def app(session):
     from tesda_track.db import get_session
     from tesda_track.main import create_app

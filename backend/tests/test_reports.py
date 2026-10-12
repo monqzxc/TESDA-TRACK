@@ -5,6 +5,8 @@ from sqlmodel import select
 
 from tesda_track.models import ReadinessCheck, RecommendationSession, utcnow
 
+pytestmark = pytest.mark.usefixtures("clean_match_stats")
+
 CEBU_CITY = (10.3157, 123.8854)
 
 
@@ -102,20 +104,6 @@ def test_date_range_limits_what_is_counted(client, admin, session, activity):
     assert overview["recommendation_sessions"] == 1 and overview["readiness_checks"] == 1
     assert client.get("/api/v1/admin/reports/overview", headers=admin,
                       params={"date_from": "2026-05-01", "date_to": "2026-04-01"}).status_code == 422
-
-
-@pytest.fixture(autouse=True)
-def clean_match_stats(engine):
-    """The counter commits on its own session, so these tests start and end with an empty table."""
-    from sqlalchemy import text
-
-    def clear():
-        with engine.begin() as connection:
-            connection.execute(text("DELETE FROM match_daily_stat"))
-
-    clear()
-    yield
-    clear()
 
 
 def welder_profile(client, query):
