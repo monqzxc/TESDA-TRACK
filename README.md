@@ -69,7 +69,7 @@ The training weights (`RANKING_WEIGHTS__SEMANTIC`, `__PROXIMITY`, `__ASSESSMENT`
 
 ### Skills Bridge
 
-The **Skills Bridge** tab connects to the public read-only MCP endpoint at
+The **Skills Explorer** tab (powered by Skills Bridge) connects to the public read-only MCP endpoint at
 [mcp.skills-bridge.ph/mcp](https://mcp.skills-bridge.ph/mcp), through FastAPI. It distinguishes target job
 titles from capabilities: “welder” and “programmer” use the bounded occupation-title lookup, while “welding”,
 “JavaScript”, and “network configuration” use `match_skills`. It then supports related qualifications, a
@@ -256,7 +256,7 @@ Any other client (DBeaver, pgAdmin, VS Code extensions) works with the same host
 ## Accounts
 
 Learners can use the pathway finder without an account. Signing in (sidebar) saves recommendation
-sessions, readiness checks, goals and certifications under **My progress**. To register, learners must
+sessions, readiness checks, goals and certifications under **My Progress**. To register, learners must
 agree to the privacy notice. From the sidebar they can download all their data or permanently delete
 their account; the API deletes every record they own along with it.
 
@@ -272,9 +272,9 @@ revokes every existing token, and five failed sign-ins lock an account for 15 mi
 
 ## Training, assessment and pathways
 
-Learners use the **Training & assessment** tab to find training programs and upcoming assessments,
+Learners use the **Training & Assessment** tab to find training programs and upcoming assessments,
 nearest to their region first, and to apply for an assessment. The region only sorts the results and
-isn't saved. Under **My progress** they tick off the steps of the pathways they follow and can withdraw
+isn't saved. Under **My Progress** they tick off the steps of the pathways they follow and can withdraw
 an application.
 
 Administrators manage this data through the API. Open `/api/docs`, click **Authorize**, and sign in with

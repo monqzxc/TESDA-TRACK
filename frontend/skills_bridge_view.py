@@ -7,7 +7,7 @@ import re
 import streamlit as st
 
 from api_client import ApiClient, ApiError
-from presentation import empty_state, section_header
+from presentation import empty_state, page_hero
 
 
 _LEADING_REQUEST = re.compile(
@@ -465,7 +465,7 @@ def _show_delivery_options(api: ApiClient, item: dict, qualifications: list[dict
         local = _local_qualification(item, qualifications)
         if local is None:
             st.info("This Skills Bridge standard is not mapped to a local TESDA catalog code yet. "
-                    "You can search the Qualification library or Training & assessment tab by title.")
+                    "You can search the Qualifications Library or Training & Assessment tab by title.")
             return
         code = local["code"]
         st.caption(f"Local catalog match: {local['name']} · {code}. This is a title/code mapping for discovery, not an equivalency decision.")
@@ -581,8 +581,9 @@ def _qualification(item: dict, key: str, api: ApiClient | None = None, qualifica
 
 
 def show_skills_bridge(api: ApiClient, qualifications: list[dict] | None = None) -> None:
-    section_header("POWERED BY SKILLS BRIDGE", "See where your skills can take you.",
-                   "Explore occupations, related qualifications, and skills to develop using Skills Bridge's live taxonomy.")
+    page_hero("SKILLS EXPLORER · POWERED BY SKILLS BRIDGE", "See where your skills", "can take you.",
+              "Explore occupations, related qualifications, and skills to develop using Skills Bridge's live taxonomy.",
+              "network")
     with st.container(border=True, key="card_bridge_search"):
         with st.form("bridge_search", border=False):
             terms_text = st.text_area("What skills or roles are you exploring?", key="bridge_terms", height=105,

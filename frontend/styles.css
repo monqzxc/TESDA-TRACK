@@ -8,14 +8,52 @@
   --track-surface: #ffffff;
   --track-soft: #eef4ff;
   --track-page: #f5f7fb; /* config.toml backgroundColor, for surfaces that cover scrolling content */
+  --track-ink: #3e5272; /* body copy on white cards */
+  --track-tint: #e8f0fe; /* icon tiles and circles */
+  --track-panel: #f4f7fd; /* panels inside cards */
+  --track-violet: #6248b3;
+  --track-banner: linear-gradient(100deg, #f3f7ff 0%, #eaf2ff 48%, #dde9fd 100%);
 }
 
-.block-container { max-width: 1240px; padding: 3.8rem 2.5rem 2rem; }
+.block-container { max-width: 1520px; padding: 3.8rem 2.5rem 2rem; }
 h1, h2, h3 { letter-spacing: -0.035em; }
 
 /* Preserve Streamlit's controls, input semantics, and toolbar. */
 [data-testid="stSidebar"] { border-right: 1px solid var(--track-border); }
-[data-testid="stSidebarUserContent"] { padding-top: 1.3rem; }
+[data-testid="stSidebarUserContent"] { padding: 1.3rem 0 1.5rem; } /* stSidebarContent already pads the sides */
+
+/* Sidebar navigation: full-width rows with the icon before the label; the open page is filled blue. */
+.st-key-primary_navigation { gap: 0.6rem; }
+.st-key-sidebar_account { margin-top: -0.4rem; }
+.st-key-primary_navigation [data-testid="stButton"] button,
+.st-key-sidebar_account [data-testid="stButton"] button {
+  justify-content: flex-start;
+  min-height: 54px;
+  padding: 0.5rem 1.2rem;
+  border: 1px solid var(--track-border);
+  border-radius: 12px;
+  background: var(--track-surface);
+  color: var(--track-navy);
+}
+.st-key-primary_navigation button > div,
+.st-key-sidebar_account button > div { justify-content: flex-start; }
+.st-key-primary_navigation button > div > span,
+.st-key-sidebar_account button > div > span { gap: 1rem; }
+.st-key-primary_navigation [data-testid="stMarkdownContainer"],
+.st-key-sidebar_account [data-testid="stMarkdownContainer"] { text-align: left; }
+.st-key-primary_navigation [data-testid="stMarkdownContainer"] p,
+.st-key-sidebar_account [data-testid="stMarkdownContainer"] p { font-size: 1rem; font-weight: 500; }
+.st-key-primary_navigation [data-testid="stIconMaterial"],
+.st-key-sidebar_account [data-testid="stIconMaterial"] { font-size: 1.45rem; }
+.st-key-primary_navigation [data-testid="stButton"] button:hover,
+.st-key-sidebar_account [data-testid="stButton"] button:hover { border-color: #b8cdf0; background: var(--track-soft); color: var(--track-navy); }
+.st-key-primary_navigation [data-testid="stButton"] button[data-testid="stBaseButton-primary"] {
+  border-color: var(--track-blue);
+  background: var(--track-blue);
+  color: white;
+  box-shadow: 0 10px 20px -12px var(--track-blue);
+}
+.st-key-primary_navigation [data-testid="stButton"] button[data-testid="stBaseButton-primary"]:hover { background: #124fb8; color: white; }
 [data-testid="stForm"] {
   background: var(--track-surface);
   border-color: var(--track-border);
@@ -85,76 +123,157 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
 }
 body.finder-compact .st-key-finder_header { padding: 0.5rem 0; box-shadow: 0 14px 16px -18px #102a5659; }
 
-/* One numbered step at a time, in a bar of arrow-shaped segments with a › between them. Button types mark
-   each tab: primary is the current step, tertiary a finished one, secondary one still ahead. */
+/* One tab per step, as chevrons that point on to the next: the icon in a circle, the name, and its hint
+   underneath (app.py sets --step-hint on each tab). Button types mark each tab: primary is the current step,
+   tertiary a finished one, secondary one still ahead. */
 .st-key-finder_steps {
-  padding: 0;
+  --notch: 18px; /* how far each chevron's point reaches into the next tab */
+  --step-inset: 1.1rem; /* the space before each tab's icon, past its notch */
+  padding: 0.4rem;
   gap: 0;
-  margin-top: 0.75rem;
-  overflow: hidden;
+  margin-top: 0.85rem;
   background: var(--track-surface);
   border: 1px solid var(--track-border);
-  border-radius: 16px;
-  box-shadow: 0 2px 8px #102a5604;
-  transition: margin 0.3s ease;
+  border-radius: 18px;
+  box-shadow: 0 8px 22px -16px #102a5640;
+  transition: margin 0.3s ease, padding 0.3s ease;
 }
-body.finder-compact .st-key-finder_steps { margin-top: 0.5rem; }
-.st-key-finder_steps [class*="st-key-finder_tab_"] { position: relative; }
-.st-key-finder_steps [class*="st-key-finder_tab_"]:not(.st-key-finder_tab_4)::after {
-  content: "›";
-  position: absolute;
-  top: 50%;
-  right: -0.7rem;
-  z-index: 2;
-  transform: translateY(-55%);
-  color: #8fa1bb;
-  font-size: 1.5rem;
-  line-height: 1;
-  pointer-events: none;
-}
+body.finder-compact .st-key-finder_steps { margin-top: 0.5rem; padding: 0.3rem; }
+/* Each tab after the first tucks its notch round the point before it, leaving a thin white seam. The tabs'
+   boxes overlap, so only the clipped buttons take clicks. */
+.st-key-finder_steps [class*="st-key-finder_tab_"] { position: relative; flex: 1 1 0; min-width: 0; pointer-events: none; }
+.st-key-finder_steps [class*="st-key-finder_tab_"]:not(.st-key-finder_tab_1) { margin-left: calc(5px - var(--notch)); }
 .st-key-finder_steps [data-testid="stButton"] button {
-  min-height: 56px;
-  padding: 0.5rem 1.5rem;
+  justify-content: flex-start;
+  min-height: 66px;
+  padding: 0.55rem calc(var(--notch) + 0.5rem) 0.55rem calc(var(--notch) + var(--step-inset));
   border: 0;
   border-radius: 0;
-  background: transparent;
-  color: var(--track-muted);
+  background: #f0f4fb;
+  color: var(--track-navy);
+  clip-path: polygon(0 0, calc(100% - var(--notch)) 0, 100% 50%, calc(100% - var(--notch)) 100%, 0 100%, var(--notch) 50%);
+  pointer-events: auto;
+  transition: min-height 0.3s ease, background 0.2s ease;
 }
-.st-key-finder_steps [data-testid="stIconMaterial"] { font-size: 1.35rem; }
-/* The current step is an arrow pointing on to the next one; after the first, it also takes the previous point.
-   Streamlit renders a new button when its type changes, so these animations play as a tab becomes current or done. */
+/* The first tab has no notch and the last no point; their outer corners follow the bar's. */
+.st-key-finder_steps .st-key-finder_tab_1 [data-testid="stButton"] button {
+  padding-left: var(--step-inset);
+  border-radius: 13px 0 0 13px;
+  clip-path: polygon(0 0, calc(100% - var(--notch)) 0, 100% 50%, calc(100% - var(--notch)) 100%, 0 100%);
+}
+.st-key-finder_steps .st-key-finder_tab_4 [data-testid="stButton"] button {
+  padding-right: var(--step-inset);
+  border-radius: 0 13px 13px 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, var(--notch) 50%);
+}
+/* The clip hides the usual outline, so a focused tab glows along its own edges instead. */
+.st-key-finder_steps [data-testid="stButton"] button:focus-visible { outline: none; }
+.st-key-finder_steps [class*="st-key-finder_tab_"]:has(button:focus-visible) {
+  z-index: 2;
+  filter: drop-shadow(0 0 1px #438bf5) drop-shadow(0 0 1px #438bf5) drop-shadow(0 0 1px #438bf5);
+}
+.st-key-finder_steps button > div { justify-content: flex-start; }
+.st-key-finder_steps button > div > span { gap: 0.9rem; }
+/* Streamlit wraps the icon in a 16px box; let it grow to the circle, or the circle spills over the label. */
+.st-key-finder_steps span:has(> [data-testid="stIconMaterial"]) { width: auto; height: auto; }
+.st-key-finder_steps [data-testid="stIconMaterial"] {
+  display: grid;
+  flex: none; /* a long name mustn't squeeze the circle into an oval */
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--track-surface);
+  color: var(--track-blue);
+  font-size: 1.45rem;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+.st-key-finder_steps [data-testid="stMarkdownContainer"] { text-align: left; }
+.st-key-finder_steps [data-testid="stMarkdownContainer"] p { font-size: 0.9375rem; font-weight: 650; line-height: 1.3; }
+.st-key-finder_steps [data-testid="stMarkdownContainer"] p::after {
+  content: var(--step-hint, "");
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--track-muted);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+/* Streamlit renders a new button when its type changes, so these animations play as a tab becomes current or done. */
 .st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-primary"] {
   background: var(--track-navy);
   color: white;
-  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 0 100%, 22px 50%);
   animation: finder-tab-in 0.3s ease-out backwards;
 }
-.st-key-finder_steps .st-key-finder_tab_1 [data-testid="stButton"] button[data-testid="stBaseButton-primary"] {
-  clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 0 100%);
+/* A box shadow would be clipped away with the corners, so the current tab's shadow follows its chevron. */
+.st-key-finder_steps [class*="st-key-finder_tab_"]:has([data-testid="stBaseButton-primary"]) {
+  z-index: 1;
+  filter: drop-shadow(0 6px 7px #102a5638);
 }
-.st-key-finder_steps .st-key-finder_tab_4 [data-testid="stButton"] button[data-testid="stBaseButton-primary"] {
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 22px 50%);
-}
-.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-tertiary"] { color: var(--track-navy); }
+.st-key-finder_steps [data-testid="stBaseButton-primary"] [data-testid="stIconMaterial"] { background: #ffffff1f; color: white; }
+.st-key-finder_steps [data-testid="stBaseButton-primary"] [data-testid="stMarkdownContainer"] p::after { color: #c3d2ef; }
+.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-tertiary"] { background: #e3f4ef; }
 .st-key-finder_steps [data-testid="stBaseButton-tertiary"] [data-testid="stIconMaterial"] {
   color: var(--track-teal);
   animation: finder-tick 0.45s ease-out backwards;
 }
 @keyframes finder-tab-in { from { transform: scale(0.94); opacity: 0.55; } }
 @keyframes finder-tick { 0% { transform: scale(0.3); opacity: 0; } 65% { transform: scale(1.25); opacity: 1; } }
-.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-secondary"]:hover:not(:disabled),
-.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-tertiary"]:hover { background: var(--track-soft); color: var(--track-navy); }
-.st-key-finder_steps [data-testid="stButton"] button:disabled { opacity: 0.5; }
-.st-key-finder_goal_summary {
-  padding: 0.55rem 0.6rem 0.55rem 1rem;
-  margin-bottom: 0.4rem;
-  background: var(--track-soft);
-  border: 1px solid #d8e5fb;
-  border-radius: 14px;
+.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-secondary"]:hover:not(:disabled) { background: #e2eafa; color: var(--track-navy); }
+.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-tertiary"]:hover { background: #d3ede5; color: var(--track-navy); }
+.st-key-finder_steps [data-testid="stButton"] button:disabled { opacity: 0.55; }
+/* Pinned and scrolled: the tabs drop their hints and shrink to one slim row. */
+body.finder-compact .st-key-finder_steps [data-testid="stButton"] button { min-height: 48px; }
+body.finder-compact .st-key-finder_steps [data-testid="stIconMaterial"] { width: 32px; height: 32px; font-size: 1.15rem; }
+body.finder-compact .st-key-finder_steps [data-testid="stMarkdownContainer"] p::after { display: none; }
+/* A narrow bar (a small window, or a laptop with the sidebar open) drops the hints too, and tightens each tab so
+   a long name wraps onto a second line instead of being cut off. */
+.st-key-finder_steps { container-type: inline-size; }
+@container (max-width: 880px) {
+  .st-key-finder_steps [class*="st-key-finder_tab_"] { --notch: 14px; --step-inset: 0.7rem; }
+  .st-key-finder_steps [data-testid="stButton"] button { padding-right: calc(var(--notch) + 0.25rem); }
+  .st-key-finder_steps button > div > span { gap: 0.6rem; }
+  .st-key-finder_steps [data-testid="stIconMaterial"] { width: 34px; height: 34px; font-size: 1.2rem; }
+  .st-key-finder_steps [data-testid="stMarkdownContainer"],
+  .st-key-finder_steps [data-testid="stMarkdownContainer"] p { white-space: normal; }
+  .st-key-finder_steps [data-testid="stMarkdownContainer"] p::after { display: none; }
 }
-.goal-summary { min-width: 0; }
-.goal-summary span { display: block; color: #356297; font-size: 0.625rem; font-weight: 700; letter-spacing: 0.12em; line-height: 1.6; }
-.goal-summary p { margin: 0.1rem 0 0; color: var(--track-navy); font-size: 0.9375rem; font-weight: 600; line-height: 1.45; overflow-wrap: anywhere; }
+/* Narrower still, but not yet a phone's two rows, "Readiness" no longer fits a tab: only the current step keeps
+   its name on screen; the rest keep their icon or tick, and screen readers still hear their names. Streamlit
+   sizes stretch-width buttons with width: 100%, so the tabs need width: auto to shrink to their icons. */
+@media (min-width: 521px) {
+  @container (max-width: 600px) {
+    .st-key-finder_steps [class*="st-key-finder_tab_"] { flex: 0 0 auto; width: auto; }
+    .st-key-finder_steps [class*="st-key-finder_tab_"]:has([data-testid="stBaseButton-primary"]) { flex: 1 1 0; }
+    .st-key-finder_steps button:not([data-testid="stBaseButton-primary"]) [data-testid="stMarkdownContainer"] {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+  }
+}
+
+/* The submitted goal, with a learner's avatar, above steps 2 to 4. */
+.st-key-finder_goal_summary {
+  padding: 0.9rem 1.25rem 0.9rem 1rem;
+  margin-bottom: 0.25rem;
+  background: var(--track-surface);
+  border: 1px solid var(--track-border);
+  border-radius: 18px;
+  box-shadow: 0 2px 8px #102a5604;
+}
+.goal-summary { display: flex; align-items: center; gap: 1.1rem; min-width: 0; }
+.goal-avatar { flex-shrink: 0; width: 68px; height: 68px; }
+.goal-avatar img { display: block; width: 100%; height: 100%; }
+.goal-summary div > span { display: block; color: var(--track-ink); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.12em; line-height: 1.6; }
+.goal-summary p { margin: 0.15rem 0 0; color: var(--track-navy); font-size: 1.1875rem; font-weight: 650; line-height: 1.4; overflow-wrap: anywhere; }
+.st-key-finder_goal_actions { gap: 0; flex-shrink: 0; }
+.st-key-finder_goal_actions > * + * { margin-left: 0.6rem; padding-left: 0.6rem; border-left: 1px solid var(--track-border); }
+.st-key-finder_goal_actions [data-testid="stButton"] button { color: var(--track-navy); }
+.st-key-finder_goal_actions [data-testid="stButton"] button:hover { color: var(--track-blue); }
+.st-key-finder_goal_actions [data-testid="stMarkdownContainer"] p { font-size: 1rem; font-weight: 500; }
+.st-key-finder_goal_actions [data-testid="stIconMaterial"] { color: var(--track-blue); font-size: 1.3rem; }
 .st-key-finder_nav { margin-top: 0.75rem; padding-top: 1rem; border-top: 1px solid var(--track-border); }
 /* A new readiness part opens just below the toolbar and the compact pinned header. */
 .st-key-readiness_questions { scroll-margin-top: 12.75rem; }
@@ -227,8 +346,8 @@ body.finder-compact .st-key-finder_steps { margin-top: 0.5rem; }
 }
 .prototype-badge::before { content: ""; width: 6px; height: 6px; background: var(--track-teal); border-radius: 50%; }
 .sidebar-brand { margin: 0.2rem 0 1.8rem; }
-.sidebar-brand .brand { font-size: 1.3rem; }
-.sidebar-brand .brand-icon { width: 36px; height: 36px; }
+.sidebar-brand .brand { font-size: 1.55rem; }
+.sidebar-brand .brand-icon { width: 46px; height: 46px; }
 .sidebar-note {
   margin-top: 1.2rem;
   padding: 1rem;
@@ -333,60 +452,257 @@ body.finder-compact .st-key-finder_steps { margin-top: 0.5rem; }
 .section-heading h3 { color: var(--track-navy); font-size: 1.5rem; line-height: 1.25; padding: 0; margin: 0.3rem 0 0.55rem; }
 .section-heading p { color: var(--track-muted); font-size: 0.9375rem; line-height: 1.6; margin: 0; max-width: 660px; }
 
-/* The banner above every Find my pathway step: the heading, then its four steps in a row, one per tab, each in
-   its own colour. */
-.journey-card {
-  display: grid;
-  gap: 1rem;
-  border: 1px solid #dce7f7;
-  border-radius: 18px;
-  padding: 1.2rem 1.5rem 1.15rem;
-  background: linear-gradient(150deg, #edf4ff, #f7faff 70%);
-  transition: padding 0.3s ease, row-gap 0.3s ease;
+/* The banner above every Find my pathway step: the heading on the left, and a scene on the right with three cards
+   over its lower part. The banner is a size container, so its layout follows its own width (the sidebar can be open
+   or closed), not the window's. */
+.journey-hero {
+  position: relative;
+  container-type: inline-size;
+  min-height: 256px;
+  max-height: 40rem; /* above its tallest wrap; the cap only exists to animate */
+  padding: 1.9rem 2.1rem 1.5rem;
+  overflow: hidden;
+  border: 1px solid #e0e9f8;
+  border-radius: 22px;
+  background: var(--track-banner);
+  transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease, border-width 0.35s ease;
 }
-.journey-card .eyebrow { color: #356297; }
-.journey-card h3 { color: var(--track-navy); font-size: 1.5rem; font-weight: 750; letter-spacing: -0.035em; line-height: 1.15; margin: 0.3rem 0 0; padding: 0; }
-.journey-card h3 span { color: var(--track-blue); }
-.journey-lead { color: var(--track-muted); font-size: 0.9375rem; line-height: 1.55; margin: 0.45rem 0 0; max-width: 640px; }
-.journey-steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.25rem; padding-top: 1rem; border-top: 1px solid #d5e2f6; }
-.journey-step { display: flex; flex-direction: column; align-items: flex-start; gap: 0.55rem; min-width: 0; }
-.journey-step:nth-child(1) { --step-color: #175cd3; --step-tint: #e0eaff; }
-.journey-step:nth-child(2) { --step-color: #6248b3; --step-tint: #ece6fb; }
-.journey-step:nth-child(3) { --step-color: #0b7d72; --step-tint: #dcf3ee; }
-.journey-step:nth-child(4) { --step-color: #a14f10; --step-tint: #fcebd9; }
-.journey-number {
+.journey-scene { position: absolute; inset: 0 0 0 32%; pointer-events: none; }
+.journey-scene img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: right top; }
+.journey-copy { position: relative; z-index: 1; width: 33%; min-width: 300px; }
+.journey-copy .eyebrow,
+.page-hero .eyebrow { color: #24395f; letter-spacing: 0.14em; }
+.journey-copy h1,
+.page-hero h1 {
+  margin: 0.5rem 0 0.75rem;
+  padding: 0;
+  color: var(--track-navy);
+  font-size: clamp(1.9rem, 2.65cqi, 2.6rem);
+  font-weight: 750;
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+}
+.journey-copy h1 span,
+.page-hero h1 span { color: var(--track-blue); }
+.journey-copy p,
+.page-hero p { margin: 0; color: var(--track-muted); font-size: 1rem; line-height: 1.6; max-width: 460px; }
+.journey-tiles {
+  position: absolute;
+  z-index: 1;
+  left: calc(33% + 1.25rem);
+  right: 9%;
+  bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.journey-tile {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  min-width: 0;
+  padding: 1rem 1.05rem;
+  border: 1px solid #ffffffe0;
+  border-radius: 16px;
+  background: #ffffffd9;
+  box-shadow: 0 12px 28px -20px #102a5680;
+  backdrop-filter: blur(8px);
+}
+.journey-tile-violet { background: #f7f4ffe6; }
+.journey-tile-green { background: #e9f8f0eb; }
+.journey-tile-icon { display: grid; place-items: center; flex-shrink: 0; width: 46px; height: 46px; border-radius: 13px; background: #e3edff; }
+.journey-tile-violet .journey-tile-icon { background: #ebe5fd; }
+.journey-tile-green .journey-tile-icon { background: #d3f1e2; }
+.journey-tile-icon img { width: 26px; height: 26px; }
+.journey-tile strong { display: block; color: var(--track-navy); font-size: 0.9375rem; font-weight: 700; line-height: 1.3; }
+.journey-tile p { margin: 0.2rem 0 0; color: var(--track-ink); font-size: 0.8125rem; line-height: 1.45; }
+/* Narrower banners: the cards move under the heading, and the scene keeps to the top right. */
+@container (max-width: 1100px) {
+  .journey-copy { width: 52%; }
+  .journey-scene { inset: 0 0 auto 46%; height: 230px; }
+  .journey-tiles { position: static; margin-top: 1.4rem; }
+}
+@container (max-width: 680px) {
+  .journey-copy { width: auto; min-width: 0; }
+  .journey-scene { display: none; }
+  .journey-tiles { grid-template-columns: 1fr; gap: 0.5rem; margin-top: 1.1rem; }
+  .journey-tile { align-items: center; padding: 0.65rem 0.8rem; }
+  .journey-tile-icon { width: 38px; height: 38px; border-radius: 11px; }
+  .journey-tile-icon img { width: 22px; height: 22px; }
+}
+/* Pinned and scrolled: the banner folds away, leaving the step tabs. */
+body.finder-compact .journey-hero { min-height: 0; max-height: 0; opacity: 0; padding-block: 0; border-width: 0; }
+
+/* The other pages' banners, in the same style. */
+.page-hero {
+  position: relative;
+  container-type: inline-size;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 188px;
+  padding: 1.6rem 2.1rem;
+  margin-bottom: 1.1rem;
+  overflow: hidden;
+  border: 1px solid #e0e9f8;
+  border-radius: 22px;
+  background: var(--track-banner);
+}
+.page-hero-copy { position: relative; z-index: 1; min-width: 0; max-width: 680px; }
+.page-hero h1 { font-size: clamp(1.75rem, 2.6vw, 2.4rem); }
+.page-hero p { max-width: 580px; font-size: 0.9375rem; }
+.page-hero-art { flex: 0 0 auto; width: min(32%, 290px); }
+.page-hero-art img { display: block; width: 100%; height: auto; }
+
+/* A card's opening: its icon in a tinted tile beside the kicker, title and description. */
+.card-heading { display: flex; align-items: center; gap: 1rem; min-width: 0; }
+.card-heading-icon { display: grid; place-items: center; flex-shrink: 0; width: 52px; height: 52px; border-radius: 14px; background: var(--track-tint); }
+.card-heading-icon img { width: 28px; height: 28px; }
+.card-heading h3 { margin: 0; padding: 0; color: var(--track-navy); font-size: 1.3rem; font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; }
+.card-heading p { margin: 0.2rem 0 0; color: var(--track-muted); font-size: 0.9375rem; line-height: 1.5; }
+.card-kicker { color: var(--track-ink); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; line-height: 1.5; text-transform: uppercase; }
+
+/* Your starting point: the facts in a row with dividers, beside a stack of books. The card is a size container,
+   so the row wraps by the card's width. */
+.st-key-card_understanding { container-type: inline-size; padding: 1.15rem 1.4rem; }
+.start-point {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "head art" "facts art" "skills art";
+  align-items: center;
+  column-gap: 1.5rem;
+}
+.start-point .card-heading { grid-area: head; }
+.start-facts { grid-area: facts; display: grid; grid-template-columns: repeat(4, auto); margin-top: 1.2rem; }
+.start-fact { display: flex; align-items: center; gap: 0.85rem; min-width: 0; padding: 0.15rem 1.25rem; border-left: 1px solid var(--track-border); }
+.start-fact:first-child { padding-left: 0.4rem; border-left: 0; }
+.start-fact > img { flex-shrink: 0; width: 30px; height: 30px; }
+.start-fact span { display: block; color: var(--track-navy); font-size: 0.8125rem; font-weight: 650; line-height: 1.4; }
+.start-fact strong { display: block; margin-top: 0.15rem; color: var(--track-navy); font-size: 1.0625rem; font-weight: 500; line-height: 1.35; overflow-wrap: anywhere; }
+.start-skills { grid-area: skills; margin: 0.8rem 0 0 0.4rem; color: var(--track-muted); font-size: 0.8125rem; }
+.start-art { grid-area: art; width: 230px; }
+.start-art img { display: block; width: 100%; height: auto; }
+.st-key-finder_followup { margin-top: 0.4rem; padding-top: 1rem; border-top: 1px solid var(--track-border); }
+.followup-title { margin: 0; color: var(--track-navy); font-size: 0.9375rem; font-weight: 650; }
+.followup-title span { margin-left: 0.4rem; color: var(--track-muted); font-size: 0.8125rem; font-weight: 400; }
+@container (max-width: 980px) {
+  .start-point { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "facts" "skills"; }
+  .start-art { display: none; }
+}
+@container (max-width: 640px) {
+  .start-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1rem; }
+  .start-fact:nth-child(3) { padding-left: 0.4rem; border-left: 0; }
+}
+@container (max-width: 480px) {
+  .start-facts { grid-template-columns: minmax(0, 1fr); row-gap: 0.8rem; }
+  .start-fact { padding-left: 0.4rem; border-left: 0; }
+}
+
+/* Qualifications for you: the heading with its link, then one wide card per match. */
+.st-key-finder_matches_heading { margin-top: 0.75rem; }
+.section-title { display: flex; align-items: flex-start; gap: 0.75rem; min-width: 0; }
+.section-title > img { flex-shrink: 0; width: 26px; height: 26px; margin-top: 0.2rem; }
+.section-title h3 { margin: 0; padding: 0; color: var(--track-navy); font-size: 1.4rem; font-weight: 750; line-height: 1.3; }
+.section-title p { margin: 0.2rem 0 0; color: var(--track-muted); font-size: 0.9375rem; line-height: 1.5; }
+.st-key-finder_view_library [data-testid="stButton"] button { color: var(--track-blue); white-space: nowrap; }
+.st-key-finder_view_library [data-testid="stMarkdownContainer"] p { font-size: 1rem; font-weight: 650; }
+[class*="st-key-card_match_"] { padding: 1.1rem; }
+/* Each column is a size container, so the picture and text share whatever width their column gets. */
+[class*="st-key-card_match_"] [data-testid="stColumn"] { container-type: inline-size; }
+.match-summary { display: flex; align-items: center; gap: 1.35rem; min-width: 0; }
+.match-media { flex: 0 0 236px; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 12px; background: var(--track-tint); }
+.qual-photo { display: block; width: 100%; height: 100%; object-fit: cover; background: center / cover no-repeat; }
+/* A sector tile: its icon over two soft circles and the sector's gradient (presentation.media_styles sets both). */
+.qual-tile {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--tile-icon) center / min(30%, 60px) auto no-repeat,
+              radial-gradient(circle at 92% 0%, #ffffff24 0 34%, transparent 35%),
+              radial-gradient(circle at 0% 105%, #ffffff17 0 30%, transparent 31%),
+              var(--tile-fill, var(--track-blue));
+}
+.match-body { flex: 1; min-width: 0; }
+.match-title { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.8rem; margin: 0.3rem 0 0.4rem; }
+.match-title h4 { margin: 0; padding: 0; color: var(--track-navy); font-size: 1.25rem; font-weight: 700; line-height: 1.3; letter-spacing: -0.02em; }
+.top-match {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: #e3f5ee;
+  color: #11664c;
+  font-size: 0.8125rem;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.top-match img { width: 17px; height: 17px; }
+.match-body > p { margin: 0 0 0.8rem; color: var(--track-ink); font-size: 0.9375rem; line-height: 1.55; }
+.qual-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.qual-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  background: #eef2f8;
+  color: var(--track-ink);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+.qual-tag-green { background: #e3f5ee; color: #11664c; }
+.qual-tag img { width: 15px; height: 15px; }
+@container (max-width: 700px) { .match-media { flex-basis: 160px; } }
+@container (max-width: 480px) {
+  .match-summary { flex-direction: column; align-items: stretch; gap: 0.9rem; }
+  .match-media { flex-basis: auto; }
+}
+/* The score panel: a ring, then bars or notes, then the button. */
+[class*="st-key-match_fit_"] { container-type: inline-size; padding: 1rem 1.15rem; background: var(--track-panel); border: 1px solid #e6edf8; border-radius: 14px; }
+.score-ring {
+  --score: 0;
   display: grid;
   place-items: center;
-  flex-shrink: 0;
-  width: 32px;
-  height: 26px;
-  border-radius: 8px;
-  color: var(--step-color);
-  background: var(--step-tint);
-  font-size: 0.6875rem;
-  font-weight: 750;
+  width: 108px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--track-panel) 80%, transparent 81%),
+              conic-gradient(var(--track-blue) calc(var(--score) * 1%), #dbe5f5 0);
 }
-.journey-step-body { display: flex; align-items: flex-start; gap: 0.65rem; min-width: 0; }
-.journey-step-body > img { width: 28px; height: 28px; flex-shrink: 0; }
-.journey-step strong { color: var(--track-navy); font-size: 0.9375rem; line-height: 1.4; }
-.journey-step p { color: var(--track-muted); font-size: 0.8125rem; line-height: 1.5; margin: 0.15rem 0 0; }
-/* Pinned and scrolled: the banner shrinks to one line of the four steps' icons and titles. */
-.journey-head,
-.journey-number,
-.journey-step p { overflow: hidden; transition: max-height 0.3s ease, opacity 0.2s ease, margin 0.3s ease, padding 0.3s ease; }
-.journey-head { max-height: 10rem; }
-.journey-number { max-height: 2rem; }
-.journey-step p { max-height: 7rem; } /* room for any wrap above 1100px; the caps only exist to animate */
-.journey-steps,
-.journey-step { transition: padding 0.3s ease, border-color 0.3s ease, gap 0.3s ease; }
-body.finder-compact .journey-card { row-gap: 0; padding: 0.5rem 1rem; }
-body.finder-compact .journey-head,
-body.finder-compact .journey-number,
-body.finder-compact .journey-step p { max-height: 0; opacity: 0; margin: 0; padding: 0; }
-body.finder-compact .journey-steps { padding-top: 0; border-top-color: transparent; }
-body.finder-compact .journey-step { gap: 0; }
-body.finder-compact .journey-step-body { align-items: center; }
-body.finder-compact .journey-step-body > img { width: 22px; height: 22px; }
+.score-ring span { color: var(--track-navy); font-size: 1.65rem; font-weight: 750; letter-spacing: -0.03em; }
+.match-fit-title { display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.4rem; color: var(--track-navy); font-size: 0.9375rem; font-weight: 650; }
+.match-fit-hint { display: inline-grid; cursor: help; }
+.match-fit-hint img { display: block; width: 16px; height: 16px; }
+.match-note { margin: 0.15rem 0 0; color: var(--track-ink); font-size: 0.875rem; line-height: 1.45; }
+.match-note + .match-note { color: var(--track-muted); font-size: 0.8125rem; }
+.skill-bars { display: grid; gap: 0.55rem; }
+.skill-bar { display: grid; grid-template-columns: 8.5rem minmax(3rem, 1fr) 2.75rem; align-items: center; gap: 0.75rem; color: var(--track-ink); font-size: 0.875rem; }
+.skill-track { height: 8px; overflow: hidden; border-radius: 99px; background: #dfe7f4; }
+.skill-track i { display: block; height: 100%; border-radius: inherit; background: var(--track-blue); }
+.skill-bar-violet .skill-track i { background: #7a5cdb; }
+.skill-bar b { color: var(--track-navy); font-weight: 650; text-align: right; }
+[class*="st-key-card_readiness_"] .skill-bars { max-width: 720px; margin-block: 0.25rem 0.4rem; }
+@container (max-width: 400px) {
+  .skill-bar { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.25rem; }
+  .skill-track { grid-column: 1 / -1; grid-row: 2; }
+}
+
+/* A curated pathway's steps as a timeline. */
+.pathway-steps { display: grid; margin: 0.6rem 0 0.3rem; padding: 0; list-style: none; }
+.pathway-steps li { position: relative; display: flex; align-items: flex-start; gap: 0.85rem; margin: 0; padding: 0 0 0.9rem; }
+.pathway-steps li:not(:last-child)::before { content: ""; position: absolute; top: 34px; bottom: 2px; left: 15px; width: 2px; background: #d8e3f5; }
+.pathway-steps span { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; background: var(--track-tint); color: var(--track-blue); font-size: 0.875rem; font-weight: 700; }
+.pathway-steps p { margin: 0.3rem 0 0; color: var(--track-navy); font-size: 0.9375rem; line-height: 1.5; }
+
+/* Library cards: a small picture beside the sector, the name, careers and tags. */
+.library-top { display: flex; align-items: center; gap: 0.85rem; }
+.library-media { flex: 0 0 52px; width: 52px; height: 52px; overflow: hidden; border-radius: 12px; }
+.library-media .qual-tile { background-size: 50% auto, auto, auto, auto; }
+.library-details p { margin: 0.2rem 0 0.75rem; color: var(--track-navy); font-size: 0.9375rem; line-height: 1.5; }
+[class*="st-key-card_library_"] h3 { font-size: 1.25rem; }
 
 /* Your goal: the step's heading, its two rows of ideas and the last goal, as one card. */
 .step-heading { display: flex; align-items: center; gap: 1.1rem; margin-bottom: 0.4rem; }
@@ -461,10 +777,6 @@ body.finder-compact .journey-step-body > img { width: 22px; height: 22px; }
   .hero h1 { font-size: 2.55rem; }
   .feature-strip { gap: 0.9rem; }
   .feature-item { gap: 0.6rem; }
-  /* Four columns get too narrow for the descriptions; the titles carry the journey. */
-  .journey-step p { display: none; }
-  .journey-card h3 { font-size: 1.3rem; }
-  .st-key-finder_steps [data-testid="stButton"] button { padding: 0.5rem 1rem; }
 }
 @media (max-width: 800px) {
   .hero { padding: 1.8rem; min-height: 250px; }
@@ -480,11 +792,10 @@ body.finder-compact .journey-step-body > img { width: 22px; height: 22px; }
   .feature-copy strong { font-size: 0.8125rem; }
   .feature-copy p,
   .feature-copy span { font-size: 0.8125rem; }
-  .journey-card { padding: 1rem 1.1rem 0.8rem; }
+  .page-hero-art { display: none; }
 }
 @media (max-width: 520px) {
   .block-container { padding: 3.8rem 1rem 1.5rem; }
-  [data-testid="stSidebarUserContent"] { padding-inline: 1rem; }
   .sidebar-brand { margin-bottom: 1.2rem; }
   .sidebar-note { padding: 0.9rem; font-size: 0.875rem; }
   .brand-bar { gap: 0.6rem; margin-bottom: 1.1rem; }
@@ -507,29 +818,36 @@ body.finder-compact .journey-step-body > img { width: 22px; height: 22px; }
   .feature-copy span { font-size: 0.875rem; }
   [data-testid="stTabs"] [role="tablist"] { gap: 1.2rem; }
   [data-testid="stTabs"] [role="tab"] { font-size: 0.875rem; }
-  /* Two step tabs per row on phones. */
-  /* Two step tabs per row on phones, so plain rounded tabs: arrows and chevrons would point at nothing. */
+  /* Two step tabs per row on phones, so no chevrons: they would point at nothing. */
   .st-key-finder_steps { padding: 0.35rem; gap: 0.35rem; }
   .st-key-finder_steps [class*="st-key-finder_tab_"] { flex: 1 1 calc(50% - 0.5rem); min-width: 0; }
-  .st-key-finder_steps [class*="st-key-finder_tab_"]::after { display: none; }
-  .st-key-finder_steps [data-testid="stButton"] button { min-height: 44px; padding: 0.4rem 0.5rem; border-radius: 12px; font-size: 0.8125rem; }
-  .st-key-finder_steps [class*="st-key-finder_tab_"] [data-testid="stButton"] button[data-testid="stBaseButton-primary"] { clip-path: none; }
+  .st-key-finder_steps [class*="st-key-finder_tab_"]:not(.st-key-finder_tab_1) { margin-left: 0; }
+  .st-key-finder_steps [class*="st-key-finder_tab_"] [data-testid="stButton"] button {
+    min-height: 48px;
+    padding: 0.4rem 0.6rem;
+    border-radius: 12px;
+    clip-path: none;
+  }
+  .st-key-finder_steps [data-testid="stIconMaterial"] { width: 32px; height: 32px; font-size: 1.15rem; }
+  .st-key-finder_steps button > div > span { gap: 0.55rem; }
+  .st-key-finder_steps [data-testid="stMarkdownContainer"] p { font-size: 0.8125rem; }
   .st-key-finder_panel,
   .st-key-training_filters,
   .st-key-library_filters,
   .st-key-progress_summary,
   .st-key-service_unavailable { padding: 1.1rem; border-radius: 14px; }
   .empty-state { padding: 1.6rem 1rem; }
-  /* Phones keep the journey to its headline and four numbered titles, two by two. */
-  .journey-card { gap: 0.6rem; border-radius: 14px; }
-  .journey-card h3 { font-size: 1.15rem; }
-  .journey-lead,
-  .journey-step-body > img,
-  .journey-step p { display: none; }
-  .journey-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem 0.75rem; padding-top: 0.6rem; }
-  .journey-step { flex-direction: row; align-items: center; gap: 0.5rem; }
-  .journey-number { width: 28px; }
-  .journey-step strong { display: block; font-size: 0.75rem; line-height: 1.35; }
+  /* Phones keep the banners to their headline; the journey cards keep their titles. */
+  .journey-hero,
+  .page-hero { padding: 1.3rem 1.2rem; border-radius: 16px; }
+  .journey-hero { min-height: 0; }
+  .journey-copy p,
+  .journey-tile p { display: none; }
+  .journey-copy h1,
+  .page-hero h1 { font-size: 1.65rem; }
+  .page-hero { min-height: 0; }
+  .goal-avatar { width: 48px; height: 48px; }
+  .goal-summary p { font-size: 1rem; }
   /* One swipeable row of sample goals instead of six stacked rows; the cut-off last pill shows there's more. */
   .st-key-goal_samples { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
   .st-key-goal_samples::-webkit-scrollbar { display: none; }
@@ -540,10 +858,7 @@ body.finder-compact .journey-step-body > img { width: 22px; height: 22px; }
   .step-heading h1 { font-size: 1.3rem; }
   .st-key-goal_examples [data-testid="stButton"] button { min-height: 44px; padding: 0.45rem 1rem; }
   .st-key-goal_examples [data-testid="stButton"] button p { font-size: 0.9375rem; }
-  /* Pinned and scrolled on phones: the banner slides away, and the tabs become one row of numbers with only the
-     current step named. */
-  .journey-card { max-height: 16rem; overflow: hidden; transition: max-height 0.3s ease, opacity 0.2s ease, padding 0.3s ease, border-width 0.3s ease; }
-  body.finder-compact .journey-card { max-height: 0; opacity: 0; padding-block: 0; border-width: 0; }
+  /* Pinned and scrolled on phones: the tabs become one row of icons with only the current step named. */
   body.finder-compact .st-key-finder_steps { margin-top: 0; flex-wrap: nowrap; }
   /* Streamlit sizes stretch-width buttons with width: 100%, which would give every tab a whole row. */
   body.finder-compact .st-key-finder_steps [class*="st-key-finder_tab_"] { flex: 0 0 auto; width: auto; min-width: 0; }

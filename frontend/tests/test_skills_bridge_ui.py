@@ -10,7 +10,7 @@ from skills_bridge_view import (_classify_terms, _delivery_query_params, _delive
                                 _location_from_state)
 
 
-TAB = "Skills Bridge"
+TAB = "Skills Explorer"
 MATCH = {"source": "Skills Bridge", "retrieved_at": "2026-10-07T01:00:00+00:00", "data": {
     "input": {"skills": ["JavaScript", "Cooking"]}, "unmatched": ["Cooking"],
     "resolution": [{"term": "JavaScript", "matched_skills": 5, "strength": "strong"}],
@@ -133,7 +133,7 @@ def test_matches_details_gap_review_and_tab_switch_preserve_state(bridge):
     app.multiselect(key="bridge_known_skills").set_value([10])
     run_page(app, TAB)
     assert list(app.dataframe[0].value["Skill to explore"]) == ["Web accessibility"]
-    run_page(app, "Qualification library")
+    run_page(app, "Qualifications Library")
     run_page(app, TAB)
     assert app.multiselect(key="bridge_known_skills").value == [10]
     assert len(bridge["calls"]) == 2, "ordinary widget reruns must not repeat remote requests"

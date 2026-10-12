@@ -173,7 +173,7 @@ def test_service_outage_keeps_sign_in_and_retry_recovers(offline_api, monkeypatc
     app.button(key="retry_service").click()
     run_page(app)
     assert len(attempts) == 2
-    assert "Qualification library" in navigation_labels(app)
+    assert "Qualifications Library" in navigation_labels(app)
     assert "can't reach" not in page_text(app)
     open_account(app)
     assert app.text_input(key="dialog_signin_email")
@@ -181,7 +181,7 @@ def test_service_outage_keeps_sign_in_and_retry_recovers(offline_api, monkeypatc
 
 
 def test_library_search_and_sector_filter_combine(offline_api):
-    tab = "Qualification library"
+    tab = "Qualifications Library"
     app = run_page(new_app(), tab)
     assert library_names(app) == {item["name"] for item in CATALOG}
     app.text_input(key="library_search").set_value("  technician  ")
@@ -199,6 +199,29 @@ def test_library_search_and_sector_filter_combine(offline_api):
     assert library_names(app) == {item["name"] for item in CATALOG}
 
 
+def test_library_shows_a_page_at_a_time_and_a_new_search_starts_over(offline_api):
+    offline_api["catalog"] = [{"code": f"Q-{n:02d}", "name": f"Qualification {n:02d} NC II", "sector": "Tourism",
+                               "possible_jobs": ["Cook"] if n % 2 else ["Welder"], "competencies": []}
+                              for n in range(1, 30)]
+    tab = "Qualifications Library"
+    app = run_page(new_app(), tab)
+
+    def shown():
+        return [button.key.removeprefix("explore_") for button in app.button if (button.key or "").startswith("explore_")]
+
+    assert shown() == [f"Q-{n:02d}" for n in range(1, 13)], "the whole catalog at once freezes the browser"
+    assert app.button(key="previous_library_page").disabled
+    press(app, "next_library_page")
+    assert shown() == [f"Q-{n:02d}" for n in range(13, 25)]
+    assert scroll_targets(app) == ["library_filters"], "a new page opens back at the filters"
+    press(app, "next_library_page")
+    assert shown() == [f"Q-{n:02d}" for n in range(25, 30)]
+    assert app.button(key="next_library_page").disabled
+    app.text_input(key="library_search").set_value("welder")
+    run_page(app, tab)
+    assert shown() == [f"Q-{n:02d}" for n in range(2, 26, 2)], "a new search starts at its first page"
+
+
 @pytest.mark.parametrize("email,password", [("", ""), ("invalid-address", "secret"), ("juan@example.test", "")])
 def test_invalid_sign_in_stays_local(offline_api, email, password):
     app = open_account(run_page(new_app()))
@@ -212,7 +235,7 @@ def test_invalid_sign_in_stays_local(offline_api, email, password):
 
 
 def test_learner_progress_has_useful_empty_states(offline_api):
-    app = run_page(new_app("learner"), "My progress")
+    app = run_page(new_app("learner"), "My Progress")
     assert "Reports" not in navigation_labels(app)
     assert app.text_input(key="goal_title")
     assert app.text_input(key="certificate_title")
@@ -235,7 +258,7 @@ def test_progress_renders_saved_records_and_completions(offline_api):
                              "target_qualification": qualification}]
     offline_api["certifications"] = [{"title": "My certificate", "issuing_body": "TESDA",
                                       "verified": False, "certificate_number": None}]
-    app = run_page(new_app("learner"), "My progress")
+    app = run_page(new_app("learner"), "My Progress")
     history = next(table.value for table in app.dataframe if "Score" in table.value.columns)
     assert list(history["Score"]) == [75]
     assert app.checkbox(key="step_path-1_1").value is True
@@ -245,7 +268,7 @@ def test_progress_renders_saved_records_and_completions(offline_api):
 
 
 def test_training_without_listings_has_empty_states(offline_api):
-    app = run_page(new_app(), "Training & assessment")
+    app = run_page(new_app(), "Training & Assessment")
     assert app.multiselect(key="training_qualifications")
     assert "No centers match your search" in page_text(app)
     assert not any(button.label == "Apply" for button in app.button)
@@ -267,7 +290,7 @@ def test_expired_session_returns_to_sign_in(offline_api, monkeypatch):
         raise ApiError("Expired session", 401)
 
     monkeypatch.setattr(ApiClient, "readiness_checks", expired)
-    app = run_page(new_app("learner"), "My progress")
+    app = run_page(new_app("learner"), "My Progress")
     assert "auth" not in app.session_state
     assert app.button(key="open_account_sidebar")
     assert "session has expired" in page_text(app)
@@ -292,7 +315,7 @@ def test_finder_answers_survive_tab_switch_without_hidden_requests(offline_api, 
     next(button for button in app.button if button.label == "Analyze My Skills").click()
     run_page(app)
     before_switch = len(calls)
-    run_page(app, "Qualification library")
+    run_page(app, "Qualifications Library")
     assert len(calls) == before_switch, "hidden finder must not call analysis endpoints"
     run_page(app, "Find my pathway")
     assert [metric.value for metric in app.metric if metric.label == "Your readiness"] == ["100%"], \
@@ -339,6 +362,33 @@ def test_finder_shows_one_numbered_step_at_a_time(offline_api, monkeypatch):
     assert app.selectbox(key="qualification_selected"), "back from the readiness check is Your matches"
 
 
+def card_text(app, code):
+    return "\n".join(html.proto.body for html in app.container(key=f"card_match_{code}").get("html"))
+
+
+def test_match_cards_show_catalog_facts_and_pick_their_qualification(offline_api, monkeypatch):
+    offline_api["catalog"].append({"code": "SMAW-NC-III", "name": "Welding NC III", "sector": "Metals and Engineering",
+                                   "possible_jobs": ["Welder"], "competencies": []})
+    mock_finder(monkeypatch)
+    monkeypatch.setattr(ApiClient, "match", lambda self, query, updated: {"profile": updated, "matches": [
+        {"qualification": CATALOG[0], "score": 90, "reason": "Matches your welding goal."},
+        {"qualification": CATALOG[2], "score": 40, "reason": "Also fits your goal."}]})
+    app = submit_goal(run_page(new_app()))
+    welding, cookery = card_text(app, "SMAW-NC-II"), card_text(app, "COOKERY-NC-II")
+    assert "Top match" in welding and "Top match" not in cookery
+    assert "Prepares you for jobs like Welder and Fabricator." in welding
+    assert "Pathway to NC III" in welding and "Pathway to" not in cookery, "only when the catalog has the next level"
+    assert "Rate its 1 skills" not in welding and "Rate its 1 skill" in welding
+
+    press(app, "finder_choose_COOKERY-NC-II")
+    assert app.session_state["qualification_selected"] == "COOKERY-NC-II"
+    app.radio(key="competency_COOKERY-NC-II_3").set_value("I can do this confidently")
+    click_label(app, "Analyze My Skills")
+    open_step(app, 2)
+    assert "Relevant skills" in card_text(app, "COOKERY-NC-II"), "a rated qualification shows the skills you have"
+    assert "Relevant skills" not in card_text(app, "SMAW-NC-II")
+
+
 @pytest.mark.parametrize("score, level, verdict, action, kind, route", [
     (85, "High Readiness", "NC assessment", "See assessment schedules", "assessment", "ASSESSMENT_READINESS"),
     (65, "Moderate Readiness", "focused training", "Find training near you", "training", "SKILL_GAP_CHECK"),
@@ -361,7 +411,7 @@ def test_the_readiness_result_decides_between_training_and_an_nc(offline_api, mo
     assert "A pathway for this verdict" in page_text(app)
     assert app.button(key="finder_next").label == action
     press(app, "finder_next")
-    assert app.session_state["main_tabs"] == "Training & assessment"
+    assert app.session_state["main_tabs"] == "Training & Assessment"
     assert app.session_state["training_kinds"] == [kind], "the centers that fit the verdict"
     assert app.session_state["training_qualifications"] == ["SMAW-NC-II"]
     assert app.text_input(key="training_search").value == "Welding", "the qualification's keyword fills the search box"
@@ -517,10 +567,10 @@ def test_sign_out_clears_saved_personal_results(offline_api):
     app.session_state["readiness_results"] = {"SMAW-NC-II": {"score": 100}}
     app.session_state["competency_SMAW-NC-II_1"] = "I can do this confidently"
     app.session_state["data_export"] = "{}"
-    run_page(app, "My progress")
+    run_page(app, "My Progress")
     open_account(app)
     app.button(key="dialog_sign_out").click()
-    run_page(app, "My progress")
+    run_page(app, "My Progress")
     assert all(key not in app.session_state for key in (
         "auth", "analysis", "original_query", "readiness_results", "data_export", "competency_SMAW-NC-II_1"))
     open_account(app)
@@ -528,7 +578,7 @@ def test_sign_out_clears_saved_personal_results(offline_api):
 
 
 def test_library_explore_opens_finder_with_the_chosen_goal(offline_api):
-    app = run_page(new_app(), "Qualification library")
+    app = run_page(new_app(), "Qualifications Library")
     app.button(key="explore_CSS-NC-II").click()
     run_page(app)
     assert app.session_state["main_tabs"] == "Find my pathway"
@@ -539,7 +589,7 @@ def test_library_explore_opens_finder_with_the_chosen_goal(offline_api):
 def test_library_explore_shows_the_goal_step_over_earlier_results(offline_api, monkeypatch):
     mock_finder(monkeypatch)
     app = open_step(submit_goal(run_page(new_app())), 3)
-    run_page(app, "Qualification library")
+    run_page(app, "Qualifications Library")
     app.button(key="explore_CSS-NC-II").click()
     run_page(app)
     assert app.text_area(key="goal_query").value == "I want to pursue Computer Systems Servicing NC II."
@@ -554,7 +604,7 @@ def test_empty_catalog_can_be_refreshed_when_qualifications_arrive(offline_api):
     next(button for button in app.button if button.label == "Refresh catalog").click()
     run_page(app)
     assert "no qualifications in the catalog" not in page_text(app).lower()
-    run_page(app, "Qualification library")
+    run_page(app, "Qualifications Library")
     assert library_names(app) == {item["name"] for item in CATALOG}
 
 
@@ -675,7 +725,7 @@ def test_new_recommendation_resets_readiness_and_rejected_answers_can_recover(of
 
 @pytest.mark.parametrize("tab,trigger", [
     ("Find my pathway", "open_account_sidebar"),
-    ("My progress", "open_account_progress")])
+    ("My Progress", "open_account_progress")])
 def test_account_dialog_opens_from_each_learner_entry_point(offline_api, tab, trigger):
     app = run_page(new_app(), tab)
     app.button(key=trigger).click()
@@ -688,7 +738,7 @@ def test_account_dialog_opens_from_each_learner_entry_point(offline_api, tab, tr
 
 
 def test_account_dialog_validates_then_signs_in(offline_api, monkeypatch):
-    app = open_account(run_page(new_app(), "My progress"))
+    app = open_account(run_page(new_app(), "My Progress"))
     next(button for button in app.button
          if button.label == "Sign in" and "dialog_" in (button.key or "")).click()
     run_page(app)
@@ -703,14 +753,14 @@ def test_account_dialog_validates_then_signs_in(offline_api, monkeypatch):
          if button.label == "Sign in" and "dialog_" in (button.key or "")).click()
     run_page(app)
     assert app.session_state["auth"]["token"] == "frontend-dialog-token"
-    assert app.session_state["main_tabs"] == "My progress"
+    assert app.session_state["main_tabs"] == "My Progress"
     assert app.text_input(key="goal_title"), "signing in returns to the current page"
     assert "Juan Dela Cruz" in app.button(key="open_account_sidebar").label
     assert not app.session_state["account_dialog_open"]
     assert not app.error
 
 
-@pytest.mark.parametrize("role,tab", [("learner", "My progress"), ("admin", "Reports")])
+@pytest.mark.parametrize("role,tab", [("learner", "My Progress"), ("admin", "Reports")])
 def test_empty_catalog_preserves_account_history_and_reporting(offline_api, role, tab):
     offline_api["catalog"] = []
     app = run_page(new_app(role), tab)
@@ -730,12 +780,12 @@ def test_empty_catalog_preserves_account_history_and_reporting(offline_api, role
 def test_account_deletion_returns_immediately_to_signed_out_controls(offline_api, monkeypatch):
     deleted_tokens = []
     monkeypatch.setattr(ApiClient, "delete_account", lambda self, token: deleted_tokens.append(token))
-    app = open_account(run_page(new_app("learner"), "My progress"))
+    app = open_account(run_page(new_app("learner"), "My Progress"))
     assert app.button(key="dialog_delete_account").disabled
     app.checkbox(key="dialog_confirm_delete").check()
-    run_page(app, "My progress")
+    run_page(app, "My Progress")
     app.button(key="dialog_delete_account").click()
-    run_page(app, "My progress")
+    run_page(app, "My Progress")
     assert deleted_tokens == ["frontend-test-token"]
     assert "auth" not in app.session_state
     assert app.button(key="open_account_sidebar")

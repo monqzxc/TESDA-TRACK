@@ -966,7 +966,7 @@ def _fit(api_client: ApiClient, token: str | None, code: str, goal: str | None, 
 def _header() -> None:
     title, tools = st.columns([1, 1.15], vertical_alignment="bottom", gap="medium")
     with title:
-        section_header("Training & assessment", "Find a training or assessment center",
+        section_header("Training & Assessment", "Find a training or assessment center",
                        "Discover TESDA-accredited training centers and assessment centers near you or in any location.")
     with tools, st.container(horizontal=True, horizontal_alignment="right", vertical_alignment="center",
                              key="training_toolbar"):
@@ -1113,7 +1113,7 @@ def _apply(api_client: ApiClient, token: str, schedule_id: int) -> None:
             raise
         st.session_state["training_notice"] = ("warning", error.message)
     else:
-        st.session_state["training_notice"] = ("success", "Application sent. Track it under My progress.")
+        st.session_state["training_notice"] = ("success", "Application sent. Track it under My Progress.")
         _listings.clear()  # seats changed
     st.rerun()
 

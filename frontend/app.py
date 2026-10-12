@@ -1,5 +1,6 @@
 import json
 import os
+import re
 from html import escape
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -9,7 +10,9 @@ import streamlit as st
 from api_client import ApiClient, ApiError, ApiUnavailableError
 from centers import ASSESSMENT, TRAINING
 from directions import DEFAULT_ROUTING_URL, RouteClient
-from presentation import FAVICON, brand, empty_state, footer, journey, last_goal, section_header, step_heading
+from presentation import (FAVICON, brand, empty_state, footer, goal_summary, html_with_vectors, journey, last_goal,
+                          library_details, library_top, match_fit, match_summary, media_styles, page_hero, pathway_steps,
+                          score_ring, section_title, show_card_heading, skill_bars, starting_point, step_heading)
 from skills_bridge_view import show_skills_bridge
 from training_view import short_name, show_training as show_center_finder
 
@@ -39,9 +42,14 @@ PATH_LABELS = {
 ANSWER_OPTIONS = {"I can do this confidently": "confident", "I have some experience": "some_experience",
                   "I am not familiar with this": "not_familiar"}
 RESULT_LABELS = {"competent": "Competent", "not_yet_competent": "Not yet competent"}
-# Find my pathway shows one of these at a time; the step bar numbers them. The readiness check comes before the
-# recommendation because its result decides between training and an NC assessment.
-FINDER_STEPS = ["Your goal", "Your matches", "Readiness check", "Your recommendation"]
+# Find my pathway shows one of these at a time; each tab shows its hint underneath and its icon. The readiness check
+# comes before the pathway because its result decides between training and an NC assessment.
+FINDER_STEPS = ["Your goal", "Your match", "Readiness check", "Your pathway"]
+FINDER_HINTS = ["Start here", "See recommendations", "Find skill gaps", "Plan your learning"]
+FINDER_ICONS = ["track_changes", "search", "bar_chart", "add_location_alt"]
+NC_LEVEL = re.compile(r"\bNC\s+(IV|III|II|I)\b")
+NC_LEVELS = ["I", "II", "III", "IV"]
+LIBRARY_PAGE_SIZE = 12
 # The first word of a readiness level picks the bottom line: (headline, curated pathway route, centers, button).
 VERDICTS = {
     "high": ("Apply for the NC assessment", "ASSESSMENT_READINESS", ASSESSMENT, "See assessment schedules"),
@@ -281,8 +289,9 @@ def compact_on_scroll() -> None:
 
 def show_readiness(qualification: dict) -> None:
     code = qualification["code"]
-    section_header("KNOW YOUR STARTING POINT", "Assessment readiness",
-                   f"{qualification['name']}: recognize your strengths and discover what to build on.", level=2)
+    show_card_heading("checklist", "Assessment readiness",
+                      f"{qualification['name']}: recognize your strengths and discover what to build on.",
+                      "KNOW YOUR STARTING POINT")
     parts = competency_parts(qualification["competencies"])
     if not parts:
         st.caption("No sample competencies are listed for this qualification yet.")
@@ -346,12 +355,12 @@ def verdict_for(result: dict) -> tuple[str, str, str, str]:
 
 
 def open_training(qualification: dict, kind: str) -> None:
-    """Training & assessment, already showing the centers that fit the recommendation: the qualification's keyword
+    """Training & Assessment, already showing the centers that fit the recommendation: the qualification's keyword
     in the search box, where learners can see and change it, and the qualification and center type as filters."""
     st.session_state["training_kinds"] = [kind]
     st.session_state["training_qualifications"] = [qualification["code"]]
     st.session_state["training_search"] = short_name(qualification["name"])
-    navigate("Training & assessment")
+    navigate("Training & Assessment")
 
 
 def show_why_we_ask(context: dict) -> None:
@@ -359,7 +368,7 @@ def show_why_we_ask(context: dict) -> None:
     profile, code = context["profile"], context["qualification"]["code"]
     pathway = remembered("pathway", {"profile": profile, "code": code}, lambda: api().pathway(profile, code))
     with st.container(border=True, key="card_why_we_ask"):
-        st.caption("WHY WE ASK")
+        show_card_heading("lightbulb", "Why we ask")
         st.write(pathway["reason"])
         st.caption(pathway["next_step"] + " Your experience should be relevant to the selected qualification.")
 
@@ -385,7 +394,12 @@ def show_recommendation(context: dict) -> None:
         score.metric("Your readiness", f"{result['score']:g}%")
         guidance.markdown(f"**{result['level']}**")
         guidance.write(result["recommendation"])
-        st.progress(result["score"] / 100)
+        total = len(qualification["competencies"])
+        if total:
+            html_with_vectors(skill_bars([("Your strengths", len(result["strengths"]), total, "blue"),
+                                          ("Skills to improve", len(result["skill_gaps"]), total, "violet")]))
+        else:
+            st.progress(result["score"] / 100)
         # The action sits with the verdict; the skill lists can run to dozens, so they fold away, open when there
         # are gaps to work on.
         st.button(action, key="finder_next", type="primary", icon=":material/arrow_forward:", icon_position="right",
@@ -435,18 +449,17 @@ def save_session_progress(profile: dict, qualification_code: str) -> None:
 def show_curated_pathway(curated: dict) -> None:
     st.markdown(f"**{curated['title']}**")
     st.caption(curated["description"])
-    for step in curated["steps"]:
-        st.markdown(f"{step['position']}. {step['title']}")
+    pathway_steps(curated["steps"])
     token = auth_token()
     # Not "follow_...": main() re-assigns those keys to keep follow-up answers, and button state can't be assigned.
     if token and st.button("Follow this pathway", key=f"pathway_follow_{curated['id']}"):
         try:
             api().follow_pathway(token, curated["id"])
-            st.success("Added to My progress. Tick off each step as you complete it.")
+            st.success("Added to My Progress. Tick off each step as you complete it.")
         except ApiError as error:
             if error.status_code != 409:
                 raise
-            st.info("You're already following this pathway. Find it under My progress.")
+            st.info("You're already following this pathway. Find it under My Progress.")
 
 
 def current_step() -> int:
@@ -490,65 +503,134 @@ def finder_context(qualifications: list[dict]) -> dict:
             "experience_description": experience if asked_experience and experience in EXPERIENCE_OPTIONS else None}
 
 
+def qualification_blurb(qualification: dict) -> str:
+    """A sentence or two about a qualification from its catalog record: the jobs it leads to and what it covers."""
+    jobs, competencies = qualification["possible_jobs"][:3], qualification["competencies"]
+    core = sum(1 for competency in competencies if competency["category"] == "Core")
+    sentences = []
+    if jobs:
+        sentences.append("Prepares you for jobs like "
+                         + (f"{', '.join(jobs[:-1])} and {jobs[-1]}" if len(jobs) > 1 else jobs[0]) + ".")
+    if competencies:
+        sentences.append(f"Covers {len(competencies)} competenc{'ies' if len(competencies) != 1 else 'y'}"
+                         + (f", including {core} core technical skill{'s' if core != 1 else ''}." if core else "."))
+    return " ".join(sentences)
+
+
+def qualification_tags(qualification: dict, catalog_names: set[str]) -> list[tuple[str | None, str]]:
+    """Facts from the catalog as (icon, text) chips: the NC level, its size, its careers, and the next level up when
+    the catalog has one."""
+    tags = []
+    level = NC_LEVEL.search(qualification["name"])
+    if level:
+        tags.append(("check", f"NC {level[1]}"))
+    count = len(qualification["competencies"])
+    if count:
+        tags.append((None, f"{count} competenc{'ies' if count != 1 else 'y'}"))
+    jobs = len(qualification["possible_jobs"])
+    if jobs:
+        tags.append((None, f"{jobs} career option{'s' if jobs != 1 else ''}"))
+    if level:
+        base = qualification["name"][:level.start()]
+        higher = next((numeral for numeral in NC_LEVELS[NC_LEVELS.index(level[1]) + 1:]
+                       if f"{base}NC {numeral}".casefold() in catalog_names), None)
+        if higher:
+            tags.append(("route", f"Pathway to NC {higher}"))
+    return tags
+
+
+def choose_qualification(code: str) -> None:
+    """A match card's button: that qualification, then its readiness check."""
+    st.session_state["qualification_selected"] = code
+    go_to_step(3)
+
+
+def show_match_card(match: dict, qualification: dict, top: bool, chosen: bool, result: dict | None,
+                    catalog_names: set[str]) -> None:
+    code = qualification["code"]
+    with st.container(border=True, key=f"card_match_{code}"):
+        about, fit = st.columns([1.75, 1], gap="medium", vertical_alignment="center")
+        with about:
+            match_summary(qualification, qualification_blurb(qualification),
+                          qualification_tags(qualification, catalog_names), top)
+        with fit, st.container(horizontal=True, vertical_alignment="center", gap="medium", key=f"match_fit_{code}"):
+            score_ring(match["score"], "Goal match")
+            with st.container():
+                total = len(qualification["competencies"])
+                hint = "How closely this qualification fits the goal you described. It's guidance, not a guarantee."
+                # Once the learner has rated their skills for it, the card shows how many they already have.
+                if result and total:
+                    match_fit("Goal match", hint, bars=[("Relevant skills", len(result["strengths"]), total, "blue"),
+                                                        ("Skills to develop", len(result["skill_gaps"]), total, "violet")])
+                else:
+                    match_fit("Goal match", hint, notes=[match["reason"]] + (
+                        [f"Rate its {total} skill{'s' if total != 1 else ''} to see your strengths and gaps."] if total else []))
+                st.button("Check my readiness", key=f"finder_choose_{code}", type="primary" if chosen else "secondary",
+                          icon=":material/arrow_forward:", icon_position="right", width="stretch",
+                          on_click=choose_qualification, args=(code,))
+
+
 def show_matches(context: dict) -> None:
     asked = st.session_state["analysis"]
-    needs_answers = asked["experience_years"] is None or asked["has_certification"] is None
-    # Side by side when there are questions, so the matches below stay close to the top.
-    questions, summary = st.columns(2, gap="medium") if needs_answers else (None, st.container())
-    if needs_answers:
-        with questions, st.container(border=True, height="stretch", key="card_followup"):
-            st.subheader("A little more about you")
-            st.caption("These details help us suggest a suitable starting point.")
-            if asked["experience_years"] is None:
-                label = "Do you already have welding experience?" if asked["career_goal"] == "Welder" else "How much experience do you have in your intended field?"
-                st.selectbox(label, ["Choose an answer", *EXPERIENCE_OPTIONS], key="follow_experience")
-            if asked["has_certification"] is None:
-                st.selectbox("Do you currently hold a related certification?",
-                             ["Choose an answer", "Yes", "No", "I'm not sure"], key="follow_certification")
-
     profile = context["profile"]
     years = profile["experience_years"]
-    facts = [("Career goal", profile["career_goal"] or "Still exploring"),
-             ("Experience", context["experience_description"] or (f"{years:g} years" if years is not None else "Not specified")),
-             ("Certification", {True: "Reported certification", False: "None", None: "Not specified"}[profile["has_certification"]]),
-             ("Detected intent", profile["intent"].replace("_", " ").title())]
-    with summary, st.container(border=True, height="stretch", key="card_understanding"):
-        st.subheader("Your starting point")
-        st.caption("Based on your submitted goal and the details you've shared.")
-        for row in (facts[:2], facts[2:]) if needs_answers else (facts,):
-            for column, (label, value) in zip(st.columns(len(row)), row):
-                column.markdown(f"**{label}**\n\n{value}")
-        st.caption("Reported skills: " + (", ".join(profile["existing_skills"]) or "Not yet established"))
+    facts = [("briefcase", "Career goal", profile["career_goal"] or "Still exploring"),
+             ("clock", "Experience", context["experience_description"] or (f"{years:g} years" if years is not None else "Not specified")),
+             ("award", "Certification", {True: "Reported certification", False: "None", None: "Not specified"}[profile["has_certification"]]),
+             ("target", "Detected intent", profile["intent"].replace("_", " ").title())]
+    with st.container(border=True, key="card_understanding"):
+        starting_point(facts, profile["existing_skills"])
+        # The goal didn't say: the questions sit under the facts they fill in.
+        if asked["experience_years"] is None or asked["has_certification"] is None:
+            with st.container(key="finder_followup"):
+                st.html('<p class="followup-title">A little more about you <span>These details help us suggest a '
+                        'suitable starting point.</span></p>')
+                columns = iter(st.columns(2, gap="medium"))
+                if asked["experience_years"] is None:
+                    label = "Do you already have welding experience?" if asked["career_goal"] == "Welder" else "How much experience do you have in your intended field?"
+                    next(columns).selectbox(label, ["Choose an answer", *EXPERIENCE_OPTIONS], key="follow_experience")
+                if asked["has_certification"] is None:
+                    next(columns).selectbox("Do you currently hold a related certification?",
+                                            ["Choose an answer", "Yes", "No", "I'm not sure"], key="follow_certification")
 
-    st.subheader("Qualifications for you")
-    matches = context["matches"]
-    if matches:
-        for column, match in zip(st.columns(len(matches)), matches):
-            with column, st.container(border=True, key=f"card_match_{match['qualification']['code']}"):
-                st.caption(match["qualification"]["sector"].upper())
-                st.markdown(f"**{match['qualification']['name']}**")
-                st.metric("Goal match", f"{match['score']}%")
-                st.progress(match["score"] / 100)
-                st.caption(match["reason"])
-    else:
+    matches, options = context["matches"], context["options"]
+    with st.container(horizontal=True, vertical_alignment="bottom", key="finder_matches_heading"):
+        section_title("sparkle", "Qualifications for you",
+                      "These match your goal and experience. Choose one to check your readiness for it." if matches
+                      else "Pick one from the full list, or describe your goal another way.")
+        st.button("View all qualifications", key="finder_view_library", type="tertiary",
+                  icon=":material/arrow_forward:", icon_position="right", on_click=navigate,
+                  args=("Qualifications Library",))
+    catalog = {q["code"]: q for q in options}
+    catalog_names = {q["name"].casefold() for q in options}
+    results = st.session_state.get("readiness_results", {})
+    st.html(media_styles())
+    for rank, match in enumerate(matches):
+        code = match["qualification"]["code"]
+        show_match_card(match, catalog.get(code, {**match["qualification"], "possible_jobs": [], "competencies": []}),
+                        rank == 0, code == context["qualification"]["code"], results.get(code), catalog_names)
+    if not matches:
         st.info("We couldn't find a clear match. Choose a sample qualification below, or describe a more specific career goal.")
-    options = context["options"]
     st.selectbox(
-        "Select a qualification to explore", [q["code"] for q in options],
-        format_func=lambda code: next(q["name"] for q in options if q["code"] == code),
-        key="qualification_selected",
+        "Or choose any qualification to explore", [q["code"] for q in options],
+        format_func=lambda code: catalog[code]["name"], key="qualification_selected",
     )
-    st.caption("Sample career options: " + ", ".join(context["qualification"]["possible_jobs"]))
+    # A choice from the full list has no card above, so its careers show here.
+    if context["qualification"]["code"] not in {match["qualification"]["code"] for match in matches}:
+        st.caption("Sample career options: " + ", ".join(context["qualification"]["possible_jobs"]))
 
 
 def show_step_bar(current: int, unlocked: bool) -> None:
-    """Numbered tabs, one per step: finished ones are ticked, later ones open once there's a goal."""
+    """One tab per step with its hint underneath: finished ones are ticked, later ones open once there's a goal."""
+    # A button label is one line, so styles.css adds each hint as a second line from this custom property.
+    st.html("<style>" + "".join(f'.st-key-finder_tab_{number} {{ --step-hint: "{hint}"; }}'
+                                for number, hint in enumerate(FINDER_HINTS, start=1)) + "</style>")
     with st.container(horizontal=True, gap="small", key="finder_steps"):
-        for number, label in enumerate(FINDER_STEPS, start=1):
+        for number, (label, symbol) in enumerate(zip(FINDER_STEPS, FINDER_ICONS), start=1):
             done = number < current
             # The button type carries the state to styles.css: primary is current, tertiary is finished.
             st.button(label, key=f"finder_tab_{number}", on_click=go_to_step, args=(number,), width="stretch",
-                      icon=":material/check_circle:" if done else f":material/counter_{number}:",
+                      icon=":material/check_circle:" if done else f":material/{symbol}:",
                       type="primary" if number == current else "tertiary" if done else "secondary",
                       disabled=number > 1 and not unlocked)
 
@@ -567,15 +649,16 @@ def show_step_nav(step: int, checked_readiness: bool = False) -> None:
 
 def show_goal_summary() -> None:
     with st.container(horizontal=True, vertical_alignment="center", key="finder_goal_summary"):
-        st.html(f'<div class="goal-summary"><span>YOUR GOAL</span><p>{escape(st.session_state["original_query"])}</p></div>',
-                width="stretch")
-        st.button("Change goal", key="finder_change_goal", type="tertiary", icon=":material/edit:",
-                  on_click=go_to_step, args=(1,))
-        if auth_token():
-            st.caption("Saved to My progress")
-        else:
-            st.button("Sign in to save", key="open_account_finder", type="tertiary",
-                      icon=":material/bookmark_border:", on_click=open_account)
+        goal_summary(st.session_state["original_query"])
+        with st.container(horizontal=True, vertical_alignment="center", width="content", key="finder_goal_actions"):
+            st.button("Change goal", key="finder_change_goal", type="tertiary", icon=":material/edit:",
+                      on_click=go_to_step, args=(1,))
+            if auth_token():
+                st.caption(":material/bookmark_added: Saved to My Progress")
+            else:
+                st.button("Save to profile", key="open_account_finder", type="tertiary",
+                          icon=":material/bookmark_border:", on_click=open_account,
+                          help="Sign in or create an account to keep your goal and results.")
 
 
 def show_finder(qualifications: list[dict]) -> None:
@@ -650,7 +733,7 @@ def show_goal() -> None:
                 st.session_state["recommendation_session"] = saved
                 st.rerun()
         if auth_token():
-            st.caption("Your results are saved to My progress.")
+            st.caption("Your results are saved to My Progress.")
         elif "analysis" in st.session_state:
             st.button("Sign in to save your progress", key="open_account_finder", type="tertiary",
                       icon=":material/bookmark_border:", on_click=open_account)
@@ -766,11 +849,12 @@ def show_my_applications(token: str) -> None:
                     api().withdraw_application(token, application["id"])
                     st.rerun()
         if not applications:
-            st.caption("Apply for an assessment from Training & assessment.")
+            st.caption("Apply for an assessment from Training & Assessment.")
 
 
 def show_progress(qualifications: list[dict]) -> None:
-    section_header("MY PROGRESS", "Every step counts.", "Your recommendations, readiness checks, and achievements, together in one place.")
+    page_hero("MY PROGRESS", "Every step counts.", "Watch your skills grow.",
+              "Your recommendations, readiness checks, and achievements, together in one place.", "chart")
     token = auth_token()
     if not token:
         empty_state("Your journey deserves a place to grow", "Create an account or sign in using the account panel to keep your goals and progress together.", "growth")
@@ -821,8 +905,9 @@ def show_progress(qualifications: list[dict]) -> None:
 
 
 def show_reports(token: str, qualifications: list[dict]) -> None:
-    section_header("ADMINISTRATOR WORKSPACE", "A clearer view of learner progress.",
-                   "Explore pilot activity, qualification demand, and training opportunities. Counts and averages only.")
+    page_hero("ADMINISTRATOR WORKSPACE", "A clearer view", "of learner progress.",
+              "Explore pilot activity, qualification demand, and training opportunities. Counts and averages only.",
+              "chart")
     start, end = st.columns(2)
     date_from = start.date_input("From (optional)", value=None, key="report_from")
     date_to = end.date_input("To (optional)", value=None, key="report_to")
@@ -906,6 +991,14 @@ def handle_api_error(error: ApiError) -> None:
 def reset_library_filters() -> None:
     st.session_state["library_search"] = ""
     st.session_state["library_sector"] = "All sectors"
+    st.session_state["library_page"] = 1
+
+
+def set_library_page(page: int, scroll: bool = False) -> None:
+    st.session_state["library_page"] = page
+    # The pager sits under the cards, so a new page opens back at the filters.
+    if scroll:
+        st.session_state["library_scroll"] = True
 
 
 def explore_qualification(name: str) -> None:
@@ -915,31 +1008,52 @@ def explore_qualification(name: str) -> None:
 
 
 def show_library(qualifications: list[dict]) -> None:
-    section_header("QUALIFICATION LIBRARY", "Find what sparks your interest.",
-                   "Explore qualifications, possible careers, and the skills you'll build along the way.")
+    page_hero("QUALIFICATIONS LIBRARY", "Find what sparks", "your interest.",
+              "Explore qualifications, possible careers, and the skills you'll build along the way.", "books")
+    catalog_names = {q["name"].casefold() for q in qualifications}
+    st.html(media_styles(thumbnails=True))
     with st.container(border=True, key="library_filters"):
         search, sector = st.columns([2, 1])
-        query = search.text_input("Search qualifications or careers", key="library_search", placeholder="Try welding, cookery, or computers", icon=":material/search:")
-        selected_sector = sector.selectbox("Sector", ["All sectors", *sorted({q["sector"] for q in qualifications})], key="library_sector")
+        # A new search or sector starts again at the first page.
+        query = search.text_input("Search qualifications or careers", key="library_search", placeholder="Try welding, cookery, or computers",
+                                  icon=":material/search:", on_change=set_library_page, args=(1,))
+        selected_sector = sector.selectbox("Sector", ["All sectors", *sorted({q["sector"] for q in qualifications})], key="library_sector",
+                                           on_change=set_library_page, args=(1,))
     filtered = [q for q in qualifications if (selected_sector == "All sectors" or q["sector"] == selected_sector)
                 and query.casefold().strip() in " ".join([q["name"], q["code"], q["sector"], *q["possible_jobs"]]).casefold()]
-    st.caption(f"{len(filtered)} of {len(qualifications)} qualifications" + (" · Filtered results" if query or selected_sector != "All sectors" else " · Find your next possibility"))
+    # A page at a time: the whole catalog at once (hundreds of cards) freezes the browser.
+    pages = max(1, -(-len(filtered) // LIBRARY_PAGE_SIZE))
+    page = min(max(st.session_state.get("library_page", 1), 1), pages)
+    first = (page - 1) * LIBRARY_PAGE_SIZE
+    shown = filtered[first:first + LIBRARY_PAGE_SIZE]
+    st.caption(f"{len(filtered)} of {len(qualifications)} qualifications"
+               + (f" · Showing {first + 1}–{first + len(shown)}" if pages > 1 else "")
+               + (" · Filtered results" if query or selected_sector != "All sectors" else " · Find your next possibility"))
     if query or selected_sector != "All sectors":
         st.button("Clear filters", key="clear_library_filters", on_click=reset_library_filters, icon=":material/filter_alt_off:")
     if not filtered:
         empty_state("No qualifications found", "Try a different career or keyword, or clear your filters to explore all qualifications.", "search")
-    for start in range(0, len(filtered), 2):
-        for column, qualification in zip(st.columns(2, gap="medium"), filtered[start:start + 2]):
+    for start in range(0, len(shown), 2):
+        for column, qualification in zip(st.columns(2, gap="medium"), shown[start:start + 2]):
             with column, st.container(border=True, key=f"card_library_{qualification['code']}"):
-                st.badge(qualification["sector"], color="blue")
+                library_top(qualification)
                 st.markdown(f"### {qualification['name']}")
-                st.caption("POSSIBLE CAREERS")
-                st.write(", ".join(qualification["possible_jobs"]))
+                library_details(qualification["possible_jobs"], qualification_tags(qualification, catalog_names))
                 with st.expander(f"View {len(qualification['competencies'])} sample competencies", icon=":material/checklist:"):
-                    for competency in qualification["competencies"]:
-                        st.write(f"• {competency['name']}")
+                    # One list, not one element per competency: some qualifications have dozens.
+                    st.markdown("\n".join(f"- {competency['name']}" for competency in qualification["competencies"]))
                 st.button("Explore this pathway", key=f"explore_{qualification['code']}", width="stretch",
                           icon=":material/arrow_forward:", on_click=explore_qualification, args=(qualification["name"],))
+    if pages > 1:
+        # Not "library_...": main() re-assigns those keys to keep the filters, and button state can't be assigned.
+        with st.container(horizontal=True, horizontal_alignment="center", vertical_alignment="center", key="library_pager"):
+            st.button("Previous", key="previous_library_page", icon=":material/arrow_back:", disabled=page == 1,
+                      on_click=set_library_page, args=(page - 1, True))
+            st.caption(f"Page {page} of {pages}", width="content")
+            st.button("Next", key="next_library_page", icon=":material/arrow_forward:", icon_position="right",
+                      disabled=page == pages, on_click=set_library_page, args=(page + 1, True))
+    if st.session_state.pop("library_scroll", False):
+        scroll_to("library_filters")
 
 
 def show_service_unavailable(error: ApiError) -> None:
@@ -955,10 +1069,10 @@ def show_service_unavailable(error: ApiError) -> None:
 
 NAVIGATION = [
     ("Find my pathway", "home", "finder"),
-    ("Qualification library", "school", "library"),
-    ("Training & assessment", "menu_book", "training"),
-    ("My progress", "bar_chart", "progress"),
-    ("Skills Bridge", "hub", "bridge"),
+    ("Qualifications Library", "menu_book", "library"),
+    ("Training & Assessment", "assignment", "training"),
+    ("My Progress", "bar_chart", "progress"),
+    ("Skills Explorer", "explore", "bridge"),
 ]
 
 
@@ -977,9 +1091,8 @@ def show_sidebar(selected: str, is_admin: bool) -> None:
         with st.container(key="sidebar_account"):
             account = st.session_state.get("auth")
             label = account["name"] if account else "Sign in"
-            st.button(label, key="open_account_sidebar", icon=":material/account_circle:",
-                      width="stretch", on_click=open_account)
-            st.caption("Manage your account" if account else "Access your account")
+            st.button(label, key="open_account_sidebar", icon=":material/account_circle:" if account else ":material/person:",
+                      width="stretch", on_click=open_account, help="Manage your account" if account else None)
 
 
 def main() -> None:
@@ -1010,10 +1123,10 @@ def main() -> None:
         return
     renderers = {
         "Find my pathway": lambda: show_finder(qualifications),
-        "Qualification library": lambda: show_library(qualifications),
-        "Training & assessment": lambda: show_training(qualifications),
-        "My progress": lambda: show_progress(qualifications),
-        "Skills Bridge": lambda: show_skills_bridge(api(), qualifications),
+        "Qualifications Library": lambda: show_library(qualifications),
+        "Training & Assessment": lambda: show_training(qualifications),
+        "My Progress": lambda: show_progress(qualifications),
+        "Skills Explorer": lambda: show_skills_bridge(api(), qualifications),
         "Reports": lambda: show_reports(auth_token(), qualifications),
     }
     page_key = next((key for label, _, key in NAVIGATION if label == selected), "reports")
