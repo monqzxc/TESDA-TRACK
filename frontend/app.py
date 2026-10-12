@@ -1,5 +1,6 @@
 import json
 import os
+import sys
 from html import escape
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -37,7 +38,15 @@ def api_base_url() -> str:
     return os.environ.get("API_BASE_URL", "http://127.0.0.1:8000")
 
 
-@st.cache_resource
+def of_loaded_class(value: object) -> bool:
+    """False once Streamlit has re-imported the module that defines ``value``'s class, as it does when that file
+    changes during development. A cached client of the old class would raise exceptions the views no longer
+    catch, so the cache builds a new one."""
+    cls = type(value)
+    return getattr(sys.modules.get(cls.__module__), cls.__qualname__, None) is cls
+
+
+@st.cache_resource(validate=of_loaded_class)
 def get_api(base_url: str) -> ApiClient:
     return ApiClient(base_url)
 
@@ -67,7 +76,7 @@ def routing_url() -> str:
     return os.environ.get("ROUTING_URL", DEFAULT_ROUTING_URL).strip()
 
 
-@st.cache_resource
+@st.cache_resource(validate=of_loaded_class)
 def get_router(url: str) -> RouteClient:
     # One client for every learner, so the routing service's request limit holds across sessions.
     return RouteClient(url)

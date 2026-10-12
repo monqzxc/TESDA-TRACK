@@ -57,3 +57,17 @@ def test_rate_limited_lookup_keeps_the_apis_message():
     with pytest.raises(ApiError) as raised:
         client_seeing([], status=429, body={"detail": message}).bridge_matches(["welding"], client_ip=None)
     assert raised.value.status_code == 429 and raised.value.message == message
+
+
+def test_cached_client_is_rebuilt_after_its_module_is_reloaded(monkeypatch):
+    import importlib
+    import sys
+
+    from app import of_loaded_class
+
+    client = ApiClient("http://api.test")
+    assert of_loaded_class(client)
+    # What Streamlit does when api_client.py changes: the next run imports it afresh.
+    monkeypatch.delitem(sys.modules, "api_client")
+    importlib.import_module("api_client")
+    assert not of_loaded_class(client)
