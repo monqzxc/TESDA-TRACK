@@ -337,3 +337,54 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) {
   .hero *, .brand *, .feature-strip * { animation: none !important; transition: none !important; }
 }
+
+/* Finder: a learner's goal first, with optional guidance alongside the form. */
+.finder-heading { margin: 0 0 1.4rem; }
+.finder-eyebrow { display: block; color: var(--track-blue); font-size: .72rem; font-weight: 700; letter-spacing: .12em; }
+.finder-heading h1 { color: var(--track-navy); font-size: clamp(2rem, 3vw, 2.8rem); line-height: 1.15; margin: .5rem 0 .65rem; padding: 0; }
+.finder-heading p { color: var(--track-muted); margin: 0; font-size: 1rem; line-height: 1.6; }
+.finder-roadmap { list-style: none; display: flex; gap: 1.5rem; padding: 0 0 1.2rem; margin: 0 0 .4rem; border-bottom: 1px solid var(--track-border); }
+.finder-roadmap li { display: flex; gap: .6rem; align-items: center; font-size: .85rem; color: var(--track-muted); }
+.finder-roadmap li > span { display: grid; place-items: center; width: 30px; height: 30px; flex-shrink: 0; border-radius: 50%; background: #e8edf5; font-size: .75rem; font-weight: 700; }
+.finder-roadmap .is-current { color: var(--track-blue); font-weight: 650; }
+.finder-roadmap .is-current > span { color: white; background: var(--track-blue); }
+.finder-roadmap .is-done > span { color: #11664c; background: #e3f5ee; }
+.st-key-finder_stories { margin-bottom: .6rem; }
+.st-key-page_finder [data-testid="stCaptionContainer"] { opacity: 1; color: var(--track-muted); }
+[class*="st-key-story_"] { background: var(--track-surface); border-radius: 14px; min-height: 140px; gap: .6rem; }
+[class*="st-key-story_"] button { border: 0; justify-content: flex-start; background: transparent; padding-inline: 0; text-align: left; }
+[class*="st-key-story_"] button p { font-size: .95rem; font-weight: 650; }
+[class*="st-key-story_"] [data-testid="stCaptionContainer"] p { line-height: 1.5; font-size: .85rem; }
+[class*="st-key-story_"][class*="_active"] { background: var(--track-soft); border-color: var(--track-blue); box-shadow: inset 0 0 0 1px var(--track-blue); }
+.st-key-finder_panel { border: 1px solid var(--track-border); padding: 1.5rem; }
+.st-key-finder_panel h2, .st-key-finder_panel h3 { padding-top: 0; font-size: 1.3rem; }
+.st-key-finder_panel textarea { background: #f9fbfe; font-size: 1rem; line-height: 1.6; }
+.st-key-goal_examples button { min-height: 44px; border-radius: 999px; font-size: .8rem; }
+.finder-guide { padding: 1.4rem 0 0; }
+.finder-guide-icon { display: grid; place-items: center; width: 42px; height: 42px; background: #e4edfc; border-radius: 12px; margin-bottom: 1rem; }
+.finder-guide-icon img { width: 24px; height: 24px; }
+.finder-guide .finder-eyebrow { font-size: .65rem; }
+.finder-guide h2 { color: var(--track-navy); font-size: 1.35rem; line-height: 1.35; margin: .5rem 0 1.1rem; padding: 0; }
+.finder-guide ul { list-style: none; margin: 0; padding: 0; }
+.finder-guide li { position: relative; padding-left: 1rem; margin-bottom: 1rem; }
+.finder-guide li::before { content: ''; width: 5px; height: 5px; position: absolute; left: 0; top: .6rem; background: var(--track-blue); border-radius: 50%; }
+.finder-guide strong, .finder-guide li span { display: block; font-size: .85rem; line-height: 1.55; }
+.finder-guide li span { color: var(--track-muted); margin-top: .2rem; }
+.finder-guide-note { color: var(--track-muted); border-top: 1px solid var(--track-border); padding-top: 1rem; font-size: .8rem; line-height: 1.8; }
+.finder-path-steps { list-style: none; padding: 0; margin: .5rem 0; }
+.finder-path-steps li { display: flex; align-items: flex-start; gap: .85rem; padding: .7rem 0; }
+.finder-path-steps li span { display: grid; place-items: center; flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%; background: var(--track-soft); color: var(--track-blue); font-size: .8rem; font-weight: 700; }
+.finder-path-steps li div { padding-top: .15rem; line-height: 1.5; }
+.st-key-card_recommended_path { border-top: 3px solid var(--track-blue); }
+@media (max-width: 1000px) {
+  .st-key-page_finder [data-testid="stHorizontalBlock"] { flex-wrap: wrap; gap: 1rem; }
+  .st-key-page_finder [data-testid="stColumn"] { width: 100%; flex: 1 1 100%; min-width: 0; }
+  [class*="st-key-story_"] { min-height: auto; }
+}
+@media (max-width: 640px) {
+  .finder-heading { margin-bottom: 1rem; }
+  .finder-roadmap { gap: .6rem; justify-content: space-between; }
+  .finder-roadmap li { flex: 1; align-items: flex-start; flex-direction: column; font-size: .75rem; line-height: 1.4; }
+  [class*="st-key-story_"] { min-height: auto; gap: .2rem; }
+  .finder-guide { padding-top: .5rem; }
+}

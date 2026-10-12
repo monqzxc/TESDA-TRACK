@@ -50,23 +50,25 @@ def test_reruns_reuse_the_last_matches_and_pathway(ui, monkeypatch):
         monkeypatch.setattr(ApiClient, name, counted)
     app = ui
     click(app, "Become a welder")
-    click(app, "Get Recommendation")
-    assert calls == ["match", "pathway"]
+    click(app, "Find my matches")
+    assert calls == ["match"]
     rerun(app)
-    assert calls == ["match", "pathway"], "a rerun with nothing changed doesn't ask the API again"
+    assert calls == ["match"], "a rerun with nothing changed doesn't ask the API again"
     app.selectbox(key="follow_experience").select("More than 3 years").run()
-    assert calls == ["match", "pathway", "match", "pathway"], "a changed answer does"
+    assert calls == ["match", "match"], "a changed answer refreshes matches"
+    app.selectbox(key="follow_certification").select("No").run()
+    assert calls == ["match", "match", "match", "pathway"], "a pathway needs both answers"
 
 def test_pathway_finder_flow(ui):
     app = ui
     assert [button.label for button in app.sidebar.button][:2] == ["Find my pathway", "Qualification library"]
-    click(app, "Get Recommendation")
+    click(app, "Find my matches")
     assert any("Describe your career goal" in warning.value for warning in app.warning)
     assert "analysis" not in app.session_state
 
     click(app, "Become a welder")
     assert app.text_area(key="goal_query").value == "I want to be a welder."
-    click(app, "Get Recommendation")
+    click(app, "Find my matches")
     assert app.selectbox(key="qualification_selected").value == "SMAW-NC-II"
     app.selectbox(key="follow_experience").select("More than 3 years").run()
     app.selectbox(key="follow_certification").select("No").run()
@@ -97,13 +99,13 @@ def test_pathway_finder_flow(ui):
     assert any("last submitted answers" in caption.value for caption in app.caption)
 
     app.text_area(key="goal_query").set_value(" ")
-    click(app, "Get Recommendation")
+    click(app, "Find my matches")
     assert any("Describe your career goal" in warning.value for warning in app.warning)
     assert app.session_state["original_query"] == "I want to be a welder."
     assert readiness(app) == ["75%"]
 
     app.text_area(key="goal_query").set_value("I want to fix computers.")
-    click(app, "Get Recommendation")
+    click(app, "Find my matches")
     assert app.selectbox(key="qualification_selected").value == "CSS-NC-II"
     assert app.selectbox(key="follow_experience").value == "Choose an answer"
     assert app.selectbox(key="follow_certification").value == "Choose an answer"
@@ -131,7 +133,7 @@ def test_signed_in_learner_results_are_saved_to_progress(ui):
     assert "Juan Dela Cruz" in app.button(key="open_account_sidebar").label
     rerun(app, "Find my pathway")
     click(app, "Become a welder")
-    click(app, "Get Recommendation")
+    click(app, "Find my matches")
     app.selectbox(key="follow_experience").select("More than 3 years").run()
     app.selectbox(key="follow_certification").select("No").run()
     for index, radio in enumerate(app.radio):
@@ -177,7 +179,7 @@ def test_registration_requires_consent(ui):
 
 def recommend_welding_readiness_path(app):
     click(app, "Become a welder")
-    click(app, "Get Recommendation")
+    click(app, "Find my matches")
     app.selectbox(key="follow_experience").select("More than 3 years").run()
     app.selectbox(key="follow_certification").select("No").run()
 
@@ -318,5 +320,5 @@ def test_report_date_range_is_checked_before_asking_the_api(ui, training_data, m
 def test_a_goal_without_a_match_gets_guidance_for_its_kind(ui, goal, expected):
     app = ui
     app.text_area(key="goal_query").set_value(goal)
-    click(app, "Get Recommendation")
+    click(app, "Find my matches")
     assert any(expected in info.value for info in app.info), [info.value for info in app.info]
