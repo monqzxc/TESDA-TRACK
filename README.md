@@ -80,7 +80,7 @@ The training weights (`RANKING_WEIGHTS__SEMANTIC`, `__PROXIMITY`, `__ASSESSMENT`
 
 ### Skills Bridge
 
-The **Skills Bridge** tab connects to the public read-only MCP endpoint at
+The **Skills Bridge** tab connects to the read-only MCP endpoint at
 [mcp.skills-bridge.ph/mcp](https://mcp.skills-bridge.ph/mcp), through FastAPI. It distinguishes target job
 titles from capabilities: “welder” and “programmer” use the bounded occupation-title lookup, while “welding”,
 “JavaScript”, and “network configuration” use `match_skills`. It then supports related qualifications, a
@@ -88,10 +88,15 @@ preview of up to 50 occupation skills, and the international mappings actually r
 Input-match scores are not readiness assessments; international mappings are not certification equivalencies.
 No qualifications are imported into the local catalog.
 
-The integration is enabled by default and currently needs no token. Set `SKILLS_BRIDGE_MCP_ENABLED=false`
-to disable it. `SKILLS_BRIDGE_MCP_URL`, optional `SKILLS_BRIDGE_MCP_TOKEN`, and
-`SKILLS_BRIDGE_TIMEOUT_SECONDS` configure the connection. Restart the backend after changing settings.
-The legacy REST settings are separate and are not required for MCP.
+The integration is enabled by default. Skills Bridge requires sign-in with the OAuth client credentials grant, so set
+`SKILLS_BRIDGE_CLIENT_ID` and `SKILLS_BRIDGE_CLIENT_SECRET` to the client issued to TESDA Track; without them every
+lookup fails with a message asking learners to contact the administrator. The backend requests an access token from
+`SKILLS_BRIDGE_TOKEN_URL` (default `https://skills-bridge.ph/oauth/token`, where Skills Bridge issues such clients)
+with the `mcp` scope, and reuses it until shortly before it expires. If Skills Bridge refuses a token, the backend requests a new one, once. Set
+`SKILLS_BRIDGE_MCP_ENABLED=false` to disable the integration. `SKILLS_BRIDGE_MCP_URL` and
+`SKILLS_BRIDGE_TIMEOUT_SECONDS` configure the connection, and `SKILLS_BRIDGE_MCP_TOKEN` can supply a fixed bearer
+token instead of the client credentials. Restart the backend after changing settings. The legacy REST settings are
+separate and are not required for MCP.
 
 - `POST /api/v1/skills-bridge/matches`: accepts 1–25 extracted capability terms, each at most 80 characters.
 - `POST /api/v1/skills-bridge/occupations/search`: finds occupations by title, Skills Bridge's exact title or alias

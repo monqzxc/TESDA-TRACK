@@ -69,6 +69,13 @@ class Settings(BaseSettings):
     skills_bridge_mcp_enabled: bool = True
     skills_bridge_mcp_url: HttpUrl = "https://mcp.skills-bridge.ph/mcp"
     skills_bridge_mcp_token: SecretStr | None = None
+    # Skills Bridge signs clients in with the OAuth client credentials grant. When both are set they replace
+    # skills_bridge_mcp_token: access tokens come from skills_bridge_token_url and are reused until shortly
+    # before they expire. The client is issued by skills-bridge.ph (Laravel Passport), so its tokens come from
+    # there; the /token endpoint the MCP server advertises serves only its own interactive sign-in.
+    skills_bridge_client_id: str | None = None
+    skills_bridge_client_secret: SecretStr | None = None
+    skills_bridge_token_url: HttpUrl = "https://skills-bridge.ph/oauth/token"
     skills_bridge_rate_limit_per_minute: int = Field(default=20, ge=1, description="Lookups per client address")
     skills_bridge_upstream_per_minute: int = Field(default=120, ge=1,
                                                    description="Uncached lookups sent to Skills Bridge, all clients")
@@ -77,6 +84,12 @@ class Settings(BaseSettings):
     def semantic_band_ordered(self):
         if self.semantic_z_ceiling <= self.semantic_z_floor:
             raise ValueError("semantic_z_ceiling must be greater than semantic_z_floor.")
+        return self
+
+    @model_validator(mode="after")
+    def skills_bridge_client_complete(self):
+        if bool(self.skills_bridge_client_id) != bool(self.skills_bridge_client_secret):
+            raise ValueError("Set both SKILLS_BRIDGE_CLIENT_ID and SKILLS_BRIDGE_CLIENT_SECRET, or neither.")
         return self
 
     @model_validator(mode="after")

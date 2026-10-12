@@ -1,20 +1,30 @@
 """Database-free checks. Run with --confcutdir=backend/tests/unit."""
 import json
+from urllib.parse import parse_qsl
 
 import httpx
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
+from pydantic import ValidationError
 
 from tesda_track.config import Settings, get_settings
 from tesda_track.db import get_session
 from tesda_track.routers.skills_bridge import BridgeLimits, bridge_cache, bridge_client, router
+from tesda_track.services import skills_bridge_mcp
 from tesda_track.services.skills_bridge_mcp import SkillsBridgeMCPClient, SkillsBridgeMCPError
 
 
 def settings(**kwargs):
     return Settings(_env_file=None, database_url="postgresql://unused", secret_key="test-only-" * 8,
                     skills_bridge_mcp_url="https://bridge.example.test/mcp", **kwargs)
+
+
+@pytest.fixture(autouse=True)
+def no_cached_access_tokens():
+    skills_bridge_mcp._access_tokens.clear()
+    yield
+    skills_bridge_mcp._access_tokens.clear()
 
 
 class MCPServer:
@@ -209,6 +219,144 @@ def test_optional_mcp_credential_is_separate(token, expected):
     with SkillsBridgeMCPClient(settings(skills_bridge_mcp_token=token), httpx.MockTransport(server)):
         pass
     assert server.requests[0][0].headers.get("authorization") == expected
+
+
+OAUTH = {"skills_bridge_client_id": "tesda-track-test", "skills_bridge_client_secret": "client-secret",
+         "skills_bridge_token_url": "https://bridge.example.test/token"}
+
+
+class OAuthServer:
+    """Skills Bridge's token endpoint in front of its MCP endpoint, which answers 401 to any other token."""
+
+    def __init__(self, *, expires_in=3600, token_response=None):
+        self.mcp = MCPServer()
+        self.expires_in = expires_in
+        self.token_response = token_response
+        self.token_requests = []
+        self.accepted = set()
+
+    def __call__(self, request):
+        if str(request.url) == "https://bridge.example.test/token":
+            self.token_requests.append(request)
+            if self.token_response:
+                return self.token_response()
+            token = f"access-{len(self.token_requests)}"
+            self.accepted.add(token)
+            return httpx.Response(200, json={"access_token": token, "token_type": "Bearer",
+                                             "expires_in": self.expires_in, "scope": "mcp"})
+        if request.headers.get("authorization", "").removeprefix("Bearer ") not in self.accepted:
+            return httpx.Response(401, headers={
+                "WWW-Authenticate": 'Bearer resource_metadata="https://bridge.example.test/.well-known/'
+                                    'oauth-protected-resource/mcp"'})
+        return self.mcp(request)
+
+
+def test_client_credentials_token_authorizes_every_mcp_request():
+    server = OAuthServer()
+    # The client credentials take the place of a static token.
+    with SkillsBridgeMCPClient(settings(**OAUTH, skills_bridge_mcp_token="static"),
+                               httpx.MockTransport(server)) as client:
+        client.match_skills(["Welding"])
+    [token_request] = server.token_requests
+    assert token_request.method == "POST" and "authorization" not in token_request.headers
+    assert dict(parse_qsl(token_request.content.decode())) == {
+        "grant_type": "client_credentials", "client_id": "tesda-track-test", "client_secret": "client-secret",
+        "scope": "mcp", "resource": "https://bridge.example.test/mcp"}
+    assert [body["method"] for _, body in server.mcp.requests] == ["initialize", "notifications/initialized",
+                                                                   "tools/call"]
+    assert all(request.headers["authorization"] == "Bearer access-1" for request, _ in server.mcp.requests)
+    assert server.mcp.deletes[0].headers["authorization"] == "Bearer access-1"
+
+
+def test_token_is_reused_until_shortly_before_it_expires(monkeypatch):
+    now = [1000.0]
+    monkeypatch.setattr(skills_bridge_mcp, "monotonic", lambda: now[0])
+    server = OAuthServer(expires_in=3600)
+    for _ in range(2):
+        with SkillsBridgeMCPClient(settings(**OAUTH), httpx.MockTransport(server)) as client:
+            client.match_skills(["Welding"])
+    assert len(server.token_requests) == 1
+    now[0] += 3600 - 30
+    with SkillsBridgeMCPClient(settings(**OAUTH), httpx.MockTransport(server)) as client:
+        client.match_skills(["Welding"])
+    assert len(server.token_requests) == 2
+    assert server.mcp.requests[-1][0].headers["authorization"] == "Bearer access-2"
+
+
+def test_a_refused_token_is_replaced_once():
+    server = OAuthServer()
+    with SkillsBridgeMCPClient(settings(**OAUTH), httpx.MockTransport(server)):
+        pass
+    server.accepted.clear()  # Skills Bridge revoked the token, or the client's secret was rotated.
+    with SkillsBridgeMCPClient(settings(**OAUTH), httpx.MockTransport(server)) as client:
+        client.match_skills(["Welding"])
+    assert len(server.token_requests) == 2
+    assert server.mcp.requests[-1][0].headers["authorization"] == "Bearer access-2"
+
+
+def test_mcp_that_refuses_every_token_fails_without_retrying_forever():
+    server = OAuthServer()
+
+    def handler(request):
+        response = server(request)
+        server.accepted.clear()  # Every token is refused as soon as it is issued.
+        return response
+
+    client = SkillsBridgeMCPClient(settings(**OAUTH), httpx.MockTransport(handler))
+    with pytest.raises(SkillsBridgeMCPError, match="administrator"):
+        with client:
+            pass
+    assert len(server.token_requests) == 2
+    assert client.http.is_closed
+
+
+@pytest.mark.parametrize("status,body,message", [
+    (401, {"error": "invalid_client", "error_description": "Invalid client_id"}, "administrator"),
+    (400, {"error": "unsupported_grant_type"}, "administrator"),
+    (500, {"error": "server_error"}, "unavailable"),
+    (200, {"token_type": "Bearer", "expires_in": 3600}, "unavailable"),
+    (200, {"access_token": "access-1", "token_type": "mac"}, "unavailable"),
+    (200, "private upstream detail", "unavailable"),
+])
+def test_token_failures_are_safe_and_never_reach_mcp(status, body, message):
+    def token_response():
+        if isinstance(body, str):
+            return httpx.Response(status, text=body)
+        return httpx.Response(status, json=body)
+    server = OAuthServer(token_response=token_response)
+    client = SkillsBridgeMCPClient(settings(**OAUTH), httpx.MockTransport(server))
+    with pytest.raises(SkillsBridgeMCPError, match=message) as error:
+        with client:
+            pass
+    assert "client-secret" not in str(error.value) and "private" not in str(error.value)
+    assert not server.mcp.requests
+    assert client.http.is_closed
+
+
+def test_token_endpoint_outage_is_safe():
+    def handler(request):
+        raise httpx.ConnectError("private upstream detail", request=request)
+    client = SkillsBridgeMCPClient(settings(**OAUTH), httpx.MockTransport(handler))
+    with pytest.raises(SkillsBridgeMCPError, match="unavailable") as error:
+        with client:
+            pass
+    assert "private" not in str(error.value)
+    assert client.http.is_closed
+
+
+def test_anonymous_client_refused_by_skills_bridge_asks_for_the_administrator():
+    server = OAuthServer()
+    with pytest.raises(SkillsBridgeMCPError, match="administrator"):
+        with SkillsBridgeMCPClient(settings(), httpx.MockTransport(server)):
+            pass
+    assert not server.token_requests
+
+
+@pytest.mark.parametrize("partial", [{"skills_bridge_client_id": "tesda-track"},
+                                     {"skills_bridge_client_secret": "client-secret"}])
+def test_client_credentials_need_both_parts(partial):
+    with pytest.raises(ValidationError, match="SKILLS_BRIDGE_CLIENT_SECRET"):
+        settings(**partial)
 
 
 def test_session_is_ended_with_delete_when_the_server_issued_one():

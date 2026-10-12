@@ -1,19 +1,37 @@
 """Narrow read-only client for the Skills Bridge Streamable HTTP MCP service.
 
-The verified endpoint negotiates MCP 2025-06-18. Tool names and queries are application-owned: learner terms
-travel only as plain tool arguments, and the only Cypher sent is two fixed reads keyed by an integer id.
-Responses are cut down to the fields TESDA-TRACK shows before anything is cached or returned.
+The verified endpoint negotiates MCP 2025-06-18 and, since 2026-10-12, accepts only clients signed in with the
+OAuth client credentials grant. Tool names and queries are application-owned: learner terms travel only as
+plain tool arguments, and the only Cypher sent is two fixed reads keyed by an integer id. Responses are cut
+down to the fields TESDA-TRACK shows before anything is cached or returned.
 """
 import json
+import logging
+import threading
+from time import monotonic
 from typing import Any
 
 import httpx
 
 from tesda_track.config import Settings
 
+logger = logging.getLogger("tesda_track")
+
+UNAVAILABLE = "Skills Bridge is unavailable right now. Please try again shortly."
+NOT_SIGNED_IN = "Skills Bridge did not accept this portal's sign-in. Please contact the portal administrator."
+
+# Client credentials access tokens, shared by every lookup in this process:
+# (token URL, client id) -> (token, monotonic() time to stop using it).
+_access_tokens: dict[tuple[str, str], tuple[str, float]] = {}
+_access_tokens_lock = threading.Lock()
+
 
 class SkillsBridgeMCPError(Exception):
     """An upstream error with a safe, learner-facing message."""
+
+
+class _Unauthorized(SkillsBridgeMCPError):
+    """The MCP endpoint answered 401: no token, or one it no longer accepts."""
 
 
 # What is kept of each kind of record; everything else Skills Bridge returns is dropped.
@@ -64,6 +82,8 @@ class SkillsBridgeMCPClient:
     ALLOWED_TOOLS = {"match_skills", "occupation_curriculum_profile", "graph_search", "graph_query"}
     MAX_RESPONSE_BYTES = 2_000_000
     CLOSE_TIMEOUT_SECONDS = 3
+    SCOPE = "mcp"
+    TOKEN_LIFETIME_SECONDS = 300  # Assumed when the token endpoint gives no expires_in.
 
     def __init__(self, settings: Settings, transport: httpx.BaseTransport | None = None):
         self.settings = settings
@@ -76,13 +96,13 @@ class SkillsBridgeMCPClient:
             raise SkillsBridgeMCPError("Skills Bridge is currently disabled. Your TESDA Track pathways are still available.")
         headers = {"Accept": "application/json, text/event-stream", "MCP-Protocol-Version": self.PROTOCOL}
         token = self.settings.skills_bridge_mcp_token
-        if token and token.get_secret_value():
+        if not self.settings.skills_bridge_client_id and token and token.get_secret_value():
             headers["Authorization"] = f"Bearer {token.get_secret_value()}"
         self.http = httpx.Client(headers=headers, timeout=self.settings.skills_bridge_timeout_seconds,
                                  transport=self.transport, follow_redirects=False)
         try:
-            result = self._rpc("initialize", {"protocolVersion": self.PROTOCOL, "capabilities": {},
-                                               "clientInfo": {"name": "tesda-track", "version": "1.0"}})
+            result = self._initialize({"protocolVersion": self.PROTOCOL, "capabilities": {},
+                                       "clientInfo": {"name": "tesda-track", "version": "1.0"}})
             if result.get("protocolVersion") != self.PROTOCOL:
                 raise SkillsBridgeMCPError("Skills Bridge changed its connection protocol. Please contact the portal administrator.")
             self._rpc("notifications/initialized", notification=True)
@@ -94,6 +114,56 @@ class SkillsBridgeMCPClient:
     def __exit__(self, *_):
         if self.http:
             self._close()
+
+    def _initialize(self, params: dict) -> dict:
+        """The MCP handshake. A token Skills Bridge refuses (revoked, or the client secret was rotated) is
+        replaced once; lookups after the handshake run well within a token's remaining lifetime."""
+        if not self.settings.skills_bridge_client_id:
+            return self._rpc("initialize", params)
+        token = self._access_token()
+        self.http.headers["Authorization"] = f"Bearer {token}"
+        try:
+            return self._rpc("initialize", params)
+        except _Unauthorized:
+            self.http.headers["Authorization"] = f"Bearer {self._access_token(refused=token)}"
+            return self._rpc("initialize", params)
+
+    def _access_token(self, refused: str | None = None) -> str:
+        """The cached token while it has time left and was not ``refused``, otherwise a new one. The lock is held
+        while a token is requested, so concurrent lookups wait for that token rather than each requesting one."""
+        key = (str(self.settings.skills_bridge_token_url), self.settings.skills_bridge_client_id)
+        with _access_tokens_lock:
+            token, renew_at = _access_tokens.get(key, (None, 0.0))
+            if token is None or token == refused or monotonic() >= renew_at:
+                token, lifetime = self._request_token()
+                _access_tokens[key] = token, monotonic() + lifetime - min(60, lifetime / 2)
+            return token
+
+    def _request_token(self) -> tuple[str, int]:
+        """A new access token and its lifetime in seconds. The MCP server accepts only tokens with the mcp
+        scope; a token without it is refused although the token endpoint issues it."""
+        form = {"grant_type": "client_credentials", "client_id": self.settings.skills_bridge_client_id,
+                "client_secret": self.settings.skills_bridge_client_secret.get_secret_value(),
+                "scope": self.SCOPE, "resource": str(self.settings.skills_bridge_mcp_url)}
+        try:
+            with httpx.Client(timeout=self.settings.skills_bridge_timeout_seconds, transport=self.transport,
+                              follow_redirects=False) as http:
+                response = http.post(str(self.settings.skills_bridge_token_url), data=form,
+                                     headers={"Accept": "application/json"})
+            data = response.json()
+        except (httpx.HTTPError, ValueError) as error:
+            raise SkillsBridgeMCPError(UNAVAILABLE) from error
+        if not isinstance(data, dict):
+            raise SkillsBridgeMCPError(UNAVAILABLE)
+        if response.status_code in (400, 401):
+            logger.error("Skills Bridge refused the client credentials: %r %r", data.get("error"),
+                         data.get("error_description"))
+            raise SkillsBridgeMCPError(NOT_SIGNED_IN)
+        token = data.get("access_token")
+        if not response.is_success or not isinstance(token, str) or not token \
+                or str(data.get("token_type")).lower() != "bearer":
+            raise SkillsBridgeMCPError(UNAVAILABLE)
+        return token, _count(data.get("expires_in")) or self.TOKEN_LIFETIME_SECONDS
 
     def _close(self) -> None:
         """End the server-side session, if the server started one, then close the connection."""
@@ -115,6 +185,10 @@ class SkillsBridgeMCPClient:
             payload["id"] = request_id
         try:
             with self.http.stream("POST", str(self.settings.skills_bridge_mcp_url), json=payload) as response:
+                if response.status_code == 401:
+                    logger.warning("Skills Bridge answered 401 to %s; check SKILLS_BRIDGE_CLIENT_ID and "
+                                   "SKILLS_BRIDGE_CLIENT_SECRET", method)
+                    raise _Unauthorized(NOT_SIGNED_IN)
                 response.raise_for_status()
                 if method == "initialize" and response.headers.get("mcp-session-id"):
                     self.http.headers["Mcp-Session-Id"] = response.headers["mcp-session-id"]
@@ -153,7 +227,7 @@ class SkillsBridgeMCPClient:
                     raise ValueError("Mismatched RPC response")
                 return result
         except (httpx.HTTPError, ValueError, TypeError, AttributeError) as error:
-            raise SkillsBridgeMCPError("Skills Bridge is unavailable right now. Please try again shortly.") from error
+            raise SkillsBridgeMCPError(UNAVAILABLE) from error
 
     @staticmethod
     def _matching_result(message: Any, request_id: int) -> dict | None:
