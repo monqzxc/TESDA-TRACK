@@ -56,6 +56,7 @@ COMMON_WORDS = frozenset("""
     finished finish finishing wedding weddings baby babies bake baked bakes serve served serves serving lines cooling
     baryo barrio barako machines machine nagtatayo nagtatali maghinang trabaho working worked works looking pilot
     school graduate graduated studied study student students person people house home water travel
+    gusto gsto gusot mging maging mgng pwede please plss pleas sana
     """.split())
 _SUFFIXES = ("ings", "ing", "ers", "ed", "er", "es", "s", "e")
 
@@ -85,7 +86,8 @@ class FuzzyKeywords:
 
     def candidate(self, word: str) -> str | None:
         """The one keyword `word` is a typo of (the closest), or None."""
-        if len(word) < _MIN_LETTERS - 1 or len(word) > 40 or word in self.known:
+        # The goal word needs 5+ letters too: four-letter words sit one edit from too many keywords.
+        if len(word) < _MIN_LETTERS or len(word) > 40 or word in self.known:
             return None
         best = None
         for variant in _deletions(word, 2 if len(word) >= 7 else 1):

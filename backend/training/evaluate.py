@@ -13,6 +13,7 @@ from pathlib import Path
 import numpy as np
 
 from tesda_track.config import get_settings
+from tesda_track.services import goal_rules
 from tesda_track.services.analysis import MatchParams, match_params, score_matches
 from tesda_track.services.catalog import CatalogItem
 from tesda_track.services.embeddings import E5Embedder, qualification_text
@@ -99,7 +100,7 @@ def prepare(goals: list[dict], items: list[CatalogItem], passages: list[list[flo
         array = np.asarray(vectors, dtype=np.float64)
         return array / np.maximum(np.linalg.norm(array, axis=1, keepdims=True), 1e-12)
 
-    cosine = unit(embed_queries([g["goal"] for g in goals])) @ unit(passages).T
+    cosine = unit(embed_queries([goal_rules.strip_negated(g["goal"]) for g in goals])) @ unit(passages).T
     rules = [item.rules for item in items]
     prepared = []
     for goal, row in zip(goals, cosine):
@@ -109,7 +110,8 @@ def prepare(goals: list[dict], items: list[CatalogItem], passages: list[list[flo
 
 
 def evaluate(prepared: list[Prepared], items: list[CatalogItem], params: MatchParams) -> list[GoalResult]:
-    return [GoalResult(p.goal, [m.qualification.name for m in score_matches(items, p.keyword, p.similarities, params)])
+    return [GoalResult(p.goal, [m.qualification.name for m in score_matches(items, p.keyword, p.similarities, params,
+                                                              query=p.goal["goal"])])
             for p in prepared]
 
 

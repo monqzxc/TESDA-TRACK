@@ -1,14 +1,16 @@
 import re
 
+from tesda_track.services import goal_rules
 from tesda_track.utils.helpers import contains, fuzzy_matches, normalize
 
 
 def analyze_user_query(query: str, qualifications: list[dict]) -> dict:
     """Rule-based interpretation; the AI analyzer falls back to this."""
-    text = normalize(query)
+    text = normalize(goal_rules.strip_negated(query))
     near = fuzzy_matches(text, qualifications)
     matches = [q for q in qualifications
-               if any(contains(text, word) or word in near for word in q["career_keywords"])]
+               if any((contains(text, word) or word in near) and not goal_rules.is_generic(word)
+                      for word in q["career_keywords"])]
     qualification = matches[0] if matches else None
     years = re.search(r"(\d+(?:\.\d+)?)\s*(?:\+\s*)?(?:years?|yrs?)\b", text)
     months = re.search(r"(\d+)\s*months?\b", text)

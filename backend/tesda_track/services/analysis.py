@@ -9,7 +9,7 @@ from tesda_track.config import get_settings
 from tesda_track.errors import InvalidRequestError
 from tesda_track.models import Qualification
 from tesda_track.schemas.analysis import Match, MatchComponents, PathwayRecommendation, Profile, ReadinessResult
-from tesda_track.services import catalog, embeddings, pathways
+from tesda_track.services import catalog, embeddings, goal_rules, pathways
 from tesda_track.services.catalog import CatalogItem
 from tesda_track.services.embeddings import Embedder
 from tesda_track.services.intent_service import analyze_user_query
@@ -73,8 +73,13 @@ def strengths(similarities: dict[int, float], params: MatchParams) -> dict[int, 
 
 
 def score_matches(items: Sequence[CatalogItem], keyword: dict[str, dict], similarities: dict[int, float],
-                  params: MatchParams, limit: int = 3) -> list[Match]:
-    """The hybrid score for every qualification, strongest first; the API and the offline evaluation share it."""
+                  params: MatchParams, limit: int = 3, query: str | None = None) -> list[Match]:
+    """The hybrid score for every qualification, strongest first; the API and the offline evaluation share it.
+
+    With the learner's `query`, the plain-language rules apply: no match when it names no trade, and the level
+    they need comes first within a family (see goal_rules)."""
+    if query is not None and goal_rules.gives_no_match(query, bool(keyword)):
+        return []
     semantic_by_id = strengths(similarities, params)
     matches = []
     for item in items:
@@ -88,6 +93,8 @@ def score_matches(items: Sequence[CatalogItem], keyword: dict[str, dict], simila
                                  components=MatchComponents(keyword=round(keyword_score / KEYWORD_SCALE, 3),
                                                             semantic=round(semantic, 3))))
     matches.sort(key=lambda m: m.score, reverse=True)
+    if query is not None:
+        matches = goal_rules.order_within_families(matches, items, query)
     return matches[:limit]
 
 
@@ -98,7 +105,8 @@ def analyze_goal(session: Session, query: str, embedder: Embedder | None = None)
     if embedder is None or profile.career_goal is not None or profile.intent != "unknown":
         return GoalAnalysisResult(profile, "rules")
     params = match_params(embedder)
-    semantic_by_id = strengths(embeddings.qualification_similarities(session, embedder, query), params)
+    semantic_by_id = strengths(embeddings.qualification_similarities(session, embedder, goal_rules.strip_negated(query)),
+                               params)
     candidates = [item for item in current.items if item.id in semantic_by_id]
     if not candidates:
         return GoalAnalysisResult(profile, "rules")
@@ -127,8 +135,8 @@ def match(session: Session, query: str, profile: Profile,
         return refined, [Match(qualification=by_code[code].summary, score=r["score"], reason=r["reason"])
                          for code, r in list(keyword.items())[:3]]
     params = match_params(embedder)
-    similarities = embeddings.qualification_similarities(session, embedder, query)
-    return refined, score_matches(current.items, keyword, similarities, params)
+    similarities = embeddings.qualification_similarities(session, embedder, goal_rules.strip_negated(query))
+    return refined, score_matches(current.items, keyword, similarities, params, query=query)
 
 
 def pathway(session: Session, profile: Profile, qualification_code: str) -> PathwayRecommendation:
