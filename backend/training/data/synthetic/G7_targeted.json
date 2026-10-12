@@ -1,0 +1,987 @@
+{
+ "Technical Drafting NC II": [
+  "pangarap kong maging arkitekto pero hindi ako makapag-college, anong kurso ang pinakamalapit",
+  "I wanted to study architecture but cannot afford the tuition, is there a short course for drawing building plans",
+  "civil engineer sana ako, kaso kapos sa pera, draftsman muna siguro",
+  "engineering dropout na gustong gumuhit ng plano para sa mga contractor",
+  "I like drawing floor plans and elevations, what certificate do I need",
+  "tagaguhit ng floor plan at detalye ng bahay gamit ang CAD software"
+ ],
+ "Machining NC II": [
+  "mechanical engineering is too expensive for me, I would rather learn to make machine parts by hand",
+  "ME board exam is not for me, I want hands-on work with metal lathes and mills",
+  "mag-aral ng machine shop practice habang nangangarap maging engineer",
+  "mag-bench work at gumawa ng bahagi ng makina ayon sa drawing",
+  "machinist na gumagamit ng lathe, milling at grinder para gumawa ng piyesa",
+  "bench work and lathe operations in a machine shop"
+ ],
+ "Mechatronics Servicing NC II": [
+  "I wanted to study robotics engineering, is there a hands-on course for automated machines",
+  "pangarap kong magtrabaho sa mga robotic arm at conveyor na kinokontrol ng PLC",
+  "industrial automation technician ang gusto ko, hindi engineer"
+ ],
+ "Consumer Electronics Servicing NC III": [
+  "I want to repair audio and video equipment like an ECE graduate would",
+  "ayoko ng board exam, gusto ko lang mag-troubleshoot ng circuit boards ng TV at sound system",
+  "pangarap kong maging electronics engineer, may short course ba para sa pag-aayos ng mga appliances na may circuit",
+  "repair ng TV, DVD at sound system, mag-troubleshoot ng circuit"
+ ],
+ "Electronic Products Assembly and Servicing NC II": [
+  "I want to be an electronics technician, soldering and testing circuit boards",
+  "nagkukumpuni ng mga sirang karaoke, speaker at electric fan sa munting tindahan",
+  "bench technician for small appliances and consumer gadgets"
+ ],
+ "Dental Hygiene Level IV": [
+  "pangarap kong maging dentista pero hindi ko kaya ang gastos, dental hygienist muna",
+  "I want to clean patients' teeth and assist the dentist in a clinic",
+  "I wanted to study dentistry, what related course can I take that is shorter",
+  "dental hygienist na naglilinis ng ngipin at tumutulong sa dentista",
+  "dentist's chairside assistant who cleans teeth and takes x-rays"
+ ],
+ "Dental Laboratory Technology Services NC I": [
+  "I like working with teeth molds and plaster but I am not going to dentistry school",
+  "entry level na trabaho sa dental laboratory, wala pa akong alam"
+ ],
+ "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II": [
+  "nagpapagawa ang mga dentista ng pustiso, gusto kong ako ang gagawa",
+  "I want to fabricate dentures that dentists order from a lab",
+  "mag-ayos ng nabaling pustiso at gumawa ng bagong set"
+ ],
+ "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II": [
+  "I want to make porcelain crowns that fit exactly over a patient's tooth"
+ ],
+ "Dental Technology NC IV": [
+  "I have dental lab certificates already and want to lead the whole laboratory",
+  "pamahalaan ang dental laboratory, may NC II na ako sa pustiso at korona"
+ ],
+ "Health Care Services NC II": [
+  "pangarap kong maging nurse pero hindi ako makapag-nursing school, ano ang pwede kong simulan",
+  "nurse aide sana ako sa ospital, taga-linis ng pasyente at taga-sukat ng BP",
+  "tumutulong sa mga nars na mag-alaga ng may sakit sa ward",
+  "I dream of becoming a midwife, what training do I need to start with",
+  "parang nurse sa mga hospital drama pero hindi ako nag-aral ng nursing, anong course ang pwede",
+  "tumutulong sa nars na magpaligo, magpakain at sumukat ng presyon ng pasyente",
+  "ward attendant in a hospital"
+ ],
+ "Caregiving NC II": [
+  "nars sana ako pero caregiver na lang muna dahil mas mabilis",
+  "I wanted nursing but a shorter caregiver course will do for now",
+  "home care worker para sa pasyenteng naka-bed, gusto kong mag-abroad bilang caregiver"
+ ],
+ "Caregiving (Elderly) NC II": [
+  "taga-alaga ng matandang may dementia sa bahay",
+  "I take care of my grandfather and want to do it as a paid job for other seniors"
+ ],
+ "Caregiving (Newborn to Pre-Schooler) NC II": [
+  "I want to be a nanny for babies like Nanny McPhee",
+  "mag-alaga ng bagong panganak na sanggol sa bahay ng amo",
+  "babysitter for toddlers, feeding and bathing them"
+ ],
+ "Caregiving (Clients with Special Needs) NC II": [
+  "I want to take care of persons with disabilities at home",
+  "tagapag-alaga ng batang may Down syndrome sa bahay at paaralan",
+  "personal assistant for adults with disabilities who need daily help"
+ ],
+ "Massage Therapy NC II": [
+  "I want to help injured people recover with massage and muscle treatment",
+  "physiotherapy assistant sa clinic, nagmamasahe ng pasyenteng may sakit sa likod",
+  "relaxation massage and sports massage for athletes"
+ ],
+ "Hilot (Wellness Massage) NC II": [
+  "traditional hilot practitioner na gustong magkaroon ng sertipiko",
+  "traditional healer's massage for muscle pain and sprain, I want a license"
+ ],
+ "Pharmacy Services NC III": [
+  "pharmacist's assistant who dispenses medicines and checks prescriptions",
+  "pharmacy assistant, naghahanda ng gamot at nag-aayos ng stock sa botika",
+  "drugstore attendant, hindi pa pharmacist",
+  "pwede ba akong magtrabaho sa botika kahit hindi ako graduate ng pharmacy"
+ ],
+ "Security Services NC I": [
+  "I wanted to join the police but the next best thing is guarding buildings",
+  "bantay sa subdivision gate at mall, entry level",
+  "magbantay ng gusali sa gabi bilang security guard",
+  "nagsisimula pa lang ako sa pagiging sekyu",
+  "gwardiya sa gate ng subdivision at mall",
+  "security guard NC I at a factory"
+ ],
+ "Security Services NC II": [
+  "experienced guard seeking the supervisory level with a certificate",
+  "sundalo o pulis sana, pero security supervisor ang puwede sa akin",
+  "bodyguard o VIP escort ang pangarap ko",
+  "security officer who leads other guards"
+ ],
+ "Early Childhood Care and Development Services NC III": [
+  "pangarap kong magturo sa preschool pero hindi ako nakapag-aral ng education",
+  "I want to teach toddlers and nursery kids without an education degree",
+  "teacher aide sa nursery school, mahilig ako sa mga bata",
+  "tita-teacher sa day care na nagtuturo ng alphabet at kanta",
+  "child development worker in a barangay day care center",
+  "pagtuturo ng ABC at awit sa mga paslit na nasa day care"
+ ],
+ "Front Office Services NC II": [
+  "pangarap kong mag-manage ng hotel balang araw, receptionist muna ang simula",
+  "I want to greet guests and handle check-ins and check-outs at a resort",
+  "mag-asikaso ng reservation at key cards sa lobby ng hotel",
+  "receptionist ng hotel na marunong mag-English"
+ ],
+ "Housekeeping NC IV": [
+  "executive housekeeper ng malaking resort ang target ko",
+  "mag-supervise ng mga room attendant at linen section sa five-star hotel",
+  "housekeeping manager who budgets supplies and trains staff"
+ ],
+ "Housekeeping NC II": [
+  "maid sa hotel, magpalit ng kumot at maglinis ng kuwarto",
+  "room attendant at cruise ship, bed making and cleaning",
+  "mag-housekeeping sa hotel sa Gitnang Silangan"
+ ],
+ "Bookkeeping NC III": [
+  "I like numbers and want to keep the accounts of a small business",
+  "mag-record ng resibo at gumawa ng financial statement ng maliit na kumpanya",
+  "accounting clerk who prepares journal entries and trial balance"
+ ],
+ "Real Estate Services NC II": [
+  "I want to be a property agent selling condos and house-and-lot packages",
+  "realtor sa subdivision, nagpapakita ng model house sa mga buyer"
+ ],
+ "Film and Video Postproduction NC III": [
+  "I want to make and edit videos for my channel, from cutting clips to color grading",
+  "video editor para sa kasal at event",
+  "paano maging vlogger na marunong mag-edit ng sariling footage"
+ ],
+ "Performing Arts (Song) NC II": [
+  "I want to join singing contests and perform as a professional vocalist",
+  "singer sa wedding band na may sertipiko"
+ ],
+ "Performing Arts (Dance) NC II": [
+  "I want to dance in musicals and stage productions as a career",
+  "street dance crew member na gustong magturo at magtanghal",
+  "sumayaw sa entablado, folk dance at modern dance",
+  "member ng dance group sa barko, kailangan ng training"
+ ],
+ "Performing Arts (Ballroom Dancing) NC II": [
+  "ballroom dancer sa mga cruise ship at competition",
+  "sumayaw ng rumba at foxtrot sa mga kompetisyon at cruise",
+  "dance sport couple training with a certificate"
+ ],
+ "Able Seafarer Engine NC II (III-5)": [
+  "inhinyerong pandagat ang pangarap ko pero rating muna ang kaya ko",
+  "motorman sa cargo vessel, gusto kong makapag-abroad",
+  "seaman na nasa makina ng barko, hindi sa deck"
+ ],
+ "Rating Forming Part of an Engineering Watch NC II (III-4)": [
+  "nagbabantay ng makina at pumps sa engine room habang naglalayag ang barko",
+  "I want to stand engine watch on a vessel as a rating"
+ ],
+ "Able Seafarer Deck NC II (II-5)": [
+  "marino na nasa deck: mag-mooring ng lubid, maglinis ng barko at magmaneho ng timon",
+  "tripulante ng barko na nagpapalit-palit ng bantay sa deck"
+ ],
+ "Rating Forming Part of a Navigational Watch NC II (II-4)": [
+  "mag-bantay sa bridge ng barko bilang lookout at helmsman",
+  "navigational watch rating for a merchant ship"
+ ],
+ "Ships' Catering NC III (Ships' Cooks)": [
+  "cook sa cargo ship, magluto para sa buong crew",
+  "chief cook sa barko, magplano ng menu para sa mga seaman"
+ ],
+ "Ship's Catering Services NC I": [
+  "galley helper sa cruise ship",
+  "tagahatid ng pagkain at tagahugas ng pinggan sa kainan ng mga tripulante"
+ ],
+ "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II": [
+  "I want to process import documents and customs forms for sea cargo",
+  "taga-follow up ng container na darating sa pier at ng bill of lading",
+  "freight forwarder clerk, nagpoproseso ng import shipment"
+ ],
+ "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III": [
+  "supervisor ng import cargo operations sa port, may karanasan na sa papeles ng kargamento",
+  "mamahala sa pagdating at paglabas ng mga container sa pantalan"
+ ],
+ "Fishport/Wharf Operation NC I": [
+  "magtrabaho sa fish landing, mag-unload at magtimbang ng huli",
+  "wharf worker who sorts and weighs the fish catch at the port"
+ ],
+ "Travel Services NC II": [
+  "mag-book ng flight, hotel at tour package sa travel agency",
+  "travel agent na tumutulong sa mga kliyente sa visa at itinerary"
+ ],
+ "Tour Guiding Services NC III": [
+  "tour guide sa Intramuros at mga museo, marunong mag-English at Chinese",
+  "I want to lead tourists around historical sites and tell their stories"
+ ],
+ "Local Guiding Services NC II": [
+  "mag-guide sa mga bisita sa isla at falls ng probinsya",
+  "tagapagpasyal ng mga bisita sa mga tanawin ng aming munisipyo"
+ ],
+ "Events Management Services NC III": [
+  "mag-organize ng kasal, debut at kumpanya events, sa venue at supplier",
+  "I like planning birthday parties and corporate gatherings for a living",
+  "event coordinator na may sariling team",
+  "pag-aayos ng programa, catering at sound system ng malalaking handaan"
+ ],
+ "Carpentry NC II": [
+  "tulad ng mga karpintero sa home renovation show, gusto kong magtayo ng bahay na kahoy",
+  "pagpapatayo ng kubo at bahay na gawa sa kahoy"
+ ],
+ "Masonry NC II": [
+  "mag-plaster ng dingding at mag-ayos ng semento",
+  "magpatong ng hollow blocks at magpakinis ng semento sa dingding ng bahay"
+ ],
+ "Masonry NC III": [
+  "kantero na 5 taon at gustong maging foreman ng finishing works",
+  "advanced na kantero, finishing ng sahig at wall tiles, may NC II na",
+  "mason foreman who leads a team and inspects concrete finishing"
+ ],
+ "Tile Setting NC II": [
+  "mag-install ng tiles sa sahig at dingding ng banyo",
+  "I tile bathrooms for neighbors but have no certificate",
+  "maglatag ng ceramic at porcelain na tiles",
+  "self-taught na taga-tile na gustong ma-assess"
+ ],
+ "Reinforcing Steel Works NC II": [
+  "I cut, bend and tie steel bars for concrete columns at construction sites",
+  "taga-bend ng bakal na pamalo at taga-tali ng rebar sa proyekto"
+ ],
+ "Structural Erection NC II": [
+  "magtayo ng steel structure para sa bodega at tulay, bolting at alignment",
+  "I want to erect steel beams and columns on building sites",
+  "taga-kabit ng bakal na frame ng gusali, hindi lang taga-weld"
+ ],
+ "Construction Painting NC II": [
+  "magpinta ng dingding at kisame ng bahay at gusali",
+  "mag-primer at mag-finish ng pader at bakal sa construction"
+ ],
+ "Construction Painting NC III": [
+  "advanced painter handling large commercial buildings and spray equipment",
+  "pintor ng malalaking gusali na gumagamit ng spray rig, may NC II na",
+  "lead painter assigning crews on a high-rise finishing job"
+ ],
+ "Heavy Equipment Operation (Hydraulic Excavator) NC II": [
+  "I want to dig trenches with a big excavator like the toy trucks I loved as a kid",
+  "operator ng backhoe at excavator, maghukay ng lupa at kanal"
+ ],
+ "Heavy Equipment Operation (Paver) NC II": [
+  "I want to run the paving machine that lays asphalt on highways",
+  "asphalt paver operator for road projects"
+ ],
+ "Heavy Equipment Operation (Tower Crane) NC III": [
+  "may karanasan ako bilang rigger, gusto kong umupo sa cabin ng tower crane",
+  "tower crane operator for high-rise projects"
+ ],
+ "Heavy Equipment Servicing (Mechanical) NC II": [
+  "mekaniko ng bulldozer, backhoe at crane",
+  "I want to maintain and repair construction machines like excavators"
+ ],
+ "Construction Lift Passenger/Material Elevator Operation NC II": [
+  "construction elevator operator in high-rise sites"
+ ],
+ "System Formworks Installation NC II": [
+  "formwork carpenter for concrete slabs and columns",
+  "mag-assemble ng kahoy at steel na pormahan bago buhusan ng kongkreto",
+  "forms for concrete slab and beam, carpenter specializing in formworks"
+ ],
+ "Electric Power Distribution Line Construction NC II": [
+  "lineman na umaakyat ng poste tuwing bagyo para ibalik ang kuryente",
+  "magkabit ng kable at transformer sa poste",
+  "tagabitin ng linya ng kuryente sa baryo namin",
+  "lineman trainee, learning to rig crossarms and pull conductors on utility poles"
+ ],
+ "Transmission Line Installation and Maintenance NC II": [
+  "magtrabaho sa matataas na tore ng kuryente, mag-ayos ng high voltage lines",
+  "tower climber for transmission lines"
+ ],
+ "Transmission Line Installation and Maintenance NC IV": [
+  "mamahala sa buong proyekto ng transmission line, supervisor level",
+  "mamahala ng proyekto ng mga tore at linya ng mataas na boltahe, tapos na ako sa NC III",
+  "transmission project supervisor, highest level"
+ ],
+ "Transmission Line Installation and Maintenance NC III": [
+  "senior lineman for high-voltage towers who already completed NC II",
+  "tapos na ako ng NC II sa pag-aayos ng tore ng kuryente, ano ang kasunod"
+ ],
+ "PV Systems Installation NC II": [
+  "I dream of turning sunlight into power for homes with solar installations",
+  "mag-install ng solar inverter at baterya sa mga tindahan"
+ ],
+ "PV System Design NC III": [
+  "I want to size and design rooftop solar systems for customers",
+  "magkompyut ng laki ng solar panel at inverter para sa isang bahay o pabrika",
+  "solar system designer who does load computations and single-line diagrams"
+ ],
+ "Electrical Installation and Maintenance NC II": [
+  "mag-install ng ilaw, saksakan at breaker sa bahay",
+  "I want to be a house electrician, wiring and troubleshooting circuits"
+ ],
+ "Electrical Installation and Maintenance NC III": [
+  "supervise industrial electrical installations, I already hold NC II",
+  "foreman ng mga electrician sa proyekto, sampung taon na sa field",
+  "industrial wiring supervisor, I hold NC II and want the higher level"
+ ],
+ "Plumbing NC II": [
+  "I fix leaking pipes and unclog drains for neighbors and want a certificate",
+  "mag-ayos ng tubig sa banyo at kusina, magkabit ng PVC"
+ ],
+ "Plumbing NC I": [
+  "baguhan sa pagtutubero, gusto kong simulan sa pinakamababang NC",
+  "plumber helper who cuts and joins pipes under supervision"
+ ],
+ "Pipefitting (Metallic) NC II": [
+  "magkabit ng malalaking bakal na tubo sa planta at refinery",
+  "I want to fit and weld process piping for oil and gas plants",
+  "pipefitter sa shipyard at power plant"
+ ],
+ "GAS Welding NC II": [
+  "mag-braze at mag-solder ng metal gamit ang gas torch",
+  "I use a gas flame torch to cut and join steel at a junk shop"
+ ],
+ "Gas Welding NC I": [
+  "entry level gas welder using fuel gas and oxygen",
+  "unang beses kong hahawak ng oxy-acetylene torch, entry level pa lang",
+  "baguhang welder na gas ang gamit, mag-solder at mag-braze"
+ ],
+ "Gas Tungsten Arc Welding (GTAW) NC II": [
+  "TIG welding ng stainless at aluminum na manipis",
+  "I want to learn TIG welding with a tungsten electrode and argon gas"
+ ],
+ "Gas Metal Arc Welding (GMAW) NC II": [
+  "semi-automatic welding with continuous wire for fabrication shops",
+  "MIG welder para sa body ng trak at steel furniture",
+  "welding gamit ang tuloy-tuloy na wire at gas, hindi electrode na stick"
+ ],
+ "Flux-Cored Arc Welding (FCAW) NC II": [
+  "flux-cored welding ng makakapal na bakal sa shipyard",
+  "welding na wire na may flux sa loob, para sa structural steel"
+ ],
+ "Submerged Arc Welding (SAW) NC II": [
+  "I want to run submerged arc welding for pressure vessels and pipes",
+  "SAW machine setup for thick plates and long seams"
+ ],
+ "Submerged Arc Welding (SAW) NC I": [
+  "baguhan sa submerged arc welding machine, pulbos na flux ang tinatakip sa hinang",
+  "entry level SAW operator for steel plates"
+ ],
+ "Manual Metal Arc Welding (MMAW) NC II": [
+  "mag-weld ng gate, grills at bakal gamit ang electrode",
+  "stick welding ng structural steel sa gusali at tulay"
+ ],
+ "Manual Metal Arc Welding (MMAW) NC I": [
+  "baguhan sa pagwe-welding gamit ang electrode, wala pang karanasan",
+  "welding helper who wants to start with the entry level NC"
+ ],
+ "Manual Metal Arc Welding (MMAW) NC III": [
+  "advanced stick welder for plates and pipes na may NC II na",
+  "advanced SMAW welder planning to take the next certificate"
+ ],
+ "Machining NC I": [
+  "baguhan sa machine shop na gustong humawak ng lathe",
+  "machinist helper with zero experience, I want to start from the first level",
+  "machine shop helper na nag-aaral humawak ng lathe, baguhan pa lang",
+  "first-level machining course for someone with no experience"
+ ],
+ "Machining NC III": [
+  "advanced machining na may precision measuring at complex parts",
+  "mataas na lebel ng machinist, precision grinding at complicated na piyesa"
+ ],
+ "CNC Lathe Machine Operation NC II": [
+  "mag-operate ng CNC lathe sa Japan o Korea",
+  "I run a manual lathe and want to learn CNC turning and G-code",
+  "CNC operator na may five years sa manual lathe"
+ ],
+ "CNC Milling Machine Operation NC II": [
+  "mag-set up at magpatakbo ng CNC milling machine",
+  "CNC mill operator, program editing and tool offsets"
+ ],
+ "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III": [
+  "wire EDM operator for precise cutting of hard steel parts",
+  "wire cut machine na gumagamit ng deionized water at kuryente"
+ ],
+ "Electric Discharge Machine (EDM) Sinking Operation NC II": [
+  "spark erosion machine operator for mold cavities",
+  "gumagawa ng cavity sa tigas na steel gamit ang graphite electrode at kuryente",
+  "ram EDM operator in a mold shop"
+ ],
+ "Foundry Molding NC II": [
+  "I make sand molds and cores for metal castings",
+  "green sand molding for iron casting"
+ ],
+ "Foundry Melting/Casting NC II": [
+  "I pour molten metal into molds at a foundry",
+  "nagpapainit ng furnace at nagbubuhos ng tinunaw na bakal at aluminyo sa pandayan",
+  "cupola or induction furnace operator pouring metal"
+ ],
+ "Foundry Pattern Making NC II": [
+  "pattern maker who builds the wooden or resin model used in sand molds",
+  "woodworker making patterns with shrinkage allowance for castings"
+ ],
+ "Forging NC II": [
+  "blacksmith who heats and hammers steel into tools",
+  "nagpapanday ng itak, bolo at pait gamit ang martilyo at pugon",
+  "blacksmith shop worker forging farm tools",
+  "panday sa baryo namin, gusto kong sertipikado"
+ ],
+ "Heat Treatment NC II": [
+  "magpatigas ng bakal sa pugon at i-temper para hindi mabasag",
+  "quenching, tempering and hardening of metal parts in a furnace"
+ ],
+ "Tool and Die Making NC II": [
+  "tool and die maker who builds punches and dies for stamping",
+  "bumubuo ng punch at die para sa press na pumuputol ng lata",
+  "tool room worker building jigs, fixtures and dies"
+ ],
+ "Die Designing NC IV": [
+  "magdisenyo ng stamping dies sa CAD, galing akong taga-feed ng press",
+  "I want to design dies instead of feeding sheet metal into a press"
+ ],
+ "Mold Designing NC IV": [
+  "mold design engineer role abroad without a degree"
+ ],
+ "Moldmaking NC II": [
+  "mold maker for plastic injection tools",
+  "tagagawa ng mold ng plastik sa tool room, nagpupulido at nag-fit",
+  "assembling and polishing injection molds"
+ ],
+ "Plastic Machine Operation NC II": [
+  "operator of machines that shape plastic bottles and containers",
+  "bumubuo ng produkto mula sa plastic pellets sa makina"
+ ],
+ "Metal Stamping NC II": [
+  "press shop operator, forming sheet metal parts",
+  "tagapagpindot ng makinang pang-hulma ng manipis na bakal sa planta"
+ ],
+ "CAD/CAM Operation NC III": [
+  "I draw parts in CAD and generate G-code for machines",
+  "gumagawa ng 3D model sa computer at nagpoprograma ng CNC machine mula rito",
+  "CAM programmer converting drawings into machining code"
+ ],
+ "Mechanical Drafting NC I": [
+  "mechanical draftsman for machine parts and assemblies",
+  "junior mechanical draftsman, parts and assembly drawings"
+ ],
+ "Plant Maintenance NC I": [
+  "maintenance man sa pabrika, taga-ayos ng sirang makina",
+  "maintenance helper for factory machines, routine checks and repairs"
+ ],
+ "Mechatronics Servicing NC III": [
+  "maintain and troubleshoot automated production lines with PLC"
+ ],
+ "Mechatronics Servicing NC IV": [
+  "magdisenyo at mamahala ng automation system ng buong pabrika, may NC III na ako",
+  "namamahala sa disenyo at pagpapabuti ng mga automated na makina, may NC III na"
+ ],
+ "Process Inspection NC III": [
+  "in-process quality inspection in a factory",
+  "mag-inspeksyon ng kalidad ng produkto sa gitna ng produksiyon gamit ang gauges",
+  "line QC inspector measuring parts against specifications"
+ ],
+ "Laboratory and Metrology/Calibration Services NC II": [
+  "mag-calibrate ng mga instrument at sukatan sa laboratoryo",
+  "metrology technician checking measuring tools with micrometers and gauges"
+ ],
+ "Automotive Servicing NC I": [
+  "I want to start as a helper in a car repair shop",
+  "mag-oil change at tune-up bilang unang trabaho sa talyer"
+ ],
+ "Automotive Servicing (Engine Repair) NC II": [
+  "mekaniko ng jeep at van na marunong mag-ayos ng engine"
+ ],
+ "Automotive Servicing (Chassis Repair) NC II": [
+  "palitan ang brake shoe, shock absorber at tie rod ng sasakyan",
+  "mekaniko na nag-aayos ng manibela, gulong at suspension",
+  "wheel alignment and brake service technician in a tire shop"
+ ],
+ "Automotive Servicing (Electrical Repair) NC II": [
+  "car electrician who fixes lights, battery and charging system",
+  "ayusin ang ilaw at kuryente ng kotse na nasira"
+ ],
+ "Automotive Servicing NC IV": [
+  "I want to manage a service shop and supervise mechanics",
+  "head mechanic na namamahala ng mga technician at kliyente sa talyer",
+  "service manager of an automotive repair center, already experienced"
+ ],
+ "Automotive Diagnosis (Chassis) NC III": [
+  "diagnostic technician for steering and suspension faults",
+  "gumagamit ng scanner at alignment machine para hanapin ang sira ng preno at manibela",
+  "chassis diagnostic specialist for ABS and steering systems"
+ ],
+ "Automotive Diagnosis (Electrical) NC III": [
+  "automotive electrical diagnostics with a multimeter and scanner",
+  "mahusay sa multimeter at scanner, hinahanap ko ang sirang sensor sa kuryente ng kotse",
+  "automotive electrical troubleshooting, CAN bus and ECU faults"
+ ],
+ "Automotive Diagnosis (Engine) NC III": [
+  "mag-diagnose ng engine misfire at injector problem gamit ang scanner",
+  "engine diagnostic technician for fuel injected cars"
+ ],
+ "Automotive Body Repairing NC II": [
+  "I pound out dents and straighten car body panels",
+  "hammering at welding ng body ng kotse sa body shop"
+ ],
+ "Automotive Painting NC II": [
+  "car painter who masks, primes and sprays vehicles",
+  "nag-i-spray ng kotse sa paint booth at nagma-mix ng kulay",
+  "auto painter doing primer, base coat and clear coat"
+ ],
+ "Automotive Body Painting/Finishing NC I": [
+  "baguhan sa pagpipintura ng kotse, taga-liha at taga-masking",
+  "paint shop helper for cars, entry level"
+ ],
+ "Tinsmithing (Automotive Manufacturing) NC II": [
+  "sheet metal worker shaping car panels in a vehicle plant",
+  "sheet metal shaper in a car manufacturing plant"
+ ],
+ "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II": [
+  "car aircon technician who recharges refrigerant in vehicles",
+  "aircon ng jeep, bus at kotse ang gusto kong ayusin, compressor at freon",
+  "vehicle AC repair: compressor, condenser and blower of a car"
+ ],
+ "RAC Servicing (DomRAC) NC II": [
+  "refrigerator at aircon sa bahay ang gusto kong ayusin, hindi sa sasakyan",
+  "service technician for household cooling units: cleaning coils and refilling gas"
+ ],
+ "Commercial Air-conditioning Installation and Servicing NC III": [
+  "HVAC technician for large buildings, I already have DomRAC NC II",
+  "VRF at package-type aircon sa mga opisina"
+ ],
+ "Commercial Refrigeration Installation and Servicing NC III": [
+  "mag-ayos ng malaking freezer at cold room ng supermarket",
+  "technician of cold storage rooms and supermarket freezers"
+ ],
+ "Ice Plant Refrigeration Servicing NC III": [
+  "ice plant refrigeration technician for ammonia compressors",
+  "magpaandar at magkumpuni ng compressor sa pagawaan ng yelo",
+  "ammonia refrigeration plant operator for ice blocks"
+ ],
+ "Automotive Mechanical Assembly NC II": [
+  "assembly line worker who fits engine parts in a vehicle plant"
+ ],
+ "Automotive Electrical Assembly NC II": [
+  "bumubuo ng starter, alternator at ignition coil sa pagawaan ng piyesa",
+  "electrical component assembler for vehicles in a factory"
+ ],
+ "Automotive Electrical Assembly NC III": [
+  "lead assembler of automotive electrical components, NC III",
+  "lead assembler ng electrical parts ng sasakyan, may NC II na"
+ ],
+ "Automotive Wiring Harness Assembly NC II": [
+  "I assemble wiring harnesses for cars on a production line",
+  "wire harness assembler, cutting, crimping and taping"
+ ],
+ "Motorcycle/Small Engine Servicing NC II": [
+  "mag-ayos ng motorsiklo, water pump engine at lawnmower",
+  "motorcycle mechanic and small engine repair, gasoline generators"
+ ],
+ "Driving NC II": [
+  "magmaneho ng taxi, van o UV Express bilang trabaho",
+  "I drive a delivery van and want a driving certificate"
+ ],
+ "Driving (Passenger Bus/Straight Truck) NC III": [
+  "straight truck driver for deliveries, heavy vehicle license",
+  "magmaneho ng pampasaherong bus o malaking delivery truck na walang trailer",
+  "heavy vehicle driver for passenger buses"
+ ],
+ "Driving (Articulated Vehicle) NC III": [
+  "I want to drive container trucks with a trailer",
+  "drayber ng trailer truck at tractor head na may container",
+  "articulated lorry driver hauling container vans from the port"
+ ],
+ "Slaughtering Operations (Swine) NC II": [
+  "nagkakatay at naglilinis ng laman-loob ng baboy sa palengke",
+  "pagkatay at pagtanggal ng balahibo ng baboy sa katayan"
+ ],
+ "Slaughtering Operations (Large Animal) NC II": [
+  "I want to butcher cattle and carabao in a licensed slaughterhouse",
+  "tagakatay ng mga malalaking hayop, beef cuts at carcass",
+  "slaughterhouse worker for cattle and buffalo"
+ ],
+ "Animal Production (Swine) NC II": [
+  "I raise hogs in my backyard and want to learn proper piggery management",
+  "piggery owner na gustong matuto ng tamang pagpapakain at kalinisan"
+ ],
+ "Animal Production (Ruminants) NC II": [
+  "I want to run a goat and cattle ranch like a cowboy",
+  "goat and cattle raising for meat and milk"
+ ],
+ "Animal Production (Poultry-Chicken) NC II": [
+  "I want to run a poultry farm with layers and broilers",
+  "magmanukan sa bakuran at ibenta ang itlog"
+ ],
+ "Artificial Insemination (Swine) NC II": [
+  "I inject boar semen into sows so they get pregnant",
+  "technician for breeding sows by artificial insemination"
+ ],
+ "Artificial Insemination (Large Ruminants) NC II": [
+  "cattle AI technician who breeds cows without bulls",
+  "AI technician for dairy cows and carabao"
+ ],
+ "Milking Operation NC II": [
+  "dairy farm worker doing milking and milk handling",
+  "dairy hand who milks and cools the milk safely",
+  "naggagatas ng baka tuwing umaga at nag-iingat ng sariwang gatas"
+ ],
+ "Beekeeping NC II": [
+  "gaya ni Winnie the Pooh na mahilig sa pulot, gusto kong may sarili akong pukyutan",
+  "bee farmer na nagbebenta ng honey"
+ ],
+ "Grains Production NC II": [
+  "I grow rice and corn in my family's field and want modern techniques",
+  "gusto kong pataasin ang ani ng aming palayan at taniman ng mais"
+ ],
+ "Agricultural Crops Production NC II": [
+  "vegetable farming, composting and watering schedules",
+  "crop farmer who wants an NC for planting and harvesting"
+ ],
+ "Agricultural Crops Production NC I": [
+  "kakasimula ko pa lang magtanim, gusto kong makuha ang pinakaunang NC",
+  "beginner farm hand who plants and weeds vegetables"
+ ],
+ "Agricultural Crops Production NC III": [
+  "farm supervisor for crop production, I already hold NC II",
+  "farm foreman na namamahala ng mga magsasaka sa plantasyon, may NC II na",
+  "magsasaka ng 10 taon, gusto ko ng mas mataas na NC para mag-supervise"
+ ],
+ "Sugarcane Production NC II": [
+  "I plant and cut sugarcane and take care of ratoons in Negros"
+ ],
+ "Rubber Production NC II": [
+  "rubber tapper in a plantation, tapping latex from trees",
+  "rubber plantation worker who taps latex"
+ ],
+ "Rubber Processing NC II": [
+  "magproseso ng latex sa pabrika at gumawa ng rubber sheets",
+  "rubber processing plant worker"
+ ],
+ "Bamboo Production NC II": [
+  "I want to start a bamboo plantation and harvest properly"
+ ],
+ "Bamboo Processing (Engineered-Bamboo) NC II": [
+  "laminated bamboo boards for flooring and furniture",
+  "magproseso ng kawayan para maging flooring at panel sa pabrika",
+  "worker in a plant that makes laminated bamboo products"
+ ],
+ "Horticulture NC III": [
+  "I want to produce export-quality vegetables and fruits",
+  "propagation, grafting at pag-aalaga ng mga halaman sa nursery"
+ ],
+ "Landscape Installation and Maintenance (Softscape) NC II": [
+  "hardinero ng mga bahay at subdivision, maglatag ng damo at magtanim ng halaman",
+  "I trim plants and design gardens for clients and want to go professional"
+ ],
+ "Pressurized Irrigation System Installation and Maintenance NC II": [
+  "irrigation technician who sets up pumps and pipes in farms",
+  "magtayo ng sistema ng tubo at bomba na nagpapadilig sa malawak na bukid"
+ ],
+ "Agricultural Machinery Operation NC II": [
+  "magpaandar ng hand tractor at traktora sa palayan",
+  "hand tractor and power tiller operator"
+ ],
+ "Rice Machinery Operations NC II": [
+  "rice thresher and dryer operator",
+  "rice combine and thresher operator"
+ ],
+ "Agricultural Machinery Servicing (4-Wheel Tractor) NC III": [
+  "mechanic for 4-wheel tractors and farm machines",
+  "farm machinery mechanic for four-wheel tractors"
+ ],
+ "Drying and Milling Plant Servicing NC III": [
+  "maintain rice mill and grain dryer equipment",
+  "magkumpuni ng kiskisan ng palay, dryer at conveyor",
+  "maintenance ng makinarya sa gilingan ng bigas at pagpapatuyuan ng palay"
+ ],
+ "Fish Capture NC II": [
+  "fisherman who wants to run a boat and maintain its engine",
+  "like the crab fishermen on the TV show but in Philippine waters"
+ ],
+ "Fish Capture NC I": [
+  "katulong sa bangkang pangisda, taga-hila ng lambat",
+  "deckhand on a fishing boat who is just starting"
+ ],
+ "Fishing Gear Repair and Maintenance NC III": [
+  "net maker and repairer for fishermen",
+  "magtahi ng punit na lambat at gumawa ng bagong pukot para sa mangingisda",
+  "net repair and fishing gear maintenance"
+ ],
+ "Seaweed Production NC II": [
+  "seaweed farming on floating lines near the shore",
+  "magtanim ng gusô sa lubid na lutang, mag-ani at magpatuyo nito",
+  "seaweed farmer who ties seedlings to floating lines"
+ ],
+ "Fish Products Packaging NC II": [
+  "pack canned fish in a cannery",
+  "nagpa-pack ng isda sa lata sa cannery",
+  "worker in a canned sardines factory sealing and labeling cans"
+ ],
+ "Aquaculture (Tilapia Culture) NC II": [
+  "I want to raise tilapia in a pond and sell at the market",
+  "tilapia grower, from fingerlings to harvest"
+ ],
+ "Aquaculture (Grow-Out Operation) NC II": [
+  "mag-alaga ng bangus at hipon sa palaisdaan hanggang sa mabenta",
+  "fishpond grow-out operation for bangus and prawns"
+ ],
+ "Aquaculture (Hatchery Operation) NC II": [
+  "fish hatchery technician who breeds fingerlings",
+  "pagpapalaki ng maliliit na isda mula sa itlog sa loob ng hatchery tank"
+ ],
+ "Food Processing NC II": [
+  "magproseso ng daing, tinapa at dried squid nang malinis",
+  "banana chips, pastillas at dried mango na negosyo sa bahay",
+  "I work at a food factory and want a certificate in processing"
+ ],
+ "Food Processing NC I": [
+  "baguhan sa pabrika ng pagkain, naglilinis ng makina at nagpa-pack",
+  "entry-level food factory helper"
+ ],
+ "Food Processing NC III": [
+  "production line supervisor in a food plant",
+  "supervisor ng linya sa pabrika ng pagkain, may NC II na"
+ ],
+ "Food Production (Bread and Patisserie) NC II": [
+  "pastry chef na gumagawa ng cupcakes at wedding cakes",
+  "mag-bake ng ensaymada at cupcake para sa negosyo"
+ ],
+ "Cookery NC II": [
+  "magluto sa restaurant at hotel kitchen bilang line cook",
+  "mag-prepare ng Filipino dishes para sa mga customer",
+  "kusinero sa hotel kitchen"
+ ],
+ "Food Production (Professional Cookery) NC IV": [
+  "executive chef na namamahala ng buong kusina at menu",
+  "kitchen head of a luxury hotel, directing the cooks"
+ ],
+ "Barista NC II": [
+  "magtimpla ng espresso at latte art sa kapihan",
+  "magtimpla ng kape at latte sa coffee shop",
+  "barista sa cafe, latte art at espresso"
+ ],
+ "Bartending NC II": [
+  "flair bartender na gumagawa ng cocktail tulad sa pelikulang Cocktail",
+  "magtimpla ng cocktail at mag-serve ng alak sa bar",
+  "bartender in a hotel lounge or cruise ship"
+ ],
+ "Pyrotechnics NC II": [
+  "paggawa ng piccolo, luces at pailaw",
+  "I make firecrackers and fireworks displays and want an NC"
+ ],
+ "Sanitary Landfill Operations NC III": [
+  "mamahala ng sanitary landfill ng lungsod",
+  "landfill supervisor handling waste disposal and leachate"
+ ],
+ "Garbage Collection NC I": [
+  "garbage collector for a city waste truck",
+  "kolektor ng basura sa lungsod, nagbubuhat sa truck",
+  "waste collector in the barangay"
+ ],
+ "Web Development NC III": [
+  "front-end web developer, building pages for clients",
+  "web developer na gumagawa ng online store at pahina ng negosyo",
+  "gumawa ng mga web page at online shop para sa mga kliyente"
+ ],
+ "Visual Graphic Design NC III": [
+  "I do layouts for flyers and want a graphic design certificate",
+  "graphic artist: logo, poster, brochure at social media layout"
+ ],
+ "3D Animation NC III": [
+  "3D modeling and rigging for animated movies",
+  "3D animator using Maya or Blender"
+ ],
+ "3D Game Art Development NC III": [
+  "mag-model ng mga 3D props at karakter para sa video game",
+  "game artist doing textures and 3D assets"
+ ],
+ "2D Game Art Development NC III": [
+  "mag-drawing ng mga karakter at background para sa mobile games",
+  "pixel art and sprites for 2D games"
+ ],
+ "Game Programming NC III": [
+  "I want to code my own games like Roblox and Minecraft mods",
+  "mag-program ng laro sa Unity at C#"
+ ],
+ "2D Animation NC III": [
+  "traditional animator sa isang studio",
+  "traditional hand-drawn animator for TV cartoons"
+ ],
+ "Animation NC II": [
+  "entry level animator, gumagawa ng simpleng galaw sa mga drawing",
+  "animation assistant who does in-betweens for cartoons"
+ ],
+ "Illustration NC II": [
+  "children's book illustrator who draws characters",
+  "digital illustrator and comic artist"
+ ],
+ "Cyber Threat Mitigation NC II": [
+  "white hat hacker like in the movies, defending networks",
+  "tagapagtanggol laban sa hacker, mag-imbestiga ng security incident"
+ ],
+ "Cyber Threat Monitoring NC I": [
+  "mag-bantay ng mga alerto sa SOC at mag-monitor ng network para sa mga banta",
+  "entry-level security analyst watching logs for intrusions"
+ ],
+ "Programming (Oracle Database) NC III": [
+  "database developer using Oracle SQL and PL/SQL",
+  "Oracle developer: queries, stored procedures and triggers"
+ ],
+ "Programming (JAVA) NC III": [
+  "mag-code ng Java applications para sa mga bangko at negosyo",
+  "Java developer for business systems"
+ ],
+ "Programming (.Net Technology) NC III": [
+  "software developer using Microsoft .NET",
+  "software developer na gumagamit ng C# para sa mga business application"
+ ],
+ "Computer Systems Servicing NC II": [
+  "I repair laptops and install Windows and want to be certified"
+ ],
+ "Mobile Phones and Handheld Gadgets Servicing NC III": [
+  "mag-ayos ng basag na screen at charging port ng cellphone sa stall",
+  "mag-repair ng cellphone, palitan ang LCD at charging port",
+  "smartphone repair technician at a mall stall"
+ ],
+ "Cable TV Installation NC II": [
+  "magkabit ng cable at set-top box sa bahay ng subscriber",
+  "cable installer for subscribers' homes"
+ ],
+ "Telecom OSP Installation (Fiber Optic Cable) NC II": [
+  "magkabit at mag-splice ng fiber optic cable sa poste",
+  "fiber installer for internet providers"
+ ],
+ "Broadband Installation (Fixed Wireless Systems) NC II": [
+  "magkabit ng wireless internet antenna sa bubong ng subscriber",
+  "fixed wireless internet installer"
+ ],
+ "Photography NC II": [
+  "wedding photographer na gustong may sertipiko",
+  "potograper po, gusto q ng training"
+ ],
+ "Audio Production Services NC I": [
+  "audyo sawnd engineer sa recording studio, mag-mix ng tunog",
+  "audio editing and recording for podcasts and bands"
+ ],
+ "Lighting for Live Performances NC II": [
+  "magpailaw sa mga konsiyerto at teatro",
+  "stage lighting technician for live shows"
+ ],
+ "Medical Transcription NC II": [
+  "medical transcriptionist working from home",
+  "pakikinig sa recording ng doktor at pagta-type ng medical report"
+ ],
+ "Medical Coding and Claims Processing NC III": [
+  "magproseso ng claims sa PhilHealth at insurance ng ospital",
+  "hospital billing and coding clerk"
+ ],
+ "Contact Center Services NC II": [
+  "I want to work in a BPO because my English is good and I can do graveyard shift",
+  "call center agent handling customer calls and chats"
+ ],
+ "Customer Services NC II": [
+  "tindera sa tindahan na nagbebenta at nag-aasikaso ng customer",
+  "kahera at sales attendant sa mall",
+  "saleslady sa department store"
+ ],
+ "Warehousing Services NC II": [
+  "warehouse staff who counts stock and prepares orders",
+  "warehouse clerk who checks incoming deliveries and picks orders"
+ ],
+ "Warehousing Services NC III": [
+  "warehouse supervisor with inventory records and receiving",
+  "mamahala ng bodega at inventory records ng kumpanya, may NC II na",
+  "warehouse supervisor handling receiving, storage and dispatch"
+ ],
+ "Microfinance Technology NC II": [
+  "mangolekta ng lingguhang hulog mula sa maliliit na negosyante",
+  "I want to work as a microlending field officer helping small vendors borrow capital"
+ ],
+ "Community Nutrition Services NC II": [
+  "magturo sa mga nanay sa barangay tungkol sa masustansyang pagkain ng bata",
+  "community nutrition worker teaching healthy meals to families"
+ ],
+ "Trainers Methodology Level I (In-Company Trainer)": [
+  "magturo ng mga bagong empleyado sa loob ng aming kumpanya",
+  "in-house trainer teaching workers in a plant"
+ ],
+ "Trainers Methodology Level I (Trainer/Assessor)": [
+  "teach and assess trainees for NC"
+ ],
+ "Emergency Medical Services NC II": [
+  "I want to be an EMT who rushes patients to the hospital",
+  "first responder na nagbibigay ng first aid sa kalsada"
+ ],
+ "Lifeguard Services NC II": [
+  "lifeguard sa resort na tulad sa Baywatch",
+  "bantay-dagat sa resort na sumasagip ng nalulunod",
+  "pool and beach lifeguard with CPR training"
+ ],
+ "Assistive Rehabilitation Technology Services (Prosthetics) NC II": [
+  "technician fitting prosthetic limbs for amputees"
+ ],
+ "Assistive Rehabilitation Technology Services (Orthotics) NC II": [
+  "orthotic technician who builds splints and leg supports",
+  "orthotics technician: splints and orthopedic supports"
+ ],
+ "Assistive Rehabilitation Technology Services (Wheelchair) NC II": [
+  "wheelchair technician fitting chairs to patients",
+  "mag-ayos at mag-assemble ng wheelchair para sa PWD",
+  "wheelchair repair and fitting technician"
+ ],
+ "Beauty Care (Nail Care) Services NC II": [
+  "manicure at pedicure sa salon, gusto kong may sertipiko",
+  "nail technician applying polish and nail art"
+ ],
+ "Beauty Care (Skin Care) Services NC II": [
+  "skin care therapist for facials and cleansing",
+  "esthetician who gives facials and skin treatments"
+ ],
+ "Barbering NC II": [
+  "barbero na nag-fade at nag-shave ng balbas",
+  "barbero sa kanto na gumugupit at nag-aahit ng balbas",
+  "barber for men's haircuts and shave"
+ ],
+ "Hairdressing NC II": [
+  "gupit, kulay at estilo ng buhok ng mga kustomer sa salon",
+  "I grew up in my aunt's salon and want to cut and color hair professionally"
+ ],
+ "Hairdressing NC III": [
+  "senior stylist ng salon na may NC II na",
+  "advanced hair coloring and styling, already NC II"
+ ],
+ "Dressmaking NC II": [
+  "I sew dresses and blouses for neighbors on a pedal machine",
+  "mananahi ng bestida para sa kasal at pista"
+ ],
+ "Tailoring NC II": [
+  "men's tailor making suits and barong",
+  "tailor of men's trousers and suits"
+ ],
+ "Fashion Design (Apparel) NC III": [
+  "gown designer na gumuguhit ng pattern at koleksyon",
+  "fashion designer creating sketches and sample garments"
+ ],
+ "Handloom Weaving (Backstrap) NC II": [
+  "traditional backstrap weaving of Ifugao cloth",
+  "backstrap weaver of Igorot textiles"
+ ],
+ "Handloom Weaving (Upright) NC II": [
+  "manghahabi ng inabel at t'nalak sa tradisyonal na habihan",
+  "naghahabi sa patayong habihan ng Ilocos at Mindanao na tela",
+  "upright handloom weaver of inabel"
+ ],
+ "Jewelry Making (Fine Jewelry) NC II": [
+  "gumawa ng singsing at hikaw na ginto at mag-set ng bato",
+  "alahero sa Meycauayan na marunong magpulido ng alahas"
+ ],
+ "Furniture Making (Finishing) NC II": [
+  "taga-liha at taga-barnis ng kabinet at muwebles sa talyer",
+  "furniture finisher who sands, lacquers and sprays cabinets"
+ ],
+ "Domestic Work NC II": [
+  "household helper who cooks, cleans and does laundry for a family",
+  "kasambahay na naglalaba, nagluluto at naglilinis para sa pamilya",
+  "household worker with cooking, laundry and childcare duties"
+ ],
+ "Barangay Health Services NC II": [
+  "barangay health worker na nagbabahay-bahay para sa bakuna at check-up"
+ ],
+ "Contact Tracing NC II": [
+  "contact tracer na nagtatala ng mga nakasalamuha ng pasyente"
+ ]
+}
