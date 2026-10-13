@@ -6,13 +6,16 @@ pilot with real learners, self-hosted on our own server with Docker.
 
 ```
 Browser ──HTTPS──▶ Caddy ──▶ Streamlit (frontend/) ──HTTP──▶ FastAPI (backend/) ──▶ PostgreSQL 17
-                                                      └── internal network only ──┘   + pgvector + PostGIS
+                      │                               └── internal network only ──┘   + pgvector + PostGIS
+                      └──▶ landing page (landing/), static files at /
 ```
 
 - **backend/**: FastAPI + SQLModel (SQLAlchemy 2.0) + PostgreSQL, with migrations in Alembic. It is the
   only component that touches the database.
 - **frontend/**: the Streamlit app. It has no database credentials and calls the API through
   `api_client.py`.
+- **landing/**: the public landing page, one static HTML file with its images and fonts. It calls nothing;
+  its buttons open the app.
 - **deploy/**: the PostgreSQL image (`deploy/postgres/`, PostgreSQL 17 with pgvector and PostGIS) and the
   Caddy configuration.
 - **docker-compose.dev.yml**: the local development database.
@@ -125,6 +128,25 @@ styles live in `frontend/styles.css`. `frontend/presentation.py` provides escape
 page elements. The finder, qualification library, training, progress, account dialogs, and reports use
 the same spacing, blue palette, accessible form controls, and empty/error states. Inactive tabs do not
 make page-specific requests, and switching tabs preserves entered goals and filters.
+
+### Landing page
+
+`landing/index.html` is the page learners see first. Behind Caddy it is served at `/`, and the app moves to
+`/app/` (`STREAMLIT_SERVER_BASE_URL_PATH` in `docker-compose.yml`). Its **Find my path** buttons open the
+app. Its goal box opens `/app/?goal=…`, and the app puts that goal in the finder's box for the learner to
+review, then removes it from the address.
+
+- **Viewing it locally:** open `landing/index.html` in a browser. Its buttons point to `/app/`, which only
+  exists behind Caddy. To try the goal handoff, open the app at
+  `http://localhost:8501/?goal=I%20want%20to%20become%20a%20chef`.
+- **Scroll reveal:** sections fade in as they enter the screen. With reduced motion turned on, or without
+  JavaScript, everything shows at once.
+- **Figures are written into the page:** 319 qualifications, 27 sectors, 738 jobs, 4,981 units of
+  competency, the NC level counts, the 18 regional centers, the ranking weights and the readiness bands
+  (80% and 50%). Update them when the catalog, `regions.json`, `RANKING_WEIGHTS__*` or
+  `skill_gap_service.py` change. The match percentages in the hero and in step 2 are labelled examples.
+- **Fonts and images:** the fonts are copies of `frontend/static/fonts/` (SIL Open Font License, with
+  their license files). The photos are smaller copies of the illustrations in `frontend/assets/training/`.
 
 ## Requirements
 
@@ -401,8 +423,8 @@ docker compose up -d --build
 
 Compose starts PostgreSQL, runs the migrations, the seed and the embedding sync, then starts the API, the
 Streamlit app and Caddy. The embedding model is built into the API image, so the server never needs to
-download it. If the sync fails, the deploy still goes ahead and matching falls back to keywords. Only ports 80 and 443 are published. Caddy serves the app at `/` and the API at `/api/`
-(interactive docs at `/api/docs`). Point the domain's DNS at the server before starting, so Caddy can
+download it. If the sync fails, the deploy still goes ahead and matching falls back to keywords. Only ports 80 and 443 are published. Caddy serves the landing page at `/`, the app at
+`/app/` and the API at `/api/` (interactive docs at `/api/docs`). Point the domain's DNS at the server before starting, so Caddy can
 obtain a certificate.
 
 The first build is slow. It installs the Python packages and downloads the embedding model into the API
@@ -430,3 +452,7 @@ project (`tesda-track`), with its own database volume.
 
 Learner data is subject to the Data Privacy Act of 2012 (RA 10173). Goals typed into the finder are
 processed in memory and never logged, and request bodies are excluded from logs.
+
+A goal typed on the landing page reaches the app in the address (`/app/?goal=…`). Caddy keeps no access
+log, and the app removes the goal from the address as soon as it reads it, but the browser may still keep
+that first address in its history. On a shared computer, learners can type their goal in the app instead.

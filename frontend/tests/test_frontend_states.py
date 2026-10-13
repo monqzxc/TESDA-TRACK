@@ -595,6 +595,28 @@ def test_library_explore_shows_the_goal_step_over_earlier_results(offline_api, m
     assert app.text_area(key="goal_query").value == "I want to pursue Computer Systems Servicing NC II."
 
 
+def test_a_goal_from_the_landing_page_waits_in_the_goal_box(offline_api, monkeypatch):
+    mock_finder(monkeypatch)
+    app = run_page(open_step(submit_goal(run_page(new_app())), 3), "Qualifications Library")
+    app.query_params["goal"] = "  Gusto kong maging kusinero.  "
+    run_page(app)
+    assert app.session_state["main_tabs"] == "Find my pathway"
+    assert app.text_area(key="goal_query").value == "Gusto kong maging kusinero."
+    assert "goal" not in app.query_params, "a refresh must not replace what the learner types next"
+    app.text_area(key="goal_query").set_value("I want to become a chef.")
+    run_page(app)
+    assert app.text_area(key="goal_query").value == "I want to become a chef."
+
+
+@pytest.mark.parametrize("linked, expected", [("   ", ""), ("a" * 600, "a" * 500)])
+def test_a_linked_goal_keeps_to_the_goal_box_limits(offline_api, linked, expected):
+    app = new_app()
+    app.query_params["goal"] = linked
+    run_page(app)
+    assert app.text_area(key="goal_query").value == expected
+    assert "goal" not in app.query_params
+
+
 def test_empty_catalog_can_be_refreshed_when_qualifications_arrive(offline_api):
     offline_api["catalog"] = []
     app = run_page(new_app())

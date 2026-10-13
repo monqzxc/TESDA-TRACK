@@ -15,9 +15,16 @@
 			header_up X-Forwarded-For {remote_host}
 		}
 	}
-	handle {
+	# The Streamlit app lives under /app (STREAMLIT_SERVER_BASE_URL_PATH in docker-compose.yml).
+	redir /app /app/ 308
+	handle /app/* {
 		reverse_proxy web:8501 {
 			header_up X-Forwarded-For {remote_host}
 		}
+	}
+	# Everything else is the static landing page (landing/).
+	handle {
+		root * /srv/landing
+		file_server
 	}
 }
