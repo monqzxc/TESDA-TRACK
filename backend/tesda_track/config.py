@@ -68,6 +68,12 @@ class Settings(BaseSettings):
     skills_bridge_upstream_per_minute: int = Field(default=120, ge=1,
                                                    description="Uncached lookups sent to Skills Bridge, all clients")
 
+    # Directions from an OSRM server (GET /api/v1/routes). The public FOSSGIS router allows one request a second
+    # and keeps requests in its logs; empty turns Directions off, and the app links to Google Maps instead.
+    routing_url: str = "https://routing.openstreetmap.de/routed-car"
+    routing_rate_limit_per_minute: int = Field(default=10, ge=1, description="Directions per client address")
+    routing_cache_ttl_seconds: int = Field(default=3600, ge=0, description="How long found routes are kept; 0 for none")
+
     @model_validator(mode="after")
     def semantic_band_ordered(self):
         if self.semantic_z_ceiling <= self.semantic_z_floor:

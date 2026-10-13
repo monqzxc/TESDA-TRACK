@@ -363,6 +363,10 @@ an administrator's email (as `username`) and password. Then use the admin endpoi
   `competent` result issues a verified certification to the learner automatically.
 - **Pathways:** steps sent with an `id` are kept, along with learners' progress on them. Steps you leave
   out are removed.
+- **Directions:** the API asks an OSRM router for road routes (`GET /api/v1/routes`) and adds an estimated
+  flight for long trips, so the router sees the server's address, not the learner's. `ROUTING_URL` picks the
+  router (see `.env.example`); set it empty to turn Directions off, and the app links to Google Maps instead.
+  The learner's location is rounded to about 1 km first and never logged.
 
 ## Reports
 
@@ -401,6 +405,8 @@ similar. Set `TESDA_MODEL_TESTS=1` to also check that the real model understands
 - `qualifications.json`: qualifications and their units of competency, built from TESDA's Training
   Regulations (see below)
 - `pathways.json`: a default pathway template for each recommendation route
+- `airports_ph.json`: Philippine airports with scheduled flights (from OurAirports), read by the API for
+  flight estimates and not stored in the database
 - `delivery_sites.json`: clearly marked development fixtures with regional coordinates, linked training
   offerings and upcoming assessment schedules. These records are not verified T2MIS data.
 

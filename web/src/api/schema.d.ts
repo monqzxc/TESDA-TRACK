@@ -1093,6 +1093,32 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/routes": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get Routes
+         * @description Directions from the learner's location to a center: a road route for each travel mode the router has (car,
+         *     bike and foot from the public router; car only from a self-hosted one), then an estimated flight for a long
+         *     trip. No sign-in needed.
+         *
+         *     The origin is rounded to about a kilometre before it's used, cached or sent to the router, and isn't logged.
+         *     When this server has no router (ROUTING_URL empty), the answer is `routing_enabled: false` with no routes:
+         *     link to Google Maps instead.
+         */
+        get: operations["get_routes_api_v1_routes_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1119,6 +1145,19 @@ export interface components {
             assessment_applications: components["schemas"]["AssessmentApplicationPublic"][];
             /** Training Rankings */
             training_rankings: components["schemas"]["RankingAuditPublic"][];
+        };
+        /** Airport */
+        Airport: {
+            /** Iata */
+            iata: string;
+            /** Name */
+            name: string;
+            /** Municipality */
+            municipality: string;
+            /** Latitude */
+            latitude: number;
+            /** Longitude */
+            longitude: number;
         };
         /** ApplicationCreate */
         ApplicationCreate: {
@@ -1466,6 +1505,24 @@ export interface components {
             /** Category */
             category: string;
         };
+        /** Directions */
+        Directions: {
+            /**
+             * Routing Enabled
+             * @description False when this server has no router: link to Google Maps instead
+             */
+            routing_enabled: boolean;
+            /**
+             * Routes
+             * @description Car, bike and foot as the router has them, then a flight for a long trip. Empty when routing is off.
+             */
+            routes: (components["schemas"]["RoadRoute"] | components["schemas"]["FlightEstimate"])[];
+            /**
+             * Missing Modes
+             * @description Road modes that couldn't be routed this time; asking again retries them
+             */
+            missing_modes: ("car" | "bike" | "foot")[];
+        };
         /** EnrollmentCreate */
         EnrollmentCreate: {
             /** Pathway Id */
@@ -1508,6 +1565,54 @@ export interface components {
              * @enum {string}
              */
             status: "active" | "withdrawn";
+        };
+        /**
+         * FlightEstimate
+         * @description An estimate from the distance between the airports nearest each end, not an airline schedule.
+         */
+        FlightEstimate: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            mode: "plane";
+            /**
+             * Path
+             * @description A curve from airport to airport, as flight paths are drawn
+             */
+            path: number[][];
+            /**
+             * Start
+             * @description [latitude, longitude]
+             */
+            start: number[];
+            /**
+             * End
+             * @description [latitude, longitude]
+             */
+            end: number[];
+            /**
+             * Distance Km
+             * @description Between the airports, in a straight line
+             */
+            distance_km: number;
+            /**
+             * Duration Min
+             * @description In the air, with time for taxiing, climbing and descending
+             */
+            duration_min: number;
+            departure: components["schemas"]["Airport"];
+            arrival: components["schemas"]["Airport"];
+            /**
+             * To Departure Km
+             * @description From the learner to the departure airport, in a straight line
+             */
+            to_departure_km: number;
+            /**
+             * From Arrival Km
+             * @description From the arrival airport to the center, in a straight line
+             */
+            from_arrival_km: number;
         };
         /** Funnel */
         Funnel: {
@@ -2136,6 +2241,36 @@ export interface components {
              * @description The learner agreed to the privacy notice (required).
              */
             privacy_consent: boolean;
+        };
+        /** RoadRoute */
+        RoadRoute: {
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            mode: "bike" | "car" | "foot";
+            /**
+             * Path
+             * @description The route as the map draws it, origin to center
+             */
+            path: number[][];
+            /**
+             * Start
+             * @description Where the roads begin, which can be a little off the learner's location
+             */
+            start: number[];
+            /**
+             * End
+             * @description Where the roads end, near the center
+             */
+            end: number[];
+            /** Distance Km */
+            distance_km: number;
+            /**
+             * Duration Min
+             * @description Without traffic
+             */
+            duration_min: number;
         };
         /**
          * ScoreComponents
@@ -4838,6 +4973,61 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
                 };
+            };
+        };
+    };
+    get_routes_api_v1_routes_get: {
+        parameters: {
+            query: {
+                /** @description latitude,longitude */
+                origin: string;
+                /** @description latitude,longitude */
+                destination: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Directions"];
+                };
+            };
+            /** @description No travel mode has a route to the center */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Too many requests from this client, or the router is busy; see Retry-After */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description The router can't be reached right now */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

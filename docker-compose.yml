@@ -11,6 +11,8 @@ x-backend-environment: &backend-environment
   SKILLS_BRIDGE_MCP_URL: ${SKILLS_BRIDGE_MCP_URL:-https://mcp.skills-bridge.ph/mcp}
   SKILLS_BRIDGE_MCP_TOKEN: ${SKILLS_BRIDGE_MCP_TOKEN:-}
   SKILLS_BRIDGE_TIMEOUT_SECONDS: ${SKILLS_BRIDGE_TIMEOUT_SECONDS:-10}
+  # Road routes for Directions (GET /api/v1/routes); empty turns them off.
+  ROUTING_URL: ${ROUTING_URL-https://routing.openstreetmap.de/routed-car}
 
 services:
   db:

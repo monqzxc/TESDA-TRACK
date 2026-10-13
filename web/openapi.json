@@ -3753,6 +3753,81 @@
           }
         }
       }
+    },
+    "/api/v1/routes": {
+      "get": {
+        "tags": [
+          "directions"
+        ],
+        "summary": "Get Routes",
+        "description": "Directions from the learner's location to a center: a road route for each travel mode the router has (car,\nbike and foot from the public router; car only from a self-hosted one), then an estimated flight for a long\ntrip. No sign-in needed.\n\nThe origin is rounded to about a kilometre before it's used, cached or sent to the router, and isn't logged.\nWhen this server has no router (ROUTING_URL empty), the answer is `routing_enabled: false` with no routes:\nlink to Google Maps instead.",
+        "operationId": "get_routes_api_v1_routes_get",
+        "parameters": [
+          {
+            "name": "origin",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 60,
+              "pattern": "^\\s*-?\\d{1,3}(\\.\\d{1,10})?\\s*,\\s*-?\\d{1,3}(\\.\\d{1,10})?\\s*$",
+              "description": "latitude,longitude",
+              "examples": [
+                "14.5995,120.9842"
+              ],
+              "title": "Origin"
+            },
+            "description": "latitude,longitude"
+          },
+          {
+            "name": "destination",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 60,
+              "pattern": "^\\s*-?\\d{1,3}(\\.\\d{1,10})?\\s*,\\s*-?\\d{1,3}(\\.\\d{1,10})?\\s*$",
+              "description": "latitude,longitude",
+              "examples": [
+                "14.5995,120.9842"
+              ],
+              "title": "Destination"
+            },
+            "description": "latitude,longitude"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Directions"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No travel mode has a route to the center"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests from this client, or the router is busy; see Retry-After"
+          },
+          "503": {
+            "description": "The router can't be reached right now"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3830,6 +3905,39 @@
           "training_rankings"
         ],
         "title": "AccountExport"
+      },
+      "Airport": {
+        "properties": {
+          "iata": {
+            "type": "string",
+            "title": "Iata"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "municipality": {
+            "type": "string",
+            "title": "Municipality"
+          },
+          "latitude": {
+            "type": "number",
+            "title": "Latitude"
+          },
+          "longitude": {
+            "type": "number",
+            "title": "Longitude"
+          }
+        },
+        "type": "object",
+        "required": [
+          "iata",
+          "name",
+          "municipality",
+          "latitude",
+          "longitude"
+        ],
+        "title": "Airport"
       },
       "ApplicationCreate": {
         "properties": {
@@ -5039,6 +5147,59 @@
         ],
         "title": "CompetencyPublic"
       },
+      "Directions": {
+        "properties": {
+          "routing_enabled": {
+            "type": "boolean",
+            "title": "Routing Enabled",
+            "description": "False when this server has no router: link to Google Maps instead"
+          },
+          "routes": {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/RoadRoute"
+                },
+                {
+                  "$ref": "#/components/schemas/FlightEstimate"
+                }
+              ],
+              "discriminator": {
+                "propertyName": "mode",
+                "mapping": {
+                  "bike": "#/components/schemas/RoadRoute",
+                  "car": "#/components/schemas/RoadRoute",
+                  "foot": "#/components/schemas/RoadRoute",
+                  "plane": "#/components/schemas/FlightEstimate"
+                }
+              }
+            },
+            "type": "array",
+            "title": "Routes",
+            "description": "Car, bike and foot as the router has them, then a flight for a long trip. Empty when routing is off."
+          },
+          "missing_modes": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "car",
+                "bike",
+                "foot"
+              ]
+            },
+            "type": "array",
+            "title": "Missing Modes",
+            "description": "Road modes that couldn't be routed this time; asking again retries them"
+          }
+        },
+        "type": "object",
+        "required": [
+          "routing_enabled",
+          "routes",
+          "missing_modes"
+        ],
+        "title": "Directions"
+      },
       "EnrollmentCreate": {
         "properties": {
           "pathway_id": {
@@ -5134,6 +5295,90 @@
           "status"
         ],
         "title": "EnrollmentUpdate"
+      },
+      "FlightEstimate": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "const": "plane",
+            "title": "Mode"
+          },
+          "path": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array",
+              "maxItems": 2,
+              "minItems": 2,
+              "description": "[latitude, longitude]"
+            },
+            "type": "array",
+            "title": "Path",
+            "description": "A curve from airport to airport, as flight paths are drawn"
+          },
+          "start": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Start",
+            "description": "[latitude, longitude]"
+          },
+          "end": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "End",
+            "description": "[latitude, longitude]"
+          },
+          "distance_km": {
+            "type": "number",
+            "title": "Distance Km",
+            "description": "Between the airports, in a straight line"
+          },
+          "duration_min": {
+            "type": "number",
+            "title": "Duration Min",
+            "description": "In the air, with time for taxiing, climbing and descending"
+          },
+          "departure": {
+            "$ref": "#/components/schemas/Airport"
+          },
+          "arrival": {
+            "$ref": "#/components/schemas/Airport"
+          },
+          "to_departure_km": {
+            "type": "number",
+            "title": "To Departure Km",
+            "description": "From the learner to the departure airport, in a straight line"
+          },
+          "from_arrival_km": {
+            "type": "number",
+            "title": "From Arrival Km",
+            "description": "From the arrival airport to the center, in a straight line"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mode",
+          "path",
+          "start",
+          "end",
+          "distance_km",
+          "duration_min",
+          "departure",
+          "arrival",
+          "to_departure_km",
+          "from_arrival_km"
+        ],
+        "title": "FlightEstimate",
+        "description": "An estimate from the distance between the airports nearest each end, not an airline schedule."
       },
       "Funnel": {
         "properties": {
@@ -6830,6 +7075,72 @@
           "privacy_consent"
         ],
         "title": "RegisterRequest"
+      },
+      "RoadRoute": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "car",
+              "bike",
+              "foot"
+            ],
+            "title": "Mode"
+          },
+          "path": {
+            "items": {
+              "items": {
+                "type": "number"
+              },
+              "type": "array",
+              "maxItems": 2,
+              "minItems": 2,
+              "description": "[latitude, longitude]"
+            },
+            "type": "array",
+            "title": "Path",
+            "description": "The route as the map draws it, origin to center"
+          },
+          "start": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "Start",
+            "description": "Where the roads begin, which can be a little off the learner's location"
+          },
+          "end": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array",
+            "maxItems": 2,
+            "minItems": 2,
+            "title": "End",
+            "description": "Where the roads end, near the center"
+          },
+          "distance_km": {
+            "type": "number",
+            "title": "Distance Km"
+          },
+          "duration_min": {
+            "type": "number",
+            "title": "Duration Min",
+            "description": "Without traffic"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mode",
+          "path",
+          "start",
+          "end",
+          "distance_km",
+          "duration_min"
+        ],
+        "title": "RoadRoute"
       },
       "ScoreComponents": {
         "properties": {

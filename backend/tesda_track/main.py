@@ -13,7 +13,7 @@ from tesda_track.db import get_engine
 from tesda_track.errors import AuthenticationError, DomainError, SessionCookieError
 from tesda_track.routers import (analysis, assessments, auth, certifications, goals, health, integrations, me,
                                  pathways, qualifications, readiness_checks, recommendation_sessions, recommendations,
-                                 reports, skills_bridge, training)
+                                 reports, routes, skills_bridge, training)
 from tesda_track.security import clear_session_cookie
 from tesda_track.services import cache
 from tesda_track.services.embeddings import get_embedder
@@ -43,6 +43,8 @@ def create_app() -> FastAPI:
         openapi_url="/api/openapi.json" if settings.docs_enabled else None, redoc_url=None,
     )
     app.state.skills_bridge_limits = skills_bridge.BridgeLimits()
+    app.state.route_limits = routes.RouteLimits()
+    routes.hide_coordinates_in_access_log()
     if settings.cors_origins:
         app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins, allow_methods=["*"],
                            allow_headers=["Authorization", "Content-Type"])
@@ -74,7 +76,8 @@ def create_app() -> FastAPI:
                    recommendation_sessions.router, readiness_checks.router, certifications.router,
                    pathways.router, pathways.learner_router, training.router, assessments.router,
                    assessments.learner_router, recommendations.router, pathways.admin_router, training.admin_router,
-                   assessments.admin_router, integrations.router, reports.router, skills_bridge.router):
+                   assessments.admin_router, integrations.router, reports.router, skills_bridge.router,
+                   routes.router):
         api.include_router(router)
     app.include_router(api)
     return app
