@@ -10,10 +10,11 @@ from sqlmodel import Session
 
 from tesda_track.config import get_settings
 from tesda_track.db import get_engine
-from tesda_track.errors import AuthenticationError, DomainError
+from tesda_track.errors import AuthenticationError, DomainError, SessionCookieError
 from tesda_track.routers import (analysis, assessments, auth, certifications, goals, health, integrations, me,
                                  pathways, qualifications, readiness_checks, recommendation_sessions, recommendations,
                                  reports, skills_bridge, training)
+from tesda_track.security import clear_session_cookie
 from tesda_track.services import cache
 from tesda_track.services.embeddings import get_embedder
 
@@ -49,7 +50,10 @@ def create_app() -> FastAPI:
     @app.exception_handler(DomainError)
     async def domain_error(request: Request, error: DomainError):
         headers = {"WWW-Authenticate": "Bearer"} if isinstance(error, AuthenticationError) else None
-        return JSONResponse({"detail": error.detail}, status_code=error.status_code, headers=headers)
+        response = JSONResponse({"detail": error.detail}, status_code=error.status_code, headers=headers)
+        if isinstance(error, SessionCookieError):
+            clear_session_cookie(response, settings)
+        return response
 
     @app.exception_handler(OperationalError)
     async def database_unavailable(request: Request, error: OperationalError):

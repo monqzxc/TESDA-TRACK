@@ -324,6 +324,14 @@ Create the first administrator from the backend directory:
 Passwords are hashed with Argon2. Access tokens are JWTs signed with `SECRET_KEY`. Changing a password
 revokes every existing token, and five failed sign-ins lock an account for 15 minutes.
 
+The browser app signs in with `POST /api/v1/auth/session` (the same form as `/auth/token`) instead. It puts the
+token in an `HttpOnly`, `SameSite=Strict` cookie named `tesda_session` (also `Secure` in production) and
+`DELETE /api/v1/auth/session` signs out. Requests signed in by the cookie that aren't reads (`GET`, `HEAD`,
+`OPTIONS`) must send an `X-Requested-With` header, and so do both session routes. Bearer tokens keep working
+as before, need no extra header, and win if a request has both. Cookie sign-in works only when the app and the
+API share an origin (through Caddy, or the Vite proxy in development): CORS deliberately allows neither
+credentials nor `X-Requested-With`, and loosening that needs a security review.
+
 ## Training, assessment and pathways
 
 Learners use the **Training & Assessment** tab to find training programs and upcoming assessments,

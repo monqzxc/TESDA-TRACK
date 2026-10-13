@@ -32,5 +32,9 @@ class AuthenticationError(DomainError):
         super().__init__(detail)
 
 
+class SessionCookieError(AuthenticationError):
+    """A session cookie that is expired, revoked or forged. The error response clears it from the browser."""
+
+
 class TooManyAttemptsError(DomainError):
     status_code = 429

@@ -32,6 +32,12 @@ class TokenResponse(BaseModel):
     expires_in: int
 
 
+class SessionResponse(BaseModel):
+    """Cookie sign-in. The token itself goes only into the HttpOnly cookie, never into the body."""
+    learner: LearnerPublic
+    expires_in: int
+
+
 class LearnerUpdate(BaseModel):
     full_name: FullName | None = None
 

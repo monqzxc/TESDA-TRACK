@@ -1,13 +1,16 @@
-"""Password hashing (Argon2) and signed access tokens (JWT, HS256)."""
+"""Password hashing (Argon2), signed access tokens (JWT, HS256) and the session cookie that can carry them."""
 import uuid
 from datetime import datetime, timedelta, timezone
 
 import jwt
 from pwdlib import PasswordHash
+from starlette.responses import Response
 
 from tesda_track.config import Settings
 
 ALGORITHM = "HS256"
+# The browser app signs in with this cookie instead of a bearer header. It holds the same access token.
+SESSION_COOKIE = "tesda_session"
 _hasher = PasswordHash.recommended()
 # Verified against when the email is unknown, so response timing doesn't reveal which accounts exist.
 _DUMMY_HASH = _hasher.hash("timing-equalizer-not-a-real-password")
@@ -38,3 +41,16 @@ def decode_access_token(token: str, settings: Settings) -> tuple[uuid.UUID, int]
     claims = jwt.decode(token, settings.secret_key.get_secret_value(), algorithms=[ALGORITHM],
                         options={"require": ["sub", "exp", "ver"]})
     return uuid.UUID(claims["sub"]), int(claims["ver"])
+
+
+def _session_cookie_flags(settings: Settings) -> dict:
+    # Scripts can't read it, other sites never get it, and outside local development it only travels over HTTPS.
+    return {"path": "/api", "httponly": True, "samesite": "strict", "secure": settings.environment == "production"}
+
+
+def set_session_cookie(response: Response, token: str, max_age: int, settings: Settings) -> None:
+    response.set_cookie(SESSION_COOKIE, token, max_age=max_age, **_session_cookie_flags(settings))
+
+
+def clear_session_cookie(response: Response, settings: Settings) -> None:
+    response.delete_cookie(SESSION_COOKIE, **_session_cookie_flags(settings))
