@@ -2,6 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- Sets data-theme on <html> before the first paint. It must stay a blocking script, ahead of the app.
+         Vite adds its base to this public-file path in dev and build (e.g. /beta/theme-init.js). -->
+    <script src="/theme-init.js"></script>
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TESDA-TRACK</title>

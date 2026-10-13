@@ -3,13 +3,18 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import { createQueryClient } from './api/queryClient.ts'
+import './styles/tokens.css'
+import './styles/base.css'
+import { ThemeProvider } from './theme/ThemeProvider.tsx'
 
 const queryClient = createQueryClient()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <App />
-    </QueryClientProvider>
+    <ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
+    </ThemeProvider>
   </StrictMode>,
 )

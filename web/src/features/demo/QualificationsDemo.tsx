@@ -9,7 +9,8 @@ export function QualificationsDemo() {
   const qualifications = useQualifications()
 
   return (
-    <main>
+    // The padding is temporary: Task 4 replaces this page with the app shell.
+    <main style={{ padding: '2rem 16px' }}>
       <h1>{en.app.name}</h1>
       <h2>{en.demo.heading}</h2>
       {qualifications.isPending && <p>{en.demo.loading}</p>}

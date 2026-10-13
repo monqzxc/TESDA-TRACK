@@ -1,0 +1,145 @@
+/* The app's colors, copied unchanged from frontend/styles.css (its :root and :root[data-theme="dark"] blocks).
+   Light values sit on :root and dark values on :root[data-theme="dark"]; public/theme-init.js and ThemeProvider
+   always set data-theme, with System resolved to light or dark. Until the Streamlit app is removed, the two files
+   must stay in step: tokens.test.ts fails when they differ. */
+:root {
+  --track-navy: #102a56; /* headings and strong text */
+  --track-blue: #175cd3; /* accents: links, icons, bars */
+  --track-fill: #175cd3; /* blue fills under white text */
+  --track-fill-hover: #124fb8;
+  --track-teal: #0d9488;
+  --track-muted: #52647e;
+  --track-border: #dfe7f2;
+  --track-surface: #ffffff;
+  --track-soft: #eef4ff;
+  --track-page: #f5f7fb; /* config.toml backgroundColor, for surfaces that cover scrolling content */
+  --track-ink: #3e5272; /* body copy on white cards */
+  --track-tint: #e8f0fe; /* icon tiles and circles */
+  --track-panel: #f4f7fd; /* panels inside cards */
+  --track-panel-border: #e3ebf7;
+  --track-violet: #6248b3;
+  --track-violet-bar: #7a5cdb;
+  --track-banner: linear-gradient(100deg, #f3f7ff 0%, #eaf2ff 48%, #dde9fd 100%);
+  --track-banner-border: #e0e9f8;
+  --track-eyebrow: #24395f;
+  --track-hover-border: #b8cdf0;
+  --track-focus: #438bf5;
+  --track-shadow-rgb: 16 42 86;
+  --track-line: #d8e3f5; /* timeline rules */
+  --track-bar: #dde6f5; /* the empty part of bars and rings */
+  /* Find my pathway's step tabs */
+  --track-current: #102a56;
+  --track-current-hint: #c3d2ef;
+  --track-step: #f0f4fb;
+  --track-step-hover: #e2eafa;
+  --track-done: #e3f4ef;
+  --track-done-hover: #d3ede5;
+  /* Banner cards */
+  --track-tile: #ffffffd9;
+  --track-tile-border: #ffffffe0;
+  --track-tile-violet: #f7f4ffe6;
+  --track-tile-green: #e9f8f0eb;
+  --track-tile-icon: #e3edff;
+  --track-tile-icon-violet: #ebe5fd;
+  --track-tile-icon-green: #d3f1e2;
+  /* Pills, chips and states */
+  --track-pill: #eaf2ff;
+  --track-pill-border: #c8dafa;
+  --track-pill-hover: #dce9ff;
+  --track-pill-hover-border: #9fbff3;
+  --track-pill-hover-ink: #0f4fbf;
+  --track-chip: #eef2f8;
+  --track-chip-hover: #e3e9f3;
+  --track-chip-hover-border: #cfd9e8;
+  --track-good-bg: #e3f5ee;
+  --track-good-ink: #11664c;
+  --track-warn-bg: #fff5df;
+  --track-warn-ink: #92601a;
+  --track-empty: #f9fbfe;
+  --track-dash: #c8d6e9;
+  /* Training & Assessment */
+  --track-stripe: #e6efff99;
+  --track-rule: #edf1f7;
+  --track-row-hover: #f5f8fe;
+  --track-row-hover-border: #dbe6f7;
+  --track-disabled-bg: #f4f6fa;
+  --track-disabled-ink: #9aa7ba;
+  --track-faint: #8a9bb4;
+  /* The center map (training_view.py). Its tiles stay as drawn in light, and turn to night in dark. */
+  --track-glass: #ffffffee;
+  --track-glass-soft: #ffffffcc;
+  --track-map-water: #cfe6f5;
+  --track-map-tiles: none;
+  /* Skills Explorer's delivery map legend */
+  --track-legend-provider: #0b6bcb;
+  --track-legend-assessment: #b46b00;
+  --track-legend-learner: #14804a;
+}
+/* Night navy, matching [theme.dark] in frontend/.streamlit/config.toml. */
+:root[data-theme="dark"] {
+  --track-navy: #e4ebf7;
+  --track-blue: #7fb0ff;
+  --track-fill: #2f6fe0;
+  --track-fill-hover: #3a78ea;
+  --track-teal: #2bc4a9;
+  --track-muted: #9fb1ce;
+  --track-border: #22365c;
+  --track-surface: #111f42;
+  --track-soft: #16305f;
+  --track-page: #0b1630;
+  --track-ink: #c3d0e6;
+  --track-tint: #1a2d5a;
+  --track-panel: #0e1b3b;
+  --track-panel-border: #22365c;
+  --track-violet: #a58df0;
+  --track-violet-bar: #a58df0;
+  --track-banner: linear-gradient(100deg, #0f1f45 0%, #13275a 48%, #183170 100%);
+  --track-banner-border: #22365c;
+  --track-eyebrow: #9db4da;
+  --track-hover-border: #34507f;
+  --track-focus: #6ea3ff;
+  --track-shadow-rgb: 0 0 0;
+  --track-line: #2a3f68;
+  --track-bar: #22365c;
+  --track-current: #2f6fe0;
+  --track-current-hint: #dbe6ff;
+  --track-step: #142650;
+  --track-step-hover: #1a3164;
+  --track-done: #0f3a35;
+  --track-done-hover: #134a43;
+  --track-tile: #111f42e6;
+  --track-tile-border: #ffffff14;
+  --track-tile-violet: #1e1c4ae6;
+  --track-tile-green: #0f2f33eb;
+  --track-tile-icon: #1a2d5a;
+  --track-tile-icon-violet: #2a2457;
+  --track-tile-icon-green: #0f3a35;
+  --track-pill: #16305f;
+  --track-pill-border: #2b4a85;
+  --track-pill-hover: #1c3a72;
+  --track-pill-hover-border: #4a6fb0;
+  --track-pill-hover-ink: #b5d0ff;
+  --track-chip: #182a52;
+  --track-chip-hover: #1f3563;
+  --track-chip-hover-border: #34507f;
+  --track-good-bg: #0f3a35;
+  --track-good-ink: #7be0c8;
+  --track-warn-bg: #3a2c10;
+  --track-warn-ink: #f5cf7a;
+  --track-empty: #0e1b3b;
+  --track-dash: #2f4670;
+  --track-stripe: #16305f40;
+  --track-rule: #1d2f55;
+  --track-row-hover: #15284f;
+  --track-row-hover-border: #2b4a85;
+  --track-disabled-bg: #15244a;
+  --track-disabled-ink: #6d7f9f;
+  --track-faint: #7d90b0;
+  --track-glass: #111f42ee;
+  --track-glass-soft: #111f42cc;
+  --track-map-water: #172540;
+  --track-map-tiles: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.88) saturate(0.7);
+  --track-legend-provider: #7fb0ff;
+  --track-legend-assessment: #e8b04a;
+  --track-legend-learner: #4fd18b;
+}

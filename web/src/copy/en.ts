@@ -10,6 +10,26 @@ export const en = {
     // Shown when the API rejects a form's input without a message for it.
     checkInput: 'Please check your input.',
   },
+  theme: {
+    // The accessible name of the System / Light / Dark switch.
+    label: 'Theme',
+    system: 'System',
+    light: 'Light',
+    dark: 'Dark',
+  },
+  dev: {
+    tokens: {
+      title: 'Design tokens',
+      intro:
+        'Every color token and icon in the theme on screen, then in light and dark side by side.',
+      colors: 'Colors',
+      icons: 'Icons',
+      token: 'Token',
+      current: 'On screen',
+      light: 'Light',
+      dark: 'Dark',
+    },
+  },
   demo: {
     heading: 'Qualifications',
     loading: 'Loading qualifications…',
