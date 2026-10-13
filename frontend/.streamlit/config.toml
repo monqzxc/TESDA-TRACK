@@ -1,3 +1,7 @@
+[server]
+# Serves frontend/static/ at app/static/: the landing page's fonts and photos.
+enableStaticServing = true
+
 # Native widget theme, adapted from Streamlit's Fluent template.
 # Local system fonts keep the application usable without a font CDN.
 [theme]
@@ -40,6 +44,18 @@ dataframeBorderColor = "#DFE7F2"
 dataframeHeaderBackgroundColor = "#EAF0F9"
 dataframeHeaderTextColor = "#102A56"
 chartCategoricalColors = ["#175CD3", "#0D9488", "#7054BF", "#BD791E", "#CF5064", "#5281B8"]
+
+# The landing page's faces, served from static/fonts/. They are declared here because a font face declared inside
+# the landing page's shadow root doesn't load.
+[[theme.fontFaces]]
+family = "Bricolage Grotesque"
+url = "app/static/fonts/BricolageGrotesque-latin.woff2"
+weight = "200 800"
+
+[[theme.fontFaces]]
+family = "Figtree"
+url = "app/static/fonts/Figtree-latin.woff2"
+weight = "300 900"
 
 [theme.sidebar]
 backgroundColor = "#FFFFFF"

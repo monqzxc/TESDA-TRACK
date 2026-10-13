@@ -3,12 +3,15 @@
 Run independently of the integration suite with:
     .venv/Scripts/python -m pytest --confcutdir=frontend/tests frontend/tests/test_frontend_states.py
 """
+import json
 from copy import deepcopy
 from datetime import date
 from pathlib import Path
 from uuid import uuid4
 
 import pytest
+from streamlit.components.v2.bidi_component.main import _make_trigger_id
+from streamlit.proto.WidgetStates_pb2 import WidgetState
 from streamlit.testing.v1 import AppTest
 
 from api_client import ApiClient, ApiError, ApiUnavailableError, UNAVAILABLE_MESSAGE
@@ -77,10 +80,11 @@ def offline_api(monkeypatch):
 
 def run_page(app, tab=None):
     # Navigate through the actual sidebar once the app has been rendered.
-    # Seed only the first view, so tests can isolate a page without hidden requests.
+    # Seed only the first view, so tests can isolate a page without hidden requests. A first visit opens on the landing
+    # page, which has tests of its own; the rest start on the finder unless they name a page.
     # The app stores the open page on every run, so its absence means nothing has rendered yet.
-    if tab and "main_tabs" not in app.session_state:
-        app.session_state["main_tabs"] = tab
+    if "main_tabs" not in app.session_state:
+        app.session_state["main_tabs"] = tab or "Find my pathway"
     elif tab and app.session_state["main_tabs"] != tab:
         next(button for button in app.sidebar.button if button.label == tab).click()
     app.run()
@@ -595,26 +599,71 @@ def test_library_explore_shows_the_goal_step_over_earlier_results(offline_api, m
     assert app.text_area(key="goal_query").value == "I want to pursue Computer Systems Servicing NC II."
 
 
+def landing_click(app, event, value):
+    """A click on the landing page. AppTest can't run the page's script, so this sends the trigger the browser would:
+    one entry in the component's trigger widget. It uses AppTest internals, so it may need updating with Streamlit."""
+    landing = app.get("bidi_component")[0]
+    states = app._tree.get_widget_states()
+    states.widgets.append(WidgetState(id=_make_trigger_id(landing.proto.id, "events"),
+                                      json_trigger_value=json.dumps([{"event": event, "value": value}])))
+    app._run(states)
+    assert not app.exception
+    return app
+
+
+def test_a_first_visit_opens_on_the_landing_page(offline_api):
+    app = new_app().run()
+    assert not app.exception
+    assert app.session_state["main_tabs"] == "Home"
+    assert app.get("bidi_component"), "the landing page"
+    assert not app.sidebar.button, "the landing page has its own top bar instead of the sidebar"
+
+
+def test_the_landing_page_shows_while_the_service_is_down(offline_api, monkeypatch):
+    def unavailable(self):
+        raise ApiUnavailableError(UNAVAILABLE_MESSAGE)
+
+    monkeypatch.setattr(ApiClient, "qualifications", unavailable)
+    app = new_app().run()
+    assert app.get("bidi_component") and "can't reach" not in page_text(app)
+    landing_click(app, "open", "finder")
+    assert "can't reach" in page_text(app)
+
+
+@pytest.mark.parametrize("target, page", [("finder", "Find my pathway"), ("library", "Qualifications Library"),
+                                          ("training", "Training & Assessment"), ("progress", "My Progress")])
+def test_landing_links_open_their_pages(offline_api, target, page):
+    app = landing_click(new_app().run(), "open", target)
+    assert app.session_state["main_tabs"] == page
+    assert "Home" in navigation_labels(app), "the sidebar leads back to the landing page"
+
+
+def test_sign_in_on_the_landing_page_opens_the_account_panel(offline_api):
+    app = landing_click(new_app().run(), "open", "account")
+    assert app.session_state["main_tabs"] == "Home"
+    assert app.text_input(key="dialog_signin_email")
+
+
+def test_home_in_the_sidebar_returns_to_the_landing_page(offline_api):
+    app = run_page(run_page(new_app()), "Home")
+    assert app.get("bidi_component")
+    assert not app.sidebar.button
+
+
 def test_a_goal_from_the_landing_page_waits_in_the_goal_box(offline_api, monkeypatch):
     mock_finder(monkeypatch)
-    app = run_page(open_step(submit_goal(run_page(new_app())), 3), "Qualifications Library")
-    app.query_params["goal"] = "  Gusto kong maging kusinero.  "
-    run_page(app)
+    app = run_page(open_step(submit_goal(run_page(new_app())), 3), "Home")
+    landing_click(app, "goal", "  Gusto kong maging kusinero.  ")
     assert app.session_state["main_tabs"] == "Find my pathway"
     assert app.text_area(key="goal_query").value == "Gusto kong maging kusinero."
-    assert "goal" not in app.query_params, "a refresh must not replace what the learner types next"
-    app.text_area(key="goal_query").set_value("I want to become a chef.")
-    run_page(app)
-    assert app.text_area(key="goal_query").value == "I want to become a chef."
+    assert "analysis" in app.session_state, "the learner reviews the goal before it replaces earlier results"
 
 
-@pytest.mark.parametrize("linked, expected", [("   ", ""), ("a" * 600, "a" * 500)])
-def test_a_linked_goal_keeps_to_the_goal_box_limits(offline_api, linked, expected):
-    app = new_app()
-    app.query_params["goal"] = linked
-    run_page(app)
-    assert app.text_area(key="goal_query").value == expected
-    assert "goal" not in app.query_params
+def test_a_landing_goal_keeps_to_the_goal_box_limits(offline_api):
+    app = landing_click(new_app().run(), "goal", "   ")
+    assert app.session_state["main_tabs"] == "Home", "a blank goal goes nowhere"
+    landing_click(app, "goal", "a" * 600)
+    assert app.text_area(key="goal_query").value == "a" * 500
 
 
 def test_empty_catalog_can_be_refreshed_when_qualifications_arrive(offline_api):

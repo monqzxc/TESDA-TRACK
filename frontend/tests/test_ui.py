@@ -7,9 +7,16 @@ from streamlit.testing.v1 import AppTest
 APP_FILE = Path(__file__).resolve().parents[1] / "app.py"
 
 
+def new_app():
+    """The app, opening on the finder rather than the landing page (test_frontend_states.py covers that)."""
+    app = AppTest.from_file(str(APP_FILE), default_timeout=30)
+    app.session_state["main_tabs"] = "Find my pathway"
+    return app
+
+
 @pytest.fixture
 def ui(live_api):
-    app = AppTest.from_file(str(APP_FILE), default_timeout=30).run()
+    app = new_app().run()
     assert not app.exception
     return app
 
@@ -301,7 +308,7 @@ def test_library_lists_catalog_from_the_api(ui):
 
 def test_unreachable_api_shows_an_error_instead_of_crashing(monkeypatch):
     monkeypatch.setenv("API_BASE_URL", "http://127.0.0.1:1")
-    app = AppTest.from_file(str(APP_FILE), default_timeout=30).run()
+    app = new_app().run()
     assert not app.exception
     assert any("can't reach" in error.value for error in app.error)
 

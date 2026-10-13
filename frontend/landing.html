@@ -1,0 +1,303 @@
+<!-- The landing page, the app's Home. Mounted by landing_view.py; landing.css styles it and landing.js runs it. -->
+<div class="landing">
+<header class="topbar" id="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="TESDA Track home"><img src="app/static/landing/logo.png" alt="">TESDA<span>TRACK</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#how">How it works</a>
+      <a href="#near">Near you</a>
+      <a href="#catalog">Qualifications</a>
+      <a href="#progress">My progress</a>
+    </nav>
+    <button type="button" class="nav-account" data-open="account">Sign in</button>
+    <button type="button" class="btn btn-signal" data-open="finder">Find my path
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+  </div>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-photo" aria-hidden="true"><img src="app/static/landing/welding.jpg" alt=""></div>
+    <svg class="hero-road" viewBox="0 0 600 400" fill="none" aria-hidden="true">
+      <path d="M40 360h170a80 80 0 0 0 0-160h-40a80 80 0 0 1 0-160h390" stroke="#fff" stroke-width="44" stroke-linecap="round"/>
+    </svg>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow">TESDA qualifications · Learner pilot</div>
+        <h1 id="hero-title">
+          <span class="line"><span style="--i:0">Every career</span></span>
+          <span class="line"><span style="--i:1">has a track.</span></span>
+          <span class="line"><span style="--i:2"><em>Find yours.<svg viewBox="0 0 100 10" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M2 7c20-5 50-6 96-2"/></svg></em></span></span>
+        </h1>
+        <p class="hero-lead reveal" style="--i:3">Say what you want to do in English, Filipino or Taglish. TESDA Track matches it to a qualification,
+          helps you check how ready you are, and maps the training or assessment that leads to your National Certificate.</p>
+        <div class="hero-actions reveal" style="--i:4">
+          <button type="button" class="btn btn-signal" data-open="finder">Find my path
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+          <button type="button" class="btn btn-ghost" data-open="library">Browse 319 qualifications</button>
+        </div>
+        <ul class="hero-notes reveal" style="--i:5">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>No account needed to start</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Taglish welcome</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>Search all 18 regions</li>
+        </ul>
+      </div>
+
+      <div class="console reveal zoom" style="--i:3" role="group" aria-label="Example: a goal matched to a qualification">
+        <div class="console-head"><b>Your goal</b><span class="example-tag">Example</span></div>
+        <div class="goal-box" id="goalBox">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="13" r="8"/><circle cx="11" cy="13" r="4"/><path d="m11 13 9-9m-4 0h4v4"/></svg>
+          <span class="goal-text"><span id="goalText">Gusto kong maging welder.</span><span class="caret" aria-hidden="true"></span></span>
+        </div>
+        <div class="goal-lang" id="goalLang">Written in Taglish</div>
+        <div class="match" id="match">
+          <div class="match-tile" id="matchTile" style="--a:#5b7aa3;--b:#33507a"></div>
+          <div>
+            <div class="match-kicker">Top match</div>
+            <div class="match-name" id="matchName">Manual Metal Arc Welding (MMAW) NC II</div>
+            <div class="match-meta" id="matchMeta">Metals and Engineering · 17 units of competency</div>
+          </div>
+          <div class="ring" id="matchRing" style="--v:92"><span id="matchPct">92%</span><small>Goal match</small></div>
+        </div>
+        <div class="jobs" id="matchJobs"><span>Welder</span><span>Fabricator</span><span>Structural Welder</span></div>
+        <div class="console-steps" aria-hidden="true">
+          <span class="on"><i></i>Goal</span><span class="on" id="stepMatch"><i></i>Match</span><span><i></i>Readiness</span><span><i></i>Pathway</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS: the track -->
+  <section class="section" id="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="eyebrow">How Find my path works</div>
+        <h2 id="how-title">Four stops between a goal and a certificate.</h2>
+        <p>Follow the route at your own pace. Each stop uses what you told us at the one before, so the plan at the end is yours.</p>
+      </div>
+
+      <div class="track" id="track">
+        <svg class="route" id="route" aria-hidden="true"><path class="road-bed"/><path class="road"/><path class="road-dash"/></svg>
+
+        <article class="stop">
+          <span class="waypoint" aria-hidden="true"></span>
+          <div class="stop-copy reveal from-left">
+            <div class="stop-num"><b>1</b>Your goal</div>
+            <h3>Start with what you want to do.</h3>
+            <p>Write it the way you would say it. <q>Gusto kong maging kusinero</q> works as well as <q>I want to become a chef</q>,
+              and so does a goal that names no trade at all, like <q>I want to take care of elderly people abroad</q>.</p>
+          </div>
+          <div class="stop-visual reveal from-right" style="--i:1">
+            <div class="card">
+              <div class="card-label"><span>Goals learners start with</span></div>
+              <div class="goal-cloud">
+                <span>Become a welder</span><span>Work in a hotel</span><span class="tl">Marunong akong mag-ayos ng computer</span>
+                <span>I want to be a barista</span><span>Improve my digital skills</span><span>Work on construction projects</span>
+                <span>I want to learn caregiving</span><span class="tl">Gusto kong maging kusinero</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="stop">
+          <span class="waypoint" aria-hidden="true"></span>
+          <div class="stop-copy reveal from-right">
+            <div class="stop-num"><b>2</b>Your match</div>
+            <h3>See which qualifications fit, and why.</h3>
+            <p>Matches weigh the meaning of your goal and the words you used, so a goal finds its trade even when it shares no words with the catalog.
+              When a goal has no TESDA equivalent, such as astronaut or lawyer, TESDA Track says so instead of guessing.</p>
+          </div>
+          <div class="stop-visual reveal from-left" style="--i:1">
+            <div class="card">
+              <div class="card-label"><span>“I want to work in a hotel”</span><span>Example</span></div>
+              <div class="match-list">
+                <div class="match-row top"><strong>Housekeeping NC II</strong><span class="pct">88%</span><small>Tourism · Cleaner, Assistant Public Area Cleaner</small><span class="bar"><i style="--w:88"></i></span></div>
+                <div class="match-row"><strong>Food and Beverage Services NC II</strong><span class="pct">81%</span><small>Tourism · Waiter, Food and Beverage Attendant</small><span class="bar"><i style="--w:81"></i></span></div>
+                <div class="match-row"><strong>Front Office Services NC II</strong><span class="pct">77%</span><small>Tourism · Front Office Agent</small><span class="bar"><i style="--w:77"></i></span></div>
+              </div>
+              <p class="match-note">Match scores are guidance, not a guarantee.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="stop">
+          <span class="waypoint" aria-hidden="true"></span>
+          <div class="stop-copy reveal from-left">
+            <div class="stop-num"><b>3</b>Readiness check</div>
+            <h3>Rate yourself on each unit of competency.</h3>
+            <p>Every qualification is built from units of competency in TESDA’s Training Regulations. Mark the ones you can already do,
+              and see your strengths and skill gaps before you spend on training. Try it here.</p>
+          </div>
+          <div class="stop-visual reveal from-right" style="--i:1">
+            <form class="card" id="readiness" aria-describedby="readinessOut">
+              <div class="card-label"><span>Barista NC II · core units</span><span>Try it</span></div>
+              <div class="units" id="units"></div>
+              <div class="meter">
+                <output class="meter-out" id="readinessOut"><strong id="readinessScore">70%</strong><span id="readinessLevel">Moderate readiness</span></output>
+                <div class="meter-track" id="meterTrack"><i></i><b style="left:50%"></b><b style="left:80%"></b></div>
+                <div class="meter-scale" aria-hidden="true"><span style="left:0">0</span><span style="left:50%">50 moderate</span><span style="left:80%">80 high</span><span style="left:100%">100</span></div>
+              </div>
+            </form>
+          </div>
+        </article>
+
+        <article class="stop">
+          <span class="waypoint" aria-hidden="true"></span>
+          <div class="stop-copy reveal from-right">
+            <div class="stop-num"><b>4</b>Your pathway</div>
+            <h3>Get the route that fits where you are.</h3>
+            <p>Your readiness picks the route. Experienced workers can go straight to assessment, and new learners start with training.
+              Change your answers above and watch the route change.</p>
+          </div>
+          <div class="stop-visual reveal from-left" style="--i:1">
+            <div class="card">
+              <div class="card-label"><span>Your recommended route</span></div>
+              <div class="routes" id="routes">
+                <div class="route-card" data-level="high"><span class="dot"></span><strong>Apply for the NC assessment</strong><em>80% and up</em><small>Book a schedule at an accredited assessment center.</small></div>
+                <div class="route-card" data-level="moderate"><span class="dot"></span><strong>Take focused training, then the NC assessment</strong><em>50–79%</em><small>Train only on the units you marked as gaps.</small></div>
+                <div class="route-card" data-level="low"><span class="dot"></span><strong>Take training first</strong><em>Below 50%</em><small>Enroll in a TESDA-registered program near you.</small></div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEAR YOU -->
+  <section class="band section" id="near" aria-labelledby="near-title">
+    <div class="wrap near-grid">
+      <div class="archipelago reveal zoom">
+        <svg id="islands" viewBox="0 0 320 420" role="img" aria-label="Dots marking the center of each of the 18 Philippine regions"></svg>
+        <p class="map-caption">One dot per region, placed at its regional center</p>
+      </div>
+      <div>
+        <div class="section-head reveal">
+          <div class="eyebrow">Training &amp; assessment</div>
+          <h2 id="near-title">Programs and assessment centers, nearest first.</h2>
+          <p>Pick your region and TESDA Track lists training programs and upcoming assessment schedules, then lets you apply for a slot.</p>
+        </div>
+        <div class="weights reveal" style="--i:1">
+          <h3>How training programs are ranked</h3>
+          <div class="weight-bar" aria-hidden="true">
+            <i style="--w:50;--i:0;background:#6fe0d2"></i><i style="--w:20;--i:1;background:#7ea6ff"></i><i style="--w:15;--i:2;background:#f5b83d"></i><i style="--w:10;--i:3;background:#ab98f5"></i><i style="--w:5;--i:4;background:#f08aa0"></i>
+          </div>
+          <ul class="weight-list">
+            <li style="--c:#6fe0d2"><b>50</b><span><strong>Fit with your goal.</strong> How close the program is to what you asked for.</span></li>
+            <li style="--c:#7ea6ff"><b>20</b><span><strong>Distance.</strong> How far the provider is from your region.</span></li>
+            <li style="--c:#f5b83d"><b>15</b><span><strong>Assessment nearby.</strong> Whether you can get certified close to where you train.</span></li>
+            <li style="--c:#ab98f5"><b>10</b><span><strong>Start date.</strong> Sooner classes rank higher.</span></li>
+            <li style="--c:#f08aa0"><b>5</b><span><strong>Your preferences.</strong> Anything else you told us.</span></li>
+          </ul>
+        </div>
+        <div class="near-extras reveal" style="--i:2">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Z"/><circle cx="12" cy="10" r="2.3"/></svg>Directions and travel time</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 13.5 21 6l-4 14-4.5-5L8 18v-5l9-6.5"/></svg>Flight estimates across islands</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4m6-4v4"/></svg>Open assessment schedules</span>
+        </div>
+        <div class="section-cta reveal" style="--i:3">
+          <button type="button" class="btn btn-outline" data-open="training">Find training near you <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATALOG -->
+  <section class="section" id="catalog" aria-labelledby="catalog-title">
+    <div class="wrap">
+      <div class="catalog-top">
+        <div class="reveal">
+          <div class="eyebrow">Qualifications library</div>
+          <h2 id="catalog-title" class="sr-only">319 qualifications</h2>
+          <div class="big-number" aria-hidden="true"><span data-count="319">319</span></div>
+          <p>qualifications, each built from a current TESDA Training Regulation.</p>
+        </div>
+        <div class="facts reveal" style="--i:1">
+          <div><b data-count="27">27</b><span>sectors, from construction to maritime</span></div>
+          <div><b data-count="738">738</b><span>jobs the qualifications lead to</span></div>
+          <div><b data-count="4981">4,981</b><span>units of competency to rate yourself on</span></div>
+        </div>
+      </div>
+      <div class="levels reveal" style="--i:1">
+        <div class="card-label"><span>Qualifications by NC level</span></div>
+        <div class="levels-bars">
+          <div class="level"><span>NC I</span><i style="--n:26;--i:0;--c:#5281b8"></i><b>26</b></div>
+          <div class="level"><span>NC II</span><i style="--n:179;--i:1;--c:var(--blue)"></i><b>179</b></div>
+          <div class="level"><span>NC III</span><i style="--n:90;--i:2;--c:var(--teal)"></i><b>90</b></div>
+          <div class="level"><span>NC IV</span><i style="--n:20;--i:3;--c:var(--violet)"></i><b>20</b></div>
+        </div>
+        <p class="levels-note">Four more qualifications carry no NC level.</p>
+        <div class="section-cta">
+          <button type="button" class="btn btn-outline" data-open="library">Open the qualifications library <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="marquee reveal" style="--i:2" aria-label="Some of the qualifications in the library">
+      <div class="marquee-row" id="row1"></div>
+      <div class="marquee-row" id="row2"></div>
+    </div>
+  </section>
+
+  <!-- PROGRESS -->
+  <section class="section" id="progress" aria-labelledby="progress-title" style="padding-top:0">
+    <div class="wrap progress-grid">
+      <div class="card plan reveal from-left">
+        <div class="plan-head">
+          <img src="app/static/landing/electrical.jpg" alt="">
+          <div><strong>Train, then get assessed</strong><small>Electrical Installation and Maintenance NC II</small></div>
+        </div>
+        <ol id="plan">
+          <li><i></i><div><strong>Enroll in a training program</strong><small>Choose a TESDA-registered program near you or online.</small></div></li>
+          <li><i></i><div><strong>Complete the readiness check</strong><small>Rate yourself on each competency to find any remaining gaps.</small></div></li>
+          <li><i></i><div><strong>Apply for the competency assessment</strong><small>Book a schedule at an accredited assessment center.</small></div></li>
+          <li><i></i><div><strong>Receive your National Certificate</strong><small>Candidates assessed as competent are issued an NC.</small></div></li>
+        </ol>
+      </div>
+      <div>
+        <div class="section-head reveal">
+          <div class="eyebrow">My progress</div>
+          <h2 id="progress-title">Save your path. Tick off each step.</h2>
+          <p>Create an account when you want to keep your place. Your plan waits for you on any device.</p>
+        </div>
+        <ul class="keeps">
+          <li class="reveal" style="--i:1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6 1.5 1.5L8 5M4 12l1.5 1.5L8 11M4 18l1.5 1.5L8 17M11 6h9M11 12h9M11 18h9"/></svg>
+            <div><strong>Goals, matches and readiness checks</strong><span>Come back to a recommendation without starting over.</span></div></li>
+          <li class="reveal" style="--i:2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="5"/><path d="m8 12-2 9 6-3 6 3-2-9"/></svg>
+            <div><strong>Applications and certificates</strong><span>Follow an assessment application, and keep the certificate when you pass.</span></div></li>
+          <li class="reveal" style="--i:3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.3 7.5 9.5 4.3-1.2 7.5-4.9 7.5-9.5V6L12 3Z"/><path d="m9 12 2 2 4-4"/></svg>
+            <div><strong>Your data stays yours</strong><span>Download everything we keep about you, or delete your account and every record with it.</span></div></li>
+        </ul>
+        <div class="section-cta reveal" style="--i:4">
+          <button type="button" class="btn btn-outline" data-open="progress">Go to My progress <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING CTA -->
+  <section class="band section closing" id="start" aria-labelledby="start-title">
+    <div class="wrap closing-inner">
+      <div class="reveal">
+        <div class="eyebrow">Step 1 of 4</div>
+        <h2 id="start-title">What would you like to achieve?</h2>
+        <p>Tell us about a career, a skill, or an experience you’d like to turn into a qualification.</p>
+      </div>
+      <form class="cta-form reveal" style="--i:1" id="ctaForm">
+        <label for="ctaGoal">Your goal</label>
+        <textarea id="ctaGoal" name="goal" required maxlength="500" placeholder="I’ve worked as a welder for 5 years but I don’t have an NC."></textarea>
+        <button class="btn btn-signal" type="submit">Find my path
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button>
+        <p class="cta-note">Your goal opens in Find my path, where you can change it before you get your matches.</p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="app/static/landing/logo.png" alt="">TESDA<span>TRACK</span></a>
+    <p>TESDA Track is a pilot. Matches are guidance, and readiness checks are self-reported: they don’t replace an official TESDA competency assessment.</p>
+  </div>
+</footer>
+</div>
