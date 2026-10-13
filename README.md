@@ -233,6 +233,26 @@ changes reload instantly. The commands below work in PowerShell and Git Bash.
 
 6. **Optional: create an administrator account** (see [Accounts](#accounts)).
 
+### React app (web/)
+
+The React app in `web/` will replace the Streamlit app. It needs Node 24 (see `web/.nvmrc`). Start the
+API first (step 5, terminal 1). The React app sends `/api` requests to it on port 8000.
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+The app opens at http://localhost:5173. Other commands, run in `web/`:
+
+| Task | Command |
+|------|---------|
+| Run the tests | `npm test` |
+| Check the code | `npm run lint` |
+| Format the code | `npm run format` |
+| Run the browser tests (first run `npx playwright install chromium`) | `npm run e2e` |
+
 ### Everyday commands
 
 | Task | Command |

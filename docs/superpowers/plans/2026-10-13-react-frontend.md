@@ -21,7 +21,8 @@ frontends run side by side until the React app matches the Streamlit one, then t
 (accessible, unstyled widgets), Leaflet with `react-leaflet` and marker clustering, CSS Modules on top of the
 existing design tokens, Zustand for the finder's state, Vitest with Testing Library and MSW, Playwright with axe.
 
-**Status:** Proposed on 2026-10-13. Settle the decisions below before Task 1.
+**Status:** Proposed on 2026-10-13. Decisions settled the same day: all five follow the recommendations (cookie
+sign-in, React Aria Components, Streamlit frozen, the `portal_app.py` redesign stopped, copy in `copy/en.ts`).
 
 ## Why move
 

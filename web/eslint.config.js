@@ -1,0 +1,40 @@
+import js from '@eslint/js'
+import prettier from 'eslint-config-prettier'
+import jsxA11y from 'eslint-plugin-jsx-a11y'
+import reactHooks from 'eslint-plugin-react-hooks'
+import { defineConfig, globalIgnores } from 'eslint/config'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
+
+export default defineConfig([
+  globalIgnores(['dist', 'coverage', 'test-results', 'playwright-report', 'blob-report']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs.flat.recommended,
+      jsxA11y.flatConfigs.recommended,
+    ],
+    languageOptions: {
+      ecmaVersion: 2023,
+      globals: globals.browser,
+    },
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'error',
+      // Learner text is rendered as text, never as markup.
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "JSXAttribute[name.name='dangerouslySetInnerHTML']",
+          message: 'Render text as text. dangerouslySetInnerHTML is not allowed.',
+        },
+      ],
+    },
+  },
+  {
+    files: ['*.config.{js,ts}', 'tests/e2e/**/*.ts'],
+    languageOptions: { globals: globals.node },
+  },
+  prettier,
+])
