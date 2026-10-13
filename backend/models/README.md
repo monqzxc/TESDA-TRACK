@@ -5,16 +5,19 @@ run from `backend/` (see `backend/training/`). Folders are git-ignored; only thi
 
 ## Get the shared model
 
-The latest model, `tesda-e5-small-v2`, is published with its `calibration.json` at
-[huggingface.co/Nyanta19/tesda-e5-small-v2](https://huggingface.co/Nyanta19/tesda-e5-small-v2) (public; its
-model card has the training details and the dev-set evaluation). From the repository root:
+The latest model, `tesda-e5-small-v3`, is published with its `calibration.json` at
+[huggingface.co/Nyanta19/tesda-e5-small-v3](https://huggingface.co/Nyanta19/tesda-e5-small-v3) (public; its
+model card has the training details and the sealed-set evaluation against v2). From the repository root:
 
 ```bash
-hf download Nyanta19/tesda-e5-small-v2 --local-dir backend/models/tesda-e5-small-v2
+hf download Nyanta19/tesda-e5-small-v3 --local-dir backend/models/tesda-e5-small-v3
 ```
 
-Then serve it as described below, with `EMBEDDING_MODEL=tesda-track/tesda-e5-small-v2` and
-`EMBEDDING_MODEL_PATH=backend/models/tesda-e5-small-v2`.
+Then serve it as described below, with `EMBEDDING_MODEL=tesda-track/tesda-e5-small-v3` and
+`EMBEDDING_MODEL_PATH=backend/models/tesda-e5-small-v3`.
+
+The previous model stays published at
+[huggingface.co/Nyanta19/tesda-e5-small-v2](https://huggingface.co/Nyanta19/tesda-e5-small-v2) for rollback.
 
 ## Folders and serving
 
