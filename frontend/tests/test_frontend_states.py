@@ -10,8 +10,6 @@ from pathlib import Path
 from uuid import uuid4
 
 import pytest
-from streamlit.components.v2.bidi_component.main import _make_trigger_id
-from streamlit.proto.WidgetStates_pb2 import WidgetState
 from streamlit.testing.v1 import AppTest
 
 from api_client import ApiClient, ApiError, ApiUnavailableError, UNAVAILABLE_MESSAGE
@@ -600,13 +598,13 @@ def test_library_explore_shows_the_goal_step_over_earlier_results(offline_api, m
 
 
 def landing_click(app, event, value):
-    """A click on the landing page. AppTest can't run the page's script, so this sends the trigger the browser would:
-    one entry in the component's trigger widget. It uses AppTest internals, so it may need updating with Streamlit."""
-    landing = app.get("bidi_component")[0]
+    """A click on the landing page, sent like the map's events in test_training_centers.py (see map_event there)."""
+    [element] = app.get("bidi_component")
     states = app._tree.get_widget_states()
-    states.widgets.append(WidgetState(id=_make_trigger_id(landing.proto.id, "events"),
-                                      json_trigger_value=json.dumps([{"event": event, "value": value}])))
-    app._run(states)
+    states.widgets.add(id=element.proto.id, json_value="{}")
+    states.widgets.add(id=f"$$STREAMLIT_INTERNAL_KEY_{element.proto.id}__events",
+                       json_trigger_value=json.dumps([{"event": event, "value": value}]))
+    app = app._run(states)
     assert not app.exception
     return app
 

@@ -13,7 +13,7 @@ from directions import DEFAULT_ROUTING_URL, RouteClient
 from presentation import (FAVICON, brand, empty_state, footer, goal_summary, html_with_vectors, journey, last_goal,
                           library_details, library_top, match_fit, match_summary, media_styles, page_hero, pathway_steps,
                           score_ring, section_title, show_card_heading, skill_bars, starting_point, step_heading)
-from landing_view import show_landing
+from landing_view import landing_event, show_landing
 from skills_bridge_view import show_skills_bridge
 from training_view import short_name, show_training as show_center_finder
 
@@ -1013,19 +1013,21 @@ def explore_qualification(name: str) -> None:
     start_goal(f"I want to pursue {name}.")
 
 
-def follow_landing(target, goal) -> bool:
-    """Where a landing page click leads: its goal box opens the finder, and a link opens a page or the account panel.
-    False when nothing was clicked."""
+def open_from_landing() -> None:
+    """A landing page link: a page of the app, or the account panel."""
+    target = landing_event("open")
     pages = {key: label for label, _, key in NAVIGATION}
-    if isinstance(goal, str) and goal.strip():
-        start_goal(goal.strip()[:500])  # the goal box's own limit
-    elif target in pages:
+    if target in pages:
         navigate(pages[target])
     elif target == "account":
         open_account()
-    else:
-        return False
-    return True
+
+
+def start_from_landing() -> None:
+    """The landing page's goal box opens the finder with that goal."""
+    goal = landing_event("goal")
+    if isinstance(goal, str) and goal.strip():
+        start_goal(goal.strip()[:500])  # the goal box's own limit
 
 
 def show_library(qualifications: list[dict]) -> None:
@@ -1144,9 +1146,8 @@ def main() -> None:
         # Before the catalog loads: the landing page needs no API.
         account = st.session_state.get("auth")
         with st.container(key="page_home"):
-            clicked = show_landing((account["name"].split() or ["Account"])[0] if account else "Sign in")
-        if follow_landing(clicked.open, clicked.goal):
-            st.rerun()
+            show_landing((account["name"].split() or ["Account"])[0] if account else "Sign in",
+                         on_open=open_from_landing, on_goal=start_from_landing)
         return
     try:
         qualifications = load_qualifications(api_base_url())

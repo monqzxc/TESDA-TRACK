@@ -8,6 +8,7 @@ from pathlib import Path
 import streamlit as st
 
 HERE = Path(__file__).resolve().parent
+KEY = "landing"
 
 _LANDING = st.components.v2.component(
     "tesda_track_landing",
@@ -17,12 +18,10 @@ _LANDING = st.components.v2.component(
 )
 
 
-def _reported() -> None:
-    """A trigger is only reported when it has a callback. The page keeps no state of its own, so its triggers never
-    reach st.session_state, where a real callback would look; app.py reads them from show_landing's result."""
+def landing_event(name: str):
+    """What the landing page sent with a trigger, read inside that trigger's callback."""
+    return (st.session_state.get(KEY) or {}).get(name)
 
 
-def show_landing(account_label: str):
-    """The landing page. The result's `open` and `goal` hold what was clicked this run, or None."""
-    return _LANDING(data={"account": account_label}, key="landing", on_open_change=_reported,
-                    on_goal_change=_reported)
+def show_landing(account_label: str, on_open, on_goal) -> None:
+    _LANDING(data={"account": account_label}, key=KEY, on_open_change=on_open, on_goal_change=on_goal)
