@@ -1,0 +1,17 @@
+[
+  {"goal":"Kabalo ko motahi pero gusto ko makat-on paghimo og pattern sa sinina.","accept":["Dressmaking NC II","Tailoring NC II"],"lang":"ceb","tags":["experience","task"],"group":"G1"},
+  {"goal":"Unsa nga training ang para sa pag-ilis sa bed linen ug paglimpyo sa guest room?","accept":["Housekeeping NC II"],"lang":"ceb","tags":["task","indirect"],"group":"G1"},
+  {"goal":"Gusto nako makat-on pag-ayo og tubo sa tubig sa kusina.","accept":["Plumbing NC I","Plumbing NC II","Plumbing NC III"],"lang":"ceb","tags":["task"],"group":"G1"},
+  {"goal":"Plano nako maghimo og pandesal ug pastry sa gamay nga bakery.","accept":["Food Production (Bread and Patisserie) NC II"],"lang":"ceb","tags":["task"],"group":"G1"},
+  {"goal":"Gusto ko mahimong huwes ug maghukom sa mga kaso sa korte.","accept":[],"lang":"ceb","tags":["no_tvet"],"group":"X"},
+  {"goal":"Ania a training ti para iti panagbaliw iti sapin ti katre ken panagdalus iti guest room?","accept":["Housekeeping NC II"],"lang":"ilo","tags":["task","indirect"],"group":"G1"},
+  {"goal":"Ammok ti agdait ngem kayat ko nga agadal iti panagaramid iti pattern ti bado.","accept":["Dressmaking NC II","Tailoring NC II"],"lang":"ilo","tags":["experience","task"],"group":"G1"},
+  {"goal":"Kayat ko nga masursuro ti panagtarimaan iti tubo ti danum iti kusina.","accept":["Plumbing NC I","Plumbing NC II","Plumbing NC III"],"lang":"ilo","tags":["task"],"group":"G1"},
+  {"goal":"Plano ko ti agaramid iti pandesal ken pastry iti bassit a bakery.","accept":["Food Production (Bread and Patisserie) NC II"],"lang":"ilo","tags":["task"],"group":"G1"},
+  {"goal":"Kayat ko ti agbalin a huwes ken mangukom kadagiti kaso iti korte.","accept":[],"lang":"ilo","tags":["no_tvet"],"group":"X"},
+  {"goal":"Kabalo ako magtahi pero gusto ko magtuon maghimo sang pattern sang bayo.","accept":["Dressmaking NC II","Tailoring NC II"],"lang":"hil","tags":["experience","task"],"group":"G1"},
+  {"goal":"Ano nga training ang para sa pag-ilis sang bed linen kag paglimpyo sang guest room?","accept":["Housekeeping NC II"],"lang":"hil","tags":["task","indirect"],"group":"G1"},
+  {"goal":"Gusto ko matun-an ang pag-ayo sang tubo sang tubig sa kusina.","accept":["Plumbing NC I","Plumbing NC II","Plumbing NC III"],"lang":"hil","tags":["task"],"group":"G1"},
+  {"goal":"Plano ko maghimo sang pandesal kag pastry sa gamay nga bakery.","accept":["Food Production (Bread and Patisserie) NC II"],"lang":"hil","tags":["task"],"group":"G1"},
+  {"goal":"Gusto ko mangin huwes kag maghukom sang mga kaso sa korte.","accept":[],"lang":"hil","tags":["no_tvet"],"group":"X"}
+]

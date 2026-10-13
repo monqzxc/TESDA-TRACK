@@ -85,7 +85,7 @@ def test_reruns_reuse_the_last_matches_and_pathway(ui, monkeypatch):
 
 def test_pathway_finder_flow(ui):
     app = ui
-    assert [button.label for button in app.sidebar.button][:2] == ["Find my pathway", "Qualification library"]
+    assert [button.label for button in app.sidebar.button][:2] == ["Find my pathway", "Qualifications Library"]
     click(app, "Get Recommendation")
     assert any("Describe your career goal" in warning.value for warning in app.warning)
     assert "analysis" not in app.session_state
@@ -166,7 +166,7 @@ def create_account(app, email="juan@example.com", password="correct horse batter
 
 def test_signed_in_learner_results_are_saved_to_progress(ui):
     app = ui
-    app.session_state["main_tabs"] = "My progress"
+    app.session_state["main_tabs"] = "My Progress"
     app.run()
     assert any("Sign in to save" in info.value for info in app.info)
 
@@ -180,7 +180,7 @@ def test_signed_in_learner_results_are_saved_to_progress(ui):
     rate_welding_skills(app)
     assert readiness(app) == ["75%"]
 
-    app.session_state["main_tabs"] = "My progress"
+    app.session_state["main_tabs"] = "My Progress"
     app.run()
     assert not app.exception
     checks = app.dataframe[0].value
@@ -235,13 +235,13 @@ def test_learner_follows_the_curated_pathway_and_ticks_off_steps(ui):
     create_account(app)
     rerun(app, "Find my pathway")
     click(app, "Follow this pathway")
-    assert any("My progress" in success.value for success in app.success)
+    assert any("My Progress" in success.value for success in app.success)
 
-    rerun(app, "My progress")
+    rerun(app, "My Progress")
     steps = [box for box in app.checkbox if box.key and box.key.startswith("step_")]
     assert len(steps) == 4 and not any(box.value for box in steps)
     steps[0].check()
-    rerun(app, "My progress")
+    rerun(app, "My Progress")
     assert any("25% complete" in caption.value for caption in app.caption)
 
 
@@ -263,7 +263,7 @@ def open_center(app, name, tab):
 
 def test_training_tab_finds_nearby_centers_and_learner_applies(ui, training_data):
     app = ui
-    tab = "Training & assessment"
+    tab = "Training & Assessment"
     rerun(app, tab)
     app.multiselect(key="training_qualifications").select("SMAW-NC-II")
     app.text_input(key="training_place").input("Manila")
@@ -285,16 +285,16 @@ def test_training_tab_finds_nearby_centers_and_learner_applies(ui, training_data
     click(app, "Apply", tab)
     assert any("application" in success.value.lower() for success in app.success)
 
-    rerun(app, "My progress")
+    rerun(app, "My Progress")
     applications = [md.value for md in app.container(key="my_applications").markdown]
     assert any("Pending" in value for value in applications)
-    click(app, "Withdraw", "My progress")
+    click(app, "Withdraw", "My Progress")
     applications = [md.value for md in app.container(key="my_applications").markdown]
     assert any("Withdrawn" in value for value in applications)
 
 
 def test_library_lists_catalog_from_the_api(ui):
-    rerun(ui, "Qualification library")
+    rerun(ui, "Qualifications Library")
     headings = [m.value for m in ui.markdown if m.value.startswith("### ")]
     assert "### Cookery NC II" in headings and len(headings) == 5
 

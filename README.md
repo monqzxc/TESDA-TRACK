@@ -22,13 +22,13 @@ Browser ──HTTPS──▶ Caddy ──▶ Streamlit (frontend/) ──HTTP─
 
 The backend is built in five parts, in order:
 
-| # | Part | Status | What it adds |
-|---|------|--------|--------------|
-| 1 | Foundation | Done | FastAPI, SQLModel, PostgreSQL, Alembic, the qualification catalog |
-| 2 | Learner accounts and records | Done | Sign-in, saved recommendation sessions, readiness checks, goals, certifications, data export and deletion |
-| 3 | Pathways, training and assessment | Done | Regions, training providers and programs, assessment centers, schedules and applications, pathway progress, "near me" search with PostGIS |
-| 4 | Integrations and AI | Done | Semantic search with a local embedding model (pgvector), weighted training rankings with an audit trail, a PostgreSQL cache, and the Skills Bridge client |
-| 5 | Reporting and analytics | Done | Overview, learner funnel, demand by qualification, skill gaps per competency, and supply by region, for administrators |
+| #   | Part                              | Status | What it adds                                                                                                                                              |
+| --- | --------------------------------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | Foundation                        | Done   | FastAPI, SQLModel, PostgreSQL, Alembic, the qualification catalog                                                                                         |
+| 2   | Learner accounts and records      | Done   | Sign-in, saved recommendation sessions, readiness checks, goals, certifications, data export and deletion                                                 |
+| 3   | Pathways, training and assessment | Done   | Regions, training providers and programs, assessment centers, schedules and applications, pathway progress, "near me" search with PostGIS                 |
+| 4   | Integrations and AI               | Done   | Semantic search with a local embedding model (pgvector), weighted training rankings with an audit trail, a PostgreSQL cache, and the Skills Bridge client |
+| 5   | Reporting and analytics           | Done   | Overview, learner funnel, demand by qualification, skill gaps per competency, and supply by region, for administrators                                    |
 
 **How pathway recommendations work.** Goals are processed locally with PostgreSQL and a local embedding
 model. The separate Skills Bridge tab sends only the skill or role terms extracted from a learner's explicit
@@ -80,7 +80,7 @@ The training weights (`RANKING_WEIGHTS__SEMANTIC`, `__PROXIMITY`, `__ASSESSMENT`
 
 ### Skills Bridge
 
-The **Skills Bridge** tab connects to the read-only MCP endpoint at
+The **Skills Explorer** tab (powered by Skills Bridge) connects to the read-only MCP endpoint at
 [mcp.skills-bridge.ph/mcp](https://mcp.skills-bridge.ph/mcp), through FastAPI. It distinguishes target job
 titles from capabilities: “welder” and “programmer” use the bounded occupation-title lookup, while “welding”,
 “JavaScript”, and “network configuration” use `match_skills`. It then supports related qualifications, a
@@ -221,19 +221,19 @@ changes reload instantly. The commands below work in PowerShell and Git Bash.
 
 ### Everyday commands
 
-| Task | Command |
-|------|---------|
-| Start the database | `docker compose -f docker-compose.dev.yml up -d` |
-| Stop the database (keeps data) | `docker compose -f docker-compose.dev.yml stop` |
-| Check the database is running | `docker compose -f docker-compose.dev.yml ps` |
-| Database logs | `docker compose -f docker-compose.dev.yml logs -f db` |
-| Delete the database and start fresh | `docker compose -f docker-compose.dev.yml down -v`, then repeat steps 2 and 4 |
-| Apply new migrations (after pulling) | `cd backend` then `../.venv/Scripts/alembic upgrade head` |
-| Create a migration | `cd backend` then `../.venv/Scripts/alembic revision --autogenerate --rev-id 0004 -m "short description"` |
-| Reload the seed data | `cd backend` then `../.venv/Scripts/python -m tesda_track.seed` |
-| Embed new or changed qualifications and programs | `cd backend` then `../.venv/Scripts/python -m tesda_track.embeddings sync` |
-| Run the tests | `.venv/Scripts/python -m pytest` |
-| Also test the real embedding model | `TESDA_MODEL_TESTS=1 .venv/Scripts/python -m pytest backend/tests/test_semantic.py` |
+| Task                                             | Command                                                                                                   |
+| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
+| Start the database                               | `docker compose -f docker-compose.dev.yml up -d`                                                          |
+| Stop the database (keeps data)                   | `docker compose -f docker-compose.dev.yml stop`                                                           |
+| Check the database is running                    | `docker compose -f docker-compose.dev.yml ps`                                                             |
+| Database logs                                    | `docker compose -f docker-compose.dev.yml logs -f db`                                                     |
+| Delete the database and start fresh              | `docker compose -f docker-compose.dev.yml down -v`, then repeat steps 2 and 4                             |
+| Apply new migrations (after pulling)             | `cd backend` then `../.venv/Scripts/alembic upgrade head`                                                 |
+| Create a migration                               | `cd backend` then `../.venv/Scripts/alembic revision --autogenerate --rev-id 0004 -m "short description"` |
+| Reload the seed data                             | `cd backend` then `../.venv/Scripts/python -m tesda_track.seed`                                           |
+| Embed new or changed qualifications and programs | `cd backend` then `../.venv/Scripts/python -m tesda_track.embeddings sync`                                |
+| Run the tests                                    | `.venv/Scripts/python -m pytest`                                                                          |
+| Also test the real embedding model               | `TESDA_MODEL_TESTS=1 .venv/Scripts/python -m pytest backend/tests/test_semantic.py`                       |
 
 Migrations are numbered `0001`, `0002`, and so on. Pass the next number with `--rev-id`, and read the
 generated file before applying it.
@@ -248,14 +248,14 @@ The dev database accepts connections on **127.0.0.1, port 5433**.
 2. Click **New** and name the session `TESDA-TRACK (Docker)`.
 3. Fill in:
 
-   | Field | Value |
-   |-------|-------|
-   | Network type | PostgreSQL (TCP/IP) |
-   | Hostname / IP | `127.0.0.1` |
-   | User | `tesda_track` |
-   | Password | your `APP_DB_PASSWORD` from `.env` |
-   | Port | `5433` |
-   | Database(s) | `tesda_track` (or `tesda_track_test` for the test database) |
+   | Field         | Value                                                       |
+   | ------------- | ----------------------------------------------------------- |
+   | Network type  | PostgreSQL (TCP/IP)                                         |
+   | Hostname / IP | `127.0.0.1`                                                 |
+   | User          | `tesda_track`                                               |
+   | Password      | your `APP_DB_PASSWORD` from `.env`                          |
+   | Port          | `5433`                                                      |
+   | Database(s)   | `tesda_track` (or `tesda_track_test` for the test database) |
 
 4. Click **Save**, then **Open**. The tables are under **public**. The pgvector and PostGIS objects are
    under **extensions**.
@@ -276,7 +276,7 @@ Any other client (DBeaver, pgAdmin, VS Code extensions) works with the same host
 ## Accounts
 
 Learners can use the pathway finder without an account. Signing in (sidebar) saves recommendation
-sessions, readiness checks, goals and certifications under **My progress**. To register, learners must
+sessions, readiness checks, goals and certifications under **My Progress**. To register, learners must
 agree to the privacy notice. From the sidebar they can download all their data or permanently delete
 their account; the API deletes every record they own along with it.
 
@@ -292,21 +292,21 @@ revokes every existing token, and five failed sign-ins lock an account for 15 mi
 
 ## Training, assessment and pathways
 
-Learners use the **Training & assessment** tab to find training programs and upcoming assessments,
+Learners use the **Training & Assessment** tab to find training programs and upcoming assessments,
 nearest to their region first, and to apply for an assessment. The region only sorts the results and
-isn't saved. Under **My progress** they tick off the steps of the pathways they follow and can withdraw
+isn't saved. Under **My Progress** they tick off the steps of the pathways they follow and can withdraw
 an application.
 
 Administrators manage this data through the API. Open `/api/docs`, click **Authorize**, and sign in with
 an administrator's email (as `username`) and password. Then use the admin endpoints:
 
-| Task | Endpoint |
-|------|----------|
-| Add a training provider or an assessment center | `POST /api/v1/admin/training-providers`, `POST /api/v1/admin/assessment-centers` |
-| Add a training program | `POST /api/v1/admin/training-programs` |
-| Open an assessment schedule | `POST /api/v1/admin/assessment-schedules` |
-| Review applications | `GET /api/v1/admin/assessment-applications?status=pending`, then `PATCH /api/v1/admin/assessment-applications/{id}` |
-| Edit a pathway | `PUT /api/v1/admin/pathways/{id}` |
+| Task                                            | Endpoint                                                                                                            |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| Add a training provider or an assessment center | `POST /api/v1/admin/training-providers`, `POST /api/v1/admin/assessment-centers`                                    |
+| Add a training program                          | `POST /api/v1/admin/training-programs`                                                                              |
+| Open an assessment schedule                     | `POST /api/v1/admin/assessment-schedules`                                                                           |
+| Review applications                             | `GET /api/v1/admin/assessment-applications?status=pending`, then `PATCH /api/v1/admin/assessment-applications/{id}` |
+| Edit a pathway                                  | `PUT /api/v1/admin/pathways/{id}`                                                                                   |
 
 - **Locations:** give providers and centers a `latitude` and `longitude` so they appear in "near me"
   search. Without coordinates they still appear in region and qualification searches.
@@ -322,13 +322,13 @@ an administrator's email (as `username`) and password. Then use the admin endpoi
 Administrators see a **Reports** tab in the app. The same data is available at `/api/v1/admin/reports/*`,
 with optional `date_from` and `date_to` dates in Philippine time:
 
-| Report | What it answers |
-|--------|-----------------|
-| `overview` | How many learners, saved recommendations and readiness checks; the average readiness; applications by status; certifications |
-| `funnel` | How many learners registered, saved a recommendation, checked readiness, applied for assessment, and were certified |
-| `qualification-demand` | For each qualification: how often it was the top match or the learner's choice, readiness, applications, and results |
-| `skill-gaps?qualification_code=...` | For each competency: how learners rated themselves, and the share who weren't confident (the gap rate) |
-| `supply` | For each region right now: training providers, programs, upcoming assessments, and open seats |
+| Report                              | What it answers                                                                                                              |
+| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `overview`                          | How many learners, saved recommendations and readiness checks; the average readiness; applications by status; certifications |
+| `funnel`                            | How many learners registered, saved a recommendation, checked readiness, applied for assessment, and were certified          |
+| `qualification-demand`              | For each qualification: how often it was the top match or the learner's choice, readiness, applications, and results         |
+| `skill-gaps?qualification_code=...` | For each competency: how learners rated themselves, and the share who weren't confident (the gap rate)                       |
+| `supply`                            | For each region right now: training providers, programs, upcoming assessments, and open seats                                |
 
 Reports return only counts and averages, never individual records.
 

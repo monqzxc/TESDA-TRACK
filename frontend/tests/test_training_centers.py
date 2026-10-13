@@ -1,4 +1,4 @@
-"""The Training & assessment center finder, driven through the real app with a fake API (no network, no database).
+"""The Training & Assessment center finder, driven through the real app with a fake API (no network, no database).
 
 Run with:
     .venv/Scripts/python -m pytest --confcutdir=frontend/tests frontend/tests/test_training_centers.py
@@ -17,7 +17,7 @@ from api_client import ApiClient, ApiUnavailableError, UNAVAILABLE_MESSAGE
 from directions import RouteClient, RouteError
 
 APP_FILE = Path(__file__).resolve().parents[1] / "app.py"
-PAGE = "Training & assessment"
+PAGE = "Training & Assessment"
 TODAY = datetime.now(timezone(timedelta(hours=8))).date()
 CATALOG = [
     {"code": "CSS-NC-II", "name": "Computer Systems Servicing NC II", "sector": "Information Technology",
@@ -343,7 +343,7 @@ def test_filters_survive_a_trip_to_another_page(api):
     app = open_page()
     app.segmented_control(key="training_kinds").set_value(["assessment"])
     search(app)
-    run(next(button for button in app.sidebar.button if button.label == "Qualification library").click())
+    run(next(button for button in app.sidebar.button if button.label == "Qualifications Library").click())
     run(next(button for button in app.sidebar.button if button.label == PAGE).click())
     assert row_ids(app) == ["assessment-7"]
 

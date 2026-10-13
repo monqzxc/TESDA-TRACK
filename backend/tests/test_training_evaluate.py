@@ -67,7 +67,8 @@ def test_calibration_can_require_a_minimum_rejection():
     one_stands_out = {a: 0.9, b: 0.5, c: 0.5, d: 0.5}  # z-score 1.732 for a
 
     def goal(accept, similarities):
-        return evaluate.Prepared({"goal": "g", "accept": accept, "lang": "en", "split": "dev"}, {}, similarities)
+        # A concrete goal passes the API's non-goal guard; this test isolates calibration scores.
+        return evaluate.Prepared({"goal": "I want to weld metal", "accept": accept, "lang": "en", "split": "dev"}, {}, similarities)
 
     prepared = [goal([items[0].summary.name, items[1].summary.name], two_stand_out),
                 goal([], one_stands_out), goal([], two_stand_out)]

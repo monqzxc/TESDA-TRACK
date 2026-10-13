@@ -40,6 +40,7 @@ class Metrics:
     objective: float
     by_lang: dict[str, float]  # top-1 per language over related goals
     by_tag: dict[str, dict] = field(default_factory=dict)  # per tag: n, top1/top3 (related), rejection (no TVET)
+    language_details: dict[str, dict] = field(default_factory=dict)
 
 
 @dataclass
@@ -75,9 +76,18 @@ def metrics(results: list[GoalResult]) -> Metrics:
         if rejected:
             row["rejection"] = _mean(rejected)
         by_tag[tag] = row
+    language_details = {}
+    for lang in sorted({r.goal["lang"] for r in results}):
+        indices = [i for i, r in enumerate(related) if r.goal["lang"] == lang]
+        rejected = [not r.shown for r in unrelated if r.goal["lang"] == lang]
+        language_details[lang] = {"related_n": len(indices), "unrelated_n": len(rejected),
+            "top1": _mean([top1[i] for i in indices]) if indices else None,
+            "top3": _mean([top3[i] for i in indices]) if indices else None,
+            "mrr": _mean([reciprocal[i] for i in indices]) if indices else None,
+            "rejection": _mean(rejected) if rejected else None}
     return Metrics(top1=_mean(top1), top3=_mean(top3), mrr=_mean(reciprocal), rejection=rejection,
                    objective=0.4 * _mean(top1) + 0.2 * _mean(top3) + 0.4 * rejection, by_lang=by_lang,
-                   by_tag=by_tag)
+                   by_tag=by_tag, language_details=language_details)
 
 
 def errors(results: list[GoalResult]) -> list[dict]:

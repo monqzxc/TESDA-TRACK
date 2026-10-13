@@ -1,0 +1,23 @@
+[
+  {"goal":"Unsa nga kurso para sa pag-ayo sa laptop nga dili na moandar?","accept":["Computer Systems Servicing NC II"],"lang":"ceb","tags":["task","indirect"],"group":"G1"},
+  {"goal":"Nagluto ko sa among kan-anan, gusto ko og training sa pag-andam og pagkaon.","accept":["Cookery NC II","Food Production (Professional Cookery) NC III"],"lang":"ceb","tags":["experience"],"group":"G1"},
+  {"goal":"Unsa akong tun-an para mahimong barista sa cafe?","accept":["Barista NC II"],"lang":"ceb","tags":["job_title"],"group":"G1"},
+  {"goal":"Ganahan ko mag-training sa PV Systems Installation NC II para sa solar energy.","accept":["PV Systems Installation NC II"],"lang":"ceb","tags":["certification"],"group":"G1"},
+  {"goal":"Naa koy kasinatian sa pag-atiman sa akong lola; ganahan ko mahimong caregiver sa tigulang.","accept":["Caregiving (Elderly) NC II","Caregiving NC II"],"lang":"ceb","tags":["experience"],"group":"G1"},
+  {"goal":"Ganahan ko mahimong abogado ug modepensa sa korte.","accept":[],"lang":"ceb","tags":["no_tvet"],"group":"X"},
+  {"goal":"Ganahan ko mahimong astronaut sa bulan.","accept":[],"lang":"ceb","tags":["no_tvet"],"group":"X"},
+  {"goal":"Ania a kurso ti maitutop iti panagtarimaan iti laptop a saanen nga agandar?","accept":["Computer Systems Servicing NC II"],"lang":"ilo","tags":["task","indirect"],"group":"G1"},
+  {"goal":"Aglutlutoak iti karinderia mi ket kayat ko ti training iti panagisagana iti taraon.","accept":["Cookery NC II","Food Production (Professional Cookery) NC III"],"lang":"ilo","tags":["experience"],"group":"G1"},
+  {"goal":"Ania ti adalek tapno agbalinak a barista iti cafe?","accept":["Barista NC II"],"lang":"ilo","tags":["job_title"],"group":"G1"},
+  {"goal":"Kayat ko ti training iti PV Systems Installation NC II para iti solar energy.","accept":["PV Systems Installation NC II"],"lang":"ilo","tags":["certification"],"group":"G1"},
+  {"goal":"Adda kapadasak nga agaywan iti lolak; kayat ko nga agbalin a caregiver kadagiti nataengan.","accept":["Caregiving (Elderly) NC II","Caregiving NC II"],"lang":"ilo","tags":["experience"],"group":"G1"},
+  {"goal":"Kayat ko ti agbalin nga abogado ken agdepensa iti korte.","accept":[],"lang":"ilo","tags":["no_tvet"],"group":"X"},
+  {"goal":"Kayat ko ti agbalin nga astronaut idiay bulan.","accept":[],"lang":"ilo","tags":["no_tvet"],"group":"X"},
+  {"goal":"Ano nga kurso para sa pag-ayo sang laptop nga indi na mag-andar?","accept":["Computer Systems Servicing NC II"],"lang":"hil","tags":["task","indirect"],"group":"G1"},
+  {"goal":"Nagaluto ako sa amon kan-anan kag gusto ko sang training sa pagpreparar sang pagkaon.","accept":["Cookery NC II","Food Production (Professional Cookery) NC III"],"lang":"hil","tags":["experience"],"group":"G1"},
+  {"goal":"Ano ang akon tun-an para mangin barista sa cafe?","accept":["Barista NC II"],"lang":"hil","tags":["job_title"],"group":"G1"},
+  {"goal":"Gusto ko mag-training sa PV Systems Installation NC II para sa solar energy.","accept":["PV Systems Installation NC II"],"lang":"hil","tags":["certification"],"group":"G1"},
+  {"goal":"May eksperyensya ako sa pag-atipan sang akon lola; gusto ko mangin caregiver sang tigulang.","accept":["Caregiving (Elderly) NC II","Caregiving NC II"],"lang":"hil","tags":["experience"],"group":"G1"},
+  {"goal":"Gusto ko mangin abogado kag magdepensa sa korte.","accept":[],"lang":"hil","tags":["no_tvet"],"group":"X"},
+  {"goal":"Gusto ko mangin astronaut sa bulan.","accept":[],"lang":"hil","tags":["no_tvet"],"group":"X"}
+]

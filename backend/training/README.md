@@ -1,5 +1,11 @@
 # Matching model: evaluation and fine-tuning
 
+**Version 3:** [Colab notebook](colab/train_colab_v3.ipynb) and [complete v3 guide](V3.md) add
+Cebuano/Bisaya, Ilocano and Hiligaynon/Ilonggo examples, deeper Core-competency requests,
+coverage audits and per-language evaluation. Build `training/runs/colab-bundle-v3.zip` with
+`python -m training.bundle --output training/runs/colab-bundle-v3.zip`. V3 is a training recipe;
+trained weights and accuracy claims require a completed Colab run and local evaluation.
+
 Offline tools for the embedding model that matches learner goals to qualifications. Nothing here runs in the
 API: the API image copies only `tesda_track`, `migrations` and `seed`, and installs only
 `backend/requirements.txt`. The API runs `intfloat/multilingual-e5-small`, or a fine-tuned copy from
@@ -97,9 +103,10 @@ reports the loss on 5% of the pairs held out from training. Use a GPU: a step of
 a 4 GB laptop RTX 3050 (a full 3-epoch run on the 24,640 pairs is about 1,100 steps, roughly 45 minutes; with Smart App Control blocking torch on this laptop, it now trains on Google Colab) but about 3 minutes on a
 4-core laptop CPU, which makes CPU training impractical beyond a few smoke steps.
 
-**Interruptions.** The script saves a checkpoint in `<output>/checkpoints/` at the end of every epoch. If a run
+**Interruptions.** The script saves a checkpoint in `<output>/checkpoints/` every 100 steps (`--save-steps`). If a run
 stops, start it again with the same options plus `--resume` to continue from that checkpoint; without `--resume`
-it refuses to overwrite an unfinished run. The checkpoints are deleted once the model has been exported and
+it refuses to overwrite an unfinished run. Resume also requires the same data/settings in `run_config.json`;
+older checkpoints without that file need their original training script. The checkpoints are deleted once the model has been exported and
 verified.
 
 **One new folder and model name per retrain.** The script refuses an output folder that already holds a finished

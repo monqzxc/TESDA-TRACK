@@ -1,5 +1,19 @@
 # Native widget theme, adapted from Streamlit's Fluent template.
-# Local system fonts keep the application usable without a font CDN.
+# Figtree for reading and Bricolage Grotesque for headings, served from frontend/static (OFL licences beside them)
+# so learners' browsers never contact a font CDN.
+[server]
+enableStaticServing = true
+
+[[theme.fontFaces]]
+family = "Figtree"
+url = "app/static/fonts/Figtree-latin.woff2"
+weight = "400 800"
+
+[[theme.fontFaces]]
+family = "Bricolage Grotesque"
+url = "app/static/fonts/BricolageGrotesque-latin.woff2"
+weight = "400 800"
+
 [theme]
 base = "light"
 primaryColor = "#175CD3"
@@ -13,8 +27,8 @@ showWidgetBorder = true
 showSidebarBorder = true
 baseRadius = "0.75rem"
 buttonRadius = "0.75rem"
-font = "'Segoe UI', Arial, sans-serif"
-headingFont = "'Segoe UI', Arial, sans-serif"
+font = "Figtree, 'Segoe UI', system-ui, sans-serif"
+headingFont = "'Bricolage Grotesque', Figtree, 'Segoe UI', sans-serif"
 codeFont = "Consolas, monospace"
 baseFontSize = 16
 baseFontWeight = 400

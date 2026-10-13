@@ -15,7 +15,7 @@ GOALS_V2_DIR = DATA_DIR / "goals_v2"
 SETS = ("dev", "test_v1", "sealed")
 TAGS = frozenset({"job_title", "task", "indirect", "experience", "certification", "abroad", "typo", "short", "long",
                   "multi", "negation", "near_tvet", "no_tvet", "vague", "non_goal"})
-LANGS = frozenset({"en", "tl", "taglish"})
+LANGS = frozenset({"en", "tl", "taglish", "ceb", "ilo", "hil"})
 GROUPS = frozenset({"G1", "G2", "G3", "G4", "G5", "G6", "X"})
 
 

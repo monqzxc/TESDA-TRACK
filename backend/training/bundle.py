@@ -7,6 +7,7 @@ and data/exclusions.json (SHA-256 of every evaluation goal's normalised text). S
 equal an evaluation goal are left out, so it holds no goal text, .env or model.
 """
 import argparse
+import hashlib
 import json
 import zipfile
 from pathlib import Path
@@ -35,6 +36,7 @@ def bundle_files() -> list[Path]:
     files.append(BACKEND / "seed" / "qualifications.json")
     files += sorted((BACKEND / "training").glob("*.py"))
     files += sorted((BACKEND / "training" / "data" / "synthetic").glob("*.json"))
+    files += sorted((BACKEND / "training" / "data" / "v3").glob("*.json"))
     files.append(BACKEND / "training" / "requirements.txt")
     files.append(BACKEND / "requirements.txt")
     return files
@@ -61,12 +63,20 @@ def build(output: Path, hard_negatives: Path | None = None) -> Path:
             name = f"backend/{path.relative_to(BACKEND).as_posix()}"
             if path.parent.name == "synthetic":
                 bundle.writestr(name, _clean_synthetic(path.read_text(encoding="utf-8"), known))
+            elif path.parent.name == "v3":
+                rows = json.loads(path.read_text(encoding="utf-8"))
+                bundle.writestr(name, json.dumps([r for r in rows if exclusion_hash(r["query"]) not in known],
+                                                ensure_ascii=False, indent=2) + "\n")
             else:
                 bundle.write(path, name)
         if hard_negatives:
             bundle.writestr(f"backend/training/runs/{hard_negatives.name}",
                             _clean_negatives(hard_negatives.read_text(encoding="utf-8"), known))
         bundle.writestr("backend/training/data/exclusions.json", json.dumps(hashes, indent=0) + "\n")
+    # Reopen so Windows ZipInfo.orig_filename is canonicalized before reads.
+    with zipfile.ZipFile(output, "a", zipfile.ZIP_DEFLATED) as bundle:
+        manifest = {name: hashlib.sha256(bundle.read(name)).hexdigest() for name in bundle.namelist()}
+        bundle.writestr("manifest.json", json.dumps(manifest, indent=2) + "\n")
     return output
 
 
