@@ -39,9 +39,9 @@ def test_options_are_ranked_by_the_weighted_components(client, make_provider, ma
     assert (first["components"]["assessment"], first["components"]["schedule"], first["components"]["preference"]) \
         == (1, 1, 0)
     assert first["score"] == 93
-    # Cebu: about 570 km away, no assessment nearby, no start date (rolling intake counts half).
-    assert second["components"] == {"semantic": 1, "proximity": 0, "assessment": 0, "schedule": 0.5, "preference": 0}
-    assert second["score"] == 55
+    # Cebu: about 570 km away; missing dates never prove rolling intake.
+    assert second["components"] == {"semantic": 1, "proximity": 0, "assessment": 0, "schedule": 0, "preference": 0}
+    assert second["score"] == 50
     assert any("km" in reason for reason in first["explanation"])
 
 

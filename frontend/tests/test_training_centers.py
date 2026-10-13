@@ -42,8 +42,14 @@ def summary_of(place):
     return {key: place[key] for key in ("id", "name", "region_code", "city", "latitude", "longitude")}
 
 
+def service_evidence_fixture():
+    expiry = (datetime.now(timezone.utc) + timedelta(days=30)).isoformat()
+    return {"verification": {"status": "verified", "review_due_at": expiry, "requirements_reviewed": True},
+            "availability": {"status": "available", "valid_until": expiry}}
+
+
 def program(program_id, provider, code, days, mode="institution_based", scholarship=False):
-    return {"id": program_id, "title": f"{NAMES[code]} ({program_id})", "description": None,
+    return {**service_evidence_fixture(), "id": program_id, "title": f"{NAMES[code]} ({program_id})", "description": None,
             "qualification": {"code": code, "name": NAMES[code], "sector": "Test"}, "provider": summary_of(provider),
             "delivery_mode": mode, "duration_hours": 268, "cost": "0.00", "scholarship_available": scholarship,
             "start_date": (TODAY + timedelta(days=days)).isoformat(), "end_date": None, "slots": 25,
@@ -52,7 +58,7 @@ def program(program_id, provider, code, days, mode="institution_based", scholars
 
 def schedule(schedule_id, center, code, days):
     when = datetime.combine(TODAY + timedelta(days=days), datetime.min.time(), timezone.utc) + timedelta(hours=1)
-    return {"id": schedule_id, "qualification": {"code": code, "name": NAMES[code], "sector": "Test"},
+    return {**service_evidence_fixture(), "id": schedule_id, "qualification": {"code": code, "name": NAMES[code], "sector": "Test"},
             "center": summary_of(center), "scheduled_at": when.isoformat().replace("+00:00", "Z"), "slots": 25,
             "seats_left": 9, "fee": "500.00", "status": "open", "distance_km": None}
 
@@ -290,6 +296,26 @@ def test_a_signed_in_learner_applies_for_the_chosen_assessment(api):
     run(app.button(key="apply_21").click())
     assert api["applied"] == [("frontend-test-token", 21)]
     assert any("Application sent" in message.value for message in app.success)
+
+
+def test_unverified_schedule_cannot_be_applied_for(api, monkeypatch):
+    monkeypatch.setitem(SCHEDULES[0], "verification", {"status": "unknown"})
+    app = open_page(signed_in=True)
+    open_center(app, "assessment-7")
+    assert app.button(key="apply_21").disabled
+    assert "Service requires verification" in text(app.container(key="center_detail"))
+    assert not api["applied"]
+
+
+def test_unverified_program_has_no_fit_badge_even_with_an_old_ranking(api, monkeypatch):
+    monkeypatch.setitem(PROGRAMS[0], "verification", {"status": "unknown"})
+    app = open_page(original_query="I want to fix computers")
+    app.multiselect(key="training_qualifications").select("CSS-NC-II")
+    search(app)
+    open_center(app, "training-1")
+    detail = text(app.container(key="center_detail"))
+    assert "87% fit" not in detail
+    assert "Service requires verification" in detail
 
 
 def test_a_searched_place_orders_centers_by_distance_from_it(api):

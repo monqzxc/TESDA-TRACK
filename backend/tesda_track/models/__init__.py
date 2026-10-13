@@ -1,5 +1,6 @@
 """Importing this package registers every table on SQLModel.metadata (used by Alembic)."""
 from tesda_track.models.base import Timestamped, one_of, utcnow
+from tesda_track.models.verification import ServiceVerification
 from tesda_track.models.catalog import COMPETENCY_CATEGORIES, Competency, Qualification, Sector
 from tesda_track.models.delivery import (APPLICATION_STATUSES, ASSESSMENT_RESULTS, DELIVERY_MODES, SCHEDULE_STATUSES,
                                          AssessmentApplication, AssessmentCenter, AssessmentSchedule, Region,
@@ -13,6 +14,7 @@ from tesda_track.models.semantic import (EMBEDDING_DIMENSIONS, CacheEntry, Quali
                                          TrainingProgramEmbedding)
 
 __all__ = [
+    "ServiceVerification",
     "EMBEDDING_DIMENSIONS", "CacheEntry", "QualificationEmbedding", "RankingAudit", "TrainingProgramEmbedding",
     "ANSWER_CODES", "APPLICATION_STATUSES", "ASSESSMENT_RESULTS", "COMPETENCY_CATEGORIES", "DELIVERY_MODES",
     "ENROLLMENT_STATUSES", "GOAL_STATUSES", "ROLES", "ROUTES", "SCHEDULE_STATUSES", "STEP_KINDS", "STEP_STATUSES",

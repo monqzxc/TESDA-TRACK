@@ -1,18 +1,21 @@
 from sqlalchemy import null
-from sqlalchemy.orm import selectinload
+from sqlalchemy.orm import object_session, selectinload
 from sqlmodel import Session, select
 
 from tesda_track.errors import InvalidRequestError, NotFoundError
 from tesda_track.models import Qualification, TrainingProgram, TrainingProvider
 from tesda_track.schemas.delivery import (ProgramSearch, SiteSummary, TrainingProgramCreate, TrainingProgramPublic,
                                           TrainingProgramUpdate, TrainingProviderCreate)
-from tesda_track.services import catalog, geo, sites
+from tesda_track.services import catalog, geo, sites, verification
 
 PROGRAM_REQUIRED_FIELDS = {"title", "delivery_mode", "scholarship_available", "is_active"}
 
 
 def program_public(program: TrainingProgram, distance_km: float | None = None) -> TrainingProgramPublic:
+    session = object_session(program)
+    record = verification.get(session, "training", program.provider_id, program.qualification_id) if session else None
     return TrainingProgramPublic(
+        verification=verification.public(record), availability=verification.availability(program),
         id=program.id, title=program.title, description=program.description,
         qualification=catalog.summary(program.qualification), provider=SiteSummary.model_validate(program.provider),
         delivery_mode=program.delivery_mode, duration_hours=program.duration_hours, cost=program.cost,
@@ -62,16 +65,21 @@ def create_program(session: Session, request: TrainingProgramCreate) -> Training
 
 
 def update_program(session: Session, program: TrainingProgram, request: TrainingProgramUpdate) -> TrainingProgram:
+    verification.validate_availability_update(program, request)
     fields = request.model_fields_set
     start = request.start_date if "start_date" in fields else program.start_date
     end = request.end_date if "end_date" in fields else program.end_date
     if start and end and end < start:
         raise InvalidRequestError("The end date can't be before the start date.")
+    needs_review = verification.availability_needs_review(program, request,
+        {"start_date", "end_date", "title", "slots", "delivery_mode", "cost", "is_active"})
     for field in fields:
         value = getattr(request, field)
         if value is None and field in PROGRAM_REQUIRED_FIELDS:
             continue
         setattr(program, field, value)
+    if needs_review:
+        program.availability_status = "unknown"
     session.flush()
     return program
 
@@ -92,4 +100,6 @@ def search_programs(session: Session, search: ProgramSearch) -> list[tuple[Train
     if search.radius_km is not None:
         query = query.where(geo.within_radius(TrainingProvider, search))
     order = (distance.asc().nulls_last(), TrainingProgram.id) if search.near_lat is not None else (TrainingProgram.id,)
-    return list(session.exec(query.order_by(*order).limit(search.limit).offset(search.offset)).all())
+    rows = list(session.exec(query.order_by(*order).limit(search.limit).offset(search.offset)).all())
+    verification.preload(session, "training", {(p.provider_id, p.qualification_id) for p, _ in rows})
+    return rows

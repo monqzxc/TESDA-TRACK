@@ -56,9 +56,20 @@ class TrainingProvider(Timestamped, table=True):
     programs: list["TrainingProgram"] = Relationship(back_populates="provider")
 
 
-class TrainingProgram(Timestamped, table=True):
+class AvailabilityFields(Timestamped):
+    availability_status: str = Field(default="unknown", sa_type=String(20))
+    availability_source: str | None = Field(default=None, sa_type=String(500))
+    availability_checked_at: datetime | None = Field(default=None, sa_type=DateTime(timezone=True))
+    availability_valid_until: datetime | None = Field(default=None, sa_type=DateTime(timezone=True))
+
+
+class TrainingProgram(AvailabilityFields, table=True):
     __tablename__ = "training_program"
     __table_args__ = (
+        CheckConstraint("availability_status IN ('unknown', 'available', 'unavailable')", name="availability_status_valid"),
+        CheckConstraint("availability_status = 'unknown' OR (availability_source IS NOT NULL AND availability_checked_at IS NOT NULL "
+                        "AND availability_valid_until IS NOT NULL AND availability_valid_until > availability_checked_at)",
+                        name="availability_evidence"),
         CheckConstraint(one_of("delivery_mode", DELIVERY_MODES), name="delivery_mode_valid"),
         CheckConstraint("end_date IS NULL OR start_date IS NULL OR end_date >= start_date", name="dates_ordered"),
         CheckConstraint("duration_hours IS NULL OR duration_hours > 0", name="duration_positive"),
@@ -101,9 +112,13 @@ class AssessmentCenter(Timestamped, table=True):
     is_active: bool = True
 
 
-class AssessmentSchedule(Timestamped, table=True):
+class AssessmentSchedule(AvailabilityFields, table=True):
     __tablename__ = "assessment_schedule"
     __table_args__ = (
+        CheckConstraint("availability_status IN ('unknown', 'available', 'unavailable')", name="availability_status_valid"),
+        CheckConstraint("availability_status = 'unknown' OR (availability_source IS NOT NULL AND availability_checked_at IS NOT NULL "
+                        "AND availability_valid_until IS NOT NULL AND availability_valid_until > availability_checked_at)",
+                        name="availability_evidence"),
         CheckConstraint(one_of("status", SCHEDULE_STATUSES), name="status_valid"),
         CheckConstraint("slots > 0", name="slots_positive"),
         CheckConstraint("fee IS NULL OR fee >= 0", name="fee_not_negative"),

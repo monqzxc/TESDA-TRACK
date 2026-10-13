@@ -104,9 +104,37 @@ def make_provider(client, admin):
 
 
 @pytest.fixture
-def make_program(client, admin, make_provider):
-    def make_program(provider=None, qualification_code="SMAW-NC-II", **extra):
+def verify_service(client, admin):
+    """Authoritative-evidence simulation ONLY in the isolated test database, never seed/demo data."""
+    def verify_service(kind, site_id, code="SMAW-NC-II", **extra):
+        from datetime import timedelta
+        from tesda_track.models import utcnow
+
+        body = {"status": "verified", "source_name": "Test-only authority fixture",
+                "source_reference": "https://authority.example.invalid/test-fixture",
+                "reviewed_at": (utcnow() - timedelta(minutes=1)).isoformat(),
+                "review_due_at": (utcnow() + timedelta(days=30)).isoformat(),
+                "requirements_reviewed": True, **extra}
+        response = client.put(f"/api/v1/admin/service-verifications/{kind}/{site_id}/{code}", headers=admin, json=body)
+        assert response.status_code == 200, response.text
+        return response.json()
+    return verify_service
+
+
+def available_fixture():
+    from datetime import timedelta
+    from tesda_track.models import utcnow
+    return {"availability_status": "available", "availability_source": "Isolated test-only availability fixture",
+            "availability_checked_at": (utcnow() - timedelta(minutes=1)).isoformat(),
+            "availability_valid_until": (utcnow() + timedelta(days=30)).isoformat()}
+
+
+@pytest.fixture
+def make_program(client, admin, make_provider, verify_service):
+    def make_program(provider=None, qualification_code="SMAW-NC-II", verified=True, **extra):
         provider = provider or make_provider()
+        if verified:
+            verify_service("training", provider["id"], qualification_code)
         body = {"provider_id": provider["id"], "qualification_code": qualification_code,
                 "title": "SMAW NC II Batch 1", "delivery_mode": "institution_based", **extra}
         return _post(client, admin, "/api/v1/admin/training-programs", body)
@@ -124,13 +152,16 @@ def make_center(client, admin):
 
 
 @pytest.fixture
-def make_schedule(client, admin, make_center):
-    def make_schedule(center=None, qualification_code="SMAW-NC-II", days_ahead=14, slots=2, **extra):
+def make_schedule(client, admin, make_center, verify_service):
+    def make_schedule(center=None, qualification_code="SMAW-NC-II", days_ahead=14, slots=2, verified=True, **extra):
         from datetime import datetime, timedelta, timezone
 
         center = center or make_center()
+        if verified:
+            verify_service("assessment", center["id"], qualification_code)
         body = {"center_id": center["id"], "qualification_code": qualification_code, "slots": slots,
-                "scheduled_at": (datetime.now(timezone.utc) + timedelta(days=days_ahead)).isoformat(), **extra}
+                "scheduled_at": (datetime.now(timezone.utc) + timedelta(days=days_ahead)).isoformat(),
+                **available_fixture(), **extra}
         return _post(client, admin, "/api/v1/admin/assessment-schedules", body)
     return make_schedule
 

@@ -4,6 +4,7 @@ Run on its own with:
     .venv/Scripts/python -m pytest --confcutdir=frontend/tests frontend/tests/test_portal.py
 """
 from copy import deepcopy
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from uuid import uuid4
 
@@ -45,6 +46,8 @@ SMAW_PATHWAY = {"id": 2, "qualification": SUMMARY["SMAW-NC-II"], "route": "ASSES
 
 def program(id, title, city, score):
     return {"program": {"id": id, "title": title, "description": None, "qualification": SUMMARY["SMAW-NC-II"],
+                        "verification": {"status": "verified", "requirements_reviewed": True,
+                                         "review_due_at": (datetime.now(timezone.utc) + timedelta(days=30)).isoformat()},
                         "provider": {"id": id, "name": f"{city} Welding Institute", "region_code": "NCR", "city": city,
                                      "latitude": 14.6, "longitude": 121.0},
                         "delivery_mode": "institution_based", "duration_hours": 268, "cost": None,

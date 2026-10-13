@@ -22,6 +22,7 @@ from centers import (ASSESSMENT, KIND_LABELS, PHILIPPINE_TIME, TRAINING, Filters
 from directions import UNAVAILABLE, RouteClient, RouteError, travel_time
 from flights import airport_label, flight
 from presentation import section_header
+from service_evidence import can_apply, evidence_messages, service_verified
 
 DELIVERY_LABELS = {"institution_based": "In a training center", "enterprise_based": "At a workplace",
                    "community_based": "In the community", "online": "Online"}
@@ -1135,7 +1136,7 @@ def _program_facts(program: dict, today: date) -> list[str]:
     if program.get("duration_hours"):
         facts.append(f"{program['duration_hours']} hours")
     start = date.fromisoformat(program["start_date"]) if program.get("start_date") else None
-    facts.append("Flexible start" if start is None
+    facts.append("Start date not confirmed" if start is None
                  else f"{'Starts' if start >= today else 'Started'} {friendly_day(start, today)}")
     if program.get("cost") is not None:
         facts.append("Free" if float(program["cost"]) == 0 else _peso(program["cost"]))
@@ -1148,7 +1149,7 @@ def _program_cards(center: dict, fits: dict[int, dict], today: date) -> None:
     if not programs:
         st.caption("No programs are listed here for your search yet.")
     for program in programs if showing_all else programs[:PREVIEW]:
-        fit = fits.get(program["id"])
+        fit = fits.get(program["id"]) if service_verified(program) else None
         with st.container(border=True, horizontal=True, vertical_alignment="center", gap="small",
                           key=f"card_center_program_{program['id']}"):
             st.image(str(_listing_photo(program)), width=108, alt="")
@@ -1159,6 +1160,8 @@ def _program_cards(center: dict, fits: dict[int, dict], today: date) -> None:
                     st.caption(plain(qualification))
                 st.caption(f"{DELIVERY_ICONS.get(program['delivery_mode'], ':material/school:')} "
                            + " • ".join(_program_facts(program, today)))
+                for message in evidence_messages(program):
+                    st.caption(plain(message))
                 if fit or program.get("scholarship_available"):
                     with st.container(horizontal=True, gap="xsmall"):
                         if fit:
@@ -1198,10 +1201,12 @@ def _schedule_cards(center: dict, api_client: ApiClient, token: str | None,
                 if schedule.get("fee") is not None:
                     facts.append("No fee" if float(schedule["fee"]) == 0 else f"{_peso(schedule['fee'])} fee")
                 st.caption(":material/event_seat: " + " • ".join(facts))
+                for message in evidence_messages(schedule):
+                    st.caption(plain(message))
                 if not open_seats:
                     st.badge("Fully booked", icon=":material/event_busy:", color="orange")
                 elif token and st.button("Apply", key=f"apply_{schedule['id']}", type="primary",
-                                         icon=":material/send:"):
+                                         icon=":material/send:", disabled=not can_apply(schedule)):
                     _apply(api_client, token, schedule["id"])
 
 
@@ -1281,6 +1286,7 @@ def _detail(center: dict, api_client: ApiClient, token: str | None, fits: dict[i
 
 @st.dialog("Program details", width="medium", on_dismiss=_close_program)
 def _program_dialog(program: dict, center: dict, fit: dict | None, today: date) -> None:
+    fit = fit if service_verified(program) else None
     with st.container(horizontal=True, gap="medium", vertical_alignment="center"):
         st.image(str(_listing_photo(program)), width=150, alt="")
         with st.container(gap="xsmall"):
@@ -1300,7 +1306,7 @@ def _program_dialog(program: dict, center: dict, fit: dict | None, today: date) 
              DELIVERY_LABELS.get(program["delivery_mode"], program["delivery_mode"])),
             (":material/schedule:", "Duration", f"{program['duration_hours']} hours"
              if program.get("duration_hours") else None),
-            (":material/event:", "Starts", friendly_day(start, today) if start else "Flexible start"),
+            (":material/event:", "Starts", friendly_day(start, today) if start else "Start date not confirmed"),
             (":material/event_available:", "Ends", friendly_day(end, today) if end else None),
             (":material/payments:", "Cost", None if program.get("cost") is None
              else "Free" if float(program["cost"]) == 0 else _peso(program["cost"])),
@@ -1308,6 +1314,8 @@ def _program_dialog(program: dict, center: dict, fit: dict | None, today: date) 
     st.markdown("\n".join(f"- {icon} **{label}:** {plain(value)}" for icon, label, value in rows if value))
     if program.get("description"):
         st.markdown(plain(program["description"]))
+    for message in evidence_messages(program):
+        st.caption(plain(message))
     if fit and fit["explanation"]:
         st.markdown("**Why this program?**")
         st.markdown("\n".join(f"- {plain(reason)}" for reason in fit["explanation"]))

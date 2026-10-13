@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field, model_validator
 from tesda_track.config import RankingWeights
 from tesda_track.schemas.analysis import GoalText
 from tesda_track.schemas.delivery import DeliveryMode, Latitude, Longitude, TrainingProgramPublic, check_location
+from tesda_track.schemas.verification import EligibilityPublic
 
 
 class TrainingRankingRequest(BaseModel):
@@ -15,6 +16,7 @@ class TrainingRankingRequest(BaseModel):
     near_lon: Longitude | None = None
     preferred_delivery_mode: DeliveryMode | None = None
     needs_scholarship: bool = False
+    require_confirmed_availability: bool = False
     limit: int = Field(default=10, ge=1, le=50)
 
     @model_validator(mode="after")
@@ -33,10 +35,17 @@ class ScoreComponents(BaseModel):
 
 
 class RankedProgram(BaseModel):
+    eligibility: EligibilityPublic = Field(default_factory=EligibilityPublic)
     program: TrainingProgramPublic
     score: int = Field(description="0-100: the weighted sum of the components")
     components: ScoreComponents
     explanation: list[str]
+
+
+class UnconfirmedProgram(BaseModel):
+    program: TrainingProgramPublic
+    eligibility: EligibilityPublic
+    reasons: list[str]
 
 
 class RankingAuditPublic(BaseModel):
@@ -51,6 +60,8 @@ class RankingAuditPublic(BaseModel):
 
 
 class TrainingRanking(BaseModel):
+    policy_version: str = "verified-services-v1"
+    requires_verification: list[UnconfirmedProgram] = Field(default_factory=list)
     weights: RankingWeights
     semantic_used: bool
     results: list[RankedProgram]

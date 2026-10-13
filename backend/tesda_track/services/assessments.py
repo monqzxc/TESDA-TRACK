@@ -2,7 +2,7 @@
 import uuid
 
 from sqlalchemy import func, null
-from sqlalchemy.orm import selectinload
+from sqlalchemy.orm import object_session, selectinload
 from sqlmodel import Session, select
 
 from tesda_track.errors import ConflictError, InvalidRequestError, NotFoundError
@@ -11,7 +11,7 @@ from tesda_track.models import (AssessmentApplication, AssessmentCenter, Assessm
 from tesda_track.schemas.delivery import (ApplicationReview, AssessmentApplicationAdmin, AssessmentApplicationPublic,
                                           AssessmentCenterCreate, AssessmentScheduleCreate, AssessmentSchedulePublic,
                                           AssessmentScheduleUpdate, LearnerSummary, NearbySearch, SiteSummary)
-from tesda_track.services import catalog, geo, sites
+from tesda_track.services import catalog, geo, sites, verification
 from tesda_track.services.ownership import get_owned
 
 SEAT_HOLDING = ("approved", "completed")
@@ -32,7 +32,10 @@ def seats_taken(session: Session, schedule_id: int) -> int:
 
 
 def schedule_public(schedule: AssessmentSchedule, taken: int, distance_km: float | None = None) -> AssessmentSchedulePublic:
+    session = object_session(schedule)
+    record = verification.get(session, "assessment", schedule.center_id, schedule.qualification_id) if session else None
     return AssessmentSchedulePublic(
+        verification=verification.public(record), availability=verification.availability(schedule),
         id=schedule.id, qualification=catalog.summary(schedule.qualification),
         center=SiteSummary.model_validate(schedule.center), scheduled_at=schedule.scheduled_at, slots=schedule.slots,
         seats_left=max(schedule.slots - taken, 0), fee=schedule.fee, status=schedule.status,
@@ -77,20 +80,24 @@ def create_schedule(session: Session, request: AssessmentScheduleCreate) -> Asse
     if center is None:
         raise InvalidRequestError("Assessment center was not found.")
     schedule = AssessmentSchedule(center=center, qualification=catalog.resolve_qualification(session, request.qualification_code),
-                                  scheduled_at=request.scheduled_at, slots=request.slots, fee=request.fee)
+                                  **request.model_dump(exclude={"center_id", "qualification_code"}))
     session.add(schedule)
     session.flush()
     return schedule
 
 
 def update_schedule(session: Session, schedule: AssessmentSchedule, request: AssessmentScheduleUpdate) -> AssessmentSchedule:
+    verification.validate_availability_update(schedule, request)
     fields = request.model_fields_set
     if "slots" in fields and request.slots is not None and request.slots < seats_taken(session, schedule.id):
         raise ConflictError("More applicants are already approved than the new number of slots.")
+    needs_review = verification.availability_needs_review(schedule, request, {"scheduled_at", "slots", "fee", "status"})
     for field in fields:
         value = getattr(request, field)
         if value is not None or field == "fee":
             setattr(schedule, field, value)
+    if needs_review:
+        schedule.availability_status = "unknown"
     session.flush()
     return schedule
 
@@ -111,7 +118,9 @@ def search_schedules(session: Session, search: NearbySearch) -> list[tuple[Asses
     if search.radius_km is not None:
         query = query.where(geo.within_radius(AssessmentCenter, search))
     order = ((distance.asc().nulls_last(),) if search.near_lat is not None else ()) + (AssessmentSchedule.scheduled_at,)
-    return list(session.exec(query.order_by(*order).limit(search.limit).offset(search.offset)).all())
+    rows = list(session.exec(query.order_by(*order).limit(search.limit).offset(search.offset)).all())
+    verification.preload(session, "assessment", {(s.center_id, s.qualification_id) for s, _, _ in rows})
+    return rows
 
 
 # Applications
@@ -159,6 +168,7 @@ def apply(session: Session, learner: Learner, schedule_id: int) -> AssessmentApp
         raise InvalidRequestError("Assessment schedule was not found.")
     if schedule.status != "open" or schedule.scheduled_at <= utcnow():
         raise InvalidRequestError("This schedule is no longer open for applications.")
+    verification.require_application_eligibility(session, schedule, learner)
     existing = session.exec(select(AssessmentApplication).where(
         AssessmentApplication.learner_id == learner.id, AssessmentApplication.schedule_id == schedule_id)).first()
     if existing is not None:
@@ -189,6 +199,9 @@ def review(session: Session, application: AssessmentApplication, request: Applic
             # Lock the schedule so two approvals can't both take the last seat.
             schedule = session.exec(select(AssessmentSchedule).where(AssessmentSchedule.id == application.schedule_id)
                                     .with_for_update()).one()
+            if schedule.status != "open" or schedule.scheduled_at <= utcnow():
+                raise InvalidRequestError("This schedule is no longer open for approvals.")
+            verification.require_application_eligibility(session, schedule, application.learner)
             if seats_taken(session, schedule.id) >= schedule.slots:
                 raise ConflictError("No seats are left for this schedule.")
         application.status = request.status

@@ -5,6 +5,7 @@ from api_client import ApiError
 from portal import session
 from portal.account import sign_in_prompt
 from portal.components import empty_state, friendly_date, friendly_time
+from service_evidence import can_apply, evidence_messages, service_verified
 
 DELIVERY = {"institution_based": "In a training center", "enterprise_based": "At a workplace",
             "community_based": "In the community", "online": "Online"}
@@ -31,15 +32,23 @@ def show_programs(code: str, goal: str | None, near: dict, mode: str | None, nee
                                           preferred_delivery_mode=mode, needs_scholarship=needs_scholarship, **near)
     results = ranking["results"]
     with st.container(key="program_results"):
+        pending = ranking.get("requires_verification", [])
+        if pending:
+            st.warning("Some listed programs require verification and are not confirmed recommendations.")
+            with st.expander("Programs requiring verification"):
+                for item in pending:
+                    st.text(item["program"]["title"])
+                    for reason in item["reasons"]:
+                        st.caption(reason)
         if not results:
-            empty_state("No programs listed yet", "No training programs are listed for this qualification yet. "
+            empty_state("No confirmed programs yet", "No verified, eligible training programs were found for this qualification. "
                         "Check the assessment schedules, or try another qualification.", "learn")
             return
         st.caption(f"{len(results)} programs, best fit first")
         for index, item in enumerate(results):
             program = item["program"]
             with st.container(border=True, key=f"card_program_{program['id']}"):
-                if index == 0:
+                if index == 0 and service_verified(program):
                     st.badge("Best fit for you", icon=":material/star:", color="yellow")
                 st.markdown(f"**{program['title']}**")
                 st.markdown(f":material/apartment: {program['provider']['name']}, "
@@ -50,6 +59,8 @@ def show_programs(code: str, goal: str | None, near: dict, mode: str | None, nee
                 if program["start_date"]:
                     facts.append(f":material/event: Starts {friendly_date(program['start_date'])}")
                 st.markdown(GAP.join(facts))
+                for message in evidence_messages(program):
+                    st.caption(message)
                 if program["scholarship_available"]:
                     st.badge("Scholarship available", icon=":material/volunteer_activism:", color="green")
                 with st.expander("Why it fits", icon=":material/info:"):
@@ -83,9 +94,11 @@ def show_schedules(code: str, near: dict, places: dict) -> None:
                 if schedule.get("distance_km") is not None:
                     facts.append(f"about {schedule['distance_km']:,.0f} km away")
                 st.markdown(GAP.join(facts))
+                for message in evidence_messages(schedule):
+                    st.caption(message)
                 if token and open_seats:
                     st.button("Apply", key=f"apply_{schedule['id']}", type="primary", icon=":material/send:",
-                              on_click=apply, args=(schedule["id"],))
+                              on_click=apply, args=(schedule["id"],), disabled=not can_apply(schedule))
 
 
 st.header("Training and assessment")
