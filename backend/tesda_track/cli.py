@@ -1,14 +1,18 @@
 """Administrative commands.
 
     python -m tesda_track.cli create-admin --email admin@example.com --name "Pilot Admin"
+    python -m tesda_track.cli openapi web/openapi.json
 
 The password is read from TESDA_ADMIN_PASSWORD or prompted for. Promoting an existing account keeps
-its password unless a new one is given.
+its password unless a new one is given. `openapi` writes the API's schema without a database, for the
+web app's generated types (`npm run api:types` in web/).
 """
 import argparse
 import getpass
+import json
 import os
 import sys
+from pathlib import Path
 
 from sqlmodel import Session
 
@@ -37,16 +41,34 @@ def create_or_promote_admin(session: Session, email: str, full_name: str, passwo
     return learner
 
 
-def main() -> None:
-    from tesda_track.db import get_engine
+def write_openapi_schema(path: Path) -> None:
+    """The schema served at /api/openapi.json, in a stable layout with LF line endings."""
+    from tesda_track.main import create_app
 
+    schema = create_app().openapi()
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(schema, indent=2, ensure_ascii=False) + "\n", encoding="utf-8", newline="\n")
+
+
+def main() -> None:
     parser = argparse.ArgumentParser(description="TESDA-TRACK administration")
     commands = parser.add_subparsers(dest="command", required=True)
     admin = commands.add_parser("create-admin", help="create an admin account or promote an existing one")
     admin.add_argument("--email", required=True)
     admin.add_argument("--name", default="Administrator")
     admin.add_argument("--keep-password", action="store_true", help="promote an existing account without a new password")
+    openapi = commands.add_parser("openapi", help="write the API's OpenAPI schema to a file (no database needed)")
+    openapi.add_argument("path", type=Path)
     args = parser.parse_args()
+
+    if args.command == "openapi":
+        # The schema doesn't depend on the database or the secret key, so placeholders do when none are set.
+        os.environ.setdefault("DATABASE_URL", "postgresql+psycopg://unused@127.0.0.1:1/unused")
+        os.environ.setdefault("SECRET_KEY", "placeholder-for-writing-the-openapi-schema-only")
+        write_openapi_schema(args.path)
+        return
+
+    from tesda_track.db import get_engine
 
     password = None
     if not args.keep_password:

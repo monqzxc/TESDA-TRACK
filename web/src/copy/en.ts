@@ -5,6 +5,10 @@ export const en = {
   },
   service: {
     unreachable: "We can't reach the TESDA-TRACK service right now. Please try again shortly.",
+    // Shown when the API refuses a request without saying why.
+    requestFailed: 'The request could not be completed.',
+    // Shown when the API rejects a form's input without a message for it.
+    checkInput: 'Please check your input.',
   },
   demo: {
     heading: 'Qualifications',
