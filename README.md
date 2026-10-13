@@ -88,6 +88,11 @@ The legacy REST settings are separate and are not required for MCP.
   a place among the results.
 - `GET /api/v1/skills-bridge/occupations/{id}`: retrieves the occupation's promulgated qualifications and bounded
   skills/mapping previews.
+- `POST /api/v1/skills-bridge/explore`: Skills Explorer in one request, for the React app. It takes `{"text": ...}`
+  (up to 500 characters), extracts the skill and role terms on the server, runs the two lookups above as needed, and
+  returns the extracted terms with the combined matches. Only the extracted terms reach Skills Bridge; the text is
+  not logged or cached. Each lookup counts against the per-client limit, as the Streamlit app's two calls do, and
+  text with no usable terms returns `searched: false` with a `reason` without contacting Skills Bridge.
 
 Only extracted skill or role terms and public occupation IDs leave the backend. Account details and saved learner
 records are not forwarded. The application owns all tool names. Terms travel only as plain tool arguments, and the
