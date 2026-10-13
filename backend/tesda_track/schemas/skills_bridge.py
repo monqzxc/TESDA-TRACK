@@ -101,3 +101,64 @@ class SkillsBridgeExploreResponse(BaseModel):
     resolution: list[SkillsBridgeTermResolution] = []
     occupations: list[SkillsBridgeOccupationMatch] = []
     qualifications: list[SkillsBridgeQualificationMatch] = []
+
+
+# The answer of /occupations/{id}: what SkillsBridgeMCPClient keeps of a Skills Bridge answer, with where and when
+# it came from. Unlike /explore, it passes records on as Skills Bridge sent them rather than skipping incomplete
+# ones, so every field of a record is optional. The route leaves out keys an answer didn't have
+# (response_model_exclude_unset) rather than adding them, so lists use default_factory: a schema default would make
+# the generated TypeScript type promise the key.
+
+
+class SkillsBridgeLookup(BaseModel):
+    source: str
+    source_url: str
+    retrieved_at: str = Field(description="When Skills Bridge answered; kept by cached answers.")
+
+
+class SkillsBridgeOccupationSummary(BaseModel):
+    occupation_id: int | None = None
+    title: str | None = None
+    sector: str | None = None
+
+
+class SkillsBridgeStandard(BaseModel):
+    """A current (promulgated) qualification for the occupation."""
+    code: str | None = None
+    title: str | None = None
+    level_label: str | None = None
+    status: str | None = None
+    review_due_at: str | None = None
+
+
+class SkillsBridgeOccupationProfile(BaseModel):
+    occupation: SkillsBridgeOccupationSummary | None = Field(
+        default=None, description="Missing when Skills Bridge has no occupation with this id.")
+    standards: list[SkillsBridgeStandard] = Field(default_factory=list)
+
+
+class SkillsBridgeSkill(BaseModel):
+    skill_id: int | None = None
+    name: str | None = None
+    type: str | None = None
+
+
+class SkillsBridgeBenchmark(BaseModel):
+    """An international occupation Skills Bridge maps this one to. Not a certification equivalency."""
+    title: str | None = None
+    status: str | None = None
+    source: str | None = None
+    standard: str | None = None
+    sample_skills: list[str] = Field(default_factory=list)
+
+
+class SkillsBridgeOccupationDetails(BaseModel):
+    profile: SkillsBridgeOccupationProfile
+    skills: list[SkillsBridgeSkill] = Field(default_factory=list, description="Up to 50 linked skills, by graph weight.")
+    benchmarks: list[SkillsBridgeBenchmark] = Field(default_factory=list)
+    warnings: list[str] = Field(description="Parts that couldn't be loaded. These answers aren't cached, so asking "
+                                            "again retries them.")
+
+
+class SkillsBridgeOccupationDetailsResponse(SkillsBridgeLookup):
+    data: SkillsBridgeOccupationDetails

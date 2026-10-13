@@ -1119,6 +1119,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/client-config": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Client Config
+         * @description The map key, and which optional services this deployment has turned on. No sign-in needed.
+         */
+        get: operations["client_config_api_v1_client_config_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1474,6 +1494,24 @@ export interface components {
             issued_on?: string | null;
             /** Expires On */
             expires_on?: string | null;
+        };
+        /** ClientConfig */
+        ClientConfig: {
+            /**
+             * Carto Key
+             * @description CARTO basemaps key for the center map. Empty: use OpenStreetMap tiles.
+             */
+            carto_key: string;
+            /**
+             * Routing Enabled
+             * @description Whether GET /api/v1/routes gives directions. False: link to Google Maps instead.
+             */
+            routing_enabled: boolean;
+            /**
+             * Skills Bridge Enabled
+             * @description Whether the Skills Bridge lookups behind Skills Explorer are turned on.
+             */
+            skills_bridge_enabled: boolean;
         };
         /** CompetencyGap */
         CompetencyGap: {
@@ -2312,6 +2350,22 @@ export interface components {
             /** Longitude */
             longitude: number | null;
         };
+        /**
+         * SkillsBridgeBenchmark
+         * @description An international occupation Skills Bridge maps this one to. Not a certification equivalency.
+         */
+        SkillsBridgeBenchmark: {
+            /** Title */
+            title?: string | null;
+            /** Status */
+            status?: string | null;
+            /** Source */
+            source?: string | null;
+            /** Standard */
+            standard?: string | null;
+            /** Sample Skills */
+            sample_skills?: string[];
+        };
         /** SkillsBridgeEvidence */
         SkillsBridgeEvidence: {
             /** Term */
@@ -2403,6 +2457,35 @@ export interface components {
              */
             limit: number;
         };
+        /** SkillsBridgeOccupationDetails */
+        SkillsBridgeOccupationDetails: {
+            profile: components["schemas"]["SkillsBridgeOccupationProfile"];
+            /**
+             * Skills
+             * @description Up to 50 linked skills, by graph weight.
+             */
+            skills?: components["schemas"]["SkillsBridgeSkill"][];
+            /** Benchmarks */
+            benchmarks?: components["schemas"]["SkillsBridgeBenchmark"][];
+            /**
+             * Warnings
+             * @description Parts that couldn't be loaded. These answers aren't cached, so asking again retries them.
+             */
+            warnings: string[];
+        };
+        /** SkillsBridgeOccupationDetailsResponse */
+        SkillsBridgeOccupationDetailsResponse: {
+            /** Source */
+            source: string;
+            /** Source Url */
+            source_url: string;
+            /**
+             * Retrieved At
+             * @description When Skills Bridge answered; kept by cached answers.
+             */
+            retrieved_at: string;
+            data: components["schemas"]["SkillsBridgeOccupationDetails"];
+        };
         /** SkillsBridgeOccupationMatch */
         SkillsBridgeOccupationMatch: {
             /** Occupation Id */
@@ -2427,6 +2510,13 @@ export interface components {
              */
             match_kind: "occupation" | "skill";
         };
+        /** SkillsBridgeOccupationProfile */
+        SkillsBridgeOccupationProfile: {
+            /** @description Missing when Skills Bridge has no occupation with this id. */
+            occupation?: components["schemas"]["SkillsBridgeOccupationSummary"] | null;
+            /** Standards */
+            standards?: components["schemas"]["SkillsBridgeStandard"][];
+        };
         /**
          * SkillsBridgeOccupationSearchRequest
          * @description Occupation titles are searched separately from capability/skill matching.
@@ -2439,6 +2529,15 @@ export interface components {
              * @default 6
              */
             limit: number;
+        };
+        /** SkillsBridgeOccupationSummary */
+        SkillsBridgeOccupationSummary: {
+            /** Occupation Id */
+            occupation_id?: number | null;
+            /** Title */
+            title?: string | null;
+            /** Sector */
+            sector?: string | null;
         };
         /** SkillsBridgeQualificationMatch */
         SkillsBridgeQualificationMatch: {
@@ -2464,6 +2563,31 @@ export interface components {
              * @default []
              */
             evidence: components["schemas"]["SkillsBridgeEvidence"][];
+        };
+        /** SkillsBridgeSkill */
+        SkillsBridgeSkill: {
+            /** Skill Id */
+            skill_id?: number | null;
+            /** Name */
+            name?: string | null;
+            /** Type */
+            type?: string | null;
+        };
+        /**
+         * SkillsBridgeStandard
+         * @description A current (promulgated) qualification for the occupation.
+         */
+        SkillsBridgeStandard: {
+            /** Code */
+            code?: string | null;
+            /** Title */
+            title?: string | null;
+            /** Level Label */
+            level_label?: string | null;
+            /** Status */
+            status?: string | null;
+            /** Review Due At */
+            review_due_at?: string | null;
         };
         /**
          * SkillsBridgeTermResolution
@@ -4929,7 +5053,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["SkillsBridgeOccupationDetailsResponse"];
                 };
             };
             /** @description Validation Error */
@@ -5028,6 +5152,26 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    client_config_api_v1_client_config_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ClientConfig"];
+                };
             };
         };
     };

@@ -13,6 +13,8 @@ x-backend-environment: &backend-environment
   SKILLS_BRIDGE_TIMEOUT_SECONDS: ${SKILLS_BRIDGE_TIMEOUT_SECONDS:-10}
   # Road routes for Directions (GET /api/v1/routes); empty turns them off.
   ROUTING_URL: ${ROUTING_URL-https://routing.openstreetmap.de/routed-car}
+  # CARTO basemaps key for the center map, handed to the React app by GET /api/v1/client-config.
+  CARTO_API: ${CARTO_API-}
 
 services:
   db:

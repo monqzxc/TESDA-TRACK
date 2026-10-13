@@ -257,6 +257,7 @@ The app opens at http://localhost:5173. Other commands, run in `web/`:
 | Check the code | `npm run lint` |
 | Format the code | `npm run format` |
 | Run the browser tests (first run `npx playwright install chromium`) | `npm run e2e` |
+| Regenerate the API types after changing the API (CI checks they match) | `npm run api:types` |
 
 ### Everyday commands
 
@@ -367,6 +368,8 @@ an administrator's email (as `username`) and password. Then use the admin endpoi
   flight for long trips, so the router sees the server's address, not the learner's. `ROUTING_URL` picks the
   router (see `.env.example`); set it empty to turn Directions off, and the app links to Google Maps instead.
   The learner's location is rounded to about 1 km first and never logged.
+- **App settings:** the React app asks `GET /api/v1/client-config` for the map's CARTO key (`CARTO_API`) and
+  whether Directions and Skills Bridge are on, so one build runs in every deployment.
 
 ## Reports
 

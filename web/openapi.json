@@ -3695,7 +3695,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/SkillsBridgeOccupationDetailsResponse"
+                }
               }
             }
           },
@@ -3825,6 +3827,28 @@
           },
           "503": {
             "description": "The router can't be reached right now"
+          }
+        }
+      }
+    },
+    "/api/v1/client-config": {
+      "get": {
+        "tags": [
+          "meta"
+        ],
+        "summary": "Client Config",
+        "description": "The map key, and which optional services this deployment has turned on. No sign-in needed.",
+        "operationId": "client_config_api_v1_client_config_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClientConfig"
+                }
+              }
+            }
           }
         }
       }
@@ -5063,6 +5087,32 @@
         },
         "type": "object",
         "title": "CertificationUpdate"
+      },
+      "ClientConfig": {
+        "properties": {
+          "carto_key": {
+            "type": "string",
+            "title": "Carto Key",
+            "description": "CARTO basemaps key for the center map. Empty: use OpenStreetMap tiles."
+          },
+          "routing_enabled": {
+            "type": "boolean",
+            "title": "Routing Enabled",
+            "description": "Whether GET /api/v1/routes gives directions. False: link to Google Maps instead."
+          },
+          "skills_bridge_enabled": {
+            "type": "boolean",
+            "title": "Skills Bridge Enabled",
+            "description": "Whether the Skills Bridge lookups behind Skills Explorer are turned on."
+          }
+        },
+        "type": "object",
+        "required": [
+          "carto_key",
+          "routing_enabled",
+          "skills_bridge_enabled"
+        ],
+        "title": "ClientConfig"
       },
       "CompetencyGap": {
         "properties": {
@@ -7253,6 +7303,64 @@
         ],
         "title": "SiteSummary"
       },
+      "SkillsBridgeBenchmark": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source"
+          },
+          "standard": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Standard"
+          },
+          "sample_skills": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Sample Skills"
+          }
+        },
+        "type": "object",
+        "title": "SkillsBridgeBenchmark",
+        "description": "An international occupation Skills Bridge maps this one to. Not a certification equivalency."
+      },
       "SkillsBridgeEvidence": {
         "properties": {
           "term": {
@@ -7431,6 +7539,70 @@
         ],
         "title": "SkillsBridgeMatchRequest"
       },
+      "SkillsBridgeOccupationDetails": {
+        "properties": {
+          "profile": {
+            "$ref": "#/components/schemas/SkillsBridgeOccupationProfile"
+          },
+          "skills": {
+            "items": {
+              "$ref": "#/components/schemas/SkillsBridgeSkill"
+            },
+            "type": "array",
+            "title": "Skills",
+            "description": "Up to 50 linked skills, by graph weight."
+          },
+          "benchmarks": {
+            "items": {
+              "$ref": "#/components/schemas/SkillsBridgeBenchmark"
+            },
+            "type": "array",
+            "title": "Benchmarks"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings",
+            "description": "Parts that couldn't be loaded. These answers aren't cached, so asking again retries them."
+          }
+        },
+        "type": "object",
+        "required": [
+          "profile",
+          "warnings"
+        ],
+        "title": "SkillsBridgeOccupationDetails"
+      },
+      "SkillsBridgeOccupationDetailsResponse": {
+        "properties": {
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "source_url": {
+            "type": "string",
+            "title": "Source Url"
+          },
+          "retrieved_at": {
+            "type": "string",
+            "title": "Retrieved At",
+            "description": "When Skills Bridge answered; kept by cached answers."
+          },
+          "data": {
+            "$ref": "#/components/schemas/SkillsBridgeOccupationDetails"
+          }
+        },
+        "type": "object",
+        "required": [
+          "source",
+          "source_url",
+          "retrieved_at",
+          "data"
+        ],
+        "title": "SkillsBridgeOccupationDetailsResponse"
+      },
       "SkillsBridgeOccupationMatch": {
         "properties": {
           "occupation_id": {
@@ -7500,6 +7672,30 @@
         ],
         "title": "SkillsBridgeOccupationMatch"
       },
+      "SkillsBridgeOccupationProfile": {
+        "properties": {
+          "occupation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SkillsBridgeOccupationSummary"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Missing when Skills Bridge has no occupation with this id."
+          },
+          "standards": {
+            "items": {
+              "$ref": "#/components/schemas/SkillsBridgeStandard"
+            },
+            "type": "array",
+            "title": "Standards"
+          }
+        },
+        "type": "object",
+        "title": "SkillsBridgeOccupationProfile"
+      },
       "SkillsBridgeOccupationSearchRequest": {
         "properties": {
           "occupations": {
@@ -7528,6 +7724,45 @@
         ],
         "title": "SkillsBridgeOccupationSearchRequest",
         "description": "Occupation titles are searched separately from capability/skill matching."
+      },
+      "SkillsBridgeOccupationSummary": {
+        "properties": {
+          "occupation_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Occupation Id"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "sector": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sector"
+          }
+        },
+        "type": "object",
+        "title": "SkillsBridgeOccupationSummary"
       },
       "SkillsBridgeQualificationMatch": {
         "properties": {
@@ -7616,6 +7851,107 @@
         },
         "type": "object",
         "title": "SkillsBridgeQualificationMatch"
+      },
+      "SkillsBridgeSkill": {
+        "properties": {
+          "skill_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Skill Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Type"
+          }
+        },
+        "type": "object",
+        "title": "SkillsBridgeSkill"
+      },
+      "SkillsBridgeStandard": {
+        "properties": {
+          "code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Code"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "level_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Level Label"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "review_due_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Review Due At"
+          }
+        },
+        "type": "object",
+        "title": "SkillsBridgeStandard",
+        "description": "A current (promulgated) qualification for the occupation."
       },
       "SkillsBridgeTermResolution": {
         "properties": {

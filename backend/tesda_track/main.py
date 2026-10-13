@@ -11,7 +11,7 @@ from sqlmodel import Session
 from tesda_track.config import get_settings
 from tesda_track.db import get_engine
 from tesda_track.errors import AuthenticationError, DomainError, SessionCookieError
-from tesda_track.routers import (analysis, assessments, auth, certifications, goals, health, integrations, me,
+from tesda_track.routers import (analysis, assessments, auth, certifications, goals, health, integrations, me, meta,
                                  pathways, qualifications, readiness_checks, recommendation_sessions, recommendations,
                                  reports, routes, skills_bridge, training)
 from tesda_track.security import clear_session_cookie
@@ -77,7 +77,7 @@ def create_app() -> FastAPI:
                    pathways.router, pathways.learner_router, training.router, assessments.router,
                    assessments.learner_router, recommendations.router, pathways.admin_router, training.admin_router,
                    assessments.admin_router, integrations.router, reports.router, skills_bridge.router,
-                   routes.router):
+                   routes.router, meta.router):
         api.include_router(router)
     app.include_router(api)
     return app

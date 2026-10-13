@@ -74,6 +74,10 @@ class Settings(BaseSettings):
     routing_rate_limit_per_minute: int = Field(default=10, ge=1, description="Directions per client address")
     routing_cache_ttl_seconds: int = Field(default=3600, ge=0, description="How long found routes are kept; 0 for none")
 
+    # CARTO basemaps key for the center map's default style; empty keeps the map on OpenStreetMap tiles. Not a
+    # secret: browsers send it with every tile request, so restrict it to the deployment's domain in CARTO.
+    carto_api: str = ""
+
     @model_validator(mode="after")
     def semantic_band_ordered(self):
         if self.semantic_z_ceiling <= self.semantic_z_floor:
