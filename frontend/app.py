@@ -14,6 +14,7 @@ from directions import DEFAULT_ROUTING_URL, RouteClient
 from presentation import (FAVICON, brand, empty_state, footer, goal_summary, html_with_vectors, journey, last_goal,
                           library_details, library_top, match_fit, match_summary, media_styles, page_hero, pathway_steps,
                           score_ring, section_title, show_card_heading, skill_bars, starting_point, step_heading)
+from landing_view import landing_event, show_landing
 from skills_bridge_view import show_skills_bridge
 from training_view import short_name, show_training as show_center_finder
 
@@ -1038,23 +1039,32 @@ def set_library_page(page: int, scroll: bool = False) -> None:
         st.session_state["library_scroll"] = True
 
 
-def explore_qualification(name: str) -> None:
-    use_example(f"I want to pursue {name}.")
+def start_goal(goal: str) -> None:
+    """Find my pathway at its first step, with the goal in the box for the learner to review."""
+    use_example(goal)
     go_to_step(1)
     st.session_state["main_tabs"] = "Find my pathway"
 
 
-def take_goal_from_link() -> None:
-    """The landing page's goal box opens the app at ?goal=...: the goal waits in the finder's box for the learner to
-    review. It leaves the address at once, so a refresh can't replace what they type next."""
-    goal = st.query_params.get("goal")
-    if goal is None:
-        return
-    del st.query_params["goal"]
-    if goal.strip():
-        use_example(goal.strip()[:500])  # the goal box's own limit
-        go_to_step(1)
-        st.session_state["main_tabs"] = "Find my pathway"
+def explore_qualification(name: str) -> None:
+    start_goal(f"I want to pursue {name}.")
+
+
+def open_from_landing() -> None:
+    """A landing page link: a page of the app, or the account panel."""
+    target = landing_event("open")
+    pages = {key: label for label, _, key in NAVIGATION}
+    if target in pages:
+        navigate(pages[target])
+    elif target == "account":
+        open_account()
+
+
+def start_from_landing() -> None:
+    """The landing page's goal box opens the finder with that goal."""
+    goal = landing_event("goal")
+    if isinstance(goal, str) and goal.strip():
+        start_goal(goal.strip()[:500])  # the goal box's own limit
 
 
 def show_library(qualifications: list[dict]) -> None:
@@ -1118,7 +1128,8 @@ def show_service_unavailable(error: ApiError) -> None:
 
 
 NAVIGATION = [
-    ("Find my pathway", "home", "finder"),
+    ("Home", "home", "home"),
+    ("Find my pathway", "route", "finder"),
     ("Qualifications Library", "menu_book", "library"),
     ("Training & Assessment", "assignment", "training"),
     ("My Progress", "bar_chart", "progress"),
@@ -1148,25 +1159,33 @@ def show_sidebar(selected: str, is_admin: bool) -> None:
 def main() -> None:
     st.set_page_config(page_title="TESDA Track | Your next step", page_icon=str(FAVICON), layout="wide")
     st.html(Path(__file__).with_name("styles.css"))
-    take_goal_from_link()
     # Retain drafts and filters when a page is not rendered. Button keys are
     # deliberately excluded: Streamlit owns trigger-widget state.
     for key in list(st.session_state):
         if (key == "goal_query" or key.startswith(("follow_", "competency_", "qualification_", "training_", "library_", "report_", "bridge_"))) and "_button_" not in key:
             st.session_state[key] = st.session_state[key]
     is_admin = (st.session_state.get("auth") or {}).get("role") == "admin"
-    selected = st.session_state.get("main_tabs", "Find my pathway")
+    selected = st.session_state.get("main_tabs", "Home")
     allowed = [item[0] for item in NAVIGATION] + (["Reports"] if is_admin else [])
     if selected not in allowed:
-        selected = "Find my pathway"
+        selected = "Home"
     st.session_state["main_tabs"] = selected
-    show_sidebar(selected, is_admin)
+    # Home is the landing page: it brings its own top bar, so it has no sidebar (styles.css also hides the header).
+    if selected != "Home":
+        show_sidebar(selected, is_admin)
     if "flash" in st.session_state:
         st.warning(st.session_state.pop("flash"))
     # A full rerun must also restore an open account dialog (including validation
     # errors); dismissing or completing sign-in clears this flag.
     if st.session_state.get("account_dialog_open"):
         show_account_dialog()
+    if selected == "Home":
+        # Before the catalog loads: the landing page needs no API.
+        account = st.session_state.get("auth")
+        with st.container(key="page_home"):
+            show_landing((account["name"].split() or ["Account"])[0] if account else "Sign in",
+                         on_open=open_from_landing, on_goal=start_from_landing)
+        return
     try:
         qualifications = load_qualifications(api_base_url())
     except ApiError as error:
@@ -1183,7 +1202,7 @@ def main() -> None:
     page_key = next((key for label, _, key in NAVIGATION if label == selected), "reports")
     with st.container(key=f"page_{page_key}"):
         try:
-            if not qualifications and selected in allowed[:3]:
+            if not qualifications and selected in ("Find my pathway", "Qualifications Library", "Training & Assessment"):
                 empty_state("New possibilities are on the way", "There are no qualifications in the catalog yet. Please check back later.", "learn")
                 if st.button("Refresh catalog", icon=":material/refresh:"):
                     load_qualifications.clear()

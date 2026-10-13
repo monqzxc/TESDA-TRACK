@@ -21,6 +21,10 @@
 h1, h2, h3, h4, .brand, .score-ring span { font-family: var(--track-display); }
 h1, h2, h3 { letter-spacing: -0.02em; }
 
+/* Home: the landing page (landing.css) runs edge to edge under its own top bar, in place of Streamlit's header. */
+.stApp:has(.st-key-page_home) [data-testid="stHeader"] { display: none; }
+.stApp:has(.st-key-page_home) .block-container { max-width: none; padding: 0; }
+
 /* Preserve Streamlit's controls, input semantics, and toolbar. */
 [data-testid="stSidebar"] { border-right: 1px solid var(--track-border); }
 [data-testid="stSidebarUserContent"] { padding: 1.3rem 0 1.5rem; } /* stSidebarContent already pads the sides */

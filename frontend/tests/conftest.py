@@ -9,8 +9,10 @@ import uvicorn
 
 @pytest.fixture(autouse=True)
 def fresh_component_modules():
-    """AppTest gives every app its own custom-component registry; re-importing registers the map there."""
+    """AppTest gives every app its own custom-component registry; re-importing registers the map and the landing page
+    there."""
     sys.modules.pop("training_view", None)
+    sys.modules.pop("landing_view", None)
 
 
 @pytest.fixture

@@ -454,7 +454,8 @@ def open_located():
 def map_event(app, event, value):
     """Act on the map as its JavaScript does: one trigger event, sent with the next run.
 
-    The browser sends the component's own (empty) state too; without it the event never reaches the callbacks.
+    A browser sends only the trigger, and a real session still hands it to the callbacks through st.session_state.
+    AppTest only does that when the component's own (empty) state is sent as well.
     """
     [element] = app.get("bidi_component")
     states = app._tree.get_widget_states()
