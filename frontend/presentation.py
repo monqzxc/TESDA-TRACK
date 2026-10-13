@@ -50,7 +50,15 @@ def html_with_vectors(markup: str, **options) -> None:
     st.html(re.sub(r"<svg\b.*?</svg>", svg_image, markup, flags=re.DOTALL), **options)
 
 
+# An icon's color in the dark theme. Icons become images, which can't take the page's colors, so each one carries
+# both: an SVG image's prefers-color-scheme follows the color-scheme Streamlit gives the app.
+DARK_INK = {"#175CD3": "#7FB0FF", "#6248B3": "#A58DF0", "#0D9488": "#2BC4A9", "#11664C": "#7BE0C8",
+            "#3E5272": "#C3D0E6", "#52647E": "#9FB1CE"}
+
+
 def icon(name: str, color: str = "#175CD3") -> str:
+    dark = DARK_INK.get(color.upper())
+    scheme = f"<style>@media (prefers-color-scheme: dark) {{ svg {{ color: {dark}; stroke: {dark} }} }}</style>" if dark else ""
     paths = {
         "route": '<path d="M5 19h5a4 4 0 0 0 0-8H9a4 4 0 0 1 0-8h10m-4 0 4 0 0 4"/><circle cx="5" cy="19" r="2"/>',
         "learn": '<path d="m2 8 10-5 10 5-10 5L2 8Zm4 3v6c4 3 8 3 12 0v-6m4-3v9"/>',
@@ -106,7 +114,7 @@ def icon(name: str, color: str = "#175CD3") -> str:
     }
     return ('<svg viewBox="0 0 24 24" width="24" height="24" fill="none" '
             f'color="{color}" stroke="{color}" stroke-width="1.7" stroke-linecap="round" '
-            f'stroke-linejoin="round" aria-hidden="true">{paths.get(name, paths["route"])}</svg>')
+            f'stroke-linejoin="round" aria-hidden="true">{scheme}{paths.get(name, paths["route"])}</svg>')
 
 
 @cache

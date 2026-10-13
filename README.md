@@ -126,6 +126,21 @@ page elements. The finder, qualification library, training, progress, account di
 the same spacing, blue palette, accessible form controls, and empty/error states. Inactive tabs do not
 make page-specific requests, and switching tabs preserves entered goals and filters.
 
+### Light and dark themes
+
+The app follows the device's light or dark setting. Learners can also pick **System**, **Light** or **Dark** in
+the menu at the top right (⋮), and the browser remembers their choice.
+
+- **Streamlit's widgets** take their colors from `[theme.light]` and `[theme.dark]` in
+  `frontend/.streamlit/config.toml`.
+- **The app's own elements** take theirs from the `--track-*` tokens in `frontend/styles.css`: light values on
+  `:root`, dark values on `:root[data-theme="dark"]`. A script in `app.py` (`THEME_SYNC`) sets `data-theme` to the
+  theme Streamlit is showing. The center map and the Skills Explorer map use the same tokens inside their
+  components, and darken their map tiles at night. The landing page has its own light and dark colors in
+  `landing.css`.
+- **Icons** in `presentation.py` are images, so each one carries its dark color too (`DARK_INK`).
+- **Adding a color:** give it a value in both themes. `frontend/tests/test_theme.py` fails when one is missing.
+
 ### Landing page (Home)
 
 The app opens on **Home**, a landing page with its own top bar instead of the sidebar. Its links open the

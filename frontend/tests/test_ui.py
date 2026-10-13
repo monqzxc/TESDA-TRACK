@@ -92,7 +92,7 @@ def test_reruns_reuse_the_last_matches_and_pathway(ui, monkeypatch):
 
 def test_pathway_finder_flow(ui):
     app = ui
-    assert [button.label for button in app.sidebar.button][:2] == ["Find my pathway", "Qualifications Library"]
+    assert [button.label for button in app.sidebar.button][:3] == ["Home", "Find my pathway", "Qualifications Library"]
     click(app, "Get Recommendation")
     assert any("Describe your career goal" in warning.value for warning in app.warning)
     assert "analysis" not in app.session_state
