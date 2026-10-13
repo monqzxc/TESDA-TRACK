@@ -69,6 +69,8 @@ services:
     restart: unless-stopped
     environment:
       API_BASE_URL: http://api:8000
+      # Caddy serves the landing page at / and this app at /app/.
+      STREAMLIT_SERVER_BASE_URL_PATH: app
       # Only Caddy reaches this container; trust its X-Forwarded-For so the app sees each learner's address.
       FORWARDED_ALLOW_IPS: "*"
       # Road routes for Directions; set ROUTING_URL empty in .env to use Google Maps links instead.
@@ -91,6 +93,7 @@ services:
       DOMAIN: ${DOMAIN:-localhost}
     volumes:
       - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./landing:/srv/landing:ro
       - caddy_data:/data
       - caddy_config:/config
     depends_on:

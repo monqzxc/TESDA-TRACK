@@ -1044,6 +1044,19 @@ def explore_qualification(name: str) -> None:
     st.session_state["main_tabs"] = "Find my pathway"
 
 
+def take_goal_from_link() -> None:
+    """The landing page's goal box opens the app at ?goal=...: the goal waits in the finder's box for the learner to
+    review. It leaves the address at once, so a refresh can't replace what they type next."""
+    goal = st.query_params.get("goal")
+    if goal is None:
+        return
+    del st.query_params["goal"]
+    if goal.strip():
+        use_example(goal.strip()[:500])  # the goal box's own limit
+        go_to_step(1)
+        st.session_state["main_tabs"] = "Find my pathway"
+
+
 def show_library(qualifications: list[dict]) -> None:
     page_hero("QUALIFICATIONS LIBRARY", "Find what sparks", "your interest.",
               "Explore qualifications, possible careers, and the skills you'll build along the way.", "books")
@@ -1135,6 +1148,7 @@ def show_sidebar(selected: str, is_admin: bool) -> None:
 def main() -> None:
     st.set_page_config(page_title="TESDA Track | Your next step", page_icon=str(FAVICON), layout="wide")
     st.html(Path(__file__).with_name("styles.css"))
+    take_goal_from_link()
     # Retain drafts and filters when a page is not rendered. Button keys are
     # deliberately excluded: Streamlit owns trigger-widget state.
     for key in list(st.session_state):
