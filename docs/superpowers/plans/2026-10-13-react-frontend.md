@@ -175,11 +175,11 @@ web/
 **Files:** `web/` (Vite React TypeScript template), `web/.nvmrc` (24), `.github/workflows/web.yml` or the CI the
 team uses, README "Local development" section.
 
-- [ ] Create the app with the Vite React TypeScript template; turn on `strict`.
-- [ ] Add ESLint (typescript-eslint, react-hooks, jsx-a11y, a rule banning `dangerouslySetInnerHTML`) and Prettier.
-- [ ] Add Vitest with Testing Library and MSW, and Playwright with `@axe-core/playwright`.
-- [ ] Proxy `/api` to `http://127.0.0.1:8000` in `vite.config.ts`.
-- [ ] Document `npm install`, `npm run dev` (http://localhost:5173) next to the existing Streamlit steps.
+- [x] Create the app with the Vite React TypeScript template; turn on `strict`.
+- [x] Add ESLint (typescript-eslint, react-hooks, jsx-a11y, a rule banning `dangerouslySetInnerHTML`) and Prettier.
+- [x] Add Vitest with Testing Library and MSW, and Playwright with `@axe-core/playwright`.
+- [x] Proxy `/api` to `http://127.0.0.1:8000` in `vite.config.ts`.
+- [x] Document `npm install`, `npm run dev` (http://localhost:5173) next to the existing Streamlit steps.
 
 **Done when** `npm run dev` shows a page that calls `/api/v1/qualifications` through the proxy, and lint, test and
 build pass in CI.
@@ -188,11 +188,11 @@ build pass in CI.
 
 **Files:** `web/src/api/schema.d.ts` (generated), `client.ts`, `errors.ts`, `queries.ts`.
 
-- [ ] `npm run api:types` generates `schema.d.ts` from `/api/openapi.json`; `--check` fails when it's out of date.
-- [ ] `client.ts` wraps `openapi-fetch` with base URL `/api`, sends credentials, and adds `X-Requested-With`.
-- [ ] `errors.ts` turns failures into the same messages `api_client.py` shows today, including
+- [x] `npm run api:types` generates `schema.d.ts` from `/api/openapi.json`; `--check` fails when it's out of date.
+- [x] `client.ts` wraps `openapi-fetch` with base URL `/api`, sends credentials, and adds `X-Requested-With`.
+- [x] `errors.ts` turns failures into the same messages `api_client.py` shows today, including
       "We can't reach the TESDA-TRACK service right now. Please try again shortly." for network errors.
-- [ ] `queries.ts` holds query keys and hooks for the catalog and regions, with today's cache times.
+- [x] `queries.ts` holds query keys and hooks for the catalog and regions, with today's cache times.
 
 **Done when** a test calling `useQualifications()` against MSW returns typed data, and a network failure shows the
 service message.
@@ -202,11 +202,11 @@ service message.
 **Files:** `web/src/styles/tokens.css`, `base.css`, `web/src/theme/*`, `web/src/components/Icon.tsx`,
 `web/public/fonts/*`.
 
-- [ ] Copy the `--track-*` tokens from `frontend/styles.css`, light and dark, unchanged.
-- [ ] Add the fonts and their licenses from `frontend/static/fonts/`.
-- [ ] Build `ThemeProvider` and `ThemeSwitch` (System, Light, Dark), with the inline script in `index.html`.
-- [ ] Port the icon paths from `presentation.icon()` into `<Icon name>`, drawn with `currentColor`.
-- [ ] Port the token check from `frontend/tests/test_theme.py` to Vitest.
+- [x] Copy the `--track-*` tokens from `frontend/styles.css`, light and dark, unchanged.
+- [x] Add the fonts and their licenses from `frontend/static/fonts/`.
+- [x] Build `ThemeProvider` and `ThemeSwitch` (System, Light, Dark), with the inline script in `index.html`.
+- [x] Port the icon paths from `presentation.icon()` into `<Icon name>`, drawn with `currentColor`.
+- [x] Port the token check from `frontend/tests/test_theme.py` to Vitest.
 
 **Done when** a test page shows every token and icon in both themes, and switching theme has no flash on reload.
 
@@ -214,11 +214,11 @@ service message.
 
 **Files:** `web/src/App.tsx`, `routes.tsx`, `components/Layout.tsx`, `Nav.tsx`, `ServiceUnavailable.tsx`.
 
-- [ ] Routes for every page in the table above, each loaded on demand.
-- [ ] The layout: the landing page's own header on Home, and the sidebar navigation (collapsing on phones)
+- [x] Routes for every page in the table above, each loaded on demand.
+- [x] The layout: the landing page's own header on Home, and the sidebar navigation (collapsing on phones)
       elsewhere, matching today.
-- [ ] Page titles, scroll restored on Back and reset on new pages, focus moved to the page heading.
-- [ ] An error boundary and the "We can't load TESDA Track right now" state, with a Retry button.
+- [x] Page titles, scroll restored on Back and reset on new pages, focus moved to the page heading.
+- [x] An error boundary and the "We can't load TESDA Track right now" state, with a Retry button.
 
 **Done when** every address renders a placeholder page in both themes, at 390 px and on desktop, and Playwright
 with axe passes on each.
@@ -229,13 +229,13 @@ with axe passes on each.
 
 **Files:** `backend/tesda_track/routers/auth.py`, `deps.py`, `security.py`, `backend/tests/test_auth_cookie.py`.
 
-- [ ] `POST /api/v1/auth/session` takes the same form as `/auth/token`, and sets the session cookie with
+- [x] `POST /api/v1/auth/session` takes the same form as `/auth/token`, and sets the session cookie with
       `HttpOnly`, `Secure` (outside local development), `SameSite=Strict`, `Path=/api`, lasting
       `access_token_expire_minutes`.
-- [ ] `DELETE /api/v1/auth/session` clears it.
-- [ ] `get_current_user` accepts the cookie or a bearer token. When signed in by cookie, `POST`, `PATCH` and
+- [x] `DELETE /api/v1/auth/session` clears it.
+- [x] `get_current_user` accepts the cookie or a bearer token. When signed in by cookie, `POST`, `PATCH` and
       `DELETE` requests without `X-Requested-With` are refused with 403.
-- [ ] Lockout after five failed attempts, and token revocation on a password change, work the same for cookies.
+- [x] Lockout after five failed attempts, and token revocation on a password change, work the same for cookies.
 
 **Done when** tests cover sign-in, sign-out, an expired cookie, a write without the header, and bearer tokens still
 working.
@@ -245,11 +245,11 @@ working.
 **Files:** `backend/tesda_track/services/routing.py`, `routers/routes.py`, the airport data from
 `frontend/data/airports_ph.json`, tests ported from `frontend/tests/test_directions.py` and `test_flights.py`.
 
-- [ ] Move `RouteClient` (shared rate limit, cache, OSRM calls) and the flight estimate into the backend.
-- [ ] `GET /api/v1/routes?origin=lat,lon&destination=lat,lon` returns each travel mode with a route (car, bike,
+- [x] Move `RouteClient` (shared rate limit, cache, OSRM calls) and the flight estimate into the backend.
+- [x] `GET /api/v1/routes?origin=lat,lon&destination=lat,lon` returns each travel mode with a route (car, bike,
       foot, plus a flight estimate for long trips), as `training_view._routes` does today. `ROUTING_URL` moves to
       the backend's settings.
-- [ ] Round the origin the same way the ranking audit does, and never log it.
+- [x] Round the origin the same way the ranking audit does, and never log it.
 
 **Done when** the ported tests pass in the backend suite.
 
@@ -258,8 +258,8 @@ working.
 **Files:** `backend/tesda_track/services/skills_terms.py`, `routers/skills_bridge.py`, tests ported from
 `frontend/tests/test_skills_bridge_ui.py` (term extraction cases).
 
-- [ ] Move `_extract_skill_terms` and `_classify_terms` into the backend.
-- [ ] `POST /api/v1/skills-bridge/explore` takes `{ "text": … }` (500 characters at most), extracts the terms, and
+- [x] Move `_extract_skill_terms` and `_classify_terms` into the backend.
+- [x] `POST /api/v1/skills-bridge/explore` takes `{ "text": … }` (500 characters at most), extracts the terms, and
       returns the occupation and skill matches, using the existing rate limits and cache. Only the extracted terms
       go to Skills Bridge.
 
@@ -270,8 +270,8 @@ working.
 **Files:** `backend/tesda_track/routers/meta.py` (or the existing health router), schemas for any route the app
 reads that has no response model.
 
-- [ ] `GET /api/v1/client-config` returns `{ carto_key, routing_enabled, skills_bridge_enabled }`.
-- [ ] Add response models where the React app reads a body that isn't typed yet, so `schema.d.ts` has no `unknown`
+- [x] `GET /api/v1/client-config` returns `{ carto_key, routing_enabled, skills_bridge_enabled }`.
+- [x] Add response models where the React app reads a body that isn't typed yet, so `schema.d.ts` has no `unknown`
       the app relies on.
 
 **Done when** `npm run api:types` produces types for every endpoint the app calls.
