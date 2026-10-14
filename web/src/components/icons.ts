@@ -1,5 +1,5 @@
-// The icons from frontend/presentation.py's icon(), drawn on a 24 by 24 grid with a 1.7 stroke in currentColor
-// (see Icon.tsx). Shapes are data, not markup, so nothing here is ever parsed as HTML.
+// The icons from frontend/presentation.py's icon(), plus a few for the app shell, drawn on a 24 by 24 grid with a
+// 1.7 stroke in currentColor (see Icon.tsx). Shapes are data, not markup, so nothing here is ever parsed as HTML.
 
 export type IconShape =
   | { readonly tag: 'path'; readonly d: string; readonly filled?: boolean }
@@ -173,6 +173,18 @@ export const icons = {
     { tag: 'circle', cx: 7, cy: 17, r: 1.8 },
     { tag: 'circle', cx: 17, cy: 17, r: 1.8 },
   ],
+  // The app shell's own icons, standing in for the Material icons of the Streamlit sidebar (home, menu_book)
+  // and of its header and service message (menu, close, refresh).
+  home: [{ tag: 'path', d: 'm3 11 9-7.5 9 7.5M5.5 9v11h4.5v-6h4v6h4.5V9' }],
+  book: [
+    {
+      tag: 'path',
+      d: 'M12 6.5C10 5 7 4.5 3.5 5v13c3.5-.5 6.5 0 8.5 1.5 2-1.5 5-2 8.5-1.5V5C17 4.5 14 5 12 6.5Zm0 0v13',
+    },
+  ],
+  menu: [{ tag: 'path', d: 'M4 7h16M4 12h16M4 17h16' }],
+  close: [{ tag: 'path', d: 'm6 6 12 12M18 6 6 18' }],
+  refresh: [{ tag: 'path', d: 'M19.5 12a7.5 7.5 0 1 1-2.2-5.3L20 9.5M20 4v5.5h-5.5' }],
 } as const satisfies Record<string, readonly IconShape[]>
 
 export type IconName = keyof typeof icons
