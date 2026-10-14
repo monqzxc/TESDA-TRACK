@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button, Dialog, DialogTrigger, Modal, ModalOverlay } from 'react-aria-components'
 import { useLocation } from 'react-router'
 import { en } from '../copy/en.ts'
@@ -20,6 +20,7 @@ export function MobileMenu({ isAdmin = false }: { isAdmin?: boolean }) {
   const [openOn, setOpenOn] = useState<string | null>(null)
   const isOpen = openOn === pathname
   const close = () => setOpenOn(null)
+  const menuButton = useRef<HTMLButtonElement>(null)
 
   // Wider than a phone, the sidebar shows in the page, so the menu closes.
   useEffect(() => {
@@ -34,7 +35,7 @@ export function MobileMenu({ isAdmin = false }: { isAdmin?: boolean }) {
 
   return (
     <DialogTrigger isOpen={isOpen} onOpenChange={(open) => setOpenOn(open ? pathname : null)}>
-      <Button className={styles.menuButton}>
+      <Button ref={menuButton} className={styles.menuButton}>
         <Icon name="menu" size="1.4rem" />
         {en.nav.menu}
       </Button>
@@ -48,7 +49,11 @@ export function MobileMenu({ isAdmin = false }: { isAdmin?: boolean }) {
               </Button>
             </div>
             {/* A link to the page already open doesn't change the address, so it closes the menu itself. */}
-            <SidebarContent isAdmin={isAdmin} onNavigate={close} />
+            <SidebarContent
+              isAdmin={isAdmin}
+              onNavigate={close}
+              returnFocus={() => menuButton.current}
+            />
           </Dialog>
         </Modal>
       </ModalOverlay>

@@ -4,6 +4,7 @@ import { http, HttpResponse } from 'msw'
 // From react-router itself, not react-router/dom as in App.tsx: under Vitest the two entry points load separate
 // copies of the router's context.
 import { createMemoryRouter, RouterProvider } from 'react-router'
+import { AuthProvider } from '../auth/AuthProvider.tsx'
 import { routes } from '../routes.tsx'
 import { ThemeProvider } from '../theme/ThemeProvider.tsx'
 import { bookkeeping, electrical } from './fixtures.ts'
@@ -16,7 +17,9 @@ export function renderApp(path: string, client: QueryClient = createTestQueryCli
   const view = render(
     <ThemeProvider>
       <QueryClientProvider client={client}>
-        <RouterProvider router={router} />
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
       </QueryClientProvider>
     </ThemeProvider>,
   )

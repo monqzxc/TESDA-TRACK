@@ -1,0 +1,82 @@
+/* Home's page: its type and colors, and the scroll reveal shared by its sections (after frontend/landing.css). */
+.page {
+  overflow-x: clip;
+  background: var(--page);
+  color: var(--body);
+  font: 400 var(--step-0) / 1.6 var(--font-text);
+}
+
+/* The landing page's resets, which base.css sets otherwise for the rest of the app. :where() keeps them as weak as
+   base.css's element rules (they win by coming later), so any class in Home's sections overrides them. */
+:where(.page) :is(h1, h2, h3) {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  line-height: inherit;
+  letter-spacing: normal;
+  text-wrap: balance;
+}
+
+:where(.page) :is(p, ul, ol) {
+  margin: 0;
+}
+
+:where(.page) a {
+  color: inherit;
+}
+
+:where(.page) :focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Clear of Home's top bar, whose height useHomeBar keeps in --home-bar-height (components/useHomeBar.ts): each
+   section a link jumps to lands just below it, and whatever Tab or Shift+Tab focuses stops a little further down,
+   with room for its focus ring (and for a radio button's label, which reaches above the hidden radio). Not
+   scroll-padding on <html>: with that, focusing anything in the sticky bar itself scrolls the page. */
+.page * {
+  scroll-margin-top: calc(var(--home-bar-height, 68px) + 2rem);
+}
+
+.page section[id] {
+  scroll-margin-top: var(--home-bar-height, 68px);
+}
+
+/* On Home's first showing in a document, the sections under the hero are laid out and painted only as they come
+   near the window, which keeps the first load light on phones. Until then their height is a guess; after that, the
+   height they last had. A jump to a section lays out the whole page (data-laid-out, from hooks/useSectionJumps.ts),
+   so it lands where the section really is, and so does every later showing, so Back brings the page back exactly
+   where the learner left it. */
+.page:not([data-laid-out]) > section:not([data-home-hero]) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1000px;
+}
+
+/* ───────── Scroll reveal ─────────
+   Content shows by default. HomePage adds data-motion only when motion is welcome and scrolling can be watched;
+   then each [data-reveal] waits off stage until it scrolls into view and gets data-in (hooks/useReveal.ts).
+   --i staggers a group: each step waits a little longer. */
+.page[data-motion] [data-reveal] {
+  transition:
+    opacity 0.9s var(--ease),
+    transform 0.9s var(--ease);
+  transition-delay: calc(var(--i, 0) * 110ms);
+}
+
+.page[data-motion] [data-reveal]:not([data-in]) {
+  opacity: 0;
+  transform: translateY(32px);
+}
+
+.page[data-motion] [data-reveal='left']:not([data-in]) {
+  transform: translateX(-40px);
+}
+
+.page[data-motion] [data-reveal='right']:not([data-in]) {
+  transform: translateX(40px);
+}
+
+.page[data-motion] [data-reveal='zoom']:not([data-in]) {
+  transform: scale(0.94) translateY(20px);
+}

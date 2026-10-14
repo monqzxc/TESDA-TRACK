@@ -32,9 +32,10 @@ const PAGES = [
   ],
   ['/qualifications', 'Qualifications Library', null, 'Qualifications Library · TESDA-TRACK', true],
   ['/training', 'Training & Assessment', null, 'Training & Assessment · TESDA-TRACK', true],
-  ['/progress', 'My Progress', null, 'My Progress · TESDA-TRACK', true],
+  // Signed out, My Progress asks the learner to sign in, and Reports isn't available (see account tests).
+  ['/progress', 'My Progress', null, 'My Progress · TESDA-TRACK', false],
   ['/skills', 'Skills Explorer', null, 'Skills Explorer · TESDA-TRACK', true],
-  ['/reports', 'Reports', null, 'Reports · TESDA-TRACK', true],
+  ['/reports', 'Reports', null, 'Reports · TESDA-TRACK', false],
   ['/sign-in', 'Sign in', null, 'Sign in · TESDA-TRACK', false],
   ['/no-such-page', 'Page not found', null, 'Page not found · TESDA-TRACK', false],
 ] as const
@@ -73,7 +74,9 @@ describe('routes', () => {
         name: 'Every career has a track. Find yours.',
       }),
     ).toBeInTheDocument()
-    expect(screen.getByText('The new home page is coming soon.')).toBeInTheDocument()
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'What would you like to achieve?' }),
+    ).toBeInTheDocument()
     expect(requests).toBe(0)
   })
 
@@ -85,9 +88,11 @@ describe('routes', () => {
     const sections = screen.getByRole('navigation', { name: 'Sections' })
     expect(within(sections).getByRole('link', { name: 'How it works' })).toHaveAttribute(
       'href',
-      '#how',
+      '/#how',
     )
-    expect(screen.getByRole('link', { name: 'Find my path' })).toHaveAttribute('href', '/find')
+    expect(
+      within(screen.getByRole('banner')).getByRole('link', { name: 'Find my path' }),
+    ).toHaveAttribute('href', '/find')
     expect(screen.queryByRole('navigation', { name: 'Main' })).not.toBeInTheDocument()
 
     await router.navigate('/qualifications')

@@ -24,3 +24,11 @@ export function writeItem(key: string, value: string): void {
     // Not saved: the choice still applies until the page is closed.
   }
 }
+
+export function removeItem(key: string): void {
+  try {
+    window.localStorage.removeItem(key)
+  } catch {
+    // Nothing to remove.
+  }
+}

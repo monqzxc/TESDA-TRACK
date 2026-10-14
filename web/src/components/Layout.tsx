@@ -1,8 +1,10 @@
 import type { MouseEvent } from 'react'
 import { Outlet, ScrollRestoration } from 'react-router'
+import { useAuth } from '../auth/useAuth.ts'
 import { en } from '../copy/en.ts'
 import { useCurrentPage, useFocusOnNavigation, usePageTitle } from '../lib/navigation.ts'
 import { Brand } from './Brand.tsx'
+import { HomeFooter } from './HomeFooter.tsx'
 import { HomeHeader } from './HomeHeader.tsx'
 import { MobileMenu } from './MobileMenu.tsx'
 import { SidebarContent } from './Nav.tsx'
@@ -37,7 +39,10 @@ function SkipLink() {
   )
 }
 
-/** Home: the landing page's own top bar and no sidebar, as in the Streamlit app. */
+/**
+ * Home: the landing page's own top bar and footer, and no sidebar, as in the Streamlit app. The footer is outside
+ * <main>, as on the landing page, so it's the page's contentinfo landmark.
+ */
 export function HomeLayout() {
   return (
     <>
@@ -46,20 +51,18 @@ export function HomeLayout() {
       <main id="main" tabIndex={-1} className={styles.homeMain}>
         <Outlet />
       </main>
+      <HomeFooter />
     </>
   )
 }
 
-type AppLayoutProps = {
-  /** Shows Reports in the navigation. The signed-in account decides it (Task 10); nobody is an admin until then. */
-  isAdmin?: boolean
-}
-
 /**
  * Every other page: the Streamlit app's sidebar beside the page. On phones the sidebar becomes a bar with the
- * brand and a Menu button, which opens the same sidebar over the page (MobileMenu).
+ * brand and a Menu button, which opens the same sidebar over the page (MobileMenu). Reports shows for
+ * administrators.
  */
-export function AppLayout({ isAdmin = false }: AppLayoutProps) {
+export function AppLayout() {
+  const { isAdmin } = useAuth()
   return (
     <>
       <SkipLink />

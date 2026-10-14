@@ -1,6 +1,7 @@
 /* After frontend/landing.css's top bar. The landing page has its own navy band colors, kept here as it keeps
-   them (they aren't --track-* tokens). The bar is navy from the start: Home's hero, which it sits over in the
-   Streamlit app, comes in Task 9. */
+   them (they aren't --track-* tokens). The bar is see-through over Home's hero, and turns solid once the page
+   scrolls (data-scrolled, from useHomeBar). Without a hero under it (Home still loading, or its error state) it's
+   solid navy from the start. */
 .topbar {
   --band: #0c2152;
   --band-body: #cfdcf5;
@@ -10,11 +11,26 @@
   top: 0;
   z-index: 20;
   color: #ffffff;
-  background: var(--band);
+  background-color: var(--band);
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s,
+    backdrop-filter 0.3s;
 }
 
 :global(:root[data-theme='dark']) .topbar {
   --band: #071740;
+}
+
+.topbar:not([data-scrolled]):has(~ main [data-home-hero]) {
+  background-color: transparent;
+}
+
+.topbar[data-scrolled] {
+  background-color: rgb(9 27 70 / 0.82);
+  box-shadow: 0 10px 30px -20px #000000;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
 }
 
 .topbar :focus-visible {
@@ -23,13 +39,14 @@
   border-radius: 6px;
 }
 
-/* The brand pushes the rest to the right. Where the theme switch doesn't fit, it takes a row of its own. */
+/* The brand pushes the rest to the right. Where the theme switch doesn't fit, it takes a row of its own; on a
+   desktop (1180px and up) everything fits on one row, as on the landing page. */
 .wrap {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: flex-end;
-  gap: 0.5rem 1.5rem;
+  gap: 0.5rem 1.25rem;
   width: 100%;
   max-width: 1180px;
   min-height: 68px;

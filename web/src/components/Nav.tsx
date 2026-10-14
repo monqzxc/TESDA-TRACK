@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router'
 import { en } from '../copy/en.ts'
+import { AccountControl } from '../features/account/AccountMenu.tsx'
 import { paths } from '../paths.ts'
 import { ThemeSwitch } from '../theme/ThemeSwitch.tsx'
 import { Icon, type IconName } from './Icon.tsx'
@@ -44,15 +45,18 @@ export function Nav({ isAdmin = false, onNavigate }: NavProps) {
   )
 }
 
-/** The sidebar under the brand: the page links, the sign-in link and the theme switch. */
-export function SidebarContent({ isAdmin = false, onNavigate }: NavProps) {
+type SidebarContentProps = NavProps & {
+  /** Where focus goes after the sign-in dialog when this sidebar has closed by then (the phone menu's button). */
+  returnFocus?: () => HTMLElement | null
+}
+
+/** The sidebar under the brand: the page links, the account control and the theme switch. */
+export function SidebarContent({ isAdmin = false, onNavigate, returnFocus }: SidebarContentProps) {
   return (
     <div className={styles.sidebar}>
       <Nav isAdmin={isAdmin} onNavigate={onNavigate} />
-      <NavLink to={paths.signIn} className={styles.link} onClick={onNavigate}>
-        <Icon name="person" size="1.45rem" />
-        {en.nav.signIn}
-      </NavLink>
+      {/* In the phone menu, Sign in closes the menu first: the dialog opens over the page, not over the menu. */}
+      <AccountControl variant="sidebar" onOpenSignIn={onNavigate} returnFocus={returnFocus} />
       <div className={styles.theme}>
         <ThemeSwitch />
       </div>

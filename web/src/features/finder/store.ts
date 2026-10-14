@@ -1,12 +1,13 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware'
+import { FINDER_KEY } from './key.ts'
 
 // The finder's state: the learner's goal and their work towards a pathway. It lives in sessionStorage, so a refresh
 // keeps the learner's work (US-14) and closing the tab clears it, which suits shared computers. The goal never goes
 // into an address: pages that start the finder with a goal (Home, the Library) call startWithGoal, then navigate.
 // Task 12 adds the answers, the chosen qualification and the readiness answers here.
 
-export const FINDER_KEY = 'tesda-track.finder'
+export { FINDER_KEY }
 
 /** The goal box's limit, as in the Streamlit app and the API. */
 export const GOAL_MAX_LENGTH = 500

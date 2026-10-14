@@ -49,13 +49,16 @@ for (const colorScheme of ['light', 'dark'] as const) {
           await expect(page.getByRole('heading', { level: 1, name: heading })).toBeVisible()
           if (step) await expect(page.getByRole('heading', { level: 2, name: step })).toBeVisible()
           await expect(page.locator('html')).toHaveAttribute('data-theme', colorScheme)
-          // Settled: the catalog is in, on the pages that wait for it.
-          await expect(page.getByRole('status')).toHaveCount(0)
+          // Settled: the catalog is in, on the pages that wait for it. (Home needs no catalog, and its readiness
+          // example announces its score in a status of its own.)
+          if (path !== '/') await expect(page.getByRole('status')).toHaveCount(0)
 
           // Home has the landing page's top bar; every other page has the sidebar, behind Menu on a phone.
           const phone = size === 'phone'
           if (path === '/') {
-            await expect(page.getByRole('link', { name: 'Find my path' })).toBeVisible()
+            await expect(
+              page.getByRole('banner').getByRole('link', { name: 'Find my path' }),
+            ).toBeVisible()
             await expect(page.getByRole('navigation', { name: 'Sections' })).toBeVisible({
               visible: !phone,
             })
@@ -199,7 +202,9 @@ test.describe('on a desktop', () => {
     await expect(
       page.getByRole('heading', { level: 1, name: 'Every career has a track. Find yours.' }),
     ).toBeVisible()
-    await expect(page.getByText('The new home page is coming soon.')).toBeVisible()
+    await expect(
+      page.getByRole('heading', { level: 2, name: 'What would you like to achieve?' }),
+    ).toBeAttached()
     expect(requests).toEqual([])
   })
 

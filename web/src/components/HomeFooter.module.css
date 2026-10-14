@@ -1,0 +1,67 @@
+/* After frontend/landing.css's footer: a navy band under Home, in the landing page's own colors (as in
+   HomeHeader.module.css and features/home/tokens.module.css). */
+.footer {
+  --band: #0c2152;
+  --band-accent: #6fe0d2;
+  --signal: #e8a800;
+  padding-block: 2.2rem 2.6rem;
+  border-top: 1px solid rgb(255 255 255 / 0.08);
+  background: var(--band);
+  color: rgb(207 220 245 / 0.75);
+  font: 400 0.85rem/1.6 var(--font-text);
+}
+
+:global(:root[data-theme='dark']) .footer {
+  --band: #071740;
+  --signal: #f5b83d;
+}
+
+/* Hidden while Home's code downloads, so it doesn't show at the top of an empty page and then jump down. */
+main:empty ~ .footer {
+  display: none;
+}
+
+.footer :focus-visible {
+  outline: 3px solid var(--signal);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem 2rem;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: clamp(16px, 4vw, 40px);
+}
+
+.footer p {
+  max-width: 44rem;
+  margin: 0;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #ffffff;
+  font: 800 1rem/1 var(--font-display);
+  letter-spacing: 0.01em;
+  text-decoration: none;
+}
+
+.brand img {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+}
+
+.brand b {
+  margin-left: 0.3em;
+  font-weight: 400;
+  color: var(--band-accent);
+}

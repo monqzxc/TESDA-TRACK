@@ -47,8 +47,11 @@ export function usePageTitle(page: PageKey | undefined): void {
   }, [page])
 }
 
-/** The element that takes focus after a navigation: the page's h1, or the main region when it has none. */
-function navigationTarget(): HTMLElement | null {
+/**
+ * The element that takes focus after a navigation: the page's h1, or the main region when it has none. Also where
+ * focus goes after a sign-in took away the control that had it (AuthProvider).
+ */
+export function navigationTarget(): HTMLElement | null {
   const main = document.getElementById('main')
   return main?.querySelector<HTMLElement>('h1[tabindex="-1"]') ?? main
 }

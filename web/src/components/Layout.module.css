@@ -23,11 +23,9 @@
   outline: none;
 }
 
+/* Home's sections run the full width of the window and set their own widths and spacing (features/home). */
 .homeMain {
-  width: 100%;
-  max-width: 1180px;
-  margin-inline: auto;
-  padding: 3rem clamp(16px, 4vw, 40px) 4rem;
+  display: block;
 }
 
 /* The sidebar beside the page, after Streamlit's: a white column with a border, which stays put while the page

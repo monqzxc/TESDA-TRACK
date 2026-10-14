@@ -30,7 +30,7 @@ describe('the phone menu', () => {
       'aria-current',
       'page',
     )
-    expect(within(dialog).getByRole('link', { name: 'Sign in' })).toBeInTheDocument()
+    expect(within(dialog).getByRole('button', { name: 'Sign in' })).toBeInTheDocument()
     expect(within(dialog).getByRole('radiogroup', { name: 'Theme' })).toBeInTheDocument()
 
     await user.keyboard('{Escape}')

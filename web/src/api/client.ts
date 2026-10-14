@@ -12,6 +12,32 @@ const requestedWith: Middleware = {
   },
 }
 
+type Listener = () => void
+const signInRequiredListeners = new Set<Listener>()
+
+// The sign-in routes answer 401 for a wrong email or password. That isn't a session ending.
+const SIGN_IN_PATHS: ReadonlySet<string> = new Set(['/api/v1/auth/session', '/api/v1/auth/token'])
+
+/** Tells the listeners about every 401: the request needed a sign-in the browser doesn't have (any more). */
+const sessionWatch: Middleware = {
+  onResponse({ response, schemaPath }) {
+    if (response.status !== 401 || SIGN_IN_PATHS.has(schemaPath)) return undefined
+    for (const listener of signInRequiredListeners) listener()
+    return undefined
+  },
+}
+
+/**
+ * Calls `listener` whenever the API refuses a request because it needs a valid sign-in (401), so an expired session
+ * is noticed in one place (the AuthProvider), whichever request finds it. Returns a function that unsubscribes.
+ */
+export function onSignInRequired(listener: Listener): () => void {
+  signInRequiredListeners.add(listener)
+  return () => {
+    signInRequiredListeners.delete(listener)
+  }
+}
+
 export const api = createClient<paths>({
   baseUrl: globalThis.location.origin,
   credentials: 'same-origin',
@@ -19,4 +45,4 @@ export const api = createClient<paths>({
   fetch: (request) => globalThis.fetch(request),
 })
 
-api.use(requestedWith)
+api.use(requestedWith, sessionWatch)
