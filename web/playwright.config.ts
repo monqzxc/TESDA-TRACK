@@ -1,6 +1,7 @@
 import { defineConfig, devices } from '@playwright/test'
 
-const PORT = 5173
+// E2E_PORT lets two test runs work side by side, each with its own dev server.
+const PORT = Number(process.env.E2E_PORT ?? 5173)
 
 export default defineConfig({
   testDir: './tests/e2e',
