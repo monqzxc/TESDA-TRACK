@@ -17,7 +17,7 @@ def fresh_component_modules():
 
 @pytest.fixture
 def training_data(client, session):
-    """A welding program in Manila and one in Cebu, plus an upcoming assessment in Manila."""
+    """Isolated test-only authorized services; this evidence must never enter seed or demo data."""
     from tesda_track.cli import create_or_promote_admin
 
     create_or_promote_admin(session, email="admin@example.com", full_name="Admin", password="correct horse battery")
@@ -31,17 +31,31 @@ def training_data(client, session):
         assert response.status_code == 201, response.text
         return response.json()
 
+    def verify(kind, site_id):
+        now = datetime.now(timezone.utc)
+        response = client.put(f"/api/v1/admin/service-verifications/{kind}/{site_id}/SMAW-NC-II", headers=admin,
+            json={"status": "verified", "source_name": "Isolated UI test authority",
+                  "source_reference": "https://example.invalid/ui-test-evidence", "requirements_reviewed": True,
+                  "reviewed_at": (now - timedelta(minutes=1)).isoformat(),
+                  "review_due_at": (now + timedelta(days=30)).isoformat()})
+        assert response.status_code == 200, response.text
+
     manila = post("training-providers", {"name": "Manila Welding Institute", "region_code": "NCR",
                                          "city": "Manila", "latitude": 14.5995, "longitude": 120.9842})
     cebu = post("training-providers", {"name": "Cebu Skills Center", "region_code": "VII",
                                        "city": "Cebu City", "latitude": 10.3157, "longitude": 123.8854})
     for provider, title in ((cebu, "SMAW NC II Cebu batch"), (manila, "SMAW NC II Manila batch")):
+        verify("training", provider["id"])
         post("training-programs", {"provider_id": provider["id"], "qualification_code": "SMAW-NC-II", "title": title,
                                    "delivery_mode": "institution_based", "duration_hours": 268})
     center = post("assessment-centers", {"name": "Manila Assessment Center", "region_code": "NCR", "city": "Manila",
                                          "latitude": 14.5995, "longitude": 120.9842})
+    verify("assessment", center["id"])
     schedule = post("assessment-schedules", {
         "center_id": center["id"], "qualification_code": "SMAW-NC-II", "slots": 10,
+        "availability_status": "available", "availability_source": "Isolated UI test intake evidence",
+        "availability_checked_at": (datetime.now(timezone.utc) - timedelta(minutes=1)).isoformat(),
+        "availability_valid_until": (datetime.now(timezone.utc) + timedelta(days=30)).isoformat(),
         "scheduled_at": (datetime.now(timezone.utc) + timedelta(days=21)).isoformat()})
     return {"schedule": schedule}
 

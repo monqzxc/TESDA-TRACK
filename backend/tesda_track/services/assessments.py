@@ -117,7 +117,7 @@ def search_schedules(session: Session, search: NearbySearch) -> list[tuple[Asses
         query = query.where(AssessmentCenter.region_code == search.region_code)
     if search.radius_km is not None:
         query = query.where(geo.within_radius(AssessmentCenter, search))
-    order = ((distance.asc().nulls_last(),) if search.near_lat is not None else ()) + (AssessmentSchedule.scheduled_at,)
+    order = ((distance.asc().nulls_last(),) if search.near_lat is not None else ()) + (AssessmentSchedule.scheduled_at, AssessmentSchedule.id)
     rows = list(session.exec(query.order_by(*order).limit(search.limit).offset(search.offset)).all())
     verification.preload(session, "assessment", {(s.center_id, s.qualification_id) for s, _, _ in rows})
     return rows
@@ -174,9 +174,13 @@ def apply(session: Session, learner: Learner, schedule_id: int) -> AssessmentApp
     if existing is not None:
         if existing.status != "withdrawn":
             raise ConflictError("You have already applied for this schedule.")
+        if seats_taken(session, schedule.id) >= schedule.slots:
+            raise InvalidRequestError("No seats are left for this schedule.")
         existing.status, existing.result, existing.reviewer_note = "pending", None, None
         session.flush()
         return existing
+    if seats_taken(session, schedule.id) >= schedule.slots:
+        raise InvalidRequestError("No seats are left for this schedule.")
     application = AssessmentApplication(learner_id=learner.id, schedule=schedule)
     session.add(application)
     session.flush()
@@ -184,6 +188,8 @@ def apply(session: Session, learner: Learner, schedule_id: int) -> AssessmentApp
 
 
 def withdraw(session: Session, application: AssessmentApplication) -> AssessmentApplication:
+    if application.status == "withdrawn":
+        return application  # An uncertain withdrawal can safely be retried.
     if application.status not in ("pending", "approved"):
         raise ConflictError("Only pending or approved applications can be withdrawn.")
     application.status = "withdrawn"

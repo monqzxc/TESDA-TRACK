@@ -38,6 +38,19 @@ def test_other_calls_never_forward_an_address():
     assert "X-Forwarded-For" not in requests[0].headers
 
 
+def test_assessment_ranking_uses_post_body_and_saved_history_requires_token():
+    import json
+    requests = []
+    api = client_seeing(requests)
+    api.rank_assessments("learner-token", qualification_code="SMAW-NC-II", goal="private goal", maximum_fee="0")
+    assert requests[0].method == "POST" and requests[0].url.path == "/api/v1/recommendations/assessments"
+    assert not requests[0].url.params
+    assert json.loads(requests[0].content)["goal"] == "private goal"
+    assert requests[0].headers["Authorization"] == "Bearer learner-token"
+    api.saved_ranking("learner-token", 42)
+    assert requests[1].url.path == "/api/v1/recommendations/42" and requests[1].method == "GET"
+
+
 @pytest.mark.parametrize("call, path", [
     (lambda api: api.training_providers(), "/api/v1/training-providers"),
     (lambda api: api.assessment_centers(), "/api/v1/assessment-centers"),

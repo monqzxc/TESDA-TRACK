@@ -13,10 +13,12 @@ COPY tesda_track ./tesda_track
 COPY models ./finetuned
 ARG EMBEDDING_MODEL=
 ARG EMBEDDING_MODEL_PATH=
+ARG SEMANTIC_SEARCH_ENABLED=true
 # Bake the embedding model (about 470 MB) into the image so the server never downloads it at runtime.
 # With EMBEDDING_MODEL_PATH set (e.g. /app/finetuned/tesda-e5-small-v1) the step only warms up that local model.
 RUN useradd --system --uid 10001 --no-create-home app \
-    && python -m tesda_track.embeddings download \
+    && mkdir -p /app/models \
+    && if [ "$SEMANTIC_SEARCH_ENABLED" = "true" ]; then python -m tesda_track.embeddings download; fi \
     && chown -R app /app/models
 ENV HF_HUB_OFFLINE=1
 USER app

@@ -53,7 +53,7 @@ def show_programs(code: str, goal: str | None, near: dict, mode: str | None, nee
                 st.markdown(f"**{program['title']}**")
                 st.markdown(f":material/apartment: {program['provider']['name']}, "
                             f"{place_name(program['provider'], places)}")
-                facts = [f":material/school: {DELIVERY[program['delivery_mode']]}"]
+                facts = [f":material/school: {DELIVERY.get(program['delivery_mode'], 'Delivery mode unconfirmed')}"]
                 if program["duration_hours"]:
                     facts.append(f":material/schedule: {program['duration_hours']} hours")
                 if program["start_date"]:
@@ -70,19 +70,34 @@ def show_programs(code: str, goal: str | None, near: dict, mode: str | None, nee
 
 
 def show_schedules(code: str, near: dict, places: dict) -> None:
-    schedules = session.api().schedules(qualification_code=code, **near)
     token = session.token()
+    source = {}
+    if st.session_state.get("assessment_record"):
+        source["assessment_id"] = st.session_state["assessment_record"]["id"]
+    elif st.session_state.get("assessment_answers") is not None:
+        source["assessment"] = st.session_state["assessment_answers"]
+    ranking = session.api().rank_assessments(token, qualification_code=code, **near, **source)
+    decisions = {item["schedule"]["id"]: item for item in ranking["results"]}
+    schedules = [item["schedule"] for item in ranking["results"]]
     with st.container(key="schedule_results"):
+        if ranking["requires_verification"]:
+            with st.expander("Schedules requiring verification"):
+                for item in ranking["requires_verification"]:
+                    st.text(item["schedule"]["center"]["name"])
+                    for reason in item["reasons"]:
+                        st.caption(reason)
         if not schedules:
             empty_state("No upcoming assessments yet", "Check back soon, or look at training programs for this "
                         "qualification.", "award")
             return
-        st.caption(f"{len(schedules)} upcoming assessments, in Philippine time")
+        st.caption(f"{len(schedules)} confirmed assessments, best fit first, in Philippine time")
         if not token:
             sign_in_prompt("Sign in to apply", "apply_sign_in", "training")
         for schedule in schedules:
             open_seats = schedule["seats_left"] > 0
             with st.container(border=True, key=f"card_schedule_{schedule['id']}"):
+                decision = decisions[schedule["id"]]
+                st.badge(f"Fit {decision['score']}/100", color="blue")
                 st.badge("Seats available" if open_seats else "Fully booked", icon=":material/event_seat:",
                          color="green" if open_seats else "orange")
                 st.markdown(f"**{friendly_time(schedule['scheduled_at'])}**")
@@ -96,9 +111,15 @@ def show_schedules(code: str, near: dict, places: dict) -> None:
                 st.markdown(GAP.join(facts))
                 for message in evidence_messages(schedule):
                     st.caption(message)
-                if token and open_seats:
+                with st.expander("Why it fits"):
+                    for reason in decision["explanation"]:
+                        st.caption(reason)
+                    st.caption("Fit describes preferences, not a probability of passing or proof of readiness.")
+                if decision.get("application_status") not in (None, "withdrawn"):
+                    st.badge(f"Application: {decision['application_status']}", color="green")
+                elif token and open_seats:
                     st.button("Apply", key=f"apply_{schedule['id']}", type="primary", icon=":material/send:",
-                              on_click=apply, args=(schedule["id"],), disabled=not can_apply(schedule))
+                              on_click=apply, args=(schedule["id"],), disabled=not can_apply(schedule, decision["eligibility"]))
 
 
 st.header("Training and assessment")

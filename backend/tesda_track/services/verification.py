@@ -1,5 +1,5 @@
 """Fail-closed service verification; unknown evidence never proves eligibility."""
-from datetime import datetime
+from datetime import date, datetime
 from zoneinfo import ZoneInfo
 
 from sqlalchemy import tuple_
@@ -31,6 +31,14 @@ def effective_status(record, now: datetime) -> str:
     if record.review_due_at <= now or (record.valid_until and record.valid_until <= now):
         return "expired"
     return "verified"
+
+
+def authorization_covers(record, starts_at: datetime, ends_at: datetime | None = None) -> bool:
+    """A current authorization cannot confirm a service outside its recorded validity."""
+    if record is None:
+        return False
+    return ((record.valid_from is None or record.valid_from <= starts_at)
+            and (record.valid_until is None or record.valid_until > (ends_at or starts_at)))
 
 
 def public(record, now: datetime | None = None) -> VerificationPublic:
@@ -95,22 +103,23 @@ def certificates(session: Session, learner) -> dict[str, list[Certification]] | 
     return result
 
 
-def eligibility(record, evidence: dict | None, now: datetime) -> EligibilityPublic:
+def eligibility(record, evidence: dict | None, now: datetime, service_date: date | None = None) -> EligibilityPublic:
     checks = []
     if record is None or not record.requirements_reviewed or effective_status(record, now) != "verified":
         return EligibilityPublic(checks=[EligibilityCheck(description="Mandatory prerequisites",
             status="unknown", reason="Current authoritative prerequisite information requires verification.")])
     today = now.astimezone(PHILIPPINE_TIME).date()
+    required_date = max(today, service_date or today)
     for rule in record.requirements:
         status, reason = "unknown", "This prerequisite requires manual verification."
         if rule["kind"] == "verified_certification":
             candidates = (evidence or {}).get(rule["qualification_code"], [])
             if any(c.issued_on is not None and c.issued_on <= today and
-                   (c.expires_on is None or c.expires_on >= today) for c in candidates):
-                status, reason = "satisfied", "A current verified qualification certificate is on your account."
-            elif candidates and all((c.expires_on is not None and c.expires_on < today) or
+                   (c.expires_on is None or c.expires_on >= required_date) for c in candidates):
+                status, reason = "satisfied", "Your verified qualification certificate is valid for the required date."
+            elif candidates and all((c.expires_on is not None and c.expires_on < required_date) or
                                     (c.issued_on is not None and c.issued_on > today) for c in candidates):
-                status, reason = "unsatisfied", "The recorded certificates are expired or not yet valid."
+                status, reason = "unsatisfied", "The recorded certificates are expired, not yet valid, or expire before the service date."
             else:
                 reason = "A current verified certificate is required; missing or self-reported records do not prove it."
         checks.append(EligibilityCheck(description=rule["description"], status=status, reason=reason))
@@ -153,7 +162,10 @@ def require_application_eligibility(session: Session, schedule, learner) -> None
     record = get(session, "assessment", schedule.center_id, schedule.qualification_id)
     if effective_status(record, now) != "verified":
         raise InvalidRequestError("This center's authority for this qualification requires current verification.")
+    if not authorization_covers(record, schedule.scheduled_at):
+        raise InvalidRequestError("This center's authorization does not cover the scheduled assessment date.")
     if availability(schedule, now).status != "available":
         raise InvalidRequestError("Current availability of this assessment requires confirmation.")
-    if eligibility(record, certificates(session, learner), now).status != "satisfied":
+    if eligibility(record, certificates(session, learner), now,
+                   schedule.scheduled_at.astimezone(PHILIPPINE_TIME).date()).status != "satisfied":
         raise InvalidRequestError("Mandatory prerequisites are unmet or require verification before applying.")

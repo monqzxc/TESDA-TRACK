@@ -1,4 +1,6 @@
 import uuid
+from tesda_track.models import AssessmentApplication
+from tesda_track.services import write_receipts
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Query, status
@@ -39,7 +41,8 @@ def my_applications(learner: CurrentLearner, session: SessionDep):
 
 @learner_router.post("", response_model=AssessmentApplicationPublic, status_code=status.HTTP_201_CREATED)
 def apply(request: ApplicationCreate, learner: CurrentLearner, session: SessionDep):
-    application = assessments.apply(session, learner, request.schedule_id)
+    application = write_receipts.perform(session, learner, "assessment_application", request, AssessmentApplication,
+        lambda: assessments.apply(session, learner, request.schedule_id))
     session.commit()
     return assessments.application_public(session, application)
 

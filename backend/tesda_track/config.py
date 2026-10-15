@@ -25,6 +25,20 @@ class RankingWeights(BaseModel):
         return self
 
 
+class PersonalizationWeights(BaseModel):
+    interest: float = Field(default=0.35, ge=0, le=1)
+    skill: float = Field(default=0.25, ge=0, le=1)
+    career: float = Field(default=0.15, ge=0, le=1)
+    location: float = Field(default=0.15, ge=0, le=1)
+    preference: float = Field(default=0.10, ge=0, le=1)
+
+    @model_validator(mode="after")
+    def sums_to_one(self):
+        if abs(sum(self.model_dump().values()) - 1) > 1e-6:
+            raise ValueError("Personalization weights must add up to 1.")
+        return self
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=ROOT_ENV_FILE, env_file_encoding="utf-8", extra="ignore",
                                       env_nested_delimiter="__")
@@ -57,6 +71,7 @@ class Settings(BaseSettings):
     match_weight_keyword: float = Field(default=0.5, ge=0, le=1)
     match_min_score: int = Field(default=20, ge=0, le=100, description="Hide qualification matches scoring below this")
     ranking_weights: RankingWeights = RankingWeights()
+    personalization_weights: PersonalizationWeights = Field(default_factory=PersonalizationWeights)
     proximity_radius_km: float = Field(default=100, gt=0, description="Distance at which proximity counts for nothing")
 
     # Legacy REST adapter; optional and independent of the public MCP integration below.

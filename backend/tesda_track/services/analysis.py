@@ -15,6 +15,8 @@ from tesda_track.services.embeddings import Embedder
 from tesda_track.services.intent_service import analyze_user_query
 from tesda_track.services.recommendation_service import recommend_pathway, refine_profile, score_qualifications
 from tesda_track.services.skill_gap_service import calculate_skill_gap
+from tesda_track.schemas.learner_assessments import AssessmentAnswers
+from tesda_track.services import personalization
 
 KEYWORD_SCALE = 95  # the highest score the keyword rules give
 SEMANTIC_REASON = "Similar in meaning to your goal."
@@ -121,8 +123,40 @@ def analyze_goal(session: Session, query: str, embedder: Embedder | None = None)
     return GoalAnalysisResult(inferred, "ai")
 
 
+def structured_matches(items: Sequence[CatalogItem], assessment: AssessmentAnswers, limit: int = 3) -> list[Match]:
+    """Shared by the API and offline evaluation; no database or embedding model required."""
+    scored = []
+    for item in items:
+        details = personalization.qualification_score(assessment, item)
+        if details.score > 0:
+            scored.append(Match(qualification=item.summary, score=details.score,
+                reason=" ".join(personalization.explanations(details)), personalization=details))
+
+    def tie_key(result):
+        parsed = goal_rules.level_of(result.qualification.name)
+        family, level = parsed if parsed else (result.qualification.name, 0)
+        level_order = level if assessment.experience_years == 0 else {2: 0, 1: 1, 3: 2, 4: 3}.get(level, 9)
+        return (-result.score, family.casefold(), level_order, result.qualification.code)
+
+    scored.sort(key=tie_key)
+    return scored[:limit]
+
+
 def match(session: Session, query: str, profile: Profile,
-          embedder: Embedder | None = None) -> tuple[Profile, list[Match]]:
+          embedder: Embedder | None = None, assessment: AssessmentAnswers | None = None,
+          limit: int = 3) -> tuple[Profile, list[Match]]:
+    if assessment is not None:
+        if assessment.career_goal is None and query.strip():
+            assessment = assessment.model_copy(update={"career_goal": query.strip()})
+        updates = {field: getattr(assessment, field) for field in ("experience_years", "has_certification")
+                   if getattr(assessment, field) is not None}
+        if assessment.career_goal:
+            updates["career_goal"] = assessment.career_goal[:200]
+        if assessment.existing_skills:
+            updates["existing_skills"] = assessment.existing_skills
+        refined = Profile.model_validate(refine_profile(profile.model_copy(update=updates).model_dump()))
+        current = catalog.snapshot(session)
+        return refined, structured_matches(current.items, assessment, limit)
     refined = Profile.model_validate(refine_profile(profile.model_dump()))
     current = catalog.snapshot(session)
     # With semantic search on, keywords count only as direct evidence in the learner's own words: the

@@ -581,22 +581,27 @@ def test_sign_out_clears_saved_personal_results(offline_api):
     assert app.text_input(key="dialog_signin_email")
 
 
-def test_library_explore_opens_finder_with_the_chosen_goal(offline_api):
+def test_library_explore_opens_finder_with_exact_qualification(offline_api, monkeypatch):
+    mock_finder(monkeypatch)
     app = run_page(new_app(), "Qualifications Library")
     app.button(key="explore_CSS-NC-II").click()
     run_page(app)
     assert app.session_state["main_tabs"] == "Find my pathway"
-    assert app.text_area(key="goal_query").value == "I want to pursue Computer Systems Servicing NC II."
-    assert "analysis" not in app.session_state, "exploring should let the learner review their goal before submitting"
+    assert app.session_state["original_query"] == "I want to pursue Computer Systems Servicing NC II."
+    assert app.selectbox(key="qualification_selected").value == "CSS-NC-II"
+    assert "Your chosen qualification" in page_text(app)
+    assert app.session_state["analysis"]["experience_years"] is None
 
 
-def test_library_explore_shows_the_goal_step_over_earlier_results(offline_api, monkeypatch):
+def test_library_explore_clears_earlier_results(offline_api, monkeypatch):
     mock_finder(monkeypatch)
     app = open_step(submit_goal(run_page(new_app())), 3)
     run_page(app, "Qualifications Library")
     app.button(key="explore_CSS-NC-II").click()
     run_page(app)
-    assert app.text_area(key="goal_query").value == "I want to pursue Computer Systems Servicing NC II."
+    assert app.session_state["original_query"] == "I want to pursue Computer Systems Servicing NC II."
+    assert app.selectbox(key="qualification_selected").value == "CSS-NC-II"
+    assert "readiness_results" not in app.session_state
 
 
 def landing_click(app, event, value):

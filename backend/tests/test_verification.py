@@ -206,6 +206,35 @@ def test_approval_rechecks_revoked_authorization(client, admin, learner, make_sc
     assert response.status_code == 422
 
 
+def test_current_authorization_must_cover_the_scheduled_assessment(client, admin, learner, make_schedule):
+    schedule = make_schedule(days_ahead=14)
+    assert put(client, admin, schedule["center"]["id"], kind="assessment",
+               valid_until=(utcnow() + timedelta(days=7)).isoformat()).status_code == 200
+    response = client.post("/api/v1/me/assessment-applications", headers=learner,
+                           json={"schedule_id": schedule["id"]})
+    assert response.status_code == 422
+    assert "scheduled assessment date" in response.json()["detail"]
+
+
+def test_current_certificate_that_expires_before_assessment_cannot_satisfy_entry_requirement(
+        client, admin, learner, session, make_schedule):
+    schedule = make_schedule(days_ahead=14)
+    put(client, admin, schedule["center"]["id"], kind="assessment", requirements=[prerequisite()])
+    certificate(session)  # Valid now, expires in ten days, before this assessment.
+    response = client.post("/api/v1/me/assessment-applications", headers=learner,
+                           json={"schedule_id": schedule["id"]})
+    assert response.status_code == 422
+
+
+def test_training_authorization_must_cover_published_dates(client, admin, make_program):
+    program = make_program(start_date=(utcnow().date() + timedelta(days=2)).isoformat(),
+                           end_date=(utcnow().date() + timedelta(days=30)).isoformat())
+    put(client, admin, program["provider"]["id"], valid_until=(utcnow() + timedelta(days=10)).isoformat())
+    result = ranking(client)
+    assert not result["results"]
+    assert any("published training dates" in reason for reason in result["requires_verification"][0]["reasons"])
+
+
 def test_editing_an_intake_requires_new_availability_evidence(client, admin, make_schedule):
     schedule = make_schedule()
     response = client.patch(f"/api/v1/admin/assessment-schedules/{schedule['id']}", headers=admin,

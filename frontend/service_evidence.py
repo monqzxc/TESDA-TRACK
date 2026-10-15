@@ -22,9 +22,37 @@ def service_verified(item: dict) -> bool:
     return not evidence.get("is_synthetic", False) and current_status(evidence, "review_due_at", "verified") == "verified"
 
 
-def can_apply(item: dict) -> bool:
+def can_apply(item: dict, eligibility: dict | None = None) -> bool:
+    if any(rule.get("kind") == "verified_certification" for rule in (item.get("verification") or {}).get("requirements", [])):
+        if not eligibility or eligibility.get("status") != "satisfied":
+            return False
+    if item.get("scheduled_at"):
+        try:
+            if datetime.fromisoformat(item["scheduled_at"].replace("Z", "+00:00")) <= datetime.now(timezone.utc):
+                return False
+        except (TypeError, ValueError):
+            return False
+    if item.get("status", "open") != "open" or item.get("seats_left", 1) <= 0:
+        return False
     return (service_verified(item) and item["verification"].get("requirements_reviewed", False)
+            and not any(rule.get("kind") == "manual_review" for rule in item["verification"].get("requirements", []))
+            and authorization_covers_schedule(item)
             and current_status(item.get("availability") or {}, "valid_until", "available") == "available")
+
+
+def authorization_covers_schedule(item: dict) -> bool:
+    evidence = item.get("verification") or {}
+    if not item.get("scheduled_at"):
+        return True
+    try:
+        scheduled = datetime.fromisoformat(item["scheduled_at"].replace("Z", "+00:00"))
+        if evidence.get("valid_from") and datetime.fromisoformat(evidence["valid_from"].replace("Z", "+00:00")) > scheduled:
+            return False
+        if evidence.get("valid_until") and datetime.fromisoformat(evidence["valid_until"].replace("Z", "+00:00")) <= scheduled:
+            return False
+    except (TypeError, ValueError):
+        return False
+    return True
 
 
 def evidence_messages(item: dict) -> list[str]:
@@ -37,6 +65,16 @@ def evidence_messages(item: dict) -> list[str]:
                  "unavailable": "Service unavailable", "unknown": "Service requires verification"}.get(status,
                                                                                                          "Service requires verification")
     messages = [label]
+    if evidence.get("source_name"):
+        messages.append("Source: " + evidence["source_name"])
+    if evidence.get("source_reference"):
+        messages.append("Source reference: " + evidence["source_reference"])
+    if evidence.get("reviewed_at"):
+        messages.append("Reviewed: " + evidence["reviewed_at"][:10])
+    if evidence.get("review_due_at"):
+        messages.append("Review due: " + evidence["review_due_at"][:10])
+    if not authorization_covers_schedule(item):
+        messages.append("Service authorization does not cover the scheduled assessment date")
     available = current_status(item.get("availability") or {}, "valid_until", "available")
     if available != "available":
         messages.append("Intake unavailable" if available == "unavailable" else "Intake availability requires confirmation")

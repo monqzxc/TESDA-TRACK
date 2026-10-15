@@ -131,6 +131,11 @@ def api(monkeypatch):
                                         "audit_id": 1})[1])
     monkeypatch.setattr(ApiClient, "schedules", lambda self, **params: (
         record("schedules", params), deepcopy(state["schedules"]))[1])
+    monkeypatch.setattr(ApiClient, "rank_assessments", lambda self, token=None, **body: (
+        record("rank_assessments", body), {"results": [
+            {"schedule": deepcopy(schedule), "score": 60, "explanation": ["Matches your selected qualification"],
+             "eligibility": {"status": "satisfied"}, "application_status": None}
+            for schedule in state["schedules"]], "requires_verification": []})[1])
     for method in ("readiness_checks", "sessions", "my_pathways", "my_applications", "goals", "certifications"):
         monkeypatch.setattr(ApiClient, method, lambda self, token, _m=method, **kwargs: deepcopy(state[_m]))
     monkeypatch.setattr(ApiClient, "set_step_status", lambda self, token, enrollment_id, step_id, status: (
@@ -329,7 +334,7 @@ def test_results_open_training_with_the_chosen_qualification(api):
 def test_results_open_assessment_schedules_view(api):
     app = press(finish_readiness(portal()), "see_assessments")
     assert app.button_group(key="training_view").value == "Assessment schedules"
-    assert calls(api, "schedules")[-1][0]["qualification_code"] == "SMAW-NC-II"
+    assert calls(api, "rank_assessments")[-1][0]["qualification_code"] == "SMAW-NC-II"
 
 
 def test_a_new_goal_starts_over_without_old_answers(api):

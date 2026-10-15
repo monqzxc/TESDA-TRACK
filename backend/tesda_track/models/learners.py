@@ -52,6 +52,7 @@ class RecommendationSession(Timestamped, table=True):
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     learner_id: uuid.UUID = Field(foreign_key="learner.id", ondelete="CASCADE", index=True)
+    assessment_id: uuid.UUID | None = Field(default=None, foreign_key="learner_assessment.id", ondelete="CASCADE", index=True)
     goal_id: uuid.UUID | None = Field(default=None, foreign_key="goal.id", ondelete="SET NULL")
     query: str = Field(sa_type=Text)
     analysis_source: str = Field(sa_type=String(10))

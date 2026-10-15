@@ -78,8 +78,14 @@ class ApiClient:
     def analyze_goal(self, query: str) -> dict:
         return self._request("POST", "/api/v1/analysis/goal", json={"query": query})
 
-    def match(self, query: str, profile: dict) -> dict:
-        return self._request("POST", "/api/v1/analysis/matches", json={"query": query, "profile": profile})
+    def match(self, query: str, profile: dict, *, assessment: dict | None = None,
+              assessment_id: str | None = None, token: str | None = None) -> dict:
+        body = {"query": query, "profile": profile}
+        if assessment is not None:
+            body["assessment"] = assessment
+        if assessment_id is not None:
+            body["assessment_id"] = assessment_id
+        return self._request("POST", "/api/v1/analysis/matches", token, json=body)
 
     def pathway(self, profile: dict, qualification_code: str) -> dict:
         return self._request("POST", "/api/v1/analysis/pathway",
@@ -111,8 +117,40 @@ class ApiClient:
         self._request("DELETE", "/api/v1/me", token)
 
     # Records of a signed-in learner
-    def start_session(self, token: str, query: str) -> dict:
-        return self._request("POST", "/api/v1/me/recommendations", token, json={"query": query})
+    def start_session(self, token: str, query: str, *, assessment_id: str | None = None,
+                      assessment: dict | None = None, request_id: str | None = None) -> dict:
+        body = {"query": query}
+        if request_id is not None:
+            body["request_id"] = request_id
+        if assessment is not None:
+            body["assessment"] = assessment
+        if assessment_id is not None:
+            body["assessment_id"] = assessment_id
+        return self._request("POST", "/api/v1/me/recommendations", token, json=body)
+
+    def create_learner_assessment(self, token: str, answers: dict, *, request_id: str | None = None) -> dict:
+        body = {"answers": answers}
+        if request_id is not None:
+            body["request_id"] = request_id
+        return self._request("POST", "/api/v1/learner-assessments", token, json=body)
+
+    def assessment_qualifications(self, answers: dict, token: str | None = None) -> dict:
+        return self._request("POST", "/api/v1/recommendations/qualifications", token, json={"assessment": answers})
+
+    def revise_learner_assessment(self, token: str, assessment_id: str, answers: dict, *, request_id: str | None = None) -> dict:
+        body = {"answers": answers}
+        if request_id is not None:
+            body["request_id"] = request_id
+        return self._request("PATCH", f"/api/v1/learner-assessments/{assessment_id}", token, json=body)
+
+    def learner_assessments(self, token: str) -> list[dict]:
+        return self._request("GET", "/api/v1/learner-assessments", token)
+
+    def get_learner_assessment(self, token: str, assessment_id: str) -> dict:
+        return self._request("GET", f"/api/v1/learner-assessments/{assessment_id}", token)
+
+    def delete_learner_assessment(self, token: str, assessment_id: str) -> None:
+        self._request("DELETE", f"/api/v1/learner-assessments/{assessment_id}", token)
 
     def update_session(self, token: str, session_id: str, **fields) -> dict:
         return self._request("PATCH", f"/api/v1/me/recommendations/{session_id}", token, json=fields)
@@ -120,10 +158,15 @@ class ApiClient:
     def sessions(self, token: str, limit: int = 10) -> list[dict]:
         return self._request("GET", "/api/v1/me/recommendations", token, params={"limit": limit})
 
+    def get_session(self, token: str, session_id: str) -> dict:
+        return self._request("GET", f"/api/v1/me/recommendations/{session_id}", token)
+
     def submit_readiness(self, token: str, qualification_code: str, answers: dict[int, str],
-                         session_id: str | None = None) -> dict:
-        return self._request("POST", "/api/v1/me/readiness-checks", token, json={
-            "qualification_code": qualification_code, "answers": answers, "recommendation_session_id": session_id})
+                         session_id: str | None = None, *, request_id: str | None = None) -> dict:
+        body = {"qualification_code": qualification_code, "answers": answers, "recommendation_session_id": session_id}
+        if request_id is not None:
+            body["request_id"] = request_id
+        return self._request("POST", "/api/v1/me/readiness-checks", token, json=body)
 
     def readiness_checks(self, token: str) -> list[dict]:
         return self._request("GET", "/api/v1/me/readiness-checks", token)
@@ -145,6 +188,12 @@ class ApiClient:
     def rank_training(self, token: str | None = None, **body) -> dict:
         """Ranked programs with score components; the goal goes in the body, never in a URL."""
         return self._request("POST", "/api/v1/recommendations/training", token, json=body)
+
+    def rank_assessments(self, token: str | None = None, **body) -> dict:
+        return self._request("POST", "/api/v1/recommendations/assessments", token, json=body)
+
+    def saved_ranking(self, token: str, audit_id: int) -> dict:
+        return self._request("GET", f"/api/v1/recommendations/{audit_id}", token)
 
     def training_providers(self) -> list[dict]:
         """Every active training provider, with its location when one is on file."""
@@ -171,8 +220,11 @@ class ApiClient:
         return self._request("PATCH", f"/api/v1/me/pathways/{enrollment_id}/steps/{step_id}", token,
                              json={"status": status})
 
-    def apply_for_assessment(self, token: str, schedule_id: int) -> dict:
-        return self._request("POST", "/api/v1/me/assessment-applications", token, json={"schedule_id": schedule_id})
+    def apply_for_assessment(self, token: str, schedule_id: int, *, request_id: str | None = None) -> dict:
+        body = {"schedule_id": schedule_id}
+        if request_id is not None:
+            body["request_id"] = request_id
+        return self._request("POST", "/api/v1/me/assessment-applications", token, json=body)
 
     def my_applications(self, token: str) -> list[dict]:
         return self._request("GET", "/api/v1/me/assessment-applications", token)

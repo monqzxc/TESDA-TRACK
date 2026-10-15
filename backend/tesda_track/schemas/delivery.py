@@ -19,6 +19,7 @@ Latitude = Annotated[float, Field(ge=-90, le=90)]
 Longitude = Annotated[float, Field(ge=-180, le=180)]
 Money = Annotated[Decimal, Field(ge=0, max_digits=10, decimal_places=2)]
 DeliveryMode = Literal[DELIVERY_MODES]
+PreferredDeliveryMode = Literal["institution_based", "enterprise_based", "community_based", "online"]
 
 
 def check_location(latitude: float | None, longitude: float | None) -> None:
@@ -209,6 +210,7 @@ class AssessmentSchedulePublic(BaseModel):
 
 
 class ApplicationCreate(BaseModel):
+    request_id: uuid.UUID | None = None
     schedule_id: int
 
 

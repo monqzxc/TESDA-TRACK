@@ -15,7 +15,7 @@ from tesda_track.models.base import Timestamped, one_of
 from tesda_track.models.catalog import Qualification
 from tesda_track.models.learners import Learner
 
-DELIVERY_MODES = ("institution_based", "enterprise_based", "community_based", "online")
+DELIVERY_MODES = ("institution_based", "enterprise_based", "community_based", "online", "unknown")
 SCHEDULE_STATUSES = ("open", "closed", "cancelled", "completed")
 APPLICATION_STATUSES = ("pending", "approved", "rejected", "withdrawn", "completed")
 ASSESSMENT_RESULTS = ("competent", "not_yet_competent")

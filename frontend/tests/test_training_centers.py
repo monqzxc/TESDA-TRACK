@@ -76,7 +76,7 @@ SCHEDULES = [schedule(21, MANILA_AC, "SMAW-NC-II", days=10)]
 def api(monkeypatch):
     """A fake API that pages and filters listings the way the real one does."""
     monkeypatch.setenv("API_BASE_URL", f"http://training-test-{uuid4().hex}.invalid")
-    state = {"applied": [], "ranked": [], "pages": []}
+    state = {"applied": [], "ranked": [], "pages": [], "assessment_ranked": []}
 
     def blocked_request(self, *args, **kwargs):
         raise AssertionError("These tests must never reach the network")
@@ -99,6 +99,15 @@ def api(monkeypatch):
         state["applied"].append((token, schedule_id))
         return {"id": "application-1", "status": "pending"}
 
+    def rank_assessments(self, token=None, **body):
+        state["assessment_ranked"].append((token, deepcopy(body)))
+        items = [{"schedule": deepcopy(item), "score": 67, "explanation": ["Fits your assessment fee preference"],
+                  "eligibility": {"status": "satisfied"}, "personalization": {"evidence_coverage": 1},
+                  "application_status": "pending" if (token, item["id"]) in state["applied"] else None}
+                 for item in SCHEDULES if item["qualification"]["code"] == body["qualification_code"]]
+        return {"results": items, "requires_verification": [], "total": len(items), "unconfirmed_total": 0,
+                "limit": body["limit"], "offset": body.get("offset", 0), "audit_id": 2}
+
     monkeypatch.setattr(ApiClient, "_request", blocked_request)
     monkeypatch.setattr(RouteClient, "route", blocked_request)
     monkeypatch.setattr(ApiClient, "qualifications", lambda self: deepcopy(CATALOG))
@@ -108,6 +117,7 @@ def api(monkeypatch):
     monkeypatch.setattr(ApiClient, "training_programs", listings(PROGRAMS, "programs"))
     monkeypatch.setattr(ApiClient, "schedules", listings(SCHEDULES, "schedules"))
     monkeypatch.setattr(ApiClient, "rank_training", rank)
+    monkeypatch.setattr(ApiClient, "rank_assessments", rank_assessments)
     monkeypatch.setattr(ApiClient, "apply_for_assessment", apply)
     return state
 
@@ -314,7 +324,7 @@ def test_unverified_program_has_no_fit_badge_even_with_an_old_ranking(api, monke
     search(app)
     open_center(app, "training-1")
     detail = text(app.container(key="center_detail"))
-    assert "87% fit" not in detail
+    assert "Fit 87/100" not in detail
     assert "Service requires verification" in detail
 
 
@@ -385,7 +395,7 @@ def test_training_details_show_how_well_each_program_fits(api):
     app.multiselect(key="training_qualifications").select("CSS-NC-II")
     search(app)
     open_center(app, "training-1")
-    assert "87% fit" in text(app.container(key="center_detail"))
+    assert "Fit 87/100" in text(app.container(key="center_detail"))
     assert api["ranked"][-1]["qualification_code"] == "CSS-NC-II"
     assert api["ranked"][-1]["goal"] == "I want to fix computers"
     calls = len(api["ranked"])
@@ -632,3 +642,117 @@ def test_directions_stay_with_google_maps_when_routing_is_switched_off(api, monk
     assert "training_button_route" not in button_keys(app)
     assert "Get directions" in links(app.container(key="center_detail"))
     assert map_data(app)["can_route"] is False
+
+
+def compare_assessments(app):
+    return run(app.button(key="assessment_center_submit").click())
+
+
+def test_assessment_comparison_is_lazy_and_batches_fee_and_date_inputs(api):
+    app = open_page(assessment_center_panel=True, training_qualifications=["SMAW-NC-II"],
+                    assessment_answers={"interests": ["welding"]})
+    assert api["assessment_ranked"] == []
+    app.number_input(key="assessment_center_fee").set_value(800)
+    app.checkbox(key="assessment_center_fee_required").check()
+    compare_assessments(app)
+    token, body = api["assessment_ranked"][0]
+    assert token is None and body["maximum_fee"] == "800.0" and body["fee_is_mandatory"]
+    assert body["assessment"] == {"interests": ["welding"]}
+    assert "Fit 67/100" in text(app.container(key="assessment_center_result_21"))
+    assert app.button(key="assessment_center_sign_in")
+    run(app)
+    assert len(api["assessment_ranked"]) == 1, "ordinary reruns reuse the fresh, account-specific comparison"
+
+
+def test_ranked_assessment_opens_map_and_application_is_tracked(api):
+    app = open_page(signed_in=True, assessment_center_panel=True, training_qualifications=["SMAW-NC-II"],
+                    training_selected="training-2", assessment_record={"id": "owned-revision"},
+                    assessment_answers={"interests": ["welding"]})
+    compare_assessments(app)
+    assert api["assessment_ranked"][0][1]["assessment_id"] == "owned-revision"
+    assert "assessment" not in api["assessment_ranked"][0][1]
+    run(app.button(key="assessment_center_open_21").click())
+    assert featured(app) == "assessment-7" and map_data(app)["selected"] == "assessment-7"
+    run(app.button(key="assessment_center_apply_21").click())
+    assert api["applied"] == [("frontend-test-token", 21)]
+    assert "Application: pending" in text(app.container(key="assessment_center_result_21"))
+    assert "assessment_center_apply_21" not in button_keys(app)
+    assert app.button(key="apply_21").disabled
+    assert "Track it under My Progress" in text(app)
+
+
+def test_assessment_comparison_does_not_send_browser_coordinates(api):
+    app = open_page(assessment_center_panel=True, training_qualifications=["SMAW-NC-II"],
+        training_use_location=True, training_location={"latitude": 14.623456, "longitude": 121.054321})
+    compare_assessments(app)
+    body = api["assessment_ranked"][0][1]
+    assert "near_lat" not in body and "near_lon" not in body
+
+
+def test_changed_assessment_invalidates_previous_comparison(api):
+    app = open_page(assessment_center_panel=True, training_qualifications=["SMAW-NC-II"])
+    compare_assessments(app)
+    app.session_state["assessment_answers"] = {"interests": ["cooking"]}
+    run(app)
+    assert "assessment_center_apply_21" not in button_keys(app)
+    assert "Compare again to update eligibility" in text(app)
+
+
+def test_expired_comparison_is_not_used_as_current_eligibility(api):
+    app = open_page(assessment_center_panel=True, training_qualifications=["SMAW-NC-II"])
+    compare_assessments(app)
+    cached = app.session_state["assessment_center_result"]
+    cached["fetched_at"] = datetime.now(timezone.utc) - timedelta(minutes=5)
+    app.session_state["assessment_center_result"] = cached
+    run(app)
+    assert "This comparison has expired" in text(app)
+    assert not any(node.key == "assessment_center_result_21" for node in app.container)
+
+
+def test_unconfirmed_assessments_have_reasons_and_no_score_or_apply(api, monkeypatch):
+    pending = {"schedule": deepcopy(SCHEDULES[0]), "eligibility": {"status": "unknown"},
+               "reasons": ["Mandatory prerequisites require verification."]}
+    monkeypatch.setattr(ApiClient, "rank_assessments", lambda *args, **kwargs: {
+        "results": [], "requires_verification": [pending], "total": 0, "unconfirmed_total": 1})
+    app = open_page(signed_in=True, assessment_center_panel=True, training_qualifications=["SMAW-NC-II"])
+    compare_assessments(app)
+    assert "Mandatory prerequisites require verification" in text(app)
+    assert "assessment_center_apply_21" not in button_keys(app)
+    assert "Fit 67/100" not in text(app)
+
+
+def test_comparison_failure_preserves_browse_and_retry(api, monkeypatch):
+    def fail(*args, **kwargs):
+        raise ApiUnavailableError(UNAVAILABLE_MESSAGE)
+    monkeypatch.setattr(ApiClient, "rank_assessments", fail)
+    app = open_page(assessment_center_panel=True, training_qualifications=["SMAW-NC-II"])
+    compare_assessments(app)
+    assert UNAVAILABLE_MESSAGE in text(app)
+    assert row_ids(app), "center browsing still renders when recommendations are unavailable"
+
+
+def test_training_fit_expiry_rechecks_eligibility_and_removes_old_score(api, monkeypatch):
+    app = open_page(training_qualifications=["SMAW-NC-II"], training_selected="training-2")
+    assert "Fit 87/100" in text(app.container(key="center_detail"))
+    memo = app.session_state["training_fit"]
+    for entry in memo.values():
+        entry["expires_at"] = 0
+    app.session_state["training_fit"] = memo
+    calls = []
+    monkeypatch.setattr(ApiClient, "rank_training", lambda *args, **body: (calls.append(body), {"results": []})[1])
+    run(app)
+    assert calls and "Fit 87/100" not in text(app.container(key="center_detail"))
+
+
+def test_registry_program_with_unknown_operational_fields_is_browsable(api, monkeypatch):
+    imported = PROGRAMS[0]
+    for field,value in {'delivery_mode':'unknown', 'start_date':None, 'end_date':None, 'slots':None,
+                        'cost':None, 'scholarship_available':False,
+                        'verification':{'status':'unknown'}, 'availability':{'status':'unknown'}}.items():
+        monkeypatch.setitem(imported,field,value)
+    monkeypatch.setattr(ApiClient,'rank_training',lambda *args,**kwargs:{'results':[]})
+    app = open_page(training_qualifications=['CSS-NC-II'],training_selected='training-1')
+    detail = text(app.container(key='center_detail'))
+    assert 'Delivery mode unconfirmed' in detail
+    assert 'Fit 87/100' not in detail
+    assert not app.exception

@@ -12,6 +12,7 @@ from tesda_track.schemas.catalog import QualificationSummary
 from tesda_track.schemas.delivery import AssessmentApplicationPublic
 from tesda_track.schemas.pathways import EnrollmentPublic
 from tesda_track.schemas.ranking import RankingAuditPublic
+from tesda_track.schemas.learner_assessments import AssessmentPublic, AssessmentReference
 
 QualificationCode = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=40)]
 GoalStatus = Literal["active", "achieved", "archived"]
@@ -45,7 +46,8 @@ class GoalPublic(BaseModel):
     updated_at: datetime
 
 
-class RecommendationSessionCreate(BaseModel):
+class RecommendationSessionCreate(AssessmentReference):
+    request_id: uuid.UUID | None = None
     query: GoalText
     goal_id: uuid.UUID | None = None
 
@@ -55,9 +57,11 @@ class RecommendationSessionUpdate(BaseModel):
     experience_years: float | None = Field(default=None, ge=0, le=80)
     has_certification: bool | None = None
     qualification_code: QualificationCode | None = None
+    assessment_id: uuid.UUID | None = None
 
 
 class RecommendationSessionPublic(BaseModel):
+    assessment_id: uuid.UUID | None = None
     id: uuid.UUID
     goal_id: uuid.UUID | None
     query: str
@@ -71,6 +75,7 @@ class RecommendationSessionPublic(BaseModel):
 
 
 class ReadinessCheckCreate(ReadinessRequest):
+    request_id: uuid.UUID | None = None
     recommendation_session_id: uuid.UUID | None = None
 
 
@@ -120,6 +125,7 @@ class CertificationPublic(BaseModel):
 
 
 class AccountExport(BaseModel):
+    learner_assessments: list[AssessmentPublic] = Field(default_factory=list)
     exported_at: datetime
     account: LearnerPublic
     goals: list[GoalPublic]
@@ -129,3 +135,4 @@ class AccountExport(BaseModel):
     pathway_enrollments: list[EnrollmentPublic]
     assessment_applications: list[AssessmentApplicationPublic]
     training_rankings: list[RankingAuditPublic]
+    assessment_rankings: list[RankingAuditPublic] = Field(default_factory=list)

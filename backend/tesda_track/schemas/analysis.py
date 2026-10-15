@@ -1,9 +1,10 @@
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, Field, StringConstraints
+from pydantic import BaseModel, Field, StringConstraints, model_serializer
 
 from tesda_track.schemas.catalog import QualificationSummary
 from tesda_track.schemas.pathways import PathwayPublic
+from tesda_track.schemas.learner_assessments import AssessmentReference, PersonalizedScore
 
 GoalText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=1000)]
 ShortText = Annotated[str, StringConstraints(strip_whitespace=True, max_length=200)]
@@ -31,7 +32,7 @@ class GoalAnalysis(BaseModel):
     source: Literal["rules", "ai"]
 
 
-class MatchRequest(BaseModel):
+class MatchRequest(AssessmentReference):
     query: GoalText
     profile: Profile
 
@@ -43,10 +44,18 @@ class MatchComponents(BaseModel):
 
 
 class Match(BaseModel):
+    personalization: PersonalizedScore | None = None
     qualification: QualificationSummary
     score: int
     reason: str
     components: MatchComponents | None = None
+
+    @model_serializer(mode="wrap")
+    def preserve_legacy_shape(self, handler):
+        result = handler(self)
+        if self.personalization is None:
+            result.pop("personalization", None)
+        return result
 
 
 class MatchResult(BaseModel):

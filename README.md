@@ -78,6 +78,22 @@ the API uses the base model above.
 The training weights (`RANKING_WEIGHTS__SEMANTIC`, `__PROXIMITY`, `__ASSESSMENT`, `__SCHEDULE`,
 `__PREFERENCE`) must add up to 1 and are set in `.env`.
 
+Learners can optionally personalize the finder with a versioned structured assessment. Its separate
+35/25/15/15/10 policy uses interests, reported skills, career goals, location and practical preferences.
+Both policies expose missing evidence and effective weights; unavailable models no longer receive full
+semantic credit. See [Structured assessments and scoring](docs/structured-assessments.md) for the workflow,
+API, migration `0007`, and configuration.
+
+Assessment-center comparisons now use a distinct verified schedule ranker with explicit exam fee/date
+constraints, explained fit scores, and direct application tracking. Open **Compare assessment centers**
+in **Training & Assessment**. See [Assessment-center ranking and portal integration](docs/assessment-center-ranking.md)
+for eligibility checks, pagination, historical snapshots, and the completed application/certificate flow.
+
+Run `.venv/Scripts/python.exe scripts/release_check.py --build-images` for repeatable relevance,
+constraint, regression, migration and container checks. It saves reports and fails unmet release gates.
+See [Evaluation and release checks](docs/evaluation-and-release-checks.md) and the
+[2026-10-14 validation report](docs/2026-10-14-release-validation.md) for measured results and current blockers.
+
 ### Skills Bridge
 
 The **Skills Explorer** tab (powered by Skills Bridge) connects to the read-only MCP endpoint at
@@ -265,6 +281,7 @@ changes reload instantly. The commands below work in PowerShell and Git Bash.
 | Apply new migrations (after pulling)             | `cd backend` then `../.venv/Scripts/alembic upgrade head`                                                 |
 | Create a migration                               | `cd backend` then `../.venv/Scripts/alembic revision --autogenerate --rev-id 0004 -m "short description"` |
 | Reload the seed data                             | `cd backend` then `../.venv/Scripts/python -m tesda_track.seed`                                           |
+| Import real training/assessment Excel registries | See [registry import commands and review workflow](docs/registry-import.md); preview first with `python -m tesda_track.registry_import --help` |
 | Embed new or changed qualifications and programs | `cd backend` then `../.venv/Scripts/python -m tesda_track.embeddings sync`                                |
 | Run the tests                                    | `.venv/Scripts/python -m pytest`                                                                          |
 | Also test the real embedding model               | `TESDA_MODEL_TESTS=1 .venv/Scripts/python -m pytest backend/tests/test_semantic.py`                       |
@@ -325,6 +342,9 @@ Passwords are hashed with Argon2. Access tokens are JWTs signed with `SECRET_KEY
 revokes every existing token, and five failed sign-ins lock an account for 15 minutes.
 
 ## Training, assessment and pathways
+
+Service recommendations require current qualification-specific verification and satisfied prerequisites.
+See [Service verification and eligibility](docs/service-verification.md) for migration `0006`, administrator evidence imports, availability updates, and the distinction between confirmed results and records requiring verification.
 
 Learners use the **Training & Assessment** tab to find training programs and upcoming assessments,
 nearest to their region first, and to apply for an assessment. The region only sorts the results and
