@@ -6,7 +6,7 @@ import { useCountUp } from './hooks/useCountUp.ts'
 import { usePaused } from './hooks/usePaused.ts'
 import { useReducedMotion } from './hooks/useReducedMotion.ts'
 import { useReveal } from './hooks/useReveal.ts'
-import { cssVars, cx } from './style.ts'
+import { cssVars, cx } from '../../lib/style.ts'
 import styles from './GoalConsole.module.css'
 
 const copy = en.home.console

@@ -10,7 +10,7 @@ import {
   type ReadinessLevel,
 } from './readiness.ts'
 import { Reveal } from './Reveal.tsx'
-import { cssVars, cx } from './style.ts'
+import { cssVars, cx } from '../../lib/style.ts'
 import shared from './shared.module.css'
 import styles from './Track.module.css'
 

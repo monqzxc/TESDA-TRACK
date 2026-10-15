@@ -9,7 +9,7 @@ import { useReducedMotion } from './hooks/useReducedMotion.ts'
 import { useReveal } from './hooks/useReveal.ts'
 import electrical from './img/electrical.jpg'
 import { Reveal } from './Reveal.tsx'
-import { cx } from './style.ts'
+import { cx } from '../../lib/style.ts'
 import shared from './shared.module.css'
 import styles from './ProgressPreview.module.css'
 

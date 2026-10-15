@@ -185,6 +185,17 @@ export const icons = {
   menu: [{ tag: 'path', d: 'M4 7h16M4 12h16M4 17h16' }],
   close: [{ tag: 'path', d: 'm6 6 12 12M18 6 6 18' }],
   refresh: [{ tag: 'path', d: 'M19.5 12a7.5 7.5 0 1 1-2.2-5.3L20 9.5M20 4v5.5h-5.5' }],
+  // The pages' controls, for the Material icons on the Streamlit pages' buttons (expand_more, check,
+  // arrow_forward, arrow_back, edit, bookmark_border, filter_alt_off).
+  chevron: [{ tag: 'path', d: 'm6 9 6 6 6-6' }],
+  tick: [{ tag: 'path', d: 'm5 12.5 4.5 4.5L19 7.5' }],
+  arrowRight: [{ tag: 'path', d: 'M4.5 12h15m-6-6 6 6-6 6' }],
+  arrowLeft: [{ tag: 'path', d: 'M19.5 12h-15m6-6-6 6 6 6' }],
+  edit: [{ tag: 'path', d: 'M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Zm9.5-13.5 4 4' }],
+  bookmark: [{ tag: 'path', d: 'M6.5 3.5h11v17L12 16l-5.5 4.5v-17Z' }],
+  filterOff: [
+    { tag: 'path', d: 'M4 4.5h16l-6 7.5v5.5l-4 2.5v-8L4 4.5ZM16 15l4.5 4.5m0-4.5L16 19.5' },
+  ],
 } as const satisfies Record<string, readonly IconShape[]>
 
 export type IconName = keyof typeof icons

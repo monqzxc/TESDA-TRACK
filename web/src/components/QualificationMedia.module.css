@@ -1,0 +1,29 @@
+/* After frontend/styles.css's .qual-photo and .qual-tile. The picture fills the box its card gives it. */
+.photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The sector's icon in white over two soft circles and the sector's gradient. */
+.tile {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(circle at 92% 0%, #ffffff24 0 34%, transparent 35%),
+    radial-gradient(circle at 0% 105%, #ffffff17 0 30%, transparent 31%),
+    linear-gradient(135deg, var(--tile-start), var(--tile-end));
+  color: #ffffff;
+}
+
+.tileIcon {
+  width: min(30%, 60px);
+  height: auto;
+}
+
+.thumb .tileIcon {
+  width: 50%;
+}

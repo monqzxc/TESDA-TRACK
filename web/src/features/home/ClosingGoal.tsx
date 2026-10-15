@@ -7,7 +7,7 @@ import utilities from '../../styles/utilities.module.css'
 import { GOAL_MAX_LENGTH, useFinderStore } from '../finder/store.ts'
 import { Glyph } from './Glyph.tsx'
 import { Reveal } from './Reveal.tsx'
-import { cx } from './style.ts'
+import { cx } from '../../lib/style.ts'
 import shared from './shared.module.css'
 import styles from './ClosingGoal.module.css'
 

@@ -1,7 +1,7 @@
 import { en } from '../../copy/en.ts'
 import { MAP_LABELS, MAP_LEARNER_REGION, REGIONS } from './data.ts'
 import { Reveal } from './Reveal.tsx'
-import { cssVars } from './style.ts'
+import { cssVars } from '../../lib/style.ts'
 import styles from './NearYou.module.css'
 
 const copy = en.home.near

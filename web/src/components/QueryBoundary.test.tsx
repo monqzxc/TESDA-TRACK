@@ -45,7 +45,9 @@ describe('QueryBoundary', () => {
 
     await user.click(screen.getByRole('button', { name: 'Try again' }))
 
-    expect(await screen.findByText(/^Soon you can explore qualifications/)).toBeInTheDocument()
+    expect(
+      await screen.findByRole('heading', { level: 2, name: bookkeeping.name }),
+    ).toBeInTheDocument()
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
     expect(calls.count).toBe(2)
   })

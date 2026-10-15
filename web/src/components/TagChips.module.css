@@ -1,0 +1,27 @@
+/* After frontend/styles.css's .qual-tags. */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  background: var(--track-chip);
+  color: var(--track-ink);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.green {
+  background: var(--track-good-bg);
+  color: var(--track-good-ink);
+}

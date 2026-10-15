@@ -286,22 +286,22 @@ Playwright journey. Check each page against the Streamlit version and the matchi
 Port `frontend/landing.html`, `landing.css` and `landing.js` into `features/home/`: Hero, GoalConsole, Track (the
 road drawn on scroll), ReadinessDemo, Archipelago, Catalog, ProgressPreview, ClosingGoal.
 
-- [ ] `useReveal` (IntersectionObserver) and `useRoute` (the road's path and scroll progress) hooks, both turned off
+- [x] `useReveal` (IntersectionObserver) and `useRoute` (the road's path and scroll progress) hooks, both turned off
       with reduced motion.
-- [ ] Links become router links. The closing goal box opens `/find` with the goal passed in the finder store, not
+- [x] Links become router links. The closing goal box opens `/find` with the goal passed in the finder store, not
       in the address.
-- [ ] The figures (319 qualifications, 27 sectors, and the rest) stay written into the page, as today.
+- [x] The figures (319 qualifications, 27 sectors, and the rest) stay written into the page, as today.
 
 ### Task 10: Account
 
-- [ ] Sign-in dialog, account creation with the privacy notice and consent, the account menu, sign out.
-- [ ] Download my data (a JSON file) and delete my account, with a confirmation step inside the page.
-- [ ] Actions that need an account (follow a pathway, apply, save) open the dialog and return the learner to the
+- [x] Sign-in dialog, account creation with the privacy notice and consent, the account menu, sign out.
+- [x] Download my data (a JSON file) and delete my account, with a confirmation step inside the page.
+- [x] Actions that need an account (follow a pathway, apply, save) open the dialog and return the learner to the
       same place with their work intact (US-02).
 
 ### Task 11: Qualifications Library (US-04)
 
-- [ ] Search and sector filter in the address, 12 cards a page, sector tiles and trade photos, competencies by
+- [x] Search and sector filter in the address, 12 cards a page, sector tiles and trade photos, competencies by
       group, and "Explore this pathway" opening the finder with that goal.
 
 ### Task 12: Find my pathway (US-01, US-03, US-05, US-06, US-14)

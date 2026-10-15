@@ -3,6 +3,12 @@
 /** A figure in a line of copy, grouped as the page shows figures: 4,981. */
 const figure = (n: number) => n.toLocaleString('en-US')
 
+/** Names in a sentence: "a", "a and b", "a, b and c". */
+const list = (items: readonly string[]) =>
+  items.length > 1
+    ? `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`
+    : (items[0] ?? '')
+
 export const en = {
   app: {
     name: 'TESDA-TRACK',
@@ -285,7 +291,7 @@ export const en = {
     qualifications: {
       title: 'Qualifications Library · TESDA-TRACK',
       heading: 'Qualifications Library',
-      lead: "Soon you can explore qualifications, possible careers, and the skills you'll build along the way.",
+      lead: "Explore qualifications, possible careers, and the skills you'll build along the way.",
     },
     training: {
       title: 'Training & Assessment · TESDA-TRACK',
@@ -321,6 +327,73 @@ export const en = {
   },
   catalog: {
     loading: 'Loading qualifications…',
+    // The catalog loaded, but it has no qualifications yet (frontend/app.py main).
+    empty: {
+      heading: 'New possibilities are on the way',
+      body: 'There are no qualifications in the catalog yet. Please check back later.',
+      refresh: 'Refresh catalog',
+    },
+  },
+  // Facts about a qualification from its catalog record (frontend/app.py qualification_tags, qualification_blurb).
+  qualification: {
+    tags: {
+      level: (numeral: string) => `NC ${numeral}`,
+      competencies: (n: number) => `${figure(n)} ${n === 1 ? 'competency' : 'competencies'}`,
+      careers: (n: number) => `${figure(n)} career ${n === 1 ? 'option' : 'options'}`,
+      higher: (numeral: string) => `Pathway to NC ${numeral}`,
+    },
+    blurb: {
+      jobs: (jobs: readonly string[]) => `Prepares you for jobs like ${list(jobs)}.`,
+      covers: (competencies: number, core: number) =>
+        `Covers ${figure(competencies)} ${competencies === 1 ? 'competency' : 'competencies'}` +
+        (core
+          ? `, including ${figure(core)} core technical ${core === 1 ? 'skill' : 'skills'}.`
+          : '.'),
+    },
+    // Each group of competencies, as the readiness check and the library name them.
+    category: (category: string) => `${category} skills`,
+    categoryHelp: {
+      Basic: 'Workplace skills every qualification shares, like teamwork and safety.',
+      Common: 'Skills shared by the trades in this sector.',
+      Core: 'The technical skills of this qualification.',
+      other: 'What can you already do? Rate each sample competency.',
+    } as Record<string, string>,
+  },
+  // Qualifications Library (frontend/app.py show_library).
+  library: {
+    hero: {
+      title: 'Find what sparks',
+      accent: 'your interest.',
+    },
+    filters: 'Filter qualifications',
+    search: 'Search qualifications or careers',
+    searchPlaceholder: 'Try welding, cookery, or computers',
+    clearSearch: 'Clear search',
+    sector: 'Sector',
+    allSectors: 'All sectors',
+    // "12 of 319 qualifications · Showing 1–12 · Filtered results"
+    count: (found: number, total: number) => `${figure(found)} of ${figure(total)} qualifications`,
+    showing: (first: number, last: number) => `Showing ${figure(first)}–${figure(last)}`,
+    filtered: 'Filtered results',
+    unfiltered: 'Find your next possibility',
+    clear: 'Clear filters',
+    empty: {
+      heading: 'No qualifications found',
+      body: 'Try a different career or keyword, or clear your filters to explore all qualifications.',
+    },
+    careers: 'Possible careers',
+    noCareers: 'Not listed yet',
+    competencies: (n: number) =>
+      `View ${figure(n)} sample ${n === 1 ? 'competency' : 'competencies'}`,
+    explore: 'Explore this pathway',
+    // The goal "Explore this pathway" puts in Find my pathway's goal box, for the learner to review.
+    exploreGoal: (name: string) => `I want to pursue ${name}.`,
+  },
+  pager: {
+    label: 'Pages',
+    previous: 'Previous',
+    next: 'Next',
+    page: (page: number, pages: number) => `Page ${figure(page)} of ${figure(pages)}`,
   },
   service: {
     unreachable: "We can't reach the TESDA-TRACK service right now. Please try again shortly.",

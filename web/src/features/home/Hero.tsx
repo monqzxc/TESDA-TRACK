@@ -9,7 +9,7 @@ import { useReveal } from './hooks/useReveal.ts'
 import welding from './img/welding.jpg'
 import weldingSmall from './img/welding-600.jpg'
 import { Reveal } from './Reveal.tsx'
-import { cssVars, cx } from './style.ts'
+import { cssVars, cx } from '../../lib/style.ts'
 import shared from './shared.module.css'
 import styles from './Hero.module.css'
 

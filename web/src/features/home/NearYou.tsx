@@ -6,7 +6,7 @@ import { Archipelago } from './Archipelago.tsx'
 import type { OnePerEntry } from './data.ts'
 import { Glyph } from './Glyph.tsx'
 import { Reveal } from './Reveal.tsx'
-import { cssVars, cx } from './style.ts'
+import { cssVars, cx } from '../../lib/style.ts'
 import shared from './shared.module.css'
 import styles from './NearYou.module.css'
 

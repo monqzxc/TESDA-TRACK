@@ -1,6 +1,7 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
+import { en } from './copy/en.ts'
 import { basename } from './routes.tsx'
 import { renderApp, serveCatalog } from './test/app.tsx'
 import { server } from './test/server.ts'
@@ -51,8 +52,11 @@ describe('routes', () => {
       expect(await screen.findByRole('heading', { level: 1, name: heading })).toBeInTheDocument()
       if (step) expect(screen.getByRole('heading', { level: 2, name: step })).toBeInTheDocument()
       await waitFor(() => expect(document.title).toBe(title))
-      // The line under the heading shows once the catalog is in, on the pages that need it.
-      if (needsCatalog) expect(await screen.findByText(/^Soon /)).toBeInTheDocument()
+      // The pages that need the catalog ask for it once, and show once it's in.
+      if (needsCatalog) {
+        await waitFor(() => expect(catalog.count).toBe(1))
+        await waitFor(() => expect(screen.queryByText(en.catalog.loading)).not.toBeInTheDocument())
+      }
       expect(catalog.count).toBe(needsCatalog ? 1 : 0)
     },
   )

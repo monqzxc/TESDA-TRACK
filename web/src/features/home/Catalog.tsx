@@ -8,7 +8,7 @@ import { useCountUp } from './hooks/useCountUp.ts'
 import { useReducedMotion } from './hooks/useReducedMotion.ts'
 import { useReveal } from './hooks/useReveal.ts'
 import { Reveal } from './Reveal.tsx'
-import { cssVars, cx } from './style.ts'
+import { cssVars, cx } from '../../lib/style.ts'
 import shared from './shared.module.css'
 import styles from './Catalog.module.css'
 

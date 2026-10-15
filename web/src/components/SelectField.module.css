@@ -1,0 +1,112 @@
+/* After the Streamlit app's select boxes, matching the account forms' fields (auth/forms.module.css). */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.label {
+  color: var(--track-navy);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  min-height: 46px;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--track-hover-border);
+  border-radius: 12px;
+  background: var(--track-surface);
+  color: var(--track-navy);
+  font-size: 1rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.button[data-hovered],
+.button[data-focus-visible],
+.button[data-pressed] {
+  border-color: var(--track-blue);
+}
+
+.button[data-disabled] {
+  background: var(--track-disabled-bg);
+  color: var(--track-disabled-ink);
+  cursor: not-allowed;
+}
+
+.value {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.value[data-placeholder] {
+  color: var(--track-muted);
+}
+
+.chevron {
+  flex: none;
+  color: var(--track-muted);
+}
+
+.help {
+  color: var(--track-muted);
+  font-size: 0.875rem;
+}
+
+.popover {
+  width: var(--trigger-width);
+  max-height: min(22rem, var(--visual-viewport-height, 60vh));
+  overflow: auto;
+  border: 1px solid var(--track-border);
+  border-radius: 12px;
+  background: var(--track-surface);
+  box-shadow: 0 16px 36px -18px rgb(var(--track-shadow-rgb) / 0.45);
+}
+
+.list {
+  padding: 0.3rem;
+  outline: none;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  min-height: 44px;
+  padding: 0.5rem 0.7rem;
+  border-radius: 8px;
+  color: var(--track-navy);
+  font-size: 0.9375rem;
+  line-height: 1.35;
+  cursor: pointer;
+  outline: none;
+}
+
+.option[data-focused],
+.option[data-hovered] {
+  background: var(--track-soft);
+}
+
+.option[data-focus-visible] {
+  outline: 2px solid var(--track-focus);
+  outline-offset: -2px;
+}
+
+.option[data-selected] {
+  font-weight: 650;
+}
+
+.tick {
+  flex: none;
+  color: var(--track-blue);
+}

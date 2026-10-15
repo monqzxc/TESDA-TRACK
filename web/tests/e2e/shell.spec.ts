@@ -229,7 +229,10 @@ test.describe('on a desktop', () => {
     reachable = true
     await page.getByRole('button', { name: 'Try again' }).click()
 
-    await expect(page.getByText(/^Soon you can explore qualifications/)).toBeVisible()
+    // The catalog came back empty: the Library says so.
+    await expect(
+      page.getByRole('heading', { name: 'New possibilities are on the way' }),
+    ).toBeVisible()
     await expect(page.getByRole('heading', { name: UNAVAILABLE })).toHaveCount(0)
   })
 

@@ -3,7 +3,7 @@ import { Label, Radio, RadioGroup } from 'react-aria-components'
 import { en } from '../../copy/en.ts'
 import { BARISTA_UNITS } from './data.ts'
 import { ANSWERS, isAnswer, readinessLevel, readinessScore, type Answer } from './readiness.ts'
-import { cssVars, cx } from './style.ts'
+import { cssVars, cx } from '../../lib/style.ts'
 import shared from './shared.module.css'
 import styles from './ReadinessDemo.module.css'
 

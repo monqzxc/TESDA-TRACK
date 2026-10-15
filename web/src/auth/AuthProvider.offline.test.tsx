@@ -78,7 +78,8 @@ describe("when the sign-in dialog's code can't be downloaded", () => {
   it('says nothing when fetching it ahead fails, as the learner may not open it', async () => {
     const user = userEvent.setup()
     serveAccountApi()
-    await openApp('/qualifications', 'Qualifications Library')
+    // A page that never needs the finder's code (the Library does, to start the finder with a goal).
+    await openApp('/no-such-page', 'Page not found')
 
     // Hovering over Sign in fetches the dialog's code. Uncaught, the failure would fail the test run.
     await user.hover(screen.getByRole('button', { name: 'Sign in' }))
@@ -98,7 +99,7 @@ describe("when the finder's code can't be downloaded", () => {
       FINDER_KEY,
       JSON.stringify({ state: { goal: 'Become an electrician' }, version: 1 }),
     )
-    await openApp('/qualifications', 'Qualifications Library')
+    await openApp('/no-such-page', 'Page not found')
 
     await user.click(await findAccountButton())
     await user.click(

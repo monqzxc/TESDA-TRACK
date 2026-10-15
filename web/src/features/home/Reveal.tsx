@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from 'react'
-import { cssVars } from './style.ts'
+import { cssVars } from '../../lib/style.ts'
 import { useReveal } from './hooks/useReveal.ts'
 
 type RevealProps = HTMLAttributes<HTMLElement> & {
