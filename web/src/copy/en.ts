@@ -3,6 +3,10 @@
 /** A figure in a line of copy, grouped as the page shows figures: 4,981. */
 const figure = (n: number) => n.toLocaleString('en-US')
 
+/** The line under Find my pathway's headline, on each of its steps. */
+const FINDER_LEAD =
+  'Discover in-demand skills, find the right TESDA programs, and get closer to the career you want.'
+
 /** Names in a sentence: "a", "a and b", "a, b and c". */
 const list = (items: readonly string[]) =>
   items.length > 1
@@ -267,26 +271,22 @@ export const en = {
     finderGoal: {
       title: 'Your goal · Find my pathway · TESDA-TRACK',
       heading: 'Find my pathway',
-      step: 'Your goal',
-      lead: "Soon you can tell us about a career, a skill, or an experience you'd like to turn into a qualification.",
+      lead: FINDER_LEAD,
     },
     finderMatches: {
       title: 'Your match · Find my pathway · TESDA-TRACK',
       heading: 'Find my pathway',
-      step: 'Your match',
-      lead: "Soon you'll see the qualifications that match your goal.",
+      lead: FINDER_LEAD,
     },
     finderReadiness: {
       title: 'Readiness check · Find my pathway · TESDA-TRACK',
       heading: 'Find my pathway',
-      step: 'Readiness check',
-      lead: 'Soon you can check the skills you already have and the ones to build.',
+      lead: FINDER_LEAD,
     },
     finderPathway: {
       title: 'Your pathway · Find my pathway · TESDA-TRACK',
       heading: 'Find my pathway',
-      step: 'Your pathway',
-      lead: "Soon you'll see the training and assessment steps to your qualification.",
+      lead: FINDER_LEAD,
     },
     qualifications: {
       title: 'Qualifications Library · TESDA-TRACK',
@@ -389,6 +389,243 @@ export const en = {
     // The goal "Explore this pathway" puts in Find my pathway's goal box, for the learner to review.
     exploreGoal: (name: string) => `I want to pursue ${name}.`,
   },
+  // Find my pathway (frontend/app.py show_finder and its steps).
+  finder: {
+    banner: {
+      title: 'A little direction.',
+      accent: 'A world of possibilities.',
+      tiles: [
+        {
+          title: 'Tell us your goal',
+          text: 'Share what you want to do, or what you already know.',
+        },
+        {
+          title: 'Explore your pathway',
+          text: 'Discover qualifications and suggested next steps.',
+        },
+        {
+          title: 'Build your confidence',
+          text: 'Check your readiness and find skills to develop.',
+        },
+      ],
+    },
+    steps: {
+      label: 'Steps',
+      // Each step's name, and the hint under it on its tab.
+      names: ['Your goal', 'Your match', 'Readiness check', 'Your pathway'],
+      hints: ['Start here', 'See recommendations', 'Find skill gaps', 'Plan your learning'],
+      // Read after a finished step's name.
+      done: 'done',
+      count: (step: number, steps: number) => `Step ${step} of ${steps}`,
+      back: 'Back',
+      next: (step: string) => `Next: ${step}`,
+    },
+    goal: {
+      heading: 'What would you like to achieve?',
+      lead: 'Tell us about a career, a skill, or an experience you’d like to turn into a qualification.',
+      examplesLabel: 'Need an idea? Start with an example',
+      // Each button puts its goal in the box, without sending it (US-01).
+      examples: [
+        { label: 'Become a welder', goal: 'I want to be a welder.' },
+        {
+          label: 'Work in a hotel',
+          goal: 'I want to work in a hotel but I don’t know which qualification is suitable for me.',
+        },
+        {
+          label: 'Improve my digital skills',
+          goal: 'I want to improve my digital skills and work with computers.',
+        },
+        {
+          label: 'Work on construction projects',
+          goal: 'I want to work on construction projects.',
+        },
+      ],
+      ownWords: 'Or tell us in your own words',
+      label: 'What would you like to learn or achieve?',
+      placeholder:
+        'Example: I want to work in a hotel but I don’t know which qualification is suitable for me.',
+      samplesLabel: 'You can also try these sample goals:',
+      samples: [
+        { label: 'I want to become a chef', goal: 'I want to become a chef.' },
+        { label: 'I want to work abroad', goal: 'I want to work abroad.' },
+        { label: 'I want to learn caregiving', goal: 'I want to learn caregiving.' },
+        { label: 'I want to be a barista', goal: 'I want to be a barista.' },
+        {
+          label: 'I want to improve my computer skills',
+          goal: 'I want to improve my computer skills.',
+        },
+        // The one idea that shows the assessment route: experience without a certificate.
+        {
+          label: 'Get my skills certified',
+          goal: 'I’ve worked as a welder for 5 years but I don’t have an NC.',
+        },
+        {
+          label: 'Marunong akong mag-ayos ng computer',
+          goal: 'Marunong akong mag-ayos ng computer.',
+        },
+      ],
+      submit: 'Get recommendation',
+      pending: 'Finding a starting point for you…',
+      empty: 'Describe your career goal or skills to get started.',
+      saved: 'Your results are saved to My Progress.',
+      signInToSave: 'Sign in to save your progress',
+      last: 'Your last submitted goal',
+      useAgain: 'Use again',
+    },
+    // The submitted goal, above steps 2 to 4.
+    summary: {
+      label: 'Your goal',
+      change: 'Change goal',
+      saved: 'Saved to My Progress',
+      save: 'Save to profile',
+      saving: 'Saving…',
+      retry: 'Try saving again',
+    },
+    // Saving a journey started as a guest, after signing in (US-02).
+    save: {
+      done: (parts: readonly string[]) => `Saved to My Progress: ${list(parts)}.`,
+      goal: 'your goal',
+      answers: 'your answers',
+      check: 'your readiness check',
+      failed: (saved: readonly string[], message: string) =>
+        saved.length
+          ? `We saved ${list(saved)}, but not the rest. ${message}`
+          : `We couldn’t save your journey. ${message}`,
+      syncFailed: 'Your latest answers aren’t saved yet.',
+    },
+    start: {
+      heading: 'Your starting point',
+      lead: 'Based on your submitted goal and the details you’ve shared.',
+      goal: 'Career goal',
+      exploring: 'Still exploring',
+      experience: 'Experience',
+      years: (years: number) =>
+        `${years.toLocaleString('en-US')} ${years === 1 ? 'year' : 'years'}`,
+      notSpecified: 'Not specified',
+      certification: 'Certification',
+      certified: 'Reported certification',
+      none: 'None',
+      unsure: 'Not sure',
+      intent: 'Detected intent',
+      intents: {
+        training_recommendation: 'Training recommendation',
+        training_and_assessment: 'Training and assessment',
+        assessment_recommendation: 'Assessment recommendation',
+        career_exploration: 'Career exploration',
+        unknown: 'Unknown',
+      },
+      skills: (skills: readonly string[]) => `Skills you mentioned: ${skills.join(', ')}`,
+    },
+    followUp: {
+      heading: 'A little more about you',
+      lead: 'These details help us suggest a suitable starting point.',
+      experienceWelder: 'Do you already have welding experience?',
+      experience: 'How much experience do you have in your intended field?',
+      experienceOptions: {
+        none: 'No experience',
+        'under-1': 'Less than 1 year',
+        '1-3': '1–3 years',
+        'over-3': 'More than 3 years',
+      },
+      certification: 'Do you currently hold a related certification?',
+      certificationOptions: { yes: 'Yes', no: 'No', unsure: 'I’m not sure' },
+      choose: 'Choose an answer',
+    },
+    matches: {
+      heading: 'Qualifications for you',
+      lead: 'These match your goal and experience. Choose one to check your readiness for it.',
+      leadNone: 'Pick one from the full list, or describe your goal another way.',
+      viewAll: 'View all qualifications',
+      loading: 'Finding qualifications for you…',
+      none: 'We couldn’t find a clear match. Choose a qualification from the full list below, or describe a more specific career goal.',
+      topMatch: 'Top match',
+      // A qualification the learner picked from the full list (US-03).
+      yourChoice: 'Your choice',
+      goalMatch: 'Goal match',
+      goalMatchScore: (score: number) => `Goal match: ${score}%`,
+      hint: 'How closely this qualification fits the goal you described. It’s guidance, not a guarantee.',
+      rate: (skills: number) =>
+        `Rate its ${figure(skills)} ${skills === 1 ? 'skill' : 'skills'} to see your strengths and gaps.`,
+      relevant: 'Relevant skills',
+      develop: 'Skills to develop',
+      check: 'Check my readiness',
+      other: 'Or choose any qualification to explore',
+      careers: (careers: readonly string[]) => `Sample career options: ${careers.join(', ')}`,
+    },
+    // Steps 3 and 4 need a qualification, and a goal with no match has none until the learner picks one.
+    choose: {
+      heading: 'Choose a qualification first',
+      body: 'Pick a qualification from your matches or the full list, then check your readiness for it.',
+      action: 'Go to your matches',
+    },
+    why: {
+      heading: 'Why we ask',
+      relevant: 'Your experience should be relevant to the selected qualification.',
+    },
+    readiness: {
+      kicker: 'Know your starting point',
+      heading: 'Assessment readiness',
+      lead: (name: string) => `${name}: recognize your strengths and discover what to build on.`,
+      none: 'No sample competencies are listed for this qualification yet.',
+      progress: (rated: number, total: number) =>
+        `${figure(rated)} of ${figure(total)} skills rated`,
+      part: (part: number, parts: number, category: string) =>
+        `Part ${part} of ${parts} · ${category} skills`,
+      single: (category: string) => `${category} skills`,
+      answers: {
+        confident: 'I can do this confidently',
+        some_experience: 'I have some experience',
+        not_familiar: 'I am not familiar with this',
+      },
+      previous: 'Previous part',
+      next: (category: string) => `Next: ${category} skills`,
+      analyze: 'Analyze my skills',
+      analyzing: 'Analyzing your skills…',
+      // Nothing is sent until every skill is rated (US-06).
+      unanswered: (left: number, category: string) =>
+        `Rate every skill before you analyze. ${figure(left)} ${left === 1 ? 'is' : 'are'} still unrated, starting in ${category} skills.`,
+    },
+    pathway: {
+      pending: {
+        heading: 'Finish your readiness check to see your recommendation',
+        body: (name: string) =>
+          `Whether training or an NC assessment comes next for ${name} depends on the skills you rate.`,
+        action: 'Go to the readiness check',
+      },
+      kicker: 'Recommended for you',
+      verdicts: {
+        high: { headline: 'Apply for the NC assessment', action: 'See assessment schedules' },
+        moderate: {
+          headline: 'Take focused training, then the NC assessment',
+          action: 'Find training near you',
+        },
+        low: { headline: 'Take training first', action: 'Find training near you' },
+      },
+      for: (name: string) => `For ${name}`,
+      score: 'Your readiness',
+      strengths: 'Your strengths',
+      improve: 'Skills to improve',
+      details: (strengths: number, gaps: number) =>
+        `Your strengths (${figure(strengths)}) and skills to improve (${figure(gaps)})`,
+      noStrengths: 'No competencies marked confident yet.',
+      noGaps: 'No self-reported gaps.',
+      basedOn:
+        'Based on your last submitted answers for this qualification. To update it, change your answers in the readiness check and select Analyze my skills.',
+      // The answers changed after this result was worked out (US-06).
+      changed:
+        'You’ve changed your answers since this result. Analyze your skills again to update it.',
+      disclaimer:
+        'This self-reported score is not an official competency assessment result. Formal assessment is subject to official eligibility and requirements.',
+      yourPathway: 'Your pathway',
+      follow: 'Follow this pathway',
+      following: 'Adding to My Progress…',
+      followed: 'Added to My Progress. Tick off each step as you complete it.',
+      already: 'You’re already following this pathway. Find it under My Progress.',
+      diagnostics: 'Recommendation diagnostics',
+    },
+  },
+  // A count against a total, as screen readers hear "5/8".
+  countOf: (count: number, total: number) => `${figure(count)} of ${figure(total)}`,
   pager: {
     label: 'Pages',
     previous: 'Previous',

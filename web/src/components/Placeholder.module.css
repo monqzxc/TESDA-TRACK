@@ -2,12 +2,6 @@
   max-width: 760px;
 }
 
-.step {
-  margin-top: 0.25rem;
-  color: var(--track-navy);
-  font-size: 1.375rem;
-}
-
 .lead {
   color: var(--track-muted);
   font-size: 1.0625rem;

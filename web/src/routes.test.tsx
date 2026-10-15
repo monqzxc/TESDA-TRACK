@@ -6,31 +6,17 @@ import { basename } from './routes.tsx'
 import { renderApp, serveCatalog } from './test/app.tsx'
 import { server } from './test/server.ts'
 
-// Every address, its h1, the step it shows (the finder's), its document title, and whether it loads the catalog.
+const GOAL_STEP = 'What would you like to achieve?'
+const GOAL_TITLE = 'Your goal · Find my pathway · TESDA-TRACK'
+
+// Every address, its h1, the step it shows (the finder's h2), its document title, and whether it loads the catalog.
 const PAGES = [
   ['/', 'Every career has a track. Find yours.', null, 'TESDA-TRACK · Your next step', false],
-  ['/find', 'Find my pathway', 'Your goal', 'Your goal · Find my pathway · TESDA-TRACK', true],
-  [
-    '/find/matches',
-    'Find my pathway',
-    'Your match',
-    'Your match · Find my pathway · TESDA-TRACK',
-    true,
-  ],
-  [
-    '/find/readiness',
-    'Find my pathway',
-    'Readiness check',
-    'Readiness check · Find my pathway · TESDA-TRACK',
-    true,
-  ],
-  [
-    '/find/pathway',
-    'Find my pathway',
-    'Your pathway',
-    'Your pathway · Find my pathway · TESDA-TRACK',
-    true,
-  ],
+  ['/find', 'Find my pathway', GOAL_STEP, GOAL_TITLE, true],
+  // Without a goal, the finder's later steps go back to Your goal.
+  ['/find/matches', 'Find my pathway', GOAL_STEP, GOAL_TITLE, true],
+  ['/find/readiness', 'Find my pathway', GOAL_STEP, GOAL_TITLE, true],
+  ['/find/pathway', 'Find my pathway', GOAL_STEP, GOAL_TITLE, true],
   ['/qualifications', 'Qualifications Library', null, 'Qualifications Library · TESDA-TRACK', true],
   ['/training', 'Training & Assessment', null, 'Training & Assessment · TESDA-TRACK', true],
   // Signed out, My Progress asks the learner to sign in, and Reports isn't available (see account tests).
@@ -50,7 +36,9 @@ describe('routes', () => {
       renderApp(path)
 
       expect(await screen.findByRole('heading', { level: 1, name: heading })).toBeInTheDocument()
-      if (step) expect(screen.getByRole('heading', { level: 2, name: step })).toBeInTheDocument()
+      if (step) {
+        expect(await screen.findByRole('heading', { level: 2, name: step })).toBeInTheDocument()
+      }
       await waitFor(() => expect(document.title).toBe(title))
       // The pages that need the catalog ask for it once, and show once it's in.
       if (needsCatalog) {

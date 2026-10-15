@@ -1,7 +1,14 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
+import { useFinderStore } from '../features/finder/store.ts'
 import { renderApp, serveCatalog } from '../test/app.tsx'
+import { serveFinderApi, welderProfile } from '../test/finder.ts'
+
+afterEach(() => {
+  useFinderStore.getState().reset()
+  window.sessionStorage.clear()
+})
 
 async function openPage(path: string, heading: string) {
   serveCatalog()
@@ -129,6 +136,14 @@ describe('focus on navigation', () => {
   })
 
   it('moves between the finder steps', async () => {
+    // The later steps need a goal.
+    serveFinderApi()
+    useFinderStore.getState().begin({
+      query: 'I want to be a welder.',
+      profile: welderProfile,
+      sessionId: null,
+      sessionOwner: null,
+    })
     const { router } = await openPage('/find', 'Find my pathway')
 
     await router.navigate('/find/matches')

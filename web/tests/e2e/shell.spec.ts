@@ -4,12 +4,15 @@ import { expect, test, type Page } from '@playwright/test'
 // The app shell: every address in both themes, on a phone and on a desktop, with axe; the keyboard; Back; and
 // the states for an unreachable API and a page that fails to download.
 
+const GOAL_STEP = 'What would you like to achieve?'
+
 const PAGES = [
   { path: '/', heading: 'Every career has a track. Find yours.' },
-  { path: '/find', heading: 'Find my pathway', step: 'Your goal' },
-  { path: '/find/matches', heading: 'Find my pathway', step: 'Your match' },
-  { path: '/find/readiness', heading: 'Find my pathway', step: 'Readiness check' },
-  { path: '/find/pathway', heading: 'Find my pathway', step: 'Your pathway' },
+  { path: '/find', heading: 'Find my pathway', step: GOAL_STEP },
+  // Without a goal, the finder's later steps go back to Your goal (finder.spec.ts covers each step with one).
+  { path: '/find/matches', heading: 'Find my pathway', step: GOAL_STEP },
+  { path: '/find/readiness', heading: 'Find my pathway', step: GOAL_STEP },
+  { path: '/find/pathway', heading: 'Find my pathway', step: GOAL_STEP },
   { path: '/qualifications', heading: 'Qualifications Library' },
   { path: '/training', heading: 'Training & Assessment' },
   { path: '/progress', heading: 'My Progress' },
@@ -26,9 +29,20 @@ const SIZES = {
 
 const UNAVAILABLE = "We can't load TESDA Track right now"
 
+/** One qualification, so each page shows its own content rather than the empty catalog's state. */
+const CATALOG = [
+  {
+    code: 'CKY-NCII',
+    name: 'Cookery NC II',
+    sector: 'Tourism',
+    possible_jobs: ['Cook'],
+    competencies: [{ id: 1, position: 1, name: 'Prepare stocks', category: 'Core' }],
+  },
+]
+
 /** Answers the catalog request every page but Home makes, so the tests don't need the backend. */
 async function serveCatalog(page: Page) {
-  await page.route('**/api/v1/qualifications', (route) => route.fulfill({ json: [] }))
+  await page.route('**/api/v1/qualifications', (route) => route.fulfill({ json: CATALOG }))
 }
 
 async function expectAccessible(page: Page) {

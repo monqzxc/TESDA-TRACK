@@ -1,0 +1,239 @@
+.pending {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+.pending h3 {
+  margin: 0;
+  color: var(--track-navy);
+  font-size: 1.3rem;
+}
+
+.verdict {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.headline {
+  margin: 0;
+  color: var(--track-navy);
+  font-size: 1.5rem;
+  line-height: 1.25;
+}
+
+.for {
+  margin: 0;
+  color: var(--track-muted);
+  font-size: 0.9375rem;
+}
+
+.score {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 3fr);
+  gap: 1rem;
+  margin-top: 0.4rem;
+}
+
+/* After Streamlit's metric: a label over a big figure. */
+.metric {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.metric span {
+  color: var(--track-ink);
+  font-size: 0.875rem;
+}
+
+.metric strong {
+  color: var(--track-navy);
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.guidance p {
+  margin: 0 0 0.4rem;
+  color: var(--track-ink);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.guidance .level {
+  color: var(--track-navy);
+  font-weight: 700;
+}
+
+.bars {
+  max-width: 720px;
+  margin-block: 0.25rem 0.4rem;
+}
+
+.action {
+  align-self: flex-start;
+}
+
+.details {
+  border: 1px solid var(--track-border);
+  border-radius: 12px;
+}
+
+.details summary {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 44px;
+  padding: 0.5rem 0.85rem;
+  color: var(--track-navy);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  list-style: none;
+  cursor: pointer;
+}
+
+.details summary::-webkit-details-marker {
+  display: none;
+}
+
+.detailsIcon {
+  flex: none;
+  color: var(--track-blue);
+  font-size: 1.2rem;
+}
+
+.chevron {
+  flex: none;
+  margin-left: auto;
+  color: var(--track-muted);
+  transition: transform 0.2s ease;
+}
+
+.details[open] .chevron {
+  transform: rotate(180deg);
+}
+
+.lists {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  padding: 0 0.95rem 0.85rem;
+}
+
+.lists h4 {
+  margin: 0.25rem 0 0.4rem;
+  color: var(--track-navy);
+  font-family: var(--font-text);
+  font-size: 0.9375rem;
+  letter-spacing: 0;
+}
+
+.strengths,
+.gaps {
+  margin: 0;
+  padding-left: 1.3rem;
+  color: var(--track-ink);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.strengths {
+  list-style: '✓  ';
+}
+
+.disclaimer {
+  margin-top: -0.25rem;
+}
+
+.pathwayTitle {
+  margin: 0.25rem 0 0.3rem;
+  color: var(--track-navy);
+  font-size: 1.15rem;
+}
+
+/* A curated pathway's steps as a timeline. */
+.steps {
+  display: grid;
+  margin: 0.8rem 0 0.6rem;
+  padding: 0;
+  list-style: none;
+}
+
+.steps li {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0 0 0.9rem;
+}
+
+.steps li:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: 34px;
+  bottom: 2px;
+  left: 15px;
+  width: 2px;
+  background: var(--track-line);
+}
+
+.steps span {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--track-tint);
+  color: var(--track-blue);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.steps p {
+  margin: 0.3rem 0 0;
+  color: var(--track-navy);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.outcome {
+  margin-top: 0.75rem;
+}
+
+.diagnostics {
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--track-border);
+  border-radius: 12px;
+  background: var(--track-surface);
+}
+
+.diagnostics summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--track-navy);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.diagnostics pre {
+  max-height: 24rem;
+  overflow: auto;
+  color: var(--track-ink);
+  font-size: 0.8125rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 640px) {
+  .score,
+  .lists {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

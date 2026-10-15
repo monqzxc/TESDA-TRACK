@@ -306,14 +306,14 @@ road drawn on scroll), ReadinessDemo, Archipelago, Catalog, ProgressPreview, Clo
 
 ### Task 12: Find my pathway (US-01, US-03, US-05, US-06, US-14)
 
-- [ ] Goal: example and sample goals, the goal box (500 characters), "Use again" and "Change goal".
-- [ ] Matches: the starting point, the follow-up questions, match cards with score rings and notes, the view-all
+- [x] Goal: example and sample goals, the goal box (500 characters), "Use again" and "Change goal".
+- [x] Matches: the starting point, the follow-up questions, match cards with score rings and notes, the view-all
       link.
-- [ ] Readiness: Basic, Common, then Core, each in its own part, with progress and the result. The 80% and 50%
+- [x] Readiness: Basic, Common, then Core, each in its own part, with progress and the result. The 80% and 50%
       bands pick the verdict, as `VERDICTS` does in `app.py` today.
-- [ ] Pathway: the verdict, the curated steps, following the pathway, and opening Training with the qualification
+- [x] Pathway: the verdict, the curated steps, following the pathway, and opening Training with the qualification
       chosen.
-- [ ] Session sync for signed-in learners, through `/me/recommendations`.
+- [x] Session sync for signed-in learners, through `/me/recommendations`.
 
 ### Task 13: Training & Assessment (US-07, US-08, US-09)
 

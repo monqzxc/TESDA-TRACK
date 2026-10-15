@@ -24,7 +24,6 @@ export function Placeholder({ needsCatalog = false }: PlaceholderProps) {
   return (
     <div className={styles.placeholder}>
       <PageHeading>{copy.heading}</PageHeading>
-      {'step' in copy && <h2 className={styles.step}>{copy.step}</h2>}
       {needsCatalog ? (
         <QueryBoundary>
           <RequireCatalog>{lead}</RequireCatalog>
