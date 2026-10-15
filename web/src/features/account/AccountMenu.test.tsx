@@ -333,7 +333,7 @@ describe('pages that need an account', () => {
     expect(
       screen.getByRole('heading', { level: 2, name: 'Reports are not available' }),
     ).toBeInTheDocument()
-    expect(screen.queryByText(/^Soon administrators/)).not.toBeInTheDocument()
+    expect(screen.queryByRole('group', { name: 'Period' })).not.toBeInTheDocument()
     expect(within(screen.getByRole('main')).queryByRole('button')).not.toBeInTheDocument()
     expect(
       within(screen.getByRole('navigation', { name: 'Main' })).queryByRole('link', {
@@ -362,7 +362,9 @@ describe('pages that need an account', () => {
 
     await openApp('/reports')
 
-    expect(await screen.findByText(/^Soon administrators/)).toBeInTheDocument()
+    expect(
+      await screen.findByRole('heading', { level: 2, name: 'Learner journey' }),
+    ).toBeInTheDocument()
   })
 })
 

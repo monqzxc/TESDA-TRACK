@@ -334,7 +334,7 @@ road drawn on scroll), ReadinessDemo, Archipelago, Catalog, ProgressPreview, Clo
 
 ### Task 16: Reports (administrators)
 
-- [ ] Overview, funnel, qualification demand, skill gaps (with a qualification picker) and supply, with the date
+- [x] Overview, funnel, qualification demand, skill gaps (with a qualification picker) and supply, with the date
       range checked before any request. Tables first; charts only where today's page has them.
 
 ## Phase 3: Ship

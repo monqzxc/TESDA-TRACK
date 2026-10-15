@@ -111,7 +111,9 @@ describe('the session', () => {
       'aria-current',
       'page',
     )
-    expect(await screen.findByText(/^Soon administrators/)).toBeInTheDocument()
+    expect(
+      await screen.findByRole('heading', { level: 2, name: 'Learner journey' }),
+    ).toBeInTheDocument()
   })
 
   it("keeps another tab's sign-in when a check that started before it finds no session", async () => {

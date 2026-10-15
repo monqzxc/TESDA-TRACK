@@ -260,13 +260,12 @@ export const en = {
     footer:
       'TESDA Track is a pilot. Matches are guidance, and readiness checks are self-reported: they don’t replace an official TESDA competency assessment.',
   },
-  // Each page's document title, heading and the line under it (for now, what's coming). Titles are fixed
-  // strings: they never include anything a learner typed (see lib/navigation.ts).
+  // Each page's document title, heading, and the line under its heading where its banner shows one. Titles are
+  // fixed strings: they never include anything a learner typed (see lib/navigation.ts).
   pages: {
     home: {
       title: 'TESDA-TRACK · Your next step',
       heading: 'Every career has a track. Find yours.',
-      lead: 'The new home page is coming soon.',
     },
     finderGoal: {
       title: 'Your goal · Find my pathway · TESDA-TRACK',
@@ -296,7 +295,6 @@ export const en = {
     training: {
       title: 'Training & Assessment · TESDA-TRACK',
       heading: 'Training & Assessment',
-      lead: 'Soon you can find training and assessment centers near you.',
     },
     progress: {
       title: 'My Progress · TESDA-TRACK',
@@ -311,7 +309,7 @@ export const en = {
     reports: {
       title: 'Reports · TESDA-TRACK',
       heading: 'Reports',
-      lead: 'Soon administrators can explore pilot activity, qualification demand, and training opportunities.',
+      lead: 'Explore pilot activity, qualification demand, and training opportunities. Counts and averages only.',
     },
     signIn: {
       title: 'Sign in · TESDA-TRACK',
@@ -1085,6 +1083,95 @@ export const en = {
     footer:
       'Skills Bridge data is external to your saved TESDA Track records. Local site listings are shown only when a safe catalog code mapping is available.',
     about: 'About Skills Bridge',
+  },
+  // Reports, for administrators (frontend/app.py show_reports).
+  reports: {
+    hero: {
+      title: 'A clearer view',
+      accent: 'of learner progress.',
+    },
+    period: {
+      legend: 'Period',
+      from: 'From (optional)',
+      to: 'To (optional)',
+      help: 'Dates are in Philippine time. Leave either one blank for an open range.',
+      order: 'Choose an end date on or after the start date.',
+      clear: 'Clear dates',
+      all: 'Showing all activity.',
+      between: (from: string, to: string) => `Showing activity from ${from} to ${to}.`,
+      since: (from: string) => `Showing activity from ${from}.`,
+      until: (to: string) => `Showing activity up to ${to}.`,
+    },
+    loading: 'Loading reports…',
+    updating: 'Updating reports…',
+    none: '—',
+    stats: {
+      label: 'Pilot activity',
+      learners: 'Learners',
+      sessions: 'Saved recommendations',
+      checks: 'Readiness checks',
+      average: 'Average readiness',
+      averageHelp: 'Average self-reported readiness in the selected period.',
+      verified: 'Verified certifications',
+      seats: 'Open assessment seats',
+      seatsHelp: 'Current availability across all listed regions, independent of the date filter.',
+    },
+    journey: {
+      heading: 'Learner journey',
+      lead: 'Learners who reached each stage in the selected period.',
+      caption: 'Learner counts by journey stage',
+      stage: 'Stage',
+      learners: 'Learners',
+      stages: {
+        registered: 'Registered',
+        saved_a_recommendation: 'Saved a recommendation',
+        checked_readiness: 'Checked readiness',
+        applied_for_assessment: 'Applied for assessment',
+        certified: 'Certified',
+      },
+      empty: 'No learner activity in this period. Try a wider date range.',
+    },
+    demand: {
+      heading: 'Demand by qualification',
+      lead: 'Qualifications learners matched, chose, checked or applied for in the selected period, busiest first.',
+      caption: 'Qualification demand and outcomes',
+      qualification: 'Qualification',
+      topMatch: 'Top match',
+      chosen: 'Chosen',
+      checks: 'Readiness checks',
+      average: 'Average readiness',
+      applications: 'Applications',
+      competent: 'Competent',
+      certified: 'Certified',
+      quiet: (n: number) =>
+        `${figure(n)} other ${n === 1 ? 'qualification' : 'qualifications'} had no activity in this period.`,
+      empty:
+        'No qualification activity in this period. Demand will appear as learners explore pathways.',
+    },
+    gaps: {
+      heading: 'Skill gaps',
+      qualification: 'Qualification',
+      lead: 'Share of answers that weren’t “I can do this confidently”. High rates suggest where training is needed.',
+      caption: (name: string) => `Self-reported skill gaps for ${name}`,
+      competency: 'Competency',
+      answers: 'Answers',
+      gapRate: 'Gap rate',
+      loading: 'Loading skill gaps…',
+      empty: 'No readiness responses for this qualification in the selected period.',
+      noCatalog:
+        'Skill gap details will be available when qualifications are added to the catalog.',
+    },
+    supply: {
+      heading: 'Training and assessment supply by region',
+      lead: 'What is listed now, whatever the dates.',
+      caption: 'Training providers, programs, and assessment seats by region',
+      region: 'Region',
+      providers: 'Providers',
+      programs: 'Programs',
+      assessments: 'Upcoming assessments',
+      seats: 'Open seats',
+      empty: 'No training or assessment supply is listed yet.',
+    },
   },
   // A count against a total, as screen readers hear "5/8".
   countOf: (count: number, total: number) => `${figure(count)} of ${figure(total)}`,
