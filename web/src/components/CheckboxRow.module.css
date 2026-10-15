@@ -1,0 +1,70 @@
+/* After auth/forms.module.css's .checkbox: a box that fills blue when ticked. */
+.checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  min-height: 32px;
+  color: var(--track-navy);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.box {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin-top: 0.05rem;
+  border: 2px solid var(--track-hover-border);
+  border-radius: 6px;
+  background: var(--track-surface);
+  color: #ffffff;
+}
+
+.box svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  visibility: hidden;
+}
+
+.checkbox[data-hovered] .box {
+  border-color: var(--track-blue);
+}
+
+.checkbox[data-selected] .box {
+  border-color: var(--track-fill);
+  background: var(--track-fill);
+}
+
+.checkbox[data-selected] .box svg {
+  visibility: visible;
+}
+
+.checkbox[data-focus-visible] .box {
+  outline: 3px solid var(--track-focus);
+  outline-offset: 2px;
+}
+
+.checkbox[data-disabled] {
+  cursor: default;
+  opacity: 0.6;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.description {
+  color: var(--track-muted);
+  font-size: 0.8125rem;
+}

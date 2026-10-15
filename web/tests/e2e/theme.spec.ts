@@ -116,10 +116,10 @@ test('System follows the device while the page is open', async ({ page }) => {
 
 test('shows every icon', async ({ page }) => {
   await page.goto('/dev/tokens')
-  // 48 named in the gallery, and again in the light and dark previews.
-  await expect(page.getByRole('region', { name: 'Icons' }).getByRole('listitem')).toHaveCount(48)
+  // 61 named in the gallery, and again in the light and dark previews.
+  await expect(page.getByRole('region', { name: 'Icons' }).getByRole('listitem')).toHaveCount(61)
   for (const theme of ['Light', 'Dark']) {
     const preview = page.getByRole('region', { name: theme, exact: true })
-    await expect(preview.locator('svg')).toHaveCount(48)
+    await expect(preview.locator('svg')).toHaveCount(61)
   }
 })

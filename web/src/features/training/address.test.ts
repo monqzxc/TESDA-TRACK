@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest'
-import { shortName, trainingAddress } from './address.ts'
+import {
+  NO_FILTERS,
+  readTrainingAddress,
+  shortName,
+  trainingAddress,
+  writeTrainingAddress,
+} from './address.ts'
 
 describe('trainingAddress', () => {
   it('puts the filters in the query', () => {
@@ -27,5 +33,38 @@ describe('shortName', () => {
 
   it('keeps a name that would be left empty', () => {
     expect(shortName('NC II')).toBe('NC II')
+  })
+})
+
+describe('readTrainingAddress and writeTrainingAddress', () => {
+  it('read back what they wrote', () => {
+    const filters = {
+      ...NO_FILTERS,
+      kinds: ['training' as const],
+      region: 'III',
+      province: 'Tarlac',
+      qualifications: ['CSS-NC-II', 'SMAW-NC-II'],
+      mode: 'online' as const,
+      within: 30 as const,
+      scholarship: true,
+      search: 'welding',
+      sort: 'soonest' as const,
+      center: 'training-12',
+    }
+    expect(readTrainingAddress(writeTrainingAddress(filters))).toEqual(filters)
+  })
+
+  it('leave out what filters nothing', () => {
+    expect(
+      writeTrainingAddress({ ...NO_FILTERS, kinds: ['training', 'assessment'] }).toString(),
+    ).toBe('')
+  })
+
+  it('read anything unknown as any', () => {
+    expect(
+      readTrainingAddress(
+        new URLSearchParams('type=school&mode=by-boat&within=7&sort=random&scholarship=yes'),
+      ),
+    ).toEqual(NO_FILTERS)
   })
 })

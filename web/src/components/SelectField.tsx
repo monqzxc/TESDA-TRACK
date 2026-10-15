@@ -10,6 +10,7 @@ import {
   type Key,
 } from 'react-aria-components'
 import { cx } from '../lib/style.ts'
+import utilities from '../styles/utilities.module.css'
 import { Icon } from './Icon.tsx'
 import styles from './SelectField.module.css'
 
@@ -28,6 +29,8 @@ interface SelectFieldProps<K extends string> {
   description?: string
   className?: string
   isDisabled?: boolean
+  /** The label is read by screen readers but not drawn, where what the list is for shows on screen already. */
+  labelHidden?: boolean
 }
 
 /**
@@ -43,6 +46,7 @@ export function SelectField<K extends string>({
   description,
   className,
   isDisabled,
+  labelHidden = false,
 }: SelectFieldProps<K>) {
   const ids = new Set<Key>(options.map((option) => option.id))
   return (
@@ -56,7 +60,7 @@ export function SelectField<K extends string>({
       placeholder={placeholder}
       isDisabled={isDisabled}
     >
-      <Label className={styles.label}>{label}</Label>
+      <Label className={labelHidden ? utilities.visuallyHidden : styles.label}>{label}</Label>
       <Button className={styles.button}>
         <SelectValue className={styles.value} />
         <Icon name="chevron" size="1.1rem" className={styles.chevron} />

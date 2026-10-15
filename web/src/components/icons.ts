@@ -186,7 +186,7 @@ export const icons = {
   close: [{ tag: 'path', d: 'm6 6 12 12M18 6 6 18' }],
   refresh: [{ tag: 'path', d: 'M19.5 12a7.5 7.5 0 1 1-2.2-5.3L20 9.5M20 4v5.5h-5.5' }],
   // The pages' controls, for the Material icons on the Streamlit pages' buttons (expand_more, check,
-  // arrow_forward, arrow_back, edit, bookmark_border, filter_alt_off).
+  // arrow_forward, arrow_back, edit, bookmark_border, filter_alt_off, tune).
   chevron: [{ tag: 'path', d: 'm6 9 6 6 6-6' }],
   tick: [{ tag: 'path', d: 'm5 12.5 4.5 4.5L19 7.5' }],
   arrowRight: [{ tag: 'path', d: 'M4.5 12h15m-6-6 6 6-6 6' }],
@@ -196,6 +196,62 @@ export const icons = {
   filterOff: [
     { tag: 'path', d: 'M4 4.5h16l-6 7.5v5.5l-4 2.5v-8L4 4.5ZM16 15l4.5 4.5m0-4.5L16 19.5' },
   ],
+  filter: [{ tag: 'path', d: 'M4 4.5h16l-6 7.5v5.5l-4 2.5v-8L4 4.5Z' }],
+  // Training & Assessment's map and directions, from the Streamlit map's own icons (frontend/training_view.py ICONS),
+  // and Material's open_in_new and map.
+  directions: [{ tag: 'path', d: 'M20.5 3.5 3.5 10.6l7.2 2.7 2.7 7.2 7.1-17Z' }],
+  phone: [
+    {
+      tag: 'path',
+      d: 'M5.2 4h3.3l1.6 4.2-2.1 1.3a11 11 0 0 0 6.5 6.5l1.3-2.1 4.2 1.6v3.3a1.6 1.6 0 0 1-1.7 1.6C10.4 19.8 4.2 13.6 3.6 5.7A1.6 1.6 0 0 1 5.2 4Z',
+    },
+  ],
+  mail: [
+    { tag: 'rect', x: 3.5, y: 5.5, width: 17, height: 13, rx: 2 },
+    { tag: 'path', d: 'm4 7 8 6 8-6' },
+  ],
+  link: [
+    {
+      tag: 'path',
+      d: 'M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1',
+    },
+  ],
+  bike: [
+    { tag: 'circle', cx: 5.5, cy: 16, r: 3.5 },
+    { tag: 'circle', cx: 18.5, cy: 16, r: 3.5 },
+    { tag: 'path', d: 'M5.5 16 9 9h7l2.5 7M9 9l3.5 7h-7M14.5 6H17' },
+  ],
+  walk: [
+    { tag: 'circle', cx: 13.5, cy: 4.5, r: 2 },
+    { tag: 'path', d: 'm8.5 21 3-6.5 2.5 2.5V21M10.5 14.5 11 9l3 .2 2 3.3 2.5.8M11 9l-3 1.5-1 3' },
+  ],
+  plane: [
+    {
+      tag: 'path',
+      d: 'M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5Z',
+    },
+  ],
+  layers: [
+    { tag: 'path', d: 'm12 4 8.5 4.5L12 13 3.5 8.5 12 4Z' },
+    { tag: 'path', d: 'm3.5 12.5 8.5 4.5 8.5-4.5M3.5 16.5 12 21l8.5-4.5' },
+  ],
+  locate: [
+    { tag: 'circle', cx: 12, cy: 12, r: 6.5 },
+    { tag: 'path', d: 'M12 10a2 2 0 1 1 0 4 2 2 0 0 1 0-4Z', filled: true },
+    { tag: 'path', d: 'M12 2v3M12 19v3M2 12h3M19 12h3' },
+  ],
+  distance: [
+    { tag: 'circle', cx: 6, cy: 18, r: 2 },
+    { tag: 'circle', cx: 18, cy: 6, r: 2 },
+    { tag: 'path', d: 'M8 18h7.5a3 3 0 0 0 0-6h-7a3 3 0 0 1 0-6H16' },
+  ],
+  external: [
+    {
+      tag: 'path',
+      d: 'M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5',
+    },
+  ],
+  map: [{ tag: 'path', d: 'M9 4 3 6.5V20l6-2.5 6 2.5 6-2.5V4l-6 2.5L9 4Zm0 0v13.5m6-11V20' }],
 } as const satisfies Record<string, readonly IconShape[]>
 
 export type IconName = keyof typeof icons

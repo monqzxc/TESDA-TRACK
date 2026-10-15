@@ -317,11 +317,11 @@ road drawn on scroll), ReadinessDemo, Archipelago, Catalog, ProgressPreview, Clo
 
 ### Task 13: Training & Assessment (US-07, US-08, US-09)
 
-- [ ] Filters (type, location, region, province, qualification, mode, availability, scholarship) in the address.
-- [ ] Results, featured center, program details dialog, and applying for an assessment.
-- [ ] Map: clustered pins, popups, layers, my location, routes with travel modes from `GET /api/v1/routes`, saved
+- [x] Filters (type, location, region, province, qualification, mode, availability, scholarship) in the address.
+- [x] Results, featured center, program details dialog, and applying for an assessment.
+- [x] Map: clustered pins, popups, layers, my location, routes with travel modes from `GET /api/v1/routes`, saved
       centers, night tiles. Port the Leaflet code from `training_view.py` before restyling it.
-- [ ] A complete list without the map, for keyboard and screen-reader users (US-08).
+- [x] A complete list without the map, for keyboard and screen-reader users (US-08).
 
 ### Task 14: My Progress (US-10, US-11)
 
