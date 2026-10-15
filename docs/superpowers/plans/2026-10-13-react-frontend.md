@@ -356,7 +356,8 @@ road drawn on scroll), ReadinessDemo, Archipelago, Catalog, ProgressPreview, Clo
 
 ### Task 19: Parallel run and switch-over
 
-- [ ] Staff test `/beta/` against a parity checklist built from `docs/user-stories.md` and the Streamlit pages.
+- [ ] Staff test `/beta/` against a parity checklist built from `docs/user-stories.md` and the Streamlit pages
+      ([`docs/parity-checklist.md`](../../parity-checklist.md)).
 - [ ] Switch: the React app at `/`, Streamlit at `/classic/` (`STREAMLIT_SERVER_BASE_URL_PATH=classic`) for two
       weeks. Learners sign in once more, because the two apps keep sign-in separately.
 - [ ] Remove Streamlit: `frontend/`, its tests, its Python dependencies, the `/classic/` route, and the Streamlit
