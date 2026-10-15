@@ -72,7 +72,7 @@ describe('QueryBoundary', () => {
       ),
     )
 
-    renderApp('/skills')
+    renderApp('/qualifications')
 
     expect(await screen.findByRole('alert')).toHaveTextContent(
       'Too many requests. Please wait a moment.',

@@ -1,8 +1,9 @@
 /* After the Streamlit center map's own styles (frontend/training_view.py _CENTER_MAP css). Leaflet's classes are
    global; they're styled here only inside the map's shell. */
+/* A page holding the map elsewhere, as Skills Explorer does, can set its height. */
 .shell {
   position: relative;
-  height: 680px;
+  height: var(--center-map-height, 680px);
   overflow: hidden;
   border: 1px solid var(--track-border);
   border-radius: 18px;
@@ -503,7 +504,7 @@
 
 @media (max-width: 640px) {
   .shell {
-    height: 460px;
+    height: min(var(--center-map-height, 460px), 460px);
   }
 
   .legend {

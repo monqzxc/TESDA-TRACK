@@ -330,7 +330,7 @@ road drawn on scroll), ReadinessDemo, Archipelago, Catalog, ProgressPreview, Clo
 
 ### Task 15: Skills Explorer
 
-- [ ] The sentence box calling `/skills-bridge/explore`, the results, occupation details, and the delivery map.
+- [x] The sentence box calling `/skills-bridge/explore`, the results, occupation details, and the delivery map.
 
 ### Task 16: Reports (administrators)
 

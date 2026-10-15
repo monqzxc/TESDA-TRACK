@@ -21,7 +21,8 @@ const PAGES = [
   ['/training', 'Training & Assessment', null, 'Training & Assessment · TESDA-TRACK', true],
   // Signed out, My Progress asks the learner to sign in, and Reports isn't available (see account tests).
   ['/progress', 'My Progress', null, 'My Progress · TESDA-TRACK', false],
-  ['/skills', 'Skills Explorer', null, 'Skills Explorer · TESDA-TRACK', true],
+  // Skills Bridge is off on the test server, so Skills Explorer says so without the catalog.
+  ['/skills', 'Skills Explorer', null, 'Skills Explorer · TESDA-TRACK', false],
   ['/reports', 'Reports', null, 'Reports · TESDA-TRACK', false],
   ['/sign-in', 'Sign in', null, 'Sign in · TESDA-TRACK', false],
   ['/no-such-page', 'Page not found', null, 'Page not found · TESDA-TRACK', false],

@@ -306,7 +306,7 @@ export const en = {
     skills: {
       title: 'Skills Explorer · TESDA-TRACK',
       heading: 'Skills Explorer',
-      lead: 'Soon you can explore occupations, related qualifications, and skills to develop with Skills Bridge.',
+      lead: 'Explore occupations, related qualifications, and skills to develop using Skills Bridge’s live taxonomy.',
     },
     reports: {
       title: 'Reports · TESDA-TRACK',
@@ -954,6 +954,137 @@ export const en = {
       missing: 'Enter the certificate title first.',
     },
     saving: 'Saving…',
+  },
+  // Skills Explorer (frontend/skills_bridge_view.py).
+  skills: {
+    hero: {
+      title: 'See where your skills',
+      accent: 'can take you.',
+    },
+    off: {
+      heading: 'Skills Explorer is turned off',
+      body: 'This server doesn’t connect to Skills Bridge. Find my pathway and the Qualifications Library work as usual.',
+    },
+    search: {
+      label: 'What skills or roles are you exploring?',
+      placeholder: 'I want to be a welder and programmer',
+      help: 'You can write a short sentence, or separate skills with commas or new lines. Use up to 25 short terms.',
+      privacy:
+        'We take out the skill and role words before sending them to Skills Bridge. Your sentence, name, email, account and saved records are not sent.',
+      submit: 'Find career matches',
+      pending: 'Looking up skills and career connections…',
+      empty: 'Describe your skills or a role you’re exploring.',
+      // The text held no usable terms, too many, or one too long (the API's reason).
+      noTerms:
+        'We couldn’t find usable skill or role terms. Try a short sentence or separate terms with commas, with no more than 25 terms of 80 characters each.',
+      stillAvailable: 'Your TESDA Track pathways and qualification library remain available.',
+    },
+    start: {
+      heading: 'Start with what you know',
+      body: 'Skills Bridge connects your skills with occupations and qualifications. You can then review a role’s skills and international mappings.',
+    },
+    results: {
+      searched: (terms: readonly string[]) => `Searching Skills Bridge for: ${terms.join(', ')}`,
+      source: (when: string) => `Source: Skills Bridge · Retrieved ${when}`,
+      unmatched: (terms: readonly string[]) =>
+        `Skills Bridge did not resolve some terms: ${terms.join(', ')}. Try more specific skill names.`,
+      treatedBoth: (roles: readonly string[], skills: readonly string[]) =>
+        `We treated ${roles.join(', ')} as target occupations and ${skills.join(', ')} as capabilities.`,
+      treatedRoles: (roles: readonly string[]) =>
+        `We treated ${roles.join(', ')} as target occupations and searched occupation titles.`,
+      understood: 'How your skills were understood',
+      resolution: (term: string, count: string, strength: string) =>
+        `${term} — ${count}; ${strength} match`,
+      occupationsFound: (n: number) => `${figure(n)} occupation ${n === 1 ? 'title' : 'titles'}`,
+      skillsFound: (n: number) => `${figure(n)} related ${n === 1 ? 'skill' : 'skills'}`,
+      unknownStrength: 'unknown',
+      // Read out when the results show.
+      announce: (occupations: number, qualifications: number) =>
+        `${figure(occupations)} ${occupations === 1 ? 'occupation' : 'occupations'} and ${figure(qualifications)} linked ${qualifications === 1 ? 'qualification' : 'qualifications'} found.`,
+    },
+    occupations: {
+      heading: 'Occupations to explore',
+      captionBoth: 'Title matches and capability matches are shown together.',
+      captionRoles:
+        'Occupation title match shows how closely a target role name matched the graph.',
+      captionSkills:
+        'Input skill match measures how strongly your submitted capabilities connect to a role.',
+      notAScore: 'It is not a readiness score or a guarantee of eligibility.',
+      careerOption: 'Career option',
+      titleMatch: 'Occupation title match',
+      skillMatch: 'Input skill match',
+      matched: (terms: readonly string[]) =>
+        `Matched input terms: ${terms.join(', ') || 'Not specified'}`,
+      openPosts: (n: number) =>
+        `${figure(n)} open ${n === 1 ? 'post' : 'posts'} recorded in Skills Bridge`,
+      none: {
+        heading: 'No occupation matches yet',
+        body: 'Try other skill terms or explore TESDA Track’s qualification library.',
+      },
+      explore: 'Explore skills & qualifications',
+      loading: 'Loading occupation skills and qualifications…',
+    },
+    linked: {
+      heading: 'Qualifications linked to your skills',
+      none: 'No promulgated qualifications matched these terms.',
+    },
+    qualification: {
+      fallbackLevel: 'Qualification',
+      fallbackTitle: 'Qualification',
+      noStatus: 'Status unavailable',
+      linkedSkills: (terms: readonly string[]) => `Linked input skills: ${terms.join(', ')}`,
+      share: (percent: number) =>
+        `Your inputs account for ${percent}% of this qualification’s linked skill content.`,
+      reviewDue: (when: string) => `Review due: ${when}`,
+      evidence: 'See matching skills',
+    },
+    delivery: {
+      heading: 'Find TESDA training & assessment options',
+      unmapped:
+        'This Skills Bridge standard is not mapped to a local TESDA catalog code yet. You can search the Qualifications Library or Training & Assessment by title.',
+      match: (name: string, code: string) =>
+        `Local catalog match: ${name} · ${code}. This is a title/code mapping for discovery, not an equivalency decision.`,
+      show: 'Show available sites',
+      loading: 'Finding training and assessment sites…',
+      none: 'No training or assessment listings are mapped to this qualification yet.',
+      noMap: 'No mapped coordinates are available for these listings yet.',
+      count: (centers: number) =>
+        `${figure(centers)} ${centers === 1 ? 'site' : 'sites'} with listings`,
+      open: 'Open in Training & Assessment',
+    },
+    details: {
+      lead: 'Occupation details from your last Explore selection.',
+      notFound:
+        'Skills Bridge could not find this occupation. Select another result and try again.',
+      standards: 'Qualifications for this occupation',
+      noStandards: 'No linked qualifications were returned for this occupation.',
+      skills: 'Skills to review',
+      skillsLead:
+        'A preview of up to 50 linked skills, ordered by graph weight. This is a partial taxonomy view, not a complete competency assessment. Tick the skills you already have to see the ones left to explore.',
+      known: 'Skills I already have',
+      tally: (known: number, remaining: number) =>
+        `${figure(known)} self-reported ${known === 1 ? 'strength' : 'strengths'} · ${figure(remaining)} ${remaining === 1 ? 'skill' : 'skills'} remaining in this preview`,
+      toExplore: 'Skills to explore',
+      skill: 'Skill to explore',
+      category: 'Category',
+      general: 'General',
+      allKnown:
+        'You’ve marked every skill in this preview as known. The occupation may have more skills beyond this preview.',
+      noSkills: 'No linked skills were returned for this occupation.',
+      mappings: 'International mappings',
+      mappingsLead:
+        'These are mappings reported by Skills Bridge. Suggested and confirmed refer to its review status; neither establishes certification equivalency or guarantees a close occupational fit.',
+      fallbackMapping: 'International occupation',
+      noFramework: 'Framework not supplied',
+      sampleSkills: (skills: readonly string[]) =>
+        `Sample linked skills: ${skills.join(', ') || 'Not supplied'}`,
+      unspecified: 'Unspecified',
+      noMappings:
+        'No international mapping was returned for this occupation. No alternative equivalency has been inferred.',
+    },
+    footer:
+      'Skills Bridge data is external to your saved TESDA Track records. Local site listings are shown only when a safe catalog code mapping is available.',
+    about: 'About Skills Bridge',
   },
   // A count against a total, as screen readers hear "5/8".
   countOf: (count: number, total: number) => `${figure(count)} of ${figure(total)}`,
