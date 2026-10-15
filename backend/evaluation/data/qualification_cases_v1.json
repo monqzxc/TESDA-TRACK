@@ -1,0 +1,32 @@
+{
+  "version": "structured-qualification-cases-v1",
+  "review_status": "engineering_draft",
+  "provenance": "Synthetic engineering cases authored from catalog occupations and practical learner scenarios. Graded expectations were specified before this evaluation run. No learner records; no expert-review claim. Do not tune against this set and then present it as held-out evidence.",
+  "reviewers": [],
+  "cases": [
+    {"id":"welding-interest-en","language":"en","tags":["interest","trade"],"answers":{"interests":["welding"]},"judgments":{"MMAW-NC-II":3,"MMAW-NC-I":2,"MMAW-NC-III":2,"MMAW-NC-IV":1,"FCAW-NC-II":2,"FCAW-NC-I":2,"GMAW-NC-II":2}},
+    {"id":"computer-repair-en","language":"en","tags":["interest","technology"],"answers":{"interests":["computer repair"]},"judgments":{"CSS-NC-II":3}},
+    {"id":"cooking-interest-en","language":"en","tags":["interest","hospitality"],"answers":{"interests":["cooking"]},"judgments":{"COOKERY-NC-II":3,"FOOD-PRODUCTION-NC-III":2,"FOOD-PRODUCTION-NC-IV":1}},
+    {"id":"electrical-interest-en","language":"en","tags":["interest","trade"],"answers":{"interests":["electrical installation"]},"judgments":{"EIM-NC-II":3,"EIM-NC-III":2}},
+    {"id":"carpentry-interest-en","language":"en","tags":["interest","trade"],"answers":{"interests":["carpentry"]},"judgments":{"CARPENTRY-NC-II":3,"CARPENTRY-NC-III":2}},
+    {"id":"elderly-care-goal-en","language":"en","tags":["career","care"],"answers":{"career_goal":"I want to take care of elderly people abroad"},"judgments":{"CAREGIVING-NC-II-2":3,"CAREGIVING-NC-II-5":2,"CAREGIVING-NC-II":1,"CAREGIVING-NC-II-3":0,"CAREGIVING-NC-II-4":0}},
+    {"id":"solar-goal-en","language":"en","tags":["career","specific_goal"],"answers":{"career_goal":"I want to install solar panels on houses"},"judgments":{"PV-SYSTEMS-INSTALLATION-NC-II":3,"EIM-NC-II":1,"CARPENTRY-NC-II":0}},
+    {"id":"call-center-goal-en","language":"en","tags":["career","specific_goal"],"answers":{"career_goal":"I want to work in a call center"},"judgments":{"CONTACT-CENTER-SERVICES-NC-II":3}},
+    {"id":"bread-and-cakes-en","language":"en","tags":["career","hospitality"],"answers":{"career_goal":"I want to make bread and cakes"},"judgments":{"FOOD-PRODUCTION-NC-II":3,"COOKERY-NC-II":1}},
+    {"id":"cooking-goal-tl","language":"tl","tags":["career","hospitality"],"answers":{"career_goal":"gusto kong magluto ng ulam para sa karinderya"},"judgments":{"COOKERY-NC-II":3,"FOOD-PRODUCTION-NC-III":2}},
+    {"id":"carpentry-goal-tl","language":"tl","tags":["career","trade"],"answers":{"career_goal":"gusto kong maging karpintero"},"judgments":{"CARPENTRY-NC-II":3,"CARPENTRY-NC-III":2}},
+    {"id":"welding-goal-tl","language":"tl","tags":["career","trade"],"answers":{"career_goal":"gusto kong maging welder"},"judgments":{"MMAW-NC-II":3,"MMAW-NC-I":2,"FCAW-NC-II":2,"GMAW-NC-II":2}},
+    {"id":"laptop-repair-taglish","language":"taglish","tags":["skills","technology"],"answers":{"existing_skills":["mag-ayos ng laptop","computer repair"]},"judgments":{"CSS-NC-II":3}},
+    {"id":"cookery-skills-taglish","language":"taglish","tags":["skills","hospitality"],"answers":{"existing_skills":["cooking","nagluluto"]},"judgments":{"COOKERY-NC-II":3,"FOOD-PRODUCTION-NC-III":2}},
+    {"id":"explicit-computer-pathway","language":"en","tags":["explicit_pathway"],"answers":{"preferred_qualification_codes":["CSS-NC-II"]},"judgments":{"CSS-NC-II":3}},
+    {"id":"explicit-electrical-pathway","language":"en","tags":["explicit_pathway"],"answers":{"preferred_qualification_codes":["EIM-NC-II"]},"judgments":{"EIM-NC-II":3}},
+    {"id":"beginner-carpentry","language":"en","tags":["beginner","tie"],"answers":{"interests":["carpentry"],"experience_years":0},"judgments":{"CARPENTRY-NC-II":3,"CARPENTRY-NC-III":1}},
+    {"id":"repeated-cookery-evidence","language":"en","tags":["correlated_inputs"],"answers":{"interests":["cooking"],"existing_skills":["cooking"],"career_goal":"cooking"},"judgments":{"COOKERY-NC-II":3,"FOOD-PRODUCTION-NC-III":2,"FOOD-PRODUCTION-NC-IV":1}},
+    {"id":"astronaut-en","language":"en","tags":["no_tvet"],"answers":{"career_goal":"I want to be an astronaut"},"judgments":{},"expect_empty":true},
+    {"id":"lawyer-tl","language":"tl","tags":["no_tvet"],"answers":{"career_goal":"gusto kong maging abogado"},"judgments":{},"expect_empty":true},
+    {"id":"politician-en","language":"en","tags":["no_tvet"],"answers":{"interests":["politician"]},"judgments":{},"expect_empty":true},
+    {"id":"empty-questionnaire","language":"none","tags":["missing_inputs"],"answers":{},"judgments":{},"expect_empty":true},
+    {"id":"context-only-questionnaire","language":"none","tags":["missing_inputs","unsupported_mapping"],"answers":{"education":"college","experience_years":5,"work_environments":["remote"]},"judgments":{},"expect_empty":true},
+    {"id":"preferences-only-questionnaire","language":"none","tags":["missing_inputs"],"answers":{"preferences":{"maximum_budget":"1000","delivery_mode":"online"}},"judgments":{},"expect_empty":true}
+  ]
+}
