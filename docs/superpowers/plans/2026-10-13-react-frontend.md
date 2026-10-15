@@ -343,16 +343,16 @@ road drawn on scroll), ReadinessDemo, Archipelago, Catalog, ProgressPreview, Clo
 
 - [x] axe passes on every page in both themes. Keyboard-only runs of the main journeys pass (US-13).
 - [x] The initial JavaScript is under 200 KB gzipped. Leaflet is in its own chunk.
-- [ ] Lighthouse on a mid-range phone profile: performance 85 or more on Home, the finder and the Library.
+- [x] Lighthouse on a mid-range phone profile: performance 85 or more on Home, the finder and the Library.
 
 ### Task 18: Container and deployment
 
 **Files:** `web/Dockerfile`, `docker-compose.yml`, `deploy/Caddyfile`, README "Deployment".
 
-- [ ] A two-stage `web/Dockerfile`: Node 24 builds `dist/`, then `caddy:2-alpine` serves it on port 8080, falling
+- [x] A two-stage `web/Dockerfile`: Node 24 builds `dist/`, then `caddy:2-alpine` serves it on port 8080, falling
       back to `index.html` for app addresses, with long cache times for hashed files and none for `index.html`.
-- [ ] During the parallel run, Caddy serves the React app at `/beta/` (Vite `base: '/beta/'`) and Streamlit at `/`.
-- [ ] Add the Content Security Policy header for the React app.
+- [x] During the parallel run, Caddy serves the React app at `/beta/` (Vite `base: '/beta/'`) and Streamlit at `/`.
+- [x] Add the Content Security Policy header for the React app.
 
 ### Task 19: Parallel run and switch-over
 

@@ -73,6 +73,20 @@ services:
       api:
         condition: service_healthy
 
+  app:
+    # The React app, served by its own Caddy on port 8080 (web/Dockerfile). Until the switch it lives at /beta/,
+    # beside Streamlit at /.
+    build:
+      context: ./web
+      args:
+        BASE_PATH: /beta/
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
@@ -89,6 +103,7 @@ services:
       - caddy_config:/config
     depends_on:
       - web
+      - app
 
 volumes:
   pgdata:

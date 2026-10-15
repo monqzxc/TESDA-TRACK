@@ -15,6 +15,11 @@
 			header_up X-Forwarded-For {remote_host}
 		}
 	}
+	# The React app (web/), beside Streamlit until the switch: /beta/ reaches it without the prefix.
+	redir /beta /beta/ 308
+	handle_path /beta/* {
+		reverse_proxy app:8080
+	}
 	handle {
 		reverse_proxy web:8501 {
 			header_up X-Forwarded-For {remote_host}
