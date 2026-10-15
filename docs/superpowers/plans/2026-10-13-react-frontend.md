@@ -341,8 +341,8 @@ road drawn on scroll), ReadinessDemo, Archipelago, Catalog, ProgressPreview, Clo
 
 ### Task 17: Accessibility and performance
 
-- [ ] axe passes on every page in both themes. Keyboard-only runs of the main journeys pass (US-13).
-- [ ] The initial JavaScript is under 200 KB gzipped. Leaflet is in its own chunk.
+- [x] axe passes on every page in both themes. Keyboard-only runs of the main journeys pass (US-13).
+- [x] The initial JavaScript is under 200 KB gzipped. Leaflet is in its own chunk.
 - [ ] Lighthouse on a mid-range phone profile: performance 85 or more on Home, the finder and the Library.
 
 ### Task 18: Container and deployment

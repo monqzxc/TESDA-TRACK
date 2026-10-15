@@ -269,6 +269,50 @@ test.describe('on a desktop', () => {
     }
   })
 
+  test('signs in and out with the keyboard alone (US-13)', async ({ page }) => {
+    const api = await serveApi(page)
+    await page.goto('/qualifications')
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Qualifications Library' }),
+    ).toBeVisible()
+
+    // Tab from the top of the page to the sidebar's Sign in.
+    const signIn = page.getByRole('banner').getByRole('button', { name: 'Sign in' })
+    for (let presses = 0; presses < 20; presses++) {
+      if (await signIn.evaluate((button) => button === document.activeElement)) break
+      await page.keyboard.press('Tab')
+    }
+    await expect(signIn).toBeFocused()
+    await page.keyboard.press('Enter')
+
+    // The dialog takes focus as it opens, so its name is read out; Tab goes on into the form.
+    const dialog = page.getByRole('dialog', { name: 'Sign in' })
+    await expect(dialog).toBeFocused()
+    const email = dialog.getByLabel('Email')
+    for (let presses = 0; presses < 6; presses++) {
+      await page.keyboard.press('Tab')
+      if (await email.evaluate((input) => input === document.activeElement)) break
+    }
+    await expect(email).toBeFocused()
+    await page.keyboard.type(LEARNER.email)
+    await page.keyboard.press('Tab')
+    await expect(dialog.getByLabel('Password')).toBeFocused()
+    await page.keyboard.type(PASSWORD)
+    await page.keyboard.press('Enter')
+
+    await expect(dialog).toBeHidden()
+    expect(api.signedIn).toBe(true)
+    const account = page.getByRole('button', { name: 'Your account: Maria Santos' })
+    await expect(account).toBeFocused()
+
+    await page.keyboard.press('Enter')
+    await expect(page.getByRole('menuitem', { name: 'Sign out' })).toBeFocused()
+    await page.keyboard.press('Enter')
+
+    await expect(signIn).toBeFocused()
+    expect(api.signedIn).toBe(false)
+  })
+
   test("Home's top bar has the account control, and /sign-in returns to ?next=", async ({
     page,
   }) => {

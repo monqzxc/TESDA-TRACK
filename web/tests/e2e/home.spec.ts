@@ -255,7 +255,9 @@ for (const [size, viewport] of Object.entries(SIZES)) {
       const left = await scrollY(page)
       expect(left).toBeGreaterThan(1000)
 
-      await cta.click()
+      // A click without Playwright's own scrolling first: beside the sticky top bar, it can move the page a little
+      // before following the link, and the page returns to where it was then.
+      await cta.dispatchEvent('click')
       await expect(page.getByRole('heading', { level: 1, name: 'My Progress' })).toBeVisible()
       await page.goBack()
 

@@ -38,6 +38,8 @@ export const en = {
     signIn: 'Sign in',
     menu: 'Menu',
     closeMenu: 'Close menu',
+    // The phone menu's code couldn't be downloaded.
+    menuUnavailable: "We can't open the menu right now. Check your connection, then try again.",
   },
   // The landing page's own top bar, on Home.
   landing: {
