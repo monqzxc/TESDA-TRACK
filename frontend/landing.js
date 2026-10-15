@@ -41,6 +41,12 @@ function start(root) {
   page.account = $('[data-open="account"]')
   scroller?.scrollTo({ top: 0 })
 
+  /* ── Theme: app.py puts the theme Streamlit shows on <html>; landing.css reads it from the host ── */
+  const mirrorTheme = () => { root.host.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light' }
+  mirrorTheme()
+  const themeWatch = new MutationObserver(mirrorTheme)
+  themeWatch.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+
   /* ── Scroll reveal: content is visible until this script can watch it come into view ── */
   const revealed = new Set()
   const onReveal = new Map()
@@ -310,6 +316,7 @@ function start(root) {
     off.abort()
     io?.disconnect()
     ro.disconnect()
+    themeWatch.disconnect()
     timers.forEach(clearTimeout)
   }
   return page

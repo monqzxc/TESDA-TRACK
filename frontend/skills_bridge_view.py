@@ -35,23 +35,25 @@ _DELIVERY_MAP = st.components.v2.component(
     html="""
     <style>
       :host { display: block; font-family: inherit; }
-      .delivery-map-shell { position: relative; overflow: hidden; border: 1px solid rgba(100, 116, 139, .28); border-radius: 16px; background: #eef4f8; }
+      .delivery-map-shell { position: relative; overflow: hidden; border: 1px solid var(--track-border); border-radius: 16px; background: var(--track-map-water); }
       .delivery-map { min-height: 430px; width: 100%; }
-      .delivery-map-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; background: rgba(255, 255, 255, .94); border-bottom: 1px solid rgba(100, 116, 139, .18); color: #19324d; font-size: 13px; }
-      .delivery-map-status { min-height: 18px; color: #526579; }
-      .delivery-map-location { border: 1px solid #0b6bcb; border-radius: 999px; padding: 7px 12px; background: #fff; color: #0b5cad; cursor: pointer; font: inherit; font-weight: 650; white-space: nowrap; }
-      .delivery-map-location:hover { background: #eaf4ff; }
+      .delivery-map-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; background: var(--track-glass); border-bottom: 1px solid var(--track-border); color: var(--track-navy); font-size: 13px; }
+      .delivery-map-status { min-height: 18px; color: var(--track-muted); }
+      .delivery-map-location { border: 1px solid var(--track-blue); border-radius: 999px; padding: 7px 12px; background: var(--track-surface); color: var(--track-blue); cursor: pointer; font: inherit; font-weight: 650; white-space: nowrap; }
+      .delivery-map-location:hover { background: var(--track-soft); }
       .delivery-map-location:disabled { opacity: .6; cursor: wait; }
-      .delivery-map-legend { display: flex; gap: 12px; flex-wrap: wrap; padding: 8px 12px; background: rgba(255, 255, 255, .94); border-top: 1px solid rgba(100, 116, 139, .18); color: #526579; font-size: 12px; }
+      .delivery-map-legend { display: flex; gap: 12px; flex-wrap: wrap; padding: 8px 12px; background: var(--track-glass); border-top: 1px solid var(--track-border); color: var(--track-muted); font-size: 12px; }
       .delivery-map-legend span::before { content: ''; display: inline-block; width: 9px; height: 9px; margin-right: 5px; border-radius: 50%; background: currentColor; }
-      .delivery-map-legend .provider { color: #0b6bcb; }
-      .delivery-map-legend .assessment { color: #b46b00; }
-      .delivery-map-legend .learner { color: #14804a; }
+      .delivery-map-legend .provider { color: var(--track-legend-provider); }
+      .delivery-map-legend .assessment { color: var(--track-legend-assessment); }
+      .delivery-map-legend .learner { color: var(--track-legend-learner); }
       .leaflet-container { font: inherit; }
+      .leaflet-tile-pane { filter: var(--track-map-tiles); }
+      .leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--track-surface); color: var(--track-ink); }
       .leaflet-popup-content { line-height: 1.45; }
-      .delivery-popup-title { margin-bottom: 4px; font-weight: 750; color: #19324d; }
-      .delivery-popup-meta { color: #526579; font-size: 12px; }
-      .delivery-popup-link { display: inline-block; margin-top: 8px; color: #0b5cad; font-weight: 650; text-decoration: none; }
+      .delivery-popup-title { margin-bottom: 4px; font-weight: 750; color: var(--track-navy); }
+      .delivery-popup-meta { color: var(--track-muted); font-size: 12px; }
+      .delivery-popup-link { display: inline-block; margin-top: 8px; color: var(--track-blue); font-weight: 650; text-decoration: none; }
     </style>
     <div class="delivery-map-shell">
       <div class="delivery-map-toolbar">

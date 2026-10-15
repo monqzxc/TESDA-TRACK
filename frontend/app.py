@@ -293,6 +293,26 @@ COMPACT_ON_SCROLL = """(() => {
 })();"""
 
 
+# Puts the theme Streamlit shows (System, Light or Dark in its menu) on the page as data-theme, for styles.css and the
+# landing page. Streamlit sets color-scheme on .stApp. It re-themes when the device's setting changes or a learner
+# picks a theme in its menu, so the page checks right after either, and every half second for anything else.
+THEME_SYNC = """(() => {
+  const sync = () => {
+    const app = document.querySelector('.stApp');
+    if (!app) return;
+    const theme = getComputedStyle(app).colorScheme.includes('dark') ? 'dark' : 'light';
+    if (document.documentElement.dataset.theme !== theme) document.documentElement.dataset.theme = theme;
+  };
+  sync();
+  if (window.trackThemeSync) return;
+  window.trackThemeSync = sync;
+  const soon = () => setTimeout(sync, 50);
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', soon);
+  document.addEventListener('click', soon, true);
+  setInterval(sync, 500);
+})();"""
+
+
 def compact_on_scroll() -> None:
     st.html(f"<script data-finder>{COMPACT_ON_SCROLL}</script>", unsafe_allow_javascript=True)
 
@@ -1159,6 +1179,7 @@ def show_sidebar(selected: str, is_admin: bool) -> None:
 def main() -> None:
     st.set_page_config(page_title="TESDA Track | Your next step", page_icon=str(FAVICON), layout="wide")
     st.html(Path(__file__).with_name("styles.css"))
+    st.html(f"<script data-theme-sync>{THEME_SYNC}</script>", unsafe_allow_javascript=True)
     # Retain drafts and filters when a page is not rendered. Button keys are
     # deliberately excluded: Streamlit owns trigger-widget state.
     for key in list(st.session_state):

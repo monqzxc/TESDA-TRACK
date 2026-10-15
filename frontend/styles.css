@@ -1,7 +1,10 @@
-/* Brand and layout layer. Native theme tokens and widgets live in config.toml. */
+/* Brand and layout layer. Native theme tokens and widgets live in config.toml, in [theme.light] and [theme.dark].
+   app.py sets data-theme on the page to the theme Streamlit shows, so these colors follow the same choice. */
 :root {
-  --track-navy: #102a56;
-  --track-blue: #175cd3;
+  --track-navy: #102a56; /* headings and strong text */
+  --track-blue: #175cd3; /* accents: links, icons, bars */
+  --track-fill: #175cd3; /* blue fills under white text */
+  --track-fill-hover: #124fb8;
   --track-teal: #0d9488;
   --track-muted: #52647e;
   --track-border: #dfe7f2;
@@ -11,18 +14,149 @@
   --track-ink: #3e5272; /* body copy on white cards */
   --track-tint: #e8f0fe; /* icon tiles and circles */
   --track-panel: #f4f7fd; /* panels inside cards */
+  --track-panel-border: #e3ebf7;
   --track-violet: #6248b3;
+  --track-violet-bar: #7a5cdb;
   --track-banner: linear-gradient(100deg, #f3f7ff 0%, #eaf2ff 48%, #dde9fd 100%);
-  /* config.toml headingFont: Streamlit applies it to its own headings, not to the ones built in HTML here. */
-  --track-display: "Bricolage Grotesque", Figtree, "Segoe UI", sans-serif;
+  --track-banner-border: #e0e9f8;
+  --track-eyebrow: #24395f;
+  --track-hover-border: #b8cdf0;
+  --track-focus: #438bf5;
+  --track-shadow-rgb: 16 42 86;
+  --track-line: #d8e3f5; /* timeline rules */
+  --track-bar: #dde6f5; /* the empty part of bars and rings */
+  /* Find my pathway's step tabs */
+  --track-current: #102a56;
+  --track-current-hint: #c3d2ef;
+  --track-step: #f0f4fb;
+  --track-step-hover: #e2eafa;
+  --track-done: #e3f4ef;
+  --track-done-hover: #d3ede5;
+  /* Banner cards */
+  --track-tile: #ffffffd9;
+  --track-tile-border: #ffffffe0;
+  --track-tile-violet: #f7f4ffe6;
+  --track-tile-green: #e9f8f0eb;
+  --track-tile-icon: #e3edff;
+  --track-tile-icon-violet: #ebe5fd;
+  --track-tile-icon-green: #d3f1e2;
+  /* Pills, chips and states */
+  --track-pill: #eaf2ff;
+  --track-pill-border: #c8dafa;
+  --track-pill-hover: #dce9ff;
+  --track-pill-hover-border: #9fbff3;
+  --track-pill-hover-ink: #0f4fbf;
+  --track-chip: #eef2f8;
+  --track-chip-hover: #e3e9f3;
+  --track-chip-hover-border: #cfd9e8;
+  --track-good-bg: #e3f5ee;
+  --track-good-ink: #11664c;
+  --track-warn-bg: #fff5df;
+  --track-warn-ink: #92601a;
+  --track-empty: #f9fbfe;
+  --track-dash: #c8d6e9;
+  /* Training & Assessment */
+  --track-stripe: #e6efff99;
+  --track-rule: #edf1f7;
+  --track-row-hover: #f5f8fe;
+  --track-row-hover-border: #dbe6f7;
+  --track-disabled-bg: #f4f6fa;
+  --track-disabled-ink: #9aa7ba;
+  --track-faint: #8a9bb4;
+  /* The center map (training_view.py). Its tiles stay as drawn in light, and turn to night in dark. */
+  --track-glass: #ffffffee;
+  --track-glass-soft: #ffffffcc;
+  --track-map-water: #cfe6f5;
+  --track-map-tiles: none;
+  /* Skills Explorer's delivery map legend */
+  --track-legend-provider: #0b6bcb;
+  --track-legend-assessment: #b46b00;
+  --track-legend-learner: #14804a;
 }
+/* Night navy, matching [theme.dark] in config.toml. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --track-navy: #e4ebf7;
+  --track-blue: #7fb0ff;
+  --track-fill: #2f6fe0;
+  --track-fill-hover: #3a78ea;
+  --track-teal: #2bc4a9;
+  --track-muted: #9fb1ce;
+  --track-border: #22365c;
+  --track-surface: #111f42;
+  --track-soft: #16305f;
+  --track-page: #0b1630;
+  --track-ink: #c3d0e6;
+  --track-tint: #1a2d5a;
+  --track-panel: #0e1b3b;
+  --track-panel-border: #22365c;
+  --track-violet: #a58df0;
+  --track-violet-bar: #a58df0;
+  --track-banner: linear-gradient(100deg, #0f1f45 0%, #13275a 48%, #183170 100%);
+  --track-banner-border: #22365c;
+  --track-eyebrow: #9db4da;
+  --track-hover-border: #34507f;
+  --track-focus: #6ea3ff;
+  --track-shadow-rgb: 0 0 0;
+  --track-line: #2a3f68;
+  --track-bar: #22365c;
+  --track-current: #2f6fe0;
+  --track-current-hint: #dbe6ff;
+  --track-step: #142650;
+  --track-step-hover: #1a3164;
+  --track-done: #0f3a35;
+  --track-done-hover: #134a43;
+  --track-tile: #111f42e6;
+  --track-tile-border: #ffffff14;
+  --track-tile-violet: #1e1c4ae6;
+  --track-tile-green: #0f2f33eb;
+  --track-tile-icon: #1a2d5a;
+  --track-tile-icon-violet: #2a2457;
+  --track-tile-icon-green: #0f3a35;
+  --track-pill: #16305f;
+  --track-pill-border: #2b4a85;
+  --track-pill-hover: #1c3a72;
+  --track-pill-hover-border: #4a6fb0;
+  --track-pill-hover-ink: #b5d0ff;
+  --track-chip: #182a52;
+  --track-chip-hover: #1f3563;
+  --track-chip-hover-border: #34507f;
+  --track-good-bg: #0f3a35;
+  --track-good-ink: #7be0c8;
+  --track-warn-bg: #3a2c10;
+  --track-warn-ink: #f5cf7a;
+  --track-empty: #0e1b3b;
+  --track-dash: #2f4670;
+  --track-stripe: #16305f40;
+  --track-rule: #1d2f55;
+  --track-row-hover: #15284f;
+  --track-row-hover-border: #2b4a85;
+  --track-disabled-bg: #15244a;
+  --track-disabled-ink: #6d7f9f;
+  --track-faint: #7d90b0;
+  --track-glass: #111f42ee;
+  --track-glass-soft: #111f42cc;
+  --track-map-water: #172540;
+  --track-map-tiles: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.88) saturate(0.7);
+  --track-legend-provider: #7fb0ff;
+  --track-legend-assessment: #e8b04a;
+  --track-legend-learner: #4fd18b;
+}
+/* Pictures drawn for the light theme sit a little quieter on night navy. */
+:root[data-theme="dark"] :is(.journey-scene, .page-hero-art, .start-art) img { filter: brightness(0.85) saturate(0.95); }
+/* The theme script in app.py has nothing to show. */
+[data-testid="stElementContainer"]:has(script[data-theme-sync]) { display: none; }
 
 .block-container { max-width: 1520px; padding: 3.8rem 2.5rem 2rem; }
 h1, h2, h3, h4, .brand, .score-ring span { font-family: var(--track-display); }
 h1, h2, h3 { letter-spacing: -0.02em; }
 
-/* Home: the landing page (landing.css) runs edge to edge under its own top bar, in place of Streamlit's header. */
-.stApp:has(.st-key-page_home) [data-testid="stHeader"] { display: none; }
+/* Home: the landing page (landing.css) runs edge to edge under its own top bar. Streamlit's header steps aside but
+   keeps its menu, with System, Light and Dark, at the top right over the landing page's navy. */
+.stApp:has(.st-key-page_home) [data-testid="stHeader"] { background: transparent; pointer-events: none; }
+.stApp:has(.st-key-page_home) [data-testid="stToolbar"] { pointer-events: auto; }
+.stApp:has(.st-key-page_home) [data-testid="stToolbar"] button { color: #fff; }
+.stApp:has(.st-key-page_home) :is([data-testid="stAppDeployButton"], [data-testid="stDecoration"]) { display: none; }
 .stApp:has(.st-key-page_home) .block-container { max-width: none; padding: 0; }
 
 /* Preserve Streamlit's controls, input semantics, and toolbar. */
@@ -53,14 +187,14 @@ h1, h2, h3 { letter-spacing: -0.02em; }
 .st-key-primary_navigation [data-testid="stIconMaterial"],
 .st-key-sidebar_account [data-testid="stIconMaterial"] { font-size: 1.45rem; }
 .st-key-primary_navigation [data-testid="stButton"] button:hover,
-.st-key-sidebar_account [data-testid="stButton"] button:hover { border-color: #b8cdf0; background: var(--track-soft); color: var(--track-navy); }
+.st-key-sidebar_account [data-testid="stButton"] button:hover { border-color: var(--track-hover-border); background: var(--track-soft); color: var(--track-navy); }
 .st-key-primary_navigation [data-testid="stButton"] button[data-testid="stBaseButton-primary"] {
-  border-color: var(--track-blue);
-  background: var(--track-blue);
+  border-color: var(--track-fill);
+  background: var(--track-fill);
   color: white;
-  box-shadow: 0 10px 20px -12px var(--track-blue);
+  box-shadow: 0 10px 20px -12px var(--track-fill);
 }
-.st-key-primary_navigation [data-testid="stButton"] button[data-testid="stBaseButton-primary"]:hover { background: #124fb8; color: white; }
+.st-key-primary_navigation [data-testid="stButton"] button[data-testid="stBaseButton-primary"]:hover { background: var(--track-fill-hover); color: white; }
 [data-testid="stForm"] {
   background: var(--track-surface);
   border-color: var(--track-border);
@@ -74,7 +208,7 @@ h1, h2, h3 { letter-spacing: -0.02em; }
 [data-testid="stFormSubmitButton"] button:focus-visible,
 [data-testid="stDownloadButton"] button:focus-visible,
 [role="tab"]:focus-visible,
-a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
+a:focus-visible { outline: 3px solid var(--track-focus); outline-offset: 3px; }
 [data-testid="stTabs"] [role="tablist"] { gap: 1.75rem; margin: 0.4rem 0 1.25rem; }
 [data-testid="stTabs"] [role="tab"] { font-size: 0.9375rem; font-weight: 600; min-height: 48px; padding-bottom: 0.75rem; }
 [data-testid="stMetric"] {
@@ -92,7 +226,7 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
 .st-key-library_filters,
 .st-key-progress_summary,
 .st-key-service_unavailable { background: var(--track-surface); border-radius: 18px; }
-.st-key-finder_panel { padding: 1.4rem; border: 1px solid var(--track-border); box-shadow: 0 3px 16px #102a5605; }
+.st-key-finder_panel { padding: 1.4rem; border: 1px solid var(--track-border); box-shadow: 0 3px 16px rgb(var(--track-shadow-rgb) / 0.02); }
 .st-key-training_filters,
 .st-key-library_filters,
 .st-key-progress_summary { padding: 1.25rem; }
@@ -107,7 +241,7 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
   min-width: 0;
   background: var(--track-surface);
   border-radius: 16px;
-  box-shadow: 0 2px 8px #102a5604;
+  box-shadow: 0 2px 8px rgb(var(--track-shadow-rgb) / 0.02);
 }
 [class*="st-key-card_"] h3,
 [class*="st-key-card_"] p { overflow-wrap: anywhere; }
@@ -128,7 +262,7 @@ a:focus-visible { outline: 3px solid #438bf5; outline-offset: 3px; }
   background: var(--track-page);
   transition: padding 0.3s ease, box-shadow 0.3s ease;
 }
-body.finder-compact .st-key-finder_header { padding: 0.5rem 0; box-shadow: 0 14px 16px -18px #102a5659; }
+body.finder-compact .st-key-finder_header { padding: 0.5rem 0; box-shadow: 0 14px 16px -18px rgb(var(--track-shadow-rgb) / 0.35); }
 
 /* One tab per step, as chevrons that point on to the next: the icon in a circle, the name, and its hint
    underneath (app.py sets --step-hint on each tab). Button types mark each tab: primary is the current step,
@@ -142,7 +276,7 @@ body.finder-compact .st-key-finder_header { padding: 0.5rem 0; box-shadow: 0 14p
   background: var(--track-surface);
   border: 1px solid var(--track-border);
   border-radius: 18px;
-  box-shadow: 0 8px 22px -16px #102a5640;
+  box-shadow: 0 8px 22px -16px rgb(var(--track-shadow-rgb) / 0.25);
   transition: margin 0.3s ease, padding 0.3s ease;
 }
 body.finder-compact .st-key-finder_steps { margin-top: 0.5rem; padding: 0.3rem; }
@@ -156,7 +290,7 @@ body.finder-compact .st-key-finder_steps { margin-top: 0.5rem; padding: 0.3rem; 
   padding: 0.55rem calc(var(--notch) + 0.5rem) 0.55rem calc(var(--notch) + var(--step-inset));
   border: 0;
   border-radius: 0;
-  background: #f0f4fb;
+  background: var(--track-step);
   color: var(--track-navy);
   clip-path: polygon(0 0, calc(100% - var(--notch)) 0, 100% 50%, calc(100% - var(--notch)) 100%, 0 100%, var(--notch) 50%);
   pointer-events: auto;
@@ -177,7 +311,7 @@ body.finder-compact .st-key-finder_steps { margin-top: 0.5rem; padding: 0.3rem; 
 .st-key-finder_steps [data-testid="stButton"] button:focus-visible { outline: none; }
 .st-key-finder_steps [class*="st-key-finder_tab_"]:has(button:focus-visible) {
   z-index: 2;
-  filter: drop-shadow(0 0 1px #438bf5) drop-shadow(0 0 1px #438bf5) drop-shadow(0 0 1px #438bf5);
+  filter: drop-shadow(0 0 1px var(--track-focus)) drop-shadow(0 0 1px var(--track-focus)) drop-shadow(0 0 1px var(--track-focus));
 }
 .st-key-finder_steps button > div { justify-content: flex-start; }
 .st-key-finder_steps button > div > span { gap: 0.9rem; }
@@ -207,26 +341,26 @@ body.finder-compact .st-key-finder_steps { margin-top: 0.5rem; padding: 0.3rem; 
 }
 /* Streamlit renders a new button when its type changes, so these animations play as a tab becomes current or done. */
 .st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-primary"] {
-  background: var(--track-navy);
+  background: var(--track-current);
   color: white;
   animation: finder-tab-in 0.3s ease-out backwards;
 }
 /* A box shadow would be clipped away with the corners, so the current tab's shadow follows its chevron. */
 .st-key-finder_steps [class*="st-key-finder_tab_"]:has([data-testid="stBaseButton-primary"]) {
   z-index: 1;
-  filter: drop-shadow(0 6px 7px #102a5638);
+  filter: drop-shadow(0 6px 7px rgb(var(--track-shadow-rgb) / 0.22));
 }
 .st-key-finder_steps [data-testid="stBaseButton-primary"] [data-testid="stIconMaterial"] { background: #ffffff1f; color: white; }
-.st-key-finder_steps [data-testid="stBaseButton-primary"] [data-testid="stMarkdownContainer"] p::after { color: #c3d2ef; }
-.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-tertiary"] { background: #e3f4ef; }
+.st-key-finder_steps [data-testid="stBaseButton-primary"] [data-testid="stMarkdownContainer"] p::after { color: var(--track-current-hint); }
+.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-tertiary"] { background: var(--track-done); }
 .st-key-finder_steps [data-testid="stBaseButton-tertiary"] [data-testid="stIconMaterial"] {
   color: var(--track-teal);
   animation: finder-tick 0.45s ease-out backwards;
 }
 @keyframes finder-tab-in { from { transform: scale(0.94); opacity: 0.55; } }
 @keyframes finder-tick { 0% { transform: scale(0.3); opacity: 0; } 65% { transform: scale(1.25); opacity: 1; } }
-.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-secondary"]:hover:not(:disabled) { background: #e2eafa; color: var(--track-navy); }
-.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-tertiary"]:hover { background: #d3ede5; color: var(--track-navy); }
+.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-secondary"]:hover:not(:disabled) { background: var(--track-step-hover); color: var(--track-navy); }
+.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-tertiary"]:hover { background: var(--track-done-hover); color: var(--track-navy); }
 .st-key-finder_steps [data-testid="stButton"] button:disabled { opacity: 0.55; }
 /* Pinned and scrolled: the tabs drop their hints and shrink to one slim row. */
 body.finder-compact .st-key-finder_steps [data-testid="stButton"] button { min-height: 48px; }
@@ -268,7 +402,7 @@ body.finder-compact .st-key-finder_steps [data-testid="stMarkdownContainer"] p::
   background: var(--track-surface);
   border: 1px solid var(--track-border);
   border-radius: 18px;
-  box-shadow: 0 2px 8px #102a5604;
+  box-shadow: 0 2px 8px rgb(var(--track-shadow-rgb) / 0.02);
 }
 .goal-summary { display: flex; align-items: center; gap: 1.1rem; min-width: 0; }
 .goal-avatar { flex-shrink: 0; width: 68px; height: 68px; }
@@ -345,7 +479,7 @@ body.finder-compact .st-key-finder_steps [data-testid="stMarkdownContainer"] p::
   border: 1px solid var(--track-border);
   border-radius: 999px;
   color: var(--track-muted);
-  background: white;
+  background: var(--track-surface);
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.035em;
@@ -358,9 +492,9 @@ body.finder-compact .st-key-finder_steps [data-testid="stMarkdownContainer"] p::
 .sidebar-note {
   margin-top: 1.2rem;
   padding: 1rem;
-  border: 1px solid #d8e8fb;
+  border: 1px solid var(--track-pill-border);
   border-radius: 12px;
-  background: #f3f7fe;
+  background: var(--track-panel);
   color: var(--track-muted);
   font-size: 0.8rem;
   line-height: 1.65;
@@ -441,9 +575,9 @@ body.finder-compact .st-key-finder_steps [data-testid="stMarkdownContainer"] p::
   width: 38px;
   height: 38px;
   padding: 9px;
-  border: 1px solid #dce7f7;
+  border: 1px solid var(--track-border);
   border-radius: 11px;
-  background: white;
+  background: var(--track-surface);
   color: var(--track-blue);
   box-sizing: border-box;
 }
@@ -469,7 +603,7 @@ body.finder-compact .st-key-finder_steps [data-testid="stMarkdownContainer"] p::
   max-height: 40rem; /* above its tallest wrap; the cap only exists to animate */
   padding: 1.9rem 2.1rem 1.5rem;
   overflow: hidden;
-  border: 1px solid #e0e9f8;
+  border: 1px solid var(--track-banner-border);
   border-radius: 22px;
   background: var(--track-banner);
   transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease, border-width 0.35s ease;
@@ -478,7 +612,7 @@ body.finder-compact .st-key-finder_steps [data-testid="stMarkdownContainer"] p::
 .journey-scene img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: right top; }
 .journey-copy { position: relative; z-index: 1; width: 33%; min-width: 300px; }
 .journey-copy .eyebrow,
-.page-hero .eyebrow { color: #24395f; letter-spacing: 0.14em; }
+.page-hero .eyebrow { color: var(--track-eyebrow); letter-spacing: 0.14em; }
 .journey-copy h1,
 .page-hero h1 {
   margin: 0.5rem 0 0.75rem;
@@ -509,17 +643,17 @@ body.finder-compact .st-key-finder_steps [data-testid="stMarkdownContainer"] p::
   gap: 0.8rem;
   min-width: 0;
   padding: 1rem 1.05rem;
-  border: 1px solid #ffffffe0;
+  border: 1px solid var(--track-tile-border);
   border-radius: 16px;
-  background: #ffffffd9;
-  box-shadow: 0 12px 28px -20px #102a5680;
+  background: var(--track-tile);
+  box-shadow: 0 12px 28px -20px rgb(var(--track-shadow-rgb) / 0.50);
   backdrop-filter: blur(8px);
 }
-.journey-tile-violet { background: #f7f4ffe6; }
-.journey-tile-green { background: #e9f8f0eb; }
-.journey-tile-icon { display: grid; place-items: center; flex-shrink: 0; width: 46px; height: 46px; border-radius: 13px; background: #e3edff; }
-.journey-tile-violet .journey-tile-icon { background: #ebe5fd; }
-.journey-tile-green .journey-tile-icon { background: #d3f1e2; }
+.journey-tile-violet { background: var(--track-tile-violet); }
+.journey-tile-green { background: var(--track-tile-green); }
+.journey-tile-icon { display: grid; place-items: center; flex-shrink: 0; width: 46px; height: 46px; border-radius: 13px; background: var(--track-tile-icon); }
+.journey-tile-violet .journey-tile-icon { background: var(--track-tile-icon-violet); }
+.journey-tile-green .journey-tile-icon { background: var(--track-tile-icon-green); }
 .journey-tile-icon img { width: 26px; height: 26px; }
 .journey-tile strong { display: block; color: var(--track-navy); font-size: 0.9375rem; font-weight: 700; line-height: 1.3; }
 .journey-tile p { margin: 0.2rem 0 0; color: var(--track-ink); font-size: 0.8125rem; line-height: 1.45; }
@@ -552,7 +686,7 @@ body.finder-compact .journey-hero { min-height: 0; max-height: 0; opacity: 0; pa
   padding: 1.6rem 2.1rem;
   margin-bottom: 1.1rem;
   overflow: hidden;
-  border: 1px solid #e0e9f8;
+  border: 1px solid var(--track-banner-border);
   border-radius: 22px;
   background: var(--track-banner);
 }
@@ -639,8 +773,8 @@ body.finder-compact .journey-hero { min-height: 0; max-height: 0; opacity: 0; pa
   gap: 0.35rem;
   padding: 0.3rem 0.75rem;
   border-radius: 999px;
-  background: #e3f5ee;
-  color: #11664c;
+  background: var(--track-good-bg);
+  color: var(--track-good-ink);
   font-size: 0.8125rem;
   font-weight: 650;
   white-space: nowrap;
@@ -654,13 +788,13 @@ body.finder-compact .journey-hero { min-height: 0; max-height: 0; opacity: 0; pa
   gap: 0.35rem;
   padding: 0.35rem 0.75rem;
   border-radius: 8px;
-  background: #eef2f8;
+  background: var(--track-chip);
   color: var(--track-ink);
   font-size: 0.8125rem;
   font-weight: 500;
   line-height: 1.25;
 }
-.qual-tag-green { background: #e3f5ee; color: #11664c; }
+.qual-tag-green { background: var(--track-good-bg); color: var(--track-good-ink); }
 .qual-tag img { width: 15px; height: 15px; }
 @container (max-width: 700px) { .match-media { flex-basis: 160px; } }
 @container (max-width: 480px) {
@@ -668,7 +802,7 @@ body.finder-compact .journey-hero { min-height: 0; max-height: 0; opacity: 0; pa
   .match-media { flex-basis: auto; }
 }
 /* The score panel: a ring, then bars or notes, then the button. */
-[class*="st-key-match_fit_"] { container-type: inline-size; padding: 1rem 1.15rem; background: var(--track-panel); border: 1px solid #e6edf8; border-radius: 14px; }
+[class*="st-key-match_fit_"] { container-type: inline-size; padding: 1rem 1.15rem; background: var(--track-panel); border: 1px solid var(--track-panel-border); border-radius: 14px; }
 .score-ring {
   --score: 0;
   display: grid;
@@ -677,7 +811,7 @@ body.finder-compact .journey-hero { min-height: 0; max-height: 0; opacity: 0; pa
   aspect-ratio: 1;
   border-radius: 50%;
   background: radial-gradient(closest-side, var(--track-panel) 80%, transparent 81%),
-              conic-gradient(var(--track-blue) calc(var(--score) * 1%), #dbe5f5 0);
+              conic-gradient(var(--track-blue) calc(var(--score) * 1%), var(--track-bar) 0);
 }
 .score-ring span { color: var(--track-navy); font-size: 1.65rem; font-weight: 750; letter-spacing: -0.03em; }
 .match-fit-title { display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.4rem; color: var(--track-navy); font-size: 0.9375rem; font-weight: 650; }
@@ -687,9 +821,9 @@ body.finder-compact .journey-hero { min-height: 0; max-height: 0; opacity: 0; pa
 .match-note + .match-note { color: var(--track-muted); font-size: 0.8125rem; }
 .skill-bars { display: grid; gap: 0.55rem; }
 .skill-bar { display: grid; grid-template-columns: 8.5rem minmax(3rem, 1fr) 2.75rem; align-items: center; gap: 0.75rem; color: var(--track-ink); font-size: 0.875rem; }
-.skill-track { height: 8px; overflow: hidden; border-radius: 99px; background: #dfe7f4; }
+.skill-track { height: 8px; overflow: hidden; border-radius: 99px; background: var(--track-bar); }
 .skill-track i { display: block; height: 100%; border-radius: inherit; background: var(--track-blue); }
-.skill-bar-violet .skill-track i { background: #7a5cdb; }
+.skill-bar-violet .skill-track i { background: var(--track-violet-bar); }
 .skill-bar b { color: var(--track-navy); font-weight: 650; text-align: right; }
 [class*="st-key-card_readiness_"] .skill-bars { max-width: 720px; margin-block: 0.25rem 0.4rem; }
 @container (max-width: 400px) {
@@ -700,7 +834,7 @@ body.finder-compact .journey-hero { min-height: 0; max-height: 0; opacity: 0; pa
 /* A curated pathway's steps as a timeline. */
 .pathway-steps { display: grid; margin: 0.6rem 0 0.3rem; padding: 0; list-style: none; }
 .pathway-steps li { position: relative; display: flex; align-items: flex-start; gap: 0.85rem; margin: 0; padding: 0 0 0.9rem; }
-.pathway-steps li:not(:last-child)::before { content: ""; position: absolute; top: 34px; bottom: 2px; left: 15px; width: 2px; background: #d8e3f5; }
+.pathway-steps li:not(:last-child)::before { content: ""; position: absolute; top: 34px; bottom: 2px; left: 15px; width: 2px; background: var(--track-line); }
 .pathway-steps span { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; background: var(--track-tint); color: var(--track-blue); font-size: 0.875rem; font-weight: 700; }
 .pathway-steps p { margin: 0.3rem 0 0; color: var(--track-navy); font-size: 0.9375rem; line-height: 1.5; }
 
@@ -713,52 +847,52 @@ body.finder-compact .journey-hero { min-height: 0; max-height: 0; opacity: 0; pa
 
 /* Your goal: the step's heading, its two rows of ideas and the last goal, as one card. */
 .step-heading { display: flex; align-items: center; gap: 1.1rem; margin-bottom: 0.4rem; }
-.step-heading-icon { display: grid; place-items: center; flex-shrink: 0; width: 64px; height: 64px; border-radius: 16px; background: #e6efff; }
+.step-heading-icon { display: grid; place-items: center; flex-shrink: 0; width: 64px; height: 64px; border-radius: 16px; background: var(--track-tint); }
 .step-heading-icon img { width: 34px; height: 34px; }
 .step-heading .section-kicker { color: var(--track-muted); letter-spacing: 0.1em; }
 .step-heading h1 { color: var(--track-navy); font-size: 1.6rem; line-height: 1.2; margin: 0.15rem 0 0.3rem; padding: 0; }
 .step-heading p { color: var(--track-muted); font-size: 0.9375rem; line-height: 1.5; margin: 0; }
-.goal-label { margin: 0; color: #3e5272; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; }
+.goal-label { margin: 0; color: var(--track-ink); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; }
 .goal-label-rule { display: flex; align-items: center; gap: 0.9rem; }
 .goal-label-rule::after { content: ""; flex: 1; height: 1px; background: var(--track-border); }
 .goal-samples-label { margin: 0; color: var(--track-muted); font-size: 0.875rem; }
 .st-key-goal_examples [data-testid="stButton"] button {
   min-height: 48px;
   padding: 0.55rem 1.35rem;
-  border: 1px solid #c8dafa;
+  border: 1px solid var(--track-pill-border);
   border-radius: 999px;
-  background: #eaf2ff;
+  background: var(--track-pill);
   color: var(--track-blue);
 }
 .st-key-goal_examples [data-testid="stButton"] button p { font-size: 1rem; font-weight: 700; }
-.st-key-goal_examples [data-testid="stButton"] button:hover { background: #dce9ff; border-color: #9fbff3; color: #0f4fbf; }
+.st-key-goal_examples [data-testid="stButton"] button:hover { background: var(--track-pill-hover); border-color: var(--track-pill-hover-border); color: var(--track-pill-hover-ink); }
 .st-key-goal_samples [data-testid="stButton"] button {
   min-height: 40px;
   padding: 0.3rem 0.95rem;
   border: 1px solid transparent;
   border-radius: 999px;
-  background: #edf1f7;
-  color: #3e5272;
+  background: var(--track-chip);
+  color: var(--track-ink);
 }
 .st-key-goal_samples [data-testid="stButton"] button p { font-size: 0.875rem; font-weight: 500; }
 .st-key-goal_samples [data-testid="stIconMaterial"] { color: var(--track-blue); }
-.st-key-goal_samples [data-testid="stButton"] button:hover { background: #e3e9f3; border-color: #cfd9e8; }
-.st-key-goal_last { padding: 0.85rem 1rem; background: #f3f7fd; border: 1px solid #dfe8f5; border-radius: 14px; }
+.st-key-goal_samples [data-testid="stButton"] button:hover { background: var(--track-chip-hover); border-color: var(--track-chip-hover-border); }
+.st-key-goal_last { padding: 0.85rem 1rem; background: var(--track-panel); border: 1px solid var(--track-panel-border); border-radius: 14px; }
 .goal-last { display: flex; align-items: center; gap: 0.9rem; min-width: 0; }
-.goal-last-icon { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: #e3ecfa; }
+.goal-last-icon { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: var(--track-tint); }
 .goal-last-icon img { width: 24px; height: 24px; }
 .goal-last strong { color: var(--track-navy); font-size: 0.875rem; font-weight: 650; }
-.goal-last p { margin: 0.1rem 0 0; color: #3e5272; font-size: 0.9375rem; line-height: 1.5; overflow-wrap: anywhere; }
+.goal-last p { margin: 0.1rem 0 0; color: var(--track-ink); font-size: 0.9375rem; line-height: 1.5; overflow-wrap: anywhere; }
 .st-key-goal_last [data-testid="stButton"] button { background: var(--track-surface); }
 
-.empty-state { margin-top: 1rem; border: 1px dashed #c8d6e9; border-radius: 16px; padding: 2rem 1.5rem; text-align: center; background: #f9fbfe; }
-.empty-icon { display: grid; place-items: center; width: 46px; height: 46px; margin: 0 auto 0.9rem; color: var(--track-blue); background: #eaf1fd; border-radius: 13px; }
+.empty-state { margin-top: 1rem; border: 1px dashed var(--track-dash); border-radius: 16px; padding: 2rem 1.5rem; text-align: center; background: var(--track-empty); }
+.empty-icon { display: grid; place-items: center; width: 46px; height: 46px; margin: 0 auto 0.9rem; color: var(--track-blue); background: var(--track-tint); border-radius: 13px; }
 .empty-icon svg,
 .empty-icon img { width: 23px; height: 23px; }
 .empty-state h3 { color: var(--track-navy); font-size: 1.125rem; line-height: 1.4; margin: 0 0 0.4rem; padding: 0; }
 .empty-state p { color: var(--track-muted); font-size: 0.875rem; line-height: 1.65; margin: 0 auto; max-width: 520px; }
 .service-state { text-align: center; max-width: 620px; margin: 0 auto 1.2rem; }
-.service-state .empty-icon { color: #92601a; background: #fff5df; }
+.service-state .empty-icon { color: var(--track-warn-ink); background: var(--track-warn-bg); }
 .service-state h2,
 .service-state h3 { color: var(--track-navy); margin: 0 0 0.65rem; padding: 0; font-size: 1.4rem; }
 .service-state p { color: var(--track-muted); font-size: 0.9375rem; line-height: 1.7; margin: 0 auto; }

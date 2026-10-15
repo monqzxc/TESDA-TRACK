@@ -26,6 +26,9 @@
   --band-body: #cfdcf5;
   --band-accent: #6fe0d2;
   --shadow: 0 24px 48px -28px rgb(16 42 86 / 0.45);
+  --fill-blue: #175cd3;   /* fills under white text */
+  --fill-violet: #6248b3;
+  --fill-muted: #5d6f8a;
 
   --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --text: "Figtree", "Segoe UI", system-ui, sans-serif;
@@ -39,6 +42,15 @@
   --gutter: clamp(16px, 4vw, 40px);
   --max: 1180px;
   --ease: cubic-bezier(.2, .75, .2, 1);
+}
+/* The app's dark theme (styles.css), which landing.js mirrors onto this page's host. */
+:host([data-theme="dark"]) {
+  color-scheme: dark;
+  --page: #0b1630; --surface: #111f42; --panel: #16285a; --ink: #e4ebf7; --body: #c3d0e6; --muted: #9fb1ce;
+  --border: #22365c; --blue: #7fb0ff; --blue-soft: #16305f; --route: #7ea6ff; --signal: #f5b83d;
+  --signal-soft: #3a2f12; --teal: #2bc4a9; --teal-soft: #0f3a35; --violet: #a58df0; --violet-soft: #2a2457;
+  --band: #071740; --band-2: #0f2f75; --shadow: 0 24px 48px -28px rgb(0 0 0 / 0.7);
+  --fill-blue: #2f6fe0; --fill-violet: #6a52c9; --fill-muted: #4a5d80;
 }
 *, *::before, *::after { box-sizing: border-box; }
 .landing { background: var(--page); color: var(--body); font: 400 var(--step-0)/1.6 var(--text); overflow-x: clip; }
@@ -69,10 +81,11 @@ img { display: block; max-width: 100%; }
 .topbar { position: sticky; top: 0; z-index: 20; color: #fff;
   transition: background-color .3s, box-shadow .3s, backdrop-filter .3s; }
 .topbar.is-scrolled { background: rgb(9 27 70 / 0.82); backdrop-filter: blur(14px); box-shadow: 0 10px 30px -20px #000; }
-.topbar .wrap { display: flex; align-items: center; gap: 1.5rem; min-height: 68px; }
+/* The right padding leaves room for the app's menu (System, Light and Dark), which sits over this bar. */
+.topbar .wrap { display: flex; align-items: center; gap: 1.5rem; min-height: 68px; padding-right: calc(var(--gutter) + 40px); }
 .brand { display: inline-flex; align-items: center; gap: 0.6rem; text-decoration: none; font: 800 1.15rem/1 var(--display); letter-spacing: 0.01em; }
 .brand img { width: 36px; height: 36px; border-radius: 10px; }
-.brand b { font-weight: 400; color: var(--band-accent); }
+.brand b { margin-left: 0.3em; font-weight: 400; color: var(--band-accent); }
 .nav { display: flex; gap: 1.4rem; margin-left: auto; }
 .nav a { font-weight: 600; font-size: 0.95rem; color: var(--band-body); text-decoration: none; }
 .nav a:hover { color: #fff; }
@@ -219,9 +232,9 @@ section { position: relative; }
 .seg input { position: absolute; opacity: 0; pointer-events: none; }
 .seg label { display: grid; place-items: center; min-height: 34px; padding: .3rem .4rem; border-radius: 8px; background: var(--surface);
   color: var(--muted); font-size: .76rem; font-weight: 600; line-height: 1.15; text-align: center; cursor: pointer; transition: background .2s, color .2s; }
-.seg input:checked + label { color: #fff; background: var(--blue); }
-.seg input[value="some"]:checked + label { background: var(--violet); }
-.seg input[value="new"]:checked + label { background: var(--muted); }
+.seg input:checked + label { color: #fff; background: var(--fill-blue); }
+.seg input[value="some"]:checked + label { background: var(--fill-violet); }
+.seg input[value="new"]:checked + label { background: var(--fill-muted); }
 .seg input:focus-visible + label { outline: 3px solid var(--signal); outline-offset: 1px; }
 .meter { margin-top: 1.1rem; padding-top: 1rem; border-top: 1px dashed var(--border); }
 .meter-out { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
