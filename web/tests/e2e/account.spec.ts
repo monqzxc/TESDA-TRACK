@@ -66,6 +66,14 @@ async function serveApi(
     state.signedIn = true
     return route.fulfill({ json: { learner: LEARNER, expires_in: 3600 } })
   })
+  // The learner's own records, none yet, for My Progress.
+  await target.route(
+    /\/api\/v1\/me\/(recommendations|readiness-checks|pathways|assessment-applications|goals|certifications)/,
+    (route) =>
+      state.signedIn
+        ? route.fulfill({ json: [] })
+        : route.fulfill({ status: 401, json: { detail: 'Sign in to continue.' } }),
+  )
   await target.route('**/api/v1/auth/register', (route) => {
     state.registered = route.request().postDataJSON()
     return route.fulfill({ status: 201, json: LEARNER })
@@ -212,7 +220,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
         const api = await serveApi(page, { signedIn: true })
         await page.addInitScript((key) => localStorage.setItem(key, '1'), SESSION_HINT_KEY)
         await page.goto('/progress')
-        await expect(page.getByText(/^Soon your recommendations/)).toBeVisible()
+        await expect(page.getByRole('heading', { name: 'Continue your journey' })).toBeVisible()
 
         const area = await accountArea(page, phone)
         await area.getByRole('button', { name: 'Your account: Maria Santos' }).click()
@@ -304,7 +312,7 @@ test.describe('on a desktop', () => {
     await signInWithDialog(page)
 
     // The button has gone with the sign-in: the page's heading takes focus, as after a navigation.
-    await expect(page.getByText(/^Soon your recommendations/)).toBeVisible()
+    await expect(page.getByRole('heading', { name: 'Continue your journey' })).toBeVisible()
     await expect(page.getByRole('heading', { level: 1, name: 'My Progress' })).toBeFocused()
   })
 
@@ -321,7 +329,7 @@ test.describe('on a desktop', () => {
 
     const account = second.getByRole('button', { name: 'Your account: Maria Santos' })
     await expect(account).toBeVisible()
-    await expect(second.getByText(/^Soon your recommendations/)).toBeVisible()
+    await expect(second.getByRole('heading', { name: 'Continue your journey' })).toBeVisible()
 
     await account.click()
     await second.getByRole('menuitem', { name: 'Sign out' }).click()

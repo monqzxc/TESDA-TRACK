@@ -304,7 +304,9 @@ describe('pages that need an account', () => {
     await user.type(within(dialog).getByLabelText('Password'), PASSWORD)
     await user.click(within(dialog).getByRole('button', { name: 'Sign in' }))
 
-    expect(await screen.findByText(/^Soon your recommendations/)).toBeInTheDocument()
+    expect(
+      await screen.findByRole('heading', { level: 2, name: 'Continue your journey' }),
+    ).toBeInTheDocument()
     const heading = screen.getByRole('heading', { level: 1, name: 'My Progress' })
     await waitFor(() => expect(heading).toHaveFocus())
   })
@@ -315,7 +317,9 @@ describe('pages that need an account', () => {
 
     await openApp('/progress')
 
-    expect(await screen.findByText(/^Soon your recommendations/)).toBeInTheDocument()
+    expect(
+      await screen.findByRole('heading', { level: 2, name: 'Continue your journey' }),
+    ).toBeInTheDocument()
   })
 
   it('Reports is not available to a learner, and offers no way in', async () => {
@@ -378,7 +382,9 @@ describe('the /sign-in page', () => {
     await signInOnPage(user)
 
     await waitFor(() => expect(router.state.location.pathname).toBe('/progress'))
-    expect(await screen.findByText(/^Soon your recommendations/)).toBeInTheDocument()
+    expect(
+      await screen.findByRole('heading', { level: 2, name: 'Continue your journey' }),
+    ).toBeInTheDocument()
   })
 
   it.each([

@@ -39,15 +39,16 @@ async function openApp(path: string, name: string) {
   return screen.findByRole('heading', { level: 1, name })
 }
 
-// These open the dialog from My Progress's button, which doesn't fetch the dialog's code ahead (the sidebar's Sign
-// in does, on hover). Under Vitest, a second download of a module mocked to fail never settles while the first is
-// on its way, so the dialog would never hear that its download failed, as it does in a browser.
+// These open the dialog from the Reports page's own Sign in, which doesn't fetch the dialog's code ahead (the
+// sidebar's Sign in does, on hover), on a page that never needs the finder's code. Under Vitest, a second download of
+// a module mocked to fail never settles while the first is on its way, so the dialog would never hear that its
+// download failed, as it does in a browser.
 describe("when the sign-in dialog's code can't be downloaded", () => {
   it('says so, offers to reload, and the rest of the app keeps working', async () => {
     const user = userEvent.setup()
     serveAccountApi()
-    const heading = await openApp('/progress', 'My Progress')
-    const signIn = screen.getByRole('button', { name: 'Sign in or create an account' })
+    const heading = await openApp('/reports', 'Reports')
+    const signIn = within(screen.getByRole('main')).getByRole('button', { name: 'Sign in' })
 
     await user.click(signIn)
 
@@ -64,8 +65,8 @@ describe("when the sign-in dialog's code can't be downloaded", () => {
   it('says so again the next time', async () => {
     const user = userEvent.setup()
     serveAccountApi()
-    await openApp('/progress', 'My Progress')
-    const signIn = screen.getByRole('button', { name: 'Sign in or create an account' })
+    await openApp('/reports', 'Reports')
+    const signIn = within(screen.getByRole('main')).getByRole('button', { name: 'Sign in' })
     await user.click(signIn)
     await user.click(await screen.findByRole('button', { name: 'Dismiss' }))
     expect(screen.queryByText(UNAVAILABLE)).not.toBeInTheDocument()

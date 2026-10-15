@@ -301,7 +301,7 @@ export const en = {
     progress: {
       title: 'My Progress · TESDA-TRACK',
       heading: 'My Progress',
-      lead: 'Soon your recommendations, readiness checks, and achievements will be together in one place.',
+      lead: 'Your recommendations, readiness checks, and achievements, together in one place.',
     },
     skills: {
       title: 'Skills Explorer · TESDA-TRACK',
@@ -835,6 +835,125 @@ export const en = {
       pin: (name: string, kind: string) => `${name}, ${kind.toLowerCase()}`,
       routeLabel: (label: string) => `${label}: show this route`,
     },
+  },
+  // My Progress (frontend/app.py show_progress, and its goals, certifications, pathways and applications).
+  progress: {
+    hero: {
+      title: 'Every step counts.',
+      accent: 'Watch your skills grow.',
+    },
+    loading: 'Loading your progress…',
+    // The next useful step (US-10), in this order: a pathway with steps left, an application in review, a
+    // recommendation whose qualification has no readiness check yet, the latest recommendation, else the finder.
+    continue: {
+      heading: 'Continue your journey',
+      pathway: (title: string) => `You’re following ${title}.`,
+      pathwayAction: 'Continue your pathway',
+      application: (name: string) => `Your application for ${name} is with the assessment center.`,
+      applicationAction: 'View your application',
+      readiness: (name: string) =>
+        `You chose ${name}. Check your readiness to see whether training or an assessment comes next.`,
+      readinessAction: 'Check your readiness',
+      resume: (goal: string) => `Pick up your goal: “${goal}”.`,
+      resumeAction: 'Continue in Find my pathway',
+      start: 'Tell us what you’d like to achieve, and we’ll suggest qualifications and a pathway.',
+      startAction: 'Find my pathway',
+      // A saved recommendation whose qualification the catalog no longer has (US-10).
+      unavailable:
+        'The qualification saved with this goal isn’t in the catalog any more. You can explore others.',
+    },
+    stats: {
+      sessions: 'Saved recommendations',
+      sessionsHelp: 'Your recent recommendation history.',
+      checks: 'Readiness checks',
+      latest: 'Latest readiness',
+      latestHelp: 'Your most recent self-reported skills check, not an official assessment.',
+      none: '—',
+    },
+    readiness: {
+      heading: 'Readiness over time',
+      lead: 'Self-reported checks, for you to see how your own skills change. Not an official assessment.',
+      qualification: 'Qualification',
+      empty: 'Complete an Assessment Readiness check while signed in to start your history.',
+      table: 'Your readiness checks',
+      date: 'Date',
+      score: 'Readiness',
+      level: 'Level',
+      compareFrom: 'Compare from',
+      compareTo: 'with',
+      // Fewer than two checks for the qualification (US-11).
+      single:
+        'Check your readiness for this qualification again after practice or training to see how it changes.',
+      change: (from: string, to: string, points: number) =>
+        points === 0
+          ? `No change from ${from} to ${to}.`
+          : `${points > 0 ? 'Up' : 'Down'} ${Math.abs(points)} ${Math.abs(points) === 1 ? 'point' : 'points'} from ${from} to ${to}.`,
+      // The two checks asked about different competencies (US-11).
+      differs:
+        'These two checks asked about different skills, so their scores aren’t a like-for-like comparison.',
+      checkAgain: 'Check again',
+    },
+    history: {
+      heading: 'Recommendation history',
+      empty: 'Goals you submit while signed in appear here.',
+      noQualification: 'No matching qualification yet',
+      routes: {
+        ADDITIONAL_QUESTIONS: 'Let’s fill in a few details',
+        TRAINING_AND_ASSESSMENT: 'Training + Assessment',
+        ASSESSMENT_READINESS: 'Assessment Readiness Check',
+        SKILL_GAP_CHECK: 'Skill Gap Check',
+      },
+      open: 'Continue',
+    },
+    pathways: {
+      heading: 'My pathways',
+      empty: 'Follow a recommended pathway from Find my pathway to track it here.',
+      complete: (percent: number) => `${percent}% complete`,
+      completed: 'Completed',
+      failed: 'That step couldn’t be saved. Try again.',
+    },
+    applications: {
+      heading: 'My assessment applications',
+      empty: 'Apply for an assessment from Training & Assessment.',
+      results: { competent: 'Competent', not_yet_competent: 'Not yet competent' },
+      withdraw: 'Withdraw',
+      confirmHeading: 'Withdraw this application?',
+      confirmBody:
+        'The assessment center stops reviewing it. To be assessed later, you’ll need to apply again.',
+      confirm: 'Withdraw application',
+      withdrawing: 'Withdrawing…',
+      keep: 'Keep it',
+      withdrawn: 'Your application was withdrawn.',
+    },
+    goals: {
+      heading: 'My goals',
+      empty: 'A small goal is a good place to start. Add your first one below.',
+      statuses: { active: 'Active', achieved: 'Achieved', archived: 'Archived' },
+      achieve: 'Mark achieved',
+      add: 'Add a goal',
+      title: 'New goal',
+      titlePlaceholder: 'For example: Earn my SMAW NC II this year',
+      target: 'Target qualification (optional)',
+      none: 'None',
+      submit: 'Add goal',
+      missing: 'Describe your goal first.',
+    },
+    certifications: {
+      heading: 'My certifications',
+      empty: 'Keep the qualifications you’ve earned in one place.',
+      verified: 'Verified',
+      selfReported: 'Self-reported',
+      number: (number: string) => `No. ${number}`,
+      add: 'Add a certification',
+      title: 'Certificate title',
+      titlePlaceholder: 'For example: SMAW NC I',
+      qualification: 'Related qualification (optional)',
+      certificateNumber: 'Certificate number (optional)',
+      issuedOn: 'Issued on (optional)',
+      submit: 'Add certification',
+      missing: 'Enter the certificate title first.',
+    },
+    saving: 'Saving…',
   },
   // A count against a total, as screen readers hear "5/8".
   countOf: (count: number, total: number) => `${figure(count)} of ${figure(total)}`,

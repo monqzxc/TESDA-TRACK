@@ -113,11 +113,20 @@ export function serveAccountApi({ learner = maria, signedIn = false }: AccountAp
       state.signedIn = false
       return new HttpResponse(null, { status: 204 })
     }),
-    // A learner's own records, standing in for the pages to come (Tasks 12 to 14).
-    http.get('*/api/v1/me/goals', async ({ request }) => {
-      await record(request)
-      return state.signedIn ? HttpResponse.json([]) : signInRequired()
-    }),
+    // A learner's own records, none yet, for My Progress.
+    ...[
+      'goals',
+      'recommendations',
+      'readiness-checks',
+      'pathways',
+      'assessment-applications',
+      'certifications',
+    ].map((records) =>
+      http.get(`*/api/v1/me/${records}`, async ({ request }) => {
+        await record(request)
+        return state.signedIn ? HttpResponse.json([]) : signInRequired()
+      }),
+    ),
   )
   return state
 }

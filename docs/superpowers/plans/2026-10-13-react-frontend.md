@@ -325,7 +325,7 @@ road drawn on scroll), ReadinessDemo, Archipelago, Catalog, ProgressPreview, Clo
 
 ### Task 14: My Progress (US-10, US-11)
 
-- [ ] Saved recommendations, readiness checks, followed pathways with step status, applications (with withdraw),
+- [x] Saved recommendations, readiness checks, followed pathways with step status, applications (with withdraw),
       goals and certifications, each with its empty state.
 
 ### Task 15: Skills Explorer
