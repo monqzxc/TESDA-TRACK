@@ -93,6 +93,8 @@ for (const colorScheme of ['light', 'dark'] as const) {
             'aria-current',
             'page',
           )
+          // Settled: mid-animation the drawer's colors are half faded in, and axe would measure those.
+          await expect(page.locator('[data-entering]')).toHaveCount(0)
           await expectAccessible(page)
 
           await page.keyboard.press('Escape')
