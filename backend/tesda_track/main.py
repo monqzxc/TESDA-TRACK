@@ -12,7 +12,7 @@ from tesda_track.config import get_settings
 from tesda_track.db import get_engine
 from tesda_track.errors import AuthenticationError, DomainError, SessionCookieError
 from tesda_track.routers import (analysis, assessments, auth, certifications, goals, health, integrations, learner_assessments, me, meta,
-                                 pathways, qualifications, readiness_checks, recommendation_sessions, recommendations,
+                                 oauth, pathways, qualifications, readiness_checks, recommendation_sessions, recommendations,
                                  reports, routes, skills_bridge, training, verification)
 from tesda_track.security import clear_session_cookie
 from tesda_track.services import cache
@@ -44,6 +44,7 @@ def create_app() -> FastAPI:
     )
     app.state.skills_bridge_limits = skills_bridge.BridgeLimits()
     app.state.route_limits = routes.RouteLimits()
+    app.state.oauth_limits = oauth.new_limits()
     routes.hide_coordinates_in_access_log()
     if settings.cors_origins:
         app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins, allow_methods=["*"],
@@ -71,13 +72,14 @@ def create_app() -> FastAPI:
         return JSONResponse({"detail": "Something went wrong on our side. Please try again."}, status_code=500)
 
     app.include_router(health.router)
+    app.include_router(oauth.metadata_router)
     api = APIRouter(prefix="/api/v1")
     for router in (qualifications.router, analysis.router, auth.router, me.router, goals.router,
                    recommendation_sessions.router, readiness_checks.router, certifications.router,
                    pathways.router, pathways.learner_router, training.router, assessments.router,
                    assessments.learner_router, recommendations.router, pathways.admin_router, training.admin_router,
                    assessments.admin_router, integrations.router, reports.router, skills_bridge.router, verification.router,
-                   learner_assessments.router, routes.router, meta.router):
+                   learner_assessments.router, routes.router, meta.router, oauth.router):
         api.include_router(router)
     app.include_router(api)
     return app

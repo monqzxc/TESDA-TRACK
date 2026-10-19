@@ -1,7 +1,9 @@
 """Backend fixtures for accounts. Database, app and client fixtures live in the repository-root conftest."""
 import math
 import re
+import uuid
 import zlib
+from typing import NamedTuple
 
 import pytest
 
@@ -82,6 +84,31 @@ def admin(session, login):
     create_or_promote_admin(session, email="admin@example.com", full_name="Pilot Admin", password=PASSWORD)
     session.flush()
     return login("admin@example.com")
+
+
+class Partner(NamedTuple):
+    id: uuid.UUID
+    secret: str
+    token: str
+    headers: dict
+
+
+@pytest.fixture
+def partner(session, client):
+    """An outside system with a client-credentials client and a bearer token from the real token endpoint."""
+    from tesda_track.services.partner_clients import create_client
+
+    def make(name="TSP", scopes=("catalog:read", "recommend:run"), expected_tools=(), rate_limit=120):
+        row, secret = create_client(session, name=name, organisation=f"{name} operator", declared_purpose="Tests",
+                                    scopes=list(scopes), expected_tools=list(expected_tools),
+                                    rate_limit_per_minute=rate_limit)
+        session.flush()
+        response = client.post("/api/v1/oauth/token", data={"grant_type": "client_credentials"},
+                               auth=(str(row.id), secret))
+        assert response.status_code == 200, response.text
+        token = response.json()["access_token"]
+        return Partner(row.id, secret, token, {"Authorization": f"Bearer {token}"})
+    return make
 
 
 MANILA = (14.5995, 120.9842)

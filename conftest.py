@@ -30,6 +30,7 @@ os.environ.update({
     "SKILLS_BRIDGE_API_TOKEN": "",
     "SKILLS_BRIDGE_CLIENT_ID": "",
     "SKILLS_BRIDGE_CLIENT_SECRET": "",
+    "PUBLIC_BASE_URL": "http://testserver",
 })
 
 

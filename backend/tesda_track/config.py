@@ -2,7 +2,7 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Literal
 
-from pydantic import BaseModel, Field, HttpUrl, SecretStr, model_validator
+from pydantic import BaseModel, Field, HttpUrl, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Local development reads the repository-root .env; containers get real environment variables.
@@ -104,6 +104,21 @@ class Settings(BaseSettings):
     # CARTO basemaps key for the center map's default style; empty keeps the map on OpenStreetMap tiles. Not a
     # secret: browsers send it with every tile request, so restrict it to the deployment's domain in CARTO.
     carto_api: str = ""
+
+    # Partner MCP server (TESDA Skill Passport, BSRS). public_base_url is the address partners reach this API at
+    # (the Caddy domain in production); it is the token issuer and the host the MCP endpoint accepts.
+    public_base_url: str = "http://localhost:8000"
+    mcp_enabled: bool = True
+    mcp_token_secret: SecretStr | None = Field(default=None, min_length=32,
+                                               description="Signs partner access tokens; derived from secret_key when empty")
+    mcp_token_lifetime_seconds: int = Field(default=3600, ge=60, le=86400)
+    mcp_call_log_retention_days: int = Field(default=180, ge=1)
+    mcp_allowed_hosts: list[str] = []
+
+    @field_validator("public_base_url")
+    @classmethod
+    def no_trailing_slash(cls, value: str) -> str:
+        return value.rstrip("/")
 
     @model_validator(mode="after")
     def semantic_band_ordered(self):
