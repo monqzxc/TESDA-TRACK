@@ -2,10 +2,13 @@
 
 The API runs as a single process (see backend/Dockerfile). With several workers, each would keep its own counts.
 """
+import ipaddress
 import threading
 import time
 from collections import deque
 from collections.abc import Callable
+
+from starlette.requests import Request
 
 
 class RateLimiter:
@@ -39,3 +42,17 @@ class RateLimiter:
         while len(self._hits) >= self._max_keys:
             # Forgetting the oldest key only resets its count; overall budgets still apply.
             del self._hits[next(iter(self._hits))]
+
+
+def client_address_key(request: Request) -> str:
+    """The client's address; IPv6 clients by their /64 network, since one host can use any address in it."""
+    host = request.client.host if request.client else ""
+    try:
+        address = ipaddress.ip_address(host)
+    except ValueError:
+        return host or "unknown"
+    if address.version == 6 and address.ipv4_mapped:
+        address = address.ipv4_mapped
+    if address.version == 6:
+        return str(ipaddress.ip_network(f"{address}/64", strict=False))
+    return str(address)

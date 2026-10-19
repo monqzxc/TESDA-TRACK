@@ -3,11 +3,12 @@ import uuid
 
 import jwt
 import pytest
+from fastapi.testclient import TestClient
 from sqlmodel import select
 
 from tesda_track import cli
 from tesda_track.config import get_settings
-from tesda_track.errors import InvalidRequestError
+from tesda_track.errors import ConflictError, InvalidRequestError
 from tesda_track.models import ApiClient
 from tesda_track.security import verify_password
 from tesda_track.services import partner_clients
@@ -108,10 +109,15 @@ def test_unsupported_grant_type(client, session):
     assert client.post(TOKEN, data={}, auth=(str(row.id), secret)).json()["error"] == "invalid_request"
 
 
-def test_token_endpoint_is_rate_limited_per_client(client, session):
+def test_token_endpoint_is_rate_limited_by_caller_address(app, session):
     row, secret = make_client(session)
-    codes = [client.post(TOKEN, data=GRANT, auth=(str(row.id), secret)).status_code for _ in range(31)]
-    assert codes[:30] == [200] * 30 and codes[30] == 429
+    with TestClient(app, client=("198.51.100.7", 50000)) as attacker, \
+            TestClient(app, client=("203.0.113.9", 50000)) as partner_host:
+        codes = [attacker.post(TOKEN, data=GRANT, auth=(str(row.id), "guess")).status_code for _ in range(31)]
+        assert codes[:30] == [401] * 30 and codes[30] == 429
+        assert attacker.post(TOKEN, data=GRANT, auth=(str(row.id), secret)).status_code == 429
+        # The victim's own address isn't affected by the junk sent in its name.
+        assert partner_host.post(TOKEN, data=GRANT, auth=(str(row.id), secret)).status_code == 200
 
 
 def test_revoked_client(client, session, partner):
@@ -204,6 +210,16 @@ def test_cli_create_prints_secret_once(client, session):
     assert response.status_code == 200 and response.json()["scope"] == "catalog:read reports:read"
     row = session.exec(select(ApiClient).where(ApiClient.name == "BSRS")).one()
     assert row.rate_limit_per_minute == 60 and row.expected_tools == ["get_qualification"]
+
+
+def test_cli_create_with_a_taken_name_fails_without_showing_a_secret(session):
+    make_client(session, name="BSRS")
+    out = io.StringIO()
+    args = cli.build_parser().parse_args(["mcp-client", "create", "--name", "BSRS", "--organisation", "Other",
+                                          "--purpose", "x", "--scopes", "catalog:read", "--expected-tools", "t"])
+    with pytest.raises(ConflictError, match="A client named BSRS already exists."):
+        cli.run_mcp_client_command(session, args, out)
+    assert out.getvalue() == ""
 
 
 def test_cli_list_shows_no_secrets_and_revoke_works(session):

@@ -11,13 +11,12 @@ from tesda_track.config import get_settings
 from tesda_track.db import SessionDep
 from tesda_track.services import partner_clients
 from tesda_track.services.partner_clients import OAuthError
-from tesda_track.services.rate_limit import RateLimiter
+from tesda_track.services.rate_limit import RateLimiter, client_address_key
 
 router = APIRouter(prefix="/oauth", tags=["oauth"])
 metadata_router = APIRouter()
 
 TOKEN_REQUESTS_PER_MINUTE = 30
-NO_CLIENT = "-"
 NO_STORE = {"Cache-Control": "no-store", "Pragma": "no-cache"}
 
 
@@ -52,8 +51,8 @@ def token(request: Request, session: SessionDep, grant_type: Annotated[str | Non
     credentials = _basic_credentials(request.headers.get("authorization"))
     if credentials is None and client_id and client_secret:
         credentials = (client_id, client_secret)
-    caller = credentials[0] if credentials and credentials[0] else NO_CLIENT
-    wait = request.app.state.oauth_limits.hit(caller, TOKEN_REQUESTS_PER_MINUTE)
+    # Keyed by the caller's address, not the claimed client id, so a stranger can't lock a partner out.
+    wait = request.app.state.oauth_limits.hit(client_address_key(request), TOKEN_REQUESTS_PER_MINUTE)
     if wait:
         return JSONResponse({"error": "slow_down"}, status_code=429, headers={**NO_STORE, "Retry-After": str(int(wait) + 1)})
     if not grant_type:

@@ -1,5 +1,4 @@
 import hashlib
-import ipaddress
 import json
 import math
 from datetime import datetime, timezone
@@ -14,7 +13,7 @@ from tesda_track.schemas.skills_bridge import (SkillsBridgeExploreRequest, Skill
                                               SkillsBridgeMatchRequest, SkillsBridgeOccupationDetailsResponse,
                                               SkillsBridgeOccupationSearchRequest)
 from tesda_track.services import cache, skills_terms
-from tesda_track.services.rate_limit import RateLimiter
+from tesda_track.services.rate_limit import RateLimiter, client_address_key
 from tesda_track.services.skills_bridge_mcp import SkillsBridgeMCPClient, SkillsBridgeMCPError
 
 router = APIRouter(prefix="/skills-bridge", tags=["skills bridge"])
@@ -60,20 +59,6 @@ def bridge_cache(session: SessionDep, settings: SettingsDep) -> ResponseCache:
     return ResponseCache(session, settings.skills_bridge_cache_ttl_seconds)
 
 
-def _client_key(request: Request) -> str:
-    """The client's address; IPv6 clients by their /64 network, since one host can use any address in it."""
-    host = request.client.host if request.client else ""
-    try:
-        address = ipaddress.ip_address(host)
-    except ValueError:
-        return host or "unknown"
-    if address.version == 6 and address.ipv4_mapped:
-        address = address.ipv4_mapped
-    if address.version == 6:
-        return str(ipaddress.ip_network(f"{address}/64", strict=False))
-    return str(address)
-
-
 def _wait(seconds: float, detail: str) -> None:
     if seconds:
         raise HTTPException(status_code=429, detail=detail, headers={"Retry-After": str(math.ceil(seconds))})
@@ -92,7 +77,7 @@ class Lookup:
 
     def __call__(self, operation: str, **arguments) -> dict:
         limits: BridgeLimits = self.request.app.state.skills_bridge_limits
-        _wait(limits.clients.hit(_client_key(self.request), self.settings.skills_bridge_rate_limit_per_minute),
+        _wait(limits.clients.hit(client_address_key(self.request), self.settings.skills_bridge_rate_limit_per_minute),
               CLIENT_LIMITED)
         key = "sbmcp:" + hashlib.sha256(json.dumps([operation, arguments], sort_keys=True).encode()).hexdigest()
         cached = self.cache.get(key)

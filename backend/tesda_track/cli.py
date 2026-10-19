@@ -23,10 +23,11 @@ import uuid
 from pathlib import Path
 from typing import TextIO
 
+from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session
 
 from tesda_track.models import Learner, utcnow
-from tesda_track.errors import DomainError
+from tesda_track.errors import ConflictError, DomainError
 from tesda_track.security import hash_password
 from tesda_track.services import partner_clients
 from tesda_track.services.accounts import find_by_email, normalize_email
@@ -64,6 +65,7 @@ def write_openapi_schema(path: Path) -> None:
 def run_mcp_client_command(session: Session, args: argparse.Namespace, out: TextIO) -> None:
     """Runs one `mcp-client` subcommand. The caller commits."""
     def show_secret(client, secret):
+        session.flush()
         print(f"client_id {client.id}", file=out)
         print(f"client_secret {secret}", file=out)
         print("Store the secret now; it can't be shown again.", file=out)
@@ -73,6 +75,11 @@ def run_mcp_client_command(session: Session, args: argparse.Namespace, out: Text
             session, name=args.name, organisation=args.organisation, declared_purpose=args.purpose,
             scopes=args.scopes, expected_tools=args.expected_tools, contact_email=args.contact_email,
             rate_limit_per_minute=args.rate_limit)
+        try:
+            session.flush()
+        except IntegrityError:
+            session.rollback()
+            raise ConflictError(f"A client named {args.name} already exists.") from None
         show_secret(client, secret)
     elif args.action == "rotate":
         show_secret(*partner_clients.rotate_secret(session, uuid.UUID(args.client_id)))
