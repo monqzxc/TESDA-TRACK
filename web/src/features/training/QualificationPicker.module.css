@@ -1,0 +1,134 @@
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  max-width: 100%;
+  padding: 0.25rem 0.3rem 0.25rem 0.7rem;
+  border: 1px solid var(--track-pill-border);
+  border-radius: 999px;
+  background: var(--track-pill);
+  color: var(--track-pill-hover-ink);
+  font-size: 0.875rem;
+  font-weight: 600;
+  outline: none;
+}
+
+.tag[data-focus-visible] {
+  outline: 3px solid var(--track-focus);
+  outline-offset: 2px;
+}
+
+.remove {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.remove[data-hovered] {
+  background: var(--track-pill-hover);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.label {
+  color: var(--track-navy);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  position: absolute;
+  left: 0.75rem;
+  color: var(--track-muted);
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.5rem 2.6rem 0.5rem 2.3rem;
+  border: 1px solid var(--track-hover-border);
+  border-radius: 12px;
+  background: var(--track-surface);
+  color: var(--track-navy);
+  font-size: 0.9375rem;
+}
+
+.input::placeholder {
+  color: var(--track-muted);
+  opacity: 1;
+}
+
+.input[data-focused] {
+  border-color: var(--track-blue);
+}
+
+.open {
+  position: absolute;
+  right: 0.25rem;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--track-muted);
+  cursor: pointer;
+}
+
+.popover {
+  width: var(--trigger-width);
+  max-height: min(20rem, var(--visual-viewport-height, 60vh));
+  overflow: auto;
+  border: 1px solid var(--track-border);
+  border-radius: 12px;
+  background: var(--track-surface);
+  box-shadow: 0 16px 36px -18px rgb(var(--track-shadow-rgb) / 0.45);
+}
+
+.list {
+  padding: 0.3rem;
+  outline: none;
+}
+
+.option {
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  color: var(--track-navy);
+  font-size: 0.9rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.option[data-focused] {
+  background: var(--track-soft);
+}

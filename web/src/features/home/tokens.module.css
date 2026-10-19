@@ -1,0 +1,67 @@
+/* The landing page's own colors and type scale, from frontend/landing.css (its :host block, and the dark values
+   it took from the app's theme). They're Home's alone: set on Home's root, they reach only its sections. Several
+   repeat a --track-* color; the navy bands, the route, the signal yellow and the soft fills are the landing page's.
+   The fonts are the app's (base.css). */
+.tokens {
+  --page: #f5f7fb; /* the app's page color */
+  --surface: #ffffff;
+  --panel: #eef3fb;
+  --ink: #102a56; /* track navy */
+  --body: #3e5272;
+  --muted: #52647e; /* the app's --track-muted: landing.css's #5d6f8a falls short of 4.5:1 on --blue-soft */
+  --border: #dbe4f1;
+  --blue: #175cd3; /* primary */
+  --blue-soft: #e5eefe;
+  --route: #1b3d8f; /* the logo's road */
+  --signal: #e8a800; /* the logo's waypoints */
+  --signal-soft: #fff4d6;
+  --teal: #0d9488;
+  --teal-soft: #dff5ef;
+  --violet: #6248b3;
+  --violet-soft: #eee9fd;
+  --band: #0c2152; /* navy bands */
+  --band-2: #133b8c;
+  --band-ink: #ffffff;
+  --band-body: #cfdcf5;
+  --band-accent: #6fe0d2;
+  --shadow: 0 24px 48px -28px rgb(16 42 86 / 0.45);
+  --fill-blue: #175cd3; /* fills under white text */
+  --fill-violet: #6248b3;
+  --fill-muted: #5d6f8a;
+
+  --step--1: clamp(0.8rem, 0.78rem + 0.1vw, 0.86rem);
+  --step-0: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  --step-1: clamp(1.15rem, 1.05rem + 0.45vw, 1.35rem);
+  --step-2: clamp(1.5rem, 1.25rem + 1.1vw, 2.1rem);
+  --step-3: clamp(2rem, 1.5rem + 2.3vw, 3.3rem);
+  --step-4: clamp(2.6rem, 1.7rem + 4.2vw, 5.1rem);
+  --gutter: clamp(16px, 4vw, 40px);
+  --max: 1180px;
+  --ease: cubic-bezier(0.2, 0.75, 0.2, 1);
+}
+
+/* The app's dark theme. */
+:global(:root[data-theme='dark']) .tokens {
+  --page: #0b1630;
+  --surface: #111f42;
+  --panel: #16285a;
+  --ink: #e4ebf7;
+  --body: #c3d0e6;
+  --muted: #9fb1ce;
+  --border: #22365c;
+  --blue: #7fb0ff;
+  --blue-soft: #16305f;
+  --route: #7ea6ff;
+  --signal: #f5b83d;
+  --signal-soft: #3a2f12;
+  --teal: #2bc4a9;
+  --teal-soft: #0f3a35;
+  --violet: #a58df0;
+  --violet-soft: #2a2457;
+  --band: #071740;
+  --band-2: #0f2f75;
+  --shadow: 0 24px 48px -28px rgb(0 0 0 / 0.7);
+  --fill-blue: #2f6fe0;
+  --fill-violet: #6a52c9;
+  --fill-muted: #4a5d80;
+}

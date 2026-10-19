@@ -1,0 +1,21 @@
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+  margin-top: 1.5rem;
+}
+
+.count {
+  color: var(--track-muted);
+  font-size: 0.875rem;
+}
+
+.disabled,
+.disabled:hover {
+  border-color: var(--track-border);
+  background: var(--track-disabled-bg);
+  color: var(--track-disabled-ink);
+  cursor: not-allowed;
+}

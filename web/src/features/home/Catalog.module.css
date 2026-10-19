@@ -1,0 +1,197 @@
+/* The catalog, after frontend/landing.css: its figures, NC levels and drifting names. */
+.top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: end;
+}
+
+.bigNumber {
+  color: var(--ink);
+  font: 800 clamp(5rem, 3rem + 11vw, 11rem) / 0.85 var(--font-display);
+  font-variant-numeric: tabular-nums;
+  font-variation-settings: 'opsz' 96;
+  letter-spacing: -0.05em;
+}
+
+.bigNumberText {
+  max-width: 26rem;
+  margin-top: 0.9rem;
+  color: var(--ink);
+  font-size: var(--step-1);
+  font-weight: 600;
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 18px;
+  background: var(--border);
+  box-shadow: 0 0 0 1px var(--border);
+  list-style: none;
+}
+
+.facts li {
+  padding: 1.1rem 1rem;
+  background: var(--surface);
+}
+
+.facts b {
+  display: block;
+  color: var(--ink);
+  font: 800 var(--step-2) / 1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.factText {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+/* Qualifications by NC level */
+.levels {
+  margin-top: 2.5rem;
+}
+
+.levelBars {
+  display: grid;
+  gap: 0.55rem;
+  max-width: 46rem;
+  margin-top: 0.9rem;
+  padding: 0;
+  list-style: none;
+}
+
+.level {
+  display: grid;
+  grid-template-columns: 3.6rem minmax(0, 1fr) 2.6rem;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.level span {
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.level i {
+  display: block;
+  width: calc(var(--share) * 100%);
+  height: 14px;
+  border-radius: 99px;
+  background: var(--c);
+  transform-origin: left;
+}
+
+/* The bars grow in turn once they're in view. */
+[data-motion] .level i {
+  transition: transform 1s var(--ease);
+  transition-delay: calc(var(--i, 0) * 90ms + 200ms);
+}
+
+[data-motion] .levels:not([data-in]) .level i {
+  transform: scaleX(0);
+}
+
+.level b {
+  color: var(--ink);
+  font: 800 1.05rem/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.levelsNote {
+  margin-top: 0.6rem;
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+/* Two rows of names drifting in opposite directions, faded at the edges. Hovering pauses them. */
+.drift {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000000 8%, #000000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000000 8%, #000000 92%, transparent);
+}
+
+.row {
+  display: flex;
+  gap: 0.7rem;
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  animation: drift 70s linear infinite;
+}
+
+.row:nth-child(2) {
+  animation-duration: 85s;
+  animation-direction: reverse;
+}
+
+.drift:hover .row {
+  animation-play-state: paused;
+}
+
+.row li {
+  padding: 0.65rem 1rem;
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--border);
+  color: var(--ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.row small {
+  margin-left: 0.25rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+@keyframes drift {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 860px) {
+  .top {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 520px) {
+  .facts {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* Still: each name shows once, in rows that scroll sideways (Catalog makes them a Tab stop then). */
+@media (prefers-reduced-motion: reduce) {
+  .drift {
+    overflow-x: auto;
+    padding-bottom: 0.4rem;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+
+  .row {
+    padding-inline: var(--gutter);
+    animation: none;
+  }
+
+  .row [aria-hidden] {
+    display: none;
+  }
+}

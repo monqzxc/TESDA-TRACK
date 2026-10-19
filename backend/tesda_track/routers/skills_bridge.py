@@ -10,8 +10,10 @@ from sqlmodel import Session
 
 from tesda_track.config import Settings, get_settings
 from tesda_track.db import SessionDep
-from tesda_track.schemas.skills_bridge import SkillsBridgeMatchRequest, SkillsBridgeOccupationSearchRequest
-from tesda_track.services import cache
+from tesda_track.schemas.skills_bridge import (SkillsBridgeExploreRequest, SkillsBridgeExploreResponse,
+                                              SkillsBridgeMatchRequest, SkillsBridgeOccupationDetailsResponse,
+                                              SkillsBridgeOccupationSearchRequest)
+from tesda_track.services import cache, skills_terms
 from tesda_track.services.rate_limit import RateLimiter
 from tesda_track.services.skills_bridge_mcp import SkillsBridgeMCPClient, SkillsBridgeMCPError
 
@@ -125,7 +127,22 @@ def search_occupations(body: SkillsBridgeOccupationSearchRequest, lookup: Lookup
     return lookup("search_occupations", occupations=body.occupations, limit=body.limit)
 
 
-@router.get("/occupations/{occupation_id}")
+# The answer is what the MCP client kept: response_model_exclude_unset keeps out keys Skills Bridge didn't send,
+# rather than adding them as null.
+@router.get("/occupations/{occupation_id}", response_model=SkillsBridgeOccupationDetailsResponse,
+            response_model_exclude_unset=True)
 def occupation_details(occupation_id: Annotated[int, Path(ge=1, le=2_147_483_647)], lookup: LookupDep):
     """Qualifications, a bounded skills preview, and existing benchmark mappings for a public occupation id."""
     return lookup("occupation", occupation_id=occupation_id)
+
+
+@router.post("/explore", response_model=SkillsBridgeExploreResponse)
+def explore(body: SkillsBridgeExploreRequest, lookup: LookupDep):
+    """Skills Explorer in one request: extract skill and role terms from a short sentence, search title terms as
+    occupations and the rest as skills, and return both together.
+
+    Only the extracted terms go to Skills Bridge; the text itself is not logged, cached or sent. Each of the (at
+    most two) lookups runs through the same limits and cache as ``/occupations/search`` and ``/matches``, so it
+    counts against the per-client limit like a call to those endpoints. Text with no usable terms returns
+    ``searched: false`` and a ``reason`` without contacting Skills Bridge or using the limit."""
+    return skills_terms.explore(body.text, lookup)

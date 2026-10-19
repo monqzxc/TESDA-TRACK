@@ -1,0 +1,98 @@
+/* Off screen until it has focus. */
+.skipLink {
+  position: absolute;
+  top: 0.75rem;
+  left: 1rem;
+  z-index: 200;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  background: var(--track-fill);
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(calc(-100% - 1rem));
+}
+
+.skipLink:focus {
+  transform: none;
+}
+
+/* Focus moves here from script (Skip to content, or a page without an h1); it isn't a Tab stop. */
+.main:focus,
+.homeMain:focus {
+  outline: none;
+}
+
+/* Home's sections run the full width of the window and set their own widths and spacing (features/home). */
+.homeMain {
+  display: block;
+}
+
+/* The sidebar beside the page, after Streamlit's: a white column with a border, which stays put while the page
+   scrolls. */
+.shell {
+  display: grid;
+  grid-template-columns: 19rem minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: auto;
+  padding: 1.3rem 1.25rem 1.5rem;
+  border-right: 1px solid var(--track-border);
+  background: var(--track-surface);
+}
+
+.phone {
+  display: none;
+}
+
+.main {
+  width: 100%;
+  max-width: 1520px;
+  padding: 3.8rem 2.5rem 2rem;
+}
+
+@media (max-width: 1100px) {
+  .main {
+    padding-inline: 1.5rem;
+  }
+}
+
+/* Phones: a bar across the top with the Menu button and the brand. The sidebar opens from the button. */
+@media (max-width: 768px) {
+  .shell {
+    display: block;
+  }
+
+  .sidebar {
+    z-index: 20;
+    height: auto;
+    overflow: visible;
+    padding: 0.6rem 16px;
+    border-right: 0;
+    border-bottom: 1px solid var(--track-border);
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .wide {
+    display: none;
+  }
+
+  .phone {
+    display: block;
+  }
+
+  .main {
+    padding: 1.5rem 16px 2rem;
+  }
+}

@@ -1,0 +1,144 @@
+/* Stop 3's readiness check, after frontend/landing.css. */
+.units {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 1rem;
+}
+
+.unit {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 0.7rem 0.8rem;
+  border-radius: 14px;
+  background: var(--panel);
+}
+
+.unitName {
+  color: var(--ink);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Three answers side by side, like a segmented control. */
+.choices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 3px;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--border);
+}
+
+.choice {
+  display: grid;
+  place-items: center;
+  min-height: 34px;
+  padding: 0.3rem 0.4rem;
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 600;
+  line-height: 1.15;
+  text-align: center;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.choice[data-selected] {
+  background: var(--fill-blue);
+  color: #ffffff;
+}
+
+.choice.some[data-selected] {
+  background: var(--fill-violet);
+}
+
+.choice.new[data-selected] {
+  background: var(--fill-muted);
+}
+
+.choice[data-focus-visible] {
+  outline: 3px solid var(--signal);
+  outline-offset: 1px;
+}
+
+.meter {
+  margin-top: 1.1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed var(--border);
+}
+
+.result {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.result strong {
+  color: var(--ink);
+  font: 800 1.7rem/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.result span {
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.bar {
+  position: relative;
+  height: 12px;
+  margin-top: 0.7rem;
+  border-radius: 99px;
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--border);
+}
+
+.bar i {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--score, 0) * 1%);
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--violet), var(--blue) 60%, var(--teal));
+  transition: width 0.5s var(--ease);
+}
+
+.bar b {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 2px;
+  background: var(--muted);
+  opacity: 0.45;
+}
+
+.scale {
+  position: relative;
+  height: 1rem;
+  margin-top: 0.35rem;
+  color: var(--muted);
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.scale span {
+  position: absolute;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+
+.scale span:first-child {
+  transform: none;
+}
+
+.scale span:last-child {
+  transform: translateX(-100%);
+}

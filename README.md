@@ -120,6 +120,11 @@ separate and are not required for MCP.
   a place among the results.
 - `GET /api/v1/skills-bridge/occupations/{id}`: retrieves the occupation's promulgated qualifications and bounded
   skills/mapping previews.
+- `POST /api/v1/skills-bridge/explore`: Skills Explorer in one request, for the React app. It takes `{"text": ...}`
+  (up to 500 characters), extracts the skill and role terms on the server, runs the two lookups above as needed, and
+  returns the extracted terms with the combined matches. Only the extracted terms reach Skills Bridge; the text is
+  not logged or cached. Each lookup counts against the per-client limit, as the Streamlit app's two calls do, and
+  text with no usable terms returns `searched: false` with a `reason` without contacting Skills Bridge.
 
 Only extracted skill or role terms and public occupation IDs leave the backend. Account details and saved learner
 records are not forwarded. The application owns all tool names. Terms travel only as plain tool arguments, and the
@@ -269,6 +274,27 @@ changes reload instantly. The commands below work in PowerShell and Git Bash.
 
 6. **Optional: create an administrator account** (see [Accounts](#accounts)).
 
+### React app (web/)
+
+The React app in `web/` will replace the Streamlit app. It needs Node 24 (see `web/.nvmrc`). Start the
+API first (step 5, terminal 1). The React app sends `/api` requests to it on port 8000.
+
+```bash
+cd web
+npm install
+npm run dev
+```
+
+The app opens at http://localhost:5173. Other commands, run in `web/`:
+
+| Task | Command |
+|------|---------|
+| Run the tests | `npm test` |
+| Check the code | `npm run lint` |
+| Format the code | `npm run format` |
+| Run the browser tests (first run `npx playwright install chromium`) | `npm run e2e` |
+| Regenerate the API types after changing the API (CI checks they match) | `npm run api:types` |
+
 ### Everyday commands
 
 | Task                                             | Command                                                                                                   |
@@ -341,6 +367,14 @@ Create the first administrator from the backend directory:
 Passwords are hashed with Argon2. Access tokens are JWTs signed with `SECRET_KEY`. Changing a password
 revokes every existing token, and five failed sign-ins lock an account for 15 minutes.
 
+The browser app signs in with `POST /api/v1/auth/session` (the same form as `/auth/token`) instead. It puts the
+token in an `HttpOnly`, `SameSite=Strict` cookie named `tesda_session` (also `Secure` in production) and
+`DELETE /api/v1/auth/session` signs out. Requests signed in by the cookie that aren't reads (`GET`, `HEAD`,
+`OPTIONS`) must send an `X-Requested-With` header, and so do both session routes. Bearer tokens keep working
+as before, need no extra header, and win if a request has both. Cookie sign-in works only when the app and the
+API share an origin (through Caddy, or the Vite proxy in development): CORS deliberately allows neither
+credentials nor `X-Requested-With`, and loosening that needs a security review.
+
 ## Training, assessment and pathways
 
 Service recommendations require current qualification-specific verification and satisfied prerequisites.
@@ -370,6 +404,12 @@ an administrator's email (as `username`) and password. Then use the admin endpoi
   `competent` result issues a verified certification to the learner automatically.
 - **Pathways:** steps sent with an `id` are kept, along with learners' progress on them. Steps you leave
   out are removed.
+- **Directions:** the API asks an OSRM router for road routes (`GET /api/v1/routes`) and adds an estimated
+  flight for long trips, so the router sees the server's address, not the learner's. `ROUTING_URL` picks the
+  router (see `.env.example`); set it empty to turn Directions off, and the app links to Google Maps instead.
+  The learner's location is rounded to about 1 km first and never logged.
+- **App settings:** the React app asks `GET /api/v1/client-config` for the map's CARTO key (`CARTO_API`) and
+  whether Directions and Skills Bridge are on, so one build runs in every deployment.
 
 ## Reports
 
@@ -410,6 +450,8 @@ base model.
 - `qualifications.json`: qualifications and their units of competency, built from TESDA's Training
   Regulations (see below)
 - `pathways.json`: a default pathway template for each recommendation route
+- `airports_ph.json`: Philippine airports with scheduled flights (from OurAirports), read by the API for
+  flight estimates and not stored in the database
 - `delivery_sites.json`: clearly marked development fixtures with regional coordinates, linked training
   offerings and upcoming assessment schedules. These records are not verified T2MIS data.
 
@@ -476,10 +518,25 @@ docker compose up -d --build
 ```
 
 Compose starts PostgreSQL, runs the migrations, the seed and the embedding sync, then starts the API, the
-Streamlit app and Caddy. The embedding model is built into the API image, so the server never needs to
-download it. If the sync fails, the deploy still goes ahead and matching falls back to keywords. Only ports 80 and 443 are published. Caddy serves the app at `/` and the API at `/api/`
-(interactive docs at `/api/docs`). Point the domain's DNS at the server before starting, so Caddy can
-obtain a certificate.
+Streamlit app, the React app and Caddy. The embedding model is built into the API image, so the server never needs to
+download it. If the sync fails, the deploy still goes ahead and matching falls back to keywords. Only ports 80 and 443 are published. Caddy serves the Streamlit app at `/`, the React app at `/beta/`
+and the API at `/api/` (interactive docs at `/api/docs`). Point the domain's DNS at the server before starting, so
+Caddy can obtain a certificate.
+
+### The React app's container
+
+`web/Dockerfile` builds the React app with Node 24, then serves `dist/` with Caddy on port 8080 (`web/Caddyfile`).
+The build argument `BASE_PATH` sets where the site serves it: Compose builds it for `/beta/` while it runs beside
+Streamlit, and the site's Caddy (`deploy/Caddyfile`) passes `/beta/…` to it without the prefix. To serve it at `/`
+after the switch, build it with `BASE_PATH: /` and point the site's catch-all `handle` at `app:8080`.
+
+- App addresses (`/beta/find`, `/beta/training?…`) get `index.html`. A missing file under `assets/`, `fonts/` or
+  `img/` stays a 404.
+- Files under `assets/` have hashed names and are cached for a year. Fonts and pictures are cached for a week, and
+  `index.html`, `theme-init.js` and the icon are checked on every visit, so a release shows at once.
+- The app's Content Security Policy is in `web/Caddyfile`: everything from the site itself, plus the map's tile
+  servers for pictures. React Aria adds one small style element, allowed by its hash. If a React Aria upgrade
+  changes it, `src/csp.test.tsx` fails with the new hash to put in `web/Caddyfile`.
 
 The first build is slow. It installs the Python packages and downloads the embedding model into the API
 image. On the slow connection we tested, that took about 45 minutes. Later builds reuse Docker's cache.

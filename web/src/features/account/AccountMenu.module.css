@@ -1,0 +1,242 @@
+/* The account control: a row in the sidebar like the page links (Nav.module.css's .link, after Streamlit's
+   .st-key-sidebar_account), or a plain button in Home's top bar, which brings its own colors. */
+.sidebarControl {
+  display: flex;
+  flex-direction: column;
+}
+
+.headerControl {
+  display: inline-flex;
+  min-width: 0;
+}
+
+.sidebarButton {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  min-height: 54px;
+  padding: 0.5rem 1.2rem;
+  border: 1px solid var(--track-border);
+  border-radius: 12px;
+  background: var(--track-surface);
+  color: var(--track-navy);
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+}
+
+.sidebarButton svg {
+  flex-shrink: 0;
+}
+
+.sidebarButton[data-hovered],
+.sidebarButton[data-pressed] {
+  border-color: var(--track-hover-border);
+  background: var(--track-soft);
+}
+
+.sidebarButton[data-focus-visible] {
+  outline: 3px solid var(--track-focus);
+  outline-offset: 2px;
+}
+
+.headerButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 44px;
+  max-width: 12rem;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The menu. */
+.popover {
+  min-width: 16rem;
+  max-width: calc(100vw - 32px);
+  overflow: auto;
+  border: 1px solid var(--track-border);
+  border-radius: 16px;
+  background: var(--track-surface);
+  box-shadow: 0 24px 48px -16px rgb(var(--track-shadow-rgb) / 0.4);
+}
+
+.popover[data-entering] {
+  animation: pop 0.16s ease-out;
+}
+
+.menu {
+  padding: 0.4rem;
+  outline: none;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+}
+
+.who {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.6rem 0.75rem 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.whoName {
+  color: var(--track-navy);
+  font-weight: 700;
+}
+
+.whoEmail {
+  color: var(--track-muted);
+  font-size: 0.875rem;
+}
+
+.role {
+  align-self: flex-start;
+  margin-top: 0.4rem;
+  padding: 0.1rem 0.6rem;
+  border-radius: 999px;
+  background: var(--track-chip);
+  color: var(--track-navy);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+/* "Your data & privacy", after the Streamlit panel's expander and its caption. */
+.dataHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.6rem 0.75rem 0.5rem;
+}
+
+.dataHeading {
+  color: var(--track-navy);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.dataBody {
+  max-width: 18rem;
+  color: var(--track-muted);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  border-radius: 10px;
+  color: var(--track-navy);
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+}
+
+.item[data-hovered],
+.item[data-focused] {
+  background: var(--track-soft);
+}
+
+.item[data-focus-visible] {
+  outline: 3px solid var(--track-focus);
+  outline-offset: -3px;
+}
+
+.separator {
+  height: 1px;
+  margin: 0.35rem 0.4rem;
+  background: var(--track-border);
+}
+
+/* The delete dialog. */
+.dialogBody {
+  margin: 0 0 1rem;
+  color: var(--track-ink);
+}
+
+.dialogError {
+  margin-top: 1rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.6rem;
+  margin-top: 1.4rem;
+}
+
+.secondary,
+.danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0.55rem 1.1rem;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secondary {
+  border: 1px solid var(--track-border);
+  background: var(--track-surface);
+  color: var(--track-navy);
+}
+
+.secondary[data-hovered] {
+  border-color: var(--track-hover-border);
+  background: var(--track-soft);
+}
+
+/* Not blue, so it doesn't read as the way forward. */
+.danger {
+  border: 1px solid var(--track-warn-ink);
+  background: var(--track-warn-bg);
+  color: var(--track-warn-ink);
+}
+
+.danger[data-hovered] {
+  border-width: 2px;
+  padding-inline: calc(1.1rem - 1px);
+}
+
+.danger[data-disabled] {
+  border-color: var(--track-border);
+  background: var(--track-disabled-bg);
+  color: var(--track-disabled-ink);
+  cursor: not-allowed;
+}
+
+.danger.pending {
+  cursor: progress;
+}
+
+.secondary[data-focus-visible],
+.danger[data-focus-visible] {
+  outline: 3px solid var(--track-focus);
+  outline-offset: 2px;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}

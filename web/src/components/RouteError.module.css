@@ -1,0 +1,9 @@
+.page {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 3rem 16px;
+}
+
+.page:focus {
+  outline: none;
+}

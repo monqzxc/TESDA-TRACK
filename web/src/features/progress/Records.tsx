@@ -1,0 +1,307 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useId, useState } from 'react'
+import { Button, ProgressBar } from 'react-aria-components'
+import { Link, useNavigate } from 'react-router'
+import { failureMessage } from '../../auth/fields.tsx'
+import { useAuth } from '../../auth/useAuth.ts'
+import { CheckboxRow } from '../../components/CheckboxRow.tsx'
+import { Icon } from '../../components/Icon.tsx'
+import { ModalDialog } from '../../components/ModalDialog.tsx'
+import { en } from '../../copy/en.ts'
+import { cssVars, cx } from '../../lib/style.ts'
+import { paths } from '../../paths.ts'
+import buttons from '../../styles/buttons.module.css'
+import { localTime } from '../training/format.ts'
+import {
+  progressKeys,
+  setStepStatus,
+  withdrawApplication,
+  type Application,
+  type Enrollment,
+  type RecommendationSession,
+} from './api.ts'
+import { SECTION_IDS } from './ContinueCard.tsx'
+import { sessionQualification } from './journey.ts'
+import { friendlyDate } from './ReadinessHistory.tsx'
+import { resumeSession } from './resume.ts'
+import styles from './ProgressPage.module.css'
+
+const copy = en.progress
+
+/** The learner's saved recommendations, newest first, each reopening in Find my pathway (US-10). */
+export function RecommendationHistory({
+  sessions,
+  catalog,
+}: {
+  sessions: readonly RecommendationSession[]
+  catalog: ReadonlySet<string>
+}) {
+  const { learner } = useAuth()
+  const navigate = useNavigate()
+  const headingId = useId()
+  return (
+    <section aria-labelledby={headingId} className={styles.card}>
+      <h2 id={headingId} className={styles.sectionHeading}>
+        {copy.history.heading}
+      </h2>
+      {sessions.length === 0 ? (
+        <p className={styles.empty}>{copy.history.empty}</p>
+      ) : (
+        <ul className={styles.records}>
+          {sessions.map((session) => {
+            const qualification = sessionQualification(session)
+            const route = session.pathway?.recommendation
+            const details = [
+              ...(qualification ? [qualification.name] : []),
+              ...(route ? [copy.history.routes[route]] : []),
+            ]
+            const missing = qualification !== null && !catalog.has(qualification.code)
+            return (
+              <li key={session.id} className={styles.record}>
+                <div className={styles.recordBody}>
+                  <p className={styles.date}>{friendlyDate(session.created_at)}</p>
+                  {/* The goal as the learner typed it, as text. */}
+                  <p className={styles.recordTitle}>{session.query}</p>
+                  <p className={styles.muted}>
+                    {details.join(' · ') || copy.history.noQualification}
+                  </p>
+                  {missing && (
+                    <p className={styles.note}>
+                      {copy.continue.unavailable}{' '}
+                      <Link to={paths.qualifications}>{en.finder.matches.viewAll}</Link>
+                    </p>
+                  )}
+                </div>
+                <Button
+                  className={cx(buttons.button, buttons.tertiary)}
+                  aria-label={`${copy.history.open}: ${session.query}`}
+                  onPress={() => {
+                    if (!learner) return
+                    resumeSession(session, learner.id)
+                    void navigate(paths.finderMatches)
+                  }}
+                >
+                  {copy.history.open}
+                  <Icon name="arrowRight" />
+                </Button>
+              </li>
+            )
+          })}
+        </ul>
+      )}
+    </section>
+  )
+}
+
+/** The pathways the learner follows, each step ticked off as they go. Completed ones stay, as achievements. */
+export function Pathways({ enrollments }: { enrollments: readonly Enrollment[] }) {
+  const shown = enrollments.filter((enrollment) => enrollment.status !== 'withdrawn')
+  return (
+    <section aria-labelledby={SECTION_IDS.pathways} className={styles.card}>
+      <h2 id={SECTION_IDS.pathways} tabIndex={-1} className={styles.sectionHeading}>
+        {copy.pathways.heading}
+      </h2>
+      {shown.length === 0 ? (
+        <p className={styles.empty}>{copy.pathways.empty}</p>
+      ) : (
+        <ul className={styles.records}>
+          {shown.map((enrollment) => (
+            <li key={enrollment.id}>
+              <PathwayCard enrollment={enrollment} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  )
+}
+
+function PathwayCard({ enrollment }: { enrollment: Enrollment }) {
+  const queryClient = useQueryClient()
+  const headingId = useId()
+  const update = useMutation({
+    mutationFn: ({ stepId, done }: { stepId: number; done: boolean }) =>
+      setStepStatus(enrollment.id, stepId, done ? 'completed' : 'not_started'),
+    // The API's answer has the new completion and status: it replaces this pathway's record.
+    onSuccess: (updated) =>
+      queryClient.setQueryData<Enrollment[]>(progressKeys.pathways, (current) =>
+        current?.map((item) => (item.id === updated.id ? updated : item)),
+      ),
+  })
+  const completed = enrollment.status === 'completed'
+  return (
+    <article aria-labelledby={headingId} className={styles.pathway}>
+      <h3 id={headingId} className={styles.recordTitle}>
+        {enrollment.pathway.title}
+        {completed && (
+          <span className={styles.done}>
+            <Icon name="award" />
+            {copy.pathways.completed}
+          </span>
+        )}
+      </h3>
+      <p className={styles.muted}>
+        {enrollment.pathway.qualification.name} ·{' '}
+        {copy.pathways.complete(enrollment.completion_percent)}
+      </p>
+      <ProgressBar
+        className={styles.progress}
+        value={enrollment.completion_percent}
+        aria-label={copy.pathways.complete(enrollment.completion_percent)}
+      >
+        <span className={styles.bar} aria-hidden="true">
+          <i style={cssVars({ '--score': enrollment.completion_percent })} />
+        </span>
+      </ProgressBar>
+      <ul className={styles.steps}>
+        {enrollment.steps.map((step) => (
+          <li key={step.id}>
+            <CheckboxRow
+              isSelected={step.status === 'completed'}
+              isDisabled={update.isPending}
+              onChange={(done) => update.mutate({ stepId: step.id, done })}
+            >
+              {step.position}. {step.title}
+            </CheckboxRow>
+          </li>
+        ))}
+      </ul>
+      {update.isError && (
+        <p role="alert" className={styles.note}>
+          {copy.pathways.failed}
+        </p>
+      )}
+    </article>
+  )
+}
+
+const STATUS_TONES: Record<Application['status'], string> = {
+  pending: styles.amber,
+  approved: styles.green,
+  rejected: styles.red,
+  withdrawn: styles.grey,
+  completed: styles.blue,
+}
+
+/** The learner's assessment applications, with their status and a withdrawal they confirm (US-09). */
+export function Applications({ applications }: { applications: readonly Application[] }) {
+  const [withdrawing, setWithdrawing] = useState<Application | null>(null)
+  const [withdrawn, setWithdrawn] = useState(false)
+  return (
+    <section aria-labelledby={SECTION_IDS.applications} className={styles.card}>
+      <h2 id={SECTION_IDS.applications} tabIndex={-1} className={styles.sectionHeading}>
+        {copy.applications.heading}
+      </h2>
+      <div aria-live="polite">
+        {withdrawn && <p className={styles.success}>{copy.applications.withdrawn}</p>}
+      </div>
+      {applications.length === 0 ? (
+        <p className={styles.empty}>{copy.applications.empty}</p>
+      ) : (
+        <ul className={styles.records}>
+          {applications.map((application) => {
+            const { schedule, status, result } = application
+            return (
+              <li key={application.id} className={styles.application}>
+                <span className={cx(styles.badge, STATUS_TONES[status])}>
+                  {en.training.apply.statuses[status]}
+                </span>
+                <p className={styles.recordTitle}>
+                  {schedule.qualification.name} · {localTime(schedule.scheduled_at)}
+                </p>
+                <p className={styles.muted}>
+                  {[
+                    schedule.center.name,
+                    ...(result ? [copy.applications.results[result]] : []),
+                  ].join(' · ')}
+                </p>
+                {application.reviewer_note && (
+                  <p className={styles.note}>{application.reviewer_note}</p>
+                )}
+                {(status === 'pending' || status === 'approved') && (
+                  <Button
+                    className={cx(buttons.button, styles.withdraw)}
+                    onPress={() => {
+                      setWithdrawn(false)
+                      setWithdrawing(application)
+                    }}
+                  >
+                    {copy.applications.withdraw}
+                  </Button>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+      )}
+      {withdrawing && (
+        <WithdrawDialog
+          application={withdrawing}
+          onClose={() => setWithdrawing(null)}
+          onWithdrawn={() => {
+            setWithdrawing(null)
+            setWithdrawn(true)
+          }}
+        />
+      )}
+    </section>
+  )
+}
+
+/** Asks the learner to confirm the specific application, then withdraws it and shows its actual status. */
+function WithdrawDialog({
+  application,
+  onClose,
+  onWithdrawn,
+}: {
+  application: Application
+  onClose: () => void
+  onWithdrawn: () => void
+}) {
+  const queryClient = useQueryClient()
+  const withdraw = useMutation({
+    mutationFn: () => withdrawApplication(application.id),
+    onSuccess: (updated) => {
+      queryClient.setQueryData<Application[]>(progressKeys.applications, (current) =>
+        current?.map((item) => (item.id === updated.id ? updated : item)),
+      )
+      // Seats changed.
+      void queryClient.invalidateQueries({ queryKey: ['training', 'listings'] })
+      onWithdrawn()
+    },
+  })
+  const { schedule } = application
+  return (
+    <ModalDialog
+      isOpen
+      onOpenChange={(isOpen) => !isOpen && onClose()}
+      title={copy.applications.confirmHeading}
+      closeLabel={en.account.close}
+      isPending={withdraw.isPending}
+      role="alertdialog"
+    >
+      <p className={styles.recordTitle}>
+        {schedule.qualification.name} · {localTime(schedule.scheduled_at)}
+      </p>
+      <p className={styles.muted}>{schedule.center.name}</p>
+      <p className={styles.dialogBody}>{copy.applications.confirmBody}</p>
+      {withdraw.isError && (
+        <p role="alert" className={styles.note}>
+          {failureMessage(withdraw.error)}
+        </p>
+      )}
+      <div className={styles.actions}>
+        <Button slot="close" className={buttons.button} isDisabled={withdraw.isPending}>
+          {copy.applications.keep}
+        </Button>
+        <Button
+          className={cx(buttons.button, buttons.primary)}
+          isPending={withdraw.isPending}
+          onPress={() => withdraw.mutate()}
+        >
+          {withdraw.isPending ? copy.applications.withdrawing : copy.applications.confirm}
+        </Button>
+      </div>
+    </ModalDialog>
+  )
+}

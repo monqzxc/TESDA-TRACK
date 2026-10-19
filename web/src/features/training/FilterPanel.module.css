@@ -1,0 +1,325 @@
+/* After frontend/training.css's filter panel: a white card of sections divided by rules. */
+.panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 0.35rem 1.1rem 0.4rem;
+  border: 1px solid var(--track-border);
+  border-radius: 18px;
+  background: var(--track-surface);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0 0.7rem;
+  border-bottom: 1px solid var(--track-rule);
+}
+
+.folded .head {
+  border-bottom: 0;
+}
+
+.heading {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  color: var(--track-navy);
+  font-family: var(--font-text);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.badge {
+  display: inline-block;
+  min-width: 1.4rem;
+  padding: 0.05rem 0.45rem;
+  border-radius: 999px;
+  background: var(--track-fill);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.clear {
+  min-height: 36px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Fold the panel away: an icon button with its name for screen readers. */
+.fold {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--track-border);
+  border-radius: 10px;
+  background: var(--track-surface);
+  color: var(--track-navy);
+  box-shadow: 0 1px 3px rgb(var(--track-shadow-rgb) / 0.06);
+  cursor: pointer;
+}
+
+.fold[data-hovered] {
+  background: var(--track-soft);
+}
+
+.foldIcon {
+  transform: rotate(180deg);
+  transition: transform 0.2s ease;
+}
+
+.folded .foldIcon {
+  transform: none;
+}
+
+.sections {
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+.section + .section {
+  border-top: 1px solid var(--track-rule);
+}
+
+.section summary {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.75rem 0 0.65rem;
+  color: var(--track-navy);
+  list-style: none;
+  cursor: pointer;
+}
+
+.section summary::-webkit-details-marker {
+  display: none;
+}
+
+.section summary:hover {
+  color: var(--track-blue);
+}
+
+.sectionIcon {
+  flex: none;
+  margin-top: 0.15rem;
+  font-size: 1.3rem;
+}
+
+.sectionText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+/* What a folded section holds, under its title. */
+.summary {
+  overflow: hidden;
+  color: var(--track-muted);
+  font-size: 0.9375rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chevron {
+  flex: none;
+  margin-top: 0.15rem;
+  font-size: 1.3rem;
+  transition: transform 0.2s ease;
+}
+
+.section[open] .chevron {
+  transform: rotate(180deg);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 0 0 0.85rem;
+}
+
+/* Center types as one joined bar: only the outer corners round, the chosen ones filled. */
+.kinds {
+  display: flex;
+}
+
+.kind {
+  display: inline-flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  padding-inline: 0.5rem;
+  border: 1px solid var(--track-border);
+  background: var(--track-surface);
+  color: var(--track-navy);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.kind:first-child {
+  border-radius: 12px 0 0 12px;
+}
+
+.kind:last-child {
+  border-radius: 0 12px 12px 0;
+}
+
+.kind + .kind {
+  border-left: 0;
+}
+
+.kind[data-hovered] {
+  background: var(--track-soft);
+}
+
+.kind[data-selected] {
+  border-color: var(--track-fill);
+  background: var(--track-fill);
+  color: #ffffff;
+}
+
+/* Both chosen: a faint seam keeps the two halves readable. */
+.kind[data-selected] + .kind[data-selected] {
+  border-left: 1px solid #ffffff59;
+}
+
+.kind[data-focus-visible] {
+  position: relative;
+  z-index: 1;
+  outline: 3px solid var(--track-focus);
+  outline-offset: 2px;
+}
+
+/* The location switch: a track with a thumb that slides across. */
+.switch {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: var(--track-navy);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.track {
+  position: relative;
+  flex: none;
+  width: 42px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--track-dash);
+  transition: background 0.2s ease;
+}
+
+.thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.25);
+  transition: transform 0.2s ease;
+}
+
+.switch[data-selected] .track {
+  background: var(--track-fill);
+}
+
+.switch[data-selected] .thumb {
+  transform: translateX(18px);
+}
+
+.switch[data-focus-visible] .track {
+  outline: 3px solid var(--track-focus);
+  outline-offset: 2px;
+}
+
+.help {
+  margin: 0;
+  color: var(--track-muted);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border-radius: 10px;
+  background: var(--track-warn-bg);
+  color: var(--track-warn-ink);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.place {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.label {
+  color: var(--track-navy);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.inputBox {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 0.75rem;
+  color: var(--track-muted);
+  pointer-events: none;
+}
+
+.input {
+  width: 100%;
+  min-height: 44px;
+  padding: 0.5rem 0.8rem 0.5rem 2.3rem;
+  border: 1px solid var(--track-hover-border);
+  border-radius: 12px;
+  background: var(--track-surface);
+  color: var(--track-navy);
+  font-size: 0.9375rem;
+}
+
+.input::placeholder {
+  color: var(--track-muted);
+  opacity: 1;
+}
+
+.input[data-focused] {
+  border-color: var(--track-blue);
+}

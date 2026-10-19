@@ -29,6 +29,10 @@ x-backend-environment: &backend-environment
   SKILLS_BRIDGE_CLIENT_SECRET: ${SKILLS_BRIDGE_CLIENT_SECRET:-}
   SKILLS_BRIDGE_TOKEN_URL: ${SKILLS_BRIDGE_TOKEN_URL:-https://skills-bridge.ph/oauth/token}
   SKILLS_BRIDGE_TIMEOUT_SECONDS: ${SKILLS_BRIDGE_TIMEOUT_SECONDS:-10}
+  # Road routes for Directions (GET /api/v1/routes); empty turns them off.
+  ROUTING_URL: ${ROUTING_URL-https://routing.openstreetmap.de/routed-car}
+  # CARTO basemaps key for the center map, handed to the React app by GET /api/v1/client-config.
+  CARTO_API: ${CARTO_API-}
 
 services:
   db:
@@ -92,6 +96,20 @@ services:
       api:
         condition: service_healthy
 
+  app:
+    # The React app, served by its own Caddy on port 8080 (web/Dockerfile). Until the switch it lives at /beta/,
+    # beside Streamlit at /.
+    build:
+      context: ./web
+      args:
+        BASE_PATH: /beta/
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
   caddy:
     image: caddy:2-alpine
     restart: unless-stopped
@@ -108,6 +126,7 @@ services:
       - caddy_config:/config
     depends_on:
       - web
+      - app
 
 volumes:
   pgdata:
