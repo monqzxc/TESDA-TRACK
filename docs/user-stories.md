@@ -6,14 +6,14 @@ development work, not a claim that the changes are already shipped.
 
 ## Product baseline
 
-The current `frontend/app.py` already offers guest goal matching, qualification exploration,
+The current `classic/app.py` already offers guest goal matching, qualification exploration,
 self-reported readiness checks, an account dialog, and signed-in recommendation history,
 goals, certifications, pathway steps, and assessment applications. The shared
-`frontend/training_view.py` adds a center list and map, filters, location search, program
+`classic/training_view.py` adds a center list and map, filters, location search, program
 details, assessment schedules, and applications. Skills Bridge and administrator reports
 are also available. Retain these capabilities during polish.
 
-`frontend/portal_app.py` and `frontend/app_pages/` contain a separate portal implementation.
+`classic/portal_app.py` and `classic/app_pages/` contain a separate portal implementation.
 The [earlier portal plan](superpowers/plans/2026-10-07-learner-portal-redesign.md) describes
 a future entry-point replacement, but that replacement is not a dependency of this backlog.
 Reusable helpers or interactions can be adapted after checking their state and navigation
@@ -417,8 +417,8 @@ Record completion and failure counts only if consent and a measurement design ar
 place. Existing aggregate reports can inform outcomes; new click-level analytics or
 personal-goal logging are separate work, not prerequisites for these stories.
 
-Sources reviewed: `README.md`, `frontend/app.py`, `frontend/training_view.py`,
-`frontend/centers.py`, `frontend/api_client.py`, `frontend/skills_bridge_view.py`,
-`frontend/portal_app.py`, `frontend/portal/journey.py`, `frontend/portal/session.py`,
+Sources reviewed: `README.md`, `classic/app.py`, `classic/training_view.py`,
+`classic/centers.py`, `classic/api_client.py`, `classic/skills_bridge_view.py`,
+`classic/portal_app.py`, `classic/portal/journey.py`, `classic/portal/session.py`,
 `backend/tesda_track/schemas/{catalog,delivery,records}.py`,
 `backend/seed/delivery_sites.json`, and the earlier portal implementation plan.

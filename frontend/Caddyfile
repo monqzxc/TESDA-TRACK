@@ -1,0 +1,49 @@
+# Serves the built app (frontend/Dockerfile) on port 8080. The site's Caddy (deploy/Caddyfile) is in front: it handles
+# HTTPS and the API, and strips the address the app lives at (/beta/ during the parallel run).
+{
+	admin off
+	auto_https off
+}
+
+:8080 {
+	root * /srv
+	encode zstd gzip
+
+	header {
+		# Scripts, styles, fonts and API calls come from the site itself; pictures also from the map's tile servers.
+		# The style hash is React Aria's one injected rule, for touch screens (src/csp.test.tsx checks it).
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'sha256-38RhXrc7EdReTKsOm23ZPOCUgniTUUcjky8QOOrQx6o='; img-src 'self' data: https://*.tile.openstreetmap.org https://*.basemaps.cartocdn.com; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "geolocation=(self), camera=(), microphone=()"
+		-Server
+	}
+
+	# Hashed names change with their contents, so these keep for a year.
+	@hashed {
+		path /assets/*
+		file
+	}
+	header @hashed Cache-Control "public, max-age=31536000, immutable"
+	# Fonts and pictures keep their names across releases: a week.
+	@public {
+		path /fonts/* /img/*
+		file
+	}
+	header @public Cache-Control "public, max-age=604800"
+	# index.html, theme-init.js and the icon are checked on every visit, so a release shows at once.
+	@fresh not path /assets/* /fonts/* /img/*
+	header @fresh Cache-Control "no-cache"
+
+	# A missing file stays a 404, so an old page whose files a release replaced says so (and reloads) rather than
+	# running HTML as a script.
+	@files path /assets/* /fonts/* /img/*
+	handle @files {
+		file_server
+	}
+	# App addresses (/find, /training?…) get index.html.
+	handle {
+		try_files {path} /index.html
+		file_server
+	}
+}

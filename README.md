@@ -5,14 +5,16 @@ qualifications, see a suggested training or assessment pathway, and check their 
 pilot with real learners, self-hosted on our own server with Docker.
 
 ```
-Browser ──HTTPS──▶ Caddy ──▶ Streamlit (frontend/) ──HTTP──▶ FastAPI (backend/) ──▶ PostgreSQL 17
-                                                      └── internal network only ──┘   + pgvector + PostGIS
+Browser ──HTTPS──▶ Caddy ──▶ Streamlit (classic/) ──HTTP──▶ FastAPI (backend/) ──▶ PostgreSQL 17
+                                                     └── internal network only ──┘   + pgvector + PostGIS
 ```
 
 - **backend/**: FastAPI + SQLModel (SQLAlchemy 2.0) + PostgreSQL, with migrations in Alembic. It is the
   only component that touches the database.
-- **frontend/**: the Streamlit app. It has no database credentials and calls the API through
-  `api_client.py`.
+- **frontend/**: the React app (React, Vite, TypeScript) that will replace the Streamlit app. Until the switch,
+  Caddy serves it at `/beta/`. It calls the API at `/api/v1/` on the same domain.
+- **classic/**: the Streamlit app, still serving `/` until the switch. It has no database credentials and calls
+  the API through `api_client.py`.
 - **deploy/**: the PostgreSQL image (`deploy/postgres/`, PostgreSQL 17 with pgvector and PostGIS) and the
   Caddy configuration.
 - **docker-compose.dev.yml**: the local development database.
@@ -120,13 +122,13 @@ Database-free checks (run these separately from the database integration suite):
 
 ```bash
 .venv/Scripts/python -m pytest --confcutdir=backend/tests/unit backend/tests/unit
-.venv/Scripts/python -m pytest --confcutdir=frontend/tests frontend/tests/test_frontend_states.py frontend/tests/test_skills_bridge_ui.py
+.venv/Scripts/python -m pytest --confcutdir=classic/tests classic/tests/test_frontend_states.py classic/tests/test_skills_bridge_ui.py
 ```
 
 ### Frontend presentation
 
-Native Streamlit theme settings live in `frontend/.streamlit/config.toml`; scoped layout and responsive
-styles live in `frontend/styles.css`. `frontend/presentation.py` provides escaped branding and reusable
+Native Streamlit theme settings live in `classic/.streamlit/config.toml`; scoped layout and responsive
+styles live in `classic/styles.css`. `classic/presentation.py` provides escaped branding and reusable
 page elements. The finder, qualification library, training, progress, account dialogs, and reports use
 the same spacing, blue palette, accessible form controls, and empty/error states. Inactive tabs do not
 make page-specific requests, and switching tabs preserves entered goals and filters.
@@ -137,14 +139,14 @@ The app follows the device's light or dark setting. Learners can also pick **Sys
 the menu at the top right (⋮), and the browser remembers their choice.
 
 - **Streamlit's widgets** take their colors from `[theme.light]` and `[theme.dark]` in
-  `frontend/.streamlit/config.toml`.
-- **The app's own elements** take theirs from the `--track-*` tokens in `frontend/styles.css`: light values on
+  `classic/.streamlit/config.toml`.
+- **The app's own elements** take theirs from the `--track-*` tokens in `classic/styles.css`: light values on
   `:root`, dark values on `:root[data-theme="dark"]`. A script in `app.py` (`THEME_SYNC`) sets `data-theme` to the
   theme Streamlit is showing. The center map and the Skills Explorer map use the same tokens inside their
   components, and darken their map tiles at night. The landing page has its own light and dark colors in
   `landing.css`.
 - **Icons** in `presentation.py` are images, so each one carries its dark color too (`DARK_INK`).
-- **Adding a color:** give it a value in both themes. `frontend/tests/test_theme.py` fails when one is missing.
+- **Adding a color:** give it a value in both themes. `classic/tests/test_theme.py` fails when one is missing.
 
 ### Landing page (Home)
 
@@ -152,10 +154,10 @@ The app opens on **Home**, a landing page with its own top bar instead of the si
 other pages, and its goal box opens Find my pathway with that goal filled in for the learner to review. It
 needs no API, so it shows even while the service is down.
 
-- **Files:** `frontend/landing.html`, `landing.css` and `landing.js`, mounted by `landing_view.py` as one
+- **Files:** `classic/landing.html`, `landing.css` and `landing.js`, mounted by `landing_view.py` as one
   `st.components.v2` component. The component renders in a shadow root, so its styles and the app's don't
   mix. Clicks come back as triggers, which `follow_landing()` in `app.py` turns into page changes.
-- **Assets:** `server.enableStaticServing` serves `frontend/static/` at `app/static/`: the photos in
+- **Assets:** `server.enableStaticServing` serves `classic/static/` at `app/static/`: the photos in
   `static/landing/` and the fonts in `static/fonts/`. The fonts are declared under `[[theme.fontFaces]]` in
   `.streamlit/config.toml`, because a font face declared inside a shadow root doesn't load.
 - **Scroll reveal:** a road drawn from the logo winds through the four finder steps as the page scrolls, and
@@ -232,24 +234,24 @@ changes reload instantly. The commands below work in PowerShell and Git Bash.
 
    ```bash
    # Terminal 2: Streamlit app (http://localhost:8501)
-   cd frontend
+   cd classic
    ../.venv/Scripts/streamlit run app.py
    ```
 
 6. **Optional: create an administrator account** (see [Accounts](#accounts)).
 
-### React app (web/)
+### React app (frontend/)
 
-The React app in `web/` will replace the Streamlit app. It needs Node 24 (see `web/.nvmrc`). Start the
+The React app in `frontend/` will replace the Streamlit app. It needs Node 24 (see `frontend/.nvmrc`). Start the
 API first (step 5, terminal 1). The React app sends `/api` requests to it on port 8000.
 
 ```bash
-cd web
+cd frontend
 npm install
 npm run dev
 ```
 
-The app opens at http://localhost:5173. Other commands, run in `web/`:
+The app opens at http://localhost:5173. Other commands, run in `frontend/`:
 
 | Task | Command |
 |------|---------|
@@ -483,7 +485,7 @@ Caddy can obtain a certificate.
 
 ### The React app's container
 
-`web/Dockerfile` builds the React app with Node 24, then serves `dist/` with Caddy on port 8080 (`web/Caddyfile`).
+`frontend/Dockerfile` builds the React app with Node 24, then serves `dist/` with Caddy on port 8080 (`frontend/Caddyfile`).
 The build argument `BASE_PATH` sets where the site serves it: Compose builds it for `/beta/` while it runs beside
 Streamlit, and the site's Caddy (`deploy/Caddyfile`) passes `/beta/…` to it without the prefix. To serve it at `/`
 after the switch, build it with `BASE_PATH: /` and point the site's catch-all `handle` at `app:8080`.
@@ -492,9 +494,9 @@ after the switch, build it with `BASE_PATH: /` and point the site's catch-all `h
   `img/` stays a 404.
 - Files under `assets/` have hashed names and are cached for a year. Fonts and pictures are cached for a week, and
   `index.html`, `theme-init.js` and the icon are checked on every visit, so a release shows at once.
-- The app's Content Security Policy is in `web/Caddyfile`: everything from the site itself, plus the map's tile
+- The app's Content Security Policy is in `frontend/Caddyfile`: everything from the site itself, plus the map's tile
   servers for pictures. React Aria adds one small style element, allowed by its hash. If a React Aria upgrade
-  changes it, `src/csp.test.tsx` fails with the new hash to put in `web/Caddyfile`.
+  changes it, `src/csp.test.tsx` fails with the new hash to put in `frontend/Caddyfile`.
 
 The first build is slow. It installs the Python packages and downloads the embedding model into the API
 image. On the slow connection we tested, that took about 45 minutes. Later builds reuse Docker's cache.

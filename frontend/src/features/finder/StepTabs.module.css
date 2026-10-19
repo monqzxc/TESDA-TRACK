@@ -1,0 +1,279 @@
+/* After classic/styles.css's .st-key-finder_steps: one tab per step, as chevrons that point on to the next. The
+   current step is navy, finished ones green. The bar stays in view while a step scrolls under it (not on phones,
+   where the app's own bar does). */
+.bar {
+  container-type: inline-size;
+  margin-top: 0.85rem;
+  padding: 0.4rem;
+  border: 1px solid var(--track-border);
+  border-radius: 18px;
+  background: var(--track-surface);
+  box-shadow: 0 8px 22px -16px rgb(var(--track-shadow-rgb) / 0.25);
+}
+
+.tabs {
+  --notch: 18px; /* how far each chevron's point reaches into the next tab */
+  --inset: 1.1rem; /* the space before each tab's icon, past its notch */
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Each tab after the first tucks its notch round the point before it, leaving a thin white seam. */
+.tab {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.tab + .tab {
+  margin-left: calc(5px - var(--notch));
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-height: 66px;
+  padding: 0.55rem calc(var(--notch) + 0.5rem) 0.55rem calc(var(--notch) + var(--inset));
+  background: var(--track-step);
+  color: var(--track-navy);
+  text-decoration: none;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--notch)) 0,
+    100% 50%,
+    calc(100% - var(--notch)) 100%,
+    0 100%,
+    var(--notch) 50%
+  );
+  transition: background 0.2s ease;
+}
+
+/* The first tab has no notch and the last no point; their outer corners follow the bar's. */
+.tab:first-child .link {
+  padding-left: var(--inset);
+  border-radius: 13px 0 0 13px;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--notch)) 0,
+    100% 50%,
+    calc(100% - var(--notch)) 100%,
+    0 100%
+  );
+}
+
+.tab:last-child .link {
+  padding-right: var(--inset);
+  border-radius: 0 13px 13px 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, var(--notch) 50%);
+}
+
+a.link:hover {
+  background: var(--track-step-hover);
+}
+
+/* The clip hides the usual outline, so a focused tab glows along its own edges instead. */
+.link:focus-visible {
+  outline: none;
+}
+
+.tab:has(.link:focus-visible) {
+  z-index: 2;
+  filter: drop-shadow(0 0 1px var(--track-focus)) drop-shadow(0 0 1px var(--track-focus))
+    drop-shadow(0 0 1px var(--track-focus));
+}
+
+.icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--track-surface);
+  color: var(--track-blue);
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.name {
+  font-size: 0.9375rem;
+  font-weight: 650;
+  line-height: 1.3;
+}
+
+.hint {
+  margin-top: 0.15rem;
+  color: var(--track-muted);
+  font-size: 0.8125rem;
+}
+
+/* A box shadow would be clipped away with the corners, so the current tab's shadow follows its chevron. */
+.current {
+  z-index: 1;
+  filter: drop-shadow(0 6px 7px rgb(var(--track-shadow-rgb) / 0.22));
+}
+
+.current .link,
+.current a.link:hover {
+  background: var(--track-current);
+  color: #ffffff;
+}
+
+.current .icon {
+  background: #ffffff1f;
+  color: #ffffff;
+}
+
+.current .hint {
+  color: var(--track-current-hint);
+}
+
+/* In dark, the token's hint (#dbe6ff on #2f6fe0) is 3.6:1, under the 4.5:1 small text needs; white is 4.6:1. */
+:global(:root[data-theme='dark']) .current .hint {
+  color: #ffffff;
+}
+
+.done .link,
+.done a.link:hover {
+  background: var(--track-done);
+}
+
+.done a.link:hover {
+  background: var(--track-done-hover);
+}
+
+.done .icon {
+  color: var(--track-teal);
+}
+
+.locked {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+@media (min-width: 769px) {
+  .bar {
+    position: sticky;
+    z-index: 15;
+    top: 0.75rem;
+  }
+}
+
+/* A narrow bar (a small window, or a laptop beside the sidebar) drops the hints, and tightens each tab so a long
+   name wraps onto a second line instead of being cut off. */
+@container (max-width: 880px) {
+  .tabs {
+    --notch: 14px;
+    --inset: 0.7rem;
+  }
+
+  .link {
+    gap: 0.6rem;
+    padding-right: calc(var(--notch) + 0.25rem);
+  }
+
+  .icon {
+    width: 34px;
+    height: 34px;
+  }
+
+  .hint {
+    display: none;
+  }
+}
+
+/* Narrower still, but not yet a phone's two rows: only the current step keeps its name on screen. The rest keep
+   their icon or tick, and screen readers still hear their names. */
+@media (min-width: 521px) {
+  @container (max-width: 600px) {
+    .tab {
+      flex: 0 0 auto;
+    }
+
+    .tab.current {
+      flex: 1 1 0;
+    }
+
+    .tab:not(.current) .text {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+  }
+}
+
+/* Two tabs a row on phones, so no chevrons: they would point at nothing. */
+@media (max-width: 520px) {
+  .bar {
+    padding: 0.35rem;
+  }
+
+  .tabs {
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+
+  .tab {
+    flex: 1 1 calc(50% - 0.5rem);
+  }
+
+  .tab + .tab {
+    margin-left: 0;
+  }
+
+  .link,
+  .tab:first-child .link,
+  .tab:last-child .link {
+    min-height: 48px;
+    padding: 0.4rem 0.6rem;
+    border-radius: 12px;
+    clip-path: none;
+  }
+
+  .icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .name {
+    font-size: 0.8125rem;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .current .link {
+    animation: tab-in 0.3s ease-out backwards;
+  }
+
+  .done .icon {
+    animation: tick 0.45s ease-out backwards;
+  }
+}
+
+@keyframes tab-in {
+  from {
+    transform: scale(0.94);
+    opacity: 0.55;
+  }
+}
+
+@keyframes tick {
+  0% {
+    transform: scale(0.3);
+    opacity: 0;
+  }
+  65% {
+    transform: scale(1.25);
+    opacity: 1;
+  }
+}

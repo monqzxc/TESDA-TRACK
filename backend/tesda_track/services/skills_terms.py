@@ -1,7 +1,7 @@
 """Skills Explorer: skill and role terms pulled out of a learner's sentence, then looked up in Skills Bridge.
 
 Only the extracted terms leave this module. The sentence itself is never logged, cached or sent upstream.
-Extraction and classification are copied from the Streamlit view (frontend/skills_bridge_view.py), which keeps
+Extraction and classification are copied from the Streamlit view (classic/skills_bridge_view.py), which keeps
 its own copy until it is retired.
 """
 import re

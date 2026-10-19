@@ -1,6 +1,6 @@
 # Local development and tests: both services plus the test runner.
 -r backend/requirements.txt
--r frontend/requirements.txt
+-r classic/requirements.txt
 pytest==9.1.1
 # Reads TESDA Training Regulation PDFs (python -m tesda_track.training_regulations build).
 pymupdf==1.28.2

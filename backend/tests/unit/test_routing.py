@@ -1,7 +1,7 @@
 """Database-free checks of Directions: road routes asked of a fake OSRM routing server (no network), estimated
 flights, and how the two are put together. Run with --confcutdir=backend/tests/unit.
 
-Ported from frontend/tests/test_directions.py and test_flights.py.
+Ported from classic/tests/test_directions.py and test_flights.py.
 """
 import time
 from concurrent.futures import ThreadPoolExecutor

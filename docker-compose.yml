@@ -59,7 +59,8 @@ services:
       retries: 10
 
   web:
-    build: ./frontend
+    # The Streamlit app (classic/), at / until the switch.
+    build: ./classic
     restart: unless-stopped
     environment:
       API_BASE_URL: http://api:8000
@@ -74,10 +75,10 @@ services:
         condition: service_healthy
 
   app:
-    # The React app, served by its own Caddy on port 8080 (web/Dockerfile). Until the switch it lives at /beta/,
-    # beside Streamlit at /.
+    # The React app, served by its own Caddy on port 8080 (frontend/Dockerfile). Until the switch it lives at
+    # /beta/, beside Streamlit at /.
     build:
-      context: ./web
+      context: ./frontend
       args:
         BASE_PATH: /beta/
     restart: unless-stopped

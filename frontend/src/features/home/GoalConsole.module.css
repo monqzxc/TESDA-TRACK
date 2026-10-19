@@ -1,0 +1,243 @@
+/* The hero console, after classic/landing.css: a light card in both themes, so its colors are its own. */
+.console {
+  position: relative;
+  padding: 1.25rem;
+  border-radius: 24px;
+  background: rgb(255 255 255 / 0.96);
+  color: #102a56;
+  box-shadow:
+    0 40px 80px -30px rgb(0 0 0 / 0.6),
+    0 0 0 1px rgb(255 255 255 / 0.5);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  color: #5d6f8a;
+  font-size: 0.8rem;
+}
+
+.head b {
+  color: #175cd3;
+  font: 700 0.75rem/1 var(--font-text);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tag {
+  padding: 0.25rem 0.55rem;
+  border-radius: 99px;
+  background: #eef3fb;
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.goalBox {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 58px;
+  margin-top: 0.8rem;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  background: #f4f7fd;
+  box-shadow: inset 0 0 0 1.5px #d4def0;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+
+.goalBox.live {
+  background: #ffffff;
+  box-shadow: inset 0 0 0 2px #175cd3;
+}
+
+.goalBox svg {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  color: #175cd3;
+  stroke-width: 2;
+}
+
+.goalText {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.15em;
+  margin-left: 2px;
+  vertical-align: -0.2em;
+  background: #175cd3;
+  animation: blink 1s steps(1) infinite;
+}
+
+/* Still, with the typing, while the console holds still (data-paused, from GoalConsole). */
+.console[data-paused] .caret {
+  animation-play-state: paused;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.language {
+  min-height: 1.2em;
+  margin-top: 0.5rem;
+  color: #5d6f8a;
+  font-size: 0.78rem;
+}
+
+.match {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.9rem;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 1rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f3f7ff, #e9f1ff);
+  box-shadow: inset 0 0 0 1px #d7e3f7;
+  transition:
+    opacity 0.45s var(--ease),
+    transform 0.45s var(--ease);
+}
+
+.match.hidden {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.tile {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, var(--a, #5b7aa3), var(--b, #33507a));
+  color: #ffffff;
+}
+
+.tile svg {
+  width: 28px;
+  height: 28px;
+  stroke-width: 1.8;
+}
+
+.kicker {
+  color: #0d7d72;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.name {
+  margin-top: 0.15rem;
+  color: #102a56;
+  font: 700 1.05rem/1.25 var(--font-display);
+}
+
+.detail {
+  margin-top: 0.2rem;
+  color: #5d6f8a;
+  font-size: 0.8rem;
+}
+
+.ring {
+  --v: 0;
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: conic-gradient(#175cd3 calc(var(--v) * 1%), #d7e3f7 0);
+}
+
+.ring::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border-radius: 50%;
+  background: #f1f6ff;
+}
+
+.ring span {
+  position: relative;
+  font: 800 0.95rem/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+}
+
+.ring small {
+  position: absolute;
+  top: 100%;
+  margin-top: 4px;
+  color: #5d6f8a;
+  font-size: 0.64rem;
+  white-space: nowrap;
+}
+
+.jobs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  min-height: 28px;
+  margin-top: 0.85rem;
+}
+
+.jobs span {
+  padding: 0.3rem 0.65rem;
+  border-radius: 99px;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px #d7e3f7;
+  color: #24466f;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.steps {
+  display: flex;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px dashed #d4def0;
+  color: #5d6f8a;
+  font-size: 0.74rem;
+  font-weight: 600;
+}
+
+.steps span {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.steps i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d4def0;
+  transition: background 0.3s;
+}
+
+.steps .on {
+  color: #102a56;
+}
+
+.steps .on i {
+  background: #e8a800;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caret {
+    animation: none;
+  }
+}

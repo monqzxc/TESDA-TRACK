@@ -24,6 +24,9 @@ existing design tokens, Zustand for the finder's state, Vitest with Testing Libr
 **Status:** Proposed on 2026-10-13. Decisions settled the same day: all five follow the recommendations (cookie
 sign-in, React Aria Components, Streamlit frozen, the `portal_app.py` redesign stopped, copy in `copy/en.ts`).
 
+**Folders renamed on 2026-10-19:** the React app moved from `web/` to `frontend/`, and the Streamlit app from
+`frontend/` to `classic/`. The rest of this plan keeps the names it was written with.
+
 ## Why move
 
 Building on Streamlit has meant working around it: CSS that targets Streamlit's internal class names and test ids,
@@ -360,7 +363,8 @@ road drawn on scroll), ReadinessDemo, Archipelago, Catalog, ProgressPreview, Clo
       ([`docs/parity-checklist.md`](../../parity-checklist.md)).
 - [ ] Switch: the React app at `/`, Streamlit at `/classic/` (`STREAMLIT_SERVER_BASE_URL_PATH=classic`) for two
       weeks. Learners sign in once more, because the two apps keep sign-in separately.
-- [ ] Remove Streamlit: `frontend/`, its tests, its Python dependencies, the `/classic/` route, and the Streamlit
+- [ ] Remove Streamlit: `classic/` (its tests and `requirements.txt` with it), its entries in `pytest.ini` and
+      `requirements-dev.txt`, the `web` service in `docker-compose.yml`, the `/classic/` route, and the Streamlit
       sections of the README.
 
 ## Effort

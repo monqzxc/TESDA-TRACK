@@ -1,12 +1,15 @@
-FROM python:3.13-slim
-
-ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 PIP_DISABLE_PIP_VERSION_CHECK=1
+# The React app: Node builds dist/, then Caddy serves it on port 8080 (see Caddyfile). The site's own Caddy
+# (deploy/Caddyfile) sits in front, with HTTPS, and serves it at BASE_PATH.
+FROM node:24-slim AS build
 WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-# Every module, stylesheet and asset the app loads; .dockerignore keeps tests, caches and secrets out.
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
 COPY . .
-RUN useradd --system --uid 10001 --create-home app
-USER app
-EXPOSE 8501
-CMD ["streamlit", "run", "app.py", "--server.address=0.0.0.0", "--server.port=8501", "--server.headless=true", "--browser.gatherUsageStats=false"]
+# Where the site serves the app: /beta/ while it runs beside Streamlit, / after the switch.
+ARG BASE_PATH=/
+RUN npm run build -- --base "$BASE_PATH"
+
+FROM caddy:2-alpine
+COPY Caddyfile /etc/caddy/Caddyfile
+COPY --from=build /app/dist /srv
+EXPOSE 8080
