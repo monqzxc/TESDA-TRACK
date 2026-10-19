@@ -88,7 +88,7 @@ Run the following against the configured disposable `_test` database; the existi
 
 ```powershell
 .venv/Scripts/python.exe -m pytest backend/tests/test_learner_assessments.py backend/tests/test_ranking.py backend/tests/test_verification.py backend/tests/test_recommendation_sessions.py -q --tb=short
-.venv/Scripts/python.exe -m pytest --confcutdir=frontend/tests frontend/tests/test_assessment_view.py frontend/tests/test_training_centers.py frontend/tests/test_frontend_states.py -q --tb=short
+.venv/Scripts/python.exe -m pytest --confcutdir=classic/tests classic/tests/test_assessment_view.py classic/tests/test_training_centers.py classic/tests/test_frontend_states.py -q --tb=short
 ```
 
 Tests cover immutable revisions, stale-update conflicts, ownership, invalid input, transient guest handling, export/deletion, explicit personalization, beginner ties, repeated evidence, score arithmetic, missing program details, mandatory constraints, and absent/degenerate model signals. UI checks cover lazy loading, batched submission, saved reassessment/loading, optional persistence, cache invalidation, and the existing goal-only workflow.

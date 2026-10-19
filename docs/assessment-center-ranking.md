@@ -71,7 +71,7 @@ Run API/application checks against the configured disposable `_test` database:
 
 ```powershell
 .venv/Scripts/python.exe -m pytest backend/tests/test_assessment_ranking.py backend/tests/test_assessments.py backend/tests/test_verification.py backend/tests/test_ranking.py -q --tb=short
-.venv/Scripts/python.exe -m pytest --confcutdir=frontend/tests frontend/tests/test_training_centers.py frontend/tests/test_service_evidence.py frontend/tests/test_api_client.py frontend/tests/test_portal.py -q --tb=short
+.venv/Scripts/python.exe -m pytest --confcutdir=classic/tests classic/tests/test_training_centers.py classic/tests/test_service_evidence.py classic/tests/test_api_client.py classic/tests/test_portal.py -q --tb=short
 ```
 
 All authority and availability evidence in tests is explicitly synthetic and isolated from production/seed data. Checks cover current service evidence, certificate ownership and exam-date expiry, constraints, missing details, rounding, more than 100 candidates, stable pagination, score arithmetic, history ownership/export separation, stale comparisons, map selection, and application → approval → completion → verified certificate.

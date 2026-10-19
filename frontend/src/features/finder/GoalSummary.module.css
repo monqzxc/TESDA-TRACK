@@ -1,0 +1,97 @@
+/* After classic/styles.css's .st-key-finder_goal_summary: the goal with a learner's avatar, and its actions. */
+.summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.25rem;
+  padding: 0.9rem 1.25rem 0.9rem 1rem;
+  border: 1px solid var(--track-border);
+  border-radius: 18px;
+  background: var(--track-surface);
+  box-shadow: 0 2px 8px rgb(var(--track-shadow-rgb) / 0.02);
+}
+
+.goal {
+  display: flex;
+  flex: 1 1 22rem;
+  align-items: center;
+  gap: 1.1rem;
+  min-width: 0;
+}
+
+.avatar {
+  flex-shrink: 0;
+  width: 68px;
+  height: 68px;
+}
+
+.text {
+  min-width: 0;
+}
+
+.label {
+  margin: 0;
+  color: var(--track-ink);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.query {
+  margin: 0.15rem 0 0;
+  color: var(--track-navy);
+  font-size: 1.1875rem;
+  font-weight: 650;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.6rem;
+}
+
+.status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem 0.5rem;
+  padding-left: 0.6rem;
+  border-left: 1px solid var(--track-border);
+}
+
+.saved {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--track-good-ink);
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.unsaved {
+  color: var(--track-warn-ink);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+@media (max-width: 520px) {
+  .avatar {
+    width: 48px;
+    height: 48px;
+  }
+
+  .query {
+    font-size: 1rem;
+  }
+
+  .status {
+    padding-left: 0;
+    border-left: 0;
+  }
+}

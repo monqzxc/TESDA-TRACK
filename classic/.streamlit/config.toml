@@ -1,0 +1,108 @@
+[server]
+# Serves classic/static/ at app/static/: the landing page's fonts and photos.
+enableStaticServing = true
+
+# Native widget theme, adapted from Streamlit's Fluent template.
+# Local system fonts keep the application usable without a font CDN.
+# Light and dark colors live in [theme.light] and [theme.dark]: the app follows the device's setting, and the menu
+# at the top right offers System, Light and Dark. styles.css has the matching colors for the app's own elements.
+[theme]
+linkUnderline = true
+showWidgetBorder = true
+showSidebarBorder = true
+baseRadius = "0.75rem"
+buttonRadius = "0.75rem"
+font = "Figtree, 'Segoe UI', system-ui, sans-serif"
+headingFont = "'Bricolage Grotesque', Figtree, 'Segoe UI', sans-serif"
+codeFont = "Consolas, monospace"
+baseFontSize = 16
+baseFontWeight = 400
+headingFontSizes = ["2.5rem", "1.75rem", "1.375rem", "1.125rem", "1rem", "0.875rem"]
+headingFontWeights = [700, 700, 650, 600, 600, 600]
+codeFontSize = "0.875rem"
+
+# The landing page's faces, served from static/fonts/. They are declared here because a font face declared inside
+# the landing page's shadow root doesn't load.
+[[theme.fontFaces]]
+family = "Bricolage Grotesque"
+url = "app/static/fonts/BricolageGrotesque-latin.woff2"
+weight = "200 800"
+
+[[theme.fontFaces]]
+family = "Figtree"
+url = "app/static/fonts/Figtree-latin.woff2"
+weight = "300 900"
+
+[theme.sidebar]
+headingFontSizes = ["1.75rem", "1.5rem", "1.25rem", "1.125rem", "1rem", "0.875rem"]
+
+[theme.light]
+primaryColor = "#175CD3"
+backgroundColor = "#F5F7FB"
+secondaryBackgroundColor = "#EDF2F9"
+textColor = "#102A56"
+linkColor = "#175CD3"
+borderColor = "#D4DEEC"
+codeTextColor = "#24466F"
+codeBackgroundColor = "#EDF2F9"
+blueColor = "#175CD3"
+greenColor = "#0D9488"
+greenBackgroundColor = "#E3F5EE"
+greenTextColor = "#11664C"
+redColor = "#CF3446"
+redBackgroundColor = "#FEEDF0"
+redTextColor = "#9E2436"
+yellowColor = "#B77914"
+yellowBackgroundColor = "#FFF5DF"
+yellowTextColor = "#805315"
+orangeColor = "#B65B14"
+violetColor = "#7054BF"
+grayColor = "#60728B"
+dataframeBorderColor = "#DFE7F2"
+dataframeHeaderBackgroundColor = "#EAF0F9"
+dataframeHeaderTextColor = "#102A56"
+chartCategoricalColors = ["#175CD3", "#0D9488", "#7054BF", "#BD791E", "#CF5064", "#5281B8"]
+
+[theme.light.sidebar]
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F2F5FA"
+textColor = "#102A56"
+primaryColor = "#175CD3"
+borderColor = "#D4DEEC"
+codeBackgroundColor = "#F2F5FA"
+
+# Night navy from the logo; every text color here reads at 7:1 or more on the background.
+[theme.dark]
+primaryColor = "#2F6FE0"
+backgroundColor = "#0B1630"
+secondaryBackgroundColor = "#14234A"
+textColor = "#E4EBF7"
+linkColor = "#8DB8FF"
+borderColor = "#26395F"
+codeTextColor = "#B9CCF0"
+codeBackgroundColor = "#14234A"
+blueColor = "#5B9BFF"
+greenColor = "#2BC4A9"
+greenBackgroundColor = "#0F3A35"
+greenTextColor = "#7BE0C8"
+redColor = "#F0687A"
+redBackgroundColor = "#3D1620"
+redTextColor = "#FF9DAA"
+yellowColor = "#E8B04A"
+yellowBackgroundColor = "#3A2C10"
+yellowTextColor = "#F5CF7A"
+orangeColor = "#E8894A"
+violetColor = "#A58DF0"
+grayColor = "#8FA1BC"
+dataframeBorderColor = "#22365C"
+dataframeHeaderBackgroundColor = "#14234A"
+dataframeHeaderTextColor = "#E4EBF7"
+chartCategoricalColors = ["#5B9BFF", "#2BC4A9", "#A58DF0", "#E8A64A", "#F07A8C", "#7FA8D8"]
+
+[theme.dark.sidebar]
+backgroundColor = "#0E1A38"
+secondaryBackgroundColor = "#14234A"
+textColor = "#E4EBF7"
+primaryColor = "#2F6FE0"
+borderColor = "#22365C"
+codeBackgroundColor = "#14234A"

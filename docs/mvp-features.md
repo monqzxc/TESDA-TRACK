@@ -13,7 +13,7 @@ The MVP helps a learner describe a career goal, find a TESDA qualification, chec
 | Proposed | The requested workflow is described in the backlog but was not found in the active application during this review. |
 | Deferred | P2 expansion or an explicitly excluded capability; not part of the recommended initial MVP completion scope. |
 
-Statuses are a source-code review snapshot, including local uncommitted changes. No live deployment, database migration state, external credentials, or end-to-end acceptance tests were checked for this document. The active application is `frontend/app.py`; functionality in the alternate `frontend/portal_app.py` alone does not establish completion in the active application.
+Statuses are a source-code review snapshot, including local uncommitted changes. No live deployment, database migration state, external credentials, or end-to-end acceptance tests were checked for this document. The active application is `classic/app.py`; functionality in the alternate `classic/portal_app.py` alone does not establish completion in the active application.
 
 ## Roadmap features
 
@@ -40,7 +40,7 @@ These are the baseline capabilities described by the five-part roadmap. The road
 | F17 | Delivery and pathway administration | Admin | Implemented | Administrative APIs manage providers, programs, centers, schedules, pathways, and steps. A complete dedicated administrative UI is not implied. | Delivery and pathway entities |
 | F18 | Reporting and analytics | Admin | Implemented | Overview, learner funnel, qualification demand, competency gaps, regional supply, and daily matching/no-match counts. | Existing learner/delivery records, `match_daily_stat` |
 
-Evidence: [catalog and models](../backend/tesda_track/models/), [API routers](../backend/tesda_track/routers/), [services](../backend/tesda_track/services/), [active application](../frontend/app.py), and [training UI](../frontend/training_view.py).
+Evidence: [catalog and models](../backend/tesda_track/models/), [API routers](../backend/tesda_track/routers/), [services](../backend/tesda_track/services/), [active application](../classic/app.py), and [training UI](../classic/training_view.py).
 
 ## Current additions supporting the MVP
 

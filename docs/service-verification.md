@@ -107,7 +107,7 @@ The backend test fixture drops and recreates only the database named by `TEST_DA
 
 ```powershell
 .venv/Scripts/python.exe -m pytest backend/tests/test_verification.py backend/tests/test_ranking.py backend/tests/test_assessments.py backend/tests/test_training.py -q --tb=short
-.venv/Scripts/python.exe -m pytest --confcutdir=frontend/tests frontend/tests/test_training_centers.py frontend/tests/test_portal.py frontend/tests/test_centers.py frontend/tests/test_service_evidence.py -q --tb=short
+.venv/Scripts/python.exe -m pytest --confcutdir=classic/tests classic/tests/test_training_centers.py classic/tests/test_portal.py classic/tests/test_centers.py classic/tests/test_service_evidence.py -q --tb=short
 ```
 
 Coverage includes unknown/expired/unavailable evidence, future authorization, service/qualification separation, owned verified certificates, manual requirements, unavailable/stale intakes, administrator-only writes, atomic imports, migration downgrade/upgrade, and candidates beyond position 100. Frontend coverage includes unverified application actions, stale cached evidence, missing metadata, and suppression of misleading fit badges.

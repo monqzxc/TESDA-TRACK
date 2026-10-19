@@ -196,7 +196,7 @@ def main(argv=None):
         checks["optional_model_guard"] = {"passed": None, "status": "not_run"}
     if args.build_images:
         checks["backend_image_build"] = build_check("backend", ["--build-arg", "SEMANTIC_SEARCH_ENABLED=false", "-t", "tesda-track-backend:release-check", "backend"])
-        checks["web_image_build"] = build_check("web", ["-t", "tesda-track-web:release-check", "frontend"])
+        checks["web_image_build"] = build_check("web", ["-t", "tesda-track-web:release-check", "classic"])
         if checks["backend_image_build"]["passed"] and checks["web_image_build"]["passed"]:
             checks["image_smoke"] = image_smoke()
     else:

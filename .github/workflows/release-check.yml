@@ -22,7 +22,7 @@ jobs:
           cache-dependency-path: |
             requirements-dev.txt
             backend/requirements.txt
-            frontend/requirements.txt
+            classic/requirements.txt
       - name: Install pinned dependencies
         run: python -m pip install -r requirements-dev.txt
       - name: Configure disposable CI database

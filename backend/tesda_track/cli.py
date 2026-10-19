@@ -1,11 +1,11 @@
 """Administrative commands.
 
     python -m tesda_track.cli create-admin --email admin@example.com --name "Pilot Admin"
-    python -m tesda_track.cli openapi web/openapi.json
+    python -m tesda_track.cli openapi frontend/openapi.json
 
 The password is read from TESDA_ADMIN_PASSWORD or prompted for. Promoting an existing account keeps
 its password unless a new one is given. `openapi` writes the API's schema without a database, for the
-web app's generated types (`npm run api:types` in web/).
+web app's generated types (`npm run api:types` in frontend/).
 """
 import argparse
 import getpass

@@ -14,7 +14,7 @@ SENTENCE = "I want to be a welder and programmer, I know JavaScript and network 
 TERMS = ["welder", "programmer", "JavaScript", "network configuration"]
 
 
-# Ported from frontend/tests/test_skills_bridge_ui.py, which keeps its copy until the Streamlit app is retired.
+# Ported from classic/tests/test_skills_bridge_ui.py, which keeps its copy until the Streamlit app is retired.
 @pytest.mark.parametrize("text,expected", [
     ("I want to be a welder and programmer", ["welder", "programmer"]),
     ("I want to become a front-end web developer", ["front-end web developer"]),

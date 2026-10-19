@@ -1,4 +1,4 @@
-"""Deployment settings the browser app reads when it starts, so one build of web/ runs in every deployment."""
+"""Deployment settings the browser app reads when it starts, so one build of frontend/ runs in every deployment."""
 from pydantic import BaseModel, Field
 
 

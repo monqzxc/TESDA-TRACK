@@ -1,7 +1,7 @@
-tests/
-__pycache__/
-*.pyc
-.env
-.streamlit/secrets.toml
+node_modules
+dist
+test-results
+playwright-report
+blob-report
 Dockerfile
 .dockerignore
