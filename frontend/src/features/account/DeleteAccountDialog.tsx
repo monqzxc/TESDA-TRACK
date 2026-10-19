@@ -9,11 +9,11 @@ import {
   ModalOverlay,
 } from 'react-aria-components'
 import { CheckMark, failureMessage } from '../../auth/fields.tsx'
+import { dialogStyle, formStyle } from '../../auth/styles.ts'
 import { useAuth } from '../../auth/useAuth.ts'
 import { en } from '../../copy/en.ts'
-import formStyles from '../../auth/forms.module.css'
-import dialogStyles from '../../auth/SignInDialog.module.css'
-import styles from './AccountMenu.module.css'
+import { cx } from '../../lib/style.ts'
+import { deleteButton, deleteDialog } from './styles.ts'
 
 const copy = en.account.deleteDialog
 
@@ -48,14 +48,14 @@ export function DeleteAccountDialog({
       onOpenChange={onOpenChange}
       isDismissable={!isPending}
       isKeyboardDismissDisabled={isPending}
-      className={dialogStyles.overlay}
+      className={dialogStyle.overlay}
     >
-      <Modal className={dialogStyles.modal}>
+      <Modal className={dialogStyle.modal}>
         <Dialog
           ref={dialogRef}
           role="alertdialog"
           aria-describedby={bodyId}
-          className={dialogStyles.dialog}
+          className={dialogStyle.dialog}
         >
           <DeleteAccountForm
             bodyId={bodyId}
@@ -104,37 +104,33 @@ function DeleteAccountForm({
 
   return (
     <>
-      <Heading slot="title" className={dialogStyles.title}>
+      <Heading slot="title" className={dialogStyle.title}>
         {copy.heading}
       </Heading>
-      <p id={bodyId} className={styles.dialogBody}>
+      <p id={bodyId} className={deleteDialog.body}>
         {copy.body}
       </p>
       <CheckboxField
         isSelected={confirmed}
         onChange={setConfirmed}
         isDisabled={isPending}
-        className={formStyles.checkField}
+        className={formStyle.checkField}
       >
-        <CheckboxButton className={formStyles.checkbox}>
+        <CheckboxButton className={formStyle.checkbox}>
           <CheckMark />
           {copy.confirm}
         </CheckboxButton>
       </CheckboxField>
       {error && (
-        <p role="alert" className={`${formStyles.error} ${styles.dialogError}`}>
+        <p role="alert" className={cx(formStyle.error, deleteDialog.error)}>
           {error}
         </p>
       )}
-      <div className={styles.actions}>
-        <Button slot="close" isDisabled={isPending} className={styles.secondary}>
+      <div className={deleteDialog.actions}>
+        <Button slot="close" isDisabled={isPending} className={deleteDialog.cancel}>
           {copy.cancel}
         </Button>
-        <Button
-          onPress={remove}
-          isDisabled={!confirmed}
-          className={isPending ? `${styles.danger} ${styles.pending}` : styles.danger}
-        >
+        <Button onPress={remove} isDisabled={!confirmed} className={deleteButton(isPending)}>
           {isPending ? copy.pending : copy.submit}
         </Button>
       </div>

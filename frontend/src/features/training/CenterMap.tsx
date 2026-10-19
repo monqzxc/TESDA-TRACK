@@ -1,4 +1,6 @@
 import 'leaflet/dist/leaflet.css'
+// After leaflet.css, which it styles over.
+import './center-map.css'
 import L from 'leaflet'
 // After Leaflet, which sets the global L the plugin extends.
 import 'leaflet.markercluster'
@@ -32,7 +34,6 @@ import { placeLabel, summary, type Center, type Point } from './centers.ts'
 import { MODE_ICONS, googleMapsDirections } from './CenterDetail.tsx'
 import { kilometres, routeLabel } from './format.ts'
 import type { Reference } from './useCenters.ts'
-import styles from './CenterMap.module.css'
 
 // The center map (classic/training_view.py _CENTER_MAP, ported from its Leaflet code): clustered pins with popups,
 // the learner's location or searched place, routes for each travel mode, a choice of map layers, and night tiles in
@@ -60,6 +61,22 @@ const OSM_CREDIT =
 const CARTO_CREDIT = `${OSM_CREDIT} &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener noreferrer">CARTO</a>`
 /** The map layer chosen, kept for this browser (the plan's small preferences). */
 const BASEMAP_KEY = 'tesda-track.basemap'
+
+// The map's own controls float over it. Leaflet's parts are styled in center-map.css.
+const floating = 'shadow-[0_4px_14px_rgb(var(--track-shadow-rgb)/0.12)]'
+const KIND_DOTS: Record<CenterKind, string> = {
+  training: 'bg-[#175cd3]',
+  assessment: 'bg-[#0d9488]',
+}
+// A pin's glow when it's selected, in its type's color.
+const SELECTED_GLOWS: Record<CenterKind, string> = {
+  training: 'drop-shadow-[0_0_7px_#175cd3aa]',
+  assessment: 'drop-shadow-[0_0_7px_#0d9488aa]',
+}
+const POPUP_CHIPS: Record<CenterKind, string> = {
+  training: 'border-tint bg-tint text-blue',
+  assessment: 'border-good-bg bg-good-bg text-good-ink',
+}
 
 type BasemapId = keyof typeof copy.basemaps
 interface Basemap {
@@ -110,10 +127,17 @@ function pinIcon(kind: CenterKind, selected: boolean): L.DivIcon {
   return icon
 }
 
+/** Pins, clusters and the reference dot are Leaflet div icons: markup given to Leaflet, classes and all. */
 function makePinIcon(kind: CenterKind, selected: boolean): L.DivIcon {
+  const pin = cx(
+    'h-11 w-[34px] origin-bottom transition-transform duration-150 ease-[ease]',
+    selected
+      ? cx('scale-130', SELECTED_GLOWS[kind])
+      : 'drop-shadow-[0_3px_3px_rgb(var(--track-shadow-rgb)/0.27)]',
+  )
   return L.divIcon({
     className: '',
-    html: `<div class="${cx(styles.pin, selected && styles.selected)}" data-kind="${kind}"><svg viewBox="0 0 34 44" aria-hidden="true"><path d="M17 1.5C8.4 1.5 1.5 8.3 1.5 16.9 1.5 28.4 17 42.5 17 42.5s15.5-14.1 15.5-25.6C32.5 8.3 25.6 1.5 17 1.5Z" fill="${COLORS[kind]}" stroke="#fff" stroke-width="2"/><g transform="translate(5 4.5)" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${GLYPHS[kind]}</g></svg></div>`,
+    html: `<div class="${pin}" data-kind="${kind}"><svg class="block size-full" viewBox="0 0 34 44" aria-hidden="true"><path d="M17 1.5C8.4 1.5 1.5 8.3 1.5 16.9 1.5 28.4 17 42.5 17 42.5s15.5-14.1 15.5-25.6C32.5 8.3 25.6 1.5 17 1.5Z" fill="${COLORS[kind]}" stroke="#fff" stroke-width="2"/><g transform="translate(5 4.5)" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${GLYPHS[kind]}</g></svg></div>`,
     iconSize: [34, 44],
     iconAnchor: [17, 43],
     popupAnchor: [0, -40],
@@ -134,7 +158,7 @@ const ClusterGroup = createLayerComponent<
       L.divIcon({
         className: '',
         iconSize: [46, 46],
-        html: `<div class="${styles.cluster}"><span>${cluster.getChildCount()}</span></div>`,
+        html: `<div class="grid size-11.5 place-items-center rounded-full bg-[#175cd32e]"><span class="grid size-8.5 place-items-center rounded-full border-2 border-white bg-[#175cd3] text-13 font-bold text-white">${cluster.getChildCount()}</span></div>`,
       }),
   })
   return createElementObject(group, extendContext(context, { layerContainer: group }))
@@ -197,14 +221,16 @@ export default function CenterMap(props: CenterMapProps) {
   const shownStatus = locating ? en.training.filters.locating : !points.length ? copy.none : status
 
   return (
+    // A page holding the map elsewhere, as Skills Explorer does, can set its height (--center-map-height).
     <div
       ref={shell}
-      className={cx(styles.shell, basemap.soft && styles.soft)}
+      className="center-map relative isolate h-[var(--center-map-height,680px)] overflow-hidden rounded-18 border border-border bg-map-water shadow-[0_6px_24px_rgb(var(--track-shadow-rgb)/0.05)] max-sm:h-[min(var(--center-map-height,460px),460px)]"
+      data-soft={basemap.soft || undefined}
       role="region"
       aria-label={copy.label}
     >
       <MapContainer
-        className={styles.map}
+        className="absolute inset-0 bg-map-water"
         bounds={PHILIPPINES}
         zoomSnap={0.5}
         scrollWheelZoom={false}
@@ -244,21 +270,40 @@ export default function CenterMap(props: CenterMapProps) {
       </MapContainer>
 
       {shownStatus && (
-        <p className={styles.status} role="status">
+        <p
+          className="pointer-events-none absolute top-3.5 right-[70px] left-[calc(var(--map-overlay-inset,0px)_+_14px)] z-800 m-0 rounded-12 bg-glass px-3.5 py-2.5 text-13 text-muted shadow-[0_2px_10px_rgb(var(--track-shadow-rgb)/0.08)]"
+          role="status"
+        >
           {shownStatus}
         </p>
       )}
-      <Button className={styles.locate} aria-label={copy.locate} onPress={props.onLocate}>
+      <Button
+        className={cx(
+          'absolute top-3.5 right-3.5 z-800 grid size-10.5 cursor-pointer place-items-center rounded-12 border-0 bg-surface text-navy data-hovered:bg-soft',
+          floating,
+        )}
+        aria-label={copy.locate}
+        onPress={props.onLocate}
+      >
         <Icon name="locate" size={20} />
       </Button>
       <MenuTrigger>
-        <Button className={styles.layers} aria-label={copy.layers}>
+        <Button
+          className={cx(
+            'absolute right-3.5 bottom-7 z-800 inline-flex h-11 cursor-pointer items-center gap-[9px] rounded-12 border-0 bg-surface px-[18px] text-[13.5px] font-semibold text-navy data-hovered:bg-row-hover max-sm:px-3',
+            floating,
+          )}
+          aria-label={copy.layers}
+        >
           <Icon name="layers" size={18} />
-          <span className={styles.layersText}>{copy.layersButton}</span>
+          <span className="max-sm:hidden">{copy.layersButton}</span>
         </Button>
-        <Popover placement="top end" className={styles.layersPopover}>
+        <Popover
+          placement="top end"
+          className="min-w-[180px] rounded-12 bg-surface p-1.5 shadow-[0_10px_28px_rgb(var(--track-shadow-rgb)/0.2)]"
+        >
           <Menu
-            className={styles.layersMenu}
+            className="outline-none"
             aria-label={copy.layers}
             selectionMode="single"
             selectedKeys={[basemap.id]}
@@ -271,10 +316,14 @@ export default function CenterMap(props: CenterMapProps) {
             }}
           >
             {layers.map((layer) => (
-              <MenuItem key={layer.id} id={layer.id} className={styles.layersItem}>
+              <MenuItem
+                key={layer.id}
+                id={layer.id}
+                className="flex cursor-pointer items-center gap-2 rounded-8 px-2.5 py-[9px] text-13 text-navy outline-none data-focused:bg-soft data-selected:font-[650]"
+              >
                 {({ isSelected }) => (
                   <>
-                    <Icon name="tick" className={cx(styles.tick, !isSelected && styles.hidden)} />
+                    <Icon name="tick" className={cx('text-blue', !isSelected && 'invisible')} />
                     {copy.basemaps[layer.id]}
                   </>
                 )}
@@ -283,15 +332,16 @@ export default function CenterMap(props: CenterMapProps) {
           </Menu>
         </Popover>
       </MenuTrigger>
-      <div className={styles.legend} aria-hidden="true">
-        <span>
-          <i className={styles.dot} data-kind="training" />
-          {copy.legend.training}
-        </span>
-        <span>
-          <i className={styles.dot} data-kind="assessment" />
-          {copy.legend.assessment}
-        </span>
+      <div
+        className="absolute bottom-3.5 left-[calc(var(--map-overlay-inset,0px)_+_4px)] z-800 flex flex-wrap gap-[22px] rounded-14 bg-surface px-[18px] py-[11px] text-[12.5px] text-navy shadow-[0_4px_14px_rgb(var(--track-shadow-rgb)/0.1)] max-sm:gap-3 max-sm:px-3 max-sm:py-[9px] max-sm:text-[11.5px]"
+        aria-hidden="true"
+      >
+        {(['training', 'assessment'] as const).map((kind) => (
+          <span key={kind} className="inline-flex items-center gap-2">
+            <i className={cx('size-3 rounded-full', KIND_DOTS[kind])} data-kind={kind} />
+            {copy.legend[kind]}
+          </span>
+        ))}
       </div>
     </div>
   )
@@ -416,54 +466,72 @@ function CenterPopup({
       onCopied(copy.copyFailed(url))
     }
   }
+  const chip =
+    'inline-flex items-center gap-[5px] rounded-8 border px-2 py-1 text-[11.5px] font-semibold'
+  const contact = 'inline-flex items-center gap-1.5 no-underline'
+  const iconButton = (active = false) =>
+    cx(
+      'box-border grid h-10.5 flex-[0_0_42px] cursor-pointer place-items-center rounded-10 border text-blue hovered:bg-soft',
+      active ? 'border-hover-border bg-tint [&_svg_path]:fill-current' : 'border-border bg-surface',
+    )
+  // Leaflet's popup takes away its paragraphs' margins (center-map.css): those set here need !.
   return (
-    <div className={styles.popup}>
-      <img className={styles.popupPhoto} src={centerPhoto} alt="" />
-      <div className={styles.popupHead}>
-        <p className={styles.popupName}>{center.name}</p>
-        <p className={styles.popupPlace}>
+    <div className="grid grid-cols-[76px_minmax(0,1fr)] gap-x-3.5 gap-y-3 text-12 text-muted max-sm:grid-cols-[56px_minmax(0,1fr)]">
+      <img
+        className="h-20 w-19 rounded-10 object-cover max-sm:h-15 max-sm:w-14"
+        src={centerPhoto}
+        alt=""
+      />
+      <div className="min-w-0 pr-[18px]">
+        <p className="text-15 leading-[1.3] font-bold wrap-anywhere text-navy">{center.name}</p>
+        <p className="mt-1! flex items-center gap-1.5 text-[12.5px]">
           <Icon name="pin" />
           {placeLabel(center)}
         </p>
-        <p className={styles.chips}>
-          <span className={styles.chip} data-kind={center.kind}>
+        <p className="mt-2.5! flex flex-wrap gap-1.5">
+          <span className={cx(chip, POPUP_CHIPS[center.kind])} data-kind={center.kind}>
             <Icon name={center.kind === 'training' ? 'learn' : 'clipboard'} />
             {en.training.kinds[center.kind]}
           </span>
           {center.distanceKm !== null && (
-            <span className={styles.chip}>
+            <span className={cx(chip, 'border-border bg-surface text-navy')}>
               <Icon name="distance" />
               {en.training.center.away(kilometres(center.distanceKm))}
             </span>
           )}
         </p>
       </div>
-      <p className={styles.popupNote}>{center.address || summary(center, today)}</p>
+      <p className="col-span-full">{center.address || summary(center, today)}</p>
       {(center.phone || center.email) && (
-        <p className={styles.contacts}>
+        // Its links are blue, as every link on the map is (center-map.css).
+        <p className="col-span-full flex flex-wrap items-center gap-x-3 gap-y-1.5">
           {center.phone && (
-            <a href={`tel:${center.phone.replace(/[^+\d]/g, '')}`}>
+            <a className={contact} href={`tel:${center.phone.replace(/[^+\d]/g, '')}`}>
               <Icon name="phone" />
               {center.phone}
             </a>
           )}
           {center.email && (
-            <a className={styles.mail} href={`mailto:${center.email}`}>
+            <a className={contact} href={`mailto:${center.email}`}>
               <Icon name="mail" />
               {center.email}
             </a>
           )}
         </p>
       )}
-      <div className={styles.popupActions}>
-        <button type="button" className={styles.primary} onClick={() => onDetails(center.id)}>
+      <div className="col-span-full flex items-center gap-2.5 pt-0.5">
+        <button
+          type="button"
+          className="inline-flex h-10.5 flex-[1_1_auto] cursor-pointer items-center justify-center gap-2 rounded-10 border-0 bg-fill px-4 text-14 font-[650] text-white hovered:bg-fill-hover"
+          onClick={() => onDetails(center.id)}
+        >
           {en.training.results.viewDetails}
           <Icon name="arrowRight" />
         </button>
         {canRoute ? (
           <button
             type="button"
-            className={styles.iconButton}
+            className={iconButton()}
             aria-label={en.training.center.directions}
             title={en.training.center.directions}
             onClick={() => onRoute(center.id)}
@@ -472,7 +540,7 @@ function CenterPopup({
           </button>
         ) : (
           <a
-            className={styles.iconButton}
+            className={iconButton()}
             href={googleMapsDirections(point)}
             target="_blank"
             rel="noopener noreferrer"
@@ -484,7 +552,7 @@ function CenterPopup({
         )}
         <button
           type="button"
-          className={cx(styles.iconButton, isSaved && styles.active)}
+          className={iconButton(isSaved)}
           aria-label={en.training.center.save}
           aria-pressed={isSaved}
           title={isSaved ? en.training.center.saved : en.training.center.save}
@@ -494,7 +562,7 @@ function CenterPopup({
         </button>
         <button
           type="button"
-          className={styles.iconButton}
+          className={iconButton()}
           aria-label={copy.copy}
           title={copy.copy}
           onClick={copyLink}
@@ -516,7 +584,12 @@ function ReferenceDot({ reference }: { reference: Reference | null }) {
         className: '',
         iconSize: [18, 18],
         iconAnchor: [9, 9],
-        html: `<div class="${cx(styles.reference, !reference.mine && styles.place)}"></div>`,
+        html: `<div class="${cx(
+          'box-border size-4.5 rounded-full border-3 border-white',
+          reference.mine
+            ? 'bg-[#175cd3] shadow-[0_0_0_7px_#175cd333,0_1px_4px_rgb(var(--track-shadow-rgb)/0.4)]'
+            : 'bg-step-current shadow-[0_0_0_7px_rgb(var(--track-shadow-rgb)/0.13),0_1px_4px_rgb(var(--track-shadow-rgb)/0.4)]',
+        )}"></div>`,
       })}
       keyboard={false}
       zIndexOffset={-1000}
@@ -697,12 +770,18 @@ function RouteLayer({
                 permanent
                 interactive
                 direction="center"
-                className={styles.routeTooltip}
+                className="center-map-route-tooltip"
                 opacity={1}
               >
+                {/* A route's label: picks its travel mode. */}
                 <button
                   type="button"
-                  className={cx(styles.routeLabel, chosen && styles.routeChosen)}
+                  className={cx(
+                    'inline-flex cursor-pointer items-center gap-2 rounded-10 border px-3 py-[7px] whitespace-nowrap hovered:border-blue',
+                    chosen
+                      ? 'border-fill bg-fill text-13 font-[650] text-white shadow-[0_4px_12px_#175cd355]'
+                      : 'border-border bg-surface text-[12.5px] font-semibold text-navy shadow-[0_3px_10px_rgb(var(--track-shadow-rgb)/0.15)]',
+                  )}
                   aria-pressed={chosen}
                   aria-label={copy.routeLabel(
                     `${routeLabel(option)} ${en.training.routes.modes[option.mode]}`,

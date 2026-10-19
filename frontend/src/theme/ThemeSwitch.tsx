@@ -1,7 +1,6 @@
 import { Radio, RadioGroup } from 'react-aria-components'
 import { en } from '../copy/en.ts'
 import { useTheme, type ThemeChoice } from './ThemeProvider.tsx'
-import styles from './ThemeSwitch.module.css'
 
 const CHOICES: readonly ThemeChoice[] = ['system', 'light', 'dark']
 
@@ -10,7 +9,7 @@ export function ThemeSwitch() {
   const { choice, setChoice } = useTheme()
   return (
     <RadioGroup
-      className={styles.switch}
+      className="inline-flex gap-0.5 rounded-full border border-border bg-surface p-[3px]"
       aria-label={en.theme.label}
       orientation="horizontal"
       value={choice}
@@ -20,7 +19,15 @@ export function ThemeSwitch() {
       }}
     >
       {CHOICES.map((option) => (
-        <Radio key={option} value={option} className={styles.option}>
+        <Radio
+          key={option}
+          value={option}
+          className={
+            'inline-flex min-h-9 cursor-pointer items-center rounded-full px-[0.9rem] text-14 font-semibold text-muted ' +
+            'data-hovered:bg-chip data-hovered:text-navy data-selected:bg-fill data-selected:text-white ' +
+            'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus'
+          }
+        >
           {en.theme[option]}
         </Radio>
       ))}

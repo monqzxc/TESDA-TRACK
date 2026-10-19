@@ -19,7 +19,7 @@ import { returnFocus } from '../../lib/focus.ts'
 import { DeleteAccountDialog } from './DeleteAccountDialog.tsx'
 import { downloadMyData } from './exportData.ts'
 import { shownName, type Variant } from './variant.ts'
-import styles from './AccountMenu.module.css'
+import { accountName, menu } from './styles.ts'
 
 const copy = en.account
 
@@ -90,37 +90,37 @@ export default function SignedInMenu({
       <MenuTrigger>
         <Button ref={trigger} className={buttonClass} aria-label={`${copy.menu.label}: ${name}`}>
           <Icon name="person" size={variant === 'sidebar' ? '1.45rem' : '1.2rem'} />
-          <span className={styles.name}>{shownName(name, variant)}</span>
+          <span className={accountName}>{shownName(name, variant)}</span>
         </Button>
         <Popover
           placement={variant === 'header' ? 'bottom end' : 'bottom start'}
-          className={styles.popover}
+          className={menu.popover}
         >
-          <Menu onAction={onAction} className={styles.menu}>
+          <Menu onAction={onAction} className={menu.menu}>
             {/* A section's Header is read as the name of its group, before the items in it. The spaces between
                 its lines keep the words apart there; they don't show, as the lines are flex items. */}
-            <MenuSection className={styles.section}>
-              <Header className={styles.who}>
-                <span className={styles.whoName}>{name}</span>{' '}
-                <span className={styles.whoEmail}>{learner.email}</span>{' '}
-                <span className={styles.role}>
+            <MenuSection className={menu.section}>
+              <Header className={menu.who}>
+                <span className={menu.whoName}>{name}</span>{' '}
+                <span className={menu.whoEmail}>{learner.email}</span>{' '}
+                <span className={menu.role}>
                   {learner.role === 'admin' ? copy.menu.admin : copy.menu.learner}
                 </span>
               </Header>
-              <MenuItem id="signOut" className={styles.item}>
+              <MenuItem id="signOut" className={menu.item}>
                 {copy.menu.signOut}
               </MenuItem>
             </MenuSection>
-            <Separator className={styles.separator} />
-            <MenuSection className={styles.section}>
-              <Header className={styles.dataHeader}>
-                <span className={styles.dataHeading}>{copy.menu.data.heading}</span>{' '}
-                <span className={styles.dataBody}>{copy.menu.data.body}</span>
+            <Separator className={menu.separator} />
+            <MenuSection className={menu.section}>
+              <Header className={menu.dataHeader}>
+                <span className={menu.dataHeading}>{copy.menu.data.heading}</span>{' '}
+                <span className={menu.dataBody}>{copy.menu.data.body}</span>
               </Header>
-              <MenuItem id="download" className={styles.item}>
+              <MenuItem id="download" className={menu.item}>
                 {copy.menu.download}
               </MenuItem>
-              <MenuItem id="delete" className={styles.item}>
+              <MenuItem id="delete" className={menu.item}>
                 {copy.menu.delete}
               </MenuItem>
             </MenuSection>

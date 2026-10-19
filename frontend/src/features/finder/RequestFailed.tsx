@@ -2,9 +2,8 @@ import { Button } from 'react-aria-components'
 import { failureMessage } from '../../auth/fields.tsx'
 import { Icon } from '../../components/Icon.tsx'
 import { en } from '../../copy/en.ts'
-import { cx } from '../../lib/style.ts'
-import buttons from '../../styles/buttons.module.css'
-import shared from './finder.module.css'
+import { button } from '../../styles/buttons.ts'
+import { failed, notice } from './styles.ts'
 
 /**
  * A request for one part of a step that failed, in that part's place: what went wrong and Try again. The rest of the
@@ -12,11 +11,11 @@ import shared from './finder.module.css'
  */
 export function RequestFailed({ error, onRetry }: { error: unknown; onRetry: () => void }) {
   return (
-    <div className={shared.failed}>
-      <p role="alert" className={cx(shared.notice, shared.warning)}>
+    <div className={failed}>
+      <p role="alert" className={notice('warning')}>
         {failureMessage(error)}
       </p>
-      <Button className={buttons.button} onPress={onRetry}>
+      <Button className={button()} onPress={onRetry}>
         <Icon name="refresh" />
         {en.unavailable.retry}
       </Button>

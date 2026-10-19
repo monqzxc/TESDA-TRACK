@@ -10,7 +10,7 @@ import { ModalDialog } from '../../components/ModalDialog.tsx'
 import { en } from '../../copy/en.ts'
 import { cssVars, cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
-import buttons from '../../styles/buttons.module.css'
+import { button } from '../../styles/buttons.ts'
 import { localTime } from '../training/format.ts'
 import {
   progressKeys,
@@ -24,7 +24,7 @@ import { SECTION_IDS } from './ContinueCard.tsx'
 import { sessionQualification } from './journey.ts'
 import { friendlyDate } from './ReadinessHistory.tsx'
 import { resumeSession } from './resume.ts'
-import styles from './ProgressPage.module.css'
+import { ui } from './styles.ts'
 
 const copy = en.progress
 
@@ -40,14 +40,14 @@ export function RecommendationHistory({
   const navigate = useNavigate()
   const headingId = useId()
   return (
-    <section aria-labelledby={headingId} className={styles.card}>
-      <h2 id={headingId} className={styles.sectionHeading}>
+    <section aria-labelledby={headingId} className={ui.card}>
+      <h2 id={headingId} className={ui.sectionHeading}>
         {copy.history.heading}
       </h2>
       {sessions.length === 0 ? (
-        <p className={styles.empty}>{copy.history.empty}</p>
+        <p className={ui.empty}>{copy.history.empty}</p>
       ) : (
-        <ul className={styles.records}>
+        <ul className={ui.records}>
           {sessions.map((session) => {
             const qualification = sessionQualification(session)
             const route = session.pathway?.recommendation
@@ -57,23 +57,21 @@ export function RecommendationHistory({
             ]
             const missing = qualification !== null && !catalog.has(qualification.code)
             return (
-              <li key={session.id} className={styles.record}>
-                <div className={styles.recordBody}>
-                  <p className={styles.date}>{friendlyDate(session.created_at)}</p>
+              <li key={session.id} className={ui.record}>
+                <div className={ui.recordBody}>
+                  <p className="m-0 text-12 text-muted">{friendlyDate(session.created_at)}</p>
                   {/* The goal as the learner typed it, as text. */}
-                  <p className={styles.recordTitle}>{session.query}</p>
-                  <p className={styles.muted}>
-                    {details.join(' · ') || copy.history.noQualification}
-                  </p>
+                  <p className={ui.recordTitle}>{session.query}</p>
+                  <p className={ui.muted}>{details.join(' · ') || copy.history.noQualification}</p>
                   {missing && (
-                    <p className={styles.note}>
+                    <p className={ui.note}>
                       {copy.continue.unavailable}{' '}
                       <Link to={paths.qualifications}>{en.finder.matches.viewAll}</Link>
                     </p>
                   )}
                 </div>
                 <Button
-                  className={cx(buttons.button, buttons.tertiary)}
+                  className={button({ variant: 'tertiary' })}
                   aria-label={`${copy.history.open}: ${session.query}`}
                   onPress={() => {
                     if (!learner) return
@@ -97,14 +95,14 @@ export function RecommendationHistory({
 export function Pathways({ enrollments }: { enrollments: readonly Enrollment[] }) {
   const shown = enrollments.filter((enrollment) => enrollment.status !== 'withdrawn')
   return (
-    <section aria-labelledby={SECTION_IDS.pathways} className={styles.card}>
-      <h2 id={SECTION_IDS.pathways} tabIndex={-1} className={styles.sectionHeading}>
+    <section aria-labelledby={SECTION_IDS.pathways} className={ui.card}>
+      <h2 id={SECTION_IDS.pathways} tabIndex={-1} className={ui.sectionHeading}>
         {copy.pathways.heading}
       </h2>
       {shown.length === 0 ? (
-        <p className={styles.empty}>{copy.pathways.empty}</p>
+        <p className={ui.empty}>{copy.pathways.empty}</p>
       ) : (
-        <ul className={styles.records}>
+        <ul className={ui.records}>
           {shown.map((enrollment) => (
             <li key={enrollment.id}>
               <PathwayCard enrollment={enrollment} />
@@ -130,30 +128,32 @@ function PathwayCard({ enrollment }: { enrollment: Enrollment }) {
   })
   const completed = enrollment.status === 'completed'
   return (
-    <article aria-labelledby={headingId} className={styles.pathway}>
-      <h3 id={headingId} className={styles.recordTitle}>
+    <article
+      aria-labelledby={headingId}
+      className="flex flex-col items-stretch gap-[0.35rem] rounded-12 border border-border px-[0.95rem] py-[0.85rem]"
+    >
+      <h3 id={headingId} className={ui.recordTitle}>
         {enrollment.pathway.title}
         {completed && (
-          <span className={styles.done}>
+          <span className="inline-flex items-center gap-[0.3rem] rounded-full bg-good-bg px-[0.55rem] py-[0.15rem] text-12 font-[650] text-good-ink">
             <Icon name="award" />
             {copy.pathways.completed}
           </span>
         )}
       </h3>
-      <p className={styles.muted}>
+      <p className={ui.muted}>
         {enrollment.pathway.qualification.name} ·{' '}
         {copy.pathways.complete(enrollment.completion_percent)}
       </p>
       <ProgressBar
-        className={styles.progress}
         value={enrollment.completion_percent}
         aria-label={copy.pathways.complete(enrollment.completion_percent)}
       >
-        <span className={styles.bar} aria-hidden="true">
-          <i style={cssVars({ '--score': enrollment.completion_percent })} />
+        <span className={cx(ui.bar, 'w-full')} aria-hidden="true">
+          <i className={ui.barFill} style={cssVars({ '--score': enrollment.completion_percent })} />
         </span>
       </ProgressBar>
-      <ul className={styles.steps}>
+      <ul className="mt-[0.3rem] mb-0 flex list-none flex-col gap-[0.2rem] p-0">
         {enrollment.steps.map((step) => (
           <li key={step.id}>
             <CheckboxRow
@@ -167,7 +167,7 @@ function PathwayCard({ enrollment }: { enrollment: Enrollment }) {
         ))}
       </ul>
       {update.isError && (
-        <p role="alert" className={styles.note}>
+        <p role="alert" className={ui.note}>
           {copy.pathways.failed}
         </p>
       )}
@@ -176,11 +176,11 @@ function PathwayCard({ enrollment }: { enrollment: Enrollment }) {
 }
 
 const STATUS_TONES: Record<Application['status'], string> = {
-  pending: styles.amber,
-  approved: styles.green,
-  rejected: styles.red,
-  withdrawn: styles.grey,
-  completed: styles.blue,
+  pending: 'bg-warn-bg text-warn-ink',
+  approved: 'bg-good-bg text-good-ink',
+  rejected: 'bg-warn-bg text-warn-ink',
+  withdrawn: 'bg-chip text-ink',
+  completed: 'bg-tint text-blue',
 }
 
 /** The learner's assessment applications, with their status and a withdrawal they confirm (US-09). */
@@ -188,39 +188,51 @@ export function Applications({ applications }: { applications: readonly Applicat
   const [withdrawing, setWithdrawing] = useState<Application | null>(null)
   const [withdrawn, setWithdrawn] = useState(false)
   return (
-    <section aria-labelledby={SECTION_IDS.applications} className={styles.card}>
-      <h2 id={SECTION_IDS.applications} tabIndex={-1} className={styles.sectionHeading}>
+    <section aria-labelledby={SECTION_IDS.applications} className={ui.card}>
+      <h2 id={SECTION_IDS.applications} tabIndex={-1} className={ui.sectionHeading}>
         {copy.applications.heading}
       </h2>
       <div aria-live="polite">
-        {withdrawn && <p className={styles.success}>{copy.applications.withdrawn}</p>}
+        {withdrawn && (
+          <p className="mt-0 mb-[0.6rem] rounded-10 bg-good-bg px-3 py-[0.55rem] text-14 font-semibold text-good-ink">
+            {copy.applications.withdrawn}
+          </p>
+        )}
       </div>
       {applications.length === 0 ? (
-        <p className={styles.empty}>{copy.applications.empty}</p>
+        <p className={ui.empty}>{copy.applications.empty}</p>
       ) : (
-        <ul className={styles.records}>
+        <ul className={ui.records}>
           {applications.map((application) => {
             const { schedule, status, result } = application
             return (
-              <li key={application.id} className={styles.application}>
-                <span className={cx(styles.badge, STATUS_TONES[status])}>
+              <li
+                key={application.id}
+                className="flex flex-col items-start gap-[0.35rem] rounded-12 border border-border px-[0.95rem] py-[0.85rem]"
+              >
+                <span
+                  className={cx(
+                    'rounded-full px-[0.6rem] py-[0.15rem] text-12 font-[650]',
+                    STATUS_TONES[status],
+                  )}
+                >
                   {en.training.apply.statuses[status]}
                 </span>
-                <p className={styles.recordTitle}>
+                <p className={ui.recordTitle}>
                   {schedule.qualification.name} · {localTime(schedule.scheduled_at)}
                 </p>
-                <p className={styles.muted}>
+                <p className={ui.muted}>
                   {[
                     schedule.center.name,
                     ...(result ? [copy.applications.results[result]] : []),
                   ].join(' · ')}
                 </p>
                 {application.reviewer_note && (
-                  <p className={styles.note}>{application.reviewer_note}</p>
+                  <p className={ui.note}>{application.reviewer_note}</p>
                 )}
                 {(status === 'pending' || status === 'approved') && (
                   <Button
-                    className={cx(buttons.button, styles.withdraw)}
+                    className={cx(button({ height: 38 }), 'mt-[0.2rem]')}
                     onPress={() => {
                       setWithdrawn(false)
                       setWithdrawing(application)
@@ -280,22 +292,24 @@ function WithdrawDialog({
       isPending={withdraw.isPending}
       role="alertdialog"
     >
-      <p className={styles.recordTitle}>
+      <p className={ui.recordTitle}>
         {schedule.qualification.name} · {localTime(schedule.scheduled_at)}
       </p>
-      <p className={styles.muted}>{schedule.center.name}</p>
-      <p className={styles.dialogBody}>{copy.applications.confirmBody}</p>
+      <p className={ui.muted}>{schedule.center.name}</p>
+      <p className="mt-[0.6rem] mb-4 text-15 leading-[1.6] text-ink">
+        {copy.applications.confirmBody}
+      </p>
       {withdraw.isError && (
-        <p role="alert" className={styles.note}>
+        <p role="alert" className={ui.note}>
           {failureMessage(withdraw.error)}
         </p>
       )}
-      <div className={styles.actions}>
-        <Button slot="close" className={buttons.button} isDisabled={withdraw.isPending}>
+      <div className="flex flex-wrap justify-end gap-[0.6rem]">
+        <Button slot="close" className={button()} isDisabled={withdraw.isPending}>
           {copy.applications.keep}
         </Button>
         <Button
-          className={cx(buttons.button, buttons.primary)}
+          className={button({ variant: 'primary' })}
           isPending={withdraw.isPending}
           onPress={() => withdraw.mutate()}
         >

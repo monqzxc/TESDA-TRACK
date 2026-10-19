@@ -18,9 +18,8 @@
   font-display: swap;
 }
 
+/* --font-display and --font-text come from app.css's theme. */
 :root {
-  --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
-  --font-text: 'Figtree', 'Segoe UI', system-ui, sans-serif;
   color-scheme: light;
 }
 

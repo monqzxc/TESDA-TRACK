@@ -6,8 +6,9 @@ import { regionsQuery, type Qualification } from '../../api/queries.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { LoadBoundary } from '../../components/LoadBoundary.tsx'
 import { en } from '../../copy/en.ts'
+import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
-import buttons from '../../styles/buttons.module.css'
+import { button } from '../../styles/buttons.ts'
 import { clientConfigQuery, listingsQuery, sitesQuery } from '../training/api.ts'
 import { writeTrainingAddress } from '../training/address.ts'
 import {
@@ -22,7 +23,7 @@ import {
 import { useTrainingStore } from '../training/state.ts'
 import type { BridgeQualification as Item, Standard } from './api.ts'
 import { localQualification } from './local.ts'
-import styles from './SkillsPage.module.css'
+import { ui } from './styles.ts'
 
 // The delivery map is Training & Assessment's own, downloaded only when a learner asks for sites.
 const CenterMap = lazy(() => import('../training/CenterMap.tsx'))
@@ -50,15 +51,15 @@ export function BridgeQualification({
   const share = 'skill_share' in item ? item.skill_share : null
   const evidence = 'evidence' in item ? (item.evidence ?? []) : []
   return (
-    <article aria-labelledby={headingId} className={styles.card}>
-      <span className={styles.level}>
+    <article aria-labelledby={headingId} className={ui.card}>
+      <span className={ui.level}>
         <Icon name="learn" />
         {item.level_label || copy.qualification.fallbackLevel}
       </span>
-      <Heading id={headingId} className={styles.cardTitle}>
+      <Heading id={headingId} className={ui.cardTitle}>
         {item.title || copy.qualification.fallbackTitle}
       </Heading>
-      <p className={styles.muted}>
+      <p className={ui.muted}>
         {[
           item.code,
           status ? status[0].toUpperCase() + status.slice(1) : copy.qualification.noStatus,
@@ -66,26 +67,24 @@ export function BridgeQualification({
           .filter(Boolean)
           .join(' · ')}
       </p>
-      {matched.length > 0 && (
-        <p className={styles.text}>{copy.qualification.linkedSkills(matched)}</p>
-      )}
+      {matched.length > 0 && <p className={ui.text}>{copy.qualification.linkedSkills(matched)}</p>}
       {share !== null && share !== undefined && (
-        <p className={styles.muted}>{copy.qualification.share(Math.round(share * 100))}</p>
+        <p className={ui.muted}>{copy.qualification.share(Math.round(share * 100))}</p>
       )}
       {item.review_due_at && (
-        <p className={styles.muted}>{copy.qualification.reviewDue(item.review_due_at)}</p>
+        <p className={ui.muted}>{copy.qualification.reviewDue(item.review_due_at)}</p>
       )}
       {evidence.length > 0 && (
-        <details className={styles.details}>
-          <summary>
-            <Icon name="checklist" />
+        <details className={ui.details}>
+          <summary className={ui.summary}>
+            <Icon name="checklist" className={ui.summaryIcon} />
             {copy.qualification.evidence}
-            <Icon name="chevron" className={styles.chevron} />
+            <Icon name="chevron" className={ui.chevron} />
           </summary>
           {evidence.map((entry) => (
-            <div key={entry.term} className={styles.evidence}>
-              <p className={styles.text}>{entry.term}</p>
-              <ul>
+            <div key={entry.term} className="px-[0.95rem] pb-[0.6rem]">
+              <p className={cx(ui.text, 'font-semibold')}>{entry.term}</p>
+              <ul className="mt-[0.2rem] mb-0 pl-[1.35rem] text-14 leading-[1.55] text-ink">
                 {(entry.skills ?? []).map((skill) => (
                   <li key={skill}>{skill}</li>
                 ))}
@@ -110,24 +109,24 @@ function DeliveryOptions({
   const local = useMemo(() => localQualification(item, catalog), [item, catalog])
   const [shown, setShown] = useState(false)
   return (
-    <details className={styles.details}>
-      <summary>
-        <Icon name="pin" />
+    <details className={ui.details}>
+      <summary className={ui.summary}>
+        <Icon name="pin" className={ui.summaryIcon} />
         {copy.delivery.heading}
-        <Icon name="chevron" className={styles.chevron} />
+        <Icon name="chevron" className={ui.chevron} />
       </summary>
-      <div className={styles.delivery}>
+      <div className="flex flex-col items-start gap-[0.6rem] px-[0.95rem] pb-[0.95rem]">
         {!local ? (
-          <p className={styles.note}>
+          <p className={ui.note}>
             {copy.delivery.unmapped} <Link to={paths.qualifications}>{en.nav.qualifications}</Link>
           </p>
         ) : (
           <>
-            <p className={styles.muted}>{copy.delivery.match(local.name, local.code)}</p>
+            <p className={ui.muted}>{copy.delivery.match(local.name, local.code)}</p>
             {shown ? (
               <DeliverySites code={local.code} />
             ) : (
-              <Button className={buttons.button} onPress={() => setShown(true)}>
+              <Button className={button()} onPress={() => setShown(true)}>
                 <Icon name="search" />
                 {copy.delivery.show}
               </Button>
@@ -167,19 +166,19 @@ function DeliverySites({ code }: { code: string }) {
 
   if (sites.isError || listings.isError) {
     return (
-      <p role="alert" className={styles.note}>
+      <p role="alert" className={ui.note}>
         {(sites.error ?? listings.error)?.message}
       </p>
     )
   }
   if (!centers) {
     return (
-      <p role="status" className={styles.muted}>
+      <p role="status" className={ui.muted}>
         {copy.delivery.loading}
       </p>
     )
   }
-  if (!centers.length) return <p className={styles.muted}>{copy.delivery.none}</p>
+  if (!centers.length) return <p className={ui.muted}>{copy.delivery.none}</p>
 
   const open = (centerId?: string) =>
     void navigate(
@@ -188,11 +187,11 @@ function DeliverySites({ code }: { code: string }) {
   const mapped = centers.some((center) => center.latitude !== null)
   return (
     <>
-      <p className={styles.muted}>{copy.delivery.count(centers.length)}</p>
+      <p className={ui.muted}>{copy.delivery.count(centers.length)}</p>
       {mapped ? (
-        <LoadBoundary fallback={<p className={styles.note}>{en.training.map.failed}</p>}>
-          <Suspense fallback={<p className={styles.muted}>{en.training.map.loading}</p>}>
-            <div className={styles.map}>
+        <LoadBoundary fallback={<p className={ui.note}>{en.training.map.failed}</p>}>
+          <Suspense fallback={<p className={ui.muted}>{en.training.map.loading}</p>}>
+            <div className="self-stretch [--center-map-height:430px]">
               <CenterMap
                 centers={centers}
                 selectedId={null}
@@ -216,21 +215,21 @@ function DeliverySites({ code }: { code: string }) {
           </Suspense>
         </LoadBoundary>
       ) : (
-        <p className={styles.muted}>{copy.delivery.noMap}</p>
+        <p className={ui.muted}>{copy.delivery.noMap}</p>
       )}
-      <ul className={styles.sites}>
+      <ul className="m-0 flex list-none flex-col gap-2 self-stretch p-0">
         {centers.map((center) => (
-          <li key={center.id}>
-            <p className={styles.text}>
-              <strong>{center.name}</strong> · {placeLabel(center)}
+          <li key={center.id} className="rounded-10 border border-rule px-3 py-[0.55rem]">
+            <p className={ui.text}>
+              <strong className="text-navy">{center.name}</strong> · {placeLabel(center)}
             </p>
-            <p className={styles.muted}>
+            <p className={ui.muted}>
               {en.training.kinds[center.kind]} · {summary(center, today)}
             </p>
           </li>
         ))}
       </ul>
-      <Button className={buttons.button} onPress={() => open()}>
+      <Button className={button()} onPress={() => open()}>
         {copy.delivery.open}
         <Icon name="arrowRight" />
       </Button>

@@ -10,13 +10,12 @@ import { PageHero } from '../../components/PageHero.tsx'
 import { WithCatalog } from '../../components/WithCatalog.tsx'
 import { en } from '../../copy/en.ts'
 import { cx } from '../../lib/style.ts'
-import buttons from '../../styles/buttons.module.css'
-import utilities from '../../styles/utilities.module.css'
+import { button } from '../../styles/buttons.ts'
 import { clientConfigQuery } from '../training/api.ts'
 import { explore, type Exploration, type OccupationMatch } from './api.ts'
 import { BridgeQualification } from './BridgeQualification.tsx'
 import { OccupationDetails } from './OccupationDetails.tsx'
-import styles from './SkillsPage.module.css'
+import { ui } from './styles.ts'
 
 const copy = en.skills
 
@@ -84,14 +83,14 @@ function Explorer({ catalog }: { catalog: Qualification[] }) {
   const found = search.data?.searched ? search.data : null
   return (
     <>
-      <section aria-labelledby={headingId} className={styles.search}>
-        <h2 id={headingId} className={utilities.visuallyHidden}>
+      <section aria-labelledby={headingId} className="mb-5 rounded-18 bg-surface p-5">
+        <h2 id={headingId} className="sr-only">
           {copy.search.label}
         </h2>
         {/* Enter makes a new line, as the sentence may be a list of terms. */}
-        <form onSubmit={submit} noValidate className={styles.form}>
+        <form onSubmit={submit} noValidate className="flex flex-col gap-3">
           <TextField
-            className={styles.field}
+            className="flex flex-col gap-[0.45rem]"
             value={text}
             onChange={(value) => {
               setText(value)
@@ -101,32 +100,36 @@ function Explorer({ catalog }: { catalog: Qualification[] }) {
             isInvalid={error !== null}
             validationBehavior="aria"
           >
-            <Label className={styles.label}>{copy.search.label}</Label>
+            <Label className="text-15 font-semibold text-navy">{copy.search.label}</Label>
             <TextArea
               ref={field}
-              className={styles.textarea}
+              className="min-h-[105px] w-full resize-y rounded-12 border border-hover-border bg-surface px-[0.9rem] py-3 text-16 leading-[1.5] text-navy placeholder:text-muted placeholder:opacity-100 data-focused:border-blue data-hovered:border-blue data-invalid:border-warn-ink"
               placeholder={copy.search.placeholder}
             />
-            <div className={styles.under}>
-              <Text slot="description" className={styles.muted}>
+            <div className="flex justify-between gap-4">
+              <Text slot="description" className={ui.muted}>
                 {copy.search.help}{' '}
-                <span className={utilities.visuallyHidden}>
+                <span className="sr-only">
                   {en.home.closing.countLabel(text.length, TEXT_MAX_LENGTH)}
                 </span>
               </Text>
-              <span className={styles.counter} aria-hidden="true">
+              <span className="flex-none text-13 text-muted" aria-hidden="true">
                 {`${text.length}/${TEXT_MAX_LENGTH}`}
               </span>
             </div>
-            <FieldError className={styles.error}>{error}</FieldError>
+            {/* Words as well as color say what's wrong (US-13). */}
+            <FieldError className="text-14 font-semibold text-warn-ink">{error}</FieldError>
           </TextField>
-          <p className={styles.privacy}>
-            <Icon name="info" />
+          <p className="m-0 flex items-start gap-2 text-14 leading-[1.5] text-ink">
+            <Icon name="info" className="mt-[0.2rem] flex-none text-blue" />
             {copy.search.privacy}
           </p>
           <Button
             type="submit"
-            className={cx(buttons.button, buttons.primary, styles.submit)}
+            className={cx(
+              button({ variant: 'primary', height: 48 }),
+              'self-start max-sm:self-stretch',
+            )}
             isPending={search.isPending}
           >
             <Icon name="search" />
@@ -134,14 +137,17 @@ function Explorer({ catalog }: { catalog: Qualification[] }) {
           </Button>
         </form>
         {search.isError && (
-          <div role="alert" className={styles.failure}>
-            <p>{failureMessage(search.error)}</p>
-            <p>{copy.search.stillAvailable}</p>
+          <div
+            role="alert"
+            className="mt-3 rounded-10 bg-warn-bg px-[0.85rem] py-[0.65rem] text-14 text-warn-ink"
+          >
+            <p className="m-0 font-[650]">{failureMessage(search.error)}</p>
+            <p className="m-0">{copy.search.stillAvailable}</p>
           </div>
         )}
       </section>
 
-      <p role="status" className={utilities.visuallyHidden}>
+      <p role="status" className="sr-only">
         {search.isPending
           ? copy.search.pending
           : found
@@ -188,28 +194,30 @@ function Results({
         : copy.occupations.captionSkills
 
   return (
-    <div className={styles.results}>
-      <div className={styles.summary}>
-        <p className={styles.searched}>{results.searched(found.terms)}</p>
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-[0.35rem]">
+        <p className="m-0 text-15 font-semibold wrap-anywhere text-navy">
+          {results.searched(found.terms)}
+        </p>
         {found.retrieved_at && (
-          <p className={styles.muted}>{results.source(retrieved(found.retrieved_at))}</p>
+          <p className={ui.muted}>{results.source(retrieved(found.retrieved_at))}</p>
         )}
         {roles.length > 0 && (
-          <p className={styles.muted}>
+          <p className={ui.muted}>
             {skills.length > 0 ? results.treatedBoth(roles, skills) : results.treatedRoles(roles)}
           </p>
         )}
         {found.unmatched.length > 0 && (
-          <p className={styles.note}>{results.unmatched(found.unmatched)}</p>
+          <p className={ui.note}>{results.unmatched(found.unmatched)}</p>
         )}
         {found.resolution.length > 0 && (
-          <details className={styles.details}>
-            <summary>
-              <Icon name="search" />
+          <details className={ui.details}>
+            <summary className={ui.summary}>
+              <Icon name="search" className={ui.summaryIcon} />
               {results.understood}
-              <Icon name="chevron" className={styles.chevron} />
+              <Icon name="chevron" className={ui.chevron} />
             </summary>
-            <ul className={styles.resolution}>
+            <ul className="m-0 pt-0 pr-[0.95rem] pb-[0.85rem] pl-10 text-14 leading-[1.6] text-ink">
               {found.resolution.map((item) => (
                 <li key={item.term}>
                   {results.resolution(
@@ -227,10 +235,10 @@ function Results({
       </div>
 
       <section aria-labelledby={occupationsId}>
-        <h2 id={occupationsId} className={styles.sectionHeading}>
+        <h2 id={occupationsId} className="mt-0 mb-[0.35rem] text-[1.3rem] text-navy">
           {copy.occupations.heading}
         </h2>
-        <p className={styles.lead}>
+        <p className="mt-0 mb-[0.85rem] text-14 leading-[1.55] text-muted">
           {caption} {copy.occupations.notAScore}
         </p>
         {occupations.length === 0 ? (
@@ -241,9 +249,10 @@ function Results({
             headingLevel={3}
           />
         ) : (
-          <ul className={styles.occupations}>
+          // Two occupations to a row, as the Streamlit app's columns.
+          <ul className="m-0 grid list-none grid-cols-2 gap-4 p-0 max-sm:grid-cols-1">
             {occupations.map((occupation) => (
-              <li key={occupation.occupation_id}>
+              <li key={occupation.occupation_id} className="flex">
                 <OccupationCard
                   occupation={occupation}
                   chosen={occupation.occupation_id === occupationId}
@@ -259,13 +268,13 @@ function Results({
         <OccupationDetails key={occupationId} occupationId={occupationId} catalog={catalog} />
       ) : (
         <section aria-labelledby={linkedId}>
-          <h2 id={linkedId} className={styles.sectionHeading}>
+          <h2 id={linkedId} className="mt-0 mb-[0.35rem] text-[1.3rem] text-navy">
             {copy.linked.heading}
           </h2>
           {qualifications.length === 0 ? (
-            <p className={styles.muted}>{copy.linked.none}</p>
+            <p className={ui.muted}>{copy.linked.none}</p>
           ) : (
-            <ul className={styles.list}>
+            <ul className={ui.list}>
               {qualifications.map((item, index) => (
                 <li key={item.code ?? index}>
                   <BridgeQualification item={item} catalog={catalog} headingLevel={3} />
@@ -276,9 +285,9 @@ function Results({
         </section>
       )}
 
-      <footer className={styles.footer}>
-        <p className={styles.muted}>{copy.footer}</p>
-        <a className={buttons.button} href={ABOUT_URL} target="_blank" rel="noopener noreferrer">
+      <footer className="flex flex-wrap items-center justify-between gap-x-5 gap-y-3 border-t border-border pt-4">
+        <p className={cx(ui.muted, 'flex-[1_1_22rem]')}>{copy.footer}</p>
+        <a className={button()} href={ABOUT_URL} target="_blank" rel="noopener noreferrer">
           {copy.about}
           <Icon name="external" />
         </a>
@@ -305,25 +314,31 @@ function OccupationCard({
   return (
     <article
       aria-labelledby={headingId}
-      className={cx(styles.card, styles.role, chosen && styles.chosen)}
+      className={cx(
+        ui.cardFrame,
+        'flex-1',
+        chosen ? 'border-blue shadow-[0_0_0_1px_var(--track-blue)]' : 'border-border',
+      )}
     >
-      <p className={styles.kicker}>{occupation.sector || copy.occupations.careerOption}</p>
-      <h3 id={headingId} className={styles.cardTitle}>
+      <p className="m-0 text-11 leading-[1.5] font-bold tracking-[0.1em] text-ink uppercase">
+        {occupation.sector || copy.occupations.careerOption}
+      </p>
+      <h3 id={headingId} className={ui.cardTitle}>
         {occupation.title}
       </h3>
-      <div className={styles.match}>
+      <div className="mt-[0.35rem] mb-2 flex items-center gap-4">
         <ScoreRing score={score} label={`${label}: ${score}%`} />
-        <div className={styles.matchText}>
-          <p className={styles.matchLabel}>{label}</p>
-          <p className={styles.text}>{copy.occupations.matched(occupation.terms_matched)}</p>
+        <div className="flex min-w-0 flex-col gap-[0.2rem]">
+          <p className="m-0 text-14 font-[650] text-navy">{label}</p>
+          <p className={ui.text}>{copy.occupations.matched(occupation.terms_matched)}</p>
           {/* Title matches carry no count, and few job posts are recorded yet: only a real count shows. */}
           {occupation.open_posts ? (
-            <p className={styles.muted}>{copy.occupations.openPosts(occupation.open_posts)}</p>
+            <p className={ui.muted}>{copy.occupations.openPosts(occupation.open_posts)}</p>
           ) : null}
         </div>
       </div>
       <Button
-        className={cx(buttons.button, buttons.wide, chosen && buttons.primary, styles.explore)}
+        className={cx(button({ variant: chosen ? 'primary' : 'secondary', wide: true }), 'mt-auto')}
         aria-label={`${copy.occupations.explore}: ${occupation.title}`}
         aria-pressed={chosen}
         onPress={onExplore}

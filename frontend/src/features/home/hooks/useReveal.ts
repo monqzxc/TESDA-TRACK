@@ -37,7 +37,7 @@ export interface Reveal<T extends Element> {
   /** Goes on the element to watch. */
   ref: RefCallback<T>
   /**
-   * The element has scrolled into view, so it shows (with data-in, see HomePage.module.css) and starts what it
+   * The element has scrolled into view, so it shows (with data-in, see Reveal.tsx) and starts what it
    * animates. Always true when motion is reduced or scrolling can't be watched: everything shows at once.
    */
   isIn: boolean

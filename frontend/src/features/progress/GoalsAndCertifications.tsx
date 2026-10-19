@@ -7,7 +7,7 @@ import { throwWithoutData } from '../../components/QueryBoundary.tsx'
 import { SelectField } from '../../components/SelectField.tsx'
 import { en } from '../../copy/en.ts'
 import { cx } from '../../lib/style.ts'
-import buttons from '../../styles/buttons.module.css'
+import { button } from '../../styles/buttons.ts'
 import {
   achieveGoal,
   addCertification,
@@ -18,10 +18,15 @@ import {
   type Certification,
   type Goal,
 } from './api.ts'
-import styles from './ProgressPage.module.css'
+import { ui } from './styles.ts'
 
 const copy = en.progress
 const NONE = 'none'
+
+/** The add forms, under each list. */
+const addForm = 'mt-4 flex flex-col gap-3 border-t border-border pt-4'
+const input =
+  'min-h-11.5 w-full rounded-12 border border-hover-border bg-surface px-[0.8rem] py-[0.55rem] text-16 text-navy placeholder:text-muted placeholder:opacity-100 data-focused:border-blue data-invalid:border-warn-ink'
 
 /** The catalog as options for an optional qualification, "None" first. */
 function qualificationOptions(catalog: readonly Qualification[], none: string) {
@@ -45,24 +50,24 @@ export function Goals({ catalog }: { catalog: readonly Qualification[] }) {
   })
 
   return (
-    <section aria-labelledby={headingId} className={styles.card}>
-      <h2 id={headingId} className={styles.sectionHeading}>
+    <section aria-labelledby={headingId} className={ui.card}>
+      <h2 id={headingId} className={ui.sectionHeading}>
         {copy.goals.heading}
       </h2>
-      {goals.data && goals.data.length === 0 && <p className={styles.empty}>{copy.goals.empty}</p>}
-      <ul className={styles.records}>
+      {goals.data && goals.data.length === 0 && <p className={ui.empty}>{copy.goals.empty}</p>}
+      <ul className={ui.records}>
         {goals.data?.map((goal) => (
-          <li key={goal.id} className={styles.record}>
-            <div className={styles.recordBody}>
-              <p className={styles.recordTitle}>{goal.title}</p>
-              <p className={styles.muted}>
+          <li key={goal.id} className={ui.record}>
+            <div className={ui.recordBody}>
+              <p className={ui.recordTitle}>{goal.title}</p>
+              <p className={ui.muted}>
                 {copy.goals.statuses[goal.status]}
                 {goal.target_qualification ? ` · ${goal.target_qualification.name}` : ''}
               </p>
             </div>
             {goal.status === 'active' && (
               <Button
-                className={cx(buttons.button, buttons.tertiary)}
+                className={button({ variant: 'tertiary' })}
                 aria-label={`${copy.goals.achieve}: ${goal.title}`}
                 isPending={achieve.isPending && achieve.variables === goal.id}
                 onPress={() => achieve.mutate(goal.id)}
@@ -74,7 +79,7 @@ export function Goals({ catalog }: { catalog: readonly Qualification[] }) {
         ))}
       </ul>
       {achieve.isError && (
-        <p role="alert" className={styles.note}>
+        <p role="alert" className={ui.note}>
           {failureMessage(achieve.error)}
         </p>
       )}
@@ -109,9 +114,9 @@ function AddGoal({ catalog }: { catalog: readonly Qualification[] }) {
     add.mutate()
   }
   return (
-    <form className={styles.form} onSubmit={submit} noValidate aria-label={copy.goals.add}>
+    <form className={addForm} onSubmit={submit} noValidate aria-label={copy.goals.add}>
       <TextField
-        className={styles.field}
+        className="flex flex-col gap-[0.35rem]"
         value={title}
         onChange={(value) => {
           setTitle(value)
@@ -121,9 +126,9 @@ function AddGoal({ catalog }: { catalog: readonly Qualification[] }) {
         validationBehavior="aria"
         maxLength={200}
       >
-        <Label className={styles.label}>{copy.goals.title}</Label>
-        <Input ref={field} className={styles.input} placeholder={copy.goals.titlePlaceholder} />
-        <FieldError className={styles.fieldError}>{error}</FieldError>
+        <Label className="text-15 font-semibold text-navy">{copy.goals.title}</Label>
+        <Input ref={field} className={input} placeholder={copy.goals.titlePlaceholder} />
+        <FieldError className="text-14 font-semibold text-warn-ink">{error}</FieldError>
       </TextField>
       <SelectField
         label={copy.goals.target}
@@ -131,7 +136,7 @@ function AddGoal({ catalog }: { catalog: readonly Qualification[] }) {
         value={target}
         onChange={setTarget}
       />
-      <Button type="submit" className={cx(buttons.button, styles.submit)} isPending={add.isPending}>
+      <Button type="submit" className={cx(button(), 'self-start')} isPending={add.isPending}>
         {add.isPending ? copy.saving : copy.goals.submit}
       </Button>
     </form>
@@ -143,19 +148,19 @@ export function Certifications({ catalog }: { catalog: readonly Qualification[] 
   const certifications = useQuery({ ...certificationsQuery, throwOnError: throwWithoutData })
   const headingId = useId()
   return (
-    <section aria-labelledby={headingId} className={styles.card}>
-      <h2 id={headingId} className={styles.sectionHeading}>
+    <section aria-labelledby={headingId} className={ui.card}>
+      <h2 id={headingId} className={ui.sectionHeading}>
         {copy.certifications.heading}
       </h2>
       {certifications.data && certifications.data.length === 0 && (
-        <p className={styles.empty}>{copy.certifications.empty}</p>
+        <p className={ui.empty}>{copy.certifications.empty}</p>
       )}
-      <ul className={styles.records}>
+      <ul className={ui.records}>
         {certifications.data?.map((certification) => (
-          <li key={certification.id} className={styles.record}>
-            <div className={styles.recordBody}>
-              <p className={styles.recordTitle}>{certification.title}</p>
-              <p className={styles.muted}>
+          <li key={certification.id} className={ui.record}>
+            <div className={ui.recordBody}>
+              <p className={ui.recordTitle}>{certification.title}</p>
+              <p className={ui.muted}>
                 {[
                   certification.issuing_body,
                   // Self-reported unless TESDA's records confirm it (US-12).
@@ -215,9 +220,9 @@ function AddCertification({ catalog }: { catalog: readonly Qualification[] }) {
     add.mutate()
   }
   return (
-    <form className={styles.form} onSubmit={submit} noValidate aria-label={copy.certifications.add}>
+    <form className={addForm} onSubmit={submit} noValidate aria-label={copy.certifications.add}>
       <TextField
-        className={styles.field}
+        className="flex flex-col gap-[0.35rem]"
         value={title}
         onChange={(value) => {
           setTitle(value)
@@ -227,13 +232,9 @@ function AddCertification({ catalog }: { catalog: readonly Qualification[] }) {
         validationBehavior="aria"
         maxLength={200}
       >
-        <Label className={styles.label}>{copy.certifications.title}</Label>
-        <Input
-          ref={field}
-          className={styles.input}
-          placeholder={copy.certifications.titlePlaceholder}
-        />
-        <FieldError className={styles.fieldError}>{error}</FieldError>
+        <Label className="text-15 font-semibold text-navy">{copy.certifications.title}</Label>
+        <Input ref={field} className={input} placeholder={copy.certifications.titlePlaceholder} />
+        <FieldError className="text-14 font-semibold text-warn-ink">{error}</FieldError>
       </TextField>
       <SelectField
         label={copy.certifications.qualification}
@@ -241,15 +242,27 @@ function AddCertification({ catalog }: { catalog: readonly Qualification[] }) {
         value={qualification}
         onChange={setQualification}
       />
-      <TextField className={styles.field} value={number} onChange={setNumber} maxLength={100}>
-        <Label className={styles.label}>{copy.certifications.certificateNumber}</Label>
-        <Input className={styles.input} />
+      <TextField
+        className="flex flex-col gap-[0.35rem]"
+        value={number}
+        onChange={setNumber}
+        maxLength={100}
+      >
+        <Label className="text-15 font-semibold text-navy">
+          {copy.certifications.certificateNumber}
+        </Label>
+        <Input className={input} />
       </TextField>
-      <TextField className={styles.field} value={issuedOn} onChange={setIssuedOn} type="date">
-        <Label className={styles.label}>{copy.certifications.issuedOn}</Label>
-        <Input className={styles.input} />
+      <TextField
+        className="flex flex-col gap-[0.35rem]"
+        value={issuedOn}
+        onChange={setIssuedOn}
+        type="date"
+      >
+        <Label className="text-15 font-semibold text-navy">{copy.certifications.issuedOn}</Label>
+        <Input className={input} />
       </TextField>
-      <Button type="submit" className={cx(buttons.button, styles.submit)} isPending={add.isPending}>
+      <Button type="submit" className={cx(button(), 'self-start')} isPending={add.isPending}>
         {add.isPending ? copy.saving : copy.certifications.submit}
       </Button>
     </form>

@@ -1,7 +1,6 @@
 import { useRouteError } from 'react-router'
 import { reloadPage } from '../lib/reload.ts'
 import { ServiceUnavailable } from './ServiceUnavailable.tsx'
-import styles from './RouteError.module.css'
 
 /**
  * A route's errorElement: a page that failed to download (its chunk) or to show. It takes the page's place, inside
@@ -16,7 +15,7 @@ export function RouteError() {
 /** The root route's errorElement, for a failure in a layout itself: the same state on a page of its own. */
 export function RootError() {
   return (
-    <main id="main" tabIndex={-1} className={styles.page}>
+    <main id="main" tabIndex={-1} className="mx-auto max-w-[760px] px-4 py-12 focus:outline-none">
       <RouteError />
     </main>
   )

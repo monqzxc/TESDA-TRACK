@@ -1,13 +1,18 @@
 import { useId, useState } from 'react'
 import { SelectField } from '../../components/SelectField.tsx'
 import { en } from '../../copy/en.ts'
-import { cssVars } from '../../lib/style.ts'
-import utilities from '../../styles/utilities.module.css'
+import { cssVars, cx } from '../../lib/style.ts'
 import type { ReadinessCheck } from './api.ts'
 import { checkedQualifications, checksFor, compareChecks } from './journey.ts'
-import styles from './ProgressPage.module.css'
+import { ui } from './styles.ts'
 
 const copy = en.progress.readiness
+
+const table = cx(
+  'w-full border-collapse text-14',
+  '[&_th]:border-b [&_th]:border-border [&_th]:px-[0.6rem] [&_th]:py-2 [&_th]:text-left [&_th]:font-semibold [&_th]:text-muted',
+  '[&_td]:border-b [&_td]:border-rule [&_td]:px-[0.6rem] [&_td]:py-[0.55rem] [&_td]:text-navy',
+)
 
 /** "Oct 15, 2026", in Philippine time. */
 export function friendlyDate(timestamp: string): string {
@@ -42,18 +47,18 @@ export function ReadinessHistory({ checks }: { checks: readonly ReadinessCheck[]
   }))
 
   return (
-    <section aria-labelledby={headingId} className={styles.card}>
-      <h2 id={headingId} className={styles.sectionHeading}>
+    <section aria-labelledby={headingId} className={ui.card}>
+      <h2 id={headingId} className={ui.sectionHeading}>
         {copy.heading}
       </h2>
-      <p className={styles.muted}>{copy.lead}</p>
+      <p className={ui.muted}>{copy.lead}</p>
       {checks.length === 0 ? (
-        <p className={styles.empty}>{copy.empty}</p>
+        <p className={ui.empty}>{copy.empty}</p>
       ) : (
         <>
           {qualifications.length > 1 && (
             <SelectField
-              className={styles.picker}
+              className="my-3 max-w-[28rem]"
               label={copy.qualification}
               options={qualifications.map((item) => ({ id: item.code, label: item.name }))}
               value={code}
@@ -64,10 +69,14 @@ export function ReadinessHistory({ checks }: { checks: readonly ReadinessCheck[]
               }}
             />
           )}
-          <div className={styles.tableBox}>
-            <table className={styles.table}>
+          <div className="mt-[0.6rem] overflow-x-auto">
+            <table className={table}>
               <caption
-                className={qualifications.length > 1 ? utilities.visuallyHidden : styles.caption}
+                className={
+                  qualifications.length > 1
+                    ? 'sr-only'
+                    : 'mb-[0.4rem] text-left font-[650] text-navy'
+                }
               >
                 {name}
               </caption>
@@ -83,9 +92,12 @@ export function ReadinessHistory({ checks }: { checks: readonly ReadinessCheck[]
                   <tr key={check.id}>
                     <td>{friendlyDate(check.created_at)}</td>
                     <td>
-                      <span className={styles.scoreCell}>
-                        <span className={styles.bar} aria-hidden="true">
-                          <i style={cssVars({ '--score': Math.round(check.score) })} />
+                      <span className="flex items-center gap-[0.6rem]">
+                        <span className={ui.bar} aria-hidden="true">
+                          <i
+                            className={ui.barFill}
+                            style={cssVars({ '--score': Math.round(check.score) })}
+                          />
                         </span>
                         {Math.round(check.score)}%
                       </span>
@@ -97,7 +109,7 @@ export function ReadinessHistory({ checks }: { checks: readonly ReadinessCheck[]
             </table>
           </div>
           {list.length < 2 || !from || !to ? (
-            <p className={styles.muted}>{copy.single}</p>
+            <p className={ui.muted}>{copy.single}</p>
           ) : (
             <Comparison options={options} from={from} to={to} onFrom={setFromId} onTo={setToId} />
           )}
@@ -124,15 +136,15 @@ function Comparison({
   const [earlier, later] = from.created_at <= to.created_at ? [from, to] : [to, from]
   const { points, sameQuestions } = compareChecks(earlier, later)
   return (
-    <div className={styles.compare}>
-      <div className={styles.compareFields}>
+    <div className="mt-4">
+      <div className="grid grid-cols-[repeat(2,minmax(0,16rem))] gap-3 max-sm:grid-cols-1">
         <SelectField label={copy.compareFrom} options={options} value={from.id} onChange={onFrom} />
         <SelectField label={copy.compareTo} options={options} value={to.id} onChange={onTo} />
       </div>
-      <p className={styles.change} aria-live="polite">
+      <p className="mt-3 mb-0 text-15 font-[650] text-navy" aria-live="polite">
         {copy.change(friendlyDate(earlier.created_at), friendlyDate(later.created_at), points)}
       </p>
-      {!sameQuestions && <p className={styles.note}>{copy.differs}</p>}
+      {!sameQuestions && <p className={ui.note}>{copy.differs}</p>}
     </div>
   )
 }

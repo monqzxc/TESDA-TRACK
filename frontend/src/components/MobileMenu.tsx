@@ -7,9 +7,8 @@ import { prefetch } from '../lib/prefetch.ts'
 import { reloadPage } from '../lib/reload.ts'
 import { Icon } from './Icon.tsx'
 import { LoadBoundary } from './LoadBoundary.tsx'
-import styles from './MobileMenu.module.css'
 
-/** Phone width, where the sidebar folds away behind the Menu button. The CSS modules use the same breakpoint. */
+/** Phone width, where the sidebar folds away behind the Menu button. The classes use the same one (max-md:). */
 const PHONE = '(max-width: 768px)'
 
 const loadDrawer = () => import('./MobileMenuDrawer.tsx')
@@ -63,7 +62,12 @@ export function MobileMenu({ isAdmin = false }: { isAdmin?: boolean }) {
     <>
       <Button
         ref={menuButton}
-        className={styles.menuButton}
+        className={
+          'inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-12 border border-border bg-surface py-[0.4rem] pr-[0.9rem] pl-[0.7rem] font-semibold text-navy ' +
+          'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:border-hover-border data-hovered:bg-soft ' +
+          // The sidebar shows in the page above phone width.
+          'md:hidden'
+        }
         aria-haspopup="dialog"
         aria-expanded={isOpen}
         onHoverStart={() => prefetch(loadDrawer)}

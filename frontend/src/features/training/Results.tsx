@@ -6,15 +6,16 @@ import centerPhoto from '../../components/img/center-thumb.jpg'
 import { SelectField } from '../../components/SelectField.tsx'
 import { en } from '../../copy/en.ts'
 import { cx } from '../../lib/style.ts'
-import buttons from '../../styles/buttons.module.css'
+import { button } from '../../styles/buttons.ts'
 import { NO_FILTERS, SORTS, shortName, type SortOrder } from './address.ts'
 import { placeLabel, summary, type Center } from './centers.ts'
 import { CenterDetail, KindBadges } from './CenterDetail.tsx'
 import { useTrainingFilters, useTrainingStore } from './state.ts'
 import type { CenterResults } from './useCenters.ts'
-import styles from './Results.module.css'
 
 const copy = en.training.results
+
+const note = 'm-0 flex items-center gap-[0.35rem] text-13 text-muted'
 
 /** Other centers listed at first, and how many more Show more adds. */
 const LIST_STEP = 20
@@ -41,7 +42,8 @@ interface ResultsProps {
 
 /**
  * Every center that matches, sorted, with the selected one (or the first) in full and the rest as rows below
- * (classic/training_view.py _results). It's the whole result: nothing needs the map (US-08).
+ * (classic/training_view.py _results). It's the whole result: nothing needs the map (US-08). A white card with its
+ * own scrolling list beside the map, and the whole page's flow below it on narrow screens.
  */
 export function Results({ results, hasMap, onViewOnMap, onChoose, show }: ResultsProps) {
   const { filters, update } = useTrainingFilters()
@@ -68,13 +70,16 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
   }, [show, featuredId])
 
   return (
-    <section aria-labelledby={headingId} className={styles.results}>
-      <div className={styles.head}>
-        <h2 id={headingId} className={styles.heading}>
+    <section
+      aria-labelledby={headingId}
+      className="flex min-w-0 flex-col rounded-18 border border-border bg-surface p-4 max-xs:rounded-14 max-xs:p-[0.85rem]"
+    >
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+        <h2 id={headingId} className="m-0 text-[1.2rem] text-navy">
           {copy.heading(centers.length)}
         </h2>
         <SelectField<SortOrder>
-          className={styles.sort}
+          className="w-[11.5rem]"
           label={en.training.sortLabel}
           labelHidden
           options={SORTS.map((id) => ({ id, label: en.training.sorts[id] }))}
@@ -83,22 +88,27 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
         />
       </div>
 
-      <div className={styles.notes} aria-live="polite">
+      <div className="mt-2 mb-3 flex flex-col gap-1" aria-live="polite">
         {reference ? (
-          <p>
+          <p className={note}>
             <Icon name="distance" />
             {copy.distancesFrom(reference.mine ? copy.fromYou : reference.label)}
           </p>
         ) : (
-          filters.sort === 'nearest' && <p>{copy.sortHint}</p>
+          filters.sort === 'nearest' && <p className={note}>{copy.sortHint}</p>
         )}
-        {results.truncated && <p>{copy.truncated}</p>}
+        {results.truncated && <p className={note}>{copy.truncated}</p>}
       </div>
 
       {!featured ? (
         <NoMatch results={results} />
       ) : (
-        <div className={cx(styles.list, results.refreshing && styles.refreshing)}>
+        <div
+          className={cx(
+            'flex flex-col gap-[0.6rem]',
+            results.refreshing && 'opacity-60 transition-opacity duration-200 ease-[ease]',
+          )}
+        >
           <CenterDetail
             key={featured.id}
             center={featured}
@@ -112,8 +122,10 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
           />
           {others.length > 0 && (
             <>
-              <h3 className={styles.othersHeading}>{copy.others(others.length)}</h3>
-              <ul className={styles.rows}>
+              <h3 className="mt-4 mb-[0.2rem] text-[1.05rem] text-navy">
+                {copy.others(others.length)}
+              </h3>
+              <ul className="m-0 flex list-none flex-col p-0">
                 {others.slice(0, limit).map((center) => (
                   <CenterRow
                     key={center.id}
@@ -126,7 +138,7 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
               </ul>
               {others.length > limit && (
                 <Button
-                  className={cx(buttons.button, buttons.tertiary, buttons.wide)}
+                  className={button({ variant: 'tertiary', wide: true })}
                   onPress={() => setLimit(limit + LIST_STEP)}
                 >
                   <Icon name="chevron" />
@@ -154,20 +166,26 @@ function CenterRow({
   onChoose: () => void
 }) {
   return (
-    <li className={styles.row}>
-      <img className={styles.rowPhoto} src={centerPhoto} alt="" loading="lazy" />
-      <div className={styles.rowBody}>
-        <p className={styles.rowName}>{center.name}</p>
-        <p className={styles.rowPlace}>
+    <li className="flex flex-wrap items-center gap-3 border-t border-rule px-[0.3rem] py-[0.7rem] hovered:bg-row-hover">
+      <img
+        className="size-15 flex-none rounded-10 object-cover"
+        src={centerPhoto}
+        alt=""
+        loading="lazy"
+      />
+      {/* Room for the name; with less, View details goes under the row. */}
+      <div className="flex min-w-0 flex-[1_1_12rem] flex-col gap-[0.2rem]">
+        <p className="m-0 text-15 font-bold wrap-anywhere text-navy">{center.name}</p>
+        <p className="m-0 flex items-center gap-[0.3rem] text-13 text-ink">
           <Icon name="pin" />
           {placeLabel(center)}
         </p>
         <KindBadges center={center} saved={saved} />
-        <p className={styles.rowSummary}>{summary(center, today)}</p>
+        <p className="m-0 text-13 text-muted">{summary(center, today)}</p>
       </div>
       {/* Its name starts with what it shows, then says which center (label in name). */}
       <Button
-        className={cx(buttons.button, buttons.tertiary, styles.rowOpen)}
+        className={cx(button({ variant: 'tertiary', height: 36, text: 13 }), 'ml-auto flex-none')}
         aria-label={copy.viewDetailsOf(center.name)}
         onPress={onChoose}
       >
@@ -197,9 +215,11 @@ function NoMatch({ results }: { results: CenterResults }) {
   ]
   return (
     <EmptyState icon="search" heading={copy.none.heading} body={copy.none.body} headingLevel={3}>
-      {active.length > 0 && <p className={styles.active}>{copy.active(active)}</p>}
+      {active.length > 0 && (
+        <p className="m-0 basis-full text-14 text-ink">{copy.active(active)}</p>
+      )}
       <Button
-        className={buttons.button}
+        className={button()}
         onPress={() => {
           update({ ...NO_FILTERS, sort: filters.sort })
           setPlaceText('')

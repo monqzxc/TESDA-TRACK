@@ -85,9 +85,9 @@ export const CATALOG = {
   // Qualifications at each NC level. The bars are drawn against the largest.
   levels: [
     { name: 'NC I', count: 26, color: '#5281b8' },
-    { name: 'NC II', count: 179, color: 'var(--blue)' },
-    { name: 'NC III', count: 90, color: 'var(--teal)' },
-    { name: 'NC IV', count: 20, color: 'var(--violet)' },
+    { name: 'NC II', count: 179, color: 'var(--home-blue)' },
+    { name: 'NC III', count: 90, color: 'var(--home-teal)' },
+    { name: 'NC IV', count: 20, color: 'var(--home-violet)' },
   ],
 } as const
 

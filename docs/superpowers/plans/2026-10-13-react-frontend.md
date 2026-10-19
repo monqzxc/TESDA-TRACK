@@ -27,6 +27,9 @@ sign-in, React Aria Components, Streamlit frozen, the `portal_app.py` redesign s
 **Folders renamed on 2026-10-19:** the React app moved from `web/` to `frontend/`, and the Streamlit app from
 `frontend/` to `classic/`. The rest of this plan keeps the names it was written with.
 
+**Styles moved to Tailwind CSS on 2026-10-19:** the CSS Modules in the tech stack above were replaced with
+Tailwind CSS 4 utility classes, on the same design tokens, with no visible change.
+
 ## Why move
 
 Building on Streamlit has meant working around it: CSS that targets Streamlit's internal class names and test ids,

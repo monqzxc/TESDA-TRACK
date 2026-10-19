@@ -13,7 +13,6 @@ import { Certifications, Goals } from './GoalsAndCertifications.tsx'
 import { nextStep } from './journey.ts'
 import { ReadinessHistory } from './ReadinessHistory.tsx'
 import { Applications, Pathways, RecommendationHistory } from './Records.tsx'
-import styles from './ProgressPage.module.css'
 
 const copy = en.progress
 
@@ -63,7 +62,7 @@ function Progress({ catalog }: { catalog: Qualification[] }) {
 
   if (!sessions.data || !checks.data || !pathways.data || !applications.data) {
     return (
-      <p role="status" className={styles.loading}>
+      <p role="status" className="text-17 text-muted">
         {copy.loading}
       </p>
     )
@@ -73,11 +72,11 @@ function Progress({ catalog }: { catalog: Qualification[] }) {
     : null
 
   return (
-    <div className={styles.sections}>
+    <div className="flex flex-col gap-4">
       <ContinueCard
         next={nextStep(sessions.data, checks.data, pathways.data, applications.data, codes)}
       />
-      <dl className={styles.stats}>
+      <dl className="m-0 grid grid-cols-3 gap-4 max-sm:grid-cols-1">
         <Stat
           label={copy.stats.sessions}
           value={String(sessions.data.length)}
@@ -92,11 +91,11 @@ function Progress({ catalog }: { catalog: Qualification[] }) {
       </dl>
       <ReadinessHistory checks={checks.data} />
       <RecommendationHistory sessions={sessions.data} catalog={codes} />
-      <div className={styles.columns}>
+      <div className="grid grid-cols-2 items-start gap-4 max-xl:grid-cols-1">
         <Pathways enrollments={pathways.data} />
         <Applications applications={applications.data} />
       </div>
-      <div className={styles.columns}>
+      <div className="grid grid-cols-2 items-start gap-4 max-xl:grid-cols-1">
         <Goals catalog={catalog} />
         <Certifications catalog={catalog} />
       </div>
@@ -104,14 +103,14 @@ function Progress({ catalog }: { catalog: Qualification[] }) {
   )
 }
 
-/** A figure with its label, after Streamlit's st.metric. */
+/** A figure with its label, after Streamlit's st.metric with a border. */
 function Stat({ label, value, help }: { label: string; value: string; help?: string }) {
   return (
-    <div className={styles.stat}>
-      <dt>{label}</dt>
-      <dd>
-        <span className={styles.figure}>{value}</span>
-        {help && <span className={styles.help}>{help}</span>}
+    <div className="rounded-14 border border-border bg-surface px-5 py-[1.1rem]">
+      <dt className="text-14 text-ink">{label}</dt>
+      <dd className="mt-[0.2rem] mb-0 ml-0 flex flex-col gap-[0.2rem]">
+        <span className="font-display text-[2rem] leading-[1.15] font-bold text-navy">{value}</span>
+        {help && <span className="text-12 leading-[1.4] text-muted">{help}</span>}
       </dd>
     </div>
   )

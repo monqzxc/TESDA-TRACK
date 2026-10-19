@@ -5,16 +5,13 @@ import { useRevealMotion } from './hooks/useReducedMotion.ts'
 import { useSectionJumps } from './hooks/useSectionJumps.ts'
 import { NearYou } from './NearYou.tsx'
 import { ProgressPreview } from './ProgressPreview.tsx'
-import { cx } from '../../lib/style.ts'
 import { Track } from './Track.tsx'
-import tokens from './tokens.module.css'
-import styles from './HomePage.module.css'
 
 /**
  * Home, at /: the landing page (classic/landing.html, .css and .js), between its own top bar and footer
  * (HomeHeader and HomeFooter, in HomeLayout). It makes no API calls, so it shows while the service is down.
- * data-motion turns on the scroll reveal (see HomePage.module.css); without it, as with reduced motion, everything
- * shows at once.
+ * data-motion turns on the scroll reveal (see Reveal.tsx); without it, as with reduced motion, everything shows at
+ * once. home-tokens brings Home's colors and page-wide defaults (styles/home.css).
  */
 export default function HomePage() {
   const motion = useRevealMotion()
@@ -22,7 +19,7 @@ export default function HomePage() {
   return (
     <div
       ref={ref}
-      className={cx(tokens.tokens, styles.page)}
+      className="home-tokens overflow-x-clip bg-home-page font-text text-home-base leading-[1.6] font-normal text-home-body"
       data-motion={motion || undefined}
       data-laid-out={laidOut || undefined}
     >

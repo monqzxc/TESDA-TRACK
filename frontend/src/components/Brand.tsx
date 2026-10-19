@@ -1,6 +1,5 @@
 import { en } from '../copy/en.ts'
-import utilities from '../styles/utilities.module.css'
-import styles from './Brand.module.css'
+import { cx } from '../lib/style.ts'
 
 /** The logo, from public/img. Public files sit under the app's base (/beta/ during the parallel run). */
 export const logoSrc = `${import.meta.env.BASE_URL}img/logo.png`
@@ -12,16 +11,32 @@ const [first, second] = en.brand.wordmark
 // smaller version, without the tagline.
 export function Brand({ compact = false }: { compact?: boolean }) {
   return (
-    <div className={compact ? `${styles.brand} ${styles.compact}` : styles.brand}>
-      <div className={styles.mark}>
-        <img src={logoSrc} alt="" width={46} height={46} className={styles.logo} />
+    <div className={cx(!compact && 'mt-[0.2rem] mb-[1.8rem]')}>
+      <div
+        className={cx(
+          'flex items-center gap-[0.3rem] font-display leading-[1.15] font-extrabold tracking-[-0.055em] whitespace-nowrap text-navy',
+          compact ? 'text-[1.2rem]' : 'text-[1.55rem]',
+        )}
+      >
+        {/* The logo artwork carries its own rounded blue tile. */}
+        <img
+          src={logoSrc}
+          alt=""
+          width={46}
+          height={46}
+          className={cx('shrink-0', compact ? 'mr-[0.2rem] size-8.5' : 'mr-[0.4rem] size-11.5')}
+        />
         <span aria-hidden="true">
           {first}
-          <span className={styles.light}>{second}</span>
+          <span className="font-normal text-blue">{second}</span>
         </span>
-        <span className={utilities.visuallyHidden}>{en.brand.name}</span>
+        <span className="sr-only">{en.brand.name}</span>
       </div>
-      {!compact && <p className={styles.tagline}>{en.brand.tagline}</p>}
+      {!compact && (
+        <p className="mt-[0.3rem] mb-0 text-[0.625rem] leading-[1.6] font-semibold tracking-[0.12em] text-muted uppercase">
+          {en.brand.tagline}
+        </p>
+      )}
     </div>
   )
 }

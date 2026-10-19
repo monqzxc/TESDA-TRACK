@@ -4,7 +4,6 @@ import electricalCard from './img/electrical-card.jpg'
 import electricalThumb from './img/electrical-thumb.jpg'
 import weldingCard from './img/welding-card.jpg'
 import weldingThumb from './img/welding-thumb.jpg'
-import styles from './QualificationMedia.module.css'
 
 // A qualification's picture (classic/presentation.py qualification_media): its trade's photo when there is one,
 // otherwise a tile in its sector's colors with the sector's icon. Pictures are decoration: the card's text names
@@ -73,12 +72,13 @@ interface QualificationMediaProps {
   className?: string
 }
 
+// After classic/styles.css's .qual-photo and .qual-tile. The picture fills the box its card gives it.
 export function QualificationMedia({ name, sector, size, className }: QualificationMediaProps) {
   const photo = tradePhoto(name, size)
   if (photo) {
     return (
       <img
-        className={cx(styles.photo, className)}
+        className={cx('block size-full object-cover', className)}
         src={photo}
         alt=""
         loading="lazy"
@@ -87,13 +87,21 @@ export function QualificationMedia({ name, sector, size, className }: Qualificat
     )
   }
   const art = sectorArt(sector)
+  // The sector's icon in white over two soft circles and the sector's gradient.
   return (
     <span
-      className={cx(styles.tile, size === 'thumb' && styles.thumb, className)}
+      className={cx(
+        'grid size-full place-items-center text-white',
+        'bg-[image:radial-gradient(circle_at_92%_0%,#ffffff24_0_34%,transparent_35%),radial-gradient(circle_at_0%_105%,#ffffff17_0_30%,transparent_31%),linear-gradient(135deg,var(--tile-start),var(--tile-end))]',
+        className,
+      )}
       style={cssVars({ '--tile-start': art.start, '--tile-end': art.end })}
       aria-hidden="true"
     >
-      <Icon name={art.icon} className={styles.tileIcon} />
+      <Icon
+        name={art.icon}
+        className={cx('h-auto', size === 'thumb' ? 'w-1/2' : 'w-[min(30%,60px)]')}
+      />
     </span>
   )
 }

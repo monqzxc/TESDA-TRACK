@@ -1,9 +1,10 @@
+import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vitest/config'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react(), tailwindcss()],
   server: {
     // The FastAPI backend, run with `uvicorn tesda_track.main:app --reload` (see the README). API_PROXY points it
     // elsewhere, e.g. http://host.docker.internal:8000 when this dev server runs in a container.

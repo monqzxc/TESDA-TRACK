@@ -5,8 +5,8 @@ import { en } from '../copy/en.ts'
 import { loadSignedInMenu } from '../features/account/loaders.ts'
 import { prefetch } from '../lib/prefetch.ts'
 import { AccountForms } from './AccountForms.tsx'
+import { dialogStyle } from './styles.ts'
 import type { OpenSignInOptions, SignInView } from './useAuth.ts'
-import styles from './SignInDialog.module.css'
 
 /** An open sign-in dialog: which form, its message, and what happens after it closes. */
 export interface SignInRequest extends Pick<OpenSignInOptions, 'onSignedIn' | 'returnFocus'> {
@@ -29,7 +29,7 @@ interface SignInDialogProps {
 
 function DialogTitle({ children }: { children: ReactNode }) {
   return (
-    <Heading slot="title" className={styles.title}>
+    <Heading slot="title" className={dialogStyle.title}>
       {children}
     </Heading>
   )
@@ -57,15 +57,15 @@ export function SignInDialog({
         if (!isOpen) onClose()
       }}
       isDismissable
-      className={styles.overlay}
+      className={dialogStyle.overlay}
     >
-      <Modal className={styles.modal}>
+      <Modal className={dialogStyle.modal}>
         <Dialog
           ref={dialogRef}
-          className={styles.dialog}
+          className={dialogStyle.dialog}
           aria-describedby={request?.message ? messageId : undefined}
         >
-          <Button slot="close" aria-label={en.account.close} className={styles.close}>
+          <Button slot="close" aria-label={en.account.close} className={dialogStyle.close}>
             <Icon name="close" size="1.3rem" />
           </Button>
           {request && (

@@ -11,15 +11,18 @@ import { SkillBars } from '../../components/Meters.tsx'
 import { en } from '../../copy/en.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
-import buttons from '../../styles/buttons.module.css'
+import { button } from '../../styles/buttons.ts'
 import { shortName, trainingAddress } from '../training/address.ts'
 import { curatedPathwaysQuery, followPathway, type CuratedPathway } from './api.ts'
 import { VERDICTS, verdictFor } from './rules.ts'
 import { useFinderStore, type Answers, type Profile, type SubmittedCheck } from './store.ts'
-import shared from './finder.module.css'
-import styles from './PathwayStep.module.css'
+import { card, kicker, muted, notice } from './styles.ts'
 
 const copy = en.finder.pathway
+
+// The strengths and gaps under the verdict.
+const listHeading = 'mt-1 mb-[0.4rem] font-text text-15 tracking-normal text-navy'
+const list = 'm-0 pl-[1.3rem] text-[0.9rem] leading-[1.55] text-ink'
 
 interface PathwayStepProps {
   qualification: Qualification
@@ -38,10 +41,15 @@ export function PathwayStep({ qualification, profile }: PathwayStepProps) {
 
   if (!check) {
     return (
-      <section aria-labelledby={headingId} className={cx(shared.card, styles.pending)}>
-        <h3 id={headingId}>{copy.pending.heading}</h3>
-        <p className={shared.muted}>{copy.pending.body(qualification.name)}</p>
-        <Link to={paths.finderReadiness} className={cx(buttons.button, buttons.primary)}>
+      <section
+        aria-labelledby={headingId}
+        className={cx(card, 'flex flex-col items-start gap-[0.6rem]')}
+      >
+        <h3 id={headingId} className="m-0 text-[1.3rem] text-navy">
+          {copy.pending.heading}
+        </h3>
+        <p className={muted}>{copy.pending.body(qualification.name)}</p>
+        <Link to={paths.finderReadiness} className={button({ variant: 'primary' })}>
           <Icon name="arrowLeft" />
           {copy.pending.action}
         </Link>
@@ -55,7 +63,7 @@ export function PathwayStep({ qualification, profile }: PathwayStepProps) {
         check={check}
         changed={!sameAnswers(answers, check.answers)}
       />
-      <p className={cx(shared.muted, styles.disclaimer)}>{copy.disclaimer}</p>
+      <p className={cx(muted, '-mt-1')}>{copy.disclaimer}</p>
       <CuratedPathway code={qualification.code} route={VERDICTS[verdictFor(check.result)].route} />
       <Diagnostics profile={profile} check={check} />
     </>
@@ -89,26 +97,33 @@ function Verdict({
     )
 
   return (
-    <section aria-labelledby={headingId} className={cx(shared.card, styles.verdict)}>
-      <p className={shared.kicker}>{copy.kicker}</p>
-      <h3 id={headingId} className={styles.headline}>
+    <section aria-labelledby={headingId} className={cx(card, 'flex flex-col gap-[0.6rem]')}>
+      <p className={kicker}>{copy.kicker}</p>
+      <h3 id={headingId} className="m-0 text-24 leading-[1.25] text-navy">
         {copy.verdicts[verdict].headline}
       </h3>
-      <p className={styles.for}>{copy.for(qualification.name)}</p>
+      <p className="m-0 text-15 text-muted">{copy.for(qualification.name)}</p>
 
-      <div className={styles.score}>
-        <div className={styles.metric}>
-          <span>{copy.score}</span>
-          <strong>{score}%</strong>
+      <div className="mt-[0.4rem] grid grid-cols-[minmax(0,1fr)_minmax(0,3fr)] gap-4 max-sm:grid-cols-1">
+        {/* After Streamlit's metric: a label over a big figure. */}
+        <div className="flex flex-col gap-[0.2rem]">
+          <span className="text-14 text-ink">{copy.score}</span>
+          <strong className="font-display text-[2.25rem] leading-[1.1] font-bold text-navy">
+            {score}%
+          </strong>
         </div>
-        <div className={styles.guidance}>
-          <p className={styles.level}>{result.level}</p>
-          <p>{result.recommendation}</p>
+        <div>
+          <p className="mt-0 mb-[0.4rem] text-15 leading-[1.55] font-bold text-navy">
+            {result.level}
+          </p>
+          <p className="mt-0 mb-[0.4rem] text-15 leading-[1.55] text-ink">
+            {result.recommendation}
+          </p>
         </div>
       </div>
       {total > 0 && (
         <SkillBars
-          className={styles.bars}
+          className="mt-1 mb-[0.4rem] max-w-[720px]"
           bars={[
             { label: copy.strengths, count: result.strengths.length, total, tone: 'blue' },
             { label: copy.improve, count: result.skill_gaps.length, total, tone: 'violet' },
@@ -116,49 +131,55 @@ function Verdict({
         />
       )}
 
-      <Button className={cx(buttons.button, buttons.primary, styles.action)} onPress={openCenters}>
+      <Button className={cx(button({ variant: 'primary' }), 'self-start')} onPress={openCenters}>
         {copy.verdicts[verdict].action}
         <Icon name="arrowRight" />
       </Button>
 
       {/* The lists can run to dozens, so they fold away, open when there are gaps to work on. */}
-      <details className={styles.details} open={result.skill_gaps.length > 0}>
-        <summary>
-          <Icon name="checklist" className={styles.detailsIcon} />
+      <details
+        className="group rounded-12 border border-border"
+        open={result.skill_gaps.length > 0}
+      >
+        <summary className="flex min-h-11 cursor-pointer list-none items-center gap-[0.6rem] px-[0.85rem] py-2 text-15 font-semibold text-navy [&::-webkit-details-marker]:hidden">
+          <Icon name="checklist" className="flex-none text-[1.2rem] text-blue" />
           {copy.details(result.strengths.length, result.skill_gaps.length)}
-          <Icon name="chevron" className={styles.chevron} />
+          <Icon
+            name="chevron"
+            className="ml-auto flex-none text-muted transition-transform duration-200 ease-[ease] group-open:rotate-180"
+          />
         </summary>
-        <div className={styles.lists}>
+        <div className="grid grid-cols-2 gap-4 px-[0.95rem] pb-[0.85rem] max-sm:grid-cols-1">
           <div>
-            <h4>{copy.strengths}</h4>
+            <h4 className={listHeading}>{copy.strengths}</h4>
             {result.strengths.length ? (
-              <ul className={styles.strengths}>
+              <ul className={cx(list, "[list-style:'✓__']")}>
                 {result.strengths.map((name) => (
                   <li key={name}>{name}</li>
                 ))}
               </ul>
             ) : (
-              <p className={shared.muted}>{copy.noStrengths}</p>
+              <p className={muted}>{copy.noStrengths}</p>
             )}
           </div>
           <div>
-            <h4>{copy.improve}</h4>
+            <h4 className={listHeading}>{copy.improve}</h4>
             {result.skill_gaps.length ? (
-              <ul className={styles.gaps}>
+              <ul className={list}>
                 {result.skill_gaps.map((name) => (
                   <li key={name}>{name}</li>
                 ))}
               </ul>
             ) : (
-              <p className={shared.muted}>{copy.noGaps}</p>
+              <p className={muted}>{copy.noGaps}</p>
             )}
           </div>
         </div>
       </details>
       {changed ? (
-        <p className={cx(shared.notice, shared.warning)}>{copy.changed}</p>
+        <p className={notice('warning')}>{copy.changed}</p>
       ) : (
-        <p className={shared.muted}>{copy.basedOn}</p>
+        <p className={muted}>{copy.basedOn}</p>
       )}
     </section>
   )
@@ -197,23 +218,32 @@ function PathwayCard({ pathway }: { pathway: CuratedPathway }) {
   })
 
   return (
-    <section aria-labelledby={headingId} className={shared.card}>
-      <p className={shared.kicker}>{copy.yourPathway}</p>
-      <h3 id={headingId} className={styles.pathwayTitle}>
+    <section aria-labelledby={headingId} className={card}>
+      <p className={kicker}>{copy.yourPathway}</p>
+      <h3 id={headingId} className="mt-1 mb-[0.3rem] text-[1.15rem] text-navy">
         {pathway.title}
       </h3>
-      {pathway.description && <p className={shared.muted}>{pathway.description}</p>}
-      <ol className={styles.steps}>
+      {pathway.description && <p className={muted}>{pathway.description}</p>}
+      {/* The steps as a timeline: a line runs from each number down to the next. */}
+      <ol className="mt-[0.8rem] mb-[0.6rem] grid list-none p-0">
         {pathway.steps.map((step) => (
-          <li key={step.id}>
-            <span aria-hidden="true">{step.position}</span>
-            <p>{step.title}</p>
+          <li
+            key={step.id}
+            className="relative m-0 flex items-start gap-[0.85rem] pb-[0.9rem] not-last:before:absolute not-last:before:top-[34px] not-last:before:bottom-0.5 not-last:before:left-[15px] not-last:before:w-0.5 not-last:before:bg-line not-last:before:content-['']"
+          >
+            <span
+              aria-hidden="true"
+              className="grid size-8 shrink-0 place-items-center rounded-full bg-tint text-14 font-bold text-blue"
+            >
+              {step.position}
+            </span>
+            <p className="mt-[0.3rem] mb-0 text-15 leading-[1.5] text-navy">{step.title}</p>
           </li>
         ))}
       </ol>
       {/* Following needs an account: signed out, it opens sign-in and carries on afterwards (US-02). */}
       <Button
-        className={buttons.button}
+        className={button()}
         isPending={follow.isPending}
         onPress={() => {
           setOutcome(null)
@@ -227,10 +257,14 @@ function PathwayCard({ pathway }: { pathway: CuratedPathway }) {
         {outcome && (
           <p
             className={cx(
-              shared.notice,
-              styles.outcome,
-              outcome.tone === 'success' && shared.success,
-              outcome.tone === 'error' && shared.warning,
+              notice(
+                outcome.tone === 'success'
+                  ? 'success'
+                  : outcome.tone === 'error'
+                    ? 'warning'
+                    : 'info',
+              ),
+              'mt-3',
             )}
           >
             {outcome.message}
@@ -247,12 +281,14 @@ function Diagnostics({ profile, check }: { profile: Profile; check: SubmittedChe
   if (!isAdmin) return null
   const route = VERDICTS[verdictFor(check.result)].route
   return (
-    <details className={styles.diagnostics}>
-      <summary>
+    <details className="rounded-12 border border-border bg-surface px-[0.85rem] py-2">
+      <summary className="flex cursor-pointer items-center gap-2 font-semibold text-navy">
         <Icon name="document" />
         {copy.diagnostics}
       </summary>
-      <pre>{JSON.stringify({ profile, readiness: check.result, route }, null, 2)}</pre>
+      <pre className="max-h-96 overflow-auto text-13 wrap-anywhere whitespace-pre-wrap text-ink">
+        {JSON.stringify({ profile, readiness: check.result, route }, null, 2)}
+      </pre>
     </details>
   )
 }

@@ -11,16 +11,34 @@ import centerPhoto from '../../components/img/center-thumb.jpg'
 import { en } from '../../copy/en.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
-import buttons from '../../styles/buttons.module.css'
+import { button } from '../../styles/buttons.ts'
 import { applyForAssessment, type Application } from './api.ts'
 import { friendlyDay, placeLabel, type Center, type Program, type Schedule } from './centers.ts'
 import { localTime, programCost, programFacts, scheduleFee } from './format.ts'
-import styles from './Listings.module.css'
 
 const copy = en.training
 
 /** Listings shown under a center before View all (classic/training_view.py PREVIEW). */
 const PREVIEW = 2
+
+// A center's programs or assessments, after classic/training_view.py's listing cards, and their dialogs.
+const card = 'flex gap-[0.8rem] rounded-14 border border-border bg-surface p-3'
+const photo = 'size-19 flex-none rounded-10 object-cover'
+const body = 'flex min-w-0 flex-1 flex-col items-start gap-[0.3rem]'
+const cardTitle = 'm-0 font-text text-15 font-bold tracking-normal wrap-anywhere text-navy'
+const muted = 'm-0 text-13 leading-[1.5] text-muted'
+const factLine = 'm-0 text-13 leading-[1.5] text-ink'
+const badges = 'm-0 flex flex-wrap gap-[0.35rem]'
+const badge =
+  'inline-flex items-center gap-[0.3rem] rounded-full px-[0.6rem] py-[0.2rem] text-12 font-[650]'
+const fitBadge = cx(badge, 'bg-tint text-blue')
+const scholarshipBadge = cx(badge, 'bg-good-bg text-good-ink')
+const factList = cx(
+  'mt-0 mb-[0.9rem] grid gap-[0.45rem]',
+  '[&_div]:grid [&_div]:grid-cols-[9rem_minmax(0,1fr)] [&_div]:gap-3 max-xs:[&_div]:grid-cols-1 max-xs:[&_div]:gap-[0.1rem]',
+  '[&_dd]:m-0 [&_dd]:text-15 [&_dd]:font-semibold [&_dd]:wrap-anywhere [&_dd]:text-navy [&_dt]:text-14 [&_dt]:text-muted',
+)
+const description = 'mt-0 mb-[0.9rem] text-15 leading-[1.6] text-ink'
 
 export type Fits = ReadonlyMap<number, { score: number; explanation: string[] }>
 
@@ -41,7 +59,7 @@ export function Programs({ center, fits, today }: { center: Center; fits: Fits; 
       a.title.localeCompare(b.title),
   )
   return (
-    <section aria-labelledby={headingId} className={styles.listings}>
+    <section aria-labelledby={headingId} className="mt-4 flex flex-col gap-2">
       <ListingsHead
         id={headingId}
         title={copy.programs.heading(programs.length)}
@@ -49,8 +67,8 @@ export function Programs({ center, fits, today }: { center: Center; fits: Fits; 
         all={all}
         onToggle={() => setAll(!all)}
       />
-      {programs.length === 0 && <p className={styles.muted}>{copy.programs.none}</p>}
-      <ul className={styles.cards}>
+      {programs.length === 0 && <p className={muted}>{copy.programs.none}</p>}
+      <ul className="m-0 flex list-none flex-col gap-[0.6rem] p-0">
         {(all ? programs : programs.slice(0, PREVIEW)).map((program) => (
           <li key={program.id}>
             <ProgramCard
@@ -89,10 +107,12 @@ function ListingsHead({
   onToggle: () => void
 }) {
   return (
-    <div className={styles.head}>
-      <h3 id={id}>{title}</h3>
+    <div className="flex items-center justify-between gap-2">
+      <h3 id={id} className="m-0 text-[1.05rem] text-navy">
+        {title}
+      </h3>
       {count > PREVIEW && (
-        <Button className={cx(buttons.button, buttons.tertiary)} onPress={onToggle}>
+        <Button className={button({ variant: 'tertiary' })} onPress={onToggle}>
           {all ? copy.programs.fewer : copy.programs.viewAll}
         </Button>
       )}
@@ -114,26 +134,28 @@ function ProgramCard({
   const headingId = useId()
   const qualification = program.qualification.name
   return (
-    <article className={styles.card} aria-labelledby={headingId}>
-      <img className={styles.photo} src={listingPhoto(program)} alt="" loading="lazy" />
-      <div className={styles.body}>
-        <h4 id={headingId}>{program.title}</h4>
+    <article className={card} aria-labelledby={headingId}>
+      <img className={photo} src={listingPhoto(program)} alt="" loading="lazy" />
+      <div className={body}>
+        <h4 id={headingId} className={cardTitle}>
+          {program.title}
+        </h4>
         {!program.title
           .toLocaleLowerCase('en-US')
           .includes(qualification.toLocaleLowerCase('en-US')) && (
-          <p className={styles.muted}>{qualification}</p>
+          <p className={muted}>{qualification}</p>
         )}
-        <p className={styles.facts}>{programFacts(program, today).join(' • ')}</p>
+        <p className={factLine}>{programFacts(program, today).join(' • ')}</p>
         {(fit || program.scholarship_available) && (
-          <p className={styles.badges}>
+          <p className={badges}>
             {fit && (
-              <span className={styles.fit}>
+              <span className={fitBadge}>
                 <Icon name="sparkle" />
                 {copy.programs.fit(fit.score)}
               </span>
             )}
             {program.scholarship_available && (
-              <span className={styles.scholarship}>
+              <span className={scholarshipBadge}>
                 <Icon name="check" />
                 {copy.programs.scholarship}
               </span>
@@ -141,20 +163,23 @@ function ProgramCard({
           </p>
         )}
         {fit && fit.explanation.length > 0 && (
-          <details className={styles.why}>
-            <summary>
+          <details>
+            <summary className="inline-flex cursor-pointer items-center gap-[0.35rem] text-13 font-semibold text-blue">
               <Icon name="info" />
               {copy.programs.why}
             </summary>
-            <ul>
+            <ul className="my-[0.4rem] pl-[1.1rem] text-13 text-ink">
               {fit.explanation.map((reason) => (
                 <li key={reason}>{reason}</li>
               ))}
             </ul>
-            <p className={styles.muted}>{copy.programs.whyNote}</p>
+            <p className={muted}>{copy.programs.whyNote}</p>
           </details>
         )}
-        <Button className={cx(buttons.button, buttons.tertiary, styles.open)} onPress={onOpen}>
+        <Button
+          className={cx(button({ variant: 'tertiary', height: 36, text: 14 }), '-ml-2')}
+          onPress={onOpen}
+        >
           {copy.programs.details}
           <Icon name="arrowRight" />
         </Button>
@@ -198,22 +223,26 @@ function ProgramDialog({
       closeLabel={facts.close}
       wide
     >
-      <div className={styles.dialogTop}>
-        <img className={styles.dialogPhoto} src={listingPhoto(program)} alt="" />
+      <div className="mb-[0.8rem] flex items-center gap-4">
+        <img
+          className="size-27.5 flex-none rounded-12 object-cover"
+          src={listingPhoto(program)}
+          alt=""
+        />
         <div>
-          <p className={styles.muted}>
+          <p className={muted}>
             {program.qualification.name}
             {program.qualification.sector ? ` · ${program.qualification.sector}` : ''}
           </p>
-          <p className={styles.badges}>
-            {fit && <span className={styles.fit}>{copy.programs.fit(fit.score)}</span>}
+          <p className={badges}>
+            {fit && <span className={fitBadge}>{copy.programs.fit(fit.score)}</span>}
             {program.scholarship_available && (
-              <span className={styles.scholarship}>{copy.programs.scholarship}</span>
+              <span className={scholarshipBadge}>{copy.programs.scholarship}</span>
             )}
           </p>
         </div>
       </div>
-      <dl className={styles.factList}>
+      <dl className={factList}>
         {rows
           .filter((row): row is [string, string] => row[1] !== null)
           .map(([label, value]) => (
@@ -223,18 +252,20 @@ function ProgramDialog({
             </div>
           ))}
       </dl>
-      {program.description && <p className={styles.description}>{program.description}</p>}
+      {program.description && <p className={description}>{program.description}</p>}
       {fit && fit.explanation.length > 0 && (
         <>
-          <h3 className={styles.subheading}>{copy.programs.why}</h3>
-          <ul className={styles.reasons}>
+          <h3 className="mt-0 mb-[0.3rem] font-text text-15 tracking-normal text-navy">
+            {copy.programs.why}
+          </h3>
+          <ul className="mt-0 mb-[0.9rem] pl-[1.2rem] text-[0.9rem] text-ink">
             {fit.explanation.map((reason) => (
               <li key={reason}>{reason}</li>
             ))}
           </ul>
         </>
       )}
-      <p className={styles.muted}>{facts.confirm}</p>
+      <p className={muted}>{facts.confirm}</p>
     </ModalDialog>
   )
 }
@@ -249,7 +280,7 @@ export function Schedules({ center }: { center: Center }) {
     a.scheduled_at.localeCompare(b.scheduled_at),
   )
   return (
-    <section aria-labelledby={headingId} className={styles.listings}>
+    <section aria-labelledby={headingId} className="mt-4 flex flex-col gap-2">
       <ListingsHead
         id={headingId}
         title={copy.schedules.heading(schedules.length)}
@@ -258,11 +289,11 @@ export function Schedules({ center }: { center: Center }) {
         onToggle={() => setAll(!all)}
       />
       {schedules.length === 0 ? (
-        <p className={styles.muted}>{copy.schedules.none}</p>
+        <p className={muted}>{copy.schedules.none}</p>
       ) : (
-        <p className={styles.muted}>{copy.schedules.timezone}</p>
+        <p className={muted}>{copy.schedules.timezone}</p>
       )}
-      <ul className={styles.cards}>
+      <ul className="m-0 flex list-none flex-col gap-[0.6rem] p-0">
         {(all ? schedules : schedules.slice(0, PREVIEW)).map((schedule) => (
           <li key={schedule.id}>
             <ScheduleCard
@@ -284,20 +315,27 @@ function ScheduleCard({ schedule, onApply }: { schedule: Schedule; onApply: () =
   const headingId = useId()
   const open = schedule.seats_left > 0
   return (
-    <article className={styles.card} aria-labelledby={headingId}>
-      <img className={styles.photo} src={listingPhoto(schedule)} alt="" loading="lazy" />
-      <div className={styles.body}>
-        <h4 id={headingId}>{localTime(schedule.scheduled_at)}</h4>
-        <p className={styles.muted}>{schedule.qualification.name}</p>
-        <p className={styles.facts}>
+    <article className={card} aria-labelledby={headingId}>
+      <img className={photo} src={listingPhoto(schedule)} alt="" loading="lazy" />
+      <div className={body}>
+        <h4 id={headingId} className={cardTitle}>
+          {localTime(schedule.scheduled_at)}
+        </h4>
+        <p className={muted}>{schedule.qualification.name}</p>
+        <p className={factLine}>
           {copy.schedules.seats(schedule.seats_left, schedule.slots)} • {scheduleFee(schedule)}
         </p>
         {open ? (
-          <Button className={cx(buttons.button, buttons.primary, styles.apply)} onPress={onApply}>
+          <Button
+            className={cx(button({ variant: 'primary', height: 38, snug: true }), 'mt-[0.2rem]')}
+            onPress={onApply}
+          >
             {copy.schedules.apply}
           </Button>
         ) : (
-          <span className={styles.full}>{copy.schedules.full}</span>
+          <span className="rounded-full bg-warn-bg px-[0.6rem] py-[0.2rem] text-12 font-[650] text-warn-ink">
+            {copy.schedules.full}
+          </span>
         )}
       </div>
     </article>
@@ -337,7 +375,7 @@ function ApplyDialog({
       closeLabel={facts.close}
       isPending={apply.isPending}
     >
-      <dl className={styles.factList}>
+      <dl className={factList}>
         <div>
           <dt>{facts.qualification}</dt>
           <dd>{schedule.qualification.name}</dd>
@@ -360,28 +398,34 @@ function ApplyDialog({
         </div>
       </dl>
       {sent ? (
-        <div role="status" className={styles.receipt}>
+        <div
+          role="status"
+          className="flex flex-col items-start gap-[0.8rem] rounded-12 bg-good-bg px-4 py-[0.9rem] font-semibold text-good-ink [&_p]:m-0"
+        >
           <p>{facts.receipt(sent.id.slice(0, 8).toUpperCase(), facts.statuses[sent.status])}</p>
-          <Link to={paths.progress} className={cx(buttons.button, buttons.primary)}>
+          <Link to={paths.progress} className={button({ variant: 'primary' })}>
             {facts.toProgress}
             <Icon name="arrowRight" />
           </Link>
         </div>
       ) : (
         <>
-          <p className={styles.description}>{facts.review}</p>
+          <p className={description}>{facts.review}</p>
           {error && (
-            <p role="alert" className={styles.error}>
+            <p
+              role="alert"
+              className="mt-0 mb-[0.9rem] rounded-12 bg-warn-bg px-[0.9rem] py-[0.7rem] text-15 font-semibold text-warn-ink"
+            >
               {/* Full, or already applied: the API says which (409, 422). */}
               {failureMessage(error)}
             </p>
           )}
-          <div className={styles.actions}>
-            <Button slot="close" className={buttons.button} isDisabled={apply.isPending}>
+          <div className="flex flex-wrap justify-end gap-[0.6rem]">
+            <Button slot="close" className={button()} isDisabled={apply.isPending}>
               {facts.cancel}
             </Button>
             <Button
-              className={cx(buttons.button, buttons.primary)}
+              className={button({ variant: 'primary' })}
               isPending={apply.isPending}
               onPress={() => apply.mutate()}
             >

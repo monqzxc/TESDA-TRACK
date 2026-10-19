@@ -1,10 +1,8 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router'
 import { en } from '../copy/en.ts'
-import { cx } from '../lib/style.ts'
-import buttons from '../styles/buttons.module.css'
+import { button } from '../styles/buttons.ts'
 import { Icon } from './Icon.tsx'
-import styles from './Pager.module.css'
 
 interface PagerProps {
   page: number
@@ -23,12 +21,15 @@ export function Pager({ page, pages, to, onNavigate }: PagerProps) {
   const copy = en.pager
   if (pages <= 1) return null
   return (
-    <nav aria-label={copy.label} className={styles.pager}>
+    <nav
+      aria-label={copy.label}
+      className="mt-6 flex flex-wrap items-center justify-center gap-x-4 gap-y-3"
+    >
       <PageLink to={to(page - 1)} disabled={page <= 1} onNavigate={onNavigate}>
         <Icon name="arrowLeft" />
         {copy.previous}
       </PageLink>
-      <span className={styles.count}>{copy.page(page, pages)}</span>
+      <span className="text-14 text-muted">{copy.page(page, pages)}</span>
       <PageLink to={to(page + 1)} disabled={page >= pages} onNavigate={onNavigate}>
         {copy.next}
         <Icon name="arrowRight" />
@@ -50,10 +51,10 @@ function PageLink({
 }) {
   if (disabled) {
     // Not a link at all: no Tab stop, and read as plain text beside "Page 1 of 3".
-    return <span className={cx(buttons.button, styles.disabled)}>{children}</span>
+    return <span className={button({ inert: true })}>{children}</span>
   }
   return (
-    <Link to={to} preventScrollReset className={buttons.button} onClick={onNavigate}>
+    <Link to={to} preventScrollReset className={button()} onClick={onNavigate}>
       {children}
     </Link>
   )

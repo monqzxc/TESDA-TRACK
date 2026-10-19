@@ -23,7 +23,7 @@ interface SectionJumps<T> {
 
 /**
  * Home's sections under the hero are laid out only as they come near the window on its first showing in a document
- * (content-visibility, see HomePage.module.css), so until then their heights are guesses. That first showing never
+ * (content-visibility, see styles/home.css), so until then their heights are guesses. That first showing never
  * has a position to bring back: on a reload, ScrollRestoration (Layout.tsx) restores before Home's code arrives,
  * while the page is one screen tall, so it opens at the top. But a jump to a section would land in the wrong place,
  * so when the address names one of Home's sections (an address like /#catalog, or a top bar link), this lays out the

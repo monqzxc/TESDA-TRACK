@@ -13,7 +13,7 @@ import {
 } from './fields.tsx'
 import { SignInAfterRegistrationError } from './session.ts'
 import { useAuth } from './useAuth.ts'
-import styles from './forms.module.css'
+import { formStyle, submitButton } from './styles.ts'
 
 const copy = en.account.registerForm
 
@@ -72,7 +72,7 @@ export function RegisterForm({
   }
 
   return (
-    <Form onSubmit={submit} className={styles.form}>
+    <Form onSubmit={submit} className={formStyle.form}>
       <Field
         name="fullName"
         autoComplete="name"
@@ -101,9 +101,9 @@ export function RegisterForm({
         description={copy.passwordHelp}
         validate={checkPassword}
       />
-      <div className={styles.privacy}>
-        <p className={styles.privacyTitle}>{copy.privacyHeading}</p>
-        <p id={noticeId} className={styles.privacyText}>
+      <div className={formStyle.privacy}>
+        <p className={formStyle.privacyTitle}>{copy.privacyHeading}</p>
+        <p id={noticeId} className={formStyle.privacyText}>
           {copy.privacyNotice}
         </p>
       </div>
@@ -112,23 +112,20 @@ export function RegisterForm({
         isRequired
         aria-describedby={noticeId}
         validate={(selected) => (selected ? null : copy.consentRequired)}
-        className={styles.checkField}
+        className={formStyle.checkField}
       >
-        <CheckboxButton className={styles.checkbox}>
+        <CheckboxButton className={formStyle.checkbox}>
           <CheckMark />
           {copy.consent}
         </CheckboxButton>
-        <FieldError className={styles.fieldError} />
+        <FieldError className={formStyle.fieldError} />
       </CheckboxField>
       {error && (
-        <p role="alert" className={styles.error}>
+        <p role="alert" className={formStyle.error}>
           {error}
         </p>
       )}
-      <Button
-        type="submit"
-        className={isPending ? `${styles.submit} ${styles.pending}` : styles.submit}
-      >
+      <Button type="submit" className={submitButton(isPending)}>
         {isPending ? copy.pending : copy.submit}
       </Button>
     </Form>

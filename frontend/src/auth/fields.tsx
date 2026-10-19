@@ -9,7 +9,7 @@ import {
 } from 'react-aria-components'
 import { ApiError } from '../api/errors.ts'
 import { en } from '../copy/en.ts'
-import styles from './forms.module.css'
+import { formStyle } from './styles.ts'
 
 // The account forms' text fields and checks. Fields validate the way React Aria does by default ("native"): the
 // messages show when the form is sent, then follow the learner's typing. Every message is our own copy.
@@ -52,11 +52,17 @@ type FieldProps = Omit<TextFieldProps, 'className' | 'children' | 'autoFocus'> &
   focusOnMount?: boolean
 }
 
-/** The drawn box of a CheckboxButton (styled by forms.module.css's .checkbox). */
+/** The drawn box of a CheckboxButton (with formStyle.checkbox): a box that fills blue when ticked. */
 export function CheckMark() {
   return (
-    <span className={styles.box} aria-hidden="true">
-      <svg viewBox="0 0 18 18" focusable="false">
+    <span className={formStyle.box} aria-hidden="true">
+      <svg
+        viewBox="0 0 18 18"
+        focusable="false"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="invisible size-3.5 fill-none stroke-current stroke-[2.6] group-data-selected:visible"
+      >
         <polyline points="3.5 9.5 7.5 13.5 14.5 5" />
       </svg>
     </span>
@@ -76,15 +82,15 @@ export function Field({
     if (focusOnMount) input.current?.focus()
   }, [focusOnMount])
   return (
-    <TextField {...props} className={styles.field}>
-      <Label className={styles.label}>{label}</Label>
-      <Input ref={input} className={styles.input} placeholder={placeholder} />
+    <TextField {...props} className={formStyle.field}>
+      <Label className={formStyle.label}>{label}</Label>
+      <Input ref={input} className={formStyle.input} placeholder={placeholder} />
       {description && (
-        <Text slot="description" className={styles.help}>
+        <Text slot="description" className={formStyle.help}>
           {description}
         </Text>
       )}
-      <FieldError className={styles.fieldError} />
+      <FieldError className={formStyle.fieldError} />
     </TextField>
   )
 }

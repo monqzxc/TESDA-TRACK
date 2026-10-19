@@ -4,7 +4,7 @@ import { en } from '../copy/en.ts'
 import { RegisterForm } from './RegisterForm.tsx'
 import { SignInForm } from './SignInForm.tsx'
 import type { SignInView } from './useAuth.ts'
-import styles from './forms.module.css'
+import { formStyle } from './styles.ts'
 
 const copy = en.account
 
@@ -43,9 +43,9 @@ export function AccountForms({
   return (
     <>
       <Heading>{isSignIn ? copy.signInForm.heading : copy.registerForm.heading}</Heading>
-      {isSignIn && <p className={styles.lead}>{copy.signInForm.lead}</p>}
+      {isSignIn && <p className={formStyle.lead}>{copy.signInForm.lead}</p>}
       {message && (
-        <p id={messageId} role="status" className={styles.message}>
+        <p id={messageId} role="status" className={formStyle.message}>
           {message}
         </p>
       )}
@@ -64,15 +64,15 @@ export function AccountForms({
           }
         />
       )}
-      <div className={styles.switch}>
+      <div className={formStyle.switch}>
         <Button
-          className={styles.textButton}
+          className={formStyle.textButton}
           onPress={() => switchTo(isSignIn ? 'register' : 'signIn')}
         >
           {isSignIn ? copy.signInForm.toRegister : copy.registerForm.toSignIn}
         </Button>
       </div>
-      <p className={styles.note}>
+      <p className={formStyle.note}>
         <strong>{copy.exploring.heading}</strong> {copy.exploring.body}
       </p>
     </>

@@ -5,10 +5,8 @@ import { Icon } from '../../components/Icon.tsx'
 import { WithCatalog } from '../../components/WithCatalog.tsx'
 import { en } from '../../copy/en.ts'
 import { useCurrentPage } from '../../lib/navigation.ts'
-import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
-import buttons from '../../styles/buttons.module.css'
-import utilities from '../../styles/utilities.module.css'
+import { button } from '../../styles/buttons.ts'
 import { GoalStep } from './GoalStep.tsx'
 import { GoalSummary } from './GoalSummary.tsx'
 import { JourneyBanner } from './JourneyBanner.tsx'
@@ -20,7 +18,7 @@ import { StepTabs } from './StepTabs.tsx'
 import { useFinderStore, type Journey } from './store.ts'
 import { useJourney } from './useJourney.ts'
 import { useSessionSync } from './useJourneySession.ts'
-import shared from './finder.module.css'
+import { card, muted, status, stepBody, stepNav } from './styles.ts'
 
 const copy = en.finder
 
@@ -51,7 +49,7 @@ export default function FinderPage() {
       <StepTabs current={step} unlocked={journey !== null} />
       <WithCatalog emptyState>
         {(catalog) => (
-          <div className={shared.body} data-direction={direction}>
+          <div className={stepBody} data-direction={direction}>
             {step === GOAL || !journey ? (
               <>
                 <GoalStep />
@@ -101,7 +99,7 @@ function JourneySteps({
     )
   } else if (context.choosing) {
     body = (
-      <p role="status" className={shared.status}>
+      <p role="status" className={status}>
         {copy.matches.loading}
       </p>
     )
@@ -123,8 +121,8 @@ function JourneySteps({
   return (
     <>
       <GoalSummary journey={journey} code={chosen?.code ?? null} sync={sync} />
-      <section aria-labelledby={headingId} className={shared.body}>
-        <h2 id={headingId} className={utilities.visuallyHidden}>
+      <section aria-labelledby={headingId} className={stepBody}>
+        <h2 id={headingId} className="sr-only">
           {copy.steps.names[step]}
         </h2>
         {body}
@@ -139,11 +137,11 @@ function JourneySteps({
 function ChooseFirst() {
   const headingId = useId()
   return (
-    <section aria-labelledby={headingId} className={shared.card}>
+    <section aria-labelledby={headingId} className={card}>
       <h3 id={headingId}>{copy.choose.heading}</h3>
-      <p className={shared.muted}>{copy.choose.body}</p>
+      <p className={muted}>{copy.choose.body}</p>
       <p>
-        <Link to={paths.finderMatches} className={cx(buttons.button, buttons.primary)}>
+        <Link to={paths.finderMatches} className={button({ variant: 'primary' })}>
           <Icon name="arrowLeft" />
           {copy.choose.action}
         </Link>
@@ -155,9 +153,9 @@ function ChooseFirst() {
 /** Back to the step before, and on to the next (the last step's own button is its next step). */
 function StepNav({ step, quietNext = false }: { step: number; quietNext?: boolean }) {
   return (
-    <div className={shared.nav}>
+    <div className={stepNav}>
       {step > GOAL && (
-        <Link to={STEP_PATHS[step - 1]} className={buttons.button}>
+        <Link to={STEP_PATHS[step - 1]} className={button()}>
           <Icon name="arrowLeft" />
           {copy.steps.back}
         </Link>
@@ -165,7 +163,7 @@ function StepNav({ step, quietNext = false }: { step: number; quietNext?: boolea
       {step < PATHWAY && (
         <Link
           to={STEP_PATHS[step + 1]}
-          className={cx(buttons.button, !quietNext && buttons.primary)}
+          className={button({ variant: quietNext ? 'secondary' : 'primary' })}
         >
           {copy.steps.next(copy.steps.names[step + 1])}
           <Icon name="arrowRight" />

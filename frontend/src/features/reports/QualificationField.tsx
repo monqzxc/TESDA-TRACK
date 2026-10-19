@@ -11,7 +11,7 @@ import {
 } from 'react-aria-components'
 import type { Qualification } from '../../api/queries.ts'
 import { Icon } from '../../components/Icon.tsx'
-import pickerStyles from '../training/QualificationPicker.module.css'
+import { combo } from '../training/QualificationPicker.tsx'
 
 /**
  * One qualification from the catalog (Streamlit's selectbox): a box that finds it by name as the administrator types,
@@ -34,7 +34,7 @@ export function QualificationField({
   )
   return (
     <ComboBox
-      className={pickerStyles.field}
+      className={combo.field}
       defaultItems={items}
       value={value}
       onChange={(code: Key | null) => {
@@ -42,18 +42,18 @@ export function QualificationField({
       }}
       menuTrigger="focus"
     >
-      <Label className={pickerStyles.label}>{label}</Label>
-      <div className={pickerStyles.box}>
-        <Icon name="search" className={pickerStyles.icon} />
-        <Input className={pickerStyles.input} />
-        <Button className={pickerStyles.open}>
+      <Label className={combo.label}>{label}</Label>
+      <div className={combo.box}>
+        <Icon name="search" className={combo.icon} />
+        <Input className={combo.input} />
+        <Button className={combo.open}>
           <Icon name="chevron" />
         </Button>
       </div>
-      <Popover className={pickerStyles.popover}>
-        <ListBox className={pickerStyles.list}>
+      <Popover className={combo.popover}>
+        <ListBox className={combo.list}>
           {(item: { id: string; name: string }) => (
-            <ListBoxItem id={item.id} textValue={item.name} className={pickerStyles.option}>
+            <ListBoxItem id={item.id} textValue={item.name} className={combo.option}>
               {item.name}
             </ListBoxItem>
           )}

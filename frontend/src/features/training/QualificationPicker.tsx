@@ -15,9 +15,27 @@ import {
 import { Icon } from '../../components/Icon.tsx'
 import { en } from '../../copy/en.ts'
 import { shortName } from './address.ts'
-import styles from './QualificationPicker.module.css'
 
 const copy = en.training.filters
+
+const ring =
+  'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-focus-visible:outline-solid'
+
+/** A box that finds a qualification by name as it's typed, and its list. Reports' QualificationField uses it too. */
+export const combo = {
+  field: 'flex flex-col gap-[0.35rem]',
+  label: 'text-14 font-semibold text-navy',
+  box: 'relative flex items-center',
+  icon: 'pointer-events-none absolute left-3 text-muted',
+  input:
+    'min-h-11 w-full rounded-12 border border-hover-border bg-surface py-2 pr-[2.6rem] pl-[2.3rem] text-15 text-navy placeholder:text-muted placeholder:opacity-100 data-focused:border-blue',
+  open: 'absolute right-1 grid size-9 cursor-pointer place-items-center rounded-9 border-0 bg-transparent text-muted',
+  popover:
+    'max-h-[min(20rem,var(--visual-viewport-height,60vh))] w-(--trigger-width) overflow-auto rounded-12 border border-border bg-surface shadow-popover',
+  list: 'p-[0.3rem] outline-none',
+  option:
+    'cursor-pointer rounded-8 px-[0.7rem] py-[0.55rem] text-[0.9rem] text-navy outline-none data-focused:bg-soft',
+}
 
 interface QualificationPickerProps {
   /** Every qualification in the catalog, by code. */
@@ -41,13 +59,13 @@ export function QualificationPicker({ names, chosen, onChange }: QualificationPi
   )
 
   return (
-    <div className={styles.picker}>
+    <div className="flex flex-col gap-[0.6rem]">
       {chosen.length > 0 && (
         <TagGroup
           aria-label={copy.qualification}
           onRemove={(keys) => onChange(chosen.filter((code) => !keys.has(code)))}
         >
-          <TagList className={styles.tags}>
+          <TagList className="flex flex-wrap gap-[0.4rem]">
             {chosen.map((code) => {
               const name = shortName(names.get(code) ?? code)
               return (
@@ -55,12 +73,12 @@ export function QualificationPicker({ names, chosen, onChange }: QualificationPi
                   key={code}
                   id={code}
                   textValue={names.get(code) ?? code}
-                  className={styles.tag}
+                  className={`inline-flex max-w-full items-center gap-[0.3rem] rounded-full border border-pill-border bg-pill py-1 pr-[0.3rem] pl-[0.7rem] text-14 font-semibold text-pill-hover-ink outline-none ${ring}`}
                 >
                   {name}
                   <Button
                     slot="remove"
-                    className={styles.remove}
+                    className="grid size-7 cursor-pointer place-items-center rounded-full border-0 bg-transparent text-inherit data-hovered:bg-pill-hover"
                     aria-label={copy.removeQualification(names.get(code) ?? code)}
                   >
                     <Icon name="close" />
@@ -72,7 +90,7 @@ export function QualificationPicker({ names, chosen, onChange }: QualificationPi
         </TagGroup>
       )}
       <ComboBox
-        className={styles.field}
+        className={combo.field}
         items={options}
         inputValue={text}
         onInputChange={setText}
@@ -84,18 +102,18 @@ export function QualificationPicker({ names, chosen, onChange }: QualificationPi
         }}
         menuTrigger="focus"
       >
-        <Label className={styles.label}>{copy.addQualification}</Label>
-        <div className={styles.box}>
-          <Icon name="search" className={styles.icon} />
-          <Input className={styles.input} placeholder={en.training.filters.anyQualification} />
-          <Button className={styles.open}>
+        <Label className={combo.label}>{copy.addQualification}</Label>
+        <div className={combo.box}>
+          <Icon name="search" className={combo.icon} />
+          <Input className={combo.input} placeholder={en.training.filters.anyQualification} />
+          <Button className={combo.open}>
             <Icon name="chevron" />
           </Button>
         </div>
-        <Popover className={styles.popover}>
-          <ListBox className={styles.list}>
+        <Popover className={combo.popover}>
+          <ListBox className={combo.list}>
             {(option: { id: string; name: string }) => (
-              <ListBoxItem id={option.id} textValue={option.name} className={styles.option}>
+              <ListBoxItem id={option.id} textValue={option.name} className={combo.option}>
                 {option.name}
               </ListBoxItem>
             )}

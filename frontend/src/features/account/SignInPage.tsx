@@ -5,7 +5,6 @@ import { safeNextPath } from '../../auth/nextPath.ts'
 import { useAuth, type SignInView } from '../../auth/useAuth.ts'
 import { PageHeading } from '../../components/PageHeading.tsx'
 import { en } from '../../copy/en.ts'
-import styles from './SignInPage.module.css'
 
 interface Start {
   view: SignInView
@@ -32,17 +31,17 @@ export default function SignInPage() {
   if (isSignedIn) return null
   if (isChecking) {
     return (
-      <div className={styles.page}>
+      <div className="max-w-[34rem]">
         <PageHeading>{en.pages.signIn.heading}</PageHeading>
-        <p role="status" className={styles.checking}>
+        <p role="status" className="text-17 text-muted">
           {en.account.checking}
         </p>
       </div>
     )
   }
   return (
-    <div className={styles.page}>
-      <div className={styles.card}>
+    <div className="max-w-[34rem]">
+      <div className="rounded-20 border border-border bg-surface px-[1.6rem] pt-[1.6rem] pb-[1.4rem] max-xs:rounded-16 max-xs:px-[1.1rem] max-xs:pt-[1.2rem] max-xs:pb-[1.1rem]">
         <AccountForms
           view={start.view}
           message={start.message}

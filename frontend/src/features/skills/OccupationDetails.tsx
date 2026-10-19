@@ -3,11 +3,14 @@ import { useEffect, useId, useRef, useState } from 'react'
 import type { Qualification } from '../../api/queries.ts'
 import { CheckboxRow } from '../../components/CheckboxRow.tsx'
 import { en } from '../../copy/en.ts'
+import { cx } from '../../lib/style.ts'
 import { occupationQuery } from './api.ts'
 import { BridgeQualification } from './BridgeQualification.tsx'
-import styles from './SkillsPage.module.css'
+import { ui } from './styles.ts'
 
 const copy = en.skills.details
+
+const subheading = 'mt-0 mb-[0.35rem] text-[1.15rem] text-navy'
 
 /**
  * An occupation from Skills Bridge (classic/skills_bridge_view.py show_occupation_details): its qualifications, a
@@ -36,21 +39,21 @@ export function OccupationDetails({
 
   if (details.isPending) {
     return (
-      <p role="status" className={styles.muted}>
+      <p role="status" className={ui.muted}>
         {en.skills.occupations.loading}
       </p>
     )
   }
   if (details.isError) {
     return (
-      <p role="alert" className={styles.note}>
+      <p role="alert" className={ui.note}>
         {details.error.message}
       </p>
     )
   }
   const { data } = details.data
   const occupation = data.profile.occupation
-  if (!occupation?.title) return <p className={styles.note}>{copy.notFound}</p>
+  if (!occupation?.title) return <p className={ui.note}>{copy.notFound}</p>
 
   const standards = data.profile.standards ?? []
   const skills = (data.skills ?? []).filter(
@@ -60,25 +63,33 @@ export function OccupationDetails({
   const benchmarks = data.benchmarks ?? []
 
   return (
-    <section className={styles.occupation} aria-labelledby={`${skillsId}-title`}>
-      <h2 id={`${skillsId}-title`} ref={heading} tabIndex={-1} className={styles.occupationTitle}>
+    <section
+      className="flex flex-col gap-5 border-t border-border pt-5"
+      aria-labelledby={`${skillsId}-title`}
+    >
+      <h2
+        id={`${skillsId}-title`}
+        ref={heading}
+        tabIndex={-1}
+        className="m-0 scroll-mt-4 font-display text-[1.6rem] leading-[1.25] text-navy focus:outline-none"
+      >
         {occupation.title}
       </h2>
-      <p className={styles.muted}>{copy.lead}</p>
+      <p className={cx(ui.muted, 'mt-[-0.9rem]')}>{copy.lead}</p>
       {data.warnings.map((warning) => (
-        <p key={warning} className={styles.note}>
+        <p key={warning} className={ui.note}>
           {warning}
         </p>
       ))}
 
       <section aria-labelledby={standardsId}>
-        <h3 id={standardsId} className={styles.subheading}>
+        <h3 id={standardsId} className={subheading}>
           {copy.standards}
         </h3>
         {standards.length === 0 ? (
-          <p className={styles.muted}>{copy.noStandards}</p>
+          <p className={cx(ui.muted, 'mb-3')}>{copy.noStandards}</p>
         ) : (
-          <ul className={styles.list}>
+          <ul className={ui.list}>
             {standards.map((standard, index) => (
               <li key={standard.code ?? index}>
                 <BridgeQualification item={standard} catalog={catalog} headingLevel={4} />
@@ -89,16 +100,16 @@ export function OccupationDetails({
       </section>
 
       <section aria-labelledby={skillsId}>
-        <h3 id={skillsId} className={styles.subheading}>
+        <h3 id={skillsId} className={subheading}>
           {copy.skills}
         </h3>
-        <p className={styles.muted}>{copy.skillsLead}</p>
+        <p className={cx(ui.muted, 'mb-3')}>{copy.skillsLead}</p>
         {skills.length === 0 ? (
-          <p className={styles.muted}>{copy.noSkills}</p>
+          <p className={ui.muted}>{copy.noSkills}</p>
         ) : (
           <>
-            <fieldset className={styles.known}>
-              <legend>{copy.known}</legend>
+            <fieldset className="mx-0 mt-0 mb-[0.6rem] grid grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-x-4 gap-y-[0.15rem] rounded-14 border border-border bg-surface px-4 py-[0.85rem]">
+              <legend className="px-[0.35rem] text-15 font-[650] text-navy">{copy.known}</legend>
               {skills.map((skill) => (
                 <CheckboxRow
                   key={skill.skill_id}
@@ -116,15 +127,15 @@ export function OccupationDetails({
                 </CheckboxRow>
               ))}
             </fieldset>
-            <p className={styles.muted} aria-live="polite">
+            <p className={ui.muted} aria-live="polite">
               {copy.tally(known.size, remaining.length)}
             </p>
             {remaining.length === 0 ? (
-              <p className={styles.note}>{copy.allKnown}</p>
+              <p className={ui.note}>{copy.allKnown}</p>
             ) : (
-              <div className={styles.tableBox}>
-                <table className={styles.table}>
-                  <caption className={styles.caption}>{copy.toExplore}</caption>
+              <div className={ui.tableBox}>
+                <table className={ui.table}>
+                  <caption className={ui.caption}>{copy.toExplore}</caption>
                   <thead>
                     <tr>
                       <th scope="col">{copy.skill}</th>
@@ -147,25 +158,23 @@ export function OccupationDetails({
       </section>
 
       <section aria-labelledby={mappingsId}>
-        <h3 id={mappingsId} className={styles.subheading}>
+        <h3 id={mappingsId} className={subheading}>
           {copy.mappings}
         </h3>
-        <p className={styles.muted}>{copy.mappingsLead}</p>
+        <p className={cx(ui.muted, 'mb-3')}>{copy.mappingsLead}</p>
         {benchmarks.length === 0 ? (
-          <p className={styles.muted}>{copy.noMappings}</p>
+          <p className={ui.muted}>{copy.noMappings}</p>
         ) : (
-          <ul className={styles.list}>
+          <ul className={ui.list}>
             {benchmarks.map((benchmark, index) => (
-              <li key={index} className={styles.card}>
-                <span className={styles.level}>
-                  {capitalize(benchmark.status) || copy.unspecified}
-                </span>
-                <h4 className={styles.cardTitle}>{benchmark.title || copy.fallbackMapping}</h4>
-                <p className={styles.muted}>
+              <li key={index} className={ui.card}>
+                <span className={ui.level}>{capitalize(benchmark.status) || copy.unspecified}</span>
+                <h4 className={ui.cardTitle}>{benchmark.title || copy.fallbackMapping}</h4>
+                <p className={ui.muted}>
                   {[benchmark.source, benchmark.standard].filter(Boolean).join(' · ') ||
                     copy.noFramework}
                 </p>
-                <p className={styles.text}>{copy.sampleSkills(benchmark.sample_skills ?? [])}</p>
+                <p className={ui.text}>{copy.sampleSkills(benchmark.sample_skills ?? [])}</p>
               </li>
             ))}
           </ul>

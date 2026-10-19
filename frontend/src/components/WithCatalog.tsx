@@ -3,11 +3,10 @@ import type { ReactNode } from 'react'
 import { Button } from 'react-aria-components'
 import { qualificationsQuery, type Qualification } from '../api/queries.ts'
 import { en } from '../copy/en.ts'
-import buttons from '../styles/buttons.module.css'
+import { button } from '../styles/buttons.ts'
 import { EmptyState } from './EmptyState.tsx'
 import { Icon } from './Icon.tsx'
 import { QueryBoundary, throwWithoutData } from './QueryBoundary.tsx'
-import styles from './WithCatalog.module.css'
 
 interface WithCatalogProps {
   /** The part of the page that needs the catalog, given the whole of it. */
@@ -33,7 +32,7 @@ function CatalogLoader({ children, emptyState }: Required<WithCatalogProps>) {
   const catalog = useQuery({ ...qualificationsQuery, throwOnError: throwWithoutData })
   if (catalog.data === undefined) {
     return (
-      <p role="status" className={styles.loading}>
+      <p role="status" className="text-17 text-muted">
         {en.catalog.loading}
       </p>
     )
@@ -43,7 +42,7 @@ function CatalogLoader({ children, emptyState }: Required<WithCatalogProps>) {
     return (
       <EmptyState icon="learn" heading={copy.heading} body={copy.body}>
         <Button
-          className={buttons.button}
+          className={button()}
           onPress={() => void catalog.refetch()}
           isPending={catalog.isFetching}
         >

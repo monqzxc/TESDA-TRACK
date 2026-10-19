@@ -10,8 +10,7 @@ import { throwWithoutData } from '../../components/QueryBoundary.tsx'
 import { WithCatalog } from '../../components/WithCatalog.tsx'
 import { en } from '../../copy/en.ts'
 import { cssVars, cx } from '../../lib/style.ts'
-import buttons from '../../styles/buttons.module.css'
-import utilities from '../../styles/utilities.module.css'
+import { button } from '../../styles/buttons.ts'
 import { AccountGate } from '../account/AccountGate.tsx'
 import {
   activeDemand,
@@ -28,12 +27,31 @@ import {
   type RegionSupply,
 } from './api.ts'
 import { QualificationField } from './QualificationField.tsx'
-import styles from './ReportsPage.module.css'
 
 const copy = en.reports
 
 /** The address's names for the period and the skill-gap qualification. */
 const PARAMS = { from: 'from', to: 'to', qualification: 'qualification' } as const
+
+// Reports, after classic/app.py show_reports: the period, the figures as bordered metrics, then each report on a card
+// with its table.
+const muted = 'mt-2 mb-0 text-14 leading-[1.55] text-muted'
+const leadText = 'mt-0 mb-[0.6rem] text-14 leading-[1.55] text-muted'
+const empty =
+  'mt-1 mb-0 rounded-12 border border-dashed border-dash bg-empty px-4 py-[0.85rem] text-14 text-muted'
+
+/** A table's box, which scrolls sideways on a narrow screen and takes focus so the keyboard can scroll it. */
+const tableBox =
+  'mt-[0.4rem] overflow-x-auto rounded-8 focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus'
+
+// The tables' cells. Figures line up on the right, in figures of one width.
+const headBase =
+  'border-b border-border px-[0.6rem] py-2 font-semibold whitespace-nowrap text-muted'
+const head = cx(headBase, 'text-left')
+const headNumber = cx(headBase, 'text-right tabular-nums')
+const rowHead = 'border-b border-rule px-[0.6rem] py-[0.55rem] text-left font-semibold text-navy'
+const cell = 'border-b border-rule px-[0.6rem] py-[0.55rem] text-left text-navy'
+const cellNumber = 'border-b border-rule px-[0.6rem] py-[0.55rem] text-right tabular-nums text-navy'
 
 /**
  * Reports, at /reports, for administrators (classic/app.py show_reports): figures for a period, the learner
@@ -93,7 +111,7 @@ function Reports({ catalog }: { catalog: Qualification[] }) {
     )
 
   return (
-    <div className={styles.sections}>
+    <div className="flex flex-col gap-4">
       <PeriodFields period={period} onChange={update} />
       {/* A backwards period is refused before any request, as the API would refuse it. */}
       {!isBackwards(period) && (
@@ -122,9 +140,11 @@ function PeriodFields({
   const backwards = isBackwards(period)
   const describedBy = cx(helpId, backwards && errorId)
   return (
-    <fieldset className={styles.period}>
-      <legend className={styles.legend}>{copy.period.legend}</legend>
-      <div className={styles.dates}>
+    <fieldset className="m-0 rounded-18 border-0 bg-surface px-5 py-[1.1rem]">
+      <legend className="float-left mb-[0.6rem] w-full p-0 text-16 font-[650] text-navy">
+        {copy.period.legend}
+      </legend>
+      <div className="clear-both flex flex-wrap items-end gap-x-4 gap-y-3">
         <DateField
           id={fromId}
           label={copy.period.from}
@@ -143,20 +163,21 @@ function PeriodFields({
           onChange={(to) => onChange({ to })}
         />
         {(period.from || period.to) && (
-          <Button
-            className={cx(buttons.button, styles.clear)}
-            onPress={() => onChange({ from: null, to: null })}
-          >
+          <Button className={button()} onPress={() => onChange({ from: null, to: null })}>
             <Icon name="filterOff" />
             {copy.period.clear}
           </Button>
         )}
       </div>
-      <p id={helpId} className={styles.help}>
+      <p id={helpId} className="mt-[0.6rem] mb-0 text-13 leading-[1.45] text-muted">
         {copy.period.help}
       </p>
       {/* Words as well as color say what's wrong (US-13). */}
-      <p id={errorId} role="alert" className={styles.error}>
+      <p
+        id={errorId}
+        role="alert"
+        className="mt-2 mb-0 text-14 font-semibold text-warn-ink empty:m-0"
+      >
         {backwards ? copy.period.order : ''}
       </p>
     </fieldset>
@@ -193,14 +214,17 @@ function DateField({
     setDraft(value ?? '')
   }
   return (
-    <div className={styles.dateField}>
-      <label htmlFor={id} className={styles.label}>
+    <div className="flex max-w-[18rem] flex-[1_1_12rem] flex-col gap-[0.35rem] max-sm:max-w-none">
+      <label htmlFor={id} className="text-14 font-semibold text-navy">
         {label}
       </label>
       <input
         id={id}
         type="date"
-        className={styles.date}
+        className={cx(
+          'min-h-11 rounded-12 border bg-surface px-3 py-[0.45rem] text-15 text-navy',
+          invalid ? 'border-warn-ink' : 'border-hover-border focus:border-blue hovered:border-blue',
+        )}
         value={draft}
         min={min ?? undefined}
         max={max ?? undefined}
@@ -238,7 +262,7 @@ function ReportSections({
 
   if (!overview.data || !funnel.data || !demand.data || !supply.data) {
     return (
-      <p role="status" className={styles.muted}>
+      <p role="status" className={muted}>
         {copy.loading}
       </p>
     )
@@ -255,12 +279,18 @@ function ReportSections({
 
   return (
     <>
-      <p className={styles.showing} role="status">
+      <p className="m-0 text-14 text-ink" role="status">
         {showing(period)} {updating ? copy.updating : ''}
       </p>
-      <div className={cx(styles.sections, updating && styles.updating)} aria-busy={updating}>
+      <div
+        className={cx(
+          'flex flex-col gap-4',
+          updating && 'opacity-60 transition-opacity duration-200 ease-[ease]',
+        )}
+        aria-busy={updating}
+      >
         <section aria-label={stats.label}>
-          <dl className={styles.stats}>
+          <dl className="m-0 grid grid-cols-3 gap-4 max-xl:grid-cols-2 max-xl:gap-3">
             <Stat label={stats.learners} value={count(overview.data.learners)} />
             <Stat label={stats.sessions} value={count(overview.data.recommendation_sessions)} />
             <Stat label={stats.checks} value={count(overview.data.readiness_checks)} />
@@ -285,11 +315,13 @@ function ReportSections({
 /** A figure with its label, after Streamlit's st.metric. */
 function Stat({ label, value, help }: { label: string; value: string; help?: string }) {
   return (
-    <div className={styles.stat}>
-      <dt>{label}</dt>
-      <dd>
-        <span className={styles.figure}>{value}</span>
-        {help && <span className={styles.help}>{help}</span>}
+    <div className="rounded-14 border border-border bg-surface px-5 py-[1.1rem] max-sm:px-4 max-sm:py-[0.9rem]">
+      <dt className="text-14 text-ink">{label}</dt>
+      <dd className="mt-[0.2rem] mb-0 ml-0 flex flex-col gap-[0.2rem]">
+        <span className="font-display text-[2rem] leading-[1.15] font-bold text-navy max-sm:text-[1.6rem]">
+          {value}
+        </span>
+        {help && <span className="m-0 text-12 leading-[1.45] text-muted">{help}</span>}
       </dd>
     </div>
   )
@@ -307,11 +339,14 @@ function Report({
 }) {
   const headingId = useId()
   return (
-    <section aria-labelledby={headingId} className={styles.card}>
-      <h2 id={headingId} className={styles.heading}>
+    <section
+      aria-labelledby={headingId}
+      className="min-w-0 rounded-16 border border-border bg-surface px-5 py-[1.15rem]"
+    >
+      <h2 id={headingId} className="mt-0 mb-1 text-[1.3rem] text-navy">
         {heading}
       </h2>
-      {lead && <p className={styles.lead}>{lead}</p>}
+      {lead && <p className={leadText}>{lead}</p>}
       {children}
     </section>
   )
@@ -325,15 +360,15 @@ function Table({ caption, children }: { caption: string; children: ReactNode }) 
   const captionId = useId()
   return (
     <>
-      <p className={styles.caption} aria-hidden="true">
+      <p className="mt-1 mb-[0.4rem] text-14 font-[650] text-navy" aria-hidden="true">
         {caption}
       </p>
       {/* A scrolling box needs focus for the keyboard to reach what's off to the side (axe's
           scrollable-region-focusable). */}
       {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
-      <div className={styles.tableBox} tabIndex={0} role="region" aria-labelledby={captionId}>
-        <table className={styles.table}>
-          <caption id={captionId} className={utilities.visuallyHidden}>
+      <div className={tableBox} tabIndex={0} role="region" aria-labelledby={captionId}>
+        <table className="w-full border-collapse text-14">
+          <caption id={captionId} className="sr-only">
             {caption}
           </caption>
           {children}
@@ -346,11 +381,17 @@ function Table({ caption, children }: { caption: string; children: ReactNode }) 
 /** A count with a bar for its share of the largest, as Streamlit's charts and progress columns show it. */
 function Bar({ share, children }: { share: number; children: ReactNode }) {
   return (
-    <span className={styles.barCell}>
-      <span className={styles.bar} aria-hidden="true">
-        <i style={cssVars({ '--share': Math.round(Math.min(Math.max(share, 0), 1) * 100) })} />
+    <span className="flex min-w-36 items-center gap-[0.6rem]">
+      <span
+        className="block h-2.5 max-w-96 flex-[1_1_8rem] overflow-hidden rounded-full bg-bar"
+        aria-hidden="true"
+      >
+        <i
+          className="block h-full w-[calc(var(--share)*1%)] rounded-[inherit] bg-blue"
+          style={cssVars({ '--share': Math.round(Math.min(Math.max(share, 0), 1) * 100) })}
+        />
       </span>
-      <span className={styles.barValue}>{children}</span>
+      <span className="min-w-14 flex-none tabular-nums">{children}</span>
     </span>
   )
 }
@@ -369,13 +410,15 @@ function Journey({ funnel }: { funnel: Funnel }) {
   return (
     <Report heading={journey.heading} lead={journey.lead}>
       {most === 0 ? (
-        <p className={styles.empty}>{journey.empty}</p>
+        <p className={empty}>{journey.empty}</p>
       ) : (
         <Table caption={journey.caption}>
           <thead>
             <tr>
-              <th scope="col">{journey.stage}</th>
-              <th scope="col" className={styles.wide}>
+              <th scope="col" className={head}>
+                {journey.stage}
+              </th>
+              <th scope="col" className={cx(head, 'w-[70%]')}>
                 {journey.learners}
               </th>
             </tr>
@@ -383,8 +426,10 @@ function Journey({ funnel }: { funnel: Funnel }) {
           <tbody>
             {STAGES.map((stage) => (
               <tr key={stage}>
-                <th scope="row">{journey.stages[stage]}</th>
-                <td>
+                <th scope="row" className={rowHead}>
+                  {journey.stages[stage]}
+                </th>
+                <td className={cell}>
                   <Bar share={funnel[stage] / most}>{count(funnel[stage])}</Bar>
                 </td>
               </tr>
@@ -403,30 +448,34 @@ function Demand({ rows }: { rows: QualificationDemand[] }) {
   return (
     <Report heading={demand.heading} lead={demand.lead}>
       {active.length === 0 ? (
-        <p className={styles.empty}>{demand.empty}</p>
+        <p className={empty}>{demand.empty}</p>
       ) : (
         <>
           <Table caption={demand.caption}>
             <thead>
               <tr>
-                <th scope="col">{demand.qualification}</th>
-                <th scope="col" className={styles.number}>
+                <th scope="col" className={head}>
+                  {demand.qualification}
+                </th>
+                <th scope="col" className={headNumber}>
                   {demand.topMatch}
                 </th>
-                <th scope="col" className={styles.number}>
+                <th scope="col" className={headNumber}>
                   {demand.chosen}
                 </th>
-                <th scope="col" className={styles.number}>
+                <th scope="col" className={headNumber}>
                   {demand.checks}
                 </th>
-                <th scope="col">{demand.average}</th>
-                <th scope="col" className={styles.number}>
+                <th scope="col" className={head}>
+                  {demand.average}
+                </th>
+                <th scope="col" className={headNumber}>
                   {demand.applications}
                 </th>
-                <th scope="col" className={styles.number}>
+                <th scope="col" className={headNumber}>
                   {demand.competent}
                 </th>
-                <th scope="col" className={styles.number}>
+                <th scope="col" className={headNumber}>
                   {demand.certified}
                 </th>
               </tr>
@@ -434,13 +483,13 @@ function Demand({ rows }: { rows: QualificationDemand[] }) {
             <tbody>
               {active.map((row) => (
                 <tr key={row.qualification.code}>
-                  <th scope="row" className={styles.name}>
+                  <th scope="row" className={cx(rowHead, 'min-w-56 max-sm:min-w-40')}>
                     {row.qualification.name}
                   </th>
-                  <td className={styles.number}>{count(row.top_match)}</td>
-                  <td className={styles.number}>{count(row.chosen)}</td>
-                  <td className={styles.number}>{count(row.readiness_checks)}</td>
-                  <td>
+                  <td className={cellNumber}>{count(row.top_match)}</td>
+                  <td className={cellNumber}>{count(row.chosen)}</td>
+                  <td className={cellNumber}>{count(row.readiness_checks)}</td>
+                  <td className={cell}>
                     {row.average_readiness === null ? (
                       copy.none
                     ) : (
@@ -449,14 +498,14 @@ function Demand({ rows }: { rows: QualificationDemand[] }) {
                       </Bar>
                     )}
                   </td>
-                  <td className={styles.number}>{count(row.assessment_applications)}</td>
-                  <td className={styles.number}>{count(row.competent)}</td>
-                  <td className={styles.number}>{count(row.certified)}</td>
+                  <td className={cellNumber}>{count(row.assessment_applications)}</td>
+                  <td className={cellNumber}>{count(row.competent)}</td>
+                  <td className={cellNumber}>{count(row.certified)}</td>
                 </tr>
               ))}
             </tbody>
           </Table>
-          {quiet > 0 && <p className={styles.muted}>{demand.quiet(quiet)}</p>}
+          {quiet > 0 && <p className={muted}>{demand.quiet(quiet)}</p>}
         </>
       )}
     </Report>
@@ -478,10 +527,10 @@ function SkillGaps({
   return (
     <Report heading={gaps.heading}>
       {code === null ? (
-        <p className={styles.empty}>{gaps.noCatalog}</p>
+        <p className={empty}>{gaps.noCatalog}</p>
       ) : (
         <>
-          <div className={styles.picker}>
+          <div className="mt-2 mb-3 max-w-[32rem]">
             <QualificationField
               label={gaps.qualification}
               catalog={catalog}
@@ -489,7 +538,7 @@ function SkillGaps({
               onChange={onChoose}
             />
           </div>
-          <p className={styles.lead}>{gaps.lead}</p>
+          <p className={leadText}>{gaps.lead}</p>
           <GapTable
             code={code}
             name={catalog.find((qualification) => qualification.code === code)?.name ?? code}
@@ -506,22 +555,24 @@ function GapTable({ code, name, period }: { code: string; name: string; period: 
   const query = useQuery({ ...skillGapsQuery(code, period), throwOnError: throwWithoutData })
   if (!query.data) {
     return (
-      <p role="status" className={styles.muted}>
+      <p role="status" className={muted}>
         {gaps.loading}
       </p>
     )
   }
   const rows = query.data
-  if (!rows.some((row) => row.answers > 0)) return <p className={styles.empty}>{gaps.empty}</p>
+  if (!rows.some((row) => row.answers > 0)) return <p className={empty}>{gaps.empty}</p>
   return (
     <Table caption={gaps.caption(name)}>
       <thead>
         <tr>
-          <th scope="col">{gaps.competency}</th>
-          <th scope="col" className={styles.number}>
+          <th scope="col" className={head}>
+            {gaps.competency}
+          </th>
+          <th scope="col" className={headNumber}>
             {gaps.answers}
           </th>
-          <th scope="col" className={styles.number}>
+          <th scope="col" className={headNumber}>
             {gaps.gapRate}
           </th>
         </tr>
@@ -531,11 +582,11 @@ function GapTable({ code, name, period }: { code: string; name: string; period: 
           .sort((a, b) => a.position - b.position)
           .map((row) => (
             <tr key={row.competency_id}>
-              <th scope="row" className={styles.name}>
+              <th scope="row" className={cx(rowHead, 'min-w-56 max-sm:min-w-40')}>
                 {row.position}. {row.name}
               </th>
-              <td className={styles.number}>{count(row.answers)}</td>
-              <td className={styles.number}>
+              <td className={cellNumber}>{count(row.answers)}</td>
+              <td className={cellNumber}>
                 {row.gap_rate === null ? copy.none : `${Math.round(row.gap_rate * 100)}%`}
               </td>
             </tr>
@@ -550,22 +601,24 @@ function Supply({ rows }: { rows: RegionSupply[] }) {
   return (
     <Report heading={supply.heading} lead={supply.lead}>
       {rows.length === 0 ? (
-        <p className={styles.empty}>{supply.empty}</p>
+        <p className={empty}>{supply.empty}</p>
       ) : (
         <Table caption={supply.caption}>
           <thead>
             <tr>
-              <th scope="col">{supply.region}</th>
-              <th scope="col" className={styles.number}>
+              <th scope="col" className={head}>
+                {supply.region}
+              </th>
+              <th scope="col" className={headNumber}>
                 {supply.providers}
               </th>
-              <th scope="col" className={styles.number}>
+              <th scope="col" className={headNumber}>
                 {supply.programs}
               </th>
-              <th scope="col" className={styles.number}>
+              <th scope="col" className={headNumber}>
                 {supply.assessments}
               </th>
-              <th scope="col" className={styles.number}>
+              <th scope="col" className={headNumber}>
                 {supply.seats}
               </th>
             </tr>
@@ -573,13 +626,13 @@ function Supply({ rows }: { rows: RegionSupply[] }) {
           <tbody>
             {rows.map((row) => (
               <tr key={row.region_code}>
-                <th scope="row" className={styles.name}>
+                <th scope="row" className={cx(rowHead, 'min-w-56 max-sm:min-w-40')}>
                   {row.region}
                 </th>
-                <td className={styles.number}>{count(row.training_providers)}</td>
-                <td className={styles.number}>{count(row.training_programs)}</td>
-                <td className={styles.number}>{count(row.upcoming_assessments)}</td>
-                <td className={styles.number}>{count(row.open_seats)}</td>
+                <td className={cellNumber}>{count(row.training_providers)}</td>
+                <td className={cellNumber}>{count(row.training_programs)}</td>
+                <td className={cellNumber}>{count(row.upcoming_assessments)}</td>
+                <td className={cellNumber}>{count(row.open_seats)}</td>
               </tr>
             ))}
           </tbody>

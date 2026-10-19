@@ -8,17 +8,24 @@ import { Icon } from '../../components/Icon.tsx'
 import { en } from '../../copy/en.ts'
 import { competencyGroups } from '../../lib/qualifications.ts'
 import { cx } from '../../lib/style.ts'
-import buttons from '../../styles/buttons.module.css'
+import { button } from '../../styles/buttons.ts'
 import { pathwayQuery, submitReadiness } from './api.ts'
 import { CardHeading } from './CardHeading.tsx'
 import { useFinderStore, type Answer, type Answers, type Journey, type Profile } from './store.ts'
 import { ownsSession } from './useJourneySession.ts'
-import shared from './finder.module.css'
-import styles from './ReadinessStep.module.css'
+import { card, muted, notice } from './styles.ts'
 
 const copy = en.finder.readiness
 const ANSWERS: readonly Answer[] = ['confident', 'some_experience', 'not_familiar']
 const NO_ANSWERS: Answers = {}
+
+/** An answer, drawn as a pill with its own round mark. Phones give each answer a row. */
+const answerPill = cx(
+  'inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-full border border-border bg-surface px-[0.85rem] py-[0.35rem] text-14 text-ink max-xs:flex-[1_1_100%]',
+  "before:box-border before:size-4 before:flex-none before:rounded-full before:border-2 before:border-dash before:bg-surface before:content-['']",
+  'data-hovered:border-hover-border data-selected:border-fill data-selected:bg-tint data-selected:font-semibold data-selected:text-navy data-selected:before:border-5 data-selected:before:border-fill',
+  'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus',
+)
 
 interface ReadinessStepProps {
   journey: Journey
@@ -45,12 +52,14 @@ function WhyWeAsk({ profile, code }: { profile: Profile; code: string }) {
   const headingId = useId()
   if (!pathway.data) return null
   return (
-    <section aria-labelledby={headingId} className={shared.card}>
+    <section aria-labelledby={headingId} className={card}>
       <CardHeading icon="lightbulb" id={headingId}>
         {en.finder.why.heading}
       </CardHeading>
-      <p className={styles.reason}>{pathway.data.reason}</p>
-      <p className={shared.muted}>
+      <p className="mt-[0.9rem] mb-[0.4rem] text-15 leading-[1.6] text-ink">
+        {pathway.data.reason}
+      </p>
+      <p className={muted}>
         {pathway.data.next_step} {en.finder.why.relevant}
       </p>
     </section>
@@ -112,9 +121,9 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
 
   if (groups.length === 0) {
     return (
-      <section aria-labelledby={headingId} className={shared.card}>
+      <section aria-labelledby={headingId} className={card}>
         <Heading id={headingId} name={qualification.name} />
-        <p className={shared.muted}>{copy.none}</p>
+        <p className={muted}>{copy.none}</p>
       </section>
     )
   }
@@ -148,28 +157,39 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
   }
 
   return (
-    <section aria-labelledby={headingId} className={shared.card}>
+    <section aria-labelledby={headingId} className={card}>
       <Heading id={headingId} name={qualification.name} />
 
-      <ProgressBar className={styles.progress} value={rated} maxValue={total || 1}>
-        <Label className={styles.progressLabel}>{copy.progress(rated, total)}</Label>
-        <span className={styles.track} aria-hidden="true">
-          <i style={{ width: `${total ? (100 * rated) / total : 0}%` }} />
+      <ProgressBar
+        className="mt-[1.1rem] mb-1 flex flex-col gap-[0.4rem]"
+        value={rated}
+        maxValue={total || 1}
+      >
+        <Label className="text-14 text-ink">{copy.progress(rated, total)}</Label>
+        <span className="h-2 overflow-hidden rounded-full bg-bar" aria-hidden="true">
+          <i
+            className="block h-full rounded-[inherit] bg-blue transition-[width] duration-250 ease-[ease]"
+            style={{ width: `${total ? (100 * rated) / total : 0}%` }}
+          />
         </span>
       </ProgressBar>
 
-      <div ref={questions} className={styles.part}>
-        <h4 ref={partHeading} tabIndex={-1} className={styles.partHeading}>
+      <div ref={questions} className="mt-4">
+        <h4
+          ref={partHeading}
+          tabIndex={-1}
+          className="mt-0 mb-[0.2rem] scroll-mt-28 font-text text-16 font-bold tracking-normal text-navy focus:outline-none"
+        >
           {groups.length > 1 ? copy.part(part + 1, groups.length, category) : copy.single(category)}
         </h4>
-        <p className={shared.muted}>
+        <p className={muted}>
           {en.qualification.categoryHelp[category] ?? en.qualification.categoryHelp.other}
         </p>
-        <ol className={styles.questions}>
+        <ol className="mt-[0.9rem] mb-0 flex list-none flex-col gap-[0.6rem] p-0">
           {competencies.map((competency, i) => (
             <li key={competency.id} data-unrated={!answers[competency.id] || undefined}>
               <RadioGroup
-                className={styles.question}
+                className="flex flex-col gap-2 rounded-12 border border-panel-border bg-panel px-[0.95rem] py-[0.85rem]"
                 orientation="horizontal"
                 value={answers[competency.id] ?? null}
                 onChange={(value) => {
@@ -177,12 +197,12 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
                   setMessage(null)
                 }}
               >
-                <Label className={styles.questionLabel}>
+                <Label className="text-15 leading-[1.45] font-semibold text-navy">
                   {first + i}. {competency.name}
                 </Label>
-                <div className={styles.options}>
+                <div className="flex flex-wrap gap-[0.45rem]">
                   {ANSWERS.map((value) => (
-                    <Radio key={value} value={value} className={styles.option}>
+                    <Radio key={value} value={value} className={answerPill}>
                       {copy.answers[value]}
                     </Radio>
                   ))}
@@ -194,28 +214,28 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
       </div>
 
       {message && (
-        <p role="alert" className={cx(shared.notice, shared.warning)}>
+        <p role="alert" className={notice('warning')}>
           {message}
         </p>
       )}
 
-      <div className={styles.buttons}>
+      <div className="mt-[1.1rem] flex flex-wrap justify-between gap-3 [&>:only-child]:ml-auto">
         {part > 0 && (
-          <Button className={buttons.button} onPress={() => goTo(part - 1)}>
+          <Button className={button()} onPress={() => goTo(part - 1)}>
             <Icon name="arrowLeft" />
             {copy.previous}
           </Button>
         )}
         {isLast ? (
           <Button
-            className={cx(buttons.button, buttons.primary)}
+            className={button({ variant: 'primary' })}
             onPress={analyze}
             isPending={submit.isPending}
           >
             {submit.isPending ? copy.analyzing : copy.analyze}
           </Button>
         ) : (
-          <Button className={cx(buttons.button, buttons.primary)} onPress={() => goTo(part + 1)}>
+          <Button className={button({ variant: 'primary' })} onPress={() => goTo(part + 1)}>
             {copy.next(groups[part + 1].category)}
             <Icon name="arrowRight" />
           </Button>

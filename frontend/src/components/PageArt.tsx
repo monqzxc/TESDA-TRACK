@@ -1,5 +1,3 @@
-import styles from './PageHero.module.css'
-
 // The soft illustrations on the pages' banners (classic/presentation.py PAGE_ART and LEAVES), 260 x 150 units.
 // They're decoration: hidden from screen readers. The blob behind each one follows the theme; the rest keeps the
 // colors it's drawn in.
@@ -20,7 +18,7 @@ function Leaves({ transform }: { transform: string }) {
 function Books() {
   return (
     <>
-      <ellipse className={styles.blob} cx="150" cy="92" rx="112" ry="54" />
+      <ellipse className="fill-tint" cx="150" cy="92" rx="112" ry="54" />
       <Leaves transform="translate(0 22) scale(.82)" />
       <rect x="62" y="104" width="172" height="28" rx="5" fill="#24418f" />
       <rect x="216" y="108" width="14" height="20" rx="2" fill="#f3f6fc" />
@@ -41,7 +39,7 @@ function Books() {
 function Chart() {
   return (
     <>
-      <ellipse className={styles.blob} cx="150" cy="88" rx="112" ry="56" />
+      <ellipse className="fill-tint" cx="150" cy="88" rx="112" ry="56" />
       <Leaves transform="translate(-6 24) scale(.8)" />
       <rect x="80" y="30" width="150" height="104" rx="14" fill="#d6e3fa" />
       <rect x="74" y="24" width="150" height="104" rx="14" fill="#fff" />
@@ -64,7 +62,7 @@ function Chart() {
 function Network() {
   return (
     <>
-      <ellipse className={styles.blob} cx="140" cy="84" rx="116" ry="58" />
+      <ellipse className="fill-tint" cx="140" cy="84" rx="116" ry="58" />
       <g stroke="#a9c3f3" strokeWidth="2.5" strokeDasharray="2 7">
         <path d="M138 76 66 40M138 76l74-44M138 76l80 40M138 76l-78 42M138 76V20" />
       </g>
@@ -97,6 +95,7 @@ export function PageArt({ name }: { name: PageArtName }) {
       strokeLinejoin="round"
       aria-hidden="true"
       focusable="false"
+      className="block h-auto w-full"
     >
       <Art />
     </svg>

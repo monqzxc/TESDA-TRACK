@@ -2,14 +2,20 @@ import type { CSSProperties } from 'react'
 import { Icon } from '../../components/Icon.tsx'
 import { iconNames } from '../../components/icons.ts'
 import { en } from '../../copy/en.ts'
+import { cx } from '../../lib/style.ts'
 import { lightAndDark } from '../../styles/tokenBlocks.ts'
 import tokensCss from '../../styles/tokens.css?raw'
 import { ThemeSwitch } from '../../theme/ThemeSwitch.tsx'
-import styles from './TokensPage.module.css'
 
 // A page for checking the tokens and icons by eye, at /dev/tokens. It isn't linked from anywhere.
 
 const copy = en.dev.tokens
+
+const table = cx(
+  'w-full border-collapse bg-surface',
+  '[&_:is(th,td)]:border-b [&_:is(th,td)]:border-rule [&_:is(th,td)]:px-[0.6rem] [&_:is(th,td)]:py-[0.35rem] [&_:is(th,td)]:text-left [&_:is(th,td)]:align-middle',
+  '[&_thead_th]:text-13 [&_thead_th]:text-muted',
+)
 const { light, dark } = lightAndDark(tokensCss)
 const names = [...light.keys()]
 
@@ -27,27 +33,32 @@ function themeVars(values: Map<string, string>): CSSProperties {
 }
 
 function Swatch({ name }: { name: string }) {
-  return <span className={styles.swatch} style={sampleStyle(name)} />
+  return (
+    <span className="block h-6 w-10 rounded-6 border border-border" style={sampleStyle(name)} />
+  )
 }
 
 function Preview({ heading, values }: { heading: string; values: Map<string, string> }) {
   return (
     <section
-      className={styles.preview}
+      className="rounded-16 border border-border bg-page p-4 text-navy"
       style={themeVars(values)}
       aria-labelledby={`preview-${heading}`}
     >
       <h3 id={`preview-${heading}`}>{heading}</h3>
-      <ul className={styles.swatches}>
+      <ul className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(2.5rem,1fr))] gap-[0.35rem] p-0">
         {names.map((name) => (
           <li key={name} title={`${name}: ${values.get(name)}`}>
             <Swatch name={name} />
           </li>
         ))}
       </ul>
-      <ul className={`${styles.icons} ${styles.iconsCompact}`}>
+      <ul className="mt-4 mb-0 grid list-none grid-cols-[repeat(auto-fill,minmax(36px,1fr))] gap-1 p-0 text-blue">
         {iconNames.map((name) => (
-          <li key={name}>
+          <li
+            key={name}
+            className="flex flex-col items-center gap-[0.4rem] rounded-8 border border-border bg-tint p-[0.4rem]"
+          >
             <Icon name={name} size={22} />
           </li>
         ))}
@@ -58,18 +69,23 @@ function Preview({ heading, values }: { heading: string; values: Map<string, str
 
 export default function TokensPage() {
   return (
-    <main className={styles.page}>
-      <header className={styles.header}>
+    <main className="mx-auto max-w-[1100px] px-4 pt-8 pb-16 [&_code]:text-13 [&_code]:wrap-anywhere">
+      <header className="mb-2 flex flex-wrap items-center justify-between gap-4">
         <h1>{copy.title}</h1>
         <ThemeSwitch />
       </header>
       <p>{copy.intro}</p>
 
       <section aria-labelledby="tokens-icons">
-        <h2 id="tokens-icons">{copy.icons}</h2>
-        <ul className={styles.icons}>
+        <h2 id="tokens-icons" className="mt-8">
+          {copy.icons}
+        </h2>
+        <ul className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(96px,1fr))] gap-3 p-0 text-blue [&_code]:text-ink">
           {iconNames.map((name) => (
-            <li key={name}>
+            <li
+              key={name}
+              className="flex flex-col items-center gap-[0.4rem] rounded-12 border border-border bg-surface px-1 py-3"
+            >
               <Icon name={name} size={28} />
               <code>{name}</code>
             </li>
@@ -78,9 +94,11 @@ export default function TokensPage() {
       </section>
 
       <section aria-labelledby="tokens-colors">
-        <h2 id="tokens-colors">{copy.colors}</h2>
-        <div className={styles.tableWrap}>
-          <table className={styles.table}>
+        <h2 id="tokens-colors" className="mt-8">
+          {copy.colors}
+        </h2>
+        <div className="overflow-x-auto">
+          <table className={table}>
             <thead>
               <tr>
                 <th scope="col">{copy.token}</th>
@@ -112,10 +130,10 @@ export default function TokensPage() {
       </section>
 
       <section aria-labelledby="tokens-both">
-        <h2 id="tokens-both">
+        <h2 id="tokens-both" className="mt-8">
           {copy.light} / {copy.dark}
         </h2>
-        <div className={styles.previews}>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(280px,1fr))] gap-4">
           <Preview heading={copy.light} values={light} />
           <Preview heading={copy.dark} values={dark} />
         </div>

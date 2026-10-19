@@ -3,8 +3,8 @@ import { en } from '../copy/en.ts'
 import { AccountControl } from '../features/account/AccountMenu.tsx'
 import { paths } from '../paths.ts'
 import { ThemeSwitch } from '../theme/ThemeSwitch.tsx'
+import { cx } from '../lib/style.ts'
 import { Icon, type IconName } from './Icon.tsx'
-import styles from './Nav.module.css'
 
 type NavItem = { to: string; label: string; icon: IconName }
 
@@ -26,15 +26,28 @@ export type NavProps = {
   onNavigate?: () => void
 }
 
+// After classic/styles.css: .st-key-primary_navigation and .st-key-sidebar_account, full-width rows with the icon
+// before the label; the open page is filled blue.
+const link =
+  'flex min-h-[54px] items-center gap-4 rounded-12 border px-[1.2rem] py-2 text-16 leading-[1.3] font-medium no-underline [&_svg]:shrink-0'
+const openLink =
+  'border-fill bg-fill text-white shadow-[0_10px_20px_-12px_var(--track-fill)] hovered:bg-fill-hover hovered:text-white'
+const otherLink =
+  'border-border bg-surface text-navy hovered:border-hover-border hovered:bg-soft hovered:text-navy'
+
 /** The page links. The current page is marked with aria-current="page" (NavLink's own), and drawn filled. */
 export function Nav({ isAdmin = false, onNavigate }: NavProps) {
   const items = isAdmin ? [...PAGES, REPORTS] : PAGES
   return (
     <nav aria-label={en.nav.label}>
-      <ul className={styles.list}>
+      <ul className="m-0 flex list-none flex-col gap-[0.6rem] p-0">
         {items.map(({ to, label, icon }) => (
           <li key={to}>
-            <NavLink to={to} className={styles.link} onClick={onNavigate}>
+            <NavLink
+              to={to}
+              className={({ isActive }) => cx(link, isActive ? openLink : otherLink)}
+              onClick={onNavigate}
+            >
               <Icon name={icon} size="1.45rem" />
               {label}
             </NavLink>
@@ -53,11 +66,11 @@ type SidebarContentProps = NavProps & {
 /** The sidebar under the brand: the page links, the account control and the theme switch. */
 export function SidebarContent({ isAdmin = false, onNavigate, returnFocus }: SidebarContentProps) {
   return (
-    <div className={styles.sidebar}>
+    <div className="flex flex-col gap-[0.6rem]">
       <Nav isAdmin={isAdmin} onNavigate={onNavigate} />
       {/* In the phone menu, Sign in closes the menu first: the dialog opens over the page, not over the menu. */}
       <AccountControl variant="sidebar" onOpenSignIn={onNavigate} returnFocus={returnFocus} />
-      <div className={styles.theme}>
+      <div className="mt-4">
         <ThemeSwitch />
       </div>
     </div>

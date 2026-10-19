@@ -11,13 +11,10 @@ import { WithCatalog } from '../../components/WithCatalog.tsx'
 import { en } from '../../copy/en.ts'
 import { pageOf } from '../../lib/paging.ts'
 import { catalogNames, filterQualifications, sectorsOf } from '../../lib/qualifications.ts'
-import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
-import buttons from '../../styles/buttons.module.css'
-import utilities from '../../styles/utilities.module.css'
+import { button } from '../../styles/buttons.ts'
 import { useFinderStore } from '../finder/store.ts'
 import { QualificationCard } from './QualificationCard.tsx'
-import styles from './LibraryPage.module.css'
 
 const copy = en.library
 
@@ -117,28 +114,41 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
 
   return (
     <>
-      <section aria-labelledby={filtersId} className={styles.filters}>
-        <h2 id={filtersId} className={utilities.visuallyHidden}>
+      {/* After classic/styles.css's .st-key-library_filters: the search beside the sector, on one card. */}
+      <section
+        aria-labelledby={filtersId}
+        className="grid grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-4 rounded-18 bg-surface p-5 max-[801px]:grid-cols-1 max-xs:rounded-14 max-xs:p-[1.1rem]"
+      >
+        <h2 id={filtersId} className="sr-only">
           {copy.filters}
         </h2>
         <SearchField
-          className={styles.search}
+          className="flex min-w-0 flex-col gap-[0.35rem]"
           value={query}
           onChange={(value) => setFilter('q', value)}
         >
-          <Label className={styles.label}>{copy.search}</Label>
-          <div className={styles.searchBox}>
-            <Icon name="search" className={styles.searchIcon} />
-            <Input className={styles.input} placeholder={copy.searchPlaceholder} />
+          <Label className="text-15 font-semibold text-navy">{copy.search}</Label>
+          <div className="relative flex items-center">
+            <Icon
+              name="search"
+              className="pointer-events-none absolute left-[0.8rem] text-[1.15rem] text-muted"
+            />
+            {/* The browser's own clear button would double up with ours. */}
+            <Input
+              className="min-h-11.5 w-full rounded-12 border border-hover-border bg-surface py-[0.55rem] pr-11 pl-10 text-16 text-navy placeholder:text-muted placeholder:opacity-100 data-focused:border-blue data-hovered:border-blue [&::-webkit-search-cancel-button]:hidden"
+              placeholder={copy.searchPlaceholder}
+            />
             {query && (
-              <Button className={styles.clearSearch} aria-label={copy.clearSearch}>
+              <Button
+                className="absolute right-[0.3rem] grid size-9.5 cursor-pointer place-items-center rounded-9 border-0 bg-transparent text-muted data-hovered:bg-soft data-hovered:text-navy"
+                aria-label={copy.clearSearch}
+              >
                 <Icon name="close" />
               </Button>
             )}
           </div>
         </SearchField>
         <SelectField
-          className={styles.sector}
           label={copy.sector}
           options={sectorOptions}
           value={sector ?? ALL}
@@ -146,11 +156,11 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
         />
       </section>
 
-      <div className={styles.summaryRow}>
+      <div className="mt-4 mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <p
           ref={summary}
           tabIndex={-1}
-          className={styles.summary}
+          className="m-0 scroll-mt-4 text-14 text-muted focus:outline-none"
           aria-live="polite"
           aria-atomic="true"
         >
@@ -163,7 +173,7 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
             .join(' · ')}
         </p>
         {isFiltered && (
-          <Button className={cx(buttons.button, buttons.tertiary)} onPress={clearFilters}>
+          <Button className={button({ variant: 'tertiary' })} onPress={clearFilters}>
             <Icon name="filterOff" />
             {copy.clear}
           </Button>
@@ -173,7 +183,7 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
       {filtered.length === 0 ? (
         <EmptyState icon="search" heading={copy.empty.heading} body={copy.empty.body} />
       ) : (
-        <ul className={styles.cards}>
+        <ul className="m-0 grid list-none grid-cols-2 gap-4 p-0 max-[801px]:grid-cols-1">
           {shown.items.map((qualification) => (
             <li key={qualification.code}>
               <QualificationCard

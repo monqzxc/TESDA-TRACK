@@ -7,7 +7,6 @@ import { mockIntersectionObserver } from '../../test/intersectionObserver.ts'
 import { mockMediaQueries } from '../../test/matchMedia.ts'
 import { FINDER_KEY, GOAL_MAX_LENGTH, useFinderStore } from '../finder/store.ts'
 import { CATALOG, REGIONS } from './data.ts'
-import progress from './ProgressPreview.module.css'
 
 const REDUCE = '(prefers-reduced-motion: reduce)'
 const HEADING = 'Every career has a track. Find yours.'
@@ -245,13 +244,8 @@ describe('Home', () => {
       const fact = screen.getByText('units of competency to rate yourself on').closest('li')!
       expect(fact.querySelector('b')).toHaveTextContent('4,981')
       const steps = [...document.querySelectorAll('ol > li')]
-      const state = (step: Element) =>
-        step.classList.contains(progress.done)
-          ? 'done'
-          : step.classList.contains(progress.next)
-            ? 'next'
-            : 'to do'
-      expect(steps.map(state)).toEqual(['done', 'done', 'next', 'to do'])
+      const state = (step: Element) => step.getAttribute('data-state')
+      expect(steps.map(state)).toEqual(['done', 'done', 'next', 'to-do'])
     })
   })
 })

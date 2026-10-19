@@ -3,7 +3,7 @@ import { Button, Form } from 'react-aria-components'
 import { en } from '../copy/en.ts'
 import { failureMessage, Field, fieldText, isEmail } from './fields.tsx'
 import { useAuth } from './useAuth.ts'
-import styles from './forms.module.css'
+import { formStyle, submitButton } from './styles.ts'
 
 const copy = en.account.signInForm
 
@@ -40,7 +40,7 @@ export function SignInForm({ defaultEmail, focusFirstField = false, onSignedIn }
   }
 
   return (
-    <Form onSubmit={submit} className={styles.form}>
+    <Form onSubmit={submit} className={formStyle.form}>
       <Field
         name="email"
         type="email"
@@ -63,14 +63,11 @@ export function SignInForm({ defaultEmail, focusFirstField = false, onSignedIn }
         validate={(value) => (value ? null : copy.missingPassword)}
       />
       {error && (
-        <p role="alert" className={styles.error}>
+        <p role="alert" className={formStyle.error}>
           {error}
         </p>
       )}
-      <Button
-        type="submit"
-        className={isPending ? `${styles.submit} ${styles.pending}` : styles.submit}
-      >
+      <Button type="submit" className={submitButton(isPending)}>
         {isPending ? copy.pending : copy.submit}
       </Button>
     </Form>

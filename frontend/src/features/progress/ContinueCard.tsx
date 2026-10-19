@@ -4,13 +4,11 @@ import { Link, useNavigate } from 'react-router'
 import { useAuth } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { en } from '../../copy/en.ts'
-import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
-import buttons from '../../styles/buttons.module.css'
+import { button } from '../../styles/buttons.ts'
 import { useFinderStore } from '../finder/store.ts'
 import type { Continuation } from './journey.ts'
 import { resumeSession } from './resume.ts'
-import styles from './ProgressPage.module.css'
 
 const copy = en.progress.continue
 
@@ -32,7 +30,7 @@ export function ContinueCard({ next }: { next: Continuation }) {
 
   let text: string
   let action
-  const primary = cx(buttons.button, buttons.primary)
+  const primary = button({ variant: 'primary' })
   switch (next.kind) {
     case 'pathway':
       text = copy.pathway(next.enrollment.pathway.title)
@@ -97,13 +95,18 @@ export function ContinueCard({ next }: { next: Continuation }) {
   }
 
   return (
-    <section aria-labelledby={headingId} className={styles.continue}>
-      <span className={styles.continueIcon}>
+    <section
+      aria-labelledby={headingId}
+      className="flex flex-wrap items-center gap-x-5 gap-y-4 rounded-18 border border-banner-border bg-(image:--track-banner) px-5 py-[1.1rem]"
+    >
+      <span className="grid size-13 flex-none place-items-center rounded-14 bg-surface text-blue">
         <Icon name="route" size={26} />
       </span>
-      <div className={styles.continueText}>
-        <h2 id={headingId}>{copy.heading}</h2>
-        <p>{text}</p>
+      <div className="min-w-0 flex-[1_1_18rem]">
+        <h2 id={headingId} className="mt-0 mb-[0.2rem] text-[1.2rem] text-navy">
+          {copy.heading}
+        </h2>
+        <p className="m-0 text-15 wrap-anywhere text-ink">{text}</p>
       </div>
       {action}
     </section>

@@ -261,6 +261,24 @@ The app opens at http://localhost:5173. Other commands, run in `frontend/`:
 | Run the browser tests (first run `npx playwright install chromium`) | `npm run e2e` |
 | Regenerate the API types after changing the API (CI checks they match) | `npm run api:types` |
 
+**Styles** are Tailwind CSS utility classes in the components. `src/styles/app.css` sets up the theme: the
+colors come from the `--track-*` tokens in `src/styles/tokens.css` (copied from `classic/styles.css`, and
+`tokens.test.ts` fails if the two drift apart), plus the app's own type sizes, corners and breakpoints in place
+of Tailwind's. A few things to know:
+
+- **No Preflight.** `src/styles/base.css` is the reset. A border style class styles every side, so for a border
+  on one side start from `border-0` (`border-0 border-t border-dashed`).
+- **Write class names out whole.** Tailwind only generates the classes it finds in the source, so a name built
+  from a template string (`` `text-${size}` ``) gets no CSS. Map each value to a full class name instead.
+- **One class per property.** When two classes on an element set the same property, Tailwind's rule order
+  decides which one wins, not their order in `className`. Shared looks such as `button()` in
+  `src/styles/buttons.ts` pick one class per property for that reason.
+- **React Aria's states** have variants: `data-hovered:`, `data-pressed:`, `data-selected:` and so on, and
+  `hovered:` for mouse hover on both React Aria widgets and plain links.
+- **Leaflet's own markup** (map controls, popups) is styled in `src/features/training/center-map.css`, outside
+  the layers so it beats `leaflet.css`.
+- `npm run format` sorts the classes (`prettier-plugin-tailwindcss`).
+
 ### Everyday commands
 
 | Task | Command |

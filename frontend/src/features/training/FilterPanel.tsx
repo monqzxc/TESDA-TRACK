@@ -16,8 +16,7 @@ import { SelectField } from '../../components/SelectField.tsx'
 import { en } from '../../copy/en.ts'
 import { readItem, writeItem } from '../../lib/storage.ts'
 import { cx } from '../../lib/style.ts'
-import buttons from '../../styles/buttons.module.css'
-import utilities from '../../styles/utilities.module.css'
+import { button } from '../../styles/buttons.ts'
 import {
   DELIVERY_MODES,
   KINDS,
@@ -31,9 +30,35 @@ import {
 import { QualificationPicker } from './QualificationPicker.tsx'
 import { useTrainingFilters, useTrainingStore } from './state.ts'
 import type { CenterResults } from './useCenters.ts'
-import styles from './FilterPanel.module.css'
 
 const copy = en.training.filters
+
+const badge =
+  'inline-block min-w-[1.4rem] rounded-full bg-fill px-[0.45rem] py-[0.05rem] text-center text-12 leading-[1.35] font-bold text-white'
+const help = 'm-0 text-13 leading-[1.5] text-muted'
+const notice =
+  'm-0 flex items-start gap-[0.4rem] rounded-10 bg-warn-bg px-[0.7rem] py-[0.55rem] text-14 font-semibold text-warn-ink'
+const ring =
+  'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus'
+
+/**
+ * Center types as one joined bar: only the outer corners round, the chosen ones filled. Both chosen, a faint seam
+ * keeps the two halves readable.
+ */
+function kindClass(index: number, bothChosen: boolean): string {
+  return cx(
+    'inline-flex min-h-11 flex-[1_1_0] cursor-pointer items-center justify-center gap-[0.4rem] border border-border bg-surface px-2 text-13 font-semibold whitespace-nowrap text-navy',
+    'data-hovered:bg-soft data-selected:border-fill data-selected:bg-fill data-selected:text-white',
+    ring,
+    'data-focus-visible:relative data-focus-visible:z-1',
+    index === 0
+      ? 'rounded-[12px_0_0_12px]'
+      : cx(
+          'rounded-[0_12px_12px_0]',
+          bothChosen ? 'data-selected:border-l-[#ffffff59]' : 'border-l-0',
+        ),
+  )!
+}
 
 /** Whether the panel is folded away, kept for this browser. */
 const FOLDED_KEY = 'tesda-track.training-filters'
@@ -76,34 +101,53 @@ export function FilterPanel({ results }: { results: CenterResults }) {
   ]
   const regionName = results.regions.find((region) => region.code === results.region)?.name
 
+  // After classic/training.css's filter panel: a white card of sections divided by rules.
   return (
-    <section aria-labelledby={headingId} className={cx(styles.panel, folded && styles.folded)}>
-      <div className={styles.head}>
-        <h2 id={headingId} className={styles.heading}>
+    <section
+      aria-labelledby={headingId}
+      className="flex min-h-0 flex-col rounded-18 border border-border bg-surface px-[1.1rem] pt-[0.35rem] pb-[0.4rem]"
+    >
+      <div
+        className={cx(
+          'flex items-center gap-2 pt-[0.55rem] pb-[0.7rem]',
+          !folded && 'border-b border-rule',
+        )}
+      >
+        <h2
+          id={headingId}
+          className="m-0 flex flex-1 items-center gap-2 font-text text-17 font-bold tracking-normal text-navy"
+        >
           <Icon name="filter" />
           {copy.heading}
           {total > 0 && (
-            <span className={styles.badge}>
+            <span className={badge}>
               <span aria-hidden="true">{total}</span>
-              <span className={utilities.visuallyHidden}>, {copy.count(total)}</span>
+              <span className="sr-only">, {copy.count(total)}</span>
             </span>
           )}
         </h2>
-        <Button className={cx(buttons.button, buttons.tertiary, styles.clear)} onPress={clearAll}>
+        <Button
+          className={button({ variant: 'tertiary', height: 36, text: 14, medium: true })}
+          onPress={clearAll}
+        >
           {copy.clear}
         </Button>
+        {/* Fold the panel away: an icon button with its name for screen readers. */}
         <Button
-          className={styles.fold}
+          className="grid size-9.5 cursor-pointer place-items-center rounded-10 border border-border bg-surface text-navy shadow-[0_1px_3px_rgb(var(--track-shadow-rgb)/0.06)] data-hovered:bg-soft"
           aria-label={folded ? copy.show : copy.hide}
           aria-expanded={!folded}
           onPress={() => fold(!folded)}
         >
-          <Icon name="chevron" className={styles.foldIcon} />
+          <Icon
+            name="chevron"
+            className={cx('transition-transform duration-200 ease-[ease]', !folded && 'rotate-180')}
+          />
         </Button>
       </div>
 
       {!folded && (
-        <div className={styles.sections}>
+        <div className="min-h-0 [scrollbar-width:thin] overflow-y-auto overscroll-contain [&>*+*]:border-t [&>*+*]:border-rule">
           <Section
             icon="learn"
             title={copy.type}
@@ -112,7 +156,7 @@ export function FilterPanel({ results }: { results: CenterResults }) {
             open
           >
             <ToggleButtonGroup
-              className={styles.kinds}
+              className="flex"
               aria-label={copy.type}
               selectionMode="multiple"
               selectedKeys={kinds}
@@ -122,8 +166,12 @@ export function FilterPanel({ results }: { results: CenterResults }) {
                 set({ kinds: chosen.length === 1 ? chosen : [] })
               }}
             >
-              {KINDS.map((kind: CenterKind) => (
-                <ToggleButton key={kind} id={kind} className={styles.kind}>
+              {KINDS.map((kind: CenterKind, index) => (
+                <ToggleButton
+                  key={kind}
+                  id={kind}
+                  className={kindClass(index, kinds.length === KINDS.length)}
+                >
                   <Icon name={kind === 'training' ? 'learn' : 'clipboard'} />
                   {en.training.kinds[kind]}
                 </ToggleButton>
@@ -138,35 +186,42 @@ export function FilterPanel({ results }: { results: CenterResults }) {
             summary={where.join(' · ') || copy.anywhere}
             open
           >
+            {/* The location switch: a track with a thumb that slides across. */}
             <Switch
-              className={styles.switch}
+              className="group flex cursor-pointer items-center gap-3 text-15 font-semibold text-navy"
               isSelected={store.useLocation}
               onChange={store.setUseLocation}
             >
-              <span className={styles.track} aria-hidden="true">
-                <span className={styles.thumb} />
+              <span
+                className="relative h-6 w-[42px] flex-none rounded-full bg-dash transition-[background] duration-200 ease-[ease] group-data-focus-visible:outline-3 group-data-focus-visible:outline-offset-2 group-data-focus-visible:outline-focus group-data-selected:bg-fill"
+                aria-hidden="true"
+              >
+                <span className="absolute top-[3px] left-[3px] size-4.5 rounded-full bg-white shadow-[0_1px_3px_rgb(0_0_0/0.25)] transition-transform duration-200 ease-[ease] group-data-selected:translate-x-[18px]" />
               </span>
               {copy.useCurrent}
             </Switch>
-            <p className={styles.help}>{copy.locationHelp}</p>
+            <p className={help}>{copy.locationHelp}</p>
             <LocationStatus />
             <TextField
-              className={styles.place}
+              className="flex flex-col gap-[0.35rem]"
               value={store.placeText}
               onChange={store.setPlaceText}
               type="search"
             >
-              <Label className={styles.label}>{copy.place}</Label>
-              <div className={styles.inputBox}>
-                <Icon name="pin" className={styles.inputIcon} />
-                <Input className={styles.input} placeholder={copy.placePlaceholder} />
+              <Label className="text-14 font-semibold text-navy">{copy.place}</Label>
+              <div className="relative flex items-center">
+                <Icon name="pin" className="pointer-events-none absolute left-3 text-muted" />
+                <Input
+                  className="min-h-11 w-full rounded-12 border border-hover-border bg-surface py-2 pr-[0.8rem] pl-[2.3rem] text-15 text-navy placeholder:text-muted placeholder:opacity-100 data-focused:border-blue"
+                  placeholder={copy.placePlaceholder}
+                />
               </div>
-              <Text slot="description" className={styles.help}>
+              <Text slot="description" className={help}>
                 {copy.placeHelp}
               </Text>
             </TextField>
             {placeText && !results.place && !results.loading && (
-              <p className={styles.notice} role="status">
+              <p className={notice} role="status">
                 {copy.placeNotFound(placeText)}
               </p>
             )}
@@ -295,22 +350,26 @@ function Section({
   const [isOpen, setOpen] = useState(open)
   return (
     <details
-      className={styles.section}
+      className="group"
       open={isOpen}
       onToggle={(event) => setOpen(event.currentTarget.open)}
     >
-      <summary>
-        <Icon name={icon} className={styles.sectionIcon} />
-        <span className={styles.sectionText}>
-          <span className={styles.sectionTitle}>
+      <summary className="flex cursor-pointer list-none items-start gap-3 pt-3 pb-[0.65rem] text-navy hovered:text-blue [&::-webkit-details-marker]:hidden">
+        <Icon name={icon} className="mt-[0.15rem] flex-none text-[1.3rem]" />
+        <span className="flex min-w-0 flex-1 flex-col">
+          <span className="flex items-center gap-[0.4rem] text-17 font-semibold">
             {title}
-            {count > 0 && <span className={styles.badge}>{count}</span>}
+            {count > 0 && <span className={badge}>{count}</span>}
           </span>
-          {!isOpen && <span className={styles.summary}>{summary}</span>}
+          {/* What a folded section holds, under its title. */}
+          {!isOpen && <span className="truncate text-15 text-muted">{summary}</span>}
         </span>
-        <Icon name="chevron" className={styles.chevron} />
+        <Icon
+          name="chevron"
+          className="mt-[0.15rem] flex-none text-[1.3rem] transition-transform duration-200 ease-[ease] group-open:rotate-180"
+        />
       </summary>
-      <div className={styles.body}>{children}</div>
+      <div className="flex flex-col gap-3 pb-[0.85rem]">{children}</div>
     </details>
   )
 }
@@ -321,7 +380,7 @@ function LocationStatus() {
   const error = useTrainingStore((state) => state.locationError)
   if (error) {
     return (
-      <p className={styles.notice} role="status">
+      <p className={notice} role="status">
         <Icon name="pin" />
         {copy.locationErrors[error]}
       </p>
@@ -329,7 +388,7 @@ function LocationStatus() {
   }
   if (locating) {
     return (
-      <p className={styles.help} role="status">
+      <p className={help} role="status">
         {copy.locating}
       </p>
     )

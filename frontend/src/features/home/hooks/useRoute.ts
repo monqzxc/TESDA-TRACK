@@ -80,7 +80,7 @@ export function useRoute() {
 
   // The road's shape follows the waypoints: built once the track is laid out, and again when it changes size (as
   // when the fonts arrive). Home's lower sections are only laid out near the window (content-visibility, see
-  // HomePage.module.css), so the track is measured when the browser reports its size, never before: measuring it
+  // styles/home.css), so the track is measured when the browser reports its size, never before: measuring it
   // earlier would lay out the whole section while the page first loads.
   useEffect(() => {
     const track = trackRef.current

@@ -10,7 +10,7 @@ import { prefetch } from '../../lib/prefetch.ts'
 import { reloadPage } from '../../lib/reload.ts'
 import { loadSignedInMenu } from './loaders.ts'
 import { shownName, type Variant } from './variant.ts'
-import styles from './AccountMenu.module.css'
+import { accountButton, accountName, control } from './styles.ts'
 
 const copy = en.account
 
@@ -34,7 +34,7 @@ function AccountButton({ learner, variant, className, isDisabled, onPress }: Acc
       aria-label={`${copy.menu.label}: ${learner.full_name}`}
     >
       <Icon name="person" size={variant === 'sidebar' ? '1.45rem' : '1.2rem'} />
-      <span className={styles.name}>{shownName(learner.full_name, variant)}</span>
+      <span className={accountName}>{shownName(learner.full_name, variant)}</span>
     </Button>
   )
 }
@@ -89,7 +89,7 @@ export function AccountControl({
   }, [isChecking])
 
   const buttonClass = [
-    variant === 'sidebar' ? styles.sidebarButton : styles.headerButton,
+    variant === 'sidebar' ? accountButton.sidebar : accountButton.header,
     buttonClassName,
   ]
     .filter(Boolean)
@@ -104,10 +104,7 @@ export function AccountControl({
   const prepareSignIn = () => prefetch(loadSignInDialog)
 
   return (
-    <div
-      ref={wrapper}
-      className={variant === 'sidebar' ? styles.sidebarControl : styles.headerControl}
-    >
+    <div ref={wrapper} className={variant === 'sidebar' ? control.sidebar : control.header}>
       {learner ? (
         // The menu's code couldn't be downloaded: the same button says so, and offers to reload.
         <LoadBoundary
