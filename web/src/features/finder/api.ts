@@ -20,10 +20,10 @@ const MINUTE = 60_000
 /** A goal's analysis: the API's reading of it. Signed in, it starts a saved recommendation session. */
 export async function analyzeGoal(
   query: string,
-  signedIn: boolean,
+  requestId: string | null,
 ): Promise<{ profile: Profile; sessionId: string | null }> {
-  if (signedIn) {
-    const session = await unwrap(api.POST('/api/v1/me/recommendations', { body: { query } }))
+  if (requestId) {
+    const session = await startSession(query, requestId)
     return { profile: session.profile, sessionId: session.id }
   }
   const analysis = await unwrap(api.POST('/api/v1/analysis/goal', { body: { query } }))
@@ -79,7 +79,7 @@ export const curatedPathwaysQuery = (code: string, route: PathwayRoute) =>
 export async function submitReadiness(
   code: string,
   answers: Answers,
-  saveTo: { sessionId: string | null } | null,
+  saveTo: { sessionId: string | null; requestId: string } | null,
 ): Promise<ReadinessResult> {
   if (saveTo) {
     return unwrap(
@@ -88,6 +88,7 @@ export async function submitReadiness(
           qualification_code: code,
           answers,
           recommendation_session_id: saveTo.sessionId,
+          request_id: saveTo.requestId,
         },
       }),
     )
@@ -98,8 +99,11 @@ export async function submitReadiness(
 }
 
 /** Starts a saved recommendation session for a goal analysed while signed out. */
-export async function startSession(query: string): Promise<RecommendationSession> {
-  return unwrap(api.POST('/api/v1/me/recommendations', { body: { query } }))
+export async function startSession(
+  query: string,
+  requestId: string,
+): Promise<RecommendationSession> {
+  return unwrap(api.POST('/api/v1/me/recommendations', { body: { query, request_id: requestId } }))
 }
 
 /** Saves the follow-up answers and the chosen qualification to the learner's recommendation session. */

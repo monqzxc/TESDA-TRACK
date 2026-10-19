@@ -1,5 +1,6 @@
 import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent, { type UserEvent } from '@testing-library/user-event'
+import { http, HttpResponse } from 'msw'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import { PASSWORD, maria, rememberSignIn, serveAccountApi } from '../../test/account.tsx'
 import { renderApp } from '../../test/app.tsx'
@@ -8,9 +9,11 @@ import {
   serveFinderApi,
   serveFinderCatalog,
   welding,
+  welderProfile,
   type FinderRequest,
 } from '../../test/finder.ts'
 import { FINDER_KEY, useFinderStore } from './store.ts'
+import { server } from '../../test/server.ts'
 
 const GOAL = 'I want to be a welder.'
 
@@ -316,6 +319,42 @@ describe('Find my pathway', () => {
 })
 
 describe('Find my pathway, signed in', () => {
+  it('retries a failed goal with its receipt and changes the receipt for a new goal', async () => {
+    rememberSignIn()
+    serveAccountApi({ signedIn: true })
+    serveFinderCatalog()
+    serveFinderApi()
+    const bodies: { query: string; request_id: string }[] = []
+    server.use(
+      http.post('*/api/v1/me/recommendations', async ({ request }) => {
+        bodies.push((await request.json()) as { query: string; request_id: string })
+        return bodies.length < 3
+          ? HttpResponse.error()
+          : HttpResponse.json({ id: 'session-1', profile: welderProfile }, { status: 201 })
+      }),
+    )
+    const user = userEvent.setup()
+    await openFinder()
+    await screen.findByText('Your results are saved to My Progress.')
+    await user.click(screen.getByRole('button', { name: 'Become a welder' }))
+    const send = () => user.click(screen.getByRole('button', { name: 'Get recommendation' }))
+
+    await send()
+    await screen.findByText(
+      "We can't reach the TESDA-TRACK service right now. Please try again shortly.",
+    )
+    await send()
+    await waitFor(() => expect(bodies).toHaveLength(2))
+    await screen.findByRole('button', { name: 'Get recommendation' })
+    expect(bodies[1].request_id).toBe(bodies[0].request_id)
+    expect(bodies[0].request_id).toMatch(/^[0-9a-f-]{36}$/i)
+
+    await user.click(screen.getByRole('button', { name: 'Work in a hotel' }))
+    await send()
+    await screen.findByRole('article', { name: welding.name })
+    expect(bodies[2].request_id).not.toBe(bodies[0].request_id)
+  })
+
   it('saves the goal as a session, keeps its answers and choice in step, and saves the check with it', async () => {
     rememberSignIn()
     const account = serveAccountApi({ signedIn: true })
@@ -331,6 +370,7 @@ describe('Find my pathway, signed in', () => {
 
     expect(sent(api.requests, 'POST', '/api/v1/me/recommendations')[0].body).toEqual({
       query: GOAL,
+      request_id: expect.any(String),
     })
     expect(sent(api.requests, 'POST', '/api/v1/analysis/goal')).toEqual([])
     expect(screen.getByText('Saved to My Progress')).toBeInTheDocument()
@@ -355,6 +395,7 @@ describe('Find my pathway, signed in', () => {
     expect(sent(api.requests, 'POST', '/api/v1/me/readiness-checks')[0].body).toMatchObject({
       qualification_code: welding.code,
       recommendation_session_id: 'session-1',
+      request_id: expect.any(String),
     })
     expect(sent(api.requests, 'POST', '/api/v1/analysis/readiness')).toEqual([])
     // Every write carried the header that cookie sign-in requires.
@@ -397,6 +438,7 @@ describe('Find my pathway, signed in', () => {
       qualification_code: welding.code,
       answers: { 1: 'confident', 2: 'confident', 3: 'confident', 4: 'not_familiar' },
       recommendation_session_id: 'session-1',
+      request_id: expect.any(String),
     })
     expect(await screen.findByText('Saved to My Progress')).toBeInTheDocument()
     // The journey is the learner's own now: the same work isn't sent again.

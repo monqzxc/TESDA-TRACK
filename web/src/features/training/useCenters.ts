@@ -1,9 +1,10 @@
 import { keepPreviousData, useQueries, useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { regionsQuery, type Qualification } from '../../api/queries.ts'
+import { useAuth } from '../../auth/useAuth.ts'
 import { throwWithoutData } from '../../components/QueryBoundary.tsx'
 import { useFinderStore } from '../finder/store.ts'
-import { clientConfigQuery, fitQuery, listingsQuery, sitesQuery } from './api.ts'
+import { clientConfigQuery, fitQuery, listingsQuery, sitesQuery, type ProgramFit } from './api.ts'
 import {
   buildCenters,
   filterCenters,
@@ -32,6 +33,7 @@ export interface Reference extends Point {
  * can't do without goes to the QueryBoundary around it if it fails.
  */
 export function useCenters(catalog: readonly Qualification[]) {
+  const { learner } = useAuth()
   const { filters } = useTrainingFilters()
   const location = useTrainingStore((state) => (state.useLocation ? state.location : null))
   const placeText = useTrainingStore((state) => state.placeText)
@@ -148,6 +150,7 @@ export function useCenters(catalog: readonly Qualification[]) {
   const fits = useQueries({
     queries: fitCodes.map((code) =>
       fitQuery({
+        learnerId: learner?.id ?? null,
         code,
         goal,
         place: location ? null : place,
@@ -156,7 +159,7 @@ export function useCenters(catalog: readonly Qualification[]) {
       }),
     ),
     combine: (results) => {
-      const merged = new Map<number, { score: number; explanation: string[] }>()
+      const merged = new Map<number, ProgramFit>()
       for (const result of results) for (const [id, fit] of result.data ?? []) merged.set(id, fit)
       return merged
     },

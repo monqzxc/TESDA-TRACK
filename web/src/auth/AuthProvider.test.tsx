@@ -217,6 +217,24 @@ describe('signing in', () => {
     )
   })
 
+  it('drops guest training fits on sign-in while keeping public listings', async () => {
+    const user = userEvent.setup()
+    serveAccountApi()
+    const client = createTestQueryClient()
+    const fitKey = ['training', 'fit', 'SMAW-NC-II', null, null, null, false]
+    const listingKey = ['training', 'listings', ['SMAW-NC-II']]
+    client.setQueryData(fitKey, new Map())
+    client.setQueryData(listingKey, { programs: [], schedules: [], truncated: false })
+    await openApp('/qualifications', client)
+    await user.click(screen.getByRole('button', { name: 'Sign in' }))
+
+    await signInWithDialog(user)
+
+    await findAccountButton()
+    expect(client.getQueryData(fitKey)).toBeUndefined()
+    expect(client.getQueryData(listingKey)).toBeDefined()
+  })
+
   it('says why an email or password is missing, and sends nothing', async () => {
     const user = userEvent.setup()
     const account = serveAccountApi()
@@ -558,6 +576,8 @@ describe('another tab', () => {
     serveAccountApi({ signedIn: true })
     const client = createTestQueryClient()
     client.setQueryData(['me', 'goals'], [{ title: 'Become an electrician' }])
+    const fitKey = ['training', 'fit', 'SMAW-NC-II', null, null, null, false]
+    client.setQueryData(fitKey, new Map([[1, { score: 90, explanation: [] }]]))
     await openApp('/qualifications', client)
     await findAccountButton()
 
@@ -568,6 +588,7 @@ describe('another tab', () => {
     await findAccountButton(admin.full_name)
     expect(screen.queryByRole('button', { name: /Maria Santos/ })).not.toBeInTheDocument()
     expect(client.getQueryData(['me', 'goals'])).toBeUndefined()
+    expect(client.getQueryData(fitKey)).toBeUndefined()
   })
 
   it('signing in there shows the learner in a tab that had never signed in', async () => {

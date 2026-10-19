@@ -21,10 +21,11 @@ export const sessionKey = ['session'] as const
 
 /**
  * Queries that hold data belonging to the signed-in account start with one of these keys: the learner's own
- * records under ['me', ...] and administrator data under ['admin', ...]. Signing out, a new sign-in and an expired
- * session remove them all, so nothing from one account is left for the next person on a shared computer.
+ * records under ['me', ...], administrator data under ['admin', ...], and training fits that depend on the learner's
+ * certificates. Signing out, a new sign-in and an expired session remove them all, so another account or a guest
+ * never reuses the previous learner's eligibility results.
  */
-export const accountQueryKeys = [['me'], ['admin']] as const
+export const accountQueryKeys = [['me'], ['admin'], ['training', 'fit']] as const
 
 /**
  * Set while this browser may hold a session cookie: from a sign-in until a sign-out or a refused cookie. Without it

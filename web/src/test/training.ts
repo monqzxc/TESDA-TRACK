@@ -92,6 +92,22 @@ export const manilaAssessment = site(
 ) as AssessmentSite
 
 export const weldingProgram: Program = {
+  verification: {
+    status: 'verified',
+    source_name: 'Test registry',
+    source_reference: 'test-record-11',
+    reviewed_at: '2020-01-01T00:00:00Z',
+    review_due_at: '2101-01-01T00:00:00Z',
+    is_synthetic: false,
+    requirements_reviewed: true,
+    requirements: [],
+  },
+  availability: {
+    status: 'available',
+    source_reference: 'test-intake-11',
+    checked_at: '2020-01-01T00:00:00Z',
+    valid_until: '2101-01-01T00:00:00Z',
+  },
   id: 11,
   title: 'Shielded Metal Arc Welding (SMAW) NC II · Evening batch',
   description: 'Weld plates and pipes in an industry workshop.',
@@ -132,6 +148,8 @@ export const mobileProgram: Program = {
 }
 
 export const weldingAssessment: Schedule = {
+  verification: weldingProgram.verification,
+  availability: weldingProgram.availability,
   id: 21,
   qualification: weldingProgram.qualification,
   center: summaryOf(manilaAssessment),

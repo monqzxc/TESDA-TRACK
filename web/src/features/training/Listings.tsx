@@ -12,9 +12,10 @@ import { en } from '../../copy/en.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import buttons from '../../styles/buttons.module.css'
-import { applyForAssessment, type Application } from './api.ts'
+import { applyForAssessment, type Application, type ProgramFit } from './api.ts'
 import { friendlyDay, placeLabel, type Center, type Program, type Schedule } from './centers.ts'
-import { localTime, programCost, programFacts, scheduleFee } from './format.ts'
+import { deliveryLabel, localTime, programCost, programFacts, scheduleFee } from './format.ts'
+import { canReviewApplication, evidenceMessages } from './evidence.ts'
 import styles from './Listings.module.css'
 
 const copy = en.training
@@ -22,7 +23,15 @@ const copy = en.training
 /** Listings shown under a center before View all (frontend/training_view.py PREVIEW). */
 const PREVIEW = 2
 
-export type Fits = ReadonlyMap<number, { score: number; explanation: string[] }>
+export type Fits = ReadonlyMap<number, ProgramFit>
+
+function ServiceEvidence({ service }: { service: Program | Schedule }) {
+  return evidenceMessages(service).map((message) => (
+    <p key={message} className={styles.muted}>
+      {message}
+    </p>
+  ))
+}
 
 /** The trade's photo when the listing is for one, the center's otherwise. Decoration: the text names it. */
 function listingPhoto(listing: Program | Schedule): string {
@@ -107,7 +116,7 @@ function ProgramCard({
   onOpen,
 }: {
   program: Program
-  fit?: { score: number; explanation: string[] }
+  fit?: ProgramFit
   today: string
   onOpen: () => void
 }) {
@@ -124,9 +133,10 @@ function ProgramCard({
           <p className={styles.muted}>{qualification}</p>
         )}
         <p className={styles.facts}>{programFacts(program, today).join(' • ')}</p>
+        <ServiceEvidence service={program} />
         {(fit || program.scholarship_available) && (
           <p className={styles.badges}>
-            {fit && (
+            {fit?.score !== undefined && (
               <span className={styles.fit}>
                 <Icon name="sparkle" />
                 {copy.programs.fit(fit.score)}
@@ -144,7 +154,7 @@ function ProgramCard({
           <details className={styles.why}>
             <summary>
               <Icon name="info" />
-              {copy.programs.why}
+              {fit.score === undefined ? 'Service verification' : copy.programs.why}
             </summary>
             <ul>
               {fit.explanation.map((reason) => (
@@ -173,14 +183,14 @@ function ProgramDialog({
 }: {
   program: Program
   center: Center
-  fit?: { score: number; explanation: string[] }
+  fit?: ProgramFit
   today: string
   onClose: () => void
 }) {
   const facts = copy.program
   const rows: [string, string | null][] = [
     [facts.where, `${center.name}, ${placeLabel(center)}`],
-    [facts.how, copy.delivery[program.delivery_mode]],
+    [facts.how, deliveryLabel(program.delivery_mode)],
     [facts.duration, program.duration_hours ? copy.programs.hours(program.duration_hours) : null],
     [
       facts.starts,
@@ -206,7 +216,9 @@ function ProgramDialog({
             {program.qualification.sector ? ` · ${program.qualification.sector}` : ''}
           </p>
           <p className={styles.badges}>
-            {fit && <span className={styles.fit}>{copy.programs.fit(fit.score)}</span>}
+            {fit?.score !== undefined && (
+              <span className={styles.fit}>{copy.programs.fit(fit.score)}</span>
+            )}
             {program.scholarship_available && (
               <span className={styles.scholarship}>{copy.programs.scholarship}</span>
             )}
@@ -224,9 +236,12 @@ function ProgramDialog({
           ))}
       </dl>
       {program.description && <p className={styles.description}>{program.description}</p>}
+      <ServiceEvidence service={program} />
       {fit && fit.explanation.length > 0 && (
         <>
-          <h3 className={styles.subheading}>{copy.programs.why}</h3>
+          <h3 className={styles.subheading}>
+            {fit.score === undefined ? 'Service verification' : copy.programs.why}
+          </h3>
           <ul className={styles.reasons}>
             {fit.explanation.map((reason) => (
               <li key={reason}>{reason}</li>
@@ -292,8 +307,13 @@ function ScheduleCard({ schedule, onApply }: { schedule: Schedule; onApply: () =
         <p className={styles.facts}>
           {copy.schedules.seats(schedule.seats_left, schedule.slots)} • {scheduleFee(schedule)}
         </p>
+        <ServiceEvidence service={schedule} />
         {open ? (
-          <Button className={cx(buttons.button, buttons.primary, styles.apply)} onPress={onApply}>
+          <Button
+            className={cx(buttons.button, buttons.primary, styles.apply)}
+            onPress={onApply}
+            isDisabled={!canReviewApplication(schedule)}
+          >
             {copy.schedules.apply}
           </Button>
         ) : (
@@ -319,8 +339,10 @@ function ApplyDialog({
 }) {
   const queryClient = useQueryClient()
   const facts = copy.apply
+  // Keep the receipt key across uncertain responses and retries within this review.
+  const [requestId] = useState(() => crypto.randomUUID())
   const apply = useMutation({
-    mutationFn: () => applyForAssessment(schedule.id),
+    mutationFn: () => applyForAssessment(schedule.id, requestId),
     // Seats changed, and My Progress has a new application.
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['training', 'listings'] })
@@ -370,6 +392,7 @@ function ApplyDialog({
       ) : (
         <>
           <p className={styles.description}>{facts.review}</p>
+          <ServiceEvidence service={schedule} />
           {error && (
             <p role="alert" className={styles.error}>
               {/* Full, or already applied: the API says which (409, 422). */}
@@ -383,6 +406,7 @@ function ApplyDialog({
             <Button
               className={cx(buttons.button, buttons.primary)}
               isPending={apply.isPending}
+              isDisabled={!canReviewApplication(schedule)}
               onPress={() => apply.mutate()}
             >
               {apply.isPending ? facts.pending : facts.submit}
