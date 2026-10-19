@@ -2,6 +2,7 @@ import type { MouseEvent } from 'react'
 import { Outlet, ScrollRestoration } from 'react-router'
 import { useAuth } from '../auth/useAuth.ts'
 import { en } from '../copy/en.ts'
+import { FirstVisitNotice } from '../features/privacy/FirstVisitNotice.tsx'
 import { useCurrentPage, useFocusOnNavigation, usePageTitle } from '../lib/navigation.ts'
 import { Brand } from './Brand.tsx'
 import { HomeFooter } from './HomeFooter.tsx'
@@ -12,7 +13,8 @@ import styles from './Layout.module.css'
 
 /**
  * The root route, around every page: the title follows the page, focus moves to its heading after a navigation,
- * and ScrollRestoration starts new pages at the top and puts Back where the learner left off.
+ * and ScrollRestoration starts new pages at the top and puts Back where the learner left off. A first visit opens
+ * with the privacy notice over the page.
  */
 export function Root() {
   usePageTitle(useCurrentPage())
@@ -21,6 +23,7 @@ export function Root() {
     <>
       <ScrollRestoration />
       <Outlet />
+      <FirstVisitNotice />
     </>
   )
 }

@@ -65,3 +65,32 @@ main:empty ~ .footer {
   font-weight: 400;
   color: var(--band-accent);
 }
+
+/* An outlined button on the band, like the landing page's light-on-navy links. */
+.privacy {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.5rem 1rem;
+  border: 1px solid rgb(255 255 255 / 0.25);
+  border-radius: 12px;
+  color: #ffffff;
+  font-weight: 650;
+  text-decoration: none;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.privacy svg {
+  flex: none;
+  width: 1.15em;
+  height: 1.15em;
+  color: var(--band-accent);
+}
+
+.privacy:hover {
+  border-color: rgb(255 255 255 / 0.5);
+  background: rgb(255 255 255 / 0.08);
+}

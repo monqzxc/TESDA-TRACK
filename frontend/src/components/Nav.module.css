@@ -56,3 +56,28 @@
 .theme {
   margin-top: 1rem;
 }
+
+.privacy {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.4rem 0.6rem;
+  border-radius: 10px;
+  color: var(--track-blue);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.privacy:hover {
+  background: var(--track-soft);
+  color: var(--track-blue);
+}
+
+.privacy[aria-current='page'] {
+  color: var(--track-navy);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}

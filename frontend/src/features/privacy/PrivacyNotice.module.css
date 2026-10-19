@@ -1,0 +1,52 @@
+/* The privacy notice, in ModalDialog's card: the four points, each after its icon, then the two actions. */
+.lead {
+  margin: 0 0 0.9rem;
+  color: var(--track-ink);
+  line-height: 1.55;
+}
+
+.points {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin: 0 0 1.4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  color: var(--track-ink);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+
+.icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--track-soft);
+  color: var(--track-blue);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.6rem;
+}
+
+@media (max-width: 520px) {
+  .actions {
+    flex-direction: column-reverse;
+  }
+
+  .actions > * {
+    width: 100%;
+  }
+}

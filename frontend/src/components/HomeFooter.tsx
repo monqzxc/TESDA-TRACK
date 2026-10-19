@@ -2,11 +2,15 @@ import { Link } from 'react-router'
 import { en } from '../copy/en.ts'
 import { paths } from '../paths.ts'
 import { logoSrc } from './Brand.tsx'
+import { Icon } from './Icon.tsx'
 import styles from './HomeFooter.module.css'
 
 const [first, second] = en.brand.wordmark
 
-/** Home's footer, from the landing page: the brand and what the pilot's matches and checks are worth. */
+/**
+ * Home's footer, from the landing page: the brand, what the pilot's matches and checks are worth, and the privacy
+ * policy.
+ */
 export function HomeFooter() {
   return (
     <footer className={styles.footer}>
@@ -19,6 +23,10 @@ export function HomeFooter() {
           </span>
         </Link>
         <p>{en.home.footer}</p>
+        <Link to={paths.privacy} className={styles.privacy}>
+          <Icon name="document" />
+          {en.privacy.link}
+        </Link>
       </div>
     </footer>
   )

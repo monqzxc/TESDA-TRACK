@@ -50,7 +50,10 @@ type SidebarContentProps = NavProps & {
   returnFocus?: () => HTMLElement | null
 }
 
-/** The sidebar under the brand: the page links, the account control and the theme switch. */
+/**
+ * The sidebar under the brand: the page links, the account control, the theme switch, and the privacy policy, a
+ * quieter link than the pages'.
+ */
 export function SidebarContent({ isAdmin = false, onNavigate, returnFocus }: SidebarContentProps) {
   return (
     <div className={styles.sidebar}>
@@ -60,6 +63,10 @@ export function SidebarContent({ isAdmin = false, onNavigate, returnFocus }: Sid
       <div className={styles.theme}>
         <ThemeSwitch />
       </div>
+      <NavLink to={paths.privacy} className={styles.privacy} onClick={onNavigate}>
+        <Icon name="document" size="1.15rem" />
+        {en.privacy.link}
+      </NavLink>
     </div>
   )
 }

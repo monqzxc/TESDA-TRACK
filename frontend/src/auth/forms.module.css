@@ -137,6 +137,16 @@
   line-height: 1.55;
 }
 
+.privacyLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
+  color: var(--track-blue);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
 .checkField {
   display: flex;
   flex-direction: column;

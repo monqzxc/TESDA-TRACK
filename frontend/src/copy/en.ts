@@ -318,6 +318,11 @@ export const en = {
       heading: 'Sign in',
       lead: 'Sign in to save your progress and pick up where you left off.',
     },
+    privacy: {
+      title: 'Privacy policy · TESDA-TRACK',
+      heading: 'Privacy policy',
+      lead: 'What TESDA Track collects, why, who sees it, and how you stay in control of it.',
+    },
     notFound: {
       title: 'Page not found · TESDA-TRACK',
       heading: 'Page not found',
@@ -1233,6 +1238,7 @@ export const en = {
         'TESDA-TRACK keeps your name, email, goals, recommendations, readiness checks and certifications so you ' +
         'can follow your progress. They are used only to run this pilot and are never sold. You can download or ' +
         'permanently delete your data from your account menu at any time.',
+      privacyLink: 'Read the full privacy policy (opens in a new tab)',
       consent: 'I agree to the privacy notice',
       submit: 'Create account',
       pending: 'Creating your account…',
@@ -1292,6 +1298,254 @@ export const en = {
       signedOut:
         'Reports are only available to administrator accounts. Sign in with one to see them.',
       action: 'Sign in',
+    },
+  },
+  // The privacy notice on a first visit and the privacy policy at /privacy (RA 10173). They describe what the API
+  // and the app keep (backend/tesda_track/models, and the browser keys in lib/storage.ts and the feature stores):
+  // change them together. A changed policy gets a new PRIVACY_NOTICE_VERSION in features/privacy/notice.ts.
+  privacy: {
+    link: 'Privacy policy',
+    notice: {
+      title: 'Your privacy on TESDA Track',
+      lead: 'TESDA Track is a pilot, and it collects some data to work. In short:',
+      // Also the policy's summary.
+      points: [
+        'Find my pathway sends your goal and answers to our server to find your matches. Without an account they stay in this browser tab, and our server keeps only a coded fingerprint of your goal and daily counts.',
+        'With an account, we keep your name, email and progress (goals, readiness checks, certifications and applications) until you delete it.',
+        'Your location is used only if you allow it, rounded to about 1 km, to find centers near you.',
+        'We never sell your data or use it for advertising. You can download it or delete your account at any time.',
+      ],
+      read: 'Read the privacy policy',
+      accept: 'I understand',
+      close: 'Close the privacy notice',
+    },
+    updated: 'Last updated 19 October 2026',
+    summary: 'In short',
+    contents: 'On this page',
+    sections: [
+      {
+        id: 'who-we-are',
+        heading: 'Who we are',
+        paragraphs: [
+          'TESDA Track (TESDA-TRACK) helps learners find TESDA qualifications, training programs and assessment centers that fit their goals. It is a pilot, run by the TESDA-TRACK pilot team on the pilot’s own server.',
+          'We handle your personal information under the Data Privacy Act of 2012 (Republic Act No. 10173). This page explains what we collect and why, in plain words.',
+        ],
+      },
+      {
+        id: 'without-an-account',
+        heading: 'When you use TESDA Track without an account',
+        paragraphs: [
+          'You can find a pathway, browse qualifications and look for training without signing up. When you do:',
+        ],
+        items: [
+          {
+            term: 'Your goal and answers',
+            detail:
+              'What you type in Find my pathway is sent to our server to find your matches. It isn’t saved with anything that identifies you. We keep a coded fingerprint of your goal, which can’t be turned back into your words, with the qualifications we showed and how they were ranked, so we can check that the ranking is fair and working.',
+          },
+          {
+            term: 'Daily counts',
+            detail:
+              'How many goals were matched each day, and how many found no match. Only the totals are kept.',
+          },
+          {
+            term: 'Your location, only if you allow it',
+            detail:
+              'Your browser asks you first. The app rounds your location to about 1 km and uses it to sort centers by distance and to get directions. Where a location is kept with a ranking record, it is rounded to about 11 km, too rough to find a person.',
+          },
+          {
+            term: 'Skills Explorer searches',
+            detail:
+              'We pick out the skill and role words from what you type and send only those to Skills Bridge. Your sentence, name, email and account are not sent.',
+          },
+          {
+            term: 'Your network address',
+            detail:
+              'Like every website, our server sees your device’s IP address. It is used, in memory only, to limit how many requests one device can make each minute. Our server’s logs may record it with the time and the address of the page asked for, but never what you type: goals and searches never go into web addresses, and locations are removed from the logs.',
+          },
+        ],
+      },
+      {
+        id: 'with-an-account',
+        heading: 'When you create an account',
+        paragraphs: [
+          'An account lets you save your progress. You create one only after agreeing to the privacy notice, and we then keep:',
+        ],
+        items: [
+          {
+            term: 'Account details',
+            detail:
+              'Your full name, email address and password. The password is stored only as a one-way code that no one, including us, can read. We also record when you agreed to the privacy notice, and to protect your account we count failed sign-ins and may lock it for a short while.',
+          },
+          {
+            term: 'Goals and recommendations',
+            detail:
+              'The goals you set (with a target qualification and date, if you choose them), the goal you typed in Find my pathway, your answers to its questions, and the matches and pathway we suggested.',
+          },
+          {
+            term: 'Readiness checks',
+            detail:
+              'How you rated yourself on each competency, with the score and level the check gave you.',
+          },
+          {
+            term: 'Certifications',
+            detail:
+              'The certifications you add: title, certificate number, issuing body and dates, and whether they have been verified.',
+          },
+          {
+            term: 'Assessment applications',
+            detail:
+              'The assessment schedules you apply for, the status of each application, its result and any note from the reviewer.',
+          },
+          {
+            term: 'Pathway progress',
+            detail: 'The pathways you follow and the steps you have started or finished.',
+          },
+          {
+            term: 'A sign-in cookie',
+            detail:
+              'One cookie, tesda_session, keeps you signed in. The page’s scripts can’t read it, other websites never receive it, and it ends when you sign out or after a set time (8 hours by default).',
+          },
+        ],
+      },
+      {
+        id: 'in-your-browser',
+        heading: 'What stays in your browser',
+        paragraphs: ['Some things are kept only on your device, where our server never sees them:'],
+        items: [
+          {
+            term: 'Until you close the tab',
+            detail:
+              'Your work in Find my pathway (your goal and answers) and the centers you saved in Training & Assessment.',
+          },
+          {
+            term: 'On this device, until you clear your browser data',
+            detail:
+              'Your theme, the map style you picked, whether the map and filters are shown, that you have seen the privacy notice, and a random marker that tells the app you may be signed in. The marker says nothing about who you are.',
+          },
+        ],
+        after:
+          'We don’t use advertising or analytics cookies, and no page has tracking or advertising scripts.',
+      },
+      {
+        id: 'how-we-use-it',
+        heading: 'How we use your data',
+        items: [
+          'To suggest qualifications, training programs, assessment centers and pathways that fit your goal.',
+          'To save your progress and show it in My Progress.',
+          'To pass your assessment applications to the people who review them.',
+          'To produce pilot reports for administrators. Reports show counts and averages only, never individual learners.',
+          'To keep TESDA Track secure and working, and to check that its matches are fair and useful.',
+        ],
+        after:
+          'Matching runs on our own server: your goal is not sent to an outside AI service. Matches and readiness levels are guidance only. They don’t decide anything about you, and they don’t replace an official TESDA competency assessment. We never sell your data or use it for advertising.',
+      },
+      {
+        id: 'who-sees-it',
+        heading: 'Who can see or receive your data',
+        items: [
+          {
+            term: 'You',
+            detail: 'You can see everything kept in your account, and download it.',
+          },
+          {
+            term: 'Pilot administrators',
+            detail:
+              'They review assessment applications, which show your name and email with the schedule you chose, and record the results. The reports they see hold counts and averages only.',
+          },
+          {
+            term: 'Skills Bridge',
+            detail:
+              'Receives only the skill and role words from your Skills Explorer searches. Its answers are kept for up to an hour, so the same search isn’t sent twice.',
+          },
+          {
+            term: 'Directions and maps',
+            detail:
+              'For directions, our server sends a route’s start and end points to a routing service built on OpenStreetMap. Found routes are kept for up to an hour, under a code that can’t be searched by place. Map images come from OpenStreetMap or CARTO, which see your network address and the part of the map you view. Google Maps opens only if you choose it, with the center’s location.',
+          },
+          {
+            term: 'Authorities',
+            detail: 'Only when the law requires us to share it.',
+          },
+        ],
+      },
+      {
+        id: 'how-long',
+        heading: 'How long we keep it',
+        items: [
+          {
+            term: 'Your account',
+            detail:
+              'Until you delete it. Deleting your account removes it and everything saved in it at once: goals, recommendations, readiness checks, certifications, applications and progress.',
+          },
+          {
+            term: 'Records not linked to you',
+            detail:
+              'Goal fingerprints, ranking records and daily counts are kept for the pilot’s evaluation. Ranking records from an account you delete stay, but no longer point to you.',
+          },
+          {
+            term: 'Short-lived copies',
+            detail:
+              'Routes and Skills Bridge answers for up to an hour, and your browser’s copies as described above.',
+          },
+        ],
+      },
+      {
+        id: 'your-rights',
+        heading: 'Your rights',
+        paragraphs: ['Under the Data Privacy Act, you have the right to:'],
+        items: [
+          {
+            term: 'Be informed',
+            detail:
+              'This page, and the notice you saw on your first visit, tell you what we collect and why.',
+          },
+          {
+            term: 'Access your data and take it with you',
+            detail:
+              'Choose Download my data in your account menu to get everything we keep about you as a file (JSON).',
+          },
+          {
+            term: 'Correct it',
+            detail:
+              'Keep your goals and certifications up to date in My Progress, or ask us to fix anything else that is wrong.',
+          },
+          {
+            term: 'Erase it and withdraw your consent',
+            detail: 'Choose Delete my account in your account menu. This can’t be undone.',
+          },
+          {
+            term: 'Object and complain',
+            detail:
+              'Tell us if you object to how we use your data. You can also complain to the National Privacy Commission.',
+          },
+        ],
+      },
+      {
+        id: 'how-we-protect-it',
+        heading: 'How we protect it',
+        items: [
+          'TESDA Track runs on the pilot’s own server, and its pages and data travel over encrypted connections (HTTPS).',
+          'Passwords are stored as one-way codes, and the sign-in cookie can’t be read by scripts or sent to other sites.',
+          'Only administrators can see other learners’ assessment applications.',
+          'Your location is rounded before it is used, and what you type is kept out of web addresses and logs.',
+        ],
+      },
+      {
+        id: 'questions-and-changes',
+        heading: 'Questions and changes',
+        paragraphs: [
+          'For a question about your data, or a request you can’t make in the app, contact the TESDA-TRACK pilot team.',
+          'If we change what we collect or how we use it, we will update this page and its date, and show you the privacy notice again.',
+        ],
+      },
+    ],
+    // The last line of the policy, with its link.
+    complaint: {
+      before: 'To make a complaint, contact the ',
+      link: 'National Privacy Commission',
+      after: '.',
+      href: 'https://privacy.gov.ph',
     },
   },
   theme: {

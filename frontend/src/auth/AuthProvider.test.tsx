@@ -344,6 +344,10 @@ describe('creating an account', () => {
     await fillIn(user, dialog)
     const consent = within(dialog).getByRole('checkbox', { name: 'I agree to the privacy notice' })
     expect(consent).toHaveAccessibleDescription(expect.stringContaining('never sold'))
+    // The whole policy opens in a new tab, so the form keeps what was typed.
+    const policy = within(dialog).getByRole('link', { name: /Read the full privacy policy/ })
+    expect(policy).toHaveAttribute('href', '/privacy')
+    expect(policy).toHaveAttribute('target', '_blank')
     await user.click(consent)
     await user.click(within(dialog).getByRole('button', { name: 'Create account' }))
 

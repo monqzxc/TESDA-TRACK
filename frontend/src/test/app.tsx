@@ -5,14 +5,25 @@ import { http, HttpResponse } from 'msw'
 // copies of the router's context.
 import { createMemoryRouter, RouterProvider } from 'react-router'
 import { AuthProvider } from '../auth/AuthProvider.tsx'
+import { markPrivacyNoticeSeen, PRIVACY_NOTICE_KEY } from '../features/privacy/notice.ts'
+import { removeItem } from '../lib/storage.ts'
 import { routes } from '../routes.tsx'
 import { ThemeProvider } from '../theme/ThemeProvider.tsx'
 import { bookkeeping, electrical } from './fixtures.ts'
 import { createTestQueryClient } from './query.tsx'
 import { server } from './server.ts'
 
-/** The whole app at an address: the real routes and layouts, in memory, with a fresh query client. */
-export function renderApp(path: string, client: QueryClient = createTestQueryClient()) {
+/**
+ * The whole app at an address: the real routes and layouts, in memory, with a fresh query client. It opens as for a
+ * browser that has seen the privacy notice, unless `firstVisit` asks for the notice over the page.
+ */
+export function renderApp(
+  path: string,
+  client: QueryClient = createTestQueryClient(),
+  { firstVisit = false }: { firstVisit?: boolean } = {},
+) {
+  if (firstVisit) removeItem(PRIVACY_NOTICE_KEY)
+  else markPrivacyNoticeSeen()
   const router = createMemoryRouter(routes, { initialEntries: [path] })
   const view = render(
     <ThemeProvider>

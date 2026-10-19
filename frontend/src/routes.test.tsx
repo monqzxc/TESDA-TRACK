@@ -25,6 +25,7 @@ const PAGES = [
   ['/skills', 'Skills Explorer', null, 'Skills Explorer · TESDA-TRACK', false],
   ['/reports', 'Reports', null, 'Reports · TESDA-TRACK', false],
   ['/sign-in', 'Sign in', null, 'Sign in · TESDA-TRACK', false],
+  ['/privacy', 'Privacy policy', null, 'Privacy policy · TESDA-TRACK', false],
   ['/no-such-page', 'Page not found', null, 'Page not found · TESDA-TRACK', false],
 ] as const
 
