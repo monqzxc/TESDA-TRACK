@@ -95,8 +95,12 @@ def search_programs(session: Session, search: ProgramSearch) -> list[tuple[Train
         query = query.where(Qualification.code == search.qualification_code)
     if search.region_code:
         query = query.where(TrainingProvider.region_code == search.region_code)
+    if search.provider_id is not None:
+        query = query.where(TrainingProgram.provider_id == search.provider_id)
     if search.delivery_mode:
         query = query.where(TrainingProgram.delivery_mode == search.delivery_mode)
+    if search.scholarship_only:
+        query = query.where(TrainingProgram.scholarship_available)
     if search.radius_km is not None:
         query = query.where(geo.within_radius(TrainingProvider, search))
     order = (distance.asc().nulls_last(), TrainingProgram.id) if search.near_lat is not None else (TrainingProgram.id,)

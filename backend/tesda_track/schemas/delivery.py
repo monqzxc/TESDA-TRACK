@@ -271,4 +271,6 @@ class NearbySearch(BaseModel):
 
 
 class ProgramSearch(NearbySearch):
+    provider_id: int | None = None
     delivery_mode: DeliveryMode | None = None
+    scholarship_only: bool = False

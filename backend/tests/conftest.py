@@ -111,6 +111,39 @@ def partner(session, client):
     return make
 
 
+class McpCaller:
+    """JSON-RPC on the MCP endpoint. A 2026-07-28 client sends no handshake: every request carries its protocol
+    version, client info and capabilities in params._meta, and repeats the method (and tool name) as headers."""
+
+    def __init__(self, client):
+        self.client = client
+
+    def call(self, headers, method, params=None, *, protocol="2026-07-28"):
+        params = dict(params or {})
+        sent = {"Accept": "application/json, text/event-stream", **headers}
+        if protocol == "2026-07-28":
+            params["_meta"] = {"io.modelcontextprotocol/protocolVersion": protocol,
+                               "io.modelcontextprotocol/clientInfo": {"name": "tesda-track-tests", "version": "0"},
+                               "io.modelcontextprotocol/clientCapabilities": {}}
+            sent.update({"MCP-Protocol-Version": protocol, "Mcp-Method": method})
+            if method == "tools/call":
+                sent["Mcp-Name"] = params["name"]
+        elif method != "initialize":
+            sent["MCP-Protocol-Version"] = protocol
+        body = {"jsonrpc": "2.0", "id": 1, "method": method, "params": params}
+        return self.client.post("/mcp", json=body, headers=sent)
+
+    def tool(self, headers, name, **arguments):
+        response = self.call(headers, "tools/call", {"name": name, "arguments": arguments})
+        assert response.status_code == 200, response.text
+        return response.json()["result"]
+
+
+@pytest.fixture
+def mcp(client):
+    return McpCaller(client)
+
+
 MANILA = (14.5995, 120.9842)
 
 

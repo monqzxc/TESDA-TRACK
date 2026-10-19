@@ -11,6 +11,7 @@ from sqlmodel import Session
 from tesda_track.config import get_settings
 from tesda_track.db import get_engine
 from tesda_track.errors import AuthenticationError, DomainError, SessionCookieError
+from tesda_track.mcp.server import install_mcp, run_mcp
 from tesda_track.routers import (analysis, assessments, auth, certifications, goals, health, integrations, learner_assessments, me, meta,
                                  oauth, pathways, qualifications, readiness_checks, recommendation_sessions, recommendations,
                                  reports, routes, skills_bridge, training, verification)
@@ -29,7 +30,8 @@ async def lifespan(app: FastAPI):
     stop = threading.Event()
     threading.Thread(target=cache.purge_until_stopped, name="cache-purge", daemon=True,
                      args=(lambda: Session(get_engine()), stop, CACHE_PURGE_INTERVAL_SECONDS)).start()
-    yield
+    async with run_mcp(app):
+        yield
     stop.set()
 
 
@@ -82,6 +84,7 @@ def create_app() -> FastAPI:
                    learner_assessments.router, routes.router, meta.router, oauth.router):
         api.include_router(router)
     app.include_router(api)
+    install_mcp(app)
     return app
 
 
