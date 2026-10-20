@@ -1,4 +1,6 @@
 """What the MCP tools return. The SDK publishes each as the tool's outputSchema."""
+from datetime import date
+
 from pydantic import BaseModel, Field, create_model
 
 from tesda_track.schemas.analysis import Match, Profile, Route
@@ -57,3 +59,23 @@ TrainingRankingOutput = _without(TrainingRanking, "TrainingRankingOutput", {"aud
 RankedAssessmentOutput = _without(RankedAssessment, "RankedAssessmentOutput", {"application_status"})
 AssessmentRankingOutput = _without(AssessmentRanking, "AssessmentRankingOutput", {"audit_id"},
                                    results=list[RankedAssessmentOutput])
+
+
+class DemandRow(BaseModel):
+    qualification: QualificationSummary
+    top_match: int | None = Field(description="Times it was the best match for a learner's goal.")
+    chosen: int | None = Field(description="Times a learner chose it.")
+    readiness_checks: int | None = Field(description="Readiness checks taken for it.")
+    average_readiness: float | None = Field(
+        description="Average readiness score, 0-100; null when fewer than 5 checks were taken.")
+    assessment_applications: int | None
+    competent: int | None = Field(description="Assessment applications that ended competent.")
+    certified: int | None = Field(description="Verified certificates earned.")
+    hidden: list[str] = Field(description="Fields set to null because the count was between 1 and 4.")
+
+
+class DemandOutput(BaseModel):
+    quarter: str
+    date_from: date
+    date_to: date
+    rows: list[DemandRow] = Field(description="Qualifications with activity in the quarter; others are left out.")

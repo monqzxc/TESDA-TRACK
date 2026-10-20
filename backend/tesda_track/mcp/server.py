@@ -12,7 +12,7 @@ from starlette.routing import Route
 from starlette.types import ASGIApp, Receive, Scope, Send
 
 from tesda_track.config import get_settings
-from tesda_track.mcp import tools_catalog, tools_recommend
+from tesda_track.mcp import tools_catalog, tools_recommend, tools_reports
 from tesda_track.mcp.auth import PartnerTokenVerifier
 from tesda_track.mcp.deps import hide_inputs_in_errors
 from tesda_track.mcp.scopes import ScopeMiddleware
@@ -90,6 +90,7 @@ def install_mcp(app: FastAPI) -> MCPServer | None:
     server = _server(app)
     tools_catalog.register(server, app)
     tools_recommend.register(server, app)
+    tools_reports.register(server, app)
     hide_inputs_in_errors(server)
     security = TransportSecuritySettings(
         allowed_hosts=[urlsplit(settings.public_base_url).netloc, *settings.mcp_allowed_hosts])

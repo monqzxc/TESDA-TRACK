@@ -15,6 +15,7 @@ from tesda_track.services.partner_clients import mcp_signing_key, revoke_client
 CATALOG_TOOLS = {"get_qualification", "search_training_programs", "get_regional_supply"}
 RECOMMEND_TOOLS = {"match_qualifications", "recommend_route", "check_readiness", "rank_training_programs",
                    "rank_assessment_schedules"}
+REPORT_TOOLS = {"get_qualification_demand"}
 ALL_SCOPES = ("catalog:read", "recommend:run", "reports:read")
 
 
@@ -153,7 +154,7 @@ def test_rest_routes_keep_their_405_and_json_404(client):
 def test_tools_are_annotated_and_typed(mcp, partner):
     response = mcp.call(partner(scopes=ALL_SCOPES).headers, "tools/list")
     tools = response.json()["result"]["tools"]
-    assert {tool["name"] for tool in tools} == CATALOG_TOOLS | RECOMMEND_TOOLS
+    assert {tool["name"] for tool in tools} == CATALOG_TOOLS | RECOMMEND_TOOLS | REPORT_TOOLS
     for tool in tools:
         assert tool["annotations"]["readOnlyHint"] is True and tool["annotations"]["openWorldHint"] is False
         assert tool["outputSchema"]["type"] == "object"

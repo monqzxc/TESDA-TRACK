@@ -1,4 +1,5 @@
 """Aggregate reports for administrators. Only counts and averages leave this module, never individual records."""
+import re
 from datetime import date, datetime, time, timedelta, timezone
 
 from sqlalchemy import distinct, func, or_
@@ -50,6 +51,27 @@ def overview(session: Session, period: DateRange) -> Overview:
 
 def _grouped(session: Session, query) -> dict:
     return {key: value for key, value in session.exec(query)}
+
+
+MIN_PUBLISHED_COUNT = 5  # a count below this could point at one person's activity, so partners never see it
+QUARTER_LABEL = re.compile(r"\d{4}-Q[1-4]")
+
+
+def hide_small_counts(values: dict[str, int], minimum: int = MIN_PUBLISHED_COUNT) -> tuple[dict[str, int | None], list[str]]:
+    """The counts with those from 1 to minimum-1 replaced by None, and the names of the ones replaced. 0 is not
+    small: it names no one."""
+    hidden = sorted(name for name, count in values.items() if 0 < count < minimum)
+    return {name: None if name in hidden else count for name, count in values.items()}, hidden
+
+
+def quarter_range(label: str) -> DateRange:
+    """The whole calendar quarter named like 2026-Q3."""
+    if not QUARTER_LABEL.fullmatch(label):
+        raise ValueError("A quarter looks like 2026-Q3.")
+    year, quarter = int(label[:4]), int(label[-1])
+    first = date(year, 3 * quarter - 2, 1)
+    following = date(year + (quarter == 4), 3 * quarter % 12 + 1, 1)
+    return DateRange(date_from=first, date_to=following - timedelta(days=1))
 
 
 def qualification_demand(session: Session, period: DateRange) -> list[QualificationDemand]:
