@@ -330,3 +330,33 @@ def test_latency_percentiles_ignore_refused_calls(session, partner):
         add_call(session, made.id, outcome="rate_limited", latency_ms=0)
     [tool] = mcp_usage.usage_report(session, DateRange()).clients[0].tools
     assert tool.calls == 7 and tool.p50_ms == 150
+
+
+def test_suppressed_unattributed_denials_are_counted_not_dropped(mcp, partner, session, monkeypatch):
+    from tesda_track.mcp import auth
+    from tesda_track.services.rate_limit import RateLimiter
+
+    now = [0.0]
+    monkeypatch.setattr(auth, "_unattributed_denials", RateLimiter(clock=lambda: now[0]))
+    monkeypatch.setattr(auth, "_suppressed", 0)
+    monkeypatch.setattr(auth, "UNATTRIBUTED_DENIALS_PER_MINUTE", 3)
+    garbage = {"Authorization": "Bearer nonsense"}
+    for _ in range(10):
+        assert mcp.call(garbage, "tools/list").status_code == 401
+    assert len(rows(session, outcome="denied_token")) == 3
+    # An attributed denial is never capped.
+    made = partner()
+    revoke_client(session, made.id)
+    session.flush()
+    for _ in range(5):
+        assert mcp.call(made.headers, "tools/list").status_code == 401
+    assert len(rows(session, client_id=made.id)) == 5
+    now[0] = 61.0
+    assert mcp.call(garbage, "tools/list").status_code == 401
+    summaries = rows(session, error_code="suppressed")
+    assert [row.result_count for row in summaries] == [7]
+    assert mcp_usage.usage_report(session, DateRange()).unattributed_denials == 11
+    # Folding keeps the total.
+    session.execute(text("UPDATE mcp_call_log SET called_at = now() - interval '400 days'"))
+    mcp_usage.fold_old_rows(session, 180)
+    assert mcp_usage.usage_report(session, DateRange()).unattributed_denials == 11

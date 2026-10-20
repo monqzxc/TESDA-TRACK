@@ -7,7 +7,7 @@ from collections.abc import Callable
 from contextlib import AbstractContextManager
 from datetime import datetime, timedelta, timezone
 
-from sqlalchemy import cast, delete, func, literal, select as core_select, text
+from sqlalchemy import case, cast, delete, func, literal, select as core_select, text
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.types import Date
 from sqlmodel import Session, select
@@ -21,6 +21,7 @@ PHILIPPINE_TIME = "Asia/Manila"
 PHILIPPINE_OFFSET = timezone(timedelta(hours=8))
 FOLD_LOCK = 4_120_001  # one fold at a time across the hourly thread and the CLI
 LATENCY_OUTCOMES = ("ok", "tool_error")  # refused calls return in no time and would drag the percentiles down
+SUPPRESSED = "suppressed"  # error_code of a row that stands for result_count unattributed denials
 DEEP_PAGING_OFFSET = 200
 DEEP_PAGING_TOOL = "search_training_programs"
 
@@ -38,6 +39,11 @@ def record_call(session: Session, **fields) -> None:
         logger.warning("Could not log an MCP call (%s).", type(error).__name__)
 
 
+def _weight():
+    """What a row counts for: one call, or the denials a suppressed-summary row stands for."""
+    return func.sum(case((McpCallLog.error_code == SUPPRESSED, func.coalesce(McpCallLog.result_count, 1)), else_=1))
+
+
 def _day(column):
     return cast(func.timezone(PHILIPPINE_TIME, column), Date)
 
@@ -50,7 +56,7 @@ def fold_old_rows(session: Session, retention_days: int, now: datetime | None = 
     day = _day(McpCallLog.called_at)
     client = func.coalesce(McpCallLog.client_id, literal(NO_CLIENT))
     tool = func.coalesce(McpCallLog.tool, "")
-    counted = (core_select(day, client, tool, McpCallLog.outcome, func.count())
+    counted = (core_select(day, client, tool, McpCallLog.outcome, _weight())
                .where(old).group_by(day, client, tool, McpCallLog.outcome))
     statement = insert(McpCallDaily).from_select(["date", "client_id", "tool", "outcome", "calls"], counted)
     session.execute(statement.on_conflict_do_update(
@@ -98,9 +104,9 @@ def usage_report(session: Session, period: DateRange) -> UsageReport:
     tool = func.coalesce(McpCallLog.tool, "")
     counts: dict[tuple, int] = defaultdict(int)  # (client, tool, outcome, day) -> calls
     for client_id, tool_name, outcome, when, calls in session.execute(
-            core_select(client, tool, McpCallLog.outcome, day, func.count()).where(*detail_where)
+            core_select(client, tool, McpCallLog.outcome, day, _weight()).where(*detail_where)
             .group_by(client, tool, McpCallLog.outcome, day)):
-        counts[(client_id, tool_name, outcome, when)] += calls
+        counts[(client_id, tool_name, outcome, when)] += int(calls)
     for row in session.exec(select(McpCallDaily).where(*_in_period(McpCallDaily.date, period))):
         counts[(row.client_id, row.tool, row.outcome, row.date)] += row.calls
 

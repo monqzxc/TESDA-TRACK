@@ -1,4 +1,6 @@
 """Bearer tokens on the MCP endpoint: the partner access tokens the client-credentials token endpoint issues."""
+import threading
+
 import anyio
 from fastapi import FastAPI
 from mcp.server.auth.provider import AccessToken
@@ -11,8 +13,22 @@ from tesda_track.services.partner_clients import InvalidPartnerToken, mcp_resour
 
 
 # Denials that name no known client cost the caller nothing, so they share one budget instead of one commit each.
+# Those over the budget are counted, and the next one written carries the count in a "suppressed" summary row.
 _unattributed_denials = RateLimiter()
 UNATTRIBUTED_DENIALS_PER_MINUTE = 60
+_suppressed = 0
+_suppressed_lock = threading.Lock()
+
+
+def _suppress_or_take_count() -> tuple[bool, int]:
+    """(True, 0) when this denial is over budget and is counted; else (False, denials counted since the last write)."""
+    global _suppressed
+    with _suppressed_lock:
+        if _unattributed_denials.hit("all", UNATTRIBUTED_DENIALS_PER_MINUTE):
+            _suppressed += 1
+            return True, 0
+        suppressed, _suppressed = _suppressed, 0
+        return False, suppressed
 
 
 class PartnerTokenVerifier:
@@ -30,8 +46,13 @@ class PartnerTokenVerifier:
             try:
                 principal = verify_access_token(session, token, settings)
             except InvalidPartnerToken as denied:
-                if denied.client_id is None and _unattributed_denials.hit("all", UNATTRIBUTED_DENIALS_PER_MINUTE):
-                    return None
+                if denied.client_id is None:
+                    over_budget, suppressed = _suppress_or_take_count()
+                    if over_budget:
+                        return None
+                    if suppressed:
+                        mcp_usage.record_call(session, client_id=None, method="http", outcome="denied_token",
+                                              error_code=mcp_usage.SUPPRESSED, result_count=suppressed, latency_ms=0)
                 mcp_usage.record_call(session, client_id=denied.client_id, method="http", outcome="denied_token",
                                       error_code=denied.reason, latency_ms=0)
                 return None
