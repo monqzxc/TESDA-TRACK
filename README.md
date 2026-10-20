@@ -716,6 +716,20 @@ as before, need no extra header, and win if a request has both. Cookie sign-in w
 API share an origin (through Caddy, or the Vite proxy in development): CORS deliberately allows neither
 credentials nor `X-Requested-With`, and loosening that needs a security review.
 
+### Admin management workspace
+
+Full administrators see **Admin management** in the React app at `/admin`. The workspace provides:
+
+- an operational overview with links to reports, the delivery network, and the qualification catalog;
+- paginated learner accounts, role assignment, and a read-only role-permission matrix;
+- MCP partner client creation with selectable expected tools, one-time credential display, secret rotation, revocation,
+  scopes, and rate limits;
+- aggregate recommendation activity and qualification-demand oversight; and
+- anonymous, aggregate recommendation feedback and dissatisfaction reasons.
+
+Analysts continue to see aggregate **Reports** without receiving the broader management workspace. API authorization
+remains authoritative: hiding the page or navigation is not treated as an access control.
+
 ## Training, assessment and pathways
 
 Service recommendations require current qualification-specific verification and satisfied prerequisites.

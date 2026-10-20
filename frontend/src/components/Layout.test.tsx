@@ -38,7 +38,8 @@ describe('the phone menu', () => {
       'page',
     )
     expect(within(dialog).getByRole('button', { name: 'Sign in' })).toBeInTheDocument()
-    expect(within(dialog).getByRole('radiogroup', { name: 'Theme' })).toBeInTheDocument()
+    expect(within(dialog).queryByRole('radiogroup', { name: 'Theme' })).not.toBeInTheDocument()
+    expect(within(dialog).queryByRole('link', { name: 'Privacy policy' })).not.toBeInTheDocument()
 
     await user.keyboard('{Escape}')
 

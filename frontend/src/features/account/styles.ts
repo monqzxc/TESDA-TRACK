@@ -43,6 +43,8 @@ export const menu = {
     'data-focus-visible:outline-3 data-focus-visible:-outline-offset-3 data-focus-visible:outline-focus data-focus-visible:outline-solid',
   ),
   separator: 'mx-[0.4rem] my-[0.35rem] h-px bg-border',
+  settings: 'mx-[0.4rem] border-t border-border px-[0.6rem] pt-3 pb-[0.7rem]',
+  settingsHeading: 'mt-0 mb-2 text-14 font-bold text-navy',
 }
 
 /** The delete dialog. */

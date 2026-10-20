@@ -92,6 +92,10 @@ export const routes: RouteObject[] = [
                 ...page('reports', () => import('./features/reports/ReportsPage.tsx')),
               },
               {
+                path: paths.admin,
+                ...page('admin', () => import('./features/admin/AdminPage.tsx')),
+              },
+              {
                 path: paths.signIn,
                 ...page('signIn', () => import('./features/account/SignInPage.tsx')),
               },

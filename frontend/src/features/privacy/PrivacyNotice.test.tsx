@@ -179,21 +179,22 @@ describe('links to the privacy policy', () => {
     )
   })
 
-  it('are in the sidebar, marked on the policy itself', async () => {
+  it('are in each page footer, marked on the policy itself', async () => {
     serveCatalog()
     renderApp('/qualifications')
     await screen.findByRole('heading', { level: 1, name: 'Qualifications Library' })
 
-    const link = screen.getByRole('link', { name: 'Privacy policy' })
+    const footer = screen.getByRole('contentinfo')
+    expect(footer).toHaveTextContent(en.footer.copyright)
+    const link = within(footer).getByRole('link', { name: 'Privacy policy' })
     expect(link).toHaveAttribute('href', '/privacy')
     await userEvent.setup().click(link)
 
     expect(
       await screen.findByRole('heading', { level: 1, name: 'Privacy policy' }),
     ).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Privacy policy' })).toHaveAttribute(
-      'aria-current',
-      'page',
-    )
+    expect(
+      within(screen.getByRole('contentinfo')).getByRole('link', { name: 'Privacy policy' }),
+    ).toHaveAttribute('aria-current', 'page')
   })
 })

@@ -25,6 +25,9 @@ export const en = {
     homeLink: 'TESDA Track home',
   },
   skipToContent: 'Skip to content',
+  footer: {
+    copyright: '© 2026 TESDA-TRACK. All rights reserved.',
+  },
   nav: {
     // The accessible name of the page links.
     label: 'Main',
@@ -35,6 +38,7 @@ export const en = {
     progress: 'My Progress',
     skills: 'Skills Explorer',
     reports: 'Reports',
+    admin: 'Admin management',
     signIn: 'Sign in',
     menu: 'Menu',
     closeMenu: 'Close menu',
@@ -299,6 +303,11 @@ export const en = {
       title: 'Reports · TESDA-TRACK',
       heading: 'Reports',
       lead: 'Explore pilot activity, qualification demand, and training opportunities. Counts and averages only.',
+    },
+    admin: {
+      title: 'Admin management · TESDA-TRACK',
+      heading: 'Admin management',
+      lead: 'Manage learner access, MCP partners, recommendations, feedback, and pilot operations.',
     },
     signIn: {
       title: 'Sign in · TESDA-TRACK',
@@ -1302,6 +1311,9 @@ export const en = {
       admin: 'Administrator',
       learner: 'Learner account',
       signOut: 'Sign out',
+      settings: 'Settings',
+      closeSettings: 'Close settings',
+      appearance: 'Appearance',
       // The Streamlit panel's "Your data & privacy" expander.
       data: {
         heading: 'Your data & privacy',

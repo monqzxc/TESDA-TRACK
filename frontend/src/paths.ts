@@ -11,6 +11,7 @@ export const paths = {
   progress: '/progress',
   skills: '/skills',
   reports: '/reports',
+  admin: '/admin',
   signIn: '/sign-in',
   privacy: '/privacy',
 } as const

@@ -45,6 +45,14 @@ async function openAccountMenu(user: ReturnType<typeof userEvent.setup>, name = 
   return { trigger, menu }
 }
 
+async function openDataSettings(user: ReturnType<typeof userEvent.setup>) {
+  const { trigger, menu } = await openAccountMenu(user)
+  await user.click(within(menu).getByRole('menuitem', { name: 'Settings' }))
+  const dialog = await screen.findByRole('dialog', { name: 'Settings' })
+  await user.click(within(dialog).getByText('Your data & privacy'))
+  return { trigger, menu: dialog }
+}
+
 describe('the account menu', () => {
   it('shows who is signed in, with their account actions', async () => {
     const user = userEvent.setup()
@@ -56,19 +64,12 @@ describe('the account menu', () => {
 
     expect(within(menu).getByText('Maria Santos')).toBeInTheDocument()
     expect(within(menu).getByText('maria@example.com')).toBeInTheDocument()
-    expect(within(menu).getByText('Learner account')).toBeInTheDocument()
-    // As the Streamlit account panel has them: who, Sign out, then "Your data & privacy".
     expect(
       within(menu)
         .getAllByRole('menuitem')
         .map((item) => item.textContent),
-    ).toEqual(['Sign out', 'Download my data (JSON)', 'Delete my account'])
-    const [who, data] = within(menu).getAllByRole('group')
-    expect(who).toHaveAccessibleName('Maria Santos maria@example.com Learner account')
-    expect(data).toHaveAccessibleName(
-      'Your data & privacy Download everything TESDA-TRACK stores about you, or delete your account.',
-    )
-    expect(within(data).getAllByRole('menuitem')).toHaveLength(2)
+    ).toEqual(['Settings', 'Sign out'])
+    expect(screen.queryByRole('radiogroup', { name: 'Theme' })).not.toBeInTheDocument()
   })
 
   it("is in Home's top bar too, with the learner's first name", async () => {
@@ -79,6 +80,23 @@ describe('the account menu', () => {
 
     const trigger = await screen.findByRole('button', { name: 'Your account: Maria Santos' })
     expect(trigger).toHaveTextContent(/^Maria$/)
+  })
+
+  it('opens theme settings from the profile popup and returns focus when closed', async () => {
+    const user = userEvent.setup()
+    rememberSignIn()
+    serveAccountApi({ signedIn: true })
+    await openApp('/qualifications')
+
+    const { trigger, menu } = await openAccountMenu(user)
+    await user.click(within(menu).getByRole('menuitem', { name: 'Settings' }))
+    const popup = await screen.findByRole('dialog', { name: 'Settings' })
+    await user.click(within(popup).getByRole('radio', { name: 'Dark' }))
+
+    expect(within(popup).getByRole('radio', { name: 'Dark' })).toBeChecked()
+    expect(document.documentElement.dataset.theme).toBe('dark')
+    await user.keyboard('{Escape}')
+    await waitFor(() => expect(trigger).toHaveFocus())
   })
 })
 
@@ -110,8 +128,8 @@ describe('Download my data', () => {
     const account = serveAccountApi({ signedIn: true })
     await openApp('/qualifications')
 
-    const { menu } = await openAccountMenu(user)
-    await user.click(within(menu).getByRole('menuitem', { name: 'Download my data (JSON)' }))
+    const { menu } = await openDataSettings(user)
+    await user.click(within(menu).getByRole('button', { name: 'Download my data (JSON)' }))
 
     expect(
       await screen.findByText('Your data was downloaded as tesda-track-my-data.json.'),
@@ -132,8 +150,8 @@ describe('Download my data', () => {
     server.use(http.get('*/api/v1/me/export', () => HttpResponse.error()))
     await openApp('/qualifications')
 
-    const { menu } = await openAccountMenu(user)
-    await user.click(within(menu).getByRole('menuitem', { name: 'Download my data (JSON)' }))
+    const { menu } = await openDataSettings(user)
+    await user.click(within(menu).getByRole('button', { name: 'Download my data (JSON)' }))
 
     expect(
       await screen.findByText(
@@ -156,8 +174,8 @@ describe('Download my data', () => {
     )
     await openApp('/qualifications')
 
-    const { menu } = await openAccountMenu(user)
-    await user.click(within(menu).getByRole('menuitem', { name: 'Download my data (JSON)' }))
+    const { menu } = await openDataSettings(user)
+    await user.click(within(menu).getByRole('button', { name: 'Download my data (JSON)' }))
     expect(await screen.findByText('Preparing your data…')).toBeInTheDocument()
     const { menu: again } = await openAccountMenu(user)
     await user.click(within(again).getByRole('menuitem', { name: 'Sign out' }))
@@ -173,8 +191,8 @@ describe('Download my data', () => {
 
 describe('Delete my account', () => {
   async function openDeleteDialog(user: ReturnType<typeof userEvent.setup>) {
-    const { trigger, menu } = await openAccountMenu(user)
-    await user.click(within(menu).getByRole('menuitem', { name: 'Delete my account' }))
+    const { trigger, menu } = await openDataSettings(user)
+    await user.click(within(menu).getByRole('button', { name: 'Delete my account' }))
     const dialog = await screen.findByRole('alertdialog', { name: 'Delete my account' })
     return { trigger, dialog }
   }

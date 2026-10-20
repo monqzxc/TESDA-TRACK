@@ -14,8 +14,10 @@ import { failureMessage } from '../../auth/fields.tsx'
 import type { Learner } from '../../auth/session.ts'
 import { useAuth } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
+import { ModalDialog } from '../../components/ModalDialog.tsx'
 import { en } from '../../copy/en.ts'
 import { returnFocus } from '../../lib/focus.ts'
+import { ThemeSwitch } from '../../theme/ThemeSwitch.tsx'
 import { DeleteAccountDialog } from './DeleteAccountDialog.tsx'
 import { downloadMyData } from './exportData.ts'
 import { shownName, type Variant } from './variant.ts'
@@ -36,9 +38,9 @@ export interface SignedInMenuProps {
 }
 
 /**
- * Signed in: the learner's name opens a menu laid out as the Streamlit account panel: who they're signed in as and
- * Sign out, then "Your data & privacy" with Download my data and Delete my account. Loaded only once someone signs
- * in, since most visitors never do (AccountControl).
+ * Signed in: the learner's name opens a menu laid out as the Streamlit account panel: who they're signed in as,
+ * account actions and display settings. Loaded only once someone signs in, since most visitors never do
+ * (AccountControl).
  */
 export default function SignedInMenu({
   learner,
@@ -53,6 +55,7 @@ export default function SignedInMenu({
   const trigger = useRef<HTMLButtonElement>(null)
   const deleteDialog = useRef<HTMLElement>(null)
   const [isDeleting, setDeleting] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const deleteWasOpen = useRef(false)
 
   useEffect(() => onShown(trigger.current), [onShown])
@@ -79,8 +82,7 @@ export default function SignedInMenu({
   }
 
   const onAction = (key: Key) => {
-    if (key === 'download') void downloadMyData(queryClient, notify)
-    else if (key === 'delete') setDeleting(true)
+    if (key === 'settings') setSettingsOpen(true)
     else if (key === 'signOut') void endSession()
   }
 
@@ -103,30 +105,63 @@ export default function SignedInMenu({
               <Header className={menu.who}>
                 <span className={menu.whoName}>{name}</span>{' '}
                 <span className={menu.whoEmail}>{learner.email}</span>{' '}
-                <span className={menu.role}>
-                  {learner.role === 'admin' ? copy.menu.admin : copy.menu.learner}
-                </span>
               </Header>
-              <MenuItem id="signOut" className={menu.item}>
-                {copy.menu.signOut}
+              <MenuItem id="settings" className={menu.item}>
+                {copy.menu.settings}
               </MenuItem>
             </MenuSection>
             <Separator className={menu.separator} />
             <MenuSection className={menu.section}>
-              <Header className={menu.dataHeader}>
-                <span className={menu.dataHeading}>{copy.menu.data.heading}</span>{' '}
-                <span className={menu.dataBody}>{copy.menu.data.body}</span>
-              </Header>
-              <MenuItem id="download" className={menu.item}>
-                {copy.menu.download}
-              </MenuItem>
-              <MenuItem id="delete" className={menu.item}>
-                {copy.menu.delete}
+              <MenuItem id="signOut" className={menu.item}>
+                {copy.menu.signOut}
               </MenuItem>
             </MenuSection>
           </Menu>
         </Popover>
       </MenuTrigger>
+      <ModalDialog
+        isOpen={settingsOpen}
+        onOpenChange={(open) => {
+          setSettingsOpen(open)
+          if (!open) trigger.current?.focus()
+        }}
+        title={copy.menu.settings}
+        closeLabel={copy.menu.closeSettings}
+      >
+        <section className="py-5" aria-labelledby="account-appearance">
+          <h3 id="account-appearance" className="mb-3 text-16 font-semibold text-navy">
+            {copy.menu.appearance}
+          </h3>
+          <ThemeSwitch />
+        </section>
+        <details className="border-t border-border pt-4">
+          <summary className="min-h-11 cursor-pointer py-2 text-16 font-semibold text-navy">
+            {copy.menu.data.heading}
+          </summary>
+          <p className="mt-2 mb-4 text-14 text-muted">{copy.menu.data.body}</p>
+          <div className="flex flex-col gap-2">
+            <Button
+              className={menu.item}
+              onPress={() => {
+                setSettingsOpen(false)
+                trigger.current?.focus()
+                void downloadMyData(queryClient, notify)
+              }}
+            >
+              {copy.menu.download}
+            </Button>
+            <Button
+              className={`${menu.item} text-warn-ink`}
+              onPress={() => {
+                setSettingsOpen(false)
+                setDeleting(true)
+              }}
+            >
+              {copy.menu.delete}
+            </Button>
+          </div>
+        </details>
+      </ModalDialog>
       <DeleteAccountDialog
         dialogRef={deleteDialog}
         isOpen={isDeleting}

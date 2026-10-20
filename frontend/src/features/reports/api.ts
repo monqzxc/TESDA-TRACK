@@ -15,6 +15,7 @@ export type CompetencyGap = components['schemas']['CompetencyGap']
 export type RegionSupply = components['schemas']['RegionSupply']
 export type FeedbackSummary = components['schemas']['FeedbackSummary']
 export type FeedbackCount = components['schemas']['FeedbackCount']
+export type MatchingReport = components['schemas']['MatchingReport']
 
 /** Inclusive dates (YYYY-MM-DD) in Philippine time; null leaves that end open. */
 export interface Period {
@@ -79,6 +80,16 @@ export const feedbackQuery = (period: Period) =>
     queryFn: ({ signal }) =>
       unwrap(
         api.GET('/api/v1/admin/reports/feedback', { params: { query: dates(period) }, signal }),
+      ),
+    placeholderData: keepPreviousData,
+  })
+
+export const matchingQuery = (period: Period) =>
+  queryOptions<MatchingReport, ApiError>({
+    queryKey: ['admin', 'reports', 'matching', period.from, period.to],
+    queryFn: ({ signal }) =>
+      unwrap(
+        api.GET('/api/v1/admin/reports/matching', { params: { query: dates(period) }, signal }),
       ),
     placeholderData: keepPreviousData,
   })

@@ -71,6 +71,7 @@ describe('Home', () => {
 
     const footer = screen.getByRole('contentinfo')
     expect(footer).toHaveTextContent(en.home.footer)
+    expect(footer).toHaveTextContent(en.footer.copyright)
     expect(screen.getByRole('main')).not.toContainElement(footer)
   })
 

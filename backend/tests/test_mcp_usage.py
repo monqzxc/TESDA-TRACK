@@ -275,6 +275,46 @@ def test_client_list_hides_the_secret_hash(client, partner, admin):
     assert "secret_hash" not in found and found["name"] == "TSP" and found["scopes"]
 
 
+def test_admin_tool_catalog_is_scoped(client, admin, learner):
+    from tesda_track.mcp.scopes import TOOL_SCOPES
+
+    response = client.get("/api/v1/admin/mcp/tools", headers=admin)
+    assert response.status_code == 200 and response.json() == TOOL_SCOPES
+    assert client.get("/api/v1/admin/mcp/tools", headers=learner).status_code == 403
+
+
+def test_admin_manages_partner_client_lifecycle(client, session, admin):
+    created = client.post("/api/v1/admin/mcp/clients", headers=admin, json={
+        "name": "eTESDA", "organisation": "TESDA", "contact_email": "mcp@example.gov.ph",
+        "declared_purpose": "Recommend qualifications", "scopes": ["catalog:read", "recommend:run"],
+        "expected_tools": ["match_qualifications"], "rate_limit_per_minute": 45,
+    })
+    assert created.status_code == 201
+    body = created.json()
+    assert body["client"]["name"] == "eTESDA" and body["client_secret"]
+    assert "secret_hash" not in body["client"]
+    client_id = body["client"]["id"]
+
+    duplicate = client.post("/api/v1/admin/mcp/clients", headers=admin, json={
+        "name": "eTESDA", "organisation": "Other", "declared_purpose": "Duplicate",
+        "scopes": ["catalog:read"],
+    })
+    assert duplicate.status_code == 409
+
+    rotated = client.post(f"/api/v1/admin/mcp/clients/{client_id}/rotate-secret", headers=admin)
+    assert rotated.status_code == 200 and rotated.json()["client_secret"] != body["client_secret"]
+    revoked = client.post(f"/api/v1/admin/mcp/clients/{client_id}/revoke", headers=admin)
+    assert revoked.status_code == 200 and revoked.json()["is_active"] is False
+
+
+def test_partner_client_writes_are_admin_only(client, learner, admin):
+    request = {"name": "Blocked", "organisation": "Test", "declared_purpose": "Test",
+               "scopes": ["catalog:read"]}
+    assert client.post("/api/v1/admin/mcp/clients", headers=learner, json=request).status_code == 403
+    assert client.post("/api/v1/admin/mcp/clients", json=request).status_code == 401
+    assert client.post(f"/api/v1/admin/mcp/clients/{uuid.uuid4()}/revoke", headers=admin).status_code == 404
+
+
 def test_cli_folds_old_calls(session, partner):
     import io
 

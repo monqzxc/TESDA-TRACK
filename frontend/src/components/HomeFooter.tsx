@@ -53,10 +53,13 @@ export function HomeFooter() {
           </span>
         </Link>
         <p className="m-0 max-w-[44rem]">{en.home.footer}</p>
-        <Link to={paths.privacy} className={privacyLink}>
-          <Icon name="document" />
-          {en.privacy.link}
-        </Link>
+        <div className="flex flex-wrap items-center justify-end gap-x-5 gap-y-2">
+          <p className="m-0">{en.footer.copyright}</p>
+          <Link to={paths.privacy} className={privacyLink}>
+            <Icon name="document" />
+            {en.privacy.link}
+          </Link>
+        </div>
       </div>
     </footer>
   )
