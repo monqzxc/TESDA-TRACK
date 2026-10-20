@@ -17,6 +17,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
+# A pending expert review is a fact about the evaluation data rather than a broken build: routine CI runs report it
+# as a warning (--review-warns), and a release run fails on it.
+REVIEW_PENDING = "expert_relevance_review_pending"
 
 
 def command(args, *, cwd=ROOT, env=None, timeout=1200):
@@ -154,11 +157,18 @@ def image_smoke():
             command(["docker", "rm", "-f", container_id], timeout=30)
 
 
+def failing_blockers(blockers: list[str], review_warns: bool) -> list[str]:
+    """The blockers that fail this run. Every blocker still keeps the release from being ready."""
+    return [name for name in blockers if not (review_warns and name == REVIEW_PENDING)]
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--output-dir", type=Path, default=ROOT / "reports")
     parser.add_argument("--build-images", action="store_true")
     parser.add_argument("--skip-model", action="store_true", help="Reports the optional real-model guard as not run")
+    parser.add_argument("--review-warns", action="store_true",
+                        help="Report a pending expert relevance review as a warning instead of failing (routine CI runs)")
     args = parser.parse_args(argv)
     output = args.output_dir.resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -207,19 +217,24 @@ def main(argv=None):
     if model_enabled and checks["optional_model_guard"].get("passed") is not True:
         blocks.append("enabled_model_not_validated")
     if not report["qualification_evaluation"] or not report["qualification_evaluation"]["expert_review_complete"]:
-        blocks.append("expert_relevance_review_pending")
+        blocks.append(REVIEW_PENDING)
     if not report["service_evaluation"]:
         blocks.append("service_evaluation_missing")
     if not args.build_images:
         blocks.append("container_builds_not_checked")
-    report.update(completed_at=datetime.now(timezone.utc).isoformat(), blockers=blocks,
+    failing = failing_blockers(blocks, args.review_warns)
+    report.update(completed_at=datetime.now(timezone.utc).isoformat(), blockers=blocks, failing=failing,
                   release_ready=not blocks, limitations=["Source records and relevance judgments need expert review before a production rollout.",
                     "Sequential latency measurements are not a concurrent-load SLA.", "No production deployment was performed."])
     destination = output / "release-check.json"
     destination.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"report": str(destination), "release_ready": report["release_ready"], "blockers": blocks,
-                      "regression": checks["full_regression"]}, indent=2), flush=True)
-    return 0 if report["release_ready"] else 1
+                      "failing": failing, "regression": checks["full_regression"]}, indent=2), flush=True)
+    if REVIEW_PENDING in blocks and REVIEW_PENDING not in failing:
+        # GitHub Actions shows this line as a warning on the run.
+        print("::warning title=Expert relevance review pending::The qualification relevance cases are an engineering "
+              "draft. Not ready for a production release until an expert reviews them.", flush=True)
+    return 1 if failing else 0
 
 
 if __name__ == "__main__":

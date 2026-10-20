@@ -51,3 +51,11 @@ def test_failure_boolean_cannot_be_overwritten_by_a_positive_pass_count(tmp_path
     gate = {"passed": False, "exit_code": 1}
     gate.update(release_check.test_summary(path))
     assert gate["passed"] is False and gate["passed_count"] == 1
+
+
+def test_a_pending_review_warns_on_routine_runs_but_fails_a_release():
+    review = release_check.REVIEW_PENDING
+    assert release_check.failing_blockers([review], review_warns=True) == []
+    assert release_check.failing_blockers([review], review_warns=False) == [review]
+    assert release_check.failing_blockers(["full_regression", review], review_warns=True) == ["full_regression"], \
+        "only the review is downgraded"
