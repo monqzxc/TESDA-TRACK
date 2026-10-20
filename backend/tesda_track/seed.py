@@ -366,6 +366,10 @@ def _read(seed_dir: Path, name: str) -> object:
 
 
 def seed_all(session: Session, seed_dir: Path = SEED_DIR) -> dict[str, SyncReport | DeliverySyncReport | CrosswalkReport | AccountSeedReport]:
+    from tesda_track.services.roles import sync_system_roles
+
+    # Migration 0017 inserts these; this tops up a database that predates a newly added permission.
+    sync_system_roles(session)
     reports: dict[str, SyncReport | DeliverySyncReport | CrosswalkReport | AccountSeedReport] = {
         "regions": sync_regions(session, _read(seed_dir, "regions.json")),
         "qualifications": sync_catalog(session, parse_catalog(_read(seed_dir, "qualifications.json"))),

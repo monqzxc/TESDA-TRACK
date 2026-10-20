@@ -24,8 +24,10 @@ def settings(**kwargs):
 
 
 def account(token_version=0, is_active=True):
+    # `permissions` is a property on the real Learner, read from its role row; the stand-in has to carry it too.
     return SimpleNamespace(id=uuid.uuid4(), email="juan@example.com", full_name="Juan Dela Cruz", role="learner",
-                           created_at=datetime.now(timezone.utc), token_version=token_version, is_active=is_active)
+                           permissions=[], created_at=datetime.now(timezone.utc), token_version=token_version,
+                           is_active=is_active)
 
 
 class FakeSession:

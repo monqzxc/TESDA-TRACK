@@ -8,8 +8,10 @@ from tesda_track.models.delivery import (APPLICATION_STATUSES, ASSESSMENT_RESULT
                                          AssessmentApplication, AssessmentCenter, AssessmentSchedule, Region,
                                          TrainingProgram, TrainingProvider)
 from tesda_track.models.feedback import FEEDBACK_REASONS, RecommendationFeedback
-from tesda_track.models.learners import (ANSWER_CODES, GOAL_STATUSES, ROLES, Certification, Goal, Learner,
+from tesda_track.models.rbac import Role
+from tesda_track.models.learners import (ANSWER_CODES, GOAL_STATUSES, Certification, Goal, Learner,
                                          ReadinessAnswer, ReadinessCheck, RecommendationSession)
+from tesda_track.rbac import ROLES
 from tesda_track.models.pathways import (ENROLLMENT_STATUSES, ROUTES, STEP_KINDS, STEP_STATUSES, Pathway,
                                          PathwayEnrollment, PathwayStep, StepProgress)
 from tesda_track.models.stats import MatchDailyStat
@@ -30,6 +32,7 @@ __all__ = [
     "ANSWER_CODES", "APPLICATION_STATUSES", "ASSESSMENT_RESULTS", "COMPETENCY_CATEGORIES", "DELIVERY_MODES",
     "ENROLLMENT_STATUSES", "FEEDBACK_REASONS", "GOAL_STATUSES", "ROLES", "ROUTES", "SCHEDULE_STATUSES", "STEP_KINDS",
     "STEP_STATUSES",
+    "Role",
     "AssessmentApplication", "AssessmentCenter", "AssessmentSchedule", "Certification", "Competency", "Goal",
     "Learner", "MatchDailyStat", "Pathway", "PathwayEnrollment", "PathwayStep", "Qualification", "ReadinessAnswer", "ReadinessCheck",
     "RecommendationFeedback", "RecommendationSession", "Region", "Sector", "StepProgress", "Timestamped",

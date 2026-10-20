@@ -14,7 +14,7 @@ from tesda_track.errors import AuthenticationError, DomainError, SessionCookieEr
 from tesda_track.mcp.server import install_mcp, run_mcp
 from tesda_track.routers import (mcp_admin, analysis, assessments, auth, certifications, feedback, goals, health, integrations, learner_assessments, me, meta,
                                  oauth, pathways, qualifications, readiness_checks, recommendation_sessions, recommendations,
-                                 reports, routes, skills_bridge, training, verification, users)
+                                 reports, roles, routes, skills_bridge, training, verification, users)
 from tesda_track.security import clear_session_cookie
 from tesda_track.services import cache, mcp_usage
 from tesda_track.services.embeddings import get_embedder
@@ -87,7 +87,7 @@ def create_app() -> FastAPI:
                    pathways.router, pathways.learner_router, training.router, assessments.router,
                    assessments.learner_router, recommendations.router, pathways.admin_router, training.admin_router,
                    assessments.admin_router, integrations.router, reports.router, skills_bridge.router, verification.router,
-                   learner_assessments.router, routes.router, meta.router, oauth.router, mcp_admin.router, users.router):
+                   learner_assessments.router, routes.router, meta.router, oauth.router, mcp_admin.router, users.router, roles.router):
         api.include_router(router)
     app.include_router(api)
     install_mcp(app)

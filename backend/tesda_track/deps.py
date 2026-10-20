@@ -84,13 +84,16 @@ AdminUser = Annotated[Learner, Depends(require_admin)]
 
 
 def require_permission(permission: str):
-    from tesda_track.rbac import ROLE_PERMISSIONS
+    """Guard an endpoint with one permission from the fixed vocabulary. The account's permissions come from its
+    role row and are read on every request, so re-scoping a role takes effect at once."""
+    from tesda_track.rbac import PERMISSIONS
 
-    if permission not in ROLE_PERMISSIONS["admin"]:
+    # A typo here would be a guard nobody can satisfy, so fail at import rather than in production.
+    if permission not in PERMISSIONS:
         raise ValueError(f"Unknown permission: {permission}")
 
     def check(learner: CurrentLearner) -> Learner:
-        if permission not in ROLE_PERMISSIONS.get(learner.role, frozenset()):
+        if permission not in learner.permissions:
             raise PermissionDeniedError("Your account does not have permission to perform this action.")
         return learner
 

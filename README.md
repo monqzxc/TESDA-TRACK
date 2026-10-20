@@ -721,7 +721,9 @@ credentials nor `X-Requested-With`, and loosening that needs a security review.
 Full administrators see **Admin management** in the React app at `/admin`. The workspace provides:
 
 - an operational overview with links to reports, the delivery network, and the qualification catalog;
-- paginated learner accounts, role assignment, and a read-only role-permission matrix;
+- paginated learner accounts, role assignment, and an editable role-permission matrix where
+  administrators compose roles from the backend's fixed permission vocabulary, with each admin
+  section gated on the permission its own endpoints require;
 - MCP partner client creation with selectable expected tools, one-time credential display, secret rotation, revocation,
   scopes, and rate limits;
 - aggregate recommendation activity and qualification-demand oversight; and

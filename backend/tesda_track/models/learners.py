@@ -9,8 +9,8 @@ from sqlmodel import Field, Relationship, SQLModel
 
 from tesda_track.models.base import Timestamped, one_of, timestamp_field
 from tesda_track.models.catalog import Qualification
-
-from tesda_track.rbac import ROLES
+from tesda_track.models.rbac import Role
+from tesda_track.rbac import known_permissions
 GOAL_STATUSES = ("active", "achieved", "archived")
 ANALYSIS_SOURCES = ("rules", "ai")
 ANSWER_CODES = ("confident", "some_experience", "not_familiar")
@@ -18,19 +18,28 @@ CERTIFICATION_SOURCES = ("self_reported", "assessment")
 
 
 class Learner(Timestamped, table=True):
-    __table_args__ = (CheckConstraint(one_of("role", ROLES), name="role_valid"),)
-
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     email: str = Field(sa_type=String(254), unique=True)
     password_hash: str = Field(sa_type=String(255))
     full_name: str = Field(sa_type=String(150))
-    role: str = Field(default="learner", sa_type=String(20))
+    # RESTRICT, so a role still assigned to somebody cannot be deleted out from under them.
+    role: str = Field(default="learner", sa_type=String(50), foreign_key="app_role.key", ondelete="RESTRICT")
     is_active: bool = True
     privacy_consent_at: datetime = Field(sa_type=DateTime(timezone=True))
     # Incremented on password change; tokens carrying an older version stop working.
     token_version: int = 0
     failed_login_attempts: int = 0
     locked_until: datetime | None = Field(default=None, sa_type=DateTime(timezone=True))
+
+    # Eager, so authorization and the account payload never depend on the session still being open, and so
+    # listing users does not fan out into one query per row.
+    role_record: Role = Relationship(sa_relationship_kwargs={"lazy": "selectin"})
+
+    @property
+    def permissions(self) -> list[str]:
+        """What this account may do right now. Read from the role row on every request, so an administrator
+        re-scoping a role takes effect immediately without waiting for tokens to expire."""
+        return known_permissions(self.role_record.permissions if self.role_record else ())
 
 
 class Goal(Timestamped, table=True):

@@ -1,9 +1,8 @@
 """Explicit, atomic account seeding; existing accounts are never modified."""
-from pydantic import BaseModel, ConfigDict
-from sqlmodel import Session
+from pydantic import BaseModel, ConfigDict, Field
+from sqlmodel import Session, select
 
-from tesda_track.models import Learner, utcnow
-from tesda_track.rbac import Role
+from tesda_track.models import Learner, Role, utcnow
 from tesda_track.schemas.accounts import FullName, NewPassword, NormalizedEmail
 from tesda_track.security import hash_password
 from tesda_track.services.accounts import find_by_email
@@ -14,12 +13,15 @@ class SeedAccount(BaseModel):
     email: NormalizedEmail
     full_name: FullName
     password: NewPassword
-    role: Role
+    role: str = Field(max_length=50)
 
 
 def seed_accounts(session: Session, accounts: list[SeedAccount]) -> dict[str, int]:
     if len({account.email for account in accounts}) != len(accounts):
         raise ValueError("Seed emails must be unique.")
+    unknown = sorted({account.role for account in accounts} - {role.key for role in session.exec(select(Role))})
+    if unknown:
+        raise ValueError(f"Unknown role(s) in the seed file: {', '.join(unknown)}.")
     created = skipped = 0
     with session.begin_nested():
         for account in accounts:

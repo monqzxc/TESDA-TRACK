@@ -4,18 +4,58 @@ Each account has one role. All signed-in roles retain access to their own learne
 records; ownership checks still apply. Staff permissions cover the whole application,
 not individual providers or assessment centers. Assign them only to trusted staff.
 
-| Role | Additional access |
+## Permissions are fixed; roles are not
+
+Permissions live in code, in `PERMISSIONS` in `backend/tesda_track/rbac.py`. Each one is
+named by a `require_permission` guard on a real endpoint, so the list is exactly what can
+be granted and an administrator cannot invent a new one at runtime. Adding a permission
+means adding both the entry and the guard.
+
+Roles are rows in the `app_role` table, so an administrator with `users:manage` can compose
+new ones out of that vocabulary — under **Admin → Roles & Permissions**, or through the API
+below. An account's permissions are read from its role row on every request, so re-scoping a
+role takes effect immediately, without waiting for tokens to expire.
+
+These six roles are built in. They are seeded by migration 0017 and cannot be deleted or
+renamed, but their permissions can be changed, so treat the table as a starting point rather
+than a description of the live system:
+
+| Role | Additional access as seeded |
 | --- | --- |
 | learner | None |
 | trainer | Manage training providers, programs, and pathways |
 | assessor | Manage assessment centers, schedules, and applications |
 | verifier | Read and maintain service verification evidence |
 | analyst | Read aggregate reports |
-| admin | All staff operations, integrations, MCP administration, and role assignment |
+| admin | Every permission, always |
 
-Public registration always creates learners. Permissions are defined in
-`backend/tesda_track/rbac.py`; unknown roles have no staff permissions.
-The database migration preserves existing learner/admin assignments.
+Two rules keep the pilot from locking everybody out of `/admin`, and both are enforced in
+`backend/tesda_track/services/roles.py` so the CLI and seeding obey them too:
+
+- `admin` is frozen. It always holds the whole vocabulary, so a permission added in code
+  reaches it without a data migration, and no edit can take `users:manage` away from the
+  last account that holds it.
+- No role can be deleted while an account still has it; the foreign key says `RESTRICT` as
+  well. Built-in roles cannot be deleted at all.
+
+Public registration always creates learners. A role the database holds but code does not
+recognise, or a permission outside `PERMISSIONS`, grants nothing: unknown values fail closed.
+
+## What the web admin workspace shows
+
+`/admin` is gated per section on the permission that section's own endpoints require, so a
+composed role can use the parts it was given and nothing else:
+
+| Section | Needs |
+| --- | --- |
+| Overview, Recommendation, Feedback | `reports:read` |
+| Users, Roles & Permissions | `users:manage` |
+| MCP partners | `mcp:manage` |
+
+An account holding none of those three is turned away from `/admin` altogether, and the
+sidebar's Admin link only appears when at least one section is open to it. A link to a section
+the account cannot open falls back to the first one it can, rather than dead-ending. The API
+enforces the same permissions independently; hiding a tab is presentation, not protection.
 
 From the repository root, apply the migration:
 
@@ -76,14 +116,30 @@ an existing account. Keep seed files out of source control and delete them after
 
 Administrators can use the authenticated API (also available through `/api/docs`):
 
-- `GET /api/v1/admin/roles`: role and permission catalog.
+- `GET /api/v1/admin/permissions`: the permission vocabulary, with a description of each.
+  Read-only: there is no route that creates a permission.
+- `GET /api/v1/admin/roles`: every role with the permissions it grants.
+- `GET /api/v1/admin/roles/assignments`: how many accounts hold each role.
+- `POST /api/v1/admin/roles` with
+  `{"key":"regional_coordinator","label":"Regional Coordinator","permissions":["reports:read"]}`:
+  compose a role. The key is a lowercase slug (letters, numbers, underscores), is stored on
+  every account given that role, and cannot be changed afterwards.
+- `PATCH /api/v1/admin/roles/{key}`: change only the fields sent, so a label edit cannot
+  silently clear the permissions. Refused for `admin`.
+- `DELETE /api/v1/admin/roles/{key}`: delete a composed role. Refused for built-in roles,
+  and `409` while any account still holds it.
 - `GET /api/v1/admin/users?limit=50&offset=0`: paginated accounts.
-- `PATCH /api/v1/admin/users/{id}/role` with `{"role":"assessor"}`: assign a role.
+- `PATCH /api/v1/admin/users/{id}/role` with `{"role":"assessor"}`: assign any existing role,
+  composed ones included. An unknown role is `422`.
 
 A changed role invalidates the account's existing bearer tokens and session cookies.
 The account must sign in again. Administrators cannot change their own role.
 Cookie-authenticated writes require `X-Requested-With`, as elsewhere in the app.
 The existing `create-admin` CLI remains available for initial administrator setup.
 
-Downgrading migration 0015 requires first reassigning staff accounts to learner or
-admin, so rollback cannot silently lose assignments.
+Changing a role's permissions does not invalidate tokens: permissions are read from the
+role row per request, so the change applies to the account's next call either way.
+
+Downgrading migration 0017 requires first moving accounts off any role added after it, and
+downgrading 0015 requires reassigning staff accounts to learner or admin, so neither rollback
+can silently lose assignments.

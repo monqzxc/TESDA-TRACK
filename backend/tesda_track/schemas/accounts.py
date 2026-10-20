@@ -2,9 +2,7 @@ import uuid
 from datetime import datetime
 from typing import Annotated, Literal
 
-from pydantic import BaseModel, BeforeValidator, ConfigDict, EmailStr, Field, StringConstraints, computed_field
-
-from tesda_track.rbac import Role, permissions_for
+from pydantic import BaseModel, BeforeValidator, ConfigDict, EmailStr, Field, StringConstraints
 
 NormalizedEmail = Annotated[EmailStr, BeforeValidator(lambda value: value.strip().lower() if isinstance(value, str) else value)]
 NewPassword = Annotated[str, StringConstraints(min_length=10, max_length=128)]
@@ -24,13 +22,10 @@ class LearnerPublic(BaseModel):
     id: uuid.UUID
     email: str
     full_name: str
-    role: Role
+    role: str
+    # Read from the account's role row by Learner.permissions, so it always matches what the guards enforce.
+    permissions: list[str]
     created_at: datetime
-
-    @computed_field
-    @property
-    def permissions(self) -> list[str]:
-        return permissions_for(self.role)
 
 
 class TokenResponse(BaseModel):
