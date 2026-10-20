@@ -12,13 +12,13 @@ from tesda_track.models.pathways import (ENROLLMENT_STATUSES, ROUTES, STEP_KINDS
                                          PathwayEnrollment, PathwayStep, StepProgress)
 from tesda_track.models.stats import MatchDailyStat
 from tesda_track.models.write_receipt import WriteReceipt
-from tesda_track.models.partners import NO_CLIENT, OUTCOMES, ApiClient, McpCallDaily, McpCallLog
+from tesda_track.models.partners import NO_CLIENT, OUTCOMES, ApiClient, McpCallDaily, McpCallLog, McpDemandSnapshot
 from tesda_track.models.registry import RegistryBatch, RegistryLink, RegistryRecord
 from tesda_track.models.semantic import (EMBEDDING_DIMENSIONS, CacheEntry, QualificationEmbedding, RankingAudit,
                                          TrainingProgramEmbedding)
 
 __all__ = [
-    "ApiClient", "McpCallDaily", "McpCallLog", "NO_CLIENT", "OUTCOMES",
+    "ApiClient", "McpCallDaily", "McpCallLog", "McpDemandSnapshot", "NO_CLIENT", "OUTCOMES",
     "WriteReceipt",
     "RegistryBatch", "RegistryLink", "RegistryRecord",
     "LearnerAssessment",

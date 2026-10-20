@@ -4,7 +4,7 @@ from datetime import date, datetime, timedelta
 
 import pytest
 
-from tesda_track.models import ReadinessCheck
+from tesda_track.models import McpDemandSnapshot, ReadinessCheck
 from tesda_track.schemas.catalog import QualificationSummary
 from tesda_track.schemas.reports import LearnerDemand
 from tesda_track.services import reports
@@ -150,3 +150,63 @@ def test_demand_has_no_date_range_inputs(mcp, partner):
     [tool] = [t for t in response.json()["result"]["tools"] if t["name"] == "get_qualification_demand"]
     properties = tool["inputSchema"]["properties"]
     assert "quarter" in properties and "date_from" not in properties and "date_to" not in properties
+
+
+def published(mcp, partner, monkeypatch, **counts):
+    monkeypatch.setattr(reports, "qualification_demand_by_learners", lambda session, period: [
+        demand("X", chose=20, **counts)])
+    [row] = ask(mcp, partner, quarter="2025-Q1")["structuredContent"]["rows"]
+    return row
+
+
+@pytest.mark.parametrize("applied, competent, shown, hidden", [
+    (7, 5, (7, None), ["learners_competent"]),
+    (10, 5, (10, 5), []),
+    (5, 5, (5, 5), []),
+    (3, 5, (None, 5), ["learners_applied"]),
+    (6, 2, (6, None), ["learners_competent"]),
+])
+def test_competent_hidden_when_applied_gives_the_difference_away(mcp, partner, monkeypatch, applied, competent, shown,
+                                                                 hidden):
+    row = published(mcp, partner, monkeypatch, applied=applied, competent=competent)
+    assert (row["learners_applied"], row["learners_competent"]) == shown and row["hidden"] == hidden
+
+
+def test_hidden_stays_sorted_after_secondary_suppression(mcp, partner, monkeypatch):
+    row = published(mcp, partner, monkeypatch, applied=7, competent=5, certified=2)
+    assert row["hidden"] == ["learners_certified", "learners_competent"]
+
+
+def test_quarter_figures_are_frozen_after_first_request(client, session, mcp, partner, register, login,
+                                                        competency_ids):
+    headers = partner(scopes=REPORTS).headers
+    for n in range(5):
+        register(f"first{n}@example.com")
+        dated_checks(client, session, login(f"first{n}@example.com"), competency_ids, [manila(2025, 2, 1)])
+    first = mcp.tool(headers, "get_qualification_demand", quarter="2025-Q1")["structuredContent"]["rows"]
+    assert first[0]["learners_checked_readiness"] == 5
+    register("late@example.com")
+    dated_checks(client, session, login("late@example.com"), competency_ids, [manila(2025, 3, 1)])
+    second = mcp.tool(headers, "get_qualification_demand", quarter="2025-Q1")["structuredContent"]["rows"]
+    assert second == first
+    live = {r.qualification.code: r.checked_readiness for r in reports.qualification_demand_by_learners(
+        session, reports.quarter_range("2025-Q1"))}
+    assert live["SMAW-NC-II"] == 6
+
+
+def test_snapshot_stores_only_suppressed_rows_and_filters(session, mcp, partner, monkeypatch):
+    monkeypatch.setattr(reports, "qualification_demand_by_learners", lambda session, period: [
+        demand("A", chose=3, applied=9, competent=8), demand("B", chose=12, checked_readiness=2)])
+    headers = partner(scopes=REPORTS).headers
+    [only] = mcp.tool(headers, "get_qualification_demand", quarter="2025-Q1",
+                      qualification_code="B")["structuredContent"]["rows"]
+    assert only["qualification"]["code"] == "B"
+    stored = session.get(McpDemandSnapshot, "2025-Q1")
+    assert [r["qualification"]["code"] for r in stored.rows] == ["A", "B"]
+    for row in stored.rows:
+        values = [v for k, v in row.items() if k.startswith("learners_") and v is not None]
+        assert not any(1 <= v <= 4 for v in values), row
+    [a] = [r for r in stored.rows if r["qualification"]["code"] == "A"]
+    assert a["learners_chose"] is None and a["learners_competent"] is None and a["learners_applied"] == 9
+    assert [r["qualification"]["code"] for r in mcp.tool(headers, "get_qualification_demand",
+                                                          quarter="2025-Q1")["structuredContent"]["rows"]] == ["A", "B"]

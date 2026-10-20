@@ -4,7 +4,7 @@ import uuid
 from datetime import datetime
 
 from sqlalchemy import BigInteger, CheckConstraint, DateTime, String, Text
-from sqlalchemy.dialects.postgresql import ARRAY
+from sqlalchemy.dialects.postgresql import ARRAY, JSONB
 from sqlmodel import Field, SQLModel
 
 from tesda_track.models.base import Timestamped, one_of, utcnow
@@ -66,3 +66,13 @@ class McpCallDaily(SQLModel, table=True):
     tool: str = Field(primary_key=True, sa_type=String(64))
     outcome: str = Field(primary_key=True, sa_type=String(20))
     calls: int = 0
+
+
+class McpDemandSnapshot(SQLModel, table=True):
+    """A completed quarter's demand figures as first published to a partner, already suppressed. Later requests get
+    these rows, so figures that change afterwards cannot be compared month to month."""
+    __tablename__ = "mcp_demand_snapshot"
+
+    quarter: str = Field(sa_type=String(7), primary_key=True)
+    computed_at: datetime = Field(default_factory=utcnow, sa_type=DateTime(timezone=True))
+    rows: list = Field(sa_type=JSONB)
