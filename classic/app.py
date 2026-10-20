@@ -432,8 +432,8 @@ def verdict_for(result: dict) -> tuple[str, str, str, str]:
 
 
 def open_training(qualification: dict, kind: str) -> None:
-    """Training & Assessment, already showing the centers that fit the recommendation: the qualification's keyword
-    in the search box, where learners can see and change it, and the qualification and center type as filters."""
+    """Training & Assessment, already showing the centers that fit the recommendation: the qualification and center
+    type as filters, where learners can see and change them, and the other filters and the search cleared."""
     st.session_state["training_kinds"] = [kind]
     st.session_state["training_qualifications"] = [qualification["code"]]
     st.session_state["training_search"] = ""
