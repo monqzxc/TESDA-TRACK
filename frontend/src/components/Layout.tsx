@@ -9,6 +9,7 @@ import { HomeFooter } from './HomeFooter.tsx'
 import { HomeHeader } from './HomeHeader.tsx'
 import { MobileMenu } from './MobileMenu.tsx'
 import { SidebarContent } from './Nav.tsx'
+import { PageFooter } from './PageFooter.tsx'
 
 /**
  * The root route, around every page: the title follows the page, focus moves to its heading after a navigation,
@@ -73,7 +74,7 @@ export function HomeLayout() {
  * opens the same sidebar over the page (MobileMenu). Reports shows for administrators.
  */
 export function AppLayout() {
-  const { canViewReports } = useAuth()
+  const { canViewReports, isAdmin } = useAuth()
   return (
     <>
       <SkipLink />
@@ -85,7 +86,7 @@ export function AppLayout() {
           }
         >
           <div className="max-md:flex max-md:items-center max-md:gap-3">
-            <MobileMenu isAdmin={canViewReports} />
+            <MobileMenu isAdmin={canViewReports} canManage={isAdmin} />
             <div className="max-md:hidden">
               <Brand />
             </div>
@@ -94,16 +95,19 @@ export function AppLayout() {
             </div>
           </div>
           <div className="max-md:hidden">
-            <SidebarContent isAdmin={canViewReports} />
+            <SidebarContent isAdmin={canViewReports} canManage={isAdmin} />
           </div>
         </header>
-        <main
-          id="main"
-          tabIndex={-1}
-          className="w-full max-w-[1520px] px-10 pt-[3.8rem] pb-8 focus:outline-none max-[1101px]:px-6 max-md:px-4 max-md:pt-6 max-md:pb-8"
-        >
-          <Outlet />
-        </main>
+        <div className="flex min-h-screen min-w-0 flex-col">
+          <main
+            id="main"
+            tabIndex={-1}
+            className="w-full max-w-[1520px] flex-1 px-10 pt-[3.8rem] pb-8 focus:outline-none max-[1101px]:px-6 max-md:px-4 max-md:pt-6 max-md:pb-8"
+          >
+            <Outlet />
+          </main>
+          <PageFooter />
+        </div>
       </div>
     </>
   )

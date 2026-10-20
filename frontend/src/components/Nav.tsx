@@ -1,9 +1,8 @@
 import { NavLink } from 'react-router'
 import { en } from '../copy/en.ts'
 import { AccountControl } from '../features/account/AccountMenu.tsx'
-import { paths } from '../paths.ts'
-import { ThemeSwitch } from '../theme/ThemeSwitch.tsx'
 import { cx } from '../lib/style.ts'
+import { paths } from '../paths.ts'
 import { Icon, type IconName } from './Icon.tsx'
 
 type NavItem = { to: string; label: string; icon: IconName }
@@ -18,10 +17,13 @@ const PAGES: readonly NavItem[] = [
   { to: paths.skills, label: en.nav.skills, icon: 'compass' },
 ]
 const REPORTS: NavItem = { to: paths.reports, label: en.nav.reports, icon: 'growth' }
+const ADMIN: NavItem = { to: paths.admin, label: en.nav.admin, icon: 'network' }
 
 export type NavProps = {
   /** Adds Reports, which only administrators see. */
   isAdmin?: boolean
+  /** Adds the management workspace, which only full administrators see. */
+  canManage?: boolean
   /** Called when a link is chosen, e.g. to close the phone menu. */
   onNavigate?: () => void
 }
@@ -36,8 +38,8 @@ const otherLink =
   'border-border bg-surface text-navy hovered:border-hover-border hovered:bg-soft hovered:text-navy'
 
 /** The page links. The current page is marked with aria-current="page" (NavLink's own), and drawn filled. */
-export function Nav({ isAdmin = false, onNavigate }: NavProps) {
-  const items = isAdmin ? [...PAGES, REPORTS] : PAGES
+export function Nav({ isAdmin = false, canManage = false, onNavigate }: NavProps) {
+  const items = [...PAGES, ...(isAdmin ? [REPORTS] : []), ...(canManage ? [ADMIN] : [])]
   return (
     <nav aria-label={en.nav.label}>
       <ul className="m-0 flex list-none flex-col gap-[0.6rem] p-0">
@@ -64,27 +66,21 @@ type SidebarContentProps = NavProps & {
 }
 
 /**
- * The sidebar under the brand: the page links, the account control, the theme switch, and the privacy policy, a
- * quieter link than the pages'.
+ * The sidebar under the brand: page links and the account control. Settings live in the profile popover, while
+ * legal information lives in each page's footer.
  */
-export function SidebarContent({ isAdmin = false, onNavigate, returnFocus }: SidebarContentProps) {
+export function SidebarContent({
+  isAdmin = false,
+  canManage = false,
+  onNavigate,
+  returnFocus,
+}: SidebarContentProps) {
   return (
-    <div className="flex min-h-[85dvh] flex-col gap-[0.6rem]">
-      <Nav isAdmin={isAdmin} onNavigate={onNavigate} />
+    <div className="flex min-h-[88dvh] flex-col gap-[0.6rem]">
+      <Nav isAdmin={isAdmin} canManage={canManage} onNavigate={onNavigate} />
       {/* In the phone menu, Sign in closes the menu first: the dialog opens over the page, not over the menu. */}
-      <div className="mt-auto flex flex-col gap-[0.6rem]">
-        <div className="mt-4">
-          <ThemeSwitch />
-        </div>
+      <div className="mt-auto pt-4">
         <AccountControl variant="sidebar" onOpenSignIn={onNavigate} returnFocus={returnFocus} />
-        <NavLink
-          to={paths.privacy}
-          className="inline-flex min-h-11 items-center gap-2 self-start rounded-10 px-[0.6rem] py-[0.4rem] text-15 font-semibold text-blue no-underline aria-[current=page]:text-navy aria-[current=page]:underline aria-[current=page]:underline-offset-[0.2em] hovered:bg-soft hovered:text-blue"
-          onClick={onNavigate}
-        >
-          <Icon name="document" size="1.15rem" />
-          {en.privacy.link}
-        </NavLink>
       </div>
     </div>
   )

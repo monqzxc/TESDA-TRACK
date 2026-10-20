@@ -8,6 +8,7 @@ export interface MobileMenuDrawerProps {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   isAdmin: boolean
+  canManage?: boolean
   /** Called when a link is chosen: a link to the page already open doesn't change the address. */
   onNavigate: () => void
   /** The Menu button, where focus goes after a link to the page already open. */
@@ -23,6 +24,7 @@ export default function MobileMenuDrawer({
   isOpen,
   onOpenChange,
   isAdmin,
+  canManage = false,
   onNavigate,
   returnFocus,
 }: MobileMenuDrawerProps) {
@@ -45,7 +47,12 @@ export default function MobileMenuDrawer({
               <Icon name="close" size="1.4rem" />
             </Button>
           </div>
-          <SidebarContent isAdmin={isAdmin} onNavigate={onNavigate} returnFocus={returnFocus} />
+          <SidebarContent
+            isAdmin={isAdmin}
+            canManage={canManage}
+            onNavigate={onNavigate}
+            returnFocus={returnFocus}
+          />
         </Dialog>
       </Modal>
     </ModalOverlay>

@@ -1,12 +1,12 @@
-import { render, screen, within } from '@testing-library/react'
+import { cleanup, render, screen, within } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import { describe, expect, it } from 'vitest'
 import { Nav } from './Nav.tsx'
 
-function renderNav(path: string, isAdmin?: boolean) {
+function renderNav(path: string, isAdmin?: boolean, canManage?: boolean) {
   render(
     <MemoryRouter initialEntries={[path]}>
-      <Nav isAdmin={isAdmin} />
+      <Nav isAdmin={isAdmin} canManage={canManage} />
     </MemoryRouter>,
   )
   return screen.getByRole('navigation', { name: 'Main' })
@@ -68,6 +68,17 @@ describe('Nav', () => {
 
     expect(linkNames(nav).at(-1)).toBe('Reports')
     expect(within(nav).getByRole('link', { name: 'Reports' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    )
+  })
+
+  it('shows Admin management only to full administrators', () => {
+    expect(linkNames(renderNav('/reports', true))).not.toContain('Admin management')
+    cleanup()
+    const nav = renderNav('/admin', true, true)
+    expect(linkNames(nav).at(-1)).toBe('Admin management')
+    expect(within(nav).getByRole('link', { name: 'Admin management' })).toHaveAttribute(
       'aria-current',
       'page',
     )

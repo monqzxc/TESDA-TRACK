@@ -18,7 +18,13 @@ const MobileMenuDrawer = lazy(loadDrawer)
  * On phones, the sidebar opens over the page from the Menu button, as Streamlit's does (MobileMenuDrawer). The
  * drawer's code comes down once the page is idle on a phone, or at the first press.
  */
-export function MobileMenu({ isAdmin = false }: { isAdmin?: boolean }) {
+export function MobileMenu({
+  isAdmin = false,
+  canManage = false,
+}: {
+  isAdmin?: boolean
+  canManage?: boolean
+}) {
   const { pathname } = useLocation()
   const { notify } = useAuth()
   // The page the menu was opened on: going to another page closes it, by a link or by Back.
@@ -94,6 +100,7 @@ export function MobileMenu({ isAdmin = false }: { isAdmin?: boolean }) {
               isOpen={isOpen}
               onOpenChange={(open) => setOpenOn(open ? pathname : null)}
               isAdmin={isAdmin}
+              canManage={canManage}
               onNavigate={close}
               returnFocus={() => menuButton.current}
             />

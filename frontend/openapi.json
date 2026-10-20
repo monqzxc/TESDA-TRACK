@@ -4815,6 +4815,40 @@
         }
       }
     },
+    "/api/v1/admin/mcp/tools": {
+      "get": {
+        "tags": [
+          "admin: mcp"
+        ],
+        "summary": "Tools",
+        "description": "Available MCP tool names and the scope required to call each one.",
+        "operationId": "tools_api_v1_admin_mcp_tools_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "string"
+                  },
+                  "type": "object",
+                  "title": "Response Tools Api V1 Admin Mcp Tools Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
+    },
     "/api/v1/admin/mcp/usage": {
       "get": {
         "tags": [
@@ -4922,6 +4956,155 @@
             "SessionCookie": []
           }
         ]
+      },
+      "post": {
+        "tags": [
+          "admin: mcp"
+        ],
+        "summary": "Create Client",
+        "operationId": "create_client_api_v1_admin_mcp_clients_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApiClientCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiClientCredentials"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/mcp/clients/{client_id}/rotate-secret": {
+      "post": {
+        "tags": [
+          "admin: mcp"
+        ],
+        "summary": "Rotate Client Secret",
+        "operationId": "rotate_client_secret_api_v1_admin_mcp_clients__client_id__rotate_secret_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Client Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiClientCredentials"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/mcp/clients/{client_id}/revoke": {
+      "post": {
+        "tags": [
+          "admin: mcp"
+        ],
+        "summary": "Revoke Client",
+        "operationId": "revoke_client_api_v1_admin_mcp_clients__client_id__revoke_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "client_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Client Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiClientPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/admin/roles": {
@@ -5212,6 +5395,93 @@
           "longitude"
         ],
         "title": "Airport"
+      },
+      "ApiClientCreate": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Name"
+          },
+          "organisation": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Organisation"
+          },
+          "contact_email": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "email"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contact Email"
+          },
+          "declared_purpose": {
+            "type": "string",
+            "maxLength": 2000,
+            "minLength": 1,
+            "title": "Declared Purpose"
+          },
+          "expected_tools": {
+            "items": {
+              "type": "string",
+              "maxLength": 64,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Expected Tools"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "minItems": 1,
+            "title": "Scopes"
+          },
+          "rate_limit_per_minute": {
+            "type": "integer",
+            "maximum": 10000,
+            "minimum": 1,
+            "title": "Rate Limit Per Minute",
+            "default": 120
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "name",
+          "organisation",
+          "declared_purpose",
+          "scopes"
+        ],
+        "title": "ApiClientCreate"
+      },
+      "ApiClientCredentials": {
+        "properties": {
+          "client": {
+            "$ref": "#/components/schemas/ApiClientPublic"
+          },
+          "client_secret": {
+            "type": "string",
+            "title": "Client Secret",
+            "description": "Shown once. Only its password hash is stored."
+          }
+        },
+        "type": "object",
+        "required": [
+          "client",
+          "client_secret"
+        ],
+        "title": "ApiClientCredentials"
       },
       "ApiClientPublic": {
         "properties": {

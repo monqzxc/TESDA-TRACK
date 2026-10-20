@@ -1385,6 +1385,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/mcp/tools": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Tools
+         * @description Available MCP tool names and the scope required to call each one.
+         */
+        get: operations["tools_api_v1_admin_mcp_tools_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/mcp/usage": {
         parameters: {
             query?: never;
@@ -1415,7 +1435,42 @@ export interface paths {
         /** Clients */
         get: operations["clients_api_v1_admin_mcp_clients_get"];
         put?: never;
-        post?: never;
+        /** Create Client */
+        post: operations["create_client_api_v1_admin_mcp_clients_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/mcp/clients/{client_id}/rotate-secret": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Rotate Client Secret */
+        post: operations["rotate_client_secret_api_v1_admin_mcp_clients__client_id__rotate_secret_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/mcp/clients/{client_id}/revoke": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Revoke Client */
+        post: operations["revoke_client_api_v1_admin_mcp_clients__client_id__revoke_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -1516,6 +1571,35 @@ export interface components {
             latitude: number;
             /** Longitude */
             longitude: number;
+        };
+        /** ApiClientCreate */
+        ApiClientCreate: {
+            /** Name */
+            name: string;
+            /** Organisation */
+            organisation: string;
+            /** Contact Email */
+            contact_email?: string | null;
+            /** Declared Purpose */
+            declared_purpose: string;
+            /** Expected Tools */
+            expected_tools?: string[];
+            /** Scopes */
+            scopes: string[];
+            /**
+             * Rate Limit Per Minute
+             * @default 120
+             */
+            rate_limit_per_minute: number;
+        };
+        /** ApiClientCredentials */
+        ApiClientCredentials: {
+            client: components["schemas"]["ApiClientPublic"];
+            /**
+             * Client Secret
+             * @description Shown once. Only its password hash is stored.
+             */
+            client_secret: string;
         };
         /** ApiClientPublic */
         ApiClientPublic: {
@@ -6967,6 +7051,28 @@ export interface operations {
             };
         };
     };
+    tools_api_v1_admin_mcp_tools_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string;
+                    };
+                };
+            };
+        };
+    };
     usage_api_v1_admin_mcp_usage_get: {
         parameters: {
             query?: {
@@ -7015,6 +7121,101 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ApiClientPublic"][];
+                };
+            };
+        };
+    };
+    create_client_api_v1_admin_mcp_clients_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ApiClientCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiClientCredentials"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    rotate_client_secret_api_v1_admin_mcp_clients__client_id__rotate_secret_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                client_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiClientCredentials"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    revoke_client_api_v1_admin_mcp_clients__client_id__revoke_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                client_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiClientPublic"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

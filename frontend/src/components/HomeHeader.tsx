@@ -3,7 +3,6 @@ import { en } from '../copy/en.ts'
 import { AccountControl } from '../features/account/AccountMenu.tsx'
 import { cx } from '../lib/style.ts'
 import { paths } from '../paths.ts'
-import { ThemeSwitch } from '../theme/ThemeSwitch.tsx'
 import { logoSrc } from './Brand.tsx'
 import { useHomeBar } from './useHomeBar.ts'
 
@@ -40,12 +39,11 @@ const cta = cx(
 )
 
 /**
- * Home's own top bar, from the landing page: the brand, its section links, Sign in, Find my path and the theme.
+ * Home's own top bar, from the landing page: the brand, its section links, Sign in and Find my path.
  * It's see-through over Home's hero and turns solid once the page scrolls (useHomeBar).
  *
- * The brand pushes the rest to the right. Where the theme switch doesn't fit, it takes a row of its own; on a
- * desktop (1180px and up) everything fits on one row, as on the landing page. On small phones the logo stands for
- * the name, so Sign in and Find my path keep to one line.
+ * The brand pushes the rest to the right. On small phones the logo stands for the name, so Sign in and Find my path
+ * keep to one line.
  */
 export function HomeHeader() {
   const { ref, scrolled } = useHomeBar<HTMLElement>()
@@ -94,9 +92,6 @@ export function HomeHeader() {
             <path d="M5 12h14m-6-6 6 6-6 6" />
           </svg>
         </Link>
-        <div>
-          <ThemeSwitch />
-        </div>
       </div>
     </header>
   )
