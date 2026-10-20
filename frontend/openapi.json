@@ -2001,6 +2001,22 @@
             }
           },
           {
+            "name": "provider_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Provider Id"
+            }
+          },
+          {
             "name": "delivery_mode",
             "in": "query",
             "required": false,
@@ -2021,6 +2037,16 @@
                 }
               ],
               "title": "Delivery Mode"
+            }
+          },
+          {
+            "name": "scholarship_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Scholarship Only"
             }
           }
         ],
@@ -4557,6 +4583,319 @@
           }
         }
       }
+    },
+    "/api/v1/oauth/token": {
+      "post": {
+        "tags": [
+          "oauth"
+        ],
+        "summary": "Client credentials token for partner systems",
+        "description": "Send the client id and secret as HTTP Basic (client_secret_basic) or as form fields (client_secret_post).",
+        "operationId": "token_api_v1_oauth_token_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_token_api_v1_oauth_token_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/mcp/usage": {
+      "get": {
+        "tags": [
+          "admin: mcp"
+        ],
+        "summary": "Usage",
+        "description": "Which partner calls which tool, how often, and whether that matches what it declared.",
+        "operationId": "usage_api_v1_admin_mcp_usage_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsageReport"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/mcp/clients": {
+      "get": {
+        "tags": [
+          "admin: mcp"
+        ],
+        "summary": "Clients",
+        "operationId": "clients_api_v1_admin_mcp_clients_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ApiClientPublic"
+                  },
+                  "type": "array",
+                  "title": "Response Clients Api V1 Admin Mcp Clients Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/roles": {
+      "get": {
+        "tags": [
+          "admin: users"
+        ],
+        "summary": "List Roles",
+        "operationId": "list_roles_api_v1_admin_roles_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "type": "object",
+                  "title": "Response List Roles Api V1 Admin Roles Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/users": {
+      "get": {
+        "tags": [
+          "admin: users"
+        ],
+        "summary": "List Users",
+        "operationId": "list_users_api_v1_admin_users_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LearnerPublic"
+                  },
+                  "title": "Response List Users Api V1 Admin Users Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/users/{user_id}/role": {
+      "patch": {
+        "tags": [
+          "admin: users"
+        ],
+        "summary": "Assign Role",
+        "operationId": "assign_role_api_v1_admin_users__user_id__role_patch",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LearnerPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -4681,6 +5020,92 @@
           "longitude"
         ],
         "title": "Airport"
+      },
+      "ApiClientPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "organisation": {
+            "type": "string",
+            "title": "Organisation"
+          },
+          "contact_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contact Email"
+          },
+          "declared_purpose": {
+            "type": "string",
+            "title": "Declared Purpose"
+          },
+          "expected_tools": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Expected Tools"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scopes"
+          },
+          "rate_limit_per_minute": {
+            "type": "integer",
+            "title": "Rate Limit Per Minute"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "last_token_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Token At"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "organisation",
+          "contact_email",
+          "declared_purpose",
+          "expected_tools",
+          "scopes",
+          "rate_limit_per_minute",
+          "is_active",
+          "last_token_at",
+          "created_at"
+        ],
+        "title": "ApiClientPublic"
       },
       "ApplicationCreate": {
         "properties": {
@@ -6680,6 +7105,67 @@
         ],
         "title": "Body_start_session_api_v1_auth_session_post"
       },
+      "Body_token_api_v1_oauth_token_post": {
+        "properties": {
+          "grant_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grant Type"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scope"
+          },
+          "resource": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resource"
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "title": "Body_token_api_v1_oauth_token_post"
+      },
       "CertificationCounts": {
         "properties": {
           "total": {
@@ -6975,6 +7461,95 @@
         ],
         "title": "ClientConfig"
       },
+      "ClientUsage": {
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Client Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "organisation": {
+            "type": "string",
+            "title": "Organisation"
+          },
+          "declared_purpose": {
+            "type": "string",
+            "title": "Declared Purpose"
+          },
+          "expected_tools": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Expected Tools"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scopes"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "calls": {
+            "type": "integer",
+            "title": "Calls"
+          },
+          "by_outcome": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "By Outcome"
+          },
+          "tools": {
+            "items": {
+              "$ref": "#/components/schemas/ToolUsage"
+            },
+            "type": "array",
+            "title": "Tools"
+          },
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/DayUsage"
+            },
+            "type": "array",
+            "title": "Days"
+          },
+          "unexpected_tool_calls": {
+            "type": "integer",
+            "title": "Unexpected Tool Calls"
+          },
+          "deep_paging_calls": {
+            "type": "integer",
+            "title": "Deep Paging Calls"
+          }
+        },
+        "type": "object",
+        "required": [
+          "client_id",
+          "name",
+          "organisation",
+          "declared_purpose",
+          "expected_tools",
+          "scopes",
+          "is_active",
+          "calls",
+          "by_outcome",
+          "tools",
+          "days",
+          "unexpected_tool_calls",
+          "deep_paging_calls"
+        ],
+        "title": "ClientUsage"
+      },
       "CompetencyAnswer": {
         "properties": {
           "competency_id": {
@@ -7082,6 +7657,25 @@
           "category"
         ],
         "title": "CompetencyPublic"
+      },
+      "DayUsage": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "calls": {
+            "type": "integer",
+            "title": "Calls"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "calls"
+        ],
+        "title": "DayUsage"
       },
       "Directions": {
         "properties": {
@@ -7633,7 +8227,11 @@
             "type": "string",
             "enum": [
               "learner",
-              "admin"
+              "admin",
+              "trainer",
+              "assessor",
+              "verifier",
+              "analyst"
             ],
             "title": "Role"
           },
@@ -7641,6 +8239,14 @@
             "type": "string",
             "format": "date-time",
             "title": "Created At"
+          },
+          "permissions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Permissions",
+            "readOnly": true
           }
         },
         "type": "object",
@@ -7649,7 +8255,8 @@
           "email",
           "full_name",
           "role",
-          "created_at"
+          "created_at",
+          "permissions"
         ],
         "title": "LearnerPublic"
       },
@@ -9622,6 +10229,28 @@
         ],
         "title": "RoadRoute"
       },
+      "RoleUpdate": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "learner",
+              "admin",
+              "trainer",
+              "assessor",
+              "verifier",
+              "analyst"
+            ],
+            "title": "Role"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "role"
+        ],
+        "title": "RoleUpdate"
+      },
       "ScoreComponents": {
         "properties": {
           "semantic": {
@@ -10557,6 +11186,73 @@
           "expires_in"
         ],
         "title": "TokenResponse"
+      },
+      "ToolUsage": {
+        "properties": {
+          "tool": {
+            "type": "string",
+            "title": "Tool"
+          },
+          "calls": {
+            "type": "integer",
+            "title": "Calls"
+          },
+          "ok": {
+            "type": "integer",
+            "title": "Ok"
+          },
+          "tool_error": {
+            "type": "integer",
+            "title": "Tool Error"
+          },
+          "denied_scope": {
+            "type": "integer",
+            "title": "Denied Scope"
+          },
+          "rate_limited": {
+            "type": "integer",
+            "title": "Rate Limited"
+          },
+          "p50_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P50 Ms"
+          },
+          "p95_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P95 Ms"
+          },
+          "expected": {
+            "type": "boolean",
+            "title": "Expected"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tool",
+          "calls",
+          "ok",
+          "tool_error",
+          "denied_scope",
+          "rate_limited",
+          "p50_ms",
+          "p95_ms",
+          "expected"
+        ],
+        "title": "ToolUsage"
       },
       "TrainingProgramCreate": {
         "properties": {
@@ -11653,6 +12349,27 @@
           "reasons"
         ],
         "title": "UnconfirmedProgram"
+      },
+      "UsageReport": {
+        "properties": {
+          "clients": {
+            "items": {
+              "$ref": "#/components/schemas/ClientUsage"
+            },
+            "type": "array",
+            "title": "Clients"
+          },
+          "unattributed_denials": {
+            "type": "integer",
+            "title": "Unattributed Denials"
+          }
+        },
+        "type": "object",
+        "required": [
+          "clients",
+          "unattributed_denials"
+        ],
+        "title": "UsageReport"
       },
       "ValidationError": {
         "properties": {

@@ -14,7 +14,8 @@ interface ConsoleMatch {
   jobs: readonly string[]
   score: number
   icon: IconName
-  colors: readonly [from: string, to: string]
+  /** The tile behind its sector's icon. */
+  color: string
 }
 
 /** The hero console's top matches, one for each goal in en.home.console.examples, in the order it types them. */
@@ -25,7 +26,7 @@ export const CONSOLE_MATCHES = [
     jobs: ['Welder', 'Fabricator', 'Structural Welder'],
     score: 92,
     icon: 'wrench',
-    colors: ['#5b7aa3', '#33507a'],
+    color: '#33507a',
   },
   {
     name: 'Computer Systems Servicing NC II',
@@ -33,7 +34,7 @@ export const CONSOLE_MATCHES = [
     jobs: ['Computer Technician', 'IT Support Technician'],
     score: 89,
     icon: 'monitor',
-    colors: ['#2f6fe0', '#1a4aa8'],
+    color: '#1a4aa8',
   },
   {
     name: 'Caregiving (Elderly) NC II',
@@ -41,7 +42,7 @@ export const CONSOLE_MATCHES = [
     jobs: ['Caregiver for Elderly'],
     score: 86,
     icon: 'heart',
-    colors: ['#e0607a', '#ac3651'],
+    color: '#ac3651',
   },
   {
     name: 'Cookery NC II',
@@ -49,7 +50,7 @@ export const CONSOLE_MATCHES = [
     jobs: ['Chef', 'Cook', 'Kitchen Assistant'],
     score: 94,
     icon: 'cloche',
-    colors: ['#7b61d6', '#5038a3'],
+    color: '#5038a3',
   },
 ] as const satisfies OnePerEntry<typeof en.home.console.examples, ConsoleMatch>
 
@@ -84,10 +85,10 @@ export const CATALOG = {
   facts: [27, 738, 4981] satisfies OnePerEntry<typeof en.home.catalog.facts, number>,
   // Qualifications at each NC level. The bars are drawn against the largest.
   levels: [
-    { name: 'NC I', count: 26, color: '#5281b8' },
-    { name: 'NC II', count: 179, color: 'var(--blue)' },
-    { name: 'NC III', count: 90, color: 'var(--teal)' },
-    { name: 'NC IV', count: 20, color: 'var(--violet)' },
+    { name: 'NC I', count: 26 },
+    { name: 'NC II', count: 179 },
+    { name: 'NC III', count: 90 },
+    { name: 'NC IV', count: 20 },
   ],
 } as const
 
@@ -140,12 +141,3 @@ export const REGIONS = [
   ['XIII', 'Butuan', 8.9475, 125.5406],
   ['BARMM', 'Cotabato City', 7.2236, 124.2464],
 ] as const
-
-/** The example learner on the map, linked to the regional centers near them. */
-export const MAP_LEARNER_REGION = 'VII'
-
-/** The other cities named on the map: most to the right of their dot, a few to the left. */
-export const MAP_LABELS = {
-  right: ['Davao City', 'Tuguegarao', 'Legazpi', 'Cagayan de Oro'],
-  left: ['Manila', 'Baguio', 'Iloilo City'],
-} as const

@@ -12,10 +12,7 @@
   z-index: 20;
   color: #ffffff;
   background-color: var(--band);
-  transition:
-    background-color 0.3s,
-    box-shadow 0.3s,
-    backdrop-filter 0.3s;
+  transition: background-color 0.3s;
 }
 
 :global(:root[data-theme='dark']) .topbar {
@@ -26,11 +23,9 @@
   background-color: transparent;
 }
 
+/* Scrolled: a plain navy bar, which the light sections pass under. */
 .topbar[data-scrolled] {
-  background-color: rgb(9 27 70 / 0.82);
-  box-shadow: 0 10px 30px -20px #000000;
-  -webkit-backdrop-filter: blur(14px);
-  backdrop-filter: blur(14px);
+  background-color: var(--band);
 }
 
 .topbar :focus-visible {
@@ -111,17 +106,16 @@
   align-items: center;
   gap: 0.55rem;
   min-height: 40px;
-  padding: 0.55rem 1rem;
-  border-radius: 14px;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
   background: var(--signal);
   color: #0c2152;
   font: 700 0.92rem/1 var(--font-text);
   text-decoration: none;
   white-space: nowrap;
-  box-shadow: 0 10px 24px -12px var(--signal);
   transition:
-    transform 0.25s cubic-bezier(0.2, 0.75, 0.2, 1),
-    box-shadow 0.25s cubic-bezier(0.2, 0.75, 0.2, 1);
+    background-color 0.2s,
+    transform 0.15s cubic-bezier(0.2, 0.75, 0.2, 1);
 }
 
 .cta svg {
@@ -131,8 +125,11 @@
 }
 
 .cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 30px -12px var(--signal);
+  background: #f8c968;
+}
+
+.cta:active {
+  transform: scale(0.97);
 }
 
 .cta:hover svg {

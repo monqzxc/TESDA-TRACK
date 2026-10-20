@@ -10,7 +10,7 @@ from sqlmodel import Field, Relationship, SQLModel
 from tesda_track.models.base import Timestamped, one_of, timestamp_field
 from tesda_track.models.catalog import Qualification
 
-ROLES = ("learner", "admin")
+from tesda_track.rbac import ROLES
 GOAL_STATUSES = ("active", "achieved", "archived")
 ANALYSIS_SOURCES = ("rules", "ai")
 ANSWER_CODES = ("confident", "some_experience", "not_familiar")

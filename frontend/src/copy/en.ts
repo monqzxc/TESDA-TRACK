@@ -56,10 +56,10 @@ export const en = {
   // from there.
   home: {
     hero: {
-      eyebrow: 'TESDA qualifications · Learner pilot',
-      // The h1, drawn on three lines with the last one highlighted. It reads as en.pages.home.heading.
+      // The h1: the first two parts share its first line on wide screens, and break between them on narrow ones.
+      // It reads as en.pages.home.heading.
       title: ['Every career', 'has a track.', 'Find yours.'],
-      lead: "Not sure where to start? Just tell us what you enjoy doing, what you're good at, or what you'd like to become—in your own words. We'll help you discover skills worth learning, explore career paths, and find training or assessment centers near you.",
+      lead: 'Tell us what you want to do, in your own words. TESDA Track matches you to a TESDA qualification, checks how ready you are, and finds training and assessment near you.',
       findMyPath: 'Find my path',
       browse: (qualifications: number) => `Browse ${figure(qualifications)} qualifications`,
       notes: (regions: number) => [
@@ -88,11 +88,9 @@ export const en = {
       ],
     },
     how: {
-      eyebrow: 'How Find my path works',
       heading: 'Four stops between a goal and a certificate.',
-      lead: 'Follow the route at your own pace. Each stop uses what you told us at the one before, so the plan at the end is yours.',
+      lead: 'Find my path takes you along one route, at your own pace. Each stop uses what you told us at the one before, so the plan at the end is yours.',
       goal: {
-        step: 'Your goal',
         heading: 'Start with what you want to do.',
         // Plain text, with each { quote } shown as a quotation.
         body: [
@@ -119,7 +117,6 @@ export const en = {
         ],
       },
       match: {
-        step: 'Your match',
         heading: 'See which qualifications fit, and why.',
         body: 'Matches weigh the meaning of your goal and the words you used, so a goal finds its trade even when it shares no words with the catalog. When a goal has no TESDA equivalent, such as astronaut or lawyer, TESDA Track says so instead of guessing.',
         card: '“I want to work in a hotel”',
@@ -127,7 +124,6 @@ export const en = {
         note: 'Match scores are guidance, not a guarantee.',
       },
       readiness: {
-        step: 'Readiness check',
         heading: 'Rate yourself on each unit of competency.',
         body: 'Every qualification is built from units of competency in TESDA’s Training Regulations. Mark the ones you can already do, and see your strengths and skill gaps before you spend on training. Try it here.',
         card: 'Barista NC II · core units',
@@ -138,7 +134,6 @@ export const en = {
         scale: ['0', '50 moderate', '80 high', '100'],
       },
       pathway: {
-        step: 'Your pathway',
         heading: 'Get the route that fits where you are.',
         body: 'Your readiness picks the route. Experienced workers can go straight to assessment, and new learners start with training. Change your answers above and watch the route change.',
         card: 'Your recommended route',
@@ -162,14 +157,11 @@ export const en = {
       },
     },
     near: {
-      eyebrow: 'Training & assessment',
-      heading: 'Programs and assessment centers, nearest first.',
-      lead: 'Pick your region and TESDA Track lists training programs and upcoming assessment schedules, then lets you apply for a slot.',
-      mapLabel: (regions: number) =>
-        `Dots marking the center of each of the ${figure(regions)} Philippine regions`,
-      mapCaption: 'One dot per region, placed at its regional center',
-      // Beside the example learner's dot: "You · Cebu City".
-      you: 'You',
+      heading: 'Training and assessment near you.',
+      lead: 'Pick your region, and TESDA Track lists training programs and upcoming assessment schedules, nearest first. Then apply for a slot.',
+      mapLabel:
+        'Illustrated Metro Manila map with location pins in Quezon City, Manila, Makati, Pasig and Taguig, connected by nearby routes. You are marked by the gold pin in Makati.',
+      mapCaption: 'An illustrative map of Metro Manila.',
       weightsHeading: 'How training programs are ranked',
       // Each part of a program's score, with its weight in features/home/NearYou.tsx.
       weights: [
@@ -182,15 +174,12 @@ export const en = {
         { title: 'Start date.', text: 'Sooner classes rank higher.' },
         { title: 'Your preferences.', text: 'Anything else you told us.' },
       ],
-      extras: [
-        'Directions and travel time',
-        'Flight estimates across islands',
-        'Open assessment schedules',
-      ],
+      // Under the weights.
+      extras:
+        'Each program also shows directions and travel time, flight estimates across islands, and its open assessment schedules.',
       cta: 'Find training near you',
     },
     catalog: {
-      eyebrow: 'Qualifications library',
       heading: (qualifications: number) => `${figure(qualifications)} qualifications`,
       // After the big figure.
       lead: 'qualifications, each built from a current TESDA Training Regulation.',
@@ -225,7 +214,6 @@ export const en = {
           text: 'Candidates assessed as competent are issued an NC.',
         },
       ],
-      eyebrow: 'My progress',
       heading: 'Save your path. Tick off each step.',
       lead: 'Create an account when you want to keep your place. Your plan waits for you on any device.',
       keeps: [
@@ -246,7 +234,6 @@ export const en = {
     },
     // The goal box at the end of the page, which opens Find my path with the goal.
     closing: {
-      eyebrow: 'Step 1 of 4',
       heading: 'What would you like to achieve?',
       lead: 'Tell us about a career, a skill, or an experience you’d like to turn into a qualification.',
       label: 'Your goal',
@@ -1294,9 +1281,9 @@ export const en = {
     // Reports, for anyone but an administrator.
     reports: {
       heading: 'Reports are not available',
-      body: 'Reports are only available to administrator accounts.',
+      body: 'Reports are only available to administrator and analyst accounts.',
       signedOut:
-        'Reports are only available to administrator accounts. Sign in with one to see them.',
+        'Reports are only available to administrator and analyst accounts. Sign in with one to see them.',
       action: 'Sign in',
     },
   },

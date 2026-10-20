@@ -3,12 +3,12 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Query
 
 from tesda_track.db import SessionDep
-from tesda_track.deps import require_admin
+from tesda_track.deps import require_permission
 from tesda_track.schemas.mcp_usage import ApiClientPublic, UsageReport
 from tesda_track.schemas.reports import DateRange
 from tesda_track.services import mcp_usage, partner_clients
 
-router = APIRouter(prefix="/admin/mcp", tags=["admin: mcp"], dependencies=[Depends(require_admin)])
+router = APIRouter(prefix="/admin/mcp", tags=["admin: mcp"], dependencies=[Depends(require_permission("mcp:manage"))])
 
 
 @router.get("/usage", response_model=UsageReport)

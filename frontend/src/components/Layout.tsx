@@ -65,14 +65,14 @@ export function HomeLayout() {
  * administrators.
  */
 export function AppLayout() {
-  const { isAdmin } = useAuth()
+  const { canViewReports } = useAuth()
   return (
     <>
       <SkipLink />
       <div className={styles.shell}>
         <header className={styles.sidebar}>
           <div className={styles.bar}>
-            <MobileMenu isAdmin={isAdmin} />
+            <MobileMenu isAdmin={canViewReports} />
             <div className={styles.wide}>
               <Brand />
             </div>
@@ -81,7 +81,7 @@ export function AppLayout() {
             </div>
           </div>
           <div className={styles.wide}>
-            <SidebarContent isAdmin={isAdmin} />
+            <SidebarContent isAdmin={canViewReports} />
           </div>
         </header>
         <main id="main" tabIndex={-1} className={styles.main}>

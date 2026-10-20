@@ -58,15 +58,18 @@ def main() -> None:
     parser.add_argument("--k", type=int, default=3,
                         help="negatives per pair; 3 so a pair keeps some after sibling levels are filtered at training")
     parser.add_argument("--limit", type=int, default=None, help="mine about N pairs, sampled evenly (smoke runs)")
-    parser.add_argument("--profile", choices=("v2", "v3"), default="v2")
+    parser.add_argument("--profile", choices=("v2", "v3", "v4"), default="v2")
     args = parser.parse_args()
 
     qualifications, _ = load_catalog()
     by_passage = {qualification_text(q): q.name for q in qualifications}
     exclusions = eval_exclusions()
     synthetic = load_synthetic()
-    if args.profile == "v3":
-        from training.v3 import enrich
+    if args.profile in ("v3", "v4"):
+        if args.profile == "v4":
+            from training.v4 import enrich
+        else:
+            from training.v3 import enrich
         synthetic, _ = enrich(qualifications, synthetic, exclusions)
     pairs = training_pairs(qualifications, exclusions, synthetic)
     named = [(query, by_passage[passage]) for query, passage in pairs]

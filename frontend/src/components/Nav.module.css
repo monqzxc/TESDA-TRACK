@@ -4,6 +4,15 @@
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+  min-height: 85vh;
+  min-height: 85dvh;
+}
+
+.sidebarBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: auto;
 }
 
 .list {

@@ -37,6 +37,7 @@ def bundle_files() -> list[Path]:
     files += sorted((BACKEND / "training").glob("*.py"))
     files += sorted((BACKEND / "training" / "data" / "synthetic").glob("*.json"))
     files += sorted((BACKEND / "training" / "data" / "v3").glob("*.json"))
+    files += sorted((BACKEND / "training" / "data" / "v4").glob("*.json"))
     files.append(BACKEND / "training" / "requirements.txt")
     files.append(BACKEND / "requirements.txt")
     return files
@@ -63,7 +64,7 @@ def build(output: Path, hard_negatives: Path | None = None) -> Path:
             name = f"backend/{path.relative_to(BACKEND).as_posix()}"
             if path.parent.name == "synthetic":
                 bundle.writestr(name, _clean_synthetic(path.read_text(encoding="utf-8"), known))
-            elif path.parent.name == "v3":
+            elif path.parent.name in ("v3", "v4"):
                 rows = json.loads(path.read_text(encoding="utf-8"))
                 bundle.writestr(name, json.dumps([r for r in rows if exclusion_hash(r["query"]) not in known],
                                                 ensure_ascii=False, indent=2) + "\n")

@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="640" viewBox="0 0 600 640" role="img" aria-labelledby="title desc">
+  <title id="title">Training and assessment near you</title>
+  <desc id="desc">An illustrative Metro Manila map with pulsing location pins for Quezon City, Manila, Makati, Pasig and Taguig. The gold pin in Makati is labeled You.</desc>
+  <defs>
+    <linearGradient id="land" x1="0" y1="1" x2="1" y2="0">
+      <stop stop-color="#08439b" stop-opacity=".65"/>
+      <stop offset="1" stop-color="#052762" stop-opacity=".4"/>
+    </linearGradient>
+    <radialGradient id="halo">
+      <stop stop-color="#00dbda" stop-opacity=".12"/>
+      <stop offset="1" stop-color="#008dff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow">
+      <stop stop-color="#fff" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="shine" x2=".8" y2="1">
+      <stop stop-color="#fff" stop-opacity=".42"/>
+      <stop offset=".55" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#001e4d" stop-opacity=".2"/>
+    </linearGradient>
+    <path id="land-shape" d="M328 26 339 20 347 29 357 26 365 33 363 43 375 47 382 58 391 61 403 54 412 59 426 55 419 68 428 73 424 88 415 101 421 111 434 119 429 130 443 140 448 153 439 166 442 180 430 192 436 207 428 219 437 231 451 232 463 219 471 224 474 214 485 220 495 216 502 228 510 232 507 244 520 255 515 267 528 278 519 294 524 307 515 317 527 329 523 343 516 350 519 367 510 381 514 394 503 406 511 419 499 431 504 443 493 449 487 463 473 468 465 480 452 477 444 490 432 486 422 494 408 491 399 505 388 510 384 525 369 536 365 552 352 560 345 574 329 577 321 590 325 605 318 614 327 626 313 622 304 612 295 617 288 606 274 612 263 606 254 610 244 602 236 608 223 602 215 589 203 594 193 586 185 593 174 584 166 589 156 580 151 567 141 566 138 551 130 543 135 531 127 519 134 509 128 496 140 488 150 490 163 478 170 466 185 460 190 444 202 430 197 419 184 417 175 407 160 407 153 393 140 392 139 378 128 371 130 356 118 349 121 335 106 328 109 315 95 309 99 295 90 283 97 276 90 269 98 260 111 265 122 260 134 265 142 258 153 262 160 255 170 259 179 250 173 237 161 232 155 219 145 215 148 206 137 198 144 195 157 206 167 204 177 217 186 220 192 236 205 239 211 230 203 219 204 206 196 196 198 184 188 175 191 161 181 147 190 148 202 162 206 175 217 181 224 195 238 199 245 190 240 179 245 165 235 154 240 142 234 131 242 120 236 109 242 99 250 106 258 103 265 115 276 116 283 126 295 121 301 126 313 119 314 104 307 96 311 85 306 76 313 68 309 58 315 49 327 48 333 40 325 35Z"/>
+    <clipPath id="land-clip"><use href="#land-shape"/></clipPath>
+    <g id="pin">
+      <path d="M0 22C-4 17-18 2-18-8a18 18 0 1 1 36 0C18 2 4 17 0 22Z" fill="currentColor"/>
+      <path d="M0 22C-4 17-18 2-18-8a18 18 0 1 1 36 0C18 2 4 17 0 22Z" fill="url(#shine)"/>
+      <circle cy="-8" r="5.8" fill="#f5ffff"/>
+    </g>
+    <g id="rings">
+      <circle r="44" fill="currentColor" opacity=".07"/>
+      <circle r="31" fill="currentColor" fill-opacity=".1" stroke="currentColor" stroke-opacity=".28"/>
+      <circle r="20" fill="currentColor" fill-opacity=".17" stroke="currentColor" stroke-opacity=".7"/>
+      <circle r="30" fill="url(#glow)"/>
+    </g>
+  </defs>
+  <style>
+    text { font-family: Arial, Helvetica, sans-serif; }
+    .boundary { fill: none; stroke: #0870e8; stroke-width: 1.1; stroke-opacity: .65; stroke-linejoin: round; }
+    .street { fill: none; stroke: #0868d9; stroke-width: .8; opacity: .28; }
+    .route { fill: none; stroke: #12dcf2; stroke-width: 1.7; stroke-dasharray: 4 6; stroke-linecap: round; }
+    .city { fill: #f5f8ff; font-size: 21px; font-weight: 600; }
+    .ping { fill: currentColor; fill-opacity: .07; stroke: currentColor; stroke-width: 1; transform-origin: 0 0; animation: ping 3.6s cubic-bezier(.2,.5,.4,1) infinite; animation-delay: var(--delay, 0s); }
+    .ping.second { animation-delay: calc(var(--delay, 0s) - 1.8s); }
+    @keyframes ping {
+      0% { transform: scale(.45); opacity: 0; }
+      12% { opacity: .7; }
+      85%, 100% { transform: scale(1.65); opacity: 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ping { animation: none; opacity: 0; }
+    }
+  </style>
+
+  <!-- Simplified vector geography, with shared paths and pins to keep the illustration small. -->
+  <ellipse cx="326" cy="318" rx="256" ry="294" fill="url(#halo)"/>
+  <use href="#land-shape" fill="url(#land)" stroke="#086df0" stroke-width="1.2" stroke-linejoin="round"/>
+  <g clip-path="url(#land-clip)">
+    <path d="M90 269 153 262 179 250 212 280 231 326 221 390 190 444 150 490 128 496Z" fill="#0c54bd" opacity=".18"/>
+    <path d="M313 119 343 135 379 128 415 101 443 140 428 219 403 248 358 257 313 224 298 173Z" fill="#063a91" opacity=".2"/>
+    <path class="boundary" d="M314 104 322 132 335 146 338 168 355 184 350 210 363 231 358 257 378 265 401 257 415 268 437 259 451 232M258 103 254 135 265 153 260 176 274 198 266 219 282 239 313 224 320 204 338 168M191 161 220 229 248 240 266 219M179 250 212 251 230 266 253 261 282 239 299 254 318 252 358 257M212 251 205 280 220 298 248 306 264 292 293 300 305 278 299 254M205 280 181 285 168 276 134 290 99 295M248 306 238 330 248 347 270 351 278 332 293 300M358 257 353 282 368 297 364 318 387 331 407 321 415 296 437 288 437 259M270 351 296 361 310 348 335 354 344 333 364 318M407 321 430 330 447 320 469 328 481 313 519 294M387 331 382 358 400 373 422 362 438 374 460 366 476 380 510 381M248 347 226 363 221 390 252 393 271 409 296 400 296 361M296 400 325 411 342 396 360 409 382 394 400 373M422 362 410 403 427 422 452 415 467 432 499 431M271 409 266 438 281 461 312 454 331 466 360 447 360 409M197 419 226 426 243 416 266 438M185 460 208 475 229 467 249 482 281 461M331 466 339 492 364 500 384 525M360 447 387 454 408 441 427 422M249 482 256 507 280 524 275 550 299 573 321 590M150 490 175 507 195 501 217 519 240 514 256 507M217 519 205 543 222 562 215 589M299 573 326 562 345 574M195 501 185 527 163 532 151 567"/>
+    <path class="street" d="M260 131 292 156 326 151 369 168 405 152M240 179 288 184 305 205 359 201 410 218M205 239 234 223 252 249 278 268 318 274M169 299 211 310 229 345 282 376 330 369 367 387 418 386 462 402M237 273 228 303 255 323 311 325 343 306 388 286M320 204 297 221 312 245 336 264 327 290 335 316M430 241 453 270 478 282 490 310M469 328 455 345 469 363M312 454 305 427 326 390M243 416 233 454 253 471M280 524 315 514 339 492M175 507 169 548 195 571M427 422 414 470 384 485M256 507 301 495 324 481M358 257 390 244 401 257"/>
+    <path d="M184 217C196 246 189 260 208 285S234 329 236 371 241 428 217 474 224 514 245 537 278 564 310 580M202 302C240 307 265 291 295 306S344 338 382 327 452 294 493 308M350 210C334 255 337 294 314 332S292 370 296 400" fill="none" stroke="#078bff" stroke-opacity=".8" stroke-width="1.7"/>
+  </g>
+
+  <!-- Nearby routes remain readable beneath the animated marker rings. -->
+  <path class="route" d="M205 285C207 329 239 366 281 391S376 401 443 346M281 391C304 421 334 440 357 475"/>
+
+  <g transform="translate(347 184)" color="#12e3d2" style="--delay:-.6s">
+    <g transform="scale(1.9)">
+      <use href="#rings"/>
+      <circle class="ping" r="44"/>
+      <circle class="ping second" r="44"/>
+    </g>
+    <ellipse cy="24" rx="19" ry="5" fill="#001b43" opacity=".45"/>
+    <use href="#pin" transform="scale(1.2)"/>
+    <path d="M27-11H48" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="48" cy="-11" r="3" fill="currentColor"/>
+  </g>
+  <text class="city" x="405" y="179">Quezon City</text>
+
+  <g transform="translate(205 285)" color="#10ddd0" style="--delay:-1.3s">
+    <use href="#rings"/>
+    <circle class="ping" r="31"/>
+    <circle class="ping second" r="31"/>
+    <use href="#pin" transform="scale(.78)"/>
+    <path d="M18-5H31" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="31" cy="-5" r="2.5" fill="currentColor"/>
+  </g>
+  <text class="city" x="246" y="285">Manila</text>
+
+  <g transform="translate(443 346)" color="#168fff" style="--delay:-2.1s">
+    <use href="#rings"/>
+    <circle class="ping" r="31"/>
+    <circle class="ping second" r="31"/>
+    <use href="#pin" transform="scale(.78)"/>
+    <path d="M18-5H31" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="31" cy="-5" r="2.5" fill="currentColor"/>
+  </g>
+  <text class="city" x="484" y="346">Pasig</text>
+
+  <g transform="translate(281 391)" color="#ffbd37" style="--delay:-2.7s">
+    <use href="#rings"/>
+    <circle class="ping" r="31"/>
+    <circle class="ping second" r="31"/>
+    <use href="#pin" transform="scale(.78)"/>
+    <path d="M18-5H31" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="31" cy="-5" r="2.5" fill="currentColor"/>
+  </g>
+  <text class="city" x="322" y="391"><tspan fill="#ffbd37">You</tspan> · Makati</text>
+
+  <g transform="translate(357 475)" color="#9970ff" style="--delay:-3.2s">
+    <use href="#rings"/>
+    <circle class="ping" r="31"/>
+    <circle class="ping second" r="31"/>
+    <use href="#pin" transform="scale(.78)"/>
+    <path d="M18-5H31" stroke="currentColor" stroke-width="1.5"/>
+    <circle cx="31" cy="-5" r="2.5" fill="currentColor"/>
+  </g>
+  <text class="city" x="398" y="475">Taguig</text>
+
+  <!-- The reference's training-center card and north indicator. -->
+  <g transform="translate(10 45)">
+    <rect width="282" height="91" rx="14" fill="#061e45" fill-opacity=".88" stroke="#078dff" stroke-width="1.3"/>
+    <use href="#pin" transform="translate(30 37) scale(.72)" color="#12e3d2"/>
+    <text x="58" y="29" fill="#fff" font-size="18" font-weight="600">TESDA Training &amp;</text>
+    <text x="58" y="52" fill="#fff" font-size="18" font-weight="600">Assessment Center</text>
+    <text x="58" y="75" fill="#b6d6ff" font-size="15">Quezon City, NCR</text>
+    <path d="m260 39 6 7-6 7" fill="none" stroke="#6eb9ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g transform="translate(535 81)">
+    <text y="-41" text-anchor="middle" fill="#3da3ff" font-size="16" font-weight="600">N</text>
+    <circle r="31" fill="none" stroke="#096ce7" stroke-width="1.6"/>
+    <path d="m-11 1 21-11-9 22-2-10Z" fill="none" stroke="#8ecaff" stroke-width="2.8" stroke-linejoin="round"/>
+  </g>
+</svg>

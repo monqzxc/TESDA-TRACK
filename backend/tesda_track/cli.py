@@ -112,6 +112,8 @@ def build_parser() -> argparse.ArgumentParser:
     admin.add_argument("--keep-password", action="store_true", help="promote an existing account without a new password")
     openapi = commands.add_parser("openapi", help="write the API's OpenAPI schema to a file (no database needed)")
     openapi.add_argument("path", type=Path)
+    seed = commands.add_parser("seed-accounts", help="create role accounts from a JSON file; never overwrite existing accounts")
+    seed.add_argument("path", type=Path)
     mcp_client = commands.add_parser("mcp-client", help="manage the outside systems that call the MCP server")
     actions = mcp_client.add_subparsers(dest="action", required=True)
     create = actions.add_parser("create", help="register a client and print its secret once")
@@ -144,6 +146,23 @@ def main() -> None:
         return
 
     from tesda_track.db import get_engine
+
+    if args.command == "seed-accounts":
+        from pydantic import TypeAdapter, ValidationError
+        from tesda_track.seed_accounts import SeedAccount, seed_accounts
+
+        try:
+            records = TypeAdapter(list[SeedAccount]).validate_json(args.path.read_text(encoding="utf-8-sig"))
+            with Session(get_engine()) as session:
+                result = seed_accounts(session, records)
+                session.commit()
+        except ValidationError:
+            # Pydantic errors may contain the supplied password; do not print input values.
+            sys.exit("Invalid seed file. Check emails, roles, names and passwords (10–128 characters).")
+        except (OSError, ValueError) as error:
+            sys.exit(str(error))
+        print(f"Created {result['created']} accounts; skipped {result['skipped']} existing accounts.")
+        return
 
     if args.command in ("mcp-client", "mcp-usage"):
         run = run_mcp_client_command if args.command == "mcp-client" else run_mcp_usage_command

@@ -103,6 +103,7 @@ export function GoalConsole() {
       className={styles.console}
       role="group"
       aria-label={copy.label}
+      data-ui=""
     >
       <div className={styles.head}>
         <b>{copy.goal}</b>
@@ -117,18 +118,26 @@ export function GoalConsole() {
       </div>
       <div className={styles.language}>{hidden ? '' : example.language}</div>
       <div className={cx(styles.match, hidden && styles.hidden)}>
-        <div
-          className={styles.tile}
-          style={cssVars({ '--a': example.colors[0], '--b': example.colors[1] })}
-        >
+        <div className={styles.tile} style={cssVars({ '--a': example.color })}>
           <Icon name={example.icon} />
         </div>
         <div>
-          <div className={styles.kicker}>{copy.topMatch}</div>
+          <div className={styles.matchLabel}>{copy.topMatch}</div>
           <div className={styles.name}>{example.name}</div>
           <div className={styles.detail}>{example.detail}</div>
         </div>
-        <div className={styles.ring} style={cssVars({ '--v': score })}>
+        <div className={styles.ring}>
+          <svg viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+            <circle className={styles.ringTrack} cx="32" cy="32" r="28" />
+            <circle
+              className={styles.ringValue}
+              cx="32"
+              cy="32"
+              r="28"
+              pathLength={100}
+              style={cssVars({ '--v': score })}
+            />
+          </svg>
           <span>{score}%</span>
           <small>{copy.goalMatch}</small>
         </div>

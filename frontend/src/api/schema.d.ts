@@ -1300,6 +1300,114 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/oauth/token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Client credentials token for partner systems
+         * @description Send the client id and secret as HTTP Basic (client_secret_basic) or as form fields (client_secret_post).
+         */
+        post: operations["token_api_v1_oauth_token_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/mcp/usage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Usage
+         * @description Which partner calls which tool, how often, and whether that matches what it declared.
+         */
+        get: operations["usage_api_v1_admin_mcp_usage_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/mcp/clients": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Clients */
+        get: operations["clients_api_v1_admin_mcp_clients_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/roles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Roles */
+        get: operations["list_roles_api_v1_admin_roles_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Users */
+        get: operations["list_users_api_v1_admin_users_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/users/{user_id}/role": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Assign Role */
+        patch: operations["assign_role_api_v1_admin_users__user_id__role_patch"];
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1343,6 +1451,37 @@ export interface components {
             latitude: number;
             /** Longitude */
             longitude: number;
+        };
+        /** ApiClientPublic */
+        ApiClientPublic: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+            /** Organisation */
+            organisation: string;
+            /** Contact Email */
+            contact_email: string | null;
+            /** Declared Purpose */
+            declared_purpose: string;
+            /** Expected Tools */
+            expected_tools: string[];
+            /** Scopes */
+            scopes: string[];
+            /** Rate Limit Per Minute */
+            rate_limit_per_minute: number;
+            /** Is Active */
+            is_active: boolean;
+            /** Last Token At */
+            last_token_at: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
         };
         /** ApplicationCreate */
         ApplicationCreate: {
@@ -1888,6 +2027,19 @@ export interface components {
              */
             client_secret?: string | null;
         };
+        /** Body_token_api_v1_oauth_token_post */
+        Body_token_api_v1_oauth_token_post: {
+            /** Grant Type */
+            grant_type?: string | null;
+            /** Scope */
+            scope?: string | null;
+            /** Resource */
+            resource?: string | null;
+            /** Client Id */
+            client_id?: string | null;
+            /** Client Secret */
+            client_secret?: string | null;
+        };
         /** CertificationCounts */
         CertificationCounts: {
             /** Total */
@@ -1982,6 +2134,40 @@ export interface components {
              */
             skills_bridge_enabled: boolean;
         };
+        /** ClientUsage */
+        ClientUsage: {
+            /**
+             * Client Id
+             * Format: uuid
+             */
+            client_id: string;
+            /** Name */
+            name: string;
+            /** Organisation */
+            organisation: string;
+            /** Declared Purpose */
+            declared_purpose: string;
+            /** Expected Tools */
+            expected_tools: string[];
+            /** Scopes */
+            scopes: string[];
+            /** Is Active */
+            is_active: boolean;
+            /** Calls */
+            calls: number;
+            /** By Outcome */
+            by_outcome: {
+                [key: string]: number;
+            };
+            /** Tools */
+            tools: components["schemas"]["ToolUsage"][];
+            /** Days */
+            days: components["schemas"]["DayUsage"][];
+            /** Unexpected Tool Calls */
+            unexpected_tool_calls: number;
+            /** Deep Paging Calls */
+            deep_paging_calls: number;
+        };
         /** CompetencyAnswer */
         CompetencyAnswer: {
             /** Competency Id */
@@ -2021,6 +2207,16 @@ export interface components {
             name: string;
             /** Category */
             category: string;
+        };
+        /** DayUsage */
+        DayUsage: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Calls */
+            calls: number;
         };
         /** Directions */
         Directions: {
@@ -2249,12 +2445,14 @@ export interface components {
              * Role
              * @enum {string}
              */
-            role: "learner" | "admin";
+            role: "learner" | "admin" | "trainer" | "assessor" | "verifier" | "analyst";
             /**
              * Created At
              * Format: date-time
              */
             created_at: string;
+            /** Permissions */
+            readonly permissions: string[];
         };
         /** LearnerSummary */
         LearnerSummary: {
@@ -2972,6 +3170,14 @@ export interface components {
              */
             duration_min: number;
         };
+        /** RoleUpdate */
+        RoleUpdate: {
+            /**
+             * Role
+             * @enum {string}
+             */
+            role: "learner" | "admin" | "trainer" | "assessor" | "verifier" | "analyst";
+        };
         /**
          * ScoreComponents
          * @description Each component on a 0..1 scale before weighting.
@@ -3319,6 +3525,27 @@ export interface components {
             /** Expires In */
             expires_in: number;
         };
+        /** ToolUsage */
+        ToolUsage: {
+            /** Tool */
+            tool: string;
+            /** Calls */
+            calls: number;
+            /** Ok */
+            ok: number;
+            /** Tool Error */
+            tool_error: number;
+            /** Denied Scope */
+            denied_scope: number;
+            /** Rate Limited */
+            rate_limited: number;
+            /** P50 Ms */
+            p50_ms: number | null;
+            /** P95 Ms */
+            p95_ms: number | null;
+            /** Expected */
+            expected: boolean;
+        };
         /** TrainingProgramCreate */
         TrainingProgramCreate: {
             /**
@@ -3574,6 +3801,13 @@ export interface components {
             eligibility: components["schemas"]["EligibilityPublic"];
             /** Reasons */
             reasons: string[];
+        };
+        /** UsageReport */
+        UsageReport: {
+            /** Clients */
+            clients: components["schemas"]["ClientUsage"][];
+            /** Unattributed Denials */
+            unattributed_denials: number;
         };
         /** ValidationError */
         ValidationError: {
@@ -4955,7 +5189,9 @@ export interface operations {
                 near_lat?: number | null;
                 near_lon?: number | null;
                 radius_km?: number | null;
+                provider_id?: number | null;
                 delivery_mode?: ("institution_based" | "enterprise_based" | "community_based" | "online" | "unknown") | null;
+                scholarship_only?: boolean;
             };
             header?: never;
             path?: never;
@@ -6390,6 +6626,180 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ClientConfig"];
+                };
+            };
+        };
+    };
+    token_api_v1_oauth_token_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/x-www-form-urlencoded": components["schemas"]["Body_token_api_v1_oauth_token_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    usage_api_v1_admin_mcp_usage_get: {
+        parameters: {
+            query?: {
+                date_from?: string | null;
+                date_to?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsageReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    clients_api_v1_admin_mcp_clients_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiClientPublic"][];
+                };
+            };
+        };
+    };
+    list_roles_api_v1_admin_roles_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string[];
+                    };
+                };
+            };
+        };
+    };
+    list_users_api_v1_admin_users_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LearnerPublic"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    assign_role_api_v1_admin_users__user_id__role_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RoleUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LearnerPublic"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

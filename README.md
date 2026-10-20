@@ -4,6 +4,415 @@ Career pathway recommendations for TESDA qualifications: learners describe a goa
 qualifications, see a suggested training or assessment pathway, and check their readiness. Built for a
 pilot with real learners, self-hosted on our own server with Docker.
 
+Start with [local setup](#local-development). If you already installed the app, use
+[Daily startup](#daily-startup) or [After updating the code](#after-updating-the-code).
+For errors, jump to [Troubleshooting](#troubleshooting).
+
+- [Requirements](#requirements)
+- [Optional features](#optional-features)
+- [Everyday commands](#everyday-commands)
+- [Accounts](#accounts) and [viewing the database](#viewing-the-database)
+- [Tests](#tests)
+- [Deployment](#deployment-own-server-or-vm)
+- [Project layout](#project-layout) and [technical background](#roadmap)
+
+## Requirements
+
+For local development on Windows, install:
+
+| Tool | Version / purpose |
+| --- | --- |
+| Python | **3.13** for the API and Python tools |
+| Node.js | **24**, including npm, for the React frontend |
+| Docker Desktop | Running with Linux containers; provides PostgreSQL 17, pgvector and PostGIS |
+| Git | To clone and update the repository |
+| Laragon | Optional; HeidiSQL can view the Docker database |
+
+The steps below use **PowerShell**. They call the virtual environment's Python directly and use
+`npm.cmd`, so you do not need to activate the environment or change PowerShell's execution policy.
+
+## Local development
+
+You will run three services: **Docker database → Python API → React frontend**.
+The React app is at [localhost:5173](http://localhost:5173). Streamlit is optional.
+
+### 1. Open the project folder
+
+Open PowerShell in the folder containing `README.md`, `.env.example` and `docker-compose.dev.yml`.
+For this checkout:
+
+```powershell
+cd D:/Projects/Laragon/TESDA-TRACK
+py -3.13 --version
+node --version
+npm.cmd --version
+docker compose version
+```
+
+Use your own checkout path if different. Expect Python 3.13 and Node v24.
+If a command is missing, install the corresponding requirement and open a new terminal.
+
+### 2. Install dependencies
+
+Run from the **repository root**:
+
+```powershell
+py -3.13 -m venv .venv
+./.venv/Scripts/python.exe -m pip install -r requirements-dev.txt
+Push-Location frontend
+npm.cmd ci
+Pop-Location
+```
+
+The first install needs internet access. Wait for both installations to succeed before continuing.
+If `.venv` already exists with Python 3.13, skip its creation.
+
+### 3. Configure the environment
+
+From the **repository root**, create `.env` only if it does not already exist:
+
+```powershell
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
+./.venv/Scripts/python.exe -c "import secrets; print(secrets.token_urlsafe(48))"
+```
+
+Run the Python command three times to generate separate values for `SECRET_KEY`,
+`POSTGRES_PASSWORD` and `APP_DB_PASSWORD`. Edit `.env` with those values:
+
+```dotenv
+SECRET_KEY=PASTE_FIRST_GENERATED_VALUE
+POSTGRES_PASSWORD=PASTE_SECOND_GENERATED_VALUE
+APP_DB_PASSWORD=PASTE_THIRD_GENERATED_VALUE
+
+DATABASE_URL=postgresql+psycopg://tesda_track:PASTE_THIRD_GENERATED_VALUE@127.0.0.1:5433/tesda_track
+TEST_DATABASE_URL=postgresql+psycopg://tesda_track:PASTE_THIRD_GENERATED_VALUE@127.0.0.1:5433/tesda_track_test
+API_BASE_URL=http://127.0.0.1:8000
+ENVIRONMENT=development
+
+# Start with keyword matching; enable optional integrations later.
+SEMANTIC_SEARCH_ENABLED=false
+SKILLS_BRIDGE_MCP_ENABLED=false
+```
+
+Replace every placeholder. The password inside **both database URLs** must match `APP_DB_PASSWORD`.
+Keep the `_test` database separate: tests rebuild its schema. Keep existing secrets when updating an
+existing installation; changing `.env` does not change passwords already stored in PostgreSQL.
+
+**Optional features:** the example starts with keyword matching and disables Skills Explorer.
+Accounts, the catalog and the pathway finder work without either integration.
+See [optional features](#optional-features) to enable them later. Keep `.env` private.
+
+### 4. Start the database and create the tables
+
+Open Docker Desktop and wait for its engine to start. From the **repository root**:
+
+```powershell
+docker compose -f docker-compose.dev.yml up -d --build
+docker compose -f docker-compose.dev.yml exec db pg_isready -h 127.0.0.1 -U postgres -d tesda_track
+```
+
+Wait for `accepting connections`; if it is still starting, repeat the second command.
+The database listens on **127.0.0.1:5433**. The first startup creates `tesda_track` and `tesda_track_test`.
+
+Apply all migrations and load the catalog:
+
+```powershell
+Push-Location backend
+../.venv/Scripts/python.exe -m alembic upgrade head
+../.venv/Scripts/python.exe -m alembic current
+../.venv/Scripts/python.exe -m tesda_track.seed
+Pop-Location
+```
+
+Expect the current migration to show `(head)`, and the seed command to finish without errors.
+**Do not skip migrations:** the API can pass its health check while signed-in features fail because
+a required table is missing.
+
+### 5. Start the API and frontend
+
+Keep these **two terminals open**. Start each terminal in the repository root.
+
+**Terminal 1 — API:**
+
+```powershell
+cd backend
+../.venv/Scripts/python.exe -m uvicorn tesda_track.main:app --reload
+```
+
+Wait for `Application startup complete`. Check [API health](http://127.0.0.1:8000/health);
+it should return `{"status":"ok","database":"ok"}`.
+The interactive API documentation is at [API docs](http://127.0.0.1:8000/api/docs).
+
+**Terminal 2 — React frontend:**
+
+```powershell
+cd frontend
+npm.cmd run dev -- --port 5173 --strictPort
+```
+
+Open [TESDA-TRACK](http://localhost:5173). The frontend forwards `/api` requests to port 8000.
+Use the same hostname throughout a session; `localhost` and `127.0.0.1` have separate browser cookies.
+
+### 6. Check that setup worked
+
+1. Open **Find my pathway**, enter `I want to become a welder`, and get a recommendation.
+2. Create a learner account, sign in, and submit the goal again.
+3. Confirm that recommendations load and the saved journey appears in **My Progress**.
+
+With the supplied catalog, the welding goal should include **Manual Metal Arc Welding (MMAW) NC II**.
+Testing both guest and signed-in requests checks the catalog, matching and saved-record tables.
+If either fails, use [Troubleshooting](#troubleshooting).
+
+## Daily startup
+
+After the initial setup, start Docker Desktop. In a terminal at the **repository root**:
+
+```powershell
+docker compose -f docker-compose.dev.yml up -d
+cd backend
+../.venv/Scripts/python.exe -m uvicorn tesda_track.main:app --reload
+```
+
+In a second terminal at the **repository root**:
+
+```powershell
+cd frontend
+npm.cmd run dev -- --port 5173 --strictPort
+```
+
+Open [localhost:5173](http://localhost:5173). Stop each development server with **Ctrl+C**.
+To stop the database while keeping its data, run
+`docker compose -f docker-compose.dev.yml stop` from the repository root.
+
+## After updating the code
+
+Stop the API and frontend with **Ctrl+C**, then run these commands from the **repository root**
+after pulling or switching to the updated code:
+
+```powershell
+./.venv/Scripts/python.exe -m pip install -r requirements-dev.txt
+Push-Location frontend
+npm.cmd ci
+Pop-Location
+docker compose -f docker-compose.dev.yml up -d
+Push-Location backend
+../.venv/Scripts/python.exe -m alembic upgrade head
+../.venv/Scripts/python.exe -m alembic current
+../.venv/Scripts/python.exe -m tesda_track.seed
+Pop-Location
+```
+
+Confirm `(head)`, then use [Daily startup](#daily-startup). Local development does **not** apply migrations
+automatically. Check new settings in `.env.example` and add them to your existing `.env`.
+If the catalog or model changed and semantic search is enabled, sync embeddings as described below.
+
+## Optional features
+
+### Semantic matching
+
+Semantic matching helps with goals that do not use exact catalog keywords. Set
+`SEMANTIC_SEARCH_ENABLED=true` in `.env`, then run from the **repository root**:
+
+```powershell
+Push-Location backend
+../.venv/Scripts/python.exe -m tesda_track.embeddings sync
+Pop-Location
+```
+
+With `EMBEDDING_MODEL` and `EMBEDDING_MODEL_PATH` unset, this downloads the default model on first use
+(about 470 MB). Expect an `Embeddings: ... created, ... updated.` message. Restart the API afterwards.
+If you want to finish setup without the download, set `SEMANTIC_SEARCH_ENABLED=false` and restart the API.
+
+For a shared fine-tuned model, follow [the model setup guide](backend/models/README.md).
+Model folders are not included in Git. Set both its model name and local folder path, then sync again;
+stored vectors belong to a particular model.
+
+### Skills Explorer
+
+Set `SKILLS_BRIDGE_MCP_ENABLED=true`, `SKILLS_BRIDGE_CLIENT_ID` and `SKILLS_BRIDGE_CLIENT_SECRET`
+in `.env` using credentials issued to your application, then restart the API.
+See [Skills Bridge](#skills-bridge) for details. This service is separate from the local pathway finder.
+
+### Classic Streamlit app
+
+With the database and API running, open another terminal at the **repository root**:
+
+```powershell
+cd classic
+../.venv/Scripts/python.exe -m streamlit run app.py
+```
+
+Open [the classic app](http://localhost:8501). This terminal is optional when using the React frontend.
+
+## Everyday commands
+
+Start each command in the directory shown.
+
+| Task | Directory | Command |
+| --- | --- | --- |
+| Database status | Repository root | `docker compose -f docker-compose.dev.yml ps` |
+| Database logs | Repository root | `docker compose -f docker-compose.dev.yml logs --tail=100 db` |
+| Apply migrations | `backend/` | `../.venv/Scripts/python.exe -m alembic upgrade head` |
+| Current / available migration | `backend/` | `../.venv/Scripts/python.exe -m alembic current` / `../.venv/Scripts/python.exe -m alembic heads` |
+| Reload catalog data | `backend/` | `../.venv/Scripts/python.exe -m tesda_track.seed` |
+| Sync embeddings | `backend/` | `../.venv/Scripts/python.exe -m tesda_track.embeddings sync` |
+| Python tests | Repository root | `./.venv/Scripts/python.exe -m pytest` |
+| Frontend tests | `frontend/` | `npm.cmd test` |
+| Frontend lint / build | `frontend/` | `npm.cmd run lint` / `npm.cmd run build` |
+| Browser tests | `frontend/` | First `npx.cmd playwright install chromium`, then `npm.cmd run e2e` |
+| Refresh API types after API changes | `frontend/` | `npm.cmd run api:types` |
+| Format frontend code | `frontend/` | `npm.cmd run format` |
+
+To create a migration, run `../.venv/Scripts/python.exe -m alembic revision --autogenerate --rev-id NEXT_NUMBER -m "short description"`
+from `backend/`. Replace `NEXT_NUMBER` with the next unused number after checking
+`backend/migrations/versions/`, and review the generated file before applying it.
+
+For real training and assessment registries, see the [registry import and review workflow](docs/registry-import.md).
+For test database behavior and optional real-model checks, see [Tests](#tests).
+
+## Troubleshooting
+
+### "We can't reach the TESDA-TRACK service right now"
+
+This message can mean a stopped service **or a server error**. Check these in order.
+Run the commands from the **repository root** in a third terminal:
+
+```powershell
+docker compose -f docker-compose.dev.yml ps
+curl.exe -fsS http://127.0.0.1:8000/health
+curl.exe -fsS http://localhost:5173/api/v1/qualifications
+```
+
+| Result | What to do |
+| --- | --- |
+| Docker is unavailable or no database is running | Open Docker Desktop, then run `docker compose -f docker-compose.dev.yml up -d`. |
+| Port 8000 refuses the connection | Start the API using [Daily startup](#daily-startup). Read its terminal if it exits. |
+| Health returns 503 or `database: unreachable` | Check database status, port 5433, and the password in `DATABASE_URL`. See the database fixes below. |
+| Health works, but the frontend API URL fails | Keep both servers running. Check the frontend terminal for proxy errors; the default API target is `http://127.0.0.1:8000`. |
+| Catalog works, but a recommendation fails | Check the API terminal's traceback. If a table or column is missing, apply migrations using the next section. |
+| Both URLs work, but the page still fails | Refresh and reproduce once. In browser DevTools → Network, note the failing `/api/` request and HTTP status; match it to the API terminal error. |
+
+A working landing page does not prove the API is running. A healthy API only confirms a database
+connection; it does not verify that every migration has been applied.
+
+### Guest recommendations work, but signed-in recommendations fail
+
+A missing migration can break saved recommendations while guest matching still works. For example,
+migration `0009` adds the `write_receipt` table used to retry saves safely. Without it, a logged-in
+learner can receive the service error when submitting `I want to become a welder`, including in incognito.
+
+Apply **all available migrations**, not just a fixed revision. From the **repository root**:
+
+```powershell
+Push-Location backend
+../.venv/Scripts/python.exe -m alembic upgrade head
+../.venv/Scripts/python.exe -m alembic current
+../.venv/Scripts/python.exe -m alembic heads
+Pop-Location
+```
+
+The current revision must match the available head. Refresh the page and retry while signed in.
+This does not require clearing browser data or resetting the database.
+If it still fails, read the new API traceback rather than assuming it has the same cause.
+
+### Database connection or password fails
+
+**Connection refused on port 5433:** start Docker Desktop, then run from the repository root:
+
+```powershell
+docker compose -f docker-compose.dev.yml up -d
+docker compose -f docker-compose.dev.yml logs --tail=100 db
+docker compose -f docker-compose.dev.yml exec db pg_isready -h 127.0.0.1 -U postgres -d tesda_track
+```
+
+**`password authentication failed for user "tesda_track"`:** both database URLs must contain the
+password originally assigned to the `tesda_track` role. Changing `APP_DB_PASSWORD` in `.env` alone
+does not change an existing database password.
+
+Restore the correct password in `.env`, or change the role's password without deleting data.
+From the **repository root**, open PostgreSQL:
+
+```powershell
+docker compose -f docker-compose.dev.yml exec db psql -U postgres -d tesda_track
+```
+
+At the `psql` prompt, run:
+
+```text
+\password tesda_track
+\q
+```
+
+Enter the new password twice when prompted. Update `APP_DB_PASSWORD`, `DATABASE_URL` and
+`TEST_DATABASE_URL` to match, then restart the API. Generated URL-safe passwords avoid special-character
+escaping in database URLs.
+
+**PostGIS or vector extension errors:** check that both URLs use **127.0.0.1:5433** and that you started
+the database with `docker-compose.dev.yml`. Laragon's database on port 5432 is separate.
+If the Docker database itself reports a missing extension, check its initialization logs before continuing.
+
+Avoid `docker compose ... down -v` as a troubleshooting shortcut: it deletes the database volume,
+including accounts and saved journeys. Migrations and password corrections do not need a reset.
+
+### A port is already in use
+
+Reuse the existing TESDA-TRACK server if it is healthy, or stop its terminal with **Ctrl+C** before
+starting another copy. To inspect listeners:
+
+```powershell
+Get-NetTCPConnection -State Listen |
+    Where-Object { $_.LocalPort -in 5173, 8000, 5433 } |
+    Select-Object LocalAddress, LocalPort, OwningProcess
+```
+
+If another application needs the port:
+
+| Port | Alternative |
+| --- | --- |
+| Frontend 5173 | From `frontend/`, run `npm.cmd run dev -- --port 5174 --strictPort`, then use `http://localhost:5174`. |
+| API 8000 | Start Uvicorn with `--port 8001`. In the frontend terminal, set `$env:API_PROXY = "http://127.0.0.1:8001"` before starting Vite. If using Streamlit, also update `API_BASE_URL` in `.env`. |
+| Database 5433 | Change the host mapping in `docker-compose.dev.yml`, for example to `127.0.0.1:5434:5432`, and use port 5434 in both database URLs. Run the database `up -d` command again. |
+
+If you previously overrode `API_PROXY`, remove that override with
+`Remove-Item Env:API_PROXY -ErrorAction SilentlyContinue` in the frontend terminal and restart Vite
+to return to port 8000. The React frontend uses this proxy setting; `API_BASE_URL` configures the classic app.
+
+### Installation, catalog, model and sign-in problems
+
+| Problem | What to do |
+| --- | --- |
+| `npm.ps1 cannot be loaded` or script execution is disabled | Use `npm.cmd` / `npx.cmd` and the explicit `.venv/Scripts/python.exe` commands shown above. |
+| `py`, `node` or Docker is not recognized | Install the requirement and reopen PowerShell. If Python is installed without the launcher, check `python --version` is 3.13 and use `python -m venv .venv`. |
+| Python reports a missing module | Run `./.venv/Scripts/python.exe -m pip install -r requirements-dev.txt` from the repository root; use that same Python to start the API. |
+| Settings validation fails at startup | Check the repository-root `.env`: database URL, a `SECRET_KEY` of at least 32 characters, and both Skills Bridge credentials or neither. Restart the API after edits. |
+| `npm ci` fails | Verify Node 24 and internet access, then retry from `frontend/`. If npm reports a lockfile mismatch, restore matching `package.json` and `package-lock.json` from the same revision. |
+| Catalog is empty | Apply migrations, then run `../.venv/Scripts/python.exe -m tesda_track.seed` from `backend/`. Refresh the page. |
+| Model download fails, matching waits on model loading, or the configured folder is missing | Set `SEMANTIC_SEARCH_ENABLED=false` in `.env` and restart the API to use keywords. To enable it again, follow [Semantic matching](#semantic-matching), confirm the folder exists, and sync embeddings. |
+| Skills Explorer asks you to contact the administrator | Configure both issued Skills Bridge credentials, or disable the integration. Restart the API; these credentials are not needed for Find my pathway. |
+| Sign-in disappears or a request returns 401 | Sign in again on the same hostname. Incognito has its own cookies. For local HTTP development, use `ENVIRONMENT=development`; production sessions require HTTPS. |
+| Sign-in is temporarily locked | Wait 15 minutes after five failed attempts, then use the correct password. |
+
+### Full Docker deployment fails
+
+The full stack uses `docker-compose.yml`; local development uses `docker-compose.dev.yml`.
+They have separate databases. Do not mix their commands when diagnosing an installation.
+
+From the **repository root**, inspect the full stack:
+
+```powershell
+docker compose ps -a
+docker compose logs --tail=100 migrate api db caddy
+```
+
+Resolve a failed migration before starting the API. If ports 80/443 are occupied by Laragon, stop its
+web server or choose unused `HTTP_PORT` and `HTTPS_PORT` values in `.env`.
+For production sign-in, serve the app over HTTPS. See [Deployment](#deployment-own-server-or-vm).
+
+If a failure remains, collect the failed command or request, HTTP status, and the relevant terminal
+error. Remove passwords, tokens and learner details before sharing logs.
+
+## Project layout
+
 ```
 Browser ──HTTPS──▶ Caddy ──▶ Streamlit (classic/) ──HTTP──▶ FastAPI (backend/) ──▶ PostgreSQL 17
                                                      └── internal network only ──┘   + pgvector + PostGIS
@@ -199,124 +608,6 @@ needs no API, so it shows even while the service is down.
   (80% and 50%). Update them when the catalog, `regions.json`, `RANKING_WEIGHTS__*` or
   `skill_gap_service.py` change. The match percentages in the hero and in step 2 are labelled examples.
 
-## Requirements
-
-- **Docker Desktop** for the database. Local development uses the same PostgreSQL image as production,
-  because the app needs pgvector and PostGIS. Laragon's PostgreSQL has neither, so it isn't used.
-- **Python 3.13**
-- **Laragon** (optional) for its database viewer, HeidiSQL. See
-  [Viewing the database](#viewing-the-database).
-
-## Local development
-
-The database runs in Docker. The API and the Streamlit app run directly on your machine, so code
-changes reload instantly. The commands below work in PowerShell and Git Bash.
-
-1. **Create `.env`.**
-
-   ```bash
-   cp .env.example .env
-   ```
-
-   Generate a value for each of `SECRET_KEY`, `POSTGRES_PASSWORD` and `APP_DB_PASSWORD`:
-
-   ```bash
-   python -c "import secrets; print(secrets.token_urlsafe(48))"
-   ```
-
-   Replace `CHANGE_ME` in `DATABASE_URL` and `TEST_DATABASE_URL` with your `APP_DB_PASSWORD`.
-   `token_urlsafe` passwords are safe to put inside a URL.
-
-2. **Start the database.** The first run builds the image, which takes a few minutes.
-
-   ```bash
-   docker compose -f docker-compose.dev.yml up -d --build
-   ```
-
-   This starts PostgreSQL on `127.0.0.1:5433` and creates two databases, `tesda_track` and
-   `tesda_track_test`. Both have the `vector` and `postgis` extensions, installed in an `extensions`
-   schema. Unless you stop it, the container starts again on its own whenever Docker Desktop starts.
-
-3. **Install the Python dependencies** into a virtualenv at the repository root:
-
-   ```bash
-   python -m venv .venv
-   .venv/Scripts/python -m pip install -r requirements-dev.txt
-   ```
-
-4. **Create the tables, load the seed data, and embed the catalog:**
-
-   ```bash
-   cd backend
-   ../.venv/Scripts/alembic upgrade head
-   ../.venv/Scripts/python -m tesda_track.seed
-   ../.venv/Scripts/python -m tesda_track.embeddings sync
-   ```
-
-   The first `embeddings sync` downloads the model (about 470 MB) into `EMBEDDING_CACHE_DIR`, which
-   takes a few minutes. Later runs only embed new or changed records.
-
-   To serve a fine-tuned model instead (`backend/models/README.md`), set both `EMBEDDING_MODEL` (the
-   model's own name, e.g. `tesda-track/<folder>`, never the base model's) and `EMBEDDING_MODEL_PATH` in `.env`, then run `python -m tesda_track.embeddings sync` again: embeddings are stored
-   per model, so matching has no semantic signal until it has run after any model change.
-
-5. **Run the app.** Use two terminals, both starting from the repository root.
-
-   ```bash
-   # Terminal 1: API (interactive docs at http://127.0.0.1:8000/api/docs)
-   cd backend
-   ../.venv/Scripts/uvicorn tesda_track.main:app --reload
-   ```
-
-   ```bash
-   # Terminal 2: Streamlit app (http://localhost:8501)
-   cd classic
-   ../.venv/Scripts/streamlit run app.py
-   ```
-
-6. **Optional: create an administrator account** (see [Accounts](#accounts)).
-
-### React app (frontend/)
-
-The React app in `frontend/` will replace the Streamlit app. It needs Node 24 (see `frontend/.nvmrc`). Start the
-API first (step 5, terminal 1). The React app sends `/api` requests to it on port 8000.
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-The app opens at http://localhost:5173. Other commands, run in `frontend/`:
-
-| Task | Command |
-|------|---------|
-| Run the tests | `npm test` |
-| Check the code | `npm run lint` |
-| Format the code | `npm run format` |
-| Run the browser tests (first run `npx playwright install chromium`) | `npm run e2e` |
-| Regenerate the API types after changing the API (CI checks they match) | `npm run api:types` |
-
-### Everyday commands
-
-| Task                                             | Command                                                                                                   |
-| ------------------------------------------------ | --------------------------------------------------------------------------------------------------------- |
-| Start the database                               | `docker compose -f docker-compose.dev.yml up -d`                                                          |
-| Stop the database (keeps data)                   | `docker compose -f docker-compose.dev.yml stop`                                                           |
-| Check the database is running                    | `docker compose -f docker-compose.dev.yml ps`                                                             |
-| Database logs                                    | `docker compose -f docker-compose.dev.yml logs -f db`                                                     |
-| Delete the database and start fresh              | `docker compose -f docker-compose.dev.yml down -v`, then repeat steps 2 and 4                             |
-| Apply new migrations (after pulling)             | `cd backend` then `../.venv/Scripts/alembic upgrade head`                                                 |
-| Create a migration                               | `cd backend` then `../.venv/Scripts/alembic revision --autogenerate --rev-id 0004 -m "short description"` |
-| Reload the seed data                             | `cd backend` then `../.venv/Scripts/python -m tesda_track.seed`                                           |
-| Import real training/assessment Excel registries | See [registry import commands and review workflow](docs/registry-import.md); preview first with `python -m tesda_track.registry_import --help` |
-| Embed new or changed qualifications and programs | `cd backend` then `../.venv/Scripts/python -m tesda_track.embeddings sync`                                |
-| Run the tests                                    | `.venv/Scripts/python -m pytest`                                                                          |
-| Also test the real embedding model               | `TESDA_MODEL_TESTS=1 .venv/Scripts/python -m pytest backend/tests/test_semantic.py`                       |
-
-Migrations are numbered `0001`, `0002`, and so on. Pass the next number with `--rev-id`, and read the
-generated file before applying it.
-
 ## Viewing the database
 
 The dev database accepts connections on **127.0.0.1, port 5433**.
@@ -430,6 +721,8 @@ Reports return only counts and averages, never individual records.
 
 ## Tests
 
+Run from the **repository root**, with the Docker development database running:
+
 ```bash
 .venv/Scripts/python -m pytest
 ```
@@ -443,6 +736,14 @@ The tests don't load the embedding model. They use a small stand-in that treats 
 similar. Set `TESDA_MODEL_TESTS=1` to also run the real-model guard test; with the adopted local model it
 currently fails on 2 of 13 goals (see `docs/ml/2026-10-09-matching-model-evaluation.md`), and it passes with the
 base model.
+
+To include the real-model check in PowerShell (uses the model configured in `.env`):
+
+```powershell
+$env:TESDA_MODEL_TESTS = "1"
+./.venv/Scripts/python.exe -m pytest backend/tests/test_semantic.py
+Remove-Item Env:TESDA_MODEL_TESTS
+```
 
 ## Seed data
 
@@ -515,7 +816,8 @@ show. Loading again replaces the earlier demo data, and `remove` deletes all of 
 ## Deployment (own server or VM)
 
 ```bash
-cp .env.example .env        # set DOMAIN, SECRET_KEY, POSTGRES_PASSWORD, APP_DB_PASSWORD
+# First deployment only: copy .env.example to .env if it does not exist.
+# Set DOMAIN, SECRET_KEY, POSTGRES_PASSWORD and APP_DB_PASSWORD in .env.
 docker compose up -d --build
 ```
 
@@ -547,19 +849,6 @@ The API and the migration job share one image (`tesda-track-backend`), so it's b
 To try the full stack on your own machine, stop Laragon's Apache or Nginx first, because Caddy needs
 ports 80 and 443. Then set `DOMAIN=localhost` and open https://localhost. It runs as a separate Compose
 project (`tesda-track`), with its own database volume.
-
-## Troubleshooting
-
-- **`password authentication failed for user "tesda_track"`**: the password in `DATABASE_URL` must
-  match `APP_DB_PASSWORD`. The database passwords are set only when the volume is first created, so
-  changing `.env` afterwards has no effect. Run `docker compose -f docker-compose.dev.yml down -v`
-  (this deletes the data), then repeat steps 2 and 4.
-- **`connection refused` on port 5433**: Docker Desktop isn't running, or the database is stopped. Run
-  `docker compose -f docker-compose.dev.yml up -d`.
-- **`extension "postgis" is not available`** while running migrations: you are connected to Laragon's
-  PostgreSQL (port 5432) instead of the Docker database (port 5433). Check `.env`.
-- **Port 5433 is already in use**: change the left-hand port in `docker-compose.dev.yml`
-  (`127.0.0.1:5433:5432`) and in both URLs in `.env`.
 
 ## Privacy
 

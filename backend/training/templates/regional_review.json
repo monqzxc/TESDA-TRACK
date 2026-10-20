@@ -1,0 +1,18 @@
+[
+  {
+    "qualification": "Cookery NC II",
+    "lang": "pam",
+    "kind": "native_task",
+    "query": "Buri kung matutung maglutu kareng pamangan para king karinderya.",
+    "english": "I want to learn to cook dishes for a small eatery.",
+    "review_status": "draft"
+  },
+  {
+    "qualification": "Motorcycle/Small Engine Servicing NC II",
+    "lang": "ilo",
+    "kind": "native_task",
+    "query": "Kayat ko nga agsursuro nga agtarimaan iti motorsiklo a saan nga agrugi ti makina na.",
+    "english": "I want to learn to repair a motorcycle whose engine will not start.",
+    "review_status": "draft"
+  }
+]

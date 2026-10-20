@@ -71,61 +71,49 @@
 }
 
 .waypoint {
+  position: relative;
   grid-column: 2;
   grid-row: 1;
   justify-self: center;
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
+  border: 5px solid var(--page);
   border-radius: 50%;
-  background: var(--surface);
-  box-shadow:
-    0 0 0 5px var(--page),
-    inset 0 0 0 3px var(--border);
+  background: var(--border);
   transition:
     background 0.4s,
-    box-shadow 0.4s;
+    transform 0.4s var(--ease);
+}
+
+/* The stop's marker, cut out of the road by the page-colored border: hollow until the road reaches it. */
+.waypoint::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: var(--surface);
+  transition: background 0.4s;
 }
 
 .waypoint[data-lit] {
   background: var(--signal);
-  box-shadow:
-    0 0 0 5px var(--page),
-    0 0 0 11px color-mix(in srgb, var(--signal) 28%, transparent);
+  transform: scale(1.15);
 }
 
-.number {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.6rem;
-  color: var(--muted);
-  font: 700 var(--step--1) / 1 var(--font-text);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.number b {
-  display: grid;
-  place-items: center;
-  width: 30px;
-  height: 30px;
-  border-radius: 9px;
-  background: var(--blue-soft);
-  color: var(--blue);
-  font: 800 0.95rem/1 var(--font-display);
-  letter-spacing: 0;
+.waypoint[data-lit]::after {
+  background: var(--signal);
 }
 
 .copy h3 {
-  margin-top: 0.9rem;
   font-size: var(--step-2);
   font-weight: 750;
-  line-height: 1.1;
-  letter-spacing: -0.015em;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
 }
 
 .copy p {
   max-width: 30rem;
-  margin-top: 0.8rem;
+  margin-top: 1rem;
 }
 
 .copy q {
@@ -164,8 +152,8 @@
 .filipino small {
   margin-left: 0.25rem;
   color: var(--muted);
-  font-size: 0.7rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 /* Stop 2: ranked matches */
@@ -201,7 +189,7 @@
 .match small {
   grid-column: 1;
   color: var(--muted);
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
 }
 
 .score {
@@ -242,7 +230,7 @@
 .note {
   margin-top: 0.9rem;
   color: var(--muted);
-  font-size: 0.85rem;
+  font-size: 0.8125rem;
 }
 
 /* Stop 4: three routes; the readiness check picks one */
@@ -265,11 +253,10 @@
   background: var(--panel);
   transition:
     background 0.35s,
-    box-shadow 0.35s,
-    transform 0.35s var(--ease);
+    box-shadow 0.35s;
 }
 
-.dot {
+[data-ui] .dot {
   grid-row: 1 / span 2;
   width: 14px;
   height: 14px;
@@ -291,32 +278,29 @@
 
 .route small {
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: 0.8125rem;
 }
 
 .route em {
   position: absolute;
-  top: 0.9rem;
+  top: 0.95rem;
   right: 1rem;
   color: var(--muted);
-  font-size: 0.7rem;
+  font-size: 0.8125rem;
   font-style: normal;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
-.route.picked {
-  background: var(--surface);
-  box-shadow:
-    0 0 0 2px var(--blue),
-    var(--shadow);
-  transform: translateX(6px);
+/* The picked route: the app's selected row, drawn in the primary blue. */
+[data-ui] .route.picked {
+  background: var(--blue-soft);
+  box-shadow: inset 0 0 0 2px var(--blue);
 }
 
-.picked .dot {
+[data-ui] .picked .dot {
   background: var(--signal);
-  box-shadow: 0 0 0 4px color-mix(in srgb, var(--signal) 30%, transparent);
+  box-shadow: none;
 }
 
 .route.picked em {
@@ -346,10 +330,14 @@
     grid-row: 1;
     align-self: start;
     justify-self: start;
-    width: 24px;
-    height: 24px;
-    margin-top: 0.1rem;
-    margin-left: -2px;
+    width: 32px;
+    height: 32px;
+    margin-top: 0;
+    margin-left: -6px;
+  }
+
+  .waypoint::after {
+    inset: 3px;
   }
 
   .roadBed,

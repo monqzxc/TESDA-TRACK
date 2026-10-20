@@ -27,7 +27,13 @@ export function ReadinessDemo({ answers, onChange }: ReadinessDemoProps) {
   const score = readinessScore(answers)
   const level = readinessLevel(score)
   return (
-    <div className={shared.card} role="group" aria-labelledby={labelId} aria-describedby={scoreId}>
+    <div
+      className={shared.card}
+      role="group"
+      aria-labelledby={labelId}
+      aria-describedby={scoreId}
+      data-ui=""
+    >
       <div className={shared.cardLabel}>
         <span id={labelId}>{copy.card}</span>
         <span>{copy.tryIt}</span>

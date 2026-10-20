@@ -27,8 +27,8 @@ function Line({ order, children }: { order: number; children: ReactNode }) {
 }
 
 /**
- * The navy band at the top, under Home's see-through top bar: the h1, the ways in, and the console's example. It
- * carries data-home-hero, which tells the top bar there's a hero to see through to.
+ * The navy band at the top, under Home's see-through top bar: the h1 across the width, then the ways in beside the
+ * console's example. It carries data-home-hero, which tells the top bar there's a hero to see through to.
  */
 export function Hero() {
   const { ref, isIn } = useReveal<HTMLElement>()
@@ -55,45 +55,21 @@ export function Hero() {
           />
         </picture>
       </div>
-      <svg
-        className={styles.road}
-        viewBox="0 0 600 400"
-        fill="none"
-        aria-hidden="true"
-        focusable="false"
-      >
-        <path
-          d="M40 360h170a80 80 0 0 0 0-160h-40a80 80 0 0 1 0-160h390"
-          stroke="#fff"
-          strokeWidth={44}
-          strokeLinecap="round"
-        />
-      </svg>
       <div className={cx(shared.wrap, styles.grid)}>
-        <div>
-          <div className={cx(shared.eyebrow, styles.eyebrow)}>{copy.eyebrow}</div>
-          {/* Focus comes here after a navigation to Home (lib/navigation.ts). The spaces read the lines as one
-              sentence: "Every career has a track. Find yours." */}
-          <h1 id="hero-title" tabIndex={-1} className={styles.title}>
-            <Line order={0}>{first}</Line> <Line order={1}>{second}</Line>{' '}
-            <Line order={2}>
-              <em>
-                {last}
-                <svg
-                  viewBox="0 0 100 10"
-                  preserveAspectRatio="none"
-                  aria-hidden="true"
-                  focusable="false"
-                >
-                  <path pathLength={1} d="M2 7c20-5 50-6 96-2" />
-                </svg>
-              </em>
-            </Line>
-          </h1>
-          <Reveal as="p" order={3} className={styles.lead}>
+        {/* Focus comes here after a navigation to Home (lib/navigation.ts). Two lines on wide screens, the first
+            breaking between its halves on narrow ones; the spaces read them as one sentence: "Every career has a
+            track. Find yours." */}
+        <h1 id="hero-title" tabIndex={-1} className={styles.title}>
+          <Line order={0}>
+            <span className={styles.keep}>{first}</span> <span className={styles.keep}>{second}</span>
+          </Line>{' '}
+          <Line order={1}>{last}</Line>
+        </h1>
+        <div className={styles.text}>
+          <Reveal as="p" order={2} className={styles.lead}>
             {copy.lead}
           </Reveal>
-          <Reveal order={4} className={styles.actions}>
+          <Reveal order={3} className={styles.actions}>
             <Link to={paths.finder} className={cx(shared.btn, shared.signal)}>
               {copy.findMyPath}
               <Glyph name="arrow" />
@@ -102,12 +78,10 @@ export function Hero() {
               {copy.browse(CATALOG.qualifications)}
             </Link>
           </Reveal>
-          <Reveal as="ul" order={5} className={styles.notes}>
+          {/* Three short notes, read as sentences. */}
+          <Reveal as="ul" order={4} className={styles.notes}>
             {copy.notes(REGIONS.length).map((note) => (
-              <li key={note}>
-                <Glyph name="tick" />
-                {note}
-              </li>
+              <li key={note}>{note}</li>
             ))}
           </Reveal>
         </div>

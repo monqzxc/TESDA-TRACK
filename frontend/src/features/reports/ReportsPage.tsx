@@ -41,8 +41,8 @@ const PARAMS = { from: 'from', to: 'to', qualification: 'qualification' } as con
  * only. Anyone else gets a "not available" message instead of the page (the API refuses their requests in any case).
  */
 export default function ReportsPage() {
-  const { isAdmin, isSignedIn } = useAuth()
-  if (!isAdmin) {
+  const { canViewReports, isSignedIn } = useAuth()
+  if (!canViewReports) {
     const gate = en.account.reports
     return (
       <AccountGate

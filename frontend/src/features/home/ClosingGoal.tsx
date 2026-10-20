@@ -44,7 +44,6 @@ export function ClosingGoal() {
     >
       <div className={cx(shared.wrap, styles.inner)}>
         <Reveal>
-          <div className={shared.eyebrow}>{copy.eyebrow}</div>
           <h2 id="start-title">{copy.heading}</h2>
           <p>{copy.lead}</p>
         </Reveal>

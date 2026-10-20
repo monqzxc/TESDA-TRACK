@@ -4,13 +4,13 @@ from sqlmodel import select
 
 from tesda_track.config import get_settings
 from tesda_track.db import SessionDep
-from tesda_track.deps import require_admin
+from tesda_track.deps import require_permission
 from tesda_track.errors import ConflictError
 from tesda_track.models import Qualification, QualificationEmbedding, TrainingProgram, TrainingProgramEmbedding
 from tesda_track.services import embeddings, skills_bridge
 from tesda_track.services.embeddings import EmbedderDep
 
-router = APIRouter(prefix="/admin", tags=["admin: integrations"], dependencies=[Depends(require_admin)])
+router = APIRouter(prefix="/admin", tags=["admin: integrations"], dependencies=[Depends(require_permission("integrations:manage"))])
 
 
 def _count(session, query) -> int:

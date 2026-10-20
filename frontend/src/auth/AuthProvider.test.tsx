@@ -116,6 +116,22 @@ describe('the session', () => {
     ).toBeInTheDocument()
   })
 
+  it('lets analysts view Reports without making them administrators', async () => {
+    rememberSignIn()
+    serveAccountApi({
+      learner: { ...maria, role: 'analyst', permissions: ['reports:read'] },
+      signedIn: true,
+    })
+    await openApp('/reports')
+    await findAccountButton()
+    expect(
+      within(screen.getByRole('navigation', { name: 'Main' })).getByRole('link', { name: 'Reports' }),
+    ).toHaveAttribute('aria-current', 'page')
+    expect(
+      await screen.findByRole('heading', { level: 2, name: 'Learner journey' }),
+    ).toBeInTheDocument()
+  })
+
   it("keeps another tab's sign-in when a check that started before it finds no session", async () => {
     window.localStorage.setItem(SESSION_HINT_KEY, 'before')
     serveAccountApi({ signedIn: false })

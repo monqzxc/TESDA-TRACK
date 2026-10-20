@@ -48,7 +48,6 @@ export function Catalog() {
       <div className={shared.wrap}>
         <div className={styles.top}>
           <div ref={totalRef} data-reveal="below" data-in={totalIn || undefined}>
-            <div className={shared.eyebrow}>{copy.eyebrow}</div>
             <h2 id="catalog-title" className={utilities.visuallyHidden}>
               {copy.heading(CATALOG.qualifications)}
             </h2>
@@ -71,20 +70,14 @@ export function Catalog() {
         </div>
 
         <Reveal order={1} className={styles.levels}>
-          <div className={shared.cardLabel}>
-            <span>{copy.levels}</span>
-          </div>
+          <h3>{copy.levels}</h3>
           <ul className={styles.levelBars}>
             {CATALOG.levels.map((level, i) => (
               <li key={level.name} className={styles.level}>
                 <span>{level.name}</span>
                 <i
                   aria-hidden="true"
-                  style={cssVars({
-                    '--share': level.count / MOST_AT_A_LEVEL,
-                    '--i': i,
-                    '--c': level.color,
-                  })}
+                  style={cssVars({ '--share': level.count / MOST_AT_A_LEVEL, '--i': i })}
                 />
                 <b>{level.count}</b>
               </li>
@@ -92,7 +85,7 @@ export function Catalog() {
           </ul>
           <p className={styles.levelsNote}>{copy.levelsNote}</p>
           <div className={shared.sectionCta}>
-            <Link to={paths.qualifications} className={cx(shared.btn, shared.outline)}>
+            <Link to={paths.qualifications} className={cx(shared.btn, shared.quiet)}>
               {copy.cta}
               <Glyph name="arrow" />
             </Link>

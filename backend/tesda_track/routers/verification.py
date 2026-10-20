@@ -3,12 +3,12 @@ from typing import Literal
 from fastapi import APIRouter, Depends
 
 from tesda_track.db import SessionDep
-from tesda_track.deps import require_admin
+from tesda_track.deps import require_permission
 from tesda_track.schemas.verification import VerificationImport, VerificationPublic, VerificationWrite
 from tesda_track.services import catalog, verification
 
 router = APIRouter(prefix="/admin/service-verifications", tags=["admin: service verification"],
-                   dependencies=[Depends(require_admin)])
+                   dependencies=[Depends(require_permission("verifications:manage"))])
 
 
 @router.post("/import")

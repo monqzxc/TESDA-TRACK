@@ -14,3 +14,7 @@ worker_profiles_*.csv
 30_DATABASE_SCHEMA_MERMAID.md
 backend/training/runs/
 reports/
+frontend/node_modules
+frontend/.agents/   
+frontend/.claude/
+tesda-e5-small-v4-scenarios-20261020-03.zip

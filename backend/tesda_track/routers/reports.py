@@ -3,12 +3,12 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Query
 
 from tesda_track.db import SessionDep
-from tesda_track.deps import require_admin
+from tesda_track.deps import require_permission
 from tesda_track.schemas.reports import (CompetencyGap, DateRange, Funnel, MatchingReport, Overview, QualificationDemand,
                                          RegionSupply, SkillGapQuery)
 from tesda_track.services import reports
 
-router = APIRouter(prefix="/admin/reports", tags=["admin: reports"], dependencies=[Depends(require_admin)])
+router = APIRouter(prefix="/admin/reports", tags=["admin: reports"], dependencies=[Depends(require_permission("reports:read"))])
 
 Period = Annotated[DateRange, Query()]
 

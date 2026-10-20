@@ -1,9 +1,8 @@
-import { useEffect, useState, type ReactElement } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
-import { Icon } from '../../components/Icon.tsx'
 import { en } from '../../copy/en.ts'
 import { paths } from '../../paths.ts'
-import { PLAN_QUALIFICATION, type OnePerEntry } from './data.ts'
+import { PLAN_QUALIFICATION } from './data.ts'
 import { Glyph } from './Glyph.tsx'
 import { useReducedMotion } from './hooks/useReducedMotion.ts'
 import { useReveal } from './hooks/useReveal.ts'
@@ -14,12 +13,6 @@ import shared from './shared.module.css'
 import styles from './ProgressPreview.module.css'
 
 const copy = en.home.progress
-
-const KEEPS_ICONS = [
-  <Icon key="checklist" name="checklist" />,
-  <Icon key="award" name="award" />,
-  <Glyph key="shield" name="shield" />,
-] satisfies OnePerEntry<typeof copy.keeps, ReactElement>
 
 /** The example plan's steps 1 and 2 are done and step 3 is next. */
 const DONE = 2
@@ -57,6 +50,7 @@ export function ProgressPreview() {
           ref={planRef}
           data-reveal="left"
           data-in={planIn || undefined}
+          data-ui=""
           className={cx(shared.card, styles.plan)}
         >
           <div className={styles.planHead}>
@@ -84,22 +78,18 @@ export function ProgressPreview() {
         </div>
         <div>
           <Reveal className={shared.sectionHead}>
-            <div className={shared.eyebrow}>{copy.eyebrow}</div>
             <h2 id="progress-title">{copy.heading}</h2>
             <p>{copy.lead}</p>
           </Reveal>
           <ul className={styles.keeps}>
             {copy.keeps.map((keep, i) => (
               <Reveal as="li" key={keep.title} order={i + 1}>
-                {KEEPS_ICONS[i]}
-                <div>
-                  <strong>{keep.title}</strong> <span>{keep.text}</span>
-                </div>
+                <strong>{keep.title}</strong> <span>{keep.text}</span>
               </Reveal>
             ))}
           </ul>
           <Reveal order={4} className={shared.sectionCta}>
-            <Link to={paths.progress} className={cx(shared.btn, shared.outline)}>
+            <Link to={paths.progress} className={cx(shared.btn, shared.quiet)}>
               {copy.cta}
               <Glyph name="arrow" />
             </Link>

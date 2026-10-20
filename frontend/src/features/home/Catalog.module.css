@@ -1,4 +1,5 @@
-/* The catalog, after classic/landing.css: its figures, NC levels and drifting names. */
+/* The catalog, after classic/landing.css: its figures, NC levels and drifting names. The big figure is the
+   section's title; the rest is set as type on the page, with no boxes or rules between the figures. */
 .top {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
@@ -16,78 +17,83 @@
 
 .bigNumberText {
   max-width: 26rem;
-  margin-top: 0.9rem;
+  margin-top: 1.1rem;
   color: var(--ink);
   font-size: var(--step-1);
   font-weight: 600;
+  line-height: 1.35;
 }
 
+/* One fact a line: its figure, right-aligned in a column of figures, then what it counts. */
 .facts {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1px;
+  gap: 1rem;
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  border-radius: 18px;
-  background: var(--border);
-  box-shadow: 0 0 0 1px var(--border);
   list-style: none;
 }
 
 .facts li {
-  padding: 1.1rem 1rem;
-  background: var(--surface);
+  display: grid;
+  /* Room for "4,981" at the figures' size. */
+  grid-template-columns: calc(var(--step-2) * 2.9) minmax(0, 1fr);
+  gap: 1.1rem;
+  align-items: baseline;
 }
 
 .facts b {
-  display: block;
   color: var(--ink);
   font: 800 var(--step-2) / 1 var(--font-display);
   font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  text-align: right;
 }
 
 .factText {
-  display: block;
-  margin-top: 0.35rem;
-  color: var(--muted);
-  font-size: 0.82rem;
-  line-height: 1.35;
+  color: var(--body);
+  line-height: 1.4;
 }
 
-/* Qualifications by NC level */
+/* Qualifications by NC level: one bar each, drawn against the largest. */
 .levels {
-  margin-top: 2.5rem;
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+}
+
+.levels h3 {
+  font-size: var(--step-1);
+  font-weight: 700;
+  line-height: 1.25;
 }
 
 .levelBars {
   display: grid;
-  gap: 0.55rem;
+  gap: 0.7rem;
   max-width: 46rem;
-  margin-top: 0.9rem;
+  margin-top: 1.1rem;
   padding: 0;
   list-style: none;
 }
 
 .level {
   display: grid;
-  grid-template-columns: 3.6rem minmax(0, 1fr) 2.6rem;
-  gap: 0.8rem;
+  grid-template-columns: 4rem minmax(0, 1fr) 2.8rem;
+  gap: 1rem;
   align-items: center;
 }
 
-.level span {
+.level span,
+.level b {
   color: var(--ink);
-  font-size: 0.92rem;
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 .level i {
   display: block;
   width: calc(var(--share) * 100%);
-  height: 14px;
+  height: 16px;
   border-radius: 99px;
-  background: var(--c);
+  background: var(--blue);
   transform-origin: left;
 }
 
@@ -102,31 +108,26 @@
 }
 
 .level b {
-  color: var(--ink);
-  font: 800 1.05rem/1 var(--font-display);
-  font-variant-numeric: tabular-nums;
   text-align: right;
 }
 
 .levelsNote {
-  margin-top: 0.6rem;
+  margin-top: 0.8rem;
   color: var(--muted);
-  font-size: 0.8rem;
+  font-size: var(--step--1);
 }
 
-/* Two rows of names drifting in opposite directions, faded at the edges. Hovering pauses them. */
+/* Two rows of names drifting in opposite directions, edge to edge. Hovering pauses them. */
 .drift {
   display: grid;
-  gap: 0.7rem;
-  margin-top: clamp(2.5rem, 5vw, 4rem);
+  gap: 0.75rem;
+  margin-top: clamp(3rem, 6vw, 4.5rem);
   overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000000 8%, #000000 92%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000000 8%, #000000 92%, transparent);
 }
 
 .row {
   display: flex;
-  gap: 0.7rem;
+  gap: 0.75rem;
   width: max-content;
   margin: 0;
   padding: 0;
@@ -144,18 +145,18 @@
 }
 
 .row li {
-  padding: 0.65rem 1rem;
-  border-radius: 12px;
+  padding: 0.75rem 1.2rem;
+  border-radius: 999px;
   background: var(--surface);
-  box-shadow: 0 0 0 1px var(--border);
   color: var(--ink);
   font-weight: 600;
   white-space: nowrap;
 }
 
 .row small {
-  margin-left: 0.25rem;
+  margin-left: 0.35rem;
   color: var(--muted);
+  font-size: var(--step--1);
   font-weight: 500;
 }
 
@@ -171,19 +172,11 @@
   }
 }
 
-@media (max-width: 520px) {
-  .facts {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
 /* Still: each name shows once, in rows that scroll sideways (Catalog makes them a Tab stop then). */
 @media (prefers-reduced-motion: reduce) {
   .drift {
     overflow-x: auto;
     padding-bottom: 0.4rem;
-    -webkit-mask-image: none;
-    mask-image: none;
   }
 
   .row {

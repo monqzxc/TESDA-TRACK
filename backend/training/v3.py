@@ -15,7 +15,7 @@ JOB_TEMPLATES = {
 }
 
 
-def records(qualifications, directory=DATA):
+def records(qualifications, directory=DATA, *, languages=LANGUAGES, job_templates=JOB_TEMPLATES, profile="v3"):
     """Generate bounded task examples and load synthetic language drafts.
 
     These are training labels, not statements that a learner already qualifies for certification.
@@ -44,35 +44,48 @@ def records(qualifications, directory=DATA):
             result.append(dict(qualification=q.name,
                                query=f"I want to learn these skills: {core[0].lower()}; {core[-1].lower()}.",
                                lang="en", kind="multi_skill"))
-        for lang, templates in JOB_TEMPLATES.items():
+        for lang, templates in job_templates.items():
             for job in list(dict.fromkeys(q.possible_jobs))[:3]:
                 for template in templates:
                     result.append(dict(qualification=q.name, query=template.format(job=job),
                                        lang=lang, kind="code_switched_job"))
     for path in sorted(directory.glob("*.json")):
-        for row in json.loads(path.read_text(encoding="utf-8")):
-            if (row.get("qualification") not in names or row.get("lang") not in LANGUAGES
+        rows = json.loads(path.read_text(encoding="utf-8"))
+        if not isinstance(rows, list):
+            raise ValueError(f"Invalid {profile} training file {path.name}: expected a JSON list")
+        for row in rows:
+            if not isinstance(row, dict):
+                raise ValueError(f"Invalid {profile} training row in {path.name}: expected an object")
+            if (row.get("qualification") not in names or row.get("lang") not in languages
                     or not isinstance(row.get("query"), str) or not row["query"].strip()
-                    or row.get("kind") != "native_task"):
-                raise ValueError(f"Invalid v3 training row in {path.name}")
+                    or row.get("kind") != "native_task"
+                    or row.get("review_status", "draft") not in ("draft", "reviewed")):
+                raise ValueError(f"Invalid {profile} training row in {path.name}")
+            if profile == "v4" and ("review_status" not in row or not isinstance(row.get("english"), str)
+                                    or not row["english"].strip()):
+                raise ValueError(f"Invalid v4 training row in {path.name}: english and review_status are required")
             result.append(row)
     return result
 
 
-def enrich(qualifications, synthetic, exclude, directory=DATA):
+def enrich(qualifications, synthetic, exclude, directory=DATA, *, languages=LANGUAGES,
+           job_templates=JOB_TEMPLATES, profile="v3"):
     from tesda_track.utils.helpers import normalize
 
     merged = {name: list(queries) for name, queries in synthetic.items()}
-    kept = [r for r in records(qualifications, directory) if normalize(r["query"]) not in exclude]
+    kept = [r for r in records(qualifications, directory, languages=languages,
+                              job_templates=job_templates, profile=profile) if normalize(r["query"]) not in exclude]
     for row in kept:
         merged.setdefault(row["qualification"], []).append(row["query"])
     merged = {name: list(dict.fromkeys(queries)) for name, queries in merged.items()}
     by_name = Counter(r["qualification"] for r in kept)
     report = {
-        "profile": "v3", "language_data_status": "synthetic; native-speaker review pending",
+        "profile": profile, "language_data_status": "includes synthetic drafts; see review_status counts",
         "catalog_qualifications": len(qualifications), "enrichment_rows": len(kept),
         "by_language": dict(Counter(r["lang"] for r in kept)),
         "by_kind": dict(Counter(r["kind"] for r in kept)),
+        "review_status": dict(Counter(r.get("review_status", "catalog" if r["lang"] == "en" else "draft")
+                                      for r in kept)),
         "qualification_coverage": {q.name: {"added_queries": by_name[q.name],
             "core_units": sum(c.is_active and c.category == "Core" for c in q.competencies),
             "jobs": len(q.possible_jobs)} for q in qualifications},

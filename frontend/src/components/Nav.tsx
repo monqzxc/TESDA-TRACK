@@ -59,14 +59,16 @@ export function SidebarContent({ isAdmin = false, onNavigate, returnFocus }: Sid
     <div className={styles.sidebar}>
       <Nav isAdmin={isAdmin} onNavigate={onNavigate} />
       {/* In the phone menu, Sign in closes the menu first: the dialog opens over the page, not over the menu. */}
-      <AccountControl variant="sidebar" onOpenSignIn={onNavigate} returnFocus={returnFocus} />
-      <div className={styles.theme}>
-        <ThemeSwitch />
+      <div className={styles.sidebarBottom}>
+        <div className={styles.theme}>
+          <ThemeSwitch />
+        </div>
+        <AccountControl variant="sidebar" onOpenSignIn={onNavigate} returnFocus={returnFocus} />
+        {/* <NavLink to={paths.privacy} className={styles.privacy} onClick={onNavigate}>
+          <Icon name="document" size="1.15rem" />
+          {en.privacy.link}
+        </NavLink> */}
       </div>
-      <NavLink to={paths.privacy} className={styles.privacy} onClick={onNavigate}>
-        <Icon name="document" size="1.15rem" />
-        {en.privacy.link}
-      </NavLink>
     </div>
   )
 }

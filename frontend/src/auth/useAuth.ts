@@ -30,8 +30,9 @@ export interface Auth {
   /** The signed-in learner, or null. Their name and email are learner text: render them as text. */
   learner: Learner | null
   isSignedIn: boolean
-  /** Shows Reports. The API still checks the role on every administrator request. */
+  /** Administrator identity; authorization is enforced by the API. */
   isAdmin: boolean
+  canViewReports: boolean
   /** The app is asking the API who is signed in (only when this browser has signed in before). */
   isChecking: boolean
   /** Signs in with the session cookie. Rejects with an ApiError whose message is for the learner. */

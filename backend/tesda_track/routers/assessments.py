@@ -6,7 +6,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Query, status
 
 from tesda_track.db import SessionDep
-from tesda_track.deps import CurrentLearner, require_admin
+from tesda_track.deps import CurrentLearner, require_permission
 from tesda_track.models import APPLICATION_STATUSES
 from tesda_track.schemas.delivery import (ApplicationCreate, ApplicationReview, AssessmentApplicationAdmin,
                                           AssessmentApplicationPublic, AssessmentCenterCreate, AssessmentCenterPublic,
@@ -16,7 +16,7 @@ from tesda_track.services import assessments, sites
 
 router = APIRouter(tags=["assessment"])
 learner_router = APIRouter(prefix="/me/assessment-applications", tags=["assessment applications"])
-admin_router = APIRouter(prefix="/admin", tags=["admin: assessment"], dependencies=[Depends(require_admin)])
+admin_router = APIRouter(prefix="/admin", tags=["admin: assessment"], dependencies=[Depends(require_permission("assessments:manage"))])
 
 Limit = Annotated[int, Query(ge=1, le=100)]
 Offset = Annotated[int, Query(ge=0)]

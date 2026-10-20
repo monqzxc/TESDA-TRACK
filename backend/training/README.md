@@ -1,5 +1,11 @@
 # Matching model: evaluation and fine-tuning
 
+**Version 4 (Kapampangan + Ilocano):** use [the v4 Colab notebook](colab/train_colab_v4.ipynb)
+and [step-by-step guide](V4.md). Keeps English, Filipino/Taglish, Cebuano and Hiligaynon;
+adds Kapampangan starter data, more Ilocano tasks, English meanings and a native-speaker
+review template. These are unreviewed drafts, not a measured language capability.
+Build the upload with `python -m training.bundle --output training/runs/colab-bundle-v4.zip`.
+
 **Version 3:** [Colab notebook](colab/train_colab_v3.ipynb) and [complete v3 guide](V3.md) add
 Cebuano/Bisaya, Ilocano and Hiligaynon/Ilonggo examples, deeper Core-competency requests,
 coverage audits and per-language evaluation. Build `training/runs/colab-bundle-v3.zip` with

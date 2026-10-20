@@ -24,7 +24,7 @@ function Quoted({ parts }: { parts: readonly (string | { quote: string })[] }) {
 /** Stop 1: goals as learners write them. */
 function GoalCloud() {
   return (
-    <div className={shared.card}>
+    <div className={shared.card} data-ui="">
       <div className={shared.cardLabel}>
         <span>{copy.goal.card}</span>
       </div>
@@ -48,7 +48,7 @@ function GoalCloud() {
 /** Stop 2: an example goal's matches, best first. */
 function MatchList() {
   return (
-    <div className={shared.card}>
+    <div className={shared.card} data-ui="">
       <div className={shared.cardLabel}>
         <span>{copy.match.card}</span>
         <span>{copy.match.example}</span>
@@ -74,7 +74,7 @@ const LEVELS: readonly ReadinessLevel[] = ['high', 'moderate', 'low']
 /** Stop 4: the three routes, with the one the readiness check picks marked as current. */
 function RouteChoice({ level }: { level: ReadinessLevel }) {
   return (
-    <div className={shared.card}>
+    <div className={shared.card} data-ui="">
       <div className={shared.cardLabel}>
         <span>{copy.pathway.card}</span>
       </div>
@@ -100,14 +100,15 @@ function RouteChoice({ level }: { level: ReadinessLevel }) {
 
 /**
  * "How it works": Find my path's four stops along one winding road, which draws itself as the page scrolls
- * (hooks/useRoute.ts). Stops alternate sides on wide screens and stack beside the road on narrow ones.
+ * (hooks/useRoute.ts). The road and its lit waypoints show the order, so the stops carry no numbers. Stops
+ * alternate sides on wide screens and stack beside the road on narrow ones.
  */
 export function Track() {
   const { trackRef, roadRef, geometry, lit } = useRoute()
   const [answers, setAnswers] = useState(STARTING_ANSWERS)
   const level = readinessLevel(readinessScore(answers))
 
-  const stops: { copy: { step: string; heading: string }; body: ReactNode; visual: ReactNode }[] = [
+  const stops: { copy: { heading: string }; body: ReactNode; visual: ReactNode }[] = [
     { copy: copy.goal, body: <Quoted parts={copy.goal.body} />, visual: <GoalCloud /> },
     { copy: copy.match, body: copy.match.body, visual: <MatchList /> },
     {
@@ -129,7 +130,6 @@ export function Track() {
     <section id="how" aria-labelledby="how-title" className={shared.section}>
       <div className={shared.wrap}>
         <Reveal className={shared.sectionHead}>
-          <div className={shared.eyebrow}>{copy.eyebrow}</div>
           <h2 id="how-title">{copy.heading}</h2>
           <p>{copy.lead}</p>
         </Reveal>
@@ -150,7 +150,7 @@ export function Track() {
             // Even stops have their text on the right.
             const flip = i % 2 === 1
             return (
-              <article key={stop.copy.step} className={cx(styles.stop, flip && styles.flip)}>
+              <article key={stop.copy.heading} className={cx(styles.stop, flip && styles.flip)}>
                 <span
                   className={styles.waypoint}
                   data-waypoint=""
@@ -158,9 +158,6 @@ export function Track() {
                   aria-hidden="true"
                 />
                 <Reveal from={flip ? 'right' : 'left'} className={styles.copy}>
-                  <div className={styles.number}>
-                    <b>{i + 1}</b> {stop.copy.step}
-                  </div>
                   <h3>{stop.copy.heading}</h3>
                   <p>{stop.body}</p>
                 </Reveal>
