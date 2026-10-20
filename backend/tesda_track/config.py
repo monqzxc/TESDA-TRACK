@@ -115,6 +115,11 @@ class Settings(BaseSettings):
     mcp_call_log_retention_days: int = Field(default=180, ge=1)
     mcp_allowed_hosts: list[str] = []
 
+    @field_validator("mcp_token_secret", mode="before")
+    @classmethod
+    def empty_secret_is_unset(cls, value):
+        return value or None
+
     @field_validator("public_base_url")
     @classmethod
     def no_trailing_slash(cls, value: str) -> str:

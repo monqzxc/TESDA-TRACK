@@ -33,6 +33,11 @@ x-backend-environment: &backend-environment
   ROUTING_URL: ${ROUTING_URL-https://routing.openstreetmap.de/routed-car}
   # CARTO basemaps key for the center map, handed to the React app by GET /api/v1/client-config.
   CARTO_API: ${CARTO_API-}
+  # Partner MCP server; PUBLIC_BASE_URL must be the address Caddy serves, or the API refuses the requests (421).
+  PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-https://${DOMAIN:-localhost}}
+  MCP_ENABLED: ${MCP_ENABLED:-true}
+  MCP_TOKEN_SECRET: ${MCP_TOKEN_SECRET-}
+  MCP_CALL_LOG_RETENTION_DAYS: ${MCP_CALL_LOG_RETENTION_DAYS:-180}
 
 services:
   db:
