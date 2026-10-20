@@ -80,8 +80,12 @@ class UsageMiddleware:
             fields.update(_shape(arguments))
         started = time.perf_counter()
         result = None
+        unlogged = False
         try:
-            if not ctx.method.startswith("notifications/"):
+            if ctx.method.startswith("notifications/"):
+                # no reply to carry an error, so an over-budget notification is simply not logged
+                unlogged = self._enforce_limits(None, raising=False)
+            else:
                 self._enforce_limits(asked)
             deps.begin_ranking_audit()
             result = await call_next(ctx)
@@ -102,7 +106,7 @@ class UsageMiddleware:
             raise
         finally:
             fields["latency_ms"] = round((time.perf_counter() - started) * 1000)
-            if "outcome" in fields:
+            if "outcome" in fields and not unlogged:
                 if ctx.method == "tools/list" and fields["outcome"] == "ok":
                     fields["result_count"] = len(result["tools"])
                 elif is_call:
@@ -118,20 +122,24 @@ class UsageMiddleware:
                 return frozenset(registered.fn_metadata.arg_model.model_fields)
         return frozenset()
 
-    def _enforce_limits(self, tool: str | None) -> None:
+    def _enforce_limits(self, tool: str | None, raising: bool = True) -> bool:
+        """Count the request against the client's budgets; raise when over (or, if not `raising`, return True)."""
         token = get_access_token()
         if token is None:
-            return
+            return False
         principal = deps.principal()
         limiter = self.app.state.mcp_limits
         client = str(principal.client_id)
         wait = limiter.hit(f"{client}:*", principal.rate_limit_per_minute)
         if not wait and tool in TOOL_LIMITS:
             wait = limiter.hit(f"{client}:{tool}", TOOL_LIMITS[tool])
+        if wait and not raising:
+            return True
         if wait:
             seconds = max(1, round(wait))
             raise MCPError(code=RATE_LIMITED, message=f"Rate limit exceeded; retry in {seconds} seconds.",
                            data={"retry_after": seconds})
+        return False
 
     def _record(self, fields: dict) -> None:
         with deps.open_session(self.app) as session:

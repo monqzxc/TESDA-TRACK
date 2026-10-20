@@ -129,6 +129,38 @@ def test_every_method_is_rate_limited_not_only_tool_calls(mcp, partner, session)
     assert {row.method for row in rows(session)} == {"tools/list", "ping"}
 
 
+def test_notifications_are_logged_under_budget_and_not_written_over_it(app, partner, session):
+    """The SDK runs the middleware chain for notifications too, so the middleware is driven directly here."""
+    import asyncio
+    from types import SimpleNamespace
+
+    from mcp.server.auth.middleware.auth_context import auth_context_var
+    from mcp.server.auth.provider import AccessToken
+
+    from tesda_track.mcp.usage import UsageMiddleware
+
+    made = partner(rate_limit=3)
+    token = AccessToken(token="x", client_id=str(made.id), scopes=["catalog:read"], expires_at=None,
+                        claims={"expected_tools": [], "rate_limit_per_minute": 3})
+    ctx = SimpleNamespace(method="notifications/initialized", params={}, protocol_version="2026-07-28")
+
+    async def next_(_ctx):
+        return None
+
+    async def send(times):
+        reset = auth_context_var.set(SimpleNamespace(access_token=token))
+        try:
+            for _ in range(times):
+                assert await UsageMiddleware(app)(ctx, next_) is None  # never raises, even over budget
+        finally:
+            auth_context_var.reset(reset)
+
+    asyncio.run(send(3))
+    assert len(rows(session, method="notifications/initialized")) == 3
+    asyncio.run(send(5))
+    assert len(rows(session)) == 3
+
+
 def test_client_rate_limit(mcp, partner, session):
     headers = partner(rate_limit=3).headers
     mcp.tool(headers, "get_regional_supply")
