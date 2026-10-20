@@ -1,0 +1,38 @@
+[
+  {
+    "email": "admin@example.com",
+    "full_name": "Sample Administrator",
+    "password": "TesdaAdmin2026!",
+    "role": "admin"
+  },
+  {
+    "email": "learner@example.com",
+    "full_name": "Sample Learner",
+    "password": "TesdaLearner2026!",
+    "role": "learner"
+  },
+  {
+    "email": "trainer@example.com",
+    "full_name": "Sample Trainer",
+    "password": "TesdaTrainer2026!",
+    "role": "trainer"
+  },
+  {
+    "email": "assessor@example.com",
+    "full_name": "Sample Assessor",
+    "password": "TesdaAssessor2026!",
+    "role": "assessor"
+  },
+  {
+    "email": "verifier@example.com",
+    "full_name": "Sample Verifier",
+    "password": "TesdaVerifier2026!",
+    "role": "verifier"
+  },
+  {
+    "email": "analyst@example.com",
+    "full_name": "Sample Analyst",
+    "password": "TesdaAnalyst2026!",
+    "role": "analyst"
+  }
+]

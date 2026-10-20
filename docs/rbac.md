@@ -25,6 +25,22 @@ From the repository root, apply the migration:
 
 ## Seed accounts
 
+For local development, `backend/seed/sample_accounts.json` contains one sample
+account for each role with explicit demo credentials. Run from the repository root:
+
+```powershell
+$env:PYTHONPATH = "backend"
+.venv/Scripts/alembic.exe -c backend/alembic.ini upgrade head
+.venv/Scripts/python.exe -m tesda_track.seed
+```
+
+These published sample passwords are for local development only. The command
+can be rerun safely: existing accounts are skipped, not reset.
+The standard seeder loads `sample_accounts.json` from its seed directory when
+present and skips it in production. To seed only accounts without syncing the
+catalog, use `python -m tesda_track.cli seed-accounts backend/seed/sample_accounts.json`
+with `PYTHONPATH=backend` from the repository root.
+
 Create a private JSON file containing the accounts you want. This PowerShell example
 prompts for a separate password for each of the six roles (minimum 10 characters):
 
