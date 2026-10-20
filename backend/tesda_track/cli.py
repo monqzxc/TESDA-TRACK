@@ -11,6 +11,7 @@ web app's generated types (`npm run api:types` in frontend/).
         --scopes catalog:read recommend:run --expected-tools match_qualifications get_qualification
     python -m tesda_track.cli mcp-client rotate|revoke --client-id <uuid>
     python -m tesda_track.cli mcp-client list
+    python -m tesda_track.cli mcp-usage fold [--days 180]
 
 `mcp-client` manages the outside systems that call the MCP server; a new secret is printed once.
 """
@@ -29,7 +30,7 @@ from sqlmodel import Session
 from tesda_track.models import Learner, utcnow
 from tesda_track.errors import ConflictError, DomainError
 from tesda_track.security import hash_password
-from tesda_track.services import partner_clients
+from tesda_track.services import mcp_usage, partner_clients
 from tesda_track.services.accounts import find_by_email, normalize_email
 
 MIN_PASSWORD_LENGTH = 10
@@ -93,6 +94,15 @@ def run_mcp_client_command(session: Session, args: argparse.Namespace, out: Text
                   f"limit={client.rate_limit_per_minute}/min  last_token={client.last_token_at or 'never'}", file=out)
 
 
+def run_mcp_usage_command(session: Session, args: argparse.Namespace, out: TextIO) -> None:
+    """Runs one `mcp-usage` subcommand. The caller commits."""
+    from tesda_track.config import get_settings
+
+    days = args.days if args.days is not None else get_settings().mcp_call_log_retention_days
+    print(f"Folded {mcp_usage.fold_old_rows(session, days)} MCP calls older than {days} days into daily counts.",
+          file=out)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="TESDA-TRACK administration")
     commands = parser.add_subparsers(dest="command", required=True)
@@ -116,6 +126,10 @@ def build_parser() -> argparse.ArgumentParser:
                          ("revoke", "stop a client and its tokens")):
         actions.add_parser(action, help=text).add_argument("--client-id", required=True)
     actions.add_parser("list", help="show clients (never secrets)")
+    mcp_usage_parser = commands.add_parser("mcp-usage", help="keep the MCP call log within its retention period")
+    usage_actions = mcp_usage_parser.add_subparsers(dest="action", required=True)
+    fold = usage_actions.add_parser("fold", help="fold old calls into daily counts (the server also does this hourly)")
+    fold.add_argument("--days", type=int, help="fold calls older than this; default MCP_CALL_LOG_RETENTION_DAYS")
     return parser
 
 
@@ -131,10 +145,11 @@ def main() -> None:
 
     from tesda_track.db import get_engine
 
-    if args.command == "mcp-client":
+    if args.command in ("mcp-client", "mcp-usage"):
+        run = run_mcp_client_command if args.command == "mcp-client" else run_mcp_usage_command
         with Session(get_engine()) as session:
             try:
-                run_mcp_client_command(session, args, sys.stdout)
+                run(session, args, sys.stdout)
             except (DomainError, ValueError) as error:
                 sys.exit(getattr(error, "detail", str(error)))
             session.commit()

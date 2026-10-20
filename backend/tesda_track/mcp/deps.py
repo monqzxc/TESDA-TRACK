@@ -65,9 +65,13 @@ def note_ranking_audit(audit_id: int) -> None:
 
 
 def take_ranking_audit() -> int | None:
-    """The audit the call wrote, or None."""
+    """The audit the call wrote, or None. Reading it empties the box, so no later call can report it again."""
     box = _ranking_audit.get()
-    return box[-1] if box else None
+    if not box:
+        return None
+    audit_id = box[-1]
+    box.clear()
+    return audit_id
 
 
 def hide_inputs_in_errors(server) -> None:

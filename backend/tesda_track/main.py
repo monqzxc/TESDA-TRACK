@@ -12,15 +12,16 @@ from tesda_track.config import get_settings
 from tesda_track.db import get_engine
 from tesda_track.errors import AuthenticationError, DomainError, SessionCookieError
 from tesda_track.mcp.server import install_mcp, run_mcp
-from tesda_track.routers import (analysis, assessments, auth, certifications, goals, health, integrations, learner_assessments, me, meta,
+from tesda_track.routers import (mcp_admin, analysis, assessments, auth, certifications, goals, health, integrations, learner_assessments, me, meta,
                                  oauth, pathways, qualifications, readiness_checks, recommendation_sessions, recommendations,
                                  reports, routes, skills_bridge, training, verification)
 from tesda_track.security import clear_session_cookie
-from tesda_track.services import cache
+from tesda_track.services import cache, mcp_usage
 from tesda_track.services.embeddings import get_embedder
 
 logger = logging.getLogger("tesda_track")
 CACHE_PURGE_INTERVAL_SECONDS = 600
+MCP_FOLD_INTERVAL_SECONDS = 3600
 
 
 @asynccontextmanager
@@ -30,6 +31,9 @@ async def lifespan(app: FastAPI):
     stop = threading.Event()
     threading.Thread(target=cache.purge_until_stopped, name="cache-purge", daemon=True,
                      args=(lambda: Session(get_engine()), stop, CACHE_PURGE_INTERVAL_SECONDS)).start()
+    threading.Thread(target=mcp_usage.fold_until_stopped, name="mcp-usage-fold", daemon=True,
+                     args=(lambda: Session(get_engine()), stop, MCP_FOLD_INTERVAL_SECONDS,
+                           get_settings().mcp_call_log_retention_days)).start()
     async with run_mcp(app):
         yield
     stop.set()
@@ -81,7 +85,7 @@ def create_app() -> FastAPI:
                    pathways.router, pathways.learner_router, training.router, assessments.router,
                    assessments.learner_router, recommendations.router, pathways.admin_router, training.admin_router,
                    assessments.admin_router, integrations.router, reports.router, skills_bridge.router, verification.router,
-                   learner_assessments.router, routes.router, meta.router, oauth.router):
+                   learner_assessments.router, routes.router, meta.router, oauth.router, mcp_admin.router):
         api.include_router(router)
     app.include_router(api)
     install_mcp(app)

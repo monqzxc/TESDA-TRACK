@@ -16,7 +16,9 @@ from tesda_track.mcp import tools_catalog, tools_recommend
 from tesda_track.mcp.auth import PartnerTokenVerifier
 from tesda_track.mcp.deps import hide_inputs_in_errors
 from tesda_track.mcp.scopes import ScopeMiddleware
+from tesda_track.mcp.usage import UsageMiddleware
 from tesda_track.services.partner_clients import mcp_resource_url
+from tesda_track.services.rate_limit import RateLimiter
 
 # The paths the SDK's app serves. Only these reach it, so the API keeps its own 404s, 405s and redirects.
 MCP_PATHS = ("/mcp", "/.well-known/oauth-protected-resource/mcp")
@@ -39,7 +41,7 @@ def _server(app: FastAPI) -> MCPServer:
             name="tesda-track", version="1.0.0", instructions=INSTRUCTIONS, token_verifier=PartnerTokenVerifier(app),
             auth=AuthSettings(issuer_url=settings.public_base_url, resource_server_url=mcp_resource_url(settings),
                               validate_token_resource=True),
-            middleware=[ScopeMiddleware()])
+            middleware=[UsageMiddleware(app), ScopeMiddleware()])
     finally:
         root.handlers[:] = handlers
         root.setLevel(level)
@@ -84,6 +86,7 @@ def install_mcp(app: FastAPI) -> MCPServer | None:
     settings = get_settings()
     if not settings.mcp_enabled:
         return None
+    app.state.mcp_limits = RateLimiter()
     server = _server(app)
     tools_catalog.register(server, app)
     tools_recommend.register(server, app)
