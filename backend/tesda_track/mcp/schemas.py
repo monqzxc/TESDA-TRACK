@@ -61,21 +61,25 @@ AssessmentRankingOutput = _without(AssessmentRanking, "AssessmentRankingOutput",
                                    results=list[RankedAssessmentOutput])
 
 
+
+
 class DemandRow(BaseModel):
+    """Distinct learners, never events. A count of 1 to 4 is null and named in hidden; 0 stays 0."""
     qualification: QualificationSummary
-    top_match: int | None = Field(description="Times it was the best match for a learner's goal.")
-    chosen: int | None = Field(description="Times a learner chose it.")
-    readiness_checks: int | None = Field(description="Readiness checks taken for it.")
+    learners_top_matched: int | None = Field(description="Learners whose best match was this qualification.")
+    learners_chose: int | None = Field(description="Learners who chose it.")
+    learners_checked_readiness: int | None = Field(description="Learners who checked their readiness for it.")
     average_readiness: float | None = Field(
-        description="Average readiness score, 0-100; null when fewer than 5 checks were taken.")
-    assessment_applications: int | None
-    competent: int | None = Field(description="Assessment applications that ended competent.")
-    certified: int | None = Field(description="Verified certificates earned.")
-    hidden: list[str] = Field(description="Fields set to null because the count was between 1 and 4.")
+        description="Average of each learner's latest readiness score, 0-100; null when fewer than 5 learners "
+                    "checked readiness.")
+    learners_applied: int | None = Field(description="Learners who applied for an assessment.")
+    learners_competent: int | None = Field(description="Learners assessed competent.")
+    learners_certified: int | None = Field(description="Learners with a verified certificate.")
+    hidden: list[str] = Field(description="Names of the fields set to null because 1 to 4 learners were counted.")
 
 
 class DemandOutput(BaseModel):
     quarter: str
     date_from: date
     date_to: date
-    rows: list[DemandRow] = Field(description="Qualifications with activity in the quarter; others are left out.")
+    rows: list[DemandRow] = Field(description="Qualifications with learner activity in the quarter; others are left out.")

@@ -9,7 +9,7 @@ from tesda_track.models import (MatchDailyStat, AssessmentApplication, Assessmen
                                 RankingAudit, ReadinessAnswer, ReadinessCheck, RecommendationSession, Region,
                                 TrainingProgram, TrainingProvider, utcnow)
 from tesda_track.schemas.progress import CertificationCounts
-from tesda_track.schemas.reports import (CompetencyGap, DateRange, Funnel, MatchingDay, MatchingReport, Overview, QualificationDemand,
+from tesda_track.schemas.reports import (CompetencyGap, DateRange, Funnel, MatchingDay, MatchingReport, LearnerDemand, Overview, QualificationDemand,
                                          RegionSupply)
 from tesda_track.services import assessments, catalog
 from tesda_track.services.match_stats import PHILIPPINE_TIME
@@ -54,7 +54,7 @@ def _grouped(session: Session, query) -> dict:
 
 
 MIN_PUBLISHED_COUNT = 5  # a count below this could point at one person's activity, so partners never see it
-QUARTER_LABEL = re.compile(r"\d{4}-Q[1-4]")
+QUARTER_LABEL = re.compile(r"[0-9]{4}-Q[1-4]")
 
 
 def hide_small_counts(values: dict[str, int], minimum: int = MIN_PUBLISHED_COUNT) -> tuple[dict[str, int | None], list[str]]:
@@ -99,6 +99,43 @@ def qualification_demand(session: Session, period: DateRange) -> list[Qualificat
             chosen=chosen.get(qualification.id, 0), readiness_checks=checks,
             average_readiness=round(float(average), 1) if average is not None else None,
             assessment_applications=applied, competent=competent, certified=certified.get(qualification.id, 0)))
+    return rows
+
+
+def qualification_demand_by_learners(session: Session, period: DateRange) -> list[LearnerDemand]:
+    """Like qualification_demand, but counting distinct learners, for partners. The readiness average is of each
+    learner's latest score in the period, so one learner's repeats cannot stand for a group."""
+    top_code = func.jsonb_extract_path_text(RecommendationSession.matches, "0", "qualification", "code")
+    people = func.count(distinct(RecommendationSession.learner_id))
+    top_matched = _grouped(session, select(top_code, people).where(
+        *_within(RecommendationSession.created_at, period), top_code.is_not(None)).group_by(top_code))
+    chose = _grouped(session, select(RecommendationSession.qualification_id, people).where(
+        *_within(RecommendationSession.created_at, period)).group_by(RecommendationSession.qualification_id))
+    latest = (select(ReadinessCheck.qualification_id, ReadinessCheck.score)
+              .where(*_within(ReadinessCheck.created_at, period))
+              .distinct(ReadinessCheck.learner_id, ReadinessCheck.qualification_id)
+              .order_by(ReadinessCheck.learner_id, ReadinessCheck.qualification_id, ReadinessCheck.created_at.desc())
+              .subquery())
+    readiness = {qualification_id: (count, average) for qualification_id, count, average in session.exec(
+        select(latest.c.qualification_id, func.count(), func.avg(latest.c.score)).group_by(latest.c.qualification_id))}
+    applicants = func.count(distinct(AssessmentApplication.learner_id))
+    applications = {qualification_id: (count, competent) for qualification_id, count, competent in session.exec(
+        select(AssessmentSchedule.qualification_id, applicants,
+               applicants.filter(AssessmentApplication.result == "competent"))
+        .join(AssessmentSchedule).where(*_within(AssessmentApplication.created_at, period))
+        .group_by(AssessmentSchedule.qualification_id))}
+    certified = _grouped(session, select(Certification.qualification_id, func.count(distinct(Certification.learner_id)))
+                         .where(Certification.verified, *_within(Certification.created_at, period))
+                         .group_by(Certification.qualification_id))
+    rows = []
+    for qualification in catalog.active_qualifications(session):
+        checked, average = readiness.get(qualification.id, (0, None))
+        applied, competent = applications.get(qualification.id, (0, 0))
+        rows.append(LearnerDemand(
+            qualification=catalog.summary(qualification), top_matched=top_matched.get(qualification.code, 0),
+            chose=chose.get(qualification.id, 0), checked_readiness=checked,
+            average_readiness=round(float(average), 1) if average is not None else None,
+            applied=applied, competent=competent, certified=certified.get(qualification.id, 0)))
     return rows
 
 

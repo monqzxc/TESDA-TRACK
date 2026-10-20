@@ -47,6 +47,18 @@ class QualificationDemand(BaseModel):
     certified: int
 
 
+class LearnerDemand(BaseModel):
+    """Distinct learners per measure for one qualification; the average is of each learner's latest readiness score."""
+    qualification: QualificationSummary
+    top_matched: int
+    chose: int
+    checked_readiness: int
+    average_readiness: float | None
+    applied: int
+    competent: int
+    certified: int
+
+
 class CompetencyGap(BaseModel):
     competency_id: int
     position: int
