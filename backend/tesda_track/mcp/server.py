@@ -8,6 +8,7 @@ from fastapi import FastAPI
 from mcp.server.auth.settings import AuthSettings
 from mcp.server.mcpserver import MCPServer
 from mcp.server.transport_security import TransportSecuritySettings
+from starlette.routing import Route
 from starlette.types import ASGIApp, Receive, Scope, Send
 
 from tesda_track.config import get_settings
@@ -15,6 +16,9 @@ from tesda_track.mcp import tools_catalog
 from tesda_track.mcp.auth import PartnerTokenVerifier
 from tesda_track.mcp.scopes import ScopeMiddleware
 from tesda_track.services.partner_clients import mcp_resource_url
+
+# The paths the SDK's app serves. Only these reach it, so the API keeps its own 404s, 405s and redirects.
+MCP_PATHS = ("/mcp", "/.well-known/oauth-protected-resource/mcp")
 
 INSTRUCTIONS = (
     "TESDA-TRACK answers questions about TESDA qualifications, training programs and the training and assessment "
@@ -40,9 +44,10 @@ def _server(app: FastAPI) -> MCPServer:
         root.setLevel(level)
 
 
-class _MountedApp:
-    """The SDK runs a session manager once only, so every app lifespan gets the MCP app built afresh. Production
-    has one lifespan; the tests have one per TestClient, sometimes two at once on the same app."""
+class _PerLifespanApp:
+    """The SDK runs a session manager once only, so every app lifespan gets the MCP app built afresh. Lifespans are
+    expected one after another: production has one, the tests one per TestClient. When TestClients nest, MCP
+    requests reach the innermost one's app until it ends, then the enclosing one's again."""
 
     def __init__(self, server: MCPServer, build: Callable[[], ASGIApp]):
         self.server = server
@@ -65,16 +70,16 @@ class _MountedApp:
 @asynccontextmanager
 async def run_mcp(app: FastAPI) -> AsyncIterator[None]:
     """Serves MCP requests for the app's lifespan; does nothing when the server isn't installed."""
-    mounted = getattr(app.state, "mcp_app", None)
-    if mounted is None:
+    mcp_app = getattr(app.state, "mcp_app", None)
+    if mcp_app is None:
         yield
         return
-    async with mounted.running():
+    async with mcp_app.running():
         yield
 
 
 def install_mcp(app: FastAPI) -> MCPServer | None:
-    """Mounts the MCP app at the root, so call it after every API route: it answers whatever they don't."""
+    """Routes MCP_PATHS, any method, to the MCP app (raw ASGI routes stay out of the OpenAPI schema)."""
     settings = get_settings()
     if not settings.mcp_enabled:
         return None
@@ -82,9 +87,10 @@ def install_mcp(app: FastAPI) -> MCPServer | None:
     tools_catalog.register(server, app)
     security = TransportSecuritySettings(
         allowed_hosts=[urlsplit(settings.public_base_url).netloc, *settings.mcp_allowed_hosts])
-    mounted = _MountedApp(server, lambda: server.streamable_http_app(
+    mcp_app = _PerLifespanApp(server, lambda: server.streamable_http_app(
         streamable_http_path="/mcp", stateless_http=True, json_response=True, transport_security=security))
-    app.mount("/", mounted)
+    for path in MCP_PATHS:
+        app.router.routes.append(Route(path, endpoint=mcp_app, include_in_schema=False))
     app.state.mcp_server = server
-    app.state.mcp_app = mounted
+    app.state.mcp_app = mcp_app
     return server

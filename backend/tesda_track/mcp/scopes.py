@@ -1,4 +1,6 @@
 """The scope each MCP tool needs, how often one client may call it each minute, and the check on both list and call."""
+from collections.abc import Mapping
+
 from mcp.server.auth.middleware.auth_context import get_access_token
 from mcp.server.context import CallNext, HandlerResult, ServerRequestContext
 from mcp.shared.exceptions import MCPError
@@ -35,9 +37,11 @@ class ScopeMiddleware:
         token = get_access_token()
         granted = frozenset(token.scopes) if token else frozenset()
         if ctx.method == "tools/call":
-            name = ctx.params.get("name") if isinstance(ctx.params, dict) else None
-            # Anything but a string fails the SDK's params validation further in.
-            if isinstance(name, str) and TOOL_SCOPES.get(name) not in granted:
+            name = ctx.params.get("name") if isinstance(ctx.params, Mapping) else None
+            # Anything unexpected is refused here, never left to checks further in.
+            if not isinstance(name, str):
+                raise MCPError(code=-32602, message="Unknown tool.")
+            if TOOL_SCOPES.get(name) not in granted:
                 raise MCPError(code=-32602, message=f"Unknown tool: {name}")
         result = await call_next(ctx)
         if ctx.method == "tools/list":

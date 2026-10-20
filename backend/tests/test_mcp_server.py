@@ -5,6 +5,7 @@ import time
 import uuid
 
 import jwt
+import pytest
 from sqlmodel import select
 
 from tesda_track.config import get_settings
@@ -89,6 +90,62 @@ def test_missing_scope_refuses_tool(mcp, partner):
     response = mcp.call(made.headers, "tools/call", {"name": "get_qualification", "arguments": {"code": "SMAW-NC-II"}})
     assert response.json()["error"]["code"] == -32602
     assert response.json()["error"]["message"] == "Unknown tool: get_qualification"
+
+
+def test_missing_scope_refuses_tool_on_the_older_protocol(mcp, partner):
+    made = partner(scopes=("recommend:run",))
+    initialize = mcp.call(made.headers, "initialize", {
+        "protocolVersion": "2025-11-25", "capabilities": {}, "clientInfo": {"name": "older-client", "version": "1"}},
+        protocol="2025-11-25")
+    assert initialize.status_code == 200, initialize.text
+    response = mcp.call(made.headers, "tools/call", {"name": "get_qualification", "arguments": {"code": "SMAW-NC-II"}},
+                        protocol="2025-11-25")
+    assert response.json()["error"]["code"] == -32602
+    assert "result" not in response.json()
+
+
+def test_scope_check_fails_closed_on_unexpected_params():
+    from types import MappingProxyType, SimpleNamespace
+
+    import anyio
+    from mcp.server.auth.middleware.auth_context import auth_context_var
+    from mcp.server.auth.middleware.bearer_auth import AuthenticatedUser
+    from mcp.server.auth.provider import AccessToken
+    from mcp.shared.exceptions import MCPError
+
+    from tesda_track.mcp.scopes import ScopeMiddleware
+
+    reached = []
+
+    async def call_next(ctx):
+        reached.append(ctx.params)
+        return {}
+
+    def call(params):
+        ctx = SimpleNamespace(method="tools/call", params=params)
+        return anyio.run(ScopeMiddleware(), ctx, call_next)
+
+    token = AccessToken(token="t", client_id=str(uuid.uuid4()), scopes=["catalog:read"])
+    reset = auth_context_var.set(AuthenticatedUser(token))
+    try:
+        call(MappingProxyType({"name": "get_qualification"}))
+        assert len(reached) == 1, "a read-only mapping of an allowed tool goes through"
+        for params in (MappingProxyType({"name": "get_qualification_demand"}), ["get_qualification"], None,
+                       {"name": ["get_qualification"]}, {}):
+            with pytest.raises(MCPError) as refused:
+                call(params)
+            assert refused.value.error.code == -32602
+        assert len(reached) == 1
+    finally:
+        auth_context_var.reset(reset)
+
+
+def test_rest_routes_keep_their_405_and_json_404(client):
+    """Only the MCP paths go to the MCP app; the API answers everything else as before."""
+    assert client.delete("/api/v1/qualifications").status_code == 405
+    missing = client.get("/api/v1/no-such-thing")
+    assert missing.status_code == 404 and missing.json() == {"detail": "Not Found"}
+    assert client.get("/no-such-page").json() == {"detail": "Not Found"}
 
 
 def test_tools_are_annotated_and_typed(mcp, partner):

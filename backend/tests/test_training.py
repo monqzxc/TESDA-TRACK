@@ -63,6 +63,22 @@ def test_search_filters_by_qualification_and_region(client, make_provider, make_
     assert len(search(client, qualification_code="SMAW-NC-II")) == 2
 
 
+def test_search_filters_by_provider_and_scholarship(client, make_provider, make_program):
+    manila = make_provider()
+    cebu = make_provider(name="Cebu Skills Center", region_code="VII", location=CEBU_CITY)
+    granted = make_program(provider=manila, scholarship_available=True)
+    paying = make_program(provider=manila, title="SMAW NC II Batch 2")
+    elsewhere = make_program(provider=cebu, scholarship_available=True)
+
+    def ids(**params):
+        return [p["id"] for p in search(client, **params)]
+
+    assert ids(provider_id=manila["id"]) == [granted["id"], paying["id"]]
+    assert ids(qualification_code="SMAW-NC-II", scholarship_only="true") == [granted["id"], elsewhere["id"]]
+    assert ids(provider_id=manila["id"], scholarship_only="true") == [granted["id"]]
+    assert ids(provider_id=manila["id"], scholarship_only="false") == [granted["id"], paying["id"]]
+
+
 def test_nearby_search_orders_by_distance_and_applies_radius(client, make_provider, make_program):
     cebu = make_provider(name="Cebu Skills Center", region_code="VII", location=CEBU_CITY)
     unmapped = make_provider(name="No Address Yet", location=None)
