@@ -24,6 +24,7 @@ def set_step_status(enrollment_id: str, step_id: int, status: str) -> None:
 def withdraw(application_id: str) -> None:
     try:
         session.api().withdraw_application(session.token(), application_id)
+        st.session_state.pop("assessment_center_result", None)
     except ApiError as error:
         st.session_state["progress_notice"] = error.message
 

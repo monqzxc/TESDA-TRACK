@@ -81,3 +81,17 @@ def require_admin(learner: CurrentLearner) -> Learner:
 
 
 AdminUser = Annotated[Learner, Depends(require_admin)]
+
+
+def require_permission(permission: str):
+    from tesda_track.rbac import ROLE_PERMISSIONS
+
+    if permission not in ROLE_PERMISSIONS["admin"]:
+        raise ValueError(f"Unknown permission: {permission}")
+
+    def check(learner: CurrentLearner) -> Learner:
+        if permission not in ROLE_PERMISSIONS.get(learner.role, frozenset()):
+            raise PermissionDeniedError("Your account does not have permission to perform this action.")
+        return learner
+
+    return check

@@ -29,6 +29,7 @@ export const formStyle = {
   privacy: 'rounded-12 border border-panel-border bg-panel px-4 py-[0.85rem]',
   privacyTitle: 'mt-0 mb-[0.3rem] text-14 font-bold text-navy',
   privacyText: 'm-0 text-14 leading-[1.55] text-ink',
+  privacyLink: 'mt-[0.4rem] inline-flex items-center gap-[0.3rem] text-14 font-semibold text-blue',
   checkField: 'flex flex-col gap-[0.35rem]',
   /** A CheckboxButton; fields.tsx's CheckMark draws its box. */
   checkbox:

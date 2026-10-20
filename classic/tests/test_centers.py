@@ -219,7 +219,7 @@ def test_summary_counts_listings_and_names_the_next_date():
     tarlac = summary(centers["training-1"], TODAY)
     assert "2 programs" in tarlac and "Oct 21" in tarlac and "2027" not in tarlac
     cebu = summary(centers["training-3"], TODAY)
-    assert "1 program" in cebu and "programs" not in cebu and "Flexible start" in cebu
+    assert "1 program" in cebu and "programs" not in cebu and "Start date not confirmed" in cebu
     assessments = summary(centers["assessment-1"], TODAY)
     assert "2 upcoming assessments" in assessments and "Oct 7" in assessments
     assert "No programs" in summary(centers["training-4"], TODAY)

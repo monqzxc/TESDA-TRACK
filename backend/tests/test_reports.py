@@ -1,9 +1,11 @@
-from datetime import timedelta
+from datetime import date, datetime, timedelta
 
 import pytest
 from sqlmodel import select
 
 from tesda_track.models import ReadinessCheck, RecommendationSession, utcnow
+
+pytestmark = pytest.mark.usefixtures("clean_match_stats")
 
 CEBU_CITY = (10.3157, 123.8854)
 
@@ -38,7 +40,7 @@ def report(client, admin, name, **params):
     return response.json()
 
 
-@pytest.mark.parametrize("name", ["overview", "qualification-demand", "skill-gaps", "funnel", "supply", "feedback"])
+@pytest.mark.parametrize("name", ["overview", "qualification-demand", "skill-gaps", "funnel", "supply", "matching"])
 def test_reports_are_for_administrators_only(client, learner, name):
     assert client.get(f"/api/v1/admin/reports/{name}", headers=learner).status_code == 403
     assert client.get(f"/api/v1/admin/reports/{name}").status_code == 401
@@ -102,3 +104,88 @@ def test_date_range_limits_what_is_counted(client, admin, session, activity):
     assert overview["recommendation_sessions"] == 1 and overview["readiness_checks"] == 1
     assert client.get("/api/v1/admin/reports/overview", headers=admin,
                       params={"date_from": "2026-05-01", "date_to": "2026-04-01"}).status_code == 422
+
+
+def welder_profile(client, query):
+    return client.post("/api/v1/analysis/goal", json={"query": query}).json()["profile"]
+
+
+def test_matching_report_counts_requests_and_no_matches_per_day(client, admin):
+    from tesda_track.models import MatchDailyStat
+    from tesda_track.services.reports import PHILIPPINE_TIME
+
+    for query in ("I want to be a welder.", "astronaut", "astronaut"):
+        response = client.post("/api/v1/analysis/matches", json={"query": query, "profile": welder_profile(client, query)})
+        assert response.status_code == 200
+    today = datetime.now(PHILIPPINE_TIME).date().isoformat()
+    body = report(client, admin, "matching")
+    assert body["requests"] == 3 and body["no_match"] == 2 and body["no_match_rate"] == pytest.approx(2 / 3)
+    assert body["days"] == [{"date": today, "requests": 3, "no_match": 2}]
+    assert set(MatchDailyStat.model_fields) == {"date", "requests", "no_match"}, "counts only: no text, hash, id or IP"
+
+
+def test_matching_report_respects_the_date_range(client, admin, session):
+    from tesda_track.models import MatchDailyStat
+
+    session.add_all([MatchDailyStat(date=date(2026, 10, 1), requests=10, no_match=4),
+                     MatchDailyStat(date=date(2026, 10, 5), requests=20, no_match=2)])
+    session.flush()
+    body = report(client, admin, "matching", date_from="2026-10-02", date_to="2026-10-31")
+    assert (body["requests"], body["no_match"], body["no_match_rate"]) == (20, 2, 0.1)
+    assert [day["date"] for day in body["days"]] == ["2026-10-05"]
+    everything = report(client, admin, "matching", date_from="2026-10-01", date_to="2026-10-05")
+    assert [day["date"] for day in everything["days"]] == ["2026-10-01", "2026-10-05"]
+    assert (everything["requests"], everything["no_match"]) == (30, 6)
+
+
+def test_matching_report_with_no_requests_has_no_rate(client, admin):
+    body = report(client, admin, "matching", date_from="2000-01-01", date_to="2000-01-02")
+    assert body == {"requests": 0, "no_match": 0, "no_match_rate": None, "days": []}
+
+
+def test_matching_report_rejects_a_reversed_range(client, admin):
+    response = client.get("/api/v1/admin/reports/matching", headers=admin,
+                          params={"date_from": "2026-10-07", "date_to": "2026-10-01"})
+    assert response.status_code == 422
+
+
+def test_concurrent_match_counts_are_not_lost(engine):
+    from concurrent.futures import ThreadPoolExecutor
+
+    from sqlmodel import Session
+
+    from tesda_track.models import MatchDailyStat
+    from tesda_track.services import match_stats
+
+    def record_many(_):
+        for _ in range(5):
+            match_stats.record(no_match=True)
+
+    try:
+        with ThreadPoolExecutor(8) as pool:
+            list(pool.map(record_many, range(8)))
+        with Session(engine) as check:
+            rows = check.exec(select(MatchDailyStat)).all()
+        assert [(row.requests, row.no_match) for row in rows] == [(40, 40)]
+    finally:
+        with Session(engine) as cleanup:
+            for row in cleanup.exec(select(MatchDailyStat)).all():
+                cleanup.delete(row)
+            cleanup.commit()
+
+
+def test_a_failing_counter_never_breaks_matching(client, monkeypatch, caplog):
+    from tesda_track.services import match_stats
+
+    class Broken:
+        def __enter__(self):
+            raise RuntimeError("relation match_daily_stat does not exist")
+
+        def __exit__(self, *exc):
+            return False
+
+    monkeypatch.setattr(match_stats, "Session", lambda engine: Broken())
+    query = "I want to be a welder."
+    response = client.post("/api/v1/analysis/matches", json={"query": query, "profile": welder_profile(client, query)})
+    assert response.status_code == 200 and response.json()["matches"]
+    assert "Could not count" in caplog.text and "welder" not in caplog.text

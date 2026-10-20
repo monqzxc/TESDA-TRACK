@@ -19,21 +19,23 @@ function useFigure(target: number, start: boolean): string {
   return format(useCountUp(target, { start, duration: 1400 + Math.min(target, 1000), power: 4 }))
 }
 
-/** A fact: its figure counts up on screen, and screen readers hear the figure itself. */
+/**
+ * A fact, one a line: its figure, right-aligned in a column of figures, then what it counts. The figure counts up on
+ * screen, and screen readers hear the figure itself.
+ */
 function Fact({ figure, text, start }: { figure: number; text: string; start: boolean }) {
   const shown = useFigure(figure, start)
   return (
-    <li className="bg-home-surface px-4 py-[1.1rem]">
+    // Room for "4,981" at the figures' size.
+    <li className="grid grid-cols-[calc(var(--text-home-xl)*2.9)_minmax(0,1fr)] items-baseline gap-[1.1rem]">
       <b
         aria-hidden="true"
-        className="block font-display text-home-xl leading-none font-extrabold text-home-ink tabular-nums"
+        className="text-right font-display text-home-xl leading-none font-extrabold tracking-[-0.02em] text-home-ink tabular-nums"
       >
         {shown}
       </b>
       <span className="sr-only">{format(figure)} </span>
-      <span className="mt-[0.35rem] block text-[0.82rem] leading-[1.35] text-home-muted">
-        {text}
-      </span>
+      <span className="leading-[1.4] text-home-body">{text}</span>
     </li>
   )
 }
@@ -44,29 +46,23 @@ const MOST_AT_A_LEVEL = Math.max(...CATALOG.levels.map((level) => level.count))
 function LevelBars() {
   const shown = useRevealed()
   return (
-    <ul className="mt-[0.9rem] grid max-w-[46rem] list-none gap-[0.55rem] p-0">
+    <ul className="mt-[1.1rem] grid max-w-[46rem] list-none gap-[0.7rem] p-0">
       {CATALOG.levels.map((level, i) => (
         <li
           key={level.name}
-          className="grid grid-cols-[3.6rem_minmax(0,1fr)_2.6rem] items-center gap-[0.8rem]"
+          className="grid grid-cols-[4rem_minmax(0,1fr)_2.8rem] items-center gap-4"
         >
-          <span className="text-[0.92rem] font-bold text-home-ink">{level.name}</span>
+          <span className="font-bold text-home-ink tabular-nums">{level.name}</span>
           <i
             aria-hidden="true"
             className={cx(
-              'block h-3.5 w-[calc(var(--share)*100%)] origin-left rounded-full bg-(--c)',
+              'block h-4 w-[calc(var(--share)*100%)] origin-left rounded-full bg-home-blue',
               'in-data-motion:transition-[scale] in-data-motion:delay-[calc(var(--i,0)*90ms_+_200ms)] in-data-motion:duration-1000 in-data-motion:ease-home',
               !shown && 'in-data-motion:scale-x-0',
             )}
-            style={cssVars({
-              '--share': level.count / MOST_AT_A_LEVEL,
-              '--i': i,
-              '--c': level.color,
-            })}
+            style={cssVars({ '--share': level.count / MOST_AT_A_LEVEL, '--i': i })}
           />
-          <b className="text-right font-display text-[1.05rem] leading-none font-extrabold text-home-ink tabular-nums">
-            {level.count}
-          </b>
+          <b className="text-right font-bold text-home-ink tabular-nums">{level.count}</b>
         </li>
       ))}
     </ul>
@@ -75,7 +71,8 @@ function LevelBars() {
 
 /**
  * The qualifications library's figures, its NC levels, and some of its names drifting by (after
- * classic/landing.css).
+ * classic/landing.css). The big figure is the section's title; the rest is set as type on the page, with no boxes or
+ * rules between the figures.
  */
 export function Catalog() {
   const { ref: totalRef, isIn: totalIn } = useReveal<HTMLDivElement>()
@@ -94,7 +91,6 @@ export function Catalog() {
             data-in={totalIn || undefined}
             className={revealClasses('below')}
           >
-            <div className={ui.eyebrow}>{copy.eyebrow}</div>
             <h2 id="catalog-title" className="sr-only">
               {copy.heading(CATALOG.qualifications)}
             </h2>
@@ -104,7 +100,7 @@ export function Catalog() {
             >
               {qualifications}
             </div>
-            <p className="mt-[0.9rem] max-w-[26rem] text-home-lg font-semibold text-home-ink">
+            <p className="mt-[1.1rem] max-w-[26rem] text-home-lg leading-[1.35] font-semibold text-home-ink">
               {copy.lead}
             </p>
           </div>
@@ -113,10 +109,7 @@ export function Catalog() {
             data-reveal="below"
             data-in={factsIn || undefined}
             style={cssVars({ '--i': 1 })}
-            className={cx(
-              revealClasses('below'),
-              'm-0 grid list-none grid-cols-3 gap-px overflow-hidden rounded-18 bg-home-border p-0 shadow-[0_0_0_1px_var(--home-border)] max-xs:grid-cols-1',
-            )}
+            className={cx(revealClasses('below'), 'm-0 grid list-none gap-4 p-0')}
           >
             {copy.facts.map((text, i) => (
               <Fact key={text} figure={CATALOG.facts[i]} text={text} start={factsIn} />
@@ -124,14 +117,12 @@ export function Catalog() {
           </ul>
         </div>
 
-        <Reveal order={1} className="mt-10">
-          <div className={ui.cardLabel}>
-            <span>{copy.levels}</span>
-          </div>
+        <Reveal order={1} className="mt-[clamp(3rem,6vw,4.5rem)]">
+          <h3 className="text-home-lg leading-[1.25] font-bold">{copy.levels}</h3>
           <LevelBars />
-          <p className="mt-[0.6rem] text-[0.8rem] text-home-muted">{copy.levelsNote}</p>
+          <p className="mt-[0.8rem] text-home-xs text-home-muted">{copy.levelsNote}</p>
           <div className={ui.sectionCta}>
-            <Link to={paths.qualifications} className={homeButton('outline')}>
+            <Link to={paths.qualifications} className={homeButton('quiet')}>
               {copy.cta}
               <Glyph name="arrow" />
             </Link>
@@ -139,15 +130,14 @@ export function Catalog() {
         </Reveal>
       </div>
 
-      {/* Two rows of names drifting in opposite directions, faded at the edges; hovering pauses them. Each row
-          runs twice, so it loops without a seam; screen readers hear each name once. Still, each name shows once,
-          in rows that scroll sideways. */}
+      {/* Two rows of names drifting in opposite directions, edge to edge; hovering pauses them. Each row runs
+          twice, so it loops without a seam; screen readers hear each name once. Still, each name shows once, in
+          rows that scroll sideways. */}
       <Reveal
         order={2}
         className={cx(
-          'group/drift mt-[clamp(2.5rem,5vw,4rem)] grid gap-[0.7rem] overflow-hidden',
-          '[mask-image:linear-gradient(90deg,transparent,#000000_8%,#000000_92%,transparent)] [-webkit-mask-image:linear-gradient(90deg,transparent,#000000_8%,#000000_92%,transparent)]',
-          'motion-reduce:overflow-x-auto motion-reduce:[mask-image:none] motion-reduce:pb-[0.4rem] motion-reduce:[-webkit-mask-image:none]',
+          'group/drift mt-[clamp(3rem,6vw,4.5rem)] grid gap-3 overflow-hidden',
+          'motion-reduce:overflow-x-auto motion-reduce:pb-[0.4rem]',
         )}
         role="group"
         aria-label={copy.drifting}
@@ -157,7 +147,7 @@ export function Catalog() {
           <ul
             key={r}
             className={cx(
-              'm-0 flex w-max animate-drift list-none gap-[0.7rem] p-0 group-hovered/drift:[animation-play-state:paused] motion-reduce:animate-none motion-reduce:px-home-gutter',
+              'm-0 flex w-max animate-drift list-none gap-3 p-0 group-hovered/drift:[animation-play-state:paused] motion-reduce:animate-none motion-reduce:px-home-gutter',
               r === 1 && '[animation-direction:reverse] [animation-duration:85s]',
             )}
           >
@@ -165,9 +155,12 @@ export function Catalog() {
               <li
                 key={i}
                 aria-hidden={i >= row.length || undefined}
-                className="rounded-12 bg-home-surface px-4 py-[0.65rem] font-semibold whitespace-nowrap text-home-ink shadow-[0_0_0_1px_var(--home-border)] motion-reduce:aria-hidden:hidden"
+                className="rounded-full bg-home-surface px-[1.2rem] py-3 font-semibold whitespace-nowrap text-home-ink motion-reduce:aria-hidden:hidden"
               >
-                {name} <small className="ml-1 font-medium text-home-muted">{sector}</small>
+                {name}{' '}
+                <small className="ml-[0.35rem] text-home-xs font-medium text-home-muted">
+                  {sector}
+                </small>
               </li>
             ))}
           </ul>

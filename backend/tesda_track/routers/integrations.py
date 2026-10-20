@@ -4,13 +4,13 @@ from sqlmodel import select
 
 from tesda_track.config import get_settings
 from tesda_track.db import SessionDep
-from tesda_track.deps import require_admin
+from tesda_track.deps import require_permission
 from tesda_track.errors import ConflictError
 from tesda_track.models import Qualification, QualificationEmbedding, TrainingProgram, TrainingProgramEmbedding
 from tesda_track.services import embeddings, skills_bridge
 from tesda_track.services.embeddings import EmbedderDep
 
-router = APIRouter(prefix="/admin", tags=["admin: integrations"], dependencies=[Depends(require_admin)])
+router = APIRouter(prefix="/admin", tags=["admin: integrations"], dependencies=[Depends(require_permission("integrations:manage"))])
 
 
 def _count(session, query) -> int:
@@ -39,6 +39,8 @@ def integration_status(session: SessionDep, embedder: EmbedderDep):
     return {"semantic_search": semantic, "skills_bridge": bridge,
             "skills_bridge_mcp": {"enabled": settings.skills_bridge_mcp_enabled,
                                   "url": str(settings.skills_bridge_mcp_url),
+                                  "sign_in": "client_credentials" if settings.skills_bridge_client_id
+                                  else "token" if settings.skills_bridge_mcp_token else "none",
                                   "cache_ttl_seconds": settings.skills_bridge_cache_ttl_seconds,
                                   "rate_limit_per_minute": settings.skills_bridge_rate_limit_per_minute,
                                   "upstream_per_minute": settings.skills_bridge_upstream_per_minute}}

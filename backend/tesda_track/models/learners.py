@@ -10,7 +10,7 @@ from sqlmodel import Field, Relationship, SQLModel
 from tesda_track.models.base import Timestamped, one_of, timestamp_field
 from tesda_track.models.catalog import Qualification
 
-ROLES = ("learner", "admin")
+from tesda_track.rbac import ROLES
 GOAL_STATUSES = ("active", "achieved", "archived")
 ANALYSIS_SOURCES = ("rules", "ai")
 ANSWER_CODES = ("confident", "some_experience", "not_familiar")
@@ -52,6 +52,7 @@ class RecommendationSession(Timestamped, table=True):
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     learner_id: uuid.UUID = Field(foreign_key="learner.id", ondelete="CASCADE", index=True)
+    assessment_id: uuid.UUID | None = Field(default=None, foreign_key="learner_assessment.id", ondelete="CASCADE", index=True)
     goal_id: uuid.UUID | None = Field(default=None, foreign_key="goal.id", ondelete="SET NULL")
     query: str = Field(sa_type=Text)
     analysis_source: str = Field(sa_type=String(10))

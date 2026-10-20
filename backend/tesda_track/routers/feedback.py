@@ -7,10 +7,10 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status
 from tesda_track.config import Settings, get_settings
 from tesda_track.db import SessionDep
 from tesda_track.deps import OptionalLearner
-from tesda_track.routers.skills_bridge import _client_key
 from tesda_track.schemas.feedback import FeedbackCreate, FeedbackPublic, FeedbackReasonUpdate
 from tesda_track.services import feedback
 from tesda_track.services.embeddings import EmbedderDep
+from tesda_track.services.rate_limit import client_address_key
 
 router = APIRouter(prefix="/feedback", tags=["feedback"])
 SettingsDep = Annotated[Settings, Depends(get_settings)]
@@ -20,7 +20,7 @@ LIMITED = {429: {"description": "Too many answers from this client; see Retry-Af
 
 
 def _within_limit(request: Request, settings: Settings) -> None:
-    seconds = request.app.state.feedback_limits.hit(_client_key(request), settings.feedback_rate_limit_per_minute)
+    seconds = request.app.state.feedback_limits.hit(client_address_key(request), settings.feedback_rate_limit_per_minute)
     if seconds:
         raise HTTPException(status_code=429, detail=CLIENT_LIMITED, headers={"Retry-After": str(math.ceil(seconds))})
 

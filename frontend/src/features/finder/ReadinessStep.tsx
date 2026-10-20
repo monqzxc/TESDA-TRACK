@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect, useId, useRef, useState } from 'react'
 import { Button, Label, ProgressBar, Radio, RadioGroup } from 'react-aria-components'
 import type { Qualification } from '../../api/queries.ts'
@@ -14,6 +14,7 @@ import { CardHeading } from './CardHeading.tsx'
 import { useFinderStore, type Answer, type Answers, type Journey, type Profile } from './store.ts'
 import { ownsSession } from './useJourneySession.ts'
 import { card, muted, notice } from './styles.ts'
+import { createWriteRequestIds, isCurrentLearner, requireCurrentLearner } from './writeRequests.ts'
 
 const copy = en.finder.readiness
 const ANSWERS: readonly Answer[] = ['confident', 'some_experience', 'not_familiar']
@@ -78,7 +79,9 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
   const answer = useFinderStore((state) => state.answer)
   const setPart = useFinderStore((state) => state.setPart)
   const setCheck = useFinderStore((state) => state.setCheck)
-  const { learner, isSignedIn } = useAuth()
+  const { learner } = useAuth()
+  const queryClient = useQueryClient()
+  const requests = useRef(createWriteRequestIds())
   const headingId = useId()
   const partHeading = useRef<HTMLHeadingElement>(null)
   const questions = useRef<HTMLDivElement>(null)
@@ -108,11 +111,18 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
     mutationFn: ({
       sent,
       saveTo,
+      ownerId,
     }: {
       sent: Answers
-      saveTo: { sessionId: string | null } | null
-    }) => submitReadiness(code, sent, saveTo),
-    onSuccess: (result, { sent, saveTo }) => {
+      saveTo: { sessionId: string | null; requestId: string } | null
+      ownerId: string | null
+    }) => {
+      requireCurrentLearner(queryClient, ownerId)
+      return submitReadiness(code, sent, saveTo)
+    },
+    onSuccess: (result, { sent, saveTo, ownerId }) => {
+      if (saveTo) requests.current.complete('readiness', saveTo.requestId)
+      if (!isCurrentLearner(queryClient, ownerId)) return
       setCheck(code, { result, answers: sent, saved: saveTo !== null })
       onResult()
     },
@@ -150,10 +160,16 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
       return
     }
     setMessage(null)
-    const saveTo = isSignedIn
-      ? { sessionId: ownsSession(learner, journey.sessionOwner) ? journey.sessionId : null }
+    const ownerId = learner?.id ?? null
+    const sessionId = ownsSession(learner, journey.sessionOwner) ? journey.sessionId : null
+    const sent = { ...answers }
+    const saveTo = ownerId
+      ? {
+          sessionId,
+          requestId: requests.current.for('readiness', ownerId, { code, answers: sent, sessionId }),
+        }
       : null
-    submit.mutate({ sent: { ...answers }, saveTo })
+    submit.mutate({ sent, saveTo, ownerId })
   }
 
   return (

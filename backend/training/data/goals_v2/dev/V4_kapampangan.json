@@ -1,0 +1,86 @@
+[
+  {
+    "goal": "Buri kung mag-training para king pamaglutu king restaurant.",
+    "accept": [
+      "Cookery NC II",
+      "Food Production (Professional Cookery) NC III"
+    ],
+    "lang": "pam",
+    "tags": [
+      "task"
+    ],
+    "group": "G1",
+    "review_status": "draft"
+  },
+  {
+    "goal": "Nanu ing kursung para king pamag-ayos laptop a e na gagana?",
+    "accept": [
+      "Computer Systems Servicing NC II"
+    ],
+    "lang": "pam",
+    "tags": [
+      "task",
+      "indirect"
+    ],
+    "group": "G1",
+    "review_status": "draft"
+  },
+  {
+    "goal": "Buri kung mag-training bilang barista king cafe.",
+    "accept": [
+      "Barista NC II"
+    ],
+    "lang": "pam",
+    "tags": [
+      "job_title"
+    ],
+    "group": "G1",
+    "review_status": "draft"
+  },
+  {
+    "goal": "Buri kung matutung manahi uniform para kareng customer.",
+    "accept": [
+      "Dressmaking NC II"
+    ],
+    "lang": "pam",
+    "tags": [
+      "task"
+    ],
+    "group": "G1",
+    "review_status": "draft"
+  },
+  {
+    "goal": "Nanu ing training para king pamaglinis kuartu ning hotel?",
+    "accept": [
+      "Housekeeping NC II"
+    ],
+    "lang": "pam",
+    "tags": [
+      "task",
+      "indirect"
+    ],
+    "group": "G1",
+    "review_status": "draft"
+  },
+  {
+    "goal": "Buri kung maging abogado.",
+    "accept": [],
+    "lang": "pam",
+    "tags": [
+      "no_tvet",
+      "job_title"
+    ],
+    "group": "X",
+    "review_status": "draft"
+  },
+  {
+    "goal": "Mayap a abak kekayu.",
+    "accept": [],
+    "lang": "pam",
+    "tags": [
+      "non_goal"
+    ],
+    "group": "X",
+    "review_status": "draft"
+  }
+]

@@ -4,6 +4,7 @@ import type { ApiError } from '../../api/errors.ts'
 import { unwrap } from '../../api/errors.ts'
 import type { components } from '../../api/schema.d.ts'
 import type { AssessmentSite, Point, Program, Provider, Schedule } from './centers.ts'
+import type { DeliveryMode } from './address.ts'
 
 // Training & Assessment's requests (classic/training_view.py _sites, _listings, _fit and _routes). Cache times
 // follow its st.cache_data TTLs: sites 5 minutes, listings 2.
@@ -99,19 +100,27 @@ export const listingsQuery = (codes: readonly string[]) =>
   })
 
 export interface FitRequest {
+  /** Ranking eligibility depends on the account's verified certificates. */
+  learnerId: string | null
   code: string
   /** The learner's goal from Find my pathway, if any: in the request body only. */
   goal: string | null
   /** A place the learner searched for, never their own location: the API keeps an audit of every ranking. */
   place: Point | null
-  mode: Program['delivery_mode'] | null
+  mode: DeliveryMode | null
   scholarship: boolean
 }
 
+export interface ProgramFit {
+  /** Unconfirmed services have reasons but no recommendation score. */
+  score?: number
+  explanation: string[]
+}
+
 /** How well a qualification's programs fit the learner, by program id, with why. */
-export const fitQuery = ({ code, goal, place, mode, scholarship }: FitRequest) =>
-  queryOptions<Map<number, { score: number; explanation: string[] }>, ApiError>({
-    queryKey: ['training', 'fit', code, goal, place, mode, scholarship],
+export const fitQuery = ({ learnerId, code, goal, place, mode, scholarship }: FitRequest) =>
+  queryOptions<Map<number, ProgramFit>, ApiError>({
+    queryKey: ['training', 'fit', learnerId, code, goal, place, mode, scholarship],
     queryFn: async ({ signal }) => {
       const ranking = await unwrap(
         api.POST('/api/v1/recommendations/training', {
@@ -120,6 +129,7 @@ export const fitQuery = ({ code, goal, place, mode, scholarship }: FitRequest) =
             goal: goal || null,
             preferred_delivery_mode: mode,
             needs_scholarship: scholarship,
+            require_confirmed_availability: true,
             limit: 50,
             // Rounded to about 10 km, as the ranking audit keeps it.
             ...(place
@@ -132,15 +142,17 @@ export const fitQuery = ({ code, goal, place, mode, scholarship }: FitRequest) =
           signal,
         }),
       )
-      return new Map(
-        ranking.results.map((item) => [
-          item.program.id,
-          { score: item.score, explanation: item.explanation },
-        ]),
-      )
+      const fits = new Map<number, ProgramFit>()
+      for (const item of ranking.results) {
+        fits.set(item.program.id, { score: item.score, explanation: item.explanation })
+      }
+      for (const item of ranking.requires_verification ?? []) {
+        fits.set(item.program.id, { explanation: item.reasons })
+      }
+      return fits
     },
-    // Each ranking is logged by the API: asked once per search for the visit.
-    staleTime: Infinity,
+    // Service evidence and learner eligibility can change during a visit.
+    staleTime: MINUTE,
     gcTime: 30 * MINUTE,
   })
 
@@ -174,8 +186,10 @@ export const clientConfigQuery = queryOptions<ClientConfig, ApiError>({
 })
 
 /** Applies for an assessment schedule. The center reviews the application. */
-export function applyForAssessment(scheduleId: number): Promise<Application> {
+export function applyForAssessment(scheduleId: number, requestId: string): Promise<Application> {
   return unwrap(
-    api.POST('/api/v1/me/assessment-applications', { body: { schedule_id: scheduleId } }),
+    api.POST('/api/v1/me/assessment-applications', {
+      body: { schedule_id: scheduleId, request_id: requestId },
+    }),
   )
 }

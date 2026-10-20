@@ -8,7 +8,7 @@ from api_client import ApiClient, ApiError
 # Everything that belongs to one learner and must disappear when they sign out.
 PERSONAL_KEYS = ("auth", "journey", "finder_step", "readiness_group", "readiness_editing", "data_export",
                  "pending_goal", "goal_query", "finder_experience", "finder_certification", "pathway_notice")
-PERSONAL_PREFIXES = ("answer_",)
+PERSONAL_PREFIXES = ("answer_", "assessment_", "application_", "journey_")
 EXPIRED_MESSAGE = "Your session has expired. Please sign in again."
 
 

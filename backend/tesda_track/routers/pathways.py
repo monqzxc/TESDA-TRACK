@@ -3,14 +3,14 @@ import uuid
 from fastapi import APIRouter, Depends, status
 
 from tesda_track.db import SessionDep
-from tesda_track.deps import CurrentLearner, require_admin
+from tesda_track.deps import CurrentLearner, require_permission
 from tesda_track.schemas.pathways import (EnrollmentCreate, EnrollmentPublic, EnrollmentUpdate, PathwayCreate,
                                           PathwayPublic, PathwayUpdate, StepProgressUpdate)
 from tesda_track.services import pathways
 
 router = APIRouter(prefix="/pathways", tags=["pathways"])
 learner_router = APIRouter(prefix="/me/pathways", tags=["pathway progress"])
-admin_router = APIRouter(prefix="/admin/pathways", tags=["admin: pathways"], dependencies=[Depends(require_admin)])
+admin_router = APIRouter(prefix="/admin/pathways", tags=["admin: pathways"], dependencies=[Depends(require_permission("pathways:manage"))])
 
 
 @router.get("", response_model=list[PathwayPublic])

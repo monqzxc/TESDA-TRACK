@@ -1,6 +1,8 @@
 import { useId, useState, type FormEvent } from 'react'
 import { Button, CheckboxButton, CheckboxField, FieldError, Form } from 'react-aria-components'
+import { Icon } from '../components/Icon.tsx'
 import { en } from '../copy/en.ts'
+import { paths } from '../paths.ts'
 import {
   CheckMark,
   failureMessage,
@@ -16,6 +18,10 @@ import { useAuth } from './useAuth.ts'
 import { formStyle, submitButton } from './styles.ts'
 
 const copy = en.account.registerForm
+
+// The form is also in the sign-in dialog, which opens outside the router (AuthProvider): a plain link, with the app's
+// base, opening in a new tab so what the learner has typed stays here.
+const POLICY_HREF = `${import.meta.env.BASE_URL}${paths.privacy.slice(1)}`
 
 interface RegisterFormProps {
   /** Focus the first field when the form appears (after the learner switched to it). */
@@ -106,6 +112,15 @@ export function RegisterForm({
         <p id={noticeId} className={formStyle.privacyText}>
           {copy.privacyNotice}
         </p>
+        <a
+          href={POLICY_HREF}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={formStyle.privacyLink}
+        >
+          {copy.privacyLink}
+          <Icon name="external" />
+        </a>
       </div>
       <CheckboxField
         name="consent"

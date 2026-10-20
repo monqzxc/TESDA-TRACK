@@ -33,15 +33,18 @@ def test_options_are_ranked_by_the_weighted_components(client, make_provider, ma
     assert ranked["semantic_used"] is False
     first, second = ranked["results"]
     assert first["program"]["id"] == manila_program["id"] and second["program"]["id"] == cebu_program["id"]
-    # Manila: semantic 1 (no model: every program of the qualification is relevant), proximity 1 - 10.7/100,
+    # Manila: no model means no measured semantic evidence; effective weights omit that signal.
+    # Proximity is 1 - 10.7/100,
     # assessment 1, schedule 1 (starts within 60 days), no preference given.
     assert first["components"]["proximity"] == pytest.approx(0.893, abs=0.01)
     assert (first["components"]["assessment"], first["components"]["schedule"], first["components"]["preference"]) \
         == (1, 1, 0)
-    assert first["score"] == 93
-    # Cebu: about 570 km away, no assessment nearby, no start date (rolling intake counts half).
-    assert second["components"] == {"semantic": 1, "proximity": 0, "assessment": 0, "schedule": 0.5, "preference": 0}
-    assert second["score"] == 55
+    assert first["score"] == 95
+    assert first["effective_weights"]["semantic"] == 0
+    assert first["component_status"]["semantic"] == "not_applicable"
+    # Cebu: about 570 km away; missing dates never prove rolling intake.
+    assert second["components"] == {"semantic": 0, "proximity": 0, "assessment": 0, "schedule": 0, "preference": 0}
+    assert second["score"] == 0
     assert any("km" in reason for reason in first["explanation"])
 
 
@@ -62,7 +65,7 @@ def test_stated_preferences_add_their_share(client, make_program):
     scores = {r["program"]["id"]: r for r in ranked["results"]}
     assert scores[online["id"]]["components"]["preference"] == 1
     assert scores[classroom["id"]]["components"]["preference"] == 0
-    assert scores[online["id"]]["score"] - scores[classroom["id"]]["score"] == 5
+    assert scores[online["id"]]["score"] - scores[classroom["id"]]["score"] == 17
 
 
 def test_schedule_timing_is_scored_and_finished_programs_are_left_out(client, make_program):

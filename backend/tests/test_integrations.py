@@ -111,6 +111,7 @@ def test_admin_sees_integration_status(client, admin, learner):
     assert status["skills_bridge"] == {"configured": False, "detail": "Set SKILLS_BRIDGE_BASE_URL and "
                                                                        "SKILLS_BRIDGE_API_TOKEN once API access is granted."}
     assert status["skills_bridge_mcp"]["rate_limit_per_minute"] == get_settings().skills_bridge_rate_limit_per_minute
+    assert status["skills_bridge_mcp"]["sign_in"] == "none"
 
 
 def test_admin_status_counts_embedded_records(client, admin, semantic):

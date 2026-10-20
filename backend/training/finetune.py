@@ -1,13 +1,17 @@
 """Fine-tune the matching model on catalog pairs, export it to ONNX and check fastembed reproduces it.
 
 Run from backend/ inside .venv-train:  python -m training.finetune --output models/<name>
+(add --resume to continue an interrupted run from its last saved checkpoint).
 Dev-only: torch and sentence-transformers are imported inside main(), so this module imports without them.
 """
 import argparse
+import hashlib
+from importlib.metadata import version
 import json
 import random
+import re
+import shutil
 import subprocess
-import tempfile
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -17,20 +21,52 @@ import numpy as np
 from tesda_track.models import Qualification
 from tesda_track.services.embeddings import qualification_text
 from training.catalog import load_catalog
-from training.pairs import eval_exclusions, training_pairs
+from tesda_track.utils.helpers import normalize
+from training.pairs import eval_exclusions, family, load_synthetic, names_a_level, training_pairs
 
 BASE_MODEL = "intfloat/multilingual-e5-small"
-DIMENSIONS = 384
 HELD_OUT = 0.05
 MIN_PARITY = 0.999
 
 
-def split_pairs(pairs: list[tuple[str, str]], seed: int) -> tuple[list[tuple[str, str]], list[tuple[str, str]]]:
-    """A seeded 5% of the pairs for the evaluation loss; every qualification keeps most of its pairs for training."""
-    shuffled = list(pairs)
-    random.Random(seed).shuffle(shuffled)
-    cut = max(1, round(len(shuffled) * HELD_OUT))
-    return shuffled[cut:], shuffled[:cut]
+def record_run_config(output: Path, signature: dict, resume: bool) -> None:
+    """Refuse incompatible resumes before changing the saved configuration."""
+    path = output / "run_config.json"
+    if resume and (not path.exists() or json.loads(path.read_text(encoding="utf-8")) != signature):
+        raise SystemExit("Resume data/settings differ or run_config.json is missing; use the original bundle/settings")
+    output.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(signature, indent=2) + "\n", encoding="utf-8")
+
+
+def check_output_folder(output: Path, resume: bool, checkpoint: str | None) -> None:
+    """Refuse a folder that already holds a model, so one folder and name never mix two vector spaces.
+
+    Stored embeddings are keyed by model name and text, and calibration.json lives in the folder, so a retrain under
+    the same name would keep stale vectors and scores. Only an unfinished run may continue, with --resume.
+    """
+    if resume and checkpoint is None:
+        raise SystemExit(f"--resume: no checkpoint in {output / 'checkpoints'}")
+    if checkpoint and not resume:
+        raise SystemExit(f"{output / 'checkpoints'} holds an unfinished run: add --resume to continue it, "
+                         "or delete the folder")
+    if (output / "onnx" / "model.onnx").exists() or (output / "training.json").exists():
+        if not (resume and checkpoint):
+            raise SystemExit(f"{output} already holds a finished model: train into a new folder and give the model "
+                             "a new name, e.g. tesda-e5-small-v2")
+
+
+def split_pairs(pairs: list[tuple], seed: int) -> tuple[list[tuple], list[tuple]]:
+    """Keep case variants and every owner of a query together in the loss split.
+
+    This loss is a diagnostic, not a held-out retrieval benchmark: paraphrases may still be related.
+    """
+    keys = sorted({normalize(row[0]) for row in pairs})
+    if len(keys) < 2:
+        raise ValueError("Training needs at least two distinct queries")
+    random.Random(seed).shuffle(keys)
+    held = set(keys[:min(len(keys) - 1, max(1, round(len(keys) * HELD_OUT)))])
+    return ([r for r in pairs if normalize(r[0]) not in held],
+            [r for r in pairs if normalize(r[0]) in held])
 
 
 def parity_texts(qualifications: list[Qualification]) -> list[str]:
@@ -40,11 +76,60 @@ def parity_texts(qualifications: list[Qualification]) -> list[str]:
             [f"query: {q.name.lower()}" for q in sample[5:]])
 
 
-def _dataset(pairs: list[tuple[str, str]]):
+def attach_negatives(pairs: list[tuple[str, str]], rows: list[dict], qualifications: list[Qualification],
+                     seed: int, allow_sibling: bool = False) -> tuple[list[tuple[str, str, str]], int]:
+    """(query, passage, negative passage) for every pair, plus how many had no mined negative.
+
+    One dataset needs the same columns in every row, so each pair gets exactly one negative: a seeded pick among its
+    mined ones. A pair with none mined gets a random passage of a qualification that does not own the query,
+    which is no harder than an in-batch negative, so those pairs still train like plain pairs.
+
+    Another level of the positive's own family ("Cookery NC III" for "Cookery NC II") is often a correct answer, so
+    it is dropped as a negative unless the query names a level or allow_sibling is set."""
+    passage_of = {q.name: qualification_text(q) for q in qualifications}
+    name_of = {passage: name for name, passage in passage_of.items()}
+    mined: dict[tuple[str, str], list[str]] = {}
+    for row in rows:
+        sibling = family(row["negative_name"]) == family(row["positive_name"])
+        if sibling and not allow_sibling and not names_a_level(row["query"]):
+            continue
+        if row["negative_name"] in passage_of:
+            mined.setdefault((row["query"], row["positive_name"]), []).append(passage_of[row["negative_name"]])
+    # Every qualification a query belongs to is a correct answer, so none may be its random negative either.
+    owners: dict[str, set[str]] = {}
+    for query, passage in pairs:
+        owners.setdefault(normalize(query), set()).add(name_of[passage])
+    for row in rows:
+        owners.setdefault(normalize(row["query"]), set()).add(row["positive_name"])
+    rng = random.Random(seed)
+    names = sorted(passage_of)
+    triplets, missing = [], 0
+    for query, passage in pairs:
+        own = owners[normalize(query)]
+        own_families = {family(n) for n in own}
+        skip_family = not (allow_sibling or names_a_level(query))
+        options = [p for p in mined.get((query, name_of[passage]), [])
+                   if name_of[p] not in own and not (skip_family and family(name_of[p]) in own_families)]
+        if not options:
+            missing += 1
+            own = owners[normalize(query)]
+            own_families = {family(n) for n in own}
+            skip_family = not (allow_sibling or names_a_level(query))
+            candidates = [n for n in names if n not in own and not (skip_family and family(n) in own_families)]
+            if not candidates:
+                raise ValueError("No safe negative exists for a training query")
+            options = [passage_of[rng.choice(candidates)]]
+        triplets.append((query, passage, rng.choice(options)))
+    return triplets, missing
+
+
+def _dataset(pairs: list[tuple]):
     from datasets import Dataset
 
-    return Dataset.from_dict({"anchor": [f"query: {query}" for query, _ in pairs],
-                              "positive": [f"passage: {passage}" for _, passage in pairs]})
+    columns = {"anchor": [f"query: {row[0]}" for row in pairs], "positive": [f"passage: {row[1]}" for row in pairs]}
+    if pairs and len(pairs[0]) == 3:
+        columns["negative"] = [f"passage: {row[2]}" for row in pairs]
+    return Dataset.from_dict(columns)
 
 
 def export_onnx(folder: Path) -> Path:
@@ -82,15 +167,11 @@ def export_onnx(folder: Path) -> Path:
 
 def parity(model, folder: Path, texts: list[str]) -> float:
     """The lowest cosine between fastembed's vectors for the exported folder and sentence-transformers' own."""
-    from fastembed import TextEmbedding
-    from fastembed.common.model_description import ModelSource, PoolingType
+    from tesda_track.services.embeddings import E5Embedder
 
-    # Registered the way tesda_track.services.embeddings registers CUSTOM_MODELS; the files come from the folder.
-    name = f"tesda-track/{folder.name}"
-    if not any(m["model"] == name for m in TextEmbedding.list_supported_models()):
-        TextEmbedding.add_custom_model(model=name, pooling=PoolingType.MEAN, normalization=True,
-                                       sources=ModelSource(hf=BASE_MODEL), dim=DIMENSIONS, model_file="onnx/model.onnx")
-    onnx = np.asarray(list(TextEmbedding(name, specific_model_path=str(folder)).embed(texts)), dtype=np.float64)
+    # The loader the API uses; its model is called directly because the texts already carry E5's prefixes.
+    embedder = E5Embedder(f"tesda-track/{folder.name}", model_path=str(folder))
+    onnx = np.asarray(list(embedder._model.embed(texts)), dtype=np.float64)
     reference = np.asarray(model.encode(texts, normalize_embeddings=True), dtype=np.float64)
     return float(np.min(np.sum(onnx * reference, axis=1)))
 
@@ -113,17 +194,67 @@ def main() -> None:
     parser.add_argument("--lr", type=float, default=2e-5)
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--max-steps", type=int, default=None, help="stop early (smoke runs)")
+    parser.add_argument("--hard-negatives", type=Path, default=None,
+                        help="file from `python -m training.mine`: train on (query, positive, hard negative) triplets")
+    parser.add_argument("--allow-sibling-negatives", action="store_true",
+                        help="keep other levels of the positive's own family as hard negatives (default: drop them "
+                             "unless the query names a level)")
+    parser.add_argument("--augment-share", type=float, default=0.15, help="share of synthetic queries given a typo copy")
+    parser.add_argument("--no-synthetic", action="store_true", help="omit legacy data/synthetic (v3/v4 enrichment still applies)")
+    parser.add_argument("--resume", action="store_true", help="continue from the checkpoint in <output>/checkpoints")
+    parser.add_argument("--profile", choices=("v2", "v3", "v4"), default="v2")
+    parser.add_argument("--save-steps", type=int, default=100, help="checkpoint interval, including Colab disconnects")
     args = parser.parse_args()
+    if not 0 <= args.augment_share <= 1 or args.save_steps < 1:
+        parser.error("augment-share must be in [0, 1] and save-steps must be positive")
 
     import torch
     from sentence_transformers import (SentenceTransformer, SentenceTransformerTrainer,
                                        SentenceTransformerTrainingArguments)
     from sentence_transformers.base.sampler import BatchSamplers
     from sentence_transformers.sentence_transformer.losses import CachedMultipleNegativesRankingLoss
+    from transformers.trainer_utils import get_last_checkpoint
+
+    output = args.output.resolve()
+    checkpoints = output / "checkpoints"
+    checkpoint = get_last_checkpoint(str(checkpoints)) if checkpoints.is_dir() else None
+    check_output_folder(output, args.resume, checkpoint)
+    # training.json marks a finished, verified model: drop any old one until this run passes the parity check.
+    (output / "training.json").unlink(missing_ok=True)
 
     qualifications, _ = load_catalog()
-    pairs = training_pairs(qualifications, eval_exclusions())
+    synthetic = {} if args.no_synthetic else load_synthetic()
+    exclusions = eval_exclusions()
+    coverage = None
+    if args.profile in ("v3", "v4"):
+        if args.profile == "v4":
+            from training.v4 import enrich
+        else:
+            from training.v3 import enrich
+        synthetic, coverage = enrich(qualifications, synthetic, exclusions)
+    pairs = training_pairs(qualifications, exclusions, synthetic, args.augment_share)
+    plain = len(training_pairs(qualifications, exclusions, synthetic, 0))
+    synthetic_pairs = plain - len(training_pairs(qualifications, exclusions))
+    augmented_pairs = len(pairs) - plain
+    signature = {"profile": args.profile, "pairs_sha256": hashlib.sha256(
+        json.dumps(pairs, ensure_ascii=False).encode()).hexdigest(), "seed": args.seed,
+        "epochs": args.epochs, "batch_size": args.batch_size, "mini_batch_size": args.mini_batch_size,
+        "lr": args.lr, "max_steps": args.max_steps, "save_steps": args.save_steps,
+        "allow_sibling_negatives": args.allow_sibling_negatives,
+        "hard_negatives_sha256": hashlib.sha256(args.hard_negatives.read_bytes()).hexdigest()
+            if args.hard_negatives else None}
+    record_run_config(output, signature, args.resume)
+    if coverage:
+        (output / "coverage.json").write_text(json.dumps(coverage, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     train, held_out = split_pairs(pairs, args.seed)
+    negatives_hash = unmined = None
+    if args.hard_negatives:
+        raw = args.hard_negatives.read_bytes()
+        negatives_hash = hashlib.sha256(raw).hexdigest()
+        train, unmined = attach_negatives(train, json.loads(raw), qualifications, args.seed, args.allow_sibling_negatives)
+        held_out, _ = attach_negatives(held_out, json.loads(raw), qualifications, args.seed, args.allow_sibling_negatives)
+        print(f"Hard negatives from {args.hard_negatives} (sha256 {negatives_hash[:12]}): "
+              f"{unmined} of {len(train)} train pairs had none mined and got a random negative")
     cuda = torch.cuda.is_available()
     print(f"{len(pairs)} pairs from {len(qualifications)} qualifications: {len(train)} train, "
           f"{len(held_out)} held out; device {'cuda' if cuda else 'cpu'}")
@@ -131,37 +262,50 @@ def main() -> None:
     model = SentenceTransformer(BASE_MODEL)
     model.max_seq_length = 512
     loss = CachedMultipleNegativesRankingLoss(model, mini_batch_size=args.mini_batch_size)
-    with tempfile.TemporaryDirectory() as scratch:
-        training_args = SentenceTransformerTrainingArguments(
-            output_dir=scratch, num_train_epochs=args.epochs, max_steps=args.max_steps or -1,
-            per_device_train_batch_size=args.batch_size, per_device_eval_batch_size=args.batch_size,
-            learning_rate=args.lr, warmup_steps=0.1, fp16=cuda, batch_sampler=BatchSamplers.NO_DUPLICATES,
-            eval_strategy="no", save_strategy="no", logging_steps=10, report_to="none", seed=args.seed)
-        trainer = SentenceTransformerTrainer(model=model, args=training_args, train_dataset=_dataset(train),
-                                             eval_dataset=_dataset(held_out), loss=loss)
-        # The held-out loss is measured outside train() so the steps/s below count training only.
-        before = trainer.evaluate()["eval_loss"]
-        started = time.perf_counter()
-        result = trainer.train()
-        seconds = time.perf_counter() - started
-        after = trainer.evaluate()["eval_loss"]
-    print(f"Trained {result.global_step} steps in {seconds:.0f}s ({result.global_step / seconds:.3f} steps/s); "
-          f"held-out loss {before:.4f} -> {after:.4f}")
+    # Frequent checkpoints keep Colab disconnects from losing an entire epoch.
+    training_args = SentenceTransformerTrainingArguments(
+        output_dir=str(checkpoints), num_train_epochs=args.epochs, max_steps=args.max_steps or -1,
+        per_device_train_batch_size=args.batch_size, per_device_eval_batch_size=args.batch_size,
+        learning_rate=args.lr, warmup_steps=0.1, fp16=cuda, batch_sampler=BatchSamplers.NO_DUPLICATES,
+        eval_strategy="no", save_strategy="steps", save_steps=args.save_steps, save_total_limit=2,
+        logging_steps=10, report_to="none",
+        seed=args.seed)
+    trainer = SentenceTransformerTrainer(model=model, args=training_args, train_dataset=_dataset(train),
+                                         eval_dataset=_dataset(held_out), loss=loss)
+    # The held-out loss is measured outside train() so the steps/s below count training only.
+    before = trainer.evaluate()["eval_loss"]
+    resumed_at = int(re.search(r"(\d+)$", checkpoint).group(1)) if checkpoint else 0
+    if checkpoint:
+        print(f"Resuming from {checkpoint} (step {resumed_at})")
+    started = time.perf_counter()
+    result = trainer.train(resume_from_checkpoint=checkpoint)
+    seconds = time.perf_counter() - started
+    after = trainer.evaluate()["eval_loss"]
+    steps = result.global_step - resumed_at
+    print(f"Trained {steps} steps in {seconds:.0f}s ({steps / max(seconds, 1e-9):.3f} steps/s), {result.global_step} "
+          f"in all; held-out loss {before:.4f} -> {after:.4f}")
 
-    output = args.output.resolve()
     model.save_pretrained(str(output))
     export_onnx(output)
     cosine = parity(model, output, parity_texts(qualifications))
-    metadata = {"base_model": BASE_MODEL, "seed": args.seed, "epochs": args.epochs, "max_steps": args.max_steps,
-                "batch_size": args.batch_size, "mini_batch_size": args.mini_batch_size, "learning_rate": args.lr,
-                "pairs": len(pairs), "train_pairs": len(train), "held_out_pairs": len(held_out),
-                "held_out_loss": {"before": before, "after": after}, "steps": result.global_step,
-                "train_seconds": round(seconds, 1), "device": "cuda" if cuda else "cpu", "parity_cosine": cosine,
-                "date": datetime.now(timezone.utc).isoformat(timespec="seconds"), "git_commit": _git_commit()}
-    (output / "training.json").write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(f"Saved {output} (ONNX at onnx/model.onnx); fastembed parity: lowest cosine {cosine:.6f}")
-    if cosine < MIN_PARITY:
+    if not np.isfinite(cosine) or cosine < MIN_PARITY:
         raise SystemExit(f"fastembed parity {cosine:.6f} is below {MIN_PARITY}: the ONNX export does not match")
+    metadata = {"base_model": BASE_MODEL, "profile": args.profile, "data_signature": signature,
+                "loss_split": "normalized_query_group", "seed": args.seed, "epochs": args.epochs, "max_steps": args.max_steps,
+                "batch_size": args.batch_size, "mini_batch_size": args.mini_batch_size, "learning_rate": args.lr,
+                "pairs": len(pairs), "synthetic_queries": sum(len(v) for v in synthetic.values()),
+                "synthetic_pairs": synthetic_pairs, "augment_share": args.augment_share,
+                "augmented_pairs": augmented_pairs, "allow_sibling_negatives": args.allow_sibling_negatives,
+                "hard_negatives_sha256": negatives_hash, "pairs_without_mined_negative": unmined, "train_pairs": len(train), "held_out_pairs": len(held_out),
+                "held_out_loss": {"before": before, "after": after}, "steps": result.global_step,
+                "resumed_at_step": resumed_at, "train_seconds": round(seconds, 1), "device": "cuda" if cuda else "cpu",
+                "parity_cosine": cosine, "date": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                "git_commit": _git_commit(),
+                "packages": {name: version(name) for name in ("torch", "sentence-transformers", "transformers",
+                                                              "fastembed", "onnxruntime", "onnx")}}
+    (output / "training.json").write_text(json.dumps(metadata, indent=2) + "\n", encoding="utf-8", newline="\n")
+    shutil.rmtree(checkpoints, ignore_errors=True)
 
 
 if __name__ == "__main__":

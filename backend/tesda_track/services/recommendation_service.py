@@ -1,4 +1,5 @@
-from tesda_track.utils.helpers import contains, normalize
+from tesda_track.services import goal_rules
+from tesda_track.utils.helpers import contains, fuzzy_matches, normalize
 
 
 def match_qualifications(query: str, profile: dict, qualifications: list[dict]) -> list[dict]:
@@ -7,12 +8,20 @@ def match_qualifications(query: str, profile: dict, qualifications: list[dict]) 
 
 def score_qualifications(query: str, profile: dict, qualifications: list[dict]) -> list[dict]:
     """Keyword scores (0-95) for every qualification with any evidence, best first."""
-    text = normalize(query)
+    text = normalize(goal_rules.strip_negated(query))
     context = normalize(" ".join([profile.get("career_goal") or "", *profile.get("existing_skills", [])]))
     results = []
+    near = fuzzy_matches(text, qualifications)
     # ponytail: transparent keyword scores, not semantic confidence; embeddings can improve recall.
     for qualification in qualifications:
-        hits = [word for word in qualification["career_keywords"] if contains(text, word)]
+        hits = [word for word in qualification["career_keywords"]
+                if contains(text, word) and not goal_rules.is_generic(word)]
+        typo_words = [word for word in qualification["career_keywords"]
+                      if word in near and not goal_rules.is_generic(word)]
+        # A typo of an everyday single word (barko, alaga ...) is not evidence alone: it needs a second signal.
+        if not hits and all(goal_rules.is_hijack(word) for word in typo_words):
+            typo_words = []
+        hits += [f"{near[word]} ({word})" for word in typo_words]
         score = min(95, 55 + 10 * len(hits)) if hits else 0
         if any(contains(context, word) for word in qualification["career_keywords"]):
             score = min(95, score + 15)

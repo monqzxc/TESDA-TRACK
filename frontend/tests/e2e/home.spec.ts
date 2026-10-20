@@ -13,7 +13,7 @@ const SIZES = {
 const HEADING = 'Every career has a track. Find yours.'
 const SECTIONS = [
   'Four stops between a goal and a certificate.',
-  'Programs and assessment centers, nearest first.',
+  'Training and assessment near you.',
   '319 qualifications',
   'Save your path. Tick off each step.',
   'What would you like to achieve?',

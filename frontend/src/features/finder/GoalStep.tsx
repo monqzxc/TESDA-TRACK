@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useId, useRef, useState, type FormEvent } from 'react'
 import { Button, FieldError, Label, Text, TextArea, TextField } from 'react-aria-components'
 import { useNavigate } from 'react-router'
@@ -13,6 +13,7 @@ import { analyzeGoal } from './api.ts'
 import { GOAL_MAX_LENGTH, useFinderStore } from './store.ts'
 import { cardFrame, muted } from './styles.ts'
 import { ownsSession, useSaveJourney } from './useJourneySession.ts'
+import { createWriteRequestIds, isCurrentLearner, requireCurrentLearner } from './writeRequests.ts'
 
 const copy = en.finder.goal
 
@@ -39,12 +40,26 @@ export function GoalStep() {
   const field = useRef<HTMLTextAreaElement>(null)
   const [error, setError] = useState<string | null>(null)
   const headingId = useId()
+  const queryClient = useQueryClient()
+  const requests = useRef(createWriteRequestIds())
 
   const analyze = useMutation({
-    mutationFn: ({ query, signedIn }: { query: string; signedIn: boolean }) =>
-      analyzeGoal(query, signedIn),
-    onSuccess: ({ profile, sessionId }, { query }) => {
-      begin({ query, profile, sessionId, sessionOwner: sessionId ? (learner?.id ?? null) : null })
+    mutationFn: ({
+      query,
+      ownerId,
+      requestId,
+    }: {
+      query: string
+      ownerId: string | null
+      requestId: string | null
+    }) => {
+      requireCurrentLearner(queryClient, ownerId)
+      return analyzeGoal(query, requestId)
+    },
+    onSuccess: ({ profile, sessionId }, { query, ownerId, requestId }) => {
+      if (requestId) requests.current.complete('goal', requestId)
+      if (!isCurrentLearner(queryClient, ownerId)) return
+      begin({ query, profile, sessionId, sessionOwner: sessionId ? ownerId : null })
       void navigate(paths.finderMatches)
     },
     onError: (failure) => setError(failureMessage(failure)),
@@ -60,7 +75,9 @@ export function GoalStep() {
       return
     }
     setError(null)
-    analyze.mutate({ query, signedIn: isSignedIn })
+    const ownerId = learner?.id ?? null
+    const requestId = ownerId ? requests.current.for('goal', ownerId, { query }) : null
+    analyze.mutate({ query, ownerId, requestId })
   }
 
   const fillGoal = (text: string) => {

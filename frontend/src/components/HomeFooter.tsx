@@ -3,6 +3,7 @@ import { en } from '../copy/en.ts'
 import { cx } from '../lib/style.ts'
 import { paths } from '../paths.ts'
 import { logoSrc } from './Brand.tsx'
+import { Icon } from './Icon.tsx'
 
 const [first, second] = en.brand.wordmark
 
@@ -16,7 +17,18 @@ const footer = cx(
   '[main:empty~&]:hidden',
 )
 
-/** Home's footer, from the landing page: the brand and what the pilot's matches and checks are worth. */
+// An outlined button on the band, like the landing page's light-on-navy links.
+const privacyLink = cx(
+  'inline-flex min-h-11 items-center gap-2 rounded-12 border border-[rgb(255_255_255/0.25)] px-4 py-2 font-[650] text-white no-underline',
+  'transition-[background,border-color] duration-150 ease-[ease]',
+  '[&_svg]:size-[1.15em] [&_svg]:flex-none [&_svg]:text-(--band-accent)',
+  'hovered:border-[rgb(255_255_255/0.5)] hovered:bg-[rgb(255_255_255/0.08)]',
+)
+
+/**
+ * Home's footer, from the landing page: the brand, what the pilot's matches and checks are worth, and the privacy
+ * policy.
+ */
 export function HomeFooter() {
   return (
     <footer className={footer}>
@@ -41,6 +53,10 @@ export function HomeFooter() {
           </span>
         </Link>
         <p className="m-0 max-w-[44rem]">{en.home.footer}</p>
+        <Link to={paths.privacy} className={privacyLink}>
+          <Icon name="document" />
+          {en.privacy.link}
+        </Link>
       </div>
     </footer>
   )

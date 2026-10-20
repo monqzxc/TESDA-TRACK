@@ -9,10 +9,9 @@ from sqlmodel import Session
 
 from tesda_track.config import Settings, get_settings
 from tesda_track.db import SessionDep
-from tesda_track.routers.skills_bridge import _client_key
 from tesda_track.schemas.routes import Directions
 from tesda_track.services import cache, routing
-from tesda_track.services.rate_limit import RateLimiter
+from tesda_track.services.rate_limit import RateLimiter, client_address_key
 
 router = APIRouter(prefix="/routes", tags=["directions"])
 SettingsDep = Annotated[Settings, Depends(get_settings)]
@@ -121,7 +120,7 @@ def get_routes(request: Request, settings: SettingsDep, origin: Annotated[str, P
     if client is None:
         return Directions(routing_enabled=False, routes=[], missing_modes=[])
     limits: RouteLimits = request.app.state.route_limits
-    _wait(limits.clients.hit(_client_key(request), settings.routing_rate_limit_per_minute), CLIENT_LIMITED)
+    _wait(limits.clients.hit(client_address_key(request), settings.routing_rate_limit_per_minute), CLIENT_LIMITED)
     try:
         found = routing.directions(client, routes_cache, start, end)
     except routing.RouterBusy as busy:

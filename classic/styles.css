@@ -148,7 +148,8 @@
 [data-testid="stElementContainer"]:has(script[data-theme-sync]) { display: none; }
 
 .block-container { max-width: 1520px; padding: 3.8rem 2.5rem 2rem; }
-h1, h2, h3 { letter-spacing: -0.035em; }
+h1, h2, h3, h4, .brand, .score-ring span { font-family: var(--track-display); }
+h1, h2, h3 { letter-spacing: -0.02em; }
 
 /* Home: the landing page (landing.css) runs edge to edge under its own top bar. Streamlit's header steps aside but
    keeps its menu, with System, Light and Dark, at the top right over the landing page's navy. */
@@ -445,7 +446,7 @@ body.finder-compact .st-key-finder_steps [data-testid="stMarkdownContainer"] p::
   color: var(--track-navy);
   font-size: 1.35rem;
   font-weight: 800;
-  letter-spacing: -0.055em;
+  letter-spacing: -0.03em;
   line-height: 1.15;
   white-space: nowrap;
 }
@@ -542,7 +543,7 @@ body.finder-compact .st-key-finder_steps [data-testid="stMarkdownContainer"] p::
   font-weight: 700;
   line-height: 1.1;
   color: white;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.025em;
 }
 .hero h1 span { color: #76ddd7; }
 .hero p { max-width: 510px; margin: 0 0 1.25rem; color: #e0eaff; font-size: 0.9375rem; line-height: 1.65; }
@@ -561,7 +562,7 @@ body.finder-compact .st-key-finder_steps [data-testid="stMarkdownContainer"] p::
 .hero-art { position: relative; width: min(33%, 300px); min-width: 200px; flex: 0 1 300px; display: grid; place-items: center; align-self: stretch; }
 .hero-art > svg,
 .hero-art > img { display: block; width: 100%; height: 100%; max-height: 265px; object-fit: contain; overflow: visible; }
-.hero-art text { font-family: "Segoe UI", Arial, sans-serif; }
+.hero-art text { font-family: inherit; }
 
 .feature-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; padding: 1.1rem 0.25rem 1.25rem; margin-bottom: 0.3rem; }
 .feature-item { display: flex; align-items: center; gap: 0.8rem; min-width: 0; }
@@ -620,7 +621,7 @@ body.finder-compact .st-key-finder_steps [data-testid="stMarkdownContainer"] p::
   font-size: clamp(1.9rem, 2.65cqi, 2.6rem);
   font-weight: 750;
   line-height: 1.08;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.025em;
 }
 .journey-copy h1 span,
 .page-hero h1 span { color: var(--track-blue); }

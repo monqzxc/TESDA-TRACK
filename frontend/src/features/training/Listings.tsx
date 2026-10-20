@@ -12,9 +12,10 @@ import { en } from '../../copy/en.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
-import { applyForAssessment, type Application } from './api.ts'
+import { applyForAssessment, type Application, type ProgramFit } from './api.ts'
 import { friendlyDay, placeLabel, type Center, type Program, type Schedule } from './centers.ts'
-import { localTime, programCost, programFacts, scheduleFee } from './format.ts'
+import { canReviewApplication, evidenceMessages } from './evidence.ts'
+import { deliveryLabel, localTime, programCost, programFacts, scheduleFee } from './format.ts'
 
 const copy = en.training
 
@@ -40,7 +41,16 @@ const factList = cx(
 )
 const description = 'mt-0 mb-[0.9rem] text-15 leading-[1.6] text-ink'
 
-export type Fits = ReadonlyMap<number, { score: number; explanation: string[] }>
+export type Fits = ReadonlyMap<number, ProgramFit>
+
+/** What the service's verification says about it (evidence.ts), a line each. */
+function ServiceEvidence({ service }: { service: Program | Schedule }) {
+  return evidenceMessages(service).map((message) => (
+    <p key={message} className={muted}>
+      {message}
+    </p>
+  ))
+}
 
 /** The trade's photo when the listing is for one, the center's otherwise. Decoration: the text names it. */
 function listingPhoto(listing: Program | Schedule): string {
@@ -127,7 +137,7 @@ function ProgramCard({
   onOpen,
 }: {
   program: Program
-  fit?: { score: number; explanation: string[] }
+  fit?: ProgramFit
   today: string
   onOpen: () => void
 }) {
@@ -146,9 +156,10 @@ function ProgramCard({
           <p className={muted}>{qualification}</p>
         )}
         <p className={factLine}>{programFacts(program, today).join(' • ')}</p>
+        <ServiceEvidence service={program} />
         {(fit || program.scholarship_available) && (
           <p className={badges}>
-            {fit && (
+            {fit?.score !== undefined && (
               <span className={fitBadge}>
                 <Icon name="sparkle" />
                 {copy.programs.fit(fit.score)}
@@ -166,7 +177,7 @@ function ProgramCard({
           <details>
             <summary className="inline-flex cursor-pointer items-center gap-[0.35rem] text-13 font-semibold text-blue">
               <Icon name="info" />
-              {copy.programs.why}
+              {fit.score === undefined ? 'Service verification' : copy.programs.why}
             </summary>
             <ul className="my-[0.4rem] pl-[1.1rem] text-13 text-ink">
               {fit.explanation.map((reason) => (
@@ -198,14 +209,14 @@ function ProgramDialog({
 }: {
   program: Program
   center: Center
-  fit?: { score: number; explanation: string[] }
+  fit?: ProgramFit
   today: string
   onClose: () => void
 }) {
   const facts = copy.program
   const rows: [string, string | null][] = [
     [facts.where, `${center.name}, ${placeLabel(center)}`],
-    [facts.how, copy.delivery[program.delivery_mode]],
+    [facts.how, deliveryLabel(program.delivery_mode)],
     [facts.duration, program.duration_hours ? copy.programs.hours(program.duration_hours) : null],
     [
       facts.starts,
@@ -235,7 +246,9 @@ function ProgramDialog({
             {program.qualification.sector ? ` · ${program.qualification.sector}` : ''}
           </p>
           <p className={badges}>
-            {fit && <span className={fitBadge}>{copy.programs.fit(fit.score)}</span>}
+            {fit?.score !== undefined && (
+              <span className={fitBadge}>{copy.programs.fit(fit.score)}</span>
+            )}
             {program.scholarship_available && (
               <span className={scholarshipBadge}>{copy.programs.scholarship}</span>
             )}
@@ -253,10 +266,11 @@ function ProgramDialog({
           ))}
       </dl>
       {program.description && <p className={description}>{program.description}</p>}
+      <ServiceEvidence service={program} />
       {fit && fit.explanation.length > 0 && (
         <>
           <h3 className="mt-0 mb-[0.3rem] font-text text-15 tracking-normal text-navy">
-            {copy.programs.why}
+            {fit.score === undefined ? 'Service verification' : copy.programs.why}
           </h3>
           <ul className="mt-0 mb-[0.9rem] pl-[1.2rem] text-[0.9rem] text-ink">
             {fit.explanation.map((reason) => (
@@ -325,10 +339,12 @@ function ScheduleCard({ schedule, onApply }: { schedule: Schedule; onApply: () =
         <p className={factLine}>
           {copy.schedules.seats(schedule.seats_left, schedule.slots)} • {scheduleFee(schedule)}
         </p>
+        <ServiceEvidence service={schedule} />
         {open ? (
           <Button
             className={cx(button({ variant: 'primary', height: 38, snug: true }), 'mt-[0.2rem]')}
             onPress={onApply}
+            isDisabled={!canReviewApplication(schedule)}
           >
             {copy.schedules.apply}
           </Button>
@@ -357,8 +373,10 @@ function ApplyDialog({
 }) {
   const queryClient = useQueryClient()
   const facts = copy.apply
+  // Keep the receipt key across uncertain responses and retries within this review.
+  const [requestId] = useState(() => crypto.randomUUID())
   const apply = useMutation({
-    mutationFn: () => applyForAssessment(schedule.id),
+    mutationFn: () => applyForAssessment(schedule.id, requestId),
     // Seats changed, and My Progress has a new application.
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['training', 'listings'] })
@@ -411,6 +429,7 @@ function ApplyDialog({
       ) : (
         <>
           <p className={description}>{facts.review}</p>
+          <ServiceEvidence service={schedule} />
           {error && (
             <p
               role="alert"
@@ -427,6 +446,7 @@ function ApplyDialog({
             <Button
               className={button({ variant: 'primary' })}
               isPending={apply.isPending}
+              isDisabled={!canReviewApplication(schedule)}
               onPress={() => apply.mutate()}
             >
               {apply.isPending ? facts.pending : facts.submit}

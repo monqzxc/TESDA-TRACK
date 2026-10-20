@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import sys
 from html import escape
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -16,6 +17,8 @@ from presentation import (FAVICON, brand, empty_state, footer, goal_summary, htm
 from landing_view import landing_event, show_landing
 from skills_bridge_view import show_skills_bridge
 from training_view import short_name, show_training as show_center_finder
+from assessment_view import show_assessment
+from journey_state import clear_journey, request_key, restore_journey, save_journey
 
 
 # Your goal's ideas: each button puts its goal in the box. Examples are the big pills, samples the small ones.
@@ -24,6 +27,7 @@ EXAMPLES = {
     "Work in a hotel": "I want to work in a hotel but I don't know which qualification is suitable for me.",
     "Improve my digital skills": "I want to improve my digital skills and work with computers.",
     "Work on construction projects": "I want to work on construction projects.",
+    "Gusto kong maging barista": "Gusto kong maging barista.",
 }
 SAMPLE_GOALS = {
     "I want to become a chef": "I want to become a chef.",
@@ -65,7 +69,7 @@ CATEGORY_HELP = {
     "Core": "The technical skills of this qualification.",
 }
 PHILIPPINE_TIME = timezone(timedelta(hours=8))
-PRIVACY_NOTICE = ("TESDA-TRACK keeps your name, email, goals, recommendations, readiness checks and certifications "
+PRIVACY_NOTICE = ("TESDA-TRACK keeps your name, email, goals, recommendations, optional saved assessment answers, readiness checks and certifications "
                   "so you can follow your progress. They are used only to run this pilot and are never sold. "
                   "You can download or permanently delete your data from Your data & privacy in your account panel.")
 
@@ -74,7 +78,15 @@ def api_base_url() -> str:
     return os.environ.get("API_BASE_URL", "http://127.0.0.1:8000")
 
 
-@st.cache_resource
+def of_loaded_class(value: object) -> bool:
+    """False once Streamlit has re-imported the module that defines ``value``'s class, as it does when that file
+    changes during development. A cached client of the old class would raise exceptions the views no longer
+    catch, so the cache builds a new one."""
+    cls = type(value)
+    return getattr(sys.modules.get(cls.__module__), cls.__qualname__, None) is cls
+
+
+@st.cache_resource(validate=of_loaded_class)
 def get_api(base_url: str) -> ApiClient:
     return ApiClient(base_url)
 
@@ -104,7 +116,7 @@ def routing_url() -> str:
     return os.environ.get("ROUTING_URL", DEFAULT_ROUTING_URL).strip()
 
 
-@st.cache_resource
+@st.cache_resource(validate=of_loaded_class)
 def get_router(url: str) -> RouteClient:
     # One client for every learner, so the routing service's request limit holds across sessions.
     return RouteClient(url)
@@ -148,13 +160,35 @@ def sign_in(email: str, password: str) -> None:
     st.session_state["auth"] = {"token": token, "name": account["full_name"], "email": account["email"],
                                 "role": account["role"]}
     st.session_state["account_dialog_open"] = False
+    if st.session_state.get("save_journey_intent"):
+        try_save_journey()
 
 
 def sign_out() -> None:
     st.session_state["account_dialog_open"] = False
+    clear_journey(st.session_state)
     for key in list(st.session_state):
-        if key in {"auth", "recommendation_session", "data_export", "analysis", "original_query", "readiness_results", "goal_query", "analysis_memo"} or key.startswith(("follow_", "competency_", "qualification_", "step_", "bridge_")):
+        if key in {"auth", "recommendation_session", "data_export", "analysis", "original_query", "readiness_results", "goal_query", "analysis_memo", "training_fit"} or key.startswith(("follow_", "competency_", "qualification_", "step_", "bridge_", "assessment_", "application_", "training_", "withdraw_", "dialog_", "report_")):
             st.session_state.pop(key, None)
+
+
+def try_save_journey() -> None:
+    try:
+        save_journey(st.session_state, api(), auth_token())
+    except ApiError as error:
+        if error.status_code == 401:
+            handle_api_error(error)
+            return
+        stage = "Your goal was saved; the remaining details are not confirmed saved." if st.session_state.get("recommendation_session") else "Your journey save is not yet confirmed."
+        st.session_state["journey_save_error"] = f"{stage} Your answers are still here. Retry to finish safely. {error.message}"
+
+
+def request_journey_save() -> None:
+    st.session_state["save_journey_intent"] = True
+    if auth_token():
+        try_save_journey()
+    else:
+        open_account()
 
 
 def show_account(key_prefix: str = "") -> None:
@@ -181,6 +215,12 @@ def show_account(key_prefix: str = "") -> None:
                 st.session_state["flash"] = "Your account and saved records were deleted."
                 st.rerun()
         return
+    if st.session_state.get("original_query"):
+        st.info("Save this goal: " + st.session_state["original_query"])
+        code = st.session_state.get("qualification_selected") or st.session_state.get("journey_context", {}).get("code")
+        st.caption(f"Selected qualification: {code or 'None yet'}. Your follow-up answers and last submitted readiness check "
+                   "for this qualification will be saved. Unsubmitted answers stay as a draft in this browser session.")
+        st.checkbox("Save this journey after signing in", key="save_journey_intent")
     with st.form(f"{key_prefix}sign_in", border=False):
         st.subheader("Welcome back")
         st.caption("Sign in to save your progress and pick up where you left off.")
@@ -319,6 +359,13 @@ def show_readiness(qualification: dict) -> None:
         return
     # One category at a time; answers live in session state, so every part's answers are sent together.
     keys = {competency["id"]: f"competency_{code}_{competency['id']}" for competency in qualification["competencies"]}
+    submitted = st.session_state.get("readiness_submissions", {}).get(code)
+    if submitted:
+        labels = {value: label for label, value in ANSWER_OPTIONS.items()}
+        for competency_id, key in keys.items():
+            if key not in st.session_state and competency_id in submitted["answers"]:
+                st.session_state[key] = labels[submitted["answers"][competency_id]]
+        st.caption("Your last submitted result is retained until a complete new check succeeds. Draft edits do not change that result.")
     rated = sum(1 for key in keys.values() if st.session_state.get(key))
     st.progress(rated / len(keys), text=f"{rated} of {len(keys)} skills rated")
     part = min(st.session_state.get("readiness_part", {}).get(code, 0), len(parts) - 1)
@@ -349,22 +396,31 @@ def show_readiness(qualification: dict) -> None:
     if analyze:
         answer_codes = {competency_id: ANSWER_OPTIONS[st.session_state[key]]
                         for competency_id, key in keys.items() if st.session_state.get(key)}
+        missing = [c["name"] for c in qualification["competencies"] if c["id"] not in answer_codes]
+        if missing:
+            st.warning("Please answer every competency before submitting. Still unanswered: " + "; ".join(missing))
+            return
         token = auth_token()
         try:
             if token:
+                if not st.session_state.get("recommendation_session"):
+                    save_journey(st.session_state, api(), token)
                 saved = st.session_state.get("recommendation_session")
-                results[code] = api().submit_readiness(token, code, answer_codes, saved["id"] if saved else None)
+                session_id = saved["id"] if saved else None
+                payload = {"code": code, "answers": answer_codes, "session_id": session_id}
+                results[code] = api().submit_readiness(token, code, answer_codes, session_id,
+                    request_id=request_key(st.session_state, f"readiness_{code}", payload))
             else:
                 results[code] = api().readiness(code, answer_codes)
         except ApiUnavailableError as error:
-            results.pop(code, None)
-            st.error(error.message)
+            st.error("This check could not be confirmed. Your answers and last submitted result are retained. Retry safely. " + error.message)
         except ApiError as error:
             if error.status_code == 401:
                 raise
-            results.pop(code, None)
             st.warning(error.message)
         else:
+            st.session_state.setdefault("readiness_submissions", {})[code] = {
+                "answers": answer_codes, "saved_id": results[code].get("id")}
             # The result decides the recommendation, so it opens straight away.
             go_to_step(4)
             st.rerun()
@@ -380,7 +436,12 @@ def open_training(qualification: dict, kind: str) -> None:
     in the search box, where learners can see and change it, and the qualification and center type as filters."""
     st.session_state["training_kinds"] = [kind]
     st.session_state["training_qualifications"] = [qualification["code"]]
-    st.session_state["training_search"] = short_name(qualification["name"])
+    st.session_state["training_search"] = ""
+    st.session_state["training_selected"] = None
+    st.session_state["training_mode"] = None
+    st.session_state["training_scholarship"] = False
+    st.session_state["training_availability"] = None
+    st.session_state.pop("assessment_center_result", None)
     navigate("Training & Assessment")
 
 
@@ -407,6 +468,13 @@ def show_recommendation(context: dict) -> None:
                       icon=":material/arrow_back:", on_click=go_to_step, args=(3,))
         return
     headline, route, kind, action = verdict_for(result)
+    submitted = st.session_state.get("readiness_submissions", {}).get(code)
+    if submitted:
+        draft = {c["id"]: (ANSWER_OPTIONS.get(st.session_state[f"competency_{code}_{c['id']}"])
+                           if f"competency_{code}_{c['id']}" in st.session_state else submitted["answers"].get(c["id"]))
+                 for c in qualification["competencies"]}
+        if draft != submitted["answers"]:
+            st.warning("Draft answers have changed. This is your last submitted result; submit your readiness check again to update it.")
     with st.container(border=True, key=f"card_readiness_{code}"):
         st.caption("RECOMMENDED FOR YOU")
         st.subheader(headline)
@@ -462,9 +530,18 @@ def save_session_progress(profile: dict, qualification_code: str) -> None:
         return
     state = {"experience_years": profile["experience_years"], "has_certification": profile["has_certification"],
              "qualification_code": qualification_code}
+    if st.session_state.get("assessment_record"):
+        state["assessment_id"] = st.session_state["assessment_record"]["id"]
     if saved.get("synced") != state:
-        api().update_session(token, saved["id"], **state)
-        saved["synced"] = state
+        try:
+            api().update_session(token, saved["id"], **state)
+        except ApiError as error:
+            if error.status_code == 401:
+                raise
+            st.session_state["journey_save_error"] = "Your goal is saved, but your latest choices are not confirmed saved. " + error.message
+            st.warning(st.session_state["journey_save_error"])
+        else:
+            saved["synced"] = state
 
 
 def show_curated_pathway(curated: dict) -> None:
@@ -481,6 +558,24 @@ def show_curated_pathway(curated: dict) -> None:
             if error.status_code != 409:
                 raise
             st.info("You're already following this pathway. Find it under My Progress.")
+
+
+QUESTION_WORDS = ("saan", "kailan", "magkano", "paano", "where", "when")
+QUESTION_PHRASES = ("how much", "how do i")
+EXAMPLE_GOALS = "\"I want to be a welder\" or \"Gusto kong maging barista\""
+
+
+def no_match_message(query: str) -> str:
+    """Tell a learner what to try next, judged from the wording alone; nothing is stored or sent anywhere."""
+    text = query.strip().lower()
+    words = text.split()
+    if "?" in text or (words and words[0].strip(",.!") in QUESTION_WORDS) or text.startswith(QUESTION_PHRASES):
+        return ("That sounds like a question about schedules, fees or centres. Open Training & assessment in the "
+                "sidebar to find assessment centres, schedules and training programs. To find a qualification, "
+                "tell us the job you want.")
+    if len(text.split()) <= 2:
+        return f"That's a little short for us to work with. Try describing the job you want, for example {EXAMPLE_GOALS}."
+    return "We couldn't find a clear match. Choose a sample qualification below, or describe a more specific career goal."
 
 
 def current_step() -> int:
@@ -506,20 +601,34 @@ def finder_context(qualifications: list[dict]) -> dict:
     profile = st.session_state["analysis"].copy()
     experience = st.session_state.get("follow_experience")
     asked_experience = profile["experience_years"] is None
-    if asked_experience:
+    if experience in EXPERIENCE_OPTIONS or asked_experience:
         profile["experience_years"] = EXPERIENCE_OPTIONS.get(experience)
-    if profile["has_certification"] is None:
+    if st.session_state.get("follow_certification") in ("Yes", "No", "I'm not sure") or profile["has_certification"] is None:
         profile["has_certification"] = CERTIFICATION_OPTIONS.get(st.session_state.get("follow_certification"))
     # The API re-derives the intent from the follow-up answers and ranks the qualifications.
     query = st.session_state["original_query"]
-    result = remembered("match", {"query": query, "profile": profile}, lambda: api().match(query, profile))
+    record = st.session_state.get("assessment_record")
+    answers = st.session_state.get("assessment_answers")
+    if answers is not None:
+        extra = {"assessment_id": record["id"]} if record else {"assessment": answers}
+        result = remembered("match", {"query": query, "profile": profile, **extra},
+                            lambda: api().match(query, profile, token=auth_token(), **extra))
+    else:
+        result = remembered("match", {"query": query, "profile": profile}, lambda: api().match(query, profile))
     codes = [item["qualification"]["code"] for item in result["matches"]]
     options = sorted(qualifications, key=lambda item: codes.index(item["code"]) if item["code"] in codes else len(codes))
     # Before Your matches first shows the picker, its choice is the top match, as the picker itself defaults to.
     selected_code = st.session_state.get("qualification_selected")
-    qualification = next((q for q in options if q["code"] == selected_code), options[0])
-    save_session_progress(result["profile"], qualification["code"])
-    return {"profile": result["profile"], "matches": result["matches"], "options": options,
+    qualification = next((q for q in options if q["code"] == selected_code), None)
+    if qualification is None and not selected_code and codes and not st.session_state.get("journey_unavailable"):
+        qualification = next((q for q in options if q["code"] == codes[0]), None)
+    st.session_state["journey_context"] = {"profile": profile, "code": qualification["code"] if qualification else None}
+    if qualification:
+        save_session_progress(profile, qualification["code"])
+    display_profile = dict(result["profile"])
+    for field in ("experience_years", "has_certification"):
+        display_profile[field] = profile[field]
+    return {"profile": display_profile, "matches": result["matches"], "options": options,
             "qualification": qualification,
             "experience_description": experience if asked_experience and experience in EXPERIENCE_OPTIONS else None}
 
@@ -601,22 +710,17 @@ def show_matches(context: dict) -> None:
              ("target", "Detected intent", profile["intent"].replace("_", " ").title())]
     with st.container(border=True, key="card_understanding"):
         starting_point(facts, profile["existing_skills"])
-        # The goal didn't say: the questions sit under the facts they fill in.
-        if asked["experience_years"] is None or asked["has_certification"] is None:
-            with st.container(key="finder_followup"):
-                st.html('<p class="followup-title">A little more about you <span>These details help us suggest a '
-                        'suitable starting point.</span></p>')
-                columns = iter(st.columns(2, gap="medium"))
-                if asked["experience_years"] is None:
-                    label = "Do you already have welding experience?" if asked["career_goal"] == "Welder" else "How much experience do you have in your intended field?"
-                    next(columns).selectbox(label, ["Choose an answer", *EXPERIENCE_OPTIONS], key="follow_experience")
-                if asked["has_certification"] is None:
-                    next(columns).selectbox("Do you currently hold a related certification?",
-                                            ["Choose an answer", "Yes", "No", "I'm not sure"], key="follow_certification")
+        with st.container(key="finder_followup"):
+            st.caption("Correct your experience or certification if needed. Choosing no answer keeps the details above.")
+            experience_column, certificate_column = st.columns(2, gap="medium")
+            label = "Do you already have welding experience?" if asked["career_goal"] == "Welder" else "How much experience do you have in your intended field?"
+            experience_column.selectbox(label, ["Choose an answer", *EXPERIENCE_OPTIONS], key="follow_experience")
+            certificate_column.selectbox("Do you currently hold a related certification?",
+                                         ["Choose an answer", "Yes", "No", "I'm not sure"], key="follow_certification")
 
     matches, options = context["matches"], context["options"]
     with st.container(horizontal=True, vertical_alignment="bottom", key="finder_matches_heading"):
-        section_title("sparkle", "Qualifications for you",
+        section_title("info", "Qualifications for you",
                       "These match your goal and experience. Choose one to check your readiness for it." if matches
                       else "Pick one from the full list, or describe your goal another way.")
         st.button("View all qualifications", key="finder_view_library", type="tertiary",
@@ -629,15 +733,17 @@ def show_matches(context: dict) -> None:
     for rank, match in enumerate(matches):
         code = match["qualification"]["code"]
         show_match_card(match, catalog.get(code, {**match["qualification"], "possible_jobs": [], "competencies": []}),
-                        rank == 0, code == context["qualification"]["code"], results.get(code), catalog_names)
+                        rank == 0, code == (context["qualification"] or {}).get("code"), results.get(code), catalog_names)
     if not matches:
-        st.info("We couldn't find a clear match. Choose a sample qualification below, or describe a more specific career goal.")
+        st.info(no_match_message(st.session_state["original_query"]))
     st.selectbox(
         "Or choose any qualification to explore", [q["code"] for q in options],
+        index=next((i for i, q in enumerate(options) if q["code"] == (context["qualification"] or {}).get("code")), None),
         format_func=lambda code: catalog[code]["name"], key="qualification_selected",
     )
     # A choice from the full list has no card above, so its careers show here.
-    if context["qualification"]["code"] not in {match["qualification"]["code"] for match in matches}:
+    if context["qualification"] and (st.session_state.get("journey_manual") or context["qualification"]["code"] not in {match["qualification"]["code"] for match in matches}):
+        st.info("Your chosen qualification — selected for exploration, not an automatic recommendation.")
         st.caption("Sample career options: " + ", ".join(context["qualification"]["possible_jobs"]))
 
 
@@ -674,11 +780,11 @@ def show_goal_summary() -> None:
         with st.container(horizontal=True, vertical_alignment="center", width="content", key="finder_goal_actions"):
             st.button("Change goal", key="finder_change_goal", type="tertiary", icon=":material/edit:",
                       on_click=go_to_step, args=(1,))
-            if auth_token():
+            if auth_token() and st.session_state.get("recommendation_session") and not st.session_state.get("journey_save_error"):
                 st.caption(":material/bookmark_added: Saved to My Progress")
             else:
                 st.button("Save to profile", key="open_account_finder", type="tertiary",
-                          icon=":material/bookmark_border:", on_click=open_account,
+                          icon=":material/bookmark_border:", on_click=request_journey_save,
                           help="Sign in or create an account to keep your goal and results.")
 
 
@@ -691,6 +797,10 @@ def show_finder(qualifications: list[dict]) -> None:
         journey()
         show_step_bar(step, has_goal)
         compact_on_scroll()
+    show_assessment(qualifications, lambda: load_regions(api_base_url()), api(), auth_token())
+    # Applying/reloading an assessment clears results from the prior revision.
+    has_goal = "analysis" in st.session_state
+    step = current_step()
     direction, count = st.session_state.get("finder_motion", ("forward", 0))
     with st.container(key=f"finder_body_{direction}_{count % 2}"):
         if step == 1:
@@ -702,12 +812,15 @@ def show_finder(qualifications: list[dict]) -> None:
             context = finder_context(qualifications)
             if step == 2:
                 show_matches(context)
+            elif context["qualification"] is None:
+                st.info("Choose a qualification in Your match or the qualification library before continuing.")
+                st.button("Choose a qualification", on_click=go_to_step, args=(2,))
             elif step == 3:
                 show_why_we_ask(context)
                 show_readiness(context["qualification"])
             else:
                 show_recommendation(context)
-            show_step_nav(step, context["qualification"]["code"] in st.session_state.get("readiness_results", {}))
+            show_step_nav(step, (context["qualification"] or {}).get("code") in st.session_state.get("readiness_results", {}))
     if scroll_target:
         scroll_to(scroll_target)
 
@@ -739,25 +852,31 @@ def show_goal() -> None:
             else:
                 token = auth_token()
                 with st.spinner("Finding a starting point for you…"):
-                    if token:
-                        record = api().start_session(token, query)
+                    assessment_record = st.session_state.get("assessment_record")
+                    transient = st.session_state.get("assessment_answers") is not None and not assessment_record
+                    if token and not transient:
+                        extra = {"assessment_id": assessment_record["id"]} if assessment_record else {}
+                        record = api().start_session(token, query, **extra,
+                            request_id=request_key(st.session_state, "goal", {"query": query, **extra}))
                         profile, saved = record["profile"], {"id": record["id"], "synced": None}
                     else:
                         profile, saved = api().analyze_goal(query)["profile"], None
                 # A new goal starts a new questionnaire, including all saved results.
                 for key in list(st.session_state):
-                    if key.startswith(("follow_", "competency_", "qualification_")) or key in ("readiness_results", "readiness_part"):
+                    if key.startswith(("follow_", "competency_", "qualification_")) or key in ("readiness_results", "readiness_part", "readiness_submissions", "journey_context", "journey_save_error", "journey_saved", "save_journey_intent"):
                         del st.session_state[key]
                 go_to_step(2)  # before the goal is stored, so it moves on from the step on screen
                 st.session_state["analysis"] = profile
                 st.session_state["original_query"] = query.strip()
                 st.session_state["recommendation_session"] = saved
                 st.rerun()
-        if auth_token():
+        if auth_token() and (st.session_state.get("assessment_answers") is None or st.session_state.get("assessment_record")):
             st.caption("Your results are saved to My Progress.")
+        elif st.session_state.get("assessment_answers") is not None:
+            st.caption("These assessment answers and personalized results are used for this visit only.")
         elif "analysis" in st.session_state:
             st.button("Sign in to save your progress", key="open_account_finder", type="tertiary",
-                      icon=":material/bookmark_border:", on_click=open_account)
+                      icon=":material/bookmark_border:", on_click=request_journey_save)
         if "analysis" in st.session_state:
             last = st.session_state["original_query"]
             with st.container(horizontal=True, vertical_alignment="center", key="goal_last"):
@@ -827,12 +946,14 @@ def show_training(qualifications: list[dict]) -> None:
     show_center_finder(qualifications, api(), load_regions(api_base_url()), auth_token(),
                        goal=st.session_state.get("original_query"), on_sign_in=open_account,
                        default_qualifications=[chosen] if chosen else [],
+                       assessment=st.session_state.get("assessment_answers"),
+                       assessment_id=(st.session_state.get("assessment_record") or {}).get("id"),
                        router=get_router(routing) if routing else None, basemap_key=basemap_key())
 
 
-def show_my_pathways(token: str) -> None:
+def show_my_pathways(token: str, records=None) -> None:
     st.subheader("My pathways")
-    enrollments = [e for e in api().my_pathways(token) if e["status"] != "withdrawn"]
+    enrollments = [e for e in (records if records is not None else api().my_pathways(token)) if e["status"] != "withdrawn"]
     for enrollment in enrollments:
         with st.container(border=True, key=f"card_enrollment_{enrollment['id']}"):
             st.markdown(f"**{enrollment['pathway']['title']}**")
@@ -849,10 +970,10 @@ def show_my_pathways(token: str) -> None:
         st.caption("Follow a recommended pathway from Find my pathway to track it here.")
 
 
-def show_my_applications(token: str) -> None:
+def show_my_applications(token: str, records=None) -> None:
     st.subheader("My assessment applications")
     with st.container(key="my_applications"):
-        applications = api().my_applications(token)
+        applications = records if records is not None else api().my_applications(token)
         for application in applications:
             schedule = application["schedule"]
             with st.container(border=True, key=f"card_application_{application['id']}"):
@@ -863,14 +984,56 @@ def show_my_applications(token: str) -> None:
                 if application["result"]:
                     details.append(RESULT_LABELS[application["result"]])
                 st.markdown(" · ".join(details))
+                st.caption(f"Application reference: {application['id']}")
+                st.caption({"pending": "Awaiting center review. A seat has not been reserved.",
+                            "approved": "Approved. Contact the center to confirm arrival instructions and required documents.",
+                            "rejected": "Review the center's note before choosing another schedule.",
+                            "withdrawn": "Withdrawn. You can review another schedule when ready.",
+                            "completed": "Assessment finished. Review your recorded outcome and certificates below."}.get(status, "Contact the center for the next step."))
                 if application["reviewer_note"]:
                     st.caption(application["reviewer_note"])
-                if application["status"] in ("pending", "approved") and st.button(
-                        "Withdraw", key=f"withdraw_{application['id']}"):
-                    api().withdraw_application(token, application["id"])
-                    st.rerun()
+                if application["status"] in ("pending", "approved"):
+                    if st.button("Withdraw", key=f"withdraw_{application['id']}"):
+                        st.session_state["application_withdraw_review"] = application["id"]
+                    if st.session_state.get("application_withdraw_review") == application["id"]:
+                        st.warning(f"Withdraw request {application['id']} for {schedule['qualification']['name']} at {schedule['center']['name']}?")
+                        if st.button("Confirm withdrawal", key=f"confirm_withdraw_{application['id']}"):
+                            api().withdraw_application(token, application["id"])
+                            st.session_state.pop("assessment_center_result", None)
+                            st.session_state.pop("application_withdraw_review", None)
+                            st.rerun()
+                        if st.button("Keep application", key=f"keep_application_{application['id']}"):
+                            st.session_state.pop("application_withdraw_review", None)
+                            st.rerun()
         if not applications:
             st.caption("Apply for an assessment from Training & Assessment.")
+
+
+def resume_journey(record_id: str, qualifications: list[dict]) -> None:
+    try:
+        token = auth_token()
+        record = api().get_session(token, record_id)
+        checks = api().readiness_checks(token)
+        assessment = api().get_learner_assessment(token, record["assessment_id"]) if record.get("assessment_id") else None
+        restore_journey(st.session_state, record, checks, assessment)
+        selected = record.get("selected_qualification")
+        current = next((q for q in qualifications if selected and q["code"] == selected["code"]), None)
+        if selected and current is None:
+            st.session_state["qualification_selected"] = None
+            st.session_state["finder_step"] = 2
+            st.session_state["journey_unavailable"] = "The saved qualification is no longer in the active catalog. Your history is retained; choose another qualification to explore."
+        elif current:
+            check = st.session_state.get("readiness_submissions", {}).get(current["code"])
+            if check and set(check["answers"]) != {c["id"] for c in current["competencies"]}:
+                st.session_state.pop("readiness_results", None)
+                st.session_state.pop("readiness_submissions", None)
+                st.session_state["finder_step"] = 3
+                st.session_state["journey_unavailable"] = "The competency questionnaire has changed. Your historical result remains in My Progress; complete the current check for new guidance."
+    except ApiError as error:
+        if error.status_code == 401:
+            handle_api_error(error)
+        else:
+            st.session_state["flash"] = "Could not restore this journey. Your current work is retained. " + error.message
 
 
 def show_progress(qualifications: list[dict]) -> None:
@@ -886,6 +1049,29 @@ def show_progress(qualifications: list[dict]) -> None:
     names = {q["code"]: q["name"] for q in qualifications}
     checks = api().readiness_checks(token)
     sessions = api().sessions(token)
+    applications = api().my_applications(token)
+    pathways = api().my_pathways(token)
+    with st.container(border=True):
+        st.subheader("Continue your journey")
+        pending = next((a for a in applications if a["status"] in ("pending", "approved")), None)
+        unfinished = next((p for p in pathways if p["status"] != "withdrawn" and p["completion_percent"] < 100), None)
+        if pending:
+            st.write(pending["schedule"]["qualification"]["name"])
+            st.caption(f"Your application is {pending['status']}. Review its status and center instructions below.")
+            st.button("View my application", key="continue_application", on_click=scroll_to, args=("my_applications",))
+        elif unfinished:
+            st.write(unfinished["pathway"]["title"])
+            st.caption(f"{unfinished['completion_percent']}% complete. Continue your next unfinished step.")
+            st.button("Continue pathway", key="continue_pathway", on_click=scroll_to, args=(f"card_enrollment_{unfinished['id']}",))
+        elif sessions:
+            latest = sessions[0]
+            st.write(latest["query"])
+            st.caption((latest.get("selected_qualification") or {}).get("name", "Choose a qualification to continue."))
+            st.button("Resume saved journey", key="continue_journey", type="primary", on_click=resume_journey,
+                      args=(latest["id"], qualifications))
+        else:
+            st.caption("Start with a career goal to find your next step.")
+            st.button("Find my pathway", key="continue_new", on_click=navigate, args=("Find my pathway",))
     with st.container(horizontal=True, key="progress_summary"):
         st.metric("Saved recommendations", len(sessions), border=True, help="Your recent recommendation history.")
         st.metric("Readiness checks", len(checks), border=True)
@@ -911,13 +1097,15 @@ def show_progress(qualifications: list[dict]) -> None:
                 if record["pathway"]:
                     details.append(PATH_LABELS[record["pathway"]["recommendation"]])
                 st.markdown(" · ".join(details) or "No matching qualification yet")
+                st.button("Resume this journey", key=f"resume_{record['id']}", on_click=resume_journey,
+                          args=(record["id"], qualifications))
         if not sessions:
             st.caption("Goals you submit while signed in appear here.")
     pathways_column, applications_column = st.columns(2, gap="medium")
     with pathways_column:
-        show_my_pathways(token)
+        show_my_pathways(token, pathways)
     with applications_column:
-        show_my_applications(token)
+        show_my_applications(token, applications)
     goals_column, certifications_column = st.columns(2, gap="medium")
     with goals_column:
         show_goals(token, names)
@@ -964,6 +1152,16 @@ def show_reports(token: str, qualifications: list[dict]) -> None:
                 st.table(journey_data, alt="Learner counts by journey stage")
         else:
             st.caption("No learner activity in this period. Try a wider date range.")
+
+    matching = api().report(token, "matching", **period)
+    with st.container(border=True, key="card_report_matching"):
+        st.subheader("Goal matching")
+        st.caption("Anonymous daily totals. Nothing a learner typed is kept.")
+        columns = st.columns(3)
+        columns[0].metric("Goals searched", matching["requests"], border=True)
+        columns[1].metric("Without a match", matching["no_match"], border=True)
+        rate = matching["no_match_rate"]
+        columns[2].metric("No-match rate", f"{rate:.0%}" if rate is not None else "—", border=True)
 
     st.markdown("#### Demand by qualification")
     demand = api().report(token, "qualification-demand", **period)
@@ -1012,6 +1210,7 @@ def handle_api_error(error: ApiError) -> None:
 def reset_library_filters() -> None:
     st.session_state["library_search"] = ""
     st.session_state["library_sector"] = "All sectors"
+    st.session_state["library_level"] = "All levels"
     st.session_state["library_page"] = 1
 
 
@@ -1029,8 +1228,13 @@ def start_goal(goal: str) -> None:
     st.session_state["main_tabs"] = "Find my pathway"
 
 
-def explore_qualification(name: str) -> None:
-    start_goal(f"I want to pursue {name}.")
+def explore_qualification(qualification: dict) -> None:
+    clear_journey(st.session_state)
+    query = f"I want to pursue {qualification['name']}."
+    st.session_state.update(original_query=query, goal_query=query, qualification_selected=qualification["code"],
+        analysis={"career_goal": qualification["name"][:200], "possible_sector": qualification["sector"],
+                  "existing_skills": [], "experience_years": None, "has_certification": None, "intent": "career_exploration"},
+        journey_manual=True, main_tabs="Find my pathway", finder_step=2)
 
 
 def open_from_landing() -> None:
@@ -1056,13 +1260,16 @@ def show_library(qualifications: list[dict]) -> None:
     catalog_names = {q["name"].casefold() for q in qualifications}
     st.html(media_styles(thumbnails=True))
     with st.container(border=True, key="library_filters"):
-        search, sector = st.columns([2, 1])
+        search, sector, level = st.columns([2, 1, 1])
         # A new search or sector starts again at the first page.
         query = search.text_input("Search qualifications or careers", key="library_search", placeholder="Try welding, cookery, or computers",
                                   icon=":material/search:", on_change=set_library_page, args=(1,))
         selected_sector = sector.selectbox("Sector", ["All sectors", *sorted({q["sector"] for q in qualifications})], key="library_sector",
                                            on_change=set_library_page, args=(1,))
+        selected_level = level.selectbox("Qualification level", ["All levels", *[f"NC {n}" for n in NC_LEVELS], "Without NC level"],
+                                         key="library_level", on_change=set_library_page, args=(1,))
     filtered = [q for q in qualifications if (selected_sector == "All sectors" or q["sector"] == selected_sector)
+                and (selected_level == "All levels" or selected_level == (f"NC {NC_LEVEL.search(q['name']).group(1)}" if NC_LEVEL.search(q['name']) else "Without NC level"))
                 and query.casefold().strip() in " ".join([q["name"], q["code"], q["sector"], *q["possible_jobs"]]).casefold()]
     # A page at a time: the whole catalog at once (hundreds of cards) freezes the browser.
     pages = max(1, -(-len(filtered) // LIBRARY_PAGE_SIZE))
@@ -1072,7 +1279,7 @@ def show_library(qualifications: list[dict]) -> None:
     st.caption(f"{len(filtered)} of {len(qualifications)} qualifications"
                + (f" · Showing {first + 1}–{first + len(shown)}" if pages > 1 else "")
                + (" · Filtered results" if query or selected_sector != "All sectors" else " · Find your next possibility"))
-    if query or selected_sector != "All sectors":
+    if query or selected_sector != "All sectors" or selected_level != "All levels":
         st.button("Clear filters", key="clear_library_filters", on_click=reset_library_filters, icon=":material/filter_alt_off:")
     if not filtered:
         empty_state("No qualifications found", "Try a different career or keyword, or clear your filters to explore all qualifications.", "search")
@@ -1086,7 +1293,7 @@ def show_library(qualifications: list[dict]) -> None:
                     # One list, not one element per competency: some qualifications have dozens.
                     st.markdown("\n".join(f"- {competency['name']}" for competency in qualification["competencies"]))
                 st.button("Explore this pathway", key=f"explore_{qualification['code']}", width="stretch",
-                          icon=":material/arrow_forward:", on_click=explore_qualification, args=(qualification["name"],))
+                          icon=":material/arrow_forward:", on_click=explore_qualification, args=(qualification,))
     if pages > 1:
         # Not "library_...": main() re-assigns those keys to keep the filters, and button state can't be assigned.
         with st.container(horizontal=True, horizontal_alignment="center", vertical_alignment="center", key="library_pager"):
@@ -1159,6 +1366,11 @@ def main() -> None:
         show_sidebar(selected, is_admin)
     if "flash" in st.session_state:
         st.warning(st.session_state.pop("flash"))
+    if st.session_state.get("journey_save_error"):
+        st.warning(st.session_state["journey_save_error"])
+        st.button("Retry saving journey", key="retry_journey_save", on_click=try_save_journey)
+    if st.session_state.get("journey_unavailable"):
+        st.info(st.session_state["journey_unavailable"])
     # A full rerun must also restore an open account dialog (including validation
     # errors); dismissing or completing sign-in clears this flag.
     if st.session_state.get("account_dialog_open"):

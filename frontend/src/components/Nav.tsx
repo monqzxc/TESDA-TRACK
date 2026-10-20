@@ -63,15 +63,28 @@ type SidebarContentProps = NavProps & {
   returnFocus?: () => HTMLElement | null
 }
 
-/** The sidebar under the brand: the page links, the account control and the theme switch. */
+/**
+ * The sidebar under the brand: the page links, the account control, the theme switch, and the privacy policy, a
+ * quieter link than the pages'.
+ */
 export function SidebarContent({ isAdmin = false, onNavigate, returnFocus }: SidebarContentProps) {
   return (
-    <div className="flex flex-col gap-[0.6rem]">
+    <div className="flex min-h-[85dvh] flex-col gap-[0.6rem]">
       <Nav isAdmin={isAdmin} onNavigate={onNavigate} />
       {/* In the phone menu, Sign in closes the menu first: the dialog opens over the page, not over the menu. */}
-      <AccountControl variant="sidebar" onOpenSignIn={onNavigate} returnFocus={returnFocus} />
-      <div className="mt-4">
-        <ThemeSwitch />
+      <div className="mt-auto flex flex-col gap-[0.6rem]">
+        <div className="mt-4">
+          <ThemeSwitch />
+        </div>
+        <AccountControl variant="sidebar" onOpenSignIn={onNavigate} returnFocus={returnFocus} />
+        {/* <NavLink
+          to={paths.privacy}
+          className="inline-flex min-h-11 items-center gap-2 self-start rounded-10 px-[0.6rem] py-[0.4rem] text-15 font-semibold text-blue no-underline hovered:bg-soft hovered:text-blue aria-[current=page]:text-navy aria-[current=page]:underline aria-[current=page]:underline-offset-[0.2em]"
+          onClick={onNavigate}
+        >
+          <Icon name="document" size="1.15rem" />
+          {en.privacy.link}
+        </NavLink> */}
       </div>
     </div>
   )

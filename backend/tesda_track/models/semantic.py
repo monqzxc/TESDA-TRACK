@@ -41,6 +41,8 @@ class RankingAudit(SQLModel, table=True):
 
     id: int | None = Field(default=None, primary_key=True, sa_type=BigInteger)
     learner_id: uuid.UUID | None = Field(default=None, foreign_key="learner.id", ondelete="SET NULL", index=True)
+    assessment_id: uuid.UUID | None = Field(default=None, foreign_key="learner_assessment.id", ondelete="SET NULL", index=True)
+    api_client_id: uuid.UUID | None = Field(default=None, foreign_key="api_client.id", ondelete="RESTRICT", index=True)
     qualification_id: int = Field(foreign_key="qualification.id", ondelete="RESTRICT", index=True)
     query_hash: str | None = Field(default=None, sa_type=String(64))
     # Rounded to one decimal (about 11 km): enough to explain proximity, too coarse to locate a person.

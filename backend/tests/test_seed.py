@@ -12,6 +12,30 @@ from tesda_track.seed import SeedError, parse_catalog, sync_catalog
 TEST_SEED_DIR = Path(__file__).resolve().parent / "seed"
 
 
+@pytest.mark.parametrize("production", [False, True])
+def test_standard_seeder_loads_sample_accounts_only_outside_production(session, tmp_path, monkeypatch, production):
+    import shutil
+    from tesda_track.config import get_settings
+    from tesda_track.models import Learner
+    from tesda_track.seed import SEED_DIR, seed_all
+
+    for name in ("regions.json", "qualifications.json", "pathways.json"):
+        shutil.copyfile(TEST_SEED_DIR / name, tmp_path / name)
+    shutil.copyfile(SEED_DIR / "sample_accounts.json", tmp_path / "sample_accounts.json")
+    monkeypatch.setattr(get_settings(), "environment", "production" if production else "development")
+    reports = seed_all(session, tmp_path)
+    if production:
+        assert "accounts" not in reports
+        assert session.exec(select(Learner)).all() == []
+    else:
+        assert reports["accounts"].created == 6
+        before = {row.email: row.password_hash for row in session.exec(select(Learner))}
+        repeated = seed_all(session, tmp_path)
+        assert repeated["accounts"].created == 0
+        assert repeated["accounts"].skipped == 6
+        assert {row.email: row.password_hash for row in session.exec(select(Learner))} == before
+
+
 @pytest.fixture
 def entries():
     return json.loads((TEST_SEED_DIR / "qualifications.json").read_text(encoding="utf-8"))

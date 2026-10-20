@@ -242,6 +242,35 @@ TESDA-SOP-QSO-01-F08
 SECTION 2 COMPETENCY STANDARDS
 """
 
+# Page footers ("echanical drafting", "fcaw nc iii", a stray code) follow the last bullet and are not job titles.
+MECHANICAL_DRAFTING = """
+A person who has achieved this qualification is competent to be:
+-
+Mechanical Draftsman
+ echanical drafting
+ 091605
+SECTION 2 COMPETENCY STANDARDS
+"""
+
+MACHINING = """
+A person who has achieved this qualification is competent to be:
+ Lathe operator
+ Milling machine operator
+ machiii
+SECTION 2 COMPETENCY STANDARDS
+"""
+
+FCAW = """
+A person who has achieved this Qualification is competent to be:
+-
+Pipe Welder (FCAW)
+-
+FCAW Pipe Welder (Alloy Steel)
+ fcaw nc iii
+ 091605
+SECTION 2 COMPETENCY STANDARDS
+"""
+
 
 def test_job_titles_come_out_clean():
     assert parse_jobs(lines(BARBERING)) == [
@@ -254,6 +283,9 @@ def test_job_titles_come_out_clean():
     assert parse_jobs(lines(CONTACT_CENTER)) == ["Inbound/Outbound Contact Center Service Agent"]
     assert parse_jobs(lines(FOOD_PROCESSING)) == ["Food Processing Worker", "Tocino Maker", "Tinapa Maker"]
     assert parse_jobs(lines(FARMING)) == ["Independent Farmer (Owner / Operator in a smaller operation)", "Leading hand"]
+    assert parse_jobs(lines(MECHANICAL_DRAFTING)) == ["Mechanical Draftsman"]
+    assert parse_jobs(lines(MACHINING)) == ["Lathe operator", "Milling machine operator"]
+    assert parse_jobs(lines(FCAW)) == ["Pipe Welder (FCAW)", "FCAW Pipe Welder (Alloy Steel)"]
 
 def test_sector_spellings_are_unified():
     from tesda_track.training_regulations import canonical_sector

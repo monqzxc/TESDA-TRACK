@@ -1,3 +1,5 @@
+from datetime import date
+
 from sqlalchemy import CheckConstraint, String, Text, UniqueConstraint
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlmodel import Field, Relationship, SQLModel
@@ -45,3 +47,20 @@ class Competency(SQLModel, table=True):
     is_active: bool = True
 
     qualification: Qualification = Relationship(back_populates="competencies")
+
+
+RELATIONS = ("same", "covers", "superseded_by")
+
+
+class OfficialQualificationCode(SQLModel, table=True):
+    """TESDA's own code for a qualification, as T2MIS and TSP hold it, linked to the TESDA-TRACK one it stands for."""
+    __tablename__ = "official_qualification_code"
+    __table_args__ = (CheckConstraint("relation IN ('same', 'covers', 'superseded_by')", name="relation_valid"),)
+
+    official_code: str = Field(sa_type=String(20), primary_key=True)
+    qualification_id: int = Field(foreign_key="qualification.id", ondelete="RESTRICT", primary_key=True, index=True)
+    relation: str = Field(sa_type=String(20))
+    official_title: str = Field(sa_type=String(200))
+    level: str = Field(sa_type=String(5))
+    promulgated: date | None = None
+    enabled_in_t2mis: bool = False

@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import re
 from concurrent.futures import ThreadPoolExecutor
 from base64 import b64encode
@@ -10,6 +11,7 @@ from datetime import date, datetime
 from functools import cache
 from io import BytesIO
 from pathlib import Path
+from time import monotonic
 from urllib.parse import quote
 
 import streamlit as st
@@ -22,6 +24,8 @@ from centers import (ASSESSMENT, KIND_LABELS, PHILIPPINE_TIME, TRAINING, Filters
 from directions import UNAVAILABLE, RouteClient, RouteError, travel_time
 from flights import airport_label, flight
 from presentation import section_header
+from service_evidence import can_apply, evidence_messages, service_verified
+from assessment_centers_view import show_assessment_comparison
 
 DELIVERY_LABELS = {"institution_based": "In a training center", "enterprise_based": "At a workplace",
                    "community_based": "In the community", "online": "Online"}
@@ -946,25 +950,36 @@ def _routes(router: RouteClient, location: dict, center: dict) -> tuple[dict[str
 
 
 def _fit(api_client: ApiClient, token: str | None, code: str, goal: str | None, place: dict | None,
-         mode: str | None, scholarship: bool) -> dict[int, dict]:
-    """Fit scores for a qualification's programs. Kept for the session: each ranking is logged by the API.
+         mode: str | None, scholarship: bool, assessment: dict | None = None,
+         assessment_id: str | None = None) -> dict[int, dict]:
+    """Fit scores for a qualification's programs, refreshed after 60 seconds; each ranking is logged by the API.
 
     `place` is a place the learner searched for. Their own location is never passed: the API keeps an audit of
     every ranking, and the page promises that location isn't saved.
     """
     body = {"qualification_code": code, "goal": goal, "preferred_delivery_mode": mode,
             "needs_scholarship": scholarship, "limit": 50}
+    if assessment is not None or assessment_id is not None:
+        body.pop("preferred_delivery_mode")
+        body.pop("needs_scholarship")
+        if mode is not None:
+            body["preferred_delivery_mode"] = mode
+        if scholarship:
+            body["needs_scholarship"] = True
+        body.update({"assessment_id": assessment_id} if assessment_id else {"assessment": assessment})
     if place:
         body.update(near_lat=round(place["latitude"], 1), near_lon=round(place["longitude"], 1))
     memo = st.session_state.setdefault("training_fit", {})
-    memo_key = json.dumps(body, sort_keys=True)
-    if memo_key not in memo:
+    memo_key = json.dumps(body, sort_keys=True) + hashlib.sha256((token or "guest").encode()).hexdigest()
+    entry = memo.get(memo_key)
+    if entry is None or entry.get("expires_at", 0) <= monotonic():
         ranking = api_client.rank_training(token, **body)
-        memo[memo_key] = {item["program"]["id"]: {"score": item["score"], "explanation": item["explanation"]}
-                          for item in ranking["results"]}
+        memo[memo_key] = {"expires_at": monotonic() + 60,
+                         "fits": {item["program"]["id"]: {"score": item["score"], "explanation": item["explanation"]}
+                                  for item in ranking["results"]}}
         while len(memo) > 16:
             memo.pop(next(iter(memo)))
-    return memo[memo_key]
+    return memo[memo_key]["fits"]
 
 
 def _header() -> None:
@@ -1109,17 +1124,22 @@ def _center_row(center: dict, today: date, saved: bool) -> None:
                   type="tertiary", on_click=_select, args=(center["id"],))
 
 
-def _apply(api_client: ApiClient, token: str, schedule_id: int) -> None:
-    try:
-        api_client.apply_for_assessment(token, schedule_id)
-    except ApiError as error:
-        if error.status_code not in (409, 422):
-            raise
-        st.session_state["training_notice"] = ("warning", error.message)
-    else:
-        st.session_state["training_notice"] = ("success", "Application sent. Track it under My Progress.")
-        _listings.clear()  # seats changed
+def _apply(api_client: ApiClient, token: str | None, schedule: dict) -> None:
+    from application_review import review_application
+    review_application(schedule)
     st.rerun()
+
+
+def _open_assessment_center(schedule: dict) -> None:
+    """A ranked alternative opens in the same map and details workflow."""
+    state = st.session_state
+    state.update(training_kinds=[ASSESSMENT], training_qualifications=[schedule["qualification"]["code"]],
+                 training_region=None, training_province=None, training_search="", training_mode=None,
+                 training_scholarship=False, training_availability=None,
+                 training_selected=f"assessment-{schedule['center']['id']}")
+    _sites.clear()
+    _listings.clear()
+    _focus(state["training_selected"])
 
 
 def _listings_head(title: str, count: int) -> bool:
@@ -1135,14 +1155,16 @@ def _listings_head(title: str, count: int) -> bool:
 
 
 def _program_facts(program: dict, today: date) -> list[str]:
-    facts = [DELIVERY_LABELS.get(program["delivery_mode"], program["delivery_mode"])]
+    facts = [DELIVERY_LABELS.get(program["delivery_mode"], "Delivery mode unconfirmed")]
     if program.get("duration_hours"):
         facts.append(f"{program['duration_hours']} hours")
     start = date.fromisoformat(program["start_date"]) if program.get("start_date") else None
-    facts.append("Flexible start" if start is None
+    facts.append("Start date not confirmed" if start is None
                  else f"{'Starts' if start >= today else 'Started'} {friendly_day(start, today)}")
     if program.get("cost") is not None:
         facts.append("Free" if float(program["cost"]) == 0 else _peso(program["cost"]))
+    else:
+        facts.append("Cost: Not provided")
     return facts
 
 
@@ -1152,7 +1174,7 @@ def _program_cards(center: dict, fits: dict[int, dict], today: date) -> None:
     if not programs:
         st.caption("No programs are listed here for your search yet.")
     for program in programs if showing_all else programs[:PREVIEW]:
-        fit = fits.get(program["id"])
+        fit = fits.get(program["id"]) if service_verified(program) else None
         with st.container(border=True, horizontal=True, vertical_alignment="center", gap="small",
                           key=f"card_center_program_{program['id']}"):
             st.image(str(_listing_photo(program)), width=108, alt="")
@@ -1163,23 +1185,27 @@ def _program_cards(center: dict, fits: dict[int, dict], today: date) -> None:
                     st.caption(plain(qualification))
                 st.caption(f"{DELIVERY_ICONS.get(program['delivery_mode'], ':material/school:')} "
                            + " • ".join(_program_facts(program, today)))
+                for message in evidence_messages(program):
+                    st.caption(plain(message))
                 if fit or program.get("scholarship_available"):
                     with st.container(horizontal=True, gap="xsmall"):
                         if fit:
-                            st.badge(f"{fit['score']}% fit", icon=":material/auto_awesome:", color="blue")
+                            st.badge(f"Fit {fit['score']}/100", icon=":material/auto_awesome:", color="blue")
                         if program.get("scholarship_available"):
                             st.badge("Scholarship available", icon=":material/check_circle:", color="green")
                 if fit and fit["explanation"]:
                     with st.expander("Why this program?", icon=":material/info:"):
                         st.markdown("\n".join(f"- {plain(reason)}" for reason in fit["explanation"]))
-                        st.caption("Fit considers your goal, location, start date and preferences.")
+                        st.caption("Fit summarizes the available matching evidence. Unknown details are listed above; "
+                                   "a score does not guarantee enrollment or assessment success.")
             st.button("Program details", key=f"program_open_{program['id']}", icon=":material/chevron_right:",
                       type="tertiary", on_click=_open_program, args=(program["id"],))
 
 
 def _schedule_cards(center: dict, api_client: ApiClient, token: str | None,
-                    on_sign_in: Callable[[], None] | None) -> None:
-    schedules = sorted(center["schedules"], key=lambda item: item["scheduled_at"])
+                    on_sign_in: Callable[[], None] | None, decisions: dict | None = None) -> None:
+    decisions = decisions or {}
+    schedules = sorted(center["schedules"], key=lambda item: (-decisions.get(item["id"], {}).get("score", -1), item["scheduled_at"]))
     showing_all = _listings_head("Upcoming assessments", len(schedules))
     if not schedules:
         st.caption("No upcoming assessments are listed here for your search yet.")
@@ -1201,17 +1227,27 @@ def _schedule_cards(center: dict, api_client: ApiClient, token: str | None,
                 facts = [f"{schedule['seats_left']} of {schedule['slots']} seats left"]
                 if schedule.get("fee") is not None:
                     facts.append("No fee" if float(schedule["fee"]) == 0 else f"{_peso(schedule['fee'])} fee")
+                else:
+                    facts.append("Fee: Not provided")
                 st.caption(":material/event_seat: " + " • ".join(facts))
+                for message in evidence_messages(schedule):
+                    st.caption(plain(message))
+                decision = decisions.get(schedule["id"])
+                if decision and can_apply(schedule, decision.get("eligibility")):
+                    st.badge(f"Fit {decision['score']}/100", color="blue")
+                elif any(rule.get("kind") == "verified_certification" for rule in schedule.get("verification", {}).get("requirements", [])):
+                    st.caption("Compare assessment centers to check your verified-certificate prerequisites.")
                 if not open_seats:
                     st.badge("Fully booked", icon=":material/event_busy:", color="orange")
-                elif token and st.button("Apply", key=f"apply_{schedule['id']}", type="primary",
-                                         icon=":material/send:"):
-                    _apply(api_client, token, schedule["id"])
+                elif st.button("Review application", key=f"apply_{schedule['id']}", type="primary",
+                                         icon=":material/send:", disabled=not can_apply(schedule, decision.get("eligibility") if decision else None)
+                                         or bool(decision and decision.get("application_status") not in (None, "withdrawn"))):
+                    _apply(api_client, token, schedule)
 
 
 def _detail(center: dict, api_client: ApiClient, token: str | None, fits: dict[int, dict], today: date,
             on_sign_in: Callable[[], None] | None, can_route: bool = False, routes: dict[str, dict] | None = None,
-            nearest: bool = False, saved: bool = False, missing_modes: Iterable[str] = ()) -> None:
+            nearest: bool = False, saved: bool = False, missing_modes: Iterable[str] = (), decisions: dict | None = None) -> None:
     """The selected center, or the first result until one is selected, with its programs or assessments."""
     with st.container(key="center_detail"):
         with st.container(border=True, key="center_feature"):
@@ -1280,11 +1316,12 @@ def _detail(center: dict, api_client: ApiClient, token: str | None, fits: dict[i
         if center["kind"] == TRAINING:
             _program_cards(center, fits, today)
         else:
-            _schedule_cards(center, api_client, token, on_sign_in)
+            _schedule_cards(center, api_client, token, on_sign_in, decisions)
 
 
 @st.dialog("Program details", width="medium", on_dismiss=_close_program)
 def _program_dialog(program: dict, center: dict, fit: dict | None, today: date) -> None:
+    fit = fit if service_verified(program) else None
     with st.container(horizontal=True, gap="medium", vertical_alignment="center"):
         st.image(str(_listing_photo(program)), width=150, alt="")
         with st.container(gap="xsmall"):
@@ -1294,17 +1331,17 @@ def _program_dialog(program: dict, center: dict, fit: dict | None, today: date) 
                              else qualification["name"]))
             with st.container(horizontal=True, gap="xsmall"):
                 if fit:
-                    st.badge(f"{fit['score']}% fit", icon=":material/auto_awesome:", color="blue")
+                    st.badge(f"Fit {fit['score']}/100", icon=":material/auto_awesome:", color="blue")
                 if program.get("scholarship_available"):
                     st.badge("Scholarship available", icon=":material/check_circle:", color="green")
     start = date.fromisoformat(program["start_date"]) if program.get("start_date") else None
     end = date.fromisoformat(program["end_date"]) if program.get("end_date") else None
     rows = [(":material/account_balance:", "Where", f"{center['name']}, {place_label(center)}"),
             (DELIVERY_ICONS.get(program["delivery_mode"], ":material/school:"), "How",
-             DELIVERY_LABELS.get(program["delivery_mode"], program["delivery_mode"])),
+             DELIVERY_LABELS.get(program["delivery_mode"], "Delivery mode unconfirmed")),
             (":material/schedule:", "Duration", f"{program['duration_hours']} hours"
              if program.get("duration_hours") else None),
-            (":material/event:", "Starts", friendly_day(start, today) if start else "Flexible start"),
+            (":material/event:", "Starts", friendly_day(start, today) if start else "Start date not confirmed"),
             (":material/event_available:", "Ends", friendly_day(end, today) if end else None),
             (":material/payments:", "Cost", None if program.get("cost") is None
              else "Free" if float(program["cost"]) == 0 else _peso(program["cost"])),
@@ -1312,6 +1349,8 @@ def _program_dialog(program: dict, center: dict, fit: dict | None, today: date) 
     st.markdown("\n".join(f"- {icon} **{label}:** {plain(value)}" for icon, label, value in rows if value))
     if program.get("description"):
         st.markdown(plain(program["description"]))
+    for message in evidence_messages(program):
+        st.caption(plain(message))
     if fit and fit["explanation"]:
         st.markdown("**Why this program?**")
         st.markdown("\n".join(f"- {plain(reason)}" for reason in fit["explanation"]))
@@ -1356,12 +1395,16 @@ def _results(centers: list[dict], featured: dict | None, reference: dict | None,
 def show_training(qualifications: list[dict], api_client: ApiClient, regions: list[dict] | dict,
                   token: str | None, goal: str | None = None, on_sign_in: Callable[[], None] | None = None,
                   default_qualifications: Iterable[str] = (), router: RouteClient | None = None,
-                  basemap_key: str = "") -> None:
+                  basemap_key: str = "", assessment: dict | None = None, assessment_id: str | None = None) -> None:
     """The center finder: filters, a map whose pins can be selected, results, and the featured center's details.
 
     With a `router`, Directions draw the road route from the learner's own location; without one, or without a
     location, they open Google Maps. `basemap_key` is a CARTO basemaps key; without it the map uses OpenStreetMap.
     """
+    from application_review import show_application_review
+    show_application_review(api_client, token, on_sign_in)
+    st.caption("Listings may be unverified or demonstration records. Check each service's source, review date and intake status. "
+               "Unknown fees and schedules require confirmation; a scholarship listing does not guarantee an award.")
     regions = {region["code"]: region for region in regions} if isinstance(regions, list) else regions
     names = {qualification["code"]: qualification["name"] for qualification in qualifications}
     for key, value in _defaults([code for code in default_qualifications if code in names]).items():
@@ -1418,11 +1461,14 @@ def show_training(qualifications: list[dict], api_client: ApiClient, regions: li
                            & set(state["training_qualifications"])):
             try:
                 fits |= _fit(api_client, token, code, goal, None if location else place, state["training_mode"],
-                             state["training_scholarship"])
+                             state["training_scholarship"], assessment, assessment_id)
             except ApiError as error:
                 if error.status_code == 401:
                     raise
 
+    decisions = show_assessment_comparison(api_client, token, names, regions, goal, assessment, assessment_id,
+        None if location else place, state["training_qualifications"], on_apply=_apply,
+        on_center=_open_assessment_center, on_sign_in=on_sign_in)
     with st.container(key="training_workspace"):
         map_column, results_column = st.columns([3, 1], gap="small")
     # The results come first: the wait for routes shows there, and the map needs the routes.
@@ -1440,7 +1486,7 @@ def show_training(qualifications: list[dict], api_client: ApiClient, regions: li
         _results(centers, featured, reference, today, truncated,
                  lambda center: _detail(center, api_client, token, fits, today, on_sign_in, can_route=can_route,
                                         routes=routes, nearest=center["id"] == nearest_id,
-                                        saved=center["id"] in state["training_saved"], missing_modes=missing))
+                                        saved=center["id"] in state["training_saved"], missing_modes=missing, decisions=decisions))
     # The filters float over the map's left edge, or drop below the map when it is narrow (training.css).
     with map_column, st.container(key="training_map_stage"):
         _filters(names, regions, province_options, place_text, place,

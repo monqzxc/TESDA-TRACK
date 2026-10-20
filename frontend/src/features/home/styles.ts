@@ -1,47 +1,47 @@
-// What Home's sections share (after classic/landing.css): the page width, eyebrows, buttons, section heads, cards
+// What Home's sections share (after classic/landing.css): the page width, buttons, section heads, the example cards
 // and the navy bands. Their colors are Home's own (styles/home.css).
 import { cx } from '../../lib/style.ts'
 
-const eyebrowType = 'font-text text-home-xs leading-[1.2] font-bold tracking-[0.14em] uppercase'
-
 export const ui = {
   wrap: 'mx-auto w-full max-w-home px-home-gutter',
-  eyebrow: cx(eyebrowType, 'text-home-blue')!,
-  /** An eyebrow on a navy band. */
-  eyebrowOnBand: cx(eyebrowType, 'text-home-band-accent')!,
-  eyebrowType,
-  section: 'relative py-[clamp(4.5rem,10vw,8rem)]',
-  sectionHead: 'max-w-[46rem]',
-  sectionTitle: 'mt-[0.8rem] text-home-2xl leading-[1.04] font-[750] tracking-[-0.025em]',
-  sectionLead: 'mt-[1.1rem] max-w-[38rem] text-home-lg leading-[1.55]',
-  sectionCta: 'mt-[1.8rem]',
-  card: 'rounded-22 bg-home-surface p-[clamp(1.1rem,2.4vw,1.6rem)] shadow-[var(--home-shadow),0_0_0_1px_var(--home-border)]',
-  /** A card's small label. Its last part (a note on the right, or the label's only part) is in plain type. */
+  section: 'relative py-[clamp(5rem,11vw,9rem)]',
+  sectionHead: 'max-w-[48rem]',
+  sectionTitle: 'text-home-2xl leading-[1.02] font-[750] tracking-[-0.03em]',
+  sectionLead: 'mt-5 max-w-[36rem] text-home-lg leading-[1.5]',
+  sectionCta: 'mt-8',
+  /**
+   * An example card: a piece of the app itself (each carries data-ui), on a surface one tone step off the page,
+   * with the app's own small labels.
+   */
+  card: 'rounded-20 bg-home-surface p-[clamp(1.1rem,2.4vw,1.6rem)]',
+  /** A card's small label: what it is, in ink, and a note on the right. */
   cardLabel:
-    'flex justify-between gap-4 text-[0.78rem] font-bold tracking-[0.1em] text-home-muted uppercase [&_span:last-child]:font-semibold [&_span:last-child]:tracking-normal [&_span:last-child]:normal-case',
+    'flex justify-between gap-4 text-14 font-semibold text-home-muted [&_span:first-child]:text-home-ink',
   /** A navy band: its headings are white. */
-  band: 'overflow-hidden bg-[radial-gradient(90%_80%_at_10%_0%,var(--home-band-2),var(--home-band)_65%)] text-home-band-body [&_:is(h2,h3)]:text-white',
+  band: 'overflow-hidden bg-home-band text-home-band-body [&_:is(h2,h3)]:text-white',
 }
 
-type HomeButton = 'signal' | 'ghost' | 'outline' | 'outlineOnBand'
+type HomeButton = 'signal' | 'ghost' | 'quiet'
 
+// One fill each: signal yellow for the page's one action (Find my path), a tone step for the rest.
 const buttonLooks: Record<HomeButton, string> = {
-  signal:
-    'bg-[#f5b83d] text-[#0c2152] shadow-[0_10px_24px_-12px_#f5b83d] hovered:-translate-y-0.5 hovered:shadow-[0_16px_30px_-12px_#f5b83d]',
-  ghost:
-    'bg-[rgb(255_255_255/0.08)] text-white shadow-[inset_0_0_0_1.5px_rgb(255_255_255/0.28)] hovered:bg-[rgb(255_255_255/0.14)]',
-  outline:
-    'bg-home-surface text-home-blue shadow-[inset_0_0_0_1.5px_var(--home-blue)] hovered:bg-home-blue-soft',
-  outlineOnBand:
-    'bg-transparent text-white shadow-[inset_0_0_0_1.5px_rgb(255_255_255/0.4)] hovered:bg-[rgb(255_255_255/0.1)]',
+  signal: 'bg-[#f5b83d] text-[#0c2152] hovered:bg-[#f8c968]',
+  /** On a navy band: a step lighter than the band. */
+  ghost: 'bg-home-band-2 text-white hovered:bg-[color-mix(in_srgb,var(--home-band-2)_82%,#ffffff)]',
+  /** On the page: a soft blue step. */
+  quiet:
+    'bg-home-blue-soft text-home-blue hovered:bg-[color-mix(in_srgb,var(--home-blue-soft)_86%,var(--home-blue))]',
 }
 
-/** Home's buttons: links styled as buttons, and the closing goal box's submit. Their arrow nudges on hover. */
+/**
+ * Home's buttons: links styled as buttons, and the closing goal box's submit. Flat and fully round, like the ends
+ * of the logo's road. Their arrow nudges on hover, and they press in.
+ */
 export function homeButton(look: HomeButton): string {
   return cx(
-    'inline-flex min-h-12 cursor-pointer items-center gap-[0.55rem] rounded-14 border-0 px-[1.3rem] py-3 font-text text-16 leading-none font-bold no-underline',
-    '[transition:translate_0.25s_var(--ease-home),box-shadow_0.25s_var(--ease-home),background-color_0.2s]',
-    '[&_svg]:size-4.5 [&_svg]:transition-[translate] [&_svg]:duration-250 [&_svg]:ease-home hovered:[&_svg]:translate-x-[3px]',
+    'inline-flex min-h-13 cursor-pointer items-center gap-[0.6rem] rounded-full border-0 px-6 py-[0.85rem] font-text text-home-base leading-none font-bold no-underline',
+    '[transition:background-color_0.2s,scale_0.15s_var(--ease-home)] active:scale-97',
+    '[&_svg]:size-4.5 [&_svg]:transition-[translate] [&_svg]:duration-250 [&_svg]:ease-home hovered:[&_svg]:translate-x-1',
     buttonLooks[look],
   )!
 }

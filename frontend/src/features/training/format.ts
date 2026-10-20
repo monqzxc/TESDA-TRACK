@@ -52,8 +52,12 @@ export function scheduleFee(schedule: Pick<Schedule, 'fee'>): string {
 }
 
 /** A program's facts in a line: how it's delivered, its hours, when it starts, and its cost. */
+export function deliveryLabel(mode: Program['delivery_mode']): string {
+  return mode === 'unknown' ? 'Delivery mode not provided' : copy.delivery[mode]
+}
+
 export function programFacts(program: Program, today: string): string[] {
-  const facts: string[] = [copy.delivery[program.delivery_mode]]
+  const facts: string[] = [deliveryLabel(program.delivery_mode)]
   if (program.duration_hours) facts.push(copy.programs.hours(program.duration_hours))
   const start = program.start_date
   facts.push(

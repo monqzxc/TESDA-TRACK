@@ -116,6 +116,24 @@ describe('the session', () => {
     ).toBeInTheDocument()
   })
 
+  it('lets analysts view Reports without making them administrators', async () => {
+    rememberSignIn()
+    serveAccountApi({
+      learner: { ...maria, role: 'analyst', permissions: ['reports:read'] },
+      signedIn: true,
+    })
+    await openApp('/reports')
+    await findAccountButton()
+    expect(
+      within(screen.getByRole('navigation', { name: 'Main' })).getByRole('link', {
+        name: 'Reports',
+      }),
+    ).toHaveAttribute('aria-current', 'page')
+    expect(
+      await screen.findByRole('heading', { level: 2, name: 'Learner journey' }),
+    ).toBeInTheDocument()
+  })
+
   it("keeps another tab's sign-in when a check that started before it finds no session", async () => {
     window.localStorage.setItem(SESSION_HINT_KEY, 'before')
     serveAccountApi({ signedIn: false })
@@ -215,6 +233,24 @@ describe('signing in', () => {
       'autocomplete',
       'new-password',
     )
+  })
+
+  it('drops guest training fits on sign-in while keeping public listings', async () => {
+    const user = userEvent.setup()
+    serveAccountApi()
+    const client = createTestQueryClient()
+    const fitKey = ['training', 'fit', 'SMAW-NC-II', null, null, null, false]
+    const listingKey = ['training', 'listings', ['SMAW-NC-II']]
+    client.setQueryData(fitKey, new Map())
+    client.setQueryData(listingKey, { programs: [], schedules: [], truncated: false })
+    await openApp('/qualifications', client)
+    await user.click(screen.getByRole('button', { name: 'Sign in' }))
+
+    await signInWithDialog(user)
+
+    await findAccountButton()
+    expect(client.getQueryData(fitKey)).toBeUndefined()
+    expect(client.getQueryData(listingKey)).toBeDefined()
   })
 
   it('says why an email or password is missing, and sends nothing', async () => {
@@ -326,6 +362,10 @@ describe('creating an account', () => {
     await fillIn(user, dialog)
     const consent = within(dialog).getByRole('checkbox', { name: 'I agree to the privacy notice' })
     expect(consent).toHaveAccessibleDescription(expect.stringContaining('never sold'))
+    // The whole policy opens in a new tab, so the form keeps what was typed.
+    const policy = within(dialog).getByRole('link', { name: /Read the full privacy policy/ })
+    expect(policy).toHaveAttribute('href', '/privacy')
+    expect(policy).toHaveAttribute('target', '_blank')
     await user.click(consent)
     await user.click(within(dialog).getByRole('button', { name: 'Create account' }))
 
@@ -558,6 +598,8 @@ describe('another tab', () => {
     serveAccountApi({ signedIn: true })
     const client = createTestQueryClient()
     client.setQueryData(['me', 'goals'], [{ title: 'Become an electrician' }])
+    const fitKey = ['training', 'fit', 'SMAW-NC-II', null, null, null, false]
+    client.setQueryData(fitKey, new Map([[1, { score: 90, explanation: [] }]]))
     await openApp('/qualifications', client)
     await findAccountButton()
 
@@ -568,6 +610,7 @@ describe('another tab', () => {
     await findAccountButton(admin.full_name)
     expect(screen.queryByRole('button', { name: /Maria Santos/ })).not.toBeInTheDocument()
     expect(client.getQueryData(['me', 'goals'])).toBeUndefined()
+    expect(client.getQueryData(fitKey)).toBeUndefined()
   })
 
   it('signing in there shows the learner in a tab that had never signed in', async () => {

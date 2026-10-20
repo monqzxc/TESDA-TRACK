@@ -67,6 +67,8 @@ def offline_api(monkeypatch):
         if name == "funnel":
             return {"registered": 12, "saved_a_recommendation": 8, "checked_readiness": 6,
                     "applied_for_assessment": 3, "certified": 2}
+        if name == "matching":
+            return {"requests": 40, "no_match": 10, "no_match_rate": 0.25, "days": []}
         if name == "supply":
             return [{"region": "National Capital Region", "training_providers": 2,
                      "training_programs": 3, "upcoming_assessments": 1, "open_seats": 10}]
@@ -284,7 +286,7 @@ def test_reports_render_only_for_admin_when_opened(offline_api):
     metrics = {metric.label: metric.value for metric in app.metric}
     assert metrics["Learners"] == "12"
     assert metrics["Open assessment seats"] == "10"
-    assert set(offline_api["reports"]) == {"overview", "funnel", "supply", "qualification-demand", "skill-gaps"}
+    assert set(offline_api["reports"]) == {"overview", "funnel", "matching", "supply", "qualification-demand", "skill-gaps"}
 
 
 def test_expired_session_returns_to_sign_in(offline_api, monkeypatch):
@@ -579,22 +581,27 @@ def test_sign_out_clears_saved_personal_results(offline_api):
     assert app.text_input(key="dialog_signin_email")
 
 
-def test_library_explore_opens_finder_with_the_chosen_goal(offline_api):
+def test_library_explore_opens_finder_with_exact_qualification(offline_api, monkeypatch):
+    mock_finder(monkeypatch)
     app = run_page(new_app(), "Qualifications Library")
     app.button(key="explore_CSS-NC-II").click()
     run_page(app)
     assert app.session_state["main_tabs"] == "Find my pathway"
-    assert app.text_area(key="goal_query").value == "I want to pursue Computer Systems Servicing NC II."
-    assert "analysis" not in app.session_state, "exploring should let the learner review their goal before submitting"
+    assert app.session_state["original_query"] == "I want to pursue Computer Systems Servicing NC II."
+    assert app.selectbox(key="qualification_selected").value == "CSS-NC-II"
+    assert "Your chosen qualification" in page_text(app)
+    assert app.session_state["analysis"]["experience_years"] is None
 
 
-def test_library_explore_shows_the_goal_step_over_earlier_results(offline_api, monkeypatch):
+def test_library_explore_clears_earlier_results(offline_api, monkeypatch):
     mock_finder(monkeypatch)
     app = open_step(submit_goal(run_page(new_app())), 3)
     run_page(app, "Qualifications Library")
     app.button(key="explore_CSS-NC-II").click()
     run_page(app)
-    assert app.text_area(key="goal_query").value == "I want to pursue Computer Systems Servicing NC II."
+    assert app.session_state["original_query"] == "I want to pursue Computer Systems Servicing NC II."
+    assert app.selectbox(key="qualification_selected").value == "CSS-NC-II"
+    assert "readiness_results" not in app.session_state
 
 
 def landing_click(app, event, value):
@@ -690,7 +697,7 @@ def test_report_date_range_is_validated_before_request_and_can_be_corrected(offl
     run_page(app, "Reports")
     assert not app.warning
     dated_calls = [(name, params) for name, params in offline_api["report_params"] if name != "supply"]
-    assert len(dated_calls) == 4
+    assert len(dated_calls) == 5
     assert all(params["date_from"] == "2026-10-07" and params["date_to"] == "2026-10-07"
                for name, params in dated_calls)
 
@@ -703,6 +710,8 @@ def test_reports_handle_no_activity_without_fabricating_scores(offline_api, monk
         if name == "funnel":
             return {"registered": 0, "saved_a_recommendation": 0, "checked_readiness": 0,
                     "applied_for_assessment": 0, "certified": 0}
+        if name == "matching":
+            return {"requests": 0, "no_match": 0, "no_match_rate": None, "days": []}
         return []
 
     monkeypatch.setattr(ApiClient, "report", empty_report)
@@ -711,6 +720,7 @@ def test_reports_handle_no_activity_without_fabricating_scores(offline_api, monk
     assert metrics["Learners"] == "0"
     assert metrics["Readiness checks"] == "0"
     assert metrics["Open assessment seats"] == "0"
+    assert metrics["No-match rate"] == "—", "no requests means no rate, not 0%"
     assert not app.error
 
 

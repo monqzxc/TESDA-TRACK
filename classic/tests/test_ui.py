@@ -281,7 +281,7 @@ def test_training_tab_finds_nearby_centers_and_learner_applies(ui, training_data
     open_center(app, "Manila Welding Institute", tab)
     detail = app.container(key="center_detail")
     assert any("SMAW NC II Manila batch" in md.value for md in detail.markdown)
-    assert any("% fit" in md.value for md in detail.markdown), "the ranked program shows its score"
+    assert any("Fit " in md.value and "/100" in md.value for md in detail.markdown), "the ranked program shows its score"
 
     open_center(app, "Manila Assessment Center", tab)
     assert not any(button.label == "Apply" for button in app.button), "applying needs an account"
@@ -289,13 +289,17 @@ def test_training_tab_finds_nearby_centers_and_learner_applies(ui, training_data
 
     create_account(app)
     rerun(app, tab)
-    click(app, "Apply", tab)
+    click(app, "Review application", tab)
+    assert not app.success, "reviewing does not submit an application"
+    click(app, "Confirm and submit application", tab)
     assert any("application" in success.value.lower() for success in app.success)
 
     rerun(app, "My Progress")
     applications = [md.value for md in app.container(key="my_applications").markdown]
     assert any("Pending" in value for value in applications)
     click(app, "Withdraw", "My Progress")
+    assert any("Pending" in md.value for md in app.container(key="my_applications").markdown)
+    click(app, "Confirm withdrawal", "My Progress")
     applications = [md.value for md in app.container(key="my_applications").markdown]
     assert any("Withdrawn" in value for value in applications)
 
@@ -306,6 +310,46 @@ def test_library_lists_catalog_from_the_api(ui):
     assert "### Cookery NC II" in headings and len(headings) == 5
 
 
+def test_personalized_assessment_comparison_applies_and_exports_over_real_http(ui, training_data, live_api):
+    from api_client import ApiClient
+
+    app = ui
+    create_account(app)
+    token = app.session_state["auth"]["token"]
+    api = ApiClient(live_api)
+    record = api.create_learner_assessment(token, {"interests": ["welding"], "preferences": {"region_code": "NCR"}})
+    app.session_state["assessment_record"] = record
+    app.session_state["assessment_answers"] = record["answers"]
+    app.session_state["assessment_center_panel"] = True
+    app.session_state["training_qualifications"] = ["SMAW-NC-II"]
+    rerun(app, "Training & Assessment")
+    app.number_input(key="assessment_center_fee").set_value(1500)
+    app.button(key="assessment_center_submit").click()
+    rerun(app)
+    schedule_id = training_data["schedule"]["id"]
+    comparison = app.session_state["assessment_center_result"]["data"]
+    assert comparison["result_type"] == "assessment" and comparison["total"] == 1
+    assert comparison["results"][0]["score"] < 100, "missing fee must retain its weight without positive credit"
+    assert any("Fee unconfirmed" in caption.value for caption in app.container(key=f"assessment_center_result_{schedule_id}").caption)
+    app.button(key=f"assessment_center_open_{schedule_id}").click()
+    rerun(app)
+    assert app.session_state["training_selected"] == f"assessment-{training_data['schedule']['center']['id']}"
+    app.button(key=f"assessment_center_apply_{schedule_id}").click()
+    rerun(app)
+    assert api.my_applications(token) == []
+    click(app, "Confirm and submit application")
+    assert api.my_applications(token)[0]["status"] == "pending"
+    assert not any(button.key == f"assessment_center_apply_{schedule_id}" for button in app.button)
+    export = api.export_my_data(token)
+    assert export["assessment_rankings"][-1]["assessment_id"] == record["id"]
+    rerun(app, "My Progress")
+    assert any("Pending" in md.value for md in app.container(key="my_applications").markdown)
+    click(app, "Withdraw", "My Progress")
+    assert api.my_applications(token)[0]["status"] == "pending"
+    click(app, "Confirm withdrawal", "My Progress")
+    assert api.my_applications(token)[0]["status"] == "withdrawn"
+
+
 def test_unreachable_api_shows_an_error_instead_of_crashing(monkeypatch):
     monkeypatch.setenv("API_BASE_URL", "http://127.0.0.1:1")
     app = new_app().run()
@@ -313,7 +357,60 @@ def test_unreachable_api_shows_an_error_instead_of_crashing(monkeypatch):
     assert any("can't reach" in error.value for error in app.error)
 
 
-def test_reports_tab_is_only_for_administrators(ui, training_data):
+def test_guest_can_save_submitted_journey_and_resume_without_duplicate_checks(ui, live_api):
+    from api_client import ApiClient
+
+    app = ui
+    click(app, "Become a welder")
+    click(app, "Get Recommendation")
+    app.selectbox(key="follow_experience").select("More than 3 years").run()
+    app.selectbox(key="follow_certification").select("No").run()
+    rate_welding_skills(app)
+    assert readiness(app) == ["75%"]
+    app.button(key="open_account_finder").click()
+    rerun(app)
+    assert app.checkbox(key="save_journey_intent").value
+    create_account(app)
+    token = app.session_state["auth"]["token"]
+    api = ApiClient(live_api)
+    assert readiness(app) == ["75%"]
+    saved = api.sessions(token)
+    checks = api.readiness_checks(token)
+    assert len(saved) == len(checks) == 1
+    assert saved[0]["selected_qualification"]["code"] == "SMAW-NC-II"
+    assert saved[0]["profile"]["experience_years"] == 4
+    assert checks[0]["recommendation_session_id"] == saved[0]["id"]
+    rerun(app)
+    rerun(app, "My Progress")
+    app.button(key=f"resume_{saved[0]['id']}").click()
+    rerun(app)
+    assert app.session_state["main_tabs"] == "Find my pathway"
+    assert readiness(app) == ["75%"]
+    assert len(api.sessions(token)) == len(api.readiness_checks(token)) == 1
+    click(app, "Sign out")
+    assert "readiness_results" not in app.session_state
+    assert "journey_writes" not in app.session_state
+
+
+def test_guest_application_review_survives_sign_in_without_submitting(ui, training_data, live_api):
+    from api_client import ApiClient
+
+    app = ui
+    rerun(app, "Training & Assessment")
+    open_center(app, "Manila Assessment Center", "Training & Assessment")
+    click(app, "Review application")
+    assert app.button(key="application_sign_in")
+    assert "application_confirm" not in [b.key for b in app.button]
+    create_account(app)
+    token = app.session_state["auth"]["token"]
+    assert app.button(key="application_confirm")
+    assert ApiClient(live_api).my_applications(token) == []
+    click(app, "Confirm and submit application")
+    assert len(ApiClient(live_api).my_applications(token)) == 1
+    assert app.button(key="application_progress")
+
+
+def test_reports_tab_is_only_for_administrators(ui, training_data, clean_match_stats):
     app = ui
     assert "Reports" not in [button.label for button in app.sidebar.button]
     create_account(app)
@@ -329,6 +426,7 @@ def test_reports_tab_is_only_for_administrators(ui, training_data):
     metrics = {metric.label: metric.value for metric in app.metric}
     assert metrics["Learners"] == "2", "the administrator and the learner who signed up"
     assert metrics["Open assessment seats"] == "10"
+    assert metrics["Goals searched"] == "0" and metrics["No-match rate"] == "—"
     supply = app.dataframe[-1].value
     assert list(supply.loc[supply["Region"] == "National Capital Region", "Programs"]) == [1]
 
@@ -353,3 +451,18 @@ def test_report_date_range_is_checked_before_asking_the_api(ui, training_data, m
     assert not app.exception
     assert any("on or after" in warning.value for warning in app.warning)
     assert asked == []
+
+
+@pytest.mark.parametrize("goal, expected", [
+    ("Magkano ang assessment?", "Training & assessment"),
+    ("saan may training sa Cebu", "Training & assessment"),
+    ("how do i apply", "Training & assessment"),
+    ("astronaut", "for example"),
+    ("hello", "for example"),
+    ("I want to be an astronaut on the moon", "describe a more specific career goal"),
+])
+def test_a_goal_without_a_match_gets_guidance_for_its_kind(ui, goal, expected):
+    app = ui
+    app.text_area(key="goal_query").set_value(goal)
+    click(app, "Get Recommendation")
+    assert any(expected in info.value for info in app.info), [info.value for info in app.info]

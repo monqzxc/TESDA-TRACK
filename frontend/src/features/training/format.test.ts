@@ -1,7 +1,18 @@
 import { describe, expect, it } from 'vitest'
-import { kilometres, localTime, peso, programCost, scheduleFee, travelTime } from './format.ts'
+import {
+  deliveryLabel,
+  kilometres,
+  localTime,
+  peso,
+  programCost,
+  scheduleFee,
+  travelTime,
+} from './format.ts'
 
 describe('format', () => {
+  it('labels an unknown delivery mode from imported listings', () => {
+    expect(deliveryLabel('unknown')).toBe('Delivery mode not provided')
+  })
   it('writes distances and money', () => {
     expect(kilometres(105.94)).toBe('105.9 km')
     expect(kilometres(1234)).toBe('1,234.0 km')

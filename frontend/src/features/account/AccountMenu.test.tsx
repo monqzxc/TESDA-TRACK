@@ -328,7 +328,7 @@ describe('pages that need an account', () => {
     await openApp('/reports')
 
     expect(
-      await screen.findByText('Reports are only available to administrator accounts.'),
+      await screen.findByText('Reports are only available to administrator and analyst accounts.'),
     ).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { level: 2, name: 'Reports are not available' }),
@@ -348,7 +348,7 @@ describe('pages that need an account', () => {
 
     expect(
       screen.getByText(
-        'Reports are only available to administrator accounts. Sign in with one to see them.',
+        'Reports are only available to administrator and analyst accounts. Sign in with one to see them.',
       ),
     ).toBeInTheDocument()
     expect(

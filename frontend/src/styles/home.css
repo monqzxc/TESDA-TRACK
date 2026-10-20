@@ -4,13 +4,16 @@
    The colors are the landing page's own, from its :host block and the dark values it took from the app's theme.
    They're Home's alone: set on Home's root, they reach only its sections, where classes such as text-home-ink and
    bg-home-band read them (app.css). Several repeat a --track-* color; the navy bands, the route, the signal yellow
-   and the soft fills are the landing page's. */
+   and the soft fills are the landing page's.
+
+   Surfaces sit one tone step apart (page, surface, panel), with nothing drawn between them. Running text is set
+   in --home-body, a step off the ink, and only notes are --home-muted. */
 .home-tokens {
   --home-page: #f5f7fb; /* the app's page color */
   --home-surface: #ffffff;
   --home-panel: #eef3fb;
   --home-ink: #102a56; /* track navy */
-  --home-body: #3e5272;
+  --home-body: #26395c;
   --home-muted: #52647e; /* the app's --track-muted: landing.css's #5d6f8a falls short of 4.5:1 on blue-soft */
   --home-border: #dbe4f1;
   --home-blue: #175cd3; /* primary */
@@ -23,11 +26,10 @@
   --home-violet: #6248b3;
   --home-violet-soft: #eee9fd;
   --home-band: #0c2152; /* navy bands */
-  --home-band-2: #133b8c;
+  --home-band-2: #163a85; /* a step up from the band: its buttons and its goal box */
   --home-band-ink: #ffffff;
-  --home-band-body: #cfdcf5;
+  --home-band-body: #d3def3;
   --home-band-accent: #6fe0d2;
-  --home-shadow: 0 24px 48px -28px rgb(16 42 86 / 0.45);
   --home-fill-blue: #175cd3; /* fills under white text */
   --home-fill-violet: #6248b3;
   --home-fill-muted: #5d6f8a;
@@ -39,7 +41,7 @@
   --home-surface: #111f42;
   --home-panel: #16285a;
   --home-ink: #e4ebf7;
-  --home-body: #c3d0e6;
+  --home-body: #d2dcee;
   --home-muted: #9fb1ce;
   --home-border: #22365c;
   --home-blue: #7fb0ff;
@@ -52,8 +54,7 @@
   --home-violet: #a58df0;
   --home-violet-soft: #2a2457;
   --home-band: #071740;
-  --home-band-2: #0f2f75;
-  --home-shadow: 0 24px 48px -28px rgb(0 0 0 / 0.7);
+  --home-band-2: #12307a;
   --home-fill-blue: #2f6fe0;
   --home-fill-violet: #6a52c9;
   --home-fill-muted: #4a5d80;

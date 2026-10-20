@@ -4,20 +4,28 @@
     python -m tesda_track.embeddings sync       # embed new or changed qualifications and training programs
 
 The model is intfloat/multilingual-e5-small (MIT, ~100 languages including Tagalog), run on CPU through
-fastembed's ONNX runtime. E5 expects "query: " and "passage: " prefixes.
+fastembed's ONNX runtime. E5 expects "query: " and "passage: " prefixes. EMBEDDING_MODEL_PATH points at a
+fine-tuned copy in a local folder instead (see backend/models/README.md); its calibration.json carries the
+score parameters that were tuned with it.
 """
 import hashlib
+import json
 import logging
 import threading
 from dataclasses import dataclass
-from typing import Annotated, Protocol
+from pathlib import Path
+from typing import TYPE_CHECKING, Annotated, Protocol
 
 from fastapi import Depends
 from sqlalchemy.orm import selectinload
 from sqlmodel import Session, select
 
-from tesda_track.config import get_settings
+from tesda_track.config import DEFAULT_EMBEDDING_MODEL, get_settings
 from tesda_track.models import (Qualification, QualificationEmbedding, TrainingProgram, TrainingProgramEmbedding)
+from tesda_track.models.semantic import EMBEDDING_DIMENSIONS
+
+if TYPE_CHECKING:
+    from tesda_track.services.analysis import MatchParams
 
 logger = logging.getLogger(__name__)
 # Models fastembed doesn't list but can run from their Hugging Face ONNX export.
@@ -33,12 +41,24 @@ class Embedder(Protocol):
 
 
 class E5Embedder:
-    def __init__(self, model_name: str, cache_dir: str | None = None):
+    def __init__(self, model_name: str, cache_dir: str | None = None, model_path: str | None = None):
         from fastembed import TextEmbedding
 
-        _register(model_name)
         self.model_name = model_name
-        self._model = TextEmbedding(model_name, cache_dir=cache_dir)
+        self.calibration: "MatchParams | None" = None
+        if not model_path:
+            _register(model_name)
+            self._model = TextEmbedding(model_name, cache_dir=cache_dir)
+            return
+        if model_name == DEFAULT_EMBEDDING_MODEL:
+            # Vectors from two models under one name would pass the sync's hash check and silently mix.
+            raise ValueError(f"EMBEDDING_MODEL_PATH is set but EMBEDDING_MODEL is still {model_name}; set "
+                             "EMBEDDING_MODEL to the fine-tuned model's own name, e.g. tesda-track/<folder>")
+        if not (Path(model_path) / "onnx" / "model.onnx").is_file():
+            raise FileNotFoundError(f"No fine-tuned model at {model_path} (expected onnx/model.onnx)")
+        _register_local(model_name)
+        self._model = TextEmbedding(model_name, cache_dir=cache_dir, specific_model_path=model_path)
+        self.calibration = read_calibration(model_path)
 
     def embed_queries(self, texts: list[str]) -> list[list[float]]:
         return [vector.tolist() for vector in self._model.embed([f"query: {text}" for text in texts])]
@@ -60,6 +80,39 @@ def _register(model_name: str) -> None:
                                    sources=ModelSource(hf=model_name), dim=spec["dim"], model_file=spec["model_file"])
 
 
+def _register_local(model_name: str) -> None:
+    """Make a fine-tuned folder loadable under its own name; the files come from the folder, not the hub."""
+    from fastembed import TextEmbedding
+    from fastembed.common.model_description import ModelSource, PoolingType
+
+    if any(m["model"] == model_name for m in TextEmbedding.list_supported_models()):
+        return
+    TextEmbedding.add_custom_model(model=model_name, pooling=PoolingType.MEAN, normalization=True,
+                                   sources=ModelSource(hf=model_name), dim=EMBEDDING_DIMENSIONS,
+                                   model_file="onnx/model.onnx")
+
+
+def read_calibration(model_path: str | None) -> "MatchParams | None":
+    """The score parameters saved beside a fine-tuned model; None when absent or invalid (settings apply then)."""
+    from tesda_track.services.analysis import MatchParams
+
+    if not model_path:
+        return None
+    path = Path(model_path) / "calibration.json"
+    if not path.is_file():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        params = MatchParams(float(data["z_floor"]), float(data["z_ceiling"]), float(data["keyword_weight"]),
+                             int(data["min_score"]))
+        if not (params.z_ceiling > params.z_floor and 0 <= params.keyword_weight <= 1 and 0 <= params.min_score <= 100):
+            raise ValueError("values out of range")
+    except (OSError, ValueError, KeyError, TypeError) as error:
+        logger.warning("Ignoring invalid %s (%s); using the settings' score parameters", path, error)
+        return None
+    return params
+
+
 _lock = threading.Lock()
 _embedder: Embedder | None = None
 _load_failed = False
@@ -74,7 +127,8 @@ def get_embedder() -> Embedder | None:
     with _lock:
         if _embedder is None and not _load_failed:
             try:
-                _embedder = E5Embedder(settings.embedding_model, settings.embedding_cache_dir)
+                _embedder = E5Embedder(settings.embedding_model, settings.embedding_cache_dir,
+                                     settings.embedding_model_path)
             except Exception:
                 _load_failed = True
                 logger.exception("Could not load embedding model %s; using keyword matching only",

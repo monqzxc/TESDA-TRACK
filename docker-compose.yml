@@ -7,14 +7,37 @@ x-backend-environment: &backend-environment
   DATABASE_URL: postgresql+psycopg://tesda_track:${APP_DB_PASSWORD:?Set APP_DB_PASSWORD in .env}@db:5432/tesda_track
   SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY in .env}
   LOG_LEVEL: ${LOG_LEVEL:-INFO}
+  SEMANTIC_SEARCH_ENABLED: ${SEMANTIC_SEARCH_ENABLED:-true}
+  PROXIMITY_RADIUS_KM: ${PROXIMITY_RADIUS_KM:-100}
+  PERSONALIZATION_WEIGHTS__INTEREST: ${PERSONALIZATION_WEIGHTS__INTEREST:-0.35}
+  PERSONALIZATION_WEIGHTS__SKILL: ${PERSONALIZATION_WEIGHTS__SKILL:-0.25}
+  PERSONALIZATION_WEIGHTS__CAREER: ${PERSONALIZATION_WEIGHTS__CAREER:-0.15}
+  PERSONALIZATION_WEIGHTS__LOCATION: ${PERSONALIZATION_WEIGHTS__LOCATION:-0.15}
+  PERSONALIZATION_WEIGHTS__PREFERENCE: ${PERSONALIZATION_WEIGHTS__PREFERENCE:-0.10}
+  RANKING_WEIGHTS__SEMANTIC: ${RANKING_WEIGHTS__SEMANTIC:-0.5}
+  RANKING_WEIGHTS__PROXIMITY: ${RANKING_WEIGHTS__PROXIMITY:-0.2}
+  RANKING_WEIGHTS__ASSESSMENT: ${RANKING_WEIGHTS__ASSESSMENT:-0.15}
+  RANKING_WEIGHTS__SCHEDULE: ${RANKING_WEIGHTS__SCHEDULE:-0.1}
+  RANKING_WEIGHTS__PREFERENCE: ${RANKING_WEIGHTS__PREFERENCE:-0.05}
+  # Leave both unset for the default model; set both to serve a fine-tuned folder from backend/models/.
+  EMBEDDING_MODEL: ${EMBEDDING_MODEL:-intfloat/multilingual-e5-small}
+  EMBEDDING_MODEL_PATH: ${DOCKER_EMBEDDING_MODEL_PATH:-${EMBEDDING_MODEL_PATH:-}}
   SKILLS_BRIDGE_MCP_ENABLED: ${SKILLS_BRIDGE_MCP_ENABLED:-true}
   SKILLS_BRIDGE_MCP_URL: ${SKILLS_BRIDGE_MCP_URL:-https://mcp.skills-bridge.ph/mcp}
   SKILLS_BRIDGE_MCP_TOKEN: ${SKILLS_BRIDGE_MCP_TOKEN:-}
+  SKILLS_BRIDGE_CLIENT_ID: ${SKILLS_BRIDGE_CLIENT_ID:-}
+  SKILLS_BRIDGE_CLIENT_SECRET: ${SKILLS_BRIDGE_CLIENT_SECRET:-}
+  SKILLS_BRIDGE_TOKEN_URL: ${SKILLS_BRIDGE_TOKEN_URL:-https://skills-bridge.ph/oauth/token}
   SKILLS_BRIDGE_TIMEOUT_SECONDS: ${SKILLS_BRIDGE_TIMEOUT_SECONDS:-10}
   # Road routes for Directions (GET /api/v1/routes); empty turns them off.
   ROUTING_URL: ${ROUTING_URL-https://routing.openstreetmap.de/routed-car}
   # CARTO basemaps key for the center map, handed to the React app by GET /api/v1/client-config.
   CARTO_API: ${CARTO_API-}
+  # Partner MCP server; PUBLIC_BASE_URL must be the address Caddy serves, or the API refuses the requests (421).
+  PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-https://${DOMAIN:-localhost}}
+  MCP_ENABLED: ${MCP_ENABLED:-true}
+  MCP_TOKEN_SECRET: ${MCP_TOKEN_SECRET-}
+  MCP_CALL_LOG_RETENTION_DAYS: ${MCP_CALL_LOG_RETENTION_DAYS:-180}
 
 services:
   db:
@@ -45,7 +68,12 @@ services:
     restart: "no"
 
   api:
-    build: ./backend
+    build:
+      context: ./backend
+      args:
+        EMBEDDING_MODEL: ${EMBEDDING_MODEL:-}
+        EMBEDDING_MODEL_PATH: ${DOCKER_EMBEDDING_MODEL_PATH:-${EMBEDDING_MODEL_PATH:-}}
+        SEMANTIC_SEARCH_ENABLED: ${SEMANTIC_SEARCH_ENABLED:-true}
     image: tesda-track-backend:latest
     restart: unless-stopped
     environment: *backend-environment

@@ -34,7 +34,13 @@ export function ReadinessDemo({ answers, onChange }: ReadinessDemoProps) {
   const score = readinessScore(answers)
   const level = readinessLevel(score)
   return (
-    <div className={ui.card} role="group" aria-labelledby={labelId} aria-describedby={scoreId}>
+    <div
+      className={ui.card}
+      role="group"
+      aria-labelledby={labelId}
+      aria-describedby={scoreId}
+      data-ui=""
+    >
       <div className={ui.cardLabel}>
         <span id={labelId}>{copy.card}</span>
         <span>{copy.tryIt}</span>
@@ -50,9 +56,7 @@ export function ReadinessDemo({ answers, onChange }: ReadinessDemoProps) {
               if (isAnswer(value)) onChange(i, value)
             }}
           >
-            <Label className="text-[0.92rem] leading-[1.3] font-semibold text-home-ink">
-              {unit.name}
-            </Label>
+            <Label className="text-15 leading-[1.3] font-semibold text-home-ink">{unit.name}</Label>
             {/* Three answers side by side, like a segmented control. */}
             <div className="grid grid-cols-3 gap-[3px] rounded-10 bg-home-border p-[3px]">
               {ANSWERS.map((answer) => (
@@ -60,7 +64,7 @@ export function ReadinessDemo({ answers, onChange }: ReadinessDemoProps) {
                   key={answer}
                   value={answer}
                   className={cx(
-                    'grid min-h-[34px] cursor-pointer place-items-center rounded-8 bg-home-surface px-[0.4rem] py-[0.3rem] text-center text-[0.76rem] leading-[1.15] font-semibold text-home-muted [transition:background_0.2s,color_0.2s] data-selected:text-white',
+                    'grid min-h-[34px] cursor-pointer place-items-center rounded-8 bg-home-surface px-[0.4rem] py-[0.3rem] text-center text-13 leading-[1.15] font-semibold text-home-muted [transition:background_0.2s,color_0.2s] data-selected:text-white',
                     'data-focus-visible:outline-3 data-focus-visible:outline-offset-1 data-focus-visible:outline-home-signal',
                     CHOSEN[answer],
                   )}
@@ -72,7 +76,7 @@ export function ReadinessDemo({ answers, onChange }: ReadinessDemoProps) {
           </RadioGroup>
         ))}
       </div>
-      <div className="mt-[1.1rem] border-0 border-t border-dashed border-home-border pt-4">
+      <div className="mt-[1.4rem]">
         <output
           id={scoreId}
           className="flex items-baseline justify-between gap-4"
@@ -81,13 +85,14 @@ export function ReadinessDemo({ answers, onChange }: ReadinessDemoProps) {
           <strong className="font-display text-[1.7rem] leading-none font-extrabold text-home-ink tabular-nums">
             {Math.round(score)}%
           </strong>{' '}
-          <span className="text-[0.9rem] font-bold text-home-ink">{copy.levels[level]}</span>
+          <span className="text-14 font-bold text-home-ink">{copy.levels[level]}</span>
         </output>
+        {/* The meter: one flat fill to the score, with marks at the moderate and high thresholds. */}
         <div
-          className="relative mt-[0.7rem] h-3 rounded-full bg-home-panel shadow-[inset_0_0_0_1px_var(--home-border)]"
+          className="relative mt-[0.7rem] h-3 rounded-full bg-home-border"
           style={cssVars({ '--score': score })}
         >
-          <i className="absolute inset-y-0 left-0 w-[calc(var(--score,0)*1%)] rounded-[inherit] bg-[linear-gradient(90deg,var(--home-violet),var(--home-blue)_60%,var(--home-teal))] transition-[width] duration-500 ease-home" />
+          <i className="absolute inset-y-0 left-0 w-[calc(var(--score,0)*1%)] rounded-[inherit] bg-home-blue transition-[width] duration-500 ease-home" />
           <b
             className="absolute top-[-3px] bottom-[-3px] w-0.5 bg-home-muted opacity-45"
             style={{ left: '50%' }}
@@ -98,7 +103,7 @@ export function ReadinessDemo({ answers, onChange }: ReadinessDemoProps) {
           />
         </div>
         <div
-          className="relative mt-[0.35rem] h-4 text-[0.7rem] text-home-muted tabular-nums"
+          className="relative mt-[0.4rem] h-[1.1rem] text-12 text-home-muted tabular-nums"
           aria-hidden="true"
         >
           {copy.scale.map((label, i) => (

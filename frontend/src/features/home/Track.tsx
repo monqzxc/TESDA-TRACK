@@ -31,7 +31,7 @@ function Quoted({ parts }: { parts: readonly (string | { quote: string })[] }) {
 /** Stop 1: goals as learners write them. */
 function GoalCloud() {
   return (
-    <div className={ui.card}>
+    <div className={ui.card} data-ui="">
       <div className={ui.cardLabel}>
         <span>{copy.goal.card}</span>
       </div>
@@ -52,7 +52,7 @@ function GoalCloud() {
             {'filipino' in goal && (
               <>
                 {' '}
-                <small className="ml-1 text-[0.7rem] font-bold text-home-muted">
+                <small className="ml-1 text-12 font-semibold text-home-muted">
                   {copy.goal.filipino}
                 </small>
               </>
@@ -68,7 +68,7 @@ function GoalCloud() {
 function MatchList() {
   const shown = useRevealed()
   return (
-    <div className={ui.card}>
+    <div className={ui.card} data-ui="">
       <div className={ui.cardLabel}>
         <span>{copy.match.card}</span>
         <span>{copy.match.example}</span>
@@ -88,7 +88,7 @@ function MatchList() {
             <span className="col-start-2 row-span-2 row-start-1 font-display text-[1.1rem] leading-none font-extrabold text-home-ink tabular-nums">
               {match.score}%
             </span>{' '}
-            <small className="col-start-1 text-[0.8rem] text-home-muted">{match.detail}</small>
+            <small className="col-start-1 text-13 text-home-muted">{match.detail}</small>
             <span
               className="col-span-full h-1.5 overflow-hidden rounded-full bg-home-border"
               aria-hidden="true"
@@ -104,7 +104,7 @@ function MatchList() {
           </li>
         ))}
       </ul>
-      <p className="mt-[0.9rem] text-[0.85rem] text-home-muted">{copy.match.note}</p>
+      <p className="mt-[0.9rem] text-13 text-home-muted">{copy.match.note}</p>
     </div>
   )
 }
@@ -114,7 +114,7 @@ const LEVELS: readonly ReadinessLevel[] = ['high', 'moderate', 'low']
 /** Stop 4: the three routes, with the one the readiness check picks marked as current. */
 function RouteChoice({ level }: { level: ReadinessLevel }) {
   return (
-    <div className={ui.card}>
+    <div className={ui.card} data-ui="">
       <div className={ui.cardLabel}>
         <span>{copy.pathway.card}</span>
       </div>
@@ -126,9 +126,10 @@ function RouteChoice({ level }: { level: ReadinessLevel }) {
             <li
               key={option}
               className={cx(
-                'relative grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-[0.9rem] gap-y-[0.2rem] rounded-16 px-4 py-[0.95rem] [transition:background_0.35s,box-shadow_0.35s,translate_0.35s_var(--ease-home)]',
+                'relative grid grid-cols-[auto_minmax(0,1fr)] items-start gap-x-[0.9rem] gap-y-[0.2rem] rounded-16 px-4 py-[0.95rem] [transition:background_0.35s,box-shadow_0.35s]',
+                // The picked route: the app's selected row, drawn in the primary blue.
                 picked
-                  ? 'translate-x-1.5 bg-home-surface shadow-[0_0_0_2px_var(--home-blue),var(--home-shadow)]'
+                  ? 'bg-home-blue-soft shadow-[inset_0_0_0_2px_var(--home-blue)]'
                   : 'bg-home-panel',
               )}
               aria-current={picked || undefined}
@@ -137,7 +138,7 @@ function RouteChoice({ level }: { level: ReadinessLevel }) {
                 className={cx(
                   'row-span-2 row-start-1 mt-[0.3rem] size-3.5 rounded-full [transition:background_0.3s,box-shadow_0.3s]',
                   picked
-                    ? 'bg-home-signal shadow-[0_0_0_4px_color-mix(in_srgb,var(--home-signal)_30%,transparent)]'
+                    ? 'bg-home-signal shadow-none'
                     : 'shadow-[inset_0_0_0_3px_var(--home-border)]',
                 )}
               />
@@ -146,13 +147,13 @@ function RouteChoice({ level }: { level: ReadinessLevel }) {
               </strong>{' '}
               <em
                 className={cx(
-                  'absolute top-[0.9rem] right-4 text-[0.7rem] font-bold tracking-[0.08em] uppercase not-italic',
+                  'absolute top-[0.95rem] right-4 text-13 font-semibold not-italic tabular-nums',
                   picked ? 'text-home-blue' : 'text-home-muted',
                 )}
               >
                 {route.band}
               </em>{' '}
-              <small className="text-[0.82rem] text-home-muted">{route.text}</small>
+              <small className="text-13 text-home-muted">{route.text}</small>
             </li>
           )
         })}
@@ -166,7 +167,8 @@ const roadPath = 'fill-none [stroke-linecap:round] [stroke-linejoin:round]'
 
 /**
  * "How it works" (after classic/landing.css): Find my path's four stops along one winding road, which draws itself
- * as the page scrolls (hooks/useRoute.ts). Each stop has its text, its waypoint on the road and its card; every
+ * as the page scrolls (hooks/useRoute.ts). The road and its lit waypoints show the order, so the stops carry no
+ * numbers. Each stop has its text, its waypoint on the road and its card; every
  * other stop swaps sides on wide screens, and on narrow ones the road runs down the left and each card sits under
  * its text.
  */
@@ -175,7 +177,7 @@ export function Track() {
   const [answers, setAnswers] = useState(STARTING_ANSWERS)
   const level = readinessLevel(readinessScore(answers))
 
-  const stops: { copy: { step: string; heading: string }; body: ReactNode; visual: ReactNode }[] = [
+  const stops: { copy: { heading: string }; body: ReactNode; visual: ReactNode }[] = [
     { copy: copy.goal, body: <Quoted parts={copy.goal.body} />, visual: <GoalCloud /> },
     { copy: copy.match, body: copy.match.body, visual: <MatchList /> },
     {
@@ -197,7 +199,6 @@ export function Track() {
     <section id="how" aria-labelledby="how-title" className={ui.section}>
       <div className={ui.wrap}>
         <Reveal className={ui.sectionHead}>
-          <div className={ui.eyebrow}>{copy.eyebrow}</div>
           <h2 id="how-title" className={ui.sectionTitle}>
             {copy.heading}
           </h2>
@@ -238,14 +239,17 @@ export function Track() {
             const flip = i % 2 === 1
             return (
               <article
-                key={stop.copy.step}
+                key={stop.copy.heading}
                 className="relative z-1 grid grid-cols-[minmax(0,1fr)_128px_minmax(0,1fr)] items-center max-lg:grid-cols-[44px_minmax(0,1fr)] max-lg:gap-y-[1.4rem]"
               >
+                {/* The stop's marker, cut out of the road by its page-colored border: hollow until the road
+                    reaches it. */}
                 <span
                   className={cx(
-                    'col-start-2 row-start-1 size-7.5 justify-self-center rounded-full bg-home-surface shadow-[0_0_0_5px_var(--home-page),inset_0_0_0_3px_var(--home-border)] transition-[background,box-shadow] duration-400 ease-[ease]',
-                    'data-lit:bg-home-signal data-lit:shadow-[0_0_0_5px_var(--home-page),0_0_0_11px_color-mix(in_srgb,var(--home-signal)_28%,transparent)]',
-                    'max-lg:col-start-1 max-lg:mt-[0.1rem] max-lg:-ml-0.5 max-lg:size-6 max-lg:self-start max-lg:justify-self-start',
+                    'relative col-start-2 row-start-1 size-10 justify-self-center rounded-full border-5 border-solid border-home-page bg-home-border [transition:background_0.4s,scale_0.4s_var(--ease-home)]',
+                    "after:absolute after:inset-1 after:rounded-full after:bg-home-surface after:transition-[background] after:duration-400 after:content-['']",
+                    'data-lit:scale-115 data-lit:bg-home-signal data-lit:after:bg-home-signal',
+                    'max-lg:col-start-1 max-lg:-ml-1.5 max-lg:size-8 max-lg:self-start max-lg:justify-self-start max-lg:after:inset-[3px]',
                   )}
                   data-waypoint=""
                   data-lit={i < lit || undefined}
@@ -258,16 +262,10 @@ export function Track() {
                     flip ? 'col-start-3 justify-self-start' : 'col-start-1 justify-self-end',
                   )}
                 >
-                  <div className="inline-flex items-center gap-[0.6rem] font-text text-home-xs leading-none font-bold tracking-[0.12em] text-home-muted uppercase">
-                    <b className="grid size-7.5 place-items-center rounded-9 bg-home-blue-soft font-display text-[0.95rem] leading-none font-extrabold tracking-normal text-home-blue">
-                      {i + 1}
-                    </b>{' '}
-                    {stop.copy.step}
-                  </div>
-                  <h3 className="mt-[0.9rem] text-home-xl leading-[1.1] font-[750] tracking-[-0.015em]">
+                  <h3 className="text-home-xl leading-[1.08] font-[750] tracking-[-0.02em]">
                     {stop.copy.heading}
                   </h3>
-                  <p className="mt-[0.8rem] max-w-[30rem]">{stop.body}</p>
+                  <p className="mt-4 max-w-[30rem]">{stop.body}</p>
                 </Reveal>
                 <Reveal
                   from={flip ? 'left' : 'right'}

@@ -11,11 +11,9 @@ import { homeButton, ui } from './styles.ts'
 
 const copy = en.home.closing
 
-// The question's lead, and the note under the box at the same size, as the landing page shows it.
-const leadSize = 'mt-4 text-home-lg'
-
 /**
- * The goal box at the end of the page, on a navy band (after classic/landing.css). Submitting opens Find my path
+ * The goal box at the end of the page (after classic/landing.css): a navy band with the question, and the box on a
+ * step lighter than the band. Submitting opens Find my path
  * with the goal in the finder's store (session storage), never in the address, where the learner can change it
  * before getting matches.
  */
@@ -47,18 +45,17 @@ export function ClosingGoal() {
         )}
       >
         <Reveal>
-          <div className={ui.eyebrowOnBand}>{copy.eyebrow}</div>
           <h2
             id="start-title"
-            className="text-home-2xl leading-[1.02] font-extrabold tracking-[-0.025em]"
+            className="text-home-2xl leading-[1.02] font-extrabold tracking-[-0.03em]"
           >
             {copy.heading}
           </h2>
-          <p className={leadSize}>{copy.lead}</p>
+          <p className="mt-5 max-w-[32rem] text-home-lg leading-[1.5]">{copy.lead}</p>
         </Reveal>
         <Reveal order={1}>
           <form
-            className="grid gap-[0.8rem] rounded-22 bg-[rgb(255_255_255/0.07)] p-[1.2rem] shadow-[inset_0_0_0_1px_rgb(255_255_255/0.14)]"
+            className="grid gap-4 rounded-[24px] bg-home-band-2 p-[clamp(1.25rem,2.5vw,1.75rem)]"
             onSubmit={submit}
             noValidate
           >
@@ -74,21 +71,21 @@ export function ClosingGoal() {
               isInvalid={error !== null}
               validationBehavior="aria"
             >
-              <Label className="font-bold text-white">{copy.label}</Label>
+              <Label className="text-home-lg font-bold text-white">{copy.label}</Label>
               {/* Focused with an error (as after an empty submit, which focuses it): the error's red edge, and
                   the focus ring around it, on the navy band in both themes. */}
               <TextArea
                 ref={field}
                 className={cx(
-                  'min-h-24 w-full resize-y rounded-14 border-0 bg-white px-4 py-[0.9rem] font-text text-[1.02rem] leading-[1.45] font-medium text-[#102a56] placeholder:text-[#5d6f8a] focus:outline-none',
+                  'min-h-24 w-full resize-y rounded-14 border-0 bg-white px-4 py-[0.9rem] font-text text-home-base leading-[1.45] font-medium text-[#102a56] placeholder:text-[#5d6f8a] focus:outline-none',
                   error !== null
                     ? 'shadow-[inset_0_0_0_2px_#ff8f8f] focus:shadow-[inset_0_0_0_2px_#ff8f8f,0_0_0_3px_#f5b83d]'
-                    : 'shadow-[inset_0_0_0_2px_transparent] focus:shadow-[inset_0_0_0_2px_#f5b83d]',
+                    : 'focus:shadow-[inset_0_0_0_2px_#f5b83d]',
                 )}
                 placeholder={copy.placeholder}
               />
               {/* Under the box: the instruction when it's empty, and the count on the right. */}
-              <div className="mt-[-0.4rem] flex flex-wrap justify-between gap-x-4 gap-y-[0.3rem] text-[0.85rem]">
+              <div className="mt-[-0.4rem] flex flex-wrap justify-between gap-x-4 gap-y-[0.3rem] text-home-xs">
                 <FieldError className="font-semibold text-[#ffc9c9]">{error}</FieldError>
                 <Text slot="description" className="ml-auto text-home-band-body tabular-nums">
                   <span aria-hidden="true">{copy.count(goal.length, GOAL_MAX_LENGTH)}</span>
@@ -100,7 +97,8 @@ export function ClosingGoal() {
               {copy.submit}
               <Glyph name="arrow" />
             </button>
-            <p className={cx(leadSize, 'text-home-band-body')}>{copy.note}</p>
+            {/* A note under the button, at the size of the page's notes. */}
+            <p className="text-home-xs text-home-band-body">{copy.note}</p>
           </form>
         </Reveal>
       </div>

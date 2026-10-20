@@ -11,16 +11,18 @@ from sqlmodel import Session
 from tesda_track.config import get_settings
 from tesda_track.db import get_engine
 from tesda_track.errors import AuthenticationError, DomainError, SessionCookieError
-from tesda_track.routers import (analysis, assessments, auth, certifications, feedback, goals, health, integrations,
-                                 me, meta, pathways, qualifications, readiness_checks, recommendation_sessions,
-                                 recommendations, reports, routes, skills_bridge, training)
+from tesda_track.mcp.server import install_mcp, run_mcp
+from tesda_track.routers import (mcp_admin, analysis, assessments, auth, certifications, feedback, goals, health, integrations, learner_assessments, me, meta,
+                                 oauth, pathways, qualifications, readiness_checks, recommendation_sessions, recommendations,
+                                 reports, routes, skills_bridge, training, verification, users)
 from tesda_track.security import clear_session_cookie
-from tesda_track.services import cache
+from tesda_track.services import cache, mcp_usage
 from tesda_track.services.embeddings import get_embedder
 from tesda_track.services.rate_limit import RateLimiter
 
 logger = logging.getLogger("tesda_track")
 CACHE_PURGE_INTERVAL_SECONDS = 600
+MCP_FOLD_INTERVAL_SECONDS = 3600
 
 
 @asynccontextmanager
@@ -30,7 +32,11 @@ async def lifespan(app: FastAPI):
     stop = threading.Event()
     threading.Thread(target=cache.purge_until_stopped, name="cache-purge", daemon=True,
                      args=(lambda: Session(get_engine()), stop, CACHE_PURGE_INTERVAL_SECONDS)).start()
-    yield
+    threading.Thread(target=mcp_usage.fold_until_stopped, name="mcp-usage-fold", daemon=True,
+                     args=(lambda: Session(get_engine()), stop, MCP_FOLD_INTERVAL_SECONDS,
+                           get_settings().mcp_call_log_retention_days)).start()
+    async with run_mcp(app):
+        yield
     stop.set()
 
 
@@ -46,6 +52,7 @@ def create_app() -> FastAPI:
     app.state.skills_bridge_limits = skills_bridge.BridgeLimits()
     app.state.route_limits = routes.RouteLimits()
     app.state.feedback_limits = RateLimiter()
+    app.state.oauth_limits = oauth.new_limits()
     routes.hide_coordinates_in_access_log()
     if settings.cors_origins:
         app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins, allow_methods=["*"],
@@ -73,15 +80,17 @@ def create_app() -> FastAPI:
         return JSONResponse({"detail": "Something went wrong on our side. Please try again."}, status_code=500)
 
     app.include_router(health.router)
+    app.include_router(oauth.metadata_router)
     api = APIRouter(prefix="/api/v1")
     for router in (qualifications.router, analysis.router, feedback.router, auth.router, me.router, goals.router,
                    recommendation_sessions.router, readiness_checks.router, certifications.router,
                    pathways.router, pathways.learner_router, training.router, assessments.router,
                    assessments.learner_router, recommendations.router, pathways.admin_router, training.admin_router,
-                   assessments.admin_router, integrations.router, reports.router, skills_bridge.router,
-                   routes.router, meta.router):
+                   assessments.admin_router, integrations.router, reports.router, skills_bridge.router, verification.router,
+                   learner_assessments.router, routes.router, meta.router, oauth.router, mcp_admin.router, users.router):
         api.include_router(router)
     app.include_router(api)
+    install_mcp(app)
     return app
 
 

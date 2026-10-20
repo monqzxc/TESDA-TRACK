@@ -268,6 +268,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       learner,
       isSignedIn: learner !== null,
       isAdmin: learner?.role === 'admin',
+      canViewReports: learner?.role === 'admin' || learner?.role === 'analyst',
       isChecking: session.isLoading,
       signIn,
       register,

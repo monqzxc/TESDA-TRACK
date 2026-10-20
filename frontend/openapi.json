@@ -171,7 +171,15 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
       }
     },
     "/api/v1/analysis/pathway": {
@@ -2109,6 +2117,22 @@
             }
           },
           {
+            "name": "provider_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Provider Id"
+            }
+          },
+          {
             "name": "delivery_mode",
             "in": "query",
             "required": false,
@@ -2119,7 +2143,8 @@
                     "institution_based",
                     "enterprise_based",
                     "community_based",
-                    "online"
+                    "online",
+                    "unknown"
                   ],
                   "type": "string"
                 },
@@ -2128,6 +2153,16 @@
                 }
               ],
               "title": "Delivery Mode"
+            }
+          },
+          {
+            "name": "scholarship_only",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Scholarship Only"
             }
           }
         ],
@@ -2532,6 +2567,106 @@
         }
       }
     },
+    "/api/v1/recommendations/assessments": {
+      "post": {
+        "tags": [
+          "recommendations"
+        ],
+        "summary": "Rank Assessments",
+        "description": "Verified, available, eligible schedules with seats; no embedding model is required.",
+        "operationId": "rank_assessments_api_v1_recommendations_assessments_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssessmentRankingRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssessmentRanking"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/recommendations/qualifications": {
+      "post": {
+        "tags": [
+          "recommendations"
+        ],
+        "summary": "Rank Qualifications",
+        "description": "Structured matching works on a CPU without invoking an embedding model or storing guest answers.",
+        "operationId": "rank_qualifications_api_v1_recommendations_qualifications_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QualificationRecommendationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MatchResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
+    },
     "/api/v1/recommendations/training": {
       "post": {
         "tags": [
@@ -2580,6 +2715,57 @@
             "SessionCookie": []
           }
         ]
+      }
+    },
+    "/api/v1/recommendations/{audit_id}": {
+      "get": {
+        "tags": [
+          "recommendations"
+        ],
+        "summary": "Saved Ranking",
+        "description": "Owned historical scoring evidence, not a current availability or eligibility check.",
+        "operationId": "saved_ranking_api_v1_recommendations__audit_id__get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "audit_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Audit Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RankingAuditPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/admin/pathways": {
@@ -3781,6 +3967,82 @@
         ]
       }
     },
+    "/api/v1/admin/reports/matching": {
+      "get": {
+        "tags": [
+          "admin: reports"
+        ],
+        "summary": "Matching",
+        "description": "Goal-matching requests and the share that found no match, per day. Anonymous counts only.",
+        "operationId": "matching_api_v1_admin_reports_matching_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MatchingReport"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/skills-bridge/matches": {
       "post": {
         "tags": [
@@ -3948,6 +4210,475 @@
         }
       }
     },
+    "/api/v1/admin/service-verifications/import": {
+      "post": {
+        "tags": [
+          "admin: service verification"
+        ],
+        "summary": "Import Verifications",
+        "description": "Bounded, atomic upsert of reviewed evidence. Dry runs validate and roll back all writes.",
+        "operationId": "import_verifications_api_v1_admin_service_verifications_import_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificationImport"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/service-verifications/{kind}/{site_id}/{qualification_code}": {
+      "put": {
+        "tags": [
+          "admin: service verification"
+        ],
+        "summary": "Put Verification",
+        "description": "Replace reviewed source evidence. Training and assessment authorization are independent.",
+        "operationId": "put_verification_api_v1_admin_service_verifications__kind___site_id___qualification_code__put",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "enum": [
+                "training",
+                "assessment"
+              ],
+              "type": "string",
+              "title": "Kind"
+            }
+          },
+          {
+            "name": "site_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Site Id"
+            }
+          },
+          {
+            "name": "qualification_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Qualification Code"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VerificationWrite"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "admin: service verification"
+        ],
+        "summary": "Get Verification",
+        "operationId": "get_verification_api_v1_admin_service_verifications__kind___site_id___qualification_code__get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "kind",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "enum": [
+                "training",
+                "assessment"
+              ],
+              "type": "string",
+              "title": "Kind"
+            }
+          },
+          {
+            "name": "site_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Site Id"
+            }
+          },
+          {
+            "name": "qualification_code",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Qualification Code"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VerificationPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/learner-assessments": {
+      "post": {
+        "tags": [
+          "learner assessments"
+        ],
+        "summary": "Create",
+        "operationId": "create_api_v1_learner_assessments_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssessmentWrite"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssessmentPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "learner assessments"
+        ],
+        "summary": "List Assessments",
+        "operationId": "list_assessments_api_v1_learner_assessments_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 20,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AssessmentPublic"
+                  },
+                  "title": "Response List Assessments Api V1 Learner Assessments Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/learner-assessments/{assessment_id}": {
+      "get": {
+        "tags": [
+          "learner assessments"
+        ],
+        "summary": "Get",
+        "operationId": "get_api_v1_learner_assessments__assessment_id__get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "assessment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Assessment Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssessmentPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "learner assessments"
+        ],
+        "summary": "Revise",
+        "description": "Replace answers in a new immutable revision; historical results keep the original reference.",
+        "operationId": "revise_api_v1_learner_assessments__assessment_id__patch",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "assessment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Assessment Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AssessmentWrite"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssessmentPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "learner assessments"
+        ],
+        "summary": "Delete",
+        "operationId": "delete_api_v1_learner_assessments__assessment_id__delete",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "assessment_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Assessment Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/routes": {
       "get": {
         "tags": [
@@ -4044,12 +4775,332 @@
           }
         }
       }
+    },
+    "/api/v1/oauth/token": {
+      "post": {
+        "tags": [
+          "oauth"
+        ],
+        "summary": "Client credentials token for partner systems",
+        "description": "Send the client id and secret as HTTP Basic (client_secret_basic) or as form fields (client_secret_post).",
+        "operationId": "token_api_v1_oauth_token_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_token_api_v1_oauth_token_post"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/mcp/usage": {
+      "get": {
+        "tags": [
+          "admin: mcp"
+        ],
+        "summary": "Usage",
+        "description": "Which partner calls which tool, how often, and whether that matches what it declared.",
+        "operationId": "usage_api_v1_admin_mcp_usage_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsageReport"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/mcp/clients": {
+      "get": {
+        "tags": [
+          "admin: mcp"
+        ],
+        "summary": "Clients",
+        "operationId": "clients_api_v1_admin_mcp_clients_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ApiClientPublic"
+                  },
+                  "type": "array",
+                  "title": "Response Clients Api V1 Admin Mcp Clients Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/roles": {
+      "get": {
+        "tags": [
+          "admin: users"
+        ],
+        "summary": "List Roles",
+        "operationId": "list_roles_api_v1_admin_roles_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "type": "object",
+                  "title": "Response List Roles Api V1 Admin Roles Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/users": {
+      "get": {
+        "tags": [
+          "admin: users"
+        ],
+        "summary": "List Users",
+        "operationId": "list_users_api_v1_admin_users_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LearnerPublic"
+                  },
+                  "title": "Response List Users Api V1 Admin Users Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/users/{user_id}/role": {
+      "patch": {
+        "tags": [
+          "admin: users"
+        ],
+        "summary": "Assign Role",
+        "operationId": "assign_role_api_v1_admin_users__user_id__role_patch",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "User Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LearnerPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
       "AccountExport": {
         "properties": {
+          "learner_assessments": {
+            "items": {
+              "$ref": "#/components/schemas/AssessmentPublic"
+            },
+            "type": "array",
+            "title": "Learner Assessments"
+          },
           "exported_at": {
             "type": "string",
             "format": "date-time",
@@ -4106,6 +5157,13 @@
             },
             "type": "array",
             "title": "Training Rankings"
+          },
+          "assessment_rankings": {
+            "items": {
+              "$ref": "#/components/schemas/RankingAuditPublic"
+            },
+            "type": "array",
+            "title": "Assessment Rankings"
           }
         },
         "type": "object",
@@ -4155,8 +5213,106 @@
         ],
         "title": "Airport"
       },
+      "ApiClientPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "organisation": {
+            "type": "string",
+            "title": "Organisation"
+          },
+          "contact_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contact Email"
+          },
+          "declared_purpose": {
+            "type": "string",
+            "title": "Declared Purpose"
+          },
+          "expected_tools": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Expected Tools"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scopes"
+          },
+          "rate_limit_per_minute": {
+            "type": "integer",
+            "title": "Rate Limit Per Minute"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "last_token_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Token At"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "organisation",
+          "contact_email",
+          "declared_purpose",
+          "expected_tools",
+          "scopes",
+          "rate_limit_per_minute",
+          "is_active",
+          "last_token_at",
+          "created_at"
+        ],
+        "title": "ApiClientPublic"
+      },
       "ApplicationCreate": {
         "properties": {
+          "request_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Id"
+          },
           "schedule_id": {
             "type": "integer",
             "title": "Schedule Id"
@@ -4216,6 +5372,362 @@
         },
         "type": "object",
         "title": "ApplicationReview"
+      },
+      "AssessmentAnswers-Input": {
+        "properties": {
+          "questionnaire_version": {
+            "type": "integer",
+            "const": 1,
+            "title": "Questionnaire Version",
+            "default": 1
+          },
+          "interests": {
+            "items": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Interests"
+          },
+          "preferred_sectors": {
+            "items": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Preferred Sectors"
+          },
+          "work_activities": {
+            "items": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Work Activities"
+          },
+          "work_environments": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "indoors",
+                "outdoors",
+                "workshop",
+                "remote",
+                "customer_facing"
+              ]
+            },
+            "type": "array",
+            "maxItems": 5,
+            "title": "Work Environments"
+          },
+          "existing_skills": {
+            "items": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Existing Skills"
+          },
+          "competencies": {
+            "items": {
+              "$ref": "#/components/schemas/CompetencyAnswer"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Competencies"
+          },
+          "education": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "primary",
+                  "secondary",
+                  "technical_vocational",
+                  "college",
+                  "other"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Education"
+          },
+          "experience_years": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 80,
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Experience Years"
+          },
+          "has_certification": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Has Certification"
+          },
+          "career_goal": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Career Goal"
+          },
+          "goal_kind": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "employment",
+                  "career_transition",
+                  "upskilling",
+                  "exploration"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal Kind"
+          },
+          "preferred_qualification_codes": {
+            "items": {
+              "type": "string",
+              "maxLength": 40,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Preferred Qualification Codes"
+          },
+          "preferred_pathway": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "training",
+                  "assessment",
+                  "training_and_assessment",
+                  "exploration"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preferred Pathway"
+          },
+          "preferences": {
+            "$ref": "#/components/schemas/AssessmentPreferences-Input"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "AssessmentAnswers"
+      },
+      "AssessmentAnswers-Output": {
+        "properties": {
+          "questionnaire_version": {
+            "type": "integer",
+            "const": 1,
+            "title": "Questionnaire Version",
+            "default": 1
+          },
+          "interests": {
+            "items": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Interests"
+          },
+          "preferred_sectors": {
+            "items": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Preferred Sectors"
+          },
+          "work_activities": {
+            "items": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Work Activities"
+          },
+          "work_environments": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "indoors",
+                "outdoors",
+                "workshop",
+                "remote",
+                "customer_facing"
+              ]
+            },
+            "type": "array",
+            "maxItems": 5,
+            "title": "Work Environments"
+          },
+          "existing_skills": {
+            "items": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Existing Skills"
+          },
+          "competencies": {
+            "items": {
+              "$ref": "#/components/schemas/CompetencyAnswer"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "title": "Competencies"
+          },
+          "education": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "primary",
+                  "secondary",
+                  "technical_vocational",
+                  "college",
+                  "other"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Education"
+          },
+          "experience_years": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 80,
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Experience Years"
+          },
+          "has_certification": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Has Certification"
+          },
+          "career_goal": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Career Goal"
+          },
+          "goal_kind": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "employment",
+                  "career_transition",
+                  "upskilling",
+                  "exploration"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal Kind"
+          },
+          "preferred_qualification_codes": {
+            "items": {
+              "type": "string",
+              "maxLength": 40,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 10,
+            "title": "Preferred Qualification Codes"
+          },
+          "preferred_pathway": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "training",
+                  "assessment",
+                  "training_and_assessment",
+                  "exploration"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preferred Pathway"
+          },
+          "preferences": {
+            "$ref": "#/components/schemas/AssessmentPreferences-Output"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "AssessmentAnswers"
       },
       "AssessmentApplicationAdmin": {
         "properties": {
@@ -4710,8 +6222,647 @@
         "type": "object",
         "title": "AssessmentCenterUpdate"
       },
+      "AssessmentPreferences-Input": {
+        "properties": {
+          "region_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 20,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Code"
+          },
+          "near_lat": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 90,
+                "minimum": -90
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Near Lat"
+          },
+          "near_lon": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 180,
+                "minimum": -180
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Near Lon"
+          },
+          "maximum_distance_km": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 2000,
+                "exclusiveMinimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum Distance Km"
+          },
+          "delivery_mode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "institution_based",
+                  "enterprise_based",
+                  "community_based",
+                  "online"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delivery Mode"
+          },
+          "maximum_budget": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,8}|(?=[\\d.]{1,11}0*$)\\d{0,8}\\.\\d{0,2}0*$)"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum Budget"
+          },
+          "needs_scholarship": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Needs Scholarship"
+          },
+          "start_after": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start After"
+          },
+          "start_before": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Before"
+          },
+          "accessibility_preferences": {
+            "items": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 5,
+            "title": "Accessibility Preferences"
+          },
+          "delivery_is_mandatory": {
+            "type": "boolean",
+            "title": "Delivery Is Mandatory",
+            "default": false
+          },
+          "budget_is_mandatory": {
+            "type": "boolean",
+            "title": "Budget Is Mandatory",
+            "default": false
+          },
+          "schedule_is_mandatory": {
+            "type": "boolean",
+            "title": "Schedule Is Mandatory",
+            "default": false
+          },
+          "scholarship_is_mandatory": {
+            "type": "boolean",
+            "title": "Scholarship Is Mandatory",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "AssessmentPreferences"
+      },
+      "AssessmentPreferences-Output": {
+        "properties": {
+          "region_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 20,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Code"
+          },
+          "near_lat": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 90,
+                "minimum": -90
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Near Lat"
+          },
+          "near_lon": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 180,
+                "minimum": -180
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Near Lon"
+          },
+          "maximum_distance_km": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 2000,
+                "exclusiveMinimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum Distance Km"
+          },
+          "delivery_mode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "institution_based",
+                  "enterprise_based",
+                  "community_based",
+                  "online"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delivery Mode"
+          },
+          "maximum_budget": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,8}|(?=[\\d.]{1,11}0*$)\\d{0,8}\\.\\d{0,2}0*$)"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum Budget"
+          },
+          "needs_scholarship": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Needs Scholarship"
+          },
+          "start_after": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start After"
+          },
+          "start_before": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start Before"
+          },
+          "accessibility_preferences": {
+            "items": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 5,
+            "title": "Accessibility Preferences"
+          },
+          "delivery_is_mandatory": {
+            "type": "boolean",
+            "title": "Delivery Is Mandatory",
+            "default": false
+          },
+          "budget_is_mandatory": {
+            "type": "boolean",
+            "title": "Budget Is Mandatory",
+            "default": false
+          },
+          "schedule_is_mandatory": {
+            "type": "boolean",
+            "title": "Schedule Is Mandatory",
+            "default": false
+          },
+          "scholarship_is_mandatory": {
+            "type": "boolean",
+            "title": "Scholarship Is Mandatory",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "AssessmentPreferences"
+      },
+      "AssessmentPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "series_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Series Id"
+          },
+          "revision": {
+            "type": "integer",
+            "title": "Revision"
+          },
+          "previous_revision_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Revision Id"
+          },
+          "answers": {
+            "$ref": "#/components/schemas/AssessmentAnswers-Output"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "series_id",
+          "revision",
+          "previous_revision_id",
+          "answers",
+          "created_at"
+        ],
+        "title": "AssessmentPublic"
+      },
+      "AssessmentRanking": {
+        "properties": {
+          "result_type": {
+            "type": "string",
+            "const": "assessment",
+            "title": "Result Type",
+            "default": "assessment"
+          },
+          "policy_version": {
+            "type": "string",
+            "const": "assessment-center-v1",
+            "title": "Policy Version",
+            "default": "assessment-center-v1"
+          },
+          "checked_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Checked At"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/RankedAssessment"
+            },
+            "type": "array",
+            "title": "Results"
+          },
+          "requires_verification": {
+            "items": {
+              "$ref": "#/components/schemas/UnconfirmedAssessment"
+            },
+            "type": "array",
+            "title": "Requires Verification"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "unconfirmed_total": {
+            "type": "integer",
+            "title": "Unconfirmed Total"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          },
+          "audit_id": {
+            "type": "integer",
+            "title": "Audit Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "checked_at",
+          "results",
+          "requires_verification",
+          "total",
+          "unconfirmed_total",
+          "limit",
+          "offset",
+          "audit_id"
+        ],
+        "title": "AssessmentRanking"
+      },
+      "AssessmentRankingRequest": {
+        "properties": {
+          "assessment": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AssessmentAnswers-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assessment_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assessment Id"
+          },
+          "qualification_code": {
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 1,
+            "title": "Qualification Code"
+          },
+          "goal": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal"
+          },
+          "near_lat": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 90,
+                "minimum": -90
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Near Lat"
+          },
+          "near_lon": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 180,
+                "minimum": -180
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Near Lon"
+          },
+          "region_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 20,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Code"
+          },
+          "maximum_distance_km": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 2000,
+                "exclusiveMinimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum Distance Km"
+          },
+          "maximum_fee": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*(?:\\d{0,8}|(?=[\\d.]{1,11}0*$)\\d{0,8}\\.\\d{0,2}0*$)"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum Fee"
+          },
+          "fee_is_mandatory": {
+            "type": "boolean",
+            "title": "Fee Is Mandatory",
+            "default": false
+          },
+          "scheduled_after": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scheduled After"
+          },
+          "scheduled_before": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scheduled Before"
+          },
+          "schedule_is_mandatory": {
+            "type": "boolean",
+            "title": "Schedule Is Mandatory",
+            "default": false
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 50,
+            "minimum": 1,
+            "title": "Limit",
+            "default": 10
+          },
+          "offset": {
+            "type": "integer",
+            "maximum": 10000,
+            "minimum": 0,
+            "title": "Offset",
+            "default": 0
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "qualification_code"
+        ],
+        "title": "AssessmentRankingRequest"
+      },
       "AssessmentScheduleCreate": {
         "properties": {
+          "availability_status": {
+            "type": "string",
+            "enum": [
+              "unknown",
+              "available",
+              "unavailable"
+            ],
+            "title": "Availability Status",
+            "default": "unknown"
+          },
+          "availability_source": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Source"
+          },
+          "availability_checked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Checked At"
+          },
+          "availability_valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Valid Until"
+          },
           "center_id": {
             "type": "integer",
             "title": "Center Id"
@@ -4760,6 +6911,12 @@
       },
       "AssessmentSchedulePublic": {
         "properties": {
+          "verification": {
+            "$ref": "#/components/schemas/VerificationPublic"
+          },
+          "availability": {
+            "$ref": "#/components/schemas/AvailabilityPublic"
+          },
           "id": {
             "type": "integer",
             "title": "Id"
@@ -4832,6 +6989,59 @@
       },
       "AssessmentScheduleUpdate": {
         "properties": {
+          "availability_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "unknown",
+                  "available",
+                  "unavailable"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Status"
+          },
+          "availability_source": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Source"
+          },
+          "availability_checked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Checked At"
+          },
+          "availability_valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Valid Until"
+          },
           "scheduled_at": {
             "anyOf": [
               {
@@ -4892,6 +7102,82 @@
         },
         "type": "object",
         "title": "AssessmentScheduleUpdate"
+      },
+      "AssessmentWrite": {
+        "properties": {
+          "request_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Id"
+          },
+          "answers": {
+            "$ref": "#/components/schemas/AssessmentAnswers-Input"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "answers"
+        ],
+        "title": "AssessmentWrite"
+      },
+      "AvailabilityPublic": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "unknown",
+              "available",
+              "unavailable"
+            ],
+            "title": "Status",
+            "default": "unknown"
+          },
+          "source_reference": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reference"
+          },
+          "checked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Checked At"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          }
+        },
+        "type": "object",
+        "title": "AvailabilityPublic"
       },
       "Body_sign_in_api_v1_auth_token_post": {
         "properties": {
@@ -5010,6 +7296,67 @@
           "password"
         ],
         "title": "Body_start_session_api_v1_auth_session_post"
+      },
+      "Body_token_api_v1_oauth_token_post": {
+        "properties": {
+          "grant_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Grant Type"
+          },
+          "scope": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scope"
+          },
+          "resource": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resource"
+          },
+          "client_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Id"
+          },
+          "client_secret": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Secret"
+          }
+        },
+        "type": "object",
+        "title": "Body_token_api_v1_oauth_token_post"
       },
       "CertificationCounts": {
         "properties": {
@@ -5306,6 +7653,120 @@
         ],
         "title": "ClientConfig"
       },
+      "ClientUsage": {
+        "properties": {
+          "client_id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Client Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "organisation": {
+            "type": "string",
+            "title": "Organisation"
+          },
+          "declared_purpose": {
+            "type": "string",
+            "title": "Declared Purpose"
+          },
+          "expected_tools": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Expected Tools"
+          },
+          "scopes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Scopes"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "calls": {
+            "type": "integer",
+            "title": "Calls"
+          },
+          "by_outcome": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "By Outcome"
+          },
+          "tools": {
+            "items": {
+              "$ref": "#/components/schemas/ToolUsage"
+            },
+            "type": "array",
+            "title": "Tools"
+          },
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/DayUsage"
+            },
+            "type": "array",
+            "title": "Days"
+          },
+          "unexpected_tool_calls": {
+            "type": "integer",
+            "title": "Unexpected Tool Calls"
+          },
+          "deep_paging_calls": {
+            "type": "integer",
+            "title": "Deep Paging Calls"
+          }
+        },
+        "type": "object",
+        "required": [
+          "client_id",
+          "name",
+          "organisation",
+          "declared_purpose",
+          "expected_tools",
+          "scopes",
+          "is_active",
+          "calls",
+          "by_outcome",
+          "tools",
+          "days",
+          "unexpected_tool_calls",
+          "deep_paging_calls"
+        ],
+        "title": "ClientUsage"
+      },
+      "CompetencyAnswer": {
+        "properties": {
+          "competency_id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "title": "Competency Id"
+          },
+          "answer": {
+            "type": "string",
+            "enum": [
+              "confident",
+              "some_experience",
+              "not_familiar"
+            ],
+            "title": "Answer"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "competency_id",
+          "answer"
+        ],
+        "title": "CompetencyAnswer"
+      },
       "CompetencyGap": {
         "properties": {
           "competency_id": {
@@ -5389,6 +7850,25 @@
         ],
         "title": "CompetencyPublic"
       },
+      "DayUsage": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "calls": {
+            "type": "integer",
+            "title": "Calls"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "calls"
+        ],
+        "title": "DayUsage"
+      },
       "Directions": {
         "properties": {
           "routing_enabled": {
@@ -5441,6 +7921,57 @@
           "missing_modes"
         ],
         "title": "Directions"
+      },
+      "EligibilityCheck": {
+        "properties": {
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "satisfied",
+              "unsatisfied",
+              "unknown"
+            ],
+            "title": "Status"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "description",
+          "status",
+          "reason"
+        ],
+        "title": "EligibilityCheck"
+      },
+      "EligibilityPublic": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "satisfied",
+              "unsatisfied",
+              "unknown"
+            ],
+            "title": "Status",
+            "default": "unknown"
+          },
+          "checks": {
+            "items": {
+              "$ref": "#/components/schemas/EligibilityCheck"
+            },
+            "type": "array",
+            "title": "Checks"
+          }
+        },
+        "type": "object",
+        "title": "EligibilityPublic"
       },
       "EnrollmentCreate": {
         "properties": {
@@ -6102,7 +8633,11 @@
             "type": "string",
             "enum": [
               "learner",
-              "admin"
+              "admin",
+              "trainer",
+              "assessor",
+              "verifier",
+              "analyst"
             ],
             "title": "Role"
           },
@@ -6110,6 +8645,14 @@
             "type": "string",
             "format": "date-time",
             "title": "Created At"
+          },
+          "permissions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Permissions",
+            "readOnly": true
           }
         },
         "type": "object",
@@ -6118,7 +8661,8 @@
           "email",
           "full_name",
           "role",
-          "created_at"
+          "created_at",
+          "permissions"
         ],
         "title": "LearnerPublic"
       },
@@ -6167,6 +8711,16 @@
       },
       "Match": {
         "properties": {
+          "personalization": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonalizedScore"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
           "qualification": {
             "$ref": "#/components/schemas/QualificationSummary"
           },
@@ -6218,6 +8772,28 @@
       },
       "MatchRequest": {
         "properties": {
+          "assessment": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AssessmentAnswers-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assessment_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assessment Id"
+          },
           "query": {
             "type": "string",
             "maxLength": 1000,
@@ -6254,6 +8830,68 @@
           "matches"
         ],
         "title": "MatchResult"
+      },
+      "MatchingDay": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "requests": {
+            "type": "integer",
+            "title": "Requests"
+          },
+          "no_match": {
+            "type": "integer",
+            "title": "No Match"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "requests",
+          "no_match"
+        ],
+        "title": "MatchingDay"
+      },
+      "MatchingReport": {
+        "properties": {
+          "requests": {
+            "type": "integer",
+            "title": "Requests"
+          },
+          "no_match": {
+            "type": "integer",
+            "title": "No Match"
+          },
+          "no_match_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "No Match Rate"
+          },
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/MatchingDay"
+            },
+            "type": "array",
+            "title": "Days"
+          }
+        },
+        "type": "object",
+        "required": [
+          "requests",
+          "no_match",
+          "no_match_rate",
+          "days"
+        ],
+        "title": "MatchingReport"
       },
       "ModelFeedback": {
         "properties": {
@@ -6708,6 +9346,158 @@
         "title": "PathwayUpdate",
         "description": "Omitted fields keep their value; `steps`, when given, replaces the list in the given order."
       },
+      "PersonalizationWeights": {
+        "properties": {
+          "interest": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Interest",
+            "default": 0.35
+          },
+          "skill": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Skill",
+            "default": 0.25
+          },
+          "career": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Career",
+            "default": 0.15
+          },
+          "location": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Location",
+            "default": 0.15
+          },
+          "preference": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Preference",
+            "default": 0.1
+          }
+        },
+        "type": "object",
+        "title": "PersonalizationWeights"
+      },
+      "PersonalizedScore": {
+        "properties": {
+          "policy_version": {
+            "type": "string",
+            "title": "Policy Version",
+            "default": "structured-assessment-v1"
+          },
+          "score": {
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 0,
+            "title": "Score"
+          },
+          "configured_weights": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Configured Weights"
+          },
+          "effective_weights": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Effective Weights"
+          },
+          "components": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ScoreFactor"
+            },
+            "type": "object",
+            "title": "Components"
+          },
+          "contributions": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Contributions"
+          },
+          "evidence_coverage": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Evidence Coverage"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "score",
+          "configured_weights",
+          "effective_weights",
+          "components",
+          "contributions",
+          "evidence_coverage"
+        ],
+        "title": "PersonalizedScore"
+      },
+      "Prerequisite": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "verified_certification",
+              "manual_review"
+            ],
+            "title": "Kind"
+          },
+          "description": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Description"
+          },
+          "source_reference": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 1,
+            "title": "Source Reference"
+          },
+          "qualification_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 40,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Qualification Code"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "description",
+          "source_reference"
+        ],
+        "title": "Prerequisite"
+      },
       "Profile": {
         "properties": {
           "career_goal": {
@@ -6942,6 +9732,54 @@
         ],
         "title": "QualificationPublic"
       },
+      "QualificationRecommendationRequest": {
+        "properties": {
+          "assessment": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AssessmentAnswers-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assessment_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assessment Id"
+          },
+          "goal": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Goal"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 50,
+            "minimum": 1,
+            "title": "Limit",
+            "default": 3
+          }
+        },
+        "type": "object",
+        "title": "QualificationRecommendationRequest"
+      },
       "QualificationSummary": {
         "properties": {
           "code": {
@@ -6965,8 +9803,88 @@
         ],
         "title": "QualificationSummary"
       },
+      "RankedAssessment": {
+        "properties": {
+          "schedule": {
+            "$ref": "#/components/schemas/AssessmentSchedulePublic"
+          },
+          "eligibility": {
+            "$ref": "#/components/schemas/EligibilityPublic"
+          },
+          "score": {
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 0,
+            "title": "Score"
+          },
+          "personalization": {
+            "$ref": "#/components/schemas/PersonalizedScore"
+          },
+          "explanation": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Explanation"
+          },
+          "application_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Application Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "schedule",
+          "eligibility",
+          "score",
+          "personalization",
+          "explanation"
+        ],
+        "title": "RankedAssessment"
+      },
       "RankedProgram": {
         "properties": {
+          "personalization": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonalizedScore"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "effective_weights": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Effective Weights"
+          },
+          "component_status": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Component Status"
+          },
+          "evidence_coverage": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Evidence Coverage",
+            "default": 0
+          },
+          "eligibility": {
+            "$ref": "#/components/schemas/EligibilityPublic"
+          },
           "program": {
             "$ref": "#/components/schemas/TrainingProgramPublic"
           },
@@ -6976,7 +9894,25 @@
             "description": "0-100: the weighted sum of the components"
           },
           "components": {
-            "$ref": "#/components/schemas/ScoreComponents"
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ScoreComponents"
+              },
+              {
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "type": "object"
+              }
+            ],
+            "title": "Components"
           },
           "explanation": {
             "items": {
@@ -6997,6 +9933,38 @@
       },
       "RankingAuditPublic": {
         "properties": {
+          "result_type": {
+            "type": "string",
+            "enum": [
+              "training",
+              "assessment"
+            ],
+            "title": "Result Type",
+            "default": "training"
+          },
+          "audit_id": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Audit Id"
+          },
+          "assessment_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assessment Id"
+          },
           "qualification_code": {
             "type": "string",
             "title": "Qualification Code"
@@ -7054,8 +10022,7 @@
           "weights",
           "results"
         ],
-        "title": "RankingAuditPublic",
-        "description": "A learner's own ranking history, as included in their data export."
+        "title": "RankingAuditPublic"
       },
       "RankingWeights": {
         "properties": {
@@ -7114,6 +10081,18 @@
             "maxProperties": 100,
             "title": "Answers",
             "description": "Answer per competency id"
+          },
+          "request_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Id"
           },
           "recommendation_session_id": {
             "anyOf": [
@@ -7324,6 +10303,40 @@
       },
       "RecommendationSessionCreate": {
         "properties": {
+          "assessment": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AssessmentAnswers-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assessment_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assessment Id"
+          },
+          "request_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Request Id"
+          },
           "query": {
             "type": "string",
             "maxLength": 1000,
@@ -7351,6 +10364,18 @@
       },
       "RecommendationSessionPublic": {
         "properties": {
+          "assessment_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assessment Id"
+          },
           "id": {
             "type": "string",
             "format": "uuid",
@@ -7474,6 +10499,18 @@
               }
             ],
             "title": "Qualification Code"
+          },
+          "assessment_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assessment Id"
           }
         },
         "type": "object",
@@ -7651,6 +10688,28 @@
         ],
         "title": "RoadRoute"
       },
+      "RoleUpdate": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "learner",
+              "admin",
+              "trainer",
+              "assessor",
+              "verifier",
+              "analyst"
+            ],
+            "title": "Role"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "role"
+        ],
+        "title": "RoleUpdate"
+      },
       "ScoreComponents": {
         "properties": {
           "semantic": {
@@ -7684,6 +10743,42 @@
         ],
         "title": "ScoreComponents",
         "description": "Each component on a 0..1 scale before weighting."
+      },
+      "ScoreFactor": {
+        "properties": {
+          "score": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 100,
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "observed",
+              "unknown",
+              "not_applicable"
+            ],
+            "title": "State"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "state",
+          "reason"
+        ],
+        "title": "ScoreFactor"
       },
       "SessionResponse": {
         "properties": {
@@ -8551,8 +11646,122 @@
         ],
         "title": "TokenResponse"
       },
+      "ToolUsage": {
+        "properties": {
+          "tool": {
+            "type": "string",
+            "title": "Tool"
+          },
+          "calls": {
+            "type": "integer",
+            "title": "Calls"
+          },
+          "ok": {
+            "type": "integer",
+            "title": "Ok"
+          },
+          "tool_error": {
+            "type": "integer",
+            "title": "Tool Error"
+          },
+          "denied_scope": {
+            "type": "integer",
+            "title": "Denied Scope"
+          },
+          "rate_limited": {
+            "type": "integer",
+            "title": "Rate Limited"
+          },
+          "p50_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P50 Ms"
+          },
+          "p95_ms": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "P95 Ms"
+          },
+          "expected": {
+            "type": "boolean",
+            "title": "Expected"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tool",
+          "calls",
+          "ok",
+          "tool_error",
+          "denied_scope",
+          "rate_limited",
+          "p50_ms",
+          "p95_ms",
+          "expected"
+        ],
+        "title": "ToolUsage"
+      },
       "TrainingProgramCreate": {
         "properties": {
+          "availability_status": {
+            "type": "string",
+            "enum": [
+              "unknown",
+              "available",
+              "unavailable"
+            ],
+            "title": "Availability Status",
+            "default": "unknown"
+          },
+          "availability_source": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Source"
+          },
+          "availability_checked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Checked At"
+          },
+          "availability_valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Valid Until"
+          },
           "provider_id": {
             "type": "integer",
             "title": "Provider Id"
@@ -8587,7 +11796,8 @@
               "institution_based",
               "enterprise_based",
               "community_based",
-              "online"
+              "online",
+              "unknown"
             ],
             "title": "Delivery Mode"
           },
@@ -8672,6 +11882,12 @@
       },
       "TrainingProgramPublic": {
         "properties": {
+          "verification": {
+            "$ref": "#/components/schemas/VerificationPublic"
+          },
+          "availability": {
+            "$ref": "#/components/schemas/AvailabilityPublic"
+          },
           "id": {
             "type": "integer",
             "title": "Id"
@@ -8703,7 +11919,8 @@
               "institution_based",
               "enterprise_based",
               "community_based",
-              "online"
+              "online",
+              "unknown"
             ],
             "title": "Delivery Mode"
           },
@@ -8805,6 +12022,59 @@
       },
       "TrainingProgramUpdate": {
         "properties": {
+          "availability_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "unknown",
+                  "available",
+                  "unavailable"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Status"
+          },
+          "availability_source": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Source"
+          },
+          "availability_checked_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Checked At"
+          },
+          "availability_valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Availability Valid Until"
+          },
           "title": {
             "anyOf": [
               {
@@ -8838,7 +12108,8 @@
                   "institution_based",
                   "enterprise_based",
                   "community_based",
-                  "online"
+                  "online",
+                  "unknown"
                 ]
               },
               {
@@ -9324,8 +12595,35 @@
       },
       "TrainingRanking": {
         "properties": {
+          "policy_version": {
+            "type": "string",
+            "title": "Policy Version",
+            "default": "verified-services-v2"
+          },
+          "requires_verification": {
+            "items": {
+              "$ref": "#/components/schemas/UnconfirmedProgram"
+            },
+            "type": "array",
+            "title": "Requires Verification"
+          },
           "weights": {
-            "$ref": "#/components/schemas/RankingWeights"
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RankingWeights"
+              },
+              {
+                "$ref": "#/components/schemas/PersonalizationWeights"
+              }
+            ],
+            "title": "Weights"
+          },
+          "effective_weights": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Effective Weights"
           },
           "semantic_used": {
             "type": "boolean",
@@ -9354,6 +12652,28 @@
       },
       "TrainingRankingRequest": {
         "properties": {
+          "assessment": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AssessmentAnswers-Input"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "assessment_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assessment Id"
+          },
           "qualification_code": {
             "type": "string",
             "maxLength": 40,
@@ -9421,6 +12741,11 @@
             "title": "Needs Scholarship",
             "default": false
           },
+          "require_confirmed_availability": {
+            "type": "boolean",
+            "title": "Require Confirmed Availability",
+            "default": false
+          },
           "limit": {
             "type": "integer",
             "maximum": 50,
@@ -9435,6 +12760,75 @@
         ],
         "title": "TrainingRankingRequest",
         "description": "Sent as a POST body so the learner's goal never appears in URLs or access logs."
+      },
+      "UnconfirmedAssessment": {
+        "properties": {
+          "schedule": {
+            "$ref": "#/components/schemas/AssessmentSchedulePublic"
+          },
+          "eligibility": {
+            "$ref": "#/components/schemas/EligibilityPublic"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          }
+        },
+        "type": "object",
+        "required": [
+          "schedule",
+          "eligibility",
+          "reasons"
+        ],
+        "title": "UnconfirmedAssessment"
+      },
+      "UnconfirmedProgram": {
+        "properties": {
+          "program": {
+            "$ref": "#/components/schemas/TrainingProgramPublic"
+          },
+          "eligibility": {
+            "$ref": "#/components/schemas/EligibilityPublic"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          }
+        },
+        "type": "object",
+        "required": [
+          "program",
+          "eligibility",
+          "reasons"
+        ],
+        "title": "UnconfirmedProgram"
+      },
+      "UsageReport": {
+        "properties": {
+          "clients": {
+            "items": {
+              "$ref": "#/components/schemas/ClientUsage"
+            },
+            "type": "array",
+            "title": "Clients"
+          },
+          "unattributed_denials": {
+            "type": "integer",
+            "title": "Unattributed Denials"
+          }
+        },
+        "type": "object",
+        "required": [
+          "clients",
+          "unattributed_denials"
+        ],
+        "title": "UsageReport"
       },
       "ValidationError": {
         "properties": {
@@ -9475,6 +12869,327 @@
           "type"
         ],
         "title": "ValidationError"
+      },
+      "VerificationImport": {
+        "properties": {
+          "dry_run": {
+            "type": "boolean",
+            "title": "Dry Run",
+            "default": true
+          },
+          "records": {
+            "items": {
+              "$ref": "#/components/schemas/VerificationImportRow"
+            },
+            "type": "array",
+            "maxItems": 500,
+            "minItems": 1,
+            "title": "Records"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "records"
+        ],
+        "title": "VerificationImport"
+      },
+      "VerificationImportRow": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "training",
+              "assessment"
+            ],
+            "title": "Kind"
+          },
+          "site_id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "title": "Site Id"
+          },
+          "qualification_code": {
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 1,
+            "title": "Qualification Code"
+          },
+          "evidence": {
+            "$ref": "#/components/schemas/VerificationWrite"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "site_id",
+          "qualification_code",
+          "evidence"
+        ],
+        "title": "VerificationImportRow"
+      },
+      "VerificationPublic": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "unknown",
+              "verified",
+              "unavailable",
+              "expired"
+            ],
+            "title": "Status",
+            "default": "unknown"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "source_reference": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reference"
+          },
+          "source_record_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Record Id"
+          },
+          "source_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Version"
+          },
+          "reviewed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewed At"
+          },
+          "review_due_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Review Due At"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          },
+          "is_synthetic": {
+            "type": "boolean",
+            "title": "Is Synthetic",
+            "default": false
+          },
+          "requirements_reviewed": {
+            "type": "boolean",
+            "title": "Requirements Reviewed",
+            "default": false
+          },
+          "requirements": {
+            "items": {
+              "$ref": "#/components/schemas/Prerequisite"
+            },
+            "type": "array",
+            "title": "Requirements"
+          }
+        },
+        "type": "object",
+        "title": "VerificationPublic"
+      },
+      "VerificationWrite": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "unknown",
+              "verified",
+              "unavailable",
+              "expired"
+            ],
+            "title": "Status",
+            "default": "unknown"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "source_reference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reference"
+          },
+          "source_record_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Record Id"
+          },
+          "source_version": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Version"
+          },
+          "reviewed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewed At"
+          },
+          "review_due_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Review Due At"
+          },
+          "valid_from": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid From"
+          },
+          "valid_until": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Valid Until"
+          },
+          "is_synthetic": {
+            "type": "boolean",
+            "title": "Is Synthetic",
+            "default": false
+          },
+          "requirements_reviewed": {
+            "type": "boolean",
+            "title": "Requirements Reviewed",
+            "default": false
+          },
+          "requirements": {
+            "items": {
+              "$ref": "#/components/schemas/Prerequisite"
+            },
+            "type": "array",
+            "maxItems": 30,
+            "title": "Requirements"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "VerificationWrite"
       }
     },
     "securitySchemes": {

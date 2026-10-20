@@ -19,6 +19,7 @@ const PAGES = [
   { path: '/skills', heading: 'Skills Explorer' },
   { path: '/reports', heading: 'Reports' },
   { path: '/sign-in', heading: 'Sign in' },
+  { path: '/privacy', heading: 'Privacy policy' },
   { path: '/no-such-page', heading: 'Page not found' },
 ]
 
@@ -58,6 +59,9 @@ for (const colorScheme of ['light', 'dark'] as const) {
       for (const { path, heading, step } of PAGES) {
         test(`${path} shows its page and passes axe`, async ({ page }) => {
           await serveCatalog(page)
+          // Home's parts fade in as they arrive, and its hero example keeps changing: still, so axe sees them at
+          // their final colors, as home.spec.ts does.
+          if (path === '/') await page.emulateMedia({ reducedMotion: 'reduce' })
           await page.goto(path)
 
           await expect(page.getByRole('heading', { level: 1, name: heading })).toBeVisible()

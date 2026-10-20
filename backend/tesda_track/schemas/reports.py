@@ -1,3 +1,4 @@
+import datetime as dt
 from datetime import date
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
@@ -46,6 +47,18 @@ class QualificationDemand(BaseModel):
     certified: int
 
 
+class LearnerDemand(BaseModel):
+    """Distinct learners per measure for one qualification; the average is of each learner's latest readiness score."""
+    qualification: QualificationSummary
+    top_matched: int
+    chose: int
+    checked_readiness: int
+    average_readiness: float | None
+    applied: int
+    competent: int
+    certified: int
+
+
 class CompetencyGap(BaseModel):
     competency_id: int
     position: int
@@ -63,6 +76,19 @@ class Funnel(BaseModel):
     checked_readiness: int
     applied_for_assessment: int
     certified: int
+
+
+class MatchingDay(BaseModel):
+    date: dt.date
+    requests: int
+    no_match: int
+
+
+class MatchingReport(BaseModel):
+    requests: int
+    no_match: int
+    no_match_rate: float | None
+    days: list[MatchingDay]
 
 
 class RegionSupply(BaseModel):

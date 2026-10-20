@@ -2,6 +2,7 @@ import type { MouseEvent } from 'react'
 import { Outlet, ScrollRestoration } from 'react-router'
 import { useAuth } from '../auth/useAuth.ts'
 import { en } from '../copy/en.ts'
+import { FirstVisitNotice } from '../features/privacy/FirstVisitNotice.tsx'
 import { useCurrentPage, useFocusOnNavigation, usePageTitle } from '../lib/navigation.ts'
 import { Brand } from './Brand.tsx'
 import { HomeFooter } from './HomeFooter.tsx'
@@ -11,7 +12,8 @@ import { SidebarContent } from './Nav.tsx'
 
 /**
  * The root route, around every page: the title follows the page, focus moves to its heading after a navigation,
- * and ScrollRestoration starts new pages at the top and puts Back where the learner left off.
+ * and ScrollRestoration starts new pages at the top and puts Back where the learner left off. A first visit opens
+ * with the privacy notice over the page.
  */
 export function Root() {
   usePageTitle(useCurrentPage())
@@ -20,6 +22,7 @@ export function Root() {
     <>
       <ScrollRestoration />
       <Outlet />
+      <FirstVisitNotice />
     </>
   )
 }
@@ -70,7 +73,7 @@ export function HomeLayout() {
  * opens the same sidebar over the page (MobileMenu). Reports shows for administrators.
  */
 export function AppLayout() {
-  const { isAdmin } = useAuth()
+  const { canViewReports } = useAuth()
   return (
     <>
       <SkipLink />
@@ -82,7 +85,7 @@ export function AppLayout() {
           }
         >
           <div className="max-md:flex max-md:items-center max-md:gap-3">
-            <MobileMenu isAdmin={isAdmin} />
+            <MobileMenu isAdmin={canViewReports} />
             <div className="max-md:hidden">
               <Brand />
             </div>
@@ -91,7 +94,7 @@ export function AppLayout() {
             </div>
           </div>
           <div className="max-md:hidden">
-            <SidebarContent isAdmin={isAdmin} />
+            <SidebarContent isAdmin={canViewReports} />
           </div>
         </header>
         <main

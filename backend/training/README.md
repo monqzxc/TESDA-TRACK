@@ -1,36 +1,85 @@
 # Matching model: evaluation and fine-tuning
 
+**Version 4 (Kapampangan + Ilocano):** use [the v4 Colab notebook](colab/train_colab_v4.ipynb)
+and [step-by-step guide](V4.md). Keeps English, Filipino/Taglish, Cebuano and Hiligaynon;
+adds Kapampangan starter data, more Ilocano tasks, English meanings and a native-speaker
+review template. These are unreviewed drafts, not a measured language capability.
+Build the upload with `python -m training.bundle --output training/runs/colab-bundle-v4.zip`.
+
+**Version 3:** [Colab notebook](colab/train_colab_v3.ipynb) and [complete v3 guide](V3.md) add
+Cebuano/Bisaya, Ilocano and Hiligaynon/Ilonggo examples, deeper Core-competency requests,
+coverage audits and per-language evaluation. Build `training/runs/colab-bundle-v3.zip` with
+`python -m training.bundle --output training/runs/colab-bundle-v3.zip`. V3 is a training recipe;
+trained weights and accuracy claims require a completed Colab run and local evaluation.
+
 Offline tools for the embedding model that matches learner goals to qualifications. Nothing here runs in the
 API: the API image copies only `tesda_track`, `migrations` and `seed`, and installs only
-`backend/requirements.txt`. The API keeps running `intfloat/multilingual-e5-small` on CPU through fastembed.
+`backend/requirements.txt`. The API runs `intfloat/multilingual-e5-small`, or a fine-tuned copy from
+`backend/models/` (see `docs/ml/2026-10-09-matching-model-evaluation.md`), on CPU through fastembed.
 
 | File | What it does |
 | --- | --- |
 | `catalog.py` | Loads `seed/qualifications.json` as in-memory qualifications, so nothing needs a database |
 | `data/eval_goals.json` | Hand-written learner goals (English, Filipino, Taglish, and goals with no TVET match), each in the `dev` or `test` split |
-| `evaluate.py` | Scores the goals with the API's own matching code and reports top-1, top-3, MRR and rejection rate |
-| `pairs.py` | Builds (query, passage) training pairs from the catalog |
+| `goals.py` | Loads and validates the goal sets: `dev` (v1 dev + `data/goals_v2/dev/*.json`), `test_v1` (v1 test), `sealed` (`data/goals_v2/sealed/*.json`) |
+| `evaluate.py` | Scores the goals with the API's own matching code and reports top-1, top-3, MRR and rejection rate, overall, per language and per scenario tag |
+| `pairs.py` | Builds (query, passage) training pairs from the catalog, `data/synthetic/*.json` and typo augmentation |
+| `mine.py` | Mines hard negatives (main env, CPU): the closest wrong qualifications for every training query |
+| `data/synthetic/G1..G6.json` | Goal-style queries per qualification (`{"exact name": ["query", ...]}`), written from the catalog by agents |
 | `finetune.py` | Fine-tunes the model on those pairs, exports ONNX and checks that fastembed reproduces it |
 
 **Data.** Training and evaluation use only TESDA catalog text (`seed/qualifications.json`, whose Filipino
 keywords come from `seed/sources/keywords_tl.json`) and the hand-written goals. Never learner, worker, T2MIS
 or TSP records. The training queries are each qualification's name, skill, jobs, keywords and Core competencies
 (Basic and Common units such as "Participate in workplace communication" are shared by many qualifications, so
-they are left out), plus short English and Filipino phrasings ("I want to work as a cook", "gusto kong maging
-cook"). Any query that equals an evaluation goal is dropped, so the evaluation stays held out.
+they are left out), plus short English and Filipino phrasings ("I want to work as a Chef", "gusto kong maging
+Chef"). Each query appears as written in the catalog and in lower case, because the tokenizer is cased and the API
+embeds goals as learners type them. Any query that equals an evaluation goal (ignoring case) is dropped, so the
+evaluation stays held out. The catalog alone gives 18,309 pairs. `data/synthetic/*.json` adds goal-style queries
+(as written and lower-cased; an unknown qualification name raises), and 15% of them (chosen by a hash of the query)
+also get one deterministic typo or text-speak copy (`pairs.augment`), giving 24,640 pairs. Exclusions cover the v1 goals
+and the v2 dev and sealed goals (normalised); sealed text is reduced to keys and never printed.
+
+### Hard negatives
+
+```bash
+../.venv/Scripts/python -m training.mine --model-path models/tesda-e5-small-v1 --output training/runs/hard-negatives.json --k 3
+```
+
+For every training query, the top-k qualifications by similarity that are not among the query's own (a query that
+belongs to several qualifications excludes all of them). `--limit N` mines a sample. It embeds with fastembed on CPU.
+`finetune --hard-negatives <file>` then trains on (query, positive, negative) triplets with the same cached MNRL
+loss: each pair gets one negative (a seeded pick among its mined ones, `--k 3` by default). Another level of the positive's own family ("Cookery NC III" for "Cookery NC II") is often a correct answer, so it is dropped unless the query names a level ("NC II", "level 2"); `--allow-sibling-negatives` keeps them, and a pair with none mined gets a random
+other qualification's passage. `training.json` records the synthetic and augmented counts, the augment share, the sibling flag and the file's SHA-256.
 
 ## Evaluate and calibrate
 
 The main environment (`.venv`) is enough. From `backend/`:
 
 ```bash
-../.venv/Scripts/python -m training.evaluate --split all             # the settings' model and parameters
-../.venv/Scripts/python -m training.evaluate --split all --calibrate # search the score parameters on dev, report test
+../.venv/Scripts/python -m training.evaluate --set test_v1           # the configured model and its parameters
+../.venv/Scripts/python -m training.evaluate --set dev --json training/runs/dev.json   # also writes "errors"
+../.venv/Scripts/python -m training.evaluate --calibrate --min-rejection 0.9 # calibrate on dev, report test_v1
 ../.venv/Scripts/python -m training.evaluate --params 2.5 4.0 0.5 25 # try FLOOR CEILING WEIGHT MIN
+../.venv/Scripts/python -m training.evaluate --set sealed --final    # once per candidate, at the end
 ```
 
-Add `--json runs/<name>.json` to keep the numbers (`training/runs/` is git-ignored). Calibrate on `dev` only and
-judge on `test`.
+`--set dev|test_v1|sealed` picks the goals (default `test_v1`); `--split dev|test|all` still works as an alias
+(`test` = `test_v1`, `all` = dev and test_v1). `--calibrate` always calibrates on `dev`, then reports the
+requested set. `--set sealed` needs `--final` and prints a warning: the sealed set is evaluated once per candidate
+and never used for tuning. Output includes a line per scenario tag (`n`, top-1/top-3 for goals with matches,
+rejection for no-TVET goals). With `--json`, a `dev` run also lists `errors`: goals whose top result is wrong and
+no-TVET goals that got a match, each with the goal, language, tags, accepted names and what was shown.
+
+Goal files in `goals_v2/` are JSON lists of `{goal, accept, lang, tags, group}`; the loader rejects unknown tags,
+languages or qualification names, and duplicate goals (the sealed copy wins: delete the dev one). Loading `dev` or `test_v1` reads the sealed files
+only to compare normalised goal text, so a dev goal that duplicates a sealed one is rejected; sealed goals are
+never returned or printed. Each error entry has a `rank` (1-based position of the first accepted name shown, or null).
+
+Add `--json training/runs/<name>.json` to keep the numbers (`training/runs/` is git-ignored). Calibrate on `dev`
+only and judge on a held-out set. The objective (0.4 × top-1 + 0.2 × top-3 + 0.4 × rejection) will trade wrong matches
+for right ones, so calibrate with `--min-rejection`; if no parameters reach it, the output says so and uses the
+ones that reject the most.
 
 ## Fine-tune
 
@@ -54,16 +103,55 @@ Then, from `backend/`:
 ```
 
 Options: `--epochs 3`, `--batch-size 64`, `--mini-batch-size 8` (lower it if GPU memory runs out; it does not
-change the result), `--lr 2e-5`, `--seed 42`, `--max-steps N` (a short smoke run). It trains with in-batch
+change the result), `--lr 2e-5`, `--seed 42`, `--max-steps N` (a short smoke run), `--hard-negatives FILE`, `--no-synthetic`, `--resume`. It trains with in-batch
 negatives (`CachedMultipleNegativesRankingLoss`, no duplicate texts in a batch), uses fp16 on a CUDA GPU, and
 reports the loss on 5% of the pairs held out from training. Use a GPU: a step of 64 pairs took about 2.5 s on
-a 4 GB laptop RTX 3050 (a full 3-epoch run is about 430 steps, roughly 20 minutes) but about 3 minutes on a
+a 4 GB laptop RTX 3050 (a full 3-epoch run on the 24,640 pairs is about 1,100 steps, roughly 45 minutes; with Smart App Control blocking torch on this laptop, it now trains on Google Colab) but about 3 minutes on a
 4-core laptop CPU, which makes CPU training impractical beyond a few smoke steps.
+
+**Interruptions.** The script saves a checkpoint in `<output>/checkpoints/` every 100 steps (`--save-steps`). If a run
+stops, start it again with the same options plus `--resume` to continue from that checkpoint; without `--resume`
+it refuses to overwrite an unfinished run. Resume also requires the same data/settings in `run_config.json`;
+older checkpoints without that file need their original training script. The checkpoints are deleted once the model has been exported and
+verified.
+
+**One new folder and model name per retrain.** The script refuses an output folder that already holds a finished
+model (`onnx/model.onnx` or `training.json`): stored embeddings are keyed by model name and text, and
+`calibration.json` lives in the folder, so reusing a name would keep stale vectors and scores. Train into a new
+folder and give the model a new name, e.g. `models/tesda-e5-small-v2` served as `tesda-track/tesda-e5-small-v2`.
 
 The output folder (git-ignored, like everything in `backend/models/` except its README) holds the
 sentence-transformers model, `onnx/model.onnx` (what fastembed runs) and `training.json` (base model, settings,
-pair counts, held-out loss, date and git commit). The script exits with an error if fastembed's vectors for the
-exported model differ from sentence-transformers' (cosine below 0.999 on ten catalog texts).
+pair counts, held-out loss, date and git commit). `training.json` is written only after the parity check passes,
+so a folder that has it holds a finished, verified model. The check fails, and the script exits with an error, if
+fastembed's vectors for the exported model differ from sentence-transformers' (cosine below 0.999 on ten catalog
+texts).
 
 The ONNX export uses `torch.onnx` directly: no optimum release supports transformers 5, so sentence-transformers'
 ONNX backend can't be used.
+
+## Train on Google Colab
+
+Windows Smart App Control blocks PyTorch's DLLs on the dev laptop (`WinError 4551`), so fine-tuning runs on a free
+Colab T4 GPU. Evaluation, calibration, mining and serving stay local (onnxruntime is not blocked).
+
+**Before.** From `backend/`, build the bundle (main environment, no torch):
+
+```bash
+../.venv/Scripts/python -m training.bundle --output training/runs/colab-bundle.zip --hard-negatives training/runs/hard-negatives-v3.json
+```
+
+The zip (under 1 MB) holds the `tesda_track` package, the catalog, the training code, `data/synthetic/*.json`, the
+hard-negative file and `data/exclusions.json`, the SHA-256 of every v1, dev and sealed goal's normalised text. It holds
+no goal files, `.env` or model. In the bundle `eval_exclusions()` uses those hashes, and the pairs come out identical.
+Open `backend/training/colab/train_colab.ipynb` in Colab (Runtime, T4 GPU), run it top to bottom with `SMOKE = True`
+first (6 steps, checks the ONNX export and the fastembed parity), then `SMOKE = False`. Keep `USE_DRIVE = True` so a
+disconnect can continue (`--resume` is added automatically). The notebook downloads `tesda-e5-small-<ROUND>.zip`
+with only the serving files (never `model.safetensors` or checkpoints).
+
+**After.** Use a new `<ROUND>` for every run (v2, v3, ...). From `backend/`:
+
+```bash
+mkdir models/tesda-e5-small-<ROUND> && unzip ~/Downloads/tesda-e5-small-<ROUND>.zip -d models/tesda-e5-small-<ROUND>
+../.venv/Scripts/python -m training.evaluate --model tesda-track/tesda-e5-small-<ROUND> --model-path models/tesda-e5-small-<ROUND> --set dev --calibrate --min-rejection 0.9
+```

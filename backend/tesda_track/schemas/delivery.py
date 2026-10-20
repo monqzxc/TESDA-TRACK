@@ -8,6 +8,8 @@ from pydantic import AwareDatetime, BaseModel, ConfigDict, EmailStr, Field, Stri
 
 from tesda_track.models import APPLICATION_STATUSES, ASSESSMENT_RESULTS, DELIVERY_MODES, SCHEDULE_STATUSES
 from tesda_track.schemas.catalog import QualificationSummary
+from tesda_track.schemas.verification import (AvailabilityPatch, AvailabilityPublic, AvailabilityWrite,
+                                             VerificationPublic)
 
 Text200 = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=200)]
 OptionalText = Annotated[str, StringConstraints(strip_whitespace=True, max_length=300)] | None
@@ -17,6 +19,7 @@ Latitude = Annotated[float, Field(ge=-90, le=90)]
 Longitude = Annotated[float, Field(ge=-180, le=180)]
 Money = Annotated[Decimal, Field(ge=0, max_digits=10, decimal_places=2)]
 DeliveryMode = Literal[DELIVERY_MODES]
+PreferredDeliveryMode = Literal["institution_based", "enterprise_based", "community_based", "online"]
 
 
 def check_location(latitude: float | None, longitude: float | None) -> None:
@@ -101,7 +104,7 @@ class SiteSummary(BaseModel):
     longitude: float | None
 
 
-class TrainingProgramCreate(BaseModel):
+class TrainingProgramCreate(AvailabilityWrite):
     provider_id: int
     qualification_code: QualificationCode
     title: Text200
@@ -121,7 +124,7 @@ class TrainingProgramCreate(BaseModel):
         return self
 
 
-class TrainingProgramUpdate(BaseModel):
+class TrainingProgramUpdate(AvailabilityPatch):
     title: Text200 | None = None
     description: Annotated[str, StringConstraints(strip_whitespace=True, max_length=5000)] | None = None
     delivery_mode: DeliveryMode | None = None
@@ -135,6 +138,8 @@ class TrainingProgramUpdate(BaseModel):
 
 
 class TrainingProgramPublic(BaseModel):
+    verification: VerificationPublic = Field(default_factory=VerificationPublic)
+    availability: AvailabilityPublic = Field(default_factory=AvailabilityPublic)
     id: int
     title: str
     description: str | None
@@ -175,7 +180,7 @@ class AssessmentCenterPublic(BaseModel):
     is_active: bool
 
 
-class AssessmentScheduleCreate(BaseModel):
+class AssessmentScheduleCreate(AvailabilityWrite):
     center_id: int
     qualification_code: QualificationCode
     scheduled_at: AwareDatetime
@@ -183,7 +188,7 @@ class AssessmentScheduleCreate(BaseModel):
     fee: Money | None = None
 
 
-class AssessmentScheduleUpdate(BaseModel):
+class AssessmentScheduleUpdate(AvailabilityPatch):
     scheduled_at: AwareDatetime | None = None
     slots: Annotated[int, Field(gt=0)] | None = None
     fee: Money | None = None
@@ -191,6 +196,8 @@ class AssessmentScheduleUpdate(BaseModel):
 
 
 class AssessmentSchedulePublic(BaseModel):
+    verification: VerificationPublic = Field(default_factory=VerificationPublic)
+    availability: AvailabilityPublic = Field(default_factory=AvailabilityPublic)
     id: int
     qualification: QualificationSummary
     center: SiteSummary
@@ -203,6 +210,7 @@ class AssessmentSchedulePublic(BaseModel):
 
 
 class ApplicationCreate(BaseModel):
+    request_id: uuid.UUID | None = None
     schedule_id: int
 
 
@@ -263,4 +271,6 @@ class NearbySearch(BaseModel):
 
 
 class ProgramSearch(NearbySearch):
+    provider_id: int | None = None
     delivery_mode: DeliveryMode | None = None
+    scholarship_only: bool = False

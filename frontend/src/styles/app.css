@@ -125,7 +125,6 @@
   --color-home-fill-blue: var(--home-fill-blue);
   --color-home-fill-violet: var(--home-fill-violet);
   --color-home-fill-muted: var(--home-fill-muted);
-  --shadow-home: var(--home-shadow);
 
   /* Shadows that recur. The rest are written where they're used, with --track-shadow-rgb. */
   --shadow-card: 0 2px 8px rgb(var(--track-shadow-rgb) / 0.02);
@@ -145,13 +144,15 @@
   --text-18: 1.125rem;
   --text-20: 1.25rem;
   --text-24: 1.5rem;
-  /* Home's fluid type scale (classic/landing.css). */
-  --text-home-xs: clamp(0.8rem, 0.78rem + 0.1vw, 0.86rem);
-  --text-home-base: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
-  --text-home-lg: clamp(1.15rem, 1.05rem + 0.45vw, 1.35rem);
-  --text-home-xl: clamp(1.5rem, 1.25rem + 1.1vw, 2.1rem);
-  --text-home-2xl: clamp(2rem, 1.5rem + 2.3vw, 3.3rem);
-  --text-home-3xl: clamp(2.6rem, 1.7rem + 4.2vw, 5.1rem);
+  /* Home's type scale (classic/landing.css). Six sizes do the page's work, far apart: a note, the text, a lead, a
+     stop's title, a section's title, and the page's title. Interface fragments ([data-ui]) keep the product's own
+     smaller sizes. */
+  --text-home-xs: 0.875rem;
+  --text-home-base: clamp(1.0625rem, 1rem + 0.2vw, 1.125rem);
+  --text-home-lg: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  --text-home-xl: clamp(1.6rem, 1.3rem + 1.2vw, 2.25rem);
+  --text-home-2xl: clamp(2.1rem, 1.4rem + 2.8vw, 3.75rem);
+  --text-home-3xl: clamp(2.75rem, 1.25rem + 5vw, 5.75rem);
 
   /* Corners, named by their radius in pixels (rounded-12). rounded-full makes pills and circles. */
   --radius-6: 6px;

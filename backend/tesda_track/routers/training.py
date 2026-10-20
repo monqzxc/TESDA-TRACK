@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Query, status
 
 from tesda_track.db import SessionDep
-from tesda_track.deps import require_admin
+from tesda_track.deps import require_permission
 from tesda_track.schemas.delivery import (ProgramSearch, RegionPublic, TrainingProgramCreate,
                                           TrainingProgramPublic, TrainingProgramUpdate, TrainingProviderCreate,
                                           TrainingProviderPublic, TrainingProviderUpdate)
@@ -11,7 +11,7 @@ from tesda_track.services import embeddings, sites, training
 from tesda_track.services.embeddings import EmbedderDep
 
 router = APIRouter(tags=["training"])
-admin_router = APIRouter(prefix="/admin", tags=["admin: training"], dependencies=[Depends(require_admin)])
+admin_router = APIRouter(prefix="/admin", tags=["admin: training"], dependencies=[Depends(require_permission("training:manage"))])
 
 
 @router.get("/regions", response_model=list[RegionPublic], tags=["catalog"])

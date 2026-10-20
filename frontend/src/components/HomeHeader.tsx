@@ -27,16 +27,16 @@ const SECTIONS = [
 // navy from the start.
 const topbar = cx(
   '[--band-accent:#6fe0d2] [--band-body:#cfdcf5] [--band:#0c2152] [--signal:#f5b83d] dark:[--band:#071740]',
-  'sticky top-0 z-20 bg-(--band) text-white transition-[background-color,box-shadow,backdrop-filter] duration-300 ease-[ease]',
+  'sticky top-0 z-20 bg-(--band) text-white transition-[background-color] duration-300 ease-[ease]',
+  // Scrolled, it's the plain navy bar, which the light sections pass under.
   '[&:not([data-scrolled]):has(~main_[data-home-hero])]:bg-transparent',
-  'data-scrolled:bg-[rgb(9_27_70/0.82)] data-scrolled:shadow-[0_10px_30px_-20px_#000000] data-scrolled:backdrop-blur-[14px]',
   '[&_:focus-visible]:rounded-6 [&_:focus-visible]:outline-3 [&_:focus-visible]:outline-offset-3 [&_:focus-visible]:outline-(--signal)',
 )
 
 const cta = cx(
-  'group inline-flex min-h-10 items-center gap-[0.55rem] rounded-14 bg-(--signal) px-4 py-[0.55rem] font-text text-[0.92rem] leading-none font-bold whitespace-nowrap text-[#0c2152] no-underline',
-  'shadow-[0_10px_24px_-12px_var(--signal)] transition-[translate,box-shadow] duration-250 ease-home',
-  'hovered:-translate-y-0.5 hovered:shadow-[0_16px_30px_-12px_var(--signal)]',
+  'group inline-flex min-h-10 items-center gap-[0.55rem] rounded-full bg-(--signal) px-[1.1rem] py-[0.55rem] font-text text-[0.92rem] leading-none font-bold whitespace-nowrap text-[#0c2152] no-underline',
+  '[transition:background-color_0.2s,scale_0.15s_var(--ease-home)]',
+  'active:scale-97 hovered:bg-[#f8c968]',
 )
 
 /**

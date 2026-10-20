@@ -68,7 +68,25 @@ const MANILA = site(1, 'Manila Welding Institute', 'NCR', 'Manila', 14.5995, 120
 const CEBU = site(2, 'Cebu Skills Center', 'VII', 'Cebu City', 10.3157, 123.8854)
 const MANILA_AC = site(1, 'Manila Assessment Center', 'NCR', 'Manila', 14.6, 120.98)
 const qualification = { code: 'SMAW-NCII', name: CATALOG[0].name, sector: CATALOG[0].sector }
+const SERVICE_EVIDENCE = {
+  verification: {
+    status: 'verified',
+    source_name: 'Test registry',
+    source_reference: 'test-service',
+    reviewed_at: '2020-01-01T00:00:00Z',
+    review_due_at: '2101-01-01T00:00:00Z',
+    requirements_reviewed: true,
+    requirements: [],
+  },
+  availability: {
+    status: 'available',
+    source_reference: 'test-intake',
+    checked_at: '2020-01-01T00:00:00Z',
+    valid_until: '2101-01-01T00:00:00Z',
+  },
+}
 const program = (id: number, provider: ReturnType<typeof site>) => ({
+  ...SERVICE_EVIDENCE,
   id,
   title: `Shielded Metal Arc Welding (SMAW) NC II · Batch ${id}`,
   description: null,
@@ -84,6 +102,7 @@ const program = (id: number, provider: ReturnType<typeof site>) => ({
   is_active: true,
 })
 const SCHEDULE = {
+  ...SERVICE_EVIDENCE,
   id: 21,
   qualification,
   center: summary(MANILA_AC),

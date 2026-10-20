@@ -1,0 +1,2462 @@
+[
+ {
+  "goal": "gusto kong maging stick welder sa planta",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I already hold an NC II in stick welding and now I want the NC III",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "SMAW",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "welder lang po ako sa maliit na talyer, gusto ko ng kahit anong papel na pwedeng ipakita",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "experience"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Hinihingi sa Qatar ang welding certificate, ano ang dapat kong kunin bilang baguhan?",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "MMAW NC IV ang target ko para maging inspector ng pipe welds",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "kaya kong mag-weld ng stainless na plato gamit ang electrode, gusto ko ng advanced na sertipiko",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task",
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto ko matuto ng CO2 welding gamit ang wire feeder",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I'm a plate welder using MIG and want to weld pipes in alloy steel too, NC III please",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "certification",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gmaw",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "flux core welding para sa structural steel ng tulay",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "fluxcor plate weldr gusto q",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to be a FCAW pipe welder with alloy steel experience",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "experience"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "argon welding ng stainless na tangke ang gusto kong matutunan",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "TIG pipe welder para sa alloy steel, NC IV na ang hanap ng kompanya sa Saudi",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tig weldr",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "typo"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong maghinang gamit ang acetylene at oxygen na tangke",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "oxy-acetylene welder",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gas welding NC II",
+  "accept": [
+   "GAS Welding NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Submerged arc welding",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong magwelding ng makakapal na tubo gamit ang submerged arc, yung may flux na pulbos",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to weld thick steel plates with an automatic machine that buries the arc under flux",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "machinist",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong maging machinist, wala pa akong karanasan",
+  "accept": [
+   "Machining NC I"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "lathe at milling machine ang gusto kong matutunan para makagawa ng piyesa ng makina",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "2 years na akong helper ng machinist, gusto ko na mag-NC III",
+  "accept": [
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to program CNC lathes for a factory abroad, I only know manual machines",
+  "accept": [
+   "CNC Lathe Machine Operation NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "abroad",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "CNC lathe NC III ang gusto kong makuha, kaya ko na ang basic",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "CNC milling operator",
+  "accept": [
+   "CNC Milling Machine Operation NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "may NC II na ako sa CNC milling, gusto kong mag-NC III para sa mas komplikadong piyesa",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "5-axis",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "short"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "5 axis CNC machine ang gusto kong matutunan, 3 taon na akong CNC operator sa pabrika",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task",
+   "experience"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to program five-axis machines that cut turbine blades and aircraft parts",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "wire cut edm operator",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong magpatakbo ng makinang pumuputol ng bakal gamit ang manipis na wire at kuryente",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "EDM sinker",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I burn cavities into hardened steel molds with a shaped electrode and want formal training",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "CAD/CAM",
+  "accept": [
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "short"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong gumawa ng drawing sa computer at gawing toolpath para sa CNC",
+  "accept": [
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "draftsman",
+  "accept": [
+   "Technical Drafting NC II",
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "ako ang gumuguhit ng plano ng mga piyesa ng makina gamit ang AutoCAD, gusto ko ng sertipiko",
+  "accept": [
+   "Mechanical Drafting NC I",
+   "Technical Drafting NC II",
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task",
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "die designer",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "8 taon na akong nasa tool room, gusto kong mag-design ng stamping dies at mag-supervise",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "mold designer",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto kong magdisenyo ng injection molds para sa pabrika ng plastik sa Japan",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong gumawa ng mga molde para sa plastik na bote",
+  "accept": [
+   "Moldmaking NC II",
+   "Mold Making NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "CNC machinist na gumagawa ng injection mold, NC III ang gusto ko",
+  "accept": [
+   "Mold Making NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tool and die maker",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gumagawa ako ng jigs at fixtures sa maliit na machine shop, gusto kong matutunan ang tamang paggawa ng tool at die",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task",
+   "experience"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "press operator",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong magpatakbo ng stamping press sa pabrika ng piyesa",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "preventive maintenance ng mga makina sa pabrika ang gusto kong trabaho, mag-lubricate at magpalit ng belt",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "plant maintenance mechanic",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "blacksmith",
+  "accept": [
+   "Forging NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong magpanday ng itak at pang-araro",
+  "accept": [
+   "Forging NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to run a forging machine that shapes red-hot steel into crankshaft blanks",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "pandayan ng tatay ko ang kinalakihan ko, pero gusto ko ng pormal na sertipiko sa forging",
+  "accept": [
+   "Forging NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "pagtunaw ng aluminyo at bakal sa furnace para sa mga casting",
+  "accept": [
+   "Foundry Melting/Casting NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "foundry alloy melter NC III",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "certification",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gumagawa ako ng sand mold para sa mga casting ng makina",
+  "accept": [
+   "Foundry Molding NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "jobbing foundry molder",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I make wooden patterns that foundries use to shape metal castings",
+  "accept": [
+   "Foundry Pattern Making NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "patternmaker ng die cast mold",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "heat treater",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong matutunan ang pag-harden at pag-temper ng bakal sa pugon",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "car mechanic na marunong mag-tune up at mag-oil change",
+  "accept": [
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "automotive servicing",
+  "accept": [
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "mekaniko",
+  "accept": [
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto kong magtrabaho sa car dealership, ako yung susuri ng bagong sasakyan bago ibigay sa customer",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "mekanikong kotse ang pangarap ko pero walang NC at 6 na taon na akong nag-aayos sa kalsada",
+  "accept": [
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "master technician o service shop supervisor ang goal ko",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I'm a service technician with NC II and want to become a service analyst for the shop",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "certification",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "engine mechanic",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "pang-engine repair ang gusto kong matutunan, mag-overhaul ng cylinder head at timing belt",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II",
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "rebuild ng engine block, regrind ng crankshaft, boring ng cylinder",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "engine rebuilder",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "brake pads, shock absorber, wheel alignment, yan ang trabaho na gusto ko",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "chassis technician",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong ayusin ang aircon, alternator at wiring ng mga sasakyan",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "auto electrician",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to diagnose steering, brake and suspension faults using scanners and alignment machines",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong mag-trace ng short circuit at sirang sensor sa kuryente ng sasakyan gamit ang scan tool",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "engine control specialist, ECU at fuel injection ang trabaho, NC III ang target",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "diagnosis ng engine",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to repaint cars with spray gun, primer and clear coat",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC I"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "magpinta ng kotse",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "automotive paint refinishing technician",
+  "accept": [
+   "Automotive Painting NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tatlong layer na pearl na pintura ng kotse ang gusto kong ma-master, may NC I na ako",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "single stage painter lang ako ngayon, gusto ko ng sertipiko",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to work the automated paint booth at a car assembly plant",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "operator ng painting machine sa pabrika ng sasakyan",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "hammering ng yupi sa pinto at hood ng kotse pagkatapos ng aksidente",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "body repair technician",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tinsmith",
+  "accept": [
+   "Automotive Body Repairing NC II",
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tinsmith sa pabrika ng sasakyan, nagpapanday ng body panel",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong mag-assemble ng alternator at starter motor sa pabrika",
+  "accept": [
+   "Automotive Electrical Assembly NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to certify as an automotive electrical assembly rectifier at NC III",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "certification",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "nag-a-assemble ako ng makina at transmission sa linya, NC II ang gusto ko",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task",
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "mechanical assembly rectifier",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "pagawaan ng wiring harness ng sasakyan ang gusto kong pasukan",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "harness assembler",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "kailangan ng speed limiter ng mga trak at bus ayon sa LTO, gusto kong magkabit nito",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "injection molding operator",
+  "accept": [
+   "Plastic Machine Operation NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong maging team leader ng plastic machine operators",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Process inspector sa linya ng pabrika ng piyesa ng sasakyan",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "quality inspection leader",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "mekaniko ng motor",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to open a motorcycle repair shop",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "nag-aayos ako ng generator at lawnmower, gusto ko rin matutong magkumpuni ng motor",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tsuper",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong magkaroon ng professional driver's license at maging family driver",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Grab driver ako ng 3 taon pero wala akong NC",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to drive passenger buses on long routes",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "drayber ng dump truck o delivery truck na malaki",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III",
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tractor head at container van ang gusto kong imaneho",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "truck driver in Dubai",
+  "accept": [
+   "Driving NC II",
+   "Driving (Passenger Bus/Straight Truck) NC III",
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "articulated vehicle driver",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "DRAYBER GUSTO KO MAGING",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "🔧🚗 GUSTO KO MAG-AYOS NG KOTSE!!!",
+  "accept": [
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "WELDER PO AKO, GUSTO KO NG NC",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title",
+   "experience"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto q mging machnist",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto ko mgng mekaniko ng motorsiklo",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "mag pinta ng sasakyan",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to be like the mechanic crew in a pit stop at a race",
+  "accept": [
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong maging parang si Iron Man na gumagawa ng sariling suit mula sa bakal, hinang at pagputol",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "pangarap kong gumawa ng sarili kong racing car gaya sa napanood kong video, yung makina muna",
+  "accept": [
+   "Auto Engine Rebuilding NC II",
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tulad ng blacksmith sa mga pelikulang medieval, gusto kong humubog ng espada",
+  "accept": [
+   "Forging NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Nag-stop ako sa pag-aaral noong high school dahil nagkasakit ang nanay ko, tapos nagtrabaho ako bilang pahinante ng truck sa probinsya. Ngayon gusto kong gawing mas maayos ang buhay namin, kaya balak kong matutong magmaneho ng trailer truck at kumuha ng lisensya para sa pang-malayuan na biyahe",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "long",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I worked three years as a utility worker in a small shop that repairs trucks and jeepneys. The owner taught me how to change oil, replace brakes and listen for engine problems, but I never finished any course. My cousin in Saudi says garages there require a certificate, so I want to formalize what I know about fixing engines before I apply",
+  "accept": [
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "long",
+   "experience",
+   "abroad"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Matagal na akong factory worker sa isang planta ng stamping, taga-feed lang ng sheet metal sa press. Napansin ko na ang mga taga-disenyo ng die ang pinakamalaki ang sweldo at sila ang tinatanong kapag may sira. Gusto ko ring matutunan kung paano gumuhit at magdisenyo ng mga die para sa stamping",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "tl",
+  "tags": [
+   "long",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "My father owned a small welding shop in our town and I grew up around sparks and metal, but he never let me touch the machines. Now that I am 22 and he is retired, I want to properly learn to weld, get certified, and maybe work on ships or offshore platforms where the pay is much higher than local gate and grill jobs",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "long",
+   "abroad",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Tuwing weekend tinutulungan ko ang kuya ko sa talyer niya ng motor. Natutunan ko na ang magpalit ng spark plug, chain at gulong, pero gusto ko ng tamang training para sa carburetor at fuel injection ng mga motorsiklo, tapos balak kong magbukas ng sarili kong shop dito sa barangay",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "long",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Matagal ko nang gustong mag-OFW sa Japan bilang CNC operator dahil may kamag-anak ako doon. Dito sa Pilipinas, operator ako ng lathe sa isang machine shop sa loob ng limang taon, pero puro manual lang. Gusto kong matutunan ang CNC lathe para may maipakita akong papel sa mga recruiter",
+  "accept": [
+   "CNC Lathe Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "long",
+   "abroad",
+   "experience"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong matutong magsuri ng sirang preno at manibela ng sasakyan gamit ang makina",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III",
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "sino ang pwedeng mag-diagnose ng sirang ilaw at wiring ng kotse, yun ang gusto kong maging",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "magdisenyo ng molde para sa plastik na kutsara, lapis at bote",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tagagawa ng molde",
+  "accept": [
+   "Moldmaking NC II",
+   "Mold Making NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto ko ng sertipiko bilang molder, matagal na akong gumagawa ng molde sa isang pabrika",
+  "accept": [
+   "Moldmaking NC II",
+   "Mold Making NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tagapagwelding ng bakal",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "manghihinang",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "mag-aral akong maghinang ng bakal para sa tulay at gusali sa abroad",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "abroad",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong magpatakbo ng makinang gumagawa ng piyesa ng bakal",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tagagawa ng piyesa ng makina gamit ang lathe",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "operator ng CNC",
+  "accept": [
+   "CNC Lathe Machine Operation NC II",
+   "CNC Milling Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "operator ng makinang pumuputol ng metal gamit ang kuryente at wire",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tagaguhit ng plano ng makina",
+  "accept": [
+   "Mechanical Drafting NC I",
+   "Technical Drafting NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong matutong magkumpuni ng makina ng motorsiklo at de-gasolinang pangtabas",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong maging tsuper ng bus na pa-probinsya",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "magmaneho ng trak na may kasamang trailer papunta sa pier",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong mag-drive ng pribadong sasakyan ng isang pamilya sa ibang bansa",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "magpatakbo ng makina na naghuhulma ng plastik sa pabrika",
+  "accept": [
+   "Plastic Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong magsuri ng kalidad ng mga piyesa habang ginagawa sa pabrika",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "trabaho sa linya ng pagawaan ng sasakyan, taga-kabit ng piyesa ng makina",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "taga-ayos ng yupi ng sasakyan",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "magpinta ng tatlong kulay na pearl sa kotse, may NC I at II na ako",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "certification",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tagapagkumpuni ng preno at suspension ng jeep at van",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "sa Dubai ako mag-aayos ng kotse, ano ang pwede kong kunin na kurso?",
+  "accept": [
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tagapag-ayos ng aircon ng kotse",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II",
+   "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tagaayos ng makina ng sasakyan at gusto kong matuto ng overhaul",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II",
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto ko lang maging katulong sa talyer, wala pa akong alam",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "pagawaan ng mga bahagi mula sa tinunaw na metal, ang gusto kong trabaho",
+  "accept": [
+   "Foundry Melting/Casting NC II",
+   "Foundry Molding NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "pagputol ng bakal gamit ang apoy ng asetilena",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto ko ng sertipiko sa pagpapatigas ng bakal, 5 taon na akong nasa pabrika ng piyesa",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "kabitan ng speed limiter ang mga bus na pinapasukan ko, gusto kong matutunan",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "pangarap kong maging kasing galing ng mga mekaniko sa karera ng kotse",
+  "accept": [
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "ang gusto ko ay hawakan ang CNC machine na parang robot sa mga pabrika ng ibang bansa",
+  "accept": [
+   "CNC Lathe Machine Operation NC II",
+   "CNC Milling Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "indirect",
+   "abroad"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto q mging weldr sa shipyrd",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "mekaniko ng motorsiklo, gsto ko po",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "GUSTO KO MAGING MACHINIST!!",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "pnta ng kotse gusto ko",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "🚛 trk drayber",
+  "accept": [
+   "Driving NC II",
+   "Driving (Passenger Bus/Straight Truck) NC III",
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "cnc lath oprator",
+  "accept": [
+   "CNC Lathe Machine Operation NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "typo",
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "engin rebuldr",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "typo",
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "TOOL AND DIE 🔩",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto ko mging blaksmit",
+  "accept": [
+   "Forging NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "drafting ng mekanikal na plano, gusto ko ng NC",
+  "accept": [
+   "Mechanical Drafting NC I",
+   "Technical Drafting NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "certification",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "press machine operator para sa stamping ng piyesa",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Mamasada sana ako ng jeep pero gusto ko may lisensya at sertipiko muna",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "mag-aayos sana ako ng motor ng tricycle sa amin pero gusto ko ng sertipiko",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "cnc edm",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III",
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "kaya kong mag-lathe, mag-grind at mag-bench work, 4 na taon na",
+  "accept": [
+   "Machining NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong mag-operate ng wire EDM, tapos hardened steel na pang-die",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tagapagpatakbo ng pandayan na gumagawa ng kutsilyo at karit",
+  "accept": [
+   "Forging NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong gumawa ng kahoy na modelo ng piyesa para hulmahan ng tinunaw na bakal",
+  "accept": [
+   "Foundry Pattern Making NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "taga-hulma ng buhangin para sa mga casting ng bakal",
+  "accept": [
+   "Foundry Molding NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tagakabit ng wire at kable sa loob ng sasakyan sa pabrika",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tagapag-assemble ng alternator sa pagawaan, gusto ko ng NC III",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "certification",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto q mging mekaniko ng kotse",
+  "accept": [
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "mag-aral ako ng pagsusuri at pagkumpuni ng makina ng sasakyan, pang-supervisor na",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "tl",
+  "tags": [
+   "certification",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tagagawa ng dies na ginagamit sa pagpiga ng lata at bakal",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "maintenance ng mga makina sa planta, taga-grasa at taga-palit ng sirang bahagi",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tagapamahala ng team ng mga operator ng makinang plastik",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "tagapag-ayos ng sirang pintura at gasgas ng sasakyan",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "5 taon na akong tsuper ng jeep, wala pa akong NC",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto q mging drayber ng bus",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "wldr po ako sa shipyrd, gusto q ng NC",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "certification",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "mekaniko ng aircon ng kotse gsto q",
+  "accept": [
+   "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "PAINT NG KOTSE GUSTO KO MATUTUNAN 🚗🎨",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto q mg-opr8 ng cnc milng",
+  "accept": [
+   "CNC Milling Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "task"
+  ],
+  "group": "G3"
+ }
+]

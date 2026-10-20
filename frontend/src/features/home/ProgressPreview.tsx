@@ -1,10 +1,9 @@
-import { useEffect, useState, type ReactElement } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
-import { Icon } from '../../components/Icon.tsx'
 import { en } from '../../copy/en.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
-import { PLAN_QUALIFICATION, type OnePerEntry } from './data.ts'
+import { PLAN_QUALIFICATION } from './data.ts'
 import { Glyph } from './Glyph.tsx'
 import { useReducedMotion } from './hooks/useReducedMotion.ts'
 import { useReveal } from './hooks/useReveal.ts'
@@ -14,12 +13,6 @@ import { homeButton, ui } from './styles.ts'
 
 const copy = en.home.progress
 
-const KEEPS_ICONS = [
-  <Icon key="checklist" name="checklist" />,
-  <Icon key="award" name="award" />,
-  <Glyph key="shield" name="shield" />,
-] satisfies OnePerEntry<typeof copy.keeps, ReactElement>
-
 /** The example plan's steps 1 and 2 are done and step 3 is next. */
 const DONE = 2
 
@@ -28,7 +21,7 @@ type StepState = 'done' | 'next' | 'to-do'
 // A step's mark on the line: done steps get a tick and the next one a ring.
 const MARKS: Record<StepState, string> = {
   done: 'bg-home-teal shadow-none after:scale-100',
-  next: 'bg-home-surface shadow-[inset_0_0_0_2px_var(--home-signal),0_0_0_5px_color-mix(in_srgb,var(--home-signal)_22%,transparent)] after:scale-0',
+  next: 'bg-home-surface shadow-[inset_0_0_0_3px_var(--home-signal)] after:scale-0',
   'to-do': 'bg-home-surface shadow-[inset_0_0_0_2px_var(--home-border)] after:scale-0',
 }
 
@@ -66,6 +59,7 @@ export function ProgressPreview() {
           ref={planRef}
           data-reveal="left"
           data-in={planIn || undefined}
+          data-ui=""
           className={cx(revealClasses('left'), ui.card, 'relative')}
         >
           <div className="flex items-center gap-[0.9rem]">
@@ -82,7 +76,7 @@ export function ProgressPreview() {
               <strong className="block font-display text-[1.1rem] leading-[1.2] font-bold text-home-ink">
                 {copy.planTitle}
               </strong>{' '}
-              <small className="text-[0.82rem] text-home-muted">{PLAN_QUALIFICATION}</small>
+              <small className="text-13 text-home-muted">{PLAN_QUALIFICATION}</small>
             </div>
           </div>
           {/* The steps, on a line. */}
@@ -108,7 +102,7 @@ export function ProgressPreview() {
                     <strong className="block leading-[1.3] font-bold text-home-ink">
                       {step.title}
                     </strong>{' '}
-                    <small className="mt-[0.15rem] block text-[0.85rem] leading-[1.4] text-home-muted">
+                    <small className="mt-[0.15rem] block text-14 leading-[1.4] text-home-muted">
                       {step.text}
                     </small>
                   </div>
@@ -119,31 +113,24 @@ export function ProgressPreview() {
         </div>
         <div>
           <Reveal className={ui.sectionHead}>
-            <div className={ui.eyebrow}>{copy.eyebrow}</div>
             <h2 id="progress-title" className={ui.sectionTitle}>
               {copy.heading}
             </h2>
             <p className={ui.sectionLead}>{copy.lead}</p>
           </Reveal>
-          {/* What an account keeps. */}
-          <ul className="mt-[1.8rem] mb-0 grid list-none gap-4 p-0">
+          {/* What an account keeps: three short paragraphs, each led by its subject in bold. */}
+          <ul className="mt-9 mb-0 grid max-w-[34rem] list-none gap-5 p-0">
             {copy.keeps.map((keep, i) => (
-              <Reveal
-                as="li"
-                key={keep.title}
-                order={i + 1}
-                className="grid grid-cols-[40px_minmax(0,1fr)] items-start gap-[0.9rem] [&_svg]:size-10 [&_svg]:rounded-12 [&_svg]:bg-home-blue-soft [&_svg]:stroke-2 [&_svg]:p-[9px] [&_svg]:text-home-blue"
-              >
-                {KEEPS_ICONS[i]}
-                <div>
-                  <strong className="block text-home-ink">{keep.title}</strong>{' '}
-                  <span className="text-[0.95rem]">{keep.text}</span>
-                </div>
+              <Reveal as="li" key={keep.title} order={i + 1}>
+                <strong className="block text-home-base font-bold text-home-ink">
+                  {keep.title}
+                </strong>{' '}
+                <span className="mt-[0.2rem] block">{keep.text}</span>
               </Reveal>
             ))}
           </ul>
           <Reveal order={4} className={ui.sectionCta}>
-            <Link to={paths.progress} className={homeButton('outline')}>
+            <Link to={paths.progress} className={homeButton('quiet')}>
               {copy.cta}
               <Glyph name="arrow" />
             </Link>

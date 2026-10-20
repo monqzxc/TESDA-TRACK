@@ -3,12 +3,12 @@ from typing import Annotated
 from fastapi import APIRouter, Depends, Query
 
 from tesda_track.db import SessionDep
-from tesda_track.deps import require_admin
-from tesda_track.schemas.reports import (CompetencyGap, DateRange, FeedbackSummary, Funnel, Overview,
+from tesda_track.deps import require_permission
+from tesda_track.schemas.reports import (CompetencyGap, DateRange, FeedbackSummary, Funnel, MatchingReport, Overview,
                                          QualificationDemand, RegionSupply, SkillGapQuery)
 from tesda_track.services import reports
 
-router = APIRouter(prefix="/admin/reports", tags=["admin: reports"], dependencies=[Depends(require_admin)])
+router = APIRouter(prefix="/admin/reports", tags=["admin: reports"], dependencies=[Depends(require_permission("reports:read"))])
 
 Period = Annotated[DateRange, Query()]
 
@@ -48,3 +48,9 @@ def feedback(session: SessionDep, period: Period):
 def supply(session: SessionDep):
     """Training and assessment capacity per region right now."""
     return reports.supply(session)
+
+
+@router.get("/matching", response_model=MatchingReport)
+def matching(session: SessionDep, period: Period):
+    """Goal-matching requests and the share that found no match, per day. Anonymous counts only."""
+    return reports.matching(session, period)

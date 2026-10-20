@@ -19,7 +19,6 @@ from sqlmodel import Session, select
 from tesda_track.config import get_settings
 from tesda_track.models import (AssessmentApplication, AssessmentCenter, AssessmentSchedule, Goal, Learner,
                                 ReadinessCheck, RecommendationSession, Region, TrainingProgram, TrainingProvider, utcnow)
-from tesda_track.schemas.delivery import ApplicationReview
 from tesda_track.schemas.records import ReadinessCheckCreate, RecommendationSessionCreate, RecommendationSessionUpdate
 from tesda_track.security import hash_password
 from tesda_track.services import analysis, assessments, catalog, readiness_checks, recommendation_sessions
@@ -146,12 +145,17 @@ def _readiness_and_assessment(session: Session, rng: random.Random, learner: Lea
         AssessmentSchedule.status == "open")).first()
     if schedule is None or assessments.seats_taken(session, schedule.id) >= schedule.slots:
         return
-    application = assessments.apply(session, learner, schedule.id)
+    # Fictional reporting activity is constructed here, behind load()'s production guard.
+    # Never authorize a demo service or bypass the public eligibility checks for real users.
+    application = AssessmentApplication(learner_id=learner.id, schedule_id=schedule.id,
+                                        reviewer_note="[Demo] Synthetic activity; not a real assessment.")
+    session.add(application)
     if rng.random() < 0.7:
-        assessments.review(session, application, ApplicationReview(status="approved"))
+        application.status = "approved"
         if rng.random() < 0.5:
-            result = "competent" if rng.random() < 0.75 else "not_yet_competent"
-            assessments.review(session, application, ApplicationReview(status="completed", result=result))
+            application.status = "completed"
+            application.result = "competent" if rng.random() < 0.75 else "not_yet_competent"
+    session.flush()
 
 
 def remove(session: Session) -> DemoReport:

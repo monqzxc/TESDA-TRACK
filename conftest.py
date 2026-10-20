@@ -28,6 +28,9 @@ os.environ.update({
     "SEMANTIC_SEARCH_ENABLED": "false",
     "SKILLS_BRIDGE_BASE_URL": "",
     "SKILLS_BRIDGE_API_TOKEN": "",
+    "SKILLS_BRIDGE_CLIENT_ID": "",
+    "SKILLS_BRIDGE_CLIENT_SECRET": "",
+    "PUBLIC_BASE_URL": "http://testserver",
 })
 
 
@@ -71,6 +74,19 @@ def session(engine):
         with Session(bind=connection, join_transaction_mode="create_savepoint") as session:
             yield session
         transaction.rollback()
+
+
+@pytest.fixture
+def clean_match_stats(engine):
+    """The goal-matching counter commits on its own session, so a test asserting its totals starts and ends with
+    an empty table rather than whatever earlier tests searched."""
+    def clear():
+        with engine.begin() as connection:
+            connection.execute(text("DELETE FROM match_daily_stat"))
+
+    clear()
+    yield
+    clear()
 
 
 @pytest.fixture

@@ -1,5 +1,5 @@
-import { useQueryClient } from '@tanstack/react-query'
-import { useCallback, useEffect, useState } from 'react'
+import { useQueryClient, type QueryClient } from '@tanstack/react-query'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { failureMessage } from '../../auth/fields.tsx'
 import { sessionKey, type Learner } from '../../auth/session.ts'
 import { useAuth, type Notice } from '../../auth/useAuth.ts'
@@ -7,6 +7,11 @@ import { en } from '../../copy/en.ts'
 import { startSession, submitReadiness, updateSession } from './api.ts'
 import { answeredProfile, sameSessionState, sessionState } from './rules.ts'
 import { useFinderStore, type Profile } from './store.ts'
+import {
+  createWriteRequestIds,
+  requireCurrentLearner,
+  type WriteRequestIds,
+} from './writeRequests.ts'
 
 const copy = en.finder.save
 
@@ -73,13 +78,16 @@ export function useSaveJourney() {
   const queryClient = useQueryClient()
   const { notify } = useAuth()
   const [pending, setPending] = useState(false)
+  const requests = useRef(createWriteRequestIds())
 
   const save = useCallback(
     (code: string | null) => {
       const learner = queryClient.getQueryData<Learner | null>(sessionKey)
       if (!learner) return Promise.resolve()
       setPending(true)
-      return saveJourney(learner, code, notify).finally(() => setPending(false))
+      return saveJourney(learner, code, notify, queryClient, requests.current).finally(() =>
+        setPending(false),
+      )
     },
     [queryClient, notify],
   )
@@ -91,16 +99,22 @@ async function saveJourney(
   learner: Learner,
   code: string | null,
   notify: (notice: Notice) => void,
+  queryClient: QueryClient,
+  requests: WriteRequestIds,
 ): Promise<void> {
   const start = useFinderStore.getState()
   if (!start.journey) return
   const saved: string[] = []
   try {
+    requireCurrentLearner(queryClient, learner.id)
     let sessionId = ownsSession(learner, start.journey.sessionOwner)
       ? start.journey.sessionId
       : null
     if (sessionId === null) {
-      sessionId = (await startSession(start.journey.query)).id
+      const requestId = requests.for('goal', learner.id, { query: start.journey.query })
+      sessionId = (await startSession(start.journey.query, requestId)).id
+      requests.complete('goal', requestId)
+      requireCurrentLearner(queryClient, learner.id)
       useFinderStore.getState().setSession(sessionId, learner.id)
     }
     saved.push(copy.goal)
@@ -109,7 +123,9 @@ async function saveJourney(
     const profile = answeredProfile(start.journey.profile, state.experience, state.certification)
     const next = sessionState(profile, code)
     if (!sameSessionState(state.journey?.synced ?? null, next)) {
+      requireCurrentLearner(queryClient, learner.id)
       await updateSession(sessionId, next)
+      requireCurrentLearner(queryClient, learner.id)
       useFinderStore.getState().setSynced(next)
     }
     if (code !== null || state.experience !== null || state.certification !== null) {
@@ -119,7 +135,15 @@ async function saveJourney(
     // Only a check the learner submitted; answers still being given stay a draft.
     const check = code === null ? undefined : state.checks[code]
     if (code !== null && check && !check.saved) {
-      await submitReadiness(code, check.answers, { sessionId })
+      requireCurrentLearner(queryClient, learner.id)
+      const requestId = requests.for('readiness', learner.id, {
+        code,
+        answers: check.answers,
+        sessionId,
+      })
+      await submitReadiness(code, check.answers, { sessionId, requestId })
+      requests.complete('readiness', requestId)
+      requireCurrentLearner(queryClient, learner.id)
       useFinderStore.getState().markCheckSaved(code)
       saved.push(copy.check)
     }
@@ -130,7 +154,7 @@ async function saveJourney(
       message: copy.failed(saved, failureMessage(error)),
       action: {
         label: en.finder.summary.retry,
-        onPress: () => void saveJourney(learner, code, notify),
+        onPress: () => void saveJourney(learner, code, notify, queryClient, requests),
       },
     })
   }

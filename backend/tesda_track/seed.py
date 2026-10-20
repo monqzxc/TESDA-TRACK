@@ -4,6 +4,8 @@ The seed files are the source of truth for regions and the qualification catalog
 disappear from the files are archived (is_active = false) rather than deleted, so learner records that
 point at them stay valid. Default pathways are only created where missing, never overwritten, because
 administrators curate them afterwards.
+Sample role accounts are created from sample_accounts.json outside production;
+existing accounts and passwords are preserved.
 """
 import argparse
 import json
@@ -18,12 +20,20 @@ from typing import Literal
 from pydantic import BaseModel, Field, TypeAdapter, ValidationError
 from sqlmodel import Session, select
 
+from tesda_track.services.official_codes import CrosswalkReport, import_crosswalk
+
 from tesda_track.models import (DELIVERY_MODES, ROUTES, STEP_KINDS, AssessmentCenter, AssessmentSchedule,
                                 Competency, Pathway, PathwayStep, Qualification, Region, Sector, TrainingProgram,
                                 TrainingProvider)
 
 SEED_DIR = Path(__file__).resolve().parents[1] / "seed"
 logger = logging.getLogger(__name__)
+
+
+@dataclass
+class AccountSeedReport:
+    created: int = 0
+    skipped: int = 0
 
 
 class SeedError(ValueError):
@@ -355,8 +365,8 @@ def _read(seed_dir: Path, name: str) -> object:
     return json.loads((seed_dir / name).read_text(encoding="utf-8"))
 
 
-def seed_all(session: Session, seed_dir: Path = SEED_DIR) -> dict[str, SyncReport | DeliverySyncReport]:
-    reports: dict[str, SyncReport | DeliverySyncReport] = {
+def seed_all(session: Session, seed_dir: Path = SEED_DIR) -> dict[str, SyncReport | DeliverySyncReport | CrosswalkReport | AccountSeedReport]:
+    reports: dict[str, SyncReport | DeliverySyncReport | CrosswalkReport | AccountSeedReport] = {
         "regions": sync_regions(session, _read(seed_dir, "regions.json")),
         "qualifications": sync_catalog(session, parse_catalog(_read(seed_dir, "qualifications.json"))),
         "pathways": create_missing_pathways(session, _read(seed_dir, "pathways.json")),
@@ -368,6 +378,23 @@ def seed_all(session: Session, seed_dir: Path = SEED_DIR) -> dict[str, SyncRepor
             logger.warning("Skipping the development delivery-site fixture in production; load an approved T2MIS import instead.")
         else:
             reports["delivery"] = sync_delivery_sites(session, _read(seed_dir, "delivery_sites.json"))
+    crosswalk = seed_dir / "sources" / "qualification_code_crosswalk.csv"
+    if crosswalk.exists():
+        reports["official_codes"] = import_crosswalk(session, crosswalk)
+    accounts_file = seed_dir / "sample_accounts.json"
+    if accounts_file.exists():
+        from tesda_track.config import get_settings
+        from tesda_track.seed_accounts import SeedAccount, seed_accounts
+
+        if get_settings().environment == "production":
+            logger.warning("Skipping sample accounts in production.")
+        else:
+            try:
+                accounts = TypeAdapter(list[SeedAccount]).validate_json(
+                    accounts_file.read_text(encoding="utf-8-sig"))
+            except ValidationError:
+                raise SeedError("Invalid sample_accounts.json: check emails, roles, names and passwords.") from None
+            reports["accounts"] = AccountSeedReport(**seed_accounts(session, accounts))
     return reports
 
 
@@ -382,6 +409,12 @@ def main() -> None:
         reports = seed_all(session, args.dir)
         session.commit()
     for name, report in reports.items():
+        if isinstance(report, AccountSeedReport):
+            logger.info("%s: %d created, %d skipped", name, report.created, report.skipped)
+            continue
+        if isinstance(report, CrosswalkReport):
+            logger.info("%s: %d linked, skipped %s", name, report.linked, report.skipped)
+            continue
         logger.info("%s: %d created, %d updated, %d archived", name, report.created, report.updated, report.archived)
 
 

@@ -96,6 +96,10 @@ export const routes: RouteObject[] = [
                 ...page('signIn', () => import('./features/account/SignInPage.tsx')),
               },
               {
+                path: paths.privacy,
+                ...page('privacy', () => import('./features/privacy/PrivacyPage.tsx')),
+              },
+              {
                 path: '*',
                 ...page('notFound', () => import('./features/not-found/NotFoundPage.tsx')),
               },

@@ -1,0 +1,2181 @@
+[
+ {
+  "goal": "I like fixing laptops and desktop computers that won't turn on",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "computer technician",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong matutong mag-assemble ng computer at mag-install ng Windows",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "marunong na akong mag-format ng PC, gusto ko lang ng certificate para tanggapin sa shop",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto q mging computr tekniscian",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "typo"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to work as a call center agent",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa BPO kasi magaling akong mag-English at kaya ko ang graveyard shift",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "kol sentr ejent",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I grew up speaking English at home, and I want a night job answering customers' calls from the US, and I have never worked in an office before",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience",
+   "abroad"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "may NC II ba sa customer service sa phone? yan ang gusto kong kunin",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "certification"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to be the person who spots hackers trying to get into a company network",
+  "accept": [
+   "Cyber Threat Mitigation NC II",
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "en",
+  "tags": [
+   "task",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "cybersecurity analyst",
+  "accept": [
+   "Cyber Threat Mitigation NC II",
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magmonitor ng mga alert sa security ng kompanya at mag-report ng kahina-hinalang activity",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "entry-level cyber help desk, wala pa akong experience sa security",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to respond to cyber attacks and remove malware from company servers",
+  "accept": [
+   "Cyber Threat Mitigation NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto ko maging parang si Elliot sa Mr. Robot pero legal, taga-protekta ng systems",
+  "accept": [
+   "Cyber Threat Mitigation NC II",
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to build websites and web apps for clients",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "web developer",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong matutong gumawa ng website gamit ang HTML, CSS at JavaScript",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "freelance web designer ako for 2 years, self-taught, wala akong NC",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto ko mag-web dev para makapag-remote work sa company abroad",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "wbsite bilder",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to program business applications in C# for a company",
+  "accept": [
+   "Programming (.Net Technology) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "dotnet programmer",
+  "accept": [
+   "Programming (.Net Technology) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong matutong mag-code ng desktop at web apps gamit ang .NET",
+  "accept": [
+   "Programming (.Net Technology) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to write Java programs for banks and enterprise systems",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "java dev po",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "nag-aaral ako ng Java mag-isa sa YouTube, gusto ko ng pormal na training at NC",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I manage the database of our small company's sales, and I want to write the queries and stored procedures like a professional",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto ko maging database programmer na gumagamit ng Oracle",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "orakel databes programer",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to program video games",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "game dev",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong gumawa ng sarili kong mobile game gaya ng Mobile Legends",
+  "accept": [
+   "Game Programming NC III",
+   "2D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "indirect",
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "GUSTO KO MAGING GAME PROGRAMMER!!! 🎮🎮",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "typo"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I test games for bugs and I want to learn to code them myself",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience",
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I love drawing 2D characters and backgrounds for mobile games",
+  "accept": [
+   "2D Game Art Development NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong maging 2D game artist",
+  "accept": [
+   "2D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to model and texture 3D characters and props for games",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "3d game artist po sana",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong gumawa ng mga 3D na bagay para sa laro, tulad ng espada, bahay at halimaw",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to draw cartoons frame by frame, starting as an in-betweener",
+  "accept": [
+   "Animation NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong maging animator, wala pa akong alam kaso mahilig ako sa anime",
+  "accept": [
+   "Animation NC II",
+   "2D Animation NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "indirect",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "clean-up artist sa animation studio",
+  "accept": [
+   "Animation NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I make motion graphics and 2D animated videos for YouTube",
+  "accept": [
+   "2D Animation NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task",
+   "experience"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "2D animator na may experience na sa Flash, gusto ko NC III",
+  "accept": [
+   "2D Animation NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "certification",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to work for an animation studio doing 2D animation for TV series",
+  "accept": [
+   "2D Animation NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "3D animator ako sa Blender, gusto ko mag-rigging at render para sa pelikula",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to be a 3D modeller or rigger",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "3D animashon",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong gumawa ng mga movie effects at cartoon na 3D tulad ng Pixar",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I design logos, posters and social media graphics",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "graphic designer",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gumagawa ako ng layout ng flyers at tarpaulin gamit ang Photoshop, 3 years na, gusto ko ng NC III",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "certification",
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "grapik disayner gusto q",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to be a graphic artist for an advertising company in Dubai",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to take wedding and event photos for a living",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "photographer",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong matutong mag-camera, mag-ilaw sa studio at mag-edit ng litrato",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "pinagbibili ko na yung photos ko sa debut at binyag, gusto ko ng certificate para sa mas malaking client",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "potograper",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to travel the world and take pictures like National Geographic photographers",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I edit videos for my church and I want to do it professionally for TV and film",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience",
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong maging editor ng pelikula at mag-mix ng tunog",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "content creator ako at nag-eedit ng vlogs, gusto ko matutunan ang tamang post-production",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "bidyo edtor",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to help set up sound systems for concerts and work as a live sound assistant",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "en",
+  "tags": [
+   "task",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa recording studio bilang assistant",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "sound crew ako sa mga events, gusto ko ng NC I",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "audyo sawnd",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to operate the stage lights at concerts and theater shows",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong maging lighting technician sa mga event at teatro",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "taga-ilaw sa stage",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to weave traditional blankets using the backstrap loom of my ancestors",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong matutong humabi gamit ang backstrap loom",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "ang lola ko ay manghahabi ng telang Cordillera at gusto ko ring maghabi gamit ang backstrap para sa pamilya",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to weave cloth like inabel on a big wooden upright loom",
+  "accept": [
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "manghahabi",
+  "accept": [
+   "Handloom Weaving (Upright) NC II",
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa handloom weaving center, yung may malaking habihan na patayo",
+  "accept": [
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I install fiber optic internet lines for subscribers",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "fiber optic technician",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong mag-splice ng fiber cable at mag-install ng fiber sa bahay",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I install copper telephone lines and DSL broadband for homes",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong maging telephone lineman na nagkakabit ng linya at DSL",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "nagkakabit ng kable ng telepono sa poste",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I mount and align the wireless antennas that give homes internet",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong maging broadband installer ng wireless internet sa mga barangay",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I install cable TV lines and set-top boxes in houses",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magkabit ng cable TV sa mga bahay",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "kable tibi installer",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to maintain a cable TV network's headend and outside plant",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "cable TV system technician with years of line work, gusto ko ng NC III",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "catv supervisor",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to work from home coding medical records and claims for a US company",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task",
+   "abroad"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "medical coder",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa ospital pero hindi nars, yung nag-aasikaso ng medical codes ng diagnosis para sa insurance",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task",
+   "indirect"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I type out what doctors dictate from audio recordings",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong maging medical transcriptionist",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "medikal transkripsyon",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to work on a production line assembling electronic parts in a factory",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Electronics Front-of-line Operation NC II",
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa semiconductor company sa Cavite bilang operator",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I test and package chips at the end of the semiconductor line",
+  "accept": [
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong mag-operate sa front-of-line ng semiconductor, wafer at die attach",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "electronics back-end operator ako dati sa contract, gusto ko ng NC II",
+  "accept": [
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "certification",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "front-of-line operator sa electronics",
+  "accept": [
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I work in a hard disk drive plant and want to be certified for the front-of-line process",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "hard disk drive operator",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to maintain and fix the machines on a semiconductor production line",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "machine technician sa semiconductor, gusto ko ng NC III",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "certification"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to wire houses and install outlets, switches and breakers",
+  "accept": [
+   "Electrical Installation and Maintenance NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "electrician",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong maging electrician sa bahay at gusali",
+  "accept": [
+   "Electrical Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "10 years na akong electrician na walang NC, gusto kong maging foreman",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "may NC II na ako sa electrical, gusto ko ng NC III para maging leadman",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "kuryente",
+  "accept": [
+   "Electrical Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "elektrisyan na gusto mag-abroad sa Saudi",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "job_title",
+   "typo"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to install and program automated machines with sensors and PLCs",
+  "accept": [
+   "Mechatronics Servicing NC II",
+   "Mechatronics Servicing NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "mechatronics technician",
+  "accept": [
+   "Mechatronics Servicing NC II",
+   "Mechatronics Servicing NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong maging mechatronics technician sa pabrika pero wala pa akong NC",
+  "accept": [
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "experience"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "may Mechatronics NC II na ako, ano ang susunod na level?",
+  "accept": [
+   "Mechatronics Servicing NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to design and supervise whole automation systems in a factory with my NC III",
+  "accept": [
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "certification",
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I'm a senior TV and audio-video technician and I want to supervise a repair team",
+  "accept": [
+   "Consumer Electronics Servicing NC III",
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong maging senior technician ng mga appliance at cellphone sa isang service center",
+  "accept": [
+   "Consumer Electronics Servicing NC III",
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "mag-assemble at mag-ayos ng electric fan, rice cooker at TV",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I repair TVs, radios and DVD players for neighbors, no NC yet",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience",
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "elektronik teknisyan",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I repair cracked phone screens and charging ports at a stall in the mall",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task",
+   "experience"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "cellphone technician",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong matutong mag-ayos ng cellphone at tablet",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "selpon tekniko gusto q",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I clean and recharge the window-type and split-type air conditioners of neighbors",
+  "accept": [
+   "RAC Servicing (DomRAC) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong maging aircon technician sa bahay at maliit na tindahan",
+  "accept": [
+   "RAC Servicing (DomRAC) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "nag-aayos ako ng ref at aircon ng kapitbahay, gusto kong magkaroon ng NC II",
+  "accept": [
+   "RAC Servicing (DomRAC) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "certification",
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "aircon tech",
+  "accept": [
+   "RAC Servicing (DomRAC) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to install and maintain chillers and central air-conditioning in malls and offices",
+  "accept": [
+   "Commercial Air-conditioning Installation and Servicing NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto ko maging HVAC technician sa mga gusali at hotel, may NC II na ako sa DomRAC",
+  "accept": [
+   "Commercial Air-conditioning Installation and Servicing NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I maintain walk-in freezers and display chillers in supermarkets",
+  "accept": [
+   "Commercial Refrigeration Installation and Servicing NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task",
+   "experience"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "commercial refrigeration technician sa abroad",
+  "accept": [
+   "Commercial Refrigeration Installation and Servicing NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to maintain the refrigeration of an ice plant",
+  "accept": [
+   "Ice Plant Refrigeration Servicing NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa ice plant, sa mga compressor at ammonia",
+  "accept": [
+   "Ice Plant Refrigeration Servicing NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I fix the aircon of cars, buses and vans",
+  "accept": [
+   "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "car aircon technician",
+  "accept": [
+   "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "nag-aayos ng aircon ng sasakyan, gusto ko ng NC II",
+  "accept": [
+   "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to repair the cooling units of reefer trucks that carry frozen goods",
+  "accept": [
+   "Land-Based Transport Refrigeration Servicing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "reefer van mekaniko, taga-ayos ng freezer ng truck",
+  "accept": [
+   "Land-Based Transport Refrigeration Servicing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "typo"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I make and install the ducts for air conditioning and ventilation systems",
+  "accept": [
+   "Air Duct Servicing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong maging tinsmith ng duct ng aircon",
+  "accept": [
+   "Air Duct Servicing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "duct installer",
+  "accept": [
+   "Air Duct Servicing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "short"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "Ako po ay 19 anyos at nakatapos ng senior high. Nahihilig ako sa gadgets mula bata pa at lagi akong tinatawag ng mga kapitbahay para ayusin ang kanilang computer at wifi. Gusto kong magkaroon ng tunay na training at certificate para makapagtrabaho sa isang computer shop o IT company.",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "long",
+   "experience",
+   "certification"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "My father worked abroad for many years as an air-conditioning helper, and he always told me this trade never runs out of work. I finished high school last year, I have no experience yet, and now I want to learn how to install and repair split-type and window-type air conditioners so I can start a small business at home.",
+  "accept": [
+   "RAC Servicing (DomRAC) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "long"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "Dati akong nagtrabaho sa call center pero na-lay off noong pandemic, tapos nag-aral ako mag-edit ng video sa phone habang walang trabaho. Ngayon marami nang nagpapagawa ng wedding video at vlog sa akin, kaya gusto kong pag-aralan ang tamang post-production, color grading at sound mixing para tumaas ang singil ko.",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "long",
+   "experience"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "When I was a kid I used to copy my favorite cartoon characters in my notebooks, and my classmates said I should become an animator someday. Now I am a college dropout working in a store, and I still draw every night, so I want to study how to make 3D characters move for films and games.",
+  "accept": [
+   "3D Animation NC III",
+   "3D Game Art Development NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "long",
+   "indirect",
+   "experience"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "Mahigit sampung taon na akong nagtatrabaho bilang electrician sa isang pabrika, taga-ayos ng motor at control panel, pero wala akong kahit anong NC o diploma. Gusto kong magkaroon ng papel para maging foreman dito o makapag-apply sa ibang bansa kung saan hinihingi ang sertipikasyon.",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "long",
+   "experience",
+   "abroad",
+   "certification"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "MAG-AARAL AKO NG AIRCON!!! ❄️",
+  "accept": [
+   "RAC Servicing (DomRAC) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "🎥 gusto ko mag video edit 🎬",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "PHOTOGRAPHER GUSTO KO MAGING 📷",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong matutong mag-ayos ng sirang kompyuter at mag-kabit ng network sa opisina",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "nais kong sumagot ng tawag ng mga kustomer sa gabi para sa isang kumpanya sa ibang bansa",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task",
+   "abroad"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong gumawa ng mga pahina sa internet para sa maliliit na negosyo",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magsulat ng mga programa para sa mga laro sa cellphone",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "mahilig akong gumuhit ng mga tauhan na gumagalaw, gusto kong gawing hanapbuhay",
+  "accept": [
+   "Animation NC II",
+   "2D Animation NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong gumawa ng mga poster, logo at pabalat ng libro gamit ang kompyuter",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "kumukuha ako ng litrato sa kasal at binyag ng mga kamag-anak, gusto kong pag-aralan nang maayos",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task",
+   "experience"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa pagpapatakbo ng ilaw at tunog sa mga konsiyerto",
+  "accept": [
+   "Lighting for Live Performances NC II",
+   "Audio Production Services NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong maghabi ng tela gamit ang habihan na patayo",
+  "accept": [
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "nagkakabit kami ng fiber optic na internet sa mga bahay, gusto ko ng sertipiko",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task",
+   "certification"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magkabit ng kable ng telebisyon sa mga bahay sa subdibisyon",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa pabrika ng chips sa Laguna, taga-gawa ng mga piyesa ng kompyuter",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Back-end Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "nag-aayos ako ng mga sirang kuryente sa bahay, gusto kong magkaroon ng lisensya",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task",
+   "experience",
+   "certification"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong mag-ayos ng mga makinang awtomatiko sa pabrika",
+  "accept": [
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "nag-aayos ako ng sirang telebisyon, radyo at plantsa sa amin",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task",
+   "experience"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong mag-ayos ng sirang cellphone sa harap ng bahay namin",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong mag-ayos ng aircon at ref sa mga bahay",
+  "accept": [
+   "RAC Servicing (DomRAC) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa malalaking aircon ng mga mall at ospital",
+  "accept": [
+   "Commercial Air-conditioning Installation and Servicing NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "nag-aayos ako ng malalaking freezer ng mga tindahan, gusto ko ng papel na patunay",
+  "accept": [
+   "Commercial Refrigeration Installation and Servicing NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task",
+   "experience",
+   "certification"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa pagawaan ng yelo at ayusin ang mga makina nito",
+  "accept": [
+   "Ice Plant Refrigeration Servicing NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong mag-ayos ng lamig ng aircon sa kotse at bus",
+  "accept": [
+   "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong gumawa at magkabit ng duct ng aircon na gawa sa yero",
+  "accept": [
+   "Air Duct Servicing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "nais kong mag-type ng sinasabi ng doktor mula sa recording",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magtrabaho sa ospital sa pag-aayos ng papeles at singil sa insurance",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magbantay ng seguridad ng kompyuter ng kumpanya laban sa mga magnanakaw sa internet",
+  "accept": [
+   "Cyber Threat Monitoring NC I",
+   "Cyber Threat Mitigation NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong gumawa ng modelo ng tao at halimaw sa kompyuter para sa pelikula",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong mag-edit ng pelikula at music video",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "gusto kong magtrabaho bilang aircon technician sa Dubai o Qatar",
+  "accept": [
+   "RAC Servicing (DomRAC) NC II",
+   "Commercial Air-conditioning Installation and Servicing NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "I want to work as a semiconductor operator in Singapore or Malaysia",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G6"
+ },
+ {
+  "goal": "Matagal na akong nangangarap na makapagtrabaho sa ibang bansa, pero wala akong pambayad sa agency at wala rin akong kahit anong skills na hinahanap nila. Mahilig ako sa mga gadgets at madalas akong magbukas ng sirang cellphone para ayusin, kaya gusto kong pag-aralan ito nang maayos at magkaroon ng NC para may maipakita ako sa employer.",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "long",
+   "experience",
+   "certification",
+   "abroad"
+  ],
+  "group": "G6"
+ }
+]

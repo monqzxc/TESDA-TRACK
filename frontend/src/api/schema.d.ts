@@ -687,6 +687,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/recommendations/assessments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Rank Assessments
+         * @description Verified, available, eligible schedules with seats; no embedding model is required.
+         */
+        post: operations["rank_assessments_api_v1_recommendations_assessments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/recommendations/qualifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Rank Qualifications
+         * @description Structured matching works on a CPU without invoking an embedding model or storing guest answers.
+         */
+        post: operations["rank_qualifications_api_v1_recommendations_qualifications_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/recommendations/training": {
         parameters: {
             query?: never;
@@ -703,6 +743,26 @@ export interface paths {
          *     Works without signing in; a signed-in learner's rankings are linked to their account in the audit trail.
          */
         post: operations["rank_training_api_v1_recommendations_training_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/recommendations/{audit_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Saved Ranking
+         * @description Owned historical scoring evidence, not a current availability or eligibility check.
+         */
+        get: operations["saved_ranking_api_v1_recommendations__audit_id__get"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -1071,6 +1131,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/reports/matching": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Matching
+         * @description Goal-matching requests and the share that found no match, per day. Anonymous counts only.
+         */
+        get: operations["matching_api_v1_admin_reports_matching_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/skills-bridge/matches": {
         parameters: {
             query?: never;
@@ -1158,6 +1238,87 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/service-verifications/import": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Import Verifications
+         * @description Bounded, atomic upsert of reviewed evidence. Dry runs validate and roll back all writes.
+         */
+        post: operations["import_verifications_api_v1_admin_service_verifications_import_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/service-verifications/{kind}/{site_id}/{qualification_code}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Verification */
+        get: operations["get_verification_api_v1_admin_service_verifications__kind___site_id___qualification_code__get"];
+        /**
+         * Put Verification
+         * @description Replace reviewed source evidence. Training and assessment authorization are independent.
+         */
+        put: operations["put_verification_api_v1_admin_service_verifications__kind___site_id___qualification_code__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/learner-assessments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Assessments */
+        get: operations["list_assessments_api_v1_learner_assessments_get"];
+        put?: never;
+        /** Create */
+        post: operations["create_api_v1_learner_assessments_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/learner-assessments/{assessment_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get */
+        get: operations["get_api_v1_learner_assessments__assessment_id__get"];
+        put?: never;
+        post?: never;
+        /** Delete */
+        delete: operations["delete_api_v1_learner_assessments__assessment_id__delete"];
+        options?: never;
+        head?: never;
+        /**
+         * Revise
+         * @description Replace answers in a new immutable revision; historical results keep the original reference.
+         */
+        patch: operations["revise_api_v1_learner_assessments__assessment_id__patch"];
+        trace?: never;
+    };
     "/api/v1/routes": {
         parameters: {
             query?: never;
@@ -1204,12 +1365,122 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/oauth/token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Client credentials token for partner systems
+         * @description Send the client id and secret as HTTP Basic (client_secret_basic) or as form fields (client_secret_post).
+         */
+        post: operations["token_api_v1_oauth_token_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/mcp/usage": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Usage
+         * @description Which partner calls which tool, how often, and whether that matches what it declared.
+         */
+        get: operations["usage_api_v1_admin_mcp_usage_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/mcp/clients": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Clients */
+        get: operations["clients_api_v1_admin_mcp_clients_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/roles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Roles */
+        get: operations["list_roles_api_v1_admin_roles_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Users */
+        get: operations["list_users_api_v1_admin_users_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/users/{user_id}/role": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** Assign Role */
+        patch: operations["assign_role_api_v1_admin_users__user_id__role_patch"];
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         /** AccountExport */
         AccountExport: {
+            /** Learner Assessments */
+            learner_assessments?: components["schemas"]["AssessmentPublic"][];
             /**
              * Exported At
              * Format: date-time
@@ -1230,6 +1501,8 @@ export interface components {
             assessment_applications: components["schemas"]["AssessmentApplicationPublic"][];
             /** Training Rankings */
             training_rankings: components["schemas"]["RankingAuditPublic"][];
+            /** Assessment Rankings */
+            assessment_rankings?: components["schemas"]["RankingAuditPublic"][];
         };
         /** Airport */
         Airport: {
@@ -1244,8 +1517,41 @@ export interface components {
             /** Longitude */
             longitude: number;
         };
+        /** ApiClientPublic */
+        ApiClientPublic: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Name */
+            name: string;
+            /** Organisation */
+            organisation: string;
+            /** Contact Email */
+            contact_email: string | null;
+            /** Declared Purpose */
+            declared_purpose: string;
+            /** Expected Tools */
+            expected_tools: string[];
+            /** Scopes */
+            scopes: string[];
+            /** Rate Limit Per Minute */
+            rate_limit_per_minute: number;
+            /** Is Active */
+            is_active: boolean;
+            /** Last Token At */
+            last_token_at: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
         /** ApplicationCreate */
         ApplicationCreate: {
+            /** Request Id */
+            request_id?: string | null;
             /** Schedule Id */
             schedule_id: number;
         };
@@ -1257,6 +1563,78 @@ export interface components {
             result?: ("competent" | "not_yet_competent") | null;
             /** Reviewer Note */
             reviewer_note?: string | null;
+        };
+        /** AssessmentAnswers */
+        "AssessmentAnswers-Input": {
+            /**
+             * Questionnaire Version
+             * @default 1
+             * @constant
+             */
+            questionnaire_version: 1;
+            /** Interests */
+            interests?: string[];
+            /** Preferred Sectors */
+            preferred_sectors?: string[];
+            /** Work Activities */
+            work_activities?: string[];
+            /** Work Environments */
+            work_environments?: ("indoors" | "outdoors" | "workshop" | "remote" | "customer_facing")[];
+            /** Existing Skills */
+            existing_skills?: string[];
+            /** Competencies */
+            competencies?: components["schemas"]["CompetencyAnswer"][];
+            /** Education */
+            education?: ("primary" | "secondary" | "technical_vocational" | "college" | "other") | null;
+            /** Experience Years */
+            experience_years?: number | null;
+            /** Has Certification */
+            has_certification?: boolean | null;
+            /** Career Goal */
+            career_goal?: string | null;
+            /** Goal Kind */
+            goal_kind?: ("employment" | "career_transition" | "upskilling" | "exploration") | null;
+            /** Preferred Qualification Codes */
+            preferred_qualification_codes?: string[];
+            /** Preferred Pathway */
+            preferred_pathway?: ("training" | "assessment" | "training_and_assessment" | "exploration") | null;
+            preferences?: components["schemas"]["AssessmentPreferences-Input"];
+        };
+        /** AssessmentAnswers */
+        "AssessmentAnswers-Output": {
+            /**
+             * Questionnaire Version
+             * @default 1
+             * @constant
+             */
+            questionnaire_version: 1;
+            /** Interests */
+            interests?: string[];
+            /** Preferred Sectors */
+            preferred_sectors?: string[];
+            /** Work Activities */
+            work_activities?: string[];
+            /** Work Environments */
+            work_environments?: ("indoors" | "outdoors" | "workshop" | "remote" | "customer_facing")[];
+            /** Existing Skills */
+            existing_skills?: string[];
+            /** Competencies */
+            competencies?: components["schemas"]["CompetencyAnswer"][];
+            /** Education */
+            education?: ("primary" | "secondary" | "technical_vocational" | "college" | "other") | null;
+            /** Experience Years */
+            experience_years?: number | null;
+            /** Has Certification */
+            has_certification?: boolean | null;
+            /** Career Goal */
+            career_goal?: string | null;
+            /** Goal Kind */
+            goal_kind?: ("employment" | "career_transition" | "upskilling" | "exploration") | null;
+            /** Preferred Qualification Codes */
+            preferred_qualification_codes?: string[];
+            /** Preferred Pathway */
+            preferred_pathway?: ("training" | "assessment" | "training_and_assessment" | "exploration") | null;
+            preferences?: components["schemas"]["AssessmentPreferences-Output"];
         };
         /** AssessmentApplicationAdmin */
         AssessmentApplicationAdmin: {
@@ -1384,8 +1762,207 @@ export interface components {
             /** Is Active */
             is_active?: boolean | null;
         };
+        /** AssessmentPreferences */
+        "AssessmentPreferences-Input": {
+            /** Region Code */
+            region_code?: string | null;
+            /** Near Lat */
+            near_lat?: number | null;
+            /** Near Lon */
+            near_lon?: number | null;
+            /** Maximum Distance Km */
+            maximum_distance_km?: number | null;
+            /** Delivery Mode */
+            delivery_mode?: ("institution_based" | "enterprise_based" | "community_based" | "online") | null;
+            /** Maximum Budget */
+            maximum_budget?: number | string | null;
+            /** Needs Scholarship */
+            needs_scholarship?: boolean | null;
+            /** Start After */
+            start_after?: string | null;
+            /** Start Before */
+            start_before?: string | null;
+            /** Accessibility Preferences */
+            accessibility_preferences?: string[];
+            /**
+             * Delivery Is Mandatory
+             * @default false
+             */
+            delivery_is_mandatory: boolean;
+            /**
+             * Budget Is Mandatory
+             * @default false
+             */
+            budget_is_mandatory: boolean;
+            /**
+             * Schedule Is Mandatory
+             * @default false
+             */
+            schedule_is_mandatory: boolean;
+            /**
+             * Scholarship Is Mandatory
+             * @default false
+             */
+            scholarship_is_mandatory: boolean;
+        };
+        /** AssessmentPreferences */
+        "AssessmentPreferences-Output": {
+            /** Region Code */
+            region_code?: string | null;
+            /** Near Lat */
+            near_lat?: number | null;
+            /** Near Lon */
+            near_lon?: number | null;
+            /** Maximum Distance Km */
+            maximum_distance_km?: number | null;
+            /** Delivery Mode */
+            delivery_mode?: ("institution_based" | "enterprise_based" | "community_based" | "online") | null;
+            /** Maximum Budget */
+            maximum_budget?: string | null;
+            /** Needs Scholarship */
+            needs_scholarship?: boolean | null;
+            /** Start After */
+            start_after?: string | null;
+            /** Start Before */
+            start_before?: string | null;
+            /** Accessibility Preferences */
+            accessibility_preferences?: string[];
+            /**
+             * Delivery Is Mandatory
+             * @default false
+             */
+            delivery_is_mandatory: boolean;
+            /**
+             * Budget Is Mandatory
+             * @default false
+             */
+            budget_is_mandatory: boolean;
+            /**
+             * Schedule Is Mandatory
+             * @default false
+             */
+            schedule_is_mandatory: boolean;
+            /**
+             * Scholarship Is Mandatory
+             * @default false
+             */
+            scholarship_is_mandatory: boolean;
+        };
+        /** AssessmentPublic */
+        AssessmentPublic: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /**
+             * Series Id
+             * Format: uuid
+             */
+            series_id: string;
+            /** Revision */
+            revision: number;
+            /** Previous Revision Id */
+            previous_revision_id: string | null;
+            answers: components["schemas"]["AssessmentAnswers-Output"];
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /** AssessmentRanking */
+        AssessmentRanking: {
+            /**
+             * Result Type
+             * @default assessment
+             * @constant
+             */
+            result_type: "assessment";
+            /**
+             * Policy Version
+             * @default assessment-center-v1
+             * @constant
+             */
+            policy_version: "assessment-center-v1";
+            /**
+             * Checked At
+             * Format: date-time
+             */
+            checked_at: string;
+            /** Results */
+            results: components["schemas"]["RankedAssessment"][];
+            /** Requires Verification */
+            requires_verification: components["schemas"]["UnconfirmedAssessment"][];
+            /** Total */
+            total: number;
+            /** Unconfirmed Total */
+            unconfirmed_total: number;
+            /** Limit */
+            limit: number;
+            /** Offset */
+            offset: number;
+            /** Audit Id */
+            audit_id: number;
+        };
+        /** AssessmentRankingRequest */
+        AssessmentRankingRequest: {
+            assessment?: components["schemas"]["AssessmentAnswers-Input"] | null;
+            /** Assessment Id */
+            assessment_id?: string | null;
+            /** Qualification Code */
+            qualification_code: string;
+            /** Goal */
+            goal?: string | null;
+            /** Near Lat */
+            near_lat?: number | null;
+            /** Near Lon */
+            near_lon?: number | null;
+            /** Region Code */
+            region_code?: string | null;
+            /** Maximum Distance Km */
+            maximum_distance_km?: number | null;
+            /** Maximum Fee */
+            maximum_fee?: number | string | null;
+            /**
+             * Fee Is Mandatory
+             * @default false
+             */
+            fee_is_mandatory: boolean;
+            /** Scheduled After */
+            scheduled_after?: string | null;
+            /** Scheduled Before */
+            scheduled_before?: string | null;
+            /**
+             * Schedule Is Mandatory
+             * @default false
+             */
+            schedule_is_mandatory: boolean;
+            /**
+             * Limit
+             * @default 10
+             */
+            limit: number;
+            /**
+             * Offset
+             * @default 0
+             */
+            offset: number;
+        };
         /** AssessmentScheduleCreate */
         AssessmentScheduleCreate: {
+            /**
+             * Availability Status
+             * @default unknown
+             * @enum {string}
+             */
+            availability_status: "unknown" | "available" | "unavailable";
+            /** Availability Source */
+            availability_source?: string | null;
+            /** Availability Checked At */
+            availability_checked_at?: string | null;
+            /** Availability Valid Until */
+            availability_valid_until?: string | null;
             /** Center Id */
             center_id: number;
             /** Qualification Code */
@@ -1402,6 +1979,8 @@ export interface components {
         };
         /** AssessmentSchedulePublic */
         AssessmentSchedulePublic: {
+            verification?: components["schemas"]["VerificationPublic"];
+            availability?: components["schemas"]["AvailabilityPublic"];
             /** Id */
             id: number;
             qualification: components["schemas"]["QualificationSummary"];
@@ -1427,6 +2006,14 @@ export interface components {
         };
         /** AssessmentScheduleUpdate */
         AssessmentScheduleUpdate: {
+            /** Availability Status */
+            availability_status?: ("unknown" | "available" | "unavailable") | null;
+            /** Availability Source */
+            availability_source?: string | null;
+            /** Availability Checked At */
+            availability_checked_at?: string | null;
+            /** Availability Valid Until */
+            availability_valid_until?: string | null;
             /** Scheduled At */
             scheduled_at?: string | null;
             /** Slots */
@@ -1435,6 +2022,27 @@ export interface components {
             fee?: number | string | null;
             /** Status */
             status?: ("open" | "closed" | "cancelled" | "completed") | null;
+        };
+        /** AssessmentWrite */
+        AssessmentWrite: {
+            /** Request Id */
+            request_id?: string | null;
+            answers: components["schemas"]["AssessmentAnswers-Input"];
+        };
+        /** AvailabilityPublic */
+        AvailabilityPublic: {
+            /**
+             * Status
+             * @default unknown
+             * @enum {string}
+             */
+            status: "unknown" | "available" | "unavailable";
+            /** Source Reference */
+            source_reference?: string | null;
+            /** Checked At */
+            checked_at?: string | null;
+            /** Valid Until */
+            valid_until?: string | null;
         };
         /** Body_sign_in_api_v1_auth_token_post */
         Body_sign_in_api_v1_auth_token_post: {
@@ -1482,6 +2090,19 @@ export interface components {
              * Client Secret
              * Format: password
              */
+            client_secret?: string | null;
+        };
+        /** Body_token_api_v1_oauth_token_post */
+        Body_token_api_v1_oauth_token_post: {
+            /** Grant Type */
+            grant_type?: string | null;
+            /** Scope */
+            scope?: string | null;
+            /** Resource */
+            resource?: string | null;
+            /** Client Id */
+            client_id?: string | null;
+            /** Client Secret */
             client_secret?: string | null;
         };
         /** CertificationCounts */
@@ -1578,6 +2199,50 @@ export interface components {
              */
             skills_bridge_enabled: boolean;
         };
+        /** ClientUsage */
+        ClientUsage: {
+            /**
+             * Client Id
+             * Format: uuid
+             */
+            client_id: string;
+            /** Name */
+            name: string;
+            /** Organisation */
+            organisation: string;
+            /** Declared Purpose */
+            declared_purpose: string;
+            /** Expected Tools */
+            expected_tools: string[];
+            /** Scopes */
+            scopes: string[];
+            /** Is Active */
+            is_active: boolean;
+            /** Calls */
+            calls: number;
+            /** By Outcome */
+            by_outcome: {
+                [key: string]: number;
+            };
+            /** Tools */
+            tools: components["schemas"]["ToolUsage"][];
+            /** Days */
+            days: components["schemas"]["DayUsage"][];
+            /** Unexpected Tool Calls */
+            unexpected_tool_calls: number;
+            /** Deep Paging Calls */
+            deep_paging_calls: number;
+        };
+        /** CompetencyAnswer */
+        CompetencyAnswer: {
+            /** Competency Id */
+            competency_id: number;
+            /**
+             * Answer
+             * @enum {string}
+             */
+            answer: "confident" | "some_experience" | "not_familiar";
+        };
         /** CompetencyGap */
         CompetencyGap: {
             /** Competency Id */
@@ -1608,6 +2273,16 @@ export interface components {
             /** Category */
             category: string;
         };
+        /** DayUsage */
+        DayUsage: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Calls */
+            calls: number;
+        };
         /** Directions */
         Directions: {
             /**
@@ -1625,6 +2300,29 @@ export interface components {
              * @description Road modes that couldn't be routed this time; asking again retries them
              */
             missing_modes: ("car" | "bike" | "foot")[];
+        };
+        /** EligibilityCheck */
+        EligibilityCheck: {
+            /** Description */
+            description: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "satisfied" | "unsatisfied" | "unknown";
+            /** Reason */
+            reason: string;
+        };
+        /** EligibilityPublic */
+        EligibilityPublic: {
+            /**
+             * Status
+             * @default unknown
+             * @enum {string}
+             */
+            status: "satisfied" | "unsatisfied" | "unknown";
+            /** Checks */
+            checks?: components["schemas"]["EligibilityCheck"][];
         };
         /** EnrollmentCreate */
         EnrollmentCreate: {
@@ -1903,12 +2601,14 @@ export interface components {
              * Role
              * @enum {string}
              */
-            role: "learner" | "admin";
+            role: "learner" | "admin" | "trainer" | "assessor" | "verifier" | "analyst";
             /**
              * Created At
              * Format: date-time
              */
             created_at: string;
+            /** Permissions */
+            readonly permissions: string[];
         };
         /** LearnerSummary */
         LearnerSummary: {
@@ -1929,6 +2629,7 @@ export interface components {
         };
         /** Match */
         Match: {
+            personalization?: components["schemas"]["PersonalizedScore"] | null;
             qualification: components["schemas"]["QualificationSummary"];
             /** Score */
             score: number;
@@ -1948,6 +2649,9 @@ export interface components {
         };
         /** MatchRequest */
         MatchRequest: {
+            assessment?: components["schemas"]["AssessmentAnswers-Input"] | null;
+            /** Assessment Id */
+            assessment_id?: string | null;
             /** Query */
             query: string;
             profile: components["schemas"]["Profile"];
@@ -1957,6 +2661,29 @@ export interface components {
             profile: components["schemas"]["Profile"];
             /** Matches */
             matches: components["schemas"]["Match"][];
+        };
+        /** MatchingDay */
+        MatchingDay: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Requests */
+            requests: number;
+            /** No Match */
+            no_match: number;
+        };
+        /** MatchingReport */
+        MatchingReport: {
+            /** Requests */
+            requests: number;
+            /** No Match */
+            no_match: number;
+            /** No Match Rate */
+            no_match_rate: number | null;
+            /** Days */
+            days: components["schemas"]["MatchingDay"][];
         };
         /** ModelFeedback */
         ModelFeedback: {
@@ -2121,6 +2848,78 @@ export interface components {
             /** Steps */
             steps?: components["schemas"]["PathwayStepInput"][] | null;
         };
+        /** PersonalizationWeights */
+        PersonalizationWeights: {
+            /**
+             * Interest
+             * @default 0.35
+             */
+            interest: number;
+            /**
+             * Skill
+             * @default 0.25
+             */
+            skill: number;
+            /**
+             * Career
+             * @default 0.15
+             */
+            career: number;
+            /**
+             * Location
+             * @default 0.15
+             */
+            location: number;
+            /**
+             * Preference
+             * @default 0.1
+             */
+            preference: number;
+        };
+        /** PersonalizedScore */
+        PersonalizedScore: {
+            /**
+             * Policy Version
+             * @default structured-assessment-v1
+             */
+            policy_version: string;
+            /** Score */
+            score: number;
+            /** Configured Weights */
+            configured_weights: {
+                [key: string]: number;
+            };
+            /** Effective Weights */
+            effective_weights: {
+                [key: string]: number;
+            };
+            /** Components */
+            components: {
+                [key: string]: components["schemas"]["ScoreFactor"];
+            };
+            /** Contributions */
+            contributions: {
+                [key: string]: number;
+            };
+            /** Evidence Coverage */
+            evidence_coverage: number;
+            /** Limitations */
+            limitations?: string[];
+        };
+        /** Prerequisite */
+        Prerequisite: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "verified_certification" | "manual_review";
+            /** Description */
+            description: string;
+            /** Source Reference */
+            source_reference: string;
+            /** Qualification Code */
+            qualification_code?: string | null;
+        };
         /** Profile */
         Profile: {
             /** Career Goal */
@@ -2195,6 +2994,19 @@ export interface components {
             /** Competencies */
             competencies: components["schemas"]["CompetencyPublic"][];
         };
+        /** QualificationRecommendationRequest */
+        QualificationRecommendationRequest: {
+            assessment?: components["schemas"]["AssessmentAnswers-Input"] | null;
+            /** Assessment Id */
+            assessment_id?: string | null;
+            /** Goal */
+            goal?: string | null;
+            /**
+             * Limit
+             * @default 3
+             */
+            limit: number;
+        };
         /** QualificationSummary */
         QualificationSummary: {
             /** Code */
@@ -2204,23 +3016,60 @@ export interface components {
             /** Sector */
             sector: string;
         };
+        /** RankedAssessment */
+        RankedAssessment: {
+            schedule: components["schemas"]["AssessmentSchedulePublic"];
+            eligibility: components["schemas"]["EligibilityPublic"];
+            /** Score */
+            score: number;
+            personalization: components["schemas"]["PersonalizedScore"];
+            /** Explanation */
+            explanation: string[];
+            /** Application Status */
+            application_status?: string | null;
+        };
         /** RankedProgram */
         RankedProgram: {
+            personalization?: components["schemas"]["PersonalizedScore"] | null;
+            /** Effective Weights */
+            effective_weights?: {
+                [key: string]: number;
+            };
+            /** Component Status */
+            component_status?: {
+                [key: string]: string;
+            };
+            /**
+             * Evidence Coverage
+             * @default 0
+             */
+            evidence_coverage: number;
+            eligibility?: components["schemas"]["EligibilityPublic"];
             program: components["schemas"]["TrainingProgramPublic"];
             /**
              * Score
              * @description 0-100: the weighted sum of the components
              */
             score: number;
-            components: components["schemas"]["ScoreComponents"];
+            /** Components */
+            components: components["schemas"]["ScoreComponents"] | {
+                [key: string]: number | null;
+            };
             /** Explanation */
             explanation: string[];
         };
-        /**
-         * RankingAuditPublic
-         * @description A learner's own ranking history, as included in their data export.
-         */
+        /** RankingAuditPublic */
         RankingAuditPublic: {
+            /**
+             * Result Type
+             * @default training
+             * @enum {string}
+             */
+            result_type: "training" | "assessment";
+            /** Audit Id */
+            audit_id?: number | null;
+            /** Assessment Id */
+            assessment_id?: string | null;
             /** Qualification Code */
             qualification_code: string;
             /**
@@ -2285,6 +3134,8 @@ export interface components {
             answers: {
                 [key: string]: "confident" | "some_experience" | "not_familiar";
             };
+            /** Request Id */
+            request_id?: string | null;
             /** Recommendation Session Id */
             recommendation_session_id?: string | null;
         };
@@ -2362,6 +3213,11 @@ export interface components {
         };
         /** RecommendationSessionCreate */
         RecommendationSessionCreate: {
+            assessment?: components["schemas"]["AssessmentAnswers-Input"] | null;
+            /** Assessment Id */
+            assessment_id?: string | null;
+            /** Request Id */
+            request_id?: string | null;
             /** Query */
             query: string;
             /** Goal Id */
@@ -2369,6 +3225,8 @@ export interface components {
         };
         /** RecommendationSessionPublic */
         RecommendationSessionPublic: {
+            /** Assessment Id */
+            assessment_id?: string | null;
             /**
              * Id
              * Format: uuid
@@ -2410,6 +3268,8 @@ export interface components {
             has_certification?: boolean | null;
             /** Qualification Code */
             qualification_code?: string | null;
+            /** Assessment Id */
+            assessment_id?: string | null;
         };
         /** RegionPublic */
         RegionPublic: {
@@ -2486,6 +3346,14 @@ export interface components {
              */
             duration_min: number;
         };
+        /** RoleUpdate */
+        RoleUpdate: {
+            /**
+             * Role
+             * @enum {string}
+             */
+            role: "learner" | "admin" | "trainer" | "assessor" | "verifier" | "analyst";
+        };
         /**
          * ScoreComponents
          * @description Each component on a 0..1 scale before weighting.
@@ -2501,6 +3369,18 @@ export interface components {
             schedule: number;
             /** Preference */
             preference: number;
+        };
+        /** ScoreFactor */
+        ScoreFactor: {
+            /** Score */
+            score?: number | null;
+            /**
+             * State
+             * @enum {string}
+             */
+            state: "observed" | "unknown" | "not_applicable";
+            /** Reason */
+            reason: string;
         };
         /**
          * SessionResponse
@@ -2821,8 +3701,41 @@ export interface components {
             /** Expires In */
             expires_in: number;
         };
+        /** ToolUsage */
+        ToolUsage: {
+            /** Tool */
+            tool: string;
+            /** Calls */
+            calls: number;
+            /** Ok */
+            ok: number;
+            /** Tool Error */
+            tool_error: number;
+            /** Denied Scope */
+            denied_scope: number;
+            /** Rate Limited */
+            rate_limited: number;
+            /** P50 Ms */
+            p50_ms: number | null;
+            /** P95 Ms */
+            p95_ms: number | null;
+            /** Expected */
+            expected: boolean;
+        };
         /** TrainingProgramCreate */
         TrainingProgramCreate: {
+            /**
+             * Availability Status
+             * @default unknown
+             * @enum {string}
+             */
+            availability_status: "unknown" | "available" | "unavailable";
+            /** Availability Source */
+            availability_source?: string | null;
+            /** Availability Checked At */
+            availability_checked_at?: string | null;
+            /** Availability Valid Until */
+            availability_valid_until?: string | null;
             /** Provider Id */
             provider_id: number;
             /** Qualification Code */
@@ -2835,7 +3748,7 @@ export interface components {
              * Delivery Mode
              * @enum {string}
              */
-            delivery_mode: "institution_based" | "enterprise_based" | "community_based" | "online";
+            delivery_mode: "institution_based" | "enterprise_based" | "community_based" | "online" | "unknown";
             /** Duration Hours */
             duration_hours?: number | null;
             /** Cost */
@@ -2854,6 +3767,8 @@ export interface components {
         };
         /** TrainingProgramPublic */
         TrainingProgramPublic: {
+            verification?: components["schemas"]["VerificationPublic"];
+            availability?: components["schemas"]["AvailabilityPublic"];
             /** Id */
             id: number;
             /** Title */
@@ -2866,7 +3781,7 @@ export interface components {
              * Delivery Mode
              * @enum {string}
              */
-            delivery_mode: "institution_based" | "enterprise_based" | "community_based" | "online";
+            delivery_mode: "institution_based" | "enterprise_based" | "community_based" | "online" | "unknown";
             /** Duration Hours */
             duration_hours: number | null;
             /** Cost */
@@ -2886,12 +3801,20 @@ export interface components {
         };
         /** TrainingProgramUpdate */
         TrainingProgramUpdate: {
+            /** Availability Status */
+            availability_status?: ("unknown" | "available" | "unavailable") | null;
+            /** Availability Source */
+            availability_source?: string | null;
+            /** Availability Checked At */
+            availability_checked_at?: string | null;
+            /** Availability Valid Until */
+            availability_valid_until?: string | null;
             /** Title */
             title?: string | null;
             /** Description */
             description?: string | null;
             /** Delivery Mode */
-            delivery_mode?: ("institution_based" | "enterprise_based" | "community_based" | "online") | null;
+            delivery_mode?: ("institution_based" | "enterprise_based" | "community_based" | "online" | "unknown") | null;
             /** Duration Hours */
             duration_hours?: number | null;
             /** Cost */
@@ -2984,7 +3907,19 @@ export interface components {
         };
         /** TrainingRanking */
         TrainingRanking: {
-            weights: components["schemas"]["RankingWeights"];
+            /**
+             * Policy Version
+             * @default verified-services-v2
+             */
+            policy_version: string;
+            /** Requires Verification */
+            requires_verification?: components["schemas"]["UnconfirmedProgram"][];
+            /** Weights */
+            weights: components["schemas"]["RankingWeights"] | components["schemas"]["PersonalizationWeights"];
+            /** Effective Weights */
+            effective_weights?: {
+                [key: string]: number;
+            };
             /** Semantic Used */
             semantic_used: boolean;
             /** Results */
@@ -2997,6 +3932,9 @@ export interface components {
          * @description Sent as a POST body so the learner's goal never appears in URLs or access logs.
          */
         TrainingRankingRequest: {
+            assessment?: components["schemas"]["AssessmentAnswers-Input"] | null;
+            /** Assessment Id */
+            assessment_id?: string | null;
             /** Qualification Code */
             qualification_code: string;
             /**
@@ -3016,10 +3954,36 @@ export interface components {
              */
             needs_scholarship: boolean;
             /**
+             * Require Confirmed Availability
+             * @default false
+             */
+            require_confirmed_availability: boolean;
+            /**
              * Limit
              * @default 10
              */
             limit: number;
+        };
+        /** UnconfirmedAssessment */
+        UnconfirmedAssessment: {
+            schedule: components["schemas"]["AssessmentSchedulePublic"];
+            eligibility: components["schemas"]["EligibilityPublic"];
+            /** Reasons */
+            reasons: string[];
+        };
+        /** UnconfirmedProgram */
+        UnconfirmedProgram: {
+            program: components["schemas"]["TrainingProgramPublic"];
+            eligibility: components["schemas"]["EligibilityPublic"];
+            /** Reasons */
+            reasons: string[];
+        };
+        /** UsageReport */
+        UsageReport: {
+            /** Clients */
+            clients: components["schemas"]["ClientUsage"][];
+            /** Unattributed Denials */
+            unattributed_denials: number;
         };
         /** ValidationError */
         ValidationError: {
@@ -3033,6 +3997,103 @@ export interface components {
             input?: unknown;
             /** Context */
             ctx?: Record<string, never>;
+        };
+        /** VerificationImport */
+        VerificationImport: {
+            /**
+             * Dry Run
+             * @default true
+             */
+            dry_run: boolean;
+            /** Records */
+            records: components["schemas"]["VerificationImportRow"][];
+        };
+        /** VerificationImportRow */
+        VerificationImportRow: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "training" | "assessment";
+            /** Site Id */
+            site_id: number;
+            /** Qualification Code */
+            qualification_code: string;
+            evidence: components["schemas"]["VerificationWrite"];
+        };
+        /** VerificationPublic */
+        VerificationPublic: {
+            /**
+             * Status
+             * @default unknown
+             * @enum {string}
+             */
+            status: "unknown" | "verified" | "unavailable" | "expired";
+            /** Source Name */
+            source_name?: string | null;
+            /** Source Reference */
+            source_reference?: string | null;
+            /** Source Record Id */
+            source_record_id?: string | null;
+            /** Source Version */
+            source_version?: string | null;
+            /** Reviewed At */
+            reviewed_at?: string | null;
+            /** Review Due At */
+            review_due_at?: string | null;
+            /** Valid From */
+            valid_from?: string | null;
+            /** Valid Until */
+            valid_until?: string | null;
+            /**
+             * Is Synthetic
+             * @default false
+             */
+            is_synthetic: boolean;
+            /**
+             * Requirements Reviewed
+             * @default false
+             */
+            requirements_reviewed: boolean;
+            /** Requirements */
+            requirements?: components["schemas"]["Prerequisite"][];
+        };
+        /** VerificationWrite */
+        VerificationWrite: {
+            /**
+             * Status
+             * @default unknown
+             * @enum {string}
+             */
+            status: "unknown" | "verified" | "unavailable" | "expired";
+            /** Source Name */
+            source_name?: string | null;
+            /** Source Reference */
+            source_reference?: string | null;
+            /** Source Record Id */
+            source_record_id?: string | null;
+            /** Source Version */
+            source_version?: string | null;
+            /** Reviewed At */
+            reviewed_at?: string | null;
+            /** Review Due At */
+            review_due_at?: string | null;
+            /** Valid From */
+            valid_from?: string | null;
+            /** Valid Until */
+            valid_until?: string | null;
+            /**
+             * Is Synthetic
+             * @default false
+             */
+            is_synthetic: boolean;
+            /**
+             * Requirements Reviewed
+             * @default false
+             */
+            requirements_reviewed: boolean;
+            /** Requirements */
+            requirements?: components["schemas"]["Prerequisite"][];
         };
     };
     responses: never;
@@ -4400,7 +5461,9 @@ export interface operations {
                 near_lat?: number | null;
                 near_lon?: number | null;
                 radius_km?: number | null;
-                delivery_mode?: ("institution_based" | "enterprise_based" | "community_based" | "online") | null;
+                provider_id?: number | null;
+                delivery_mode?: ("institution_based" | "enterprise_based" | "community_based" | "online" | "unknown") | null;
+                scholarship_only?: boolean;
             };
             header?: never;
             path?: never;
@@ -4611,6 +5674,72 @@ export interface operations {
             };
         };
     };
+    rank_assessments_api_v1_recommendations_assessments_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AssessmentRankingRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssessmentRanking"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    rank_qualifications_api_v1_recommendations_qualifications_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["QualificationRecommendationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MatchResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     rank_training_api_v1_recommendations_training_post: {
         parameters: {
             query?: never;
@@ -4631,6 +5760,37 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["TrainingRanking"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    saved_ranking_api_v1_recommendations__audit_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                audit_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RankingAuditPublic"];
                 };
             };
             /** @description Validation Error */
@@ -5274,6 +6434,38 @@ export interface operations {
             };
         };
     };
+    matching_api_v1_admin_reports_matching_get: {
+        parameters: {
+            query?: {
+                date_from?: string | null;
+                date_to?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MatchingReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     match_skills_api_v1_skills_bridge_matches_post: {
         parameters: {
             query?: never;
@@ -5404,6 +6596,269 @@ export interface operations {
             };
         };
     };
+    import_verifications_api_v1_admin_service_verifications_import_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerificationImport"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_verification_api_v1_admin_service_verifications__kind___site_id___qualification_code__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                kind: "training" | "assessment";
+                site_id: number;
+                qualification_code: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VerificationPublic"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    put_verification_api_v1_admin_service_verifications__kind___site_id___qualification_code__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                kind: "training" | "assessment";
+                site_id: number;
+                qualification_code: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerificationWrite"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VerificationPublic"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_assessments_api_v1_learner_assessments_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssessmentPublic"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_api_v1_learner_assessments_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AssessmentWrite"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssessmentPublic"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_api_v1_learner_assessments__assessment_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                assessment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssessmentPublic"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    delete_api_v1_learner_assessments__assessment_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                assessment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    revise_api_v1_learner_assessments__assessment_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                assessment_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AssessmentWrite"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AssessmentPublic"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     get_routes_api_v1_routes_get: {
         parameters: {
             query: {
@@ -5475,6 +6930,180 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ClientConfig"];
+                };
+            };
+        };
+    };
+    token_api_v1_oauth_token_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/x-www-form-urlencoded": components["schemas"]["Body_token_api_v1_oauth_token_post"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    usage_api_v1_admin_mcp_usage_get: {
+        parameters: {
+            query?: {
+                date_from?: string | null;
+                date_to?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UsageReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    clients_api_v1_admin_mcp_clients_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiClientPublic"][];
+                };
+            };
+        };
+    };
+    list_roles_api_v1_admin_roles_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: string[];
+                    };
+                };
+            };
+        };
+    };
+    list_users_api_v1_admin_users_get: {
+        parameters: {
+            query?: {
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LearnerPublic"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    assign_role_api_v1_admin_users__user_id__role_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RoleUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LearnerPublic"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

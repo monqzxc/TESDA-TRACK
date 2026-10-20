@@ -13,6 +13,7 @@ export const maria: Learner = {
   email: 'maria@example.com',
   full_name: 'Maria Santos',
   role: 'learner',
+  permissions: [],
   created_at: '2026-10-01T08:00:00Z',
 }
 

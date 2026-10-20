@@ -6,7 +6,10 @@ import { paths } from '../../paths.ts'
 // Other pages open it already filtered, as the finder does after a readiness check (classic/app.py open_training).
 
 export type CenterKind = 'training' | 'assessment'
-export type DeliveryMode = components['schemas']['TrainingProgramPublic']['delivery_mode']
+export type DeliveryMode = Exclude<
+  components['schemas']['TrainingProgramPublic']['delivery_mode'],
+  'unknown'
+>
 export type SortOrder = 'nearest' | 'soonest' | 'name'
 
 export const KINDS: readonly CenterKind[] = ['training', 'assessment']

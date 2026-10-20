@@ -10,7 +10,7 @@ from tesda_track.schemas.accounts import LearnerPublic, RegisterRequest
 from tesda_track.schemas.ranking import RankingAuditPublic
 from tesda_track.schemas.records import AccountExport
 from tesda_track.security import burn_verification_time, hash_password, verify_password
-from tesda_track.services import (assessments, certifications, goals, pathways, readiness_checks,
+from tesda_track.services import (assessments, certifications, goals, learner_assessments, pathways, readiness_checks,
                                   recommendation_sessions)
 
 
@@ -77,8 +77,17 @@ def delete_account(session: Session, learner: Learner) -> None:
 
 
 def export(session: Session, learner: Learner) -> AccountExport:
+    histories = [RankingAuditPublic(audit_id=audit.id,
+                    result_type=audit.preferences.get("service_kind", "training"),
+                    qualification_code=code, created_at=audit.created_at, assessment_id=audit.assessment_id,
+                    near_lat=audit.near_lat, near_lon=audit.near_lon,
+                    preferences=audit.preferences, weights=audit.weights, results=audit.results)
+                 for audit, code in session.exec(select(RankingAudit, Qualification.code).join(Qualification)
+                    .where(RankingAudit.learner_id == learner.id).order_by(RankingAudit.created_at, RankingAudit.id))]
     return AccountExport(
         exported_at=utcnow(), account=LearnerPublic.model_validate(learner),
+        learner_assessments=[learner_assessments.public(record)
+                             for record in learner_assessments.list_for(session, learner, limit=10_000)],
         goals=[goals.to_public(g) for g in goals.list_for(session, learner)],
         recommendation_sessions=[recommendation_sessions.to_public(s)
                                  for s in recommendation_sessions.list_for(session, learner, limit=10_000, offset=0)],
@@ -87,10 +96,5 @@ def export(session: Session, learner: Learner) -> AccountExport:
         pathway_enrollments=[pathways.enrollment_public(e) for e in pathways.list_for(session, learner)],
         assessment_applications=[assessments.application_public(session, a)
                                  for a in assessments.list_for(session, learner)],
-        training_rankings=[RankingAuditPublic(qualification_code=code, created_at=audit.created_at,
-                                              near_lat=audit.near_lat, near_lon=audit.near_lon,
-                                              preferences=audit.preferences, weights=audit.weights,
-                                              results=audit.results)
-                           for audit, code in session.exec(
-                               select(RankingAudit, Qualification.code).join(Qualification)
-                               .where(RankingAudit.learner_id == learner.id).order_by(RankingAudit.created_at))])
+        training_rankings=[r for r in histories if r.result_type == "training"],
+        assessment_rankings=[r for r in histories if r.result_type == "assessment"])

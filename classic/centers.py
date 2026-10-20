@@ -223,7 +223,7 @@ def summary(center: dict, today: date) -> str:
         head = _counted(len(center["programs"]), "program")
         if upcoming:
             return f"{head} · Next batch {friendly_day(upcoming, today)}"
-        return f"{head} · Flexible start" if any(not item.get("start_date") for item in center["programs"]) else head
+        return f"{head} · Start date not confirmed" if any(not item.get("start_date") for item in center["programs"]) else head
     if not center["schedules"]:
         return "No upcoming assessments yet"
     head = _counted(len(center["schedules"]), "upcoming assessment")

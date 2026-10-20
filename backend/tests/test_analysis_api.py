@@ -79,3 +79,17 @@ def test_readiness_rejects_unknown_answer_values(client):
     response = client.post("/api/v1/analysis/readiness",
                            json={"qualification_code": "SMAW-NC-II", "answers": {str(i): "maybe" for i in ids}})
     assert response.status_code == 422
+
+
+def test_matches_fall_back_to_keywords_when_the_model_has_no_embeddings(client, session, semantic):
+    from sqlmodel import delete
+
+    from tesda_track.models import QualificationEmbedding
+
+    session.exec(delete(QualificationEmbedding))
+    session.flush()
+    response = client.post("/api/v1/analysis/matches", json={"query": "I want to be a welder.", "profile": {
+        "career_goal": None, "possible_sector": None, "existing_skills": [], "experience_years": None,
+        "has_certification": None, "intent": "unknown"}})
+    assert response.status_code == 200
+    assert "SMAW-NC-II" in [m["qualification"]["code"] for m in response.json()["matches"]]

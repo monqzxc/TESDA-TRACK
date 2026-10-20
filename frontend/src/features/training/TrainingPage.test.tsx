@@ -5,7 +5,12 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { PASSWORD, maria, serveAccountApi } from '../../test/account.tsx'
 import { renderApp } from '../../test/app.tsx'
 import { server } from '../../test/server.ts'
-import { serveTrainingApi, weldingProgram, type TrainingRequest } from '../../test/training.ts'
+import {
+  serveTrainingApi,
+  weldingAssessment,
+  weldingProgram,
+  type TrainingRequest,
+} from '../../test/training.ts'
 import { useFinderStore } from '../finder/store.ts'
 import { useTrainingStore } from './state.ts'
 
@@ -319,6 +324,19 @@ describe('applying for an assessment (US-09)', () => {
     await user.click(screen.getByRole('button', { name: 'Apply' }))
   }
 
+  it('shows missing service evidence and blocks an application with unconfirmed availability', async () => {
+    serveTrainingApi()
+    server.use(
+      http.get('*/api/v1/assessment-schedules', () =>
+        HttpResponse.json([{ ...weldingAssessment, availability: { status: 'unknown' } }]),
+      ),
+    )
+    await openTraining('/training?type=assessment')
+
+    expect(screen.getByText('Intake availability requires confirmation')).toBeVisible()
+    expect(screen.getByRole('button', { name: 'Apply' })).toBeDisabled()
+  })
+
   it('asks a guest to sign in, then shows the application to review, without sending it', async () => {
     serveAccountApi()
     const api = serveTrainingApi()
@@ -355,7 +373,7 @@ describe('applying for an assessment (US-09)', () => {
 
   it('says so when the API refuses, without claiming it was sent', async () => {
     serveAccountApi()
-    serveTrainingApi({ applyStatus: 409 })
+    const api = serveTrainingApi({ applyStatus: 409 })
     const user = userEvent.setup()
     await openSchedule(user)
     const signIn = await screen.findByRole('dialog', { name: 'Sign in' })
@@ -370,5 +388,16 @@ describe('applying for an assessment (US-09)', () => {
       'You have already applied for this schedule.',
     )
     expect(screen.queryByRole('dialog', { name: 'Application sent' })).not.toBeInTheDocument()
+
+    await user.click(within(review).getByRole('button', { name: 'Send application' }))
+    await waitFor(() =>
+      expect(sent(api.requests, 'POST', '/api/v1/me/assessment-applications')).toHaveLength(2),
+    )
+    const requests = sent(api.requests, 'POST', '/api/v1/me/assessment-applications')
+    expect(requests[0].body).toEqual({
+      schedule_id: weldingAssessment.id,
+      request_id: expect.stringMatching(/^[0-9a-f-]{36}$/),
+    })
+    expect(requests[1].body).toEqual(requests[0].body)
   })
 })
