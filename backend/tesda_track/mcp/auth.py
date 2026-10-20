@@ -6,7 +6,13 @@ from mcp.server.auth.provider import AccessToken
 from tesda_track.config import get_settings
 from tesda_track.mcp.deps import open_session
 from tesda_track.services import mcp_usage
+from tesda_track.services.rate_limit import RateLimiter
 from tesda_track.services.partner_clients import InvalidPartnerToken, mcp_resource_url, verify_access_token
+
+
+# Denials that name no known client cost the caller nothing, so they share one budget instead of one commit each.
+_unattributed_denials = RateLimiter()
+UNATTRIBUTED_DENIALS_PER_MINUTE = 60
 
 
 class PartnerTokenVerifier:
@@ -24,6 +30,8 @@ class PartnerTokenVerifier:
             try:
                 principal = verify_access_token(session, token, settings)
             except InvalidPartnerToken as denied:
+                if denied.client_id is None and _unattributed_denials.hit("all", UNATTRIBUTED_DENIALS_PER_MINUTE):
+                    return None
                 mcp_usage.record_call(session, client_id=denied.client_id, method="http", outcome="denied_token",
                                       error_code=denied.reason, latency_ms=0)
                 return None

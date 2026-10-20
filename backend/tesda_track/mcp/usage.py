@@ -14,16 +14,19 @@ from pydantic import ValidationError
 
 from tesda_track.config import get_settings
 from tesda_track.mcp import deps
-from tesda_track.mcp.scopes import TOOL_LIMITS
+from tesda_track.mcp.scopes import TOOL_LIMITS, TOOL_SCOPES, ScopeRefusal
 from tesda_track.services import mcp_usage
 from tesda_track.services.ranking import goal_fingerprint
 
 QUALIFICATION_CODE = re.compile(r"[A-Za-z0-9-]{1,40}")
 TOOL_NAME = re.compile(r"[A-Za-z0-9_.-]{1,64}")
 REGION_CODE = re.compile(r"[A-Za-z0-9-]{1,20}")
+KNOWN_METHODS = frozenset({
+    "initialize", "ping", "notifications/initialized", "server/discover", "tools/list", "tools/call",
+    "resources/list", "resources/templates/list", "resources/read", "prompts/list", "prompts/get",
+    "completion/complete", "logging/setLevel"})
 RESULT_LISTS = ("matches", "results", "programs", "regions", "rows", "competencies")
 RATE_LIMITED = -32000
-UNKNOWN_TOOL = -32602
 
 
 def _code(value, pattern: re.Pattern) -> str | None:
@@ -62,10 +65,14 @@ class UsageMiddleware:
     async def __call__(self, ctx: ServerRequestContext, call_next: CallNext) -> HandlerResult:
         params = ctx.params if isinstance(ctx.params, Mapping) else {}
         is_call = ctx.method == "tools/call"
-        name = _code(params.get("name"), TOOL_NAME) if is_call else None
+        asked = _code(params.get("name"), TOOL_NAME) if is_call else None
+        name = (asked if asked in TOOL_SCOPES else "unknown") if is_call else None
         arguments = params.get("arguments") if is_call and isinstance(params.get("arguments"), Mapping) else {}
+        # Only names the tool itself declares are kept: anything else is the partner's own text.
+        declared = self._argument_names(name)
+        arguments = {key: value for key, value in arguments.items() if key in declared}
         token = get_access_token()
-        fields = {"client_id": uuid.UUID(token.client_id) if token else None, "method": ctx.method[:40],
+        fields = {"client_id": uuid.UUID(token.client_id) if token else None, "method": ctx.method if ctx.method in KNOWN_METHODS else "other",
                   "tool": name, "protocol_version": ctx.protocol_version}
         if is_call:
             fields.update(_shape(arguments))
@@ -73,14 +80,16 @@ class UsageMiddleware:
         result = None
         try:
             if is_call:
-                self._enforce_limits(name)
+                self._enforce_limits(asked)
             deps.begin_ranking_audit()
             result = await call_next(ctx)
             fields["outcome"] = "tool_error" if isinstance(result, Mapping) and result.get("isError") else "ok"
         except MCPError as error:
             fields["error_code"] = str(error.error.code)
-            fields["outcome"] = {RATE_LIMITED: "rate_limited", UNKNOWN_TOOL: "denied_scope"}.get(
-                error.error.code, "invalid_request")
+            if isinstance(error, ScopeRefusal):
+                fields["outcome"] = "denied_scope"
+            else:
+                fields["outcome"] = "rate_limited" if error.error.code == RATE_LIMITED else "invalid_request"
             raise
         except ValidationError:
             fields["outcome"] = "invalid_request"
@@ -99,6 +108,13 @@ class UsageMiddleware:
                 fields["ranking_audit_id"] = deps.take_ranking_audit()
                 await anyio.to_thread.run_sync(self._record, fields)
         return result
+
+    def _argument_names(self, tool: str | None) -> frozenset[str]:
+        server = getattr(self.app.state, "mcp_server", None)
+        for registered in server._tool_manager.list_tools() if server else ():
+            if registered.name == tool:
+                return frozenset(registered.fn_metadata.arg_model.model_fields)
+        return frozenset()
 
     def _enforce_limits(self, tool: str | None) -> None:
         token = get_access_token()

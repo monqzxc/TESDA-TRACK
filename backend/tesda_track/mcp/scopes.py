@@ -5,6 +5,10 @@ from mcp.server.auth.middleware.auth_context import get_access_token
 from mcp.server.context import CallNext, HandlerResult, ServerRequestContext
 from mcp.shared.exceptions import MCPError
 
+class ScopeRefusal(MCPError):
+    """The error for a call outside the token's scopes, told apart from the SDK's other -32602 errors."""
+
+
 TOOL_SCOPES: dict[str, str] = {
     "match_qualifications": "recommend:run",
     "get_qualification": "catalog:read",
@@ -40,9 +44,9 @@ class ScopeMiddleware:
             name = ctx.params.get("name") if isinstance(ctx.params, Mapping) else None
             # Anything unexpected is refused here, never left to checks further in.
             if not isinstance(name, str):
-                raise MCPError(code=-32602, message="Unknown tool.")
+                raise ScopeRefusal(code=-32602, message="Unknown tool.")
             if TOOL_SCOPES.get(name) not in granted:
-                raise MCPError(code=-32602, message=f"Unknown tool: {name}")
+                raise ScopeRefusal(code=-32602, message=f"Unknown tool: {name}")
         result = await call_next(ctx)
         if ctx.method == "tools/list":
             result["tools"] = [tool for tool in result["tools"] if TOOL_SCOPES.get(tool["name"]) in granted]

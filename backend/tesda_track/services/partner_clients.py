@@ -173,7 +173,7 @@ def verify_access_token(session: Session, token: str, settings: Settings) -> Par
         raise InvalidPartnerToken("malformed") from None
     client = session.get(ApiClient, client_id)
     if client is None:
-        raise InvalidPartnerToken("malformed", client_id)
+        raise InvalidPartnerToken("malformed")
     if client.token_version != version:
         raise InvalidPartnerToken("revoked", client_id)
     if not client.is_active:

@@ -7,7 +7,7 @@ from collections.abc import Callable
 from contextlib import AbstractContextManager
 from datetime import datetime, timedelta, timezone
 
-from sqlalchemy import cast, delete, func, literal, select as core_select
+from sqlalchemy import cast, delete, func, literal, select as core_select, text
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.types import Date
 from sqlmodel import Session, select
@@ -18,6 +18,9 @@ from tesda_track.schemas.reports import DateRange
 
 logger = logging.getLogger("tesda_track")
 PHILIPPINE_TIME = "Asia/Manila"
+PHILIPPINE_OFFSET = timezone(timedelta(hours=8))
+FOLD_LOCK = 4_120_001  # one fold at a time across the hourly thread and the CLI
+LATENCY_OUTCOMES = ("ok", "tool_error")  # refused calls return in no time and would drag the percentiles down
 DEEP_PAGING_OFFSET = 200
 DEEP_PAGING_TOOL = "search_training_programs"
 
@@ -41,6 +44,7 @@ def _day(column):
 
 def fold_old_rows(session: Session, retention_days: int, now: datetime | None = None) -> int:
     """Move calls older than the retention period into the daily counts. Returns the rows folded."""
+    session.execute(text("SELECT pg_advisory_xact_lock(:key)"), {"key": FOLD_LOCK})
     cutoff = (now or datetime.now(timezone.utc)) - timedelta(days=retention_days)
     old = McpCallLog.called_at < cutoff
     day = _day(McpCallLog.called_at)
@@ -83,6 +87,13 @@ def usage_report(session: Session, period: DateRange) -> UsageReport:
     Folded daily counts add to the totals; latency comes from the detailed rows only."""
     day = _day(McpCallLog.called_at)
     detail_where = _in_period(day, period)
+    # The same bounds on the bare column let the index on called_at serve the query.
+    if period.date_from:
+        detail_where.append(McpCallLog.called_at >= datetime.combine(period.date_from, datetime.min.time(),
+                                                                     PHILIPPINE_OFFSET))
+    if period.date_to:
+        detail_where.append(McpCallLog.called_at < datetime.combine(period.date_to + timedelta(days=1),
+                                                                    datetime.min.time(), PHILIPPINE_OFFSET))
     client = func.coalesce(McpCallLog.client_id, literal(NO_CLIENT))
     tool = func.coalesce(McpCallLog.tool, "")
     counts: dict[tuple, int] = defaultdict(int)  # (client, tool, outcome, day) -> calls
@@ -98,7 +109,7 @@ def usage_report(session: Session, period: DateRange) -> UsageReport:
             core_select(client, tool,
                         func.percentile_cont(0.5).within_group(McpCallLog.latency_ms),
                         func.percentile_cont(0.95).within_group(McpCallLog.latency_ms))
-            .where(*detail_where).group_by(client, tool)):
+            .where(*detail_where, McpCallLog.outcome.in_(LATENCY_OUTCOMES)).group_by(client, tool)):
         latency[(client_id, tool_name)] = (round(p50), round(p95))
 
     deep_paging: dict[uuid.UUID, int] = defaultdict(int)

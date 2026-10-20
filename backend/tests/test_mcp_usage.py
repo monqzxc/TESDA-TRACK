@@ -1,6 +1,7 @@
 """The MCP usage log (shapes only), per-client and per-tool rate limits, retention and the admin usage report."""
 import contextvars
 import hashlib
+import uuid
 from datetime import datetime, timedelta, timezone
 
 from sqlalchemy import text
@@ -77,13 +78,13 @@ def test_denied_scope_logged(mcp, partner, session):
     assert row.outcome == "denied_scope"
 
 
-def test_unknown_tool_logged_by_a_plain_name_only(mcp, partner, session):
+def test_unknown_tool_is_logged_as_unknown(mcp, partner, session):
     headers = partner().headers
     mcp.call(headers, "tools/call", {"name": "no_such_tool", "arguments": {}})
     mcp.call(headers, "tools/call", {"name": "Juan Dela Cruz 0917", "arguments": {}})
     first, second = rows(session, method="tools/call")
-    assert first.outcome == "denied_scope" and first.tool == "no_such_tool"
-    assert second.outcome == "denied_scope" and second.tool is None
+    assert first.outcome == "denied_scope" and first.tool == "unknown"
+    assert second.outcome == "denied_scope" and second.tool == "unknown"
 
 
 def test_tools_list_logged_with_count(mcp, partner, session):
@@ -216,7 +217,7 @@ def test_usage_report_counts_and_flags(client, session, partner, admin):
     assert usage["unexpected_tool_calls"] == 1 and usage["deep_paging_calls"] == 2
     supply = next(item for item in usage["tools"] if item["tool"] == "get_regional_supply")
     assert supply["calls"] == 6 and supply["ok"] == 5 and supply["rate_limited"] == 1 and supply["expected"]
-    assert supply["p50_ms"] == 25 and supply["p95_ms"] >= 40
+    assert supply["p50_ms"] == 30 and supply["p95_ms"] >= 40
     assert not next(item for item in usage["tools"] if item["tool"] == "get_qualification")["expected"]
     assert [day["calls"] for day in usage["days"]] == [10]
     quiet = next(item for item in body["clients"] if item["client_id"] == str(silent.id))
@@ -241,3 +242,91 @@ def test_cli_folds_old_calls(session, partner):
     out = io.StringIO()
     run_mcp_usage_command(session, build_parser().parse_args(["mcp-usage", "fold", "--days", "30"]), out)
     assert "Folded 1 MCP calls" in out.getvalue()
+
+
+def logged_text(session):
+    return " ".join(session.execute(text("SELECT row_to_json(t)::text FROM mcp_call_log t")).scalars().all())
+
+
+def test_partner_chosen_text_never_reaches_the_log(mcp, partner, session):
+    headers = partner().headers
+    mcp.tool(headers, "get_regional_supply", **{"Juan 09171234567": "x", "region_code": "NCR"})
+    mcp.call(headers, "Juan.Dela.Cruz/0917", {})
+    dumped = logged_text(session)
+    assert "Juan" not in dumped and "0917" not in dumped
+    supply = rows(session, tool="get_regional_supply")[0]
+    assert supply.inputs_sent == ["region_code"] and supply.region_code == "NCR"
+    assert rows(session, method="other")
+
+
+def write_failure_leaves_the_session_usable(session, caplog, **fields):
+    base = {"method": "tools/call", "latency_ms": 1, "outcome": "ok"}
+    mcp_usage.record_call(session, **{**base, **fields})
+    assert "IntegrityError" in caplog.text and "bogus" not in caplog.text
+    session.add(McpCallLog(**base))
+    session.flush()
+    assert len(rows(session)) == 1
+
+
+def test_write_failing_at_flush_leaves_the_session_usable(session, caplog):
+    write_failure_leaves_the_session_usable(session, caplog, outcome="bogus")
+
+
+def test_write_failing_on_a_foreign_key_leaves_the_session_usable(session, caplog):
+    write_failure_leaves_the_session_usable(session, caplog, client_id=uuid.uuid4())
+
+
+def test_unexpected_exception_is_logged_as_server_error(mcp, partner, session, monkeypatch):
+    from tesda_track.mcp.scopes import ScopeMiddleware
+
+    async def boom(self, ctx, call_next):
+        raise RuntimeError("kaboom")
+
+    monkeypatch.setattr(ScopeMiddleware, "__call__", boom)
+    headers = partner().headers
+    try:
+        response = mcp.call(headers, "tools/call", {"name": "get_regional_supply", "arguments": {}})
+        assert "error" in response.json() or response.status_code >= 500
+    except RuntimeError:
+        pass
+    [row] = rows(session, tool="get_regional_supply")
+    assert row.outcome == "server_error" and row.error_code == "RuntimeError"
+
+
+def test_sdk_invalid_params_error_is_invalid_request_not_denied_scope(mcp, partner, session, monkeypatch):
+    from mcp.shared.exceptions import MCPError
+
+    from tesda_track.mcp.scopes import ScopeMiddleware
+
+    async def refuse(self, ctx, call_next):
+        raise MCPError(code=-32602, message="Invalid params")
+
+    monkeypatch.setattr(ScopeMiddleware, "__call__", refuse)
+    response = mcp.call(partner().headers, "tools/call", {"name": "get_regional_supply", "arguments": {}})
+    assert response.json()["error"]["code"] == -32602
+    assert rows(session, tool="get_regional_supply")[0].outcome == "invalid_request"
+
+
+def test_arguments_failing_validation_are_logged(mcp, partner, session):
+    result = mcp.tool(partner().headers, "match_qualifications", goal=GOAL, limit="Juan")
+    assert result["isError"]
+    [row] = rows(session, tool="match_qualifications")
+    assert row.outcome in ("tool_error", "invalid_request") and "Juan" not in logged_text(session)
+
+
+def test_missing_client_row_is_an_unattributed_denial(mcp, session):
+    from backend.tests.test_mcp_server import signed
+
+    assert mcp.call(signed(uuid.uuid4()), "tools/list").status_code == 401
+    [row] = rows(session, outcome="denied_token")
+    assert row.client_id is None
+
+
+def test_latency_percentiles_ignore_refused_calls(session, partner):
+    made = partner()
+    for latency in (100, 200):
+        add_call(session, made.id, latency_ms=latency)
+    for _ in range(5):
+        add_call(session, made.id, outcome="rate_limited", latency_ms=0)
+    [tool] = mcp_usage.usage_report(session, DateRange()).clients[0].tools
+    assert tool.calls == 7 and tool.p50_ms == 150
