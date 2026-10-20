@@ -77,14 +77,14 @@ export function SidebarContent({ isAdmin = false, onNavigate, returnFocus }: Sid
           <ThemeSwitch />
         </div>
         <AccountControl variant="sidebar" onOpenSignIn={onNavigate} returnFocus={returnFocus} />
-        {/* <NavLink
+        <NavLink
           to={paths.privacy}
-          className="inline-flex min-h-11 items-center gap-2 self-start rounded-10 px-[0.6rem] py-[0.4rem] text-15 font-semibold text-blue no-underline hovered:bg-soft hovered:text-blue aria-[current=page]:text-navy aria-[current=page]:underline aria-[current=page]:underline-offset-[0.2em]"
+          className="inline-flex min-h-11 items-center gap-2 self-start rounded-10 px-[0.6rem] py-[0.4rem] text-15 font-semibold text-blue no-underline aria-[current=page]:text-navy aria-[current=page]:underline aria-[current=page]:underline-offset-[0.2em] hovered:bg-soft hovered:text-blue"
           onClick={onNavigate}
         >
           <Icon name="document" size="1.15rem" />
           {en.privacy.link}
-        </NavLink> */}
+        </NavLink>
       </div>
     </div>
   )
