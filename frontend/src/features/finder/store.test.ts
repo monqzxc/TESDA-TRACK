@@ -46,6 +46,28 @@ describe('finder store', () => {
     })
   })
 
+  it('asks about a recommendation again once a new result replaces it, and forgets answers with the goal', () => {
+    const store = useFinderStore.getState()
+    const goal = (query: string) =>
+      ({ query, profile: { intent: 'unknown' }, sessionId: null, sessionOwner: null }) as const
+    const check = (score: number) => ({
+      result: { score, level: 'Low readiness', strengths: [], skill_gaps: [], recommendation: '' },
+      answers: {},
+      saved: false,
+    })
+    store.begin(goal('Be a welder'))
+    store.setCheck('SMAW-NCII', check(25))
+    store.setCheck('CKY-NCII', check(25))
+    store.setFeedback('SMAW-NCII', { id: 'a', satisfied: true, reason: null })
+    store.setFeedback('CKY-NCII', { id: 'b', satisfied: false, reason: null })
+
+    useFinderStore.getState().setCheck('SMAW-NCII', check(50))
+    expect(Object.keys(useFinderStore.getState().feedback)).toEqual(['CKY-NCII'])
+
+    useFinderStore.getState().begin(goal('Be a cook'))
+    expect(useFinderStore.getState().feedback).toEqual({})
+  })
+
   it('keeps the goal box’s text from a version 1 save', async () => {
     window.sessionStorage.setItem(
       FINDER_KEY,

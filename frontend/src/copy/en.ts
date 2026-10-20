@@ -622,6 +622,27 @@ export const en = {
       followed: 'Added to My Progress. Tick off each step as you complete it.',
       already: 'You’re already following this pathway. Find it under My Progress.',
       diagnostics: 'Recommendation diagnostics',
+      // Floating at the foot of the screen under the recommendation. The answers measure how well matching works
+      // (Reports, Recommendation feedback).
+      feedback: {
+        question: 'Are you satisfied with this recommendation?',
+        help: 'Your answer helps us improve recommendations. We keep the scores behind it, not the words of your goal.',
+        yes: 'Yes',
+        no: 'No',
+        thanks: 'Thank you for your answer.',
+        why: 'Thank you. What didn’t fit? This is optional.',
+        reasonsLabel: 'What didn’t fit',
+        reasons: {
+          wrong_qualification: 'It’s the wrong qualification for my goal',
+          readiness_off: 'The readiness result doesn’t seem right',
+          pathway_not_helpful: 'The suggested pathway isn’t helpful',
+        },
+        explained: 'Thank you. That tells us what to improve.',
+        // Hide for now tucks the question into a small button that brings it back; Close puts it away once answered.
+        later: 'Hide for now',
+        reopen: 'Rate this recommendation',
+        close: 'Close',
+      },
     },
   },
   // Training & Assessment (classic/training_view.py).
@@ -1173,6 +1194,43 @@ export const en = {
       assessments: 'Upcoming assessments',
       seats: 'Open seats',
       empty: 'No training or assessment supply is listed yet.',
+    },
+    feedback: {
+      heading: 'Recommendation feedback',
+      lead: 'Answers to “Are you satisfied with this recommendation?” at the end of Find my pathway, in the selected period.',
+      summary: (satisfied: number, answers: number) =>
+        `${Math.round((100 * satisfied) / answers)}% satisfied: ${figure(satisfied)} of ${figure(answers)} ${answers === 1 ? 'answer' : 'answers'}.`,
+      empty: 'No answers in this period. They appear as learners finish Find my pathway.',
+      answers: 'Answers',
+      satisfied: 'Satisfied',
+      place: {
+        caption: 'Satisfaction by where the recommended qualification stood among the matches',
+        heading: 'Recommended qualification',
+        rows: {
+          top_match: 'The top match',
+          other_match: 'Another match',
+          own_choice: 'Picked from the library',
+        },
+      },
+      reasons: {
+        caption: 'Reasons given for No',
+        heading: 'Reason',
+        rows: {
+          wrong_qualification: 'Wrong qualification for the goal',
+          readiness_off: 'Readiness result seemed wrong',
+          pathway_not_helpful: 'Pathway not helpful',
+          none: 'No reason given',
+        },
+      },
+      models: {
+        caption: 'Satisfaction by matching model',
+        heading: 'Model',
+        keywords: 'Keyword matching only',
+      },
+      qualifications: {
+        caption: 'Satisfaction by qualification',
+        heading: 'Qualification',
+      },
     },
   },
   // A count against a total, as screen readers hear "5/8".

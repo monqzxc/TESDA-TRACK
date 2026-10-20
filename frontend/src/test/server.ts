@@ -37,6 +37,20 @@ const referenceData = [
   http.get('*/api/v1/admin/reports/qualification-demand', () => HttpResponse.json([])),
   http.get('*/api/v1/admin/reports/skill-gaps', () => HttpResponse.json([])),
   http.get('*/api/v1/admin/reports/supply', () => HttpResponse.json([])),
+  http.get('*/api/v1/admin/reports/feedback', () =>
+    HttpResponse.json({
+      answers: 0,
+      satisfied: 0,
+      by_place: {
+        top_match: { answers: 0, satisfied: 0 },
+        other_match: { answers: 0, satisfied: 0 },
+        own_choice: { answers: 0, satisfied: 0 },
+      },
+      reasons: { wrong_qualification: 0, readiness_off: 0, pathway_not_helpful: 0, none: 0 },
+      by_model: [],
+      by_qualification: [],
+    }),
+  ),
 ]
 
 export const server = setupServer(...referenceData)

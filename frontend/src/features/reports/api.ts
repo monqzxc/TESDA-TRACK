@@ -13,6 +13,8 @@ export type Funnel = components['schemas']['Funnel']
 export type QualificationDemand = components['schemas']['QualificationDemand']
 export type CompetencyGap = components['schemas']['CompetencyGap']
 export type RegionSupply = components['schemas']['RegionSupply']
+export type FeedbackSummary = components['schemas']['FeedbackSummary']
+export type FeedbackCount = components['schemas']['FeedbackCount']
 
 /** Inclusive dates (YYYY-MM-DD) in Philippine time; null leaves that end open. */
 export interface Period {
@@ -69,6 +71,16 @@ export const skillGapsQuery = (code: string, period: Period) =>
     // The last rows stay on screen for a new period, but never under another qualification's name.
     placeholderData: (previous, previousQuery) =>
       previousQuery?.queryKey[3] === code ? previous : undefined,
+  })
+
+export const feedbackQuery = (period: Period) =>
+  queryOptions<FeedbackSummary, ApiError>({
+    queryKey: ['admin', 'reports', 'feedback', period.from, period.to],
+    queryFn: ({ signal }) =>
+      unwrap(
+        api.GET('/api/v1/admin/reports/feedback', { params: { query: dates(period) }, signal }),
+      ),
+    placeholderData: keepPreviousData,
   })
 
 /** Supply is what is listed now, whatever the period. */

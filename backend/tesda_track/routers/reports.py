@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends, Query
 
 from tesda_track.db import SessionDep
 from tesda_track.deps import require_admin
-from tesda_track.schemas.reports import (CompetencyGap, DateRange, Funnel, Overview, QualificationDemand,
-                                         RegionSupply, SkillGapQuery)
+from tesda_track.schemas.reports import (CompetencyGap, DateRange, FeedbackSummary, Funnel, Overview,
+                                         QualificationDemand, RegionSupply, SkillGapQuery)
 from tesda_track.services import reports
 
 router = APIRouter(prefix="/admin/reports", tags=["admin: reports"], dependencies=[Depends(require_admin)])
@@ -35,6 +35,13 @@ def skill_gaps(session: SessionDep, query: Annotated[SkillGapQuery, Query()]):
 def funnel(session: SessionDep, period: Period):
     """How many learners reached each stage, from registering to a verified certificate."""
     return reports.funnel(session, period)
+
+
+@router.get("/feedback", response_model=FeedbackSummary)
+def feedback(session: SessionDep, period: Period):
+    """How satisfied learners were with their recommendation, and why not: overall, by where the qualification stood
+    among their matches, by matching model and by qualification."""
+    return reports.feedback(session, period)
 
 
 @router.get("/supply", response_model=list[RegionSupply])

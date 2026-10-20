@@ -14,6 +14,8 @@ export type Match = MatchResult['matches'][number]
 export type PathwayRecommendation = components['schemas']['PathwayRecommendation']
 export type CuratedPathway = components['schemas']['PathwayPublic']
 export type RecommendationSession = components['schemas']['RecommendationSessionPublic']
+export type Feedback = components['schemas']['FeedbackPublic']
+export type FeedbackReason = components['schemas']['FeedbackReasonUpdate']['reason']
 
 const MINUTE = 60_000
 
@@ -115,4 +117,28 @@ export async function updateSession(sessionId: string, state: SessionState): Pro
 /** Adds a curated pathway to My Progress. */
 export async function followPathway(pathwayId: number): Promise<void> {
   await unwrap(api.POST('/api/v1/me/pathways', { body: { pathway_id: pathwayId } }))
+}
+
+/**
+ * The learner's answer to "Are you satisfied with this recommendation?", with what the recommendation was worked out
+ * from. The API works it out again and keeps the numbers with the answer, not the goal.
+ */
+export async function sendFeedback(body: {
+  query: string
+  profile: Profile
+  qualification_code: string
+  answers: Answers
+  satisfied: boolean
+}): Promise<Feedback> {
+  return unwrap(api.POST('/api/v1/feedback/recommendations', { body }))
+}
+
+/** Why the learner answered No. */
+export async function explainFeedback(id: string, reason: FeedbackReason): Promise<Feedback> {
+  return unwrap(
+    api.PATCH('/api/v1/feedback/recommendations/{feedback_id}', {
+      params: { path: { feedback_id: id } },
+      body: { reason },
+    }),
+  )
 }

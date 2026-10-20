@@ -197,6 +197,13 @@ export const icons = {
     { tag: 'path', d: 'M4 4.5h16l-6 7.5v5.5l-4 2.5v-8L4 4.5ZM16 15l4.5 4.5m0-4.5L16 19.5' },
   ],
   filter: [{ tag: 'path', d: 'M4 4.5h16l-6 7.5v5.5l-4 2.5v-8L4 4.5Z' }],
+  // The finder's question about its recommendation.
+  chat: [
+    {
+      tag: 'path',
+      d: 'M5 4.5h14A1.5 1.5 0 0 1 20.5 6v9a1.5 1.5 0 0 1-1.5 1.5h-7.5L7 20v-3.5H5A1.5 1.5 0 0 1 3.5 15V6A1.5 1.5 0 0 1 5 4.5Z',
+    },
+  ],
   // Training & Assessment's map and directions, from the Streamlit map's own icons (classic/training_view.py ICONS),
   // and Material's open_in_new and map.
   directions: [{ tag: 'path', d: 'M20.5 3.5 3.5 10.6l7.2 2.7 2.7 7.2 7.1-17Z' }],

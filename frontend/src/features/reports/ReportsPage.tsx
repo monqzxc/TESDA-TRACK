@@ -15,12 +15,15 @@ import { AccountGate } from '../account/AccountGate.tsx'
 import {
   activeDemand,
   demandQuery,
+  feedbackQuery,
   funnelQuery,
   isBackwards,
   overviewQuery,
   readDate,
   skillGapsQuery,
   supplyQuery,
+  type FeedbackCount,
+  type FeedbackSummary,
   type Funnel,
   type Period,
   type QualificationDemand,
@@ -259,8 +262,9 @@ function ReportSections({
   const funnel = useQuery({ ...funnelQuery(period), throwOnError: throwWithoutData })
   const demand = useQuery({ ...demandQuery(period), throwOnError: throwWithoutData })
   const supply = useQuery({ ...supplyQuery, throwOnError: throwWithoutData })
+  const feedback = useQuery({ ...feedbackQuery(period), throwOnError: throwWithoutData })
 
-  if (!overview.data || !funnel.data || !demand.data || !supply.data) {
+  if (!overview.data || !funnel.data || !demand.data || !supply.data || !feedback.data) {
     return (
       <p role="status" className={muted}>
         {copy.loading}
@@ -268,7 +272,10 @@ function ReportSections({
     )
   }
   const updating =
-    overview.isPlaceholderData || funnel.isPlaceholderData || demand.isPlaceholderData
+    overview.isPlaceholderData ||
+    funnel.isPlaceholderData ||
+    demand.isPlaceholderData ||
+    feedback.isPlaceholderData
   const stats = copy.stats
   const average = overview.data.average_readiness
   const seats = supply.data.reduce((sum, region) => sum + region.open_seats, 0)
@@ -304,6 +311,7 @@ function ReportSections({
           </dl>
         </section>
         <Journey funnel={funnel.data} />
+        <Feedback summary={feedback.data} />
         <Demand rows={demand.data} />
         <SkillGaps catalog={catalog} code={code} period={period} onChoose={onChoose} />
         <Supply rows={supply.data} />
@@ -438,6 +446,145 @@ function Journey({ funnel }: { funnel: Funnel }) {
         </Table>
       )}
     </Report>
+  )
+}
+
+const PLACES = [
+  'top_match',
+  'other_match',
+  'own_choice',
+] as const satisfies readonly (keyof FeedbackSummary['by_place'])[]
+const REASONS = [
+  'wrong_qualification',
+  'readiness_off',
+  'pathway_not_helpful',
+  'none',
+] as const satisfies readonly (keyof FeedbackSummary['reasons'])[]
+
+/**
+ * How satisfied learners were with their recommendation: overall, by where the qualification stood among their
+ * matches (a satisfied top match is matching at its best), why not, and by model and qualification.
+ */
+function Feedback({ summary }: { summary: FeedbackSummary }) {
+  const feedback = copy.feedback
+  const unsatisfied = summary.answers - summary.satisfied
+  if (summary.answers === 0) {
+    return (
+      <Report heading={feedback.heading} lead={feedback.lead}>
+        <p className={empty}>{feedback.empty}</p>
+      </Report>
+    )
+  }
+  return (
+    <Report heading={feedback.heading} lead={feedback.lead}>
+      <p className="mt-0 mb-2 text-16 font-semibold text-navy">
+        {feedback.summary(summary.satisfied, summary.answers)}
+      </p>
+      <div className="flex flex-col gap-4">
+        <Table caption={feedback.place.caption}>
+          <SatisfactionHead label={feedback.place.heading} />
+          <tbody>
+            {PLACES.map((place) => (
+              <SatisfactionRow
+                key={place}
+                label={feedback.place.rows[place]}
+                tally={summary.by_place[place]}
+              />
+            ))}
+          </tbody>
+        </Table>
+        {unsatisfied > 0 && (
+          <Table caption={feedback.reasons.caption}>
+            <thead>
+              <tr>
+                <th scope="col" className={head}>
+                  {feedback.reasons.heading}
+                </th>
+                <th scope="col" className={cx(head, 'w-[60%]')}>
+                  {feedback.answers}
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {REASONS.map((reason) => (
+                <tr key={reason}>
+                  <th scope="row" className={rowHead}>
+                    {feedback.reasons.rows[reason]}
+                  </th>
+                  <td className={cell}>
+                    <Bar share={summary.reasons[reason] / unsatisfied}>
+                      {count(summary.reasons[reason])}
+                    </Bar>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+        <Table caption={feedback.models.caption}>
+          <SatisfactionHead label={feedback.models.heading} />
+          <tbody>
+            {summary.by_model.map((row) => (
+              <SatisfactionRow
+                key={row.model ?? ''}
+                label={row.model ?? feedback.models.keywords}
+                tally={row}
+              />
+            ))}
+          </tbody>
+        </Table>
+        <Table caption={feedback.qualifications.caption}>
+          <SatisfactionHead label={feedback.qualifications.heading} />
+          <tbody>
+            {summary.by_qualification.map((row) => (
+              <SatisfactionRow
+                key={row.qualification.code}
+                label={row.qualification.name}
+                tally={row}
+              />
+            ))}
+          </tbody>
+        </Table>
+      </div>
+    </Report>
+  )
+}
+
+function SatisfactionHead({ label }: { label: string }) {
+  return (
+    <thead>
+      <tr>
+        <th scope="col" className={head}>
+          {label}
+        </th>
+        <th scope="col" className={headNumber}>
+          {copy.feedback.answers}
+        </th>
+        <th scope="col" className={cx(head, 'w-[45%]')}>
+          {copy.feedback.satisfied}
+        </th>
+      </tr>
+    </thead>
+  )
+}
+
+function SatisfactionRow({ label, tally }: { label: string; tally: FeedbackCount }) {
+  return (
+    <tr>
+      <th scope="row" className={cx(rowHead, 'min-w-56 max-sm:min-w-40')}>
+        {label}
+      </th>
+      <td className={cellNumber}>{count(tally.answers)}</td>
+      <td className={cell}>
+        {tally.answers === 0 ? (
+          copy.none
+        ) : (
+          <Bar share={tally.satisfied / tally.answers}>
+            {`${Math.round((100 * tally.satisfied) / tally.answers)}%`}
+          </Bar>
+        )}
+      </td>
+    </tr>
   )
 }
 

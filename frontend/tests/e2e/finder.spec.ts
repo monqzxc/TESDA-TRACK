@@ -103,6 +103,14 @@ async function serveFinder(page: Page) {
       ],
     }),
   )
+  await page.route('**/api/v1/feedback/recommendations', async (route) => {
+    const { satisfied } = route.request().postDataJSON() as { satisfied: boolean }
+    await route.fulfill({ status: 201, json: { id: 'feedback-1', satisfied, reason: null } })
+  })
+  await page.route('**/api/v1/feedback/recommendations/*', async (route) => {
+    const { reason } = route.request().postDataJSON() as { reason: string }
+    await route.fulfill({ json: { id: 'feedback-1', satisfied: false, reason } })
+  })
   return seen
 }
 
@@ -187,11 +195,25 @@ for (const colorScheme of ['light', 'dark'] as const) {
       await expect(page.getByRole('heading', { name: 'Close your skill gaps' })).toBeVisible()
       await expectSettledAndAccessible(page)
 
-      // A refresh keeps the learner's work (US-14).
+      // The question under the recommendation, and a reason after No.
+      const question = page.getByRole('region', {
+        name: 'Are you satisfied with this recommendation?',
+      })
+      await question.getByRole('button', { name: 'No', exact: true }).click()
+      await expect(question.getByText(/What didn’t fit\?/)).toBeFocused()
+      await expectSettledAndAccessible(page)
+      await question
+        .getByRole('button', { name: 'It’s the wrong qualification for my goal' })
+        .click()
+      await expect(question.getByText('Thank you. That tells us what to improve.')).toBeFocused()
+      await expectSettledAndAccessible(page)
+
+      // A refresh keeps the learner's work (US-14), the answer included: the question isn't asked again.
       await page.reload()
       await expect(
         page.getByRole('heading', { name: 'Take focused training, then the NC assessment' }),
       ).toBeVisible()
+      await expect(question).toHaveCount(0)
       expect(seen.goalInAddress).toEqual([])
     })
   }

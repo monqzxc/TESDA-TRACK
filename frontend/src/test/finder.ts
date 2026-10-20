@@ -57,16 +57,20 @@ interface FinderApiOptions {
   matches?: Match[]
   /** Fail the matches request this many times first. */
   failMatches?: number
+  /** Fail the feedback answer this many times first. */
+  failFeedback?: number
 }
 
 /** The finder's routes, with every request recorded in `requests` (bodies parsed). */
 export function serveFinderApi({
   matches = [weldingMatch],
   failMatches = 0,
+  failFeedback = 0,
 }: FinderApiOptions = {}) {
   const state = {
     requests: [] as FinderRequest[],
     matchFailures: failMatches,
+    feedbackFailures: failFeedback,
     followed: new Set<number>(),
   }
   const record = async (request: Request) => {
@@ -203,6 +207,20 @@ export function serveFinderApi({
       }
       state.followed.add(pathway_id)
       return HttpResponse.json({}, { status: 201 })
+    }),
+    http.post('*/api/v1/feedback/recommendations', async ({ request }) => {
+      await record(request)
+      if (state.feedbackFailures > 0) {
+        state.feedbackFailures--
+        return HttpResponse.error()
+      }
+      const { satisfied } = (await request.json()) as { satisfied: boolean }
+      return HttpResponse.json({ id: 'feedback-1', satisfied, reason: null }, { status: 201 })
+    }),
+    http.patch('*/api/v1/feedback/recommendations/:id', async ({ request, params }) => {
+      await record(request)
+      const { reason } = (await request.json()) as { reason: string }
+      return HttpResponse.json({ id: params.id, satisfied: false, reason })
     }),
   )
   return state

@@ -15,6 +15,8 @@ export const GOAL_MAX_LENGTH = 500
 
 export type Profile = components['schemas']['Profile']
 export type ReadinessResult = components['schemas']['ReadinessResult']
+/** The learner's answer about a recommendation, as the API recorded it. */
+export type GivenFeedback = components['schemas']['FeedbackPublic']
 
 /** A readiness answer, as the API takes it. */
 export type Answer = 'confident' | 'some_experience' | 'not_familiar'
@@ -67,6 +69,8 @@ export interface FinderState {
   parts: Record<string, number>
   /** The last submitted readiness check, by qualification code. */
   checks: Record<string, SubmittedCheck>
+  /** The learner's answer about the recommendation from that check, by qualification code. */
+  feedback: Record<string, GivenFeedback>
 
   /** Puts a goal in the goal box, as typed (trimmed and cut to the limit), for the learner to review. */
   startWithGoal: (goal: string) => void
@@ -79,8 +83,10 @@ export interface FinderState {
   choose: (code: string) => void
   answer: (code: string, competencyId: number, answer: Answer) => void
   setPart: (code: string, part: number) => void
+  /** A new result is a new recommendation, so any answer about the last one goes. */
   setCheck: (code: string, check: SubmittedCheck) => void
   markCheckSaved: (code: string) => void
+  setFeedback: (code: string, feedback: GivenFeedback) => void
   /** The journey's recommendation session was created, for this learner. */
   setSession: (sessionId: string, owner: string) => void
   setSynced: (synced: SessionState) => void
@@ -97,6 +103,7 @@ const EMPTY = {
   answers: {},
   parts: {},
   checks: {},
+  feedback: {},
 } satisfies Partial<FinderState>
 
 /** sessionStorage can be missing or throw (private windows, blocked site data): then nothing is saved. */
@@ -141,6 +148,7 @@ export const useFinderStore = create<FinderState>()(
           answers: {},
           parts: {},
           checks: {},
+          feedback: {},
         }),
       setExperience: (experience) => set({ experience }),
       setCertification: (certification) => set({ certification }),
@@ -150,12 +158,19 @@ export const useFinderStore = create<FinderState>()(
           answers: { ...state.answers, [code]: { ...state.answers[code], [competencyId]: answer } },
         })),
       setPart: (code, part) => set((state) => ({ parts: { ...state.parts, [code]: part } })),
-      setCheck: (code, check) => set((state) => ({ checks: { ...state.checks, [code]: check } })),
+      setCheck: (code, check) =>
+        set((state) => {
+          const feedback = { ...state.feedback }
+          delete feedback[code]
+          return { checks: { ...state.checks, [code]: check }, feedback }
+        }),
       markCheckSaved: (code) =>
         set((state) => {
           const check = state.checks[code]
           return check ? { checks: { ...state.checks, [code]: { ...check, saved: true } } } : {}
         }),
+      setFeedback: (code, feedback) =>
+        set((state) => ({ feedback: { ...state.feedback, [code]: feedback } })),
       setSession: (sessionId, sessionOwner) =>
         set((state) =>
           state.journey

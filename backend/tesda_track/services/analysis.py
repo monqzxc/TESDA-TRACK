@@ -40,6 +40,17 @@ class GoalAnalysisResult:
     source: Literal["rules", "ai"]
 
 
+@dataclass(frozen=True)
+class MatchEvidence:
+    """What matching worked from: the API returns the profile and matches, and feedback keeps the rest."""
+    profile: Profile
+    matches: list[Match]
+    keyword: dict[str, float]  # keyword strength (0..1) by qualification code, for those with any
+    z_scores: dict[int, float]  # z-score of meaning similarity by qualification id; empty without the model
+    model: str | None
+    params: MatchParams | None
+
+
 def semantic_strength(value: float, floor: float, ceiling: float) -> float:
     """Map a value onto 0..1: nothing at or below the floor, everything at or above the ceiling."""
     return min(max((value - floor) / (ceiling - floor), 0.0), 1.0)
@@ -110,6 +121,12 @@ def analyze_goal(session: Session, query: str, embedder: Embedder | None = None)
 
 def match(session: Session, query: str, profile: Profile,
           embedder: Embedder | None = None) -> tuple[Profile, list[Match]]:
+    evidence = match_evidence(session, query, profile, embedder)
+    return evidence.profile, evidence.matches
+
+
+def match_evidence(session: Session, query: str, profile: Profile,
+                   embedder: Embedder | None = None) -> MatchEvidence:
     refined = Profile.model_validate(refine_profile(profile.model_dump()))
     current = catalog.snapshot(session)
     # With semantic search on, keywords count only as direct evidence in the learner's own words: the
@@ -117,13 +134,16 @@ def match(session: Session, query: str, profile: Profile,
     evidence_profile = refined.model_dump() if embedder is None else {}
     keyword = {r["qualification"]["code"]: r for r in score_qualifications(query, evidence_profile,
                                                                             current.rule_views)}
+    strength = {code: round(r["score"] / KEYWORD_SCALE, 3) for code, r in keyword.items()}
     if embedder is None:
         by_code = {item.code: item for item in current.items}
-        return refined, [Match(qualification=by_code[code].summary, score=r["score"], reason=r["reason"])
-                         for code, r in list(keyword.items())[:3]]
+        matches = [Match(qualification=by_code[code].summary, score=r["score"], reason=r["reason"])
+                   for code, r in list(keyword.items())[:3]]
+        return MatchEvidence(refined, matches, strength, {}, None, None)
     params = MatchParams.from_settings(get_settings())
     similarities = embeddings.qualification_similarities(session, embedder, query)
-    return refined, score_matches(current.items, keyword, similarities, params)
+    return MatchEvidence(refined, score_matches(current.items, keyword, similarities, params), strength,
+                         z_scores(similarities), embedder.model_name, params)
 
 
 def pathway(session: Session, profile: Profile, qualification_code: str) -> PathwayRecommendation:

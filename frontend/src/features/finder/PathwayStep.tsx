@@ -14,6 +14,7 @@ import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { shortName, trainingAddress } from '../training/address.ts'
 import { curatedPathwaysQuery, followPathway, type CuratedPathway } from './api.ts'
+import { FeedbackPrompt } from './FeedbackPrompt.tsx'
 import { VERDICTS, verdictFor } from './rules.ts'
 import { useFinderStore, type Answers, type Profile, type SubmittedCheck } from './store.ts'
 import { card, kicker, muted, notice } from './styles.ts'
@@ -28,13 +29,16 @@ interface PathwayStepProps {
   qualification: Qualification
   /** For administrators' diagnostics. */
   profile: Profile
+  /** What the matches were asked with, for the learner's feedback. */
+  asked: { query: string; profile: Profile }
 }
 
 /**
  * Your pathway (classic/app.py show_recommendation): the readiness result's verdict, which picks training or the NC
- * assessment, its button to the centers that fit, the strengths and gaps, and the curated pathway for that route.
+ * assessment, its button to the centers that fit, the strengths and gaps, the curated pathway for that route, and
+ * whether the learner is satisfied with it all.
  */
-export function PathwayStep({ qualification, profile }: PathwayStepProps) {
+export function PathwayStep({ qualification, profile, asked }: PathwayStepProps) {
   const check = useFinderStore((state) => state.checks[qualification.code])
   const answers = useFinderStore((state) => state.answers[qualification.code])
   const headingId = useId()
@@ -65,6 +69,7 @@ export function PathwayStep({ qualification, profile }: PathwayStepProps) {
       />
       <p className={cx(muted, '-mt-1')}>{copy.disclaimer}</p>
       <CuratedPathway code={qualification.code} route={VERDICTS[verdictFor(check.result)].route} />
+      <FeedbackPrompt code={qualification.code} check={check} asked={asked} />
       <Diagnostics profile={profile} check={check} />
     </>
   )

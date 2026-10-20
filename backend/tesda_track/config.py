@@ -74,6 +74,10 @@ class Settings(BaseSettings):
     routing_rate_limit_per_minute: int = Field(default=10, ge=1, description="Directions per client address")
     routing_cache_ttl_seconds: int = Field(default=3600, ge=0, description="How long found routes are kept; 0 for none")
 
+    # Answers to "Are you satisfied with this recommendation?". Each works the match out again, so they're limited;
+    # learners behind one address (a training center's network) share the limit.
+    feedback_rate_limit_per_minute: int = Field(default=30, ge=1, description="Feedback answers per client address")
+
     # CARTO basemaps key for the center map's default style; empty keeps the map on OpenStreetMap tiles. Not a
     # secret: browsers send it with every tile request, so restrict it to the deployment's domain in CARTO.
     carto_api: str = ""

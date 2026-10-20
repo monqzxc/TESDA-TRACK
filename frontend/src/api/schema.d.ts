@@ -120,6 +120,50 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/feedback/recommendations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Give Feedback
+         * @description A learner's answer to "Are you satisfied with this recommendation?", signed in or not.
+         *
+         *     The API works the matches and readiness result out again from what the finder sent, and keeps the answer with
+         *     those numbers and the matching model's name. The goal is kept only as a keyed hash, and the answer isn't linked
+         *     to an account.
+         */
+        post: operations["give_feedback_api_v1_feedback_recommendations_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/feedback/recommendations/{feedback_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /**
+         * Explain Feedback
+         * @description Why the learner wasn't satisfied, given after an answer of No.
+         */
+        patch: operations["explain_feedback_api_v1_feedback_recommendations__feedback_id__patch"];
+        trace?: never;
+    };
     "/api/v1/auth/register": {
         parameters: {
             query?: never;
@@ -986,6 +1030,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/reports/feedback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Feedback
+         * @description How satisfied learners were with their recommendation, and why not: overall, by where the qualification stood
+         *     among their matches, by matching model and by qualification.
+         */
+        get: operations["feedback_api_v1_admin_reports_feedback_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/reports/supply": {
         parameters: {
             query?: never;
@@ -1605,6 +1670,97 @@ export interface components {
             status: "active" | "withdrawn";
         };
         /**
+         * FeedbackByPlace
+         * @description Where the qualification the learner was recommended stood among the matches they were shown.
+         */
+        FeedbackByPlace: {
+            top_match: components["schemas"]["FeedbackCount"];
+            other_match: components["schemas"]["FeedbackCount"];
+            /** @description Picked from the library rather than the matches */
+            own_choice: components["schemas"]["FeedbackCount"];
+        };
+        /** FeedbackCount */
+        FeedbackCount: {
+            /** Answers */
+            answers: number;
+            /** Satisfied */
+            satisfied: number;
+        };
+        /**
+         * FeedbackCreate
+         * @description The recommendation as the finder asked for it, so the API can work it out again. The goal isn't kept.
+         */
+        FeedbackCreate: {
+            /** Query */
+            query: string;
+            /** @description The profile the matches were asked with, follow-up answers included */
+            profile: components["schemas"]["Profile"];
+            /** Qualification Code */
+            qualification_code: string;
+            /**
+             * Answers
+             * @description The readiness answers the result came from
+             */
+            answers: {
+                [key: string]: "confident" | "some_experience" | "not_familiar";
+            };
+            /** Satisfied */
+            satisfied: boolean;
+        };
+        /** FeedbackPublic */
+        FeedbackPublic: {
+            /**
+             * Id
+             * Format: uuid
+             */
+            id: string;
+            /** Satisfied */
+            satisfied: boolean;
+            /** Reason */
+            reason: ("wrong_qualification" | "readiness_off" | "pathway_not_helpful") | null;
+        };
+        /** FeedbackReasonUpdate */
+        FeedbackReasonUpdate: {
+            /**
+             * Reason
+             * @enum {string}
+             */
+            reason: "wrong_qualification" | "readiness_off" | "pathway_not_helpful";
+        };
+        /**
+         * FeedbackReasons
+         * @description Why learners answered No.
+         */
+        FeedbackReasons: {
+            /** Wrong Qualification */
+            wrong_qualification: number;
+            /** Readiness Off */
+            readiness_off: number;
+            /** Pathway Not Helpful */
+            pathway_not_helpful: number;
+            /**
+             * None
+             * @description No reason given
+             */
+            none: number;
+        };
+        /**
+         * FeedbackSummary
+         * @description Answers to "Are you satisfied with this recommendation?" at the end of Find my pathway.
+         */
+        FeedbackSummary: {
+            /** Answers */
+            answers: number;
+            /** Satisfied */
+            satisfied: number;
+            by_place: components["schemas"]["FeedbackByPlace"];
+            reasons: components["schemas"]["FeedbackReasons"];
+            /** By Model */
+            by_model: components["schemas"]["ModelFeedback"][];
+            /** By Qualification */
+            by_qualification: components["schemas"]["QualificationFeedback"][];
+        };
+        /**
          * FlightEstimate
          * @description An estimate from the distance between the airports nearest each end, not an airline schedule.
          */
@@ -1801,6 +1957,18 @@ export interface components {
             profile: components["schemas"]["Profile"];
             /** Matches */
             matches: components["schemas"]["Match"][];
+        };
+        /** ModelFeedback */
+        ModelFeedback: {
+            /** Answers */
+            answers: number;
+            /** Satisfied */
+            satisfied: number;
+            /**
+             * Model
+             * @description The embedding model; null for keyword matching only
+             */
+            model: string | null;
         };
         /** Overview */
         Overview: {
@@ -2005,6 +2173,14 @@ export interface components {
             competent: number;
             /** Certified */
             certified: number;
+        };
+        /** QualificationFeedback */
+        QualificationFeedback: {
+            /** Answers */
+            answers: number;
+            /** Satisfied */
+            satisfied: number;
+            qualification: components["schemas"]["QualificationSummary"];
         };
         /** QualificationPublic */
         QualificationPublic: {
@@ -3067,6 +3243,102 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
                 };
+            };
+        };
+    };
+    give_feedback_api_v1_feedback_recommendations_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FeedbackCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FeedbackPublic"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Too many answers from this client; see Retry-After */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    explain_feedback_api_v1_feedback_recommendations__feedback_id__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                feedback_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["FeedbackReasonUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FeedbackPublic"];
+                };
+            };
+            /** @description No such answer */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description The answer was Yes */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Too many answers from this client; see Retry-After */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -4937,6 +5209,38 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Funnel"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    feedback_api_v1_admin_reports_feedback_get: {
+        parameters: {
+            query?: {
+                date_from?: string | null;
+                date_to?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["FeedbackSummary"];
                 };
             };
             /** @description Validation Error */

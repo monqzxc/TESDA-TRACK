@@ -105,6 +105,21 @@ async function serveReports(page: Page): Promise<Served> {
       }),
     ),
   )
+  await report('feedback', () => ({
+    answers: 42,
+    satisfied: 31,
+    by_place: {
+      top_match: { answers: 30, satisfied: 26 },
+      other_match: { answers: 7, satisfied: 3 },
+      own_choice: { answers: 5, satisfied: 2 },
+    },
+    reasons: { wrong_qualification: 6, readiness_off: 2, pathway_not_helpful: 1, none: 2 },
+    by_model: [{ model: 'intfloat/multilingual-e5-small', answers: 42, satisfied: 31 }],
+    by_qualification: [
+      { qualification: demandRow(0, 0, null).qualification, answers: 30, satisfied: 24 },
+      { qualification: demandRow(1, 0, null).qualification, answers: 12, satisfied: 7 },
+    ],
+  }))
   return served
 }
 
@@ -131,6 +146,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
 
       await expect(page.getByRole('heading', { level: 2, name: 'Learner journey' })).toBeVisible()
       await expect(gapTable(page)).toBeVisible()
+      await expect(page.getByText('74% satisfied: 31 of 42 answers.')).toBeVisible()
       await expectAccessible(page)
     })
   }

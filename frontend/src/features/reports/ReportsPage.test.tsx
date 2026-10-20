@@ -303,4 +303,68 @@ describe('Reports', () => {
       search: '?qualification_code=BKP-NCIII',
     })
   })
+
+  it('shows how satisfied learners were with their recommendation, and why not', async () => {
+    serveReports()
+    const [, welding] = CATALOG
+    server.use(
+      http.get('*/api/v1/admin/reports/feedback', () =>
+        HttpResponse.json({
+          answers: 8,
+          satisfied: 6,
+          by_place: {
+            top_match: { answers: 5, satisfied: 5 },
+            other_match: { answers: 1, satisfied: 0 },
+            own_choice: { answers: 2, satisfied: 1 },
+          },
+          reasons: { wrong_qualification: 1, readiness_off: 0, pathway_not_helpful: 0, none: 1 },
+          by_model: [
+            { model: 'intfloat/multilingual-e5-small', answers: 6, satisfied: 5 },
+            { model: null, answers: 2, satisfied: 1 },
+          ],
+          by_qualification: [
+            {
+              qualification: { code: welding.code, name: welding.name, sector: welding.sector },
+              answers: 8,
+              satisfied: 6,
+            },
+          ],
+        }),
+      ),
+    )
+    await openReports()
+
+    const feedback = region('Recommendation feedback')
+    const table = (name: string) => rows(within(feedback).getByRole('table', { name }))
+    expect(within(feedback).getByText('75% satisfied: 6 of 8 answers.')).toBeVisible()
+    expect(
+      table('Satisfaction by where the recommended qualification stood among the matches'),
+    ).toEqual([
+      ['The top match', '5', '100%'],
+      ['Another match', '1', '0%'],
+      ['Picked from the library', '2', '50%'],
+    ])
+    expect(table('Reasons given for No')).toEqual([
+      ['Wrong qualification for the goal', '1'],
+      ['Readiness result seemed wrong', '0'],
+      ['Pathway not helpful', '0'],
+      ['No reason given', '1'],
+    ])
+    expect(table('Satisfaction by matching model')).toEqual([
+      ['intfloat/multilingual-e5-small', '6', '83%'],
+      ['Keyword matching only', '2', '50%'],
+    ])
+    expect(table('Satisfaction by qualification')).toEqual([[welding.name, '8', '75%']])
+  })
+
+  it('says when there are no answers about recommendations yet', async () => {
+    serveReports()
+    await openReports()
+
+    expect(
+      within(region('Recommendation feedback')).getByText(
+        'No answers in this period. They appear as learners finish Find my pathway.',
+      ),
+    ).toBeVisible()
+  })
 })

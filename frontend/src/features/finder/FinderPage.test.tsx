@@ -7,6 +7,7 @@ import {
   cookery,
   serveFinderApi,
   serveFinderCatalog,
+  welderProfile,
   welding,
   type FinderRequest,
 } from '../../test/finder.ts'
@@ -430,5 +431,133 @@ describe('Find my pathway, signed in', () => {
     expect(
       await screen.findByText('You’re already following this pathway. Find it under My Progress.'),
     ).toBeInTheDocument()
+  })
+})
+
+describe('Find my pathway, feedback', () => {
+  const QUESTION = 'Are you satisfied with this recommendation?'
+
+  /** From the welder goal to Your pathway (skill 4 a gap), then the question under the recommendation. */
+  async function reachQuestion(user: UserEvent) {
+    await submitGoal(user)
+    await user.click(screen.getByRole('button', { name: 'Check my readiness' }))
+    await screen.findByText('Part 1 of 3 · Basic skills')
+    await rateAll(user)
+    await user.click(screen.getByRole('button', { name: 'Analyze my skills' }))
+    return screen.findByRole('region', { name: QUESTION })
+  }
+
+  it('asks under the recommendation, and sends Yes with what the recommendation came from', async () => {
+    serveFinderCatalog()
+    const api = serveFinderApi()
+    const user = userEvent.setup()
+    const question = await reachQuestion(user)
+    expect(within(question).getByText(/not the words of your goal/)).toBeInTheDocument()
+
+    await user.click(within(question).getByRole('button', { name: 'Yes' }))
+
+    // The button pressed is gone, so focus is on what replaced it.
+    expect(await within(question).findByText('Thank you for your answer.')).toHaveFocus()
+    expect(within(question).queryByRole('button', { name: 'No' })).not.toBeInTheDocument()
+    expect(sent(api.requests, 'POST', '/api/v1/feedback/recommendations')[0].body).toEqual({
+      query: GOAL,
+      profile: welderProfile,
+      qualification_code: welding.code,
+      answers: { 1: 'confident', 2: 'confident', 3: 'confident', 4: 'not_familiar' },
+      satisfied: true,
+    })
+  })
+
+  it('after No, offers an optional reason and sends the one picked', async () => {
+    serveFinderCatalog()
+    const api = serveFinderApi()
+    const user = userEvent.setup()
+    const question = await reachQuestion(user)
+
+    await user.click(within(question).getByRole('button', { name: 'No' }))
+
+    expect(await within(question).findByText(/What didn’t fit\? This is optional/)).toHaveFocus()
+    expect(sent(api.requests, 'POST', '/api/v1/feedback/recommendations')[0].body).toMatchObject({
+      satisfied: false,
+    })
+    const reasons = within(question).getByRole('group', { name: 'What didn’t fit' })
+    await user.click(
+      within(reasons).getByRole('button', { name: 'The readiness result doesn’t seem right' }),
+    )
+
+    expect(
+      await within(question).findByText('Thank you. That tells us what to improve.'),
+    ).toHaveFocus()
+    expect(
+      sent(api.requests, 'PATCH', '/api/v1/feedback/recommendations/feedback-1')[0].body,
+    ).toEqual({ reason: 'readiness_off' })
+  })
+
+  it('tucks into a button with Hide for now, which brings the question back', async () => {
+    serveFinderCatalog()
+    const api = serveFinderApi()
+    const user = userEvent.setup()
+    const question = await reachQuestion(user)
+
+    await user.click(within(question).getByRole('button', { name: 'Hide for now' }))
+
+    expect(screen.queryByRole('region', { name: QUESTION })).not.toBeInTheDocument()
+    const reopen = screen.getByRole('button', { name: 'Rate this recommendation' })
+    expect(reopen).toHaveFocus()
+    expect(sent(api.requests, 'POST', '/api/v1/feedback/recommendations')).toEqual([])
+
+    await user.click(reopen)
+    const again = screen.getByRole('region', { name: QUESTION })
+    expect(again).toHaveFocus()
+    expect(within(again).getByRole('button', { name: 'Yes' })).toBeInTheDocument()
+  })
+
+  it('closes once answered, and isn’t asked again', async () => {
+    serveFinderCatalog()
+    serveFinderApi()
+    const user = userEvent.setup()
+    const question = await reachQuestion(user)
+    await user.click(within(question).getByRole('button', { name: 'Yes' }))
+    await within(question).findByText('Thank you for your answer.')
+
+    await user.click(within(question).getByRole('button', { name: 'Close' }))
+
+    expect(screen.queryByRole('region', { name: QUESTION })).not.toBeInTheDocument()
+    expect(document.getElementById('main')).toHaveFocus()
+    expect(
+      screen.queryByRole('button', { name: 'Rate this recommendation' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('isn’t asked again when the learner comes back to an answered recommendation', async () => {
+    serveFinderCatalog()
+    serveFinderApi()
+    const user = userEvent.setup()
+    const question = await reachQuestion(user)
+    await user.click(within(question).getByRole('button', { name: 'Yes' }))
+    await within(question).findByText('Thank you for your answer.')
+
+    await user.click(screen.getByRole('link', { name: /Back/ }))
+    await screen.findByRole('heading', { level: 2, name: 'Readiness check' })
+    await user.click(screen.getByRole('link', { name: /Next: Your pathway/ }))
+    await screen.findByRole('heading', { level: 2, name: 'Your pathway' })
+
+    expect(screen.queryByRole('region', { name: QUESTION })).not.toBeInTheDocument()
+  })
+
+  it('keeps the question when the answer can’t be sent, so the learner can answer again', async () => {
+    serveFinderCatalog()
+    serveFinderApi({ failFeedback: 1 })
+    const user = userEvent.setup()
+    const question = await reachQuestion(user)
+
+    await user.click(within(question).getByRole('button', { name: 'Yes' }))
+
+    expect(await within(question).findByRole('alert')).toHaveTextContent(
+      "We can't reach the TESDA-TRACK service right now.",
+    )
+    await user.click(within(question).getByRole('button', { name: 'Yes' }))
+    expect(await within(question).findByText('Thank you for your answer.')).toBeInTheDocument()
+    expect(within(question).queryByRole('alert')).not.toBeInTheDocument()
   })
 })

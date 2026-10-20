@@ -11,12 +11,13 @@ from sqlmodel import Session
 from tesda_track.config import get_settings
 from tesda_track.db import get_engine
 from tesda_track.errors import AuthenticationError, DomainError, SessionCookieError
-from tesda_track.routers import (analysis, assessments, auth, certifications, goals, health, integrations, me, meta,
-                                 pathways, qualifications, readiness_checks, recommendation_sessions, recommendations,
-                                 reports, routes, skills_bridge, training)
+from tesda_track.routers import (analysis, assessments, auth, certifications, feedback, goals, health, integrations,
+                                 me, meta, pathways, qualifications, readiness_checks, recommendation_sessions,
+                                 recommendations, reports, routes, skills_bridge, training)
 from tesda_track.security import clear_session_cookie
 from tesda_track.services import cache
 from tesda_track.services.embeddings import get_embedder
+from tesda_track.services.rate_limit import RateLimiter
 
 logger = logging.getLogger("tesda_track")
 CACHE_PURGE_INTERVAL_SECONDS = 600
@@ -44,6 +45,7 @@ def create_app() -> FastAPI:
     )
     app.state.skills_bridge_limits = skills_bridge.BridgeLimits()
     app.state.route_limits = routes.RouteLimits()
+    app.state.feedback_limits = RateLimiter()
     routes.hide_coordinates_in_access_log()
     if settings.cors_origins:
         app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins, allow_methods=["*"],
@@ -72,7 +74,7 @@ def create_app() -> FastAPI:
 
     app.include_router(health.router)
     api = APIRouter(prefix="/api/v1")
-    for router in (qualifications.router, analysis.router, auth.router, me.router, goals.router,
+    for router in (qualifications.router, analysis.router, feedback.router, auth.router, me.router, goals.router,
                    recommendation_sessions.router, readiness_checks.router, certifications.router,
                    pathways.router, pathways.learner_router, training.router, assessments.router,
                    assessments.learner_router, recommendations.router, pathways.admin_router, training.admin_router,

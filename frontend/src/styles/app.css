@@ -186,6 +186,9 @@
   --animate-slide-in: slide-in 0.24s cubic-bezier(0.2, 0.75, 0.2, 1); /* the phone menu's drawer */
   --animate-notice: notice 0.2s ease-out; /* the account notice at the foot of the screen */
   --animate-pop: pop 0.16s ease-out; /* the account menu */
+  /* The finder's feedback question: it rises once the step has slid in, then rings twice to be noticed. */
+  --animate-float-in:
+    rise 0.3s cubic-bezier(0.2, 0.75, 0.2, 1) 0.5s backwards, beckon 1s ease-out 0.9s 2;
   /* The finder: each step slides in from the side the learner moved towards; its tab grows in and ticks. */
   --animate-enter-forward: enter-forward 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
   --animate-enter-back: enter-back 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
@@ -222,6 +225,17 @@
     from {
       opacity: 0;
       transform: translateY(-4px);
+    }
+  }
+  /* A ring that widens and fades, drawn with outline so the box keeps its own shadow. */
+  @keyframes beckon {
+    from {
+      outline: 2px solid color-mix(in srgb, var(--track-blue) 60%, transparent);
+      outline-offset: 0;
+    }
+    to {
+      outline: 2px solid transparent;
+      outline-offset: 12px;
     }
   }
   @keyframes enter-forward {

@@ -1,6 +1,6 @@
 from datetime import date
 
-from pydantic import BaseModel, ConfigDict, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from tesda_track.schemas.catalog import QualificationSummary
 from tesda_track.schemas.progress import CertificationCounts
@@ -72,3 +72,39 @@ class RegionSupply(BaseModel):
     training_programs: int
     upcoming_assessments: int
     open_seats: int
+
+
+class FeedbackCount(BaseModel):
+    answers: int
+    satisfied: int
+
+
+class FeedbackByPlace(BaseModel):
+    """Where the qualification the learner was recommended stood among the matches they were shown."""
+    top_match: FeedbackCount
+    other_match: FeedbackCount
+    own_choice: FeedbackCount = Field(description="Picked from the library rather than the matches")
+
+
+class FeedbackReasons(BaseModel):
+    """Why learners answered No."""
+    wrong_qualification: int
+    readiness_off: int
+    pathway_not_helpful: int
+    none: int = Field(description="No reason given")
+
+
+class ModelFeedback(FeedbackCount):
+    model: str | None = Field(description="The embedding model; null for keyword matching only")
+
+
+class QualificationFeedback(FeedbackCount):
+    qualification: QualificationSummary
+
+
+class FeedbackSummary(FeedbackCount):
+    """Answers to "Are you satisfied with this recommendation?" at the end of Find my pathway."""
+    by_place: FeedbackByPlace
+    reasons: FeedbackReasons
+    by_model: list[ModelFeedback]
+    by_qualification: list[QualificationFeedback]

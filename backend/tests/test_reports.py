@@ -38,7 +38,7 @@ def report(client, admin, name, **params):
     return response.json()
 
 
-@pytest.mark.parametrize("name", ["overview", "qualification-demand", "skill-gaps", "funnel", "supply"])
+@pytest.mark.parametrize("name", ["overview", "qualification-demand", "skill-gaps", "funnel", "supply", "feedback"])
 def test_reports_are_for_administrators_only(client, learner, name):
     assert client.get(f"/api/v1/admin/reports/{name}", headers=learner).status_code == 403
     assert client.get(f"/api/v1/admin/reports/{name}").status_code == 401

@@ -256,6 +256,122 @@
         }
       }
     },
+    "/api/v1/feedback/recommendations": {
+      "post": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Give Feedback",
+        "description": "A learner's answer to \"Are you satisfied with this recommendation?\", signed in or not.\n\nThe API works the matches and readiness result out again from what the finder sent, and keeps the answer with\nthose numbers and the matching model's name. The goal is kept only as a keyed hash, and the answer isn't linked\nto an account.",
+        "operationId": "give_feedback_api_v1_feedback_recommendations_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedbackPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many answers from this client; see Retry-After"
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/feedback/recommendations/{feedback_id}": {
+      "patch": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Explain Feedback",
+        "description": "Why the learner wasn't satisfied, given after an answer of No.",
+        "operationId": "explain_feedback_api_v1_feedback_recommendations__feedback_id__patch",
+        "parameters": [
+          {
+            "name": "feedback_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Feedback Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FeedbackReasonUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedbackPublic"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No such answer"
+          },
+          "409": {
+            "description": "The answer was Yes"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many answers from this client; see Retry-After"
+          }
+        }
+      }
+    },
     "/api/v1/auth/register": {
       "post": {
         "tags": [
@@ -3555,6 +3671,82 @@
         }
       }
     },
+    "/api/v1/admin/reports/feedback": {
+      "get": {
+        "tags": [
+          "admin: reports"
+        ],
+        "summary": "Feedback",
+        "description": "How satisfied learners were with their recommendation, and why not: overall, by where the qualification stood\namong their matches, by matching model and by qualification.",
+        "operationId": "feedback_api_v1_admin_reports_feedback_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FeedbackSummary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/admin/reports/supply": {
       "get": {
         "tags": [
@@ -5346,6 +5538,220 @@
         ],
         "title": "EnrollmentUpdate"
       },
+      "FeedbackByPlace": {
+        "properties": {
+          "top_match": {
+            "$ref": "#/components/schemas/FeedbackCount"
+          },
+          "other_match": {
+            "$ref": "#/components/schemas/FeedbackCount"
+          },
+          "own_choice": {
+            "$ref": "#/components/schemas/FeedbackCount",
+            "description": "Picked from the library rather than the matches"
+          }
+        },
+        "type": "object",
+        "required": [
+          "top_match",
+          "other_match",
+          "own_choice"
+        ],
+        "title": "FeedbackByPlace",
+        "description": "Where the qualification the learner was recommended stood among the matches they were shown."
+      },
+      "FeedbackCount": {
+        "properties": {
+          "answers": {
+            "type": "integer",
+            "title": "Answers"
+          },
+          "satisfied": {
+            "type": "integer",
+            "title": "Satisfied"
+          }
+        },
+        "type": "object",
+        "required": [
+          "answers",
+          "satisfied"
+        ],
+        "title": "FeedbackCount"
+      },
+      "FeedbackCreate": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Query"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/Profile",
+            "description": "The profile the matches were asked with, follow-up answers included"
+          },
+          "qualification_code": {
+            "type": "string",
+            "maxLength": 40,
+            "title": "Qualification Code"
+          },
+          "answers": {
+            "additionalProperties": {
+              "type": "string",
+              "enum": [
+                "confident",
+                "some_experience",
+                "not_familiar"
+              ]
+            },
+            "type": "object",
+            "maxProperties": 100,
+            "title": "Answers",
+            "description": "The readiness answers the result came from"
+          },
+          "satisfied": {
+            "type": "boolean",
+            "title": "Satisfied"
+          }
+        },
+        "type": "object",
+        "required": [
+          "query",
+          "profile",
+          "qualification_code",
+          "answers",
+          "satisfied"
+        ],
+        "title": "FeedbackCreate",
+        "description": "The recommendation as the finder asked for it, so the API can work it out again. The goal isn't kept."
+      },
+      "FeedbackPublic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Id"
+          },
+          "satisfied": {
+            "type": "boolean",
+            "title": "Satisfied"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "wrong_qualification",
+                  "readiness_off",
+                  "pathway_not_helpful"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "satisfied",
+          "reason"
+        ],
+        "title": "FeedbackPublic"
+      },
+      "FeedbackReasonUpdate": {
+        "properties": {
+          "reason": {
+            "type": "string",
+            "enum": [
+              "wrong_qualification",
+              "readiness_off",
+              "pathway_not_helpful"
+            ],
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason"
+        ],
+        "title": "FeedbackReasonUpdate"
+      },
+      "FeedbackReasons": {
+        "properties": {
+          "wrong_qualification": {
+            "type": "integer",
+            "title": "Wrong Qualification"
+          },
+          "readiness_off": {
+            "type": "integer",
+            "title": "Readiness Off"
+          },
+          "pathway_not_helpful": {
+            "type": "integer",
+            "title": "Pathway Not Helpful"
+          },
+          "none": {
+            "type": "integer",
+            "title": "None",
+            "description": "No reason given"
+          }
+        },
+        "type": "object",
+        "required": [
+          "wrong_qualification",
+          "readiness_off",
+          "pathway_not_helpful",
+          "none"
+        ],
+        "title": "FeedbackReasons",
+        "description": "Why learners answered No."
+      },
+      "FeedbackSummary": {
+        "properties": {
+          "answers": {
+            "type": "integer",
+            "title": "Answers"
+          },
+          "satisfied": {
+            "type": "integer",
+            "title": "Satisfied"
+          },
+          "by_place": {
+            "$ref": "#/components/schemas/FeedbackByPlace"
+          },
+          "reasons": {
+            "$ref": "#/components/schemas/FeedbackReasons"
+          },
+          "by_model": {
+            "items": {
+              "$ref": "#/components/schemas/ModelFeedback"
+            },
+            "type": "array",
+            "title": "By Model"
+          },
+          "by_qualification": {
+            "items": {
+              "$ref": "#/components/schemas/QualificationFeedback"
+            },
+            "type": "array",
+            "title": "By Qualification"
+          }
+        },
+        "type": "object",
+        "required": [
+          "answers",
+          "satisfied",
+          "by_place",
+          "reasons",
+          "by_model",
+          "by_qualification"
+        ],
+        "title": "FeedbackSummary",
+        "description": "Answers to \"Are you satisfied with this recommendation?\" at the end of Find my pathway."
+      },
       "FlightEstimate": {
         "properties": {
           "mode": {
@@ -5848,6 +6254,37 @@
           "matches"
         ],
         "title": "MatchResult"
+      },
+      "ModelFeedback": {
+        "properties": {
+          "answers": {
+            "type": "integer",
+            "title": "Answers"
+          },
+          "satisfied": {
+            "type": "integer",
+            "title": "Satisfied"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model",
+            "description": "The embedding model; null for keyword matching only"
+          }
+        },
+        "type": "object",
+        "required": [
+          "answers",
+          "satisfied",
+          "model"
+        ],
+        "title": "ModelFeedback"
       },
       "Overview": {
         "properties": {
@@ -6443,6 +6880,28 @@
           "certified"
         ],
         "title": "QualificationDemand"
+      },
+      "QualificationFeedback": {
+        "properties": {
+          "answers": {
+            "type": "integer",
+            "title": "Answers"
+          },
+          "satisfied": {
+            "type": "integer",
+            "title": "Satisfied"
+          },
+          "qualification": {
+            "$ref": "#/components/schemas/QualificationSummary"
+          }
+        },
+        "type": "object",
+        "required": [
+          "answers",
+          "satisfied",
+          "qualification"
+        ],
+        "title": "QualificationFeedback"
       },
       "QualificationPublic": {
         "properties": {

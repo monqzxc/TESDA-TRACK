@@ -1,15 +1,16 @@
 """Aggregate reports for administrators. Only counts and averages leave this module, never individual records."""
 from datetime import date, datetime, time, timedelta, timezone
 
-from sqlalchemy import distinct, func, or_
+from sqlalchemy import case, distinct, func, or_
 from sqlmodel import Session, select
 
 from tesda_track.models import (AssessmentApplication, AssessmentCenter, AssessmentSchedule, Certification, Learner,
-                                RankingAudit, ReadinessAnswer, ReadinessCheck, RecommendationSession, Region,
-                                TrainingProgram, TrainingProvider, utcnow)
+                                Qualification, RankingAudit, ReadinessAnswer, ReadinessCheck, RecommendationFeedback,
+                                RecommendationSession, Region, TrainingProgram, TrainingProvider, utcnow)
 from tesda_track.schemas.progress import CertificationCounts
-from tesda_track.schemas.reports import (CompetencyGap, DateRange, Funnel, Overview, QualificationDemand,
-                                         RegionSupply)
+from tesda_track.schemas.reports import (CompetencyGap, DateRange, FeedbackByPlace, FeedbackCount, FeedbackReasons,
+                                         FeedbackSummary, Funnel, ModelFeedback, Overview, QualificationDemand,
+                                         QualificationFeedback, RegionSupply)
 from tesda_track.services import assessments, catalog
 
 PHILIPPINE_TIME = timezone(timedelta(hours=8))
@@ -111,6 +112,38 @@ def funnel(session: Session, period: DateRange) -> Funnel:
                   applied_for_assessment=learners_with(AssessmentApplication,
                                                        AssessmentApplication.status != "withdrawn"),
                   certified=learners_with(Certification, Certification.verified))
+
+
+def feedback(session: Session, period: DateRange) -> FeedbackSummary:
+    within = _within(RecommendationFeedback.created_at, period)
+
+    def counts(column) -> dict:
+        return {key: FeedbackCount(answers=answers, satisfied=satisfied) for key, answers, satisfied in session.exec(
+            select(column, func.count(), func.count().filter(RecommendationFeedback.satisfied))
+            .where(*within).group_by(column))}
+
+    nothing = FeedbackCount(answers=0, satisfied=0)
+    place = case((RecommendationFeedback.rank == 1, "top_match"),
+                 (RecommendationFeedback.rank.is_not(None), "other_match"), else_="own_choice")
+    by_place = counts(place)
+    reason = func.coalesce(RecommendationFeedback.reason, "none")
+    reasons = _grouped(session, select(reason, func.count())
+                       .where(*within, RecommendationFeedback.satisfied.is_(False)).group_by(reason))
+    by_model = counts(RecommendationFeedback.model)
+    by_qualification = counts(RecommendationFeedback.qualification_id)
+    qualifications = session.exec(select(Qualification).where(Qualification.id.in_(list(by_qualification))))
+    return FeedbackSummary(
+        answers=sum(row.answers for row in by_place.values()),
+        satisfied=sum(row.satisfied for row in by_place.values()),
+        by_place=FeedbackByPlace(**{key: by_place.get(key, nothing) for key in FeedbackByPlace.model_fields}),
+        reasons=FeedbackReasons(**{key: reasons.get(key, 0) for key in FeedbackReasons.model_fields}),
+        by_model=sorted((ModelFeedback(model=model, **row.model_dump()) for model, row in by_model.items()),
+                        key=lambda row: -row.answers),
+        by_qualification=sorted(
+            (QualificationFeedback(qualification=catalog.summary(qualification),
+                                   **by_qualification[qualification.id].model_dump())
+             for qualification in qualifications),
+            key=lambda row: (-row.answers, row.qualification.name)))
 
 
 def supply(session: Session) -> list[RegionSupply]:

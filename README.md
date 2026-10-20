@@ -69,6 +69,34 @@ model misses. Recalibrate the band once the pilot collects real goals and outcom
 The training weights (`RANKING_WEIGHTS__SEMANTIC`, `__PROXIMITY`, `__ASSESSMENT`, `__SCHEDULE`,
 `__PREFERENCE`) must add up to 1 and are set in `.env`.
 
+### Recommendation feedback
+
+At the end of Find my pathway (the React app), under the recommendation, learners are asked **"Are you satisfied
+with this recommendation?"** with Yes and No. After No they can pick one optional reason: the wrong qualification, a
+readiness result that seems wrong, or a pathway that isn't helpful. The reason says which part to fix: matching, the
+readiness rules or the curated pathways. Guests and signed-in learners can both answer.
+
+Each answer is a row in `recommendation_feedback`, kept with the numbers behind the recommendation:
+
+- the chosen qualification, how many matches the learner saw, and the chosen one's place and score among them (no
+  place means they picked it from the library)
+- its keyword strength and the **raw z-score** of its meaning similarity, the number `SEMANTIC_Z_FLOOR` and
+  `SEMANTIC_Z_CEILING` are calibrated on, and the embedding model and parameters that produced them
+- the intent, years of experience and certification as matching read them, and the readiness score and level
+- whether the learner was signed in, but not who
+
+The goal's words are never stored, only the keyed hash the ranking audit uses, and the answer isn't linked to an
+account. The finder sends the goal, profile, qualification and readiness answers with the answer; the API works the
+matches and readiness out again rather than trusting numbers from the browser, so every row says what this server's
+matching gave. Each client address may send `FEEDBACK_RATE_LIMIT_PER_MINUTE` answers a minute (30).
+
+Administrators see the results under **Reports → Recommendation feedback** (`GET /api/v1/admin/reports/feedback`):
+satisfaction overall, by where the qualification stood among the matches, reasons for No, by model and by
+qualification. Satisfaction with a top match is the pilot's live measure of matching. Compare it across models
+before adopting a fine-tuned one, and plot satisfaction against `z_score` to recalibrate the semantic band. The
+answers are self-selected, so treat them as a signal next to the held-out evaluation in `backend/training/`, not a
+replacement for it.
+
 ### Skills Bridge
 
 The **Skills Explorer** tab (powered by Skills Bridge) connects to the public read-only MCP endpoint at

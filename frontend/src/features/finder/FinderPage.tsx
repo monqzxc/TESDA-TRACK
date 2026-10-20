@@ -115,7 +115,13 @@ function JourneySteps({
       />
     )
   } else {
-    body = <PathwayStep qualification={chosen} profile={profile} />
+    body = (
+      <PathwayStep
+        qualification={chosen}
+        profile={profile}
+        asked={{ query: journey.query, profile: context.profile }}
+      />
+    )
   }
 
   return (
