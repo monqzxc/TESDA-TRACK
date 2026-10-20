@@ -65,12 +65,26 @@ def test_get_qualification_by_official_code(mcp, partner, crosswalk):
     assert by_code["ELCEIM215"]["enabled_in_t2mis"] is False and by_code["CONEIM208"]["promulgated"] == "2008-01-01"
 
 
-def test_official_code_works_in_recommend_and_search_tools(mcp, partner, crosswalk):
+def test_official_code_works_in_recommend_and_search_tools(mcp, partner, crosswalk, make_program):
     headers = partner().headers
+    make_program(qualification_code="SMAW-NC-II")
     route = mcp.tool(headers, "recommend_route", qualification_code="MEEEAW206")
-    assert not route["isError"]
-    programs = mcp.tool(headers, "search_training_programs", qualification_code="MEEEAW206")
-    assert not programs["isError"] and programs["structuredContent"]["programs"] == []
+    own = mcp.tool(headers, "recommend_route", qualification_code="SMAW-NC-II")
+    assert not route["isError"] and route["structuredContent"] == own["structuredContent"]
+    found = mcp.tool(headers, "search_training_programs", qualification_code="MEEEAW206")["structuredContent"]
+    assert [p["qualification"]["code"] for p in found["programs"]] == ["SMAW-NC-II"]
+    elsewhere = mcp.tool(headers, "search_training_programs", qualification_code="CONEIM208")
+    assert not elsewhere["isError"] and elsewhere["structuredContent"]["programs"] == []
+
+
+def test_archived_qualification_is_not_resolved(mcp, partner, session, crosswalk):
+    qualification = official_codes.resolve_code(session, "CONEIM208")[0][0]
+    qualification.is_active = False
+    session.add(qualification)
+    session.flush()
+    assert official_codes.resolve_code(session, "CONEIM208") == []
+    result = mcp.tool(partner().headers, "get_qualification", code="CONEIM208")
+    assert result["isError"] and "No active qualification has that code or title" in text_of(result)
 
 
 def test_covering_code_asks_to_choose(mcp, partner, crosswalk):
@@ -107,6 +121,6 @@ def test_demand_filters_by_official_code(mcp, partner, crosswalk, monkeypatch):
 def test_real_crosswalk_parses_and_points_at_the_catalog():
     rows = official_codes.read_crosswalk(BACKEND / "seed" / "sources" / "qualification_code_crosswalk.csv")
     catalog = {item["code"] for item in json.loads((BACKEND / "seed" / "qualifications.json").read_text(encoding="utf-8"))}
-    assert len(rows) == 289 and len({row["official_code"] for row in rows}) == 278
+    assert len(rows) == 291 and len({row["official_code"] for row in rows}) == 280
     assert {row["relation"] for row in rows} <= {"same", "covers", "superseded_by"}
     assert {row["qualification_code"] for row in rows} <= catalog

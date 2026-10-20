@@ -55,7 +55,8 @@ def register(server: MCPServer, app: FastAPI) -> None:
         quarter: Annotated[str, Field(pattern=r"^[0-9]{4}-Q[1-4]$",
                                       description="A completed calendar quarter, e.g. 2026-Q3.")],
         qualification_code: Annotated[str | None, Field(
-            description="Only this qualification, e.g. SMAW-NC-II, or TESDA's official code; an official code that covers several qualifications gives all of them.")] = None,
+            description="Only this qualification, e.g. SMAW-NC-II, or TESDA's official code; an official code that covers several "
+            "qualifications gives all of them, and one that maps to no active qualification gives an empty list.")] = None,
     ) -> DemandOutput:
         """How many distinct learners matched, chose, checked readiness for, applied to assess in, and were found
         competent or certified in each qualification during one completed calendar quarter. Counts of 1 to 4 are
