@@ -552,6 +552,13 @@ To try the full stack on your own machine, stop Laragon's Apache or Nginx first,
 ports 80 and 443. Then set `DOMAIN=localhost` and open https://localhost. It runs as a separate Compose
 project (`tesda-track`), with its own database volume.
 
+## Deployment on Railway (demo)
+
+`.railway/railway.ts` describes a Railway project with the same database image (`deploy/postgres`) and API image
+(`backend/`), managed with Railway's Infrastructure as Code (`railway config plan`, `railway config apply`). The React
+app is on Vercel, which passes `/api/*` to the API (`frontend/vercel.json`), so cookie sign-in works as it does behind
+Caddy. Setup, plan sizing and secrets: [`.railway/README.md`](.railway/README.md).
+
 ## Troubleshooting
 
 - **`password authentication failed for user "tesda_track"`**: the password in `DATABASE_URL` must
