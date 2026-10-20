@@ -18,9 +18,11 @@ tools those scopes allow.
 | Reports | Read how many distinct learners matched, chose, checked, applied and were certified in each qualification for a completed quarter | `reports:read` |
 
 Qualification codes: every tool that takes a `qualification_code` (or `code`) accepts either a TESDA-TRACK code such
-as `MMAW-NC-II` or TESDA's official code such as `CONEIM208`. Results always show TESDA-TRACK codes, and
+as `MMAW-NC-II` or TESDA's official code such as `MEEEAW206` (the same qualification). Results always show TESDA-TRACK codes, and
 `get_qualification` also lists the qualification's `official_codes`. Some official codes cover more than one
-qualification; the call then fails with an error naming them (`choose one: ...`) so you can pick.
+qualification; the call then fails with an error naming them (`choose one: ...`) so you can pick. One
+qualification can also have several official codes: `EIM-NC-II` (Electrical Installation and Maintenance NC II) is
+`CONEIM208` and `ELCEIM215`, and either finds it.
 
 ## 2. Getting credentials
 
@@ -66,7 +68,9 @@ Both answer:
 ```
 
 You may add `scope=catalog:read` to ask for fewer scopes than your client holds. A wrong id or secret is HTTP 401
-with `error: invalid_client`. The token endpoint allows 30 requests a minute from one address.
+with `error: invalid_client`. The token endpoint allows 30 requests a minute from one address; beyond that it answers
+HTTP 429 with `{"error": "slow_down"}` and a `Retry-After` header (seconds). Reuse a token until it nears its expiry
+rather than requesting one per call.
 
 ## 4. Connecting
 
@@ -105,7 +109,8 @@ curl -s https://tesda-track.example.ph/mcp \
 ## 5. The nine tools
 
 The limit is calls per minute for your client on that tool. Your client also has an overall per-minute limit across
-all tools. Each example is the `params` of a `tools/call` request (the rest of the request is as in section 4),
+all tools. The example values are illustrative (qualification codes and titles are real; ids, scores, counts, providers
+and programs are made up for the example): a live server returns its own data. Each example is the `params` of a `tools/call` request (the rest of the request is as in section 4),
 followed by an abridged `structuredContent`.
 
 ### match_qualifications
@@ -118,7 +123,7 @@ answers, or both. A goal naming no trade, job or skill is an error. Scope `recom
 ```
 ```json
 {"interpreted": {"intent": "unknown", "experience_years": null},
- "matches": [{"qualification": {"code": "SMAW-NC-II", "name": "Shielded Metal Arc Welding (SMAW) NC II",
+ "matches": [{"qualification": {"code": "MMAW-NC-II", "name": "Manual Metal Arc Welding (MMAW) NC II",
                                 "sector": "Metals and Engineering"},
               "score": 65, "reason": "Matched your words: welder"}]}
 ```
@@ -129,17 +134,20 @@ One qualification in full: sector, the jobs it leads to, its competencies, the o
 official TESDA codes. Give `code` or `title`, not both. Scope `catalog:read`, limit 120 a minute.
 
 ```json
-{"name": "get_qualification", "arguments": {"code": "SMAW-NC-II"}}
+{"name": "get_qualification", "arguments": {"code": "MMAW-NC-II"}}
 ```
 ```json
-{"qualification": {"code": "SMAW-NC-II", "name": "Shielded Metal Arc Welding (SMAW) NC II", "sector": "Metals and Engineering"},
+{"qualification": {"code": "MMAW-NC-II", "name": "Manual Metal Arc Welding (MMAW) NC II", "sector": "Metals and Engineering"},
  "possible_jobs": ["Welder", "Fabricator", "Structural Welder"],
- "competencies": [{"id": 1, "position": 1, "name": "Observe workplace safety procedures", "category": "Basic"}],
- "other_levels": [{"code": "SMAW-NC-II", "name": "Shielded Metal Arc Welding (SMAW) NC II", "level": 2}],
- "official_codes": [{"code": "MEEEAW206", "relation": "same", "promulgated": null, "enabled_in_t2mis": true}]}
+ "competencies": [{"id": 1, "position": 1, "name": "Participate in workplace communication", "category": "Basic"}],
+ "other_levels": [{"code": "MMAW-NC-I", "name": "Manual Metal Arc Welding (MMAW) NC I", "level": 1},
+                  {"code": "MMAW-NC-II", "name": "Manual Metal Arc Welding (MMAW) NC II", "level": 2},
+                  {"code": "MMAW-NC-III", "name": "Manual Metal Arc Welding (MMAW) NC III", "level": 3}],
+ "official_codes": [{"code": "MEEEAW206", "relation": "same", "promulgated": "2006-12-14", "enabled_in_t2mis": true}]}
 ```
 
-`official_codes` is empty for a qualification with no official TESDA code on file.
+`official_codes` is empty for a qualification with no official TESDA code on file, and lists every code for one that has
+several (`EIM-NC-II` lists `CONEIM208` and `ELCEIM215`).
 
 ### recommend_route
 
@@ -147,7 +155,7 @@ The next step for a learner toward one qualification (training, assessment, a re
 with the reason and, where defined, curated steps. Scope `recommend:run`, limit 60 a minute.
 
 ```json
-{"name": "recommend_route", "arguments": {"qualification_code": "SMAW-NC-II", "experience_years": 2}}
+{"name": "recommend_route", "arguments": {"qualification_code": "MMAW-NC-II", "experience_years": 2}}
 ```
 ```json
 {"route": "ADDITIONAL_QUESTIONS", "reason": "Your experience or certification status is still unknown.",
@@ -157,16 +165,17 @@ with the reason and, where defined, curated steps. Scope `recommend:run`, limit 
 ### check_readiness
 
 A learner's readiness for one qualification's assessment, 0 to 100, with strengths, skill gaps and what to do next.
-`answers` maps every competency id (from `get_qualification`) to `confident`, `some_experience` or `not_familiar`.
+`answers` maps every competency id (from `get_qualification`) to `confident`, `some_experience` or `not_familiar`; every competency of the qualification needs an answer, and the
+example is shortened to six.
 Scope `recommend:run`, limit 60 a minute.
 
 ```json
-{"name": "check_readiness", "arguments": {"qualification_code": "SMAW-NC-II",
+{"name": "check_readiness", "arguments": {"qualification_code": "MMAW-NC-II",
   "answers": {"1": "confident", "2": "confident", "3": "some_experience", "4": "confident", "5": "not_familiar", "6": "confident"}}}
 ```
 ```json
-{"score": 83.3, "level": "High Readiness", "strengths": ["Observe workplace safety procedures"],
- "skill_gaps": ["Perform groove welding"],
+{"score": 83.3, "level": "High Readiness", "strengths": ["Participate in workplace communication"],
+ "skill_gaps": ["Prepare / Fit up Welding Joints"],
  "recommendation": "Consider formal assessment, subject to official eligibility and assessment requirements."}
 ```
 
@@ -177,11 +186,11 @@ start date and stated preferences, each with its components and explanation. Pro
 verified come separately in `requires_verification`. Scope `recommend:run`, limit 30 a minute.
 
 ```json
-{"name": "rank_training_programs", "arguments": {"qualification_code": "SMAW-NC-II", "region_code": "NCR", "limit": 2}}
+{"name": "rank_training_programs", "arguments": {"qualification_code": "MMAW-NC-II", "region_code": "NCR", "limit": 2}}
 ```
 ```json
 {"policy_version": "verified-services-v2", "semantic_used": false, "requires_verification": [],
- "results": [{"program": {"id": 1, "title": "SMAW NC II Batch 1",
+ "results": [{"program": {"id": 1, "title": "MMAW NC II Batch 1",
                           "provider": {"id": 1, "name": "Manila Welding Institute", "region_code": "NCR"}},
               "eligibility": {"status": "satisfied", "checks": []}}]}
 ```
@@ -192,7 +201,7 @@ Upcoming assessment schedules with seats left for a qualification, ranked 0-100 
 centers not yet verified come separately in `requires_verification`. Scope `recommend:run`, limit 30 a minute.
 
 ```json
-{"name": "rank_assessment_schedules", "arguments": {"qualification_code": "SMAW-NC-II", "region_code": "NCR", "limit": 2}}
+{"name": "rank_assessment_schedules", "arguments": {"qualification_code": "MMAW-NC-II", "region_code": "NCR", "limit": 2}}
 ```
 ```json
 {"policy_version": "assessment-center-v1", "results": [], "requires_verification": [], "total": 0, "limit": 2, "offset": 0}
@@ -205,11 +214,11 @@ least one of `qualification_code`, `region_code` or `provider_id`. Page with `ne
 limit 60 a minute.
 
 ```json
-{"name": "search_training_programs", "arguments": {"qualification_code": "SMAW-NC-II", "limit": 1}}
+{"name": "search_training_programs", "arguments": {"qualification_code": "MMAW-NC-II", "limit": 1}}
 ```
 ```json
-{"programs": [{"id": 1, "title": "SMAW NC II Batch 1",
-               "qualification": {"code": "SMAW-NC-II"},
+{"programs": [{"id": 1, "title": "MMAW NC II Batch 1",
+               "qualification": {"code": "MMAW-NC-II"},
                "provider": {"id": 1, "name": "Manila Welding Institute", "region_code": "NCR"},
                "delivery_mode": "institution_based", "scholarship_available": false,
                "verification": {"status": "verified"}, "availability": {"status": "unknown"}}],
@@ -246,11 +255,11 @@ with `average_readiness`. Scope `reports:read`, limit 10 a minute.
   them.
 
 ```json
-{"name": "get_qualification_demand", "arguments": {"quarter": "2026-Q3", "qualification_code": "SMAW-NC-II"}}
+{"name": "get_qualification_demand", "arguments": {"quarter": "2026-Q3", "qualification_code": "MMAW-NC-II"}}
 ```
 ```json
 {"quarter": "2026-Q3", "date_from": "2026-07-01", "date_to": "2026-09-30",
- "rows": [{"qualification": {"code": "SMAW-NC-II", "name": "Shielded Metal Arc Welding (SMAW) NC II"},
+ "rows": [{"qualification": {"code": "MMAW-NC-II", "name": "Manual Metal Arc Welding (MMAW) NC II"},
            "learners_top_matched": 42, "learners_chose": 17, "learners_checked_readiness": null,
            "learners_applied": 9, "learners_competent": null, "learners_certified": 0,
            "average_readiness": null, "hidden": ["learners_checked_readiness", "learners_competent"]}]}
