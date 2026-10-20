@@ -201,6 +201,16 @@ async function expectAccessible(page: Page) {
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
   )
   expect(overflow).toBeLessThanOrEqual(0)
+  // Let color transitions finish first: axe reads a button that's still fading to its pressed colors partway through,
+  // and fails its contrast. On a phone the occupation's button is off screen when pressed, and is still fading here.
+  await page.evaluate(() =>
+    Promise.all(
+      document
+        .getAnimations()
+        .filter((animation) => animation instanceof CSSTransition)
+        .map((transition) => transition.finished.catch(() => undefined)),
+    ),
+  )
   const results = await new AxeBuilder({ page }).exclude('[data-live-announcer]').analyze()
   expect(
     results.violations.map(({ id, nodes }) => ({ id, nodes: nodes.map((node) => node.html) })),
