@@ -23,7 +23,7 @@ Reports are written to ignored `reports/`:
 
 The runner exits nonzero when release gates are not met. A failed gate still produces the report. Docker Compose contains credentials after interpolation; the runner keeps that document in memory and reports only policy/build metadata. No goal text or learner questionnaire answers are exported into the evaluation reports. The default datasets contain synthetic scenarios, not learner records.
 
-The GitHub workflow in `.github/workflows/release-check.yml` repeats these checks on an isolated CI database with semantic search disabled. It uploads reports even when a gate fails and never deploys. Current draft relevance/expert-review gates can keep this workflow red; do not bypass them to imply production readiness.
+The GitHub workflow in `.github/workflows/release-check.yml` repeats these checks on an isolated CI database with semantic search disabled. It uploads reports even when a gate fails and never deploys. On pushes and pull requests it runs with `--review-warns`: a pending expert relevance review shows as a warning instead of failing the run, so the workflow fails only on broken checks. The report still lists the review among its `blockers` and says `release_ready: false`; `failing` lists the blockers that failed the run. Before a release, run the workflow by hand (**Actions → Recommendation release checks → Run workflow**), which enforces every gate, the review included. Do not mark the cases reviewed to imply production readiness.
 
 ## Qualification relevance
 

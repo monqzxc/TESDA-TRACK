@@ -251,7 +251,7 @@ def test_progress_renders_saved_records_and_completions(offline_api):
     qualification = deepcopy(CATALOG[0])
     offline_api["readiness_checks"] = [{"created_at": "2026-10-01T01:00:00+00:00",
                                         "qualification": qualification, "score": 75, "level": "Moderate readiness"}]
-    offline_api["sessions"] = [{"created_at": "2026-10-01T01:00:00+00:00", "query": "Become a welder",
+    offline_api["sessions"] = [{"id": "session-1", "created_at": "2026-10-01T01:00:00+00:00", "query": "Become a welder",
                                "selected_qualification": qualification, "matches": [],
                                "pathway": {"recommendation": "ASSESSMENT_READINESS"}}]
     offline_api["my_pathways"] = [{"id": "path-1", "status": "active", "completion_percent": 50,
@@ -418,7 +418,7 @@ def test_the_readiness_result_decides_between_training_and_an_nc(offline_api, mo
     assert app.session_state["main_tabs"] == "Training & Assessment"
     assert app.session_state["training_kinds"] == [kind], "the centers that fit the verdict"
     assert app.session_state["training_qualifications"] == ["SMAW-NC-II"]
-    assert app.text_input(key="training_search").value == "Welding", "the qualification's keyword fills the search box"
+    assert app.text_input(key="training_search").value == "", "an earlier search doesn't hide the centers"
 
 
 def scroll_targets(app):

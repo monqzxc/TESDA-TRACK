@@ -44,7 +44,9 @@ jobs:
           done
           (cd backend && python -m alembic upgrade head)
       - name: Evaluate and enforce release gates
-        run: python scripts/release_check.py --skip-model --build-images
+        # Pushes and pull requests fail on broken checks and show a pending expert review as a warning. Run the
+        # workflow by hand (workflow_dispatch) before a release to enforce every gate, the review included.
+        run: python scripts/release_check.py --skip-model --build-images ${{ github.event_name != 'workflow_dispatch' && '--review-warns' || '' }}
       - name: Upload sanitized evaluation reports
         if: always()
         uses: actions/upload-artifact@v4

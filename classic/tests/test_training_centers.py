@@ -95,9 +95,14 @@ def api(monkeypatch):
              "components": {"semantic": 0, "proximity": 0, "assessment": 0, "schedule": 1, "preference": 0}}
             for item in PROGRAMS if item["qualification"]["code"] == body["qualification_code"]]}
 
-    def apply(self, token, schedule_id):
+    def apply(self, token, schedule_id, request_id=None):
         state["applied"].append((token, schedule_id))
         return {"id": "application-1", "status": "pending"}
+
+    def my_applications(self, token):
+        # The review checks these before submitting, so a request from another tab isn't sent twice.
+        return [{"id": "application-1", "status": "pending", "schedule": {"id": schedule_id}}
+                for applicant, schedule_id in state["applied"] if applicant == token]
 
     def rank_assessments(self, token=None, **body):
         state["assessment_ranked"].append((token, deepcopy(body)))
@@ -119,6 +124,7 @@ def api(monkeypatch):
     monkeypatch.setattr(ApiClient, "rank_training", rank)
     monkeypatch.setattr(ApiClient, "rank_assessments", rank_assessments)
     monkeypatch.setattr(ApiClient, "apply_for_assessment", apply)
+    monkeypatch.setattr(ApiClient, "my_applications", my_applications)
     return state
 
 
@@ -295,17 +301,23 @@ def test_a_batch_already_under_way_says_it_started(api):
 def test_signed_out_learners_are_asked_to_sign_in_before_applying(api):
     app = open_page()
     open_center(app, "assessment-7")
-    assert "apply_21" not in [button.key for button in app.button]
-    run(app.button(key="apply_sign_in").click())
+    assert app.button(key="apply_sign_in")
+    # They can review an application, but submitting it takes an account.
+    run(app.button(key="apply_21").click())
+    assert "application_confirm" not in button_keys(app)
+    run(app.button(key="application_sign_in").click())
     assert app.session_state["account_dialog_open"] is True
+    assert not api["applied"]
 
 
 def test_a_signed_in_learner_applies_for_the_chosen_assessment(api):
     app = open_page(signed_in=True)
     open_center(app, "assessment-7")
     run(app.button(key="apply_21").click())
+    assert not api["applied"], "reviewing the application sends nothing yet"
+    run(app.button(key="application_confirm").click())
     assert api["applied"] == [("frontend-test-token", 21)]
-    assert any("Application sent" in message.value for message in app.success)
+    assert any("Application reference: application-1" in message.value for message in app.success)
 
 
 def test_unverified_schedule_cannot_be_applied_for(api, monkeypatch):
@@ -674,11 +686,13 @@ def test_ranked_assessment_opens_map_and_application_is_tracked(api):
     run(app.button(key="assessment_center_open_21").click())
     assert featured(app) == "assessment-7" and map_data(app)["selected"] == "assessment-7"
     run(app.button(key="assessment_center_apply_21").click())
+    run(app.button(key="application_confirm").click())
     assert api["applied"] == [("frontend-test-token", 21)]
     assert "Application: pending" in text(app.container(key="assessment_center_result_21"))
     assert "assessment_center_apply_21" not in button_keys(app)
     assert app.button(key="apply_21").disabled
-    assert "Track it under My Progress" in text(app)
+    assert "Application reference: application-1" in text(app)
+    assert app.button(key="application_progress"), "the receipt leads to the application in My Progress"
 
 
 def test_assessment_comparison_does_not_send_browser_coordinates(api):
