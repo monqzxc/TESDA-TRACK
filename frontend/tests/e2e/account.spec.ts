@@ -99,6 +99,19 @@ async function expectAccessible(page: Page) {
   expect(results.violations).toEqual([])
 }
 
+/**
+ * Opens the account menu's Settings dialog and expands "Your data & privacy", where Download my data and
+ * Delete my account live.
+ */
+async function openDataSettings(page: Page, area: Locator): Promise<Locator> {
+  await area.getByRole('button', { name: 'Your account: Maria Santos' }).click()
+  await page.getByRole('menuitem', { name: 'Settings' }).click()
+  const settings = page.getByRole('dialog', { name: 'Settings' })
+  await expect(settings).toBeVisible()
+  await settings.getByText('Your data & privacy').click()
+  return settings
+}
+
 /** Where the account control is: the sidebar, or on a phone, the menu that holds it. */
 async function accountArea(page: Page, phone: boolean): Promise<Locator> {
   if (!phone) return page.getByRole('banner')
@@ -223,8 +236,9 @@ for (const colorScheme of ['light', 'dark'] as const) {
         await expect(page.getByRole('heading', { name: 'Continue your journey' })).toBeVisible()
 
         const area = await accountArea(page, phone)
-        await area.getByRole('button', { name: 'Your account: Maria Santos' }).click()
-        await page.getByRole('menuitem', { name: 'Delete my account' }).click()
+        const settings = await openDataSettings(page, area)
+        await settings.getByRole('button', { name: 'Delete my account' }).click()
+        await expect(settings).toBeHidden()
 
         const dialog = page.getByRole('alertdialog', { name: 'Delete my account' })
         await expect(dialog).toBeVisible()
@@ -306,6 +320,9 @@ test.describe('on a desktop', () => {
     await expect(account).toBeFocused()
 
     await page.keyboard.press('Enter')
+    // The menu opens on its first item, Settings; Sign out is the one below it.
+    await expect(page.getByRole('menuitem', { name: 'Settings' })).toBeFocused()
+    await page.keyboard.press('ArrowDown')
     await expect(page.getByRole('menuitem', { name: 'Sign out' })).toBeFocused()
     await page.keyboard.press('Enter')
 

@@ -32,7 +32,15 @@ export interface Auth {
   isSignedIn: boolean
   /** Administrator identity; authorization is enforced by the API. */
   isAdmin: boolean
+  /**
+   * Whether the account holds a permission, e.g. `can('users:manage')`. Roles are composed by administrators, so
+   * what an account may do comes from its permissions rather than the name of its role. The API enforces the same
+   * check; this only decides what to put on screen.
+   */
+  can: (permission: string) => boolean
   canViewReports: boolean
+  /** Whether any part of the admin workspace is open to this account. */
+  canOpenAdmin: boolean
   /** The app is asking the API who is signed in (only when this browser has signed in before). */
   isChecking: boolean
   /** Signs in with the session cookie. Rejects with an ApiError whose message is for the learner. */

@@ -23,6 +23,18 @@ export const admin: Learner = {
   email: 'admin@example.com',
   full_name: 'Ana Reyes',
   role: 'admin',
+  // The admin role always holds the whole vocabulary, so a fixture without these is an account
+  // the backend cannot produce.
+  permissions: [
+    'assessments:manage',
+    'integrations:manage',
+    'mcp:manage',
+    'pathways:manage',
+    'reports:read',
+    'training:manage',
+    'users:manage',
+    'verifications:manage',
+  ],
 }
 
 export const PASSWORD = 'correct horse battery'

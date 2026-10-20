@@ -39,7 +39,7 @@ function SkipLink() {
   return (
     <a
       href="#main"
-      className="absolute top-3 left-4 z-200 translate-y-[calc(-100%_-_1rem)] rounded-10 bg-fill px-4 py-[0.6rem] font-semibold text-white no-underline focus:translate-none"
+      className="absolute top-3 left-4 z-200 translate-y-[calc(-100%-1rem)] rounded-10 bg-fill px-4 py-[0.6rem] font-semibold text-white no-underline focus:translate-none"
       onClick={skip}
     >
       {en.skipToContent}
@@ -74,7 +74,7 @@ export function HomeLayout() {
  * opens the same sidebar over the page (MobileMenu). Reports shows for administrators.
  */
 export function AppLayout() {
-  const { canViewReports, isAdmin } = useAuth()
+  const { canViewReports, canOpenAdmin } = useAuth()
   return (
     <>
       <SkipLink />
@@ -86,7 +86,7 @@ export function AppLayout() {
           }
         >
           <div className="max-md:flex max-md:items-center max-md:gap-3">
-            <MobileMenu isAdmin={canViewReports} canManage={isAdmin} />
+            <MobileMenu isAdmin={canViewReports} canManage={canOpenAdmin} />
             <div className="max-md:hidden">
               <Brand />
             </div>
@@ -95,14 +95,14 @@ export function AppLayout() {
             </div>
           </div>
           <div className="max-md:hidden">
-            <SidebarContent isAdmin={canViewReports} canManage={isAdmin} />
+            <SidebarContent isAdmin={canViewReports} canManage={canOpenAdmin} />
           </div>
         </header>
         <div className="flex min-h-screen min-w-0 flex-col">
           <main
             id="main"
             tabIndex={-1}
-            className="w-full max-w-[1520px] flex-1 px-10 pt-[3.8rem] pb-8 focus:outline-none max-[1101px]:px-6 max-md:px-4 max-md:pt-6 max-md:pb-8"
+            className="w-full max-w-380 flex-1 px-10 pt-[3.8rem] pb-8 focus:outline-none max-[1101px]:px-6 max-md:px-4 max-md:pt-6 max-md:pb-8"
           >
             <Outlet />
           </main>

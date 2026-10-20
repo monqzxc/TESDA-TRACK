@@ -5,7 +5,12 @@ import { unwrap } from '../../api/errors.ts'
 import type { components } from '../../api/schema.d.ts'
 
 export type AdminUser = components['schemas']['LearnerPublic']
+// A role key, not a fixed union: administrators compose their own roles, so the list comes from the API.
 export type AdminRole = AdminUser['role']
+export type Role = components['schemas']['RolePublic']
+export type RoleCreate = components['schemas']['RoleCreate']
+export type RoleUpdate = components['schemas']['RoleUpdate']
+export type Permission = components['schemas']['PermissionPublic']
 export type McpClient = components['schemas']['ApiClientPublic']
 export type McpClientCreate = components['schemas']['ApiClientCreate']
 export type McpCredentials = components['schemas']['ApiClientCredentials']
@@ -24,9 +29,21 @@ export const adminUsersQuery = (page: number) =>
     placeholderData: keepPreviousData,
   })
 
-export const rolesQuery = queryOptions<Record<string, string[]>, ApiError>({
+export const rolesQuery = queryOptions<Role[], ApiError>({
   queryKey: ['admin', 'roles'],
   queryFn: ({ signal }) => unwrap(api.GET('/api/v1/admin/roles', { signal })),
+})
+
+export const permissionsQuery = queryOptions<Permission[], ApiError>({
+  queryKey: ['admin', 'permissions'],
+  // Fixed in the backend, so it never goes stale within a session.
+  staleTime: Infinity,
+  queryFn: ({ signal }) => unwrap(api.GET('/api/v1/admin/permissions', { signal })),
+})
+
+export const roleAssignmentsQuery = queryOptions<Record<string, number>, ApiError>({
+  queryKey: ['admin', 'roles', 'assignments'],
+  queryFn: ({ signal }) => unwrap(api.GET('/api/v1/admin/roles/assignments', { signal })),
 })
 
 export const mcpToolsQuery = queryOptions<Record<string, string>, ApiError>({
@@ -46,6 +63,14 @@ export const assignRole = (userId: string, role: AdminRole) =>
       body: { role },
     }),
   )
+
+export const createRole = (body: RoleCreate) => unwrap(api.POST('/api/v1/admin/roles', { body }))
+
+export const updateRole = (key: string, body: RoleUpdate) =>
+  unwrap(api.PATCH('/api/v1/admin/roles/{key}', { params: { path: { key } }, body }))
+
+export const deleteRole = (key: string) =>
+  unwrap(api.DELETE('/api/v1/admin/roles/{key}', { params: { path: { key } } }))
 
 export const createMcpClient = (body: McpClientCreate) =>
   unwrap(api.POST('/api/v1/admin/mcp/clients', { body }))

@@ -67,9 +67,13 @@ for (const colorScheme of ['light', 'dark'] as const) {
           await expect(page.getByRole('heading', { level: 1, name: heading })).toBeVisible()
           if (step) await expect(page.getByRole('heading', { level: 2, name: step })).toBeVisible()
           await expect(page.locator('html')).toHaveAttribute('data-theme', colorScheme)
-          // Settled: the catalog is in, on the pages that wait for it. (Home needs no catalog, and its readiness
-          // example announces its score in a status of its own.)
-          if (path !== '/') await expect(page.getByRole('status')).toHaveCount(0)
+          // Settled: the catalog is in, on the pages that wait for it, so nothing is still announcing progress.
+          // (Home needs no catalog, and its readiness example announces its score in a status of its own.) Only a
+          // status with words counts: Skills Explorer keeps an empty live region for its search, which says
+          // nothing until a search has something to announce.
+          if (path !== '/') {
+            await expect(page.getByRole('status').filter({ hasText: /\S/ })).toHaveCount(0)
+          }
 
           // Home has the landing page's top bar; every other page has the sidebar, behind Menu on a phone.
           const phone = size === 'phone'

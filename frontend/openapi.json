@@ -5107,42 +5107,6 @@
         }
       }
     },
-    "/api/v1/admin/roles": {
-      "get": {
-        "tags": [
-          "admin: users"
-        ],
-        "summary": "List Roles",
-        "operationId": "list_roles_api_v1_admin_roles_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": {
-                    "items": {
-                      "type": "string"
-                    },
-                    "type": "array"
-                  },
-                  "type": "object",
-                  "title": "Response List Roles Api V1 Admin Roles Get"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "OAuth2PasswordBearer": []
-          },
-          {
-            "SessionCookie": []
-          }
-        ]
-      }
-    },
     "/api/v1/admin/users": {
       "get": {
         "tags": [
@@ -5243,7 +5207,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RoleUpdate"
+                "$ref": "#/components/schemas/AccountRoleUpdate"
               }
             }
           }
@@ -5258,6 +5222,255 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/permissions": {
+      "get": {
+        "tags": [
+          "admin: roles"
+        ],
+        "summary": "List Permissions",
+        "description": "Every permission a role can be given. Fixed in code: each one is enforced on a real endpoint.",
+        "operationId": "list_permissions_api_v1_admin_permissions_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/PermissionPublic"
+                  },
+                  "type": "array",
+                  "title": "Response List Permissions Api V1 Admin Permissions Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/roles": {
+      "get": {
+        "tags": [
+          "admin: roles"
+        ],
+        "summary": "List Roles",
+        "operationId": "list_roles_api_v1_admin_roles_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/RolePublic"
+                  },
+                  "type": "array",
+                  "title": "Response List Roles Api V1 Admin Roles Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "admin: roles"
+        ],
+        "summary": "Create Role",
+        "operationId": "create_role_api_v1_admin_roles_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleCreate"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RolePublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/roles/assignments": {
+      "get": {
+        "tags": [
+          "admin: roles"
+        ],
+        "summary": "Role Assignment Counts",
+        "description": "How many accounts hold each role, keyed by role. Absent keys hold none.",
+        "operationId": "role_assignment_counts_api_v1_admin_roles_assignments_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "additionalProperties": {
+                    "type": "integer"
+                  },
+                  "type": "object",
+                  "title": "Response Role Assignment Counts Api V1 Admin Roles Assignments Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/roles/{key}": {
+      "patch": {
+        "tags": [
+          "admin: roles"
+        ],
+        "summary": "Update Role",
+        "operationId": "update_role_api_v1_admin_roles__key__patch",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RolePublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "admin: roles"
+        ],
+        "summary": "Delete Role",
+        "operationId": "delete_role_api_v1_admin_roles__key__delete",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Key"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
           },
           "422": {
             "description": "Validation Error",
@@ -5362,6 +5575,21 @@
           "training_rankings"
         ],
         "title": "AccountExport"
+      },
+      "AccountRoleUpdate": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "maxLength": 50,
+            "title": "Role"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "role"
+        ],
+        "title": "AccountRoleUpdate"
       },
       "Airport": {
         "properties": {
@@ -8901,28 +9129,19 @@
           },
           "role": {
             "type": "string",
-            "enum": [
-              "learner",
-              "admin",
-              "trainer",
-              "assessor",
-              "verifier",
-              "analyst"
-            ],
             "title": "Role"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "title": "Created At"
           },
           "permissions": {
             "items": {
               "type": "string"
             },
             "type": "array",
-            "title": "Permissions",
-            "readOnly": true
+            "title": "Permissions"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
           }
         },
         "type": "object",
@@ -8931,8 +9150,8 @@
           "email",
           "full_name",
           "role",
-          "created_at",
-          "permissions"
+          "permissions",
+          "created_at"
         ],
         "title": "LearnerPublic"
       },
@@ -9615,6 +9834,24 @@
         "type": "object",
         "title": "PathwayUpdate",
         "description": "Omitted fields keep their value; `steps`, when given, replaces the list in the given order."
+      },
+      "PermissionPublic": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "description"
+        ],
+        "title": "PermissionPublic"
       },
       "PersonalizationWeights": {
         "properties": {
@@ -10958,27 +11195,145 @@
         ],
         "title": "RoadRoute"
       },
-      "RoleUpdate": {
+      "RoleCreate": {
         "properties": {
-          "role": {
+          "key": {
             "type": "string",
-            "enum": [
-              "learner",
-              "admin",
-              "trainer",
-              "assessor",
-              "verifier",
-              "analyst"
+            "maxLength": 50,
+            "minLength": 2,
+            "title": "Key",
+            "description": "Stable slug stored on each account, e.g. 'regional_coordinator'."
+          },
+          "label": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Label"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
             ],
-            "title": "Role"
+            "title": "Description"
+          },
+          "permissions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Permissions"
           }
         },
         "additionalProperties": false,
         "type": "object",
         "required": [
-          "role"
+          "key",
+          "label"
         ],
-        "title": "RoleUpdate"
+        "title": "RoleCreate"
+      },
+      "RolePublic": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "permissions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Permissions"
+          },
+          "is_system": {
+            "type": "boolean",
+            "title": "Is System",
+            "description": "Built-in: it cannot be deleted or renamed, and `admin` cannot be edited."
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "label",
+          "description",
+          "permissions",
+          "is_system",
+          "created_at"
+        ],
+        "title": "RolePublic"
+      },
+      "RoleUpdate": {
+        "properties": {
+          "label": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          },
+          "permissions": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Permissions"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "RoleUpdate",
+        "description": "Only the fields sent are changed, so a label edit cannot silently clear the permissions."
       },
       "ScoreComponents": {
         "properties": {

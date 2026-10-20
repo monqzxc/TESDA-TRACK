@@ -1477,23 +1477,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/api/v1/admin/roles": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List Roles */
-        get: operations["list_roles_api_v1_admin_roles_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/api/v1/admin/users": {
         parameters: {
             query?: never;
@@ -1528,6 +1511,82 @@ export interface paths {
         patch: operations["assign_role_api_v1_admin_users__user_id__role_patch"];
         trace?: never;
     };
+    "/api/v1/admin/permissions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List Permissions
+         * @description Every permission a role can be given. Fixed in code: each one is enforced on a real endpoint.
+         */
+        get: operations["list_permissions_api_v1_admin_permissions_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/roles": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Roles */
+        get: operations["list_roles_api_v1_admin_roles_get"];
+        put?: never;
+        /** Create Role */
+        post: operations["create_role_api_v1_admin_roles_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/roles/assignments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Role Assignment Counts
+         * @description How many accounts hold each role, keyed by role. Absent keys hold none.
+         */
+        get: operations["role_assignment_counts_api_v1_admin_roles_assignments_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/roles/{key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** Delete Role */
+        delete: operations["delete_role_api_v1_admin_roles__key__delete"];
+        options?: never;
+        head?: never;
+        /** Update Role */
+        patch: operations["update_role_api_v1_admin_roles__key__patch"];
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1558,6 +1617,11 @@ export interface components {
             training_rankings: components["schemas"]["RankingAuditPublic"][];
             /** Assessment Rankings */
             assessment_rankings?: components["schemas"]["RankingAuditPublic"][];
+        };
+        /** AccountRoleUpdate */
+        AccountRoleUpdate: {
+            /** Role */
+            role: string;
         };
         /** Airport */
         Airport: {
@@ -2681,18 +2745,15 @@ export interface components {
             email: string;
             /** Full Name */
             full_name: string;
-            /**
-             * Role
-             * @enum {string}
-             */
-            role: "learner" | "admin" | "trainer" | "assessor" | "verifier" | "analyst";
+            /** Role */
+            role: string;
+            /** Permissions */
+            permissions: string[];
             /**
              * Created At
              * Format: date-time
              */
             created_at: string;
-            /** Permissions */
-            readonly permissions: string[];
         };
         /** LearnerSummary */
         LearnerSummary: {
@@ -2931,6 +2992,13 @@ export interface components {
             is_active?: boolean | null;
             /** Steps */
             steps?: components["schemas"]["PathwayStepInput"][] | null;
+        };
+        /** PermissionPublic */
+        PermissionPublic: {
+            /** Key */
+            key: string;
+            /** Description */
+            description: string;
         };
         /** PersonalizationWeights */
         PersonalizationWeights: {
@@ -3430,13 +3498,52 @@ export interface components {
              */
             duration_min: number;
         };
-        /** RoleUpdate */
-        RoleUpdate: {
+        /** RoleCreate */
+        RoleCreate: {
             /**
-             * Role
-             * @enum {string}
+             * Key
+             * @description Stable slug stored on each account, e.g. 'regional_coordinator'.
              */
-            role: "learner" | "admin" | "trainer" | "assessor" | "verifier" | "analyst";
+            key: string;
+            /** Label */
+            label: string;
+            /** Description */
+            description?: string | null;
+            /** Permissions */
+            permissions?: string[];
+        };
+        /** RolePublic */
+        RolePublic: {
+            /** Key */
+            key: string;
+            /** Label */
+            label: string;
+            /** Description */
+            description: string | null;
+            /** Permissions */
+            permissions: string[];
+            /**
+             * Is System
+             * @description Built-in: it cannot be deleted or renamed, and `admin` cannot be edited.
+             */
+            is_system: boolean;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
+        /**
+         * RoleUpdate
+         * @description Only the fields sent are changed, so a label edit cannot silently clear the permissions.
+         */
+        RoleUpdate: {
+            /** Label */
+            label?: string | null;
+            /** Description */
+            description?: string | null;
+            /** Permissions */
+            permissions?: string[] | null;
         };
         /**
          * ScoreComponents
@@ -7220,28 +7327,6 @@ export interface operations {
             };
         };
     };
-    list_roles_api_v1_admin_roles_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Successful Response */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        [key: string]: string[];
-                    };
-                };
-            };
-        };
-    };
     list_users_api_v1_admin_users_get: {
         parameters: {
             query?: {
@@ -7285,7 +7370,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["RoleUpdate"];
+                "application/json": components["schemas"]["AccountRoleUpdate"];
             };
         };
         responses: {
@@ -7296,6 +7381,165 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["LearnerPublic"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_permissions_api_v1_admin_permissions_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PermissionPublic"][];
+                };
+            };
+        };
+    };
+    list_roles_api_v1_admin_roles_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RolePublic"][];
+                };
+            };
+        };
+    };
+    create_role_api_v1_admin_roles_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RoleCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RolePublic"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    role_assignment_counts_api_v1_admin_roles_assignments_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: number;
+                    };
+                };
+            };
+        };
+    };
+    delete_role_api_v1_admin_roles__key__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    update_role_api_v1_admin_roles__key__patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                key: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RoleUpdate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RolePublic"];
                 };
             };
             /** @description Validation Error */

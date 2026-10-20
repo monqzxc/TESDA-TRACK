@@ -263,12 +263,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setNotice({ tone: 'success', message: en.account.deleted })
   }, [endSession])
 
-  const auth = useMemo<Auth>(
-    () => ({
+  const auth = useMemo<Auth>(() => {
+    const held = learner?.permissions ?? []
+    const can = (permission: string) => held.includes(permission)
+    return {
       learner,
       isSignedIn: learner !== null,
       isAdmin: learner?.role === 'admin',
-      canViewReports: learner?.role === 'admin' || learner?.role === 'analyst',
+      can,
+      canViewReports: can('reports:read'),
+      // The sections of the admin workspace between them need one of these three.
+      canOpenAdmin: ['users:manage', 'mcp:manage', 'reports:read'].some(can),
       isChecking: session.isLoading,
       signIn,
       register,
@@ -276,9 +281,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       deleteAccount,
       openSignIn,
       notify: setNotice,
-    }),
-    [learner, session.isLoading, signIn, register, signOut, deleteAccount, openSignIn],
-  )
+    }
+  }, [learner, session.isLoading, signIn, register, signOut, deleteAccount, openSignIn])
 
   return (
     <AuthContext.Provider value={auth}>

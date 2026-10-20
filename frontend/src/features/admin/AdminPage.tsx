@@ -16,16 +16,23 @@ import {
   adminUsersQuery,
   assignRole,
   createMcpClient,
+  createRole,
+  deleteRole,
   mcpClientsQuery,
   mcpToolsQuery,
+  permissionsQuery,
   revokeMcpClient,
+  roleAssignmentsQuery,
   rolesQuery,
   rotateMcpSecret,
+  updateRole,
   USER_PAGE_SIZE,
   type AdminRole,
   type AdminUser,
   type McpClient,
   type McpCredentials,
+  type Permission,
+  type Role,
 } from './api.ts'
 import {
   feedbackQuery,
@@ -37,21 +44,14 @@ import {
 } from '../reports/api.ts'
 
 type Section = 'overview' | 'learners' | 'rbac' | 'mcp' | 'recommendations' | 'feedback'
-const SECTIONS: readonly { id: Section; label: string; icon: IconName }[] = [
-  { id: 'overview', label: 'Overview', icon: 'bars' },
-  { id: 'learners', label: 'Users', icon: 'person' },
-  { id: 'rbac', label: 'Roles & Permissions', icon: 'person' },
-  { id: 'mcp', label: 'MCP partners', icon: 'network' },
-  { id: 'recommendations', label: 'Recommendation', icon: 'compass' },
-  { id: 'feedback', label: 'Feedback', icon: 'growth' },
-]
-const ROLES: readonly AdminRole[] = [
-  'learner',
-  'trainer',
-  'assessor',
-  'verifier',
-  'analyst',
-  'admin',
+// Each section needs the permission its own endpoints are guarded by, so an account only sees what it can use.
+const SECTIONS: readonly { id: Section; label: string; icon: IconName; permission: string }[] = [
+  { id: 'overview', label: 'Overview', icon: 'bars', permission: 'reports:read' },
+  { id: 'learners', label: 'Users', icon: 'person', permission: 'users:manage' },
+  { id: 'rbac', label: 'Roles & Permissions', icon: 'person', permission: 'users:manage' },
+  { id: 'mcp', label: 'MCP partners', icon: 'network', permission: 'mcp:manage' },
+  { id: 'recommendations', label: 'Recommendation', icon: 'compass', permission: 'reports:read' },
+  { id: 'feedback', label: 'Feedback', icon: 'growth', permission: 'reports:read' },
 ]
 const ACCESS_LABELS: Record<string, string> = {
   'catalog:read': 'Read catalog and service listings',
@@ -71,12 +71,14 @@ const th =
 const td = 'border-b border-rule px-3 py-3 text-14 text-navy align-top'
 
 export default function AdminPage() {
-  const { isAdmin, isSignedIn } = useAuth()
+  const { can, isSignedIn } = useAuth()
   const [params, setParams] = useSearchParams()
   const requested = params.get('section') as Section | null
-  const section = SECTIONS.some((item) => item.id === requested) ? requested! : 'overview'
+  const sections = SECTIONS.filter((item) => can(item.permission))
+  // A section the account cannot open falls back to the first one it can, so a shared link never dead-ends.
+  const section = sections.some((item) => item.id === requested) ? requested! : sections[0]?.id
 
-  if (!isAdmin) {
+  if (!section) {
     return (
       <AccountGate
         page="admin"
@@ -84,8 +86,8 @@ export default function AdminPage() {
         heading="Admin management is not available"
         body={
           isSignedIn
-            ? 'This workspace is only available to administrator accounts.'
-            : 'Sign in with an administrator account to open this workspace.'
+            ? 'Your account does not have permission to open this workspace. An administrator can grant it under Roles & Permissions.'
+            : 'Sign in with a staff account to open this workspace.'
         }
         action={isSignedIn ? undefined : 'Sign in'}
       />
@@ -104,13 +106,15 @@ export default function AdminPage() {
       />
       <nav aria-label="Admin sections" className="mb-4 overflow-x-auto pb-1">
         <div className="flex min-w-max gap-2">
-          {SECTIONS.map((item) => (
+          {sections.map((item) => (
             <Button
               key={item.id}
               className={button({ variant: section === item.id ? 'primary' : 'secondary' })}
               aria-pressed={section === item.id}
               onPress={() =>
-                setParams(item.id === 'overview' ? {} : { section: item.id }, { replace: true })
+                setParams(item.id === sections[0]?.id ? {} : { section: item.id }, {
+                  replace: true,
+                })
               }
             >
               <Icon name={item.icon} />
@@ -241,6 +245,7 @@ function Learners() {
   const { learner: currentAdmin } = useAuth()
   const [page, setPage] = useState(0)
   const users = useQuery(adminUsersQuery(page))
+  const roles = useQuery(rolesQuery)
   const [search, setSearch] = useState('')
   const roleMutation = useMutation({
     mutationFn: ({ id, role }: { id: string; role: AdminRole }) => assignRole(id, role),
@@ -315,7 +320,11 @@ function Learners() {
                         id={`role-${user.id}`}
                         className={cx(field, 'min-w-34')}
                         value={user.role}
-                        disabled={roleMutation.isPending || user.id === currentAdmin?.id}
+                        disabled={
+                          roleMutation.isPending ||
+                          user.id === currentAdmin?.id ||
+                          !roles.isSuccess
+                        }
                         onChange={(event) =>
                           roleMutation.mutate({
                             id: user.id,
@@ -323,9 +332,10 @@ function Learners() {
                           })
                         }
                       >
-                        {ROLES.map((role) => (
-                          <option key={role} value={role}>
-                            {role}
+                        {/* While the roles load, keep the account's own role selectable so the value shows. */}
+                        {(roles.data ?? [{ key: user.role, label: user.role }]).map((role) => (
+                          <option key={role.key} value={role.key}>
+                            {role.label}
                           </option>
                         ))}
                       </select>
@@ -367,66 +377,287 @@ function Learners() {
           </Button>
         </div>
       </div>
+      {roles.isError && <InlineError error={roles.error} onRetry={() => void roles.refetch()} />}
       {roleMutation.isError && <InlineError error={roleMutation.error} />}
     </section>
   )
 }
 
 function RbacManagement() {
+  const queryClient = useQueryClient()
   const roles = useQuery(rolesQuery)
-  const permissions = [...new Set(Object.values(roles.data ?? {}).flat())].sort()
+  const permissions = useQuery(permissionsQuery)
+  const assignments = useQuery(roleAssignmentsQuery)
+  const [showForm, setShowForm] = useState(false)
+  // Deleting a role frees its key and changes the dropdown in Learners, so refresh accounts as well.
+  const refresh = () =>
+    Promise.all([
+      queryClient.invalidateQueries({ queryKey: ['admin', 'roles'] }),
+      queryClient.invalidateQueries({ queryKey: ['admin', 'users'] }),
+    ])
+  const scope = useMutation({
+    mutationFn: ({ key, next }: { key: string; next: string[] }) =>
+      updateRole(key, { permissions: next }),
+    onSuccess: () => void refresh(),
+  })
+  const remove = useMutation({ mutationFn: deleteRole, onSuccess: () => void refresh() })
+  const busy = scope.isPending || remove.isPending
+
   return (
-    <section className={card} aria-labelledby="rbac-heading">
-      <h2 id="rbac-heading" className="text-20 text-navy">
-        Role-based access control
-      </h2>
-      <p className="text-14 text-muted">
-        Review the permissions granted to each fixed application role. Assign roles in Learners &
-        roles; permission definitions are maintained in the backend, not edited per account.
-      </p>
-      {roles.isError ? (
-        <InlineError error={roles.error} onRetry={() => void roles.refetch()} />
-      ) : (
-        <>
-          {/* Keyboard users can scroll the wide permission matrix. */}
-          {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
-          <div className={tableBox} role="region" aria-labelledby="rbac-heading" tabIndex={0}>
-            <table className="w-full min-w-180 border-collapse">
-              <caption className="sr-only">Permissions granted to each role</caption>
-              <thead>
-                <tr>
-                  <th className={th}>Role</th>
-                  {permissions.map((permission) => (
-                    <th key={permission} className={th} scope="col">
-                      {permission}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {ROLES.map((role) => (
-                  <tr key={role}>
-                    <th className={td} scope="row">
-                      {role}
-                    </th>
-                    {permissions.map((permission) => (
-                      <td
-                        className={td}
-                        key={permission}
-                        aria-label={`${role}: ${permission} ${roles.data?.[role]?.includes(permission) ? 'granted' : 'not granted'}`}
-                      >
-                        {roles.data?.[role]?.includes(permission) ? '✓' : '—'}
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+    <div className="grid gap-4">
+      <section className={card} aria-labelledby="rbac-heading">
+        <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h2 id="rbac-heading" className="text-20 text-navy">
+              Roles and permissions
+            </h2>
+            <p className="mb-0 max-w-prose text-14 text-muted">
+              Tick what each role may do, or add a role of your own. Permissions themselves are
+              defined in the backend, where each one guards a real endpoint, so the list below is
+              everything that can be granted. Assign roles to accounts under Users.
+            </p>
           </div>
-          {roles.isLoading && <p className="text-14 text-muted">Loading permissions…</p>}
-        </>
-      )}
-    </section>
+          <Button
+            className={button({ variant: 'primary' })}
+            onPress={() => setShowForm((value) => !value)}
+          >
+            <Icon name={showForm ? 'close' : 'person'} />
+            {showForm ? 'Close form' : 'New role'}
+          </Button>
+        </div>
+        {showForm && (
+          <RoleForm
+            permissions={permissions.data ?? []}
+            onCreated={() => {
+              setShowForm(false)
+              void refresh()
+            }}
+          />
+        )}
+        {roles.isError || permissions.isError ? (
+          <InlineError
+            error={roles.error ?? permissions.error}
+            onRetry={() => {
+              void roles.refetch()
+              void permissions.refetch()
+            }}
+          />
+        ) : (
+          <>
+            {/* Keyboard users can scroll the wide permission matrix. */}
+            {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
+            <div className={tableBox} role="region" aria-labelledby="rbac-heading" tabIndex={0}>
+              <table className="w-full min-w-240 border-collapse">
+                <caption className="sr-only">
+                  Permissions granted to each role. Tick a box to grant a permission.
+                </caption>
+                <thead>
+                  <tr>
+                    <th className={th}>Role</th>
+                    <th className={th}>Accounts</th>
+                    {(permissions.data ?? []).map((permission) => (
+                      <th key={permission.key} className={th} scope="col" title={permission.description}>
+                        {permission.key}
+                        <span className="sr-only"> — {permission.description}</span>
+                      </th>
+                    ))}
+                    <th className={th}>
+                      <span className="sr-only">Actions</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {(roles.data ?? []).map((role) => (
+                    <RoleRow
+                      key={role.key}
+                      role={role}
+                      permissions={permissions.data ?? []}
+                      held={assignments.data?.[role.key] ?? 0}
+                      busy={busy}
+                      onToggle={(next) => scope.mutate({ key: role.key, next })}
+                      onDelete={() => {
+                        if (
+                          window.confirm(
+                            `Delete the ${role.label} role? Accounts can no longer be assigned to it.`,
+                          )
+                        )
+                          remove.mutate(role.key)
+                      }}
+                    />
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            {(roles.isLoading || permissions.isLoading) && (
+              <p className="mt-4 mb-0 text-14 text-muted">Loading roles and permissions…</p>
+            )}
+            <p className="mt-4 mb-0 text-13 text-muted">
+              Built-in roles cannot be deleted, and the administrator role always holds every
+              permission so that this page can never lock itself away.
+            </p>
+          </>
+        )}
+        {(scope.isError || remove.isError) && <InlineError error={scope.error ?? remove.error} />}
+      </section>
+    </div>
+  )
+}
+
+function RoleRow({
+  role,
+  permissions,
+  held,
+  busy,
+  onToggle,
+  onDelete,
+}: {
+  role: Role
+  permissions: Permission[]
+  held: number
+  busy: boolean
+  onToggle: (next: string[]) => void
+  onDelete: () => void
+}) {
+  // The administrator role is deliberately immutable; the API refuses to change it either way.
+  const locked = role.key === 'admin'
+  return (
+    <tr>
+      <th className={td} scope="row">
+        <span className="block font-semibold">{role.label}</span>
+        <span className="text-13 text-muted">{role.key}</span>
+        {role.is_system && <span className="block text-13 text-muted">Built-in</span>}
+        {role.description && <span className="mt-1 block text-13 text-muted">{role.description}</span>}
+      </th>
+      <td className={td}>{held}</td>
+      {permissions.map((permission) => {
+        const granted = role.permissions.includes(permission.key)
+        return (
+          <td className={td} key={permission.key}>
+            <input
+              type="checkbox"
+              className="size-5 accent-fill"
+              checked={granted}
+              disabled={locked || busy}
+              aria-label={`${role.label}: ${permission.description}`}
+              onChange={() =>
+                onToggle(
+                  granted
+                    ? role.permissions.filter((item) => item !== permission.key)
+                    : [...role.permissions, permission.key],
+                )
+              }
+            />
+          </td>
+        )
+      })}
+      <td className={td}>
+        {!role.is_system && (
+          <Button
+            className={button({ variant: 'secondary', text: 14, snug: true })}
+            isDisabled={busy}
+            onPress={onDelete}
+          >
+            Delete
+          </Button>
+        )}
+      </td>
+    </tr>
+  )
+}
+
+function RoleForm({
+  permissions,
+  onCreated,
+}: {
+  permissions: Permission[]
+  onCreated: () => void
+}) {
+  const [granted, setGranted] = useState<string[]>([])
+  const create = useMutation({
+    mutationFn: createRole,
+    onSuccess: () => {
+      setGranted([])
+      onCreated()
+    },
+  })
+  const submit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (create.isPending) return
+    const form = new FormData(event.currentTarget)
+    create.mutate({
+      key: String(form.get('key')),
+      label: String(form.get('label')),
+      description: String(form.get('description')).trim() || null,
+      permissions: granted,
+    })
+  }
+  return (
+    <form className="mb-5 rounded-14 border border-border bg-soft p-4" onSubmit={submit}>
+      <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+        <Field
+          name="label"
+          labelText="Role name"
+          placeholder="Regional Coordinator"
+          required
+          maxLength={100}
+        />
+        <Field
+          name="key"
+          labelText="Key"
+          placeholder="regional_coordinator"
+          required
+          minLength={2}
+          maxLength={50}
+          pattern="[a-z][a-z0-9_]*"
+          title="Lowercase letters, numbers and underscores, starting with a letter."
+        />
+      </div>
+      <p className="mt-2 mb-0 text-13 text-muted">
+        The key is stored on every account with this role and cannot be changed later.
+      </p>
+      <label className="mt-4 block">
+        <span className={label}>What this role is for (optional)</span>
+        <textarea className={cx(field, 'min-h-20 resize-y')} name="description" maxLength={1000} />
+      </label>
+      <fieldset className="mt-4 border-0 p-0">
+        <legend className={label}>Permissions</legend>
+        <p className="mt-0 text-13 text-muted">
+          Leave them all unticked for a role with learner access only.
+        </p>
+        <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
+          {permissions.map((permission) => (
+            <div
+              key={permission.key}
+              className="flex min-h-11 items-center gap-2 rounded-10 border border-border bg-surface px-3 py-2 text-13"
+            >
+              <input
+                id={`role-permission-${permission.key}`}
+                type="checkbox"
+                className="size-5 shrink-0 accent-fill"
+                checked={granted.includes(permission.key)}
+                onChange={(event) =>
+                  setGranted((current) =>
+                    event.target.checked
+                      ? [...current, permission.key]
+                      : current.filter((item) => item !== permission.key),
+                  )
+                }
+              />
+              <label htmlFor={`role-permission-${permission.key}`}>
+                <span className="block font-semibold text-navy">{permission.key}</span>
+                <span className="text-muted">{permission.description}</span>
+              </label>
+            </div>
+          ))}
+        </div>
+      </fieldset>
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        <button className={button({ variant: 'primary' })} type="submit" disabled={create.isPending}>
+          {create.isPending ? 'Creating…' : 'Create role'}
+        </button>
+      </div>
+      {create.isError && <InlineError error={create.error} />}
+    </form>
   )
 }
 
@@ -894,9 +1125,9 @@ function RecommendationManagement() {
               <tbody>
                 {active.map((row) => (
                   <tr key={row.qualification.code}>
-                    <td scope="row" className={td}>
+                    <th className={td} scope="row">
                       {row.qualification.name}
-                    </td>
+                    </th>
                     <td className={td}>{row.top_match}</td>
                     <td className={td}>{row.chosen}</td>
                     <td className={td}>{row.readiness_checks}</td>
