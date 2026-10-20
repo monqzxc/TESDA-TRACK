@@ -48,7 +48,7 @@ export default defineRailway((ctx) => {
       DATABASE_URL: "postgresql+psycopg://tesda_track:${{shared.APP_DB_PASSWORD}}@${{db.RAILWAY_PRIVATE_DOMAIN}}:5432/tesda_track",
       // The model takes about 1 GB to serve and more to embed the catalog, which is over the trial plan's 1 GB per
       // service. On the trial, set this to "false": matching then uses keywords only.
-      SEMANTIC_SEARCH_ENABLED: "true",
+      SEMANTIC_SEARCH_ENABLED: "false",
       // The CARTO basemaps key for the center map (see .env.example). Allow the Vercel domain in CARTO.
       CARTO_API: shared.CARTO_API,
     },
