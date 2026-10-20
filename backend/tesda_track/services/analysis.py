@@ -167,10 +167,10 @@ def match(session: Session, query: str, profile: Profile,
     if embedder is None:
         by_code = {item.code: item for item in current.items}
         return refined, [Match(qualification=by_code[code].summary, score=r["score"], reason=r["reason"])
-                         for code, r in list(keyword.items())[:3]]
+                         for code, r in list(keyword.items())[:limit]]
     params = match_params(embedder)
     similarities = embeddings.qualification_similarities(session, embedder, goal_rules.strip_negated(query))
-    return refined, score_matches(current.items, keyword, similarities, params, query=query)
+    return refined, score_matches(current.items, keyword, similarities, params, limit=limit, query=query)
 
 
 def pathway(session: Session, profile: Profile, qualification_code: str) -> PathwayRecommendation:

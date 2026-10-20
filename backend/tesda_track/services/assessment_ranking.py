@@ -3,6 +3,8 @@
 Training budgets, delivery modes and intake dates are not assessment fee/date evidence.
 Assessment logistics are explicit request fields; geographic preferences are shared.
 """
+import uuid
+
 from sqlmodel import Session, select
 
 from tesda_track.config import get_settings
@@ -28,7 +30,8 @@ def logistics(request, schedule):
     return checks
 
 
-def rank(session: Session, request: AssessmentRankingRequest, learner: Learner | None) -> AssessmentRanking:
+def rank(session: Session, request: AssessmentRankingRequest, learner: Learner | None,
+         api_client_id: uuid.UUID | None = None) -> AssessmentRanking:
     settings = get_settings()
     answers, assessment_id = learner_assessments.resolve(session, learner, request)
     answers = answers or AssessmentAnswers(career_goal=request.goal)
@@ -133,7 +136,8 @@ def rank(session: Session, request: AssessmentRankingRequest, learner: Learner |
     total, unconfirmed_total = len(ranked), len(pending)
     ranked = ranked[request.offset:request.offset + request.limit]
     pending = pending[request.offset:request.offset + request.limit]
-    audit = RankingAudit(learner_id=learner.id if learner else None, assessment_id=assessment_id,
+    audit = RankingAudit(learner_id=learner.id if learner else None, api_client_id=api_client_id,
+        assessment_id=assessment_id,
         qualification_id=qualification.id, near_lat=near_lat, near_lon=near_lon,
         query_hash=goal_fingerprint(request.goal, settings.secret_key.get_secret_value()) if request.goal else None,
         preferences={"service_kind": "assessment", "policy_version": "assessment-center-v1",

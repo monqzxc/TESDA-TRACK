@@ -11,6 +11,7 @@ Score = Σ weight × component, each component on 0..1 (weights from settings.ra
 """
 import hashlib
 import hmac
+import uuid
 from datetime import date, datetime, time
 
 from sqlalchemy import and_, func, or_
@@ -108,7 +109,7 @@ def _explain(program: TrainingProgram, distance_km: float | None, components: Sc
 
 
 def rank_programs(session: Session, request: TrainingRankingRequest, embedder: Embedder | None,
-                  learner: Learner | None) -> TrainingRanking:
+                  learner: Learner | None, api_client_id: uuid.UUID | None = None) -> TrainingRanking:
     settings = get_settings()
     answers, assessment_id = learner_assessments.resolve(session, learner, request)
     if answers is not None:
@@ -240,7 +241,7 @@ def rank_programs(session: Session, request: TrainingRankingRequest, embedder: E
     ranked = ranked[:request.limit]
     audit = RankingAudit(
         assessment_id=assessment_id,
-        learner_id=learner.id if learner else None, qualification_id=qualification.id,
+        learner_id=learner.id if learner else None, api_client_id=api_client_id, qualification_id=qualification.id,
         query_hash=goal_fingerprint(request.goal, settings.secret_key.get_secret_value()) if request.goal else None,
         near_lat=near_lat, near_lon=near_lon,
         preferences={"delivery_mode": request.preferred_delivery_mode, "needs_scholarship": request.needs_scholarship,

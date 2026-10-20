@@ -13,6 +13,8 @@ from tesda_track.models import Qualification
 from tesda_track.services.partner_clients import mcp_signing_key, revoke_client
 
 CATALOG_TOOLS = {"get_qualification", "search_training_programs", "get_regional_supply"}
+RECOMMEND_TOOLS = {"match_qualifications", "recommend_route", "check_readiness", "rank_training_programs",
+                   "rank_assessment_schedules"}
 ALL_SCOPES = ("catalog:read", "recommend:run", "reports:read")
 
 
@@ -82,7 +84,7 @@ def test_foreign_host_is_rejected(client, partner):
 
 def test_tools_list_filtered_by_scope(mcp, partner):
     assert tool_names(mcp.call(partner(scopes=("catalog:read",)).headers, "tools/list")) == CATALOG_TOOLS
-    assert tool_names(mcp.call(partner(name="BSRS", scopes=("recommend:run",)).headers, "tools/list")) == set()
+    assert tool_names(mcp.call(partner(name="BSRS", scopes=("recommend:run",)).headers, "tools/list")) == RECOMMEND_TOOLS
 
 
 def test_missing_scope_refuses_tool(mcp, partner):
@@ -151,7 +153,7 @@ def test_rest_routes_keep_their_405_and_json_404(client):
 def test_tools_are_annotated_and_typed(mcp, partner):
     response = mcp.call(partner(scopes=ALL_SCOPES).headers, "tools/list")
     tools = response.json()["result"]["tools"]
-    assert {tool["name"] for tool in tools} == CATALOG_TOOLS
+    assert {tool["name"] for tool in tools} == CATALOG_TOOLS | RECOMMEND_TOOLS
     for tool in tools:
         assert tool["annotations"]["readOnlyHint"] is True and tool["annotations"]["openWorldHint"] is False
         assert tool["outputSchema"]["type"] == "object"
@@ -199,8 +201,8 @@ def test_every_lifespan_of_an_app_serves_mcp(app, mcp, partner):
     made = partner()
     for _ in range(2):
         with TestClient(app) as nested:
-            assert tool_names(type(mcp)(nested).call(made.headers, "tools/list")) == CATALOG_TOOLS
-    assert tool_names(mcp.call(made.headers, "tools/list")) == CATALOG_TOOLS
+            assert tool_names(type(mcp)(nested).call(made.headers, "tools/list")) == CATALOG_TOOLS | RECOMMEND_TOOLS
+    assert tool_names(mcp.call(made.headers, "tools/list")) == CATALOG_TOOLS | RECOMMEND_TOOLS
 
 
 def test_mcp_can_be_turned_off(monkeypatch):
