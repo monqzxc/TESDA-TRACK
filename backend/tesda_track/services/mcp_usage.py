@@ -17,7 +17,7 @@ from tesda_track.schemas.mcp_usage import ClientUsage, DayUsage, ToolUsage, Usag
 from tesda_track.schemas.reports import DateRange
 
 logger = logging.getLogger("tesda_track")
-PHILIPPINE_TIME = "Asia/Manila"
+PHILIPPINE_TZ_NAME = "Asia/Manila"
 PHILIPPINE_OFFSET = timezone(timedelta(hours=8))
 FOLD_LOCK = 4_120_001  # one fold at a time across the hourly thread and the CLI
 LATENCY_OUTCOMES = ("ok", "tool_error")  # refused calls return in no time and would drag the percentiles down
@@ -45,7 +45,7 @@ def _weight():
 
 
 def _day(column):
-    return cast(func.timezone(PHILIPPINE_TIME, column), Date)
+    return cast(func.timezone(PHILIPPINE_TZ_NAME, column), Date)
 
 
 def fold_old_rows(session: Session, retention_days: int, now: datetime | None = None) -> int:

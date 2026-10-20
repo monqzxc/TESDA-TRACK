@@ -15,6 +15,7 @@ from tesda_track.mcp.schemas import DemandOutput, DemandRow
 from tesda_track.models import McpDemandSnapshot
 from tesda_track.mcp.tools_catalog import READ_ONLY
 from tesda_track.services import official_codes, reports
+from tesda_track.config import get_settings
 from tesda_track.services.match_stats import PHILIPPINE_TIME
 
 COUNTS = {"top_matched": "learners_top_matched", "chose": "learners_chose",
@@ -62,11 +63,15 @@ def register(server: MCPServer, app: FastAPI) -> None:
         competent or certified in each qualification during one completed calendar quarter. Counts of 1 to 4 are
         hidden (null, named in hidden) to protect learners, and so is a count that the others would give away by
         subtraction. Only whole, finished quarters can be asked for, and a quarter's figures are fixed when it is
-        first requested after it ends, so that no two answers can be compared to recover a hidden count."""
+        first requested after it ends, so that no two answers can be compared to recover a hidden count. Quarters
+        before the pilot began (2025-Q1 unless configured otherwise) are not available."""
         try:
             period = reports.quarter_range(quarter)
         except ValueError:
             raise ToolError("A quarter looks like 2026-Q3.") from None
+        earliest = get_settings().mcp_demand_earliest_quarter
+        if quarter < earliest:
+            raise ToolError(f"Quarters before {earliest} are not available.")
         if period.date_to >= datetime.now(PHILIPPINE_TIME).date():
             raise ToolError("Only completed quarters are available.")
         with open_session(app) as session:

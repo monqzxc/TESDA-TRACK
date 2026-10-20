@@ -11,9 +11,11 @@ from mcp.server.auth.middleware.auth_context import get_access_token
 from mcp.server.context import CallNext, HandlerResult, ServerRequestContext
 from mcp.shared.exceptions import MCPError
 from pydantic import ValidationError
+from sqlmodel import select
 
 from tesda_track.config import get_settings
 from tesda_track.mcp import deps
+from tesda_track.models import OfficialQualificationCode, Qualification, Region
 from tesda_track.mcp.scopes import TOOL_LIMITS, TOOL_SCOPES, ScopeRefusal
 from tesda_track.services import mcp_usage
 from tesda_track.services.ranking import goal_fingerprint
@@ -79,7 +81,7 @@ class UsageMiddleware:
         started = time.perf_counter()
         result = None
         try:
-            if is_call:
+            if not ctx.method.startswith("notifications/"):
                 self._enforce_limits(asked)
             deps.begin_ranking_audit()
             result = await call_next(ctx)
@@ -133,4 +135,21 @@ class UsageMiddleware:
 
     def _record(self, fields: dict) -> None:
         with deps.open_session(self.app) as session:
+            self._keep_known_codes(session, fields)
             mcp_usage.record_call(session, **fields)
+
+    @staticmethod
+    def _keep_known_codes(session, fields: dict) -> None:
+        """A code is logged only when it names a real qualification or region: anything else is partner-chosen text."""
+        try:
+            code = fields.get("qualification_code")
+            if code and not session.exec(select(Qualification.id).where(Qualification.code == code)).first():
+                official = session.exec(select(OfficialQualificationCode.official_code).where(
+                    OfficialQualificationCode.official_code == code.upper())).first()
+                fields["qualification_code"] = official
+            region = fields.get("region_code")
+            if region and session.get(Region, region) is None:
+                fields["region_code"] = None
+        except Exception:
+            session.rollback()
+            fields["qualification_code"] = fields["region_code"] = None

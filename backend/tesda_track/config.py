@@ -114,6 +114,8 @@ class Settings(BaseSettings):
     mcp_token_lifetime_seconds: int = Field(default=3600, ge=60, le=86400)
     mcp_call_log_retention_days: int = Field(default=180, ge=1)
     mcp_allowed_hosts: list[str] = []
+    # The earliest quarter get_qualification_demand will freeze a snapshot for (the pilot's first quarter).
+    mcp_demand_earliest_quarter: str = Field(default="2025-Q1", pattern=r"^[0-9]{4}-Q[1-4]$")
 
     @field_validator("mcp_token_secret", mode="before")
     @classmethod

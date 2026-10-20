@@ -17,7 +17,7 @@
 	}
 	# Partner MCP server (docs/mcp/partner-onboarding.md): the endpoint and the metadata clients discover it by.
 	# PUBLIC_BASE_URL must be https://{$DOMAIN}, because the API rejects requests for any other host.
-	handle /mcp {
+	handle /mcp /mcp/ {
 		reverse_proxy api:8000 {
 			header_up X-Forwarded-For {remote_host}
 		}

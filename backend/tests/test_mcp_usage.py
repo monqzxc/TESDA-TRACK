@@ -119,6 +119,16 @@ def test_per_tool_rate_limit(mcp, partner, session, monkeypatch):
     assert [row.outcome for row in rows(session, tool="get_regional_supply")] == ["ok", "ok", "rate_limited"]
 
 
+def test_every_method_is_rate_limited_not_only_tool_calls(mcp, partner, session):
+    headers = partner(rate_limit=3).headers
+    for _ in range(3):
+        assert "result" in mcp.call(headers, "tools/list").json()
+    assert mcp.call(headers, "tools/list").json()["error"]["code"] == -32000
+    assert mcp.call(headers, "ping").json()["error"]["code"] == -32000
+    assert [row.outcome for row in rows(session)] == ["ok"] * 3 + ["rate_limited"] * 2
+    assert {row.method for row in rows(session)} == {"tools/list", "ping"}
+
+
 def test_client_rate_limit(mcp, partner, session):
     headers = partner(rate_limit=3).headers
     mcp.tool(headers, "get_regional_supply")
@@ -248,6 +258,20 @@ def logged_text(session):
     return " ".join(session.execute(text("SELECT row_to_json(t)::text FROM mcp_call_log t")).scalars().all())
 
 
+def test_unresolved_codes_are_not_logged(mcp, partner, session, make_program):
+    make_program()
+    headers = partner().headers
+    text_sent = "Juan-Dela-Cruz-09171234567"
+    mcp.tool(headers, "get_qualification", code=text_sent)
+    mcp.tool(headers, "get_regional_supply", region_code="Juan-0917")
+    mcp.tool(headers, "get_qualification", code="SMAW-NC-II")
+    mcp.tool(headers, "get_regional_supply", region_code="NCR")
+    dumped = logged_text(session)
+    assert "Juan" not in dumped and "0917" not in dumped
+    assert [row.qualification_code for row in rows(session, tool="get_qualification")] == [None, "SMAW-NC-II"]
+    assert [row.region_code for row in rows(session, tool="get_regional_supply")] == [None, "NCR"]
+
+
 def test_partner_chosen_text_never_reaches_the_log(mcp, partner, session):
     headers = partner().headers
     mcp.tool(headers, "get_regional_supply", **{"Juan 09171234567": "x", "region_code": "NCR"})
@@ -339,23 +363,32 @@ def test_suppressed_unattributed_denials_are_counted_not_dropped(mcp, partner, s
     now = [0.0]
     monkeypatch.setattr(auth, "_unattributed_denials", RateLimiter(clock=lambda: now[0]))
     monkeypatch.setattr(auth, "_suppressed", 0)
+    monkeypatch.setattr(auth, "_attributed_denials", RateLimiter(clock=lambda: now[0]))
+    monkeypatch.setattr(auth, "_suppressed_attributed", {})
     monkeypatch.setattr(auth, "UNATTRIBUTED_DENIALS_PER_MINUTE", 3)
+    monkeypatch.setattr(auth, "ATTRIBUTED_DENIALS_PER_MINUTE", 3)
     garbage = {"Authorization": "Bearer nonsense"}
     for _ in range(10):
         assert mcp.call(garbage, "tools/list").status_code == 401
     assert len(rows(session, outcome="denied_token")) == 3
-    # An attributed denial is never capped.
+    # Attributed denials have a budget of their own, and are counted too.
     made = partner()
     revoke_client(session, made.id)
     session.flush()
     for _ in range(5):
         assert mcp.call(made.headers, "tools/list").status_code == 401
-    assert len(rows(session, client_id=made.id)) == 5
+    assert len(rows(session, client_id=made.id)) == 3
     now[0] = 61.0
     assert mcp.call(garbage, "tools/list").status_code == 401
     summaries = rows(session, error_code="suppressed")
-    assert [row.result_count for row in summaries] == [7]
+    assert [(row.client_id, row.result_count) for row in summaries] == [(None, 7)]
     assert mcp_usage.usage_report(session, DateRange()).unattributed_denials == 11
+    # The next denied request of the revoked client carries its own summary of the 2 it did not write.
+    assert mcp.call(made.headers, "tools/list").status_code == 401
+    assert [(row.client_id, row.result_count) for row in rows(session, error_code="suppressed")] == [
+        (None, 7), (made.id, 2)]
+    attributed = [client for client in mcp_usage.usage_report(session, DateRange()).clients if client.client_id == made.id]
+    assert attributed[0].by_outcome["denied_token"] == 6
     # Folding keeps the total.
     session.execute(text("UPDATE mcp_call_log SET called_at = now() - interval '400 days'"))
     mcp_usage.fold_old_rows(session, 180)

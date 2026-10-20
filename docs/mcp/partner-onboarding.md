@@ -245,7 +245,7 @@ For one **completed** calendar quarter (`YYYY-Qn`), how many **distinct learners
 assess (`learners_applied`), were found competent (`learners_competent`) and certified (`learners_certified`),
 with `average_readiness`. Scope `reports:read`, limit 10 a minute.
 
-- Only finished quarters can be asked for. The current or a future quarter is an error.
+- Only finished quarters can be asked for. The current or a future quarter is an error, and so is a quarter before 2025-Q1 (the pilot's start).
 - A quarter's figures are fixed the first time it is requested after it ends and never change afterwards, so
   asking again returns the same numbers.
 - A count of 1 to 4 is hidden: it is `null` and the field is named in `hidden`. `learners_competent` is also hidden

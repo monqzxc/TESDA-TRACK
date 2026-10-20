@@ -92,6 +92,23 @@ def test_open_and_future_quarters_are_tool_errors(mcp, partner):
         assert label not in result["content"][0]["text"]
 
 
+def test_quarters_before_the_pilot_are_refused_without_a_snapshot(mcp, partner, session):
+    headers = partner(scopes=REPORTS).headers
+    for label in ("0001-Q1", "2024-Q4"):
+        result = mcp.tool(headers, "get_qualification_demand", quarter=label)
+        assert result["isError"] is True
+        assert label not in result["content"][0]["text"] and "2025-Q1" in result["content"][0]["text"]
+    assert session.get(McpDemandSnapshot, "0001-Q1") is None and session.get(McpDemandSnapshot, "2024-Q4") is None
+
+
+def test_earliest_quarter_is_a_setting(mcp, partner, monkeypatch):
+    from tesda_track.config import get_settings
+    monkeypatch.setattr(get_settings(), "mcp_demand_earliest_quarter", "2025-Q3")
+    headers = partner(scopes=REPORTS).headers
+    assert mcp.tool(headers, "get_qualification_demand", quarter="2025-Q2")["isError"] is True
+    assert mcp.tool(headers, "get_qualification_demand", quarter="2025-Q3")["isError"] is False
+
+
 def dated_checks(client, session, headers, competency_ids, whens, answer="confident"):
     answers = {str(i): answer for i in competency_ids("SMAW-NC-II")}
     for when in whens:
