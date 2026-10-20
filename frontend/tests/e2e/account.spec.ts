@@ -224,7 +224,11 @@ for (const colorScheme of ['light', 'dark'] as const) {
 
         const area = await accountArea(page, phone)
         await area.getByRole('button', { name: 'Your account: Maria Santos' }).click()
-        await page.getByRole('menuitem', { name: 'Delete my account' }).click()
+        // Deleting is in Settings, under "Your data & privacy".
+        await page.getByRole('menuitem', { name: 'Settings' }).click()
+        const settings = page.getByRole('dialog', { name: 'Settings' })
+        await settings.getByText('Your data & privacy').click()
+        await settings.getByRole('button', { name: 'Delete my account' }).click()
 
         const dialog = page.getByRole('alertdialog', { name: 'Delete my account' })
         await expect(dialog).toBeVisible()
@@ -305,7 +309,10 @@ test.describe('on a desktop', () => {
     const account = page.getByRole('button', { name: 'Your account: Maria Santos' })
     await expect(account).toBeFocused()
 
+    // The menu opens on its first item, Settings; Sign out is the next one.
     await page.keyboard.press('Enter')
+    await expect(page.getByRole('menuitem', { name: 'Settings' })).toBeFocused()
+    await page.keyboard.press('ArrowDown')
     await expect(page.getByRole('menuitem', { name: 'Sign out' })).toBeFocused()
     await page.keyboard.press('Enter')
 

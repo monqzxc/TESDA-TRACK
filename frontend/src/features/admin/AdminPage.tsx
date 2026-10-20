@@ -894,9 +894,9 @@ function RecommendationManagement() {
               <tbody>
                 {active.map((row) => (
                   <tr key={row.qualification.code}>
-                    <td scope="row" className={td}>
+                    <th className={td} scope="row">
                       {row.qualification.name}
-                    </td>
+                    </th>
                     <td className={td}>{row.top_match}</td>
                     <td className={td}>{row.chosen}</td>
                     <td className={td}>{row.readiness_checks}</td>
