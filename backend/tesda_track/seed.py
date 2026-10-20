@@ -18,6 +18,8 @@ from typing import Literal
 from pydantic import BaseModel, Field, TypeAdapter, ValidationError
 from sqlmodel import Session, select
 
+from tesda_track.services.official_codes import CrosswalkReport, import_crosswalk
+
 from tesda_track.models import (DELIVERY_MODES, ROUTES, STEP_KINDS, AssessmentCenter, AssessmentSchedule,
                                 Competency, Pathway, PathwayStep, Qualification, Region, Sector, TrainingProgram,
                                 TrainingProvider)
@@ -355,8 +357,8 @@ def _read(seed_dir: Path, name: str) -> object:
     return json.loads((seed_dir / name).read_text(encoding="utf-8"))
 
 
-def seed_all(session: Session, seed_dir: Path = SEED_DIR) -> dict[str, SyncReport | DeliverySyncReport]:
-    reports: dict[str, SyncReport | DeliverySyncReport] = {
+def seed_all(session: Session, seed_dir: Path = SEED_DIR) -> dict[str, SyncReport | DeliverySyncReport | CrosswalkReport]:
+    reports: dict[str, SyncReport | DeliverySyncReport | CrosswalkReport] = {
         "regions": sync_regions(session, _read(seed_dir, "regions.json")),
         "qualifications": sync_catalog(session, parse_catalog(_read(seed_dir, "qualifications.json"))),
         "pathways": create_missing_pathways(session, _read(seed_dir, "pathways.json")),
@@ -368,6 +370,9 @@ def seed_all(session: Session, seed_dir: Path = SEED_DIR) -> dict[str, SyncRepor
             logger.warning("Skipping the development delivery-site fixture in production; load an approved T2MIS import instead.")
         else:
             reports["delivery"] = sync_delivery_sites(session, _read(seed_dir, "delivery_sites.json"))
+    crosswalk = seed_dir / "sources" / "qualification_code_crosswalk.csv"
+    if crosswalk.exists():
+        reports["official_codes"] = import_crosswalk(session, crosswalk)
     return reports
 
 
@@ -382,6 +387,9 @@ def main() -> None:
         reports = seed_all(session, args.dir)
         session.commit()
     for name, report in reports.items():
+        if isinstance(report, CrosswalkReport):
+            logger.info("%s: %d linked, skipped %s", name, report.linked, report.skipped)
+            continue
         logger.info("%s: %d created, %d updated, %d archived", name, report.created, report.updated, report.archived)
 
 

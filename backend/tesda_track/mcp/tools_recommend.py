@@ -15,7 +15,7 @@ from tesda_track.errors import DomainError
 from tesda_track.mcp import deps
 from tesda_track.mcp.deps import embedder, open_session, principal
 from tesda_track.mcp.schemas import AssessmentRankingOutput, MatchOutput, RouteOutput, TrainingRankingOutput
-from tesda_track.mcp.tools_catalog import READ_ONLY, _unknown_region
+from tesda_track.mcp.tools_catalog import READ_ONLY, UNKNOWN_CODE, _unknown_region, resolve_item
 from tesda_track.models import Region
 from tesda_track.schemas.analysis import GoalRequest, Profile, ReadinessResult
 from tesda_track.schemas.assessment_ranking import AssessmentRankingRequest
@@ -36,7 +36,7 @@ Lat = Annotated[float | None, Field(
     ge=-90, le=90, description="The learner's latitude; used rounded to 0.1 degree. Give it with near_lon.")]
 Lon = Annotated[float | None, Field(
     ge=-180, le=180, description="The learner's longitude; used rounded to 0.1 degree. Give it with near_lat.")]
-QualificationCode = Annotated[str, Field(description="The qualification's code, e.g. SMAW-NC-II.")]
+QualificationCode = Annotated[str, Field(description="The qualification's code, e.g. SMAW-NC-II, or TESDA's official code.")]
 Experience = Annotated[float | None, Field(ge=0, le=80, description="Years of experience in the trade.")]
 HasCertification = Annotated[bool | None, Field(description="Whether the learner already holds a TESDA certificate.")]
 RegionCode = Annotated[str | None, Field(
@@ -57,10 +57,7 @@ def _request_errors() -> Iterator[None]:
 
 def _require_qualification(session: Session, code: str):
     """The active qualification, else a message without the code the caller typed."""
-    item = next((item for item in catalog.snapshot(session).items if item.code == code), None)
-    if item is None:
-        raise ToolError("No active qualification has that code. get_qualification finds one by title.")
-    return item
+    return resolve_item(session, code, catalog.snapshot(session).items, UNKNOWN_CODE)
 
 
 def _rounded(latitude: float | None, longitude: float | None) -> tuple[float | None, float | None]:
@@ -115,7 +112,7 @@ def register(server: MCPServer, app: FastAPI) -> None:
         with _request_errors():
             profile = Profile(experience_years=experience_years, has_certification=has_certification)
             with open_session(app) as session:
-                _require_qualification(session, qualification_code)
+                qualification_code = _require_qualification(session, qualification_code).code
                 result = analysis.pathway(session, profile, qualification_code)
         return RouteOutput(route=result.recommendation, reason=result.reason, next_step=result.next_step,
                            pathway=result.pathway)
@@ -134,6 +131,7 @@ def register(server: MCPServer, app: FastAPI) -> None:
         with _request_errors():
             with open_session(app) as session:
                 item = _require_qualification(session, qualification_code)
+                qualification_code = item.code
                 expected = {competency.id for competency in item.public.competencies}
                 missing, unknown = sorted(expected - answers.keys()), sorted(answers.keys() - expected)
                 problems = []
@@ -168,7 +166,7 @@ def register(server: MCPServer, app: FastAPI) -> None:
         with _request_errors():
             near_lat, near_lon = _rounded(near_lat, near_lon)
             with open_session(app) as session:
-                _require_qualification(session, qualification_code)
+                qualification_code = _require_qualification(session, qualification_code).code
                 if region_code and near_lat is None and near_lon is None:
                     near_lat, near_lon = _region_centre(session, region_code)
                 request = TrainingRankingRequest(
@@ -207,7 +205,7 @@ def register(server: MCPServer, app: FastAPI) -> None:
         with _request_errors():
             near_lat, near_lon = _rounded(near_lat, near_lon)
             with open_session(app) as session:
-                _require_qualification(session, qualification_code)
+                qualification_code = _require_qualification(session, qualification_code).code
                 if region_code:
                     _region(session, region_code)
                 request = AssessmentRankingRequest(

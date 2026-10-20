@@ -18,12 +18,22 @@ class LevelRef(BaseModel):
     level: int = Field(description="The NC level: 1 for NC I up to 4 for NC IV.")
 
 
+class OfficialCodeRef(BaseModel):
+    code: str = Field(description="TESDA's official qualification code, as T2MIS and TSP hold it.")
+    relation: str = Field(description="same: the identical qualification; covers: this code spans several TESDA-TRACK "
+                                      "ones; superseded_by: an older code this qualification replaced.")
+    promulgated: date | None
+    enabled_in_t2mis: bool
+
+
 class QualificationDetail(BaseModel):
     qualification: QualificationSummary
     possible_jobs: list[str]
     competencies: list[CompetencyPublic]
     other_levels: list[LevelRef] = Field(
         description="Every active level of the same trade, this one included, lowest first; empty when it has no NC level.")
+    official_codes: list[OfficialCodeRef] = Field(
+        default_factory=list, description="TESDA's official codes that stand for this qualification.")
 
 
 class ProgramPage(BaseModel):

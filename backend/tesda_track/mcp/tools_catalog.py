@@ -7,14 +7,16 @@ from mcp.server.mcpserver import MCPServer
 from mcp.server.mcpserver.exceptions import ToolError
 from mcp.types import ToolAnnotations
 from pydantic import Field
+from sqlmodel import Session
 
 from tesda_track.mcp.deps import open_session
-from tesda_track.mcp.schemas import LevelRef, ProgramPage, QualificationDetail, RegionalSupply
+from tesda_track.mcp.schemas import LevelRef, OfficialCodeRef, ProgramPage, QualificationDetail, RegionalSupply
 from tesda_track.schemas.delivery import DeliveryMode, ProgramSearch
-from tesda_track.services import catalog, reports, sites, training
+from tesda_track.services import catalog, official_codes, reports, sites, training
 from tesda_track.services.catalog import CatalogItem
 from tesda_track.services.goal_rules import level_of
 
+UNKNOWN_CODE = "No active qualification has that code. get_qualification finds one by title."
 READ_ONLY = ToolAnnotations(readOnlyHint=True, openWorldHint=False)
 
 
@@ -27,6 +29,19 @@ def _closest_titles(asked: str, items: tuple[CatalogItem, ...]) -> str:
     close = difflib.get_close_matches(asked.strip().casefold(), list(keys), n=5, cutoff=0.4)
     titles = list(dict.fromkeys(keys[key] for key in close))
     return f"Closest titles: {'; '.join(titles)}." if titles else "No close titles."
+
+
+def resolve_item(session: Session, code: str, items: tuple[CatalogItem, ...], unknown: str) -> CatalogItem:
+    """The one active qualification a TESDA-TRACK or official TESDA code stands for. The messages hold only fixed
+    text, our own codes, and an official code that was found in the crosswalk, never what else the caller typed."""
+    found = official_codes.resolve_code(session, code)
+    if not found:
+        raise ToolError(unknown)
+    if len(found) > 1:
+        names = ", ".join(qualification.code for qualification, _ in found)
+        raise ToolError(f"Official code {code.strip().upper()} covers several TESDA-TRACK qualifications; "
+                        f"choose one: {names}.")
+    return next(item for item in items if item.code == found[0][0].code)
 
 
 def _other_levels(item: CatalogItem, items: tuple[CatalogItem, ...]) -> list[LevelRef]:
@@ -48,7 +63,7 @@ def _unknown_region(codes: list[str]) -> ToolError:
 def register(server: MCPServer, app: FastAPI) -> None:
     @server.tool(annotations=READ_ONLY)
     def get_qualification(
-        code: Annotated[str | None, Field(description="The qualification's code, e.g. SMAW-NC-II.")] = None,
+        code: Annotated[str | None, Field(description="The qualification's code, e.g. SMAW-NC-II, or TESDA's official code, e.g. MEEEAW206.")] = None,
         title: Annotated[str | None, Field(
             description="Its full title in any letter case, e.g. Shielded Metal Arc Welding (SMAW) NC II. "
                         "Give either code or title.")] = None,
@@ -59,21 +74,25 @@ def register(server: MCPServer, app: FastAPI) -> None:
             raise ToolError("Give exactly one of code or title.")
         with open_session(app) as session:
             items = catalog.snapshot(session).items
-        if code:
-            item = next((item for item in items if item.code == code), None)
-        else:
-            wanted = title.strip().casefold()
-            item = next((item for item in items if item.summary.name.casefold() == wanted), None)
-        if item is None:
-            raise ToolError("No active qualification has that code or title. "
-                            + _closest_titles(code or title, items))
+            unknown = "No active qualification has that code or title. " + _closest_titles(code or title, items)
+            if code:
+                item = resolve_item(session, code, items, unknown)
+            else:
+                wanted = title.strip().casefold()
+                item = next((item for item in items if item.summary.name.casefold() == wanted), None)
+                if item is None:
+                    raise ToolError(unknown)
+            official = [OfficialCodeRef(code=link.official_code, relation=link.relation, promulgated=link.promulgated,
+                                        enabled_in_t2mis=link.enabled_in_t2mis)
+                        for link in official_codes.official_codes_of(session, item.id)]
         return QualificationDetail(qualification=item.summary, possible_jobs=item.public.possible_jobs,
-                                   competencies=item.public.competencies, other_levels=_other_levels(item, items))
+                                   competencies=item.public.competencies, other_levels=_other_levels(item, items),
+                                   official_codes=official)
 
     @server.tool(annotations=READ_ONLY)
     def search_training_programs(
         qualification_code: Annotated[str | None, Field(
-            description="Only programs for this qualification code, e.g. SMAW-NC-II.")] = None,
+            description="Only programs for this qualification code, e.g. SMAW-NC-II, or TESDA's official code.")] = None,
         region_code: Annotated[str | None, Field(
             description="Only programs whose provider is in this region, e.g. NCR or VII.")] = None,
         provider_id: Annotated[int | None, Field(
@@ -99,8 +118,9 @@ def register(server: MCPServer, app: FastAPI) -> None:
         if radius_km is not None and near_lat is None:
             raise ToolError("radius_km needs near_lat and near_lon.")
         with open_session(app) as session:
-            if qualification_code and all(item.code != qualification_code for item in catalog.snapshot(session).items):
-                raise ToolError("No active qualification has that code. get_qualification finds one by title.")
+            if qualification_code:
+                qualification_code = resolve_item(session, qualification_code, catalog.snapshot(session).items,
+                                                  UNKNOWN_CODE).code
             if region_code:
                 codes = [region.code for region in sites.regions(session)]
                 if region_code not in codes:

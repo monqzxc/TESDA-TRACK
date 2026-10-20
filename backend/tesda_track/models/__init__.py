@@ -2,7 +2,8 @@
 from tesda_track.models.base import Timestamped, one_of, utcnow
 from tesda_track.models.verification import ServiceVerification
 from tesda_track.models.learner_assessments import LearnerAssessment
-from tesda_track.models.catalog import COMPETENCY_CATEGORIES, Competency, Qualification, Sector
+from tesda_track.models.catalog import (COMPETENCY_CATEGORIES, RELATIONS, Competency, OfficialQualificationCode,
+                                        Qualification, Sector)
 from tesda_track.models.delivery import (APPLICATION_STATUSES, ASSESSMENT_RESULTS, DELIVERY_MODES, SCHEDULE_STATUSES,
                                          AssessmentApplication, AssessmentCenter, AssessmentSchedule, Region,
                                          TrainingProgram, TrainingProvider)
@@ -18,6 +19,7 @@ from tesda_track.models.semantic import (EMBEDDING_DIMENSIONS, CacheEntry, Quali
                                          TrainingProgramEmbedding)
 
 __all__ = [
+    "OfficialQualificationCode", "RELATIONS",
     "ApiClient", "McpCallDaily", "McpCallLog", "McpDemandSnapshot", "NO_CLIENT", "OUTCOMES",
     "WriteReceipt",
     "RegistryBatch", "RegistryLink", "RegistryRecord",
