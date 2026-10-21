@@ -192,6 +192,10 @@ class ApiClient:
     def rank_assessments(self, token: str | None = None, **body) -> dict:
         return self._request("POST", "/api/v1/recommendations/assessments", token, json=body)
 
+    def pathway_report(self, body: dict, token: str | None = None) -> dict:
+        """The personalized report on a pathway: the goal goes in the body, as for feedback, never in a URL."""
+        return self._request("POST", "/api/v1/recommendations/report", token, json=body)
+
     def saved_ranking(self, token: str, audit_id: int) -> dict:
         return self._request("GET", f"/api/v1/recommendations/{audit_id}", token)
 

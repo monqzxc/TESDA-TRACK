@@ -48,11 +48,11 @@ async function choose(user: UserEvent, label: RegExp, option: string) {
   await user.click(await screen.findByRole('option', { name: option }))
 }
 
-/** Rates every skill of the qualification on screen, part by part. Skill 4 is a gap. */
-async function rateAll(user: UserEvent) {
+/** Rates every skill of the qualification on screen, part by part. Skill 4 is a gap unless `withGap` is false. */
+async function rateAll(user: UserEvent, withGap = true) {
   for (;;) {
     for (const group of screen.getAllByRole('radiogroup', { name: /^\d+\. / })) {
-      const gap = (group.textContent ?? '').startsWith('4.')
+      const gap = withGap && (group.textContent ?? '').startsWith('4.')
       await user.click(
         within(group).getByRole('radio', {
           name: gap ? 'I am not familiar with this' : 'I can do this confidently',
@@ -600,5 +600,127 @@ describe('Find my pathway, feedback', () => {
     await user.click(within(question).getByRole('button', { name: 'Yes' }))
     expect(await within(question).findByText('Thank you for your answer.')).toBeInTheDocument()
     expect(within(question).queryByRole('alert')).not.toBeInTheDocument()
+  })
+})
+
+describe('Find my pathway, report', () => {
+  const REPORT = 'Recommendations for you'
+
+  /** From the welder goal to Your pathway, and the report under the verdict. */
+  async function reachReport(user: UserEvent, withGap = true) {
+    await submitGoal(user)
+    await user.click(screen.getByRole('button', { name: 'Check my readiness' }))
+    await screen.findByText('Part 1 of 3 · Basic skills')
+    await rateAll(user, withGap)
+    await user.click(screen.getByRole('button', { name: 'Analyze my skills' }))
+    return screen.findByRole('region', { name: REPORT })
+  }
+
+  it('reports on the recommendation from the learner’s own answers, section by section', async () => {
+    serveFinderCatalog()
+    const api = serveFinderApi()
+    const user = userEvent.setup()
+    const report = await reachReport(user)
+
+    expect(
+      await within(report).findByText('Take focused training on your gaps, then the assessment'),
+    ).toBeInTheDocument()
+    expect(within(report).getByText('Recommended for you')).toBeInTheDocument()
+    expect(within(report).getByText('Weld carbon steel plates')).toBeInTheDocument()
+    expect(within(report).getByText('High priority')).toBeInTheDocument()
+    expect(within(report).getByText('Learn to weld carbon steel plates.')).toBeInTheDocument()
+    expect(within(report).getByText('A listed unit you reported not knowing')).toBeInTheDocument()
+    for (const name of [
+      'Why we recommend these',
+      'Other things to consider',
+      'Your next steps',
+      'Final recommendation',
+    ]) {
+      expect(screen.getByRole('region', { name })).toBeInTheDocument()
+    }
+    expect(
+      within(screen.getByRole('region', { name: 'Final recommendation' })).getByText(
+        /doesn’t guarantee certification or employment/,
+      ),
+    ).toBeInTheDocument()
+    // Worked out from what the recommendation came from, as feedback is: the goal only in the body.
+    expect(sent(api.requests, 'POST', '/api/v1/recommendations/report')[0].body).toEqual({
+      query: GOAL,
+      profile: welderProfile,
+      qualification_code: welding.code,
+      answers: { 1: 'confident', 2: 'confident', 3: 'confident', 4: 'not_familiar' },
+      region_code: null,
+      preferred_delivery_mode: null,
+      needs_scholarship: false,
+    })
+  })
+
+  it('asks again for the region chosen, and shows the options it brings', async () => {
+    serveFinderCatalog()
+    server.use(
+      http.get('*/api/v1/regions', () =>
+        HttpResponse.json([
+          {
+            code: 'NCR',
+            name: 'National Capital Region',
+            center_city: 'Manila',
+            latitude: 14.5995,
+            longitude: 120.9842,
+          },
+        ]),
+      ),
+    )
+    const api = serveFinderApi()
+    const user = userEvent.setup()
+    await reachReport(user)
+    const consider = await screen.findByRole('region', { name: 'Other things to consider' })
+    expect(
+      within(consider).getByText(
+        'No training programs or assessment schedules are listed for this qualification yet.',
+      ),
+    ).toBeInTheDocument()
+    expect(
+      within(consider).getByText('Your region, to sort options by distance.'),
+    ).toBeInTheDocument()
+
+    await choose(user, /Your region/, 'National Capital Region')
+    await user.click(screen.getByRole('checkbox', { name: 'I need a scholarship' }))
+
+    expect(await within(consider).findByText('Manila Welding Institute')).toBeInTheDocument()
+    expect(within(consider).getByText(/About 2 km from your region’s center/)).toBeInTheDocument()
+    expect(within(consider).getByText('Verified')).toBeInTheDocument()
+    expect(sent(api.requests, 'POST', '/api/v1/recommendations/report').at(-1)?.body).toMatchObject(
+      { region_code: 'NCR', needs_scholarship: true },
+    )
+  })
+
+  it('leaves out what it has nothing to say about', async () => {
+    serveFinderCatalog()
+    serveFinderApi()
+    const user = userEvent.setup()
+    const report = await reachReport(user, false)
+
+    expect(await within(report).findByText('You didn’t report any skill gaps.')).toBeInTheDocument()
+    expect(
+      within(report).queryByRole('heading', { name: 'Competencies to learn or practice' }),
+    ).not.toBeInTheDocument()
+    expect(within(report).queryByText('Also worth considering')).not.toBeInTheDocument()
+  })
+
+  it('keeps the rest of the pathway when the report can’t be prepared, and Try again asks again', async () => {
+    serveFinderCatalog()
+    serveFinderApi({ failReport: 1 })
+    const user = userEvent.setup()
+    const report = await reachReport(user)
+
+    expect(await within(report).findByRole('alert')).toHaveTextContent(
+      "We can't reach the TESDA-TRACK service right now.",
+    )
+    expect(screen.getByRole('heading', { name: 'Close your skill gaps' })).toBeInTheDocument()
+
+    await user.click(within(report).getByRole('button', { name: 'Try again' }))
+    expect(
+      await within(report).findByText('Take focused training on your gaps, then the assessment'),
+    ).toBeInTheDocument()
   })
 })

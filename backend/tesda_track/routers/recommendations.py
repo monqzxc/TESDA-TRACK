@@ -6,9 +6,10 @@ from tesda_track.errors import InvalidRequestError
 from tesda_track.models import Qualification, RankingAudit
 from tesda_track.schemas.analysis import MatchResult, Profile
 from tesda_track.schemas.assessment_ranking import AssessmentRanking, AssessmentRankingRequest
+from tesda_track.schemas.pathway_report import PathwayReport, PathwayReportRequest
 from tesda_track.schemas.personalization import QualificationRecommendationRequest
 from tesda_track.schemas.ranking import RankingAuditPublic, TrainingRanking, TrainingRankingRequest
-from tesda_track.services import analysis, assessment_ranking, learner_assessments, ranking
+from tesda_track.services import analysis, assessment_ranking, learner_assessments, pathway_report, ranking
 from tesda_track.services.embeddings import EmbedderDep
 from tesda_track.services.ownership import get_owned
 
@@ -41,6 +42,19 @@ def rank_training(request: TrainingRankingRequest, session: SessionDep, embedder
     Works without signing in; a signed-in learner's rankings are linked to their account in the audit trail.
     """
     result = ranking.rank_programs(session, request, embedder, learner)
+    session.commit()
+    return result
+
+
+@router.post("/report", response_model=PathwayReport)
+def report(request: PathwayReportRequest, session: SessionDep, embedder: EmbedderDep, learner: OptionalLearner):
+    """A personalized report on the chosen qualification's pathway: options, units to work on, why, and next steps.
+
+    Worked out again from what the finder sent, as feedback is, with deterministic templates over the matching,
+    readiness, the two rankings above (audited as usual; their audit ids are in `rankings`) and, signed in, the
+    learner's own records. The goal is neither stored nor repeated; a region only sorts options by distance.
+    """
+    result = pathway_report.build(session, request, embedder, learner)
     session.commit()
     return result
 

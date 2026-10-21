@@ -34,6 +34,16 @@ export interface SessionState {
   qualification_code: string | null
 }
 
+/**
+ * Where the pathway report looks for options. The region only sorts them by distance from its center; none of it
+ * belongs to a goal, so a new goal keeps it.
+ */
+export interface ReportPlace {
+  region: string | null
+  mode: components['schemas']['PathwayReportRequest']['preferred_delivery_mode']
+  scholarship: boolean
+}
+
 /** A submitted goal. */
 export interface Journey {
   query: string
@@ -71,6 +81,8 @@ export interface FinderState {
   checks: Record<string, SubmittedCheck>
   /** The learner's answer about the recommendation from that check, by qualification code. */
   feedback: Record<string, GivenFeedback>
+  /** Where the pathway report looks for options. */
+  place: ReportPlace
 
   /** Puts a goal in the goal box, as typed (trimmed and cut to the limit), for the learner to review. */
   startWithGoal: (goal: string) => void
@@ -87,6 +99,7 @@ export interface FinderState {
   setCheck: (code: string, check: SubmittedCheck) => void
   markCheckSaved: (code: string) => void
   setFeedback: (code: string, feedback: GivenFeedback) => void
+  setPlace: (place: Partial<ReportPlace>) => void
   /** The journey's recommendation session was created, for this learner. */
   setSession: (sessionId: string, owner: string) => void
   setSynced: (synced: SessionState) => void
@@ -104,6 +117,7 @@ const EMPTY = {
   parts: {},
   checks: {},
   feedback: {},
+  place: { region: null, mode: null, scholarship: false },
 } satisfies Partial<FinderState>
 
 /** sessionStorage can be missing or throw (private windows, blocked site data): then nothing is saved. */
@@ -171,6 +185,7 @@ export const useFinderStore = create<FinderState>()(
         }),
       setFeedback: (code, feedback) =>
         set((state) => ({ feedback: { ...state.feedback, [code]: feedback } })),
+      setPlace: (place) => set((state) => ({ place: { ...state.place, ...place } })),
       setSession: (sessionId, sessionOwner) =>
         set((state) =>
           state.journey

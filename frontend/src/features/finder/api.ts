@@ -16,6 +16,8 @@ export type CuratedPathway = components['schemas']['PathwayPublic']
 export type RecommendationSession = components['schemas']['RecommendationSessionPublic']
 export type Feedback = components['schemas']['FeedbackPublic']
 export type FeedbackReason = components['schemas']['FeedbackReasonUpdate']['reason']
+export type PathwayReport = components['schemas']['PathwayReport']
+export type ReportRequest = components['schemas']['PathwayReportRequest']
 
 const MINUTE = 60_000
 
@@ -56,6 +58,19 @@ export const pathwayQuery = (profile: Profile, code: string) =>
           signal,
         }),
       ),
+    staleTime: Infinity,
+    gcTime: 30 * MINUTE,
+  })
+
+/**
+ * The personalized report on the chosen qualification's pathway, worked out by the API from what the recommendation
+ * came from (as feedback is) and where to look for options. Signed in, it also reads the learner's own applications
+ * and certificates, so whose report it is belongs in the key. The same request gets the same report for the visit.
+ */
+export const reportQuery = (body: ReportRequest, learnerId: string | null) =>
+  queryOptions<PathwayReport, ApiError>({
+    queryKey: ['finder', 'report', learnerId, body],
+    queryFn: ({ signal }) => unwrap(api.POST('/api/v1/recommendations/report', { body, signal })),
     staleTime: Infinity,
     gcTime: 30 * MINUTE,
   })

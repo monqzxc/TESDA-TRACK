@@ -19,6 +19,7 @@ from skills_bridge_view import show_skills_bridge
 from training_view import short_name, show_training as show_center_finder
 from assessment_view import show_assessment
 from journey_state import clear_journey, request_key, restore_journey, save_journey
+import report_view
 
 
 # Your goal's ideas: each button puts its goal in the box. Examples are the big pills, samples the small ones.
@@ -511,6 +512,7 @@ def show_recommendation(context: dict) -> None:
                    "in the readiness check and select Analyze My Skills.")
     st.caption("This self-reported score is NOT an official competency assessment result. Formal assessment is "
                "subject to official eligibility and requirements.")
+    show_pathway_report(qualification, submitted)
     # The curated pathway for the verdict's route, so its steps agree with the recommendation above.
     curated = remembered("curated_pathway", {"code": code, "route": route}, lambda: api().pathways(code, route))
     if curated:
@@ -520,6 +522,36 @@ def show_recommendation(context: dict) -> None:
     if (st.session_state.get("auth") or {}).get("role") == "admin":
         with st.expander("Recommendation diagnostics", icon=":material/code:"):
             st.json({"profile": context["profile"], "readiness": result, "route": route})
+
+
+def show_pathway_report(qualification: dict, submitted: dict | None) -> None:
+    """The personalized report under the verdict, worked out by the API from what the recommendation came from: the
+    goal and the profile the matches were asked with, and the submitted answers. If it can't be prepared, the rest of
+    the pathway still shows."""
+    asked = st.session_state.get("journey_context")
+    if not submitted or not asked:
+        return
+    with st.container(border=True, key="card_report"):
+        st.caption("YOUR PERSONALIZED REPORT")
+        st.subheader("Recommendations for you")
+        st.caption("Worked out from your answers, this qualification's units of competency, and the training and "
+                   "assessment options TESDA-TRACK lists.")
+        try:
+            region, scholarship = report_view.place_fields(load_regions(api_base_url()))
+            body = {"query": st.session_state["original_query"], "profile": asked["profile"],
+                    "qualification_code": qualification["code"], "answers": submitted["answers"],
+                    "region_code": region, "preferred_delivery_mode": None, "needs_scholarship": scholarship}
+            token = auth_token()
+            # Signed in, the report reads the learner's own records, so whose it is belongs in the key.
+            report = remembered("pathway_report", {**body, "account": token},
+                                lambda: api().pathway_report(body, token))
+        except ApiError as error:
+            if error.status_code == 401:
+                raise
+            st.warning(f"{error.message} The rest of your pathway is below.")
+            return
+        report_view.show_recommendations(report)
+    report_view.show_report_sections(report)
 
 
 def save_session_progress(profile: dict, qualification_code: str) -> None:

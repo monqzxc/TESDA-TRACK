@@ -32,6 +32,170 @@ const profile = {
   intent: 'training_recommendation',
 }
 
+const gap = {
+  competency_id: 3,
+  name: 'Weld carbon steel plates',
+  category: 'Core',
+  status: 'not_familiar',
+  priority: 'high',
+  action: 'learn',
+  basis: 'required_unit',
+  must_learn: true,
+  what_to_do: 'Learn to weld carbon steel plates.',
+  why_it_matters: `It's a core unit: the technical work specific to ${welding.name}.`,
+  activities: [
+    'Learn it in a training program with supervised, hands-on practice using the tools and equipment it needs.',
+  ],
+  relevance: `Part of what the ${welding.name} assessment covers, and of the work in jobs such as Welder.`,
+  evidence: ['You answered “I am not familiar with this”.'],
+}
+
+/** The personalized report, with every section filled, so axe sees all of it. */
+const report = {
+  policy_version: 'pathway-report-v1',
+  generated_at: '2026-10-21T01:00:00Z',
+  qualification: { ...summary, possible_jobs: welding.possible_jobs, unit_count: 3 },
+  match: {
+    strength: 'named',
+    rank: 1,
+    match_count: 1,
+    score: 76,
+    explanation: 'Your goal’s own words point to this qualification.',
+    alternatives: [],
+  },
+  route: 'SKILL_GAP_CHECK',
+  readiness: {
+    available: true,
+    score: 67,
+    level: 'Moderate Readiness',
+    counts: { confident: 2, some_experience: 0, not_familiar: 1, not_answered: 0 },
+    summary: 'Moderate Readiness (67%): you rated yourself confident in 2 of 3 units.',
+    limitations: ['Self-reported: this is not an official competency assessment.'],
+  },
+  strengths: [],
+  training_to_consider: [
+    {
+      kind: 'focused_training',
+      title: 'Take focused training on your gaps, then the assessment',
+      recommended: true,
+      service_kind: 'training',
+      reasons: ['You marked 1 unit as a gap: Weld carbon steel plates.'],
+      qualification: null,
+    },
+    {
+      kind: 'direct_assessment',
+      title: 'Ask an assessment center about going straight to assessment',
+      recommended: false,
+      service_kind: 'assessment',
+      reasons: ['You reported about 2 years of experience.'],
+      qualification: null,
+    },
+  ],
+  skills_to_improve: [gap],
+  competencies_to_learn_or_practice: [gap],
+  reasoning: [
+    {
+      topic: 'skill_gaps',
+      summary: 'Start with Weld carbon steel plates.',
+      points: ['Your 1 gap: 1 high-priority.'],
+    },
+    {
+      topic: 'employment',
+      summary: 'Use this as general guidance on where the qualification can lead.',
+      points: ['TESDA-TRACK has no job-vacancy or labor-market data.'],
+    },
+  ],
+  employment: {
+    observed_data: false,
+    possible_jobs: welding.possible_jobs,
+    source: 'Training Regulation',
+    note: 'TESDA-TRACK has no job-vacancy or labor-market data.',
+  },
+  considerations: [
+    {
+      topic: 'verification',
+      text: 'Some options aren’t verified in TESDA-TRACK yet.',
+      items: ['Options marked “Verified” have current verification evidence.'],
+    },
+    {
+      topic: 'cost_and_schedule',
+      text: 'Listed fees are below; check them with the provider before you decide.',
+      items: ['Manila Welding Institute: training cost ₱8,500.00, 268 hours'],
+    },
+  ],
+  providers: [
+    {
+      kind: 'training',
+      service_id: 1,
+      site_id: 1,
+      name: 'Manila Welding Institute',
+      title: 'SMAW NC II Batch 1',
+      city: 'Manila',
+      region_code: 'NCR',
+      distance_km: 2,
+      starts_on: '2026-11-10',
+      cost: '8500.00',
+      duration_hours: 268,
+      delivery_mode: 'institution_based',
+      scholarship_available: true,
+      seats_left: null,
+      status: 'confirmed',
+      score: 95,
+      notes: ['An assessment with open seats is available nearby'],
+    },
+    {
+      kind: 'assessment',
+      service_id: 4,
+      site_id: 2,
+      name: 'Quezon City Assessment Center',
+      title: null,
+      city: 'Quezon City',
+      region_code: 'NCR',
+      distance_km: 11,
+      starts_on: '2026-11-04',
+      cost: null,
+      duration_hours: null,
+      delivery_mode: null,
+      scholarship_available: null,
+      seats_left: 3,
+      status: 'needs_verification',
+      score: null,
+      notes: ['This center’s authority to assess this qualification requires verification.'],
+    },
+  ],
+  region_name: null,
+  next_steps: [
+    {
+      position: 1,
+      kind: 'review_gaps',
+      title: 'Start with your highest-priority gaps',
+      detail: 'Weld carbon steel plates.',
+      competency_ids: [3],
+    },
+    {
+      position: 2,
+      kind: 'compare_providers',
+      title: 'Compare training providers',
+      detail: 'Start with Manila Welding Institute.',
+      competency_ids: [],
+    },
+  ],
+  final: {
+    summary: `Your best next step for ${welding.name} is focused training on the units you marked as gaps, then the assessment.`,
+    next_action: 'Start with your highest-priority gaps: Weld carbon steel plates.',
+    pathway: 'Take focused training on your gaps, then the assessment',
+    focus: ['Weld carbon steel plates'],
+    providers: ['Manila Welding Institute'],
+  },
+  disclaimer: 'This report is guidance. It doesn’t guarantee certification or employment.',
+  rankings: {
+    training_audit_id: 1,
+    training_policy: 'verified-services-v2',
+    assessment_audit_id: 2,
+    assessment_policy: 'assessment-center-v1',
+  },
+}
+
 /** The finder's routes. The goal is only ever in a request body: `goalInAddress` records any address with it. */
 async function serveFinder(page: Page) {
   const seen = { goalInAddress: [] as string[] }
@@ -103,6 +267,20 @@ async function serveFinder(page: Page) {
       ],
     }),
   )
+  await page.route('**/api/v1/regions', (route) =>
+    route.fulfill({
+      json: [
+        {
+          code: 'NCR',
+          name: 'National Capital Region',
+          center_city: 'Manila',
+          latitude: 14.5995,
+          longitude: 120.9842,
+        },
+      ],
+    }),
+  )
+  await page.route('**/api/v1/recommendations/report', (route) => route.fulfill({ json: report }))
   await page.route('**/api/v1/feedback/recommendations', async (route) => {
     const { satisfied } = route.request().postDataJSON() as { satisfied: boolean }
     await route.fulfill({ status: 201, json: { id: 'feedback-1', satisfied, reason: null } })
@@ -193,6 +371,17 @@ for (const colorScheme of ['light', 'dark'] as const) {
         page.getByRole('heading', { name: 'Take focused training, then the NC assessment' }),
       ).toBeVisible()
       await expect(page.getByRole('heading', { name: 'Close your skill gaps' })).toBeVisible()
+      // The personalized report, between the verdict and the curated pathway.
+      for (const name of [
+        'Recommendations for you',
+        'Why we recommend these',
+        'Other things to consider',
+        'Your next steps',
+        'Final recommendation',
+      ]) {
+        await expect(page.getByRole('region', { name })).toBeVisible()
+      }
+      await expect(page.getByText('Learn to weld carbon steel plates.')).toBeVisible()
       await expectSettledAndAccessible(page)
 
       // The question under the recommendation, and a reason after No.
