@@ -56,6 +56,11 @@ The regression suite also exercises immutable reassessment, ownership, export/de
 
 `test_migration_release.py` rehearses `0006` → `0007` in the isolated test transaction and verifies that legacy owned sessions/audits survive and new assessment creation works afterward. Fresh schema installation is exercised by the normal test fixture. A production downgrade of `0007` drops assessment data; use a tested backup/restore or forward repair if rollback is required rather than assuming a lossless downgrade.
 
+The [full database-copy rehearsal](migration-rehearsal.md) additionally upgrades a copy of the local `0017`
+database to `0018`, attempts the downgrade to `0004`, and verifies backup restoration by row counts and
+complete-content fingerprints. The current staff-role guard intentionally refuses the downgrade at `0015`;
+the backup restoration succeeds, the restored copy upgrades to head, and the source remains unchanged.
+
 ## Deployment configuration
 
 Docker Compose now passes personalization/training weights, proximity radius and the semantic-search toggle to both API and migration services. `DOCKER_EMBEDDING_MODEL_PATH` allows the Docker path to differ from the host path:

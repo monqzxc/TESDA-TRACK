@@ -114,7 +114,7 @@ export function GoalStep() {
       </div>
 
       <p className={rowLabel}>{copy.examplesLabel}</p>
-      <ul className={choices}>
+      <ul className={choices} data-tour="goal-examples">
         {copy.examples.map((example) => (
           <li key={example.label}>
             <Button className={button({ variant: 'pill' })} onPress={() => fillGoal(example.goal)}>
@@ -144,6 +144,7 @@ export function GoalStep() {
             {copy.ownWords}
           </Label>
           <TextArea
+            data-tour="goal-input"
             ref={field}
             className="min-h-[110px] w-full resize-y rounded-12 border border-hover-border bg-surface px-[0.9rem] py-3 text-16 leading-[1.5] text-navy placeholder:text-muted placeholder:opacity-100 data-focused:border-blue data-hovered:border-blue data-invalid:border-warn-ink"
             placeholder={copy.placeholder}
@@ -180,6 +181,7 @@ export function GoalStep() {
         </ul>
 
         <Button
+          data-tour="goal-submit"
           type="submit"
           className={cx(button({ variant: 'primary', wide: true, height: 48 }), 'mt-1')}
           isPending={analyze.isPending}

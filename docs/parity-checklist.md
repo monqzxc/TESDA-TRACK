@@ -124,6 +124,8 @@ Don't include real learners' names, email addresses or goals.
       (US-04)
 - [ ] Each card shows the sector, name, careers, NC level, number of competencies and, where there is one, the
       next NC level. **View sample competencies** opens the list.
+- [ ] Qualification cards identify incomplete, verified or example records. Source links and source/review dates
+      appear where recorded; missing evidence says **Not recorded** and is never presented as verified.
 - [ ] The search, sector and page stay in the address, so Back and shared links return to the same results.
       (US-04)
 - [ ] **Explore this pathway** opens Find my pathway with "I want to pursue …" in the goal box, not yet submitted.
@@ -172,6 +174,8 @@ Don't include real learners' names, email addresses or goals.
 ### A center's details
 
 - [ ] Contact details and the website link show where the center has them.
+- [ ] Center and program details show their source, source/review dates and record status. Example data is
+      clearly labelled; a center's website alone does not establish verification or available places.
 - [ ] **Get directions** with your location draws the route on the map, by car, bike, on foot, or as a flight
       estimate for far places, and says it's from your approximate location, without traffic. **Hide route**
       removes it.
@@ -217,6 +221,8 @@ Don't include real learners' names, email addresses or goals.
 - [ ] **Create an account** asks for your name, email and a password of at least 10 characters, shows the privacy
       notice, and needs your agreement.
 - [ ] The account menu shows your name, email and account type (learner or administrator).
+- [ ] **My Profile**, from the account menu or Settings, shows the signed-in account's name, role, email and
+      joining date. A guest sees a sign-in prompt, and signing out clears those details.
 - [ ] **Download my data (JSON)** downloads a file with your records.
 - [ ] **Delete my account** asks you to confirm, deletes the account and its records, and signs you out.
 - [ ] **Sign out** signs you out, and your personal results leave the page. (US-02)
@@ -260,6 +266,8 @@ Don't include real learners' names, email addresses or goals.
       and gap rate, or says there were no responses.
 - [ ] **Training and assessment supply by region** matches the current app. **Same as current.**
 - [ ] The period and the chosen qualification stay in the address.
+- [ ] Recommendation analytics shows separate positive feedback, selected-learner counts and review priorities.
+      Demand projections are labelled estimates and withheld when history or volume is insufficient.
 
 ## Known differences (not problems)
 
@@ -285,7 +293,6 @@ The new app does these things differently on purpose:
 - Comparing a shortlist of two or three qualifications (US-05).
 - Filipino interface text (US-15). Goals can already be written in Filipino or Taglish.
 - An NC level filter in the Qualifications Library (US-04).
-- Source and verification dates on each listing, and a notice that the listings are example data (US-12).
 
 ## Sign-off
 

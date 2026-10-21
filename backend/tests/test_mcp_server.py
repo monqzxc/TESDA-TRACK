@@ -238,7 +238,8 @@ def test_get_qualification_matches_rest(mcp, partner, client):
     detail = result["structuredContent"]
     assert detail["competencies"] == rest["competencies"]
     assert detail["possible_jobs"] == rest["possible_jobs"]
-    assert detail["qualification"] == {"code": "SMAW-NC-II", "name": rest["name"], "sector": rest["sector"]}
+    assert detail["qualification"] == {"code": "SMAW-NC-II", "name": rest["name"], "sector": rest["sector"],
+                                       "provenance": rest["provenance"]}
     assert detail["other_levels"] == [{"code": "SMAW-NC-II", "name": rest["name"], "level": 2}]
 
 

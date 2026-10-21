@@ -50,7 +50,7 @@ export function Goals({ catalog }: { catalog: readonly Qualification[] }) {
   })
 
   return (
-    <section aria-labelledby={headingId} className={ui.card}>
+    <section data-tour="progress-goals" aria-labelledby={headingId} className={ui.card}>
       <h2 id={headingId} className={ui.sectionHeading}>
         {copy.goals.heading}
       </h2>
@@ -148,7 +148,7 @@ export function Certifications({ catalog }: { catalog: readonly Qualification[] 
   const certifications = useQuery({ ...certificationsQuery, throwOnError: throwWithoutData })
   const headingId = useId()
   return (
-    <section aria-labelledby={headingId} className={ui.card}>
+    <section data-tour="progress-certifications" aria-labelledby={headingId} className={ui.card}>
       <h2 id={headingId} className={ui.sectionHeading}>
         {copy.certifications.heading}
       </h2>

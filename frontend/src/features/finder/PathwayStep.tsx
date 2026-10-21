@@ -7,6 +7,7 @@ import { ApiError } from '../../api/errors.ts'
 import { failureMessage } from '../../auth/fields.tsx'
 import { useAuth, useRequireAccount } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
+import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { SkillBars } from '../../components/Meters.tsx'
 import { en } from '../../copy/en.ts'
 import { cx } from '../../lib/style.ts'
@@ -102,12 +103,17 @@ function Verdict({
     )
 
   return (
-    <section aria-labelledby={headingId} className={cx(card, 'flex flex-col gap-[0.6rem]')}>
+    <section
+      data-tour="pathway-result"
+      aria-labelledby={headingId}
+      className={cx(card, 'flex flex-col gap-[0.6rem]')}
+    >
       <p className={kicker}>{copy.kicker}</p>
       <h3 id={headingId} className="m-0 text-24 leading-[1.25] text-navy">
         {copy.verdicts[verdict].headline}
       </h3>
       <p className="m-0 text-15 text-muted">{copy.for(qualification.name)}</p>
+      <DataProvenance value={qualification.provenance} />
 
       <div className="mt-[0.4rem] grid grid-cols-[minmax(0,1fr)_minmax(0,3fr)] gap-4 max-sm:grid-cols-1">
         {/* After Streamlit's metric: a label over a big figure. */}
@@ -136,13 +142,18 @@ function Verdict({
         />
       )}
 
-      <Button className={cx(button({ variant: 'primary' }), 'self-start')} onPress={openCenters}>
+      <Button
+        data-tour="pathway-centers"
+        className={cx(button({ variant: 'primary' }), 'self-start')}
+        onPress={openCenters}
+      >
         {copy.verdicts[verdict].action}
         <Icon name="arrowRight" />
       </Button>
 
       {/* The lists can run to dozens, so they fold away, open when there are gaps to work on. */}
       <details
+        data-tour="pathway-skills"
         className="group rounded-12 border border-border"
         open={result.skill_gaps.length > 0}
       >
@@ -223,7 +234,7 @@ function PathwayCard({ pathway }: { pathway: CuratedPathway }) {
   })
 
   return (
-    <section aria-labelledby={headingId} className={card}>
+    <section data-tour="curated-pathway" aria-labelledby={headingId} className={card}>
       <p className={kicker}>{copy.yourPathway}</p>
       <h3 id={headingId} className="mt-1 mb-[0.3rem] text-[1.15rem] text-navy">
         {pathway.title}

@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useId, type Ref } from 'react'
 import { Button, Radio, RadioGroup, ToggleButton } from 'react-aria-components'
 import { Icon, type IconName } from '../../components/Icon.tsx'
+import { DataProvenance } from '../../components/DataProvenance.tsx'
 import centerPhoto from '../../components/img/center-thumb.jpg'
 import { en } from '../../copy/en.ts'
 import { cx } from '../../lib/style.ts'
@@ -109,6 +110,7 @@ export function CenterDetail({
               {placeLabel(center)}
             </p>
             <KindBadges center={center} saved={saved} />
+            <DataProvenance value={center.provenance} />
             {center.address && <p className={muted}>{center.address}</p>}
             {(center.phone || center.email) && (
               <p className="m-0 flex flex-wrap gap-x-[0.9rem] gap-y-1 text-13">

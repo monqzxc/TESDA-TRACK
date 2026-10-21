@@ -1,0 +1,61 @@
+# Opt-in TASK-103 cutover. Activate with docker-compose.react.yml after staff parity approval.
+{$DOMAIN} {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+	handle /api/* {
+		reverse_proxy api:8000 {
+			health_uri /api/v1/ready
+			health_interval 10s
+			health_timeout 3s
+			header_up X-Forwarded-For {remote_host}
+		}
+	}
+	@mcp path /mcp /mcp/
+	handle @mcp {
+		reverse_proxy api:8000 {
+			health_uri /api/v1/ready
+			health_interval 10s
+			health_timeout 3s
+			header_up X-Forwarded-For {remote_host}
+		}
+	}
+	handle /.well-known/oauth-protected-resource* {
+		reverse_proxy api:8000 {
+			health_uri /api/v1/ready
+			health_interval 10s
+			health_timeout 3s
+			header_up X-Forwarded-For {remote_host}
+		}
+	}
+	handle /.well-known/oauth-authorization-server {
+		reverse_proxy api:8000 {
+			health_uri /api/v1/ready
+			health_interval 10s
+			health_timeout 3s
+			header_up X-Forwarded-For {remote_host}
+		}
+	}
+	# Preserve bookmarked beta paths and query filters. A temporary redirect supports rollback.
+	@beta path /beta /beta/*
+	handle @beta {
+		route {
+			uri strip_prefix /beta
+			redir {scheme}://{hostport}{uri} 307
+		}
+	}
+	redir /classic /classic/ 308
+	# Streamlit serves its own /classic prefix, including assets and WebSocket paths.
+	handle /classic/* {
+		reverse_proxy web:8501 {
+			header_up X-Forwarded-For {remote_host}
+		}
+	}
+	handle {
+		reverse_proxy app:8080
+	}
+}

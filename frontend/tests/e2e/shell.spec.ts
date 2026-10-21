@@ -28,6 +28,44 @@ const SIZES = {
   desktop: { width: 1280, height: 800 },
 }
 
+// Automated text-enlargement check. The release audit still requires a person to use the browser's
+// actual 200% zoom and a screen reader; CSS text scaling does not establish either of those results.
+test.describe('200% text enlargement', () => {
+  test.use({ viewport: SIZES.phone, reducedMotion: 'reduce' })
+  for (const colorScheme of ['light', 'dark'] as const) {
+    for (const path of ['/', '/find', '/qualifications', '/training', '/progress', '/skills']) {
+      test(`${path} reflows in ${colorScheme}`, async ({ page }) => {
+        await page.emulateMedia({ colorScheme })
+        await serveCatalog(page)
+        await page.route('**/api/v1/regions', (route) => route.fulfill({ json: [] }))
+        await page.route('**/api/v1/training-providers', (route) => route.fulfill({ json: [] }))
+        await page.route('**/api/v1/assessment-centers', (route) => route.fulfill({ json: [] }))
+        await page.route('**/api/v1/training-programs?*', (route) => route.fulfill({ json: [] }))
+        await page.route('**/api/v1/assessment-schedules?*', (route) => route.fulfill({ json: [] }))
+        await page.goto(path)
+        await expect(page.getByRole('heading', { level: 1 })).toBeVisible()
+        await page.addStyleTag({ content: 'html { font-size: 200% !important; }' })
+        // Home defers off-screen section layout with content-visibility. Visit each section at the
+        // enlarged size before measuring it, as a reader does, rather than testing its height estimate.
+        if (path === '/') {
+          for (const section of await page.locator('.home-tokens > section').all()) {
+            await section.scrollIntoViewIfNeeded()
+          }
+          await page.evaluate(() => window.scrollTo(0, 0))
+        }
+        await expect
+          .poll(() =>
+            page.evaluate(
+              () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+            ),
+          )
+          .toBeLessThanOrEqual(0)
+        await expectAccessible(page)
+      })
+    }
+  }
+})
+
 const UNAVAILABLE = "We can't load TESDA Track right now"
 
 /** One qualification, so each page shows its own content rather than the empty catalog's state. */

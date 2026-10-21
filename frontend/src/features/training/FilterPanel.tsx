@@ -99,11 +99,13 @@ export function FilterPanel({ results }: { results: CenterResults }) {
     ...(store.useLocation ? [copy.yourLocation] : []),
     ...(placeText ? [placeText] : []),
   ]
-  const regionName = results.regions.find((region) => region.code === results.region)?.name
+  const regionName =
+    results.regions.find((region) => region.code === results.region)?.name ?? results.region
 
   // After classic/training.css's filter panel: a white card of sections divided by rules.
   return (
     <section
+      data-tour="training-filters"
       aria-labelledby={headingId}
       className="flex min-h-0 flex-col rounded-18 border border-border bg-surface px-[1.1rem] pt-[0.35rem] pb-[0.4rem]"
     >
@@ -237,6 +239,10 @@ export function FilterPanel({ results }: { results: CenterResults }) {
               label={copy.region}
               options={[
                 { id: ALL, label: copy.allRegions },
+                ...(results.region &&
+                !results.regions.some((region) => region.code === results.region)
+                  ? [{ id: results.region, label: results.region }]
+                  : []),
                 ...results.regions.map((region) => ({ id: region.code, label: region.name })),
               ]}
               value={results.region ?? ALL}
@@ -254,6 +260,9 @@ export function FilterPanel({ results }: { results: CenterResults }) {
               label={copy.province}
               options={[
                 { id: ALL, label: copy.allProvinces },
+                ...(results.province && !results.provinceOptions.includes(results.province)
+                  ? [{ id: results.province, label: results.province }]
+                  : []),
                 ...results.provinceOptions.map((name) => ({ id: name, label: name })),
               ]}
               value={results.province ?? ALL}

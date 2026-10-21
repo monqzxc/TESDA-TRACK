@@ -102,6 +102,7 @@ function Explorer({ catalog }: { catalog: Qualification[] }) {
           >
             <Label className="text-15 font-semibold text-navy">{copy.search.label}</Label>
             <TextArea
+              data-tour="skills-input"
               ref={field}
               className="min-h-[105px] w-full resize-y rounded-12 border border-hover-border bg-surface px-[0.9rem] py-3 text-16 leading-[1.5] text-navy placeholder:text-muted placeholder:opacity-100 data-focused:border-blue data-hovered:border-blue data-invalid:border-warn-ink"
               placeholder={copy.search.placeholder}
@@ -125,6 +126,7 @@ function Explorer({ catalog }: { catalog: Qualification[] }) {
             {copy.search.privacy}
           </p>
           <Button
+            data-tour="skills-search"
             type="submit"
             className={cx(
               button({ variant: 'primary', height: 48 }),
@@ -234,7 +236,7 @@ function Results({
         )}
       </div>
 
-      <section aria-labelledby={occupationsId}>
+      <section data-tour="skills-occupations" aria-labelledby={occupationsId}>
         <h2 id={occupationsId} className="mt-0 mb-[0.35rem] text-[1.3rem] text-navy">
           {copy.occupations.heading}
         </h2>
@@ -267,7 +269,7 @@ function Results({
       {occupationId !== null ? (
         <OccupationDetails key={occupationId} occupationId={occupationId} catalog={catalog} />
       ) : (
-        <section aria-labelledby={linkedId}>
+        <section data-tour="skills-qualifications" aria-labelledby={linkedId}>
           <h2 id={linkedId} className="mt-0 mb-[0.35rem] text-[1.3rem] text-navy">
             {copy.linked.heading}
           </h2>

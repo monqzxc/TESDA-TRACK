@@ -76,7 +76,7 @@ function Progress({ catalog }: { catalog: Qualification[] }) {
       <ContinueCard
         next={nextStep(sessions.data, checks.data, pathways.data, applications.data, codes)}
       />
-      <dl className="m-0 grid grid-cols-3 gap-4 max-sm:grid-cols-1">
+      <dl data-tour="progress-summary" className="m-0 grid grid-cols-3 gap-4 max-sm:grid-cols-1">
         <Stat
           label={copy.stats.sessions}
           value={String(sessions.data.length)}

@@ -31,6 +31,7 @@ import {
   type RegionSupply,
 } from './api.ts'
 import { QualificationField } from './QualificationField.tsx'
+import { RecommendationAnalytics } from './RecommendationAnalytics.tsx'
 
 const copy = en.reports
 
@@ -314,6 +315,7 @@ function ReportSections({
           </dl>
         </section>
         <Journey funnel={funnel.data} />
+        <RecommendationAnalytics period={period} />
         <Feedback summary={feedback.data} />
         <Demand rows={demand.data} />
         <SkillGaps catalog={catalog} code={code} period={period} onChoose={onChoose} />

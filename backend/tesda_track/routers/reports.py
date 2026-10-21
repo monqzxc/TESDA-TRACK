@@ -7,10 +7,22 @@ from tesda_track.deps import require_permission
 from tesda_track.schemas.reports import (CompetencyGap, DateRange, FeedbackSummary, Funnel, MatchingReport, Overview,
                                          QualificationDemand, RegionSupply, SkillGapQuery)
 from tesda_track.services import reports
+from tesda_track.schemas.recommendation_analytics import RecommendationAnalytics, RecommendationAnalyticsPeriod
+from tesda_track.services.recommendation_analytics import recommendation_analytics as build_recommendation_analytics
 
 router = APIRouter(prefix="/admin/reports", tags=["admin: reports"], dependencies=[Depends(require_permission("reports:read"))])
 
 Period = Annotated[DateRange, Query()]
+
+
+@router.get("/recommendation-analytics", response_model=RecommendationAnalytics)
+def recommendation_analytics(session: SessionDep, period: Annotated[RecommendationAnalyticsPeriod, Query()]):
+    """Positive feedback by qualification, saved-session learner demand, and model/rules review priorities.
+
+    Projections use two complete 30-day windows and sample/history gates. They are trend estimates,
+    not trained forecasts. Positive answers are satisfaction responses, not enrollment or distinct people.
+    """
+    return build_recommendation_analytics(session, period)
 
 
 @router.get("/overview", response_model=Overview)

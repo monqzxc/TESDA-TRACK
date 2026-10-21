@@ -40,7 +40,7 @@ export function RecommendationHistory({
   const navigate = useNavigate()
   const headingId = useId()
   return (
-    <section aria-labelledby={headingId} className={ui.card}>
+    <section data-tour="progress-history" aria-labelledby={headingId} className={ui.card}>
       <h2 id={headingId} className={ui.sectionHeading}>
         {copy.history.heading}
       </h2>

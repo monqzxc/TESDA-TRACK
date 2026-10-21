@@ -12,6 +12,9 @@
 	# per-client limits rely on it.
 	handle /api/* {
 		reverse_proxy api:8000 {
+			health_uri /api/v1/ready
+			health_interval 10s
+			health_timeout 3s
 			header_up X-Forwarded-For {remote_host}
 		}
 	}
@@ -20,16 +23,25 @@
 	@mcp path /mcp /mcp/
 	handle @mcp {
 		reverse_proxy api:8000 {
+			health_uri /api/v1/ready
+			health_interval 10s
+			health_timeout 3s
 			header_up X-Forwarded-For {remote_host}
 		}
 	}
 	handle /.well-known/oauth-protected-resource* {
 		reverse_proxy api:8000 {
+			health_uri /api/v1/ready
+			health_interval 10s
+			health_timeout 3s
 			header_up X-Forwarded-For {remote_host}
 		}
 	}
 	handle /.well-known/oauth-authorization-server {
 		reverse_proxy api:8000 {
+			health_uri /api/v1/ready
+			health_interval 10s
+			health_timeout 3s
 			header_up X-Forwarded-For {remote_host}
 		}
 	}

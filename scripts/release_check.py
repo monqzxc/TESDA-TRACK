@@ -137,7 +137,7 @@ def image_smoke():
             deadline, healthy = time.monotonic() + 45, False
             while time.monotonic() < deadline:
                 try:
-                    healthy = httpx.get(base + ("/health" if name == "backend" else "/_stcore/health"), timeout=2).status_code == 200
+                    healthy = httpx.get(base + ("/api/v1/ready" if name == "backend" else "/_stcore/health"), timeout=2).status_code == 200
                     if healthy:
                         break
                 except httpx.TransportError:
@@ -200,7 +200,7 @@ def main(argv=None):
     # Schema rebuilds occur in separate processes sequentially, never concurrently.
     if not args.skip_model:
         environment.update(TESDA_MODEL_TESTS="1", HF_HUB_OFFLINE="1")
-        run_gate("optional_model_guard", [sys.executable, "-m", "pytest", "backend/tests/test_semantic.py::test_real_model_on_the_real_catalog", "-q", "--tb=no", f"--junitxml={output / 'model.xml'}"], env=environment)
+        run_gate("optional_model_guard", [sys.executable, "-m", "pytest", "backend/tests/test_model_acceptance.py::test_real_model_meets_frozen_metrics_and_must_match_goals", "-q", "--tb=no", f"--junitxml={output / 'model.xml'}"], env=environment)
         checks["optional_model_guard"].update(test_summary(output / "model.xml"))
     else:
         checks["optional_model_guard"] = {"passed": None, "status": "not_run"}

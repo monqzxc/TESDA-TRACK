@@ -25,6 +25,37 @@
         }
       }
     },
+    "/api/v1/ready": {
+      "get": {
+        "tags": [
+          "health"
+        ],
+        "summary": "Ready",
+        "operationId": "ready_api_v1_ready_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadinessReport"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReadinessReport"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/qualifications": {
       "get": {
         "tags": [
@@ -3537,6 +3568,82 @@
         ]
       }
     },
+    "/api/v1/admin/reports/recommendation-analytics": {
+      "get": {
+        "tags": [
+          "admin: reports"
+        ],
+        "summary": "Recommendation Analytics",
+        "description": "Positive feedback by qualification, saved-session learner demand, and model/rules review priorities.\n\nProjections use two complete 30-day windows and sample/history gates. They are trend estimates,\nnot trained forecasts. Positive answers are satisfaction responses, not enrollment or distinct people.",
+        "operationId": "recommendation_analytics_api_v1_admin_reports_recommendation_analytics_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "date_from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date From"
+            }
+          },
+          {
+            "name": "date_to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Date To"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationAnalytics"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/admin/reports/overview": {
       "get": {
         "tags": [
@@ -6532,6 +6639,79 @@
       },
       "AssessmentCenterCreate": {
         "properties": {
+          "data_status": {
+            "type": "string",
+            "enum": [
+              "verified",
+              "incomplete",
+              "example"
+            ],
+            "title": "Data Status",
+            "default": "incomplete"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "source_reference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reference"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "source_updated_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Updated On"
+          },
+          "source_reviewed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reviewed At"
+          },
           "name": {
             "type": "string",
             "maxLength": 200,
@@ -6640,6 +6820,9 @@
       },
       "AssessmentCenterPublic": {
         "properties": {
+          "provenance": {
+            "$ref": "#/components/schemas/ProvenancePublic"
+          },
           "id": {
             "type": "integer",
             "title": "Id"
@@ -6752,6 +6935,85 @@
       },
       "AssessmentCenterUpdate": {
         "properties": {
+          "data_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "verified",
+                  "incomplete",
+                  "example"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Status"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "source_reference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reference"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "source_updated_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Updated On"
+          },
+          "source_reviewed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reviewed At"
+          },
           "name": {
             "anyOf": [
               {
@@ -7473,6 +7735,79 @@
       },
       "AssessmentScheduleCreate": {
         "properties": {
+          "data_status": {
+            "type": "string",
+            "enum": [
+              "verified",
+              "incomplete",
+              "example"
+            ],
+            "title": "Data Status",
+            "default": "incomplete"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "source_reference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reference"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "source_updated_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Updated On"
+          },
+          "source_reviewed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reviewed At"
+          },
           "availability_status": {
             "type": "string",
             "enum": [
@@ -7568,6 +7903,9 @@
       },
       "AssessmentSchedulePublic": {
         "properties": {
+          "provenance": {
+            "$ref": "#/components/schemas/ProvenancePublic"
+          },
           "verification": {
             "$ref": "#/components/schemas/VerificationPublic"
           },
@@ -7646,6 +7984,85 @@
       },
       "AssessmentScheduleUpdate": {
         "properties": {
+          "data_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "verified",
+                  "incomplete",
+                  "example"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Status"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "source_reference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reference"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "source_updated_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Updated On"
+          },
+          "source_reviewed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reviewed At"
+          },
           "availability_status": {
             "anyOf": [
               {
@@ -8526,6 +8943,91 @@
         ],
         "title": "DayUsage"
       },
+      "DemandProjection": {
+        "properties": {
+          "qualification": {
+            "$ref": "#/components/schemas/QualificationSummary"
+          },
+          "recent_learners": {
+            "type": "integer",
+            "title": "Recent Learners"
+          },
+          "previous_learners": {
+            "type": "integer",
+            "title": "Previous Learners"
+          },
+          "change_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Change Rate"
+          },
+          "projected_learners": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Projected Learners"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "available",
+              "insufficient_history",
+              "insufficient_volume"
+            ],
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "qualification",
+          "recent_learners",
+          "previous_learners",
+          "change_rate",
+          "projected_learners",
+          "status"
+        ],
+        "title": "DemandProjection"
+      },
+      "DependencyStatus": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "unavailable",
+              "degraded"
+            ],
+            "title": "Status"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "DependencyStatus"
+      },
       "Directions": {
         "properties": {
           "routing_enabled": {
@@ -9271,6 +9773,96 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "ImprovementPriority": {
+        "properties": {
+          "qualification": {
+            "$ref": "#/components/schemas/QualificationSummary"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model"
+          },
+          "intent": {
+            "type": "string",
+            "title": "Intent"
+          },
+          "feedback_answers": {
+            "type": "integer",
+            "title": "Feedback Answers"
+          },
+          "accepted": {
+            "type": "integer",
+            "title": "Accepted"
+          },
+          "rejected": {
+            "type": "integer",
+            "title": "Rejected"
+          },
+          "acceptance_rate": {
+            "type": "number",
+            "title": "Acceptance Rate"
+          },
+          "wrong_qualification": {
+            "type": "integer",
+            "title": "Wrong Qualification"
+          },
+          "readiness_off": {
+            "type": "integer",
+            "title": "Readiness Off"
+          },
+          "pathway_not_helpful": {
+            "type": "integer",
+            "title": "Pathway Not Helpful"
+          },
+          "no_reason": {
+            "type": "integer",
+            "title": "No Reason"
+          },
+          "ranking_mismatches": {
+            "type": "integer",
+            "title": "Ranking Mismatches",
+            "description": "Answers for a choice below rank 1 or outside nonempty matches; not proof of error"
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "collect_feedback"
+            ],
+            "title": "Priority"
+          },
+          "recommendation": {
+            "type": "string",
+            "title": "Recommendation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "qualification",
+          "model",
+          "intent",
+          "feedback_answers",
+          "accepted",
+          "rejected",
+          "acceptance_rate",
+          "wrong_qualification",
+          "readiness_off",
+          "pathway_not_helpful",
+          "no_reason",
+          "ranking_mismatches",
+          "priority",
+          "recommendation"
+        ],
+        "title": "ImprovementPriority"
+      },
       "LearnerPublic": {
         "properties": {
           "id": {
@@ -9735,6 +10327,49 @@
           "retention_days"
         ],
         "title": "McpActivityPage"
+      },
+      "MigrationStatus": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "unavailable",
+              "degraded"
+            ],
+            "title": "Status"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "current": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Current"
+          },
+          "expected": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Expected"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "MigrationStatus"
       },
       "ModelFeedback": {
         "properties": {
@@ -10478,6 +11113,91 @@
         ],
         "title": "ProgressSummary"
       },
+      "ProvenancePublic": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "verified",
+              "incomplete",
+              "example"
+            ],
+            "title": "Status",
+            "default": "incomplete"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "source_reference": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reference"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "source_updated_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Updated On"
+          },
+          "reviewed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reviewed At"
+          },
+          "record_updated_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Record Updated At"
+          }
+        },
+        "type": "object",
+        "title": "ProvenancePublic"
+      },
       "QualificationDemand": {
         "properties": {
           "qualification": {
@@ -10568,6 +11288,9 @@
             "type": "string",
             "title": "Sector"
           },
+          "provenance": {
+            "$ref": "#/components/schemas/ProvenancePublic"
+          },
           "possible_jobs": {
             "items": {
               "type": "string"
@@ -10641,6 +11364,54 @@
         "type": "object",
         "title": "QualificationRecommendationRequest"
       },
+      "QualificationSignals": {
+        "properties": {
+          "qualification": {
+            "$ref": "#/components/schemas/QualificationSummary"
+          },
+          "chosen_learners": {
+            "type": "integer",
+            "title": "Chosen Learners",
+            "description": "Distinct learners with a saved session choosing this qualification"
+          },
+          "feedback_answers": {
+            "type": "integer",
+            "title": "Feedback Answers"
+          },
+          "accepted": {
+            "type": "integer",
+            "title": "Accepted",
+            "description": "Positive satisfaction answers, not agreement, enrollment or distinct people"
+          },
+          "rejected": {
+            "type": "integer",
+            "title": "Rejected",
+            "description": "Negative satisfaction answers"
+          },
+          "acceptance_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acceptance Rate",
+            "description": "Positive satisfaction answers / all answers; null with none"
+          }
+        },
+        "type": "object",
+        "required": [
+          "qualification",
+          "chosen_learners",
+          "feedback_answers",
+          "accepted",
+          "rejected",
+          "acceptance_rate"
+        ],
+        "title": "QualificationSignals"
+      },
       "QualificationSummary": {
         "properties": {
           "code": {
@@ -10654,6 +11425,9 @@
           "sector": {
             "type": "string",
             "title": "Sector"
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/ProvenancePublic"
           }
         },
         "type": "object",
@@ -11056,6 +11830,38 @@
         ],
         "title": "ReadinessCheckPublic"
       },
+      "ReadinessChecks": {
+        "properties": {
+          "database": {
+            "$ref": "#/components/schemas/DependencyStatus"
+          },
+          "migrations": {
+            "$ref": "#/components/schemas/MigrationStatus"
+          },
+          "postgis": {
+            "$ref": "#/components/schemas/DependencyStatus"
+          },
+          "pgvector": {
+            "$ref": "#/components/schemas/DependencyStatus"
+          },
+          "model": {
+            "$ref": "#/components/schemas/DependencyStatus"
+          },
+          "skills_bridge": {
+            "$ref": "#/components/schemas/DependencyStatus"
+          }
+        },
+        "type": "object",
+        "required": [
+          "database",
+          "migrations",
+          "postgis",
+          "pgvector",
+          "model",
+          "skills_bridge"
+        ],
+        "title": "ReadinessChecks"
+      },
       "ReadinessProgress": {
         "properties": {
           "qualification": {
@@ -11093,6 +11899,28 @@
           "last_checked_at"
         ],
         "title": "ReadinessProgress"
+      },
+      "ReadinessReport": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ready",
+              "degraded",
+              "unavailable"
+            ],
+            "title": "Status"
+          },
+          "checks": {
+            "$ref": "#/components/schemas/ReadinessChecks"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "checks"
+        ],
+        "title": "ReadinessReport"
       },
       "ReadinessRequest": {
         "properties": {
@@ -11161,6 +11989,135 @@
           "recommendation"
         ],
         "title": "ReadinessResult"
+      },
+      "RecommendationAnalytics": {
+        "properties": {
+          "feedback_answers": {
+            "type": "integer",
+            "title": "Feedback Answers"
+          },
+          "accepted": {
+            "type": "integer",
+            "title": "Accepted",
+            "description": "Positive Yes satisfaction answers, not explicit agreement or enrollment"
+          },
+          "rejected": {
+            "type": "integer",
+            "title": "Rejected"
+          },
+          "acceptance_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acceptance Rate"
+          },
+          "qualification_groups": {
+            "items": {
+              "$ref": "#/components/schemas/QualificationSignals"
+            },
+            "type": "array",
+            "title": "Qualification Groups"
+          },
+          "demand": {
+            "$ref": "#/components/schemas/RecommendationDemand"
+          },
+          "improvement_priorities": {
+            "items": {
+              "$ref": "#/components/schemas/ImprovementPriority"
+            },
+            "type": "array",
+            "title": "Improvement Priorities"
+          }
+        },
+        "type": "object",
+        "required": [
+          "feedback_answers",
+          "accepted",
+          "rejected",
+          "acceptance_rate",
+          "qualification_groups",
+          "demand",
+          "improvement_priorities"
+        ],
+        "title": "RecommendationAnalytics"
+      },
+      "RecommendationDemand": {
+        "properties": {
+          "recent_from": {
+            "type": "string",
+            "format": "date",
+            "title": "Recent From"
+          },
+          "recent_to": {
+            "type": "string",
+            "format": "date",
+            "title": "Recent To"
+          },
+          "previous_from": {
+            "type": "string",
+            "format": "date",
+            "title": "Previous From"
+          },
+          "previous_to": {
+            "type": "string",
+            "format": "date",
+            "title": "Previous To"
+          },
+          "forecast_from": {
+            "type": "string",
+            "format": "date",
+            "title": "Forecast From"
+          },
+          "forecast_to": {
+            "type": "string",
+            "format": "date",
+            "title": "Forecast To"
+          },
+          "window_days": {
+            "type": "integer",
+            "title": "Window Days",
+            "default": 30
+          },
+          "minimum_recent_learners": {
+            "type": "integer",
+            "title": "Minimum Recent Learners",
+            "default": 10
+          },
+          "minimum_previous_learners": {
+            "type": "integer",
+            "title": "Minimum Previous Learners",
+            "default": 5
+          },
+          "method": {
+            "type": "string",
+            "const": "linear_recent_trend",
+            "title": "Method",
+            "default": "linear_recent_trend"
+          },
+          "qualifications": {
+            "items": {
+              "$ref": "#/components/schemas/DemandProjection"
+            },
+            "type": "array",
+            "title": "Qualifications"
+          }
+        },
+        "type": "object",
+        "required": [
+          "recent_from",
+          "recent_to",
+          "previous_from",
+          "previous_to",
+          "forecast_from",
+          "forecast_to",
+          "qualifications"
+        ],
+        "title": "RecommendationDemand"
       },
       "RecommendationSessionCreate": {
         "properties": {
@@ -11779,6 +12736,9 @@
       },
       "SiteSummary": {
         "properties": {
+          "provenance": {
+            "$ref": "#/components/schemas/ProvenancePublic"
+          },
           "id": {
             "type": "integer",
             "title": "Id"
@@ -12694,6 +13654,79 @@
       },
       "TrainingProgramCreate": {
         "properties": {
+          "data_status": {
+            "type": "string",
+            "enum": [
+              "verified",
+              "incomplete",
+              "example"
+            ],
+            "title": "Data Status",
+            "default": "incomplete"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "source_reference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reference"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "source_updated_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Updated On"
+          },
+          "source_reviewed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reviewed At"
+          },
           "availability_status": {
             "type": "string",
             "enum": [
@@ -12861,6 +13894,9 @@
       },
       "TrainingProgramPublic": {
         "properties": {
+          "provenance": {
+            "$ref": "#/components/schemas/ProvenancePublic"
+          },
           "verification": {
             "$ref": "#/components/schemas/VerificationPublic"
           },
@@ -13001,6 +14037,85 @@
       },
       "TrainingProgramUpdate": {
         "properties": {
+          "data_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "verified",
+                  "incomplete",
+                  "example"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Status"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "source_reference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reference"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "source_updated_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Updated On"
+          },
+          "source_reviewed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reviewed At"
+          },
           "availability_status": {
             "anyOf": [
               {
@@ -13189,6 +14304,79 @@
       },
       "TrainingProviderCreate": {
         "properties": {
+          "data_status": {
+            "type": "string",
+            "enum": [
+              "verified",
+              "incomplete",
+              "example"
+            ],
+            "title": "Data Status",
+            "default": "incomplete"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "source_reference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reference"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "source_updated_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Updated On"
+          },
+          "source_reviewed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reviewed At"
+          },
           "name": {
             "type": "string",
             "maxLength": 200,
@@ -13309,6 +14497,9 @@
       },
       "TrainingProviderPublic": {
         "properties": {
+          "provenance": {
+            "$ref": "#/components/schemas/ProvenancePublic"
+          },
           "id": {
             "type": "integer",
             "title": "Id"
@@ -13433,6 +14624,85 @@
       },
       "TrainingProviderUpdate": {
         "properties": {
+          "data_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "verified",
+                  "incomplete",
+                  "example"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Data Status"
+          },
+          "source_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 255,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Name"
+          },
+          "source_reference": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reference"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "source_updated_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Updated On"
+          },
+          "source_reviewed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Reviewed At"
+          },
           "name": {
             "anyOf": [
               {

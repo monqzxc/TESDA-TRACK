@@ -14,7 +14,7 @@ worker_profiles_*.csv
 30_DATABASE_SCHEMA_MERMAID.md
 backend/training/runs/
 .railway/node_modules/
-reports/
+/reports/
 frontend/node_modules
 frontend/.agents/   
 frontend/.claude/

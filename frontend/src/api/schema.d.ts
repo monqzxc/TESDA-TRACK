@@ -18,6 +18,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/ready": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Ready */
+        get: operations["ready_api_v1_ready_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/qualifications": {
         parameters: {
             query?: never;
@@ -1013,6 +1030,29 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/reports/recommendation-analytics": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Recommendation Analytics
+         * @description Positive feedback by qualification, saved-session learner demand, and model/rules review priorities.
+         *
+         *     Projections use two complete 30-day windows and sample/history gates. They are trend estimates,
+         *     not trained forecasts. Positive answers are satisfaction responses, not enrollment or distinct people.
+         */
+        get: operations["recommendation_analytics_api_v1_admin_reports_recommendation_analytics_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/reports/overview": {
         parameters: {
             query?: never;
@@ -1863,6 +1903,22 @@ export interface components {
         };
         /** AssessmentCenterCreate */
         AssessmentCenterCreate: {
+            /**
+             * Data Status
+             * @default incomplete
+             * @enum {string}
+             */
+            data_status: "verified" | "incomplete" | "example";
+            /** Source Name */
+            source_name?: string | null;
+            /** Source Reference */
+            source_reference?: string | null;
+            /** Source Url */
+            source_url?: string | null;
+            /** Source Updated On */
+            source_updated_on?: string | null;
+            /** Source Reviewed At */
+            source_reviewed_at?: string | null;
             /** Name */
             name: string;
             /** Region Code */
@@ -1884,6 +1940,7 @@ export interface components {
         };
         /** AssessmentCenterPublic */
         AssessmentCenterPublic: {
+            provenance?: components["schemas"]["ProvenancePublic"];
             /** Id */
             id: number;
             /** Name */
@@ -1909,6 +1966,18 @@ export interface components {
         };
         /** AssessmentCenterUpdate */
         AssessmentCenterUpdate: {
+            /** Data Status */
+            data_status?: ("verified" | "incomplete" | "example") | null;
+            /** Source Name */
+            source_name?: string | null;
+            /** Source Reference */
+            source_reference?: string | null;
+            /** Source Url */
+            source_url?: string | null;
+            /** Source Updated On */
+            source_updated_on?: string | null;
+            /** Source Reviewed At */
+            source_reviewed_at?: string | null;
             /** Name */
             name?: string | null;
             /** Region Code */
@@ -2120,6 +2189,22 @@ export interface components {
         /** AssessmentScheduleCreate */
         AssessmentScheduleCreate: {
             /**
+             * Data Status
+             * @default incomplete
+             * @enum {string}
+             */
+            data_status: "verified" | "incomplete" | "example";
+            /** Source Name */
+            source_name?: string | null;
+            /** Source Reference */
+            source_reference?: string | null;
+            /** Source Url */
+            source_url?: string | null;
+            /** Source Updated On */
+            source_updated_on?: string | null;
+            /** Source Reviewed At */
+            source_reviewed_at?: string | null;
+            /**
              * Availability Status
              * @default unknown
              * @enum {string}
@@ -2147,6 +2232,7 @@ export interface components {
         };
         /** AssessmentSchedulePublic */
         AssessmentSchedulePublic: {
+            provenance?: components["schemas"]["ProvenancePublic"];
             verification?: components["schemas"]["VerificationPublic"];
             availability?: components["schemas"]["AvailabilityPublic"];
             /** Id */
@@ -2174,6 +2260,18 @@ export interface components {
         };
         /** AssessmentScheduleUpdate */
         AssessmentScheduleUpdate: {
+            /** Data Status */
+            data_status?: ("verified" | "incomplete" | "example") | null;
+            /** Source Name */
+            source_name?: string | null;
+            /** Source Reference */
+            source_reference?: string | null;
+            /** Source Url */
+            source_url?: string | null;
+            /** Source Updated On */
+            source_updated_on?: string | null;
+            /** Source Reviewed At */
+            source_reviewed_at?: string | null;
             /** Availability Status */
             availability_status?: ("unknown" | "available" | "unavailable") | null;
             /** Availability Source */
@@ -2450,6 +2548,33 @@ export interface components {
             date: string;
             /** Calls */
             calls: number;
+        };
+        /** DemandProjection */
+        DemandProjection: {
+            qualification: components["schemas"]["QualificationSummary"];
+            /** Recent Learners */
+            recent_learners: number;
+            /** Previous Learners */
+            previous_learners: number;
+            /** Change Rate */
+            change_rate: number | null;
+            /** Projected Learners */
+            projected_learners: number | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "available" | "insufficient_history" | "insufficient_volume";
+        };
+        /** DependencyStatus */
+        DependencyStatus: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ok" | "unavailable" | "degraded";
+            /** Reason */
+            reason?: string | null;
         };
         /** Directions */
         Directions: {
@@ -2754,6 +2879,42 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** ImprovementPriority */
+        ImprovementPriority: {
+            qualification: components["schemas"]["QualificationSummary"];
+            /** Model */
+            model: string | null;
+            /** Intent */
+            intent: string;
+            /** Feedback Answers */
+            feedback_answers: number;
+            /** Accepted */
+            accepted: number;
+            /** Rejected */
+            rejected: number;
+            /** Acceptance Rate */
+            acceptance_rate: number;
+            /** Wrong Qualification */
+            wrong_qualification: number;
+            /** Readiness Off */
+            readiness_off: number;
+            /** Pathway Not Helpful */
+            pathway_not_helpful: number;
+            /** No Reason */
+            no_reason: number;
+            /**
+             * Ranking Mismatches
+             * @description Answers for a choice below rank 1 or outside nonempty matches; not proof of error
+             */
+            ranking_mismatches: number;
+            /**
+             * Priority
+             * @enum {string}
+             */
+            priority: "high" | "medium" | "collect_feedback";
+            /** Recommendation */
+            recommendation: string;
+        };
         /** LearnerPublic */
         LearnerPublic: {
             /**
@@ -2904,6 +3065,20 @@ export interface components {
             has_more: boolean;
             /** Retention Days */
             retention_days: number;
+        };
+        /** MigrationStatus */
+        MigrationStatus: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ok" | "unavailable" | "degraded";
+            /** Reason */
+            reason?: string | null;
+            /** Current */
+            current?: string[];
+            /** Expected */
+            expected?: string[];
         };
         /** ModelFeedback */
         ModelFeedback: {
@@ -3182,6 +3357,27 @@ export interface components {
                 [key: string]: number;
             };
         };
+        /** ProvenancePublic */
+        ProvenancePublic: {
+            /**
+             * Status
+             * @default incomplete
+             * @enum {string}
+             */
+            status: "verified" | "incomplete" | "example";
+            /** Source Name */
+            source_name?: string | null;
+            /** Source Reference */
+            source_reference?: string | null;
+            /** Source Url */
+            source_url?: string | null;
+            /** Source Updated On */
+            source_updated_on?: string | null;
+            /** Reviewed At */
+            reviewed_at?: string | null;
+            /** Record Updated At */
+            record_updated_at?: string | null;
+        };
         /** QualificationDemand */
         QualificationDemand: {
             qualification: components["schemas"]["QualificationSummary"];
@@ -3216,6 +3412,7 @@ export interface components {
             name: string;
             /** Sector */
             sector: string;
+            provenance?: components["schemas"]["ProvenancePublic"];
             /** Possible Jobs */
             possible_jobs: string[];
             /** Competencies */
@@ -3234,6 +3431,32 @@ export interface components {
              */
             limit: number;
         };
+        /** QualificationSignals */
+        QualificationSignals: {
+            qualification: components["schemas"]["QualificationSummary"];
+            /**
+             * Chosen Learners
+             * @description Distinct learners with a saved session choosing this qualification
+             */
+            chosen_learners: number;
+            /** Feedback Answers */
+            feedback_answers: number;
+            /**
+             * Accepted
+             * @description Positive satisfaction answers, not agreement, enrollment or distinct people
+             */
+            accepted: number;
+            /**
+             * Rejected
+             * @description Negative satisfaction answers
+             */
+            rejected: number;
+            /**
+             * Acceptance Rate
+             * @description Positive satisfaction answers / all answers; null with none
+             */
+            acceptance_rate: number | null;
+        };
         /** QualificationSummary */
         QualificationSummary: {
             /** Code */
@@ -3242,6 +3465,7 @@ export interface components {
             name: string;
             /** Sector */
             sector: string;
+            provenance?: components["schemas"]["ProvenancePublic"];
         };
         /** RankedAssessment */
         RankedAssessment: {
@@ -3396,6 +3620,15 @@ export interface components {
              */
             created_at: string;
         };
+        /** ReadinessChecks */
+        ReadinessChecks: {
+            database: components["schemas"]["DependencyStatus"];
+            migrations: components["schemas"]["MigrationStatus"];
+            postgis: components["schemas"]["DependencyStatus"];
+            pgvector: components["schemas"]["DependencyStatus"];
+            model: components["schemas"]["DependencyStatus"];
+            skills_bridge: components["schemas"]["DependencyStatus"];
+        };
         /** ReadinessProgress */
         ReadinessProgress: {
             qualification: components["schemas"]["QualificationSummary"];
@@ -3412,6 +3645,15 @@ export interface components {
              * Format: date-time
              */
             last_checked_at: string;
+        };
+        /** ReadinessReport */
+        ReadinessReport: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "ready" | "degraded" | "unavailable";
+            checks: components["schemas"]["ReadinessChecks"];
         };
         /** ReadinessRequest */
         ReadinessRequest: {
@@ -3437,6 +3679,81 @@ export interface components {
             skill_gaps: string[];
             /** Recommendation */
             recommendation: string;
+        };
+        /** RecommendationAnalytics */
+        RecommendationAnalytics: {
+            /** Feedback Answers */
+            feedback_answers: number;
+            /**
+             * Accepted
+             * @description Positive Yes satisfaction answers, not explicit agreement or enrollment
+             */
+            accepted: number;
+            /** Rejected */
+            rejected: number;
+            /** Acceptance Rate */
+            acceptance_rate: number | null;
+            /** Qualification Groups */
+            qualification_groups: components["schemas"]["QualificationSignals"][];
+            demand: components["schemas"]["RecommendationDemand"];
+            /** Improvement Priorities */
+            improvement_priorities: components["schemas"]["ImprovementPriority"][];
+        };
+        /** RecommendationDemand */
+        RecommendationDemand: {
+            /**
+             * Recent From
+             * Format: date
+             */
+            recent_from: string;
+            /**
+             * Recent To
+             * Format: date
+             */
+            recent_to: string;
+            /**
+             * Previous From
+             * Format: date
+             */
+            previous_from: string;
+            /**
+             * Previous To
+             * Format: date
+             */
+            previous_to: string;
+            /**
+             * Forecast From
+             * Format: date
+             */
+            forecast_from: string;
+            /**
+             * Forecast To
+             * Format: date
+             */
+            forecast_to: string;
+            /**
+             * Window Days
+             * @default 30
+             */
+            window_days: number;
+            /**
+             * Minimum Recent Learners
+             * @default 10
+             */
+            minimum_recent_learners: number;
+            /**
+             * Minimum Previous Learners
+             * @default 5
+             */
+            minimum_previous_learners: number;
+            /**
+             * Method
+             * @default linear_recent_trend
+             * @constant
+             */
+            method: "linear_recent_trend";
+            /** Qualifications */
+            qualifications: components["schemas"]["DemandProjection"][];
         };
         /** RecommendationSessionCreate */
         RecommendationSessionCreate: {
@@ -3659,6 +3976,7 @@ export interface components {
         };
         /** SiteSummary */
         SiteSummary: {
+            provenance?: components["schemas"]["ProvenancePublic"];
             /** Id */
             id: number;
             /** Name */
@@ -3991,6 +4309,22 @@ export interface components {
         /** TrainingProgramCreate */
         TrainingProgramCreate: {
             /**
+             * Data Status
+             * @default incomplete
+             * @enum {string}
+             */
+            data_status: "verified" | "incomplete" | "example";
+            /** Source Name */
+            source_name?: string | null;
+            /** Source Reference */
+            source_reference?: string | null;
+            /** Source Url */
+            source_url?: string | null;
+            /** Source Updated On */
+            source_updated_on?: string | null;
+            /** Source Reviewed At */
+            source_reviewed_at?: string | null;
+            /**
              * Availability Status
              * @default unknown
              * @enum {string}
@@ -4033,6 +4367,7 @@ export interface components {
         };
         /** TrainingProgramPublic */
         TrainingProgramPublic: {
+            provenance?: components["schemas"]["ProvenancePublic"];
             verification?: components["schemas"]["VerificationPublic"];
             availability?: components["schemas"]["AvailabilityPublic"];
             /** Id */
@@ -4067,6 +4402,18 @@ export interface components {
         };
         /** TrainingProgramUpdate */
         TrainingProgramUpdate: {
+            /** Data Status */
+            data_status?: ("verified" | "incomplete" | "example") | null;
+            /** Source Name */
+            source_name?: string | null;
+            /** Source Reference */
+            source_reference?: string | null;
+            /** Source Url */
+            source_url?: string | null;
+            /** Source Updated On */
+            source_updated_on?: string | null;
+            /** Source Reviewed At */
+            source_reviewed_at?: string | null;
             /** Availability Status */
             availability_status?: ("unknown" | "available" | "unavailable") | null;
             /** Availability Source */
@@ -4098,6 +4445,22 @@ export interface components {
         };
         /** TrainingProviderCreate */
         TrainingProviderCreate: {
+            /**
+             * Data Status
+             * @default incomplete
+             * @enum {string}
+             */
+            data_status: "verified" | "incomplete" | "example";
+            /** Source Name */
+            source_name?: string | null;
+            /** Source Reference */
+            source_reference?: string | null;
+            /** Source Url */
+            source_url?: string | null;
+            /** Source Updated On */
+            source_updated_on?: string | null;
+            /** Source Reviewed At */
+            source_reviewed_at?: string | null;
             /** Name */
             name: string;
             /** Region Code */
@@ -4121,6 +4484,7 @@ export interface components {
         };
         /** TrainingProviderPublic */
         TrainingProviderPublic: {
+            provenance?: components["schemas"]["ProvenancePublic"];
             /** Id */
             id: number;
             /** Name */
@@ -4148,6 +4512,18 @@ export interface components {
         };
         /** TrainingProviderUpdate */
         TrainingProviderUpdate: {
+            /** Data Status */
+            data_status?: ("verified" | "incomplete" | "example") | null;
+            /** Source Name */
+            source_name?: string | null;
+            /** Source Reference */
+            source_reference?: string | null;
+            /** Source Url */
+            source_url?: string | null;
+            /** Source Updated On */
+            source_updated_on?: string | null;
+            /** Source Reviewed At */
+            source_reviewed_at?: string | null;
             /** Name */
             name?: string | null;
             /** Region Code */
@@ -4386,6 +4762,35 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+        };
+    };
+    ready_api_v1_ready_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReadinessReport"];
+                };
+            };
+            /** @description Service Unavailable */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ReadinessReport"];
                 };
             };
         };
@@ -6515,6 +6920,38 @@ export interface operations {
                 };
                 content: {
                     "application/json": unknown;
+                };
+            };
+        };
+    };
+    recommendation_analytics_api_v1_admin_reports_recommendation_analytics_get: {
+        parameters: {
+            query?: {
+                date_from?: string | null;
+                date_to?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecommendationAnalytics"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

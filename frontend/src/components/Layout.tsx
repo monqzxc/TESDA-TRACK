@@ -3,6 +3,7 @@ import { Outlet, ScrollRestoration } from 'react-router'
 import { useAuth } from '../auth/useAuth.ts'
 import { en } from '../copy/en.ts'
 import { FirstVisitNotice } from '../features/privacy/FirstVisitNotice.tsx'
+import { GuidedHelp } from '../features/help/GuidedHelp.tsx'
 import { useCurrentPage, useFocusOnNavigation, usePageTitle } from '../lib/navigation.ts'
 import { Brand } from './Brand.tsx'
 import { HomeFooter } from './HomeFooter.tsx'
@@ -24,6 +25,7 @@ export function Root() {
       <ScrollRestoration />
       <Outlet />
       <FirstVisitNotice />
+      <GuidedHelp />
     </>
   )
 }

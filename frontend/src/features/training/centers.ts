@@ -1,6 +1,7 @@
 import type { Region } from '../../api/queries.ts'
 import type { components } from '../../api/schema.d.ts'
 import { en } from '../../copy/en.ts'
+import type { Provenance } from '../../components/DataProvenance.tsx'
 import type { CenterKind, SortOrder } from './address.ts'
 
 // Training and assessment centers: joins the API's sites with their listings, then filters, measures and sorts
@@ -14,6 +15,7 @@ export type Schedule = components['schemas']['AssessmentSchedulePublic']
 type Site = Provider | AssessmentSite | Program['provider']
 
 export interface Center {
+  provenance?: Provenance
   /** "training-12" or "assessment-12": providers and assessment centers number their sites separately. */
   id: string
   kind: CenterKind
@@ -74,6 +76,7 @@ function centerFor(kind: CenterKind, site: Site, regions: ReadonlyMap<string, Re
     id: `${kind}-${site.id}`,
     kind,
     name: site.name,
+    provenance: site.provenance,
     regionCode,
     region: (regionCode && regions.get(regionCode)?.name) || regionCode || '',
     province: full('province'),

@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
+import { emptyRecommendationAnalytics } from './recommendationAnalytics.ts'
 
 // Tests add their own handlers with server.use(...). These answer the reference data a page reads beside its main
 // request, empty, so a test about something else that passes through Training & Assessment (or Reports, as an
@@ -35,6 +36,9 @@ const referenceData = [
     }),
   ),
   http.get('*/api/v1/admin/reports/qualification-demand', () => HttpResponse.json([])),
+  http.get('*/api/v1/admin/reports/recommendation-analytics', () =>
+    HttpResponse.json(emptyRecommendationAnalytics),
+  ),
   http.get('*/api/v1/admin/reports/skill-gaps', () => HttpResponse.json([])),
   http.get('*/api/v1/admin/reports/supply', () => HttpResponse.json([])),
   http.get('*/api/v1/admin/reports/feedback', () =>

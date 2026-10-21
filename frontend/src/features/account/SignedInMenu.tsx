@@ -10,6 +10,7 @@ import {
   Popover,
   Separator,
 } from 'react-aria-components'
+import { Link, useNavigate } from 'react-router'
 import { failureMessage } from '../../auth/fields.tsx'
 import type { Learner } from '../../auth/session.ts'
 import { useAuth } from '../../auth/useAuth.ts'
@@ -17,6 +18,8 @@ import { Icon } from '../../components/Icon.tsx'
 import { ModalDialog } from '../../components/ModalDialog.tsx'
 import { en } from '../../copy/en.ts'
 import { returnFocus } from '../../lib/focus.ts'
+import { paths } from '../../paths.ts'
+import { button } from '../../styles/buttons.ts'
 import { ThemeSwitch } from '../../theme/ThemeSwitch.tsx'
 import { DeleteAccountDialog } from './DeleteAccountDialog.tsx'
 import { downloadMyData } from './exportData.ts'
@@ -35,6 +38,8 @@ export interface SignedInMenuProps {
   onSessionEnding: () => void
   /** It didn't end after all. */
   onSessionKept: () => void
+  /** Closes the phone navigation when opening the profile. */
+  onNavigate?: () => void
 }
 
 /**
@@ -49,9 +54,11 @@ export default function SignedInMenu({
   onShown,
   onSessionEnding,
   onSessionKept,
+  onNavigate,
 }: SignedInMenuProps) {
   const { signOut, notify } = useAuth()
   const queryClient = useQueryClient()
+  const navigate = useNavigate()
   const trigger = useRef<HTMLButtonElement>(null)
   const deleteDialog = useRef<HTMLElement>(null)
   const [isDeleting, setDeleting] = useState(false)
@@ -82,7 +89,10 @@ export default function SignedInMenu({
   }
 
   const onAction = (key: Key) => {
-    if (key === 'settings') setSettingsOpen(true)
+    if (key === 'profile') {
+      onNavigate?.()
+      void navigate(paths.profile)
+    } else if (key === 'settings') setSettingsOpen(true)
     else if (key === 'signOut') void endSession()
   }
 
@@ -106,6 +116,9 @@ export default function SignedInMenu({
                 <span className={menu.whoName}>{name}</span>{' '}
                 <span className={menu.whoEmail}>{learner.email}</span>{' '}
               </Header>
+              <MenuItem id="profile" className={menu.item}>
+                {copy.menu.profile}
+              </MenuItem>
               <MenuItem id="settings" className={menu.item}>
                 {copy.menu.settings}
               </MenuItem>
@@ -128,6 +141,24 @@ export default function SignedInMenu({
         title={copy.menu.settings}
         closeLabel={copy.menu.closeSettings}
       >
+        <section className="border-b border-border py-5" aria-labelledby="account-profile">
+          <h3 id="account-profile" className="mb-3 text-16 font-semibold text-navy">
+            {copy.profile.heading}
+          </h3>
+          <p className="mb-1 font-semibold wrap-anywhere text-navy">{name}</p>
+          <p className="mb-4 text-14 wrap-anywhere text-muted">{learner.email}</p>
+          <Link
+            to={paths.profile}
+            className={button()}
+            onClick={() => {
+              setSettingsOpen(false)
+              onNavigate?.()
+            }}
+          >
+            <Icon name="person" />
+            {copy.profile.view}
+          </Link>
+        </section>
         <section className="py-5" aria-labelledby="account-appearance">
           <h3 id="account-appearance" className="mb-3 text-16 font-semibold text-navy">
             {copy.menu.appearance}

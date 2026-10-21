@@ -5,6 +5,7 @@ import { Link } from 'react-router'
 import { failureMessage } from '../../auth/fields.tsx'
 import { useRequireAccount } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
+import { DataProvenance, sourceLink } from '../../components/DataProvenance.tsx'
 import { ModalDialog } from '../../components/ModalDialog.tsx'
 import { tradePhoto } from '../../components/QualificationMedia.tsx'
 import centerPhoto from '../../components/img/center-thumb.jpg'
@@ -45,11 +46,54 @@ export type Fits = ReadonlyMap<number, ProgramFit>
 
 /** What the service's verification says about it (evidence.ts), a line each. */
 function ServiceEvidence({ service }: { service: Program | Schedule }) {
-  return evidenceMessages(service).map((message) => (
-    <p key={message} className={muted}>
-      {message}
-    </p>
-  ))
+  const evidence = service.verification
+  const source = sourceLink(evidence?.source_reference)
+  return (
+    <>
+      <DataProvenance
+        value={
+          evidence?.is_synthetic ? { ...service.provenance, status: 'example' } : service.provenance
+        }
+      />
+      {evidenceMessages(service).map((message) => (
+        <p key={message} className={muted}>
+          {message}
+        </p>
+      ))}
+      {evidence?.source_reference && (
+        <p className={muted}>
+          Service source:{' '}
+          {source ? (
+            <a className="text-blue underline" href={source} target="_blank" rel="noreferrer">
+              {evidence.source_reference}
+            </a>
+          ) : (
+            evidence.source_reference
+          )}
+        </p>
+      )}
+      {evidence?.reviewed_at && (
+        <p className={muted}>
+          Service reviewed:{' '}
+          <time dateTime={evidence.reviewed_at}>{evidence.reviewed_at.slice(0, 10)}</time>
+        </p>
+      )}
+      {evidence?.review_due_at && (
+        <p className={muted}>
+          Service review due:{' '}
+          <time dateTime={evidence.review_due_at}>{evidence.review_due_at.slice(0, 10)}</time>
+        </p>
+      )}
+      {service.availability?.checked_at && (
+        <p className={muted}>
+          Availability checked:{' '}
+          <time dateTime={service.availability.checked_at}>
+            {service.availability.checked_at.slice(0, 10)}
+          </time>
+        </p>
+      )}
+    </>
+  )
 }
 
 /** The trade's photo when the listing is for one, the center's otherwise. Decoration: the text names it. */

@@ -351,14 +351,17 @@ def apply_plans(session, plans, qualification_ids):
         for row in sorted(plan.rows, key=lambda r:(r.issued or date.min, -r.number), reverse=True):
             if row.outcome != 'accepted':
                 continue
+            provenance = {'data_status':'incomplete', 'source_name':plan.name,
+                'source_reference':f'{plan.sheet} · row {row.number}', 'source_updated_on':plan.snapshot,
+                'source_reviewed_at':None, 'source_url':None}
             if plan.kind == 'training':
-                provider = target('provider', row.site_key, plan.snapshot, row.site, TrainingProvider)
+                provider = target('provider', row.site_key, plan.snapshot, {**row.site, **provenance}, TrainingProvider)
                 target('program', digest(['training-registration', row.source_id]), plan.snapshot,
                     {'provider_id':provider.id, 'qualification_id':qualification_ids[row.qualification_code],
                      'title':clean(row.payload['qualification']), 'duration_hours':row.duration,
-                     'delivery_mode':'unknown'}, TrainingProgram)
+                     'delivery_mode':'unknown', **provenance}, TrainingProgram)
             else:
-                target('center', row.site_key, plan.snapshot, row.site, AssessmentCenter)
+                target('center', row.site_key, plan.snapshot, {**row.site, **provenance}, AssessmentCenter)
         records = [{'batch_id':batch.id, 'row_number':r.number, 'site_key':r.site_key, 'source_record_id':r.source_id,
             'outcome':r.outcome, 'reasons':r.reasons, 'payload':r.payload,
             'qualification_id':qualification_ids.get(r.qualification_code)} for r in plan.rows]

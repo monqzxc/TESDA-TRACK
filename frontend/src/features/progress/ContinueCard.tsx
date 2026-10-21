@@ -96,6 +96,7 @@ export function ContinueCard({ next }: { next: Continuation }) {
 
   return (
     <section
+      data-tour="progress-next"
       aria-labelledby={headingId}
       className="flex flex-wrap items-center gap-x-5 gap-y-4 rounded-18 border border-banner-border bg-(image:--track-banner) px-5 py-[1.1rem]"
     >

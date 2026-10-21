@@ -126,7 +126,7 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
       setCheck(code, { result, answers: sent, saved: saveTo !== null })
       onResult()
     },
-    onError: (failure) => setMessage(failureMessage(failure)),
+    onError: (failure) => setMessage(copy.failed(failureMessage(failure))),
   })
 
   if (groups.length === 0) {
@@ -177,6 +177,7 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
       <Heading id={headingId} name={qualification.name} />
 
       <ProgressBar
+        data-tour="readiness-progress"
         className="mt-[1.1rem] mb-1 flex flex-col gap-[0.4rem]"
         value={rated}
         maxValue={total || 1}
@@ -205,6 +206,7 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
           {competencies.map((competency, i) => (
             <li key={competency.id} data-unrated={!answers[competency.id] || undefined}>
               <RadioGroup
+                data-tour="readiness-question"
                 className="flex flex-col gap-2 rounded-12 border border-panel-border bg-panel px-[0.95rem] py-[0.85rem]"
                 orientation="horizontal"
                 value={answers[competency.id] ?? null}
@@ -235,7 +237,10 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
         </p>
       )}
 
-      <div className="mt-[1.1rem] flex flex-wrap justify-between gap-3 [&>:only-child]:ml-auto">
+      <div
+        data-tour="readiness-actions"
+        className="mt-[1.1rem] flex flex-wrap justify-between gap-3 [&>:only-child]:ml-auto"
+      >
         {part > 0 && (
           <Button className={button()} onPress={() => goTo(part - 1)}>
             <Icon name="arrowLeft" />

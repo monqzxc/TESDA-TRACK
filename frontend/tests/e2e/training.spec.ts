@@ -188,6 +188,43 @@ for (const colorScheme of ['light', 'dark'] as const) {
   }
 }
 
+for (const [size, viewport] of Object.entries(SIZES)) {
+  test(`${size}: a failed region lookup retains filters and recovers locally`, async ({ page }) => {
+    await page.setViewportSize(viewport)
+    await serveTraining(page)
+    let available = false
+    await page.route('**/api/v1/regions', (route) =>
+      available ? route.fulfill({ json: REGIONS }) : route.abort(),
+    )
+    await page.goto('/training?type=training&region=NCR&q=Manila')
+    await expect(page.getByRole('alert')).toContainText('Your search and filters are still here', {
+      timeout: 15_000,
+    })
+    await expect(page.getByRole('heading', { name: /^All results/ })).toHaveCount(0)
+    await expect(page.getByRole('searchbox', { name: 'Search centers' })).toHaveValue('Manila')
+    if (size === 'phone') await page.getByRole('button', { name: 'Show filters' }).click()
+    const panel = page.locator('[data-tour="training-filters"]')
+    await expect(panel).toBeVisible()
+    const layout = await panel.evaluate((element) => ({
+      height: element.getBoundingClientRect().height,
+      stageHeight: element.parentElement!.parentElement!.getBoundingClientRect().height,
+    }))
+    expect(layout.height).toBeGreaterThan(100)
+    expect(layout.stageHeight).toBeGreaterThanOrEqual(layout.height)
+    await page.getByRole('searchbox', { name: 'Search location' }).fill('Cebu City')
+    available = true
+    await page.getByRole('button', { name: 'Try loading the list again' }).click()
+    await expect(page.getByRole('heading', { name: 'All results (1)' })).toBeVisible()
+    await expect(page.getByRole('alert')).toHaveCount(0)
+    await expect(page.getByRole('searchbox', { name: 'Search centers' })).toHaveValue('Manila')
+    // Opening a failed request's filters again must retain this unsent place draft as well.
+    const showFilters = page.getByRole('button', { name: 'Show filters' })
+    if (await showFilters.isVisible()) await showFilters.click()
+    await expect(page.getByRole('searchbox', { name: 'Search location' })).toHaveValue('Cebu City')
+    await expect(page).toHaveURL(/region=NCR/)
+  })
+}
+
 test.describe('on a desktop', () => {
   test.use({ viewport: SIZES.desktop })
 

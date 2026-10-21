@@ -4,7 +4,7 @@ from sqlalchemy import CheckConstraint, String, Text, UniqueConstraint
 from sqlalchemy.dialects.postgresql import ARRAY
 from sqlmodel import Field, Relationship, SQLModel
 
-from tesda_track.models.base import Timestamped
+from tesda_track.models.provenance import ProvenanceFields
 
 COMPETENCY_CATEGORIES = ("Basic", "Common", "Core")
 
@@ -16,7 +16,8 @@ class Sector(SQLModel, table=True):
     qualifications: list["Qualification"] = Relationship(back_populates="sector")
 
 
-class Qualification(Timestamped, table=True):
+class Qualification(ProvenanceFields, table=True):
+    __table_args__ = (CheckConstraint("data_status IN ('verified', 'incomplete', 'example')", name="data_status_valid"),)
     id: int | None = Field(default=None, primary_key=True)
     code: str = Field(sa_type=String(40), unique=True)
     name: str = Field(sa_type=String(200))

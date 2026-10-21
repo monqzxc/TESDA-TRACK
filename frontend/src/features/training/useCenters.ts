@@ -2,7 +2,6 @@ import { keepPreviousData, useQueries, useQuery } from '@tanstack/react-query'
 import { useMemo } from 'react'
 import { regionsQuery, type Qualification } from '../../api/queries.ts'
 import { useAuth } from '../../auth/useAuth.ts'
-import { throwWithoutData } from '../../components/QueryBoundary.tsx'
 import { useFinderStore } from '../finder/store.ts'
 import { clientConfigQuery, fitQuery, listingsQuery, sitesQuery, type ProgramFit } from './api.ts'
 import {
@@ -30,7 +29,7 @@ export interface Reference extends Point {
  * Everything the page shows, worked out from the address's filters and the page's state, as
  * classic/training_view.py show_training does: the centers that match, measured from the learner's location (or a
  * place they typed) and sorted; the one shown in full; and how well its programs fit. Each request that the page
- * can't do without goes to the QueryBoundary around it if it fails.
+ * can't do without reports a local error, so the learner can retry without losing their filters.
  */
 export function useCenters(catalog: readonly Qualification[]) {
   const { learner } = useAuth()
@@ -39,8 +38,8 @@ export function useCenters(catalog: readonly Qualification[]) {
   const placeText = useTrainingStore((state) => state.placeText)
   const goal = useFinderStore((state) => state.journey?.query ?? null)
 
-  const regions = useQuery({ ...regionsQuery, throwOnError: throwWithoutData })
-  const sites = useQuery({ ...sitesQuery, throwOnError: throwWithoutData })
+  const regions = useQuery(regionsQuery)
+  const sites = useQuery(sitesQuery)
   const config = useQuery(clientConfigQuery)
 
   // Only qualifications the catalog has, so an old or mistyped address can't ask for listings of nothing.
@@ -52,7 +51,6 @@ export function useCenters(catalog: readonly Qualification[]) {
   const codes = useMemo(() => (codesKey ? codesKey.split(',') : []), [codesKey])
   const listings = useQuery({
     ...listingsQuery(codes),
-    throwOnError: throwWithoutData,
     // A new qualification asks again; the last results stay on screen meanwhile.
     placeholderData: keepPreviousData,
   })
@@ -63,7 +61,7 @@ export function useCenters(catalog: readonly Qualification[]) {
   )
   const everything = useMemo(
     () =>
-      sites.data && listings.data
+      regions.data && sites.data && listings.data
         ? buildCenters(
             sites.data.providers,
             sites.data.assessmentSites,
@@ -72,17 +70,20 @@ export function useCenters(catalog: readonly Qualification[]) {
             regionMap,
           )
         : null,
-    [sites.data, listings.data, regionMap],
+    [regions.data, sites.data, listings.data, regionMap],
   )
 
   const today = philippineDay(new Date())
-  const region = filters.region && regionMap.has(filters.region) ? filters.region : null
+  const region =
+    filters.region && (!regions.data || regionMap.has(filters.region)) ? filters.region : null
   const provinceOptions = useMemo(
     () => (everything ? provinces(everything, region ?? undefined) : []),
     [everything, region],
   )
   const province =
-    filters.province && provinceOptions.includes(filters.province) ? filters.province : null
+    filters.province && (!everything || provinceOptions.includes(filters.province))
+      ? filters.province
+      : null
   const place: FoundPlace | null = useMemo(
     () => (everything && placeText.trim() ? findPlace(placeText, everything, regionMap) : null),
     [everything, placeText, regionMap],
@@ -165,8 +166,19 @@ export function useCenters(catalog: readonly Qualification[]) {
     },
   })
 
+  const failed = regions.isError || sites.isError || listings.isError
+  const retry = () => {
+    if (regions.isError) void regions.refetch()
+    if (sites.isError) void sites.refetch()
+    if (listings.isError) void listings.refetch()
+  }
+
   return {
-    loading: everything === null,
+    loading: everything === null && !failed,
+    failed,
+    retry,
+    retrying: regions.isFetching || sites.isFetching || listings.isFetching,
+    hasData: everything !== null,
     /** Fetching a new qualification's listings, with the last results still on screen. */
     refreshing: listings.isPlaceholderData,
     truncated: listings.data?.truncated ?? false,

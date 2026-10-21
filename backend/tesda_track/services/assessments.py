@@ -35,6 +35,7 @@ def schedule_public(schedule: AssessmentSchedule, taken: int, distance_km: float
     session = object_session(schedule)
     record = verification.get(session, "assessment", schedule.center_id, schedule.qualification_id) if session else None
     return AssessmentSchedulePublic(
+        provenance=schedule.provenance,
         verification=verification.public(record), availability=verification.availability(schedule),
         id=schedule.id, qualification=catalog.summary(schedule.qualification),
         center=SiteSummary.model_validate(schedule.center), scheduled_at=schedule.scheduled_at, slots=schedule.slots,
@@ -87,6 +88,9 @@ def create_schedule(session: Session, request: AssessmentScheduleCreate) -> Asse
 
 
 def update_schedule(session: Session, schedule: AssessmentSchedule, request: AssessmentScheduleUpdate) -> AssessmentSchedule:
+    from tesda_track.services.provenance import validate_update
+
+    validate_update(schedule, request)
     verification.validate_availability_update(schedule, request)
     fields = request.model_fields_set
     if "slots" in fields and request.slots is not None and request.slots < seats_taken(session, schedule.id):
@@ -94,7 +98,8 @@ def update_schedule(session: Session, schedule: AssessmentSchedule, request: Ass
     needs_review = verification.availability_needs_review(schedule, request, {"scheduled_at", "slots", "fee", "status"})
     for field in fields:
         value = getattr(request, field)
-        if value is not None or field == "fee":
+        if value is not None or field in {"fee", "source_name", "source_reference", "source_url",
+                                           "source_updated_on", "source_reviewed_at"}:
             setattr(schedule, field, value)
     if needs_review:
         schedule.availability_status = "unknown"

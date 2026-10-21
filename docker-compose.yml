@@ -19,9 +19,9 @@ x-backend-environment: &backend-environment
   RANKING_WEIGHTS__ASSESSMENT: ${RANKING_WEIGHTS__ASSESSMENT:-0.15}
   RANKING_WEIGHTS__SCHEDULE: ${RANKING_WEIGHTS__SCHEDULE:-0.1}
   RANKING_WEIGHTS__PREFERENCE: ${RANKING_WEIGHTS__PREFERENCE:-0.05}
-  # Leave both unset for the default model; set both to serve a fine-tuned folder from backend/models/.
-  EMBEDDING_MODEL: ${EMBEDDING_MODEL:-intfloat/multilingual-e5-small}
-  EMBEDDING_MODEL_PATH: ${DOCKER_EMBEDDING_MODEL_PATH:-${EMBEDDING_MODEL_PATH:-}}
+  # Accepted pilot model (TASK-085). Keep the host model path separate from this container path.
+  EMBEDDING_MODEL: ${EMBEDDING_MODEL:-tesda-track/tesda-e5-small-v3}
+  EMBEDDING_MODEL_PATH: ${DOCKER_EMBEDDING_MODEL_PATH:-/app/finetuned/tesda-e5-small-v3}
   SKILLS_BRIDGE_MCP_ENABLED: ${SKILLS_BRIDGE_MCP_ENABLED:-true}
   SKILLS_BRIDGE_MCP_URL: ${SKILLS_BRIDGE_MCP_URL:-https://mcp.skills-bridge.ph/mcp}
   SKILLS_BRIDGE_MCP_TOKEN: ${SKILLS_BRIDGE_MCP_TOKEN:-}
@@ -71,8 +71,8 @@ services:
     build:
       context: ./backend
       args:
-        EMBEDDING_MODEL: ${EMBEDDING_MODEL:-}
-        EMBEDDING_MODEL_PATH: ${DOCKER_EMBEDDING_MODEL_PATH:-${EMBEDDING_MODEL_PATH:-}}
+        EMBEDDING_MODEL: ${EMBEDDING_MODEL:-tesda-track/tesda-e5-small-v3}
+        EMBEDDING_MODEL_PATH: ${DOCKER_EMBEDDING_MODEL_PATH:-/app/finetuned/tesda-e5-small-v3}
         SEMANTIC_SEARCH_ENABLED: ${SEMANTIC_SEARCH_ENABLED:-true}
     image: tesda-track-backend:latest
     restart: unless-stopped
@@ -81,7 +81,7 @@ services:
       migrate:
         condition: service_completed_successfully
     healthcheck:
-      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/ready', timeout=3)"]
       interval: 10s
       timeout: 5s
       retries: 10

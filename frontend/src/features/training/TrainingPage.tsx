@@ -59,6 +59,7 @@ function Header() {
       {/* A location switch pill and a wide rounded search. */}
       <div className="flex flex-[1_1_30rem] flex-wrap items-center justify-end gap-[0.9rem] max-sm:justify-start">
         <Switch
+          data-tour="training-location"
           className={cx(
             'group inline-flex min-h-11.5 cursor-pointer items-center gap-[0.6rem] rounded-full bg-surface px-[1.1rem] py-[0.55rem] font-medium text-navy',
             softShadow,
@@ -77,6 +78,7 @@ function Header() {
           </span>
         </Switch>
         <SearchField
+          data-tour="training-search"
           className="relative flex max-w-[560px] flex-[1_1_340px] items-center"
           value={filters.search}
           // A new search shows its first result in full; typing doesn't add a step to Back for each letter.
@@ -144,8 +146,24 @@ function Workspace({ catalog }: { catalog: Qualification[] }) {
 
   return (
     <>
+      {results.failed && (
+        <div className="my-4 rounded-12 border border-border bg-warn-bg p-4 text-warn-ink">
+          <p role="alert" className="mt-0">
+            {copy.loadFailed}
+          </p>
+          {results.hasData && <p>{copy.staleResults}</p>}
+          <Button className={button()} onPress={results.retry} isPending={results.retrying}>
+            <Icon name="refresh" />
+            {copy.retryLoad}
+          </Button>
+        </div>
+      )}
       <div className="mb-1 flex justify-end">
-        <Button className={button({ variant: 'tertiary' })} onPress={toggleMap}>
+        <Button
+          data-tour="training-map-toggle"
+          className={button({ variant: 'tertiary' })}
+          onPress={toggleMap}
+        >
           <Icon name="map" />
           {mapShown ? copy.results.mapToggle.hide : copy.results.mapToggle.show}
         </Button>
@@ -167,12 +185,13 @@ function Workspace({ catalog }: { catalog: Qualification[] }) {
             <div
               className={cx(
                 mapShown &&
+                  results.hasData &&
                   '@min-[640px]/stage:absolute @min-[640px]/stage:top-3.5 @min-[640px]/stage:left-3.5 @min-[640px]/stage:z-900 @min-[640px]/stage:flex @min-[640px]/stage:max-h-[calc(100%_-_28px)] @min-[640px]/stage:w-[360px] @min-[640px]/stage:flex-col @min-[640px]/stage:[&>section]:shadow-[0_12px_32px_rgb(var(--track-shadow-rgb)/0.15)]',
               )}
             >
               <FilterPanel results={results} />
             </div>
-            {mapShown && (
+            {mapShown && results.hasData && (
               // Read by the map, so its pins, routes and popups keep clear of the panel: 14px + 360px + 14px.
               <div className="@min-[640px]/stage:[--map-overlay-inset:388px]">
                 <LoadBoundary fallback={<p className={mapStandIn}>{copy.map.failed}</p>}>
@@ -216,19 +235,21 @@ function Workspace({ catalog }: { catalog: Qualification[] }) {
               </div>
             )}
           </div>
-          <Results
-            results={results}
-            hasMap={mapShown}
-            onViewOnMap={(id) => {
-              select(id)
-              setFocusOnMap((n) => n + 1)
-            }}
-            onChoose={(id) => {
-              select(id)
-              setShow({ id, focus: true })
-            }}
-            show={show}
-          />
+          {results.hasData && (
+            <Results
+              results={results}
+              hasMap={mapShown}
+              onViewOnMap={(id) => {
+                select(id)
+                setFocusOnMap((n) => n + 1)
+              }}
+              onChoose={(id) => {
+                select(id)
+                setShow({ id, focus: true })
+              }}
+              show={show}
+            />
+          )}
         </div>
       </div>
     </>

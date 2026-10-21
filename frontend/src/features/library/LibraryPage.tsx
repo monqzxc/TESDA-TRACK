@@ -116,6 +116,7 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
     <>
       {/* After classic/styles.css's .st-key-library_filters: the search beside the sector, on one card. */}
       <section
+        data-tour="library-filters"
         aria-labelledby={filtersId}
         className="grid grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-4 rounded-18 bg-surface p-5 max-[801px]:grid-cols-1 max-xs:rounded-14 max-xs:p-[1.1rem]"
       >
@@ -123,6 +124,7 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
           {copy.filters}
         </h2>
         <SearchField
+          data-tour="library-search"
           className="flex min-w-0 flex-col gap-[0.35rem]"
           value={query}
           onChange={(value) => setFilter('q', value)}

@@ -1,5 +1,3 @@
-import os
-
 import pytest
 from sqlmodel import func, select
 
@@ -84,44 +82,6 @@ def test_unrelated_goals_still_find_nothing(client, semantic):
     assert analysis["profile"]["career_goal"] is None
     response = client.post("/api/v1/analysis/matches", json={"query": "astronaut", "profile": analysis["profile"]})
     assert response.json()["matches"] == []
-
-
-# Goals that share no keyword with the catalog, and goals with no TVET equivalent. They guard the z-score band
-# against the real 319-qualification catalog, which is what learners see.
-RELATED_GOALS = {
-    "I like fixing laptops and setting up wifi": "Computer Systems Servicing NC II",
-    "I want to take care of elderly people abroad": "Caregiving (Elderly) NC II",
-    "I want to install solar panels on houses": "PV Systems Installation NC II",
-    "I want to work in a call center": "Contact Center Services NC II",
-    "I want to learn how to make bread and cakes": "Food Production (Bread and Patisserie) NC II",
-    "marunong akong mag-ayos ng laptop at internet": "Computer Systems Servicing NC II",
-    "nagluluto ako ng ulam para sa karinderya": "Cookery NC II",
-    "gusto kong maging karpintero": "Carpentry NC II",
-}
-NO_TVET_MATCH = ["I want to be an astronaut", "gusto kong maging abogado", "gusto kong maging pulis",
-                 "I want to be a politician", "I want to play professional basketball"]
-
-
-@pytest.mark.skipif(not os.environ.get("TESDA_MODEL_TESTS"), reason="set TESDA_MODEL_TESTS=1 to run the real model")
-def test_real_model_on_the_real_catalog(session):
-    from tesda_track.config import get_settings
-    from tesda_track.seed import SEED_DIR, seed_all
-    from tesda_track.services import analysis
-
-    settings = get_settings()
-    seed_all(session, SEED_DIR)  # the real catalog, inside this test's rolled-back transaction
-    # Built like get_embedder, so a configured fine-tuned model and its calibration.json are what gets tested.
-    embedder = embeddings.E5Embedder(settings.embedding_model, settings.embedding_cache_dir,
-                                     settings.embedding_model_path)
-    embeddings.sync(session, embedder)
-
-    def best_match(goal):
-        profile = analysis.analyze_goal(session, goal, embedder).profile
-        _, matches = analysis.match(session, goal, profile, embedder)
-        return matches[0].qualification.name if matches else None
-
-    assert {goal: best_match(goal) for goal in RELATED_GOALS} == RELATED_GOALS
-    assert {goal: best_match(goal) for goal in NO_TVET_MATCH} == {goal: None for goal in NO_TVET_MATCH}
 
 
 def _item(id, code):

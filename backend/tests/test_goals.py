@@ -1,3 +1,6 @@
+from unittest.mock import ANY
+
+
 def create_goal(client, headers, **body):
     response = client.post("/api/v1/me/goals", headers=headers, json={"title": "Become a welder", **body})
     assert response.status_code == 201, response.text
@@ -8,7 +11,10 @@ def test_create_goal_with_target_qualification(client, learner):
     goal = create_goal(client, learner, target_qualification_code="SMAW-NC-II", target_date="2027-06-30")
     assert goal["status"] == "active" and goal["target_date"] == "2027-06-30"
     assert goal["target_qualification"] == {"code": "SMAW-NC-II", "name": "Shielded Metal Arc Welding (SMAW) NC II",
-                                            "sector": "Metals and Engineering"}
+        "sector": "Metals and Engineering", "provenance": {
+            "status": "incomplete", "source_name": "TESDA-TRACK curated qualification catalog",
+            "source_reference": "backend/seed/qualifications.json", "source_url": None,
+            "source_updated_on": None, "reviewed_at": None, "record_updated_at": ANY}}
 
 
 def test_goal_with_unknown_qualification_is_rejected(client, learner):

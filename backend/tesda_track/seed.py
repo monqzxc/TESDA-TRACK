@@ -21,6 +21,7 @@ from pydantic import BaseModel, Field, TypeAdapter, ValidationError
 from sqlmodel import Session, select
 
 from tesda_track.services.official_codes import CrosswalkReport, import_crosswalk
+from tesda_track.schemas.provenance import ProvenanceWrite
 
 from tesda_track.models import (DELIVERY_MODES, ROUTES, STEP_KINDS, AssessmentCenter, AssessmentSchedule,
                                 Competency, Pathway, PathwayStep, Qualification, Region, Sector, TrainingProgram,
@@ -28,6 +29,11 @@ from tesda_track.models import (DELIVERY_MODES, ROUTES, STEP_KINDS, AssessmentCe
 
 SEED_DIR = Path(__file__).resolve().parents[1] / "seed"
 logger = logging.getLogger(__name__)
+EXAMPLE_PROVENANCE = {
+    "data_status": "example", "source_name": "TESDA-TRACK development fixture",
+    "source_reference": "backend/seed/delivery_sites.json",
+    "source_url": None, "source_updated_on": None, "source_reviewed_at": None,
+}
 
 
 @dataclass
@@ -54,6 +60,8 @@ class QualificationEntry(BaseModel):
     career_keywords: list[str] = Field(min_length=1)
     possible_jobs: list[str] = Field(min_length=1)
     competencies: list[CompetencyEntry] = Field(min_length=1)
+    source: dict = Field(default_factory=dict)
+    provenance: ProvenanceWrite | None = None
 
 
 class RegionEntry(BaseModel):
@@ -167,6 +175,14 @@ def sync_catalog(session: Session, entries: list[QualificationEntry]) -> SyncRep
         values = {"name": entry.name, "skill_label": entry.skill_label, "career_keywords": entry.career_keywords,
                   "possible_jobs": entry.possible_jobs, "is_active": True}
         qualification = remaining.pop(entry.code, None)
+        if entry.provenance:
+            values.update(entry.provenance.model_dump())
+        elif qualification is None or qualification.source_name is None:
+            # A published TR identifies the source, not an expert review or publication date.
+            values.update(source_name=entry.source.get("publisher") or "TESDA-TRACK curated qualification catalog",
+                          source_reference=(f"TESDA download {entry.source['download_id']}"
+                                            if entry.source.get("download_id") else "backend/seed/qualifications.json"),
+                          source_url=entry.source.get("list"))
         if qualification is None:
             qualification = Qualification(code=entry.code, sector=sector, **values)
             session.add(qualification)
@@ -239,7 +255,7 @@ def parse_delivery_sites(raw: object) -> list[DeliverySiteEntry]:
 
 
 def _site_values(entry: DeliverySiteFields) -> dict:
-    return entry.model_dump(exclude={"name", "website"})
+    return {**entry.model_dump(exclude={"name", "website"}), **EXAMPLE_PROVENANCE}
 
 
 def _sync_site(session: Session, model, entry: DeliverySiteFields):
@@ -293,6 +309,7 @@ def sync_delivery_sites(session: Session, raw: object) -> DeliverySyncReport:
             start = today + timedelta(days=offering.start_days)
             end = start + timedelta(days=offering.duration_days)
             values = {
+                **EXAMPLE_PROVENANCE,
                 "title": offering.title,
                 "description": offering.description or f"Seed catalog offering for {qualification.name}. Verify with TESDA before applying.",
                 "delivery_mode": offering.delivery_mode,
@@ -318,7 +335,7 @@ def sync_delivery_sites(session: Session, raw: object) -> DeliverySyncReport:
             schedule = session.exec(select(AssessmentSchedule).where(
                 AssessmentSchedule.center_id == center.id,
                 AssessmentSchedule.qualification_id == qualification.id)).first()
-            schedule_values = {"scheduled_at": scheduled_at, "slots": offering.assessment_slots,
+            schedule_values = {**EXAMPLE_PROVENANCE, "scheduled_at": scheduled_at, "slots": offering.assessment_slots,
                                "fee": offering.assessment_fee, "status": "open"}
             if schedule is None:
                 session.add(AssessmentSchedule(center=center, qualification=qualification, **schedule_values))

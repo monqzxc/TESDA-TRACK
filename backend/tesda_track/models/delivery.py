@@ -14,6 +14,7 @@ from sqlmodel import Field, Relationship, SQLModel
 from tesda_track.models.base import Timestamped, one_of
 from tesda_track.models.catalog import Qualification
 from tesda_track.models.learners import Learner
+from tesda_track.models.provenance import ProvenanceFields
 
 DELIVERY_MODES = ("institution_based", "enterprise_based", "community_based", "online", "unknown")
 SCHEDULE_STATUSES = ("open", "closed", "cancelled", "completed")
@@ -36,9 +37,9 @@ class Region(SQLModel, table=True):
     position: int
 
 
-class TrainingProvider(Timestamped, table=True):
+class TrainingProvider(ProvenanceFields, table=True):
     __tablename__ = "training_provider"
-    __table_args__ = LOCATION_CHECKS
+    __table_args__ = (*LOCATION_CHECKS, CheckConstraint("data_status IN ('verified', 'incomplete', 'example')", name="data_status_valid"))
 
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(sa_type=String(200))
@@ -56,7 +57,7 @@ class TrainingProvider(Timestamped, table=True):
     programs: list["TrainingProgram"] = Relationship(back_populates="provider")
 
 
-class AvailabilityFields(Timestamped):
+class AvailabilityFields(ProvenanceFields):
     availability_status: str = Field(default="unknown", sa_type=String(20))
     availability_source: str | None = Field(default=None, sa_type=String(500))
     availability_checked_at: datetime | None = Field(default=None, sa_type=DateTime(timezone=True))
@@ -66,6 +67,7 @@ class AvailabilityFields(Timestamped):
 class TrainingProgram(AvailabilityFields, table=True):
     __tablename__ = "training_program"
     __table_args__ = (
+        CheckConstraint("data_status IN ('verified', 'incomplete', 'example')", name="data_status_valid"),
         CheckConstraint("availability_status IN ('unknown', 'available', 'unavailable')", name="availability_status_valid"),
         CheckConstraint("availability_status = 'unknown' OR (availability_source IS NOT NULL AND availability_checked_at IS NOT NULL "
                         "AND availability_valid_until IS NOT NULL AND availability_valid_until > availability_checked_at)",
@@ -95,9 +97,9 @@ class TrainingProgram(AvailabilityFields, table=True):
     qualification: Qualification = Relationship()
 
 
-class AssessmentCenter(Timestamped, table=True):
+class AssessmentCenter(ProvenanceFields, table=True):
     __tablename__ = "assessment_center"
-    __table_args__ = LOCATION_CHECKS
+    __table_args__ = (*LOCATION_CHECKS, CheckConstraint("data_status IN ('verified', 'incomplete', 'example')", name="data_status_valid"))
 
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(sa_type=String(200))
@@ -115,6 +117,7 @@ class AssessmentCenter(Timestamped, table=True):
 class AssessmentSchedule(AvailabilityFields, table=True):
     __tablename__ = "assessment_schedule"
     __table_args__ = (
+        CheckConstraint("data_status IN ('verified', 'incomplete', 'example')", name="data_status_valid"),
         CheckConstraint("availability_status IN ('unknown', 'available', 'unavailable')", name="availability_status_valid"),
         CheckConstraint("availability_status = 'unknown' OR (availability_source IS NOT NULL AND availability_checked_at IS NOT NULL "
                         "AND availability_valid_until IS NOT NULL AND availability_valid_until > availability_checked_at)",

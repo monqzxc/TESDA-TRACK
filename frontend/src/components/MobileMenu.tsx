@@ -68,6 +68,7 @@ export function MobileMenu({
     <>
       <Button
         ref={menuButton}
+        data-tour="mobile-menu"
         className={
           'inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-12 border border-border bg-surface py-[0.4rem] pr-[0.9rem] pl-[0.7rem] font-semibold text-navy ' +
           'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:border-hover-border data-hovered:bg-soft ' +

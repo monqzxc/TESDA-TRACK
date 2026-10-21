@@ -41,7 +41,7 @@ const otherLink =
 export function Nav({ isAdmin = false, canManage = false, onNavigate }: NavProps) {
   const items = [...PAGES, ...(isAdmin ? [REPORTS] : []), ...(canManage ? [ADMIN] : [])]
   return (
-    <nav aria-label={en.nav.label}>
+    <nav aria-label={en.nav.label} data-tour="navigation">
       <ul className="m-0 flex list-none flex-col gap-[0.6rem] p-0">
         {items.map(({ to, label, icon }) => (
           <li key={to}>
@@ -80,7 +80,12 @@ export function SidebarContent({
       <Nav isAdmin={isAdmin} canManage={canManage} onNavigate={onNavigate} />
       {/* In the phone menu, Sign in closes the menu first: the dialog opens over the page, not over the menu. */}
       <div className="mt-auto pt-4">
-        <AccountControl variant="sidebar" onOpenSignIn={onNavigate} returnFocus={returnFocus} />
+        <AccountControl
+          variant="sidebar"
+          onOpenSignIn={onNavigate}
+          onNavigate={onNavigate}
+          returnFocus={returnFocus}
+        />
       </div>
     </div>
   )

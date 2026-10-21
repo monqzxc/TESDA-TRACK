@@ -33,6 +33,7 @@ export function AccountGate({ page, icon, heading, body, action }: AccountGatePr
         </p>
       ) : (
         <section
+          data-tour="account-gate"
           className="my-4 flex flex-col items-center rounded-18 border border-border bg-surface px-6 py-7 text-center max-xs:rounded-14 max-xs:px-[1.1rem] max-xs:py-5"
           aria-labelledby={headingId}
         >

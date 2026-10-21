@@ -316,6 +316,48 @@ describe('Find my pathway', () => {
       screen.getByRole('radio', { name: 'I have some experience', checked: true }),
     ).toBeInTheDocument()
   })
+
+  it('keeps the typed goal and every readiness answer after a failed check, and retries them', async () => {
+    serveFinderCatalog()
+    serveFinderApi()
+    const attempts: unknown[] = []
+    server.use(
+      http.post('*/api/v1/analysis/readiness', async ({ request }) => {
+        attempts.push(await request.clone().json())
+        if (attempts.length === 1) return HttpResponse.error()
+      }),
+    )
+    const user = userEvent.setup()
+    const { router } = await openFinder()
+    await user.type(
+      await screen.findByRole('textbox', { name: 'Or tell us in your own words' }),
+      GOAL,
+    )
+    await user.click(screen.getByRole('button', { name: 'Get recommendation' }))
+    await user.click(await screen.findByRole('button', { name: 'Check my readiness' }))
+    await screen.findByText('Part 1 of 3 · Basic skills')
+    await rateAll(user)
+    const answers = { ...useFinderStore.getState().answers[welding.code] }
+    await user.click(screen.getByRole('button', { name: 'Analyze my skills' }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'We couldn’t complete your readiness check. Your answers are still here.',
+    )
+    expect(router.state.location.pathname).toBe('/find/readiness')
+    expect(screen.getByText(GOAL)).toBeInTheDocument()
+    expect(useFinderStore.getState().goal).toBe(GOAL)
+    expect(useFinderStore.getState().answers[welding.code]).toEqual(answers)
+    expect(
+      screen.getByRole('radio', { name: 'I am not familiar with this', checked: true }),
+    ).toBeInTheDocument()
+    expect(useFinderStore.getState().checks[welding.code]).toBeUndefined()
+
+    await user.click(screen.getByRole('button', { name: 'Analyze my skills' }))
+    expect(await screen.findByRole('heading', { name: /focused training/ })).toBeInTheDocument()
+    expect(attempts).toHaveLength(2)
+    expect(attempts[1]).toEqual(attempts[0])
+    expect(useFinderStore.getState().answers[welding.code]).toEqual(answers)
+  })
 })
 
 describe('Find my pathway, signed in', () => {
@@ -443,6 +485,64 @@ describe('Find my pathway, signed in', () => {
     expect(await screen.findByText('Saved to My Progress')).toBeInTheDocument()
     // The journey is the learner's own now: the same work isn't sent again.
     expect(screen.queryByRole('button', { name: 'Save to profile' })).not.toBeInTheDocument()
+  })
+
+  it('explains a partial guest save and retries only the missing check without losing work', async () => {
+    serveAccountApi()
+    serveFinderCatalog()
+    const api = serveFinderApi()
+    const attempts: unknown[] = []
+    server.use(
+      http.post('*/api/v1/me/readiness-checks', async ({ request }) => {
+        attempts.push(await request.clone().json())
+        if (attempts.length === 1) return HttpResponse.error()
+      }),
+    )
+    const user = userEvent.setup()
+    await submitGoal(user)
+    await choose(user, /Do you already have welding experience/, '1–3 years')
+    await user.click(screen.getByRole('button', { name: 'Check my readiness' }))
+    await screen.findByText('Part 1 of 3 · Basic skills')
+    await rateAll(user)
+    await user.click(screen.getByRole('button', { name: 'Analyze my skills' }))
+    await screen.findByRole('heading', { name: /focused training/ })
+    const answers = { ...useFinderStore.getState().answers[welding.code] }
+    const check = useFinderStore.getState().checks[welding.code]
+
+    await user.click(screen.getByRole('button', { name: 'Save to profile' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Sign in' })
+    await user.type(within(dialog).getByLabelText('Email'), maria.email)
+    await user.type(within(dialog).getByLabelText('Password'), PASSWORD)
+    await user.click(within(dialog).getByRole('button', { name: 'Sign in' }))
+
+    expect(
+      await screen.findByText(/We saved your goal and your answers, but not the rest\./),
+    ).toBeVisible()
+    expect(useFinderStore.getState().goal).toBe(GOAL)
+    expect(useFinderStore.getState().experience).toBe('1-3')
+    expect(useFinderStore.getState().answers[welding.code]).toEqual(answers)
+    expect(useFinderStore.getState().checks[welding.code]).toEqual(check)
+    expect(useFinderStore.getState().checks[welding.code].saved).toBe(false)
+    expect(screen.getByText('75%')).toBeInTheDocument()
+    expect(sent(api.requests, 'POST', '/api/v1/me/recommendations')).toHaveLength(1)
+    const answerSaves = sent(api.requests, 'PATCH', '/api/v1/me/recommendations/session-1').length
+    expect(answerSaves).toBeGreaterThan(0)
+
+    await user.click(screen.getByRole('button', { name: 'Try saving again' }))
+
+    expect(
+      await screen.findByText(
+        'Saved to My Progress: your goal, your answers and your readiness check.',
+      ),
+    ).toBeVisible()
+    expect(attempts).toHaveLength(2)
+    expect(attempts[1]).toEqual(attempts[0])
+    expect(sent(api.requests, 'POST', '/api/v1/me/recommendations')).toHaveLength(1)
+    expect(sent(api.requests, 'PATCH', '/api/v1/me/recommendations/session-1')).toHaveLength(
+      answerSaves,
+    )
+    expect(useFinderStore.getState().answers[welding.code]).toEqual(answers)
+    expect(useFinderStore.getState().checks[welding.code].saved).toBe(true)
   })
 
   it('asks a guest to sign in to follow a pathway, then follows it', async () => {

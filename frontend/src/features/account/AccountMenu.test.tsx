@@ -68,7 +68,7 @@ describe('the account menu', () => {
       within(menu)
         .getAllByRole('menuitem')
         .map((item) => item.textContent),
-    ).toEqual(['Settings', 'Sign out'])
+    ).toEqual(['My Profile', 'Settings', 'Sign out'])
     expect(screen.queryByRole('radiogroup', { name: 'Theme' })).not.toBeInTheDocument()
   })
 

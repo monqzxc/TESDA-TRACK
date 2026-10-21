@@ -1,4 +1,4 @@
-import { screen, waitFor, within } from '@testing-library/react'
+import { act, screen, waitFor, within } from '@testing-library/react'
 import userEvent, { type UserEvent } from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
@@ -189,6 +189,123 @@ describe('Training & Assessment', () => {
     await user.type(screen.getByRole('searchbox', { name: 'Search location' }), 'Cebu City')
     expect(router.state.location.search).not.toMatch(/cebu/i)
     expect(await screen.findByText('Approximate distances from Cebu City')).toBeInTheDocument()
+  })
+
+  it('keeps typed search and location after a training-list failure and reloads without clearing them', async () => {
+    serveTrainingApi()
+    const user = userEvent.setup()
+    const { client, router } = await openTraining('/training?type=training')
+    await user.type(screen.getByRole('searchbox', { name: 'Search centers' }), 'manila')
+    await user.type(screen.getByRole('searchbox', { name: 'Search location' }), 'Cebu City')
+    const address = router.state.location.search
+    let attempts = 0
+    server.use(
+      http.get('*/api/v1/training-programs', () => {
+        attempts++
+        if (attempts === 1) return HttpResponse.error()
+      }),
+    )
+
+    await act(() => client.invalidateQueries({ queryKey: ['training', 'listings'] }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'We couldn’t load the training and assessment list. Your search and filters are still here.',
+    )
+    expect(
+      screen.getByText('Showing the last loaded results. They may be out of date.'),
+    ).toBeVisible()
+    expect(screen.getByRole('searchbox', { name: 'Search centers' })).toHaveValue('manila')
+    expect(screen.getByRole('searchbox', { name: 'Search location' })).toHaveValue('Cebu City')
+    expect(router.state.location.search).toBe(address)
+    expect(screen.getByRole('heading', { name: 'Manila Welding Institute' })).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Try loading the list again' }))
+
+    await waitFor(() => expect(screen.queryByRole('alert')).not.toBeInTheDocument())
+    expect(attempts).toBe(2)
+    expect(screen.getByRole('searchbox', { name: 'Search centers' })).toHaveValue('manila')
+    expect(screen.getByRole('searchbox', { name: 'Search location' })).toHaveValue('Cebu City')
+    expect(router.state.location.search).toBe(address)
+  })
+
+  it('offers a local retry on the first failed training list while keeping the typed search', async () => {
+    serveTrainingApi()
+    let attempts = 0
+    server.use(
+      http.get('*/api/v1/training-programs', () => {
+        attempts++
+        if (attempts === 1) return HttpResponse.error()
+      }),
+    )
+    const user = userEvent.setup()
+    const { router } = renderApp('/training?type=training&q=manila')
+    await screen.findByRole('alert')
+    expect(
+      screen.queryByRole('heading', { name: 'No centers match your search' }),
+    ).not.toBeInTheDocument()
+    expect(screen.getByRole('searchbox', { name: 'Search centers' })).toHaveValue('manila')
+    await user.type(screen.getByRole('searchbox', { name: 'Search location' }), 'Cebu City')
+
+    await user.click(screen.getByRole('button', { name: 'Try loading the list again' }))
+
+    expect(
+      await screen.findByRole('heading', { name: 'Manila Welding Institute' }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('searchbox', { name: 'Search centers' })).toHaveValue('manila')
+    expect(screen.getByRole('searchbox', { name: 'Search location' })).toHaveValue('Cebu City')
+    expect(router.state.location.search).toContain('q=manila')
+  })
+
+  it('keeps the requested region when its reference list fails and never shows nationwide results', async () => {
+    serveTrainingApi()
+    let attempts = 0
+    server.use(
+      http.get('*/api/v1/regions', () => {
+        attempts++
+        if (attempts === 1) return HttpResponse.error()
+      }),
+    )
+    const user = userEvent.setup()
+    const { router } = renderApp('/training?type=training&region=NCR')
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Your search and filters are still here.',
+    )
+    expect(screen.queryByRole('heading', { name: /^All results/ })).not.toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Cebu Skills Center' })).not.toBeInTheDocument()
+    const regionSection = screen
+      .getAllByText('Region', { exact: true })
+      .map((element) => element.closest('details'))
+      .find((element) => element !== null)!
+    const regionSummary = regionSection.querySelector('summary')!
+    expect(regionSummary).toHaveTextContent('NCR')
+    await user.click(regionSummary)
+    expect(within(regionSection).getByRole('button', { name: /Region$/ })).toHaveTextContent('NCR')
+    expect(new URLSearchParams(router.state.location.search).get('region')).toBe('NCR')
+    await user.type(screen.getByRole('searchbox', { name: 'Search centers' }), 'manila')
+    await user.type(screen.getByRole('searchbox', { name: 'Search location' }), 'Cebu City')
+    expect(new URLSearchParams(router.state.location.search).get('region')).toBe('NCR')
+
+    await user.click(screen.getByRole('button', { name: 'Try loading the list again' }))
+
+    expect(
+      await screen.findByRole('heading', { name: 'Manila Welding Institute' }),
+    ).toBeInTheDocument()
+    const restoredRegionSection = screen
+      .getAllByText('Region', { exact: true })
+      .map((element) => element.closest('details'))
+      .find((element) => element !== null)!
+    if (!restoredRegionSection.open) {
+      await user.click(restoredRegionSection.querySelector('summary')!)
+    }
+    expect(within(restoredRegionSection).getByRole('button', { name: /Region$/ })).toHaveTextContent(
+      'National Capital Region',
+    )
+    expect(screen.getByRole('searchbox', { name: 'Search centers' })).toHaveValue('manila')
+    expect(screen.getByRole('searchbox', { name: 'Search location' })).toHaveValue('Cebu City')
+    expect(new URLSearchParams(router.state.location.search).get('region')).toBe('NCR')
+    expect(screen.queryByRole('heading', { name: 'Cebu Skills Center' })).not.toBeInTheDocument()
+    expect(attempts).toBe(2)
   })
 
   it('measures from a typed place, nearest first, and gives no distance to a center without coordinates', async () => {

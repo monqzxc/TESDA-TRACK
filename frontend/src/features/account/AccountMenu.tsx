@@ -45,6 +45,8 @@ interface AccountControlProps {
   buttonClassName?: string
   /** Called before the sign-in dialog opens, e.g. to close the phone menu this sits in. */
   onOpenSignIn?: () => void
+  /** Called when a profile link is chosen, including a link to the current page. */
+  onNavigate?: () => void
   /** Where focus goes after the sign-in dialog when this control won't be on screen then (the closed phone menu). */
   returnFocus?: () => HTMLElement | null
 }
@@ -58,6 +60,7 @@ export function AccountControl({
   variant,
   buttonClassName,
   onOpenSignIn,
+  onNavigate,
   returnFocus,
 }: AccountControlProps) {
   const { learner, isChecking, openSignIn, notify } = useAuth()
@@ -138,6 +141,7 @@ export function AccountControl({
               learner={learner}
               variant={variant}
               buttonClass={buttonClass}
+              onNavigate={onNavigate}
               onShown={takeFocus}
               onSessionEnding={() => {
                 handOver.current = true

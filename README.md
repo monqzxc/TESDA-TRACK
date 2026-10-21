@@ -125,8 +125,8 @@ Pop-Location
 ```
 
 Expect the current migration to show `(head)`, and the seed command to finish without errors.
-**Do not skip migrations:** the API can pass its health check while signed-in features fail because
-a required table is missing.
+**Do not skip migrations:** `/api/v1/ready` checks that the database is at the migration graph's current head
+(now `0018`, including catalog provenance) and has PostGIS and pgvector. `/health` checks only database connectivity.
 
 ### 5. Start the API and frontend
 
@@ -141,6 +141,12 @@ cd backend
 
 Wait for `Application startup complete`. Check [API health](http://127.0.0.1:8000/health);
 it should return `{"status":"ok","database":"ok"}`.
+Check [API readiness](http://127.0.0.1:8000/api/v1/ready) before sending learner traffic: required database,
+migration-head and extension checks must be `ok`. Required failures return HTTP 503. Optional model/Skills
+Bridge degradation returns HTTP 200 with `status: degraded`, so keyword pathways remain available.
+Readiness reports the model's current loaded state and labels Skills Bridge `not_probed` (or `disabled`);
+it never downloads a model or calls an external service during a health check. Test Skills Explorer separately.
+Docker and Caddy use this readiness endpoint.
 The interactive API documentation is at [API docs](http://127.0.0.1:8000/api/docs).
 
 **Terminal 2 — React frontend:**
@@ -223,7 +229,18 @@ With `EMBEDDING_MODEL` and `EMBEDDING_MODEL_PATH` unset, this downloads the defa
 (about 470 MB). Expect an `Embeddings: ... created, ... updated.` message. Restart the API afterwards.
 If you want to finish setup without the download, set `SEMANTIC_SEARCH_ENABLED=false` and restart the API.
 
-For a shared fine-tuned model, follow [the model setup guide](backend/models/README.md).
+The accepted pilot model is **v3**, `tesda-track/tesda-e5-small-v3`, with calibration
+`3.5 / 5.5 / 0.3 / 20` (floor / ceiling / keyword weight / minimum score). Follow
+[the model setup guide](backend/models/README.md) to download it, then set:
+
+```dotenv
+EMBEDDING_MODEL=tesda-track/tesda-e5-small-v3
+EMBEDDING_MODEL_PATH=backend/models/tesda-e5-small-v3
+DOCKER_EMBEDDING_MODEL_PATH=/app/finetuned/tesda-e5-small-v3
+```
+
+Compose uses the same v3 name and container path during build and runtime. V4 remains an evaluation candidate;
+[the decision record](docs/ml/rounds.md#pilot-decision-21-october-2026) explains the evidence and fixed acceptance gates.
 Model folders are not included in Git. Set both its model name and local folder path, then sync again;
 stored vectors belong to a particular model.
 
@@ -493,16 +510,13 @@ whole catalog's. I tested 32 sample goals against the 319-qualification catalog:
 The band `SEMANTIC_Z_FLOOR` (3.0) to `SEMANTIC_Z_CEILING` (5.0) favors precision. A goal the model
 isn't sure about gets no match rather than a wrong one, and the Filipino keywords cover common trades the
 model misses. Recalibrate the band once the pilot collects real goals and outcomes.
-`TESDA_MODEL_TESTS=1` runs a guard test against the real catalog. It currently fails on 2 of its 13 goals with the
-adopted local model (a solar-panel goal ranks Carpentry first; "work in a call center" scores 21, under the minimum
-of 25) and passes with the base model; see `docs/ml/2026-10-09-matching-model-evaluation.md`. Three job titles
-(Mechanical Drafting NC I, Machining NC III, FCAW NC III) were corrected after the model was trained, and they were
-present in its training data; the model was not retrained.
+`TESDA_MODEL_TESTS=1` runs the real-model acceptance test against the committed 319-qualification catalog.
+It checks fixed metric thresholds on the 120 reusable v1 test goals and an explicit must-match/must-reject list.
+Thresholds and goal ownership are committed in `backend/training/model_acceptance.json`; they are not calibrated
+during a test run. These engineering regression gates do not replace expert review or the sealed evaluation.
 
-The pilot serves a copy of the model fine-tuned on the TESDA catalog, `tesda-track/tesda-e5-small-v1`,
-with its own band in `calibration.json`: on held-out goals it ranked the right qualification first more
-often, in English, Filipino and Taglish, and still gave no match to almost all goals with no TVET
-equivalent ([evaluation](docs/ml/2026-10-09-matching-model-evaluation.md)). The model folder is not in git;
+The pilot serves the accepted TESDA fine-tune, `tesda-track/tesda-e5-small-v3`,
+with its own band in `calibration.json` ([comparison](docs/ml/2026-10-20-matching-model-v1-v4-comparison.md)). The model folder is not in git;
 `backend/models/README.md` explains how to serve it. With `EMBEDDING_MODEL` and `EMBEDDING_MODEL_PATH` unset,
 the API uses the base model above.
 
@@ -808,15 +822,14 @@ inside a transaction that is rolled back. The UI tests drive the Streamlit app w
 the API served over HTTP.
 
 The tests don't load the embedding model. They use a small stand-in that treats texts sharing words as
-similar. Set `TESDA_MODEL_TESTS=1` to also run the real-model guard test; with the adopted local model it
-currently fails on 2 of 13 goals (see `docs/ml/2026-10-09-matching-model-evaluation.md`), and it passes with the
-base model.
+similar. Set `TESDA_MODEL_TESTS=1` to also run the real-model acceptance test with the fixed metric thresholds
+and must-match goals recorded in [the model decision](docs/ml/rounds.md#pilot-decision-21-october-2026).
 
 To include the real-model check in PowerShell (uses the model configured in `.env`):
 
 ```powershell
 $env:TESDA_MODEL_TESTS = "1"
-./.venv/Scripts/python.exe -m pytest backend/tests/test_semantic.py
+./.venv/Scripts/python.exe -m pytest backend/tests/test_model_acceptance.py
 Remove-Item Env:TESDA_MODEL_TESTS
 ```
 

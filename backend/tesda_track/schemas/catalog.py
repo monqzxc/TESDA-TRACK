@@ -1,4 +1,7 @@
 from pydantic import BaseModel, ConfigDict
+from pydantic import Field
+
+from tesda_track.schemas.provenance import ProvenancePublic
 
 
 class CompetencyPublic(BaseModel):
@@ -14,6 +17,7 @@ class QualificationSummary(BaseModel):
     code: str
     name: str
     sector: str
+    provenance: ProvenancePublic = Field(default_factory=ProvenancePublic)
 
 
 class QualificationPublic(QualificationSummary):

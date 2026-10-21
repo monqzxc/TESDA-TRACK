@@ -19,6 +19,7 @@ import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { AccountGate } from '../account/AccountGate.tsx'
+import { RecommendationAnalytics } from '../reports/RecommendationAnalytics.tsx'
 import { McpToolSelector, toolTitle } from './McpToolSelector.tsx'
 import { McpActivity } from './McpActivity.tsx'
 import {
@@ -1342,8 +1343,9 @@ function RecommendationManagement() {
           Recommendation management
         </h2>
         <p className="text-14 text-muted">
-          Monitor matching quality and qualification demand. Results are aggregate; learner goals
-          and recommendations remain private.
+          Monitor matching quality, positive feedback, and qualification demand to decide where
+          recommendation improvements need review. Results are aggregate; learner goals and
+          recommendations remain private.
         </p>
         <PeriodFilter value={filter} />
         {(matching.isError || demand.isError) && (
@@ -1380,6 +1382,7 @@ function RecommendationManagement() {
           />
         </div>
       </section>
+      {!filter.invalid && <RecommendationAnalytics period={filter.period} />}
       <section className={card} aria-labelledby="demand-heading">
         <h3 id="demand-heading" className="text-18 text-navy">
           Qualification demand
@@ -1387,7 +1390,7 @@ function RecommendationManagement() {
         {active.length ? (
           // Keyboard users can scroll the demand table on narrow screens.
           // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-          <div className={tableBox} role="region" aria-labelledby="demand-heading" tabIndex={0}>
+          <div className={tableBox} role="region" aria-label="Qualification demand table" tabIndex={0}>
             <table className="w-full border-collapse">
               <thead>
                 <tr>

@@ -43,13 +43,9 @@ def test_dev_and_test_halves_are_balanced():
 
 
 def test_the_unit_test_goals_are_in_the_dev_half():
-    import importlib.util
-
-    spec = importlib.util.spec_from_file_location("semantic_goals", Path(__file__).with_name("test_semantic.py"))
-    module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(module)
+    policy = json.loads((GOALS_FILE.parent.parent / "model_acceptance.json").read_text(encoding="utf-8"))
     by_goal = {g["goal"]: g for g in load()}
-    for goal, name in module.RELATED_GOALS.items():
+    for goal, name in policy["must_match"].items():
         assert by_goal[goal]["split"] == "dev" and name in by_goal[goal]["accept"]
-    for goal in module.NO_TVET_MATCH:
+    for goal in policy["must_reject"]:
         assert by_goal[goal]["split"] == "dev" and by_goal[goal]["accept"] == []

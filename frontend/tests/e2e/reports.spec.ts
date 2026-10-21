@@ -1,5 +1,6 @@
 import { AxeBuilder } from '@axe-core/playwright'
 import { expect, test, type Page } from '@playwright/test'
+import { exampleRecommendationAnalytics } from '../../src/test/recommendationAnalytics.ts'
 
 // Reports for an administrator: every report in both themes, on a phone and a desktop, with axe; a period and a
 // qualification chosen with the keyboard; and a backwards period refused before any request. The API is answered
@@ -16,6 +17,16 @@ const ADMIN = {
   email: 'admin@example.com',
   full_name: 'Ana Reyes',
   role: 'admin',
+  permissions: [
+    'assessments:manage',
+    'integrations:manage',
+    'mcp:manage',
+    'pathways:manage',
+    'reports:read',
+    'training:manage',
+    'users:manage',
+    'verifications:manage',
+  ],
   created_at: '2026-10-01T08:00:00Z',
 }
 const CATALOG = [
@@ -77,6 +88,8 @@ async function serveReports(page: Page): Promise<Served> {
     demandRow(1, 12, 48),
     demandRow(2, 0, null),
   ])
+  await report('recommendation-analytics', () => exampleRecommendationAnalytics)
+  await report('matching', () => ({ requests: 45, no_match: 3, no_match_rate: 3 / 45, days: [] }))
   await report('skill-gaps', (url) =>
     [
       'Prepare tools and equipment',
@@ -147,6 +160,12 @@ for (const colorScheme of ['light', 'dark'] as const) {
       await expect(page.getByRole('heading', { level: 2, name: 'Learner journey' })).toBeVisible()
       await expect(gapTable(page)).toBeVisible()
       await expect(page.getByText('74% satisfied: 31 of 42 answers.')).toBeVisible()
+      await expect(
+        page.getByRole('table', {
+          name: 'Recommendation improvement priorities by qualification, model and intent',
+        }),
+      ).toBeVisible()
+      await expect(page.getByText('Needs more learners', { exact: true })).toBeVisible()
       await expectAccessible(page)
     })
   }
@@ -154,6 +173,22 @@ for (const colorScheme of ['light', 'dark'] as const) {
 
 test.describe('on a desktop', () => {
   test.use({ viewport: SIZES.desktop })
+
+  test('recommendation analytics are available in the admin Recommendation tab', async ({
+    page,
+  }, testInfo) => {
+    await serveReports(page)
+    await page.goto('/admin?section=recommendations')
+    const analytics = page.getByRole('region', { name: 'Recommendation analytics', exact: true })
+    await expect(
+      analytics.getByRole('table', {
+        name: 'Recommendation improvement priorities by qualification, model and intent',
+      }),
+    ).toBeVisible()
+    await expect(analytics.getByText('Needs more learners', { exact: true })).toBeVisible()
+    await expectAccessible(page)
+    await analytics.screenshot({ path: testInfo.outputPath('recommendation-analytics.png') })
+  })
 
   test('a period and a qualification chosen with the keyboard', async ({ page }) => {
     const served = await serveReports(page)

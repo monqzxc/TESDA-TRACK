@@ -1,4 +1,5 @@
-// All interface copy lives here, so a Filipino version can be added later (US-15).
+// All interface copy is collected here, so a Filipino version can be added later (US-15).
+import { helpCopy } from './help.ts'
 
 /** A figure in a line of copy, grouped as the page shows figures: 4,981. */
 const figure = (n: number) => n.toLocaleString('en-US')
@@ -14,6 +15,7 @@ const list = (items: readonly string[]) =>
     : (items[0] ?? '')
 
 export const en = {
+  help: helpCopy,
   app: {
     name: 'TESDA-TRACK',
   },
@@ -309,6 +311,11 @@ export const en = {
       heading: 'Admin',
       lead: 'Manage learner access, MCP partners, recommendations, feedback, and pilot operations.',
     },
+    profile: {
+      title: 'My Profile · TESDA-TRACK',
+      heading: 'My Profile',
+      lead: 'Your account details, together in one place.',
+    },
     signIn: {
       title: 'Sign in · TESDA-TRACK',
       heading: 'Sign in',
@@ -582,6 +589,8 @@ export const en = {
       next: (category: string) => `Next: ${category} skills`,
       analyze: 'Analyze my skills',
       analyzing: 'Analyzing your skills…',
+      failed: (message: string) =>
+        `We couldn’t complete your readiness check. Your answers are still here. ${message}`,
       // Nothing is sent until every skill is rated (US-06).
       unanswered: (left: number, category: string) =>
         `Rate every skill before you analyze. ${figure(left)} ${left === 1 ? 'is' : 'are'} still unrated, starting in ${category} skills.`,
@@ -655,6 +664,9 @@ export const en = {
     useLocation: 'Use my location',
     search: 'Search centers',
     searchPlaceholder: 'Search by location, center name, or program…',
+    loadFailed: 'We couldn’t load the training and assessment list. Your search and filters are still here.',
+    retryLoad: 'Try loading the list again',
+    staleResults: 'Showing the last loaded results. They may be out of date.',
     kinds: { training: 'Training center', assessment: 'Assessment center' },
     bothKinds: 'Training and assessment centers',
     filters: {
@@ -1312,6 +1324,7 @@ export const en = {
       learner: 'Learner account',
       signOut: 'Sign out',
       settings: 'Settings',
+      profile: 'My Profile',
       closeSettings: 'Close settings',
       appearance: 'Appearance',
       // The Streamlit panel's "Your data & privacy" expander.
@@ -1321,6 +1334,36 @@ export const en = {
       },
       download: 'Download my data (JSON)',
       delete: 'Delete my account',
+    },
+    profile: {
+      heading: 'Profile',
+      view: 'View profile',
+      details: 'Account details',
+      fullName: 'Full name',
+      email: 'Email address',
+      role: 'Account role',
+      joined: 'Member since',
+      roleName: (role: string) =>
+        role === 'admin'
+          ? 'Administrator'
+          : role
+              .split(/[_\s-]+/)
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' '),
+      journey: {
+        heading: 'Continue your journey',
+        body: 'See your saved recommendations, readiness checks, and achievements.',
+        action: 'View my progress',
+      },
+      privacy: {
+        heading: 'Your privacy matters',
+        body: 'Learn how TESDA-TRACK uses and protects your account information.',
+      },
+      gate: {
+        heading: 'Your profile starts with an account',
+        body: 'Sign in to view your account details and keep your learning journey with you.',
+        action: 'Sign in or create an account',
+      },
     },
     // A part of the account's code couldn't be downloaded (offline, or a new release replaced the old files).
     // Try again reloads the app, as on a page that failed to load.

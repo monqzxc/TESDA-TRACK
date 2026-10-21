@@ -8,6 +8,7 @@ from pydantic import AwareDatetime, BaseModel, ConfigDict, EmailStr, Field, Stri
 
 from tesda_track.models import APPLICATION_STATUSES, ASSESSMENT_RESULTS, DELIVERY_MODES, SCHEDULE_STATUSES
 from tesda_track.schemas.catalog import QualificationSummary
+from tesda_track.schemas.provenance import ProvenancePatch, ProvenancePublic, ProvenanceWrite
 from tesda_track.schemas.verification import (AvailabilityPatch, AvailabilityPublic, AvailabilityWrite,
                                              VerificationPublic)
 
@@ -37,7 +38,7 @@ class RegionPublic(BaseModel):
     longitude: float
 
 
-class _Site(BaseModel):
+class _Site(ProvenanceWrite):
     """Fields shared by training providers and assessment centers."""
     name: Text200
     region_code: RegionCode
@@ -55,7 +56,7 @@ class _Site(BaseModel):
         return self
 
 
-class _SiteUpdate(BaseModel):
+class _SiteUpdate(ProvenancePatch):
     name: Text200 | None = None
     region_code: RegionCode | None = None
     province: OptionalText = None
@@ -78,6 +79,7 @@ class TrainingProviderUpdate(_SiteUpdate):
 
 class TrainingProviderPublic(BaseModel):
     model_config = ConfigDict(from_attributes=True)
+    provenance: ProvenancePublic = Field(default_factory=ProvenancePublic)
 
     id: int
     name: str
@@ -95,6 +97,7 @@ class TrainingProviderPublic(BaseModel):
 
 class SiteSummary(BaseModel):
     model_config = ConfigDict(from_attributes=True)
+    provenance: ProvenancePublic = Field(default_factory=ProvenancePublic)
 
     id: int
     name: str
@@ -104,7 +107,7 @@ class SiteSummary(BaseModel):
     longitude: float | None
 
 
-class TrainingProgramCreate(AvailabilityWrite):
+class TrainingProgramCreate(AvailabilityWrite, ProvenanceWrite):
     provider_id: int
     qualification_code: QualificationCode
     title: Text200
@@ -124,7 +127,7 @@ class TrainingProgramCreate(AvailabilityWrite):
         return self
 
 
-class TrainingProgramUpdate(AvailabilityPatch):
+class TrainingProgramUpdate(AvailabilityPatch, ProvenancePatch):
     title: Text200 | None = None
     description: Annotated[str, StringConstraints(strip_whitespace=True, max_length=5000)] | None = None
     delivery_mode: DeliveryMode | None = None
@@ -138,6 +141,7 @@ class TrainingProgramUpdate(AvailabilityPatch):
 
 
 class TrainingProgramPublic(BaseModel):
+    provenance: ProvenancePublic = Field(default_factory=ProvenancePublic)
     verification: VerificationPublic = Field(default_factory=VerificationPublic)
     availability: AvailabilityPublic = Field(default_factory=AvailabilityPublic)
     id: int
@@ -166,6 +170,7 @@ class AssessmentCenterUpdate(_SiteUpdate):
 
 class AssessmentCenterPublic(BaseModel):
     model_config = ConfigDict(from_attributes=True)
+    provenance: ProvenancePublic = Field(default_factory=ProvenancePublic)
 
     id: int
     name: str
@@ -180,7 +185,7 @@ class AssessmentCenterPublic(BaseModel):
     is_active: bool
 
 
-class AssessmentScheduleCreate(AvailabilityWrite):
+class AssessmentScheduleCreate(AvailabilityWrite, ProvenanceWrite):
     center_id: int
     qualification_code: QualificationCode
     scheduled_at: AwareDatetime
@@ -188,7 +193,7 @@ class AssessmentScheduleCreate(AvailabilityWrite):
     fee: Money | None = None
 
 
-class AssessmentScheduleUpdate(AvailabilityPatch):
+class AssessmentScheduleUpdate(AvailabilityPatch, ProvenancePatch):
     scheduled_at: AwareDatetime | None = None
     slots: Annotated[int, Field(gt=0)] | None = None
     fee: Money | None = None
@@ -196,6 +201,7 @@ class AssessmentScheduleUpdate(AvailabilityPatch):
 
 
 class AssessmentSchedulePublic(BaseModel):
+    provenance: ProvenancePublic = Field(default_factory=ProvenancePublic)
     verification: VerificationPublic = Field(default_factory=VerificationPublic)
     availability: AvailabilityPublic = Field(default_factory=AvailabilityPublic)
     id: int

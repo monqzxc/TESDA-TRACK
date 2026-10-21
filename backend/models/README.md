@@ -14,7 +14,8 @@ hf download Nyanta19/tesda-e5-small-v3 --local-dir backend/models/tesda-e5-small
 ```
 
 Then serve it as described below, with `EMBEDDING_MODEL=tesda-track/tesda-e5-small-v3` and
-`EMBEDDING_MODEL_PATH=backend/models/tesda-e5-small-v3`.
+`EMBEDDING_MODEL_PATH=backend/models/tesda-e5-small-v3`. This is the accepted pilot model as of
+21 October 2026 (TASK-085); see [the decision and acceptance gates](../../docs/ml/rounds.md#pilot-decision-21-october-2026).
 
 The previous model stays published at
 [huggingface.co/Nyanta19/tesda-e5-small-v2](https://huggingface.co/Nyanta19/tesda-e5-small-v2) for rollback.
@@ -41,6 +42,8 @@ Serve one locally by setting `EMBEDDING_MODEL=tesda-track/<name>` and `EMBEDDING
 in `.env`, then run `python -m tesda_track.embeddings sync` (embeddings are kept per model name).
 
 Docker: the build copies this folder to `/app/finetuned/` without `model.safetensors`, `checkpoints/` or run logs
-(`backend/.dockerignore`). Set `EMBEDDING_MODEL_PATH=/app/finetuned/<name>` and `EMBEDDING_MODEL=tesda-track/<name>`
-in `.env` before `docker compose up -d --build`. With neither set the image uses the default model, and a missing or
-broken folder leaves the API on keyword matching.
+(`backend/.dockerignore`). Keep `EMBEDDING_MODEL_PATH=backend/models/tesda-e5-small-v3` for local commands and
+set `DOCKER_EMBEDDING_MODEL_PATH=/app/finetuned/tesda-e5-small-v3` in `.env` before `docker compose up -d --build`.
+Compose uses v3 for both build and runtime by default. Download the folder **before** building; a missing model
+fails the image warmup, while a runtime load failure leaves the API on keyword matching and readiness degraded.
+Its accepted calibration is `3.5 / 5.5 / 0.3 / 20` (floor / ceiling / keyword weight / minimum score).

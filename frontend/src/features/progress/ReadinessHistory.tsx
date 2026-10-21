@@ -47,7 +47,7 @@ export function ReadinessHistory({ checks }: { checks: readonly ReadinessCheck[]
   }))
 
   return (
-    <section aria-labelledby={headingId} className={ui.card}>
+    <section data-tour="progress-readiness" aria-labelledby={headingId} className={ui.card}>
       <h2 id={headingId} className={ui.sectionHeading}>
         {copy.heading}
       </h2>

@@ -24,6 +24,7 @@ const PAGES = [
   // Skills Bridge is off on the test server, so Skills Explorer says so without the catalog.
   ['/skills', 'Skills Explorer', null, 'Skills Explorer · TESDA-TRACK', false],
   ['/reports', 'Reports', null, 'Reports · TESDA-TRACK', false],
+  ['/profile', 'My Profile', null, 'My Profile · TESDA-TRACK', false],
   ['/sign-in', 'Sign in', null, 'Sign in · TESDA-TRACK', false],
   ['/privacy', 'Privacy policy', null, 'Privacy policy · TESDA-TRACK', false],
   ['/no-such-page', 'Page not found', null, 'Page not found · TESDA-TRACK', false],

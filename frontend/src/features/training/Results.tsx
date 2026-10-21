@@ -1,6 +1,7 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { Button } from 'react-aria-components'
 import { EmptyState } from '../../components/EmptyState.tsx'
+import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { Icon } from '../../components/Icon.tsx'
 import centerPhoto from '../../components/img/center-thumb.jpg'
 import { SelectField } from '../../components/SelectField.tsx'
@@ -71,6 +72,7 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
 
   return (
     <section
+      data-tour="training-results"
       aria-labelledby={headingId}
       className="flex min-w-0 flex-col rounded-18 border border-border bg-surface p-4 max-xs:rounded-14 max-xs:p-[0.85rem]"
     >
@@ -181,6 +183,7 @@ function CenterRow({
           {placeLabel(center)}
         </p>
         <KindBadges center={center} saved={saved} />
+        <DataProvenance value={center.provenance} compact />
         <p className="m-0 text-13 text-muted">{summary(center, today)}</p>
       </div>
       {/* Its name starts with what it shows, then says which center (label in name). */}

@@ -12,6 +12,7 @@ export const paths = {
   skills: '/skills',
   reports: '/reports',
   admin: '/admin',
+  profile: '/profile',
   signIn: '/sign-in',
   privacy: '/privacy',
 } as const

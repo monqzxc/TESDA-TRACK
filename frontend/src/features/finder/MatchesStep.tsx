@@ -53,7 +53,7 @@ export function MatchesStep({ journey, context, catalog, onCheck }: MatchesStepP
       <StartingPoint journey={journey} profile={context.matchedProfile ?? context.profile} />
 
       {/* Qualifications for you: the heading with its link, then one wide card per match. */}
-      <section aria-labelledby={headingId} className="mt-3 flex flex-col gap-4">
+      <section data-tour="matches" aria-labelledby={headingId} className="mt-3 flex flex-col gap-4">
         <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
           <div className="flex min-w-0 items-start gap-3">
             <Icon name="sparkle" size={26} className="mt-[0.2rem] shrink-0 text-[#f5a524]" />
@@ -198,7 +198,11 @@ function StartingPoint({ journey, profile }: { journey: Journey; profile: Profil
   const skills = profile.existing_skills ?? []
 
   return (
-    <section aria-labelledby={headingId} className={cx(card, '@container')}>
+    <section
+      data-tour="starting-point"
+      aria-labelledby={headingId}
+      className={cx(card, '@container')}
+    >
       <div className={start}>
         <div className="[grid-area:head]">
           <CardHeading icon="clipboard" id={headingId} description={startCopy.lead}>

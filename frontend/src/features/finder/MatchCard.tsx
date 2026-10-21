@@ -2,6 +2,7 @@ import { useId } from 'react'
 import { Button } from 'react-aria-components'
 import type { Qualification } from '../../api/queries.ts'
 import { Icon } from '../../components/Icon.tsx'
+import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { ScoreRing, SkillBars } from '../../components/Meters.tsx'
 import { QualificationMedia } from '../../components/QualificationMedia.tsx'
 import { TagChips } from '../../components/TagChips.tsx'
@@ -83,6 +84,7 @@ export function MatchCard({
             </div>
             {blurb && <p className="mt-0 mb-[0.8rem] text-15 leading-[1.55] text-ink">{blurb}</p>}
             <TagChips tags={qualificationTags(qualification, catalogNames)} />
+            <DataProvenance value={qualification.provenance} compact />
           </div>
         </div>
       </div>

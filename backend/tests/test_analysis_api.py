@@ -1,4 +1,5 @@
 import pytest
+from unittest.mock import ANY
 
 
 def competency_ids(client, code):
@@ -31,7 +32,10 @@ def test_matches_rank_qualifications_and_refine_intent(client):
     assert body["profile"]["intent"] == "assessment_recommendation"
     assert body["matches"][0] == {
         "qualification": {"code": "SMAW-NC-II", "name": "Shielded Metal Arc Welding (SMAW) NC II",
-                          "sector": "Metals and Engineering"},
+                          "sector": "Metals and Engineering", "provenance": {
+                              "status": "incomplete", "source_name": "TESDA-TRACK curated qualification catalog",
+                              "source_reference": "backend/seed/qualifications.json", "source_url": None,
+                              "source_updated_on": None, "reviewed_at": None, "record_updated_at": ANY}},
         "score": 95, "reason": "Matched your words: welder", "components": None}
 
 

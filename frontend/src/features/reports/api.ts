@@ -16,6 +16,7 @@ export type RegionSupply = components['schemas']['RegionSupply']
 export type FeedbackSummary = components['schemas']['FeedbackSummary']
 export type FeedbackCount = components['schemas']['FeedbackCount']
 export type MatchingReport = components['schemas']['MatchingReport']
+export type RecommendationAnalytics = components['schemas']['RecommendationAnalytics']
 
 /** Inclusive dates (YYYY-MM-DD) in Philippine time; null leaves that end open. */
 export interface Period {
@@ -90,6 +91,19 @@ export const matchingQuery = (period: Period) =>
     queryFn: ({ signal }) =>
       unwrap(
         api.GET('/api/v1/admin/reports/matching', { params: { query: dates(period) }, signal }),
+      ),
+    placeholderData: keepPreviousData,
+  })
+
+export const recommendationAnalyticsQuery = (period: Period) =>
+  queryOptions<RecommendationAnalytics, ApiError>({
+    queryKey: ['admin', 'reports', 'recommendation-analytics', period.from, period.to],
+    queryFn: ({ signal }) =>
+      unwrap(
+        api.GET('/api/v1/admin/reports/recommendation-analytics', {
+          params: { query: dates(period) },
+          signal,
+        }),
       ),
     placeholderData: keepPreviousData,
   })

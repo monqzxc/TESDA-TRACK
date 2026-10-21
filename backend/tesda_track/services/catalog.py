@@ -100,7 +100,8 @@ def rule_view(qualification: Qualification) -> dict:
 
 
 def summary(qualification: Qualification) -> QualificationSummary:
-    return QualificationSummary(code=qualification.code, name=qualification.name, sector=qualification.sector.name)
+    return QualificationSummary(code=qualification.code, name=qualification.name, sector=qualification.sector.name,
+                                provenance=qualification.provenance)
 
 
 def to_public(qualification: Qualification) -> QualificationPublic:

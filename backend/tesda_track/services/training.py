@@ -7,6 +7,7 @@ from tesda_track.models import Qualification, TrainingProgram, TrainingProvider
 from tesda_track.schemas.delivery import (ProgramSearch, SiteSummary, TrainingProgramCreate, TrainingProgramPublic,
                                           TrainingProgramUpdate, TrainingProviderCreate)
 from tesda_track.services import catalog, geo, sites, verification
+from tesda_track.services.provenance import validate_update
 
 PROGRAM_REQUIRED_FIELDS = {"title", "delivery_mode", "scholarship_available", "is_active"}
 
@@ -15,6 +16,7 @@ def program_public(program: TrainingProgram, distance_km: float | None = None) -
     session = object_session(program)
     record = verification.get(session, "training", program.provider_id, program.qualification_id) if session else None
     return TrainingProgramPublic(
+        provenance=program.provenance,
         verification=verification.public(record), availability=verification.availability(program),
         id=program.id, title=program.title, description=program.description,
         qualification=catalog.summary(program.qualification), provider=SiteSummary.model_validate(program.provider),
@@ -65,6 +67,7 @@ def create_program(session: Session, request: TrainingProgramCreate) -> Training
 
 
 def update_program(session: Session, program: TrainingProgram, request: TrainingProgramUpdate) -> TrainingProgram:
+    validate_update(program, request)
     verification.validate_availability_update(program, request)
     fields = request.model_fields_set
     start = request.start_date if "start_date" in fields else program.start_date

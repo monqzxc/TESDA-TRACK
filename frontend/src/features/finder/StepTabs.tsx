@@ -67,6 +67,7 @@ export function StepTabs({ current, unlocked }: StepTabsProps) {
   const last = copy.names.length - 1
   return (
     <nav
+      data-tour="finder-steps"
       aria-label={copy.label}
       className="@container mt-[0.85rem] rounded-18 border border-border bg-surface p-[0.4rem] shadow-[0_8px_22px_-16px_rgb(var(--track-shadow-rgb)/0.25)] max-xs:p-[0.35rem] md:sticky md:top-3 md:z-15"
     >

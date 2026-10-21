@@ -4,6 +4,7 @@ from sqlmodel import Session, select
 from tesda_track.errors import InvalidRequestError
 from tesda_track.models import Region
 from tesda_track.schemas.delivery import check_location
+from tesda_track.services.provenance import validate_update
 
 REQUIRED_FIELDS = {"name", "region_code", "is_active"}
 
@@ -19,6 +20,7 @@ def require_region(session: Session, code: str) -> None:
 
 def apply_update(session: Session, site, request) -> None:
     """PATCH semantics: omitted fields stay; null clears optional fields; the location stays complete."""
+    validate_update(site, request)
     fields = request.model_fields_set
     if request.region_code is not None and "region_code" in fields:
         require_region(session, request.region_code)

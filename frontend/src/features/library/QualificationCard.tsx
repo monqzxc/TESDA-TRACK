@@ -2,6 +2,7 @@ import { useId } from 'react'
 import { Button } from 'react-aria-components'
 import type { Qualification } from '../../api/queries.ts'
 import { Icon } from '../../components/Icon.tsx'
+import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { QualificationMedia } from '../../components/QualificationMedia.tsx'
 import { TagChips } from '../../components/TagChips.tsx'
 import { en } from '../../copy/en.ts'
@@ -33,6 +34,7 @@ export function QualificationCard({
   const groups = competencyGroups(qualification.competencies)
   return (
     <article
+      data-tour="qualification-card"
       className="flex h-full flex-col gap-[0.6rem] rounded-16 border border-border bg-surface px-5 py-[1.15rem] shadow-card"
       aria-labelledby={headingId}
     >
@@ -54,6 +56,7 @@ export function QualificationCard({
         {qualification.possible_jobs.join(', ') || copy.noCareers}
       </p>
       <TagChips tags={qualificationTags(qualification, catalogNames)} />
+      <DataProvenance value={qualification.provenance} />
       {groups.length > 0 && (
         // Streamlit's expander.
         <details className="group mt-[0.35rem] rounded-12 border border-border">
@@ -80,7 +83,11 @@ export function QualificationCard({
         </details>
       )}
       {/* The button sits at the foot of the card, so cards side by side line up. */}
-      <Button className={cx(button({ wide: true }), 'mt-auto')} onPress={onExplore}>
+      <Button
+        data-tour="qualification-explore"
+        className={cx(button({ wide: true }), 'mt-auto')}
+        onPress={onExplore}
+      >
         {copy.explore}
         <Icon name="arrowRight" />
       </Button>
