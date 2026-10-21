@@ -18,7 +18,7 @@ const copy = en.training.results
 const note = 'm-0 flex items-center gap-[0.35rem] text-13 text-muted'
 
 /** Other centers listed at first, and how many more Show more adds. */
-const LIST_STEP = 20
+const LIST_STEP = 2
 
 /**
  * A request to bring a center's details into view: acted on once that center is the one shown in full (choosing it
@@ -139,7 +139,7 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
               {others.length > limit && (
                 <Button
                   className={button({ variant: 'tertiary', wide: true })}
-                  onPress={() => setLimit(limit + LIST_STEP)}
+                  onPress={() => setLimit((current) => current + LIST_STEP)}
                 >
                   <Icon name="chevron" />
                   {copy.showMore(others.length - limit)}

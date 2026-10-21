@@ -96,8 +96,9 @@ afterEach(() => {
 })
 
 describe('Training & Assessment', () => {
-  it('lists every center, the first in full with its programs, and the rest as rows', async () => {
+  it('features the first center and initially shows two other centers before Show more', async () => {
     serveTrainingApi()
+    const user = userEvent.setup()
     await openTraining()
 
     expect(screen.getByRole('heading', { level: 2, name: 'All results (4)' })).toBeInTheDocument()
@@ -112,6 +113,14 @@ describe('Training & Assessment', () => {
     // A recorded zero is free.
     expect(screen.getByText(/Flexible start • Free/)).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Other centers (3)' })).toBeInTheDocument()
+    expect(otherRows()).toHaveLength(2)
+    const showMore = within(results()).getByRole('button', { name: 'Show more (1 more)' })
+    expect(showMore.previousElementSibling).toHaveProperty('tagName', 'UL')
+
+    await user.click(showMore)
+
+    expect(otherRows()).toHaveLength(3)
+    expect(within(results()).queryByRole('button', { name: /Show more/ })).not.toBeInTheDocument()
     expect(within(await screen.findByTestId('map')).getAllByRole('listitem')).toHaveLength(4)
   })
 
@@ -313,7 +322,8 @@ describe('Training & Assessment', () => {
     await user.click(screen.getByRole('button', { name: 'Hide map' }))
 
     expect(screen.queryByTestId('map')).not.toBeInTheDocument()
-    expect(otherRows()).toHaveLength(3)
+    expect(otherRows()).toHaveLength(2)
+    expect(within(results()).getByRole('button', { name: 'Show more (1 more)' })).toBeVisible()
     expect(window.localStorage.getItem('tesda-track.training-map')).toBe('hidden')
   })
 })
