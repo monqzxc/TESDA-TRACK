@@ -24,6 +24,14 @@ not expose goals, learner names, emails, account IDs, feedback IDs, or goal hash
 stores only a keyed hash of the goal; that hash cannot supply training text. Existing saved
 sessions remain private.
 
+The page visualizes overall Yes/No feedback in a donut and compares qualification feedback
+with stacked bars on a shared response-count scale. A separate grouped bar chart compares
+prior and recent learner choices with available projections. Each comparison shows up to
+six qualifications, ranked by feedback responses or recent learners, with exact values and
+legends. The tables retain all qualifications. Empty charts give collection guidance, and
+unavailable projections are labeled rather than plotted as zero. Charts follow the selected
+report dates in both the admin Recommendation section and Reports page.
+
 ## Demand windows and projections
 
 The API endpoint is `GET /api/v1/admin/reports/recommendation-analytics`, with the same

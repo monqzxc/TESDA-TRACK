@@ -1,5 +1,7 @@
+import { Link } from 'react-router'
 import { en } from '../copy/en.ts'
 import { cx } from '../lib/style.ts'
+import { paths } from '../paths.ts'
 
 /** The logo, from public/img. Public files sit under the app's base (/beta/ during the parallel run). */
 export const logoSrc = `${import.meta.env.BASE_URL}img/logo.png`
@@ -12,9 +14,11 @@ const [first, second] = en.brand.wordmark
 export function Brand({ compact = false }: { compact?: boolean }) {
   return (
     <div className={cx(!compact && 'mt-[0.2rem] mb-[1.8rem]')}>
-      <div
+      <Link
+        to={paths.home}
+        aria-label={en.brand.homeLink}
         className={cx(
-          'flex items-center gap-[0.3rem] font-display leading-[1.15] font-extrabold tracking-[-0.055em] whitespace-nowrap text-navy',
+          'flex w-fit items-center gap-[0.3rem] rounded-6 font-display leading-[1.15] font-extrabold tracking-[-0.055em] whitespace-nowrap text-navy no-underline',
           compact ? 'text-[1.2rem]' : 'text-[1.55rem]',
         )}
       >
@@ -30,8 +34,7 @@ export function Brand({ compact = false }: { compact?: boolean }) {
           {first}
           <span className="font-normal text-blue">{second}</span>
         </span>
-        <span className="sr-only">{en.brand.name}</span>
-      </div>
+      </Link>
       {!compact && (
         <p className="mt-[0.3rem] mb-0 text-[0.625rem] leading-[1.6] font-semibold tracking-[0.12em] text-muted uppercase">
           {en.brand.tagline}

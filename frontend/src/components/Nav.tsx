@@ -7,9 +7,8 @@ import { Icon, type IconName } from './Icon.tsx'
 
 type NavItem = { to: string; label: string; icon: IconName }
 
-// The Streamlit sidebar's pages (NAVIGATION in classic/app.py), in its order, with icons for its Material ones.
+// The sidebar's pages, in order. The brand above these links returns to Home.
 const PAGES: readonly NavItem[] = [
-  { to: paths.home, label: en.nav.home, icon: 'home' },
   { to: paths.finder, label: en.nav.finder, icon: 'route' },
   { to: paths.qualifications, label: en.nav.qualifications, icon: 'book' },
   { to: paths.training, label: en.nav.training, icon: 'clipboard' },

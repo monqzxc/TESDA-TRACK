@@ -18,11 +18,10 @@ const linkNames = (nav: HTMLElement) =>
     .map((link) => link.textContent)
 
 describe('Nav', () => {
-  it("lists the Streamlit sidebar's pages, in its order", () => {
+  it('lists the sidebar pages without Home, in order', () => {
     const nav = renderNav('/qualifications')
 
     expect(linkNames(nav)).toEqual([
-      'Home',
       'Find my pathway',
       'Qualifications Library',
       'Training & Assessment',
@@ -78,9 +77,6 @@ describe('Nav', () => {
     cleanup()
     const nav = renderNav('/admin', true, true)
     expect(linkNames(nav).at(-1)).toBe('Admin')
-    expect(within(nav).getByRole('link', { name: 'Admin' })).toHaveAttribute(
-      'aria-current',
-      'page',
-    )
+    expect(within(nav).getByRole('link', { name: 'Admin' })).toHaveAttribute('aria-current', 'page')
   })
 })

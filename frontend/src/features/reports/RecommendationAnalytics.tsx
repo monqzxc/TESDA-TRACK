@@ -6,6 +6,7 @@ import { Icon } from '../../components/Icon.tsx'
 import { QueryBoundary, throwWithoutData } from '../../components/QueryBoundary.tsx'
 import { cssVars, cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
+import { DemandChart, FeedbackCharts } from './RecommendationAnalyticsCharts.tsx'
 import {
   recommendationAnalyticsQuery,
   type Period,
@@ -100,6 +101,7 @@ function AnalyticsReport({ period }: { period: Period }) {
             <Figure label="Negative feedback (No)" value={count(data.rejected)} />
             <Figure label="Positive feedback rate" value={rate(data.acceptance_rate)} />
           </dl>
+          <FeedbackCharts data={data} />
           <QualificationGroups rows={data.qualification_groups} />
           <DemandOutlook demand={data.demand} />
           <ImprovementPriorities
@@ -234,6 +236,9 @@ function DemandOutlook({ demand }: { demand: Analytics['demand'] }) {
         Later edits can change prior counts. Only completed days are compared, and the selected
         report dates also limit each window.
       </p>
+      <div className="mt-4">
+        <DemandChart demand={demand} />
+      </div>
       {demand.qualifications.length === 0 ? (
         <p className={cx(empty, 'mt-3')}>No recent qualification choices to project yet.</p>
       ) : (

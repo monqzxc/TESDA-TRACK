@@ -166,6 +166,13 @@ for (const colorScheme of ['light', 'dark'] as const) {
         }),
       ).toBeVisible()
       await expect(page.getByText('Needs more learners', { exact: true })).toBeVisible()
+      for (const name of [
+        'Feedback distribution',
+        'Feedback by qualification',
+        'Learner interest comparison',
+      ]) {
+        await expect(page.getByRole('figure', { name, exact: true })).toBeVisible()
+      }
       await expectAccessible(page)
     })
   }
@@ -186,6 +193,13 @@ test.describe('on a desktop', () => {
       }),
     ).toBeVisible()
     await expect(analytics.getByText('Needs more learners', { exact: true })).toBeVisible()
+    for (const name of [
+      'Feedback distribution',
+      'Feedback by qualification',
+      'Learner interest comparison',
+    ]) {
+      await expect(analytics.getByRole('figure', { name, exact: true })).toBeVisible()
+    }
     await expectAccessible(page)
     await analytics.screenshot({ path: testInfo.outputPath('recommendation-analytics.png') })
   })
