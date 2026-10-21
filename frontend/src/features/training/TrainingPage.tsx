@@ -36,7 +36,7 @@ const mapStandIn =
  */
 export default function TrainingPage() {
   return (
-    <div className="max-w-[1560px]">
+    <div className="max-w-full">
       <Header />
       <WithCatalog emptyState>{(catalog) => <Workspace catalog={catalog} />}</WithCatalog>
     </div>
