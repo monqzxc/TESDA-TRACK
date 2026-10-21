@@ -567,6 +567,22 @@ before adopting a fine-tuned one, and plot satisfaction against `z_score` to rec
 answers are self-selected, so treat them as a signal next to the held-out evaluation in `backend/training/`, not a
 replacement for it.
 
+### Personalized pathway report
+
+Under the readiness verdict, Find my pathway (both apps) shows a report on the recommendation:
+- the pathway to consider
+- the units of competency to learn or practice, and why
+- other things to weigh, with the nearest listed training and assessment options
+- the next steps, and a short summary
+
+`POST /api/v1/recommendations/report` builds it with templates over the existing matching, readiness, route and
+rankings (unchanged and audited as usual), the catalog's Training Regulation units, and a signed-in learner's own
+certificates, applications and goals. It uses no LLM and adds no tables.
+
+A unit is "must learn" only when it is listed for the qualification and the learner said they don't know it. The
+employment section is general guidance: TESDA-TRACK has no job-vacancy data. Rules, sources and limits are in
+[Personalized pathway report](docs/pathway-report.md).
+
 ### Skills Bridge
 
 The **Skills Explorer** tab (powered by Skills Bridge) connects to the read-only MCP endpoint at

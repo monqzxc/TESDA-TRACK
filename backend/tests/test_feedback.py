@@ -1,12 +1,13 @@
 """Feedback on a recommendation: the answer kept with the numbers behind it, never the goal's words or the account."""
 import uuid
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 import pytest
 from sqlmodel import select
 
 from tesda_track.config import get_settings
-from tesda_track.models import RecommendationFeedback, utcnow
+from tesda_track.models import SHARED_GOAL_CONSENT, Qualification, RecommendationFeedback, SharedGoal, utcnow
+from tesda_track.services.match_stats import PHILIPPINE_TIME
 from tesda_track.services.ranking import goal_fingerprint
 
 GOAL = "I want to be a welder."
@@ -40,7 +41,7 @@ def test_a_guest_answer_is_kept_with_what_matching_and_readiness_gave(client, se
     body = welder()
     answer = give(client, body)
 
-    assert answer == {"id": answer["id"], "satisfied": True, "reason": None}
+    assert answer == {"id": answer["id"], "satisfied": True, "reason": None, "wanted_qualification_code": None}
     matches = client.post("/api/v1/analysis/matches", json={"query": GOAL, "profile": body["profile"]}).json()
     readiness = client.post("/api/v1/analysis/readiness",
                             json={"qualification_code": "SMAW-NC-II", "answers": body["answers"]}).json()
@@ -96,7 +97,8 @@ def test_after_no_a_reason_can_follow(client, session, welder):
     response = client.patch(f"{PATH}/{answer['id']}", json={"reason": "readiness_off"})
 
     assert response.status_code == 200, response.text
-    assert response.json() == {"id": answer["id"], "satisfied": False, "reason": "readiness_off"}
+    assert response.json() == {"id": answer["id"], "satisfied": False, "reason": "readiness_off",
+                               "wanted_qualification_code": None}
     assert rows(session)[0].reason == "readiness_off"
 
 
@@ -109,6 +111,80 @@ def test_reasons_are_fixed_and_the_answer_must_exist(client, welder):
     answer = give(client, welder(satisfied=False))
     assert client.patch(f"{PATH}/{answer['id']}", json={"reason": "other"}).status_code == 422
     assert client.patch(f"{PATH}/{uuid.uuid4()}", json={"reason": "readiness_off"}).status_code == 404
+
+
+def qualification(session, code):
+    return session.exec(select(Qualification).where(Qualification.code == code)).one()
+
+
+def test_after_wrong_qualification_the_one_wanted_can_follow(client, session, welder):
+    answer = give(client, welder(satisfied=False))
+    url = f"{PATH}/{answer['id']}"
+
+    response = client.patch(url, json={"reason": "wrong_qualification", "wanted_qualification_code": "COOKERY-NC-II"})
+
+    assert response.status_code == 200, response.text
+    assert response.json() == {"id": answer["id"], "satisfied": False, "reason": "wrong_qualification",
+                               "wanted_qualification_code": "COOKERY-NC-II"}
+    assert rows(session)[0].wanted_qualification_id == qualification(session, "COOKERY-NC-II").id
+    # Each update replaces both, so another reason drops the wanted qualification.
+    assert client.patch(url, json={"reason": "readiness_off"}).json()["wanted_qualification_code"] is None
+    assert rows(session)[0].wanted_qualification_id is None
+
+
+def test_the_wanted_qualification_goes_only_with_wrong_qualification_and_is_another_known_one(client, welder):
+    url = f"{PATH}/{give(client, welder(satisfied=False))['id']}"
+    for body, status in (({"reason": "readiness_off", "wanted_qualification_code": "COOKERY-NC-II"}, 422),
+                         ({"reason": "wrong_qualification", "wanted_qualification_code": "SMAW-NC-II"}, 422),
+                         ({"reason": "wrong_qualification", "wanted_qualification_code": "NOPE"}, 404)):
+        assert client.patch(url, json=body).status_code == status, body
+
+
+def shared(session):
+    return session.exec(select(SharedGoal)).all()
+
+
+def test_a_satisfied_learner_can_share_their_goal_labelled_with_that_qualification(client, session, welder):
+    answer = give(client, welder())
+
+    response = client.post(f"{PATH}/{answer['id']}/goal", json={"goal": GOAL, "consent": True})
+
+    assert response.status_code == 204, response.text
+    [goal] = shared(session)
+    assert (goal.goal, goal.qualification_id, goal.shown_qualification_id, goal.consent_version) == (
+        GOAL, qualification(session, "SMAW-NC-II").id, None, SHARED_GOAL_CONSENT)
+    assert goal.shared_on == datetime.now(PHILIPPINE_TIME).date()
+    assert set(SharedGoal.model_fields) == {"id", "goal", "qualification_id", "shown_qualification_id",
+                                            "consent_version", "shared_on"}, "nothing links it to the answer"
+
+
+def test_after_wrong_qualification_a_shared_goal_has_the_wanted_one_and_the_one_shown(client, session, welder):
+    url = f"{PATH}/{give(client, welder(satisfied=False))['id']}"
+    assert client.post(f"{url}/goal", json={"goal": GOAL, "consent": True}).status_code == 409, "no label yet"
+
+    client.patch(url, json={"reason": "wrong_qualification", "wanted_qualification_code": "COOKERY-NC-II"})
+    assert client.post(f"{url}/goal", json={"goal": GOAL, "consent": True}).status_code == 204
+
+    [goal] = shared(session)
+    assert (goal.qualification_id, goal.shown_qualification_id) == (
+        qualification(session, "COOKERY-NC-II").id, qualification(session, "SMAW-NC-II").id)
+
+
+def test_only_the_goal_that_was_rated_is_shared_and_only_with_consent(client, session, welder):
+    url = f"{PATH}/{give(client, welder())['id']}/goal"
+    for body in ({"goal": "I want to be a chef.", "consent": True}, {"goal": GOAL, "consent": False}, {"goal": GOAL}):
+        assert client.post(url, json=body).status_code == 422, body
+    assert client.post(f"{PATH}/{uuid.uuid4()}/goal", json={"goal": GOAL, "consent": True}).status_code == 404
+    assert shared(session) == []
+    # As the answer's keyed hash does, the check ignores case and spacing.
+    assert client.post(url, json={"goal": "  i want to be a WELDER. ", "consent": True}).status_code == 204
+
+
+def test_shared_goals_count_against_the_client_limit(client, welder, monkeypatch):
+    url = f"{PATH}/{give(client, welder())['id']}/goal"
+    monkeypatch.setattr(get_settings(), "feedback_rate_limit_per_minute", 1)
+
+    assert client.post(url, json={"goal": GOAL, "consent": True}).status_code == 429
 
 
 def test_an_answer_needs_a_known_qualification_and_a_complete_check(client, session, welder):

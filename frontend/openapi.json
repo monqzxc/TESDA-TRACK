@@ -354,7 +354,7 @@
           "feedback"
         ],
         "summary": "Explain Feedback",
-        "description": "Why the learner wasn't satisfied, given after an answer of No.",
+        "description": "Why the learner wasn't satisfied, given after an answer of No; after \"wrong_qualification\", optionally the\nqualification they wanted instead.",
         "operationId": "explain_feedback_api_v1_feedback_recommendations__feedback_id__patch",
         "parameters": [
           {
@@ -390,7 +390,7 @@
             }
           },
           "404": {
-            "description": "No such answer"
+            "description": "No such answer, or no such wanted qualification"
           },
           "409": {
             "description": "The answer was Yes"
@@ -404,6 +404,55 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too many answers from this client; see Retry-After"
+          }
+        }
+      }
+    },
+    "/api/v1/feedback/recommendations/{feedback_id}/goal": {
+      "post": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Share Goal",
+        "description": "The goal's words, which the learner agreed to share to test and train matching, labelled with the qualification\ntheir answer says fits. Kept apart from the answer and the account; the pilot team reviews them before any use.",
+        "operationId": "share_goal_api_v1_feedback_recommendations__feedback_id__goal_post",
+        "parameters": [
+          {
+            "name": "feedback_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Feedback Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SharedGoalCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "No such answer"
+          },
+          "409": {
+            "description": "An answer of No without the qualification the learner wanted"
+          },
+          "422": {
+            "description": "Not the goal the answer was about, or no consent"
           },
           "429": {
             "description": "Too many answers from this client; see Retry-After"
@@ -2723,6 +2772,56 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/TrainingRanking"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/recommendations/report": {
+      "post": {
+        "tags": [
+          "recommendations"
+        ],
+        "summary": "Report",
+        "description": "A personalized report on the chosen qualification's pathway: options, units to work on, why, and next steps.\n\nWorked out again from what the finder sent, as feedback is, with deterministic templates over the matching,\nreadiness, the two rankings above (audited as usual; their audit ids are in `rankings`) and, signed in, the\nlearner's own records. The goal is neither stored nor repeated; a region only sorts options by distance.",
+        "operationId": "report_api_v1_recommendations_report_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PathwayReportRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PathwayReport"
                 }
               }
             }
@@ -8816,6 +8915,107 @@
         ],
         "title": "ClientUsage"
       },
+      "CompetencyAdvice": {
+        "properties": {
+          "competency_id": {
+            "type": "integer",
+            "title": "Competency Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "confident",
+              "some_experience",
+              "not_familiar",
+              "not_answered"
+            ],
+            "title": "Status"
+          },
+          "priority": {
+            "type": "string",
+            "enum": [
+              "high",
+              "medium",
+              "low"
+            ],
+            "title": "Priority"
+          },
+          "action": {
+            "type": "string",
+            "enum": [
+              "learn",
+              "practice",
+              "demonstrate"
+            ],
+            "title": "Action"
+          },
+          "basis": {
+            "type": "string",
+            "enum": [
+              "required_unit",
+              "reported_gap",
+              "general_recommendation"
+            ],
+            "title": "Basis",
+            "description": "required_unit: a listed unit of the qualification the learner reports not knowing (must learn); reported_gap: a listed unit the learner reports only some experience in; general_recommendation: advice that rests on no reported gap"
+          },
+          "must_learn": {
+            "type": "boolean",
+            "title": "Must Learn"
+          },
+          "what_to_do": {
+            "type": "string",
+            "title": "What To Do"
+          },
+          "why_it_matters": {
+            "type": "string",
+            "title": "Why It Matters"
+          },
+          "activities": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Activities"
+          },
+          "relevance": {
+            "type": "string",
+            "title": "Relevance"
+          },
+          "evidence": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Evidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "competency_id",
+          "name",
+          "category",
+          "status",
+          "priority",
+          "action",
+          "basis",
+          "must_learn",
+          "what_to_do",
+          "why_it_matters",
+          "activities",
+          "relevance",
+          "evidence"
+        ],
+        "title": "CompetencyAdvice"
+      },
       "CompetencyAnswer": {
         "properties": {
           "competency_id": {
@@ -8923,6 +9123,66 @@
           "category"
         ],
         "title": "CompetencyPublic"
+      },
+      "CompetencyRef": {
+        "properties": {
+          "competency_id": {
+            "type": "integer",
+            "title": "Competency Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          }
+        },
+        "type": "object",
+        "required": [
+          "competency_id",
+          "name",
+          "category"
+        ],
+        "title": "CompetencyRef"
+      },
+      "Consideration": {
+        "properties": {
+          "topic": {
+            "type": "string",
+            "enum": [
+              "providers",
+              "verification",
+              "distance",
+              "cost_and_schedule",
+              "scholarship",
+              "eligibility",
+              "equipment",
+              "jobs",
+              "alternatives",
+              "missing_information"
+            ],
+            "title": "Topic"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "items": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "topic",
+          "text"
+        ],
+        "title": "Consideration"
       },
       "DayUsage": {
         "properties": {
@@ -9132,6 +9392,38 @@
         "type": "object",
         "title": "EligibilityPublic"
       },
+      "Employment": {
+        "properties": {
+          "observed_data": {
+            "type": "boolean",
+            "title": "Observed Data",
+            "description": "Whether job-vacancy or labor-market data backs this section"
+          },
+          "possible_jobs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Possible Jobs"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "observed_data",
+          "possible_jobs",
+          "source",
+          "note"
+        ],
+        "title": "Employment"
+      },
       "EnrollmentCreate": {
         "properties": {
           "pathway_id": {
@@ -9227,6 +9519,39 @@
           "status"
         ],
         "title": "EnrollmentUpdate"
+      },
+      "Explanation": {
+        "properties": {
+          "topic": {
+            "type": "string",
+            "enum": [
+              "strengths",
+              "skill_gaps",
+              "career_goal",
+              "assessment_readiness",
+              "employment"
+            ],
+            "title": "Topic"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "points": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Points"
+          }
+        },
+        "type": "object",
+        "required": [
+          "topic",
+          "summary",
+          "points"
+        ],
+        "title": "Explanation"
       },
       "FeedbackByPlace": {
         "properties": {
@@ -9341,6 +9666,17 @@
               }
             ],
             "title": "Reason"
+          },
+          "wanted_qualification_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wanted Qualification Code"
           }
         },
         "type": "object",
@@ -9361,13 +9697,27 @@
               "pathway_not_helpful"
             ],
             "title": "Reason"
+          },
+          "wanted_qualification_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 40
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wanted Qualification Code",
+            "description": "With \"wrong_qualification\" only: the qualification the learner wanted instead"
           }
         },
         "type": "object",
         "required": [
           "reason"
         ],
-        "title": "FeedbackReasonUpdate"
+        "title": "FeedbackReasonUpdate",
+        "description": "Each update replaces the reason and the wanted qualification given before."
       },
       "FeedbackReasons": {
         "properties": {
@@ -9441,6 +9791,45 @@
         ],
         "title": "FeedbackSummary",
         "description": "Answers to \"Are you satisfied with this recommendation?\" at the end of Find my pathway."
+      },
+      "FinalRecommendation": {
+        "properties": {
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "next_action": {
+            "type": "string",
+            "title": "Next Action"
+          },
+          "pathway": {
+            "type": "string",
+            "title": "Pathway"
+          },
+          "focus": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Focus"
+          },
+          "providers": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Providers"
+          }
+        },
+        "type": "object",
+        "required": [
+          "summary",
+          "next_action",
+          "pathway",
+          "focus",
+          "providers"
+        ],
+        "title": "FinalRecommendation"
       },
       "FlightEstimate": {
         "properties": {
@@ -10071,6 +10460,69 @@
         ],
         "title": "MatchResult"
       },
+      "MatchSummary": {
+        "properties": {
+          "strength": {
+            "type": "string",
+            "enum": [
+              "named",
+              "similar",
+              "chosen",
+              "none"
+            ],
+            "title": "Strength",
+            "description": "named: the goal's own words point to it; similar: close in meaning only; chosen: picked by the learner, not among the matches; none: the goal matched no qualification"
+          },
+          "rank": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rank"
+          },
+          "match_count": {
+            "type": "integer",
+            "title": "Match Count"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "explanation": {
+            "type": "string",
+            "title": "Explanation"
+          },
+          "alternatives": {
+            "items": {
+              "$ref": "#/components/schemas/QualificationSummary"
+            },
+            "type": "array",
+            "title": "Alternatives"
+          }
+        },
+        "type": "object",
+        "required": [
+          "strength",
+          "rank",
+          "match_count",
+          "score",
+          "explanation",
+          "alternatives"
+        ],
+        "title": "MatchSummary",
+        "description": "How the chosen qualification relates to the goal, from the same matching the finder uses."
+      },
       "MatchingDay": {
         "properties": {
           "date": {
@@ -10402,6 +10854,55 @@
         ],
         "title": "ModelFeedback"
       },
+      "NextStep": {
+        "properties": {
+          "position": {
+            "type": "integer",
+            "title": "Position"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "complete_readiness",
+              "choose_region",
+              "review_gaps",
+              "compare_providers",
+              "confirm_requirements",
+              "train",
+              "recheck",
+              "apply",
+              "prepare_assessment",
+              "explore_jobs",
+              "next_level",
+              "explore_alternatives"
+            ],
+            "title": "Kind"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          },
+          "competency_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Competency Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "position",
+          "kind",
+          "title",
+          "detail"
+        ],
+        "title": "NextStep"
+      },
       "Overview": {
         "properties": {
           "learners": {
@@ -10527,6 +11028,73 @@
           "steps"
         ],
         "title": "PathwayCreate"
+      },
+      "PathwayOption": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "direct_assessment",
+              "focused_training",
+              "full_training",
+              "current_application",
+              "already_certified",
+              "next_level",
+              "lower_level"
+            ],
+            "title": "Kind"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "recommended": {
+            "type": "boolean",
+            "title": "Recommended"
+          },
+          "service_kind": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "training",
+                  "assessment"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Service Kind"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons"
+          },
+          "qualification": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QualificationSummary"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "For another qualification's option"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "title",
+          "recommended",
+          "service_kind",
+          "reasons"
+        ],
+        "title": "PathwayOption"
       },
       "PathwayProgress": {
         "properties": {
@@ -10661,6 +11229,220 @@
           "next_step"
         ],
         "title": "PathwayRecommendation"
+      },
+      "PathwayReport": {
+        "properties": {
+          "policy_version": {
+            "type": "string",
+            "const": "pathway-report-v1",
+            "title": "Policy Version",
+            "default": "pathway-report-v1"
+          },
+          "generated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Generated At"
+          },
+          "qualification": {
+            "$ref": "#/components/schemas/ReportQualification"
+          },
+          "match": {
+            "$ref": "#/components/schemas/MatchSummary"
+          },
+          "route": {
+            "type": "string",
+            "enum": [
+              "ADDITIONAL_QUESTIONS",
+              "TRAINING_AND_ASSESSMENT",
+              "ASSESSMENT_READINESS",
+              "SKILL_GAP_CHECK"
+            ],
+            "title": "Route"
+          },
+          "readiness": {
+            "$ref": "#/components/schemas/ReadinessSummary"
+          },
+          "strengths": {
+            "items": {
+              "$ref": "#/components/schemas/CompetencyRef"
+            },
+            "type": "array",
+            "title": "Strengths"
+          },
+          "training_to_consider": {
+            "items": {
+              "$ref": "#/components/schemas/PathwayOption"
+            },
+            "type": "array",
+            "title": "Training To Consider"
+          },
+          "skills_to_improve": {
+            "items": {
+              "$ref": "#/components/schemas/CompetencyAdvice"
+            },
+            "type": "array",
+            "title": "Skills To Improve"
+          },
+          "competencies_to_learn_or_practice": {
+            "items": {
+              "$ref": "#/components/schemas/CompetencyAdvice"
+            },
+            "type": "array",
+            "title": "Competencies To Learn Or Practice"
+          },
+          "reasoning": {
+            "items": {
+              "$ref": "#/components/schemas/Explanation"
+            },
+            "type": "array",
+            "title": "Reasoning"
+          },
+          "employment": {
+            "$ref": "#/components/schemas/Employment"
+          },
+          "considerations": {
+            "items": {
+              "$ref": "#/components/schemas/Consideration"
+            },
+            "type": "array",
+            "title": "Considerations"
+          },
+          "providers": {
+            "items": {
+              "$ref": "#/components/schemas/ProviderOption"
+            },
+            "type": "array",
+            "title": "Providers"
+          },
+          "region_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Name"
+          },
+          "next_steps": {
+            "items": {
+              "$ref": "#/components/schemas/NextStep"
+            },
+            "type": "array",
+            "title": "Next Steps"
+          },
+          "final": {
+            "$ref": "#/components/schemas/FinalRecommendation"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer"
+          },
+          "rankings": {
+            "$ref": "#/components/schemas/RankingReferences"
+          }
+        },
+        "type": "object",
+        "required": [
+          "generated_at",
+          "qualification",
+          "match",
+          "route",
+          "readiness",
+          "strengths",
+          "training_to_consider",
+          "skills_to_improve",
+          "competencies_to_learn_or_practice",
+          "reasoning",
+          "employment",
+          "considerations",
+          "providers",
+          "region_name",
+          "next_steps",
+          "final",
+          "disclaimer",
+          "rankings"
+        ],
+        "title": "PathwayReport"
+      },
+      "PathwayReportRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Query"
+          },
+          "profile": {
+            "$ref": "#/components/schemas/Profile",
+            "description": "The profile the matches were asked with, follow-up answers included"
+          },
+          "qualification_code": {
+            "type": "string",
+            "maxLength": 40,
+            "title": "Qualification Code"
+          },
+          "answers": {
+            "additionalProperties": {
+              "type": "string",
+              "enum": [
+                "confident",
+                "some_experience",
+                "not_familiar"
+              ]
+            },
+            "type": "object",
+            "maxProperties": 100,
+            "title": "Answers",
+            "description": "The readiness answers per competency id; may be incomplete"
+          },
+          "region_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 20,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Code",
+            "description": "Sorts options by distance from the region's center; never stored with the learner"
+          },
+          "preferred_delivery_mode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "institution_based",
+                  "enterprise_based",
+                  "community_based",
+                  "online"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Preferred Delivery Mode"
+          },
+          "needs_scholarship": {
+            "type": "boolean",
+            "title": "Needs Scholarship",
+            "default": false
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "query",
+          "profile",
+          "qualification_code"
+        ],
+        "title": "PathwayReportRequest",
+        "description": "The recommendation as the finder asked for it (as for feedback), plus where to look for options."
       },
       "PathwayRequest": {
         "properties": {
@@ -11198,6 +11980,183 @@
         "type": "object",
         "title": "ProvenancePublic"
       },
+      "ProviderOption": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "training",
+              "assessment"
+            ],
+            "title": "Kind"
+          },
+          "service_id": {
+            "type": "integer",
+            "title": "Service Id",
+            "description": "The training program or assessment schedule id"
+          },
+          "site_id": {
+            "type": "integer",
+            "title": "Site Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "region_code": {
+            "type": "string",
+            "title": "Region Code"
+          },
+          "distance_km": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distance Km",
+            "description": "Straight-line distance from the selected region's center"
+          },
+          "starts_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Starts On"
+          },
+          "cost": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(?!^[-+.]*$)[+-]?0*\\d*\\.?\\d*$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Cost",
+            "description": "Program cost or assessment fee, when the listing gives one"
+          },
+          "duration_hours": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Hours"
+          },
+          "delivery_mode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delivery Mode"
+          },
+          "scholarship_available": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scholarship Available"
+          },
+          "seats_left": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Seats Left"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "confirmed",
+              "needs_verification",
+              "demonstration"
+            ],
+            "title": "Status"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score",
+            "description": "The ranking's score; only confirmed options are scored"
+          },
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Notes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "service_id",
+          "site_id",
+          "name",
+          "city",
+          "region_code",
+          "distance_km",
+          "starts_on",
+          "cost",
+          "status",
+          "score",
+          "notes"
+        ],
+        "title": "ProviderOption",
+        "description": "One training program or assessment schedule, as the existing rankings returned it."
+      },
       "QualificationDemand": {
         "properties": {
           "qualification": {
@@ -11659,6 +12618,35 @@
         ],
         "title": "RankingAuditPublic"
       },
+      "RankingReferences": {
+        "properties": {
+          "training_audit_id": {
+            "type": "integer",
+            "title": "Training Audit Id"
+          },
+          "training_policy": {
+            "type": "string",
+            "title": "Training Policy"
+          },
+          "assessment_audit_id": {
+            "type": "integer",
+            "title": "Assessment Audit Id"
+          },
+          "assessment_policy": {
+            "type": "string",
+            "title": "Assessment Policy"
+          }
+        },
+        "type": "object",
+        "required": [
+          "training_audit_id",
+          "training_policy",
+          "assessment_audit_id",
+          "assessment_policy"
+        ],
+        "title": "RankingReferences",
+        "description": "The audited rankings the report's options came from (GET /recommendations/{audit_id} when signed in)."
+      },
       "RankingWeights": {
         "properties": {
           "semantic": {
@@ -11989,6 +12977,70 @@
           "recommendation"
         ],
         "title": "ReadinessResult"
+      },
+      "ReadinessSummary": {
+        "properties": {
+          "available": {
+            "type": "boolean",
+            "title": "Available"
+          },
+          "score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
+          },
+          "level": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Level"
+          },
+          "counts": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "propertyNames": {
+              "enum": [
+                "confident",
+                "some_experience",
+                "not_familiar",
+                "not_answered"
+              ]
+            },
+            "type": "object",
+            "title": "Counts"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "available",
+          "counts",
+          "summary",
+          "limitations"
+        ],
+        "title": "ReadinessSummary"
       },
       "RecommendationAnalytics": {
         "properties": {
@@ -12440,6 +13492,45 @@
         ],
         "title": "RegisterRequest"
       },
+      "ReportQualification": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "sector": {
+            "type": "string",
+            "title": "Sector"
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/ProvenancePublic"
+          },
+          "possible_jobs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Possible Jobs"
+          },
+          "unit_count": {
+            "type": "integer",
+            "title": "Unit Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "name",
+          "sector",
+          "possible_jobs",
+          "unit_count"
+        ],
+        "title": "ReportQualification"
+      },
       "RoadRoute": {
         "properties": {
           "mode": {
@@ -12733,6 +13824,29 @@
         ],
         "title": "SessionResponse",
         "description": "Cookie sign-in. The token itself goes only into the HttpOnly cookie, never into the body."
+      },
+      "SharedGoalCreate": {
+        "properties": {
+          "goal": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Goal"
+          },
+          "consent": {
+            "type": "boolean",
+            "const": true,
+            "title": "Consent",
+            "description": "The learner ticked the box agreeing to share them"
+          }
+        },
+        "type": "object",
+        "required": [
+          "goal",
+          "consent"
+        ],
+        "title": "SharedGoalCreate",
+        "description": "The goal's words, as they were rated, which the learner agreed to share to improve matching."
       },
       "SiteSummary": {
         "properties": {

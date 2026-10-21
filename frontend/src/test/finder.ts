@@ -7,6 +7,8 @@ import { server } from './server.ts'
 
 type Profile = components['schemas']['Profile']
 type Match = components['schemas']['Match']
+type Report = components['schemas']['PathwayReport']
+type ReportBody = components['schemas']['PathwayReportRequest']
 
 export const welding: Qualification = {
   code: 'SMAW-NCII',
@@ -53,12 +55,155 @@ export interface FinderRequest {
   body: unknown
 }
 
+/**
+ * A pathway report as the API writes one, from the request: the units not rated confident are the gaps, and a
+ * region brings one training option. Only what the tests read is filled in with care.
+ */
+export function reportFor(body: ReportBody): Report {
+  const qualification = [welding, cookery].find((q) => q.code === body.qualification_code)!
+  const answer = (id: number) => body.answers?.[id] ?? 'not_answered'
+  const gaps = qualification.competencies.filter((c) =>
+    ['not_familiar', 'some_experience'].includes(answer(c.id)),
+  )
+  const advice: Report['skills_to_improve'] = gaps.map((c) => {
+    const learn = answer(c.id) === 'not_familiar'
+    return {
+      competency_id: c.id,
+      name: c.name,
+      category: c.category,
+      status: answer(c.id),
+      priority: learn && c.category === 'Core' ? 'high' : 'medium',
+      action: learn ? 'learn' : 'practice',
+      basis: learn ? 'required_unit' : 'reported_gap',
+      must_learn: learn,
+      what_to_do: `Learn to ${c.name.toLowerCase()}.`,
+      why_it_matters: `It's a ${c.category.toLowerCase()} unit of ${qualification.name}.`,
+      activities: ['Learn it in a training program with supervised, hands-on practice.'],
+      relevance: `Part of what the ${qualification.name} assessment covers.`,
+      evidence: ['You answered “I am not familiar with this”.'],
+    }
+  })
+  const providers: Report['providers'] = body.region_code
+    ? [
+        {
+          kind: 'training',
+          service_id: 1,
+          site_id: 1,
+          name: 'Manila Welding Institute',
+          title: 'SMAW NC II Batch 1',
+          city: 'Manila',
+          region_code: 'NCR',
+          distance_km: 2,
+          starts_on: '2026-11-10',
+          cost: '8500.00',
+          duration_hours: 268,
+          delivery_mode: 'institution_based',
+          scholarship_available: false,
+          seats_left: null,
+          status: 'confirmed',
+          score: 95,
+          notes: ['An assessment with open seats is available nearby'],
+        },
+      ]
+    : []
+  return {
+    policy_version: 'pathway-report-v1',
+    generated_at: '2026-10-21T01:00:00Z',
+    qualification: {
+      ...summary(qualification),
+      possible_jobs: qualification.possible_jobs,
+      unit_count: qualification.competencies.length,
+    },
+    match: {
+      strength: 'named',
+      rank: 1,
+      match_count: 1,
+      score: 76,
+      explanation: 'Your goal’s own words point to this qualification.',
+      alternatives: [],
+    },
+    route: 'SKILL_GAP_CHECK',
+    readiness: {
+      available: true,
+      score: 75,
+      level: 'Moderate Readiness',
+      counts: { confident: 3, some_experience: 0, not_familiar: 1, not_answered: 0 },
+      summary: 'Moderate Readiness (75%): you rated yourself confident in 3 of 4 units.',
+      limitations: ['Self-reported: this is not an official competency assessment.'],
+    },
+    strengths: [],
+    training_to_consider: [
+      {
+        kind: gaps.length ? 'focused_training' : 'direct_assessment',
+        title: gaps.length
+          ? 'Take focused training on your gaps, then the assessment'
+          : 'Ask an assessment center about going straight to assessment',
+        recommended: true,
+        service_kind: gaps.length ? 'training' : 'assessment',
+        reasons: [`You marked ${gaps.length} units as gaps.`],
+        qualification: null,
+      },
+    ],
+    skills_to_improve: advice,
+    competencies_to_learn_or_practice: advice.filter((item) => item.action === 'learn'),
+    reasoning: [
+      {
+        topic: 'employment',
+        summary: 'Use this as general guidance on where the qualification can lead.',
+        points: ['TESDA-TRACK has no job-vacancy or labor-market data.'],
+      },
+    ],
+    employment: {
+      observed_data: false,
+      possible_jobs: qualification.possible_jobs,
+      source: 'Training Regulation',
+      note: 'TESDA-TRACK has no job-vacancy or labor-market data.',
+    },
+    considerations: providers.length
+      ? [{ topic: 'providers', text: 'The options below come from the rankings.', items: [] }]
+      : [
+          {
+            topic: 'missing_information',
+            text: 'Some information is missing, so parts of this report are general:',
+            items: ['Your region, to sort options by distance.'],
+          },
+        ],
+    providers,
+    region_name: body.region_code ? 'National Capital Region' : null,
+    next_steps: [
+      {
+        position: 1,
+        kind: 'compare_providers',
+        title: 'Compare training providers',
+        detail: 'Compare their schedules, fees and distance.',
+        competency_ids: [],
+      },
+    ],
+    final: {
+      summary: `Your best next step for ${qualification.name} is focused training on the units you marked as gaps, then the assessment.`,
+      next_action: 'Compare training providers: compare their schedules, fees and distance.',
+      pathway: 'Take focused training on your gaps, then the assessment',
+      focus: [],
+      providers: [],
+    },
+    disclaimer: 'This report is guidance. It doesn’t guarantee certification or employment.',
+    rankings: {
+      training_audit_id: 1,
+      training_policy: 'verified-services-v2',
+      assessment_audit_id: 2,
+      assessment_policy: 'assessment-center-v1',
+    },
+  }
+}
+
 interface FinderApiOptions {
   matches?: Match[]
   /** Fail the matches request this many times first. */
   failMatches?: number
   /** Fail the feedback answer this many times first. */
   failFeedback?: number
+  /** Fail the pathway report this many times first. */
+  failReport?: number
 }
 
 /** The finder's routes, with every request recorded in `requests` (bodies parsed). */
@@ -66,11 +211,13 @@ export function serveFinderApi({
   matches = [weldingMatch],
   failMatches = 0,
   failFeedback = 0,
+  failReport = 0,
 }: FinderApiOptions = {}) {
   const state = {
     requests: [] as FinderRequest[],
     matchFailures: failMatches,
     feedbackFailures: failFeedback,
+    reportFailures: failReport,
     followed: new Set<number>(),
   }
   const record = async (request: Request) => {
@@ -215,12 +362,35 @@ export function serveFinderApi({
         return HttpResponse.error()
       }
       const { satisfied } = (await request.json()) as { satisfied: boolean }
-      return HttpResponse.json({ id: 'feedback-1', satisfied, reason: null }, { status: 201 })
+      return HttpResponse.json(
+        { id: 'feedback-1', satisfied, reason: null, wanted_qualification_code: null },
+        { status: 201 },
+      )
+    }),
+    http.post('*/api/v1/feedback/recommendations/:id/goal', async ({ request }) => {
+      await record(request)
+      return new HttpResponse(null, { status: 204 })
+    }),
+    http.post('*/api/v1/recommendations/report', async ({ request }) => {
+      await record(request)
+      if (state.reportFailures > 0) {
+        state.reportFailures--
+        return HttpResponse.error()
+      }
+      return HttpResponse.json(reportFor((await request.json()) as ReportBody))
     }),
     http.patch('*/api/v1/feedback/recommendations/:id', async ({ request, params }) => {
       await record(request)
-      const { reason } = (await request.json()) as { reason: string }
-      return HttpResponse.json({ id: params.id, satisfied: false, reason })
+      const { reason, wanted_qualification_code = null } = (await request.json()) as {
+        reason: string
+        wanted_qualification_code?: string
+      }
+      return HttpResponse.json({
+        id: params.id,
+        satisfied: false,
+        reason,
+        wanted_qualification_code,
+      })
     }),
   )
   return state

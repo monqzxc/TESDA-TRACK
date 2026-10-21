@@ -57,6 +57,18 @@ def offline_api(monkeypatch):
         return deepcopy(state["pathways"])
 
     monkeypatch.setattr(ApiClient, "pathways", pathways)
+    state["pathway_reports"] = []
+
+    def pathway_report(self, body, token=None):
+        """The personalized report, as the API writes one: the qualification's name and nothing else to say."""
+        state["pathway_reports"].append(deepcopy(body))
+        name = next(q["name"] for q in state["catalog"] if q["code"] == body["qualification_code"])
+        return {"training_to_consider": [], "skills_to_improve": [], "competencies_to_learn_or_practice": [],
+                "reasoning": [], "considerations": [], "providers": [], "next_steps": [],
+                "final": {"summary": f"Your report for {name}.", "next_action": ""},
+                "disclaimer": "This report is guidance."}
+
+    monkeypatch.setattr(ApiClient, "pathway_report", pathway_report)
 
     def report(self, token, name, **params):
         state["reports"].append(name)
@@ -413,6 +425,11 @@ def test_the_readiness_result_decides_between_training_and_an_nc(offline_api, mo
     assert verdict in page_text(app)
     assert offline_api["pathway_lookups"][-1] == ("SMAW-NC-II", route), "the pathway shown agrees with the verdict"
     assert "A pathway for this verdict" in page_text(app)
+    # The personalized report under the verdict, asked for with the submitted answers and no region yet.
+    sent = offline_api["pathway_reports"][-1]
+    assert (sent["qualification_code"], sent["answers"], sent["region_code"]) == (
+        "SMAW-NC-II", {1: "some_experience"}, None)
+    assert "Your report for Welding NC II" in page_text(app)
     assert app.button(key="finder_next").label == action
     press(app, "finder_next")
     assert app.session_state["main_tabs"] == "Training & Assessment"

@@ -176,9 +176,31 @@ export interface paths {
         head?: never;
         /**
          * Explain Feedback
-         * @description Why the learner wasn't satisfied, given after an answer of No.
+         * @description Why the learner wasn't satisfied, given after an answer of No; after "wrong_qualification", optionally the
+         *     qualification they wanted instead.
          */
         patch: operations["explain_feedback_api_v1_feedback_recommendations__feedback_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/feedback/recommendations/{feedback_id}/goal": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Share Goal
+         * @description The goal's words, which the learner agreed to share to test and train matching, labelled with the qualification
+         *     their answer says fits. Kept apart from the answer and the account; the pilot team reviews them before any use.
+         */
+        post: operations["share_goal_api_v1_feedback_recommendations__feedback_id__goal_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/auth/register": {
@@ -760,6 +782,30 @@ export interface paths {
          *     Works without signing in; a signed-in learner's rankings are linked to their account in the audit trail.
          */
         post: operations["rank_training_api_v1_recommendations_training_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/recommendations/report": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Report
+         * @description A personalized report on the chosen qualification's pathway: options, units to work on, why, and next steps.
+         *
+         *     Worked out again from what the finder sent, as feedback is, with deterministic templates over the matching,
+         *     readiness, the two rankings above (audited as usual; their audit ids are in `rankings`) and, signed in, the
+         *     learner's own records. The goal is neither stored nor repeated; a region only sorts options by distance.
+         */
+        post: operations["report_api_v1_recommendations_report_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -2499,6 +2545,48 @@ export interface components {
             /** Deep Paging Calls */
             deep_paging_calls: number;
         };
+        /** CompetencyAdvice */
+        CompetencyAdvice: {
+            /** Competency Id */
+            competency_id: number;
+            /** Name */
+            name: string;
+            /** Category */
+            category: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "confident" | "some_experience" | "not_familiar" | "not_answered";
+            /**
+             * Priority
+             * @enum {string}
+             */
+            priority: "high" | "medium" | "low";
+            /**
+             * Action
+             * @enum {string}
+             */
+            action: "learn" | "practice" | "demonstrate";
+            /**
+             * Basis
+             * @description required_unit: a listed unit of the qualification the learner reports not knowing (must learn); reported_gap: a listed unit the learner reports only some experience in; general_recommendation: advice that rests on no reported gap
+             * @enum {string}
+             */
+            basis: "required_unit" | "reported_gap" | "general_recommendation";
+            /** Must Learn */
+            must_learn: boolean;
+            /** What To Do */
+            what_to_do: string;
+            /** Why It Matters */
+            why_it_matters: string;
+            /** Activities */
+            activities: string[];
+            /** Relevance */
+            relevance: string;
+            /** Evidence */
+            evidence: string[];
+        };
         /** CompetencyAnswer */
         CompetencyAnswer: {
             /** Competency Id */
@@ -2538,6 +2626,27 @@ export interface components {
             name: string;
             /** Category */
             category: string;
+        };
+        /** CompetencyRef */
+        CompetencyRef: {
+            /** Competency Id */
+            competency_id: number;
+            /** Name */
+            name: string;
+            /** Category */
+            category: string;
+        };
+        /** Consideration */
+        Consideration: {
+            /**
+             * Topic
+             * @enum {string}
+             */
+            topic: "providers" | "verification" | "distance" | "cost_and_schedule" | "scholarship" | "eligibility" | "equipment" | "jobs" | "alternatives" | "missing_information";
+            /** Text */
+            text: string;
+            /** Items */
+            items?: string[];
         };
         /** DayUsage */
         DayUsage: {
@@ -2617,6 +2726,20 @@ export interface components {
             /** Checks */
             checks?: components["schemas"]["EligibilityCheck"][];
         };
+        /** Employment */
+        Employment: {
+            /**
+             * Observed Data
+             * @description Whether job-vacancy or labor-market data backs this section
+             */
+            observed_data: boolean;
+            /** Possible Jobs */
+            possible_jobs: string[];
+            /** Source */
+            source: string;
+            /** Note */
+            note: string;
+        };
         /** EnrollmentCreate */
         EnrollmentCreate: {
             /** Pathway Id */
@@ -2659,6 +2782,18 @@ export interface components {
              * @enum {string}
              */
             status: "active" | "withdrawn";
+        };
+        /** Explanation */
+        Explanation: {
+            /**
+             * Topic
+             * @enum {string}
+             */
+            topic: "strengths" | "skill_gaps" | "career_goal" | "assessment_readiness" | "employment";
+            /** Summary */
+            summary: string;
+            /** Points */
+            points: string[];
         };
         /**
          * FeedbackByPlace
@@ -2709,14 +2844,24 @@ export interface components {
             satisfied: boolean;
             /** Reason */
             reason: ("wrong_qualification" | "readiness_off" | "pathway_not_helpful") | null;
+            /** Wanted Qualification Code */
+            wanted_qualification_code?: string | null;
         };
-        /** FeedbackReasonUpdate */
+        /**
+         * FeedbackReasonUpdate
+         * @description Each update replaces the reason and the wanted qualification given before.
+         */
         FeedbackReasonUpdate: {
             /**
              * Reason
              * @enum {string}
              */
             reason: "wrong_qualification" | "readiness_off" | "pathway_not_helpful";
+            /**
+             * Wanted Qualification Code
+             * @description With "wrong_qualification" only: the qualification the learner wanted instead
+             */
+            wanted_qualification_code?: string | null;
         };
         /**
          * FeedbackReasons
@@ -2750,6 +2895,19 @@ export interface components {
             by_model: components["schemas"]["ModelFeedback"][];
             /** By Qualification */
             by_qualification: components["schemas"]["QualificationFeedback"][];
+        };
+        /** FinalRecommendation */
+        FinalRecommendation: {
+            /** Summary */
+            summary: string;
+            /** Next Action */
+            next_action: string;
+            /** Pathway */
+            pathway: string;
+            /** Focus */
+            focus: string[];
+            /** Providers */
+            providers: string[];
         };
         /**
          * FlightEstimate
@@ -2988,6 +3146,28 @@ export interface components {
             /** Matches */
             matches: components["schemas"]["Match"][];
         };
+        /**
+         * MatchSummary
+         * @description How the chosen qualification relates to the goal, from the same matching the finder uses.
+         */
+        MatchSummary: {
+            /**
+             * Strength
+             * @description named: the goal's own words point to it; similar: close in meaning only; chosen: picked by the learner, not among the matches; none: the goal matched no qualification
+             * @enum {string}
+             */
+            strength: "named" | "similar" | "chosen" | "none";
+            /** Rank */
+            rank: number | null;
+            /** Match Count */
+            match_count: number;
+            /** Score */
+            score: number | null;
+            /** Explanation */
+            explanation: string;
+            /** Alternatives */
+            alternatives: components["schemas"]["QualificationSummary"][];
+        };
         /** MatchingDay */
         MatchingDay: {
             /**
@@ -3092,6 +3272,22 @@ export interface components {
              */
             model: string | null;
         };
+        /** NextStep */
+        NextStep: {
+            /** Position */
+            position: number;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "complete_readiness" | "choose_region" | "review_gaps" | "compare_providers" | "confirm_requirements" | "train" | "recheck" | "apply" | "prepare_assessment" | "explore_jobs" | "next_level" | "explore_alternatives";
+            /** Title */
+            title: string;
+            /** Detail */
+            detail: string;
+            /** Competency Ids */
+            competency_ids?: number[];
+        };
         /** Overview */
         Overview: {
             /** Learners */
@@ -3137,6 +3333,24 @@ export interface components {
             description: string;
             /** Steps */
             steps: components["schemas"]["PathwayStepInput"][];
+        };
+        /** PathwayOption */
+        PathwayOption: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "direct_assessment" | "focused_training" | "full_training" | "current_application" | "already_certified" | "next_level" | "lower_level";
+            /** Title */
+            title: string;
+            /** Recommended */
+            recommended: boolean;
+            /** Service Kind */
+            service_kind: ("training" | "assessment") | null;
+            /** Reasons */
+            reasons: string[];
+            /** @description For another qualification's option */
+            qualification?: components["schemas"]["QualificationSummary"] | null;
         };
         /** PathwayProgress */
         PathwayProgress: {
@@ -3186,6 +3400,82 @@ export interface components {
             next_step: string;
             /** @description Curated steps for this route, when defined */
             pathway?: components["schemas"]["PathwayPublic"] | null;
+        };
+        /** PathwayReport */
+        PathwayReport: {
+            /**
+             * Policy Version
+             * @default pathway-report-v1
+             * @constant
+             */
+            policy_version: "pathway-report-v1";
+            /**
+             * Generated At
+             * Format: date-time
+             */
+            generated_at: string;
+            qualification: components["schemas"]["ReportQualification"];
+            match: components["schemas"]["MatchSummary"];
+            /**
+             * Route
+             * @enum {string}
+             */
+            route: "ADDITIONAL_QUESTIONS" | "TRAINING_AND_ASSESSMENT" | "ASSESSMENT_READINESS" | "SKILL_GAP_CHECK";
+            readiness: components["schemas"]["ReadinessSummary"];
+            /** Strengths */
+            strengths: components["schemas"]["CompetencyRef"][];
+            /** Training To Consider */
+            training_to_consider: components["schemas"]["PathwayOption"][];
+            /** Skills To Improve */
+            skills_to_improve: components["schemas"]["CompetencyAdvice"][];
+            /** Competencies To Learn Or Practice */
+            competencies_to_learn_or_practice: components["schemas"]["CompetencyAdvice"][];
+            /** Reasoning */
+            reasoning: components["schemas"]["Explanation"][];
+            employment: components["schemas"]["Employment"];
+            /** Considerations */
+            considerations: components["schemas"]["Consideration"][];
+            /** Providers */
+            providers: components["schemas"]["ProviderOption"][];
+            /** Region Name */
+            region_name: string | null;
+            /** Next Steps */
+            next_steps: components["schemas"]["NextStep"][];
+            final: components["schemas"]["FinalRecommendation"];
+            /** Disclaimer */
+            disclaimer: string;
+            rankings: components["schemas"]["RankingReferences"];
+        };
+        /**
+         * PathwayReportRequest
+         * @description The recommendation as the finder asked for it (as for feedback), plus where to look for options.
+         */
+        PathwayReportRequest: {
+            /** Query */
+            query: string;
+            /** @description The profile the matches were asked with, follow-up answers included */
+            profile: components["schemas"]["Profile"];
+            /** Qualification Code */
+            qualification_code: string;
+            /**
+             * Answers
+             * @description The readiness answers per competency id; may be incomplete
+             */
+            answers?: {
+                [key: string]: "confident" | "some_experience" | "not_familiar";
+            };
+            /**
+             * Region Code
+             * @description Sorts options by distance from the region's center; never stored with the learner
+             */
+            region_code?: string | null;
+            /** Preferred Delivery Mode */
+            preferred_delivery_mode?: ("institution_based" | "enterprise_based" | "community_based" | "online") | null;
+            /**
+             * Needs Scholarship
+             * @default false
+             */
+            needs_scholarship: boolean;
         };
         /** PathwayRequest */
         PathwayRequest: {
@@ -3378,6 +3668,64 @@ export interface components {
             /** Record Updated At */
             record_updated_at?: string | null;
         };
+        /**
+         * ProviderOption
+         * @description One training program or assessment schedule, as the existing rankings returned it.
+         */
+        ProviderOption: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "training" | "assessment";
+            /**
+             * Service Id
+             * @description The training program or assessment schedule id
+             */
+            service_id: number;
+            /** Site Id */
+            site_id: number;
+            /** Name */
+            name: string;
+            /** Title */
+            title?: string | null;
+            /** City */
+            city: string | null;
+            /** Region Code */
+            region_code: string;
+            /**
+             * Distance Km
+             * @description Straight-line distance from the selected region's center
+             */
+            distance_km: number | null;
+            /** Starts On */
+            starts_on: string | null;
+            /**
+             * Cost
+             * @description Program cost or assessment fee, when the listing gives one
+             */
+            cost: string | null;
+            /** Duration Hours */
+            duration_hours?: number | null;
+            /** Delivery Mode */
+            delivery_mode?: string | null;
+            /** Scholarship Available */
+            scholarship_available?: boolean | null;
+            /** Seats Left */
+            seats_left?: number | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "confirmed" | "needs_verification" | "demonstration";
+            /**
+             * Score
+             * @description The ranking's score; only confirmed options are scored
+             */
+            score: number | null;
+            /** Notes */
+            notes: string[];
+        };
         /** QualificationDemand */
         QualificationDemand: {
             qualification: components["schemas"]["QualificationSummary"];
@@ -3544,6 +3892,20 @@ export interface components {
             results: unknown[];
         };
         /**
+         * RankingReferences
+         * @description The audited rankings the report's options came from (GET /recommendations/{audit_id} when signed in).
+         */
+        RankingReferences: {
+            /** Training Audit Id */
+            training_audit_id: number;
+            /** Training Policy */
+            training_policy: string;
+            /** Assessment Audit Id */
+            assessment_audit_id: number;
+            /** Assessment Policy */
+            assessment_policy: string;
+        };
+        /**
          * RankingWeights
          * @description How much each component counts when ranking training options. Must add up to 1.
          */
@@ -3679,6 +4041,23 @@ export interface components {
             skill_gaps: string[];
             /** Recommendation */
             recommendation: string;
+        };
+        /** ReadinessSummary */
+        ReadinessSummary: {
+            /** Available */
+            available: boolean;
+            /** Score */
+            score?: number | null;
+            /** Level */
+            level?: string | null;
+            /** Counts */
+            counts: {
+                [key: string]: number;
+            };
+            /** Summary */
+            summary: string;
+            /** Limitations */
+            limitations: string[];
         };
         /** RecommendationAnalytics */
         RecommendationAnalytics: {
@@ -3860,6 +4239,20 @@ export interface components {
              */
             privacy_consent: boolean;
         };
+        /** ReportQualification */
+        ReportQualification: {
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
+            /** Sector */
+            sector: string;
+            provenance?: components["schemas"]["ProvenancePublic"];
+            /** Possible Jobs */
+            possible_jobs: string[];
+            /** Unit Count */
+            unit_count: number;
+        };
         /** RoadRoute */
         RoadRoute: {
             /**
@@ -3973,6 +4366,20 @@ export interface components {
             learner: components["schemas"]["LearnerPublic"];
             /** Expires In */
             expires_in: number;
+        };
+        /**
+         * SharedGoalCreate
+         * @description The goal's words, as they were rated, which the learner agreed to share to improve matching.
+         */
+        SharedGoalCreate: {
+            /** Goal */
+            goal: string;
+            /**
+             * Consent
+             * @description The learner ticked the box agreeing to share them
+             * @constant
+             */
+            consent: true;
         };
         /** SiteSummary */
         SiteSummary: {
@@ -5042,7 +5449,7 @@ export interface operations {
                     "application/json": components["schemas"]["FeedbackPublic"];
                 };
             };
-            /** @description No such answer */
+            /** @description No such answer, or no such wanted qualification */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -5064,6 +5471,58 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
                 };
+            };
+            /** @description Too many answers from this client; see Retry-After */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    share_goal_api_v1_feedback_recommendations__feedback_id__goal_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                feedback_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SharedGoalCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description No such answer */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description An answer of No without the qualification the learner wanted */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not the goal the answer was about, or no consent */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Too many answers from this client; see Retry-After */
             429: {
@@ -6431,6 +6890,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["TrainingRanking"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    report_api_v1_recommendations_report_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PathwayReportRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PathwayReport"];
                 };
             };
             /** @description Validation Error */

@@ -162,6 +162,33 @@ def test_pathway_finder_flow(ui):
     assert app.radio and all(radio.value is None for radio in app.radio)
 
 
+def test_the_recommendation_comes_with_a_personalized_report(ui, training_data):
+    app = ui
+    click(app, "Become a welder")
+    click(app, "Get Recommendation")
+    app.selectbox(key="follow_experience").select("More than 3 years").run()
+    app.selectbox(key="follow_certification").select("No").run()
+    rate_welding_skills(app, confident=3)  # 75%: three core units with some experience
+
+    titles = [subheader.value for subheader in app.subheader]
+    for title in ("Recommendations for you", "Why we recommend these", "Other things to consider", "Your next steps",
+                  "Final recommendation"):
+        assert title in titles
+    markdown = [md.value for md in app.markdown]
+    assert "**Take focused training on your gaps, then the assessment**" in markdown
+    assert "**Ask an assessment center about going straight to assessment**" in markdown, "over 3 years' experience"
+    assert "**Perform fillet welding** · Medium priority · Some experience" in markdown
+    assert not any("Must learn" in md for md in markdown), "nothing was rated not familiar"
+    assert any("doesn't guarantee certification or employment" in caption.value for caption in app.caption)
+
+    # A region sorts the options by distance from its center: the Manila programs before Cebu's.
+    app.selectbox(key="report_region").set_value("NCR").run()
+    assert not app.exception
+    options = [md.value for md in app.markdown if md.value.startswith("**") and " · Training · " in md.value]
+    assert options[0].startswith("**Manila Welding Institute**") and options[-1].startswith("**Cebu Skills Center**")
+    assert any("from your region's center" in caption.value for caption in app.caption)
+
+
 def create_account(app, email="juan@example.com", password="correct horse battery"):
     open_account(app)
     app.text_input(key="dialog_register_name").set_value("Juan Dela Cruz")

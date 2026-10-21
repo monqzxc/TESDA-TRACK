@@ -1,7 +1,7 @@
 import uuid
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
 from tesda_track.schemas.analysis import AnswerCode, GoalText, Profile
 
@@ -18,7 +18,17 @@ class FeedbackCreate(BaseModel):
 
 
 class FeedbackReasonUpdate(BaseModel):
+    """Each update replaces the reason and the wanted qualification given before."""
     reason: FeedbackReason
+    wanted_qualification_code: str | None = Field(
+        default=None, max_length=40,
+        description='With "wrong_qualification" only: the qualification the learner wanted instead')
+
+    @model_validator(mode="after")
+    def wanted_only_when_wrong(self) -> "FeedbackReasonUpdate":
+        if self.wanted_qualification_code is not None and self.reason != "wrong_qualification":
+            raise ValueError("A wanted qualification goes only with the reason wrong_qualification.")
+        return self
 
 
 class FeedbackPublic(BaseModel):
@@ -27,3 +37,10 @@ class FeedbackPublic(BaseModel):
     id: uuid.UUID
     satisfied: bool
     reason: FeedbackReason | None
+    wanted_qualification_code: str | None = None
+
+
+class SharedGoalCreate(BaseModel):
+    """The goal's words, as they were rated, which the learner agreed to share to improve matching."""
+    goal: GoalText
+    consent: Literal[True] = Field(description="The learner ticked the box agreeing to share them")

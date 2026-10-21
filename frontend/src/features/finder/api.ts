@@ -16,6 +16,8 @@ export type CuratedPathway = components['schemas']['PathwayPublic']
 export type RecommendationSession = components['schemas']['RecommendationSessionPublic']
 export type Feedback = components['schemas']['FeedbackPublic']
 export type FeedbackReason = components['schemas']['FeedbackReasonUpdate']['reason']
+export type PathwayReport = components['schemas']['PathwayReport']
+export type ReportRequest = components['schemas']['PathwayReportRequest']
 
 const MINUTE = 60_000
 
@@ -56,6 +58,19 @@ export const pathwayQuery = (profile: Profile, code: string) =>
           signal,
         }),
       ),
+    staleTime: Infinity,
+    gcTime: 30 * MINUTE,
+  })
+
+/**
+ * The personalized report on the chosen qualification's pathway, worked out by the API from what the recommendation
+ * came from (as feedback is) and where to look for options. Signed in, it also reads the learner's own applications
+ * and certificates, so whose report it is belongs in the key. The same request gets the same report for the visit.
+ */
+export const reportQuery = (body: ReportRequest, learnerId: string | null) =>
+  queryOptions<PathwayReport, ApiError>({
+    queryKey: ['finder', 'report', learnerId, body],
+    queryFn: ({ signal }) => unwrap(api.POST('/api/v1/recommendations/report', { body, signal })),
     staleTime: Infinity,
     gcTime: 30 * MINUTE,
   })
@@ -137,12 +152,29 @@ export async function sendFeedback(body: {
   return unwrap(api.POST('/api/v1/feedback/recommendations', { body }))
 }
 
-/** Why the learner answered No. */
-export async function explainFeedback(id: string, reason: FeedbackReason): Promise<Feedback> {
+/** Why the learner answered No and, after the wrong qualification, optionally the one they wanted instead. */
+export async function explainFeedback(
+  id: string,
+  reason: FeedbackReason,
+  wantedCode?: string,
+): Promise<Feedback> {
   return unwrap(
     api.PATCH('/api/v1/feedback/recommendations/{feedback_id}', {
       params: { path: { feedback_id: id } },
-      body: { reason },
+      body: wantedCode ? { reason, wanted_qualification_code: wantedCode } : { reason },
+    }),
+  )
+}
+
+/**
+ * The goal's words, which the learner ticked a box to share so they can test and train matching. The API labels them
+ * from the answer and keeps them apart from it.
+ */
+export async function shareGoal(id: string, goal: string): Promise<void> {
+  await unwrap(
+    api.POST('/api/v1/feedback/recommendations/{feedback_id}/goal', {
+      params: { path: { feedback_id: id } },
+      body: { goal, consent: true },
     }),
   )
 }
