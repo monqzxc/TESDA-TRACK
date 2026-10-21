@@ -340,24 +340,19 @@ describe('pages that need an account', () => {
     ).toBeInTheDocument()
   })
 
-  it('Reports is not available to a learner, and offers no way in', async () => {
+  it('sends a learner without report access back home', async () => {
     rememberSignIn()
     serveAccountApi({ signedIn: true })
-    await openApp('/reports')
+    const { router } = await openApp('/reports')
 
+    await waitFor(() => expect(router.state.location.pathname).toBe('/'))
+    expect(router.state.historyAction).toBe('REPLACE')
     expect(
-      await screen.findByText('Reports are only available to administrator and analyst accounts.'),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { level: 2, name: 'Reports are not available' }),
-    ).toBeInTheDocument()
-    expect(screen.queryByRole('group', { name: 'Period' })).not.toBeInTheDocument()
-    expect(within(screen.getByRole('main')).queryByRole('button')).not.toBeInTheDocument()
-    expect(
-      within(screen.getByRole('navigation', { name: 'Main' })).queryByRole('link', {
-        name: 'Reports',
+      await screen.findByRole('heading', {
+        level: 1,
+        name: 'Every career has a track. Find yours.',
       }),
-    ).not.toBeInTheDocument()
+    ).toBeInTheDocument()
   })
 
   it('Reports offers sign-in when signed out', async () => {

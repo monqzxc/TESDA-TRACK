@@ -5,11 +5,12 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.exc import IntegrityError
 
 from tesda_track.db import SessionDep
+from tesda_track.config import get_settings
 from tesda_track.deps import require_permission
 from tesda_track.errors import ConflictError
 from tesda_track.mcp.scopes import TOOL_SCOPES
 from tesda_track.schemas.mcp_usage import (ApiClientCreate, ApiClientCredentials, ApiClientPublic,
-                                          UsageReport)
+                                          UsageReport, McpActivityQuery, McpActivityPage)
 from tesda_track.schemas.reports import DateRange
 from tesda_track.services import mcp_usage, partner_clients
 
@@ -26,6 +27,12 @@ def tools() -> dict[str, str]:
 def usage(session: SessionDep, period: Annotated[DateRange, Query()]):
     """Which partner calls which tool, how often, and whether that matches what it declared."""
     return mcp_usage.usage_report(session, period)
+
+
+@router.get("/activity", response_model=McpActivityPage)
+def activity(session: SessionDep, query: Annotated[McpActivityQuery, Query()]):
+    """Recent requests with retained input metadata, newest first. Requires MCP management access."""
+    return mcp_usage.recent_activity(session, query, get_settings().mcp_call_log_retention_days)
 
 
 @router.get("/clients", response_model=list[ApiClientPublic])

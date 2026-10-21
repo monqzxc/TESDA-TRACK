@@ -1,7 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { useMemo, useState, type FormEvent, type InputHTMLAttributes, type ReactNode } from 'react'
-import { Button } from 'react-aria-components'
-import { Link, useSearchParams } from 'react-router'
+import {
+  useMemo,
+  useState,
+  type FormEvent,
+  type InputHTMLAttributes,
+  type Key,
+  type ReactNode,
+} from 'react'
+import { Button, Menu, MenuItem, MenuTrigger, Popover } from 'react-aria-components'
+import { Link, Navigate, useSearchParams } from 'react-router'
 import { ApiError } from '../../api/errors.ts'
 import { useAuth } from '../../auth/useAuth.ts'
 import { EmptyState } from '../../components/EmptyState.tsx'
@@ -12,6 +19,8 @@ import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { AccountGate } from '../account/AccountGate.tsx'
+import { McpToolSelector, toolTitle } from './McpToolSelector.tsx'
+import { McpActivity } from './McpActivity.tsx'
 import {
   adminUsersQuery,
   assignRole,
@@ -43,13 +52,14 @@ import {
   type Period,
 } from '../reports/api.ts'
 
-type Section = 'overview' | 'learners' | 'rbac' | 'mcp' | 'recommendations' | 'feedback'
+type Section = 'overview' | 'learners' | 'rbac' | 'mcp' | 'mcp-activity' | 'recommendations' | 'feedback'
 // Each section needs the permission its own endpoints are guarded by, so an account only sees what it can use.
 const SECTIONS: readonly { id: Section; label: string; icon: IconName; permission: string }[] = [
   { id: 'overview', label: 'Overview', icon: 'bars', permission: 'reports:read' },
   { id: 'learners', label: 'Users', icon: 'person', permission: 'users:manage' },
   { id: 'rbac', label: 'Roles & Permissions', icon: 'person', permission: 'users:manage' },
   { id: 'mcp', label: 'MCP partners', icon: 'network', permission: 'mcp:manage' },
+  { id: 'mcp-activity', label: 'MCP Activity', icon: 'bars', permission: 'mcp:manage' },
   { id: 'recommendations', label: 'Recommendation', icon: 'compass', permission: 'reports:read' },
   { id: 'feedback', label: 'Feedback', icon: 'growth', permission: 'reports:read' },
 ]
@@ -78,12 +88,14 @@ export default function AdminPage() {
   // A section the account cannot open falls back to the first one it can, so a shared link never dead-ends.
   const section = sections.some((item) => item.id === requested) ? requested! : sections[0]?.id
 
+  if (isSignedIn && !section) return <Navigate to={paths.home} replace />
+
   if (!section) {
     return (
       <AccountGate
         page="admin"
         icon="info"
-        heading="Admin management is not available"
+        heading="Admin is not available"
         body={
           isSignedIn
             ? 'Your account does not have permission to open this workspace. An administrator can grant it under Roles & Permissions.'
@@ -95,6 +107,10 @@ export default function AdminPage() {
   }
 
   const page = en.pages.admin
+  const selectSection = (nextSection: Section) =>
+    setParams(nextSection === sections[0]?.id ? {} : { section: nextSection }, { replace: true })
+  const mcpSections = sections.filter((item) => item.id === 'mcp' || item.id === 'mcp-activity')
+  const selectedMcpSection = mcpSections.find((item) => item.id === section)
   return (
     <>
       <PageHero
@@ -104,29 +120,87 @@ export default function AdminPage() {
         lead={page.lead}
         art="network"
       />
-      <nav aria-label="Admin sections" className="mb-4 overflow-x-auto pb-1">
-        <div className="flex min-w-max gap-2">
-          {sections.map((item) => (
-            <Button
-              key={item.id}
-              className={button({ variant: section === item.id ? 'primary' : 'secondary' })}
-              aria-pressed={section === item.id}
-              onPress={() =>
-                setParams(item.id === sections[0]?.id ? {} : { section: item.id }, {
-                  replace: true,
-                })
-              }
-            >
-              <Icon name={item.icon} />
-              {item.label}
-            </Button>
-          ))}
+      <nav
+        aria-label="Admin sections"
+        className="mb-5 rounded-18 border border-border bg-surface p-2"
+      >
+        <div className="flex flex-wrap gap-2">
+          {sections.map((item) => {
+            if (item.id === 'mcp-activity') return null
+
+            if (item.id === 'mcp' && mcpSections.length > 1) {
+              return (
+                <MenuTrigger key={item.id}>
+                  <Button
+                    className={cx(
+                      button({
+                        variant: selectedMcpSection ? 'primary' : 'tertiary',
+                        text: 14,
+                        height: 44,
+                      }),
+                      'grow',
+                    )}
+                    aria-label={`MCP: ${selectedMcpSection?.label ?? item.label}`}
+                    aria-pressed={Boolean(selectedMcpSection)}
+                  >
+                    <Icon name={selectedMcpSection?.icon ?? item.icon} />
+                    {selectedMcpSection?.label ?? item.label}
+                    <Icon name="chevron" className="ml-auto" />
+                  </Button>
+                  <Popover
+                    placement="bottom start"
+                    offset={8}
+                    className="min-w-(--trigger-width) rounded-14 border border-border bg-surface p-1.5 shadow-popover data-entering:animate-pop"
+                  >
+                    <Menu
+                      aria-label="MCP sections"
+                      selectionMode="single"
+                      selectedKeys={selectedMcpSection ? [selectedMcpSection.id] : []}
+                      onAction={(key: Key) => selectSection(key as Section)}
+                      className="outline-none"
+                    >
+                      {mcpSections.map((mcpSection) => (
+                        <MenuItem
+                          key={mcpSection.id}
+                          id={mcpSection.id}
+                          className="flex min-h-11 cursor-pointer items-center gap-2 rounded-10 px-3 py-2 text-14 font-semibold text-navy outline-none data-focused:bg-soft data-hovered:bg-soft data-selected:bg-tint data-selected:text-blue"
+                        >
+                          <Icon name={mcpSection.icon} />
+                          {mcpSection.id === 'mcp' ? 'Partners' : 'Activities'}
+                        </MenuItem>
+                      ))}
+                    </Menu>
+                  </Popover>
+                </MenuTrigger>
+              )
+            }
+
+            return (
+              <Button
+                key={item.id}
+                className={cx(
+                  button({
+                    variant: section === item.id ? 'primary' : 'tertiary',
+                    text: 14,
+                    height: 44,
+                  }),
+                  'grow',
+                )}
+                aria-pressed={section === item.id}
+                onPress={() => selectSection(item.id)}
+              >
+                <Icon name={item.icon} />
+                {item.label}
+              </Button>
+            )
+          })}
         </div>
       </nav>
       {section === 'overview' && <Overview />}
       {section === 'learners' && <Learners />}
       {section === 'rbac' && <RbacManagement />}
       {section === 'mcp' && <McpPartners />}
+      {section === 'mcp-activity' && <McpActivity />}
       {section === 'recommendations' && <RecommendationManagement />}
       {section === 'feedback' && <FeedbackManagement />}
     </>
@@ -321,9 +395,7 @@ function Learners() {
                         className={cx(field, 'min-w-34')}
                         value={user.role}
                         disabled={
-                          roleMutation.isPending ||
-                          user.id === currentAdmin?.id ||
-                          !roles.isSuccess
+                          roleMutation.isPending || user.id === currentAdmin?.id || !roles.isSuccess
                         }
                         onChange={(event) =>
                           roleMutation.mutate({
@@ -456,7 +528,12 @@ function RbacManagement() {
                     <th className={th}>Role</th>
                     <th className={th}>Accounts</th>
                     {(permissions.data ?? []).map((permission) => (
-                      <th key={permission.key} className={th} scope="col" title={permission.description}>
+                      <th
+                        key={permission.key}
+                        className={th}
+                        scope="col"
+                        title={permission.description}
+                      >
                         {permission.key}
                         <span className="sr-only"> — {permission.description}</span>
                       </th>
@@ -526,7 +603,9 @@ function RoleRow({
         <span className="block font-semibold">{role.label}</span>
         <span className="text-13 text-muted">{role.key}</span>
         {role.is_system && <span className="block text-13 text-muted">Built-in</span>}
-        {role.description && <span className="mt-1 block text-13 text-muted">{role.description}</span>}
+        {role.description && (
+          <span className="mt-1 block text-13 text-muted">{role.description}</span>
+        )}
       </th>
       <td className={td}>{held}</td>
       {permissions.map((permission) => {
@@ -652,7 +731,11 @@ function RoleForm({
         </div>
       </fieldset>
       <div className="mt-4 flex flex-wrap items-center gap-3">
-        <button className={button({ variant: 'primary' })} type="submit" disabled={create.isPending}>
+        <button
+          className={button({ variant: 'primary' })}
+          type="submit"
+          disabled={create.isPending}
+        >
           {create.isPending ? 'Creating…' : 'Create role'}
         </button>
       </div>
@@ -664,6 +747,9 @@ function RoleForm({
 function McpPartners() {
   const queryClient = useQueryClient()
   const clients = useQuery(mcpClientsQuery)
+  const [search, setSearch] = useState('')
+  const [status, setStatus] = useState('all')
+  const [sort, setSort] = useState('newest')
   const [showForm, setShowForm] = useState(false)
   const [credentials, setCredentials] = useState<McpCredentials | null>(null)
   const refresh = () => queryClient.invalidateQueries({ queryKey: mcpClientsQuery.queryKey })
@@ -675,6 +761,21 @@ function McpPartners() {
     },
   })
   const revoke = useMutation({ mutationFn: revokeMcpClient, onSuccess: () => void refresh() })
+  const filtered = useMemo(() => {
+    const term = search.trim().toLocaleLowerCase()
+    return (clients.data ?? [])
+      .filter(
+        (client) =>
+          (status === 'all' || (status === 'active' ? client.is_active : !client.is_active)) &&
+          `${client.name} ${client.organisation} ${client.contact_email ?? ''} ${client.id}`
+            .toLocaleLowerCase()
+            .includes(term),
+      )
+      .sort((a, b) =>
+        sort === 'name' ? a.name.localeCompare(b.name) : b.created_at.localeCompare(a.created_at),
+      )
+  }, [clients.data, search, status, sort])
+  const active = clients.data?.filter((client) => client.is_active).length ?? 0
 
   return (
     <div className="grid gap-4">
@@ -688,17 +789,38 @@ function McpPartners() {
               MCP partner clients
             </h2>
             <p className="mb-0 text-14 text-muted">
-              Issue scoped credentials, rotate secrets and revoke access.
+              Connect partner services and manage their access to TESDA tools.
             </p>
           </div>
-          <Button
-            className={button({ variant: 'primary' })}
-            onPress={() => setShowForm((value) => !value)}
-          >
-            <Icon name={showForm ? 'close' : 'network'} />
-            {showForm ? 'Close form' : 'Add partner'}
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              className={button({ variant: 'secondary', text: 14 })}
+              isDisabled={clients.isFetching}
+              onPress={() => void clients.refetch()}
+            >
+              {clients.isFetching ? 'Refreshing…' : 'Refresh'}
+            </Button>
+            <Button
+              className={button({ variant: 'primary' })}
+              onPress={() => setShowForm((value) => !value)}
+            >
+              <Icon name={showForm ? 'close' : 'network'} />
+              {showForm ? 'Close form' : 'Add partner'}
+            </Button>
+          </div>
         </div>
+        <dl className="mb-5 grid grid-cols-3 gap-3 max-sm:grid-cols-1" aria-label="Partner summary">
+          {[
+            ['Total partners', clients.data?.length],
+            ['Active access', clients.data ? active : undefined],
+            ['Revoked', clients.data ? clients.data.length - active : undefined],
+          ].map(([title, value]) => (
+            <div key={title} className="rounded-12 border border-border bg-soft px-4 py-3">
+              <dt className="text-13 text-muted">{title}</dt>
+              <dd className="m-0 mt-1 text-24 font-bold text-navy tabular-nums">{value ?? '—'}</dd>
+            </div>
+          ))}
+        </dl>
         {showForm && (
           <McpClientForm
             onCreated={(result) => {
@@ -708,11 +830,56 @@ function McpPartners() {
             }}
           />
         )}
+        <div className="mb-4 grid grid-cols-[minmax(0,1fr)_160px_160px] items-end gap-3 max-md:grid-cols-1">
+          <label>
+            <span className={label}>Search partners</span>
+            <input
+              type="search"
+              className={field}
+              placeholder="Name, organisation, email or client ID"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+            />
+          </label>
+          <label>
+            <span className={label}>Status</span>
+            <select
+              className={field}
+              value={status}
+              onChange={(event) => setStatus(event.target.value)}
+            >
+              <option value="all">All partners</option>
+              <option value="active">Active</option>
+              <option value="revoked">Revoked</option>
+            </select>
+          </label>
+          <label>
+            <span className={label}>Sort by</span>
+            <select
+              className={field}
+              value={sort}
+              onChange={(event) => setSort(event.target.value)}
+            >
+              <option value="newest">Newest first</option>
+              <option value="name">Name A–Z</option>
+            </select>
+          </label>
+        </div>
+        {clients.isLoading && (
+          <p role="status" className="text-14 text-muted">
+            Loading partners…
+          </p>
+        )}
+        {clients.isSuccess && (
+          <p className="text-13 text-muted" role="status">
+            Showing {filtered.length} of {clients.data.length} partners
+          </p>
+        )}
         {clients.isError ? (
           <InlineError error={clients.error} onRetry={() => void clients.refetch()} />
         ) : (
           <div className="grid gap-3">
-            {(clients.data ?? []).map((client) => (
+            {filtered.map((client) => (
               <McpClientCard
                 key={client.id}
                 client={client}
@@ -744,6 +911,21 @@ function McpPartners() {
             body="Add the first approved partner to issue scoped MCP credentials."
             headingLevel={3}
           />
+        )}
+        {clients.isSuccess && clients.data.length > 0 && filtered.length === 0 && (
+          <div className="rounded-14 border border-dashed border-border bg-soft p-6 text-center">
+            <h3 className="text-17 text-navy">No matching partners</h3>
+            <p className="text-14 text-muted">Try a different search or show all statuses.</p>
+            <Button
+              className={button({ variant: 'secondary', text: 14 })}
+              onPress={() => {
+                setSearch('')
+                setStatus('all')
+              }}
+            >
+              Clear filters
+            </Button>
+          </div>
         )}
         {(rotate.isError || revoke.isError) && <InlineError error={rotate.error ?? revoke.error} />}
       </section>
@@ -780,95 +962,115 @@ function McpClientForm({ onCreated }: { onCreated: (credentials: McpCredentials)
     })
   }
   return (
-    <form className="mb-5 rounded-14 border border-border bg-soft p-4" onSubmit={submit}>
-      <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
-        <Field name="name" labelText="Client name" required />
-        <Field name="organisation" labelText="Organisation" required />
-        <Field name="contact_email" labelText="Contact email" type="email" />
-        <Field
-          name="rate_limit_per_minute"
-          labelText="Calls per minute"
-          type="number"
-          defaultValue="120"
-          min="1"
-          max="10000"
-          required
-        />
-      </div>
-      <label className="mt-4 block">
-        <span className={label}>Declared purpose</span>
-        <textarea
-          className={cx(field, 'min-h-24 resize-y')}
-          name="declared_purpose"
-          required
-          maxLength={2000}
-        />
-      </label>
-      <fieldset className="mt-4 border-0 p-0">
-        <legend className={label}>Expected tools</legend>
-        <p className="mt-0 text-13 text-muted">
-          Select the tools this partner plans to use. Required access is added automatically.
+    <form
+      className="mb-6 overflow-hidden rounded-18 border border-hover-border bg-soft"
+      onSubmit={submit}
+      aria-labelledby="new-partner-heading"
+    >
+      <div className="border-b border-border bg-tint px-5 py-4">
+        <p className="mb-1 text-12 font-bold tracking-wide text-blue uppercase">
+          Partner onboarding
         </p>
-        {tools.isLoading && <p className="text-13 text-muted">Loading available tools…</p>}
-        {tools.isError && <InlineError error={tools.error} onRetry={() => void tools.refetch()} />}
-        <div className="grid grid-cols-2 gap-2 max-sm:grid-cols-1">
-          {Object.entries(tools.data ?? {}).map(([tool, scope]) => (
-            <div
-              key={tool}
-              className="flex min-h-11 items-center gap-2 rounded-10 border border-border bg-surface px-3 py-2 text-13"
-            >
-              <input
-                id={`expected-tool-${tool}`}
-                type="checkbox"
-                aria-label={tool}
-                checked={expectedTools.includes(tool)}
-                onChange={(event) =>
-                  setExpectedTools((current) =>
-                    event.target.checked
-                      ? [...current, tool]
-                      : current.filter((item) => item !== tool),
-                  )
-                }
-              />
-              <label htmlFor={`expected-tool-${tool}`}>
-                <strong className="block text-navy">{tool}</strong>
-                <span className="text-muted">{accessLabel(scope)}</span>
-              </label>
-            </div>
-          ))}
-        </div>
-      </fieldset>
-      <section
-        className="mt-4 rounded-10 border border-border bg-surface p-3"
-        aria-label="Access granted"
-      >
-        <h3 className={label}>Access granted automatically</h3>
-        <div aria-live="polite">
-          {scopes.length ? (
-            <ul className="my-2 pl-5 text-14 text-navy">
-              {scopes.map((scope) => (
-                <li key={scope}>{accessLabel(scope)}</li>
-              ))}
-            </ul>
-          ) : (
-            <p className="mb-0 text-13 text-muted">Select at least one tool to grant access.</p>
-          )}
-        </div>
-        {scopes.length > 0 && (
-          <p className="mb-0 text-13 text-muted">
-            Access applies to all tools in each listed category. Expected tools record the partner’s
-            planned usage; they do not restrict access to individual tools.
+        <h3 id="new-partner-heading" className="mb-1 text-20 text-navy">
+          Connect a new partner
+        </h3>
+        <p className="mb-0 text-14 text-muted">
+          Add their details, choose tools, then issue credentials.
+        </p>
+      </div>
+      <div className="p-5 max-xs:p-4">
+        <fieldset className="m-0 min-w-0 border-0 p-0" disabled={create.isPending}>
+          <legend className="mb-3 text-16 font-semibold text-navy">Partner details</legend>
+          <div className="grid grid-cols-2 gap-4 max-sm:grid-cols-1">
+            <Field
+              name="name"
+              labelText="Client name"
+              required
+              maxLength={100}
+              placeholder="e.g. Regional learning portal"
+            />
+            <Field
+              name="organisation"
+              labelText="Organisation"
+              required
+              maxLength={200}
+              autoComplete="organization"
+            />
+            <Field
+              name="contact_email"
+              labelText="Contact email"
+              type="email"
+              autoComplete="email"
+            />
+            <Field
+              name="rate_limit_per_minute"
+              labelText="Calls per minute"
+              type="number"
+              defaultValue="120"
+              min="1"
+              max="10000"
+              required
+            />
+          </div>
+          <label className="mt-4 block">
+            <span className={label}>Declared purpose</span>
+            <textarea
+              className={cx(field, 'min-h-24 resize-y')}
+              name="declared_purpose"
+              required
+              maxLength={2000}
+            />
+          </label>
+          <p className="mt-2 mb-0 text-13 text-muted">
+            Describe how the integration will help learners. Client name, organisation and purpose
+            are required.
           </p>
-        )}
-      </section>
-      <Button
-        type="submit"
-        className={cx(button({ variant: 'primary' }), 'mt-4')}
-        isDisabled={!canCreate}
-      >
-        {create.isPending ? 'Creating…' : 'Create client'}
-      </Button>
-      {create.isError && <InlineError error={create.error} />}
+        </fieldset>
+        <div className="mt-6 border-t border-border pt-5">
+          {tools.isLoading && <p className="text-13 text-muted">Loading available tools…</p>}
+          {tools.isError && (
+            <InlineError error={tools.error} onRetry={() => void tools.refetch()} />
+          )}
+          <McpToolSelector
+            tools={tools.data ?? {}}
+            selected={expectedTools}
+            onChange={setExpectedTools}
+            disabled={create.isPending || !tools.isSuccess}
+          />
+        </div>
+        <section
+          className="mt-5 rounded-14 border border-border bg-surface p-4"
+          aria-label="Access granted"
+        >
+          <h3 className={label}>Access granted automatically</h3>
+          <div aria-live="polite">
+            {scopes.length ? (
+              <ul className="my-2 pl-5 text-14 text-navy">
+                {scopes.map((scope) => (
+                  <li key={scope}>{accessLabel(scope)}</li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mb-0 text-13 text-muted">Select at least one tool to grant access.</p>
+            )}
+          </div>
+          {scopes.length > 0 && (
+            <p className="mb-0 text-13 text-muted">
+              Access applies to all tools in each listed category. Expected tools record the
+              partner’s planned usage; they do not restrict access to individual tools.
+            </p>
+          )}
+        </section>
+        <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4">
+          <p className="mb-0 text-13 text-muted">
+            {expectedTools.length} tools selected · {scopes.length} access categories
+          </p>
+          <Button type="submit" className={button({ variant: 'primary' })} isDisabled={!canCreate}>
+            {create.isPending ? 'Creating…' : 'Create client'}
+          </Button>
+        </div>
+        {create.isError && <InlineError error={create.error} />}
+      </div>
     </form>
   )
 }
@@ -897,15 +1099,19 @@ function McpClientCard({
   onRevoke: () => void
 }) {
   return (
-    <article className="rounded-14 border border-border p-4">
+    <article
+      className="min-w-0 rounded-14 border border-border bg-surface p-5"
+      aria-label={client.name}
+    >
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
+        <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="mb-0 text-17 text-navy">{client.name}</h3>
+            <h3 className="mb-0 text-18 break-words text-navy">{client.name}</h3>
             <Status active={client.is_active} />
           </div>
-          <p className="mt-1 mb-0 text-14 text-muted">
-            {client.organisation} · {client.declared_purpose}
+          <p className="mt-1 mb-0 text-14 text-muted">{client.organisation}</p>
+          <p className="mt-2 mb-0 max-w-2xl text-14 break-words text-muted">
+            {client.declared_purpose}
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -925,7 +1131,7 @@ function McpClientCard({
           </Button>
         </div>
       </div>
-      <dl className="mt-3 grid grid-cols-3 gap-3 text-13 max-md:grid-cols-1">
+      <dl className="mt-4 grid grid-cols-3 gap-4 rounded-12 bg-soft p-4 text-13 max-md:grid-cols-1">
         <div>
           <dt className="font-semibold text-muted">Granted access</dt>
           <dd className="m-0 text-navy">{client.scopes.map(accessLabel).join('; ')}</dd>
@@ -943,6 +1149,38 @@ function McpClientCard({
           </dd>
         </div>
       </dl>
+      <details className="mt-4 border-t border-rule pt-2">
+        <summary className="min-h-11 cursor-pointer py-3 text-14 font-semibold text-blue">
+          Integration details · {client.expected_tools.length} expected tools
+        </summary>
+        <div className="grid gap-3 pt-2 text-13">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="min-w-0">
+              <span className="block font-semibold text-muted">Client ID</span>
+              <code className="break-all text-navy">{client.id}</code>
+            </div>
+            <CopyButton value={client.id} labelText="Copy client ID" />
+          </div>
+          <p className="mb-0 text-muted">
+            Created {new Date(client.created_at).toLocaleDateString('en-PH')}
+            {client.contact_email ? ` · Contact: ${client.contact_email}` : ''}
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {client.expected_tools.map((tool) => (
+              <span
+                key={tool}
+                className="rounded-full bg-tint px-3 py-1 text-12 text-blue"
+                title={tool}
+              >
+                {toolTitle(tool)}
+              </span>
+            ))}
+            {client.expected_tools.length === 0 && (
+              <span className="text-muted">No expected tools declared.</span>
+            )}
+          </div>
+        </div>
+      </details>
     </article>
   )
 }
@@ -993,16 +1231,53 @@ function SecretPanel({
       <dl className="grid gap-2 text-14">
         <div>
           <dt className="font-semibold">Client ID</dt>
-          <dd className="m-0 font-mono break-all">{credentials.client.id}</dd>
+          <dd className="m-0 flex flex-wrap items-center justify-between gap-2">
+            <span className="font-mono break-all">{credentials.client.id}</span>
+            <CopyButton value={credentials.client.id} labelText="Copy client ID" />
+          </dd>
         </div>
         <div>
           <dt className="font-semibold">Client secret</dt>
           <dd className="m-0 rounded-10 border border-border bg-surface p-3 font-mono break-all select-all">
             {credentials.client_secret}
           </dd>
+          <dd className="m-0 mt-2">
+            <CopyButton value={credentials.client_secret} labelText="Copy client secret" />
+          </dd>
         </div>
       </dl>
     </section>
+  )
+}
+
+function CopyButton({ value, labelText }: { value: string; labelText: string }) {
+  const [message, setMessage] = useState('')
+  const [busy, setBusy] = useState(false)
+  return (
+    <div className="flex flex-wrap items-center gap-2">
+      <Button
+        className={button({ variant: 'secondary', text: 13, height: 44, snug: true })}
+        isDisabled={busy}
+        onPress={async () => {
+          setBusy(true)
+          setMessage('')
+          try {
+            await navigator.clipboard.writeText(value)
+            setMessage('Copied')
+          } catch {
+            setMessage('Copy unavailable. Select the text and copy it manually.')
+          } finally {
+            setBusy(false)
+          }
+        }}
+      >
+        <Icon name="clipboard" />
+        {labelText}
+      </Button>
+      <span role="status" className="text-12 text-muted">
+        {message}
+      </span>
+    </div>
   )
 }
 

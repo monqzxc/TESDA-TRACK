@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useId, useState, type ReactNode } from 'react'
 import { Button } from 'react-aria-components'
-import { useSearchParams } from 'react-router'
+import { Navigate, useSearchParams } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
 import { useAuth } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
@@ -10,6 +10,7 @@ import { throwWithoutData } from '../../components/QueryBoundary.tsx'
 import { WithCatalog } from '../../components/WithCatalog.tsx'
 import { en } from '../../copy/en.ts'
 import { cssVars, cx } from '../../lib/style.ts'
+import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { AccountGate } from '../account/AccountGate.tsx'
 import {
@@ -63,6 +64,8 @@ const cellNumber = 'border-b border-rule px-[0.6rem] py-[0.55rem] text-right tab
  */
 export default function ReportsPage() {
   const { canViewReports, isSignedIn } = useAuth()
+  if (isSignedIn && !canViewReports) return <Navigate to={paths.home} replace />
+
   if (!canViewReports) {
     const gate = en.account.reports
     return (

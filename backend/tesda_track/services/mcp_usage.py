@@ -13,7 +13,8 @@ from sqlalchemy.types import Date
 from sqlmodel import Session, select
 
 from tesda_track.models import NO_CLIENT, ApiClient, McpCallDaily, McpCallLog
-from tesda_track.schemas.mcp_usage import ClientUsage, DayUsage, ToolUsage, UsageReport
+from tesda_track.schemas.mcp_usage import (ClientUsage, DayUsage, ToolUsage, UsageReport,
+                                         McpActivityQuery, McpActivityItem, McpActivityPage)
 from tesda_track.schemas.reports import DateRange
 
 logger = logging.getLogger("tesda_track")
@@ -24,6 +25,39 @@ LATENCY_OUTCOMES = ("ok", "tool_error")  # refused calls return in no time and w
 SUPPRESSED = "suppressed"  # error_code of a row that stands for result_count unattributed denials
 DEEP_PAGING_OFFSET = 200
 DEEP_PAGING_TOOL = "search_training_programs"
+
+
+def recent_activity(session: Session, query: McpActivityQuery, retention_days: int) -> McpActivityPage:
+    conditions = []
+    if query.client_id is not None:
+        conditions.append(McpCallLog.client_id == query.client_id)
+    if query.tool is not None:
+        conditions.append(McpCallLog.tool == query.tool)
+    if query.outcome is not None:
+        conditions.append(McpCallLog.outcome == query.outcome)
+    if query.date_from:
+        conditions.append(McpCallLog.called_at >= datetime.combine(query.date_from, datetime.min.time(), PHILIPPINE_OFFSET))
+    if query.date_to:
+        conditions.append(McpCallLog.called_at <= datetime.combine(query.date_to, datetime.max.time(), PHILIPPINE_OFFSET))
+    rows = session.exec(
+        select(McpCallLog, ApiClient).outerjoin(ApiClient, ApiClient.id == McpCallLog.client_id)
+        .where(*conditions).order_by(McpCallLog.called_at.desc(), McpCallLog.id.desc())
+        .offset(query.offset).limit(query.limit + 1)
+    ).all()
+    items = []
+    for row, client in rows[:query.limit]:
+        suppressed = row.error_code == SUPPRESSED
+        items.append(McpActivityItem(
+            id=row.id, client_id=row.client_id, client_name=client.name if client else None,
+            called_at=row.called_at, method=row.method, tool=row.tool, outcome=row.outcome,
+            error_code=row.error_code, latency_ms=row.latency_ms,
+            result_count=None if suppressed else row.result_count, inputs_sent=row.inputs_sent,
+            qualification_code=row.qualification_code, region_code=row.region_code,
+            page_offset=row.page_offset, protocol_version=row.protocol_version,
+            expected=row.tool in client.expected_tools if client and row.tool else None,
+            occurrences=(row.result_count or 1) if suppressed else 1,
+        ))
+    return McpActivityPage(items=items, has_more=len(rows) > query.limit, retention_days=retention_days)
 
 
 def record_call(session: Session, **fields) -> None:

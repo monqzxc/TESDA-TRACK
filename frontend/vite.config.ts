@@ -9,7 +9,7 @@ export default defineConfig({
     // The FastAPI backend, run with `uvicorn tesda_track.main:app --reload` (see the README). API_PROXY points it
     // elsewhere, e.g. http://host.docker.internal:8000 when this dev server runs in a container.
     proxy: {
-      '/api': process.env.API_PROXY ?? 'http://127.0.0.1:8001',
+      '/api': process.env.API_PROXY ?? 'http://127.0.0.1:8000',
     },
   },
   test: {

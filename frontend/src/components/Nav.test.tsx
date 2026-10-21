@@ -73,12 +73,12 @@ describe('Nav', () => {
     )
   })
 
-  it('shows Admin management only to full administrators', () => {
+  it('shows Admin only to full administrators', () => {
     expect(linkNames(renderNav('/reports', true))).not.toContain('Admin management')
     cleanup()
     const nav = renderNav('/admin', true, true)
-    expect(linkNames(nav).at(-1)).toBe('Admin management')
-    expect(within(nav).getByRole('link', { name: 'Admin management' })).toHaveAttribute(
+    expect(linkNames(nav).at(-1)).toBe('Admin')
+    expect(within(nav).getByRole('link', { name: 'Admin' })).toHaveAttribute(
       'aria-current',
       'page',
     )

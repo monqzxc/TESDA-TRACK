@@ -102,7 +102,7 @@ export function AppLayout() {
           <main
             id="main"
             tabIndex={-1}
-            className="w-full max-w-380 flex-1 px-10 pt-[3.8rem] pb-8 focus:outline-none max-[1101px]:px-6 max-md:px-4 max-md:pt-6 max-md:pb-8"
+            className="w-full max-w-full flex-1 px-10 pt-[3.8rem] pb-8 focus:outline-none max-[1101px]:px-6 max-md:px-4 max-md:pt-6 max-md:pb-8"
           >
             <Outlet />
           </main>

@@ -99,19 +99,6 @@ async function expectAccessible(page: Page) {
   expect(results.violations).toEqual([])
 }
 
-/**
- * Opens the account menu's Settings dialog and expands "Your data & privacy", where Download my data and
- * Delete my account live.
- */
-async function openDataSettings(page: Page, area: Locator): Promise<Locator> {
-  await area.getByRole('button', { name: 'Your account: Maria Santos' }).click()
-  await page.getByRole('menuitem', { name: 'Settings' }).click()
-  const settings = page.getByRole('dialog', { name: 'Settings' })
-  await expect(settings).toBeVisible()
-  await settings.getByText('Your data & privacy').click()
-  return settings
-}
-
 /** Where the account control is: the sidebar, or on a phone, the menu that holds it. */
 async function accountArea(page: Page, phone: boolean): Promise<Locator> {
   if (!phone) return page.getByRole('banner')

@@ -75,12 +75,24 @@ it('derives granted access from selected tools, including tools that share a sco
   const tools = screen.getByRole('group', { name: 'Expected tools' })
   const access = screen.getByRole('region', { name: 'Access granted' })
   const create = screen.getByRole('button', { name: 'Create client' })
-  const catalog = await within(tools).findByRole('checkbox', { name: 'get_qualification' })
-  const matching = within(tools).getByRole('checkbox', { name: 'match_qualifications' })
-  const readiness = within(tools).getByRole('checkbox', { name: 'check_readiness' })
-  const reports = within(tools).getByRole('checkbox', { name: 'get_qualification_demand' })
+  const catalog = await within(tools).findByRole('checkbox', { name: 'View qualification details' })
+  const matching = within(tools).getByRole('checkbox', { name: 'Match qualifications' })
+  const readiness = within(tools).getByRole('checkbox', { name: 'Check assessment readiness' })
+  const reports = within(tools).getByRole('checkbox', { name: 'View qualification demand' })
   expect(create).toBeDisabled()
   expect(within(access).queryByRole('checkbox')).not.toBeInTheDocument()
+
+  await user.click(within(tools).getByRole('button', { name: 'Select Recommendations' }))
+  expect(matching).toBeChecked()
+  expect(readiness).toBeChecked()
+  expect(catalog).not.toBeChecked()
+  await user.click(within(tools).getByRole('button', { name: 'Clear Recommendations' }))
+  expect(matching).not.toBeChecked()
+  await user.click(within(tools).getByRole('button', { name: 'Select all tools' }))
+  expect(reports).toBeChecked()
+  expect(within(access).getAllByRole('listitem')).toHaveLength(3)
+  await user.click(within(tools).getByRole('button', { name: 'Clear selection' }))
+  expect(create).toBeDisabled()
 
   await user.click(matching)
   await user.click(readiness)
@@ -107,6 +119,56 @@ it('derives granted access from selected tools, including tools that share a sco
       scopes: ['catalog:read', 'recommend:run'],
     }),
   )
+})
+
+it('combines partner search and status, sorts results and copies a client ID', async () => {
+  const user = userEvent.setup()
+  rememberSignIn()
+  serveAccountApi({ learner: admin, signedIn: true })
+  serveCatalog()
+  const client = {
+    id: 'partner-one',
+    name: 'Zulu portal',
+    organisation: 'Regional Office',
+    contact_email: 'partner@example.com',
+    declared_purpose: 'Learner pathways',
+    expected_tools: ['get_qualification'],
+    scopes: ['catalog:read'],
+    rate_limit_per_minute: 120,
+    is_active: true,
+    last_token_at: null,
+    created_at: '2026-10-20T00:00:00Z',
+  }
+  server.use(
+    http.get('*/api/v1/admin/mcp/clients', () =>
+      HttpResponse.json([
+        client,
+        {
+          ...client,
+          id: 'partner-two',
+          name: 'Alpha portal',
+          contact_email: 'alpha@example.com',
+          is_active: false,
+          created_at: '2026-10-19T00:00:00Z',
+        },
+      ]),
+    ),
+  )
+  renderApp('/admin?section=mcp')
+  await screen.findByRole('article', { name: 'Zulu portal' })
+  await user.selectOptions(screen.getByRole('combobox', { name: 'Sort by' }), 'name')
+  expect(screen.getAllByRole('article')[0]).toHaveAccessibleName('Alpha portal')
+  await user.selectOptions(screen.getByRole('combobox', { name: 'Status' }), 'active')
+  expect(screen.queryByRole('article', { name: 'Alpha portal' })).not.toBeInTheDocument()
+  await user.type(screen.getByRole('searchbox', { name: 'Search partners' }), 'alpha@example.com')
+  expect(screen.getByRole('heading', { name: 'No matching partners' })).toBeInTheDocument()
+  await user.click(screen.getByRole('button', { name: 'Clear filters' }))
+  expect(screen.getAllByRole('article')).toHaveLength(2)
+  const partner = screen.getByRole('article', { name: 'Zulu portal' })
+  await user.click(within(partner).getByText(/Integration details/))
+  await user.click(within(partner).getByRole('button', { name: 'Copy client ID' }))
+  await within(partner).findByText('Copied')
+  expect(await navigator.clipboard.readText()).toBe('partner-one')
 })
 
 const PERMISSIONS = [
@@ -175,7 +237,11 @@ it('grants a permission by sending the role its whole new permission list', asyn
   serveRoles(
     [
       { ...builtIn('auditor', 'Auditor', ['reports:read']), is_system: false },
-      builtIn('admin', 'Administrator', PERMISSIONS.map((item) => item.key)),
+      builtIn(
+        'admin',
+        'Administrator',
+        PERMISSIONS.map((item) => item.key),
+      ),
     ],
     { auditor: 3 },
   )
@@ -208,7 +274,11 @@ it('locks the administrator role and offers no delete for built-in roles', async
   serveAccountApi({ learner: admin, signedIn: true })
   serveCatalog()
   serveRoles([
-    builtIn('admin', 'Administrator', PERMISSIONS.map((item) => item.key)),
+    builtIn(
+      'admin',
+      'Administrator',
+      PERMISSIONS.map((item) => item.key),
+    ),
     builtIn('trainer', 'Trainer', ['training:manage']),
     { ...builtIn('auditor', 'Auditor', ['reports:read']), is_system: false },
   ])
@@ -258,7 +328,9 @@ it('offers every composed role when assigning one to an account', async () => {
   const select = await screen.findByLabelText('Role for Maria Santos')
   await waitFor(() => expect(select).toBeEnabled())
   expect(
-    within(select).getAllByRole('option').map((option) => option.textContent),
+    within(select)
+      .getAllByRole('option')
+      .map((option) => option.textContent),
   ).toEqual(['Learner', 'Auditor'])
 })
 
@@ -280,7 +352,9 @@ it('offers only the admin sections the account has permission for', async () => 
   expect(within(tabs).getByRole('button', { name: /Feedback/ })).toBeInTheDocument()
   // reports:read does not reach accounts, roles or partner credentials.
   expect(within(tabs).queryByRole('button', { name: /Users/ })).not.toBeInTheDocument()
-  expect(within(tabs).queryByRole('button', { name: /Roles & Permissions/ })).not.toBeInTheDocument()
+  expect(
+    within(tabs).queryByRole('button', { name: /Roles & Permissions/ }),
+  ).not.toBeInTheDocument()
   expect(within(tabs).queryByRole('button', { name: /MCP partners/ })).not.toBeInTheDocument()
 })
 
@@ -298,14 +372,19 @@ it('falls back to a permitted section when the link names one the account cannot
   expect(screen.queryByRole('heading', { name: 'Roles and permissions' })).not.toBeInTheDocument()
 })
 
-it('turns away an account with no staff permissions', async () => {
+it('sends an account with no staff permissions back home', async () => {
   rememberSignIn()
   serveAccountApi({ learner: maria, signedIn: true })
   serveCatalog()
 
-  renderApp('/admin?section=rbac')
+  const { router } = renderApp('/admin?section=rbac')
+  await waitFor(() => expect(router.state.location.pathname).toBe('/'))
+  expect(router.state.historyAction).toBe('REPLACE')
   expect(
-    await screen.findByRole('heading', { name: 'Admin management is not available' }),
+    await screen.findByRole('heading', {
+      level: 1,
+      name: 'Every career has a track. Find yours.',
+    }),
   ).toBeInTheDocument()
   expect(screen.queryByRole('navigation', { name: 'Admin sections' })).not.toBeInTheDocument()
 })

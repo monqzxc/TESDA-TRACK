@@ -38,7 +38,7 @@ export const en = {
     progress: 'My Progress',
     skills: 'Skills Explorer',
     reports: 'Reports',
-    admin: 'Admin management',
+    admin: 'Admin',
     signIn: 'Sign in',
     menu: 'Menu',
     closeMenu: 'Close menu',
@@ -305,8 +305,8 @@ export const en = {
       lead: 'Explore pilot activity, qualification demand, and training opportunities. Counts and averages only.',
     },
     admin: {
-      title: 'Admin management · TESDA-TRACK',
-      heading: 'Admin management',
+      title: 'Admin · TESDA-TRACK',
+      heading: 'Admin',
       lead: 'Manage learner access, MCP partners, recommendations, feedback, and pilot operations.',
     },
     signIn: {

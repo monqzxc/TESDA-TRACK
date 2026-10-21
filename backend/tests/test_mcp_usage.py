@@ -239,6 +239,58 @@ def test_usage_report_is_admin_only(client, learner, admin):
     assert client.get("/api/v1/admin/mcp/usage", headers=admin).status_code == 200
 
 
+def test_activity_requires_mcp_permission(client, learner, admin):
+    assert client.get("/api/v1/admin/mcp/activity", headers=learner).status_code == 403
+    client.cookies.clear()
+    assert client.get("/api/v1/admin/mcp/activity").status_code == 401
+    assert client.get("/api/v1/admin/mcp/activity", headers=admin).status_code == 200
+
+
+def test_activity_filters_paginates_and_projects_safe_metadata(client, session, partner, admin):
+    made = partner("Activity client", expected_tools=("get_regional_supply",))
+    other = partner("Other client")
+    start = datetime(2026, 10, 20, 16, tzinfo=timezone.utc)  # October 21, midnight in Manila
+    for index, instant in enumerate((start - timedelta(microseconds=1), start,
+                                     start + timedelta(hours=23), start + timedelta(days=1))):
+        session.add(McpCallLog(
+            client_id=made.id, called_at=instant, method="tools/call", tool="get_regional_supply",
+            outcome="ok", latency_ms=10, inputs_sent=["region_code", "goal"],
+            region_code="NCR", goal_fingerprint="private-fingerprint", result_count=index,
+        ))
+    add_call(session, other.id)
+    add_call(session, made.id, outcome="tool_error")
+    add_call(session, made.id, tool="get_qualification")
+    session.flush()
+    params = {"client_id": str(made.id), "tool": "get_regional_supply", "outcome": "ok",
+              "date_from": "2026-10-21", "date_to": "2026-10-21", "limit": 1}
+    response = client.get("/api/v1/admin/mcp/activity", headers=admin, params=params)
+    assert response.status_code == 200
+    body = response.json()
+    assert body["has_more"] and body["retention_days"] == get_settings().mcp_call_log_retention_days
+    [item] = body["items"]
+    assert item["result_count"] == 2 and item["expected"] is True
+    assert item["inputs_sent"] == ["region_code", "goal"] and item["region_code"] == "NCR"
+    assert item["client_name"] == "Activity client"
+    assert "goal_fingerprint" not in item and "private-fingerprint" not in response.text
+    assert "client_secret_hash" not in item and "arguments" not in item
+    second = client.get("/api/v1/admin/mcp/activity", headers=admin, params={**params, "offset": 1}).json()
+    assert not second["has_more"] and second["items"][0]["result_count"] == 1
+    assert second["items"][0]["id"] != item["id"]
+
+
+def test_activity_grouped_denials_are_not_results(client, session, admin):
+    add_call(session, None, tool=None, outcome="denied_token", error_code="suppressed", result_count=42)
+    [item] = client.get("/api/v1/admin/mcp/activity", headers=admin).json()["items"]
+    assert item["client_name"] is None and item["expected"] is None
+    assert item["occurrences"] == 42 and item["result_count"] is None
+
+
+def test_activity_rejects_invalid_filters(client, admin):
+    for params in ({"limit": 101}, {"offset": -1}, {"outcome": "anything"}, {"client_id": "bad"},
+                   {"date_from": "2026-10-22", "date_to": "2026-10-21"}):
+        assert client.get("/api/v1/admin/mcp/activity", headers=admin, params=params).status_code == 422
+
+
 def test_usage_report_counts_and_flags(client, session, partner, admin):
     expected = ("get_regional_supply", "search_training_programs")
     made = partner("TSP", expected_tools=expected)

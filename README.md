@@ -20,13 +20,13 @@ For errors, jump to [Troubleshooting](#troubleshooting).
 
 For local development on Windows, install:
 
-| Tool | Version / purpose |
-| --- | --- |
-| Python | **3.13** for the API and Python tools |
-| Node.js | **24**, including npm, for the React frontend |
+| Tool           | Version / purpose                                                           |
+| -------------- | --------------------------------------------------------------------------- |
+| Python         | **3.13** for the API and Python tools                                       |
+| Node.js        | **24**, including npm, for the React frontend                               |
 | Docker Desktop | Running with Linux containers; provides PostgreSQL 17, pgvector and PostGIS |
-| Git | To clone and update the repository |
-| Laragon | Optional; HeidiSQL can view the Docker database |
+| Git            | To clone and update the repository                                          |
+| Laragon        | Optional; HeidiSQL can view the Docker database                             |
 
 The steps below use **PowerShell**. They call the virtual environment's Python directly and use
 `npm.cmd`, so you do not need to activate the environment or change PowerShell's execution policy.
@@ -248,20 +248,20 @@ Open [the classic app](http://localhost:8501). This terminal is optional when us
 
 Start each command in the directory shown.
 
-| Task | Directory | Command |
-| --- | --- | --- |
-| Database status | Repository root | `docker compose -f docker-compose.dev.yml ps` |
-| Database logs | Repository root | `docker compose -f docker-compose.dev.yml logs --tail=100 db` |
-| Apply migrations | `backend/` | `../.venv/Scripts/python.exe -m alembic upgrade head` |
-| Current / available migration | `backend/` | `../.venv/Scripts/python.exe -m alembic current` / `../.venv/Scripts/python.exe -m alembic heads` |
-| Reload catalog data | `backend/` | `../.venv/Scripts/python.exe -m tesda_track.seed` |
-| Sync embeddings | `backend/` | `../.venv/Scripts/python.exe -m tesda_track.embeddings sync` |
-| Python tests | Repository root | `./.venv/Scripts/python.exe -m pytest` |
-| Frontend tests | `frontend/` | `npm.cmd test` |
-| Frontend lint / build | `frontend/` | `npm.cmd run lint` / `npm.cmd run build` |
-| Browser tests | `frontend/` | First `npx.cmd playwright install chromium`, then `npm.cmd run e2e` |
-| Refresh API types after API changes | `frontend/` | `npm.cmd run api:types` |
-| Format frontend code | `frontend/` | `npm.cmd run format` |
+| Task                                | Directory       | Command                                                                                           |
+| ----------------------------------- | --------------- | ------------------------------------------------------------------------------------------------- |
+| Database status                     | Repository root | `docker compose -f docker-compose.dev.yml ps`                                                     |
+| Database logs                       | Repository root | `docker compose -f docker-compose.dev.yml logs --tail=100 db`                                     |
+| Apply migrations                    | `backend/`      | `../.venv/Scripts/python.exe -m alembic upgrade head`                                             |
+| Current / available migration       | `backend/`      | `../.venv/Scripts/python.exe -m alembic current` / `../.venv/Scripts/python.exe -m alembic heads` |
+| Reload catalog data                 | `backend/`      | `../.venv/Scripts/python.exe -m tesda_track.seed`                                                 |
+| Sync embeddings                     | `backend/`      | `../.venv/Scripts/python.exe -m tesda_track.embeddings sync`                                      |
+| Python tests                        | Repository root | `./.venv/Scripts/python.exe -m pytest`                                                            |
+| Frontend tests                      | `frontend/`     | `npm.cmd test`                                                                                    |
+| Frontend lint / build               | `frontend/`     | `npm.cmd run lint` / `npm.cmd run build`                                                          |
+| Browser tests                       | `frontend/`     | First `npx.cmd playwright install chromium`, then `npm.cmd run e2e`                               |
+| Refresh API types after API changes | `frontend/`     | `npm.cmd run api:types`                                                                           |
+| Format frontend code                | `frontend/`     | `npm.cmd run format`                                                                              |
 
 To create a migration, run `../.venv/Scripts/python.exe -m alembic revision --autogenerate --rev-id NEXT_NUMBER -m "short description"`
 from `backend/`. Replace `NEXT_NUMBER` with the next unused number after checking
@@ -303,14 +303,14 @@ curl.exe -fsS http://127.0.0.1:8000/health
 curl.exe -fsS http://localhost:5173/api/v1/qualifications
 ```
 
-| Result | What to do |
-| --- | --- |
-| Docker is unavailable or no database is running | Open Docker Desktop, then run `docker compose -f docker-compose.dev.yml up -d`. |
-| Port 8000 refuses the connection | Start the API using [Daily startup](#daily-startup). Read its terminal if it exits. |
-| Health returns 503 or `database: unreachable` | Check database status, port 5433, and the password in `DATABASE_URL`. See the database fixes below. |
-| Health works, but the frontend API URL fails | Keep both servers running. Check the frontend terminal for proxy errors; the default API target is `http://127.0.0.1:8000`. |
-| Catalog works, but a recommendation fails | Check the API terminal's traceback. If a table or column is missing, apply migrations using the next section. |
-| Both URLs work, but the page still fails | Refresh and reproduce once. In browser DevTools → Network, note the failing `/api/` request and HTTP status; match it to the API terminal error. |
+| Result                                          | What to do                                                                                                                                       |
+| ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Docker is unavailable or no database is running | Open Docker Desktop, then run `docker compose -f docker-compose.dev.yml up -d`.                                                                  |
+| Port 8000 refuses the connection                | Start the API using [Daily startup](#daily-startup). Read its terminal if it exits.                                                              |
+| Health returns 503 or `database: unreachable`   | Check database status, port 5433, and the password in `DATABASE_URL`. See the database fixes below.                                              |
+| Health works, but the frontend API URL fails    | Keep both servers running. Check the frontend terminal for proxy errors; the default API target is `http://127.0.0.1:8000`.                      |
+| Catalog works, but a recommendation fails       | Check the API terminal's traceback. If a table or column is missing, apply migrations using the next section.                                    |
+| Both URLs work, but the page still fails        | Refresh and reproduce once. In browser DevTools → Network, note the failing `/api/` request and HTTP status; match it to the API terminal error. |
 
 A working landing page does not prove the API is running. A healthy API only confirms a database
 connection; it does not verify that every migration has been applied.
@@ -387,11 +387,11 @@ Get-NetTCPConnection -State Listen |
 
 If another application needs the port:
 
-| Port | Alternative |
-| --- | --- |
-| Frontend 5173 | From `frontend/`, run `npm.cmd run dev -- --port 5174 --strictPort`, then use `http://localhost:5174`. |
-| API 8000 | Start Uvicorn with `--port 8001`. In the frontend terminal, set `$env:API_PROXY = "http://127.0.0.1:8001"` before starting Vite. If using Streamlit, also update `API_BASE_URL` in `.env`. |
-| Database 5433 | Change the host mapping in `docker-compose.dev.yml`, for example to `127.0.0.1:5434:5432`, and use port 5434 in both database URLs. Run the database `up -d` command again. |
+| Port          | Alternative                                                                                                                                                                                |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Frontend 5173 | From `frontend/`, run `npm.cmd run dev -- --port 5174 --strictPort`, then use `http://localhost:5174`.                                                                                     |
+| API 8000      | Start Uvicorn with `--port 8001`. In the frontend terminal, set `$env:API_PROXY = "http://127.0.0.1:8001"` before starting Vite. If using Streamlit, also update `API_BASE_URL` in `.env`. |
+| Database 5433 | Change the host mapping in `docker-compose.dev.yml`, for example to `127.0.0.1:5434:5432`, and use port 5434 in both database URLs. Run the database `up -d` command again.                |
 
 If you previously overrode `API_PROXY`, remove that override with
 `Remove-Item Env:API_PROXY -ErrorAction SilentlyContinue` in the frontend terminal and restart Vite
@@ -399,18 +399,18 @@ to return to port 8000. The React frontend uses this proxy setting; `API_BASE_UR
 
 ### Installation, catalog, model and sign-in problems
 
-| Problem | What to do |
-| --- | --- |
-| `npm.ps1 cannot be loaded` or script execution is disabled | Use `npm.cmd` / `npx.cmd` and the explicit `.venv/Scripts/python.exe` commands shown above. |
-| `py`, `node` or Docker is not recognized | Install the requirement and reopen PowerShell. If Python is installed without the launcher, check `python --version` is 3.13 and use `python -m venv .venv`. |
-| Python reports a missing module | Run `./.venv/Scripts/python.exe -m pip install -r requirements-dev.txt` from the repository root; use that same Python to start the API. |
-| Settings validation fails at startup | Check the repository-root `.env`: database URL, a `SECRET_KEY` of at least 32 characters, and both Skills Bridge credentials or neither. Restart the API after edits. |
-| `npm ci` fails | Verify Node 24 and internet access, then retry from `frontend/`. If npm reports a lockfile mismatch, restore matching `package.json` and `package-lock.json` from the same revision. |
-| Catalog is empty | Apply migrations, then run `../.venv/Scripts/python.exe -m tesda_track.seed` from `backend/`. Refresh the page. |
+| Problem                                                                                    | What to do                                                                                                                                                                                             |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `npm.ps1 cannot be loaded` or script execution is disabled                                 | Use `npm.cmd` / `npx.cmd` and the explicit `.venv/Scripts/python.exe` commands shown above.                                                                                                            |
+| `py`, `node` or Docker is not recognized                                                   | Install the requirement and reopen PowerShell. If Python is installed without the launcher, check `python --version` is 3.13 and use `python -m venv .venv`.                                           |
+| Python reports a missing module                                                            | Run `./.venv/Scripts/python.exe -m pip install -r requirements-dev.txt` from the repository root; use that same Python to start the API.                                                               |
+| Settings validation fails at startup                                                       | Check the repository-root `.env`: database URL, a `SECRET_KEY` of at least 32 characters, and both Skills Bridge credentials or neither. Restart the API after edits.                                  |
+| `npm ci` fails                                                                             | Verify Node 24 and internet access, then retry from `frontend/`. If npm reports a lockfile mismatch, restore matching `package.json` and `package-lock.json` from the same revision.                   |
+| Catalog is empty                                                                           | Apply migrations, then run `../.venv/Scripts/python.exe -m tesda_track.seed` from `backend/`. Refresh the page.                                                                                        |
 | Model download fails, matching waits on model loading, or the configured folder is missing | Set `SEMANTIC_SEARCH_ENABLED=false` in `.env` and restart the API to use keywords. To enable it again, follow [Semantic matching](#semantic-matching), confirm the folder exists, and sync embeddings. |
-| Skills Explorer asks you to contact the administrator | Configure both issued Skills Bridge credentials, or disable the integration. Restart the API; these credentials are not needed for Find my pathway. |
-| Sign-in disappears or a request returns 401 | Sign in again on the same hostname. Incognito has its own cookies. For local HTTP development, use `ENVIRONMENT=development`; production sessions require HTTPS. |
-| Sign-in is temporarily locked | Wait 15 minutes after five failed attempts, then use the correct password. |
+| Skills Explorer asks you to contact the administrator                                      | Configure both issued Skills Bridge credentials, or disable the integration. Restart the API; these credentials are not needed for Find my pathway.                                                    |
+| Sign-in disappears or a request returns 401                                                | Sign in again on the same hostname. Incognito has its own cookies. For local HTTP development, use `ENVIRONMENT=development`; production sessions require HTTPS.                                       |
+| Sign-in is temporarily locked                                                              | Wait 15 minutes after five failed attempts, then use the correct password.                                                                                                                             |
 
 ### Full Docker deployment fails
 
@@ -716,7 +716,7 @@ as before, need no extra header, and win if a request has both. Cookie sign-in w
 API share an origin (through Caddy, or the Vite proxy in development): CORS deliberately allows neither
 credentials nor `X-Requested-With`, and loosening that needs a security review.
 
-### Admin management workspace
+### Admin workspace
 
 Full administrators see **Admin management** in the React app at `/admin`. The workspace provides:
 
@@ -724,13 +724,24 @@ Full administrators see **Admin management** in the React app at `/admin`. The w
 - paginated learner accounts, role assignment, and an editable role-permission matrix where
   administrators compose roles from the backend's fixed permission vocabulary, with each admin
   section gated on the permission its own endpoints require;
-- MCP partner client creation with selectable expected tools, one-time credential display, secret rotation, revocation,
-  scopes, and rate limits;
+- MCP partner search, status filters, sorting, and expandable integration details;
+- **MCP Activity** (`/admin?section=mcp-activity`) for accounts with `mcp:manage`: client/tool/date
+  filters, request and error totals, per-tool latency, and paginated recent calls with an outcome filter;
+- partner onboarding with grouped tool selection, automatic access categories, one-time credential display and copy,
+  secret rotation, revocation, and rate limits;
 - aggregate recommendation activity and qualification-demand oversight; and
 - anonymous, aggregate recommendation feedback and dissatisfaction reasons.
 
 Analysts continue to see aggregate **Reports** without receiving the broader management workspace. API authorization
 remains authoritative: hiding the page or navigation is not treated as an access control.
+
+MCP Activity reads aggregate counts from `GET /api/v1/admin/mcp/usage` and retained call details
+from `GET /api/v1/admin/mcp/activity` (25 records per page by default, maximum 100). Dates are inclusive
+in Philippine time. Details expose input field names, validated qualification/region codes, page offset,
+result count, outcome and latency—not raw goals, coordinates, credentials, goal fingerprints or payloads.
+Detailed logs fold into daily counts after the configured retention period (180 days by default), so
+historical totals may no longer have individual call details. Refresh activity reloads the current data;
+this view does not automatically stream calls. Expected-tool flags use the partner's current declaration.
 
 ## Training, assessment and pathways
 

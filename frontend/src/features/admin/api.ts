@@ -56,6 +56,48 @@ export const mcpClientsQuery = queryOptions<McpClient[], ApiError>({
   queryFn: ({ signal }) => unwrap(api.GET('/api/v1/admin/mcp/clients', { signal })),
 })
 
+export type McpActivityItem = components['schemas']['McpActivityItem']
+export type McpActivityFilters = {
+  client_id?: string
+  tool?: string
+  outcome?:
+    | 'ok'
+    | 'tool_error'
+    | 'denied_token'
+    | 'denied_scope'
+    | 'rate_limited'
+    | 'invalid_request'
+    | 'server_error'
+  date_from?: string
+  date_to?: string
+}
+export const ACTIVITY_PAGE_SIZE = 25
+export const mcpActivityQuery = (filters: McpActivityFilters, page: number) =>
+  queryOptions<components['schemas']['McpActivityPage'], ApiError>({
+    queryKey: ['admin', 'mcp', 'activity', filters, page],
+    queryFn: ({ signal }) =>
+      unwrap(
+        api.GET('/api/v1/admin/mcp/activity', {
+          params: {
+            query: { ...filters, limit: ACTIVITY_PAGE_SIZE, offset: page * ACTIVITY_PAGE_SIZE },
+          },
+          signal,
+        }),
+      ),
+  })
+
+export const mcpUsageQuery = (date_from?: string, date_to?: string) =>
+  queryOptions<components['schemas']['UsageReport'], ApiError>({
+    queryKey: ['admin', 'mcp', 'usage', date_from, date_to],
+    queryFn: ({ signal }) =>
+      unwrap(
+        api.GET('/api/v1/admin/mcp/usage', {
+          params: { query: { date_from, date_to } },
+          signal,
+        }),
+      ),
+  })
+
 export const assignRole = (userId: string, role: AdminRole) =>
   unwrap(
     api.PATCH('/api/v1/admin/users/{user_id}/role', {

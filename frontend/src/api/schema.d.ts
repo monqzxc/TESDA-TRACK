@@ -1425,6 +1425,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/admin/mcp/activity": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Activity
+         * @description Recent requests with retained input metadata, newest first. Requires MCP management access.
+         */
+        get: operations["activity_api_v1_admin_mcp_activity_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/mcp/clients": {
         parameters: {
             query?: never;
@@ -2829,6 +2849,61 @@ export interface components {
             no_match_rate: number | null;
             /** Days */
             days: components["schemas"]["MatchingDay"][];
+        };
+        /**
+         * McpActivityItem
+         * @description Explicit public projection of retained metadata; no raw payloads or goal fingerprints.
+         */
+        McpActivityItem: {
+            /** Id */
+            id: number;
+            /** Client Id */
+            client_id: string | null;
+            /** Client Name */
+            client_name: string | null;
+            /**
+             * Called At
+             * Format: date-time
+             */
+            called_at: string;
+            /** Method */
+            method: string;
+            /** Tool */
+            tool: string | null;
+            /** Outcome */
+            outcome: string;
+            /** Error Code */
+            error_code: string | null;
+            /** Latency Ms */
+            latency_ms: number;
+            /** Result Count */
+            result_count: number | null;
+            /** Inputs Sent */
+            inputs_sent: string[];
+            /** Qualification Code */
+            qualification_code: string | null;
+            /** Region Code */
+            region_code: string | null;
+            /** Page Offset */
+            page_offset: number | null;
+            /** Protocol Version */
+            protocol_version: string | null;
+            /** Expected */
+            expected: boolean | null;
+            /**
+             * Occurrences
+             * @default 1
+             */
+            occurrences: number;
+        };
+        /** McpActivityPage */
+        McpActivityPage: {
+            /** Items */
+            items: components["schemas"]["McpActivityItem"][];
+            /** Has More */
+            has_more: boolean;
+            /** Retention Days */
+            retention_days: number;
         };
         /** ModelFeedback */
         ModelFeedback: {
@@ -7199,6 +7274,43 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UsageReport"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    activity_api_v1_admin_mcp_activity_get: {
+        parameters: {
+            query?: {
+                date_from?: string | null;
+                date_to?: string | null;
+                client_id?: string | null;
+                tool?: string | null;
+                outcome?: ("ok" | "tool_error" | "denied_token" | "denied_scope" | "rate_limited" | "invalid_request" | "server_error") | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["McpActivityPage"];
                 };
             };
             /** @description Validation Error */
