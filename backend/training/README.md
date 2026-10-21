@@ -27,10 +27,13 @@ API: the API image copies only `tesda_track`, `migrations` and `seed`, and insta
 | `mine.py` | Mines hard negatives (main env, CPU): the closest wrong qualifications for every training query |
 | `data/synthetic/G1..G6.json` | Goal-style queries per qualification (`{"exact name": ["query", ...]}`), written from the catalog by agents |
 | `finetune.py` | Fine-tunes the model on those pairs, exports ONNX and checks that fastembed reproduces it |
+| `feedback.py` | Exports learners' "Are you satisfied?" answers, with the numbers behind each recommendation, for `colab/feedback_colab.ipynb` (see [Learner feedback](#learner-feedback)) |
+| `shared_goals.py` | Collects the goals learners chose to share into a git-ignored review file; reviewed ones join the evaluation sets or the training queries (see [Goals learners shared](#goals-learners-shared)) |
 
 **Data.** Training and evaluation use only TESDA catalog text (`seed/qualifications.json`, whose Filipino
-keywords come from `seed/sources/keywords_tl.json`) and the hand-written goals. Never learner, worker, T2MIS
-or TSP records. The training queries are each qualification's name, skill, jobs, keywords and Core competencies
+keywords come from `seed/sources/keywords_tl.json`), the hand-written goals and, once reviewed, the goals learners
+ticked a box to share ([Goals learners shared](#goals-learners-shared)). Never learner accounts or records, worker,
+T2MIS or TSP records. The training queries are each qualification's name, skill, jobs, keywords and Core competencies
 (Basic and Common units such as "Participate in workplace communication" are shared by many qualifications, so
 they are left out), plus short English and Filipino phrasings ("I want to work as a Chef", "gusto kong maging
 Chef"). Each query appears as written in the catalog and in lower case, because the tokenizer is cased and the API
@@ -155,3 +158,44 @@ with only the serving files (never `model.safetensors` or checkpoints).
 mkdir models/tesda-e5-small-<ROUND> && unzip ~/Downloads/tesda-e5-small-<ROUND>.zip -d models/tesda-e5-small-<ROUND>
 ../.venv/Scripts/python -m training.evaluate --model tesda-track/tesda-e5-small-<ROUND> --model-path models/tesda-e5-small-<ROUND> --set dev --calibrate --min-rejection 0.9
 ```
+
+## Learner feedback
+
+The answers to "Are you satisfied with this recommendation?" keep the goal only as a keyed hash, so they can't become
+training pairs (the goals learners choose to share can: see below). They show what to improve instead. From `backend/`, with `DATABASE_URL` set to the database the
+answers are in (the pilot's, not a laptop's test data):
+
+```bash
+../.venv/Scripts/python -m training.feedback --output training/runs/feedback.csv   # --from/--to YYYY-MM-DD, Philippine dates
+```
+
+Upload the file to [colab/feedback_colab.ipynb](colab/feedback_colab.ipynb) (no GPU) and run all cells. It shows
+satisfaction with 95% ranges per model, place among the matches, score band and readiness level, and what a higher
+minimum score would have hidden. It downloads `feedback-worklist.csv`: the qualifications to work on, each marked
+`matching` (write new examples and dev/sealed goals for it before the next round), `readiness` or `pathway` (content
+to review). A row holds the qualification, the match numbers, the readiness result and the answer (with, after "wrong
+qualification", the one the learner wanted); not the answer's id, the goal hash, sign-in status, the learner's
+experience or certification, or a time finer than the month.
+
+### Goals learners shared
+
+After rating a recommendation, a learner can tick a box (unticked by default) to share their goal's words: after Yes,
+labelled with that qualification; after "wrong qualification", with the one they picked as wanted, and the one they
+were shown kept as a known wrong answer. They are stored apart from the answer (table `shared_goal`: no account, no
+answer, only the day). The privacy policy (version `2026-10-21`, `SHARED_GOAL_CONSENT`) says what sharing means.
+
+```bash
+../.venv/Scripts/python -m training.shared_goals collect            # new goals become dev/sealed evaluation goals
+../.venv/Scripts/python -m training.shared_goals collect --split train   # once there are enough of those
+```
+
+`collect` adds new goals to `training/learner/shared_goals.json` (git-ignored; never commit or publish it) as
+`pending`, each with a split it keeps for good. A reviewer takes anything personal out of `goal` or rejects the row,
+checks `accept` (exact catalog names, more than one when several fit), sets `lang` and sets `review_status` to
+`reviewed` or `rejected`. Only reviewed rows are used: dev and sealed ones join those sets with the tag `learner`
+(so `training.evaluate` reports them on their own), train ones join the training queries. Every dev and sealed goal,
+pending ones too, is excluded from training, and the Colab bundle carries only their hashes; of the shared goals it
+carries only the reviewed train ones. The next `collect` deletes reviewed, rejected and duplicate goals from the
+database and empties rejected rows, so the server keeps a shared goal only until its review and the review file holds
+the only copy of the reviewed ones: back it up outside git. Real goals are the best test of the model, so keep the
+default split until the dev and sealed sets hold a few hundred of them.

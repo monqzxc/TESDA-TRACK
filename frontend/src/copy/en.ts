@@ -710,6 +710,22 @@ export const en = {
           pathway_not_helpful: 'The suggested pathway isn’t helpful',
         },
         explained: 'Thank you. That tells us what to improve.',
+        // After the wrong qualification (PATCH with wanted_qualification_code).
+        wanted: {
+          question: 'Which qualification did you want? This is optional.',
+          label: 'Qualification',
+          send: 'Send',
+          skip: 'Skip',
+        },
+        // A box the learner ticks to share their goal's words (POST …/goal). It starts unticked; the privacy policy's
+        // "Your goal's words, only if you share them" says the same.
+        share: {
+          label: 'Share the words of my goal to improve matching',
+          detail:
+            'The pilot team reads them, takes out anything personal, and uses them to test and train matching, which can run on Google Colab. They’re kept without your name or account, so they can’t be found later to delete.',
+          send: 'Share my goal',
+          shared: 'Thank you for sharing your goal. It helps us improve matching.',
+        },
         // Hide for now tucks the question into a small button that brings it back; Close puts it away once answered.
         later: 'Hide for now',
         reopen: 'Rate this recommendation',
@@ -1438,7 +1454,7 @@ export const en = {
       lead: 'TESDA Track is a pilot, and it collects some data to work. In short:',
       // Also the policy's summary.
       points: [
-        'Find my pathway sends your goal and answers to our server to find your matches. Without an account they stay in this browser tab, and our server keeps only a coded fingerprint of your goal and daily counts.',
+        'Find my pathway sends your goal and answers to our server to find your matches. Without an account they stay in this browser tab, and our server keeps only a coded fingerprint of your goal and daily counts. Your goal’s words are kept only if you tick a box to share them.',
         'With an account, we keep your name, email and progress (goals, readiness checks, certifications and applications) until you delete it.',
         'Your location is used only if you allow it, rounded to about 1 km, to find centers near you.',
         'We never sell your data or use it for advertising. You can download it or delete your account at any time.',
@@ -1447,7 +1463,7 @@ export const en = {
       accept: 'I understand',
       close: 'Close the privacy notice',
     },
-    updated: 'Last updated 19 October 2026',
+    updated: 'Last updated 21 October 2026',
     summary: 'In short',
     contents: 'On this page',
     sections: [
@@ -1475,6 +1491,11 @@ export const en = {
             term: 'Daily counts',
             detail:
               'How many goals were matched each day, and how many found no match. Only the totals are kept.',
+          },
+          {
+            term: 'Your goal’s words, only if you share them',
+            detail:
+              'Signed in or not, after you rate a recommendation you can tick a box to share the words of your goal, with the qualification you say fits it. They’re kept apart from your answer, without your name, account or the time of day, so they can’t be found later to delete. The pilot team reads them, takes out anything personal (or deletes them), and uses them to test and train the matching model. Don’t put your name or contact details in a goal you share.',
           },
           {
             term: 'Your location, only if you allow it',
@@ -1564,9 +1585,10 @@ export const en = {
           'To pass your assessment applications to the people who review them.',
           'To produce pilot reports for administrators. Reports show counts and averages only, never individual learners.',
           'To keep TESDA Track secure and working, and to check that its matches are fair and useful.',
+          'To test and improve the matching model with the goals learners chose to share.',
         ],
         after:
-          'Matching runs on our own server: your goal is not sent to an outside AI service. Matches and readiness levels are guidance only. They don’t decide anything about you, and they don’t replace an official TESDA competency assessment. We never sell your data or use it for advertising.',
+          'Matching runs on our own server: your goal is not sent to an outside AI service. A goal you choose to share may be used to train the matching model on Google Colab once the pilot team has reviewed it. Matches and readiness levels are guidance only. They don’t decide anything about you, and they don’t replace an official TESDA competency assessment. We never sell your data or use it for advertising.',
       },
       {
         id: 'who-sees-it',
@@ -1579,7 +1601,12 @@ export const en = {
           {
             term: 'Pilot administrators',
             detail:
-              'They review assessment applications, which show your name and email with the schedule you chose, and record the results. The reports they see hold counts and averages only.',
+              'They review assessment applications, which show your name and email with the schedule you chose, and record the results. The reports they see hold counts and averages only. The pilot team also reads the goals learners chose to share, to review them.',
+          },
+          {
+            term: 'Google Colab',
+            detail:
+              'Only goals learners chose to share, once the pilot team has reviewed them and taken out anything personal, are uploaded to Google Colab to train the matching model. Nothing else about you is.',
           },
           {
             term: 'Skills Bridge',
@@ -1610,6 +1637,11 @@ export const en = {
             term: 'Records not linked to you',
             detail:
               'Goal fingerprints, ranking records and daily counts are kept for the pilot’s evaluation. Ranking records from an account you delete stay, but no longer point to you.',
+          },
+          {
+            term: 'Shared goals',
+            detail:
+              'On our server only until the pilot team reviews them. Reviewed goals are then kept apart from everything else, for the pilot’s evaluation; ones the team rejects are deleted.',
           },
           {
             term: 'Short-lived copies',

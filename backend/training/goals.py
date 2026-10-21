@@ -1,26 +1,38 @@
 """Evaluation goal sets: the v1 file plus the v2 dev and sealed directories, validated on load.
 
-dev = v1 dev goals + goals_v2/dev/*.json; test_v1 = v1 test goals; sealed = goals_v2/sealed/*.json.
+dev = v1 dev goals + goals_v2/dev/*.json; test_v1 = v1 test goals; sealed = goals_v2/sealed/*.json. Dev and sealed
+also get the reviewed goals learners shared for that split (training/shared_goals.py), where the review file exists.
 Loading dev or test_v1 also reads the sealed files, only to reject a goal that duplicates a sealed one (the
 sealed goals are reduced to normalised keys and never returned or printed)."""
 import json
 import re
 from pathlib import Path
 
+from training import shared_goals
 from training.catalog import load_catalog
 
 DATA_DIR = Path(__file__).resolve().parent / "data"
 V1_PATH = DATA_DIR / "eval_goals.json"
 GOALS_V2_DIR = DATA_DIR / "goals_v2"
 SETS = ("dev", "test_v1", "sealed")
+# "learner": a goal a learner shared, once reviewed (training/shared_goals.py).
 TAGS = frozenset({"job_title", "task", "indirect", "experience", "certification", "abroad", "typo", "short", "long",
-                  "multi", "negation", "near_tvet", "no_tvet", "vague", "non_goal"})
+                  "multi", "negation", "near_tvet", "no_tvet", "vague", "non_goal", "learner"})
 LANGS = frozenset({"en", "tl", "taglish", "ceb", "ilo", "hil", "pam"})
-GROUPS = frozenset({"G1", "G2", "G3", "G4", "G5", "G6", "X"})
+GROUPS = frozenset({"G1", "G2", "G3", "G4", "G5", "G6", "X", "learner"})
 
 
 def normalise(goal: str) -> str:
     return re.sub(r"\s+", " ", goal.casefold()).strip()
+
+
+def curated_texts() -> list[str]:
+    """Every v1, dev and sealed goal the team wrote, as written and unvalidated: for exclusion hashes."""
+    texts = [g["goal"] for g in json.loads(V1_PATH.read_text(encoding="utf-8"))]
+    for split in ("dev", "sealed"):
+        for path in sorted((GOALS_V2_DIR / split).glob("*.json")):
+            texts += [g["goal"] for g in json.loads(path.read_text(encoding="utf-8"))]
+    return texts
 
 
 def _check_accept(goal: dict, label: str, names: set[str]) -> None:
@@ -68,6 +80,8 @@ def _read(split: str, names: set[str]) -> list[dict]:
             where = f"{split}/{path.name}"
             for g in json.loads(path.read_text(encoding="utf-8")):
                 goals.append(_validate(g, where, names))
+        where = f"learner/{shared_goals.REVIEW_PATH.name}"
+        goals += [_validate(g, where, names) for g in shared_goals.reviewed(split)]
     return goals
 
 

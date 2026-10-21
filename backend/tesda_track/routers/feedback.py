@@ -2,12 +2,12 @@ import math
 import uuid
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
 
 from tesda_track.config import Settings, get_settings
 from tesda_track.db import SessionDep
 from tesda_track.deps import OptionalLearner
-from tesda_track.schemas.feedback import FeedbackCreate, FeedbackPublic, FeedbackReasonUpdate
+from tesda_track.schemas.feedback import FeedbackCreate, FeedbackPublic, FeedbackReasonUpdate, SharedGoalCreate
 from tesda_track.services import feedback
 from tesda_track.services.embeddings import EmbedderDep
 from tesda_track.services.rate_limit import client_address_key
@@ -38,15 +38,31 @@ def give_feedback(body: FeedbackCreate, request: Request, session: SessionDep, s
     _within_limit(request, settings)
     result = feedback.record(session, body, embedder, signed_in=learner is not None)
     session.commit()
-    return result
+    return feedback.public(session, result)
 
 
 @router.patch("/recommendations/{feedback_id}", response_model=FeedbackPublic, responses={
-    404: {"description": "No such answer"}, 409: {"description": "The answer was Yes"}, **LIMITED})
+    404: {"description": "No such answer, or no such wanted qualification"}, 409: {"description": "The answer was Yes"},
+    **LIMITED})
 def explain_feedback(feedback_id: uuid.UUID, body: FeedbackReasonUpdate, request: Request, session: SessionDep,
                      settings: SettingsDep):
-    """Why the learner wasn't satisfied, given after an answer of No."""
+    """Why the learner wasn't satisfied, given after an answer of No; after "wrong_qualification", optionally the
+    qualification they wanted instead."""
     _within_limit(request, settings)
-    result = feedback.explain(session, feedback_id, body.reason)
+    result = feedback.explain(session, feedback_id, body)
     session.commit()
-    return result
+    return feedback.public(session, result)
+
+
+@router.post("/recommendations/{feedback_id}/goal", status_code=status.HTTP_204_NO_CONTENT, responses={
+    404: {"description": "No such answer"},
+    409: {"description": "An answer of No without the qualification the learner wanted"},
+    422: {"description": "Not the goal the answer was about, or no consent"}, **LIMITED})
+def share_goal(feedback_id: uuid.UUID, body: SharedGoalCreate, request: Request, session: SessionDep,
+               settings: SettingsDep):
+    """The goal's words, which the learner agreed to share to test and train matching, labelled with the qualification
+    their answer says fits. Kept apart from the answer and the account; the pilot team reviews them before any use."""
+    _within_limit(request, settings)
+    feedback.share_goal(session, feedback_id, body.goal)
+    session.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

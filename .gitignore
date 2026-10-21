@@ -13,6 +13,8 @@ T2MISDB.bak
 worker_profiles_*.csv
 30_DATABASE_SCHEMA_MERMAID.md
 backend/training/runs/
+# Goals learners shared, in their own words (training/shared_goals.py): never committed.
+backend/training/learner/
 .railway/node_modules/
 reports/
 frontend/node_modules

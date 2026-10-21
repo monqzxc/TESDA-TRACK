@@ -159,9 +159,31 @@ export interface paths {
         head?: never;
         /**
          * Explain Feedback
-         * @description Why the learner wasn't satisfied, given after an answer of No.
+         * @description Why the learner wasn't satisfied, given after an answer of No; after "wrong_qualification", optionally the
+         *     qualification they wanted instead.
          */
         patch: operations["explain_feedback_api_v1_feedback_recommendations__feedback_id__patch"];
+        trace?: never;
+    };
+    "/api/v1/feedback/recommendations/{feedback_id}/goal": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Share Goal
+         * @description The goal's words, which the learner agreed to share to test and train matching, labelled with the qualification
+         *     their answer says fits. Kept apart from the answer and the account; the pilot team reviews them before any use.
+         */
+        post: operations["share_goal_api_v1_feedback_recommendations__feedback_id__goal_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/api/v1/auth/register": {
@@ -2613,14 +2635,24 @@ export interface components {
             satisfied: boolean;
             /** Reason */
             reason: ("wrong_qualification" | "readiness_off" | "pathway_not_helpful") | null;
+            /** Wanted Qualification Code */
+            wanted_qualification_code?: string | null;
         };
-        /** FeedbackReasonUpdate */
+        /**
+         * FeedbackReasonUpdate
+         * @description Each update replaces the reason and the wanted qualification given before.
+         */
         FeedbackReasonUpdate: {
             /**
              * Reason
              * @enum {string}
              */
             reason: "wrong_qualification" | "readiness_off" | "pathway_not_helpful";
+            /**
+             * Wanted Qualification Code
+             * @description With "wrong_qualification" only: the qualification the learner wanted instead
+             */
+            wanted_qualification_code?: string | null;
         };
         /**
          * FeedbackReasons
@@ -3835,6 +3867,20 @@ export interface components {
             /** Expires In */
             expires_in: number;
         };
+        /**
+         * SharedGoalCreate
+         * @description The goal's words, as they were rated, which the learner agreed to share to improve matching.
+         */
+        SharedGoalCreate: {
+            /** Goal */
+            goal: string;
+            /**
+             * Consent
+             * @description The learner ticked the box agreeing to share them
+             * @constant
+             */
+            consent: true;
+        };
         /** SiteSummary */
         SiteSummary: {
             /** Id */
@@ -4815,7 +4861,7 @@ export interface operations {
                     "application/json": components["schemas"]["FeedbackPublic"];
                 };
             };
-            /** @description No such answer */
+            /** @description No such answer, or no such wanted qualification */
             404: {
                 headers: {
                     [name: string]: unknown;
@@ -4837,6 +4883,58 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
                 };
+            };
+            /** @description Too many answers from this client; see Retry-After */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    share_goal_api_v1_feedback_recommendations__feedback_id__goal_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                feedback_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SharedGoalCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description No such answer */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description An answer of No without the qualification the learner wanted */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not the goal the answer was about, or no consent */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Too many answers from this client; see Retry-After */
             429: {

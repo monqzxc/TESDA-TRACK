@@ -362,7 +362,14 @@ export function serveFinderApi({
         return HttpResponse.error()
       }
       const { satisfied } = (await request.json()) as { satisfied: boolean }
-      return HttpResponse.json({ id: 'feedback-1', satisfied, reason: null }, { status: 201 })
+      return HttpResponse.json(
+        { id: 'feedback-1', satisfied, reason: null, wanted_qualification_code: null },
+        { status: 201 },
+      )
+    }),
+    http.post('*/api/v1/feedback/recommendations/:id/goal', async ({ request }) => {
+      await record(request)
+      return new HttpResponse(null, { status: 204 })
     }),
     http.post('*/api/v1/recommendations/report', async ({ request }) => {
       await record(request)
@@ -374,8 +381,16 @@ export function serveFinderApi({
     }),
     http.patch('*/api/v1/feedback/recommendations/:id', async ({ request, params }) => {
       await record(request)
-      const { reason } = (await request.json()) as { reason: string }
-      return HttpResponse.json({ id: params.id, satisfied: false, reason })
+      const { reason, wanted_qualification_code = null } = (await request.json()) as {
+        reason: string
+        wanted_qualification_code?: string
+      }
+      return HttpResponse.json({
+        id: params.id,
+        satisfied: false,
+        reason,
+        wanted_qualification_code,
+      })
     }),
   )
   return state

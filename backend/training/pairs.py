@@ -1,10 +1,11 @@
-"""(query, passage) pairs for fine-tuning, built from catalog text only.
+"""(query, passage) pairs for fine-tuning, built from catalog text and goals: the team's, and learners' once reviewed.
 
 Each qualification's passage is exactly what the API embeds; its queries are the names, jobs, keywords and
 core competencies a learner might type, plus a few English and Filipino goal phrasings over the jobs and keywords,
 each as written in the catalog and in lower case. Synthetic goal-style queries written from the catalog (data/synthetic/*.json) add realistic phrasings, and a seeded
-share of them gets one typo or text-speak copy. Evaluation goals (v1, dev and sealed) are excluded so the held-out
-numbers stay honest.
+share of them gets one typo or text-speak copy; reviewed training goals that learners shared
+(training/shared_goals.py) join them. Evaluation goals (v1, dev and sealed, learners' too) are excluded so the
+held-out numbers stay honest.
 """
 import hashlib
 import json
@@ -14,6 +15,7 @@ import zlib
 from pathlib import Path
 
 from tesda_track.models import Qualification
+from training import shared_goals
 from tesda_track.services.embeddings import qualification_text
 from tesda_track.utils.helpers import normalize
 
@@ -109,18 +111,20 @@ def training_pairs(qualifications: list[Qualification], exclude: "set[str] | Has
     return pairs
 
 
-def load_synthetic(directory: Path = SYNTHETIC_DIR) -> dict[str, list[str]]:
-    """data/synthetic/*.json merged by qualification name; an unknown name raises, so a typo cannot go unnoticed."""
+def load_synthetic(directory: Path = SYNTHETIC_DIR, learner_path: Path | None = None) -> dict[str, list[str]]:
+    """data/synthetic/*.json merged by qualification name, then the reviewed training goals learners shared
+    (training/shared_goals.py); an unknown name raises, so a typo cannot go unnoticed."""
     from training.catalog import load_catalog
 
     known = {q.name for q in load_catalog()[0]}
     merged: dict[str, list[str]] = {}
-    for path in sorted(directory.glob("*.json")):
-        for name, queries in json.loads(path.read_text(encoding="utf-8")).items():
+    sources = [(path.name, json.loads(path.read_text(encoding="utf-8"))) for path in sorted(directory.glob("*.json"))]
+    for source, data in sources + [("shared goals", shared_goals.train_queries(learner_path))]:
+        for name, queries in data.items():
             if name not in known:
-                raise ValueError(f"{path.name}: unknown qualification {name!r}")
+                raise ValueError(f"{source}: unknown qualification {name!r}")
             if not isinstance(queries, list) or not all(isinstance(q, str) for q in queries):
-                raise ValueError(f"{path.name}: {name!r} must map to a list of strings")
+                raise ValueError(f"{source}: {name!r} must map to a list of strings")
             merged.setdefault(name, []).extend(queries)
     return {name: list(dict.fromkeys(queries)) for name, queries in merged.items()}
 
@@ -152,11 +156,13 @@ class HashedExclusions:
 
 
 def eval_exclusions():
-    """Normalised v1 (dev and test), v2 dev and sealed goals. Sealed text is only reduced to keys, never shown.
+    """Normalised v1 (dev and test), v2 dev and sealed goals, and learners' dev and sealed goals, reviewed or not.
+    Sealed text is only reduced to keys, never shown.
 
     Where the goal files are absent (the Colab bundle) the hashes in data/exclusions.json are used instead."""
     if not (DATA_DIR / "eval_goals.json").exists():
         return HashedExclusions(json.loads(EXCLUSIONS_PATH.read_text(encoding="utf-8")))
     from training import goals
 
-    return {normalize(g["goal"]) for split in ("dev", "test_v1", "sealed") for g in goals.load(split)}
+    return ({normalize(g["goal"]) for split in ("dev", "test_v1", "sealed") for g in goals.load(split)}
+            | {normalize(text) for text in shared_goals.eval_texts()})

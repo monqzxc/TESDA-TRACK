@@ -323,7 +323,7 @@
           "feedback"
         ],
         "summary": "Explain Feedback",
-        "description": "Why the learner wasn't satisfied, given after an answer of No.",
+        "description": "Why the learner wasn't satisfied, given after an answer of No; after \"wrong_qualification\", optionally the\nqualification they wanted instead.",
         "operationId": "explain_feedback_api_v1_feedback_recommendations__feedback_id__patch",
         "parameters": [
           {
@@ -359,7 +359,7 @@
             }
           },
           "404": {
-            "description": "No such answer"
+            "description": "No such answer, or no such wanted qualification"
           },
           "409": {
             "description": "The answer was Yes"
@@ -373,6 +373,55 @@
                 }
               }
             }
+          },
+          "429": {
+            "description": "Too many answers from this client; see Retry-After"
+          }
+        }
+      }
+    },
+    "/api/v1/feedback/recommendations/{feedback_id}/goal": {
+      "post": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Share Goal",
+        "description": "The goal's words, which the learner agreed to share to test and train matching, labelled with the qualification\ntheir answer says fits. Kept apart from the answer and the account; the pilot team reviews them before any use.",
+        "operationId": "share_goal_api_v1_feedback_recommendations__feedback_id__goal_post",
+        "parameters": [
+          {
+            "name": "feedback_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Feedback Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SharedGoalCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "404": {
+            "description": "No such answer"
+          },
+          "409": {
+            "description": "An answer of No without the qualification the learner wanted"
+          },
+          "422": {
+            "description": "Not the goal the answer was about, or no consent"
           },
           "429": {
             "description": "Too many answers from this client; see Retry-After"
@@ -8728,6 +8777,17 @@
               }
             ],
             "title": "Reason"
+          },
+          "wanted_qualification_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wanted Qualification Code"
           }
         },
         "type": "object",
@@ -8748,13 +8808,27 @@
               "pathway_not_helpful"
             ],
             "title": "Reason"
+          },
+          "wanted_qualification_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 40
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Wanted Qualification Code",
+            "description": "With \"wrong_qualification\" only: the qualification the learner wanted instead"
           }
         },
         "type": "object",
         "required": [
           "reason"
         ],
-        "title": "FeedbackReasonUpdate"
+        "title": "FeedbackReasonUpdate",
+        "description": "Each update replaces the reason and the wanted qualification given before."
       },
       "FeedbackReasons": {
         "properties": {
@@ -12081,6 +12155,29 @@
         ],
         "title": "SessionResponse",
         "description": "Cookie sign-in. The token itself goes only into the HttpOnly cookie, never into the body."
+      },
+      "SharedGoalCreate": {
+        "properties": {
+          "goal": {
+            "type": "string",
+            "maxLength": 1000,
+            "minLength": 1,
+            "title": "Goal"
+          },
+          "consent": {
+            "type": "boolean",
+            "const": true,
+            "title": "Consent",
+            "description": "The learner ticked the box agreeing to share them"
+          }
+        },
+        "type": "object",
+        "required": [
+          "goal",
+          "consent"
+        ],
+        "title": "SharedGoalCreate",
+        "description": "The goal's words, as they were rated, which the learner agreed to share to improve matching."
       },
       "SiteSummary": {
         "properties": {

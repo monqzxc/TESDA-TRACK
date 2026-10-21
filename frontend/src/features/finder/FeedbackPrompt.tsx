@@ -1,13 +1,16 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect, useId, useRef, useState } from 'react'
 import { Button } from 'react-aria-components'
+import { qualificationsQuery } from '../../api/queries.ts'
 import { failureMessage } from '../../auth/fields.tsx'
+import { CheckboxRow } from '../../components/CheckboxRow.tsx'
 import { Icon } from '../../components/Icon.tsx'
 import { en } from '../../copy/en.ts'
 import { focusIsLost } from '../../lib/focus.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
-import { explainFeedback, sendFeedback, type FeedbackReason } from './api.ts'
+import { QualificationField } from '../reports/QualificationField.tsx'
+import { explainFeedback, sendFeedback, shareGoal, type FeedbackReason } from './api.ts'
 import { useFinderStore, type GivenFeedback, type Profile, type SubmittedCheck } from './store.ts'
 import { notice } from './styles.ts'
 
@@ -18,8 +21,9 @@ const REASONS = Object.keys(copy.reasons) as FeedbackReason[]
 const floating =
   'fixed right-4 bottom-4 z-80 shadow-[0_18px_40px_-16px_rgb(var(--track-shadow-rgb)/0.45)]'
 
+/** It scrolls when the follow-up makes it taller than a small screen. */
 const panel =
-  'flex w-[22rem] flex-col gap-3 rounded-16 border border-pill-border bg-surface p-4 outline-none max-xs:left-4 max-xs:w-auto'
+  'flex max-h-[calc(100dvh-2rem)] w-[22rem] flex-col gap-3 overflow-y-auto rounded-16 border border-pill-border bg-surface p-4 outline-none max-xs:left-4 max-xs:w-auto'
 
 /** Hide for now, tucked: small, round and filled, so it's still easy to spot. */
 const pill =
@@ -27,6 +31,8 @@ const pill =
 
 const cornerButton =
   '-my-1 -mr-1 grid size-9 shrink-0 cursor-pointer place-items-center rounded-10 border-0 bg-transparent text-muted hovered:bg-soft hovered:text-navy'
+
+const message = 'm-0 text-14 leading-[1.5] text-ink outline-none'
 
 /**
  * Arriving when the pathway first shows (it rises in after the step and rings to be noticed), tucked into a button by
@@ -54,18 +60,32 @@ interface FeedbackPromptProps {
  *
  * Yes and No carry the same weight, so the buttons don't lean either way. The answer is sent as soon as it's given, so
  * a No counts even if the learner leaves; after a No, one optional reason says which part missed: the match, the
- * readiness result or the pathway.
+ * readiness result or the pathway. After the wrong match, the learner may say which qualification they wanted.
+ *
+ * After Yes, or with the qualification they wanted, the learner may tick a box to share their goal's words, shown to
+ * them in quotes, to test and train matching. The box starts unticked and nothing is shared without it.
  */
 export function FeedbackPrompt({ code, check, asked }: FeedbackPromptProps) {
   const given = useFinderStore((state) => state.feedback[code])
   const setFeedback = useFinderStore((state) => state.setFeedback)
   const [shown, setShown] = useState<Shown>(() => (finished(given) ? 'closed' : 'arriving'))
   const [givenBefore] = useState(given)
+  // After the answer: the offer to share the goal, and after the wrong match the question of the one wanted, until
+  // the learner sends or skips it. Not offered again when the learner comes back, as the question isn't.
+  const [offered, setOffered] = useState(true)
+  const [shared, setShared] = useState(false)
+  const [consent, setConsent] = useState(false)
+  const [wanted, setWanted] = useState('')
+  const catalog = useQuery(qualificationsQuery)
   const headingId = useId()
   const box = useRef<HTMLElement>(null)
   const thanks = useRef<HTMLParagraphElement>(null)
   const reopen = useRef<HTMLButtonElement>(null)
   const moved = useRef(false)
+  const finish = (didShare: boolean) => {
+    setShared(didShare)
+    setOffered(false)
+  }
   const answer = useMutation({
     mutationFn: (satisfied: boolean) =>
       sendFeedback({ ...asked, qualification_code: code, answers: check.answers, satisfied }),
@@ -76,13 +96,33 @@ export function FeedbackPrompt({ code, check, asked }: FeedbackPromptProps) {
       explainFeedback(id, reason),
     onSuccess: (feedback) => setFeedback(code, feedback),
   })
-  const failure = answer.error ?? explain.error
+  const share = useMutation({
+    mutationFn: (id: string) => shareGoal(id, asked.query),
+    onSuccess: () => finish(true),
+  })
+  const sendWanted = useMutation({
+    mutationFn: async ({ id, sharing }: { id: string; sharing: boolean }) => {
+      const feedback = await explainFeedback(id, 'wrong_qualification', wanted)
+      if (sharing) await shareGoal(id, asked.query)
+      return { feedback, sharing }
+    },
+    onSuccess: ({ feedback, sharing }) => {
+      setFeedback(code, feedback)
+      finish(sharing)
+    },
+  })
+  const failure = answer.error ?? explain.error ?? share.error ?? sendWanted.error
 
   // The button pressed goes away with the answer, so focus goes to what took its place. Not on the page's first
   // showing, with an answer from before.
   useEffect(() => {
     if (given && given !== givenBefore && focusIsLost()) thanks.current?.focus()
   }, [given, givenBefore])
+
+  // Sending or skipping the follow-up takes its buttons away too.
+  useEffect(() => {
+    if (!offered && focusIsLost()) thanks.current?.focus()
+  }, [offered])
 
   // Hide for now, the button that brings the question back, and Close each go away when pressed: focus goes to what
   // replaced them, or back to the page.
@@ -111,6 +151,21 @@ export function FeedbackPrompt({ code, check, asked }: FeedbackPromptProps) {
   }
 
   const done = finished(given)
+  const sharing = (
+    <CheckboxRow
+      isSelected={consent}
+      onChange={setConsent}
+      className="text-14"
+      description={
+        <>
+          <span className="line-clamp-3 block text-ink italic">“{asked.query}”</span>
+          <span className="mt-1 block">{copy.share.detail}</span>
+        </>
+      }
+    >
+      {copy.share.label}
+    </CheckboxRow>
+  )
   let body
   if (!given) {
     body = (
@@ -134,7 +189,7 @@ export function FeedbackPrompt({ code, check, asked }: FeedbackPromptProps) {
   } else if (!done) {
     body = (
       <>
-        <p ref={thanks} tabIndex={-1} className="m-0 text-14 leading-[1.5] text-ink outline-none">
+        <p ref={thanks} tabIndex={-1} className={message}>
           {copy.why}
         </p>
         <div role="group" aria-label={copy.reasonsLabel} className="flex flex-col gap-2">
@@ -152,10 +207,60 @@ export function FeedbackPrompt({ code, check, asked }: FeedbackPromptProps) {
         </div>
       </>
     )
+  } else if (offered && given.satisfied) {
+    body = (
+      <>
+        <p ref={thanks} tabIndex={-1} className={message}>
+          {copy.thanks}
+        </p>
+        {sharing}
+        <Button
+          className={button({ variant: 'primary', height: 36, text: 14 })}
+          isDisabled={!consent}
+          isPending={share.isPending}
+          onPress={() => share.mutate(given.id)}
+        >
+          {copy.share.send}
+        </Button>
+      </>
+    )
+  } else if (offered && given.reason === 'wrong_qualification') {
+    const others = (catalog.data ?? []).filter((qualification) => qualification.code !== code)
+    body = (
+      <>
+        <p ref={thanks} tabIndex={-1} className={message}>
+          {copy.wanted.question}
+        </p>
+        <QualificationField
+          label={copy.wanted.label}
+          catalog={others}
+          value={wanted}
+          onChange={setWanted}
+        />
+        {wanted && sharing}
+        <div className="flex gap-2">
+          <Button
+            className={cx(button({ variant: 'primary', height: 36, text: 14 }), 'flex-1')}
+            isDisabled={!wanted}
+            isPending={sendWanted.isPending}
+            onPress={() => sendWanted.mutate({ id: given.id, sharing: consent })}
+          >
+            {copy.wanted.send}
+          </Button>
+          <Button
+            className={cx(button({ height: 36, text: 14 }), 'flex-1')}
+            isDisabled={sendWanted.isPending}
+            onPress={() => finish(false)}
+          >
+            {copy.wanted.skip}
+          </Button>
+        </div>
+      </>
+    )
   } else {
     body = (
-      <p ref={thanks} tabIndex={-1} className="m-0 text-14 leading-[1.5] text-ink outline-none">
-        {given.satisfied ? copy.thanks : copy.explained}
+      <p ref={thanks} tabIndex={-1} className={message}>
+        {shared ? copy.share.shared : given.satisfied ? copy.thanks : copy.explained}
       </p>
     )
   }

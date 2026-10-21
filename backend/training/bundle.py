@@ -3,8 +3,9 @@
 Run from backend/ in the main environment:
     python -m training.bundle --output training/runs/colab-bundle.zip [--hard-negatives training/runs/<file>.json]
 The zip holds the API package, the catalog, the training code, the synthetic queries, the optional hard-negative file
-and data/exclusions.json (SHA-256 of every evaluation goal's normalised text). Synthetic queries and mined rows that
-equal an evaluation goal are left out, so it holds no goal text, .env or model.
+and data/exclusions.json (SHA-256 of every evaluation goal's normalised text, learners' dev and sealed goals too).
+Synthetic queries and mined rows that equal an evaluation goal are left out, so it holds no evaluation goal text, .env
+or model. Of the goals learners shared (training/shared_goals.py) only the reviewed training ones go in, as text.
 """
 import argparse
 import hashlib
@@ -12,18 +13,14 @@ import json
 import zipfile
 from pathlib import Path
 
+from training import goals, shared_goals
 from training.pairs import exclusion_hash
 
 BACKEND = Path(__file__).resolve().parents[1]
 
 
 def _goal_texts() -> list[str]:
-    data = BACKEND / "training" / "data"
-    texts = [g["goal"] for g in json.loads((data / "eval_goals.json").read_text(encoding="utf-8"))]
-    for split in ("dev", "sealed"):
-        for path in sorted((data / "goals_v2" / split).glob("*.json")):
-            texts += [g["goal"] for g in json.loads(path.read_text(encoding="utf-8"))]
-    return texts
+    return goals.curated_texts() + shared_goals.eval_texts()
 
 
 def exclusion_hashes() -> list[str]:
@@ -55,6 +52,14 @@ def _clean_negatives(text: str, hashes: set[str]) -> str:
     return json.dumps(rows, ensure_ascii=False, indent=1) + "\n"
 
 
+def _learner_training_goals(hashes: set[str]) -> list[dict]:
+    """The reviewed training goals learners shared, with only what training reads: no ids, dates or other splits."""
+    return [{"goal": row["goal"], "accept": row["accept"], "lang": row["lang"], "split": "train",
+             "review_status": "reviewed"} for row in shared_goals.read()
+            if row["split"] == "train" and row["review_status"] == "reviewed"
+            and exclusion_hash(row["goal"]) not in hashes]
+
+
 def build(output: Path, hard_negatives: Path | None = None) -> Path:
     output.parent.mkdir(parents=True, exist_ok=True)
     hashes = exclusion_hashes()
@@ -73,6 +78,9 @@ def build(output: Path, hard_negatives: Path | None = None) -> Path:
         if hard_negatives:
             bundle.writestr(f"backend/training/runs/{hard_negatives.name}",
                             _clean_negatives(hard_negatives.read_text(encoding="utf-8"), known))
+        if learner_goals := _learner_training_goals(known):
+            bundle.writestr(f"backend/training/learner/{shared_goals.REVIEW_PATH.name}",
+                            json.dumps(learner_goals, ensure_ascii=False, indent=2) + "\n")
         bundle.writestr("backend/training/data/exclusions.json", json.dumps(hashes, indent=0) + "\n")
     # Reopen so Windows ZipInfo.orig_filename is canonicalized before reads.
     with zipfile.ZipFile(output, "a", zipfile.ZIP_DEFLATED) as bundle:

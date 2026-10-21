@@ -6,7 +6,7 @@ const PORT = Number(process.env.E2E_PORT ?? 5173)
 // Every test opens as a browser that has seen the privacy notice (privacy.spec.ts clears this to see it). The key
 // and version are PRIVACY_NOTICE_KEY and PRIVACY_NOTICE_VERSION in src/features/privacy/notice.ts, which a unit
 // test checks this file against.
-const PRIVACY_NOTICE_SEEN = { name: 'tesda-track.privacy-notice', value: '2026-10-19' }
+const PRIVACY_NOTICE_SEEN = { name: 'tesda-track.privacy-notice', value: '2026-10-21' }
 
 export default defineConfig({
   testDir: './tests/e2e',

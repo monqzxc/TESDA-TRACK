@@ -534,6 +534,94 @@ describe('Find my pathway, feedback', () => {
     ).toEqual({ reason: 'readiness_off' })
   })
 
+  const SHARE = 'Share the words of my goal to improve matching'
+  const GOAL_PATH = '/api/v1/feedback/recommendations/feedback-1/goal'
+
+  it('after Yes, shares the goal’s words only once the learner ticks the box', async () => {
+    serveFinderCatalog()
+    const api = serveFinderApi()
+    const user = userEvent.setup()
+    const question = await reachQuestion(user)
+    await user.click(within(question).getByRole('button', { name: 'Yes' }))
+    await within(question).findByText('Thank you for your answer.')
+
+    const box = within(question).getByRole('checkbox', { name: new RegExp(SHARE) })
+    expect(box).not.toBeChecked()
+    expect(within(question).getByText(`“${GOAL}”`)).toBeInTheDocument()
+    expect(within(question).getByText(/can run on Google Colab/)).toBeInTheDocument()
+    expect(within(question).getByRole('button', { name: 'Share my goal' })).toBeDisabled()
+
+    await user.click(box)
+    await user.click(within(question).getByRole('button', { name: 'Share my goal' }))
+
+    expect(await within(question).findByText(/Thank you for sharing your goal/)).toHaveFocus()
+    expect(sent(api.requests, 'POST', GOAL_PATH).map((request) => request.body)).toEqual([
+      { goal: GOAL, consent: true },
+    ])
+  })
+
+  it('after the wrong qualification, asks which one was wanted and can share the goal with it', async () => {
+    serveFinderCatalog()
+    const api = serveFinderApi()
+    const user = userEvent.setup()
+    const question = await reachQuestion(user)
+    await user.click(within(question).getByRole('button', { name: 'No' }))
+    await user.click(
+      await within(question).findByRole('button', {
+        name: 'It’s the wrong qualification for my goal',
+      }),
+    )
+
+    expect(
+      await within(question).findByText('Which qualification did you want? This is optional.'),
+    ).toHaveFocus()
+    expect(within(question).queryByRole('checkbox')).not.toBeInTheDocument()
+    expect(within(question).getByRole('button', { name: 'Send' })).toBeDisabled()
+    const picker = within(question).getByRole('combobox', { name: 'Qualification' })
+    await user.type(picker, 'cook')
+    await user.click(await screen.findByRole('option', { name: cookery.name }))
+    await user.click(within(question).getByRole('checkbox', { name: new RegExp(SHARE) }))
+    await user.click(within(question).getByRole('button', { name: 'Send' }))
+
+    expect(await within(question).findByText(/Thank you for sharing your goal/)).toHaveFocus()
+    const path = '/api/v1/feedback/recommendations/feedback-1'
+    expect(sent(api.requests, 'PATCH', path).map((request) => request.body)).toEqual([
+      { reason: 'wrong_qualification' },
+      { reason: 'wrong_qualification', wanted_qualification_code: cookery.code },
+    ])
+    expect(sent(api.requests, 'POST', GOAL_PATH).map((request) => request.body)).toEqual([
+      { goal: GOAL, consent: true },
+    ])
+  })
+
+  it('offers only other qualifications, and shares nothing without the box or on Skip', async () => {
+    serveFinderCatalog()
+    const api = serveFinderApi()
+    const user = userEvent.setup()
+    const question = await reachQuestion(user)
+    await user.click(within(question).getByRole('button', { name: 'No' }))
+    await user.click(
+      await within(question).findByRole('button', {
+        name: 'It’s the wrong qualification for my goal',
+      }),
+    )
+    const picker = await within(question).findByRole('combobox', { name: 'Qualification' })
+    await user.click(picker)
+    expect(await screen.findByRole('option', { name: cookery.name })).toBeInTheDocument()
+    expect(screen.queryByRole('option', { name: welding.name })).not.toBeInTheDocument()
+    await user.keyboard('{Escape}')
+
+    await user.click(within(question).getByRole('button', { name: 'Skip' }))
+
+    expect(
+      await within(question).findByText('Thank you. That tells us what to improve.'),
+    ).toHaveFocus()
+    expect(sent(api.requests, 'PATCH', '/api/v1/feedback/recommendations/feedback-1')).toHaveLength(
+      1,
+    )
+    expect(sent(api.requests, 'POST', GOAL_PATH)).toEqual([])
+  })
+
   it('tucks into a button with Hide for now, which brings the question back', async () => {
     serveFinderCatalog()
     const api = serveFinderApi()
