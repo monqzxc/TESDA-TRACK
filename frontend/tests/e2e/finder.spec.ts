@@ -384,7 +384,8 @@ for (const colorScheme of ['light', 'dark'] as const) {
       await expect(page.getByText('Learn to weld carbon steel plates.')).toBeVisible()
       await expectSettledAndAccessible(page)
 
-      // The question under the recommendation, and a reason after No.
+      // The question under the recommendation, a reason after No, and after the wrong match the optional question
+      // of the one wanted, skipped here.
       const question = page.getByRole('region', {
         name: 'Are you satisfied with this recommendation?',
       })
@@ -394,6 +395,12 @@ for (const colorScheme of ['light', 'dark'] as const) {
       await question
         .getByRole('button', { name: 'It’s the wrong qualification for my goal' })
         .click()
+      await expect(
+        question.getByText('Which qualification did you want? This is optional.'),
+      ).toBeFocused()
+      await expect(question.getByRole('combobox', { name: 'Qualification' })).toBeVisible()
+      await expectSettledAndAccessible(page)
+      await question.getByRole('button', { name: 'Skip' }).click()
       await expect(question.getByText('Thank you. That tells us what to improve.')).toBeFocused()
       await expectSettledAndAccessible(page)
 
