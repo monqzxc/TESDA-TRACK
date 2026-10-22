@@ -6,15 +6,13 @@ import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { ScoreRing, SkillBars } from '../../components/Meters.tsx'
 import { QualificationMedia } from '../../components/QualificationMedia.tsx'
 import { TagChips } from '../../components/TagChips.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { qualificationBlurb, qualificationTags } from '../../lib/qualifications.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
 import type { Match } from './api.ts'
 import type { SubmittedCheck } from './store.ts'
 import { kicker } from './styles.ts'
-
-const copy = en.finder.matches
 
 interface MatchCardProps {
   qualification: Qualification
@@ -44,6 +42,9 @@ export function MatchCard({
   check,
   onCheck,
 }: MatchCardProps) {
+  const en = useCopy()
+  const copy = en.finder.matches
+
   const headingId = useId()
   const total = qualification.competencies.length
   const blurb = qualificationBlurb(qualification)

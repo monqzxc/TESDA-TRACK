@@ -1,5 +1,5 @@
 import { Link } from 'react-router'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cssVars, cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { CATALOG, DRIFTING_QUALIFICATIONS } from './data.ts'
@@ -9,8 +9,6 @@ import { useReducedMotion } from './hooks/useReducedMotion.ts'
 import { useReveal } from './hooks/useReveal.ts'
 import { Reveal, revealClasses, useRevealed } from './Reveal.tsx'
 import { homeButton, ui } from './styles.ts'
-
-const copy = en.home.catalog
 
 const format = (n: number) => n.toLocaleString('en-US')
 
@@ -75,6 +73,9 @@ function LevelBars() {
  * rules between the figures.
  */
 export function Catalog() {
+  const en = useCopy()
+  const copy = en.home.catalog
+
   const { ref: totalRef, isIn: totalIn } = useReveal<HTMLDivElement>()
   const { ref: factsRef, isIn: factsIn } = useReveal<HTMLUListElement>()
   const qualifications = useFigure(CATALOG.qualifications, totalIn)

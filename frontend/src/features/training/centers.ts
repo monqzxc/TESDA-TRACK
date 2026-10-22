@@ -1,6 +1,6 @@
 import type { Region } from '../../api/queries.ts'
 import type { components } from '../../api/schema.d.ts'
-import { en } from '../../copy/en.ts'
+import { getCopy } from '../../i18n/copy.ts'
 import type { Provenance } from '../../components/DataProvenance.tsx'
 import type { CenterKind, SortOrder } from './address.ts'
 
@@ -391,6 +391,8 @@ export function friendlyDay(day: string, today: string): string {
 
 /** One line on what a center offers next, for result rows and map popups. */
 export function summary(center: Center, today: string): string {
+  const en = getCopy()
+
   const copy = en.training.summary
   const upcoming = nextDate(center, today)
   if (center.kind === 'training') {

@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { ReactNode } from 'react'
 import { Button } from 'react-aria-components'
 import { qualificationsQuery, type Qualification } from '../api/queries.ts'
-import { en } from '../copy/en.ts'
+import { useCopy } from '../i18n/copy.ts'
 import { button } from '../styles/buttons.ts'
 import { EmptyState } from './EmptyState.tsx'
 import { Icon } from './Icon.tsx'
@@ -29,6 +29,8 @@ export function WithCatalog({ children, emptyState = false }: WithCatalogProps) 
 }
 
 function CatalogLoader({ children, emptyState }: Required<WithCatalogProps>) {
+  const en = useCopy()
+
   const catalog = useQuery({ ...qualificationsQuery, throwOnError: throwWithoutData })
   if (catalog.data === undefined) {
     return (

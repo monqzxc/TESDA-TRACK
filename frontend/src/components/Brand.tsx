@@ -1,17 +1,18 @@
 import { Link } from 'react-router'
-import { en } from '../copy/en.ts'
+import { useCopy } from '../i18n/copy.ts'
 import { cx } from '../lib/style.ts'
 import { paths } from '../paths.ts'
 
 /** The logo, from public/img. Public files sit under the app's base (/beta/ during the parallel run). */
 export const logoSrc = `${import.meta.env.BASE_URL}img/logo.png`
 
-const [first, second] = en.brand.wordmark
-
 // The sidebar's brand, as classic/presentation.py's brand(sidebar=True) draws it: the logo, the wordmark ("TESDA"
 // and a lighter "TRACK", which screen readers hear as the name) and the tagline. `compact` is the phone bar's
 // smaller version, without the tagline.
 export function Brand({ compact = false }: { compact?: boolean }) {
+  const en = useCopy()
+  const [first, second] = en.brand.wordmark
+
   return (
     <div className={cx(!compact && 'mt-[0.2rem] mb-[1.8rem]')}>
       <Link

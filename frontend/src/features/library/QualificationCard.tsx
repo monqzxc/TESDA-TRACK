@@ -5,12 +5,10 @@ import { Icon } from '../../components/Icon.tsx'
 import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { QualificationMedia } from '../../components/QualificationMedia.tsx'
 import { TagChips } from '../../components/TagChips.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { competencyGroups, qualificationTags } from '../../lib/qualifications.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
-
-const copy = en.library
 
 const kicker = 'm-0 text-11 leading-[1.5] font-bold tracking-[0.1em] text-ink uppercase'
 
@@ -30,6 +28,9 @@ export function QualificationCard({
   catalogNames,
   onExplore,
 }: QualificationCardProps) {
+  const en = useCopy()
+  const copy = en.library
+
   const headingId = useId()
   const groups = competencyGroups(qualification.competencies)
   return (

@@ -287,6 +287,28 @@ from `backend/`. Replace `NEXT_NUMBER` with the next unused number after checkin
 For real training and assessment registries, see the [registry import and review workflow](docs/registry-import.md).
 For test database behavior and optional real-model checks, see [Tests](#tests).
 
+### Frontend languages
+
+The React frontend has a **Language / Wika** selector in the home header and the app sidebar
+(inside **Menu** on phones), and in the first-visit privacy notice. It offers English,
+Tagalog/Filipino, Kapampangan, Cebuano, Ilocano,
+Hiligaynon, Bikol, Waray and Pangasinan. Selection changes interface copy immediately without
+clearing forms, persists in this browser under `tesda-track.language`, and follows changes from
+another tab. With blocked browser storage, the choice still works for the current page session.
+
+Translations are bundled locally; no page text or learner information is sent to a translation
+service. Official qualification names, catalog records, learner input and API-generated content
+retain their original wording. Sample goal labels are translated while their submitted goal
+payloads stay in the existing matching format. Regional translations are drafts for fluent-speaker
+review. Missing translations, including some detailed help and specialist/legal copy, use English.
+
+`frontend/src/copy/en.ts` is the canonical catalog. Components read it through `useCopy()` from
+`frontend/src/i18n/copy.ts`; event handlers and non-React helpers can use `getCopy()`. Add translations
+to `frontend/src/i18n/locales/` using exact English strings as keys. Dynamic strings can use numbered
+placeholders such as `Step {0} of {1}`; translate the surrounding words and retain the placeholders.
+Register additional languages in `languages.ts` and `copy.ts`. Never translate API identifiers or
+submitted values. Run the language tests and `tests/e2e/languages.spec.ts` after changing this feature.
+
 ### Frontend styles
 
 **Styles** are Tailwind CSS utility classes in the components. `src/styles/app.css` sets up the theme: the

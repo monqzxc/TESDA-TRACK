@@ -1,6 +1,6 @@
 import { Button } from 'react-aria-components'
 import { Icon, type IconName } from '../components/Icon.tsx'
-import { en } from '../copy/en.ts'
+import { useCopy } from '../i18n/copy.ts'
 import { cx } from '../lib/style.ts'
 import type { Notice } from './useAuth.ts'
 
@@ -32,6 +32,8 @@ export function AccountNotice({
   notice: Notice | null
   onDismiss: () => void
 }) {
+  const en = useCopy()
+
   return (
     <div
       aria-live="polite"

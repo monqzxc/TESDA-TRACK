@@ -14,7 +14,7 @@ import { useAuth } from '../../auth/useAuth.ts'
 import { EmptyState } from '../../components/EmptyState.tsx'
 import { Icon, type IconName } from '../../components/Icon.tsx'
 import { PageHero } from '../../components/PageHero.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
@@ -53,7 +53,8 @@ import {
   type Period,
 } from '../reports/api.ts'
 
-type Section = 'overview' | 'learners' | 'rbac' | 'mcp' | 'mcp-activity' | 'recommendations' | 'feedback'
+type Section =
+  'overview' | 'learners' | 'rbac' | 'mcp' | 'mcp-activity' | 'recommendations' | 'feedback'
 // Each section needs the permission its own endpoints are guarded by, so an account only sees what it can use.
 const SECTIONS: readonly { id: Section; label: string; icon: IconName; permission: string }[] = [
   { id: 'overview', label: 'Overview', icon: 'bars', permission: 'reports:read' },
@@ -82,6 +83,8 @@ const th =
 const td = 'border-b border-rule px-3 py-3 text-14 text-navy align-top'
 
 export default function AdminPage() {
+  const en = useCopy()
+
   const { can, isSignedIn } = useAuth()
   const [params, setParams] = useSearchParams()
   const requested = params.get('section') as Section | null
@@ -1389,8 +1392,14 @@ function RecommendationManagement() {
         </h3>
         {active.length ? (
           // Keyboard users can scroll the demand table on narrow screens.
-          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-          <div className={tableBox} role="region" aria-label="Qualification demand table" tabIndex={0}>
+          <div
+            className={tableBox}
+            role="region"
+            aria-label="Qualification demand table"
+            // Keyboard users need to reach this horizontally scrollable region.
+            // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+            tabIndex={0}
+          >
             <table className="w-full border-collapse">
               <thead>
                 <tr>

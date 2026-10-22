@@ -1,4 +1,4 @@
-// All interface copy is collected here, so a Filipino version can be added later (US-15).
+// Canonical interface copy. Components use i18n/copy.ts; missing translations fall back to this catalog.
 import { helpCopy } from './help.ts'
 
 /** A figure in a line of copy, grouped as the page shows figures: 4,981. */
@@ -751,7 +751,8 @@ export const en = {
     useLocation: 'Use my location',
     search: 'Search centers',
     searchPlaceholder: 'Search by location, center name, or program…',
-    loadFailed: 'We couldn’t load the training and assessment list. Your search and filters are still here.',
+    loadFailed:
+      'We couldn’t load the training and assessment list. Your search and filters are still here.',
     retryLoad: 'Try loading the list again',
     staleResults: 'Showing the last loaded results. They may be out of date.',
     kinds: { training: 'Training center', assessment: 'Assessment center' },

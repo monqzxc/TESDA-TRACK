@@ -25,7 +25,7 @@ import {
 } from 'react-leaflet'
 import { Icon } from '../../components/Icon.tsx'
 import centerPhoto from '../../components/img/center-thumb.jpg'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { readItem, writeItem } from '../../lib/storage.ts'
 import { cx } from '../../lib/style.ts'
 import type { CenterKind } from './address.ts'
@@ -39,7 +39,6 @@ import type { Reference } from './useCenters.ts'
 // the learner's location or searched place, routes for each travel mode, a choice of map layers, and night tiles in
 // dark. It's an extra: the list beside it has everything (US-08). Loaded only on this page, in its own chunk.
 
-const copy = en.training.map
 const PHILIPPINES: L.LatLngBoundsExpression = [
   [4.5, 116.8],
   [21.2, 126.7],
@@ -78,7 +77,7 @@ const POPUP_CHIPS: Record<CenterKind, string> = {
   assessment: 'border-good-bg bg-good-bg text-good-ink',
 }
 
-type BasemapId = keyof typeof copy.basemaps
+type BasemapId = keyof ReturnType<typeof useCopy>['training']['map']['basemaps']
 interface Basemap {
   id: BasemapId
   url: string
@@ -194,6 +193,9 @@ export interface CenterMapProps {
 }
 
 export default function CenterMap(props: CenterMapProps) {
+  const en = useCopy()
+  const copy = en.training.map
+
   const { centers, cartoKey, locating } = props
   const shell = useRef<HTMLDivElement>(null)
   const layers = useMemo(() => basemaps(cartoKey), [cartoKey])
@@ -202,7 +204,9 @@ export default function CenterMap(props: CenterMapProps) {
     return layers.some((layer) => layer.id === saved) ? (saved as BasemapId) : layers[0].id
   })
   const basemap = layers.find((layer) => layer.id === basemapId) ?? layers[0]
-  const [status, setStatus] = useState<string | null>(copy.loading)
+  const [status, setStatus] = useState<'loading' | 'tilesFailed' | { message: string } | null>(
+    'loading',
+  )
   // How far the filter panel reaches over the map's left edge (0 when it doesn't): framing and popups keep clear.
   const [inset, setInset] = useState(0)
 
@@ -218,7 +222,12 @@ export default function CenterMap(props: CenterMapProps) {
   }, [])
 
   const points = centers.filter((center) => center.latitude !== null && center.longitude !== null)
-  const shownStatus = locating ? en.training.filters.locating : !points.length ? copy.none : status
+  const statusText = typeof status === 'string' ? copy[status] : status?.message
+  const shownStatus = locating
+    ? en.training.filters.locating
+    : !points.length
+      ? copy.none
+      : statusText
 
   return (
     // A page holding the map elsewhere, as Skills Explorer does, can set its height (--center-map-height).
@@ -244,14 +253,19 @@ export default function CenterMap(props: CenterMapProps) {
           maxZoom={basemap.maxZoom}
           {...(basemap.subdomains ? { subdomains: basemap.subdomains } : {})}
           eventHandlers={{
-            load: () => setStatus((current) => (current === copy.loading ? null : current)),
-            tileerror: () => setStatus(copy.tilesFailed),
+            load: () => setStatus((current) => (current === 'loading' ? null : current)),
+            tileerror: () => setStatus('tilesFailed'),
           }}
         />
         <ZoomControl position="topright" />
         <FollowSize />
         <WheelZoomOnFocus />
-        <Pins {...props} points={points} inset={inset} onCopied={setStatus} />
+        <Pins
+          {...props}
+          points={points}
+          inset={inset}
+          onCopied={(message) => setStatus({ message })}
+        />
         <ReferenceDot reference={props.reference} />
         {props.route && (
           <RouteLayer
@@ -388,6 +402,9 @@ function Pins({
   onCopied,
   ...popup
 }: CenterMapProps & { points: Center[]; inset: number; onCopied: (status: string) => void }) {
+  const en = useCopy()
+  const copy = en.training.map
+
   const group = useRef<L.MarkerClusterGroup>(null)
   const markers = useRef(new Map<string, L.Marker>())
   const map = useMap()
@@ -452,6 +469,9 @@ function CenterPopup({
   CenterMapProps,
   'canRoute' | 'saved' | 'today' | 'onDetails' | 'onRoute' | 'onToggleSaved'
 > & { center: Center; onCopied: (status: string) => void }) {
+  const en = useCopy()
+  const copy = en.training.map
+
   const point = { latitude: center.latitude as number, longitude: center.longitude as number }
   const isSaved = saved.includes(center.id)
   const copyLink = () => {
@@ -576,6 +596,9 @@ function CenterPopup({
 
 /** The learner's approximate location, or the place they searched for, beneath the pins. */
 function ReferenceDot({ reference }: { reference: Reference | null }) {
+  const en = useCopy()
+  const copy = en.training.map
+
   if (!reference) return null
   return (
     <Marker
@@ -674,6 +697,9 @@ function RouteLayer({
   onTravelMode: (mode: TravelMode) => void
   inset: number
 }) {
+  const en = useCopy()
+  const copy = en.training.map
+
   const map = useMap()
   const directions = useQuery(directionsQuery(route.from, route.to))
   const options = directions.data?.routes ?? []

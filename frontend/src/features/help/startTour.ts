@@ -1,12 +1,14 @@
 import { driver } from 'driver.js'
 import 'driver.js/dist/driver.css'
-import { en } from '../../copy/en.ts'
+import { getCopy } from '../../i18n/copy.ts'
 import type { PageKey } from '../../lib/navigation.ts'
 import { buildTourSteps } from './tours.ts'
 import './tour.css'
 
 /** Start only on request: a tour explains controls without submitting forms or changing learner data. */
 export function startTour(page: PageKey | undefined, onDestroyed: () => void) {
+  const en = getCopy()
+
   const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false
   let finished = false
   const finish = () => {

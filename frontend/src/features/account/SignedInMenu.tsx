@@ -16,7 +16,7 @@ import type { Learner } from '../../auth/session.ts'
 import { useAuth } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { ModalDialog } from '../../components/ModalDialog.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { returnFocus } from '../../lib/focus.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
@@ -25,8 +25,6 @@ import { DeleteAccountDialog } from './DeleteAccountDialog.tsx'
 import { downloadMyData } from './exportData.ts'
 import { shownName, type Variant } from './variant.ts'
 import { accountName, menu } from './styles.ts'
-
-const copy = en.account
 
 export interface SignedInMenuProps {
   learner: Learner
@@ -56,6 +54,9 @@ export default function SignedInMenu({
   onSessionKept,
   onNavigate,
 }: SignedInMenuProps) {
+  const en = useCopy()
+  const copy = en.account
+
   const { signOut, notify } = useAuth()
   const queryClient = useQueryClient()
   const navigate = useNavigate()

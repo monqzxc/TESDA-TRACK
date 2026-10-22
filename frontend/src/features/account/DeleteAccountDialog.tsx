@@ -11,11 +11,9 @@ import {
 import { CheckMark, failureMessage } from '../../auth/fields.tsx'
 import { dialogStyle, formStyle } from '../../auth/styles.ts'
 import { useAuth } from '../../auth/useAuth.ts'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { deleteButton, deleteDialog } from './styles.ts'
-
-const copy = en.account.deleteDialog
 
 interface DeleteAccountDialogProps {
   isOpen: boolean
@@ -84,6 +82,9 @@ function DeleteAccountForm({
   onDeleting,
   onKept,
 }: DeleteAccountFormProps) {
+  const en = useCopy()
+  const copy = en.account.deleteDialog
+
   const { deleteAccount } = useAuth()
   const [confirmed, setConfirmed] = useState(false)
   const [error, setError] = useState<string | null>(null)

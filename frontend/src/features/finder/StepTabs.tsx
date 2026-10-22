@@ -1,10 +1,8 @@
 import { Link } from 'react-router'
 import { Icon, type IconName } from '../../components/Icon.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { STEP_PATHS } from './steps.ts'
-
-const copy = en.finder.steps
 
 /** Each step's icon (for the Streamlit tabs' track_changes, search, bar_chart and add_location_alt). */
 const ICONS: readonly IconName[] = ['target', 'search', 'bars', 'pin']
@@ -64,6 +62,9 @@ interface StepTabsProps {
  * bar stays in view while a step scrolls under it (not on phones, where the app's own bar does).
  */
 export function StepTabs({ current, unlocked }: StepTabsProps) {
+  const en = useCopy()
+  const copy = en.finder.steps
+
   const last = copy.names.length - 1
   return (
     <nav

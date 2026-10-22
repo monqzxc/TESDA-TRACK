@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Icon } from '../../components/Icon.tsx'
-import { en } from '../../copy/en.ts'
+import { getCopy, useCopy } from '../../i18n/copy.ts'
 import { CONSOLE_MATCHES } from './data.ts'
 import { useCountUp } from './hooks/useCountUp.ts'
 import { usePaused } from './hooks/usePaused.ts'
@@ -9,10 +9,8 @@ import { useReveal } from './hooks/useReveal.ts'
 import { cssVars, cx } from '../../lib/style.ts'
 import { revealClasses } from './Reveal.tsx'
 
-const copy = en.home.console
-
-const EXAMPLES = copy.examples.map((example, i) => ({ ...example, ...CONSOLE_MATCHES[i] }))
-
+// Examples keep their original goal language; only the surrounding interface is translated.
+const EXAMPLE_GOALS = getCopy('en').home.console.examples.map(({ goal }) => goal)
 type Phase = 'shown' | 'erasing' | 'typing' | 'matching'
 
 interface Scene {
@@ -28,15 +26,14 @@ interface Scene {
 }
 
 /** The first example, on show. It's all there is with reduced motion. */
-const STILL: Scene = { shown: 0, typed: EXAMPLES[0].goal, phase: 'shown' }
-
+const STILL: Scene = { shown: 0, typed: EXAMPLE_GOALS[0], phase: 'shown' }
 /** A keystroke's pause: a little uneven, as a person types. */
 const keystroke = () => 38 + Math.random() * 40
 
 /** How long a scene stays, and the one after it: landing.js's cycle, a step at a time. */
 function nextScene(scene: Scene): { stay: number; next: Scene } {
-  const following = (scene.shown + 1) % EXAMPLES.length
-  const goal = EXAMPLES[following].goal
+  const following = (scene.shown + 1) % EXAMPLE_GOALS.length
+  const goal = EXAMPLE_GOALS[following]
   switch (scene.phase) {
     case 'shown':
       // The first match stays a little less long, as the page opens.
@@ -63,6 +60,10 @@ function nextScene(scene: Scene): { stay: number; next: Scene } {
  * the navy as a flat surface: no shadow, no gradient.
  */
 export function GoalConsole() {
+  const en = useCopy()
+  const copy = en.home.console
+  const EXAMPLES = copy.examples.map((example, i) => ({ ...example, ...CONSOLE_MATCHES[i] }))
+
   const { ref: revealRef, isIn } = useReveal<HTMLDivElement>()
   const box = useRef<HTMLDivElement>(null)
   const ref = useCallback(

@@ -4,7 +4,7 @@ import type { Qualification } from '../../api/queries.ts'
 import { Icon, type IconName } from '../../components/Icon.tsx'
 import { PageArt } from '../../components/PageArt.tsx'
 import { SelectField } from '../../components/SelectField.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { catalogNames } from '../../lib/qualifications.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
@@ -23,8 +23,6 @@ import {
 import { card, notice, status } from './styles.ts'
 import type { JourneyContext } from './useJourney.ts'
 
-const copy = en.finder
-
 interface MatchesStepProps {
   journey: Journey
   context: JourneyContext
@@ -37,6 +35,9 @@ interface MatchesStepProps {
  * didn't say; the matching qualifications, each with its reason; and any other qualification to choose instead.
  */
 export function MatchesStep({ journey, context, catalog, onCheck }: MatchesStepProps) {
+  const en = useCopy()
+  const copy = en.finder
+
   const { matches, chosen, isOwnChoice } = context
   const choose = useFinderStore((state) => state.choose)
   const results = useFinderStore((state) => state.checks)
@@ -164,6 +165,9 @@ function factClass(index: number): string {
 
 /** What the finder understood from the goal, as facts in a row, with the follow-up questions under them. */
 function StartingPoint({ journey, profile }: { journey: Journey; profile: Profile }) {
+  const en = useCopy()
+  const copy = en.finder
+
   const experience = useFinderStore((state) => state.experience)
   const certification = useFinderStore((state) => state.certification)
   const setExperience = useFinderStore((state) => state.setExperience)

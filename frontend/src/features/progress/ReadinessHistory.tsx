@@ -1,12 +1,10 @@
 import { useId, useState } from 'react'
 import { SelectField } from '../../components/SelectField.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cssVars, cx } from '../../lib/style.ts'
 import type { ReadinessCheck } from './api.ts'
 import { checkedQualifications, checksFor, compareChecks } from './journey.ts'
 import { ui } from './styles.ts'
-
-const copy = en.progress.readiness
 
 const table = cx(
   'w-full border-collapse text-14',
@@ -29,6 +27,9 @@ export function friendlyDate(timestamp: string): string {
  * two of them (US-11). It's labelled as self-reported, and says when two checks asked about different skills.
  */
 export function ReadinessHistory({ checks }: { checks: readonly ReadinessCheck[] }) {
+  const en = useCopy()
+  const copy = en.progress.readiness
+
   const headingId = useId()
   const qualifications = checkedQualifications(checks)
   const [chosen, setChosen] = useState<string | null>(null)
@@ -132,6 +133,9 @@ function Comparison({
   onFrom: (id: string) => void
   onTo: (id: string) => void
 }) {
+  const en = useCopy()
+  const copy = en.progress.readiness
+
   // The earlier of the two first, whichever way round they were picked.
   const [earlier, later] = from.created_at <= to.created_at ? [from, to] : [to, from]
   const { points, sameQuestions } = compareChecks(earlier, later)

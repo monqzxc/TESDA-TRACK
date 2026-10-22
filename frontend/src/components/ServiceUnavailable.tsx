@@ -1,9 +1,7 @@
 import { useId } from 'react'
 import { ApiError } from '../api/errors.ts'
-import { en } from '../copy/en.ts'
+import { useCopy } from '../i18n/copy.ts'
 import { Icon } from './Icon.tsx'
-
-const copy = en.unavailable
 
 type ServiceUnavailableProps = {
   /** What failed. An ApiError's message is written for learners and is shown; any other error's is not. */
@@ -17,6 +15,9 @@ type ServiceUnavailableProps = {
 // shows it: in place of a page whose data can't be loaded. Drawn after classic/styles.css's
 // .st-key-service_unavailable, .service-state and .empty-icon.
 export function ServiceUnavailable({ error, onRetry, headingLevel = 2 }: ServiceUnavailableProps) {
+  const en = useCopy()
+  const copy = en.unavailable
+
   const headingId = useId()
   const Heading = headingLevel === 1 ? 'h1' : 'h2'
   const message = error instanceof ApiError ? error.message : undefined

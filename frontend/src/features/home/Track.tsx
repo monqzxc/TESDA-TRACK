@@ -1,5 +1,5 @@
 import { useState, type ReactNode } from 'react'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cssVars, cx } from '../../lib/style.ts'
 import { HOTEL_MATCHES } from './data.ts'
 import { useRoute } from './hooks/useRoute.ts'
@@ -12,8 +12,6 @@ import {
 } from './readiness.ts'
 import { Reveal, useRevealed } from './Reveal.tsx'
 import { ui } from './styles.ts'
-
-const copy = en.home.how
 
 /** Text with { quote } parts shown as quotations. */
 function Quoted({ parts }: { parts: readonly (string | { quote: string })[] }) {
@@ -30,6 +28,9 @@ function Quoted({ parts }: { parts: readonly (string | { quote: string })[] }) {
 
 /** Stop 1: goals as learners write them. */
 function GoalCloud() {
+  const en = useCopy()
+  const copy = en.home.how
+
   return (
     <div className={ui.card} data-ui="">
       <div className={ui.cardLabel}>
@@ -66,6 +67,9 @@ function GoalCloud() {
 
 /** Stop 2: an example goal's matches, best first. The bars fill once their card is in view. */
 function MatchList() {
+  const en = useCopy()
+  const copy = en.home.how
+
   const shown = useRevealed()
   return (
     <div className={ui.card} data-ui="">
@@ -113,6 +117,9 @@ const LEVELS: readonly ReadinessLevel[] = ['high', 'moderate', 'low']
 
 /** Stop 4: the three routes, with the one the readiness check picks marked as current. */
 function RouteChoice({ level }: { level: ReadinessLevel }) {
+  const en = useCopy()
+  const copy = en.home.how
+
   return (
     <div className={ui.card} data-ui="">
       <div className={ui.cardLabel}>
@@ -173,6 +180,9 @@ const roadPath = 'fill-none [stroke-linecap:round] [stroke-linejoin:round]'
  * its text.
  */
 export function Track() {
+  const en = useCopy()
+  const copy = en.home.how
+
   const { trackRef, roadRef, geometry, lit } = useRoute()
   const [answers, setAnswers] = useState(STARTING_ANSWERS)
   const level = readinessLevel(readinessScore(answers))

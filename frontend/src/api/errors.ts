@@ -1,4 +1,4 @@
-import { en } from '../copy/en.ts'
+import { getCopy } from '../i18n/copy.ts'
 
 // Turns failed requests into messages a learner can read, the same ones classic/api_client.py shows.
 
@@ -38,6 +38,8 @@ export interface UnwrapOptions {
 
 /** The learner-facing message in an error body: FastAPI's `detail`, as a string or validation errors. */
 export function detailMessage(body: unknown): string {
+  const en = getCopy()
+
   const detail = isRecord(body) ? body.detail : undefined
   if (typeof detail === 'string') return detail
   if (Array.isArray(detail)) {
@@ -67,6 +69,8 @@ export function errorFromResponse(
   body: unknown,
   options: UnwrapOptions = {},
 ): ApiError {
+  const en = getCopy()
+
   const { status } = response
   const retryAfter = parseRetryAfter(response.headers.get('Retry-After'))
   if (status >= 500 && !(options.detailOn503 && status === 503)) {
@@ -77,6 +81,8 @@ export function errorFromResponse(
 
 /** The error for a request that never got a response. */
 export function networkError(cause: unknown): ApiError {
+  const en = getCopy()
+
   return new ApiError({ message: en.service.unreachable, unavailable: true, cause })
 }
 

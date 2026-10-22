@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 import { useAuth } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy, useLanguage } from '../../i18n/copy.ts'
 import { useCurrentPage, type PageKey } from '../../lib/navigation.ts'
 
 // React Aria intentionally omits aria-modal; include its dialog roles as well as native modals.
@@ -24,13 +24,16 @@ function openDialog(): HTMLElement | undefined {
 
 /** One Help control in either layout. Changing page or account cancels a pending or active tour. */
 export function GuidedHelp() {
+  const language = useLanguage()
   const location = useLocation()
   const page = useCurrentPage()
   const { learner } = useAuth()
-  return <PageHelp key={`${location.key}:${learner?.id ?? 'guest'}`} page={page} />
+  return <PageHelp key={`${location.key}:${learner?.id ?? 'guest'}:${language}`} page={page} />
 }
 
 function PageHelp({ page }: { page: PageKey | undefined }) {
+  const en = useCopy()
+
   const { notify } = useAuth()
   const trigger = useRef<HTMLButtonElement>(null)
   const tour = useRef<Driver | null>(null)

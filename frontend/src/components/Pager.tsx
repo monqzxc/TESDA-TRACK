@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router'
-import { en } from '../copy/en.ts'
+import { useCopy } from '../i18n/copy.ts'
 import { button } from '../styles/buttons.ts'
 import { Icon } from './Icon.tsx'
 
@@ -18,6 +18,8 @@ interface PagerProps {
  * page before. At either end, its button shows greyed out.
  */
 export function Pager({ page, pages, to, onNavigate }: PagerProps) {
+  const en = useCopy()
+
   const copy = en.pager
   if (pages <= 1) return null
   return (

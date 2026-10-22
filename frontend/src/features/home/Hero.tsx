@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cssVars, cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { CATALOG, REGIONS } from './data.ts'
@@ -11,8 +11,6 @@ import welding from './img/welding.jpg'
 import weldingSmall from './img/welding-600.jpg'
 import { Reveal } from './Reveal.tsx'
 import { homeButton, ui } from './styles.ts'
-
-const copy = en.home.hero
 
 /** One line of the h1, which rises into place when the hero first shows (with motion: data-motion on Home's root). */
 function Line({ order, isIn, children }: { order: number; isIn: boolean; children: ReactNode }) {
@@ -38,6 +36,9 @@ function Line({ order, isIn, children }: { order: number; isIn: boolean; childre
  * data-home-hero, which tells the bar there's a hero to see through to.
  */
 export function Hero() {
+  const en = useCopy()
+  const copy = en.home.hero
+
   const { ref, isIn } = useReveal<HTMLElement>()
   const [first, second, last] = copy.title
   return (

@@ -4,15 +4,13 @@ import type { Learner } from '../../auth/session.ts'
 import { loadSignInDialog, useAuth } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { LoadBoundary } from '../../components/LoadBoundary.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { focusIsLost } from '../../lib/focus.ts'
 import { prefetch } from '../../lib/prefetch.ts'
 import { reloadPage } from '../../lib/reload.ts'
 import { loadSignedInMenu } from './loaders.ts'
 import { shownName, type Variant } from './variant.ts'
 import { accountButton, accountName, control } from './styles.ts'
-
-const copy = en.account
 
 const SignedInMenu = lazy(loadSignedInMenu)
 
@@ -26,6 +24,9 @@ interface AccountButtonProps {
 
 /** The account menu's button, drawn here while the menu's code comes down (or if it can't). */
 function AccountButton({ learner, variant, className, isDisabled, onPress }: AccountButtonProps) {
+  const en = useCopy()
+  const copy = en.account
+
   return (
     <Button
       isDisabled={isDisabled}
@@ -63,6 +64,9 @@ export function AccountControl({
   onNavigate,
   returnFocus,
 }: AccountControlProps) {
+  const en = useCopy()
+  const copy = en.account
+
   const { learner, isChecking, openSignIn, notify } = useAuth()
   const wrapper = useRef<HTMLDivElement>(null)
   const signInButton = useRef<HTMLButtonElement>(null)

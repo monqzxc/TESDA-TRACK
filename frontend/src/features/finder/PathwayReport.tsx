@@ -6,7 +6,7 @@ import { useAuth } from '../../auth/useAuth.ts'
 import { CheckboxRow } from '../../components/CheckboxRow.tsx'
 import { Icon, type IconName } from '../../components/Icon.tsx'
 import { SelectField } from '../../components/SelectField.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
 import {
@@ -21,8 +21,6 @@ import { reportQuery, type PathwayReport as Report, type ReportRequest } from '.
 import { RequestFailed } from './RequestFailed.tsx'
 import { useFinderStore, type Profile, type SubmittedCheck } from './store.ts'
 import { card, kicker, muted, status } from './styles.ts'
-
-const copy = en.finder.pathway.report
 
 type Advice = Report['skills_to_improve'][number]
 type Option = Report['training_to_consider'][number]
@@ -73,6 +71,9 @@ interface PathwayReportProps {
  * answers, the catalog and the rankings; a section with nothing to say isn't shown.
  */
 export function PathwayReport({ qualification, check, asked }: PathwayReportProps) {
+  const en = useCopy()
+  const copy = en.finder.pathway.report
+
   const place = useFinderStore((state) => state.place)
   const { learner } = useAuth()
   const headingId = useId()
@@ -130,6 +131,9 @@ export function PathwayReport({ qualification, check, asked }: PathwayReportProp
 
 /** Where to look for options. They sort and explain the options only, and stay in this tab. */
 function PlaceFields() {
+  const en = useCopy()
+  const copy = en.finder.pathway.report
+
   const place = useFinderStore((state) => state.place)
   const setPlace = useFinderStore((state) => state.setPlace)
   const regions = useRegions().data ?? []
@@ -214,6 +218,9 @@ function Part({ title, icon, children }: { title: string; icon?: IconName; child
 
 /** A. Training to consider, the skills to improve, and the competencies to learn or practice. */
 function Recommendations({ report }: { report: Report }) {
+  const en = useCopy()
+  const copy = en.finder.pathway.report
+
   const recommended = report.training_to_consider.filter((option) => option.recommended)
   const others = report.training_to_consider.filter((option) => !option.recommended)
   return (
@@ -254,6 +261,9 @@ function Recommendations({ report }: { report: Report }) {
 }
 
 function OptionItem({ option }: { option: Option }) {
+  const en = useCopy()
+  const copy = en.finder.pathway.report
+
   return (
     <li className={cx(box, option.recommended && 'border-blue bg-tint')}>
       {option.recommended && <Tag tone="info">{copy.recommended}</Tag>}
@@ -268,6 +278,9 @@ function OptionItem({ option }: { option: Option }) {
 }
 
 function SkillList({ items }: { items: Advice[] }) {
+  const en = useCopy()
+  const copy = en.finder.pathway.report
+
   const first = items.slice(0, FIRST_SKILLS)
   const rest = items.slice(FIRST_SKILLS)
   return (
@@ -298,6 +311,9 @@ function SkillList({ items }: { items: Advice[] }) {
 }
 
 function SkillItem({ item }: { item: Advice }) {
+  const en = useCopy()
+  const copy = en.finder.pathway.report
+
   return (
     <li className={box}>
       <p className="m-0 flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -323,6 +339,9 @@ function SkillItem({ item }: { item: Advice }) {
 
 /** Grouped by what to do: learn, practice, then be ready to show. */
 function LearnList({ items }: { items: Advice[] }) {
+  const en = useCopy()
+  const copy = en.finder.pathway.report
+
   const groups = (['learn', 'practice', 'demonstrate'] as const)
     .map((action) => [action, items.filter((item) => item.action === action)] as const)
     .filter(([, group]) => group.length > 0)
@@ -361,6 +380,9 @@ function LearnList({ items }: { items: Advice[] }) {
 
 /** B. Why we recommend these: each part of the learner's data and what it means. */
 function Reasons({ report }: { report: Report }) {
+  const en = useCopy()
+  const copy = en.finder.pathway.report
+
   const headingId = useId()
   return (
     <section aria-labelledby={headingId} className={cx(card, 'flex flex-col gap-4')}>
@@ -397,6 +419,9 @@ function Considerations({
   report: Report
   qualification: Qualification
 }) {
+  const en = useCopy()
+  const copy = en.finder.pathway.report
+
   const headingId = useId()
   const today = philippineDay(new Date())
   return (
@@ -454,6 +479,9 @@ function Considerations({
 }
 
 function ProviderItem({ provider, today }: { provider: Provider; today: string }) {
+  const en = useCopy()
+  const copy = en.finder.pathway.report
+
   const facts: string[] = []
   if (provider.distance_km !== null) facts.push(copy.distance(provider.distance_km))
   if (provider.starts_on) {
@@ -497,6 +525,9 @@ function ProviderItem({ provider, today }: { provider: Provider; today: string }
 
 /** D. Your next steps, in order: numbered as the curated pathway's steps are. */
 function NextSteps({ report }: { report: Report }) {
+  const en = useCopy()
+  const copy = en.finder.pathway.report
+
   const headingId = useId()
   return (
     <section aria-labelledby={headingId} className={card}>
@@ -528,6 +559,9 @@ function NextSteps({ report }: { report: Report }) {
 
 /** E. The summary, the next action, and what the report can't promise. */
 function FinalCard({ report }: { report: Report }) {
+  const en = useCopy()
+  const copy = en.finder.pathway.report
+
   const headingId = useId()
   return (
     <section aria-labelledby={headingId} className={cx(card, 'flex flex-col gap-3 border-blue')}>

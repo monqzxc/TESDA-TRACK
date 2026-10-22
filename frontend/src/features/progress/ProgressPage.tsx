@@ -5,7 +5,7 @@ import { useAuth } from '../../auth/useAuth.ts'
 import { PageHero } from '../../components/PageHero.tsx'
 import { throwWithoutData } from '../../components/QueryBoundary.tsx'
 import { WithCatalog } from '../../components/WithCatalog.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { AccountGate } from '../account/AccountGate.tsx'
 import { applicationsQuery, checksQuery, pathwaysQuery, sessionsQuery } from './api.ts'
 import { ContinueCard } from './ContinueCard.tsx'
@@ -14,14 +14,15 @@ import { nextStep } from './journey.ts'
 import { ReadinessHistory } from './ReadinessHistory.tsx'
 import { Applications, Pathways, RecommendationHistory } from './Records.tsx'
 
-const copy = en.progress
-
 /**
  * My Progress, at /progress (classic/app.py show_progress; US-10, US-11): what to do next, then the learner's
  * recommendations, readiness checks, pathways, applications, goals and certifications, each with its empty state.
  * Signed out, it asks the learner to sign in.
  */
 export default function ProgressPage() {
+  const en = useCopy()
+  const copy = en.progress
+
   const { isSignedIn } = useAuth()
   if (!isSignedIn) {
     const gate = en.account.progress
@@ -51,6 +52,9 @@ export default function ProgressPage() {
 }
 
 function Progress({ catalog }: { catalog: Qualification[] }) {
+  const en = useCopy()
+  const copy = en.progress
+
   const sessions = useQuery({ ...sessionsQuery, throwOnError: throwWithoutData })
   const checks = useQuery({ ...checksQuery, throwOnError: throwWithoutData })
   const pathways = useQuery({ ...pathwaysQuery, throwOnError: throwWithoutData })

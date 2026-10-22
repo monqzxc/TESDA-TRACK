@@ -1,11 +1,9 @@
 import { useState, type FormEvent } from 'react'
 import { Button, Form } from 'react-aria-components'
-import { en } from '../copy/en.ts'
+import { useCopy } from '../i18n/copy.ts'
 import { failureMessage, Field, fieldText, isEmail } from './fields.tsx'
 import { useAuth } from './useAuth.ts'
 import { formStyle, submitButton } from './styles.ts'
-
-const copy = en.account.signInForm
 
 interface SignInFormProps {
   defaultEmail?: string
@@ -19,6 +17,9 @@ interface SignInFormProps {
  * each show the API's message under the form, as Streamlit does.
  */
 export function SignInForm({ defaultEmail, focusFirstField = false, onSignedIn }: SignInFormProps) {
+  const en = useCopy()
+  const copy = en.account.signInForm
+
   const { signIn } = useAuth()
   const [error, setError] = useState<string | null>(null)
   const [isPending, setPending] = useState(false)

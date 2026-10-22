@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router'
 import { failureMessage } from '../../auth/fields.tsx'
 import { useAuth, useRequireAccount } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
@@ -14,8 +14,6 @@ import { GOAL_MAX_LENGTH, useFinderStore } from './store.ts'
 import { cardFrame, muted } from './styles.ts'
 import { ownsSession, useSaveJourney } from './useJourneySession.ts'
 import { createWriteRequestIds, isCurrentLearner, requireCurrentLearner } from './writeRequests.ts'
-
-const copy = en.finder.goal
 
 /** The small labels over each row: "Need an idea? ...", "Or tell us in your own words". */
 const rowLabel = 'm-0 text-12 font-bold tracking-[0.08em] text-ink uppercase'
@@ -28,6 +26,9 @@ const choices = 'm-0 flex list-none flex-wrap gap-2 p-0'
  * recommendation session.
  */
 export function GoalStep() {
+  const en = useCopy()
+  const copy = en.finder.goal
+
   const goal = useFinderStore((state) => state.goal)
   const setGoal = useFinderStore((state) => state.setGoal)
   const journey = useFinderStore((state) => state.journey)

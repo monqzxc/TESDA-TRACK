@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router'
-import { en } from '../copy/en.ts'
+import { useCopy } from '../i18n/copy.ts'
+import { LanguageSelector } from '../i18n/LanguageSelector.tsx'
 import { AccountControl } from '../features/account/AccountMenu.tsx'
 import { cx } from '../lib/style.ts'
 import { paths } from '../paths.ts'
@@ -8,15 +9,6 @@ import { Icon, type IconName } from './Icon.tsx'
 type NavItem = { to: string; label: string; icon: IconName }
 
 // The sidebar's pages, in order. The brand above these links returns to Home.
-const PAGES: readonly NavItem[] = [
-  { to: paths.finder, label: en.nav.finder, icon: 'route' },
-  { to: paths.qualifications, label: en.nav.qualifications, icon: 'book' },
-  { to: paths.training, label: en.nav.training, icon: 'clipboard' },
-  { to: paths.progress, label: en.nav.progress, icon: 'bars' },
-  { to: paths.skills, label: en.nav.skills, icon: 'compass' },
-]
-const REPORTS: NavItem = { to: paths.reports, label: en.nav.reports, icon: 'growth' }
-const ADMIN: NavItem = { to: paths.admin, label: en.nav.admin, icon: 'network' }
 
 export type NavProps = {
   /** Adds Reports, which only administrators see. */
@@ -38,6 +30,17 @@ const otherLink =
 
 /** The page links. The current page is marked with aria-current="page" (NavLink's own), and drawn filled. */
 export function Nav({ isAdmin = false, canManage = false, onNavigate }: NavProps) {
+  const en = useCopy()
+  const PAGES: readonly NavItem[] = [
+    { to: paths.finder, label: en.nav.finder, icon: 'route' },
+    { to: paths.qualifications, label: en.nav.qualifications, icon: 'book' },
+    { to: paths.training, label: en.nav.training, icon: 'clipboard' },
+    { to: paths.progress, label: en.nav.progress, icon: 'bars' },
+    { to: paths.skills, label: en.nav.skills, icon: 'compass' },
+  ]
+  const REPORTS: NavItem = { to: paths.reports, label: en.nav.reports, icon: 'growth' }
+  const ADMIN: NavItem = { to: paths.admin, label: en.nav.admin, icon: 'network' }
+
   const items = [...PAGES, ...(isAdmin ? [REPORTS] : []), ...(canManage ? [ADMIN] : [])]
   return (
     <nav aria-label={en.nav.label} data-tour="navigation">
@@ -65,8 +68,8 @@ type SidebarContentProps = NavProps & {
 }
 
 /**
- * The sidebar under the brand: page links and the account control. Settings live in the profile popover, while
- * legal information lives in each page's footer.
+ * The sidebar under the brand: page links, display preferences and the account control. Account settings live in
+ * the profile popover, while legal information lives in each page's footer.
  */
 export function SidebarContent({
   isAdmin = false,
@@ -75,10 +78,13 @@ export function SidebarContent({
   returnFocus,
 }: SidebarContentProps) {
   return (
-    <div className="flex min-h-[88dvh] flex-col gap-[0.6rem]">
+    <div className="flex flex-1 flex-col gap-[0.6rem]">
       <Nav isAdmin={isAdmin} canManage={canManage} onNavigate={onNavigate} />
       {/* In the phone menu, Sign in closes the menu first: the dialog opens over the page, not over the menu. */}
-      <div className="mt-auto pt-4">
+      <div className="mt-auto shrink-0 pt-4">
+        <div className="mb-4">
+          <LanguageSelector />
+        </div>
         <AccountControl
           variant="sidebar"
           onOpenSignIn={onNavigate}

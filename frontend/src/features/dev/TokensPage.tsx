@@ -1,15 +1,13 @@
 import type { CSSProperties } from 'react'
 import { Icon } from '../../components/Icon.tsx'
 import { iconNames } from '../../components/icons.ts'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { lightAndDark } from '../../styles/tokenBlocks.ts'
 import tokensCss from '../../styles/tokens.css?raw'
 import { ThemeSwitch } from '../../theme/ThemeSwitch.tsx'
 
 // A page for checking the tokens and icons by eye, at /dev/tokens. It isn't linked from anywhere.
-
-const copy = en.dev.tokens
 
 const table = cx(
   'w-full border-collapse bg-surface',
@@ -68,6 +66,9 @@ function Preview({ heading, values }: { heading: string; values: Map<string, str
 }
 
 export default function TokensPage() {
+  const en = useCopy()
+  const copy = en.dev.tokens
+
   return (
     <main className="mx-auto max-w-[1100px] px-4 pt-8 pb-16 [&_code]:text-13 [&_code]:wrap-anywhere">
       <header className="mb-2 flex flex-wrap items-center justify-between gap-4">

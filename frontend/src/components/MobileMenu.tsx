@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { Button } from 'react-aria-components'
 import { useLocation } from 'react-router'
 import { useAuth } from '../auth/useAuth.ts'
-import { en } from '../copy/en.ts'
+import { useCopy } from '../i18n/copy.ts'
 import { prefetch } from '../lib/prefetch.ts'
 import { reloadPage } from '../lib/reload.ts'
 import { Icon } from './Icon.tsx'
@@ -25,6 +25,8 @@ export function MobileMenu({
   isAdmin?: boolean
   canManage?: boolean
 }) {
+  const en = useCopy()
+
   const { pathname } = useLocation()
   const { notify } = useAuth()
   // The page the menu was opened on: going to another page closes it, by a link or by Back.

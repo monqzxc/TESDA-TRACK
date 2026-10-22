@@ -1,6 +1,6 @@
 import type { Qualification } from '../api/queries.ts'
 import type { IconName } from '../components/Icon.tsx'
-import { en } from '../copy/en.ts'
+import { getCopy } from '../i18n/copy.ts'
 
 // Facts about a qualification drawn from its catalog record, as the Streamlit app shows them (classic/app.py:
 // qualification_tags, qualification_blurb, competency_parts; classic/portal/journey.py: filter_qualifications).
@@ -60,6 +60,8 @@ export function qualificationTags(
   qualification: Qualification,
   names: ReadonlySet<string>,
 ): QualificationTag[] {
+  const en = getCopy()
+
   const copy = en.qualification.tags
   const tags: QualificationTag[] = []
   const match = NC_LEVEL.exec(qualification.name)
@@ -81,6 +83,8 @@ export function qualificationTags(
 
 /** A sentence or two about a qualification: the jobs it leads to and what it covers. */
 export function qualificationBlurb(qualification: Qualification): string {
+  const en = getCopy()
+
   const copy = en.qualification.blurb
   const jobs = qualification.possible_jobs.slice(0, 3)
   const competencies = qualification.competencies.length

@@ -8,15 +8,13 @@ import { PageHero } from '../../components/PageHero.tsx'
 import { Pager } from '../../components/Pager.tsx'
 import { SelectField } from '../../components/SelectField.tsx'
 import { WithCatalog } from '../../components/WithCatalog.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { pageOf } from '../../lib/paging.ts'
 import { catalogNames, filterQualifications, sectorsOf } from '../../lib/qualifications.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { useFinderStore } from '../finder/store.ts'
 import { QualificationCard } from './QualificationCard.tsx'
-
-const copy = en.library
 
 /** Cards a page: the whole catalog at once (hundreds of cards) is slow on a phone. */
 export const LIBRARY_PAGE_SIZE = 12
@@ -29,6 +27,9 @@ const ALL = 'all'
  * page are in the address (?q=&sector=&page=), so a search can be shared and Back returns to it.
  */
 export default function LibraryPage() {
+  const en = useCopy()
+  const copy = en.library
+
   const page = en.pages.qualifications
   return (
     <>
@@ -47,6 +48,9 @@ export default function LibraryPage() {
 }
 
 function Library({ qualifications }: { qualifications: Qualification[] }) {
+  const en = useCopy()
+  const copy = en.library
+
   const [params, setParams] = useSearchParams()
   const navigate = useNavigate()
   const startWithGoal = useFinderStore((state) => state.startWithGoal)

@@ -1,5 +1,5 @@
 import type { DriveStep } from 'driver.js'
-import { helpCopy } from '../../copy/help.ts'
+import { getCopy } from '../../i18n/copy.ts'
 import type { PageKey } from '../../lib/navigation.ts'
 
 type StepCopy = { readonly title: string; readonly description: string }
@@ -10,82 +10,84 @@ const target = (name: string, copy: StepCopy): Target => ({
   copy,
 })
 
-const copy = helpCopy.steps
-const pageTargets: Record<PageKey, readonly Target[]> = {
-  home: [
-    {
-      selector: 'header a[href$="/find"], [data-home-hero] a[href$="/find"]',
-      copy: copy.homeStart,
-    },
-    // Sections stay laid out before their scroll-reveal children become opaque.
-    { selector: '#how', copy: copy.homeHow },
-    { selector: '#near', copy: copy.homeNear },
-    { selector: '#catalog', copy: copy.homeCatalog },
-    { selector: '#start', copy: copy.homeGoal },
-  ],
-  finderGoal: [
-    target('finder-steps', copy.finderSteps),
-    target('goal-examples', copy.goalExamples),
-    target('goal-input', copy.goalInput),
-    target('goal-submit', copy.goalSubmit),
-  ],
-  finderMatches: [
-    target('finder-steps', copy.finderSteps),
-    target('starting-point', copy.startingPoint),
-    target('matches', copy.matches),
-  ],
-  finderReadiness: [
-    target('finder-steps', copy.finderSteps),
-    target('readiness-progress', copy.readinessProgress),
-    target('readiness-question', copy.readinessQuestion),
-    target('readiness-actions', copy.readinessActions),
-  ],
-  finderPathway: [
-    target('pathway-result', copy.pathwayResult),
-    target('pathway-centers', copy.pathwayCenters),
-    target('pathway-skills', copy.pathwaySkills),
-    target('curated-pathway', copy.curatedPathway),
-  ],
-  qualifications: [
-    target('library-filters', copy.libraryFilters),
-    target('qualification-card', copy.qualificationCard),
-    target('qualification-explore', copy.qualificationExplore),
-  ],
-  training: [
-    target('training-search', copy.trainingSearch),
-    target('training-location', copy.trainingLocation),
-    target('training-filters', copy.trainingFilters),
-    target('training-map-toggle', copy.trainingMapToggle),
-    target('training-results', copy.trainingResults),
-  ],
-  progress: [
-    target('progress-next', copy.progressNext),
-    target('progress-summary', copy.progressSummary),
-    target('progress-readiness', copy.progressReadiness),
-    target('progress-history', copy.progressHistory),
-    target('progress-goals', copy.progressGoals),
-  ],
-  skills: [
-    target('skills-input', copy.skillsInput),
-    target('skills-search', copy.skillsSearch),
-    target('skills-occupations', copy.skillsOccupations),
-    target('skills-qualifications', copy.skillsQualifications),
-  ],
-  reports: [
-    { selector: '#main fieldset', copy: copy.reportPeriod },
-    { selector: '#main table', copy: copy.reportTable },
-  ],
-  admin: [{ selector: '#main nav[aria-label="Admin sections"]', copy: copy.adminSections }],
-  profile: [
-    { selector: '#main section[aria-labelledby="profile-details"]', copy: copy.profileDetails },
-    { selector: '#main section[aria-labelledby="profile-journey"]', copy: copy.profileJourney },
-  ],
-  signIn: [{ selector: '#main form', copy: copy.signInForm }],
-  privacy: [
-    { selector: '#main section[aria-labelledby="privacy-summary"]', copy: copy.privacySummary },
-    { selector: '#main nav[aria-labelledby="privacy-contents"]', copy: copy.privacyContents },
-  ],
-  notFound: [],
+function pageTargets(): Record<PageKey, readonly Target[]> {
+  const copy = getCopy().help.steps
+  return {
+    home: [
+      {
+        selector: 'header a[href$="/find"], [data-home-hero] a[href$="/find"]',
+        copy: copy.homeStart,
+      },
+      // Sections stay laid out before their scroll-reveal children become opaque.
+      { selector: '#how', copy: copy.homeHow },
+      { selector: '#near', copy: copy.homeNear },
+      { selector: '#catalog', copy: copy.homeCatalog },
+      { selector: '#start', copy: copy.homeGoal },
+    ],
+    finderGoal: [
+      target('finder-steps', copy.finderSteps),
+      target('goal-examples', copy.goalExamples),
+      target('goal-input', copy.goalInput),
+      target('goal-submit', copy.goalSubmit),
+    ],
+    finderMatches: [
+      target('finder-steps', copy.finderSteps),
+      target('starting-point', copy.startingPoint),
+      target('matches', copy.matches),
+    ],
+    finderReadiness: [
+      target('finder-steps', copy.finderSteps),
+      target('readiness-progress', copy.readinessProgress),
+      target('readiness-question', copy.readinessQuestion),
+      target('readiness-actions', copy.readinessActions),
+    ],
+    finderPathway: [
+      target('pathway-result', copy.pathwayResult),
+      target('pathway-centers', copy.pathwayCenters),
+      target('pathway-skills', copy.pathwaySkills),
+      target('curated-pathway', copy.curatedPathway),
+    ],
+    qualifications: [
+      target('library-filters', copy.libraryFilters),
+      target('qualification-card', copy.qualificationCard),
+      target('qualification-explore', copy.qualificationExplore),
+    ],
+    training: [
+      target('training-search', copy.trainingSearch),
+      target('training-location', copy.trainingLocation),
+      target('training-filters', copy.trainingFilters),
+      target('training-map-toggle', copy.trainingMapToggle),
+      target('training-results', copy.trainingResults),
+    ],
+    progress: [
+      target('progress-next', copy.progressNext),
+      target('progress-summary', copy.progressSummary),
+      target('progress-readiness', copy.progressReadiness),
+      target('progress-history', copy.progressHistory),
+      target('progress-goals', copy.progressGoals),
+    ],
+    skills: [
+      target('skills-input', copy.skillsInput),
+      target('skills-search', copy.skillsSearch),
+      target('skills-occupations', copy.skillsOccupations),
+      target('skills-qualifications', copy.skillsQualifications),
+    ],
+    reports: [
+      { selector: '#main fieldset', copy: copy.reportPeriod },
+      { selector: '#main table', copy: copy.reportTable },
+    ],
+    admin: [{ selector: '#main nav[aria-label="Admin sections"]', copy: copy.adminSections }],
+    profile: [
+      { selector: '#main section[aria-labelledby="profile-details"]', copy: copy.profileDetails },
+      { selector: '#main section[aria-labelledby="profile-journey"]', copy: copy.profileJourney },
+    ],
+    signIn: [{ selector: '#main form', copy: copy.signInForm }],
+    privacy: [
+      { selector: '#main section[aria-labelledby="privacy-summary"]', copy: copy.privacySummary },
+      { selector: '#main nav[aria-labelledby="privacy-contents"]', copy: copy.privacyContents },
+    ],
+    notFound: [],
+  }
 }
 
 /** Off-screen targets remain eligible: Driver.js scrolls them into view when their step starts. */
@@ -122,6 +124,7 @@ function stepFor({ selector, copy: popover }: Target): DriveStep {
 
 /** Build a fresh tour from fixed copy and the page's currently available, visible controls. */
 export function buildTourSteps(page: PageKey | undefined): DriveStep[] {
+  const helpCopy = getCopy().help
   const steps: DriveStep[] = [
     {
       popover: {
@@ -142,7 +145,7 @@ export function buildTourSteps(page: PageKey | undefined): DriveStep[] {
 
   const targets = [
     target('account-gate', helpCopy.shared.accountGate),
-    ...(page ? pageTargets[page] : []),
+    ...(page ? pageTargets()[page] : []),
   ]
   for (const entry of targets) {
     if (visibleElement(entry.selector)) steps.push(stepFor(entry))

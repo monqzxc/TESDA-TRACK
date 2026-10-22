@@ -1,7 +1,7 @@
 import type { MouseEvent } from 'react'
 import { Outlet, ScrollRestoration } from 'react-router'
 import { useAuth } from '../auth/useAuth.ts'
-import { en } from '../copy/en.ts'
+import { useCopy } from '../i18n/copy.ts'
 import { FirstVisitNotice } from '../features/privacy/FirstVisitNotice.tsx'
 import { GuidedHelp } from '../features/help/GuidedHelp.tsx'
 import { useCurrentPage, useFocusOnNavigation, usePageTitle } from '../lib/navigation.ts'
@@ -33,6 +33,8 @@ export function Root() {
 /** The first Tab stop on every page, off screen until it has focus. It focuses the page's main region, so the
  *  next Tab goes into the page. */
 function SkipLink() {
+  const en = useCopy()
+
   const skip = (event: MouseEvent<HTMLAnchorElement>) => {
     // Focused here rather than followed: following #main would add a history entry for the same page.
     event.preventDefault()
@@ -83,11 +85,11 @@ export function AppLayout() {
       <div className="grid min-h-screen grid-cols-[19rem_minmax(0,1fr)] max-md:block">
         <header
           className={
-            'sticky top-0 h-dvh overflow-y-auto border-r border-border bg-surface px-5 pt-[1.3rem] pb-6 ' +
+            'sticky top-0 flex h-dvh flex-col overflow-y-auto border-r border-border bg-surface px-5 pt-[1.3rem] pb-6 ' +
             'max-md:z-20 max-md:h-auto max-md:overflow-visible max-md:border-r-0 max-md:border-b max-md:px-4 max-md:py-[0.6rem]'
           }
         >
-          <div className="max-md:flex max-md:items-center max-md:gap-3">
+          <div className="shrink-0 max-md:flex max-md:items-center max-md:gap-3">
             <MobileMenu isAdmin={canViewReports} canManage={canOpenAdmin} />
             <div className="max-md:hidden">
               <Brand />
@@ -96,7 +98,7 @@ export function AppLayout() {
               <Brand compact />
             </div>
           </div>
-          <div className="max-md:hidden">
+          <div className="flex flex-1 flex-col max-md:hidden">
             <SidebarContent isAdmin={canViewReports} canManage={canOpenAdmin} />
           </div>
         </header>

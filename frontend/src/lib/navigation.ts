@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useLocation, useMatches } from 'react-router'
-import { en } from '../copy/en.ts'
+import type { en } from '../copy/en.ts'
+import { getCopy, useCopy } from '../i18n/copy.ts'
 
 // What happens on every navigation: the document title follows the page, and focus moves to the new page's
 // heading. Scrolling is React Router's <ScrollRestoration /> (see Layout.tsx).
@@ -14,6 +15,8 @@ export interface RouteHandle {
 }
 
 function isRouteHandle(handle: unknown): handle is RouteHandle {
+  const en = getCopy()
+
   return (
     typeof handle === 'object' &&
     handle !== null &&
@@ -38,13 +41,16 @@ export function useCurrentPage(): PageKey | undefined {
  * in en.pages and can never carry anything a learner typed (a goal, a name or a place).
  */
 export function pageTitle(page: PageKey | undefined): string {
+  const en = getCopy()
+
   return page ? en.pages[page].title : en.app.name
 }
 
 export function usePageTitle(page: PageKey | undefined): void {
+  const copy = useCopy()
   useEffect(() => {
-    document.title = pageTitle(page)
-  }, [page])
+    document.title = page ? copy.pages[page].title : copy.app.name
+  }, [page, copy])
 }
 
 /**

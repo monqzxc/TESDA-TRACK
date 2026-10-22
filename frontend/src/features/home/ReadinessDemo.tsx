@@ -1,12 +1,10 @@
 import { useId } from 'react'
 import { Label, Radio, RadioGroup } from 'react-aria-components'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cssVars, cx } from '../../lib/style.ts'
 import { BARISTA_UNITS } from './data.ts'
 import { ANSWERS, isAnswer, readinessLevel, readinessScore, type Answer } from './readiness.ts'
 import { ui } from './styles.ts'
-
-const copy = en.home.how.readiness
 
 /** Where each label under the meter sits, in percent. */
 const SCALE = [0, 50, 80, 100] as const
@@ -29,6 +27,9 @@ interface ReadinessDemoProps {
  * changes.
  */
 export function ReadinessDemo({ answers, onChange }: ReadinessDemoProps) {
+  const en = useCopy()
+  const copy = en.home.how.readiness
+
   const labelId = useId()
   const scoreId = useId()
   const score = readinessScore(answers)

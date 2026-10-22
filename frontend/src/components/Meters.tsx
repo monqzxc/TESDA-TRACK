@@ -1,4 +1,4 @@
-import { en } from '../copy/en.ts'
+import { useCopy } from '../i18n/copy.ts'
 import { cssVars, cx } from '../lib/style.ts'
 
 /** A score out of 100 as a ring (classic/presentation.py score_ring). Screen readers hear its label. */
@@ -33,6 +33,8 @@ export interface SkillBar {
 
 /** Labelled bars, e.g. 5 of 8 relevant skills (skill_bars). In a narrow space each bar drops under its label. */
 export function SkillBars({ bars, className }: { bars: readonly SkillBar[]; className?: string }) {
+  const en = useCopy()
+
   return (
     <ul className={cx('@container m-0 grid list-none gap-[0.55rem] p-0', className)}>
       {bars.map((bar) => (

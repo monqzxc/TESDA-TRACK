@@ -1,7 +1,5 @@
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { Reveal } from './Reveal.tsx'
-
-const copy = en.home.near
 
 // With the app's base, so the picture loads wherever the app is served (at / on its own, or under /beta/).
 const MAP_SRC = `${import.meta.env.BASE_URL}img/near-you-map.svg`
@@ -11,6 +9,9 @@ const MAP_SRC = `${import.meta.env.BASE_URL}img/near-you-map.svg`
  * label. Its ping animation respects reduced motion. On narrow screens it goes under the text.
  */
 export function Archipelago() {
+  const en = useCopy()
+  const copy = en.home.near
+
   return (
     <Reveal
       from="zoom"

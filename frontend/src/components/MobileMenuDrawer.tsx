@@ -1,5 +1,5 @@
 import { Button, Dialog, Modal, ModalOverlay } from 'react-aria-components'
-import { en } from '../copy/en.ts'
+import { useCopy } from '../i18n/copy.ts'
 import { Brand } from './Brand.tsx'
 import { Icon } from './Icon.tsx'
 import { SidebarContent } from './Nav.tsx'
@@ -28,6 +28,8 @@ export default function MobileMenuDrawer({
   onNavigate,
   returnFocus,
 }: MobileMenuDrawerProps) {
+  const en = useCopy()
+
   return (
     <ModalOverlay
       isOpen={isOpen}
@@ -35,9 +37,12 @@ export default function MobileMenuDrawer({
       isDismissable
       className="fixed inset-0 z-100 bg-[rgb(var(--track-shadow-rgb)/0.45)] data-entering:animate-fade-in"
     >
-      <Modal className="fixed top-0 bottom-0 left-0 w-[min(20rem,88vw)] overflow-y-auto overscroll-contain border-r border-border bg-surface shadow-dialog data-entering:animate-slide-in">
-        <Dialog aria-label={en.nav.menu} className="px-4 pt-[1.1rem] pb-6 focus:outline-none">
-          <div className="flex items-start justify-between gap-2">
+      <Modal className="fixed top-0 left-0 h-dvh w-[min(20rem,88vw)] overflow-y-auto overscroll-contain border-r border-border bg-surface shadow-dialog data-entering:animate-slide-in">
+        <Dialog
+          aria-label={en.nav.menu}
+          className="flex min-h-full flex-col px-4 pt-[1.1rem] pb-[max(1.5rem,env(safe-area-inset-bottom))] focus:outline-none"
+        >
+          <div className="flex shrink-0 items-start justify-between gap-2">
             <Brand />
             <Button
               slot="close"

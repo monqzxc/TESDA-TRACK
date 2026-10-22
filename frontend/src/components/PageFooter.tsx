@@ -1,9 +1,11 @@
 import { NavLink } from 'react-router'
-import { en } from '../copy/en.ts'
+import { useCopy } from '../i18n/copy.ts'
 import { paths } from '../paths.ts'
 
 /** The shared footer for application pages. Legal information stays with page content, not navigation. */
 export function PageFooter() {
+  const en = useCopy()
+
   return (
     <footer className="w-full max-w-full px-10 pb-8 max-[1101px]:px-6 max-md:px-4">
       <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-border pt-5 text-14 text-muted">

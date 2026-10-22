@@ -1,24 +1,16 @@
 import { Link } from 'react-router'
-import { en } from '../copy/en.ts'
+import { useCopy, useLanguage } from '../i18n/copy.ts'
+import { LanguageSelector } from '../i18n/LanguageSelector.tsx'
 import { AccountControl } from '../features/account/AccountMenu.tsx'
 import { cx } from '../lib/style.ts'
 import { paths } from '../paths.ts'
 import { logoSrc } from './Brand.tsx'
 import { useHomeBar } from './useHomeBar.ts'
 
-const copy = en.landing
-const [first, second] = en.brand.wordmark
-
 // The landing page's sections (classic/landing.html): links to Home's sections, by their ids. They're router links,
 // so each jump is a history entry of the router's own, and Back returns to where the page was before it. (A plain
 // link to #how would make an entry the router can't tell from the page's first load, and the browser scrolls before
 // the router hears of it, so the router would save the section's position as the page's.)
-const SECTIONS = [
-  { hash: '#how', label: copy.how },
-  { hash: '#near', label: copy.near },
-  { hash: '#catalog', label: copy.catalog },
-  { hash: '#progress', label: copy.progress },
-] as const
 
 // After classic/landing.css's top bar. The landing page has its own navy band colors, kept here as it keeps them
 // (they aren't --track-* tokens). The bar is see-through over Home's hero, and turns solid once the page scrolls
@@ -46,6 +38,17 @@ const cta = cx(
  * keep to one line.
  */
 export function HomeHeader() {
+  const language = useLanguage()
+  const en = useCopy()
+  const copy = en.landing
+  const [first, second] = en.brand.wordmark
+  const SECTIONS = [
+    { hash: '#how', label: copy.how },
+    { hash: '#near', label: copy.near },
+    { hash: '#catalog', label: copy.catalog },
+    { hash: '#progress', label: copy.progress },
+  ] as const
+
   const { ref, scrolled } = useHomeBar<HTMLElement>()
   return (
     <header ref={ref} className={topbar} data-scrolled={scrolled || undefined}>
@@ -56,12 +59,21 @@ export function HomeHeader() {
           aria-label={en.brand.homeLink}
         >
           <img src={logoSrc} alt="" width={36} height={36} className="size-9 rounded-10" />
-          <span className="max-[431px]:hidden" aria-hidden="true">
+          <span
+            className={language === 'en' ? 'max-[431px]:hidden' : 'max-[901px]:hidden'}
+            aria-hidden="true"
+          >
             {first}
             <b className="ml-[0.3em] font-normal text-(--band-accent)">{second}</b>
           </span>
         </Link>
-        <nav className="flex gap-[1.4rem] max-[761px]:hidden" aria-label={copy.sections}>
+        <nav
+          className={cx(
+            'flex gap-[1.4rem] max-[1101px]:hidden',
+            language !== 'en' && 'max-[1451px]:hidden',
+          )}
+          aria-label={copy.sections}
+        >
           {SECTIONS.map(({ hash, label }) => (
             <Link
               key={hash}
@@ -72,6 +84,7 @@ export function HomeHeader() {
             </Link>
           ))}
         </nav>
+        <LanguageSelector header />
         <AccountControl
           variant="header"
           buttonClassName="px-[0.2rem] py-2 text-[0.95rem] font-bold whitespace-nowrap text-white no-underline hovered:text-(--band-accent)"

@@ -9,7 +9,7 @@ import { useAuth, useRequireAccount } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { SkillBars } from '../../components/Meters.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
@@ -20,8 +20,6 @@ import { PathwayReport } from './PathwayReport.tsx'
 import { VERDICTS, verdictFor } from './rules.ts'
 import { useFinderStore, type Answers, type Profile, type SubmittedCheck } from './store.ts'
 import { card, kicker, muted, notice } from './styles.ts'
-
-const copy = en.finder.pathway
 
 // The strengths and gaps under the verdict.
 const listHeading = 'mt-1 mb-[0.4rem] font-text text-15 tracking-normal text-navy'
@@ -41,6 +39,9 @@ interface PathwayStepProps {
  * curated pathway for that route, and whether the learner is satisfied with it all.
  */
 export function PathwayStep({ qualification, profile, asked }: PathwayStepProps) {
+  const en = useCopy()
+  const copy = en.finder.pathway
+
   const check = useFinderStore((state) => state.checks[qualification.code])
   const answers = useFinderStore((state) => state.answers[qualification.code])
   const headingId = useId()
@@ -87,6 +88,9 @@ function Verdict({
   check: SubmittedCheck
   changed: boolean
 }) {
+  const en = useCopy()
+  const copy = en.finder.pathway
+
   const navigate = useNavigate()
   const headingId = useId()
   const { result } = check
@@ -218,6 +222,9 @@ function CuratedPathway({
 }
 
 function PathwayCard({ pathway }: { pathway: CuratedPathway }) {
+  const en = useCopy()
+  const copy = en.finder.pathway
+
   const requireAccount = useRequireAccount()
   const headingId = useId()
   const [outcome, setOutcome] = useState<{
@@ -295,6 +302,9 @@ function PathwayCard({ pathway }: { pathway: CuratedPathway }) {
 
 /** What the recommendation was worked out from, for administrators. Shown as text, never as markup. */
 function Diagnostics({ profile, check }: { profile: Profile; check: SubmittedCheck }) {
+  const en = useCopy()
+  const copy = en.finder.pathway
+
   const { isAdmin } = useAuth()
   if (!isAdmin) return null
   const route = VERDICTS[verdictFor(check.result)].route

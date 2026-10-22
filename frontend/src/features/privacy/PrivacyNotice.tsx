@@ -3,13 +3,12 @@ import { Button } from 'react-aria-components'
 import { Link, useLocation } from 'react-router'
 import { Icon, type IconName } from '../../components/Icon.tsx'
 import { ModalDialog } from '../../components/ModalDialog.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
+import { LanguageSelector } from '../../i18n/LanguageSelector.tsx'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { hasSeenPrivacyNotice, markPrivacyNoticeSeen } from './notice.ts'
-
-const copy = en.privacy.notice
 
 // One per point, in their order: the finder, the account, the location, and the learner's control of it all.
 const POINT_ICONS: readonly IconName[] = ['route', 'person', 'pin', 'check']
@@ -25,6 +24,9 @@ const actionButton = 'max-xs:w-full'
  * show it: it says all of it.
  */
 export function PrivacyNotice() {
+  const en = useCopy()
+  const copy = en.privacy.notice
+
   const { pathname } = useLocation()
   const [isOpen, setOpen] = useState(() => !hasSeenPrivacyNotice())
   const close = () => {
@@ -41,6 +43,9 @@ export function PrivacyNotice() {
       closeLabel={copy.close}
       wide
     >
+      <div className="mb-4 max-w-64">
+        <LanguageSelector />
+      </div>
       <p className="mt-0 mb-[0.9rem] leading-[1.55] text-ink">{copy.lead}</p>
       <ul className="mt-0 mb-[1.4rem] flex list-none flex-col gap-[0.7rem] p-0">
         {copy.points.map((point, i) => (

@@ -5,7 +5,7 @@ import type { Qualification } from '../../api/queries.ts'
 import { failureMessage } from '../../auth/fields.tsx'
 import { useAuth } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { competencyGroups } from '../../lib/qualifications.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
@@ -16,7 +16,6 @@ import { ownsSession } from './useJourneySession.ts'
 import { card, muted, notice } from './styles.ts'
 import { createWriteRequestIds, isCurrentLearner, requireCurrentLearner } from './writeRequests.ts'
 
-const copy = en.finder.readiness
 const ANSWERS: readonly Answer[] = ['confident', 'some_experience', 'not_familiar']
 const NO_ANSWERS: Answers = {}
 
@@ -49,6 +48,8 @@ export function ReadinessStep({ journey, qualification, profile, onResult }: Rea
 
 /** The route the learner's experience suggests, and so why their skills matter. Left out if it can't be loaded. */
 function WhyWeAsk({ profile, code }: { profile: Profile; code: string }) {
+  const en = useCopy()
+
   const pathway = useQuery(pathwayQuery(profile, code))
   const headingId = useId()
   if (!pathway.data) return null
@@ -72,6 +73,9 @@ function WhyWeAsk({ profile, code }: { profile: Profile; code: string }) {
  * kept as the learner moves between parts and steps. Signed in, the result is saved to My Progress.
  */
 function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStepProps, 'profile'>) {
+  const en = useCopy()
+  const copy = en.finder.readiness
+
   const code = qualification.code
   const groups = competencyGroups(qualification.competencies)
   const answers = useFinderStore((state) => state.answers[code]) ?? NO_ANSWERS
@@ -267,6 +271,9 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
 }
 
 function Heading({ id, name }: { id: string; name: string }) {
+  const en = useCopy()
+  const copy = en.finder.readiness
+
   return (
     <CardHeading icon="checklist" id={id} kicker={copy.kicker} description={copy.lead(name)}>
       {copy.heading}

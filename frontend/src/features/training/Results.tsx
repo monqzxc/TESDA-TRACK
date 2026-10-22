@@ -5,7 +5,7 @@ import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { Icon } from '../../components/Icon.tsx'
 import centerPhoto from '../../components/img/center-thumb.jpg'
 import { SelectField } from '../../components/SelectField.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
 import { NO_FILTERS, SORTS, shortName, type SortOrder } from './address.ts'
@@ -13,8 +13,6 @@ import { placeLabel, summary, type Center } from './centers.ts'
 import { CenterDetail, KindBadges } from './CenterDetail.tsx'
 import { useTrainingFilters, useTrainingStore } from './state.ts'
 import type { CenterResults } from './useCenters.ts'
-
-const copy = en.training.results
 
 const note = 'm-0 flex items-center gap-[0.35rem] text-13 text-muted'
 
@@ -47,6 +45,9 @@ interface ResultsProps {
  * own scrolling list beside the map, and the whole page's flow below it on narrow screens.
  */
 export function Results({ results, hasMap, onViewOnMap, onChoose, show }: ResultsProps) {
+  const en = useCopy()
+  const copy = en.training.results
+
   const { filters, update } = useTrainingFilters()
   const saved = useTrainingStore((state) => state.saved)
   const location = useTrainingStore((state) => (state.useLocation ? state.location : null))
@@ -167,6 +168,9 @@ function CenterRow({
   today: string
   onChoose: () => void
 }) {
+  const en = useCopy()
+  const copy = en.training.results
+
   return (
     <li className="flex flex-wrap items-center gap-3 border-t border-rule px-[0.3rem] py-[0.7rem] hovered:bg-row-hover">
       <img
@@ -201,6 +205,9 @@ function CenterRow({
 
 /** Nothing matches: which filters are on, and ways to broaden them (US-07). */
 function NoMatch({ results }: { results: CenterResults }) {
+  const en = useCopy()
+  const copy = en.training.results
+
   const { filters, update } = useTrainingFilters()
   const placeText = useTrainingStore((state) => state.placeText)
   const setPlaceText = useTrainingStore((state) => state.setPlaceText)

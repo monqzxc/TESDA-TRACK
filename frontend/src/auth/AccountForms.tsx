@@ -1,12 +1,10 @@
 import { useState, type ComponentType, type ReactNode } from 'react'
 import { Button } from 'react-aria-components'
-import { en } from '../copy/en.ts'
+import { useCopy } from '../i18n/copy.ts'
 import { RegisterForm } from './RegisterForm.tsx'
 import { SignInForm } from './SignInForm.tsx'
 import type { SignInView } from './useAuth.ts'
 import { formStyle } from './styles.ts'
-
-const copy = en.account
 
 export interface AccountFormsProps {
   view: SignInView
@@ -31,6 +29,9 @@ export function AccountForms({
   defaultEmail,
   Heading,
 }: AccountFormsProps) {
+  const en = useCopy()
+  const copy = en.account
+
   // Once the learner switches forms, the new form's first field takes focus. On opening, the dialog has it.
   const [switched, setSwitched] = useState(false)
   const isSignIn = view === 'signIn'

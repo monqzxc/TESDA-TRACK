@@ -3,14 +3,12 @@ import { Button } from 'react-aria-components'
 import { Link, useNavigate } from 'react-router'
 import { useAuth } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { useFinderStore } from '../finder/store.ts'
 import type { Continuation } from './journey.ts'
 import { resumeSession } from './resume.ts'
-
-const copy = en.progress.continue
 
 /** The ids of the sections the card can lead to, on this page. */
 export const SECTION_IDS = { pathways: 'my-pathways', applications: 'my-applications' } as const
@@ -24,6 +22,9 @@ export function goToSection(id: string): void {
 
 /** The one next step for the learner, above their records (US-10). */
 export function ContinueCard({ next }: { next: Continuation }) {
+  const en = useCopy()
+  const copy = en.progress.continue
+
   const { learner } = useAuth()
   const navigate = useNavigate()
   const headingId = useId()

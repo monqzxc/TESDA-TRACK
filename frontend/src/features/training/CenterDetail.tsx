@@ -4,7 +4,7 @@ import { Button, Radio, RadioGroup, ToggleButton } from 'react-aria-components'
 import { Icon, type IconName } from '../../components/Icon.tsx'
 import { DataProvenance } from '../../components/DataProvenance.tsx'
 import centerPhoto from '../../components/img/center-thumb.jpg'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
 import { directionsQuery, type TravelMode, type TravelRoute } from './api.ts'
@@ -12,8 +12,6 @@ import { placeLabel, type Center, type Point } from './centers.ts'
 import { airportLabel, kilometres, travelTime } from './format.ts'
 import { Programs, Schedules, type Fits } from './Listings.tsx'
 import { useTrainingStore } from './state.ts'
-
-const copy = en.training
 
 export const MODE_ICONS: Record<TravelMode, IconName> = {
   car: 'car',
@@ -67,6 +65,9 @@ export function CenterDetail({
   today,
   headingRef,
 }: CenterDetailProps) {
+  const en = useCopy()
+  const copy = en.training
+
   const headingId = useId()
   const saved = useTrainingStore((state) => state.saved.includes(center.id))
   const toggleSaved = useTrainingStore((state) => state.toggleSaved)
@@ -203,6 +204,9 @@ export function CenterDetail({
 
 /** The center's type, how far it is, and whether the learner saved it. */
 export function KindBadges({ center, saved }: { center: Center; saved: boolean }) {
+  const en = useCopy()
+  const copy = en.training
+
   return (
     <p className="m-0 flex flex-wrap gap-[0.3rem]">
       <span
@@ -235,6 +239,9 @@ export function KindBadges({ center, saved }: { center: Center; saved: boolean }
  * The map draws the same routes (it reads the same request).
  */
 function RoutePanel({ from, to }: { from: Point; to: Point }) {
+  const en = useCopy()
+  const copy = en.training
+
   const directions = useQuery(directionsQuery(from, to))
   const travelMode = useTrainingStore((state) => state.travelMode)
   const setTravelMode = useTrainingStore((state) => state.setTravelMode)

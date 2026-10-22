@@ -2,14 +2,12 @@ import { Button } from 'react-aria-components'
 import { Link } from 'react-router'
 import { useAuth, useRequireAccount } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { Avatar } from './art.tsx'
 import type { Journey } from './store.ts'
 import { ownsSession, useSaveJourney } from './useJourneySession.ts'
-
-const copy = en.finder.summary
 
 interface GoalSummaryProps {
   journey: Journey
@@ -25,6 +23,9 @@ interface GoalSummaryProps {
  * Drawn after classic/styles.css's .st-key-finder_goal_summary: the goal with a learner's avatar, and its actions.
  */
 export function GoalSummary({ journey, code, sync }: GoalSummaryProps) {
+  const en = useCopy()
+  const copy = en.finder.summary
+
   const { learner } = useAuth()
   const requireAccount = useRequireAccount()
   const { save, pending } = useSaveJourney()

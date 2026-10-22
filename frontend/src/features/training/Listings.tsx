@@ -9,7 +9,7 @@ import { DataProvenance, sourceLink } from '../../components/DataProvenance.tsx'
 import { ModalDialog } from '../../components/ModalDialog.tsx'
 import { tradePhoto } from '../../components/QualificationMedia.tsx'
 import centerPhoto from '../../components/img/center-thumb.jpg'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
@@ -17,8 +17,6 @@ import { applyForAssessment, type Application, type ProgramFit } from './api.ts'
 import { friendlyDay, placeLabel, type Center, type Program, type Schedule } from './centers.ts'
 import { canReviewApplication, evidenceMessages } from './evidence.ts'
 import { deliveryLabel, localTime, programCost, programFacts, scheduleFee } from './format.ts'
-
-const copy = en.training
 
 /** Listings shown under a center before View all (classic/training_view.py PREVIEW). */
 const PREVIEW = 2
@@ -104,6 +102,9 @@ function listingPhoto(listing: Program | Schedule): string {
 
 /** A center's training programs, soonest first, two until View all. */
 export function Programs({ center, fits, today }: { center: Center; fits: Fits; today: string }) {
+  const en = useCopy()
+  const copy = en.training
+
   const [all, setAll] = useState(false)
   const [open, setOpen] = useState<Program | null>(null)
   const headingId = useId()
@@ -160,6 +161,9 @@ function ListingsHead({
   all: boolean
   onToggle: () => void
 }) {
+  const en = useCopy()
+  const copy = en.training
+
   return (
     <div className="flex items-center justify-between gap-2">
       <h3 id={id} className="m-0 text-[1.05rem] text-navy">
@@ -185,6 +189,9 @@ function ProgramCard({
   today: string
   onOpen: () => void
 }) {
+  const en = useCopy()
+  const copy = en.training
+
   const headingId = useId()
   const qualification = program.qualification.name
   return (
@@ -257,6 +264,9 @@ function ProgramDialog({
   today: string
   onClose: () => void
 }) {
+  const en = useCopy()
+  const copy = en.training
+
   const facts = copy.program
   const rows: [string, string | null][] = [
     [facts.where, `${center.name}, ${placeLabel(center)}`],
@@ -330,6 +340,9 @@ function ProgramDialog({
 
 /** A center's upcoming assessments, soonest first, two until View all, each with Apply. */
 export function Schedules({ center }: { center: Center }) {
+  const en = useCopy()
+  const copy = en.training
+
   const [all, setAll] = useState(false)
   const [reviewing, setReviewing] = useState<Schedule | null>(null)
   const requireAccount = useRequireAccount()
@@ -370,6 +383,9 @@ export function Schedules({ center }: { center: Center }) {
 }
 
 function ScheduleCard({ schedule, onApply }: { schedule: Schedule; onApply: () => void }) {
+  const en = useCopy()
+  const copy = en.training
+
   const headingId = useId()
   const open = schedule.seats_left > 0
   return (
@@ -415,6 +431,9 @@ function ApplyDialog({
   center: Center
   onClose: () => void
 }) {
+  const en = useCopy()
+  const copy = en.training
+
   const queryClient = useQueryClient()
   const facts = copy.apply
   // Keep the receipt key across uncertain responses and retries within this review.

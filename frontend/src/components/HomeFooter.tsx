@@ -1,11 +1,9 @@
 import { Link } from 'react-router'
-import { en } from '../copy/en.ts'
+import { useCopy } from '../i18n/copy.ts'
 import { cx } from '../lib/style.ts'
 import { paths } from '../paths.ts'
 import { logoSrc } from './Brand.tsx'
 import { Icon } from './Icon.tsx'
-
-const [first, second] = en.brand.wordmark
 
 // After classic/landing.css's footer: a navy band under Home, in the landing page's own colors (as in HomeHeader
 // and styles/home.css). It's hidden while Home's code downloads, so it doesn't show at the top of an empty
@@ -30,6 +28,9 @@ const privacyLink = cx(
  * policy.
  */
 export function HomeFooter() {
+  const en = useCopy()
+  const [first, second] = en.brand.wordmark
+
   return (
     <footer className={footer}>
       <div className="mx-auto flex w-full max-w-home flex-wrap items-center justify-between gap-x-8 gap-y-4 px-home-gutter">

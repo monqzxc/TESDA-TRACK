@@ -8,7 +8,7 @@ import {
   type TextFieldProps,
 } from 'react-aria-components'
 import { ApiError } from '../api/errors.ts'
-import { en } from '../copy/en.ts'
+import { getCopy } from '../i18n/copy.ts'
 import { formStyle } from './styles.ts'
 
 // The account forms' text fields and checks. Fields validate the way React Aria does by default ("native"): the
@@ -38,6 +38,8 @@ export function fieldText(form: FormData, name: string): string {
 
 /** The message to show for a failed account request. ApiError messages are written for learners. */
 export function failureMessage(error: unknown): string {
+  const en = getCopy()
+
   return error instanceof ApiError ? error.message : en.service.requestFailed
 }
 

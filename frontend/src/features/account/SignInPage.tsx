@@ -4,7 +4,7 @@ import { AccountForms } from '../../auth/AccountForms.tsx'
 import { safeNextPath } from '../../auth/nextPath.ts'
 import { useAuth, type SignInView } from '../../auth/useAuth.ts'
 import { PageHeading } from '../../components/PageHeading.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 
 interface Start {
   view: SignInView
@@ -17,6 +17,8 @@ interface Start {
  * learner goes on to ?next= when it's one of the app's own addresses, or home.
  */
 export default function SignInPage() {
+  const en = useCopy()
+
   const { isSignedIn, isChecking } = useAuth()
   const [params] = useSearchParams()
   const navigate = useNavigate()

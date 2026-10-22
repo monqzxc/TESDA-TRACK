@@ -2,13 +2,11 @@ import { useQuery } from '@tanstack/react-query'
 import { useEffect, useId, useRef, useState } from 'react'
 import type { Qualification } from '../../api/queries.ts'
 import { CheckboxRow } from '../../components/CheckboxRow.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy, getCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { occupationQuery } from './api.ts'
 import { BridgeQualification } from './BridgeQualification.tsx'
 import { ui } from './styles.ts'
-
-const copy = en.skills.details
 
 const subheading = 'mt-0 mb-[0.35rem] text-[1.15rem] text-navy'
 
@@ -24,6 +22,9 @@ export function OccupationDetails({
   occupationId: number
   catalog: readonly Qualification[]
 }) {
+  const en = useCopy()
+  const copy = en.skills.details
+
   const details = useQuery(occupationQuery(occupationId))
   const heading = useRef<HTMLHeadingElement>(null)
   const [known, setKnown] = useState<ReadonlySet<number>>(new Set())
@@ -186,6 +187,9 @@ export function OccupationDetails({
 
 /** "soft_skill" as "Soft skill"; none as General. */
 function category(type: string | null | undefined): string {
+  const en = getCopy()
+  const copy = en.skills.details
+
   return capitalize(type?.replace(/_/g, ' ')) || copy.general
 }
 

@@ -1,11 +1,9 @@
 import { Icon, type IconName } from '../../components/Icon.tsx'
 import { PageHeading } from '../../components/PageHeading.tsx'
 import { eyebrowHeading } from '../../components/PageHero.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { JourneyScene } from './art.tsx'
-
-const copy = en.finder.banner
 
 const TILES: readonly { icon: IconName; tile: string; tileIcon: string }[] = [
   { icon: 'target', tile: 'bg-tile', tileIcon: 'bg-tile-icon text-blue' },
@@ -21,6 +19,9 @@ const TILES: readonly { icon: IconName; tile: string; tileIcon: string }[] = [
  * keep the banner to its headline; the cards keep their titles.
  */
 export function JourneyBanner() {
+  const en = useCopy()
+  const copy = en.finder.banner
+
   return (
     <section className="@container relative min-h-64 overflow-hidden rounded-22 border border-banner-border bg-(image:--track-banner) px-[2.1rem] pt-[1.9rem] pb-6 max-xs:min-h-0 max-xs:rounded-16 max-xs:px-[1.2rem] max-xs:py-[1.3rem]">
       <JourneyScene className="pointer-events-none absolute top-0 right-0 bottom-0 left-[32%] h-full w-[68%] @max-[1101px]:bottom-auto @max-[1101px]:left-[46%] @max-[1101px]:h-[230px] @max-[1101px]:w-[54%] @max-[681px]:hidden" />

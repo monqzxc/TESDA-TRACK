@@ -3,7 +3,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { failureMessage } from '../../auth/fields.tsx'
 import { sessionKey, type Learner } from '../../auth/session.ts'
 import { useAuth, type Notice } from '../../auth/useAuth.ts'
-import { en } from '../../copy/en.ts'
+import { getCopy } from '../../i18n/copy.ts'
 import { startSession, submitReadiness, updateSession } from './api.ts'
 import { answeredProfile, sameSessionState, sessionState } from './rules.ts'
 import { useFinderStore, type Profile } from './store.ts'
@@ -12,8 +12,6 @@ import {
   requireCurrentLearner,
   type WriteRequestIds,
 } from './writeRequests.ts'
-
-const copy = en.finder.save
 
 /** Whether the journey's recommendation session belongs to this learner, so the finder may write to it. */
 export function ownsSession(learner: Learner | null, sessionOwner: string | null): boolean {
@@ -102,6 +100,9 @@ async function saveJourney(
   queryClient: QueryClient,
   requests: WriteRequestIds,
 ): Promise<void> {
+  const en = getCopy()
+  const copy = en.finder.save
+
   const start = useFinderStore.getState()
   if (!start.journey) return
   const saved: string[] = []

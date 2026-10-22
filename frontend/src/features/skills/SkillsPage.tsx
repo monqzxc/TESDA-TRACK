@@ -8,7 +8,7 @@ import { Icon } from '../../components/Icon.tsx'
 import { ScoreRing } from '../../components/Meters.tsx'
 import { PageHero } from '../../components/PageHero.tsx'
 import { WithCatalog } from '../../components/WithCatalog.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
 import { clientConfigQuery } from '../training/api.ts'
@@ -16,8 +16,6 @@ import { explore, type Exploration, type OccupationMatch } from './api.ts'
 import { BridgeQualification } from './BridgeQualification.tsx'
 import { OccupationDetails } from './OccupationDetails.tsx'
 import { ui } from './styles.ts'
-
-const copy = en.skills
 
 /** The sentence box's limit, as the API takes it. */
 const TEXT_MAX_LENGTH = 500
@@ -30,6 +28,9 @@ const ABOUT_URL = 'https://skills-bridge.ph'
  * the terms out of the sentence and sends only those to Skills Bridge.
  */
 export default function SkillsPage() {
+  const en = useCopy()
+  const copy = en.skills
+
   const page = en.pages.skills
   const config = useQuery(clientConfigQuery)
   return (
@@ -52,6 +53,9 @@ export default function SkillsPage() {
 }
 
 function Explorer({ catalog }: { catalog: Qualification[] }) {
+  const en = useCopy()
+  const copy = en.skills
+
   const [text, setText] = useState('')
   const [error, setError] = useState<string | null>(null)
   const [occupationId, setOccupationId] = useState<number | null>(null)
@@ -184,6 +188,9 @@ function Results({
   occupationId: number | null
   onExplore: (id: number) => void
 }) {
+  const en = useCopy()
+  const copy = en.skills
+
   const occupationsId = useId()
   const linkedId = useId()
   const results = copy.results
@@ -307,6 +314,9 @@ function OccupationCard({
   chosen: boolean
   onExplore: () => void
 }) {
+  const en = useCopy()
+  const copy = en.skills
+
   const headingId = useId()
   const label =
     occupation.match_kind === 'occupation'

@@ -1,7 +1,7 @@
 import { useEffect, useId, type ReactNode, type Ref } from 'react'
 import { Button, Dialog, Heading, Modal, ModalOverlay } from 'react-aria-components'
 import { Icon } from '../components/Icon.tsx'
-import { en } from '../copy/en.ts'
+import { useCopy } from '../i18n/copy.ts'
 import { loadSignedInMenu } from '../features/account/loaders.ts'
 import { prefetch } from '../lib/prefetch.ts'
 import { AccountForms } from './AccountForms.tsx'
@@ -47,6 +47,8 @@ export function SignInDialog({
   onSignedIn,
   dialogRef,
 }: SignInDialogProps) {
+  const en = useCopy()
+
   const messageId = useId()
   // Someone is about to sign in: fetch the account menu's code too.
   useEffect(() => prefetch(loadSignedInMenu), [])

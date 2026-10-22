@@ -13,7 +13,7 @@ import {
 import { CheckboxRow } from '../../components/CheckboxRow.tsx'
 import { Icon, type IconName } from '../../components/Icon.tsx'
 import { SelectField } from '../../components/SelectField.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy, getCopy } from '../../i18n/copy.ts'
 import { readItem, writeItem } from '../../lib/storage.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
@@ -30,8 +30,6 @@ import {
 import { QualificationPicker } from './QualificationPicker.tsx'
 import { useTrainingFilters, useTrainingStore } from './state.ts'
 import type { CenterResults } from './useCenters.ts'
-
-const copy = en.training.filters
 
 const badge =
   'inline-block min-w-[1.4rem] rounded-full bg-fill px-[0.45rem] py-[0.05rem] text-center text-12 leading-[1.35] font-bold text-white'
@@ -70,6 +68,9 @@ const ALL = 'all'
  * free the map. Each section says how many filters it sets, and, folded, what it holds.
  */
 export function FilterPanel({ results }: { results: CenterResults }) {
+  const en = useCopy()
+  const copy = en.training.filters
+
   const { filters, update } = useTrainingFilters()
   const store = useTrainingStore()
   const [folded, setFolded] = useState(() => {
@@ -385,6 +386,9 @@ function Section({
 
 /** Whether the browser is finding the learner's location, or why it couldn't. */
 function LocationStatus() {
+  const en = useCopy()
+  const copy = en.training.filters
+
   const locating = useTrainingStore((state) => state.locating)
   const error = useTrainingStore((state) => state.locationError)
   if (error) {
@@ -419,6 +423,9 @@ export function filterCounts(filters: TrainingFilters, useLocation: boolean, pla
 }
 
 function moreSummary(filters: TrainingFilters): string {
+  const en = getCopy()
+  const copy = en.training.filters
+
   const parts: string[] = []
   if (filters.mode) parts.push(en.training.delivery[filters.mode])
   if (filters.within) parts.push(en.training.availability[String(filters.within) as '30' | '90'])

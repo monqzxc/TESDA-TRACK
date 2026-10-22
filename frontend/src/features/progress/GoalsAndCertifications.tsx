@@ -5,7 +5,7 @@ import type { Qualification } from '../../api/queries.ts'
 import { failureMessage } from '../../auth/fields.tsx'
 import { throwWithoutData } from '../../components/QueryBoundary.tsx'
 import { SelectField } from '../../components/SelectField.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
 import {
@@ -20,7 +20,6 @@ import {
 } from './api.ts'
 import { ui } from './styles.ts'
 
-const copy = en.progress
 const NONE = 'none'
 
 /** The add forms, under each list. */
@@ -38,6 +37,9 @@ function qualificationOptions(catalog: readonly Qualification[], none: string) {
 
 /** The learner's goals, Mark achieved for the active ones, and a form to add one (classic/app.py show_goals). */
 export function Goals({ catalog }: { catalog: readonly Qualification[] }) {
+  const en = useCopy()
+  const copy = en.progress
+
   const goals = useQuery({ ...goalsQuery, throwOnError: throwWithoutData })
   const queryClient = useQueryClient()
   const headingId = useId()
@@ -89,6 +91,9 @@ export function Goals({ catalog }: { catalog: readonly Qualification[] }) {
 }
 
 function AddGoal({ catalog }: { catalog: readonly Qualification[] }) {
+  const en = useCopy()
+  const copy = en.progress
+
   const queryClient = useQueryClient()
   const [title, setTitle] = useState('')
   const [target, setTarget] = useState<string>(NONE)
@@ -145,6 +150,9 @@ function AddGoal({ catalog }: { catalog: readonly Qualification[] }) {
 
 /** The learner's certifications, and a form to add one (classic/app.py show_certifications). */
 export function Certifications({ catalog }: { catalog: readonly Qualification[] }) {
+  const en = useCopy()
+  const copy = en.progress
+
   const certifications = useQuery({ ...certificationsQuery, throwOnError: throwWithoutData })
   const headingId = useId()
   return (
@@ -182,6 +190,9 @@ export function Certifications({ catalog }: { catalog: readonly Qualification[] 
 }
 
 function AddCertification({ catalog }: { catalog: readonly Qualification[] }) {
+  const en = useCopy()
+  const copy = en.progress
+
   const queryClient = useQueryClient()
   const [title, setTitle] = useState('')
   const [qualification, setQualification] = useState<string>(NONE)

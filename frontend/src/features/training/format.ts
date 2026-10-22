@@ -1,10 +1,8 @@
-import { en } from '../../copy/en.ts'
+import { getCopy } from '../../i18n/copy.ts'
 import type { FlightEstimate } from './api.ts'
 import { friendlyDay, type Program, type Schedule } from './centers.ts'
 
 // How Training & Assessment writes distances, money, times and a program's facts (classic/training_view.py).
-
-const copy = en.training
 
 /** "105.9 km". */
 export function kilometres(distance: number): string {
@@ -41,22 +39,34 @@ export function localTime(timestamp: string): string {
 
 /** A program's cost: "Free" for a recorded zero, "Not provided" when it isn't given (US-08). */
 export function programCost(program: Pick<Program, 'cost'>): string {
+  const en = getCopy()
+  const copy = en.training
+
   if (program.cost === null || program.cost === undefined) return copy.programs.notProvided
   return Number(program.cost) === 0 ? copy.programs.free : peso(program.cost)
 }
 
 /** An assessment's fee: "No fee" for a recorded zero, "Not provided" when it isn't given (US-08). */
 export function scheduleFee(schedule: Pick<Schedule, 'fee'>): string {
+  const en = getCopy()
+  const copy = en.training
+
   if (schedule.fee === null || schedule.fee === undefined) return copy.programs.notProvided
   return Number(schedule.fee) === 0 ? copy.schedules.noFee : copy.schedules.fee(peso(schedule.fee))
 }
 
 /** A program's facts in a line: how it's delivered, its hours, when it starts, and its cost. */
 export function deliveryLabel(mode: Program['delivery_mode']): string {
+  const en = getCopy()
+  const copy = en.training
+
   return mode === 'unknown' ? 'Delivery mode not provided' : copy.delivery[mode]
 }
 
 export function programFacts(program: Program, today: string): string[] {
+  const en = getCopy()
+  const copy = en.training
+
   const facts: string[] = [deliveryLabel(program.delivery_mode)]
   if (program.duration_hours) facts.push(copy.programs.hours(program.duration_hours))
   const start = program.start_date

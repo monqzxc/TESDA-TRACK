@@ -3,7 +3,7 @@ import { Button } from 'react-aria-components'
 import { useAuth } from '../../auth/useAuth.ts'
 import { Icon, type IconName } from '../../components/Icon.tsx'
 import { PageHeading } from '../../components/PageHeading.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import type { PageKey } from '../../lib/navigation.ts'
 
 interface AccountGateProps {
@@ -22,6 +22,8 @@ interface AccountGateProps {
  * checks who is signed in, it says so.
  */
 export function AccountGate({ page, icon, heading, body, action }: AccountGateProps) {
+  const en = useCopy()
+
   const { isChecking, openSignIn } = useAuth()
   const headingId = useId()
   return (

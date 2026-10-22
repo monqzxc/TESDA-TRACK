@@ -3,9 +3,7 @@ import { ApiError } from '../../api/errors.ts'
 import { failureMessage } from '../../auth/fields.tsx'
 import { exportQuery, type AccountExport } from '../../auth/session.ts'
 import type { Notice } from '../../auth/useAuth.ts'
-import { en } from '../../copy/en.ts'
-
-const copy = en.account
+import { getCopy } from '../../i18n/copy.ts'
 
 // How long the file's address lasts. Revoking it as soon as the link is clicked can cancel the download in some
 // browsers, which read the file afterwards. FileSaver.js waits as long.
@@ -34,6 +32,9 @@ export async function downloadMyData(
   queryClient: QueryClient,
   notify: (notice: Notice | null) => void,
 ): Promise<void> {
+  const en = getCopy()
+  const copy = en.account
+
   notify({ tone: 'info', message: copy.downloading })
   let data: AccountExport
   try {

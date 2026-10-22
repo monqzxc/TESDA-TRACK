@@ -3,12 +3,11 @@ import { Link } from 'react-router'
 import { useAuth } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { PageHeading } from '../../components/PageHeading.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { AccountGate } from './AccountGate.tsx'
 
-const copy = en.account.profile
 const joinedDate = new Intl.DateTimeFormat('en-PH', {
   dateStyle: 'long',
   timeZone: 'Asia/Manila',
@@ -16,6 +15,9 @@ const joinedDate = new Intl.DateTimeFormat('en-PH', {
 
 /** The current account's profile. AuthProvider removes these details as soon as the session ends. */
 export default function ProfilePage() {
+  const en = useCopy()
+  const copy = en.account.profile
+
   const { learner } = useAuth()
   if (!learner) {
     return (

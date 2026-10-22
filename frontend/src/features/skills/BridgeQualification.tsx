@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router'
 import { regionsQuery, type Qualification } from '../../api/queries.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { LoadBoundary } from '../../components/LoadBoundary.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
@@ -28,8 +28,6 @@ import { ui } from './styles.ts'
 // The delivery map is Training & Assessment's own, downloaded only when a learner asks for sites.
 const CenterMap = lazy(() => import('../training/CenterMap.tsx'))
 
-const copy = en.skills
-
 /**
  * A qualification from Skills Bridge (classic/skills_bridge_view.py _qualification): its level, title, code and
  * status, the input skills it links to, and where TESDA Track lists training and assessment for it.
@@ -44,6 +42,9 @@ export function BridgeQualification({
   /** One below the section the card sits in. */
   headingLevel: 3 | 4
 }) {
+  const en = useCopy()
+  const copy = en.skills
+
   const headingId = useId()
   const Heading = headingLevel === 3 ? 'h3' : 'h4'
   const status = (item.status ?? '').replace(/_/g, ' ')
@@ -106,6 +107,9 @@ function DeliveryOptions({
   item: Item | Standard
   catalog: readonly Qualification[]
 }) {
+  const en = useCopy()
+  const copy = en.skills
+
   const local = useMemo(() => localQualification(item, catalog), [item, catalog])
   const [shown, setShown] = useState(false)
   return (
@@ -140,6 +144,9 @@ function DeliveryOptions({
 
 /** The centers listing the qualification, on the map and as a list, each opening in Training & Assessment. */
 function DeliverySites({ code }: { code: string }) {
+  const en = useCopy()
+  const copy = en.skills
+
   const navigate = useNavigate()
   const sites = useQuery(sitesQuery)
   const listings = useQuery(listingsQuery([code]))

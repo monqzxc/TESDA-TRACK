@@ -1,13 +1,11 @@
 import { Link } from 'react-router'
+import type { en } from '../../copy/en.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { PageHeading } from '../../components/PageHeading.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 
-const copy = en.privacy
-const page = en.pages.privacy
-
-type Section = (typeof copy.sections)[number]
+type Section = (typeof en.privacy.sections)[number]
 type Item = NonNullable<Extract<Section, { items: unknown }>['items']>[number]
 
 // A readable column, the summary in a tinted card, the contents in a plain one, then the sections, each under a rule.
@@ -32,6 +30,10 @@ function SectionItem({ item }: { item: Item }) {
  * brings each into view and Back returns to the top).
  */
 export default function PrivacyPage() {
+  const en = useCopy()
+  const copy = en.privacy
+  const page = en.pages.privacy
+
   return (
     <article className="flex max-w-[48rem] flex-col gap-6 leading-[1.6] text-ink">
       <header className="flex flex-col gap-2 [&_:is(h1,p)]:m-0">

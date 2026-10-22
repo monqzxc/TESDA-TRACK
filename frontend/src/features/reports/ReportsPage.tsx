@@ -8,7 +8,7 @@ import { Icon } from '../../components/Icon.tsx'
 import { PageHero } from '../../components/PageHero.tsx'
 import { throwWithoutData } from '../../components/QueryBoundary.tsx'
 import { WithCatalog } from '../../components/WithCatalog.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy, getCopy } from '../../i18n/copy.ts'
 import { cssVars, cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
@@ -32,8 +32,6 @@ import {
 } from './api.ts'
 import { QualificationField } from './QualificationField.tsx'
 import { RecommendationAnalytics } from './RecommendationAnalytics.tsx'
-
-const copy = en.reports
 
 /** The address's names for the period and the skill-gap qualification. */
 const PARAMS = { from: 'from', to: 'to', qualification: 'qualification' } as const
@@ -64,6 +62,9 @@ const cellNumber = 'border-b border-rule px-[0.6rem] py-[0.55rem] text-right tab
  * only. Anyone else gets a "not available" message instead of the page (the API refuses their requests in any case).
  */
 export default function ReportsPage() {
+  const en = useCopy()
+  const copy = en.reports
+
   const { canViewReports, isSignedIn } = useAuth()
   if (isSignedIn && !canViewReports) return <Navigate to={paths.home} replace />
 
@@ -140,6 +141,9 @@ function PeriodFields({
   period: Period
   onChange: (changes: { from?: string | null; to?: string | null }) => void
 }) {
+  const en = useCopy()
+  const copy = en.reports
+
   const fromId = useId()
   const toId = useId()
   const helpId = useId()
@@ -262,6 +266,9 @@ function ReportSections({
   chosen: string | null
   onChoose: (code: string) => void
 }) {
+  const en = useCopy()
+  const copy = en.reports
+
   const overview = useQuery({ ...overviewQuery(period), throwOnError: throwWithoutData })
   const funnel = useQuery({ ...funnelQuery(period), throwOnError: throwWithoutData })
   const demand = useQuery({ ...demandQuery(period), throwOnError: throwWithoutData })
@@ -418,6 +425,9 @@ const STAGES = [
 ] as const satisfies readonly (keyof Funnel)[]
 
 function Journey({ funnel }: { funnel: Funnel }) {
+  const en = useCopy()
+  const copy = en.reports
+
   const journey = copy.journey
   const most = Math.max(...STAGES.map((stage) => funnel[stage]))
   return (
@@ -471,6 +481,9 @@ const REASONS = [
  * matches (a satisfied top match is matching at its best), why not, and by model and qualification.
  */
 function Feedback({ summary }: { summary: FeedbackSummary }) {
+  const en = useCopy()
+  const copy = en.reports
+
   const feedback = copy.feedback
   const unsatisfied = summary.answers - summary.satisfied
   if (summary.answers === 0) {
@@ -556,6 +569,9 @@ function Feedback({ summary }: { summary: FeedbackSummary }) {
 }
 
 function SatisfactionHead({ label }: { label: string }) {
+  const en = useCopy()
+  const copy = en.reports
+
   return (
     <thead>
       <tr>
@@ -574,6 +590,9 @@ function SatisfactionHead({ label }: { label: string }) {
 }
 
 function SatisfactionRow({ label, tally }: { label: string; tally: FeedbackCount }) {
+  const en = useCopy()
+  const copy = en.reports
+
   return (
     <tr>
       <th scope="row" className={cx(rowHead, 'min-w-56 max-sm:min-w-40')}>
@@ -594,6 +613,9 @@ function SatisfactionRow({ label, tally }: { label: string; tally: FeedbackCount
 }
 
 function Demand({ rows }: { rows: QualificationDemand[] }) {
+  const en = useCopy()
+  const copy = en.reports
+
   const demand = copy.demand
   const active = activeDemand(rows)
   const quiet = rows.length - active.length
@@ -675,6 +697,9 @@ function SkillGaps({
   period: Period
   onChoose: (code: string) => void
 }) {
+  const en = useCopy()
+  const copy = en.reports
+
   const gaps = copy.gaps
   return (
     <Report heading={gaps.heading}>
@@ -703,6 +728,9 @@ function SkillGaps({
 }
 
 function GapTable({ code, name, period }: { code: string; name: string; period: Period }) {
+  const en = useCopy()
+  const copy = en.reports
+
   const gaps = copy.gaps
   const query = useQuery({ ...skillGapsQuery(code, period), throwOnError: throwWithoutData })
   if (!query.data) {
@@ -749,6 +777,9 @@ function GapTable({ code, name, period }: { code: string; name: string; period: 
 }
 
 function Supply({ rows }: { rows: RegionSupply[] }) {
+  const en = useCopy()
+  const copy = en.reports
+
   const supply = copy.supply
   return (
     <Report heading={supply.heading} lead={supply.lead}>
@@ -801,6 +832,9 @@ const percent = (n: number) => `${n.toLocaleString('en-US', { maximumFractionDig
 
 /** The period in words, for the line above the figures. */
 function showing({ from, to }: Period): string {
+  const en = getCopy()
+  const copy = en.reports
+
   const day = (date: string) =>
     new Date(`${date}T00:00:00Z`).toLocaleDateString('en-US', {
       timeZone: 'UTC',

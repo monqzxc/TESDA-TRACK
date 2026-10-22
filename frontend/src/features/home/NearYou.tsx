@@ -1,5 +1,6 @@
 import { Link } from 'react-router'
-import { en } from '../../copy/en.ts'
+import type { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cssVars, cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { Archipelago } from './Archipelago.tsx'
@@ -7,8 +8,6 @@ import type { OnePerEntry } from './data.ts'
 import { Glyph } from './Glyph.tsx'
 import { Reveal, useRevealed } from './Reveal.tsx'
 import { homeButton, ui } from './styles.ts'
-
-const copy = en.home.near
 
 /**
  * Each part of a training program's ranking score (in en.home.near.weights): its weight, and its color. One hue,
@@ -20,7 +19,7 @@ const WEIGHTS = [
   { weight: 15, color: 'color-mix(in srgb, #6fe0d2 65%, var(--home-band))' },
   { weight: 10, color: 'color-mix(in srgb, #6fe0d2 52%, var(--home-band))' },
   { weight: 5, color: 'color-mix(in srgb, #6fe0d2 42%, var(--home-band))' },
-] as const satisfies OnePerEntry<typeof copy.weights, { weight: number; color: string }>
+] as const satisfies OnePerEntry<typeof en.home.near.weights, { weight: number; color: string }>
 
 /** How training programs are ranked, as one bar whose parts grow in turn once it's in view. */
 function WeightBar() {
@@ -47,6 +46,9 @@ function WeightBar() {
  * training programs are ranked, and the way to them. On narrow screens the map goes under the text.
  */
 export function NearYou() {
+  const en = useCopy()
+  const copy = en.home.near
+
   return (
     <section id="near" aria-labelledby="near-title" className={cx(ui.band, ui.section)}>
       <div

@@ -6,7 +6,7 @@ import { LoadBoundary } from '../../components/LoadBoundary.tsx'
 import { PageHeading } from '../../components/PageHeading.tsx'
 import { eyebrowHeading } from '../../components/PageHero.tsx'
 import { WithCatalog } from '../../components/WithCatalog.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { readItem, writeItem } from '../../lib/storage.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
@@ -17,8 +17,6 @@ import { useCenters } from './useCenters.ts'
 
 // Leaflet comes down with the map, the first time it's shown, and not at all while it's hidden.
 const CenterMap = lazy(() => import('./CenterMap.tsx'))
-
-const copy = en.training
 
 /** Whether the learner hid the map, kept for this browser. */
 const MAP_KEY = 'tesda-track.training-map'
@@ -44,6 +42,9 @@ export default function TrainingPage() {
 }
 
 function Header() {
+  const en = useCopy()
+  const copy = en.training
+
   const { filters, update } = useTrainingFilters()
   const useLocation = useTrainingStore((state) => state.useLocation)
   const setUseLocation = useTrainingStore((state) => state.setUseLocation)
@@ -100,6 +101,9 @@ function Header() {
 }
 
 function Workspace({ catalog }: { catalog: Qualification[] }) {
+  const en = useCopy()
+  const copy = en.training
+
   const results = useCenters(catalog)
   const { update } = useTrainingFilters()
   const location = useTrainingStore((state) => (state.useLocation ? state.location : null))

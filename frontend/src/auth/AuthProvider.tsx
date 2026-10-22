@@ -11,7 +11,7 @@ import {
 } from 'react'
 import { onSignInRequired } from '../api/client.ts'
 import { LoadBoundary } from '../components/LoadBoundary.tsx'
-import { en } from '../copy/en.ts'
+import { useCopy } from '../i18n/copy.ts'
 import { FINDER_KEY } from '../features/finder/key.ts'
 import { focusedElement, returnFocus } from '../lib/focus.ts'
 import { navigationTarget } from '../lib/navigation.ts'
@@ -44,12 +44,6 @@ import {
 const SignInDialog = lazy(() =>
   loadSignInDialog().then((module) => ({ default: module.SignInDialog })),
 )
-
-const DIALOG_FAILED: Notice = {
-  tone: 'error',
-  message: en.account.unavailable.signIn,
-  action: { label: en.account.unavailable.retry, onPress: reloadPage },
-}
 
 /**
  * Clears the finder's work. Its store's code is only needed here once someone signs out, so it comes down then.
@@ -101,6 +95,16 @@ interface AfterClose {
  * - Signing in or out in another tab changes the cookie this tab uses too: this tab follows (see below).
  */
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const en = useCopy()
+  const DIALOG_FAILED = useMemo<Notice>(
+    () => ({
+      tone: 'error',
+      message: en.account.unavailable.signIn,
+      action: { label: en.account.unavailable.retry, onPress: reloadPage },
+    }),
+    [en],
+  )
+
   const queryClient = useQueryClient()
   // Read once: afterwards, signing in and out set the session directly.
   const [mayBeSignedIn] = useState(() => readItem(SESSION_HINT_KEY) !== null)
@@ -139,27 +143,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [queryClient],
   )
 
-  const openSignIn = useCallback((options: OpenSignInOptions = {}) => {
-    if (dialogFailed.current) {
-      setNotice(DIALOG_FAILED)
-      return
-    }
-    const opener = focusedElement()
-    const id = ++requestCount.current
-    openRequest.current = id
-    // Anything still waiting on an earlier dialog was dropped when this one opened.
-    afterClose.current = null
-    setDialogUsed(true)
-    setRequest({
-      id,
-      view: options.view ?? 'signIn',
-      message: options.message,
-      onSignedIn: options.onSignedIn,
-      // Signing in can take the opener away (a "Sign in or create an account" button): then the page's heading.
-      returnFocus:
-        options.returnFocus ?? (() => (opener?.isConnected ? opener : navigationTarget())),
-    })
-  }, [])
+  const openSignIn = useCallback(
+    (options: OpenSignInOptions = {}) => {
+      if (dialogFailed.current) {
+        setNotice(DIALOG_FAILED)
+        return
+      }
+      const opener = focusedElement()
+      const id = ++requestCount.current
+      openRequest.current = id
+      // Anything still waiting on an earlier dialog was dropped when this one opened.
+      afterClose.current = null
+      setDialogUsed(true)
+      setRequest({
+        id,
+        view: options.view ?? 'signIn',
+        message: options.message,
+        onSignedIn: options.onSignedIn,
+        // Signing in can take the opener away (a "Sign in or create an account" button): then the page's heading.
+        returnFocus:
+          options.returnFocus ?? (() => (opener?.isConnected ? opener : navigationTarget())),
+      })
+    },
+    [DIALOG_FAILED],
+  )
 
   const closeSignIn = useCallback((closed: SignInRequest, { signedIn }: { signedIn: boolean }) => {
     // A sign-in can finish after its dialog was closed (or replaced): the learner is signed in, but whatever waited
@@ -181,7 +188,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     afterClose.current = null
     setRequest(null)
     setNotice(DIALOG_FAILED)
-  }, [])
+  }, [DIALOG_FAILED])
 
   // Once the dialog has closed, and after a sign-in once the page shows the learner (the query tells React a moment
   // after the dialog closes, and that swaps "Sign in" for the account menu): focus back where the learner was, then
@@ -202,7 +209,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         void endSession({ keepFinder: true })
         openSignIn({ message: en.account.expired })
       }),
-    [queryClient, endSession, openSignIn],
+    [queryClient, endSession, openSignIn, en.account.expired],
   )
 
   // Another tab signed in or out (its hint changed), and the tabs share the cookie: whoever this tab showed may not
@@ -261,7 +268,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await requestSignOut().catch(() => undefined)
     await endSession({ keepFinder: false })
     setNotice({ tone: 'success', message: en.account.deleted })
-  }, [endSession])
+  }, [endSession, en.account.deleted])
 
   const auth = useMemo<Auth>(() => {
     const held = learner?.permissions ?? []

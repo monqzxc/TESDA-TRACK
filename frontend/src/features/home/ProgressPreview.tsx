@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { PLAN_QUALIFICATION } from './data.ts'
@@ -10,8 +10,6 @@ import { useReveal } from './hooks/useReveal.ts'
 import electrical from './img/electrical.jpg'
 import { Reveal, revealClasses } from './Reveal.tsx'
 import { homeButton, ui } from './styles.ts'
-
-const copy = en.home.progress
 
 /** The example plan's steps 1 and 2 are done and step 3 is next. */
 const DONE = 2
@@ -44,6 +42,9 @@ function usePlanProgress(start: boolean, steps: number): number {
 
 /** "My progress" (after classic/landing.css): an example plan whose steps tick off, and what an account keeps. */
 export function ProgressPreview() {
+  const en = useCopy()
+  const copy = en.home.progress
+
   const { ref: planRef, isIn: planIn } = useReveal<HTMLDivElement>()
   const ticked = usePlanProgress(planIn, copy.plan.length)
 

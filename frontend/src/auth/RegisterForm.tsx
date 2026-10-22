@@ -1,7 +1,7 @@
 import { useId, useState, type FormEvent } from 'react'
 import { Button, CheckboxButton, CheckboxField, FieldError, Form } from 'react-aria-components'
 import { Icon } from '../components/Icon.tsx'
-import { en } from '../copy/en.ts'
+import { getCopy, useCopy } from '../i18n/copy.ts'
 import { paths } from '../paths.ts'
 import {
   CheckMark,
@@ -17,8 +17,6 @@ import { SignInAfterRegistrationError } from './session.ts'
 import { useAuth } from './useAuth.ts'
 import { formStyle, submitButton } from './styles.ts'
 
-const copy = en.account.registerForm
-
 // The form is also in the sign-in dialog, which opens outside the router (AuthProvider): a plain link, with the app's
 // base, opening in a new tab so what the learner has typed stays here.
 const POLICY_HREF = `${import.meta.env.BASE_URL}${paths.privacy.slice(1)}`
@@ -32,6 +30,9 @@ interface RegisterFormProps {
 }
 
 function checkPassword(value: string): string | null {
+  const en = getCopy()
+  const copy = en.account.registerForm
+
   if (value.length < PASSWORD_MIN) return copy.shortPassword
   if (value.length > PASSWORD_MAX) return copy.longPassword
   return null
@@ -46,6 +47,9 @@ export function RegisterForm({
   onSignedIn,
   onCreatedNotSignedIn,
 }: RegisterFormProps) {
+  const en = useCopy()
+  const copy = en.account.registerForm
+
   const { register } = useAuth()
   const noticeId = useId()
   const [error, setError] = useState<string | null>(null)

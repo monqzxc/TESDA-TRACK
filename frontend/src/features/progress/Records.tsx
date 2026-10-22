@@ -7,7 +7,7 @@ import { useAuth } from '../../auth/useAuth.ts'
 import { CheckboxRow } from '../../components/CheckboxRow.tsx'
 import { Icon } from '../../components/Icon.tsx'
 import { ModalDialog } from '../../components/ModalDialog.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cssVars, cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
@@ -26,8 +26,6 @@ import { friendlyDate } from './ReadinessHistory.tsx'
 import { resumeSession } from './resume.ts'
 import { ui } from './styles.ts'
 
-const copy = en.progress
-
 /** The learner's saved recommendations, newest first, each reopening in Find my pathway (US-10). */
 export function RecommendationHistory({
   sessions,
@@ -36,6 +34,9 @@ export function RecommendationHistory({
   sessions: readonly RecommendationSession[]
   catalog: ReadonlySet<string>
 }) {
+  const en = useCopy()
+  const copy = en.progress
+
   const { learner } = useAuth()
   const navigate = useNavigate()
   const headingId = useId()
@@ -93,6 +94,9 @@ export function RecommendationHistory({
 
 /** The pathways the learner follows, each step ticked off as they go. Completed ones stay, as achievements. */
 export function Pathways({ enrollments }: { enrollments: readonly Enrollment[] }) {
+  const en = useCopy()
+  const copy = en.progress
+
   const shown = enrollments.filter((enrollment) => enrollment.status !== 'withdrawn')
   return (
     <section aria-labelledby={SECTION_IDS.pathways} className={ui.card}>
@@ -115,6 +119,9 @@ export function Pathways({ enrollments }: { enrollments: readonly Enrollment[] }
 }
 
 function PathwayCard({ enrollment }: { enrollment: Enrollment }) {
+  const en = useCopy()
+  const copy = en.progress
+
   const queryClient = useQueryClient()
   const headingId = useId()
   const update = useMutation({
@@ -185,6 +192,9 @@ const STATUS_TONES: Record<Application['status'], string> = {
 
 /** The learner's assessment applications, with their status and a withdrawal they confirm (US-09). */
 export function Applications({ applications }: { applications: readonly Application[] }) {
+  const en = useCopy()
+  const copy = en.progress
+
   const [withdrawing, setWithdrawing] = useState<Application | null>(null)
   const [withdrawn, setWithdrawn] = useState(false)
   return (
@@ -270,6 +280,9 @@ function WithdrawDialog({
   onClose: () => void
   onWithdrawn: () => void
 }) {
+  const en = useCopy()
+  const copy = en.progress
+
   const queryClient = useQueryClient()
   const withdraw = useMutation({
     mutationFn: () => withdrawApplication(application.id),

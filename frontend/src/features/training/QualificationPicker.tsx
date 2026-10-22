@@ -13,10 +13,8 @@ import {
   type Key,
 } from 'react-aria-components'
 import { Icon } from '../../components/Icon.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { shortName } from './address.ts'
-
-const copy = en.training.filters
 
 const ring =
   'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-focus-visible:outline-solid'
@@ -49,6 +47,9 @@ interface QualificationPickerProps {
  * that finds more by name as the learner types. There are hundreds, so a plain list would be too long to read.
  */
 export function QualificationPicker({ names, chosen, onChange }: QualificationPickerProps) {
+  const en = useCopy()
+  const copy = en.training.filters
+
   const [text, setText] = useState('')
   const options = useMemo(
     () =>

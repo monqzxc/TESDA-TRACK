@@ -5,7 +5,7 @@ import { qualificationsQuery } from '../../api/queries.ts'
 import { failureMessage } from '../../auth/fields.tsx'
 import { CheckboxRow } from '../../components/CheckboxRow.tsx'
 import { Icon } from '../../components/Icon.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { focusIsLost } from '../../lib/focus.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
@@ -13,9 +13,6 @@ import { QualificationField } from '../reports/QualificationField.tsx'
 import { explainFeedback, sendFeedback, shareGoal, type FeedbackReason } from './api.ts'
 import { useFinderStore, type GivenFeedback, type Profile, type SubmittedCheck } from './store.ts'
 import { notice } from './styles.ts'
-
-const copy = en.finder.pathway.feedback
-const REASONS = Object.keys(copy.reasons) as FeedbackReason[]
 
 /** In the corner of the screen, above the page and below the account notice (z-90) and dialogs (z-100). */
 const floating =
@@ -66,6 +63,10 @@ interface FeedbackPromptProps {
  * them in quotes, to test and train matching. The box starts unticked and nothing is shared without it.
  */
 export function FeedbackPrompt({ code, check, asked }: FeedbackPromptProps) {
+  const en = useCopy()
+  const copy = en.finder.pathway.feedback
+  const REASONS = Object.keys(copy.reasons) as FeedbackReason[]
+
   const given = useFinderStore((state) => state.feedback[code])
   const setFeedback = useFinderStore((state) => state.setFeedback)
   const [shown, setShown] = useState<Shown>(() => (finished(given) ? 'closed' : 'arriving'))

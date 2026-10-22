@@ -1,15 +1,13 @@
 import { useRef, useState, type FormEvent } from 'react'
 import { FieldError, Label, Text, TextArea, TextField } from 'react-aria-components'
 import { useNavigate } from 'react-router'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { GOAL_MAX_LENGTH, useFinderStore } from '../finder/store.ts'
 import { Glyph } from './Glyph.tsx'
 import { Reveal } from './Reveal.tsx'
 import { homeButton, ui } from './styles.ts'
-
-const copy = en.home.closing
 
 /**
  * The goal box at the end of the page (after classic/landing.css): a navy band with the question, and the box on a
@@ -18,6 +16,9 @@ const copy = en.home.closing
  * before getting matches.
  */
 export function ClosingGoal() {
+  const en = useCopy()
+  const copy = en.home.closing
+
   const navigate = useNavigate()
   const startWithGoal = useFinderStore((state) => state.startWithGoal)
   const [goal, setGoal] = useState('')

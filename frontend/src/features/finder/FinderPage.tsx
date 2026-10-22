@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { WithCatalog } from '../../components/WithCatalog.tsx'
-import { en } from '../../copy/en.ts'
+import { useCopy } from '../../i18n/copy.ts'
 import { useCurrentPage } from '../../lib/navigation.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
@@ -19,8 +19,6 @@ import { useFinderStore, type Journey } from './store.ts'
 import { useJourney } from './useJourney.ts'
 import { useSessionSync } from './useJourneySession.ts'
 import { card, muted, status, stepBody, stepNav } from './styles.ts'
-
-const copy = en.finder
 
 // The step shown last, so the next one slides in from the side the learner moved towards. Each step is its own
 // route, so this outlives the page between them.
@@ -75,6 +73,9 @@ function JourneySteps({
   journey: Journey
   catalog: Qualification[]
 }) {
+  const en = useCopy()
+  const copy = en.finder
+
   const context = useJourney(journey, catalog)
   const { chosen } = context
   const sync = useSessionSync(context.matchedProfile, chosen?.code ?? null)
@@ -141,6 +142,9 @@ function JourneySteps({
 
 /** A goal with no match has no qualification until the learner picks one (US-03). */
 function ChooseFirst() {
+  const en = useCopy()
+  const copy = en.finder
+
   const headingId = useId()
   return (
     <section aria-labelledby={headingId} className={card}>
@@ -158,6 +162,9 @@ function ChooseFirst() {
 
 /** Back to the step before, and on to the next (the last step's own button is its next step). */
 function StepNav({ step, quietNext = false }: { step: number; quietNext?: boolean }) {
+  const en = useCopy()
+  const copy = en.finder
+
   return (
     <div className={stepNav}>
       {step > GOAL && (
