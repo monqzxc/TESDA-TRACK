@@ -4,6 +4,7 @@ import { LanguageSelector } from '../i18n/LanguageSelector.tsx'
 import { AccountControl } from '../features/account/AccountMenu.tsx'
 import { cx } from '../lib/style.ts'
 import { paths } from '../paths.ts'
+import { ThemeSwitch } from '../theme/ThemeSwitch.tsx'
 import { Icon, type IconName } from './Icon.tsx'
 
 type NavItem = { to: string; label: string; icon: IconName }
@@ -77,11 +78,17 @@ export function SidebarContent({
   onNavigate,
   returnFocus,
 }: SidebarContentProps) {
+  const en = useCopy()
+
   return (
     <div className="flex flex-1 flex-col gap-[0.6rem]">
       <Nav isAdmin={isAdmin} canManage={canManage} onNavigate={onNavigate} />
       {/* In the phone menu, Sign in closes the menu first: the dialog opens over the page, not over the menu. */}
       <div className="mt-auto shrink-0 pt-4">
+        <div className="mb-4">
+          <p className="mb-1 text-14 font-semibold text-navy">{en.theme.label}</p>
+          <ThemeSwitch compact />
+        </div>
         <div className="mb-4">
           <LanguageSelector />
         </div>

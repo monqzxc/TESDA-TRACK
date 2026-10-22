@@ -20,7 +20,6 @@ import { useCopy } from '../../i18n/copy.ts'
 import { returnFocus } from '../../lib/focus.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
-import { ThemeSwitch } from '../../theme/ThemeSwitch.tsx'
 import { DeleteAccountDialog } from './DeleteAccountDialog.tsx'
 import { downloadMyData } from './exportData.ts'
 import { shownName, type Variant } from './variant.ts'
@@ -142,7 +141,8 @@ export default function SignedInMenu({
         title={copy.menu.settings}
         closeLabel={copy.menu.closeSettings}
       >
-        <section className="border-b border-border py-5" aria-labelledby="account-profile">
+        {/* The theme is a display preference in the sidebar, beside the language, not an account setting. */}
+        <section className="py-5" aria-labelledby="account-profile">
           <h3 id="account-profile" className="mb-3 text-16 font-semibold text-navy">
             {copy.profile.heading}
           </h3>
@@ -159,12 +159,6 @@ export default function SignedInMenu({
             <Icon name="person" />
             {copy.profile.view}
           </Link>
-        </section>
-        <section className="py-5" aria-labelledby="account-appearance">
-          <h3 id="account-appearance" className="mb-3 text-16 font-semibold text-navy">
-            {copy.menu.appearance}
-          </h3>
-          <ThemeSwitch />
         </section>
         <details className="border-t border-border pt-4">
           <summary className="min-h-11 cursor-pointer py-2 text-16 font-semibold text-navy">

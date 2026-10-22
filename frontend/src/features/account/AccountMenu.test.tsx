@@ -69,7 +69,7 @@ describe('the account menu', () => {
         .getAllByRole('menuitem')
         .map((item) => item.textContent),
     ).toEqual(['My Profile', 'Settings', 'Sign out'])
-    expect(screen.queryByRole('radiogroup', { name: 'Theme' })).not.toBeInTheDocument()
+    expect(within(menu).queryByRole('radiogroup', { name: 'Theme' })).not.toBeInTheDocument()
   })
 
   it("is in Home's top bar too, with the learner's first name", async () => {
@@ -82,7 +82,7 @@ describe('the account menu', () => {
     expect(trigger).toHaveTextContent(/^Maria$/)
   })
 
-  it('opens theme settings from the profile popup and returns focus when closed', async () => {
+  it('opens settings from the profile popup and returns focus when closed', async () => {
     const user = userEvent.setup()
     rememberSignIn()
     serveAccountApi({ signedIn: true })
@@ -91,10 +91,9 @@ describe('the account menu', () => {
     const { trigger, menu } = await openAccountMenu(user)
     await user.click(within(menu).getByRole('menuitem', { name: 'Settings' }))
     const popup = await screen.findByRole('dialog', { name: 'Settings' })
-    await user.click(within(popup).getByRole('radio', { name: 'Dark' }))
 
-    expect(within(popup).getByRole('radio', { name: 'Dark' })).toBeChecked()
-    expect(document.documentElement.dataset.theme).toBe('dark')
+    // The theme is chosen in the sidebar now, not here.
+    expect(within(popup).queryByRole('radiogroup', { name: 'Theme' })).not.toBeInTheDocument()
     await user.keyboard('{Escape}')
     await waitFor(() => expect(trigger).toHaveFocus())
   })
