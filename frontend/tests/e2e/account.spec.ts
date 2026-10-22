@@ -309,8 +309,10 @@ test.describe('on a desktop', () => {
     const account = page.getByRole('button', { name: 'Your account: Maria Santos' })
     await expect(account).toBeFocused()
 
-    // The menu opens on its first item, Settings; Sign out is the next one.
+    // The menu opens on its first item, My Profile; Settings, then Sign out, follow.
     await page.keyboard.press('Enter')
+    await expect(page.getByRole('menuitem', { name: 'My Profile' })).toBeFocused()
+    await page.keyboard.press('ArrowDown')
     await expect(page.getByRole('menuitem', { name: 'Settings' })).toBeFocused()
     await page.keyboard.press('ArrowDown')
     await expect(page.getByRole('menuitem', { name: 'Sign out' })).toBeFocused()
