@@ -1,5 +1,6 @@
 import { AxeBuilder } from '@axe-core/playwright'
 import { expect, test, type Locator, type Page } from '@playwright/test'
+import { learnerAccounts, NO_LEARNER_ACCOUNTS } from './accounts.ts'
 
 const LEARNER = {
   id: '6f1c2a52-8b7e-4d3a-9c51-2f0e7a1b3c4d',
@@ -108,6 +109,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
 test('a signed-out profile visit asks for sign-in without showing account details', async ({
   page,
 }) => {
+  test.skip(!learnerAccounts, NO_LEARNER_ACCOUNTS)
   await serveAccount(page, false)
   await page.goto('/profile')
 

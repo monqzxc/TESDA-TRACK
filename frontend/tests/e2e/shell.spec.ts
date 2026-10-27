@@ -1,5 +1,6 @@
 import { AxeBuilder } from '@axe-core/playwright'
 import { expect, test, type Page } from '@playwright/test'
+import { learnerAccounts } from './accounts.ts'
 
 // The app shell: every address in both themes, on a phone and on a desktop, with axe; the keyboard; Back; and
 // the states for an unreachable API and a page that fails to download.
@@ -15,7 +16,11 @@ const PAGES = [
   { path: '/find/pathway', heading: 'Find my pathway', step: GOAL_STEP },
   { path: '/qualifications', heading: 'Qualifications Library' },
   { path: '/training', heading: 'Training & Assessment' },
-  { path: '/progress', heading: 'My Progress' },
+  // Guest-only, My Progress sends a guest Home.
+  {
+    path: '/progress',
+    heading: learnerAccounts ? 'My Progress' : 'Every career has a track. Find yours.',
+  },
   { path: '/skills', heading: 'Skills Explorer' },
   { path: '/reports', heading: 'Reports' },
   { path: '/sign-in', heading: 'Sign in' },

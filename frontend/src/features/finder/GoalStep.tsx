@@ -34,7 +34,7 @@ export function GoalStep() {
   const journey = useFinderStore((state) => state.journey)
   const selected = useFinderStore((state) => state.selected)
   const begin = useFinderStore((state) => state.begin)
-  const { learner, isSignedIn } = useAuth()
+  const { learner, isSignedIn, offersAccounts } = useAuth()
   const requireAccount = useRequireAccount()
   const { save, pending: saving } = useSaveJourney()
   const navigate = useNavigate()
@@ -193,7 +193,7 @@ export function GoalStep() {
       </form>
 
       {/* Signed in, a goal is saved as it's sent. A goal sent before signing in can be saved now (US-02). */}
-      {journey && !ownsSession(learner, journey.sessionOwner) ? (
+      {journey && offersAccounts && !ownsSession(learner, journey.sessionOwner) ? (
         <Button
           className={cx(button({ variant: 'tertiary' }), 'self-start')}
           isPending={saving}

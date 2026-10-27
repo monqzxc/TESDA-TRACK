@@ -1,5 +1,6 @@
 import { AxeBuilder } from '@axe-core/playwright'
 import { expect, test, type Page } from '@playwright/test'
+import { learnerAccounts, NO_LEARNER_ACCOUNTS } from './accounts.ts'
 
 // Home, the landing page: every section in both themes, on a phone and a desktop, with axe; the scroll reveal and
 // the road, with motion and without; the goal box, which opens the finder at /find and nothing more; and Home with
@@ -249,7 +250,7 @@ for (const [size, viewport] of Object.entries(SIZES)) {
       await page.goto('/')
       await expect(page.getByRole('heading', { level: 1, name: HEADING })).toBeVisible()
       await scrollThrough(page)
-      const cta = page.getByRole('link', { name: 'Go to My progress' })
+      const cta = page.getByRole('link', { name: 'Open the qualifications library' })
       await cta.scrollIntoViewIfNeeded()
       await settle(page)
       const left = await scrollY(page)
@@ -258,7 +259,9 @@ for (const [size, viewport] of Object.entries(SIZES)) {
       // A click without Playwright's own scrolling first: beside the sticky top bar, it can move the page a little
       // before following the link, and the page returns to where it was then.
       await cta.dispatchEvent('click')
-      await expect(page.getByRole('heading', { level: 1, name: 'My Progress' })).toBeVisible()
+      await expect(
+        page.getByRole('heading', { level: 1, name: 'Qualifications Library' }),
+      ).toBeVisible()
       await page.goBack()
 
       await expect(page).toHaveURL('/')
@@ -331,6 +334,8 @@ test.describe('on a desktop', () => {
   })
 
   test("Back to a section's address returns to where the learner left it", async ({ page }) => {
+    // It reads on to the link in Home's "My progress" section, which only shows with learner accounts.
+    test.skip(!learnerAccounts, NO_LEARNER_ACCOUNTS)
     await serveCatalog(page)
     await page.goto('/')
     await expect(page.getByRole('heading', { level: 1, name: HEADING })).toBeVisible()
@@ -364,10 +369,10 @@ test.describe('on a desktop', () => {
     await page.goBack()
     await expect(page.getByRole('heading', { level: 1, name: HEADING })).toBeVisible()
 
-    await sectionLink(page, 'My progress').click()
+    await sectionLink(page, 'Near you').click()
 
-    await expect(page).toHaveURL('/#progress')
-    await expect.poll(() => offBar(page, '#progress')).toBeLessThanOrEqual(1)
+    await expect(page).toHaveURL('/#near')
+    await expect.poll(() => offBar(page, '#near')).toBeLessThanOrEqual(1)
   })
 
   test('a reload opens Home at the top, so its first showing has nowhere to return to', async ({

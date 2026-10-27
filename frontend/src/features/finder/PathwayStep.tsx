@@ -227,7 +227,7 @@ export function PathwayCard({ pathway }: { pathway: CuratedPathway }) {
   const copy = en.finder.pathway
 
   const requireAccount = useRequireAccount()
-  const { isSignedIn } = useAuth()
+  const { isSignedIn, offersAccounts } = useAuth()
   const queryClient = useQueryClient()
   const enrollments = useQuery({ ...pathwaysQuery, enabled: isSignedIn })
   const existing = enrollments.data?.find((item) => item.pathway.id === pathway.id)
@@ -288,30 +288,33 @@ export function PathwayCard({ pathway }: { pathway: CuratedPathway }) {
           </li>
         ))}
       </ol>
-      <div className="mt-2 flex flex-col items-start gap-3 border-t border-border pt-4">
-        <p className={muted}>{copy.cart.hint}</p>
-        <div className="flex flex-wrap items-center gap-3">
-          {/* Saving needs an account; sign-in carries on with this qualification (US-02). */}
-          <Button
-            className={button({ variant: added ? 'secondary' : 'primary' })}
-            isPending={follow.isPending}
-            isDisabled={added || (isSignedIn && enrollments.isPending)}
-            onPress={() => {
-              setOutcome(null)
-              requireAccount(() => follow.mutate())
-            }}
-          >
-            <Icon name={added ? 'check' : 'bookmark'} />
-            {follow.isPending ? copy.following : added ? copy.cart.added : copy.cart.add}
-          </Button>
-          {added && (
-            <Link to={paths.progress} className={button({ variant: 'tertiary' })}>
-              {copy.cart.view}
-              <Icon name="arrowRight" />
-            </Link>
-          )}
+      {/* Saving a pathway needs an account: a guest sees the steps only. */}
+      {offersAccounts && (
+        <div className="mt-2 flex flex-col items-start gap-3 border-t border-border pt-4">
+          <p className={muted}>{copy.cart.hint}</p>
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Saving needs an account; sign-in carries on with this qualification (US-02). */}
+            <Button
+              className={button({ variant: added ? 'secondary' : 'primary' })}
+              isPending={follow.isPending}
+              isDisabled={added || (isSignedIn && enrollments.isPending)}
+              onPress={() => {
+                setOutcome(null)
+                requireAccount(() => follow.mutate())
+              }}
+            >
+              <Icon name={added ? 'check' : 'bookmark'} />
+              {follow.isPending ? copy.following : added ? copy.cart.added : copy.cart.add}
+            </Button>
+            {added && (
+              <Link to={paths.progress} className={button({ variant: 'tertiary' })}>
+                {copy.cart.view}
+                <Icon name="arrowRight" />
+              </Link>
+            )}
+          </div>
         </div>
-      </div>
+      )}
       <div aria-live="polite">
         {outcome && (
           <p

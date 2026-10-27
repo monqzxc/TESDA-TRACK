@@ -67,7 +67,7 @@ export function AccountControl({
   const en = useCopy()
   const copy = en.account
 
-  const { learner, isChecking, openSignIn, notify } = useAuth()
+  const { learner, isChecking, offersAccounts, openSignIn, notify } = useAuth()
   const wrapper = useRef<HTMLDivElement>(null)
   const signInButton = useRef<HTMLButtonElement>(null)
   // Set when the learner signs in or out with this control: the button that takes the place of its own takes focus
@@ -157,16 +157,19 @@ export function AccountControl({
           </Suspense>
         </LoadBoundary>
       ) : (
-        <Button
-          ref={signInButton}
-          className={buttonClass}
-          onPress={signIn}
-          onHoverStart={prepareSignIn}
-          onFocus={prepareSignIn}
-        >
-          <Icon name="person" size={variant === 'sidebar' ? '1.45rem' : '1.2rem'} />
-          {copy.signIn}
-        </Button>
+        // Guest-only: no Sign in for learners (see learnerAccounts).
+        offersAccounts && (
+          <Button
+            ref={signInButton}
+            className={buttonClass}
+            onPress={signIn}
+            onHoverStart={prepareSignIn}
+            onFocus={prepareSignIn}
+          >
+            <Icon name="person" size={variant === 'sidebar' ? '1.45rem' : '1.2rem'} />
+            {copy.signIn}
+          </Button>
+        )
       )}
     </div>
   )

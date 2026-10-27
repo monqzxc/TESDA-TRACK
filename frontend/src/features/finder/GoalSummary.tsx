@@ -26,7 +26,7 @@ export function GoalSummary({ journey, code, sync }: GoalSummaryProps) {
   const en = useCopy()
   const copy = en.finder.summary
 
-  const { learner } = useAuth()
+  const { learner, offersAccounts } = useAuth()
   const requireAccount = useRequireAccount()
   const { save, pending } = useSaveJourney()
   const owned = ownsSession(learner, journey.sessionOwner) && journey.sessionId !== null
@@ -49,7 +49,7 @@ export function GoalSummary({ journey, code, sync }: GoalSummaryProps) {
         {copy.saved}
       </span>
     )
-  } else {
+  } else if (offersAccounts) {
     status = (
       <Button
         className={button({ variant: 'tertiary' })}

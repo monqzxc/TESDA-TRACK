@@ -3,7 +3,7 @@ import { useId, useState } from 'react'
 import { Button } from 'react-aria-components'
 import { Link } from 'react-router'
 import { failureMessage } from '../../auth/fields.tsx'
-import { useRequireAccount } from '../../auth/useAuth.ts'
+import { useAuth, useRequireAccount } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { DataProvenance, sourceLink } from '../../components/DataProvenance.tsx'
 import { ModalDialog } from '../../components/ModalDialog.tsx'
@@ -346,6 +346,7 @@ export function Schedules({ center }: { center: Center }) {
   const [all, setAll] = useState(false)
   const [reviewing, setReviewing] = useState<Schedule | null>(null)
   const requireAccount = useRequireAccount()
+  const { offersAccounts } = useAuth()
   const headingId = useId()
   const schedules = [...center.schedules].sort((a, b) =>
     a.scheduled_at.localeCompare(b.scheduled_at),
@@ -369,8 +370,11 @@ export function Schedules({ center }: { center: Center }) {
           <li key={schedule.id}>
             <ScheduleCard
               schedule={schedule}
-              // A guest signs in first, then reviews the application: nothing is sent without them (US-09).
-              onApply={() => requireAccount(() => setReviewing(schedule))}
+              // Applying needs an account, so a guest (guest-only) has no Apply. Signed in, the learner reviews the
+              // application first: nothing is sent without them (US-09).
+              onApply={
+                offersAccounts ? () => requireAccount(() => setReviewing(schedule)) : undefined
+              }
             />
           </li>
         ))}
@@ -382,7 +386,7 @@ export function Schedules({ center }: { center: Center }) {
   )
 }
 
-function ScheduleCard({ schedule, onApply }: { schedule: Schedule; onApply: () => void }) {
+function ScheduleCard({ schedule, onApply }: { schedule: Schedule; onApply?: () => void }) {
   const en = useCopy()
   const copy = en.training
 
@@ -400,18 +404,20 @@ function ScheduleCard({ schedule, onApply }: { schedule: Schedule; onApply: () =
           {copy.schedules.seats(schedule.seats_left, schedule.slots)} • {scheduleFee(schedule)}
         </p>
         <ServiceEvidence service={schedule} />
-        {open ? (
-          <Button
-            className={cx(button({ variant: 'primary', height: 38, snug: true }), 'mt-[0.2rem]')}
-            onPress={onApply}
-            isDisabled={!canReviewApplication(schedule)}
-          >
-            {copy.schedules.apply}
-          </Button>
-        ) : (
+        {!open ? (
           <span className="rounded-full bg-warn-bg px-[0.6rem] py-[0.2rem] text-12 font-[650] text-warn-ink">
             {copy.schedules.full}
           </span>
+        ) : (
+          onApply && (
+            <Button
+              className={cx(button({ variant: 'primary', height: 38, snug: true }), 'mt-[0.2rem]')}
+              onPress={onApply}
+              isDisabled={!canReviewApplication(schedule)}
+            >
+              {copy.schedules.apply}
+            </Button>
+          )
         )}
       </div>
     </article>

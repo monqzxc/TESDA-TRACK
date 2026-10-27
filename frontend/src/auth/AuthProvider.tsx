@@ -17,6 +17,7 @@ import { focusedElement, returnFocus } from '../lib/focus.ts'
 import { navigationTarget } from '../lib/navigation.ts'
 import { reloadPage } from '../lib/reload.ts'
 import { readItem, removeItem, writeItem } from '../lib/storage.ts'
+import { learnerAccounts } from './accounts.ts'
 import { AccountNotice } from './AccountNotice.tsx'
 import {
   accountQueryKeys,
@@ -276,6 +277,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return {
       learner,
       isSignedIn: learner !== null,
+      offersAccounts: learner !== null || learnerAccounts(),
       isAdmin: learner?.role === 'admin',
       can,
       canViewReports: can('reports:read'),

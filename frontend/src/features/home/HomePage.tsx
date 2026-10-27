@@ -1,3 +1,4 @@
+import { useAuth } from '../../auth/useAuth.ts'
 import { Catalog } from './Catalog.tsx'
 import { ClosingGoal } from './ClosingGoal.tsx'
 import { Hero } from './Hero.tsx'
@@ -14,6 +15,8 @@ import { Track } from './Track.tsx'
  * once. home-tokens brings Home's colors and page-wide defaults (styles/home.css).
  */
 export default function HomePage() {
+  // Guest-only, there's no account to keep progress in, so no section about one.
+  const { offersAccounts } = useAuth()
   const motion = useRevealMotion()
   const { ref, laidOut } = useSectionJumps<HTMLDivElement>()
   return (
@@ -27,7 +30,7 @@ export default function HomePage() {
       <Track />
       <NearYou />
       <Catalog />
-      <ProgressPreview />
+      {offersAccounts && <ProgressPreview />}
       <ClosingGoal />
     </div>
   )

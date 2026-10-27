@@ -1,4 +1,5 @@
 import { Link } from 'react-router'
+import { useAuth } from '../auth/useAuth.ts'
 import { useCopy, useLanguage } from '../i18n/copy.ts'
 import { LanguageSelector } from '../i18n/LanguageSelector.tsx'
 import { AccountControl } from '../features/account/AccountMenu.tsx'
@@ -48,6 +49,9 @@ export function HomeHeader() {
     { hash: '#catalog', label: copy.catalog },
     { hash: '#progress', label: copy.progress },
   ] as const
+  // Guest-only, Home has no "My progress" section (it's about what an account keeps).
+  const { offersAccounts } = useAuth()
+  const sections = SECTIONS.filter(({ hash }) => offersAccounts || hash !== '#progress')
 
   const { ref, scrolled } = useHomeBar<HTMLElement>()
   return (
@@ -74,7 +78,7 @@ export function HomeHeader() {
           )}
           aria-label={copy.sections}
         >
-          {SECTIONS.map(({ hash, label }) => (
+          {sections.map(({ hash, label }) => (
             <Link
               key={hash}
               to={{ pathname: paths.home, hash }}

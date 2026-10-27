@@ -1,6 +1,7 @@
 import { useState, type ComponentType, type ReactNode } from 'react'
 import { Button } from 'react-aria-components'
 import { useCopy } from '../i18n/copy.ts'
+import { learnerAccounts } from './accounts.ts'
 import { RegisterForm } from './RegisterForm.tsx'
 import { SignInForm } from './SignInForm.tsx'
 import type { SignInView } from './useAuth.ts'
@@ -34,7 +35,7 @@ export function AccountForms({
 
   // Once the learner switches forms, the new form's first field takes focus. On opening, the dialog has it.
   const [switched, setSwitched] = useState(false)
-  const isSignIn = view === 'signIn'
+  const isSignIn = view === 'signIn' || !learnerAccounts()
 
   const switchTo = (next: SignInView, start?: { email?: string; message?: string }) => {
     setSwitched(true)
@@ -65,14 +66,17 @@ export function AccountForms({
           }
         />
       )}
-      <div className={formStyle.switch}>
-        <Button
-          className={formStyle.textButton}
-          onPress={() => switchTo(isSignIn ? 'register' : 'signIn')}
-        >
-          {isSignIn ? copy.signInForm.toRegister : copy.registerForm.toSignIn}
-        </Button>
-      </div>
+      {/* Learners can't create accounts (guest-only): sign-in is left for staff. */}
+      {learnerAccounts() && (
+        <div className={formStyle.switch}>
+          <Button
+            className={formStyle.textButton}
+            onPress={() => switchTo(isSignIn ? 'register' : 'signIn')}
+          >
+            {isSignIn ? copy.signInForm.toRegister : copy.registerForm.toSignIn}
+          </Button>
+        </div>
+      )}
       <p className={formStyle.note}>
         <strong>{copy.exploring.heading}</strong> {copy.exploring.body}
       </p>
