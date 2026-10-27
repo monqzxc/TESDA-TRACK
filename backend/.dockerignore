@@ -1,0 +1,9 @@
+tests/
+__pycache__/
+*.pyc
+.env
+# A model folder is copied for serving only: no training weights, checkpoints or run logs.
+models/**/model.safetensors
+models/**/checkpoints
+models/**/runs
+models/**/*.pt

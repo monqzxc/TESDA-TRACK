@@ -1,0 +1,20 @@
+[
+  {"code": "NCR", "name": "National Capital Region", "center_city": "Manila", "latitude": 14.5995, "longitude": 120.9842},
+  {"code": "CAR", "name": "Cordillera Administrative Region", "center_city": "Baguio", "latitude": 16.4023, "longitude": 120.5960},
+  {"code": "I", "name": "Region I (Ilocos Region)", "center_city": "San Fernando, La Union", "latitude": 16.6159, "longitude": 120.3166},
+  {"code": "II", "name": "Region II (Cagayan Valley)", "center_city": "Tuguegarao", "latitude": 17.6132, "longitude": 121.7270},
+  {"code": "III", "name": "Region III (Central Luzon)", "center_city": "San Fernando, Pampanga", "latitude": 15.0286, "longitude": 120.6898},
+  {"code": "IV-A", "name": "Region IV-A (CALABARZON)", "center_city": "Calamba", "latitude": 14.2117, "longitude": 121.1653},
+  {"code": "MIMAROPA", "name": "MIMAROPA Region", "center_city": "Calapan", "latitude": 13.4115, "longitude": 121.1803},
+  {"code": "V", "name": "Region V (Bicol Region)", "center_city": "Legazpi", "latitude": 13.1391, "longitude": 123.7438},
+  {"code": "VI", "name": "Region VI (Western Visayas)", "center_city": "Iloilo City", "latitude": 10.7202, "longitude": 122.5621},
+  {"code": "NIR", "name": "Negros Island Region", "center_city": "Bacolod", "latitude": 10.6765, "longitude": 122.9509},
+  {"code": "VII", "name": "Region VII (Central Visayas)", "center_city": "Cebu City", "latitude": 10.3157, "longitude": 123.8854},
+  {"code": "VIII", "name": "Region VIII (Eastern Visayas)", "center_city": "Tacloban", "latitude": 11.2443, "longitude": 125.0039},
+  {"code": "IX", "name": "Region IX (Zamboanga Peninsula)", "center_city": "Pagadian", "latitude": 7.8257, "longitude": 123.4370},
+  {"code": "X", "name": "Region X (Northern Mindanao)", "center_city": "Cagayan de Oro", "latitude": 8.4542, "longitude": 124.6319},
+  {"code": "XI", "name": "Region XI (Davao Region)", "center_city": "Davao City", "latitude": 7.1907, "longitude": 125.4553},
+  {"code": "XII", "name": "Region XII (SOCCSKSARGEN)", "center_city": "Koronadal", "latitude": 6.5031, "longitude": 124.8469},
+  {"code": "XIII", "name": "Region XIII (Caraga)", "center_city": "Butuan", "latitude": 8.9475, "longitude": 125.5406},
+  {"code": "BARMM", "name": "Bangsamoro Autonomous Region in Muslim Mindanao", "center_city": "Cotabato City", "latitude": 7.2236, "longitude": 124.2464}
+]

@@ -1,0 +1,33 @@
+{
+  "_comment": "Default pathway per recommendation route, created for every active qualification that lacks one. {qualification} is replaced with the qualification name. Seeding never overwrites a pathway an administrator has edited.",
+  "TRAINING_AND_ASSESSMENT": {
+    "title": "Train, then get assessed",
+    "description": "For learners new to {qualification}: complete a training program, confirm you are ready, then take the national competency assessment.",
+    "steps": [
+      {"kind": "training", "title": "Enroll in a {qualification} training program", "description": "Choose a TESDA-registered program near you or online."},
+      {"kind": "self_check", "title": "Complete the readiness check", "description": "Rate yourself on each competency to find any remaining gaps."},
+      {"kind": "assessment", "title": "Apply for the competency assessment", "description": "Book a schedule at an accredited assessment center."},
+      {"kind": "certification", "title": "Receive your National Certificate", "description": "Candidates assessed as competent are issued a National Certificate."}
+    ]
+  },
+  "ASSESSMENT_READINESS": {
+    "title": "Turn your experience into a certificate",
+    "description": "Your work experience may already cover {qualification}. Check your readiness, review any gaps, then go straight to assessment.",
+    "steps": [
+      {"kind": "self_check", "title": "Complete the readiness check", "description": "Confirm which competencies your experience already covers."},
+      {"kind": "training", "title": "Review the competencies you marked as gaps", "description": "Take short refresher training only where you need it."},
+      {"kind": "assessment", "title": "Apply for the competency assessment", "description": "Book a schedule at an accredited assessment center."},
+      {"kind": "certification", "title": "Receive your National Certificate", "description": "Candidates assessed as competent are issued a National Certificate."}
+    ]
+  },
+  "SKILL_GAP_CHECK": {
+    "title": "Close your skill gaps",
+    "description": "Use your existing experience or certificate as a base and train only on the {qualification} competencies you still need.",
+    "steps": [
+      {"kind": "self_check", "title": "Complete the readiness check", "description": "Find the competencies you still need to build."},
+      {"kind": "training", "title": "Take focused training on your gaps", "description": "Pick modules or programs that cover the competencies you marked as gaps."},
+      {"kind": "self_check", "title": "Check your readiness again", "description": "Confirm you are ready before booking an assessment."},
+      {"kind": "assessment", "title": "Apply for the competency assessment", "description": "Book a schedule at an accredited assessment center."}
+    ]
+  }
+}

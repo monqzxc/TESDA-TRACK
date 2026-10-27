@@ -1,0 +1,108 @@
+/* Home's own colors and its page-wide defaults (after classic/landing.css), in the base layer under the utilities.
+   Home's root carries the home-tokens class (features/home/HomePage.tsx).
+
+   The colors are the landing page's own, from its :host block and the dark values it took from the app's theme.
+   They're Home's alone: set on Home's root, they reach only its sections, where classes such as text-home-ink and
+   bg-home-band read them (app.css). Several repeat a --track-* color; the navy bands, the route, the signal yellow
+   and the soft fills are the landing page's.
+
+   Surfaces sit one tone step apart (page, surface, panel), with nothing drawn between them. Running text is set
+   in --home-body, a step off the ink, and only notes are --home-muted. */
+.home-tokens {
+  --home-page: #f5f7fb; /* the app's page color */
+  --home-surface: #ffffff;
+  --home-panel: #eef3fb;
+  --home-ink: #102a56; /* track navy */
+  --home-body: #26395c;
+  --home-muted: #52647e; /* the app's --track-muted: landing.css's #5d6f8a falls short of 4.5:1 on blue-soft */
+  --home-border: #dbe4f1;
+  --home-blue: #175cd3; /* primary */
+  --home-blue-soft: #e5eefe;
+  --home-route: #1b3d8f; /* the logo's road */
+  --home-signal: #e8a800; /* the logo's waypoints */
+  --home-signal-soft: #fff4d6;
+  --home-teal: #0d9488;
+  --home-teal-soft: #dff5ef;
+  --home-violet: #6248b3;
+  --home-violet-soft: #eee9fd;
+  --home-band: #0c2152; /* navy bands */
+  --home-band-2: #163a85; /* a step up from the band: its buttons and its goal box */
+  --home-band-ink: #ffffff;
+  --home-band-body: #d3def3;
+  --home-band-accent: #6fe0d2;
+  --home-fill-blue: #175cd3; /* fills under white text */
+  --home-fill-violet: #6248b3;
+  --home-fill-muted: #5d6f8a;
+}
+
+/* The app's dark theme. */
+:root[data-theme='dark'] .home-tokens {
+  --home-page: #0b1630;
+  --home-surface: #111f42;
+  --home-panel: #16285a;
+  --home-ink: #e4ebf7;
+  --home-body: #d2dcee;
+  --home-muted: #9fb1ce;
+  --home-border: #22365c;
+  --home-blue: #7fb0ff;
+  --home-blue-soft: #16305f;
+  --home-route: #7ea6ff;
+  --home-signal: #f5b83d;
+  --home-signal-soft: #3a2f12;
+  --home-teal: #2bc4a9;
+  --home-teal-soft: #0f3a35;
+  --home-violet: #a58df0;
+  --home-violet-soft: #2a2457;
+  --home-band: #071740;
+  --home-band-2: #12307a;
+  --home-fill-blue: #2f6fe0;
+  --home-fill-violet: #6a52c9;
+  --home-fill-muted: #4a5d80;
+}
+
+/* The landing page's resets, which base.css sets otherwise for the rest of the app. :where() keeps them weak, and
+   being in the base layer, any class in Home's sections overrides them. */
+.home-tokens :where(h1, h2, h3) {
+  margin: 0;
+  color: var(--home-ink);
+  font-family: var(--font-display);
+  line-height: inherit;
+  letter-spacing: normal;
+  text-wrap: balance;
+}
+
+.home-tokens :where(p, ul, ol) {
+  margin: 0;
+}
+
+.home-tokens :where(a) {
+  color: inherit;
+}
+
+.home-tokens :where(:focus-visible) {
+  outline: 3px solid var(--home-signal);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Clear of Home's top bar, whose height useHomeBar keeps in --home-bar-height (components/useHomeBar.ts): each
+   section a link jumps to lands just below it, and whatever Tab or Shift+Tab focuses stops a little further down,
+   with room for its focus ring (and for a radio button's label, which reaches above the hidden radio). Not
+   scroll-padding on <html>: with that, focusing anything in the sticky bar itself scrolls the page. */
+.home-tokens * {
+  scroll-margin-top: calc(var(--home-bar-height, 68px) + 2rem);
+}
+
+.home-tokens section[id] {
+  scroll-margin-top: var(--home-bar-height, 68px);
+}
+
+/* On Home's first showing in a document, the sections under the hero are laid out and painted only as they come
+   near the window, which keeps the first load light on phones. Until then their height is a guess; after that, the
+   height they last had. A jump to a section lays out the whole page (data-laid-out, from hooks/useSectionJumps.ts),
+   so it lands where the section really is, and so does every later showing, so Back brings the page back exactly
+   where the learner left it. */
+.home-tokens:not([data-laid-out]) > section:not([data-home-hero]) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 1000px;
+}

@@ -1,0 +1,305 @@
+/* The app's stylesheet. Components style themselves with Tailwind's utility classes; this file holds what those
+   classes draw on: the theme (the colors from tokens.css, the fonts, the type and corner scales, the breakpoints),
+   the reset (base.css) and the variants for React Aria's states.
+
+   Layers keep the order predictable: the reset sits under the utilities, so a class always beats it. tokens.css
+   only declares custom properties, so it stays outside the layers (and unchanged, for tokens.test.ts). */
+@layer theme, base, components, utilities;
+
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+/* No Preflight: base.css is the app's own reset. So borders keep the browser's default width (medium) until a class
+   sets it, and a border style class (border-dashed) styles every side: with a border on some sides only, start from
+   border-0 (border-0 border-t border-dashed). */
+@import './tokens.css';
+@import './base.css' layer(base);
+@import './home.css' layer(base);
+
+/* Only the app's own values: Tailwind's palette, type scale, corners, shadows and breakpoints are left out. */
+@theme {
+  --color-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --inset-shadow-*: initial;
+  --drop-shadow-*: initial;
+  --breakpoint-*: initial;
+  --animate-*: initial;
+}
+
+/* base.css reads these too, so they're always written out. */
+@theme static {
+  --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --font-text: 'Figtree', 'Segoe UI', system-ui, sans-serif;
+}
+
+/* Colors follow the theme: each one reads its --track-* token, which tokens.css sets for light and dark. */
+@theme inline {
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-navy: var(--track-navy);
+  --color-blue: var(--track-blue);
+  --color-fill: var(--track-fill);
+  --color-fill-hover: var(--track-fill-hover);
+  --color-teal: var(--track-teal);
+  --color-muted: var(--track-muted);
+  --color-border: var(--track-border);
+  --color-surface: var(--track-surface);
+  --color-soft: var(--track-soft);
+  --color-page: var(--track-page);
+  --color-ink: var(--track-ink);
+  --color-tint: var(--track-tint);
+  --color-panel: var(--track-panel);
+  --color-panel-border: var(--track-panel-border);
+  --color-violet: var(--track-violet);
+  --color-violet-bar: var(--track-violet-bar);
+  --color-banner-border: var(--track-banner-border);
+  --color-eyebrow: var(--track-eyebrow);
+  --color-hover-border: var(--track-hover-border);
+  --color-focus: var(--track-focus);
+  --color-line: var(--track-line);
+  --color-bar: var(--track-bar);
+  --color-step-current: var(--track-current);
+  --color-step-current-hint: var(--track-current-hint);
+  --color-step: var(--track-step);
+  --color-step-hover: var(--track-step-hover);
+  --color-done: var(--track-done);
+  --color-done-hover: var(--track-done-hover);
+  --color-tile: var(--track-tile);
+  --color-tile-border: var(--track-tile-border);
+  --color-tile-violet: var(--track-tile-violet);
+  --color-tile-green: var(--track-tile-green);
+  --color-tile-icon: var(--track-tile-icon);
+  --color-tile-icon-violet: var(--track-tile-icon-violet);
+  --color-tile-icon-green: var(--track-tile-icon-green);
+  --color-pill: var(--track-pill);
+  --color-pill-border: var(--track-pill-border);
+  --color-pill-hover: var(--track-pill-hover);
+  --color-pill-hover-border: var(--track-pill-hover-border);
+  --color-pill-hover-ink: var(--track-pill-hover-ink);
+  --color-chip: var(--track-chip);
+  --color-chip-hover: var(--track-chip-hover);
+  --color-chip-hover-border: var(--track-chip-hover-border);
+  --color-good-bg: var(--track-good-bg);
+  --color-good-ink: var(--track-good-ink);
+  --color-warn-bg: var(--track-warn-bg);
+  --color-warn-ink: var(--track-warn-ink);
+  --color-empty: var(--track-empty);
+  --color-dash: var(--track-dash);
+  --color-stripe: var(--track-stripe);
+  --color-rule: var(--track-rule);
+  --color-row-hover: var(--track-row-hover);
+  --color-row-hover-border: var(--track-row-hover-border);
+  --color-disabled-bg: var(--track-disabled-bg);
+  --color-disabled-ink: var(--track-disabled-ink);
+  --color-faint: var(--track-faint);
+  --color-glass: var(--track-glass);
+  --color-glass-soft: var(--track-glass-soft);
+  --color-map-water: var(--track-map-water);
+  --color-legend-provider: var(--track-legend-provider);
+  --color-legend-assessment: var(--track-legend-assessment);
+  --color-legend-learner: var(--track-legend-learner);
+
+  /* Home's own colors (home.css), set on Home's root element. */
+  --color-home-page: var(--home-page);
+  --color-home-surface: var(--home-surface);
+  --color-home-panel: var(--home-panel);
+  --color-home-ink: var(--home-ink);
+  --color-home-body: var(--home-body);
+  --color-home-muted: var(--home-muted);
+  --color-home-border: var(--home-border);
+  --color-home-blue: var(--home-blue);
+  --color-home-blue-soft: var(--home-blue-soft);
+  --color-home-route: var(--home-route);
+  --color-home-signal: var(--home-signal);
+  --color-home-signal-soft: var(--home-signal-soft);
+  --color-home-teal: var(--home-teal);
+  --color-home-teal-soft: var(--home-teal-soft);
+  --color-home-violet: var(--home-violet);
+  --color-home-violet-soft: var(--home-violet-soft);
+  --color-home-band: var(--home-band);
+  --color-home-band-2: var(--home-band-2);
+  --color-home-band-ink: var(--home-band-ink);
+  --color-home-band-body: var(--home-band-body);
+  --color-home-band-accent: var(--home-band-accent);
+  --color-home-fill-blue: var(--home-fill-blue);
+  --color-home-fill-violet: var(--home-fill-violet);
+  --color-home-fill-muted: var(--home-fill-muted);
+
+  /* Shadows that recur. The rest are written where they're used, with --track-shadow-rgb. */
+  --shadow-card: 0 2px 8px rgb(var(--track-shadow-rgb) / 0.02);
+  --shadow-dialog: 0 24px 48px -12px rgb(var(--track-shadow-rgb) / 0.35);
+  --shadow-popover: 0 16px 36px -18px rgb(var(--track-shadow-rgb) / 0.45);
+}
+
+@theme {
+  /* Font sizes, named by their size in pixels. They set no line height: text keeps the one it inherits. */
+  --text-11: 0.6875rem;
+  --text-12: 0.75rem;
+  --text-13: 0.8125rem;
+  --text-14: 0.875rem;
+  --text-15: 0.9375rem;
+  --text-16: 1rem;
+  --text-17: 1.0625rem;
+  --text-18: 1.125rem;
+  --text-20: 1.25rem;
+  --text-24: 1.5rem;
+  /* Home's type scale (classic/landing.css). Six sizes do the page's work, far apart: a note, the text, a lead, a
+     stop's title, a section's title, and the page's title. Interface fragments ([data-ui]) keep the product's own
+     smaller sizes. */
+  --text-home-xs: 0.875rem;
+  --text-home-base: clamp(1.0625rem, 1rem + 0.2vw, 1.125rem);
+  --text-home-lg: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
+  --text-home-xl: clamp(1.6rem, 1.3rem + 1.2vw, 2.25rem);
+  --text-home-2xl: clamp(2.1rem, 1.4rem + 2.8vw, 3.75rem);
+  --text-home-3xl: clamp(2.75rem, 1.25rem + 5vw, 5.75rem);
+
+  /* Corners, named by their radius in pixels (rounded-12). rounded-full makes pills and circles. */
+  --radius-6: 6px;
+  --radius-8: 8px;
+  --radius-9: 9px;
+  --radius-10: 10px;
+  --radius-12: 12px;
+  --radius-13: 13px;
+  --radius-14: 14px;
+  --radius-16: 16px;
+  --radius-18: 18px;
+  --radius-20: 20px;
+  --radius-22: 22px;
+
+  /* Breakpoints. Each sits one pixel above the width the Streamlit-era CSS used, so max-xs: means
+     max-width: 520px and xs: means min-width: 521px. One-off widths use the same rule: max-[431px]: is 430px
+     and narrower. */
+  --breakpoint-xs: 521px;
+  --breakpoint-sm: 641px;
+  --breakpoint-md: 769px;
+  --breakpoint-lg: 861px;
+  --breakpoint-xl: 901px;
+
+  /* Home's side gutter and content width. */
+  --spacing-home-gutter: clamp(16px, 4vw, 40px);
+  --container-home: 1180px;
+  --ease-home: cubic-bezier(0.2, 0.75, 0.2, 1);
+
+  /* Entrances. base.css cuts every animation short when the learner asks for reduced motion. */
+  --animate-fade-in: fade-in 0.2s ease-out; /* dimmed overlays */
+  --animate-rise: rise 0.22s cubic-bezier(0.2, 0.75, 0.2, 1); /* dialogs */
+  --animate-slide-in: slide-in 0.24s cubic-bezier(0.2, 0.75, 0.2, 1); /* the phone menu's drawer */
+  --animate-notice: notice 0.2s ease-out; /* the account notice at the foot of the screen */
+  --animate-pop: pop 0.16s ease-out; /* the account menu */
+  /* The finder's feedback question: it rises once the step has slid in, then rings twice to be noticed. */
+  --animate-float-in:
+    rise 0.3s cubic-bezier(0.2, 0.75, 0.2, 1) 0.5s backwards, beckon 1s ease-out 0.9s 2;
+  /* The finder: each step slides in from the side the learner moved towards; its tab grows in and ticks. */
+  --animate-enter-forward: enter-forward 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
+  --animate-enter-back: enter-back 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
+  --animate-tab-in: tab-in 0.3s ease-out backwards;
+  --animate-tick: tick 0.45s ease-out backwards;
+  /* Home: the console's caret, the drifting qualification names, and each region's ring on the map. */
+  --animate-blink: blink 1s steps(1) infinite;
+  --animate-drift: drift 70s linear infinite;
+  --animate-home-pulse: home-pulse 3.2s cubic-bezier(0.2, 0.75, 0.2, 1) infinite;
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+  }
+  @keyframes slide-in {
+    from {
+      transform: translateX(-100%);
+    }
+  }
+  @keyframes notice {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+  @keyframes pop {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+  }
+  /* A ring that widens and fades, drawn with outline so the box keeps its own shadow. */
+  @keyframes beckon {
+    from {
+      outline: 2px solid color-mix(in srgb, var(--track-blue) 60%, transparent);
+      outline-offset: 0;
+    }
+    to {
+      outline: 2px solid transparent;
+      outline-offset: 12px;
+    }
+  }
+  @keyframes enter-forward {
+    from {
+      opacity: 0;
+      transform: translateX(32px);
+    }
+  }
+  @keyframes enter-back {
+    from {
+      opacity: 0;
+      transform: translateX(-32px);
+    }
+  }
+  @keyframes tab-in {
+    from {
+      transform: scale(0.94);
+      opacity: 0.55;
+    }
+  }
+  @keyframes tick {
+    0% {
+      transform: scale(0.3);
+      opacity: 0;
+    }
+    65% {
+      transform: scale(1.25);
+      opacity: 1;
+    }
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes drift {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes home-pulse {
+    0% {
+      opacity: 0.9;
+      transform: scale(0.4);
+    }
+    70%,
+    100% {
+      opacity: 0;
+      transform: scale(3.2);
+    }
+  }
+}
+
+/* The app's dark theme: data-theme on <html>, set by theme-init.js and ThemeProvider. */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* Hover from a pointer, or as React Aria reports it (data-hovered, which leaves out touch). A disabled control
+   doesn't react: hovered: comes after the data-* variants, so it would otherwise win over data-disabled:. */
+@custom-variant hovered {
+  &:hover:not(:disabled, [data-disabled]) {
+    @slot;
+  }
+  &[data-hovered] {
+    @slot;
+  }
+}

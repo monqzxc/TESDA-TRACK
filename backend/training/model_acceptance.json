@@ -1,0 +1,30 @@
+{
+  "version": "pilot-v3-2026-10-21",
+  "model": "tesda-track/tesda-e5-small-v3",
+  "evaluation_set": "test_v1",
+  "expected_goal_count": 120,
+  "minimum_metrics": {
+    "top1": 0.78,
+    "top3": 0.81,
+    "mrr": 0.79,
+    "rejection": 0.90,
+    "objective": 0.84
+  },
+  "must_match": {
+    "I like fixing laptops and setting up wifi": "Computer Systems Servicing NC II",
+    "I want to take care of elderly people abroad": "Caregiving (Elderly) NC II",
+    "I want to install solar panels on houses": "PV Systems Installation NC II",
+    "I want to work in a call center": "Contact Center Services NC II",
+    "I want to learn how to make bread and cakes": "Food Production (Bread and Patisserie) NC II",
+    "marunong akong mag-ayos ng laptop at internet": "Computer Systems Servicing NC II",
+    "nagluluto ako ng ulam para sa karinderya": "Cookery NC II",
+    "gusto kong maging karpintero": "Carpentry NC II"
+  },
+  "must_reject": [
+    "I want to be an astronaut",
+    "gusto kong maging abogado",
+    "gusto kong maging pulis",
+    "I want to be a politician",
+    "I want to play professional basketball"
+  ]
+}

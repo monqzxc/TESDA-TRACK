@@ -1,0 +1,16 @@
+# Dev-only fine-tuning environment (.venv-train at the repository root). Never installed in the API image.
+#
+# Install torch first, from PyTorch's own index, then this file (from the repository root):
+#   NVIDIA GPU (CUDA 12.8):  .venv-train/Scripts/python -m pip install torch==2.11.0 --index-url https://download.pytorch.org/whl/cu128
+#   CPU only:                .venv-train/Scripts/python -m pip install torch==2.11.0 --index-url https://download.pytorch.org/whl/cpu
+#   then:                    .venv-train/Scripts/python -m pip install -r backend/training/requirements.txt
+#
+# The ONNX export uses torch.onnx (TorchScript exporter), not optimum: no optimum or optimum-onnx release
+# supports transformers 5, so sentence-transformers' ONNX backend is not used.
+-r ../requirements.txt
+torch==2.11.0
+sentence-transformers==6.1.0
+transformers==5.19.0
+datasets==5.1.0
+accelerate==1.15.0
+onnx==1.23.2

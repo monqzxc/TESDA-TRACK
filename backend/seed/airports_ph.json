@@ -1,0 +1,312 @@
+{
+ "metadata": {
+  "source": "OurAirports (https://ourairports.com/data/), airports.csv",
+  "license": "Public domain",
+  "filter": "iso_country PH, scheduled_service yes, with an IATA code",
+  "retrieved": "2026-10-08",
+  "notice": "Scheduled service as recorded by OurAirports; routes and schedules change, so learners are told to check airlines."
+ },
+ "airports": [
+  {
+   "iata": "BCD",
+   "name": "Bacolod-Silay International Airport",
+   "municipality": "Bacolod City",
+   "latitude": 10.77624,
+   "longitude": 123.01888
+  },
+  {
+   "iata": "BSO",
+   "name": "Basco Airport",
+   "municipality": "Basco",
+   "latitude": 20.4513,
+   "longitude": 121.98
+  },
+  {
+   "iata": "BXU",
+   "name": "Bancasi Airport",
+   "municipality": "Butuan",
+   "latitude": 8.9515,
+   "longitude": 125.4788
+  },
+  {
+   "iata": "CBO",
+   "name": "Cotabato (Awang) Airport",
+   "municipality": "Datu Odin Sinsuat",
+   "latitude": 7.16475,
+   "longitude": 124.20994
+  },
+  {
+   "iata": "CEB",
+   "name": "Mactan Cebu International Airport",
+   "municipality": "Cebu City/Lapu-Lapu City",
+   "latitude": 10.30926,
+   "longitude": 123.97974
+  },
+  {
+   "iata": "CGM",
+   "name": "Camiguin Airport",
+   "municipality": "Mambajao",
+   "latitude": 9.25389,
+   "longitude": 124.70911
+  },
+  {
+   "iata": "CGY",
+   "name": "Laguindingan International Airport",
+   "municipality": "Laguindingan",
+   "latitude": 8.6122,
+   "longitude": 124.4565
+  },
+  {
+   "iata": "CRK",
+   "name": "Clark International Airport",
+   "municipality": "Mabalacat",
+   "latitude": 15.186,
+   "longitude": 120.56
+  },
+  {
+   "iata": "CRM",
+   "name": "Catarman National Airport",
+   "municipality": "Catarman",
+   "latitude": 12.50161,
+   "longitude": 124.63526
+  },
+  {
+   "iata": "CYP",
+   "name": "Calbayog Airport",
+   "municipality": "Calbayog City",
+   "latitude": 12.07257,
+   "longitude": 124.54508
+  },
+  {
+   "iata": "CYU",
+   "name": "Cuyo Airport",
+   "municipality": "Cuyo",
+   "latitude": 10.8581,
+   "longitude": 121.069
+  },
+  {
+   "iata": "CYZ",
+   "name": "Cauayan Airport",
+   "municipality": "Cauayan City",
+   "latitude": 16.9299,
+   "longitude": 121.753
+  },
+  {
+   "iata": "DGT",
+   "name": "Sibulan Airport",
+   "municipality": "Dumaguete City",
+   "latitude": 9.33418,
+   "longitude": 123.30191
+  },
+  {
+   "iata": "DPL",
+   "name": "Dipolog Airport",
+   "municipality": "Dipolog",
+   "latitude": 8.60198,
+   "longitude": 123.34188
+  },
+  {
+   "iata": "DRP",
+   "name": "Bicol International Airport",
+   "municipality": "Legazpi",
+   "latitude": 13.11191,
+   "longitude": 123.67683
+  },
+  {
+   "iata": "DVO",
+   "name": "Francisco Bangoy International Airport",
+   "municipality": "Davao",
+   "latitude": 7.12552,
+   "longitude": 125.646
+  },
+  {
+   "iata": "ENI",
+   "name": "El Nido Airport",
+   "municipality": "El Nido",
+   "latitude": 11.2024,
+   "longitude": 119.41609
+  },
+  {
+   "iata": "GES",
+   "name": "General Santos International Airport",
+   "municipality": "General Santos",
+   "latitude": 6.05721,
+   "longitude": 125.09624
+  },
+  {
+   "iata": "IAO",
+   "name": "Siargao Airport",
+   "municipality": "Del Carmen",
+   "latitude": 9.8591,
+   "longitude": 126.014
+  },
+  {
+   "iata": "ILO",
+   "name": "Iloilo International Airport",
+   "municipality": "Cabatuan",
+   "latitude": 10.83302,
+   "longitude": 122.49336
+  },
+  {
+   "iata": "JOL",
+   "name": "Jolo Airport",
+   "municipality": "Jolo",
+   "latitude": 6.05367,
+   "longitude": 121.011
+  },
+  {
+   "iata": "KLO",
+   "name": "Kalibo International Airport",
+   "municipality": "Kalibo",
+   "latitude": 11.6794,
+   "longitude": 122.376
+  },
+  {
+   "iata": "LAO",
+   "name": "Laoag International Airport",
+   "municipality": "Laoag City",
+   "latitude": 18.17509,
+   "longitude": 120.53101
+  },
+  {
+   "iata": "MBT",
+   "name": "Moises R. Espinosa Airport",
+   "municipality": "Masbate",
+   "latitude": 12.36968,
+   "longitude": 123.63009
+  },
+  {
+   "iata": "MNL",
+   "name": "Ninoy Aquino International Airport",
+   "municipality": "Manila (Pasay)",
+   "latitude": 14.5086,
+   "longitude": 121.02
+  },
+  {
+   "iata": "MPH",
+   "name": "Godofredo P. Ramos Airport",
+   "municipality": "Caticlan",
+   "latitude": 11.9245,
+   "longitude": 121.954
+  },
+  {
+   "iata": "OZC",
+   "name": "Labo Airport",
+   "municipality": "Ozamiz",
+   "latitude": 8.17851,
+   "longitude": 123.842
+  },
+  {
+   "iata": "PAG",
+   "name": "Pagadian Airport",
+   "municipality": "Pagadian",
+   "latitude": 7.82563,
+   "longitude": 123.45964
+  },
+  {
+   "iata": "PPS",
+   "name": "Puerto Princesa International Airport",
+   "municipality": "Puerto Princesa",
+   "latitude": 9.74204,
+   "longitude": 118.75911
+  },
+  {
+   "iata": "RXS",
+   "name": "Roxas Airport",
+   "municipality": "Roxas City",
+   "latitude": 11.5977,
+   "longitude": 122.752
+  },
+  {
+   "iata": "SFS",
+   "name": "Subic Bay International Airport",
+   "municipality": "Olongapo",
+   "latitude": 14.79483,
+   "longitude": 120.27188
+  },
+  {
+   "iata": "SJI",
+   "name": "San Jose Airport",
+   "municipality": "San Jose",
+   "latitude": 12.3615,
+   "longitude": 121.047
+  },
+  {
+   "iata": "SUG",
+   "name": "Surigao Airport",
+   "municipality": "Surigao City",
+   "latitude": 9.75584,
+   "longitude": 125.48095
+  },
+  {
+   "iata": "SWL",
+   "name": "San Vicente Airport",
+   "municipality": "San Vicente",
+   "latitude": 10.5243,
+   "longitude": 119.2729
+  },
+  {
+   "iata": "TAC",
+   "name": "Daniel Z. Romualdez Airport",
+   "municipality": "Tacloban City",
+   "latitude": 11.22776,
+   "longitude": 125.02778
+  },
+  {
+   "iata": "TAG",
+   "name": "Bohol-Panglao International Airport",
+   "municipality": "Panglao",
+   "latitude": 9.57305,
+   "longitude": 123.77014
+  },
+  {
+   "iata": "TBH",
+   "name": "Tugdan Airport",
+   "municipality": "Tablas Island",
+   "latitude": 12.311,
+   "longitude": 122.085
+  },
+  {
+   "iata": "TUG",
+   "name": "Tuguegarao Airport",
+   "municipality": "Tuguegarao City",
+   "latitude": 17.64337,
+   "longitude": 121.73315
+  },
+  {
+   "iata": "TWT",
+   "name": "Sanga Sanga Airport",
+   "municipality": "Bongao",
+   "latitude": 5.0482,
+   "longitude": 119.74334
+  },
+  {
+   "iata": "USU",
+   "name": "Francisco B. Reyes (Busuanga) Airport",
+   "municipality": "Coron",
+   "latitude": 12.12186,
+   "longitude": 120.1008
+  },
+  {
+   "iata": "VRC",
+   "name": "Virac Airport",
+   "municipality": "Virac",
+   "latitude": 13.5764,
+   "longitude": 124.206
+  },
+  {
+   "iata": "WNP",
+   "name": "Naga Airport",
+   "municipality": "Naga",
+   "latitude": 13.5849,
+   "longitude": 123.27
+  },
+  {
+   "iata": "ZAM",
+   "name": "Zamboanga International Airport",
+   "municipality": "Zamboanga",
+   "latitude": 6.92242,
+   "longitude": 122.06
+  }
+ ]
+}

@@ -1,0 +1,140 @@
+# Production-style stack for a single server: docker compose up -d --build
+# Fill in .env first (see .env.example). Only Caddy publishes ports; the API and database stay internal.
+name: tesda-track
+
+x-backend-environment: &backend-environment
+  ENVIRONMENT: production
+  DATABASE_URL: postgresql+psycopg://tesda_track:${APP_DB_PASSWORD:?Set APP_DB_PASSWORD in .env}@db:5432/tesda_track
+  SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY in .env}
+  LOG_LEVEL: ${LOG_LEVEL:-INFO}
+  SEMANTIC_SEARCH_ENABLED: ${SEMANTIC_SEARCH_ENABLED:-true}
+  PROXIMITY_RADIUS_KM: ${PROXIMITY_RADIUS_KM:-100}
+  PERSONALIZATION_WEIGHTS__INTEREST: ${PERSONALIZATION_WEIGHTS__INTEREST:-0.35}
+  PERSONALIZATION_WEIGHTS__SKILL: ${PERSONALIZATION_WEIGHTS__SKILL:-0.25}
+  PERSONALIZATION_WEIGHTS__CAREER: ${PERSONALIZATION_WEIGHTS__CAREER:-0.15}
+  PERSONALIZATION_WEIGHTS__LOCATION: ${PERSONALIZATION_WEIGHTS__LOCATION:-0.15}
+  PERSONALIZATION_WEIGHTS__PREFERENCE: ${PERSONALIZATION_WEIGHTS__PREFERENCE:-0.10}
+  RANKING_WEIGHTS__SEMANTIC: ${RANKING_WEIGHTS__SEMANTIC:-0.5}
+  RANKING_WEIGHTS__PROXIMITY: ${RANKING_WEIGHTS__PROXIMITY:-0.2}
+  RANKING_WEIGHTS__ASSESSMENT: ${RANKING_WEIGHTS__ASSESSMENT:-0.15}
+  RANKING_WEIGHTS__SCHEDULE: ${RANKING_WEIGHTS__SCHEDULE:-0.1}
+  RANKING_WEIGHTS__PREFERENCE: ${RANKING_WEIGHTS__PREFERENCE:-0.05}
+  # Accepted pilot model (TASK-085). Keep the host model path separate from this container path.
+  EMBEDDING_MODEL: ${EMBEDDING_MODEL:-tesda-track/tesda-e5-small-v3}
+  EMBEDDING_MODEL_PATH: ${DOCKER_EMBEDDING_MODEL_PATH:-/app/finetuned/tesda-e5-small-v3}
+  SKILLS_BRIDGE_MCP_ENABLED: ${SKILLS_BRIDGE_MCP_ENABLED:-true}
+  SKILLS_BRIDGE_MCP_URL: ${SKILLS_BRIDGE_MCP_URL:-https://mcp.skills-bridge.ph/mcp}
+  SKILLS_BRIDGE_MCP_TOKEN: ${SKILLS_BRIDGE_MCP_TOKEN:-}
+  SKILLS_BRIDGE_CLIENT_ID: ${SKILLS_BRIDGE_CLIENT_ID:-}
+  SKILLS_BRIDGE_CLIENT_SECRET: ${SKILLS_BRIDGE_CLIENT_SECRET:-}
+  SKILLS_BRIDGE_TOKEN_URL: ${SKILLS_BRIDGE_TOKEN_URL:-https://skills-bridge.ph/oauth/token}
+  SKILLS_BRIDGE_TIMEOUT_SECONDS: ${SKILLS_BRIDGE_TIMEOUT_SECONDS:-10}
+  # Road routes for Directions (GET /api/v1/routes); empty turns them off.
+  ROUTING_URL: ${ROUTING_URL-https://routing.openstreetmap.de/routed-car}
+  # CARTO basemaps key for the center map, handed to the React app by GET /api/v1/client-config.
+  CARTO_API: ${CARTO_API-}
+  # Partner MCP server; PUBLIC_BASE_URL must be the address Caddy serves, or the API refuses the requests (421).
+  PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-https://${DOMAIN:-localhost}}
+  MCP_ENABLED: ${MCP_ENABLED:-true}
+  MCP_TOKEN_SECRET: ${MCP_TOKEN_SECRET-}
+  MCP_CALL_LOG_RETENTION_DAYS: ${MCP_CALL_LOG_RETENTION_DAYS:-180}
+
+services:
+  db:
+    build: ./deploy/postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in .env}
+      APP_DB_PASSWORD: ${APP_DB_PASSWORD:?Set APP_DB_PASSWORD in .env}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # TCP check: during first-run initialization PostgreSQL only listens on its socket.
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres -d tesda_track"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  migrate:
+    # Same image as the API (built once, by the api service below).
+    image: tesda-track-backend:latest
+    pull_policy: never
+    # Embedding problems never block a deploy: search falls back to keywords until the next sync.
+    command: ["sh", "-c", "alembic upgrade head && python -m tesda_track.seed && (python -m tesda_track.embeddings sync || echo 'WARNING: embeddings not synced')"]
+    environment: *backend-environment
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    build:
+      context: ./backend
+      args:
+        EMBEDDING_MODEL: ${EMBEDDING_MODEL:-tesda-track/tesda-e5-small-v3}
+        EMBEDDING_MODEL_PATH: ${DOCKER_EMBEDDING_MODEL_PATH:-/app/finetuned/tesda-e5-small-v3}
+        SEMANTIC_SEARCH_ENABLED: ${SEMANTIC_SEARCH_ENABLED:-true}
+    image: tesda-track-backend:latest
+    restart: unless-stopped
+    environment: *backend-environment
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/v1/ready', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  web:
+    # The Streamlit app (classic/), at / until the switch.
+    build: ./classic
+    restart: unless-stopped
+    environment:
+      API_BASE_URL: http://api:8000
+      # Only Caddy reaches this container; trust its X-Forwarded-For so the app sees each learner's address.
+      FORWARDED_ALLOW_IPS: "*"
+      # Road routes for Directions; set ROUTING_URL empty in .env to use Google Maps links instead.
+      ROUTING_URL: ${ROUTING_URL-https://routing.openstreetmap.de/routed-car}
+      # CARTO basemaps key for the center map; without it the map uses OpenStreetMap tiles.
+      CARTO_API: ${CARTO_API-}
+    depends_on:
+      api:
+        condition: service_healthy
+
+  app:
+    # The React app, served by its own Caddy on port 8080 (frontend/Dockerfile). Until the switch it lives at
+    # /beta/, beside Streamlit at /.
+    build:
+      context: ./frontend
+      args:
+        BASE_PATH: /beta/
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    # Host ports default to 80/443; set HTTP_PORT/HTTPS_PORT in .env when another server already uses them.
+    ports:
+      - "${HTTP_PORT:-80}:80"
+      - "${HTTPS_PORT:-443}:443"
+      - "${HTTPS_PORT:-443}:443/udp"
+    environment:
+      DOMAIN: ${DOMAIN:-localhost}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - web
+      - app
+
+volumes:
+  pgdata:
+  caddy_data:
+  caddy_config:

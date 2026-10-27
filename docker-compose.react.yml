@@ -1,0 +1,15 @@
+# Opt-in TASK-103 cutover, only after staff sign docs/parity-checklist.md.
+# Use together with docker-compose.yml; see docs/react-cutover.md.
+services:
+  app:
+    build:
+      args:
+        BASE_PATH: /
+
+  web:
+    environment:
+      STREAMLIT_SERVER_BASE_URL_PATH: classic
+
+  caddy:
+    volumes:
+      - ./deploy/Caddyfile.react:/etc/caddy/Caddyfile:ro

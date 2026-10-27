@@ -1,0 +1,2948 @@
+[
+ {
+  "goal": "I want to become a doctor",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I dream of being a lawyer",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be an airline pilot",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be an astronaut at NASA",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a professional basketball player",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to run for senator",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a research scientist studying black holes",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a famous YouTuber",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to become a judge",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a neurosurgeon",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a college professor",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a psychiatrist",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a diplomat",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be an oceanographer",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a movie star",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be an Olympic gymnast",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a pediatrician",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a central bank governor",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a city mayor",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be an army general",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a cardiologist",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a K-pop idol",
+  "accept": [
+   "Performing Arts (Song) NC II",
+   "Performing Arts (Dance) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a stock market trader on Wall Street",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be an archaeologist",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "i wnt to be a pilot",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet",
+   "typo"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I WANT TO BE A SURGEON",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "pangarap kong maging doktor ng mga bata",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging piloto ng eroplano",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "pangarap kong maging astronaut",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging manlalaro ng basketball sa PBA",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging hukom",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging siyentipiko",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging gobernador ng probinsya namin",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging heneral ng militar",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging sikat na artista sa pelikula",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "pangarap kong maging siruhano",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging propesor sa unibersidad",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging madre",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging piskal",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging ekonomista",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging presidente ng Pilipinas",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging kampeon na boksingero",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging sikolohista",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging arkeologo",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging sikat na vlogger",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gsto q mging abogdo",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet",
+   "typo"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "GUSTO KO PO MAGING DOKTOR",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging doctor someday",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "mag-aaral ako ng law para maging attorney",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko maging pilot sa PAL",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "dream ko maging scientist sa NASA",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging professional gamer at streamer",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging influencer na may million followers",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "balak kong tumakbo as congressman",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko maging neurologist",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging Olympic athlete sa swimming",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging CEO ng malaking kumpanya",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko maging judge",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging cardiologist",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging professor sa UP",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging stock trader",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko maging pastor",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging sikat na content creator sa TikTok",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto q mging pulitiko",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet",
+   "typo"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "GUSTO KO MAGING ASTRONAUT",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "no_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I just want a stable job",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to work abroad but I have no idea what job",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "any job will do",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to earn money fast",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I need a job that pays well",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I don't know what I want to do with my life",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "something with good salary and no experience required",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to go overseas as soon as possible",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I just need work to support my family",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "a job that I can start next month",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "anything that will get me hired quickly",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want a career but I'm not sure which one",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "help me choose a course",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "what job is in demand right now",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want a better life",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "a work-from-home job",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be rich",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I'm a high school graduate looking for work",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "i want a stabel job",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague",
+   "typo"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I WANT A JOB ABROAD",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "kahit ano na lang basta may trabaho",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong kumita agad",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko ng trabahong may mataas na sweldo",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ayoko na maging mahirap",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong makapag-abroad pero hindi ko alam kung anong trabaho",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "hindi ko alam kung ano ang gusto ko",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "kailangan ko ng trabaho para sa pamilya ko",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko ng permanenteng trabaho",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ano kaya ang bagay sa akin",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong umasenso ang buhay ko",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "basta may trabaho at hindi mahirap",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong magkaroon ng magandang kinabukasan",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "anong kurso ang madaling makahanap ng trabaho",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko ng trabaho na hindi nakakapagod",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "kahit anu basta my trbaho",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "vague",
+   "typo"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "KAHIT ANONG TRABAHO PO",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko ng stable job na malaki ang sahod",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "kahit ano basta may income",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong mag-abroad, kahit anong work",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "need ko ng trabaho ASAP",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko ng quick money",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "hindi ko pa sure kung anong career ang kukunin ko",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ano ang best course para sa akin",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko ng work na in demand ngayon",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong kumita ng malaki kahit walang experience",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "any work na pwede akong magsimula agad",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko ng work from home na job",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko maging successful sa buhay",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "nag-aaral lang ako ng kahit ano para may maipasok sa resume",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "pasok sa akin kahit anong trabaho basta legit",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "vague"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto q ng trbaho abrod",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "vague",
+   "typo"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "hi po",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "thank you so much",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "good morning",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "how much is the assessment fee",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "where is the nearest TESDA training center",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "what are the requirements to enroll",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "is there a scholarship available",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "when does the next batch start",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "how long is the training",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "your app is not working",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "this is so slow and useless",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "asdfghjkl",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "qwertyuiop zxcv",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "test test 123",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "can I talk to a real person",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "what is TESDA",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "😀😀😀",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "🙏",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "?",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "...",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "!!!",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "lol",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "HELLO??",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ok",
+  "accept": [],
+  "lang": "en",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "magandang umaga po",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "salamat po",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "magkano ang bayad sa training",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "saan po ang pinakamalapit na training center",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ano ang mga requirements para mag-enroll",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "may scholarship po ba kayo",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "kailan magsisimula ang susunod na batch",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gaano katagal ang kurso",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ang bagal naman ng app na ito",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "hindi gumagana ang website",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "kumusta po",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ano po ang TESDA",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "pwede po bang makausap ang tao",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ahhhhh",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "hmmmmm",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "👍👍",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "😭😭😭",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": ",",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "slmat po",
+  "accept": [],
+  "lang": "tl",
+  "tags": [
+   "non_goal",
+   "typo"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "hello po, good afternoon",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "thank you po sa help",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "magkano ba ang fee ng NC assessment",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "saan ang schedule ng exam",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "pwede ba mag-apply online",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "may free training ba kayo",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ano ang requirements for scholarship",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ang labo ng app, ayaw mag-load",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "pwede ba ako mag-reset ng password",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "jkjkjk hahaha",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "bzzzt xxxxx",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "🤷‍♂️",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "🔥🔥🔥 wow",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": ";",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "non_goal"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "helo po musta",
+  "accept": [],
+  "lang": "taglish",
+  "tags": [
+   "non_goal",
+   "typo"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a nurse",
+  "accept": [
+   "Health Care Services NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I studied culinary arts in college and want to be a chef",
+  "accept": [
+   "Cookery NC II",
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I'm an IT graduate and want to work as a computer engineer",
+  "accept": [
+   "Computer Systems Servicing NC II",
+   "Web Development NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a civil engineer",
+  "accept": [
+   "Technical Drafting NC II",
+   "Masonry NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be an electrical engineer",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a mechanical engineer",
+  "accept": [
+   "Machining NC II",
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be an architect",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a certified public accountant",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a midwife",
+  "accept": [
+   "Health Care Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a dentist",
+  "accept": [
+   "Dental Hygiene Level IV",
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to join the police force",
+  "accept": [
+   "Security Services NC I",
+   "Security Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a veterinarian",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I studied hotel and restaurant management and want to manage a hotel",
+  "accept": [
+   "Front Office Services NC II",
+   "Food and Beverage Services NC II",
+   "Housekeeping NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a marine engineer on ships",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)",
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a fashion designer",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a kindergarten teacher",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a physical therapist",
+  "accept": [
+   "Massage Therapy NC II",
+   "Hilot (Wellness Massage) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to be a nutritionist",
+  "accept": [
+   "Community Nutrition Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "i wnt to be a nurs",
+  "accept": [
+   "Health Care Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet",
+   "typo"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I WANT TO BE A SOFTWARE DEVELOPER",
+  "accept": [
+   "Web Development NC III",
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging nars",
+  "accept": [
+   "Health Care Services NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging inhinyerong sibil",
+  "accept": [
+   "Technical Drafting NC II",
+   "Masonry NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging inhinyerong elektrikal",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "pangarap kong maging parmasyutiko",
+  "accept": [
+   "Pharmacy Services NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging komadrona",
+  "accept": [
+   "Health Care Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "pangarap kong maging pulis na may ranggo",
+  "accept": [
+   "Security Services NC I",
+   "Security Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging manggagamot ng hayop",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging guro sa kindergarten",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging ahenteng bahay-lupa na may lisensya",
+  "accept": [
+   "Real Estate Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging tagapamahala ng hotel",
+  "accept": [
+   "Front Office Services NC II",
+   "Food and Beverage Services NC II",
+   "Housekeeping NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging agrikultor na may digri",
+  "accept": [
+   "Agricultural Crops Production NC II",
+   "Agricultural Crops Production NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging akawntant",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging tagadisenyo ng damit",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging inhinyerong makina sa barko",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)",
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging paramedic sa ambulansya",
+  "accept": [
+   "Emergency Medical Services NC II",
+   "Emergency Medical Services NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging nurse",
+  "accept": [
+   "Health Care Services NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "nag-aral ako ng BS Computer Engineering, gusto ko mag-work sa IT",
+  "accept": [
+   "Computer Systems Servicing NC II",
+   "Web Development NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko maging mechanical engineer",
+  "accept": [
+   "Machining NC II",
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko maging architect",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging pharmacist",
+  "accept": [
+   "Pharmacy Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko maging dentist",
+  "accept": [
+   "Dental Hygiene Level IV",
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging police officer",
+  "accept": [
+   "Security Services NC I",
+   "Security Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko maging chef, graduate ako ng BS Hospitality",
+  "accept": [
+   "Cookery NC II",
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging vet",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko maging marine deck officer",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)",
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging graphic designer, may degree na ako",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko maging electronics engineer",
+  "accept": [
+   "Consumer Electronics Servicing NC III",
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging film director",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "near_tvet"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong maging game developer na may degree sa IT",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto q mging nurs",
+  "accept": [
+   "Health Care Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "near_tvet",
+   "typo"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I like welding or electrical work",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Electrical Installation and Maintenance NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "either cooking or driving, whichever gets me hired first",
+  "accept": [
+   "Cookery NC II",
+   "Driving NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I'm torn between plumbing and hairdressing",
+  "accept": [
+   "Plumbing NC I",
+   "Plumbing NC II",
+   "Hairdressing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "carpentry and caregiving both interest me",
+  "accept": [
+   "Carpentry NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to learn tailoring and also bartending",
+  "accept": [
+   "Tailoring NC II",
+   "Bartending NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I'd like to fix cars or build websites",
+  "accept": [
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II",
+   "Web Development NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "barista or security guard",
+  "accept": [
+   "Barista NC II",
+   "Security Services NC I",
+   "Security Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "masonry or massage therapy",
+  "accept": [
+   "Masonry NC I",
+   "Masonry NC II",
+   "Massage Therapy NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I want to do photography and farming",
+  "accept": [
+   "Photography NC II",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "aircon repair or dressmaking",
+  "accept": [
+   "RAC Servicing (DomRAC) NC II",
+   "Dressmaking NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I could be a barber or a motorcycle mechanic",
+  "accept": [
+   "Barbering NC II",
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "bookkeeping and housekeeping, either one",
+  "accept": [
+   "Bookkeeping NC III",
+   "Housekeeping NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "welding or cookry",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Cookery NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi",
+   "typo"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "COMPUTER REPAIR OR CAREGIVING",
+  "accept": [
+   "Computer Systems Servicing NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko magwelding o kaya mag-electrician",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Electrical Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "pwede akong magluto o magmaneho",
+  "accept": [
+   "Cookery NC II",
+   "Driving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "plumbero o kaya manggugupit ng buhok",
+  "accept": [
+   "Plumbing NC I",
+   "Plumbing NC II",
+   "Hairdressing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "karpintero at tagapag-alaga ng matanda ang gusto ko",
+  "accept": [
+   "Carpentry NC II",
+   "Caregiving (Elderly) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto kong magtahi at magtimpla ng kape",
+  "accept": [
+   "Dressmaking NC II",
+   "Barista NC II",
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "mekaniko ng motor o kaya mason",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II",
+   "Masonry NC I",
+   "Masonry NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "magsasaka o kaya tagapagmasahe",
+  "accept": [
+   "Agricultural Crops Production NC II",
+   "Massage Therapy NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko ng pagkuha ng litrato at paggawa ng damit",
+  "accept": [
+   "Photography NC II",
+   "Tailoring NC II",
+   "Dressmaking NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "tagaayos ng aircon o kaya gwardiya",
+  "accept": [
+   "RAC Servicing (DomRAC) NC II",
+   "Security Services NC I",
+   "Security Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "barbero o kaya bartender",
+  "accept": [
+   "Barbering NC II",
+   "Bartending NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto q mgluto o mgmaneho",
+  "accept": [
+   "Cookery NC II",
+   "Driving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "multi",
+   "typo"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko maging welder or cook",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Cookery NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "electrician or caregiver, bahala na",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "pwede ako sa driving o kaya hairdressing",
+  "accept": [
+   "Driving NC II",
+   "Hairdressing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko maging barista or bookkeeper",
+  "accept": [
+   "Barista NC II",
+   "Bookkeeping NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "plumbing or web development ang gusto ko",
+  "accept": [
+   "Plumbing NC I",
+   "Plumbing NC II",
+   "Web Development NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "gusto ko maging mason o kaya tailor",
+  "accept": [
+   "Masonry NC I",
+   "Masonry NC II",
+   "Tailoring NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "housekeeping o kaya security guard",
+  "accept": [
+   "Housekeeping NC II",
+   "Security Services NC I",
+   "Security Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "multi"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I don't want to cook, I want to fix cars",
+  "accept": [
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "not welding, I'd rather do electrical work",
+  "accept": [
+   "Electrical Installation and Maintenance NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I hate computers, I'd rather work with my hands as a carpenter",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "no driving please, I want to become a barber",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I don't like caring for people, I want to do plumbing",
+  "accept": [
+   "Plumbing NC I",
+   "Plumbing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "anything but farming, I want to be a hairdresser",
+  "accept": [
+   "Hairdressing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I don't want office work, I want to be a mason",
+  "accept": [
+   "Masonry NC I",
+   "Masonry NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I don't want to be a security guard, I want to be a baker",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "not a mechanic, I want to be a barista",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I can't stand sewing, I want to learn web development",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "i dont wnt to cook i want to be an electrician",
+  "accept": [
+   "Electrical Installation and Maintenance NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "negation",
+   "typo"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "I DON'T WANT TO DRIVE, I WANT TO DO MASSAGE",
+  "accept": [
+   "Massage Therapy NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ayoko magluto, gusto ko mag-ayos ng aircon",
+  "accept": [
+   "RAC Servicing (DomRAC) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ayoko maging electrician, gusto kong magtahi",
+  "accept": [
+   "Dressmaking NC II",
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ayaw ko sa computer, gusto kong magsaka",
+  "accept": [
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "hindi ako magmamaneho, gusto kong maging barbero",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ayokong mag-alaga ng tao, gusto kong mag-weld",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ayoko ng trabaho sa opisina, gusto kong maging karpintero",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "hindi ako gwardiya, gusto kong maging barista",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ayoko ng mekaniko, gusto kong magmasahe",
+  "accept": [
+   "Massage Therapy NC II",
+   "Hilot (Wellness Massage) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ayaw ko maging tubero, gusto kong maging web developer",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ayoko mgluto gusto q mgmaneho",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation",
+   "typo"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ayoko maging welder, gusto ko mag-cook",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "hindi ako magiging caregiver, gusto kong maging electrician",
+  "accept": [
+   "Electrical Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ayaw ko ng farming, gusto ko maging hairdresser",
+  "accept": [
+   "Hairdressing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ayoko mag-driving, gusto kong mag-repair ng motor",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "no more office work, gusto ko maging plumber",
+  "accept": [
+   "Plumbing NC I",
+   "Plumbing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ayoko ng masahe, gusto ko maging bookkeeper",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "hindi ko gusto ang security work, gusto kong maging bartender",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ },
+ {
+  "goal": "ayaw ko mag-tahi, gusto ko maglinis ng mga kwarto sa hotel",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "negation"
+  ],
+  "group": "X"
+ }
+]

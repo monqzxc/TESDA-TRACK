@@ -1,0 +1,193 @@
+{
+  "date": "2026-10-21",
+  "release_ready": false,
+  "backend_full_run": {
+    "tests": 1235,
+    "passed_count": 1231,
+    "failed": [
+      "backend.tests.test_analysis_api.test_matches_rank_qualifications_and_refine_intent",
+      "backend.tests.test_goals.test_create_goal_with_target_qualification",
+      "backend.tests.test_mcp_server.test_get_qualification_matches_rest"
+    ],
+    "errors": [],
+    "skipped": 1
+  },
+  "backend_followup": {
+    "tests": 124,
+    "passed_count": 124,
+    "failed": [],
+    "errors": [],
+    "skipped": 0
+  },
+  "safety_followup": {
+    "tests": 20,
+    "passed_count": 20,
+    "failed": [],
+    "errors": [],
+    "skipped": 0
+  },
+  "model_gate": {
+    "tests": 1,
+    "passed_count": 1,
+    "failed": [],
+    "errors": [],
+    "skipped": 0
+  },
+  "frontend_full_run": {
+    "passed": 470,
+    "failed": 1,
+    "total": 471
+  },
+  "frontend_followup": {
+    "passed": 18,
+    "failed": 0,
+    "scope": "TrainingPage including corrected recovery assertion"
+  },
+  "browser": {
+    "selected_passed": 117,
+    "additional_recovery_passed": 2,
+    "failed": 0
+  },
+  "build_lint_api_types": {
+    "passed": true
+  },
+  "release_checks": {
+    "dependency_consistency": {
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 1.478
+    },
+    "whitespace": {
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 0.16
+    },
+    "migration_drift": {
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 3.033
+    },
+    "qualification_evaluation": {
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 15.949
+    },
+    "optional_model_guard": {
+      "passed": true,
+      "exit_code": 0,
+      "seconds": 100.507,
+      "tests": 1,
+      "passed_count": 1,
+      "failed": [],
+      "errors": [],
+      "skipped": 0
+    },
+    "backend_image_build": {
+      "passed": true,
+      "seconds": 419.307
+    },
+    "web_image_build": {
+      "passed": true,
+      "seconds": 115.645
+    },
+    "image_smoke": {
+      "passed": true,
+      "checks": {
+        "backend_health": true,
+        "assessment_endpoint": true,
+        "structured_qualification_endpoint": true,
+        "web_health": true
+      },
+      "profile": "Model disabled; isolated test database; ephemeral ports; containers removed after checks"
+    }
+  },
+  "readiness_image_smoke": {
+    "passed": true,
+    "checks": {
+      "backend_health": true,
+      "assessment_endpoint": true,
+      "structured_qualification_endpoint": true,
+      "web_health": true
+    },
+    "profile": "Model disabled; isolated test database; ephemeral ports; containers removed after checks"
+  },
+  "qualification_summary": {
+    "cases": 24,
+    "positive_cases": 18,
+    "negative_cases": 6,
+    "k": 3,
+    "precision_at_k": 0.38888888888888884,
+    "recall_at_k": 0.6607142857142857,
+    "ndcg_at_k": 0.8766082263076322,
+    "mrr_at_k": 1.0,
+    "top1_relevance": 1,
+    "negative_abstention_rate": 1.0,
+    "unjudged_at_k": 0,
+    "constraint_violations": 0,
+    "unstable_cases": 0,
+    "warm_latency_samples": 120,
+    "warm_p50_ms": 91.98845000355504,
+    "warm_p95_ms": 162.33831502613612,
+    "warm_max_ms": 231.38840001774952
+  },
+  "service_summary": {
+    "cases": 9,
+    "positive_cases": 6,
+    "negative_cases": 3,
+    "k": 3,
+    "precision_at_k": 0.5,
+    "recall_at_k": 1.0,
+    "ndcg_at_k": 1.0,
+    "mrr_at_k": 1.0,
+    "top1_relevance": 1,
+    "negative_abstention_rate": 1.0,
+    "unjudged_at_k": 0,
+    "constraint_violations": 0,
+    "unstable_cases": 0,
+    "warm_latency_samples": 27,
+    "warm_p50_ms": 22.43449998786673,
+    "warm_p95_ms": 26.44595000310801,
+    "warm_max_ms": 28.831800038460642
+  },
+  "migration_rehearsal": {
+    "source_revision": [
+      "0017"
+    ],
+    "expected_heads": [
+      "0018"
+    ],
+    "checks": {
+      "copy_matches_source": true,
+      "downgrade_upgrade": false,
+      "refused_downgrade_kept_copy_unchanged": true,
+      "backup_restore_matches_source": true,
+      "restored_copy_upgrades_to_head": true,
+      "source_inventory_unchanged": true
+    },
+    "backup_restore_passed": true,
+    "downgrade_success": false,
+    "downgrade_refusal_reason": "staff_role_assignments_require_reassignment_before_0015",
+    "copy_removed": true
+  },
+  "staging": {
+    "url": "https://tesda-track.vercel.app/",
+    "profile": "Page not found",
+    "readiness_http_status": 404,
+    "schema_has_analytics": false,
+    "candidate_deployment_verified": false
+  },
+  "remaining_acceptance": [
+    "expert_review",
+    "performance_budget_approval",
+    "rollback_acceptance",
+    "staff_parity",
+    "manual_accessibility_and_screen_reader",
+    "staging_deployment_and_QA",
+    "pilot_server_and_backups"
+  ],
+  "limitations": [
+    "Separate initial full runs and successful focused follow-ups are retained.",
+    "Browser API responses use synthetic fixtures; deployed candidate and human QA are not verified.",
+    "Latency is local and sequential; this is not a production SLA."
+  ]
+}

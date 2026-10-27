@@ -1,0 +1,248 @@
+"""Aggregate reports for administrators. Only counts and averages leave this module, never individual records."""
+import re
+from datetime import date, datetime, time, timedelta, timezone
+
+from sqlalchemy import case, distinct, func, or_
+from sqlmodel import Session, select
+
+from tesda_track.models import (AssessmentApplication, AssessmentCenter, AssessmentSchedule, Certification, Learner,
+                                MatchDailyStat, Qualification, RankingAudit, ReadinessAnswer, ReadinessCheck,
+                                RecommendationFeedback, RecommendationSession, Region, TrainingProgram,
+                                TrainingProvider, utcnow)
+from tesda_track.schemas.progress import CertificationCounts
+from tesda_track.schemas.reports import (CompetencyGap, DateRange, FeedbackByPlace, FeedbackCount, FeedbackReasons,
+                                         FeedbackSummary, Funnel, LearnerDemand, MatchingDay, MatchingReport,
+                                         ModelFeedback, Overview, QualificationDemand, QualificationFeedback,
+                                         RegionSupply)
+from tesda_track.services import assessments, catalog
+from tesda_track.services.match_stats import PHILIPPINE_TIME
+
+
+
+def _within(column, period: DateRange):
+    """Conditions keeping `column` (a timestamp) inside the period's Philippine-time dates."""
+    conditions = []
+    if period.date_from:
+        conditions.append(column >= datetime.combine(period.date_from, time.min, PHILIPPINE_TIME))
+    if period.date_to:
+        conditions.append(column < datetime.combine(period.date_to + timedelta(days=1), time.min, PHILIPPINE_TIME))
+    return conditions
+
+
+def _count(session: Session, model, period: DateRange, *conditions) -> int:
+    return session.exec(select(func.count()).select_from(model).where(*_within(model.created_at, period),
+                                                                      *conditions)).one()
+
+
+def overview(session: Session, period: DateRange) -> Overview:
+    average = session.exec(select(func.avg(ReadinessCheck.score)).where(*_within(ReadinessCheck.created_at, period))).one()
+    applications = session.exec(select(AssessmentApplication.status, func.count())
+                                .where(*_within(AssessmentApplication.created_at, period))
+                                .group_by(AssessmentApplication.status))
+    total, verified = session.exec(select(func.count(), func.count().filter(Certification.verified))
+                                   .where(*_within(Certification.created_at, period))).one()
+    return Overview(
+        learners=_count(session, Learner, period),
+        recommendation_sessions=_count(session, RecommendationSession, period),
+        semantic_analyses=_count(session, RecommendationSession, period, RecommendationSession.analysis_source == "ai"),
+        readiness_checks=_count(session, ReadinessCheck, period),
+        average_readiness=round(float(average), 1) if average is not None else None,
+        training_rankings=_count(session, RankingAudit, period),
+        assessment_applications={status: count for status, count in applications},
+        certifications=CertificationCounts(total=total, verified=verified))
+
+
+def _grouped(session: Session, query) -> dict:
+    return {key: value for key, value in session.exec(query)}
+
+
+MIN_PUBLISHED_COUNT = 5  # a count below this could point at one person's activity, so partners never see it
+QUARTER_LABEL = re.compile(r"[0-9]{4}-Q[1-4]")
+
+
+def hide_small_counts(values: dict[str, int], minimum: int = MIN_PUBLISHED_COUNT) -> tuple[dict[str, int | None], list[str]]:
+    """The counts with those from 1 to minimum-1 replaced by None, and the names of the ones replaced. 0 is not
+    small: it names no one."""
+    hidden = sorted(name for name, count in values.items() if 0 < count < minimum)
+    return {name: None if name in hidden else count for name, count in values.items()}, hidden
+
+
+def quarter_range(label: str) -> DateRange:
+    """The whole calendar quarter named like 2026-Q3."""
+    if not QUARTER_LABEL.fullmatch(label):
+        raise ValueError("A quarter looks like 2026-Q3.")
+    year, quarter = int(label[:4]), int(label[-1])
+    first = date(year, 3 * quarter - 2, 1)
+    following = date(year + (quarter == 4), 3 * quarter % 12 + 1, 1)
+    return DateRange(date_from=first, date_to=following - timedelta(days=1))
+
+
+def qualification_demand(session: Session, period: DateRange) -> list[QualificationDemand]:
+    top_code = func.jsonb_extract_path_text(RecommendationSession.matches, "0", "qualification", "code")
+    top_match = _grouped(session, select(top_code, func.count()).where(
+        *_within(RecommendationSession.created_at, period), top_code.is_not(None)).group_by(top_code))
+    chosen = _grouped(session, select(RecommendationSession.qualification_id, func.count()).where(
+        *_within(RecommendationSession.created_at, period)).group_by(RecommendationSession.qualification_id))
+    readiness = {qualification_id: (count, average) for qualification_id, count, average in session.exec(
+        select(ReadinessCheck.qualification_id, func.count(), func.avg(ReadinessCheck.score))
+        .where(*_within(ReadinessCheck.created_at, period)).group_by(ReadinessCheck.qualification_id))}
+    applications = {qualification_id: (count, competent) for qualification_id, count, competent in session.exec(
+        select(AssessmentSchedule.qualification_id, func.count(),
+               func.count().filter(AssessmentApplication.result == "competent"))
+        .join(AssessmentSchedule).where(*_within(AssessmentApplication.created_at, period))
+        .group_by(AssessmentSchedule.qualification_id))}
+    certified = _grouped(session, select(Certification.qualification_id, func.count()).where(
+        Certification.verified, *_within(Certification.created_at, period)).group_by(Certification.qualification_id))
+    rows = []
+    for qualification in catalog.active_qualifications(session):
+        checks, average = readiness.get(qualification.id, (0, None))
+        applied, competent = applications.get(qualification.id, (0, 0))
+        rows.append(QualificationDemand(
+            qualification=catalog.summary(qualification), top_match=top_match.get(qualification.code, 0),
+            chosen=chosen.get(qualification.id, 0), readiness_checks=checks,
+            average_readiness=round(float(average), 1) if average is not None else None,
+            assessment_applications=applied, competent=competent, certified=certified.get(qualification.id, 0)))
+    return rows
+
+
+def qualification_demand_by_learners(session: Session, period: DateRange) -> list[LearnerDemand]:
+    """Like qualification_demand, but counting distinct learners, for partners. The readiness average is of each
+    learner's latest score in the period, so one learner's repeats cannot stand for a group."""
+    top_code = func.jsonb_extract_path_text(RecommendationSession.matches, "0", "qualification", "code")
+    people = func.count(distinct(RecommendationSession.learner_id))
+    top_matched = _grouped(session, select(top_code, people).where(
+        *_within(RecommendationSession.created_at, period), top_code.is_not(None)).group_by(top_code))
+    chose = _grouped(session, select(RecommendationSession.qualification_id, people).where(
+        *_within(RecommendationSession.created_at, period)).group_by(RecommendationSession.qualification_id))
+    latest = (select(ReadinessCheck.qualification_id, ReadinessCheck.score)
+              .where(*_within(ReadinessCheck.created_at, period))
+              .distinct(ReadinessCheck.learner_id, ReadinessCheck.qualification_id)
+              .order_by(ReadinessCheck.learner_id, ReadinessCheck.qualification_id, ReadinessCheck.created_at.desc())
+              .subquery())
+    readiness = {qualification_id: (count, average) for qualification_id, count, average in session.exec(
+        select(latest.c.qualification_id, func.count(), func.avg(latest.c.score)).group_by(latest.c.qualification_id))}
+    applicants = func.count(distinct(AssessmentApplication.learner_id))
+    applications = {qualification_id: (count, competent) for qualification_id, count, competent in session.exec(
+        select(AssessmentSchedule.qualification_id, applicants,
+               applicants.filter(AssessmentApplication.result == "competent"))
+        .join(AssessmentSchedule).where(*_within(AssessmentApplication.created_at, period))
+        .group_by(AssessmentSchedule.qualification_id))}
+    certified = _grouped(session, select(Certification.qualification_id, func.count(distinct(Certification.learner_id)))
+                         .where(Certification.verified, *_within(Certification.created_at, period))
+                         .group_by(Certification.qualification_id))
+    rows = []
+    for qualification in catalog.active_qualifications(session):
+        checked, average = readiness.get(qualification.id, (0, None))
+        applied, competent = applications.get(qualification.id, (0, 0))
+        rows.append(LearnerDemand(
+            qualification=catalog.summary(qualification), top_matched=top_matched.get(qualification.code, 0),
+            chose=chose.get(qualification.id, 0), checked_readiness=checked,
+            average_readiness=round(float(average), 1) if average is not None else None,
+            applied=applied, competent=competent, certified=certified.get(qualification.id, 0)))
+    return rows
+
+
+def skill_gaps(session: Session, qualification_code: str, period: DateRange) -> list[CompetencyGap]:
+    qualification = catalog.get_active_qualification(session, qualification_code)
+    counts: dict[int, dict[str, int]] = {}
+    for competency_id, answer, count in session.exec(
+            select(ReadinessAnswer.competency_id, ReadinessAnswer.answer, func.count()).join(ReadinessCheck)
+            .where(ReadinessCheck.qualification_id == qualification.id, *_within(ReadinessCheck.created_at, period))
+            .group_by(ReadinessAnswer.competency_id, ReadinessAnswer.answer)):
+        counts.setdefault(competency_id, {})[answer] = count
+    rows = []
+    for competency in catalog.active_competencies(qualification):
+        tally = counts.get(competency.id, {})
+        answers = sum(tally.values())
+        gaps = tally.get("some_experience", 0) + tally.get("not_familiar", 0)
+        rows.append(CompetencyGap(
+            competency_id=competency.id, position=competency.position, name=competency.name, answers=answers,
+            confident=tally.get("confident", 0), some_experience=tally.get("some_experience", 0),
+            not_familiar=tally.get("not_familiar", 0), gap_rate=round(gaps / answers, 3) if answers else None))
+    return rows
+
+
+def funnel(session: Session, period: DateRange) -> Funnel:
+    def learners_with(model, *conditions) -> int:
+        return session.exec(select(func.count(distinct(model.learner_id)))
+                            .where(*_within(model.created_at, period), *conditions)).one()
+
+    return Funnel(registered=_count(session, Learner, period),
+                  saved_a_recommendation=learners_with(RecommendationSession),
+                  checked_readiness=learners_with(ReadinessCheck),
+                  applied_for_assessment=learners_with(AssessmentApplication,
+                                                       AssessmentApplication.status != "withdrawn"),
+                  certified=learners_with(Certification, Certification.verified))
+
+
+def feedback(session: Session, period: DateRange) -> FeedbackSummary:
+    within = _within(RecommendationFeedback.created_at, period)
+
+    def counts(column) -> dict:
+        return {key: FeedbackCount(answers=answers, satisfied=satisfied) for key, answers, satisfied in session.exec(
+            select(column, func.count(), func.count().filter(RecommendationFeedback.satisfied))
+            .where(*within).group_by(column))}
+
+    nothing = FeedbackCount(answers=0, satisfied=0)
+    place = case((RecommendationFeedback.rank == 1, "top_match"),
+                 (RecommendationFeedback.rank.is_not(None), "other_match"), else_="own_choice")
+    by_place = counts(place)
+    reason = func.coalesce(RecommendationFeedback.reason, "none")
+    reasons = _grouped(session, select(reason, func.count())
+                       .where(*within, RecommendationFeedback.satisfied.is_(False)).group_by(reason))
+    by_model = counts(RecommendationFeedback.model)
+    by_qualification = counts(RecommendationFeedback.qualification_id)
+    qualifications = session.exec(select(Qualification).where(Qualification.id.in_(list(by_qualification))))
+    return FeedbackSummary(
+        answers=sum(row.answers for row in by_place.values()),
+        satisfied=sum(row.satisfied for row in by_place.values()),
+        by_place=FeedbackByPlace(**{key: by_place.get(key, nothing) for key in FeedbackByPlace.model_fields}),
+        reasons=FeedbackReasons(**{key: reasons.get(key, 0) for key in FeedbackReasons.model_fields}),
+        by_model=sorted((ModelFeedback(model=model, **row.model_dump()) for model, row in by_model.items()),
+                        key=lambda row: -row.answers),
+        by_qualification=sorted(
+            (QualificationFeedback(qualification=catalog.summary(qualification),
+                                   **by_qualification[qualification.id].model_dump())
+             for qualification in qualifications),
+            key=lambda row: (-row.answers, row.qualification.name)))
+
+
+def supply(session: Session) -> list[RegionSupply]:
+    """Current training and assessment capacity per region (not limited to a date range)."""
+    today = date.today()
+    providers = _grouped(session, select(TrainingProvider.region_code, func.count())
+                         .where(TrainingProvider.is_active).group_by(TrainingProvider.region_code))
+    programs = _grouped(session, select(TrainingProvider.region_code, func.count()).select_from(TrainingProgram)
+                        .join(TrainingProvider)
+                        .where(TrainingProgram.is_active, TrainingProvider.is_active,
+                               or_(TrainingProgram.end_date.is_(None), TrainingProgram.end_date >= today))
+                        .group_by(TrainingProvider.region_code))
+    open_seats = func.greatest(AssessmentSchedule.slots - assessments.seats_taken_subquery(), 0)
+    schedules = {region: (count, seats) for region, count, seats in session.exec(
+        select(AssessmentCenter.region_code, func.count(), func.coalesce(func.sum(open_seats), 0))
+        .select_from(AssessmentSchedule).join(AssessmentCenter)
+        .where(AssessmentSchedule.status == "open", AssessmentSchedule.scheduled_at > utcnow(),
+               AssessmentCenter.is_active).group_by(AssessmentCenter.region_code))}
+    rows = []
+    for region in session.exec(select(Region).order_by(Region.position)):
+        upcoming, seats = schedules.get(region.code, (0, 0))
+        rows.append(RegionSupply(region_code=region.code, region=region.name,
+                                 training_providers=providers.get(region.code, 0),
+                                 training_programs=programs.get(region.code, 0),
+                                 upcoming_assessments=upcoming, open_seats=int(seats)))
+    return rows
+
+
+def matching(session: Session, period: DateRange) -> MatchingReport:
+    """Goal-matching requests and how many found nothing, per Philippine-time day (anonymous totals)."""
+    conditions = []
+    if period.date_from:
+        conditions.append(MatchDailyStat.date >= period.date_from)
+    if period.date_to:
+        conditions.append(MatchDailyStat.date <= period.date_to)
+    rows = session.exec(select(MatchDailyStat).where(*conditions).order_by(MatchDailyStat.date)).all()
+    requests = sum(row.requests for row in rows)
+    no_match = sum(row.no_match for row in rows)
+    return MatchingReport(
+        requests=requests, no_match=no_match, no_match_rate=no_match / requests if requests else None,
+        days=[MatchingDay(date=row.date, requests=row.requests, no_match=row.no_match) for row in rows])

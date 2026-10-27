@@ -1,0 +1,58 @@
+# Caddy obtains and renews HTTPS certificates for $DOMAIN automatically (localhost uses a local CA).
+{$DOMAIN} {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+	# The API is public for signed-in clients and API docs; /health stays internal.
+	# X-Forwarded-For is set to the connecting address, never passed on from the client; the API's
+	# per-client limits rely on it.
+	handle /api/* {
+		reverse_proxy api:8000 {
+			health_uri /api/v1/ready
+			health_interval 10s
+			health_timeout 3s
+			header_up X-Forwarded-For {remote_host}
+		}
+	}
+	# Partner MCP server (docs/mcp/partner-onboarding.md): the endpoint and the metadata clients discover it by.
+	# PUBLIC_BASE_URL must be https://{$DOMAIN}, because the API rejects requests for any other host.
+	@mcp path /mcp /mcp/
+	handle @mcp {
+		reverse_proxy api:8000 {
+			health_uri /api/v1/ready
+			health_interval 10s
+			health_timeout 3s
+			header_up X-Forwarded-For {remote_host}
+		}
+	}
+	handle /.well-known/oauth-protected-resource* {
+		reverse_proxy api:8000 {
+			health_uri /api/v1/ready
+			health_interval 10s
+			health_timeout 3s
+			header_up X-Forwarded-For {remote_host}
+		}
+	}
+	handle /.well-known/oauth-authorization-server {
+		reverse_proxy api:8000 {
+			health_uri /api/v1/ready
+			health_interval 10s
+			health_timeout 3s
+			header_up X-Forwarded-For {remote_host}
+		}
+	}
+	# The React app (frontend/), beside Streamlit (classic/) until the switch: /beta/ reaches it without the prefix.
+	redir /beta /beta/ 308
+	handle_path /beta/* {
+		reverse_proxy app:8080
+	}
+	handle {
+		reverse_proxy web:8501 {
+			header_up X-Forwarded-For {remote_host}
+		}
+	}
+}

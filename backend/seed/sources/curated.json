@@ -1,0 +1,252 @@
+[
+ {
+  "code": "MMAW-NC-II",
+  "name": "Manual Metal Arc Welding (MMAW) NC II",
+  "sector": "Metals and Engineering",
+  "skill_label": "Welding",
+  "career_keywords": [
+   "welder",
+   "welding",
+   "metal fabrication",
+   "fabricator",
+   "mmaw",
+   "smaw",
+   "stick welding"
+  ],
+  "possible_jobs": [
+   "Welder",
+   "Fabricator",
+   "Structural Welder"
+  ],
+  "competencies": [
+   {
+    "id": 1,
+    "name": "Observe workplace safety procedures",
+    "category": "Basic"
+   },
+   {
+    "id": 2,
+    "name": "Interpret welding drawings and symbols",
+    "category": "Core"
+   },
+   {
+    "id": 3,
+    "name": "Set up welding equipment",
+    "category": "Core"
+   },
+   {
+    "id": 4,
+    "name": "Perform fillet welding",
+    "category": "Core"
+   },
+   {
+    "id": 5,
+    "name": "Perform groove welding",
+    "category": "Core"
+   },
+   {
+    "id": 6,
+    "name": "Inspect weld quality and identify common defects",
+    "category": "Core"
+   }
+  ]
+ },
+ {
+  "code": "CSS-NC-II",
+  "name": "Computer Systems Servicing NC II",
+  "sector": "Information and Communication Technology",
+  "skill_label": "Computer repair and networking",
+  "career_keywords": [
+   "computer",
+   "computers",
+   "computer repair",
+   "networking",
+   "technician",
+   "fix computers"
+  ],
+  "possible_jobs": [
+   "Computer Technician",
+   "IT Support Technician"
+  ],
+  "competencies": [
+   {
+    "id": 1,
+    "name": "Apply electrical and equipment safety",
+    "category": "Basic"
+   },
+   {
+    "id": 2,
+    "name": "Install and configure computer hardware",
+    "category": "Core"
+   },
+   {
+    "id": 3,
+    "name": "Install operating systems and software",
+    "category": "Core"
+   },
+   {
+    "id": 4,
+    "name": "Set up computer networks",
+    "category": "Core"
+   },
+   {
+    "id": 5,
+    "name": "Configure basic server services",
+    "category": "Core"
+   },
+   {
+    "id": 6,
+    "name": "Diagnose and repair computer faults",
+    "category": "Core"
+   }
+  ]
+ },
+ {
+  "code": "EIM-NC-II",
+  "name": "Electrical Installation and Maintenance NC II",
+  "sector": "Construction",
+  "skill_label": "Electrical installation",
+  "career_keywords": [
+   "electrician",
+   "electrical",
+   "wiring",
+   "electricity"
+  ],
+  "possible_jobs": [
+   "Electrician",
+   "Electrical Maintenance Worker"
+  ],
+  "competencies": [
+   {
+    "id": 1,
+    "name": "Apply electrical safety procedures",
+    "category": "Basic"
+   },
+   {
+    "id": 2,
+    "name": "Read electrical plans and diagrams",
+    "category": "Core"
+   },
+   {
+    "id": 3,
+    "name": "Select and use electrical tools",
+    "category": "Core"
+   },
+   {
+    "id": 4,
+    "name": "Install wiring and protective devices",
+    "category": "Core"
+   },
+   {
+    "id": 5,
+    "name": "Test electrical installations",
+    "category": "Core"
+   },
+   {
+    "id": 6,
+    "name": "Identify and maintain faulty components",
+    "category": "Core"
+   }
+  ]
+ },
+ {
+  "code": "COOKERY-NC-II",
+  "name": "Cookery NC II",
+  "sector": "Tourism",
+  "skill_label": "Cooking",
+  "career_keywords": [
+   "chef",
+   "cook",
+   "cooking",
+   "cookery",
+   "kitchen"
+  ],
+  "possible_jobs": [
+   "Chef",
+   "Cook",
+   "Kitchen Assistant"
+  ],
+  "competencies": [
+   {
+    "id": 1,
+    "name": "Follow food safety and hygiene procedures",
+    "category": "Basic"
+   },
+   {
+    "id": 2,
+    "name": "Use and maintain kitchen equipment",
+    "category": "Core"
+   },
+   {
+    "id": 3,
+    "name": "Prepare ingredients and mise en place",
+    "category": "Core"
+   },
+   {
+    "id": 4,
+    "name": "Prepare hot dishes",
+    "category": "Core"
+   },
+   {
+    "id": 5,
+    "name": "Prepare salads and cold dishes",
+    "category": "Core"
+   },
+   {
+    "id": 6,
+    "name": "Present and store prepared food safely",
+    "category": "Core"
+   }
+  ]
+ },
+ {
+  "code": "FBS-NC-II",
+  "name": "Food and Beverage Services NC II",
+  "sector": "Tourism",
+  "skill_label": "Food and beverage service",
+  "career_keywords": [
+   "waiter",
+   "waitress",
+   "food service",
+   "beverage",
+   "restaurant",
+   "server"
+  ],
+  "possible_jobs": [
+   "Waiter",
+   "Food and Beverage Attendant"
+  ],
+  "competencies": [
+   {
+    "id": 1,
+    "name": "Follow service hygiene and safety procedures",
+    "category": "Basic"
+   },
+   {
+    "id": 2,
+    "name": "Prepare the dining area for service",
+    "category": "Core"
+   },
+   {
+    "id": 3,
+    "name": "Welcome guests and take orders",
+    "category": "Core"
+   },
+   {
+    "id": 4,
+    "name": "Serve food and beverages",
+    "category": "Core"
+   },
+   {
+    "id": 5,
+    "name": "Handle guest requests and concerns",
+    "category": "Core"
+   },
+   {
+    "id": 6,
+    "name": "Process bills and close service",
+    "category": "Core"
+   }
+  ]
+ }
+]

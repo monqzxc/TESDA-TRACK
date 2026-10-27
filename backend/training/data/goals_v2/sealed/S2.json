@@ -1,0 +1,1355 @@
+[
+ {
+  "goal": "Gusto kong matutong maghinang ng bakal gamit ang stick electrode, gaya ng ginagawa sa mga gate at rehas.",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "May NC II na ako sa SMAW, gusto ko na mag-level up para maka-weld ng stainless steel plates.",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "weldr po aq ng mga gate 3 yrs na pero walang NC 😅",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "experience",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to train as a flux-cored arc welder so I can weld pipes at a shipyard.",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto kong mag mig welding sa fab shop, ung may wire na tuloy tuloy lumalabas",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto kong maging TIG welder sa Japan, para sa manipis na stainless na tubo.",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto kong matuto ng paghihinang gamit ang oxy-acetylene, para sa mga tubo at manipis na bakal.",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I already have Gas Welding NC I and want the next level for oxy-acetylene welding of alloy steel tubes.",
+  "accept": [
+   "GAS Welding NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "submerge arc welder",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "typo",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto kong maging machinist sa isang machine shop, gumagamit ng lathe, milling at gilingan.",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Labinlimang taon na akong lathe operator sa isang maliit na machine shop. Ako ang gumagawa ng mga shaft, bushing at gear para sa mga pabrika, pero wala akong kahit anong certificate kasi natuto lang ako sa amo ko. Ngayon gusto ko na magkaroon ng NC para makapag-apply sa mas malaking kumpanya o abroad.",
+  "accept": [
+   "Machining NC II",
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "long",
+   "experience"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to run a CNC lathe and write simple G-code for turned parts.",
+  "accept": [
+   "CNC Lathe Machine Operation NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto ko mag-operate ng CNC milling machine sa factory, mag-program at mag-set up ng cutting tools.",
+  "accept": [
+   "CNC Milling Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "May NC II na ako sa CNC milling. Gusto ko naman yung advanced programming at cost estimates.",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Our shop just bought a five-axis machining center and I want to be the one who programs and runs it.",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "CAD/CAM operator",
+  "accept": [
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto ko maging wire cut operator, yung CNC EDM na pumuputol ng hardened steel gamit ang manipis na wire.",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to operate a sinker EDM that burns cavities into steel molds using a copper electrode.",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to be a die designer who models stamping dies in CAD and simulates them before they are made.",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto kong magdisenyo ng mga molde para sa produktong plastik gamit ang CAD at simulation.",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "8 years na ako sa toolroom, nagma-machine ng mold components sa CNC, nag-a-assemble at nag-aayos ng depekto ng molds. Gusto ko ma-certify.",
+  "accept": [
+   "Mold Making NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto kong maging mold maker sa pabrika ng piyesa ng sasakyan.",
+  "accept": [
+   "Moldmaking NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to make stamping dies, fit them together and test them on the press.",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Mahilig akong gumuhit ng mga piyesa ng makina, gusto kong maging mechanical draftsman.",
+  "accept": [
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto ko maging maintenance mechanic sa planta, mag-preventive maintenance ng mga makina at mag-install ng bagong machinery.",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want a factory job setting up and running mechanical presses that stamp metal sheets.",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto kong maging parang si Flavio sa Ang Panday, gumagawa ng espada mula sa nagbabagang bakal.",
+  "accept": [
+   "Forging NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to operate the cupola and induction furnaces that melt scrap iron in a foundry.",
+  "accept": [
+   "Foundry Melting/Casting NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto kong gumawa ng hulmahang buhangin at core para sa ibinubuhos na tunaw na bakal sa foundry.",
+  "accept": [
+   "Foundry Molding NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Marunong ako sa woodworking, gusto ko gumawa ng wood patterns na ginagamit sa foundry para sa casting.",
+  "accept": [
+   "Foundry Pattern Making NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to harden, temper and anneal steel parts in heat treatment furnaces.",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto kong magpatakbo ng makinang injection molding at blow molding sa pabrika ng plastik na bote.",
+  "accept": [
+   "Plastic Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I've been a QC inspector on an auto parts line for six years and want to lead process inspection and capability studies.",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto ko mag-operate ng painting line sa car assembly plant, yung electro-deposition, primer at top coat.",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to install lights, dashboard electronics and audio systems on new cars along the assembly line.",
+  "accept": [
+   "Automotive Electrical Assembly NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto kong magkabit ng preno, suspensyon at makina ng mga bagong kotse sa assembly line ng pabrika.",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Limang taon na akong assembly technician sa planta, gusto ko na maging rectifier na nag-aayos ng assembly faults.",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "wiring harnes assembler sa factory, mag crimp at mag tape ng mga wire",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to weld and braze car body shells on a vehicle production line as a tinsmith.",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto kong matutong mag-ayos ng yupi ng kotse, magpalit ng panel at magmasilya.",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto ko maging car painter sa casa, mag-primer, mag-masking at mag-spray ng pintura.",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC I"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I've sprayed solid colors on cars for years and now want to master three-stage pearl and mica paint jobs.",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to be an engine rebuilder: strip the block, machine the cylinder heads and reassemble everything to tolerance.",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "mekaniko ng kotse",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto ko yung parang sa Fast and Furious, mag-overhaul at mag-tune up ng makina ng kotse.",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing NC I"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "My uncle has a small repair shop near the highway and I spent my summers there handing him tools. Most of the cars that come in have worn brake pads, slipping clutches, loose steering or noisy suspension. I finished senior high last year and I want to train properly so I can fix those things myself.",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing NC I"
+  ],
+  "lang": "en",
+  "tags": [
+   "long",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto ko maging auto electrician, mag-troubleshoot ng starter, charging system at ignition ng kotse.",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto kong magtrabaho sa casa na nagpapalit ng langis at nagsusuri ng bagong sasakyan bago ibigay sa may-ari.",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Twenty years as a mechanic; I now supervise the service floor at a dealership and want the master automotive technician level.",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience",
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Marunong na ako mag-PMS, gusto ko na matuto mag-diagnose ng EFI, emission at turbo ng diesel engine gamit scanner.",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to specialise in diagnosing CVTs, electronic 4x4 systems and electric power steering.",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I hold Automotive Servicing (Electrical Repair) NC II and want to move up to diagnosing immobilizers, smart entry and airbag systems.",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "certification"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto kong maging family driver sa Saudi.",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Galing ako sa probinsya at nagtrabaho muna bilang pahinante ng delivery truck ng isang bodega. Doon ako natutong magmaneho, at ngayon may lisensya na ako para sa magaan na sasakyan. Pangarap kong maging propesyonal na drayber ng isang kumpanya para may tiyak na sahod at benepisyo ang pamilya ko.",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "long",
+   "experience"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Ilang years na akong nagda-drive ng ten-wheeler na cargo truck, need ko na ng NC para sa work.",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "BUS DRIVER PO SANA ANG GUSTO KO",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III",
+   "Driving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I want to drive trailer trucks in Australia.",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto q matuto mag ayos ng motor 🏍️ pang negosyo",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "speed limiter installer",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto ko either motor mechanic o kaya auto electrician.",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "multi",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Gusto ko matuto ng welding at saka auto body repair, kahit alin muna.",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "multi"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Ayoko sa init at usok ng welding, mas gusto ko sa CNC lathe.",
+  "accept": [
+   "CNC Lathe Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "Not driving, I get carsick. I'd rather fix the small engines of our barangay's motorcycles and water pumps.",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "negation",
+   "task"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "I'm 19 and the eldest of five. I always wanted to be a nurse, but my parents can't pay for four years of college and I need to start earning soon. I like helping sick people, changing bed sheets and moving patients doesn't bother me, and I'd be happy working as a hospital aide while I save up.",
+  "accept": [
+   "Health Care Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "long",
+   "near_tvet"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto kong maging BHW sa barangay namin, bumisita sa mga bahay at magtala ng kalusugan ng bawat pamilya.",
+  "accept": [
+   "Barangay Health Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto ko maging nutrition scholar sa barangay, magtimbang ng mga batang under five at turuan ang mga nanay ng tamang pagkain.",
+  "accept": [
+   "Community Nutrition Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "During the pandemic I helped our town health office trace exposed people, and now I want formal training as a contact tracer.",
+  "accept": [
+   "Contact Tracing NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto kong maging first responder sa ambulansya ng munisipyo, marunong mag-CPR at magbigay ng paunang lunas.",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Tapos na ako sa EMS NC II, next step ko sana maging full Emergency Medical Technician.",
+  "accept": [
+   "Emergency Medical Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to be like the paramedics on hospital dramas who rush in with the ambulance.",
+  "accept": [
+   "Emergency Medical Services NC II",
+   "Emergency Medical Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto kong magtrabaho bilang caregiver sa Israel, bata man o matanda ang alagaan.",
+  "accept": [
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Labindalawang taon kong inalagaan ang lola kong na-stroke hanggang sa pumanaw siya. Natuto akong magpaligo, magpakain, magbigay ng gamot sa tamang oras at magbantay sa gabi. Ngayong wala na siya, gusto kong gawing hanapbuhay ang pag-aalaga ng mga matatanda, dito man sa atin o sa ibang bansa.",
+  "accept": [
+   "Caregiving (Elderly) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "long",
+   "experience"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto ko maging yaya ng newborn hanggang toddler, marunong magpaligo at magpadede ng baby.",
+  "accept": [
+   "Caregiving (Newborn to Pre-Schooler) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to be a caregiver for school-age kids and teenagers in a children's home.",
+  "accept": [
+   "Caregiving (Grade Schooler to Adolescent) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto kong mag-alaga ng mga batang may autism at ng mga taong may kapansanan.",
+  "accept": [
+   "Caregiving (Clients with Special Needs) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto ko magturo sa day care center ng mga 3 to 4 years old, kahit hindi ako education graduate.",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task",
+   "near_tvet"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Mag-a-apply ako bilang kasambahay sa Kuwait, kailangan ko ng NC.",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "abroad",
+   "certification",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto ko mag-work sa salon, mag-cut, mag-color at mag-rebond ng buhok.",
+  "accept": [
+   "Hairdressing NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I've cut hair in a salon for ten years and want to be recognized as a senior stylist for advanced, creative cuts and color.",
+  "accept": [
+   "Hairdressing NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "experience"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "barbero",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "manicurista po aq sa bahay2, gusto q mgka NC",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "certification",
+   "experience"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to do acrylic and gel nail extensions in a salon in Dubai.",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "abroad",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto kong magtrabaho sa spa na nagfe-facial, nagwa-wax at nagbo-body scrub.",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto kong ipagpatuloy ang paghihilot na itinuro ng lola ko, pero yung pang-relaks at pangkalusugan, hindi panggagamot.",
+  "accept": [
+   "Hilot (Wellness Massage) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I'd like to work as a spa massage therapist on a cruise ship.",
+  "accept": [
+   "Massage Therapy NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "abroad",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I wanna be a dental hygenist, cleaning teeth n taking xrays at a clinic",
+  "accept": [
+   "Dental Hygiene Level IV"
+  ],
+  "lang": "en",
+  "tags": [
+   "typo",
+   "job_title",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto kong magsimula bilang katulong sa dental laboratory, gumagawa ng hulma ng ngipin at mouthguard.",
+  "accept": [
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "gumawa ng pustiso",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "short",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to make porcelain crowns and bridges in a dental lab.",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Matagal na akong dental technician, gumagawa ng pustiso at crowns. Gusto ko na mag-manage ng sariling dental lab.",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "experience"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "optician",
+  "accept": [
+   "Ophthalmic Lens Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Hindi kaya ng pamilya ko ang limang taong kurso sa parmasya, pero gusto kong magtrabaho sa botika at mag-abot ng gamot.",
+  "accept": [
+   "Pharmacy Services NC III"
+  ],
+  "lang": "tl",
+  "tags": [
+   "near_tvet",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to fabricate leg braces and foot orthoses for children with clubfoot.",
+  "accept": [
+   "Assistive Rehabilitation Technology Services (Orthotics) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto kong gumawa ng artipisyal na binti at braso para sa mga naputulan.",
+  "accept": [
+   "Assistive Rehabilitation Technology Services (Prosthetics) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto ko mag-assemble at mag-repair ng wheelchair para sa mga PWD sa rehab center.",
+  "accept": [
+   "Assistive Rehabilitation Technology Services (Wheelchair) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "pool lifeguard",
+  "accept": [
+   "Lifeguard Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "short",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "May NC II na ako sa lifeguard, gusto ko naman sa beach resort at surf.",
+  "accept": [
+   "Lifeguard Services NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "certification"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "GUSTO KO MAG SECURITY GUARD PARA MAY PANG ARAL",
+  "accept": [
+   "Security Services NC I",
+   "Security Services NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Ako yung taga-lista ng benta at gastos sa sari-sari store at karinderya ng tita ko for almost five years. Marunong ako sa Excel pero hindi ako nakatapos ng accounting. Gusto ko sana maging bookkeeper ng mga small business, yung marunong mag-journal, mag-post at gumawa ng trial balance at financial reports.",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "long",
+   "experience"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto ko maging loan officer sa isang microfinance NGO, mag-form ng groups ng mga nanay at mangolekta ng hulog.",
+  "accept": [
+   "Microfinance Technology NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to enroll members and process policies at a mutual benefit association that offers microinsurance.",
+  "accept": [
+   "Microinsurance Services (Mutual Benefit) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto kong mamahala ng Public Employment Service Office ng aming munisipyo.",
+  "accept": [
+   "Public Employment Services NC IV"
+  ],
+  "lang": "tl",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto ko maging real estate agent, magbenta ng house and lot at mag-process ng loan ng buyer.",
+  "accept": [
+   "Real Estate Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto ko maging ballroom DI 💃 magturo ng cha-cha, waltz at tango",
+  "accept": [
+   "Performing Arts (Ballroom Dancing) NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "job_title",
+   "typo"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I dream of dancing in big production numbers like the ones on noontime variety shows.",
+  "accept": [
+   "Performing Arts (Dance) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Pangarap kong maging mang-aawit ng banda, gaya ng mga bida sa mga paligsahan sa pagkanta sa telebisyon.",
+  "accept": [
+   "Performing Arts (Song) NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "indirect"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I want to prepare print files before they go to press: preflighting, color separation and imposition.",
+  "accept": [
+   "Printing Services (Prepress Technical Operations) NC I",
+   "Printing Services (Prepress Technical Operations) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Hairdressing o kaya nail care, basta sa salon ako.",
+  "accept": [
+   "Hairdressing NC II",
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "multi"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Caregiver or nursing aide, whichever gets me abroad faster.",
+  "accept": [
+   "Caregiving NC II",
+   "Health Care Services NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "multi",
+   "abroad",
+   "job_title"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Gusto kong magmasahe o kaya mag-facial sa spa.",
+  "accept": [
+   "Massage Therapy NC II",
+   "Hilot (Wellness Massage) NC II",
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "tags": [
+   "multi",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Ayoko sa ospital kasi takot ako sa dugo, mas gusto kong maging barbero.",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "negation"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "I don't want to be a domestic helper abroad again; I want to work as a pharmacy assistant here.",
+  "accept": [
+   "Pharmacy Services NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "negation",
+   "experience"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "Not interested in caregiving at all, I'd rather work in a dental lab making dentures.",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II"
+  ],
+  "lang": "en",
+  "tags": [
+   "negation",
+   "task"
+  ],
+  "group": "G4"
+ },
+ {
+  "goal": "wanna be a trailer truck drivr in new zealand",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "en",
+  "tags": [
+   "typo",
+   "abroad",
+   "job_title"
+  ],
+  "group": "G3"
+ },
+ {
+  "goal": "gusto q maging karegiver ng matatanda sa japan 🙏",
+  "accept": [
+   "Caregiving (Elderly) NC II",
+   "Caregiving NC II"
+  ],
+  "lang": "tl",
+  "tags": [
+   "typo",
+   "abroad",
+   "job_title"
+  ],
+  "group": "G4"
+ }
+]

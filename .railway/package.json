@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "description": "Railway's IaC SDK for railway.ts. Install with: npm ci --prefix .railway",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "devDependencies": {
+    "railway": "3.16.0"
+  }
+}

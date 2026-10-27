@@ -1,0 +1,25 @@
+.venv/
+.venv-train/
+__pycache__/
+*.pyc
+.env
+.pytest_cache/
+.models/
+backend/models/*
+!backend/models/README.md
+backend/seed/sources/tr-pdfs/
+T2MISDB.bak
+*.bak
+worker_profiles_*.csv
+30_DATABASE_SCHEMA_MERMAID.md
+backend/training/runs/
+# Goals learners shared, in their own words (training/shared_goals.py): never committed.
+backend/training/learner/
+.railway/node_modules/
+/reports/
+frontend/node_modules
+frontend/.agents/   
+frontend/.claude/
+tesda-e5-small-v4-scenarios-20261020-03.zip
+tesda-e5-small-v4-colab-1.zip
+models/

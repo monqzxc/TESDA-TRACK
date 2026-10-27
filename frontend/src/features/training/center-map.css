@@ -1,0 +1,119 @@
+/* The map parts Leaflet draws itself (its panes, controls, popup frame and tooltips), after the Streamlit center
+   map's own styles (classic/training_view.py _CENTER_MAP css). No class of ours reaches them, and leaflet.css is
+   outside the cascade layers, so these rules are too: loaded after it, they win over it.
+   They're scoped to the map's shell (.center-map); everything the app draws itself has its classes in
+   CenterMap.tsx. */
+
+/* Night tiles in dark: the same filter the Streamlit map uses. OpenStreetMap standing in for CARTO is muted. */
+.center-map .leaflet-tile-pane {
+  filter: var(--track-map-tiles);
+}
+
+.center-map[data-soft] .leaflet-tile-pane {
+  filter: saturate(0.55) brightness(1.06) contrast(0.94) var(--track-map-tiles);
+}
+
+.center-map .leaflet-container {
+  background: var(--track-map-water);
+  font-family: inherit;
+  font-size: 12px;
+}
+
+/* Every link on the map, the popups' included. */
+.center-map .leaflet-container a {
+  color: var(--track-blue);
+}
+
+.center-map .leaflet-control-attribution {
+  background: var(--track-glass-soft);
+  color: var(--track-muted);
+  font-size: 10px;
+}
+
+/* Zoom sits under the locate button, top right, away from the filter panel. */
+.center-map .leaflet-top.leaflet-right {
+  top: 60px;
+}
+
+.center-map .leaflet-top.leaflet-right .leaflet-control {
+  margin: 0 14px 0 0;
+}
+
+.center-map .leaflet-bar {
+  overflow: hidden;
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgb(var(--track-shadow-rgb) / 0.12);
+}
+
+.center-map .leaflet-bar a {
+  width: 42px;
+  height: 42px;
+  border-color: var(--track-border);
+  background: var(--track-surface);
+  color: var(--track-navy);
+  font-size: 20px;
+  line-height: 42px;
+}
+
+.center-map .leaflet-bar a:hover {
+  background: var(--track-soft);
+}
+
+/* Leaflet's controls and the map's own buttons alike. */
+.center-map :is(button, a):focus-visible {
+  outline: 3px solid var(--track-focus);
+  outline-offset: 2px;
+}
+
+/* A pin's popup. Its paragraphs lose Leaflet's margins; the classes on them add their own (with !, as here). */
+.center-map .leaflet-popup-content-wrapper,
+.center-map .leaflet-popup-tip {
+  background: var(--track-surface);
+  color: var(--track-ink);
+}
+
+.center-map .leaflet-popup-content-wrapper {
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgb(var(--track-shadow-rgb) / 0.2);
+}
+
+.center-map .leaflet-popup-content {
+  width: 360px !important;
+  margin: 16px;
+  line-height: 1.4;
+}
+
+.center-map .leaflet-popup-content p {
+  margin: 0;
+}
+
+.center-map .leaflet-popup-close-button {
+  top: 12px;
+  right: 12px;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  color: var(--track-muted);
+  font:
+    400 22px/24px Arial,
+    sans-serif;
+}
+
+/* A route's label rides in a tooltip of its own, which shows nothing but the label. */
+.center-map-route-tooltip {
+  padding: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.center-map-route-tooltip::before {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .center-map .leaflet-popup-content {
+    width: 250px !important;
+  }
+}

@@ -1,0 +1,60 @@
+[
+  {
+    "goal": "Buri kung mag-training king pamaggawa cake at pan king bakery.",
+    "accept": [
+      "Food Production (Bread and Patisserie) NC II"
+    ],
+    "lang": "pam",
+    "tags": [
+      "task"
+    ],
+    "group": "G1",
+    "review_status": "draft"
+  },
+  {
+    "goal": "Nanu ing kurso para king pamagkabit gripo at pamag-ayos tubu?",
+    "accept": [
+      "Plumbing NC II"
+    ],
+    "lang": "pam",
+    "tags": [
+      "task",
+      "indirect"
+    ],
+    "group": "G1",
+    "review_status": "draft"
+  },
+  {
+    "goal": "Buri kung matutung mag-install solar panel king bale mi.",
+    "accept": [
+      "PV Systems Installation NC II"
+    ],
+    "lang": "pam",
+    "tags": [
+      "task"
+    ],
+    "group": "G1",
+    "review_status": "draft"
+  },
+  {
+    "goal": "Buri kung mag-aral para maging doktor.",
+    "accept": [],
+    "lang": "pam",
+    "tags": [
+      "no_tvet",
+      "job_title"
+    ],
+    "group": "X",
+    "review_status": "draft"
+  },
+  {
+    "goal": "Dakal a salamat king saup yu.",
+    "accept": [],
+    "lang": "pam",
+    "tags": [
+      "non_goal"
+    ],
+    "group": "X",
+    "review_status": "draft"
+  }
+]

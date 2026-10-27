@@ -1,0 +1,1021 @@
+/* Brand and layout layer. Native theme tokens and widgets live in config.toml, in [theme.light] and [theme.dark].
+   app.py sets data-theme on the page to the theme Streamlit shows, so these colors follow the same choice. */
+:root {
+  --track-navy: #102a56; /* headings and strong text */
+  --track-blue: #175cd3; /* accents: links, icons, bars */
+  --track-fill: #175cd3; /* blue fills under white text */
+  --track-fill-hover: #124fb8;
+  --track-teal: #0d9488;
+  --track-muted: #52647e;
+  --track-border: #dfe7f2;
+  --track-surface: #ffffff;
+  --track-soft: #eef4ff;
+  --track-page: #f5f7fb; /* config.toml backgroundColor, for surfaces that cover scrolling content */
+  --track-ink: #3e5272; /* body copy on white cards */
+  --track-tint: #e8f0fe; /* icon tiles and circles */
+  --track-panel: #f4f7fd; /* panels inside cards */
+  --track-panel-border: #e3ebf7;
+  --track-violet: #6248b3;
+  --track-violet-bar: #7a5cdb;
+  --track-banner: linear-gradient(100deg, #f3f7ff 0%, #eaf2ff 48%, #dde9fd 100%);
+  --track-banner-border: #e0e9f8;
+  --track-eyebrow: #24395f;
+  --track-hover-border: #b8cdf0;
+  --track-focus: #438bf5;
+  --track-shadow-rgb: 16 42 86;
+  --track-line: #d8e3f5; /* timeline rules */
+  --track-bar: #dde6f5; /* the empty part of bars and rings */
+  /* Find my pathway's step tabs */
+  --track-current: #102a56;
+  --track-current-hint: #c3d2ef;
+  --track-step: #f0f4fb;
+  --track-step-hover: #e2eafa;
+  --track-done: #e3f4ef;
+  --track-done-hover: #d3ede5;
+  /* Banner cards */
+  --track-tile: #ffffffd9;
+  --track-tile-border: #ffffffe0;
+  --track-tile-violet: #f7f4ffe6;
+  --track-tile-green: #e9f8f0eb;
+  --track-tile-icon: #e3edff;
+  --track-tile-icon-violet: #ebe5fd;
+  --track-tile-icon-green: #d3f1e2;
+  /* Pills, chips and states */
+  --track-pill: #eaf2ff;
+  --track-pill-border: #c8dafa;
+  --track-pill-hover: #dce9ff;
+  --track-pill-hover-border: #9fbff3;
+  --track-pill-hover-ink: #0f4fbf;
+  --track-chip: #eef2f8;
+  --track-chip-hover: #e3e9f3;
+  --track-chip-hover-border: #cfd9e8;
+  --track-good-bg: #e3f5ee;
+  --track-good-ink: #11664c;
+  --track-warn-bg: #fff5df;
+  --track-warn-ink: #92601a;
+  --track-empty: #f9fbfe;
+  --track-dash: #c8d6e9;
+  /* Training & Assessment */
+  --track-stripe: #e6efff99;
+  --track-rule: #edf1f7;
+  --track-row-hover: #f5f8fe;
+  --track-row-hover-border: #dbe6f7;
+  --track-disabled-bg: #f4f6fa;
+  --track-disabled-ink: #9aa7ba;
+  --track-faint: #8a9bb4;
+  /* The center map (training_view.py). Its tiles stay as drawn in light, and turn to night in dark. */
+  --track-glass: #ffffffee;
+  --track-glass-soft: #ffffffcc;
+  --track-map-water: #cfe6f5;
+  --track-map-tiles: none;
+  /* Skills Explorer's delivery map legend */
+  --track-legend-provider: #0b6bcb;
+  --track-legend-assessment: #b46b00;
+  --track-legend-learner: #14804a;
+}
+/* Night navy, matching [theme.dark] in config.toml. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --track-navy: #e4ebf7;
+  --track-blue: #7fb0ff;
+  --track-fill: #2f6fe0;
+  --track-fill-hover: #3a78ea;
+  --track-teal: #2bc4a9;
+  --track-muted: #9fb1ce;
+  --track-border: #22365c;
+  --track-surface: #111f42;
+  --track-soft: #16305f;
+  --track-page: #0b1630;
+  --track-ink: #c3d0e6;
+  --track-tint: #1a2d5a;
+  --track-panel: #0e1b3b;
+  --track-panel-border: #22365c;
+  --track-violet: #a58df0;
+  --track-violet-bar: #a58df0;
+  --track-banner: linear-gradient(100deg, #0f1f45 0%, #13275a 48%, #183170 100%);
+  --track-banner-border: #22365c;
+  --track-eyebrow: #9db4da;
+  --track-hover-border: #34507f;
+  --track-focus: #6ea3ff;
+  --track-shadow-rgb: 0 0 0;
+  --track-line: #2a3f68;
+  --track-bar: #22365c;
+  --track-current: #2f6fe0;
+  --track-current-hint: #dbe6ff;
+  --track-step: #142650;
+  --track-step-hover: #1a3164;
+  --track-done: #0f3a35;
+  --track-done-hover: #134a43;
+  --track-tile: #111f42e6;
+  --track-tile-border: #ffffff14;
+  --track-tile-violet: #1e1c4ae6;
+  --track-tile-green: #0f2f33eb;
+  --track-tile-icon: #1a2d5a;
+  --track-tile-icon-violet: #2a2457;
+  --track-tile-icon-green: #0f3a35;
+  --track-pill: #16305f;
+  --track-pill-border: #2b4a85;
+  --track-pill-hover: #1c3a72;
+  --track-pill-hover-border: #4a6fb0;
+  --track-pill-hover-ink: #b5d0ff;
+  --track-chip: #182a52;
+  --track-chip-hover: #1f3563;
+  --track-chip-hover-border: #34507f;
+  --track-good-bg: #0f3a35;
+  --track-good-ink: #7be0c8;
+  --track-warn-bg: #3a2c10;
+  --track-warn-ink: #f5cf7a;
+  --track-empty: #0e1b3b;
+  --track-dash: #2f4670;
+  --track-stripe: #16305f40;
+  --track-rule: #1d2f55;
+  --track-row-hover: #15284f;
+  --track-row-hover-border: #2b4a85;
+  --track-disabled-bg: #15244a;
+  --track-disabled-ink: #6d7f9f;
+  --track-faint: #7d90b0;
+  --track-glass: #111f42ee;
+  --track-glass-soft: #111f42cc;
+  --track-map-water: #172540;
+  --track-map-tiles: invert(1) hue-rotate(180deg) brightness(0.92) contrast(0.88) saturate(0.7);
+  --track-legend-provider: #7fb0ff;
+  --track-legend-assessment: #e8b04a;
+  --track-legend-learner: #4fd18b;
+}
+/* Pictures drawn for the light theme sit a little quieter on night navy. */
+:root[data-theme="dark"] :is(.journey-scene, .page-hero-art, .start-art) img { filter: brightness(0.85) saturate(0.95); }
+/* The theme script in app.py has nothing to show. */
+[data-testid="stElementContainer"]:has(script[data-theme-sync]) { display: none; }
+
+.block-container { max-width: 1520px; padding: 3.8rem 2.5rem 2rem; }
+h1, h2, h3, h4, .brand, .score-ring span { font-family: var(--track-display); }
+h1, h2, h3 { letter-spacing: -0.02em; }
+
+/* Home: the landing page (landing.css) runs edge to edge under its own top bar. Streamlit's header steps aside but
+   keeps its menu, with System, Light and Dark, at the top right over the landing page's navy. */
+.stApp:has(.st-key-page_home) [data-testid="stHeader"] { background: transparent; pointer-events: none; }
+.stApp:has(.st-key-page_home) [data-testid="stToolbar"] { pointer-events: auto; }
+.stApp:has(.st-key-page_home) [data-testid="stToolbar"] button { color: #fff; }
+.stApp:has(.st-key-page_home) :is([data-testid="stAppDeployButton"], [data-testid="stDecoration"]) { display: none; }
+.stApp:has(.st-key-page_home) .block-container { max-width: none; padding: 0; }
+
+/* Preserve Streamlit's controls, input semantics, and toolbar. */
+[data-testid="stSidebar"] { border-right: 1px solid var(--track-border); }
+[data-testid="stSidebarUserContent"] { padding: 1.3rem 0 1.5rem; } /* stSidebarContent already pads the sides */
+
+/* Sidebar navigation: full-width rows with the icon before the label; the open page is filled blue. */
+.st-key-primary_navigation { gap: 0.6rem; }
+.st-key-sidebar_account { margin-top: -0.4rem; }
+.st-key-primary_navigation [data-testid="stButton"] button,
+.st-key-sidebar_account [data-testid="stButton"] button {
+  justify-content: flex-start;
+  min-height: 54px;
+  padding: 0.5rem 1.2rem;
+  border: 1px solid var(--track-border);
+  border-radius: 12px;
+  background: var(--track-surface);
+  color: var(--track-navy);
+}
+.st-key-primary_navigation button > div,
+.st-key-sidebar_account button > div { justify-content: flex-start; }
+.st-key-primary_navigation button > div > span,
+.st-key-sidebar_account button > div > span { gap: 1rem; }
+.st-key-primary_navigation [data-testid="stMarkdownContainer"],
+.st-key-sidebar_account [data-testid="stMarkdownContainer"] { text-align: left; }
+.st-key-primary_navigation [data-testid="stMarkdownContainer"] p,
+.st-key-sidebar_account [data-testid="stMarkdownContainer"] p { font-size: 1rem; font-weight: 500; }
+.st-key-primary_navigation [data-testid="stIconMaterial"],
+.st-key-sidebar_account [data-testid="stIconMaterial"] { font-size: 1.45rem; }
+.st-key-primary_navigation [data-testid="stButton"] button:hover,
+.st-key-sidebar_account [data-testid="stButton"] button:hover { border-color: var(--track-hover-border); background: var(--track-soft); color: var(--track-navy); }
+.st-key-primary_navigation [data-testid="stButton"] button[data-testid="stBaseButton-primary"] {
+  border-color: var(--track-fill);
+  background: var(--track-fill);
+  color: white;
+  box-shadow: 0 10px 20px -12px var(--track-fill);
+}
+.st-key-primary_navigation [data-testid="stButton"] button[data-testid="stBaseButton-primary"]:hover { background: var(--track-fill-hover); color: white; }
+[data-testid="stForm"] {
+  background: var(--track-surface);
+  border-color: var(--track-border);
+  padding: 1.25rem;
+  border-radius: 16px;
+}
+[data-testid="stButton"] button,
+[data-testid="stFormSubmitButton"] button,
+[data-testid="stDownloadButton"] button { min-height: 44px; font-weight: 600; }
+[data-testid="stButton"] button:focus-visible,
+[data-testid="stFormSubmitButton"] button:focus-visible,
+[data-testid="stDownloadButton"] button:focus-visible,
+[role="tab"]:focus-visible,
+a:focus-visible { outline: 3px solid var(--track-focus); outline-offset: 3px; }
+[data-testid="stTabs"] [role="tablist"] { gap: 1.75rem; margin: 0.4rem 0 1.25rem; }
+[data-testid="stTabs"] [role="tab"] { font-size: 0.9375rem; font-weight: 600; min-height: 48px; padding-bottom: 0.75rem; }
+[data-testid="stMetric"] {
+  padding: 1.1rem 1.25rem;
+  background: var(--track-surface);
+  border: 1px solid var(--track-border);
+  border-radius: 14px;
+}
+[data-testid="stMetricValue"] { color: var(--track-navy); }
+[data-testid="stExpander"] { background: var(--track-surface); border-radius: 14px; }
+
+.st-key-account_panel,
+.st-key-finder_panel,
+.st-key-training_filters,
+.st-key-library_filters,
+.st-key-progress_summary,
+.st-key-service_unavailable { background: var(--track-surface); border-radius: 18px; }
+.st-key-finder_panel { padding: 1.4rem; border: 1px solid var(--track-border); box-shadow: 0 3px 16px rgb(var(--track-shadow-rgb) / 0.02); }
+.st-key-training_filters,
+.st-key-library_filters,
+.st-key-progress_summary { padding: 1.25rem; }
+.st-key-service_unavailable { padding: 1.5rem; border: 1px solid var(--track-border); }
+.st-key-account_panel [data-testid="stForm"] { padding: 0.25rem; }
+.st-key-account_panel,
+.st-key-account_panel [data-testid="stForm"] { min-width: 0; }
+.st-key-account_panel input { min-height: 44px; font-size: 1rem; }
+
+/* All result and record cards share a surface; Streamlit supplies their border. */
+[class*="st-key-card_"] {
+  min-width: 0;
+  background: var(--track-surface);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgb(var(--track-shadow-rgb) / 0.02);
+}
+[class*="st-key-card_"] h3,
+[class*="st-key-card_"] p { overflow-wrap: anywhere; }
+[class*="st-key-card_"] [data-testid="stMetric"] { box-shadow: none; }
+
+/* Find my pathway: the journey banner and step tabs stay pinned below Streamlit's 60px toolbar while the step
+   scrolls under them. A script in app.py adds body.finder-compact once the learner scrolls down. */
+[data-testid="stMain"]:has(.st-key-finder_header) {
+  overflow-x: hidden; /* a step sliding in mustn't flash a horizontal scrollbar */
+  overflow-anchor: none; /* compacting the header must not move the scroll position, or it would undo itself */
+}
+/* Sticky goes on the wrapper Streamlit puts around every keyed container: the container alone is exactly as tall
+   as its wrapper, so it would have nowhere to stick. */
+[data-testid="stLayoutWrapper"]:has(> .st-key-finder_header) { position: sticky; top: 3.75rem; z-index: 20; }
+.st-key-finder_header {
+  gap: 0;
+  padding-bottom: 0.75rem;
+  background: var(--track-page);
+  transition: padding 0.3s ease, box-shadow 0.3s ease;
+}
+body.finder-compact .st-key-finder_header { padding: 0.5rem 0; box-shadow: 0 14px 16px -18px rgb(var(--track-shadow-rgb) / 0.35); }
+
+/* One tab per step, as chevrons that point on to the next: the icon in a circle, the name, and its hint
+   underneath (app.py sets --step-hint on each tab). Button types mark each tab: primary is the current step,
+   tertiary a finished one, secondary one still ahead. */
+.st-key-finder_steps {
+  --notch: 18px; /* how far each chevron's point reaches into the next tab */
+  --step-inset: 1.1rem; /* the space before each tab's icon, past its notch */
+  padding: 0.4rem;
+  gap: 0;
+  margin-top: 0.85rem;
+  background: var(--track-surface);
+  border: 1px solid var(--track-border);
+  border-radius: 18px;
+  box-shadow: 0 8px 22px -16px rgb(var(--track-shadow-rgb) / 0.25);
+  transition: margin 0.3s ease, padding 0.3s ease;
+}
+body.finder-compact .st-key-finder_steps { margin-top: 0.5rem; padding: 0.3rem; }
+/* Each tab after the first tucks its notch round the point before it, leaving a thin white seam. The tabs'
+   boxes overlap, so only the clipped buttons take clicks. */
+.st-key-finder_steps [class*="st-key-finder_tab_"] { position: relative; flex: 1 1 0; min-width: 0; pointer-events: none; }
+.st-key-finder_steps [class*="st-key-finder_tab_"]:not(.st-key-finder_tab_1) { margin-left: calc(5px - var(--notch)); }
+.st-key-finder_steps [data-testid="stButton"] button {
+  justify-content: flex-start;
+  min-height: 66px;
+  padding: 0.55rem calc(var(--notch) + 0.5rem) 0.55rem calc(var(--notch) + var(--step-inset));
+  border: 0;
+  border-radius: 0;
+  background: var(--track-step);
+  color: var(--track-navy);
+  clip-path: polygon(0 0, calc(100% - var(--notch)) 0, 100% 50%, calc(100% - var(--notch)) 100%, 0 100%, var(--notch) 50%);
+  pointer-events: auto;
+  transition: min-height 0.3s ease, background 0.2s ease;
+}
+/* The first tab has no notch and the last no point; their outer corners follow the bar's. */
+.st-key-finder_steps .st-key-finder_tab_1 [data-testid="stButton"] button {
+  padding-left: var(--step-inset);
+  border-radius: 13px 0 0 13px;
+  clip-path: polygon(0 0, calc(100% - var(--notch)) 0, 100% 50%, calc(100% - var(--notch)) 100%, 0 100%);
+}
+.st-key-finder_steps .st-key-finder_tab_4 [data-testid="stButton"] button {
+  padding-right: var(--step-inset);
+  border-radius: 0 13px 13px 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, var(--notch) 50%);
+}
+/* The clip hides the usual outline, so a focused tab glows along its own edges instead. */
+.st-key-finder_steps [data-testid="stButton"] button:focus-visible { outline: none; }
+.st-key-finder_steps [class*="st-key-finder_tab_"]:has(button:focus-visible) {
+  z-index: 2;
+  filter: drop-shadow(0 0 1px var(--track-focus)) drop-shadow(0 0 1px var(--track-focus)) drop-shadow(0 0 1px var(--track-focus));
+}
+.st-key-finder_steps button > div { justify-content: flex-start; }
+.st-key-finder_steps button > div > span { gap: 0.9rem; }
+/* Streamlit wraps the icon in a 16px box; let it grow to the circle, or the circle spills over the label. */
+.st-key-finder_steps span:has(> [data-testid="stIconMaterial"]) { width: auto; height: auto; }
+.st-key-finder_steps [data-testid="stIconMaterial"] {
+  display: grid;
+  flex: none; /* a long name mustn't squeeze the circle into an oval */
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--track-surface);
+  color: var(--track-blue);
+  font-size: 1.45rem;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+.st-key-finder_steps [data-testid="stMarkdownContainer"] { text-align: left; }
+.st-key-finder_steps [data-testid="stMarkdownContainer"] p { font-size: 0.9375rem; font-weight: 650; line-height: 1.3; }
+.st-key-finder_steps [data-testid="stMarkdownContainer"] p::after {
+  content: var(--step-hint, "");
+  display: block;
+  margin-top: 0.15rem;
+  color: var(--track-muted);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+/* Streamlit renders a new button when its type changes, so these animations play as a tab becomes current or done. */
+.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-primary"] {
+  background: var(--track-current);
+  color: white;
+  animation: finder-tab-in 0.3s ease-out backwards;
+}
+/* A box shadow would be clipped away with the corners, so the current tab's shadow follows its chevron. */
+.st-key-finder_steps [class*="st-key-finder_tab_"]:has([data-testid="stBaseButton-primary"]) {
+  z-index: 1;
+  filter: drop-shadow(0 6px 7px rgb(var(--track-shadow-rgb) / 0.22));
+}
+.st-key-finder_steps [data-testid="stBaseButton-primary"] [data-testid="stIconMaterial"] { background: #ffffff1f; color: white; }
+.st-key-finder_steps [data-testid="stBaseButton-primary"] [data-testid="stMarkdownContainer"] p::after { color: var(--track-current-hint); }
+.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-tertiary"] { background: var(--track-done); }
+.st-key-finder_steps [data-testid="stBaseButton-tertiary"] [data-testid="stIconMaterial"] {
+  color: var(--track-teal);
+  animation: finder-tick 0.45s ease-out backwards;
+}
+@keyframes finder-tab-in { from { transform: scale(0.94); opacity: 0.55; } }
+@keyframes finder-tick { 0% { transform: scale(0.3); opacity: 0; } 65% { transform: scale(1.25); opacity: 1; } }
+.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-secondary"]:hover:not(:disabled) { background: var(--track-step-hover); color: var(--track-navy); }
+.st-key-finder_steps [data-testid="stButton"] button[data-testid="stBaseButton-tertiary"]:hover { background: var(--track-done-hover); color: var(--track-navy); }
+.st-key-finder_steps [data-testid="stButton"] button:disabled { opacity: 0.55; }
+/* Pinned and scrolled: the tabs drop their hints and shrink to one slim row. */
+body.finder-compact .st-key-finder_steps [data-testid="stButton"] button { min-height: 48px; }
+body.finder-compact .st-key-finder_steps [data-testid="stIconMaterial"] { width: 32px; height: 32px; font-size: 1.15rem; }
+body.finder-compact .st-key-finder_steps [data-testid="stMarkdownContainer"] p::after { display: none; }
+/* A narrow bar (a small window, or a laptop with the sidebar open) drops the hints too, and tightens each tab so
+   a long name wraps onto a second line instead of being cut off. */
+.st-key-finder_steps { container-type: inline-size; }
+@container (max-width: 880px) {
+  .st-key-finder_steps [class*="st-key-finder_tab_"] { --notch: 14px; --step-inset: 0.7rem; }
+  .st-key-finder_steps [data-testid="stButton"] button { padding-right: calc(var(--notch) + 0.25rem); }
+  .st-key-finder_steps button > div > span { gap: 0.6rem; }
+  .st-key-finder_steps [data-testid="stIconMaterial"] { width: 34px; height: 34px; font-size: 1.2rem; }
+  .st-key-finder_steps [data-testid="stMarkdownContainer"],
+  .st-key-finder_steps [data-testid="stMarkdownContainer"] p { white-space: normal; }
+  .st-key-finder_steps [data-testid="stMarkdownContainer"] p::after { display: none; }
+}
+/* Narrower still, but not yet a phone's two rows, "Readiness" no longer fits a tab: only the current step keeps
+   its name on screen; the rest keep their icon or tick, and screen readers still hear their names. Streamlit
+   sizes stretch-width buttons with width: 100%, so the tabs need width: auto to shrink to their icons. */
+@media (min-width: 521px) {
+  @container (max-width: 600px) {
+    .st-key-finder_steps [class*="st-key-finder_tab_"] { flex: 0 0 auto; width: auto; }
+    .st-key-finder_steps [class*="st-key-finder_tab_"]:has([data-testid="stBaseButton-primary"]) { flex: 1 1 0; }
+    .st-key-finder_steps button:not([data-testid="stBaseButton-primary"]) [data-testid="stMarkdownContainer"] {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+    }
+  }
+}
+
+/* The submitted goal, with a learner's avatar, above steps 2 to 4. */
+.st-key-finder_goal_summary {
+  padding: 0.9rem 1.25rem 0.9rem 1rem;
+  margin-bottom: 0.25rem;
+  background: var(--track-surface);
+  border: 1px solid var(--track-border);
+  border-radius: 18px;
+  box-shadow: 0 2px 8px rgb(var(--track-shadow-rgb) / 0.02);
+}
+.goal-summary { display: flex; align-items: center; gap: 1.1rem; min-width: 0; }
+.goal-avatar { flex-shrink: 0; width: 68px; height: 68px; }
+.goal-avatar img { display: block; width: 100%; height: 100%; }
+.goal-summary div > span { display: block; color: var(--track-ink); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.12em; line-height: 1.6; }
+.goal-summary p { margin: 0.15rem 0 0; color: var(--track-navy); font-size: 1.1875rem; font-weight: 650; line-height: 1.4; overflow-wrap: anywhere; }
+.st-key-finder_goal_actions { gap: 0; flex-shrink: 0; }
+.st-key-finder_goal_actions > * + * { margin-left: 0.6rem; padding-left: 0.6rem; border-left: 1px solid var(--track-border); }
+.st-key-finder_goal_actions [data-testid="stButton"] button { color: var(--track-navy); }
+.st-key-finder_goal_actions [data-testid="stButton"] button:hover { color: var(--track-blue); }
+.st-key-finder_goal_actions [data-testid="stMarkdownContainer"] p { font-size: 1rem; font-weight: 500; }
+.st-key-finder_goal_actions [data-testid="stIconMaterial"] { color: var(--track-blue); font-size: 1.3rem; }
+.st-key-finder_nav { margin-top: 0.75rem; padding-top: 1rem; border-top: 1px solid var(--track-border); }
+/* A new readiness part opens just below the toolbar and the compact pinned header. */
+.st-key-readiness_questions { scroll-margin-top: 12.75rem; }
+/* The finder's scripts have nothing to show; don't let them add gaps. */
+[data-testid="stElementContainer"]:has(script[data-finder]) { display: none; }
+
+/* Each step slides in from the side the learner moved towards (the sign of --finder-shift). app.py flips the
+   key's _0/_1 ending on every move, which swaps the animation name and so restarts it. A readiness part only
+   gets a moving key on the run it changes, so opening the step doesn't slide it twice. */
+@keyframes finder-enter-0 { from { opacity: 0; transform: translateX(var(--finder-shift)); } }
+@keyframes finder-enter-1 { from { opacity: 0; transform: translateX(var(--finder-shift)); } }
+[class*="st-key-finder_body_"],
+[class*="st-key-readiness_part_"] { --finder-shift: 32px; animation: 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) backwards; }
+[class*="st-key-finder_body_back"],
+.st-key-readiness_part_back { --finder-shift: -32px; }
+.st-key-finder_body_forward_0,
+.st-key-finder_body_back_0,
+.st-key-readiness_part_forward,
+.st-key-readiness_part_back { animation-name: finder-enter-0; }
+.st-key-finder_body_forward_1,
+.st-key-finder_body_back_1 { animation-name: finder-enter-1; }
+
+/* Compact wordmark with a geometric training mark. */
+.brand-bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-bottom: 0.75rem; }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--track-navy);
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+/* The logo artwork carries its own rounded blue tile. */
+.brand-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-right: 0.4rem;
+  flex-shrink: 0;
+}
+.brand-icon img { display: block; width: 100%; height: 100%; }
+.brand-light { color: var(--track-blue); font-weight: 400; }
+.brand-tagline {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--track-muted);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+.prototype-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--track-border);
+  border-radius: 999px;
+  color: var(--track-muted);
+  background: var(--track-surface);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.035em;
+  white-space: nowrap;
+}
+.prototype-badge::before { content: ""; width: 6px; height: 6px; background: var(--track-teal); border-radius: 50%; }
+.sidebar-brand { margin: 0.2rem 0 1.8rem; }
+.sidebar-brand .brand { font-size: 1.55rem; }
+.sidebar-brand .brand-icon { width: 46px; height: 46px; }
+.sidebar-note {
+  margin-top: 1.2rem;
+  padding: 1rem;
+  border: 1px solid var(--track-pill-border);
+  border-radius: 12px;
+  background: var(--track-panel);
+  color: var(--track-muted);
+  font-size: 0.8rem;
+  line-height: 1.65;
+}
+.sidebar-note strong { color: var(--track-navy); display: block; margin-bottom: 0.3rem; }
+.account-avatar {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: var(--track-soft);
+  color: var(--track-blue);
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.85rem;
+}
+.account-avatar svg,
+.account-avatar img { width: 26px; height: 26px; }
+
+/* A concise blue brand moment keeps the actual service close at hand. */
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  position: relative;
+  overflow: hidden;
+  min-height: 250px;
+  background: linear-gradient(115deg, #103571 0%, #12469c 72%, #1557b1 100%);
+  border: 1px solid #174a99;
+  border-radius: 20px;
+  padding: 1.6rem 2.5rem;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+.hero-copy { position: relative; z-index: 1; max-width: 620px; flex: 1 1 60%; }
+.eyebrow,
+.section-kicker { color: var(--track-blue); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.12em; line-height: 1.6; text-transform: uppercase; }
+.hero .eyebrow { color: #a5eee4; margin-bottom: 0.8rem; }
+.hero h1 {
+  margin: 0 0 0.8rem;
+  padding: 0;
+  max-width: 570px;
+  font-size: clamp(2rem, 3.2vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.1;
+  color: white;
+  letter-spacing: -0.025em;
+}
+.hero h1 span { color: #76ddd7; }
+.hero p { max-width: 510px; margin: 0 0 1.25rem; color: #e0eaff; font-size: 0.9375rem; line-height: 1.65; }
+.hero-label { color: #d8e9ff; font-size: 0.75rem; line-height: 1.5; }
+.hero-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.hero-tags span {
+  padding: 0.35rem 0.7rem;
+  color: #eaf4ff;
+  border: 1px solid #ffffff36;
+  border-radius: 999px;
+  background: #ffffff0b;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.35;
+}
+.hero-art { position: relative; width: min(33%, 300px); min-width: 200px; flex: 0 1 300px; display: grid; place-items: center; align-self: stretch; }
+.hero-art > svg,
+.hero-art > img { display: block; width: 100%; height: 100%; max-height: 265px; object-fit: contain; overflow: visible; }
+.hero-art text { font-family: inherit; }
+
+.feature-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.25rem; padding: 1.1rem 0.25rem 1.25rem; margin-bottom: 0.3rem; }
+.feature-item { display: flex; align-items: center; gap: 0.8rem; min-width: 0; }
+.feature-item > svg,
+.feature-item > img,
+.feature-item > span:first-child {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 9px;
+  border: 1px solid var(--track-border);
+  border-radius: 11px;
+  background: var(--track-surface);
+  color: var(--track-blue);
+  box-sizing: border-box;
+}
+.feature-item span svg,
+.feature-item span img { width: 20px; height: 20px; }
+.feature-copy { min-width: 0; }
+.feature-copy strong { display: block; color: var(--track-navy); font-size: 0.8125rem; font-weight: 650; }
+.feature-copy p,
+.feature-copy span { display: block; color: var(--track-muted); font-size: 0.75rem; line-height: 1.5; margin: 0.12rem 0 0; }
+.section-heading { margin: 0.4rem 0 1.1rem; }
+.section-heading h1,
+.section-heading h2,
+.section-heading h3 { color: var(--track-navy); font-size: 1.5rem; line-height: 1.25; padding: 0; margin: 0.3rem 0 0.55rem; }
+.section-heading p { color: var(--track-muted); font-size: 0.9375rem; line-height: 1.6; margin: 0; max-width: 660px; }
+
+/* The banner above every Find my pathway step: the heading on the left, and a scene on the right with three cards
+   over its lower part. The banner is a size container, so its layout follows its own width (the sidebar can be open
+   or closed), not the window's. */
+.journey-hero {
+  position: relative;
+  container-type: inline-size;
+  min-height: 256px;
+  max-height: 40rem; /* above its tallest wrap; the cap only exists to animate */
+  padding: 1.9rem 2.1rem 1.5rem;
+  overflow: hidden;
+  border: 1px solid var(--track-banner-border);
+  border-radius: 22px;
+  background: var(--track-banner);
+  transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease, border-width 0.35s ease;
+}
+.journey-scene { position: absolute; inset: 0 0 0 32%; pointer-events: none; }
+.journey-scene img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: right top; }
+.journey-copy { position: relative; z-index: 1; width: 33%; min-width: 300px; }
+.journey-copy .eyebrow,
+.page-hero .eyebrow { color: var(--track-eyebrow); letter-spacing: 0.14em; }
+.journey-copy h1,
+.page-hero h1 {
+  margin: 0.5rem 0 0.75rem;
+  padding: 0;
+  color: var(--track-navy);
+  font-size: clamp(1.9rem, 2.65cqi, 2.6rem);
+  font-weight: 750;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+.journey-copy h1 span,
+.page-hero h1 span { color: var(--track-blue); }
+.journey-copy p,
+.page-hero p { margin: 0; color: var(--track-muted); font-size: 1rem; line-height: 1.6; max-width: 460px; }
+.journey-tiles {
+  position: absolute;
+  z-index: 1;
+  left: calc(33% + 1.25rem);
+  right: 9%;
+  bottom: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.journey-tile {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  min-width: 0;
+  padding: 1rem 1.05rem;
+  border: 1px solid var(--track-tile-border);
+  border-radius: 16px;
+  background: var(--track-tile);
+  box-shadow: 0 12px 28px -20px rgb(var(--track-shadow-rgb) / 0.50);
+  backdrop-filter: blur(8px);
+}
+.journey-tile-violet { background: var(--track-tile-violet); }
+.journey-tile-green { background: var(--track-tile-green); }
+.journey-tile-icon { display: grid; place-items: center; flex-shrink: 0; width: 46px; height: 46px; border-radius: 13px; background: var(--track-tile-icon); }
+.journey-tile-violet .journey-tile-icon { background: var(--track-tile-icon-violet); }
+.journey-tile-green .journey-tile-icon { background: var(--track-tile-icon-green); }
+.journey-tile-icon img { width: 26px; height: 26px; }
+.journey-tile strong { display: block; color: var(--track-navy); font-size: 0.9375rem; font-weight: 700; line-height: 1.3; }
+.journey-tile p { margin: 0.2rem 0 0; color: var(--track-ink); font-size: 0.8125rem; line-height: 1.45; }
+/* Narrower banners: the cards move under the heading, and the scene keeps to the top right. */
+@container (max-width: 1100px) {
+  .journey-copy { width: 52%; }
+  .journey-scene { inset: 0 0 auto 46%; height: 230px; }
+  .journey-tiles { position: static; margin-top: 1.4rem; }
+}
+@container (max-width: 680px) {
+  .journey-copy { width: auto; min-width: 0; }
+  .journey-scene { display: none; }
+  .journey-tiles { grid-template-columns: 1fr; gap: 0.5rem; margin-top: 1.1rem; }
+  .journey-tile { align-items: center; padding: 0.65rem 0.8rem; }
+  .journey-tile-icon { width: 38px; height: 38px; border-radius: 11px; }
+  .journey-tile-icon img { width: 22px; height: 22px; }
+}
+/* Pinned and scrolled: the banner folds away, leaving the step tabs. */
+body.finder-compact .journey-hero { min-height: 0; max-height: 0; opacity: 0; padding-block: 0; border-width: 0; }
+
+/* The other pages' banners, in the same style. */
+.page-hero {
+  position: relative;
+  container-type: inline-size;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 188px;
+  padding: 1.6rem 2.1rem;
+  margin-bottom: 1.1rem;
+  overflow: hidden;
+  border: 1px solid var(--track-banner-border);
+  border-radius: 22px;
+  background: var(--track-banner);
+}
+.page-hero-copy { position: relative; z-index: 1; min-width: 0; max-width: 680px; }
+.page-hero h1 { font-size: clamp(1.75rem, 2.6vw, 2.4rem); }
+.page-hero p { max-width: 580px; font-size: 0.9375rem; }
+.page-hero-art { flex: 0 0 auto; width: min(32%, 290px); }
+.page-hero-art img { display: block; width: 100%; height: auto; }
+
+/* A card's opening: its icon in a tinted tile beside the kicker, title and description. */
+.card-heading { display: flex; align-items: center; gap: 1rem; min-width: 0; }
+.card-heading-icon { display: grid; place-items: center; flex-shrink: 0; width: 52px; height: 52px; border-radius: 14px; background: var(--track-tint); }
+.card-heading-icon img { width: 28px; height: 28px; }
+.card-heading h3 { margin: 0; padding: 0; color: var(--track-navy); font-size: 1.3rem; font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; }
+.card-heading p { margin: 0.2rem 0 0; color: var(--track-muted); font-size: 0.9375rem; line-height: 1.5; }
+.card-kicker { color: var(--track-ink); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; line-height: 1.5; text-transform: uppercase; }
+
+/* Your starting point: the facts in a row with dividers, beside a stack of books. The card is a size container,
+   so the row wraps by the card's width. */
+.st-key-card_understanding { container-type: inline-size; padding: 1.15rem 1.4rem; }
+.start-point {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: "head art" "facts art" "skills art";
+  align-items: center;
+  column-gap: 1.5rem;
+}
+.start-point .card-heading { grid-area: head; }
+.start-facts { grid-area: facts; display: grid; grid-template-columns: repeat(4, auto); margin-top: 1.2rem; }
+.start-fact { display: flex; align-items: center; gap: 0.85rem; min-width: 0; padding: 0.15rem 1.25rem; border-left: 1px solid var(--track-border); }
+.start-fact:first-child { padding-left: 0.4rem; border-left: 0; }
+.start-fact > img { flex-shrink: 0; width: 30px; height: 30px; }
+.start-fact span { display: block; color: var(--track-navy); font-size: 0.8125rem; font-weight: 650; line-height: 1.4; }
+.start-fact strong { display: block; margin-top: 0.15rem; color: var(--track-navy); font-size: 1.0625rem; font-weight: 500; line-height: 1.35; overflow-wrap: anywhere; }
+.start-skills { grid-area: skills; margin: 0.8rem 0 0 0.4rem; color: var(--track-muted); font-size: 0.8125rem; }
+.start-art { grid-area: art; width: 230px; }
+.start-art img { display: block; width: 100%; height: auto; }
+.st-key-finder_followup { margin-top: 0.4rem; padding-top: 1rem; border-top: 1px solid var(--track-border); }
+.followup-title { margin: 0; color: var(--track-navy); font-size: 0.9375rem; font-weight: 650; }
+.followup-title span { margin-left: 0.4rem; color: var(--track-muted); font-size: 0.8125rem; font-weight: 400; }
+@container (max-width: 980px) {
+  .start-point { grid-template-columns: minmax(0, 1fr); grid-template-areas: "head" "facts" "skills"; }
+  .start-art { display: none; }
+}
+@container (max-width: 640px) {
+  .start-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 1rem; }
+  .start-fact:nth-child(3) { padding-left: 0.4rem; border-left: 0; }
+}
+@container (max-width: 480px) {
+  .start-facts { grid-template-columns: minmax(0, 1fr); row-gap: 0.8rem; }
+  .start-fact { padding-left: 0.4rem; border-left: 0; }
+}
+
+/* Qualifications for you: the heading with its link, then one wide card per match. */
+.st-key-finder_matches_heading { margin-top: 0.75rem; }
+.section-title { display: flex; align-items: flex-start; gap: 0.75rem; min-width: 0; }
+.section-title > img { flex-shrink: 0; width: 26px; height: 26px; margin-top: 0.2rem; }
+.section-title h3 { margin: 0; padding: 0; color: var(--track-navy); font-size: 1.4rem; font-weight: 750; line-height: 1.3; }
+.section-title p { margin: 0.2rem 0 0; color: var(--track-muted); font-size: 0.9375rem; line-height: 1.5; }
+.st-key-finder_view_library [data-testid="stButton"] button { color: var(--track-blue); white-space: nowrap; }
+.st-key-finder_view_library [data-testid="stMarkdownContainer"] p { font-size: 1rem; font-weight: 650; }
+[class*="st-key-card_match_"] { padding: 1.1rem; }
+/* Each column is a size container, so the picture and text share whatever width their column gets. */
+[class*="st-key-card_match_"] [data-testid="stColumn"] { container-type: inline-size; }
+.match-summary { display: flex; align-items: center; gap: 1.35rem; min-width: 0; }
+.match-media { flex: 0 0 236px; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 12px; background: var(--track-tint); }
+.qual-photo { display: block; width: 100%; height: 100%; object-fit: cover; background: center / cover no-repeat; }
+/* A sector tile: its icon over two soft circles and the sector's gradient (presentation.media_styles sets both). */
+.qual-tile {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--tile-icon) center / min(30%, 60px) auto no-repeat,
+              radial-gradient(circle at 92% 0%, #ffffff24 0 34%, transparent 35%),
+              radial-gradient(circle at 0% 105%, #ffffff17 0 30%, transparent 31%),
+              var(--tile-fill, var(--track-blue));
+}
+.match-body { flex: 1; min-width: 0; }
+.match-title { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.8rem; margin: 0.3rem 0 0.4rem; }
+.match-title h4 { margin: 0; padding: 0; color: var(--track-navy); font-size: 1.25rem; font-weight: 700; line-height: 1.3; letter-spacing: -0.02em; }
+.top-match {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  background: var(--track-good-bg);
+  color: var(--track-good-ink);
+  font-size: 0.8125rem;
+  font-weight: 650;
+  white-space: nowrap;
+}
+.top-match img { width: 17px; height: 17px; }
+.match-body > p { margin: 0 0 0.8rem; color: var(--track-ink); font-size: 0.9375rem; line-height: 1.55; }
+.qual-tags { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+.qual-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 8px;
+  background: var(--track-chip);
+  color: var(--track-ink);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.25;
+}
+.qual-tag-green { background: var(--track-good-bg); color: var(--track-good-ink); }
+.qual-tag img { width: 15px; height: 15px; }
+@container (max-width: 700px) { .match-media { flex-basis: 160px; } }
+@container (max-width: 480px) {
+  .match-summary { flex-direction: column; align-items: stretch; gap: 0.9rem; }
+  .match-media { flex-basis: auto; }
+}
+/* The score panel: a ring, then bars or notes, then the button. */
+[class*="st-key-match_fit_"] { container-type: inline-size; padding: 1rem 1.15rem; background: var(--track-panel); border: 1px solid var(--track-panel-border); border-radius: 14px; }
+.score-ring {
+  --score: 0;
+  display: grid;
+  place-items: center;
+  width: 108px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--track-panel) 80%, transparent 81%),
+              conic-gradient(var(--track-blue) calc(var(--score) * 1%), var(--track-bar) 0);
+}
+.score-ring span { color: var(--track-navy); font-size: 1.65rem; font-weight: 750; letter-spacing: -0.03em; }
+.match-fit-title { display: flex; align-items: center; gap: 0.35rem; margin-bottom: 0.4rem; color: var(--track-navy); font-size: 0.9375rem; font-weight: 650; }
+.match-fit-hint { display: inline-grid; cursor: help; }
+.match-fit-hint img { display: block; width: 16px; height: 16px; }
+.match-note { margin: 0.15rem 0 0; color: var(--track-ink); font-size: 0.875rem; line-height: 1.45; }
+.match-note + .match-note { color: var(--track-muted); font-size: 0.8125rem; }
+.skill-bars { display: grid; gap: 0.55rem; }
+.skill-bar { display: grid; grid-template-columns: 8.5rem minmax(3rem, 1fr) 2.75rem; align-items: center; gap: 0.75rem; color: var(--track-ink); font-size: 0.875rem; }
+.skill-track { height: 8px; overflow: hidden; border-radius: 99px; background: var(--track-bar); }
+.skill-track i { display: block; height: 100%; border-radius: inherit; background: var(--track-blue); }
+.skill-bar-violet .skill-track i { background: var(--track-violet-bar); }
+.skill-bar b { color: var(--track-navy); font-weight: 650; text-align: right; }
+[class*="st-key-card_readiness_"] .skill-bars { max-width: 720px; margin-block: 0.25rem 0.4rem; }
+@container (max-width: 400px) {
+  .skill-bar { grid-template-columns: minmax(0, 1fr) auto; row-gap: 0.25rem; }
+  .skill-track { grid-column: 1 / -1; grid-row: 2; }
+}
+
+/* A curated pathway's steps as a timeline. */
+.pathway-steps { display: grid; margin: 0.6rem 0 0.3rem; padding: 0; list-style: none; }
+.pathway-steps li { position: relative; display: flex; align-items: flex-start; gap: 0.85rem; margin: 0; padding: 0 0 0.9rem; }
+.pathway-steps li:not(:last-child)::before { content: ""; position: absolute; top: 34px; bottom: 2px; left: 15px; width: 2px; background: var(--track-line); }
+.pathway-steps span { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; background: var(--track-tint); color: var(--track-blue); font-size: 0.875rem; font-weight: 700; }
+.pathway-steps p { margin: 0.3rem 0 0; color: var(--track-navy); font-size: 0.9375rem; line-height: 1.5; }
+
+/* Library cards: a small picture beside the sector, the name, careers and tags. */
+.library-top { display: flex; align-items: center; gap: 0.85rem; }
+.library-media { flex: 0 0 52px; width: 52px; height: 52px; overflow: hidden; border-radius: 12px; }
+.library-media .qual-tile { background-size: 50% auto, auto, auto, auto; }
+.library-details p { margin: 0.2rem 0 0.75rem; color: var(--track-navy); font-size: 0.9375rem; line-height: 1.5; }
+[class*="st-key-card_library_"] h3 { font-size: 1.25rem; }
+
+/* Your goal: the step's heading, its two rows of ideas and the last goal, as one card. */
+.step-heading { display: flex; align-items: center; gap: 1.1rem; margin-bottom: 0.4rem; }
+.step-heading-icon { display: grid; place-items: center; flex-shrink: 0; width: 64px; height: 64px; border-radius: 16px; background: var(--track-tint); }
+.step-heading-icon img { width: 34px; height: 34px; }
+.step-heading .section-kicker { color: var(--track-muted); letter-spacing: 0.1em; }
+.step-heading h1 { color: var(--track-navy); font-size: 1.6rem; line-height: 1.2; margin: 0.15rem 0 0.3rem; padding: 0; }
+.step-heading p { color: var(--track-muted); font-size: 0.9375rem; line-height: 1.5; margin: 0; }
+.goal-label { margin: 0; color: var(--track-ink); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; }
+.goal-label-rule { display: flex; align-items: center; gap: 0.9rem; }
+.goal-label-rule::after { content: ""; flex: 1; height: 1px; background: var(--track-border); }
+.goal-samples-label { margin: 0; color: var(--track-muted); font-size: 0.875rem; }
+.st-key-goal_examples [data-testid="stButton"] button {
+  min-height: 48px;
+  padding: 0.55rem 1.35rem;
+  border: 1px solid var(--track-pill-border);
+  border-radius: 999px;
+  background: var(--track-pill);
+  color: var(--track-blue);
+}
+.st-key-goal_examples [data-testid="stButton"] button p { font-size: 1rem; font-weight: 700; }
+.st-key-goal_examples [data-testid="stButton"] button:hover { background: var(--track-pill-hover); border-color: var(--track-pill-hover-border); color: var(--track-pill-hover-ink); }
+.st-key-goal_samples [data-testid="stButton"] button {
+  min-height: 40px;
+  padding: 0.3rem 0.95rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: var(--track-chip);
+  color: var(--track-ink);
+}
+.st-key-goal_samples [data-testid="stButton"] button p { font-size: 0.875rem; font-weight: 500; }
+.st-key-goal_samples [data-testid="stIconMaterial"] { color: var(--track-blue); }
+.st-key-goal_samples [data-testid="stButton"] button:hover { background: var(--track-chip-hover); border-color: var(--track-chip-hover-border); }
+.st-key-goal_last { padding: 0.85rem 1rem; background: var(--track-panel); border: 1px solid var(--track-panel-border); border-radius: 14px; }
+.goal-last { display: flex; align-items: center; gap: 0.9rem; min-width: 0; }
+.goal-last-icon { display: grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: var(--track-tint); }
+.goal-last-icon img { width: 24px; height: 24px; }
+.goal-last strong { color: var(--track-navy); font-size: 0.875rem; font-weight: 650; }
+.goal-last p { margin: 0.1rem 0 0; color: var(--track-ink); font-size: 0.9375rem; line-height: 1.5; overflow-wrap: anywhere; }
+.st-key-goal_last [data-testid="stButton"] button { background: var(--track-surface); }
+
+.empty-state { margin-top: 1rem; border: 1px dashed var(--track-dash); border-radius: 16px; padding: 2rem 1.5rem; text-align: center; background: var(--track-empty); }
+.empty-icon { display: grid; place-items: center; width: 46px; height: 46px; margin: 0 auto 0.9rem; color: var(--track-blue); background: var(--track-tint); border-radius: 13px; }
+.empty-icon svg,
+.empty-icon img { width: 23px; height: 23px; }
+.empty-state h3 { color: var(--track-navy); font-size: 1.125rem; line-height: 1.4; margin: 0 0 0.4rem; padding: 0; }
+.empty-state p { color: var(--track-muted); font-size: 0.875rem; line-height: 1.65; margin: 0 auto; max-width: 520px; }
+.service-state { text-align: center; max-width: 620px; margin: 0 auto 1.2rem; }
+.service-state .empty-icon { color: var(--track-warn-ink); background: var(--track-warn-bg); }
+.service-state h2,
+.service-state h3 { color: var(--track-navy); margin: 0 0 0.65rem; padding: 0; font-size: 1.4rem; }
+.service-state p { color: var(--track-muted); font-size: 0.9375rem; line-height: 1.7; margin: 0 auto; }
+.app-footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  padding-top: 1.3rem;
+  margin-top: 2rem;
+  border-top: 1px solid var(--track-border);
+  color: var(--track-muted);
+  font-size: 0.75rem;
+  line-height: 1.7;
+}
+.app-footer strong { color: var(--track-navy); font-weight: 600; }
+.app-footer p { width: 100%; margin: 0; }
+
+@media (max-width: 1100px) {
+  .block-container { padding-inline: 1.5rem; }
+  .hero { padding: 2rem; }
+  .hero-art { min-width: 160px; }
+  .hero h1 { font-size: 2.55rem; }
+  .feature-strip { gap: 0.9rem; }
+  .feature-item { gap: 0.6rem; }
+}
+@media (max-width: 800px) {
+  .hero { padding: 1.8rem; min-height: 250px; }
+  .hero-art { display: none; }
+  .hero-copy { max-width: none; }
+  .hero h1 { font-size: 2.4rem; }
+  .hero p { max-width: 570px; }
+  .feature-strip { gap: 0.75rem; }
+  .feature-item { align-items: flex-start; }
+  .feature-item > svg,
+  .feature-item > img,
+  .feature-item > span:first-child { width: 32px; height: 32px; padding: 6px; }
+  .feature-copy strong { font-size: 0.8125rem; }
+  .feature-copy p,
+  .feature-copy span { font-size: 0.8125rem; }
+  .page-hero-art { display: none; }
+}
+@media (max-width: 520px) {
+  .block-container { padding: 3.8rem 1rem 1.5rem; }
+  .sidebar-brand { margin-bottom: 1.2rem; }
+  .sidebar-note { padding: 0.9rem; font-size: 0.875rem; }
+  .brand-bar { gap: 0.6rem; margin-bottom: 1.1rem; }
+  .brand { font-size: 1.2rem; }
+  .brand-icon { width: 34px; height: 34px; margin-right: 0.2rem; }
+  .brand-tagline { font-size: 0.55rem; letter-spacing: 0.06em; }
+  .prototype-badge { padding: 0.35rem 0.5rem; font-size: 0.5625rem; letter-spacing: 0; }
+  .prototype-badge::before { display: none; }
+  .hero { padding: 1.7rem 1.4rem; min-height: auto; border-radius: 16px; }
+  .hero h1 { font-size: 2.1rem; max-width: 340px; }
+  .hero p { font-size: 0.875rem; }
+  .hero .eyebrow { font-size: 0.625rem; letter-spacing: 0.075em; }
+  .hero-tags { gap: 0.35rem; }
+  .hero-tags, .feature-strip { display: none; }
+  .hero-tags span { font-size: 0.625rem; padding: 0.3rem 0.55rem; }
+  .feature-strip { gap: 0.75rem; grid-template-columns: 1fr; padding: 1rem 0.25rem; }
+  .feature-item { align-items: center; gap: 0.75rem; }
+  .feature-copy strong { font-size: 0.875rem; }
+  .feature-copy p,
+  .feature-copy span { font-size: 0.875rem; }
+  [data-testid="stTabs"] [role="tablist"] { gap: 1.2rem; }
+  [data-testid="stTabs"] [role="tab"] { font-size: 0.875rem; }
+  /* Two step tabs per row on phones, so no chevrons: they would point at nothing. */
+  .st-key-finder_steps { padding: 0.35rem; gap: 0.35rem; }
+  .st-key-finder_steps [class*="st-key-finder_tab_"] { flex: 1 1 calc(50% - 0.5rem); min-width: 0; }
+  .st-key-finder_steps [class*="st-key-finder_tab_"]:not(.st-key-finder_tab_1) { margin-left: 0; }
+  .st-key-finder_steps [class*="st-key-finder_tab_"] [data-testid="stButton"] button {
+    min-height: 48px;
+    padding: 0.4rem 0.6rem;
+    border-radius: 12px;
+    clip-path: none;
+  }
+  .st-key-finder_steps [data-testid="stIconMaterial"] { width: 32px; height: 32px; font-size: 1.15rem; }
+  .st-key-finder_steps button > div > span { gap: 0.55rem; }
+  .st-key-finder_steps [data-testid="stMarkdownContainer"] p { font-size: 0.8125rem; }
+  .st-key-finder_panel,
+  .st-key-training_filters,
+  .st-key-library_filters,
+  .st-key-progress_summary,
+  .st-key-service_unavailable { padding: 1.1rem; border-radius: 14px; }
+  .empty-state { padding: 1.6rem 1rem; }
+  /* Phones keep the banners to their headline; the journey cards keep their titles. */
+  .journey-hero,
+  .page-hero { padding: 1.3rem 1.2rem; border-radius: 16px; }
+  .journey-hero { min-height: 0; }
+  .journey-copy p,
+  .journey-tile p { display: none; }
+  .journey-copy h1,
+  .page-hero h1 { font-size: 1.65rem; }
+  .page-hero { min-height: 0; }
+  .goal-avatar { width: 48px; height: 48px; }
+  .goal-summary p { font-size: 1rem; }
+  /* One swipeable row of sample goals instead of six stacked rows; the cut-off last pill shows there's more. */
+  .st-key-goal_samples { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+  .st-key-goal_samples::-webkit-scrollbar { display: none; }
+  .st-key-goal_samples > * { flex-shrink: 0; }
+  .step-heading { align-items: flex-start; gap: 0.8rem; }
+  .step-heading-icon { width: 48px; height: 48px; border-radius: 12px; }
+  .step-heading-icon img { width: 26px; height: 26px; }
+  .step-heading h1 { font-size: 1.3rem; }
+  .st-key-goal_examples [data-testid="stButton"] button { min-height: 44px; padding: 0.45rem 1rem; }
+  .st-key-goal_examples [data-testid="stButton"] button p { font-size: 0.9375rem; }
+  /* Pinned and scrolled on phones: the tabs become one row of icons with only the current step named. */
+  body.finder-compact .st-key-finder_steps { margin-top: 0; flex-wrap: nowrap; }
+  /* Streamlit sizes stretch-width buttons with width: 100%, which would give every tab a whole row. */
+  body.finder-compact .st-key-finder_steps [class*="st-key-finder_tab_"] { flex: 0 0 auto; width: auto; min-width: 0; }
+  body.finder-compact .st-key-finder_steps [class*="st-key-finder_tab_"]:has([data-testid="stBaseButton-primary"]) { flex: 1 1 0; }
+  body.finder-compact .st-key-finder_steps button:not([data-testid="stBaseButton-primary"]) [data-testid="stMarkdownContainer"] { display: none; }
+  .st-key-readiness_questions { scroll-margin-top: 8.75rem; }
+  .section-heading h1,
+  .section-heading h2,
+  .section-heading h3 { font-size: 1.35rem; }
+  .app-footer { display: block; }
+  .app-footer > * { display: block; margin-bottom: 0.35rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero *, .brand *, .feature-strip * { animation: none !important; transition: none !important; }
+  .st-key-finder_header,
+  .st-key-finder_header *,
+  [class*="st-key-finder_body_"],
+  [class*="st-key-readiness_part_"] { animation: none !important; transition: none !important; }
+}
