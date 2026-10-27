@@ -61,10 +61,8 @@ function pageTargets(): Record<PageKey, readonly Target[]> {
     ],
     progress: [
       target('progress-next', copy.progressNext),
-      target('progress-summary', copy.progressSummary),
-      target('progress-readiness', copy.progressReadiness),
-      target('progress-history', copy.progressHistory),
-      target('progress-goals', copy.progressGoals),
+      target('progress-sections', copy.progressSections),
+      target('progress-qualifications', copy.progressQualifications),
     ],
     skills: [
       target('skills-input', copy.skillsInput),
@@ -78,6 +76,7 @@ function pageTargets(): Record<PageKey, readonly Target[]> {
     ],
     admin: [{ selector: '#main nav[aria-label="Admin sections"]', copy: copy.adminSections }],
     profile: [
+      target('profile-sections', copy.profileSections),
       { selector: '#main section[aria-labelledby="profile-details"]', copy: copy.profileDetails },
       { selector: '#main section[aria-labelledby="profile-journey"]', copy: copy.profileJourney },
     ],

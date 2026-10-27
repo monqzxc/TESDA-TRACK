@@ -106,6 +106,24 @@ describe('Qualifications Library', () => {
     )
   })
 
+  it('can show every qualification while preserving filters and resetting pagination', async () => {
+    serve()
+    const user = userEvent.setup()
+    const { router } = await openLibrary('/qualifications?sector=Tourism&page=2')
+    expect(cards()).toHaveLength(2)
+
+    await user.click(screen.getByRole('button', { name: 'Show all qualifications' }))
+    expect(cards()).toHaveLength(14)
+    expect(new URLSearchParams(router.state.location.search).get('sector')).toBe('Tourism')
+    expect(new URLSearchParams(router.state.location.search).get('view')).toBe('all')
+    expect(new URLSearchParams(router.state.location.search).has('page')).toBe(false)
+    expect(screen.queryByRole('navigation', { name: 'Pages' })).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Show 12 per page' }))
+    expect(cards()).toHaveLength(12)
+    expect(new URLSearchParams(router.state.location.search).get('sector')).toBe('Tourism')
+  })
+
   it('opens a shared search as it was', async () => {
     serve()
     await openLibrary('/qualifications?q=qualification%201&sector=Tourism')

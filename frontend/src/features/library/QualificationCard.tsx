@@ -1,14 +1,16 @@
 import { useId } from 'react'
 import { Button } from 'react-aria-components'
+import { Link } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
+import { failureMessage } from '../../auth/fields.tsx'
 import { Icon } from '../../components/Icon.tsx'
 import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { QualificationMedia } from '../../components/QualificationMedia.tsx'
 import { TagChips } from '../../components/TagChips.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { competencyGroups, qualificationTags } from '../../lib/qualifications.ts'
-import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
+import { paths } from '../../paths.ts'
 
 const kicker = 'm-0 text-11 leading-[1.5] font-bold tracking-[0.1em] text-ink uppercase'
 
@@ -16,6 +18,13 @@ interface QualificationCardProps {
   qualification: Qualification
   catalogNames: ReadonlySet<string>
   onExplore: () => void
+  collection?: {
+    added: boolean
+    pending: boolean
+    disabled: boolean
+    error: unknown
+    onAdd: () => void
+  }
 }
 
 /**
@@ -27,6 +36,7 @@ export function QualificationCard({
   qualification,
   catalogNames,
   onExplore,
+  collection,
 }: QualificationCardProps) {
   const en = useCopy()
   const copy = en.library
@@ -84,14 +94,47 @@ export function QualificationCard({
         </details>
       )}
       {/* The button sits at the foot of the card, so cards side by side line up. */}
-      <Button
-        data-tour="qualification-explore"
-        className={cx(button({ wide: true }), 'mt-auto')}
-        onPress={onExplore}
-      >
-        {copy.explore}
-        <Icon name="arrowRight" />
-      </Button>
+      <div className="mt-auto flex flex-col gap-2 pt-2">
+        {collection && (
+          <>
+            <Button
+              className={button({
+                variant: collection.added ? 'secondary' : 'primary',
+                wide: true,
+              })}
+              isPending={collection.pending}
+              isDisabled={collection.added || collection.disabled}
+              onPress={collection.onAdd}
+            >
+              <Icon name={collection.added ? 'check' : 'plus'} />
+              {collection.pending
+                ? copy.collection.adding
+                : collection.added
+                  ? copy.collection.added
+                  : copy.collection.add}
+            </Button>
+            {collection.added && (
+              <Link to={paths.progress} className={button({ variant: 'tertiary', wide: true })}>
+                {copy.collection.view}
+                <Icon name="arrowRight" />
+              </Link>
+            )}
+            {collection.error != null && (
+              <p role="alert" className="m-0 text-14 text-warn-ink">
+                {failureMessage(collection.error)}
+              </p>
+            )}
+          </>
+        )}
+        <Button
+          data-tour="qualification-explore"
+          className={button({ wide: true, variant: collection ? 'tertiary' : 'secondary' })}
+          onPress={onExplore}
+        >
+          {copy.explore}
+          <Icon name="arrowRight" />
+        </Button>
+      </div>
     </article>
   )
 }

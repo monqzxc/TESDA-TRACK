@@ -8,6 +8,7 @@ export interface MobileMenuDrawerProps {
   isOpen: boolean
   onOpenChange: (open: boolean) => void
   isAdmin: boolean
+  isSignedIn?: boolean
   canManage?: boolean
   /** Called when a link is chosen: a link to the page already open doesn't change the address. */
   onNavigate: () => void
@@ -24,6 +25,7 @@ export default function MobileMenuDrawer({
   isOpen,
   onOpenChange,
   isAdmin,
+  isSignedIn = false,
   canManage = false,
   onNavigate,
   returnFocus,
@@ -54,6 +56,7 @@ export default function MobileMenuDrawer({
           </div>
           <SidebarContent
             isAdmin={isAdmin}
+            isSignedIn={isSignedIn}
             canManage={canManage}
             onNavigate={onNavigate}
             returnFocus={returnFocus}

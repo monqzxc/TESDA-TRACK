@@ -545,7 +545,7 @@ describe('Find my pathway, signed in', () => {
     expect(useFinderStore.getState().checks[welding.code].saved).toBe(true)
   })
 
-  it('asks a guest to sign in to follow a pathway, then follows it', async () => {
+  it('asks a guest to sign in to save a qualification, then shows it as added', async () => {
     serveAccountApi()
     serveFinderCatalog()
     const api = serveFinderApi()
@@ -556,7 +556,7 @@ describe('Find my pathway, signed in', () => {
     await rateAll(user)
     await user.click(screen.getByRole('button', { name: 'Analyze my skills' }))
 
-    await user.click(await screen.findByRole('button', { name: 'Follow this pathway' }))
+    await user.click(await screen.findByRole('button', { name: 'Add to My Progress' }))
     const dialog = await screen.findByRole('dialog', { name: 'Sign in' })
     expect(sent(api.requests, 'POST', '/api/v1/me/pathways')).toEqual([])
     await user.type(within(dialog).getByLabelText('Email'), maria.email)
@@ -568,10 +568,14 @@ describe('Find my pathway, signed in', () => {
     ).toBeInTheDocument()
     expect(sent(api.requests, 'POST', '/api/v1/me/pathways')[0].body).toEqual({ pathway_id: 7 })
 
-    await user.click(screen.getByRole('button', { name: 'Follow this pathway' }))
-    expect(
-      await screen.findByText('You’re already following this pathway. Find it under My Progress.'),
-    ).toBeInTheDocument()
+    const added = screen.getByRole('button', { name: 'Added to My Progress' })
+    expect(added).toBeDisabled()
+    await user.click(added)
+    expect(sent(api.requests, 'POST', '/api/v1/me/pathways')).toHaveLength(1)
+    expect(screen.getByRole('link', { name: 'View My Progress' })).toHaveAttribute(
+      'href',
+      '/progress',
+    )
   })
 })
 

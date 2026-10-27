@@ -2,7 +2,8 @@
 export const ui = {
   card: 'min-w-0 rounded-16 border border-border bg-surface px-5 py-[1.15rem]',
   /** A section's heading, which the card at the top can bring into view and focus (it shows no ring). */
-  sectionHeading: 'mt-0 mb-[0.6rem] scroll-mt-4 text-[1.3rem] text-navy focus:outline-none',
+  sectionHeading:
+    'mt-0 mb-[0.6rem] scroll-mt-4 text-[1.3rem] text-navy focus:outline-none max-md:scroll-mt-24',
   muted: 'm-0 text-14 leading-[1.55] wrap-anywhere text-muted',
   empty:
     'mt-1 mb-3 rounded-12 border border-dashed border-dash bg-empty px-4 py-[0.85rem] text-14 text-muted',

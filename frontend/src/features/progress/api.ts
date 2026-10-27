@@ -63,6 +63,19 @@ export const certificationsQuery = queryOptions<Certification[], ApiError>({
   queryFn: ({ signal }) => unwrap(api.GET('/api/v1/me/certifications', { signal })),
 })
 
+/** Removing a saved pathway is reversible: adding it again resumes its existing checklist. */
+export function setPathwayStatus(
+  enrollmentId: string,
+  status: 'active' | 'withdrawn',
+): Promise<Enrollment> {
+  return unwrap(
+    api.PATCH('/api/v1/me/pathways/{enrollment_id}', {
+      params: { path: { enrollment_id: enrollmentId } },
+      body: { status },
+    }),
+  )
+}
+
 export function setStepStatus(
   enrollmentId: string,
   stepId: number,
@@ -84,10 +97,18 @@ export function withdrawApplication(applicationId: string): Promise<Application>
   )
 }
 
-export function addGoal(title: string, targetCode: string | null): Promise<Goal> {
+export function addGoal(
+  title: string,
+  targetCode: string | null,
+  targetDate: string | null,
+): Promise<Goal> {
   return unwrap(
     api.POST('/api/v1/me/goals', {
-      body: { title, target_qualification_code: targetCode },
+      body: {
+        title,
+        target_qualification_code: targetCode,
+        ...(targetDate ? { target_date: targetDate } : {}),
+      },
     }),
   )
 }
@@ -97,6 +118,24 @@ export function achieveGoal(goalId: string): Promise<Goal> {
     api.PATCH('/api/v1/me/goals/{goal_id}', {
       params: { path: { goal_id: goalId } },
       body: { status: 'achieved' },
+    }),
+  )
+}
+
+export function setGoalStatus(goalId: string, status: Goal['status']): Promise<Goal> {
+  return unwrap(
+    api.PATCH('/api/v1/me/goals/{goal_id}', {
+      params: { path: { goal_id: goalId } },
+      body: { status },
+    }),
+  )
+}
+
+export function setGoalTargetDate(goalId: string, targetDate: string | null): Promise<Goal> {
+  return unwrap(
+    api.PATCH('/api/v1/me/goals/{goal_id}', {
+      params: { path: { goal_id: goalId } },
+      body: { target_date: targetDate },
     }),
   )
 }

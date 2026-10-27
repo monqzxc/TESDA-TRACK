@@ -220,6 +220,7 @@ export function serveFinderApi({
     reportFailures: failReport,
     followed: new Set<number>(),
   }
+  let latestPathway: components['schemas']['PathwayPublic'] | undefined
   const record = async (request: Request) => {
     const text = request.method === 'GET' ? '' : await request.clone().text()
     state.requests.push({
@@ -320,31 +321,30 @@ export function serveFinderApi({
       const url = new URL(request.url)
       const code = url.searchParams.get('qualification_code')
       const qualification = [welding, cookery].find((q) => q.code === code)!
-      return HttpResponse.json([
-        {
-          id: 7,
-          qualification: summary(qualification),
-          route: url.searchParams.get('route'),
-          title: 'Close your skill gaps',
-          description: 'Train only on the competencies you still need.',
-          steps: [
-            {
-              id: 1,
-              position: 1,
-              kind: 'self_check',
-              title: 'Complete the readiness check',
-              description: '',
-            },
-            {
-              id: 2,
-              position: 2,
-              kind: 'training',
-              title: 'Take focused training',
-              description: '',
-            },
-          ],
-        },
-      ])
+      latestPathway = {
+        id: 7,
+        qualification: summary(qualification),
+        route: url.searchParams.get('route') as components['schemas']['PathwayPublic']['route'],
+        title: 'Close your skill gaps',
+        description: 'Train only on the competencies you still need.',
+        steps: [
+          {
+            id: 1,
+            position: 1,
+            kind: 'self_check',
+            title: 'Complete the readiness check',
+            description: '',
+          },
+          {
+            id: 2,
+            position: 2,
+            kind: 'training',
+            title: 'Take focused training',
+            description: '',
+          },
+        ],
+      }
+      return HttpResponse.json([latestPathway])
     }),
     http.post('*/api/v1/me/pathways', async ({ request }) => {
       await record(request)
@@ -353,7 +353,19 @@ export function serveFinderApi({
         return HttpResponse.json({ detail: 'Already following.' }, { status: 409 })
       }
       state.followed.add(pathway_id)
-      return HttpResponse.json({}, { status: 201 })
+      return HttpResponse.json(
+        {
+          id: `enrollment-${pathway_id}`,
+          pathway: latestPathway,
+          status: 'active',
+          completion_percent: 0,
+          steps: latestPathway?.steps.map((step) => ({ ...step, status: 'not_started' })),
+          completed_at: null,
+          created_at: '2026-10-15T01:00:00Z',
+          updated_at: '2026-10-15T01:00:00Z',
+        },
+        { status: 201 },
+      )
     }),
     http.post('*/api/v1/feedback/recommendations', async ({ request }) => {
       await record(request)

@@ -20,7 +20,7 @@ import {
   type Enrollment,
   type RecommendationSession,
 } from './api.ts'
-import { SECTION_IDS } from './ContinueCard.tsx'
+import { pathwayHeadingId, SECTION_IDS } from './ContinueCard.tsx'
 import { sessionQualification } from './journey.ts'
 import { friendlyDate } from './ReadinessHistory.tsx'
 import { resumeSession } from './resume.ts'
@@ -40,54 +40,57 @@ export function RecommendationHistory({
   const { learner } = useAuth()
   const navigate = useNavigate()
   const headingId = useId()
+  const history = sessions
+    .filter((session) => typeof session.query === 'string' && session.query.trim().length > 0)
+    .sort((a, b) => b.created_at.localeCompare(a.created_at))
+
+  // History belongs to inputs the learner has actually submitted, so there is no empty panel to display.
+  if (history.length === 0) return null
+
   return (
     <section data-tour="progress-history" aria-labelledby={headingId} className={ui.card}>
       <h2 id={headingId} className={ui.sectionHeading}>
         {copy.history.heading}
       </h2>
-      {sessions.length === 0 ? (
-        <p className={ui.empty}>{copy.history.empty}</p>
-      ) : (
-        <ul className={ui.records}>
-          {sessions.map((session) => {
-            const qualification = sessionQualification(session)
-            const route = session.pathway?.recommendation
-            const details = [
-              ...(qualification ? [qualification.name] : []),
-              ...(route ? [copy.history.routes[route]] : []),
-            ]
-            const missing = qualification !== null && !catalog.has(qualification.code)
-            return (
-              <li key={session.id} className={ui.record}>
-                <div className={ui.recordBody}>
-                  <p className="m-0 text-12 text-muted">{friendlyDate(session.created_at)}</p>
-                  {/* The goal as the learner typed it, as text. */}
-                  <p className={ui.recordTitle}>{session.query}</p>
-                  <p className={ui.muted}>{details.join(' · ') || copy.history.noQualification}</p>
-                  {missing && (
-                    <p className={ui.note}>
-                      {copy.continue.unavailable}{' '}
-                      <Link to={paths.qualifications}>{en.finder.matches.viewAll}</Link>
-                    </p>
-                  )}
-                </div>
-                <Button
-                  className={button({ variant: 'tertiary' })}
-                  aria-label={`${copy.history.open}: ${session.query}`}
-                  onPress={() => {
-                    if (!learner) return
-                    resumeSession(session, learner.id)
-                    void navigate(paths.finderMatches)
-                  }}
-                >
-                  {copy.history.open}
-                  <Icon name="arrowRight" />
-                </Button>
-              </li>
-            )
-          })}
-        </ul>
-      )}
+      <ul className={ui.records}>
+        {history.map((session) => {
+          const qualification = sessionQualification(session)
+          const route = session.pathway?.recommendation
+          const details = [
+            ...(qualification ? [qualification.name] : []),
+            ...(route ? [copy.history.routes[route]] : []),
+          ]
+          const missing = qualification !== null && !catalog.has(qualification.code)
+          return (
+            <li key={session.id} className={ui.record}>
+              <div className={ui.recordBody}>
+                <p className="m-0 text-12 text-muted">{friendlyDate(session.created_at)}</p>
+                {/* The goal as the learner typed it, as text. */}
+                <p className={ui.recordTitle}>{session.query}</p>
+                <p className={ui.muted}>{details.join(' · ') || copy.history.noQualification}</p>
+                {missing && (
+                  <p className={ui.note}>
+                    {copy.continue.unavailable}{' '}
+                    <Link to={paths.qualifications}>{en.finder.matches.viewAll}</Link>
+                  </p>
+                )}
+              </div>
+              <Button
+                className={button({ variant: 'tertiary' })}
+                aria-label={`${copy.history.open}: ${session.query}`}
+                onPress={() => {
+                  if (!learner) return
+                  resumeSession(session, learner.id)
+                  void navigate(paths.finderMatches)
+                }}
+              >
+                {copy.history.open}
+                <Icon name="arrowRight" />
+              </Button>
+            </li>
+          )
+        })}
+      </ul>
     </section>
   )
 }
@@ -123,7 +126,7 @@ function PathwayCard({ enrollment }: { enrollment: Enrollment }) {
   const copy = en.progress
 
   const queryClient = useQueryClient()
-  const headingId = useId()
+  const headingId = pathwayHeadingId(enrollment.id)
   const update = useMutation({
     mutationFn: ({ stepId, done }: { stepId: number; done: boolean }) =>
       setStepStatus(enrollment.id, stepId, done ? 'completed' : 'not_started'),
@@ -139,7 +142,11 @@ function PathwayCard({ enrollment }: { enrollment: Enrollment }) {
       aria-labelledby={headingId}
       className="flex flex-col items-stretch gap-[0.35rem] rounded-12 border border-border px-[0.95rem] py-[0.85rem]"
     >
-      <h3 id={headingId} className={ui.recordTitle}>
+      <h3
+        id={headingId}
+        tabIndex={-1}
+        className={cx(ui.recordTitle, 'scroll-mt-4 focus:outline-none max-md:scroll-mt-24')}
+      >
         {enrollment.pathway.title}
         {completed && (
           <span className="inline-flex items-center gap-[0.3rem] rounded-full bg-good-bg px-[0.55rem] py-[0.15rem] text-12 font-[650] text-good-ink">

@@ -46,6 +46,7 @@ describe('readTrainingAddress and writeTrainingAddress', () => {
       qualifications: ['CSS-NC-II', 'SMAW-NC-II'],
       mode: 'online' as const,
       within: 30 as const,
+      radius: 10 as const,
       scholarship: true,
       search: 'welding',
       sort: 'soonest' as const,
@@ -67,4 +68,17 @@ describe('readTrainingAddress and writeTrainingAddress', () => {
       ),
     ).toEqual(NO_FILTERS)
   })
+
+  it.each([5, 10, 25, 50, 100] as const)('keeps a %s km radius in the address', (radius) => {
+    const query = writeTrainingAddress({ radius })
+    expect(query.toString()).toBe(`radius=${radius}`)
+    expect(readTrainingAddress(query).radius).toBe(radius)
+  })
+
+  it.each(['', '0', '-5', '1', 'NaN', 'Infinity', '5000', '10.5'])(
+    'ignores an unsupported radius %j',
+    (radius) => {
+      expect(readTrainingAddress(new URLSearchParams({ radius }))).toEqual(NO_FILTERS)
+    },
+  )
 })

@@ -15,6 +15,7 @@ import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { useFinderStore } from '../finder/store.ts'
 import { QualificationCard } from './QualificationCard.tsx'
+import { useLibraryCollection } from './useLibraryCollection.ts'
 
 /** Cards a page: the whole catalog at once (hundreds of cards) is slow on a phone. */
 export const LIBRARY_PAGE_SIZE = 12
@@ -58,6 +59,7 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
   // Set by the pager, so only a move to another page (not a search, nor the first showing) moves focus.
   const pageChanged = useRef(false)
   const filtersId = useId()
+  const collection = useLibraryCollection()
 
   const sectors = useMemo(() => sectorsOf(qualifications), [qualifications])
   const names = useMemo(() => catalogNames(qualifications), [qualifications])
@@ -69,7 +71,12 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
     () => filterQualifications(qualifications, { query, sector }),
     [qualifications, query, sector],
   )
-  const shown = pageOf(filtered, Number(params.get('page') ?? '1'), LIBRARY_PAGE_SIZE)
+  const showAll = params.get('view') === 'all'
+  const shown = pageOf(
+    filtered,
+    showAll ? 1 : Number(params.get('page') ?? '1'),
+    showAll ? Math.max(1, filtered.length) : LIBRARY_PAGE_SIZE,
+  )
   const isFiltered = query.trim() !== '' || sector !== undefined
 
   /** A new search or sector starts again at the first page. Typing replaces the address rather than adding to it. */
@@ -87,7 +94,22 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
   }
 
   const clearFilters = () => {
-    setParams(new URLSearchParams(), { preventScrollReset: true })
+    setParams(showAll ? new URLSearchParams({ view: 'all' }) : new URLSearchParams(), {
+      preventScrollReset: true,
+    })
+  }
+
+  const toggleView = () => {
+    setParams(
+      (current) => {
+        const next = new URLSearchParams(current)
+        if (showAll) next.delete('view')
+        else next.set('view', 'all')
+        next.delete('page')
+        return next
+      },
+      { preventScrollReset: true },
+    )
   }
 
   const pageAddress = (page: number) => {
@@ -178,12 +200,23 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
             .filter(Boolean)
             .join(' · ')}
         </p>
-        {isFiltered && (
-          <Button className={button({ variant: 'tertiary' })} onPress={clearFilters}>
-            <Icon name="filterOff" />
-            {copy.clear}
-          </Button>
-        )}
+        <div className="flex flex-wrap items-center gap-2">
+          {qualifications.length > LIBRARY_PAGE_SIZE && (
+            <Button
+              className={button({ variant: 'tertiary' })}
+              onPress={toggleView}
+              aria-pressed={showAll}
+            >
+              {showAll ? copy.collection.showPages : copy.collection.showAll}
+            </Button>
+          )}
+          {isFiltered && (
+            <Button className={button({ variant: 'tertiary' })} onPress={clearFilters}>
+              <Icon name="filterOff" />
+              {copy.clear}
+            </Button>
+          )}
+        </div>
       </div>
 
       {filtered.length === 0 ? (
@@ -196,6 +229,23 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
                 qualification={qualification}
                 catalogNames={names}
                 onExplore={() => explore(qualification)}
+                collection={
+                  collection.isSignedIn
+                    ? {
+                        added: collection.saved.has(qualification.code),
+                        pending:
+                          collection.add.isPending &&
+                          collection.add.variables?.code === qualification.code,
+                        disabled: collection.loading || collection.add.isPending,
+                        error:
+                          collection.add.isError &&
+                          collection.add.variables?.code === qualification.code
+                            ? collection.add.error
+                            : null,
+                        onAdd: () => collection.add.mutate(qualification),
+                      }
+                    : undefined
+                }
               />
             </li>
           ))}

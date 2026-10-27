@@ -21,9 +21,11 @@ const MobileMenuDrawer = lazy(loadDrawer)
 export function MobileMenu({
   isAdmin = false,
   canManage = false,
+  isSignedIn = false,
 }: {
   isAdmin?: boolean
   canManage?: boolean
+  isSignedIn?: boolean
 }) {
   const en = useCopy()
 
@@ -104,6 +106,7 @@ export function MobileMenu({
               onOpenChange={(open) => setOpenOn(open ? pathname : null)}
               isAdmin={isAdmin}
               canManage={canManage}
+              isSignedIn={isSignedIn}
               onNavigate={close}
               returnFocus={() => menuButton.current}
             />

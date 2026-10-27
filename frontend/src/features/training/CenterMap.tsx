@@ -14,6 +14,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Fragment, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
 import { Button, Menu, MenuItem, MenuTrigger, Popover, type Selection } from 'react-aria-components'
 import {
+  Circle,
   MapContainer,
   Marker,
   Polyline,
@@ -175,6 +176,8 @@ export interface CenterMapProps {
   /** Bumped by View on map, so asking again reopens a center that's already selected. */
   focus: number
   reference: Reference | null
+  /** Search radius around the shared location or searched place, in kilometres. */
+  radiusKm?: number | null
   /** The selected center's routes, from the learner's location. */
   route: MapRoute | null
   travelMode: TravelMode
@@ -216,6 +219,7 @@ export default function CenterMap(props: CenterMapProps) {
     const read = () =>
       setInset(parseFloat(getComputedStyle(element).getPropertyValue('--map-overlay-inset')) || 0)
     read()
+    if (typeof ResizeObserver === 'undefined') return
     const observer = new ResizeObserver(read)
     observer.observe(element)
     return () => observer.disconnect()
@@ -278,6 +282,7 @@ export default function CenterMap(props: CenterMapProps) {
         <Framing
           points={points}
           reference={props.reference}
+          radiusKm={props.radiusKm}
           hasRoute={props.route !== null}
           inset={inset}
         />
@@ -365,6 +370,7 @@ export default function CenterMap(props: CenterMapProps) {
 function FollowSize() {
   const map = useMap()
   useEffect(() => {
+    if (typeof ResizeObserver === 'undefined') return
     const observer = new ResizeObserver(() => map.invalidateSize())
     observer.observe(map.getContainer())
     return () => observer.disconnect()
@@ -626,24 +632,30 @@ function ReferenceDot({ reference }: { reference: Reference | null }) {
 
 /**
  * Fits the map to the results when they change: the whole country without any, or a searched place with its
- * closest centers rather than the whole country. A drawn route keeps the view on itself.
+ * closest centers rather than the whole country. An active radius frames its circle, even without results.
+ * A drawn route keeps the view on itself.
  */
 function Framing({
   points,
   reference,
+  radiusKm,
   hasRoute,
   inset,
 }: {
   points: Center[]
   reference: Reference | null
+  radiusKm?: number | null
   hasRoute: boolean
   inset: number
 }) {
   const map = useMap()
+  const circle = useRef<L.Circle>(null)
+  const radius = reference && radiusKm && radiusKm > 0 ? radiusKm : null
   // The panel's reach counts too: the map is framed again once it's known, or when the layout changes it.
   const key = JSON.stringify([
     points.map((center) => center.id),
     reference && [reference.latitude, reference.longitude],
+    radius,
     inset,
   ])
   const last = useRef<string | null>(null)
@@ -654,6 +666,11 @@ function Framing({
       paddingTopLeft: [inset + size, size] as L.PointTuple,
       paddingBottomRight: [size, size] as L.PointTuple,
     })
+    // The mounted circle supplies bounds even when no centers fall within the search radius.
+    if (radius && circle.current) {
+      map.fitBounds(circle.current.getBounds(), { ...padding(32), maxZoom: 13 })
+      return
+    }
     if (!points.length) {
       if (reference) map.setView([reference.latitude, reference.longitude], 9)
       else map.fitBounds(PHILIPPINES, padding(0))
@@ -677,8 +694,17 @@ function Framing({
       ]
     }
     map.fitBounds(L.latLngBounds(corners), { ...padding(48), maxZoom: 13 })
-  }, [key, hasRoute, inset, map, points, reference])
-  return null
+  }, [key, hasRoute, inset, map, points, reference, radius])
+  return radius && reference ? (
+    <Circle
+      ref={circle}
+      className="center-map-radius"
+      center={[reference.latitude, reference.longitude]}
+      radius={radius * 1000}
+      interactive={false}
+      pathOptions={{ color: COLORS.training, weight: 2, fillOpacity: 0.08, opacity: 0.65 }}
+    />
+  ) : null
 }
 
 /**

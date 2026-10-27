@@ -75,9 +75,9 @@ describe('the phone menu', () => {
     await openPage('/qualifications', 'Qualifications Library')
     const { dialog } = await openMenu(user)
 
-    await user.click(within(dialog).getByRole('link', { name: 'My Progress' }))
+    await user.click(within(dialog).getByRole('link', { name: 'Training & Assessment' }))
 
-    const h1 = await screen.findByRole('heading', { level: 1, name: 'My Progress' })
+    const h1 = await screen.findByRole('heading', { level: 1, name: 'Training & Assessment' })
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
     await waitFor(() => expect(h1).toHaveFocus())
   })

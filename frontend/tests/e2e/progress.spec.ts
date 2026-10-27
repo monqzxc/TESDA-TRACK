@@ -5,7 +5,8 @@ import { expect, test, type Page } from '@playwright/test'
 // with axe; ticking a step and withdrawing an application with the keyboard. The API is answered here.
 
 const SIZES = {
-  phone: { width: 390, height: 844 },
+  phone: { width: 375, height: 812 },
+  landscape: { width: 812, height: 375 },
   desktop: { width: 1280, height: 800 },
 }
 // Must match SESSION_HINT_KEY in src/auth/session.ts.
@@ -144,7 +145,9 @@ async function expectSettledAndAccessible(page: Page) {
 
 for (const colorScheme of ['light', 'dark'] as const) {
   for (const [size, viewport] of Object.entries(SIZES)) {
-    test(`${colorScheme} theme, ${size}: the learner’s records, passing axe`, async ({ page }) => {
+    test(`${colorScheme} theme, ${size}: the learner’s records, passing axe`, async ({
+      page,
+    }, testInfo) => {
       await page.setViewportSize(viewport)
       await page.emulateMedia({ colorScheme })
       await serveLearner(page)
@@ -153,7 +156,32 @@ for (const colorScheme of ['light', 'dark'] as const) {
       await expect(
         page.getByRole('heading', { level: 2, name: 'Continue your journey' }),
       ).toBeVisible()
+      const sections = page.getByRole('navigation', { name: 'My Progress sections' })
+      await expect(
+        sections.getByRole('button', { name: 'Qualifications', exact: true }),
+      ).toHaveAttribute('aria-pressed', 'true')
+      await expect(sections.getByRole('button', { name: 'History', exact: true })).toHaveCount(0)
+      const collection = page.getByRole('region', { name: 'My qualification goals' })
+      await expect(collection.getByText('1 qualification saved')).toBeVisible()
+      await expect(collection.getByText('BSRS not connected')).toBeVisible()
+      await expect(collection.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '50')
+      await expect(page.getByRole('region', { name: 'Recommendation history' })).toHaveCount(0)
+      await expect(page.getByRole('region', { name: 'My pathways' })).toHaveCount(0)
+      await expect(page.getByRole('region', { name: 'Readiness over time' })).toHaveCount(0)
+      const navigationOverflow = await sections.evaluate(
+        (element) => element.scrollWidth - element.clientWidth,
+      )
+      expect(navigationOverflow).toBeLessThanOrEqual(0)
+      await expectSettledAndAccessible(page)
+      await collection.screenshot({ path: testInfo.outputPath('qualification-collection.png') })
+      await page.screenshot({ path: testInfo.outputPath('progress-sections.png'), fullPage: true })
+      await sections.getByRole('button', { name: 'Readiness', exact: true }).click()
       await expect(page.getByText('Up 41 points from Oct 1, 2026 to Oct 9, 2026.')).toBeVisible()
+      await expect(collection).toHaveCount(0)
+      await expect(
+        sections.getByRole('button', { name: 'Readiness', exact: true }),
+      ).toHaveAttribute('aria-pressed', 'true')
+      expect(new URL(page.url()).searchParams.get('section')).toBe('readiness')
       await expectSettledAndAccessible(page)
     })
   }
@@ -162,6 +190,31 @@ for (const colorScheme of ['light', 'dark'] as const) {
 test.describe('on a desktop', () => {
   test.use({ viewport: SIZES.desktop })
 
+  test('opens a shared section and returns to Qualifications with the keyboard', async ({
+    page,
+  }) => {
+    await serveLearner(page)
+    await page.goto('/progress?section=records')
+    await expect(page).toHaveURL('/profile?section=records')
+    const sections = page.getByRole('navigation', { name: 'Profile sections' })
+    await expect(
+      sections.getByRole('button', { name: 'Goals & certificates', exact: true }),
+    ).toHaveAttribute('aria-pressed', 'true')
+    await expect(page.getByRole('region', { name: 'My goals' })).toBeVisible()
+    await expect(page.getByRole('region', { name: 'My certifications' })).toBeVisible()
+    await expect(page.getByRole('region', { name: 'My qualification goals' })).toHaveCount(0)
+    await page.reload()
+    await expect(
+      sections.getByRole('button', { name: 'Goals & certificates', exact: true }),
+    ).toHaveAttribute('aria-pressed', 'true')
+    await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'My Progress' }).focus()
+    await page.keyboard.press('Enter')
+    await expect(page.getByRole('region', { name: 'My qualification goals' })).toBeVisible()
+    await expect(page.getByRole('region', { name: 'My goals' })).toHaveCount(0)
+    await expect(page).toHaveURL('/progress')
+    await expectSettledAndAccessible(page)
+  })
+
   test('ticks off a step and withdraws an application, with the keyboard', async ({ page }) => {
     await serveLearner(page)
     await page.goto('/progress')
@@ -169,11 +222,16 @@ test.describe('on a desktop', () => {
     await page.getByRole('button', { name: 'Continue your pathway' }).focus()
     await page.keyboard.press('Enter')
     await expect(page.getByRole('heading', { level: 2, name: 'My pathways' })).toBeFocused()
+    expect(new URL(page.url()).searchParams.get('section')).toBe('pathways')
+    await expect(page.getByRole('region', { name: 'My qualification goals' })).toHaveCount(0)
 
     await page.getByRole('checkbox', { name: '2. Take focused training' }).focus()
     await page.keyboard.press('Space')
     await expect(page.getByText('Completed', { exact: true })).toBeVisible()
 
+    await page.goto('/profile?section=applications')
+    await expect(page.getByRole('region', { name: 'My assessment applications' })).toBeVisible()
+    await expect(page.getByRole('region', { name: 'My pathways' })).toHaveCount(0)
     await page.getByRole('button', { name: 'Withdraw', exact: true }).focus()
     await page.keyboard.press('Enter')
     const dialog = page.getByRole('alertdialog', { name: 'Withdraw this application?' })
@@ -184,5 +242,64 @@ test.describe('on a desktop', () => {
 
     await expect(page.getByText('Your application was withdrawn.')).toBeVisible()
     await expect(page.getByText('Withdrawn', { exact: true })).toBeVisible()
+  })
+
+  test('groups a qualification’s routes, navigates to its steps, and removes the selection', async ({
+    page,
+  }, testInfo) => {
+    await serveLearner(page)
+    const qualification = { code: 'COOKERY-NCII', name: 'Cookery NC II', sector: 'Tourism' }
+    const cooking = {
+      ...ENROLLMENT,
+      id: 'cooking',
+      pathway: { ...ENROLLMENT.pathway, id: 12, qualification, title: 'Build your cookery skills' },
+      created_at: '2026-10-03T00:00:00Z',
+      completion_percent: 0,
+      steps: steps.map((step) => ({ ...step, status: 'not_started' })),
+    }
+    let enrollments = [
+      ENROLLMENT,
+      {
+        ...ENROLLMENT,
+        id: 'alternate',
+        pathway: { ...ENROLLMENT.pathway, id: 8, title: 'Prepare for assessment' },
+      },
+      cooking,
+    ]
+    await page.route('**/api/v1/me/pathways', (route) => route.fulfill({ json: enrollments }))
+    await page.route('**/api/v1/me/pathways/*', async (route) => {
+      const id = route.request().url().split('/').pop()
+      const record = enrollments.find((item) => item.id === id)!
+      const updated = { ...record, status: 'withdrawn' }
+      enrollments = enrollments.map((item) => (item.id === id ? updated : item))
+      await route.fulfill({ json: updated })
+    })
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.goto('/progress')
+    const collection = page.getByRole('region', { name: 'My qualification goals' })
+    await expect(collection.getByText('2 qualifications saved')).toBeVisible()
+    await expect(collection.getByRole('article')).toHaveCount(2)
+    await collection.getByRole('button', { name: /Prepare for assessment/ }).click()
+    await expect(page.getByRole('heading', { name: 'Prepare for assessment' })).toBeFocused()
+    await expect(collection).toHaveCount(0)
+    await expect(
+      page.getByRole('region', { name: 'My pathways' }).getByRole('article'),
+    ).toHaveCount(3)
+    await expectSettledAndAccessible(page)
+    await page
+      .getByRole('navigation', { name: 'My Progress sections' })
+      .getByRole('button', { name: 'Qualifications', exact: true })
+      .click()
+    await collection.screenshot({ path: testInfo.outputPath('qualification-bento.png') })
+    await collection.getByRole('button', { name: `Remove: ${welding.name}` }).click()
+    await expect(collection.getByText('1 qualification saved')).toBeVisible()
+    await expect(collection.getByRole('heading', { name: 'My qualification goals' })).toBeFocused()
+    await page
+      .getByRole('navigation', { name: 'My Progress sections' })
+      .getByRole('button', { name: 'Pathways', exact: true })
+      .click()
+    await expect(
+      page.getByRole('region', { name: 'My pathways' }).getByRole('article'),
+    ).toHaveCount(1)
   })
 })

@@ -75,6 +75,15 @@ function shareLocation() {
 }
 
 beforeEach(() => {
+  // The workspace measures its available height in the browser; jsdom has no layout observer.
+  vi.stubGlobal(
+    'ResizeObserver',
+    class {
+      observe() {}
+      unobserve() {}
+      disconnect() {}
+    },
+  )
   serveCatalog()
   useTrainingStore.setState({
     useLocation: false,
@@ -92,6 +101,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
+  vi.unstubAllGlobals()
   Reflect.deleteProperty(navigator, 'geolocation')
 })
 
@@ -298,9 +308,9 @@ describe('Training & Assessment', () => {
     if (!restoredRegionSection.open) {
       await user.click(restoredRegionSection.querySelector('summary')!)
     }
-    expect(within(restoredRegionSection).getByRole('button', { name: /Region$/ })).toHaveTextContent(
-      'National Capital Region',
-    )
+    expect(
+      within(restoredRegionSection).getByRole('button', { name: /Region$/ }),
+    ).toHaveTextContent('National Capital Region')
     expect(screen.getByRole('searchbox', { name: 'Search centers' })).toHaveValue('manila')
     expect(screen.getByRole('searchbox', { name: 'Search location' })).toHaveValue('Cebu City')
     expect(new URLSearchParams(router.state.location.search).get('region')).toBe('NCR')
@@ -343,6 +353,102 @@ describe('Training & Assessment', () => {
 
     expect(router.state.location.search).toBe('')
     expect(screen.getByRole('heading', { level: 2, name: 'All results (4)' })).toBeInTheDocument()
+  })
+
+  it('filters both kinds of centers and map pins by radius, then restores all distances', async () => {
+    shareLocation()
+    serveTrainingApi()
+    const user = userEvent.setup()
+    const { router } = await openTraining()
+    await user.click(screen.getByText('Use my location'))
+    await screen.findByText('Approximate distances from your location')
+
+    await user.click(screen.getByRole('button', { name: /Radius near me$/ }))
+    await user.click(screen.getByRole('option', { name: 'Within 10 km' }))
+
+    expect(screen.getByRole('heading', { level: 2, name: 'All results (2)' })).toBeVisible()
+    expect(
+      within(screen.getByTestId('map'))
+        .getAllByRole('listitem')
+        .map((pin) => pin.textContent),
+    ).toEqual(expect.arrayContaining(['Manila Welding Institute', 'Manila Assessment Center']))
+    expect(within(screen.getByTestId('map')).queryByText('Cebu Skills Center')).toBeNull()
+    expect(within(screen.getByTestId('map')).queryByText('Mobile Training Unit')).toBeNull()
+    expect(screen.getByText('Within 10 km of your location')).toBeVisible()
+    expect(router.state.location.search).toBe('?radius=10')
+
+    await user.click(screen.getByRole('button', { name: /Radius near me$/ }))
+    await user.click(screen.getByRole('option', { name: 'All distances' }))
+
+    expect(screen.getByRole('heading', { level: 2, name: 'All results (4)' })).toBeVisible()
+    expect(within(screen.getByTestId('map')).getAllByRole('listitem')).toHaveLength(4)
+    expect(router.state.location.search).toBe('')
+  })
+
+  it('keeps a radius pending without a location and applies it to a searched place', async () => {
+    serveTrainingApi()
+    const user = userEvent.setup()
+    const { router } = await openTraining('/training?radius=10')
+
+    expect(screen.getByRole('button', { name: /Radius near me$/ })).toBeDisabled()
+    expect(
+      screen.getByText('Share your location or search a place to apply the selected radius.'),
+    ).toBeVisible()
+    expect(screen.getByRole('heading', { level: 2, name: 'All results (4)' })).toBeVisible()
+    await user.type(screen.getByRole('searchbox', { name: 'Search location' }), 'Cebu City')
+
+    await waitFor(() =>
+      expect(screen.getByRole('heading', { level: 2, name: 'All results (1)' })).toBeVisible(),
+    )
+    expect(screen.getByRole('button', { name: /Radius near me$/ })).toBeEnabled()
+    expect(within(screen.getByTestId('map')).getAllByRole('listitem')).toHaveLength(1)
+    expect(within(screen.getByTestId('map')).getByText('Cebu Skills Center')).toBeVisible()
+    expect(router.state.location.search).toBe('?radius=10')
+
+    await user.clear(screen.getByRole('searchbox', { name: 'Search location' }))
+
+    await waitFor(() =>
+      expect(screen.getByRole('heading', { level: 2, name: 'All results (4)' })).toBeVisible(),
+    )
+    expect(screen.getByRole('button', { name: /Radius near me$/ })).toBeDisabled()
+
+    await user.click(screen.getByRole('button', { name: 'Show all distances' }))
+    expect(router.state.location.search).toBe('')
+    expect(screen.getByRole('heading', { level: 2, name: 'All results (4)' })).toBeVisible()
+  })
+
+  it('can broaden an empty radius search while keeping its other filters and location', async () => {
+    shareLocation()
+    serveTrainingApi()
+    const user = userEvent.setup()
+    const { router } = await openTraining('/training?type=training&q=Manila&radius=5')
+    await user.click(screen.getByText('Use my location'))
+
+    expect(
+      await screen.findByRole('heading', { name: 'No centers match your search' }),
+    ).toBeVisible()
+    await user.click(screen.getByRole('button', { name: 'Show all distances' }))
+
+    expect(screen.getByRole('heading', { level: 2, name: 'All results (1)' })).toBeVisible()
+    expect(screen.getByRole('searchbox', { name: 'Search centers' })).toHaveValue('Manila')
+    expect(screen.getByRole('switch', { name: /Use my location/ })).toBeChecked()
+    const query = new URLSearchParams(router.state.location.search)
+    expect(query.get('radius')).toBeNull()
+    expect(query.get('type')).toBe('training')
+    expect(query.get('q')).toBe('Manila')
+  })
+
+  it('clears a pending radius while keeping the selected center type', async () => {
+    serveTrainingApi()
+    const user = userEvent.setup()
+    const { router } = await openTraining('/training?radius=10&type=assessment')
+
+    expect(screen.getByRole('heading', { level: 2, name: 'All results (1)' })).toBeVisible()
+    expect(screen.getByRole('button', { name: /Radius near me$/ })).toBeDisabled()
+    await user.click(screen.getByRole('button', { name: 'Show all distances' }))
+
+    expect(router.state.location.search).toBe('?type=assessment')
+    expect(screen.getByRole('heading', { level: 2, name: 'All results (1)' })).toBeVisible()
   })
 
   it('draws routes from the learner’s approximate location, by travel mode', async () => {
@@ -396,7 +502,7 @@ describe('Training & Assessment', () => {
     })
     serveTrainingApi()
     const user = userEvent.setup()
-    await openTraining()
+    await openTraining('/training?radius=10')
 
     await user.click(screen.getByText('Use my location'))
 
@@ -407,6 +513,7 @@ describe('Training & Assessment', () => {
     ).toBeInTheDocument()
     expect(screen.getByRole('switch', { name: /Use my location/ })).not.toBeChecked()
     expect(screen.getByRole('heading', { level: 2, name: 'All results (4)' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Radius near me$/ })).toBeDisabled()
   })
 
   it('ranks programs by fit with the finder’s goal, never with the learner’s own location', async () => {

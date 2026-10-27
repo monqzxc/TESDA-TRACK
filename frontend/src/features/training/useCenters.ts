@@ -116,7 +116,14 @@ export function useCenters(catalog: readonly Qualification[]) {
     )
     // Nearest first needs somewhere to measure from; without it, by name.
     const order = reference || filters.sort !== 'nearest' ? filters.sort : 'name'
-    return sortCenters(withDistances(matching, reference), order, today)
+    const measured = withDistances(matching, reference)
+    // A radius only applies once its origin is known. Unmapped centers cannot be placed inside it.
+    const radius = reference ? filters.radius : null
+    const nearby =
+      radius === null
+        ? measured
+        : measured.filter((center) => center.distanceKm !== null && center.distanceKm <= radius)
+    return sortCenters(nearby, order, today)
   }, [
     everything,
     filters.kinds,
@@ -128,6 +135,7 @@ export function useCenters(catalog: readonly Qualification[]) {
     filters.within,
     filters.scholarship,
     filters.sort,
+    filters.radius,
     today,
     reference,
   ])
@@ -191,6 +199,7 @@ export function useCenters(catalog: readonly Qualification[]) {
     place,
     reference,
     centers,
+    radiusKm: reference ? filters.radius : null,
     featured,
     selected,
     nearestId,

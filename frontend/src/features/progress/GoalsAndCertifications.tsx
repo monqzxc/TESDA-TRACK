@@ -15,12 +15,39 @@ import {
   certificationsQuery,
   goalsQuery,
   progressKeys,
+  setGoalTargetDate,
   type Certification,
   type Goal,
 } from './api.ts'
 import { ui } from './styles.ts'
 
 const NONE = 'none'
+
+const manilaCalendar = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'Asia/Manila',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+})
+
+function daysUntil(date: string): number {
+  const parts = Object.fromEntries(
+    manilaCalendar.formatToParts(new Date()).map((part) => [part.type, part.value]),
+  )
+  const today = Date.UTC(Number(parts.year), Number(parts.month) - 1, Number(parts.day))
+  const [year, month, day] = date.split('-').map(Number)
+  const target = Date.UTC(year, month - 1, day)
+  return Math.round((target - today) / 86_400_000)
+}
+
+function displayTargetDate(date: string): string {
+  return new Date(`${date}T12:00:00Z`).toLocaleDateString('en-US', {
+    timeZone: 'Asia/Manila',
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
+}
 
 /** The add forms, under each list. */
 const addForm = 'mt-4 flex flex-col gap-3 border-t border-border pt-4'
@@ -66,6 +93,7 @@ export function Goals({ catalog }: { catalog: readonly Qualification[] }) {
                 {copy.goals.statuses[goal.status]}
                 {goal.target_qualification ? ` · ${goal.target_qualification.name}` : ''}
               </p>
+              {goal.status === 'active' && <GoalTargetDate goal={goal} />}
             </div>
             {goal.status === 'active' && (
               <Button
@@ -97,14 +125,16 @@ function AddGoal({ catalog }: { catalog: readonly Qualification[] }) {
   const queryClient = useQueryClient()
   const [title, setTitle] = useState('')
   const [target, setTarget] = useState<string>(NONE)
+  const [targetDate, setTargetDate] = useState('')
   const [error, setError] = useState<string | null>(null)
   const field = useRef<HTMLInputElement>(null)
   const add = useMutation({
-    mutationFn: () => addGoal(title.trim(), target === NONE ? null : target),
+    mutationFn: () => addGoal(title.trim(), target === NONE ? null : target, targetDate || null),
     onSuccess: (goal) => {
       queryClient.setQueryData<Goal[]>(progressKeys.goals, (current) => [...(current ?? []), goal])
       setTitle('')
       setTarget(NONE)
+      setTargetDate('')
     },
     onError: (failure) => setError(failureMessage(failure)),
   })
@@ -141,10 +171,112 @@ function AddGoal({ catalog }: { catalog: readonly Qualification[] }) {
         value={target}
         onChange={setTarget}
       />
+      <TextField
+        className="flex flex-col gap-[0.35rem]"
+        value={targetDate}
+        onChange={setTargetDate}
+      >
+        <Label className="text-15 font-semibold text-navy">{copy.goals.targetDateOptional}</Label>
+        <Input className={input} type="date" />
+      </TextField>
       <Button type="submit" className={cx(button(), 'self-start')} isPending={add.isPending}>
         {add.isPending ? copy.saving : copy.goals.submit}
       </Button>
     </form>
+  )
+}
+
+function GoalTargetDate({ goal }: { goal: Goal }) {
+  const en = useCopy()
+  const copy = en.progress.goals
+  const queryClient = useQueryClient()
+  const [editing, setEditing] = useState(false)
+  const [targetDate, setTargetDate] = useState(goal.target_date ?? '')
+  const [saved, setSaved] = useState(false)
+  const update = useMutation({
+    mutationFn: (date: string | null) => setGoalTargetDate(goal.id, date),
+    onSuccess: (updated) => {
+      queryClient.setQueryData<Goal[]>(progressKeys.goals, (current) =>
+        current?.map((item) => (item.id === updated.id ? updated : item)),
+      )
+      setEditing(false)
+      setSaved(true)
+    },
+    onError: () => setSaved(false),
+  })
+  const due = goal.target_date ? daysUntil(goal.target_date) : null
+  const timing =
+    due === null
+      ? null
+      : due < 0
+        ? copy.overdue(Math.abs(due))
+        : due === 0
+          ? copy.dueToday
+          : copy.dueIn(due)
+
+  return (
+    <div className="mt-1 flex flex-col items-start gap-2">
+      <p className={ui.muted}>
+        {goal.target_date
+          ? `${copy.targetDate}: ${displayTargetDate(goal.target_date)}${timing ? ` · ${timing}` : ''}`
+          : copy.noTargetDate}
+      </p>
+      {editing ? (
+        <form
+          className="flex flex-wrap items-end gap-2"
+          aria-label={`${copy.changeTargetDate}: ${goal.title}`}
+          onSubmit={(event) => {
+            event.preventDefault()
+            setSaved(false)
+            update.mutate(targetDate || null)
+          }}
+        >
+          <TextField
+            className="flex min-w-40 flex-col gap-[0.35rem]"
+            value={targetDate}
+            onChange={setTargetDate}
+          >
+            <Label className="text-13 font-semibold text-navy">{copy.targetDateOptional}</Label>
+            <Input className={input} type="date" />
+          </TextField>
+          <Button type="submit" className={button({ height: 44 })} isPending={update.isPending}>
+            {copy.saveTargetDate}
+          </Button>
+          <Button
+            type="button"
+            className={button({ variant: 'tertiary', height: 44 })}
+            isDisabled={update.isPending}
+            onPress={() => setEditing(false)}
+          >
+            {copy.cancelTargetDate}
+          </Button>
+        </form>
+      ) : (
+        <Button
+          className={button({ variant: 'tertiary', height: 44 })}
+          aria-label={
+            `${goal.target_date ? copy.changeTargetDate : copy.setTargetDate}: ${goal.title}`
+          }
+          onPress={() => {
+            setTargetDate(goal.target_date ?? '')
+            setSaved(false)
+            setEditing(true)
+          }}
+        >
+          {goal.target_date ? copy.changeTargetDate : copy.setTargetDate}
+        </Button>
+      )}
+      {update.isError && (
+        <p role="alert" className={ui.note}>
+          {failureMessage(update.error)}
+        </p>
+      )}
+      {saved && (
+        <p role="status" className="m-0 text-13 text-good-ink">
+          {copy.targetDateSaved}
+        </p>
+      )}
+    </div>
   )
 }
 

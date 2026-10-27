@@ -14,6 +14,7 @@ export type IconShape =
     }
 
 export const icons = {
+  plus: [{ tag: 'path', d: 'M12 5v14M5 12h14' }],
   route: [
     { tag: 'path', d: 'M5 19h5a4 4 0 0 0 0-8H9a4 4 0 0 1 0-8h10m-4 0 4 0 0 4' },
     { tag: 'circle', cx: 5, cy: 19, r: 2 },

@@ -78,7 +78,7 @@ export function HomeLayout() {
  * opens the same sidebar over the page (MobileMenu). Reports shows for administrators.
  */
 export function AppLayout() {
-  const { canViewReports, canOpenAdmin } = useAuth()
+  const { canViewReports, canOpenAdmin, isSignedIn } = useAuth()
   return (
     <>
       <SkipLink />
@@ -90,7 +90,7 @@ export function AppLayout() {
           }
         >
           <div className="shrink-0 max-md:flex max-md:items-center max-md:gap-3">
-            <MobileMenu isAdmin={canViewReports} canManage={canOpenAdmin} />
+            <MobileMenu isAdmin={canViewReports} canManage={canOpenAdmin} isSignedIn={isSignedIn} />
             <div className="max-md:hidden">
               <Brand />
             </div>
@@ -99,7 +99,7 @@ export function AppLayout() {
             </div>
           </div>
           <div className="flex flex-1 flex-col max-md:hidden">
-            <SidebarContent isAdmin={canViewReports} canManage={canOpenAdmin} />
+            <SidebarContent isAdmin={canViewReports} canManage={canOpenAdmin} isSignedIn={isSignedIn} />
           </div>
         </header>
         <div className="flex min-h-screen min-w-0 flex-col">

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState } from 'react'
+import { lazy, Suspense, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { Button, Input, Label, SearchField, Switch } from 'react-aria-components'
 import type { Qualification } from '../../api/queries.ts'
 import { Icon } from '../../components/Icon.tsx'
@@ -24,7 +24,7 @@ const MAP_KEY = 'tesda-track.training-map'
 const softShadow = 'shadow-[0_4px_16px_rgb(var(--track-shadow-rgb)/0.05)]'
 
 const mapStandIn =
-  'm-0 grid h-[680px] place-items-center rounded-18 border border-border bg-map-water text-15 text-muted max-sm:h-[460px]'
+  'm-0 grid h-[var(--center-map-height,680px)] place-items-center rounded-18 border border-border bg-map-water text-15 text-muted max-sm:h-[460px]'
 
 /**
  * Training & Assessment, at /training (classic/training_view.py show_training; US-07, US-08, US-09): filters, a map
@@ -174,10 +174,13 @@ function Workspace({ catalog }: { catalog: Qualification[] }) {
       </div>
       {/* Map beside the results; when that is too tight for both, the results go below the map. Without the map,
           the filters sit beside the results. */}
-      <div className="@container/workspace">
+      <ResponsiveWorkspace>
         <div
           className={cx(
-            'grid items-start gap-3 @max-[960px]/workspace:grid-cols-1',
+            'grid items-start gap-3 @max-[1032px]/workspace:grid-cols-1',
+            mapShown &&
+              results.hasData &&
+              '@min-[1032px]/workspace:h-[var(--training-workspace-height,680px)] @min-[1032px]/workspace:items-stretch',
             mapShown
               ? 'grid-cols-[minmax(0,3fr)_minmax(380px,1fr)]'
               : 'grid-cols-[minmax(280px,360px)_minmax(0,1fr)]',
@@ -185,7 +188,7 @@ function Workspace({ catalog }: { catalog: Qualification[] }) {
         >
           {/* The filters float over the map's left edge. Where the map is too narrow for that, they sit above
               it. */}
-          <div className="@container/stage relative flex min-w-0 flex-col gap-3">
+          <div className="@container/stage relative flex min-h-0 min-w-0 flex-col gap-3">
             <div
               className={cx(
                 mapShown &&
@@ -197,7 +200,7 @@ function Workspace({ catalog }: { catalog: Qualification[] }) {
             </div>
             {mapShown && results.hasData && (
               // Read by the map, so its pins, routes and popups keep clear of the panel: 14px + 360px + 14px.
-              <div className="@min-[640px]/stage:[--map-overlay-inset:388px]">
+              <div className="@min-[640px]/stage:[--map-overlay-inset:388px] @min-[1032px]/workspace:min-h-0 @min-[1032px]/workspace:flex-1 @min-[1032px]/workspace:[--center-map-height:100%]">
                 <LoadBoundary fallback={<p className={mapStandIn}>{copy.map.failed}</p>}>
                   <Suspense
                     fallback={
@@ -211,6 +214,7 @@ function Workspace({ catalog }: { catalog: Qualification[] }) {
                       selectedId={selected?.id ?? null}
                       focus={focusOnMap}
                       reference={results.reference}
+                      radiusKm={results.radiusKm}
                       route={route}
                       travelMode={travelMode}
                       onTravelMode={(mode) => store().setTravelMode(mode)}
@@ -255,7 +259,44 @@ function Workspace({ catalog }: { catalog: Qualification[] }) {
             />
           )}
         </div>
-      </div>
+      </ResponsiveWorkspace>
     </>
+  )
+}
+
+/** Fit the desktop map below the actual header, including wrapped controls and load warnings. */
+function ResponsiveWorkspace({ children }: { children: ReactNode }) {
+  const workspace = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    const element = workspace.current
+    const main = element?.closest('main')
+    if (!element || !main) return
+
+    const updateHeight = () => {
+      // Use the document position so scrolling the page cannot change the map's height.
+      const top = element.getBoundingClientRect().top + window.scrollY
+      const bottomGutter = parseFloat(getComputedStyle(main).paddingBottom) || 0
+      element.style.setProperty(
+        '--training-workspace-height',
+        `max(360px, calc(100dvh - ${top + bottomGutter}px))`,
+      )
+    }
+
+    updateHeight()
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(updateHeight)
+    observer?.observe(main)
+    if (element.parentElement) observer?.observe(element.parentElement)
+    window.addEventListener('resize', updateHeight)
+    return () => {
+      observer?.disconnect()
+      window.removeEventListener('resize', updateHeight)
+    }
+  }, [])
+
+  return (
+    <div ref={workspace} className="@container/workspace">
+      {children}
+    </div>
   )
 }

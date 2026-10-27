@@ -12,6 +12,8 @@ type NavItem = { to: string; label: string; icon: IconName }
 // The sidebar's pages, in order. The brand above these links returns to Home.
 
 export type NavProps = {
+  /** My Progress contains account records, so it is only linked for a signed-in learner. */
+  isSignedIn?: boolean
   /** Adds Reports, which only administrators see. */
   isAdmin?: boolean
   /** Adds the management workspace, which only full administrators see. */
@@ -30,13 +32,13 @@ const otherLink =
   'border-border bg-surface text-navy hovered:border-hover-border hovered:bg-soft hovered:text-navy'
 
 /** The page links. The current page is marked with aria-current="page" (NavLink's own), and drawn filled. */
-export function Nav({ isAdmin = false, canManage = false, onNavigate }: NavProps) {
+export function Nav({ isSignedIn = true, isAdmin = false, canManage = false, onNavigate }: NavProps) {
   const en = useCopy()
   const PAGES: readonly NavItem[] = [
     { to: paths.finder, label: en.nav.finder, icon: 'route' },
     { to: paths.qualifications, label: en.nav.qualifications, icon: 'book' },
     { to: paths.training, label: en.nav.training, icon: 'clipboard' },
-    { to: paths.progress, label: en.nav.progress, icon: 'bars' },
+    ...(isSignedIn ? [{ to: paths.progress, label: en.nav.progress, icon: 'bars' as const }] : []),
     { to: paths.skills, label: en.nav.skills, icon: 'compass' },
   ]
   const REPORTS: NavItem = { to: paths.reports, label: en.nav.reports, icon: 'growth' }
@@ -74,19 +76,17 @@ type SidebarContentProps = NavProps & {
  */
 export function SidebarContent({
   isAdmin = false,
+  isSignedIn = true,
   canManage = false,
   onNavigate,
   returnFocus,
 }: SidebarContentProps) {
-  const en = useCopy()
-
   return (
     <div className="flex flex-1 flex-col gap-[0.6rem]">
-      <Nav isAdmin={isAdmin} canManage={canManage} onNavigate={onNavigate} />
+      <Nav isAdmin={isAdmin} isSignedIn={isSignedIn} canManage={canManage} onNavigate={onNavigate} />
       {/* In the phone menu, Sign in closes the menu first: the dialog opens over the page, not over the menu. */}
       <div className="mt-auto shrink-0 pt-4">
         <div className="mb-4">
-          <p className="mb-1 text-14 font-semibold text-navy">{en.theme.label}</p>
           <ThemeSwitch compact />
         </div>
         <div className="mb-4">

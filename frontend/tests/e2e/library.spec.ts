@@ -9,6 +9,15 @@ const SIZES = {
   desktop: { width: 1280, height: 800 },
 }
 
+const LEARNER = {
+  id: '6f1c2a52-8b7e-4d3a-9c51-2f0e7a1b3c4d',
+  email: 'maria@example.com',
+  full_name: 'Maria Santos',
+  role: 'learner',
+  permissions: [],
+  created_at: '2026-10-01T08:00:00Z',
+}
+
 const competencies = [
   { id: 1, position: 1, name: 'Participate in workplace communication', category: 'Basic' },
   { id: 2, position: 2, name: 'Apply safety practices', category: 'Common' },
@@ -123,6 +132,27 @@ test.describe('on a desktop', () => {
     await expect(page.getByText(/Showing 13–15/)).toBeInViewport()
   })
 
+  test('can show every qualification and return to pages while keeping the search', async ({
+    page,
+  }) => {
+    await serveCatalog(page)
+    await page.goto('/qualifications?q=Tourism')
+    await expect(cards(page)).toHaveCount(12)
+    await page.getByRole('button', { name: 'Show all qualifications', exact: true }).click()
+    await expect(cards(page)).toHaveCount(13)
+    await expect(page.getByRole('navigation', { name: 'Pages' })).toHaveCount(0)
+    expect(new URL(page.url()).searchParams.get('q')).toBe('Tourism')
+    expect(new URL(page.url()).searchParams.get('view')).toBe('all')
+
+    await page.reload()
+    await expect(cards(page)).toHaveCount(13)
+    await page.getByRole('button', { name: 'Show 12 per page', exact: true }).click()
+    await expect(cards(page)).toHaveCount(12)
+    await expect(page.getByRole('navigation', { name: 'Pages' })).toBeVisible()
+    expect(new URL(page.url()).searchParams.get('q')).toBe('Tourism')
+    expect(new URL(page.url()).searchParams.has('view')).toBe(false)
+  })
+
   test('Explore this pathway opens Find my pathway with the goal, not in the address', async ({
     page,
   }) => {
@@ -136,3 +166,79 @@ test.describe('on a desktop', () => {
     expect(saved).toContain('I want to pursue Shielded Metal Arc Welding (SMAW) NC II.')
   })
 })
+
+for (const [size, viewport] of Object.entries(SIZES)) {
+  test(`${size}: a signed-in learner saves a library qualification without a curated pathway`, async ({
+    page,
+  }, testInfo) => {
+    await page.setViewportSize(viewport)
+    await page.addInitScript(() => window.localStorage.setItem('tesda-track.signed-in', '1'))
+    await serveCatalog(page)
+    const selected = CATALOG[12]
+    const goal = {
+      id: 'library-goal-13',
+      title: selected.name,
+      target_qualification: { code: selected.code, name: selected.name, sector: selected.sector },
+      status: 'active',
+      target_date: null,
+      created_at: '2026-10-22T00:00:00Z',
+      updated_at: '2026-10-22T00:00:00Z',
+    }
+    let saved = false
+    const writes: unknown[] = []
+    let curatedRequests = 0
+    await page.route('**/api/v1/me', (route) => route.fulfill({ json: LEARNER }))
+    await page.route('**/api/v1/me/goals', async (route) => {
+      if (route.request().method() === 'POST') {
+        writes.push(route.request().postDataJSON())
+        saved = true
+        await route.fulfill({ status: 201, json: goal })
+      } else {
+        await route.fulfill({ json: saved ? [goal] : [] })
+      }
+    })
+    for (const records of [
+      'pathways',
+      'readiness-checks',
+      'assessment-applications',
+      'certifications',
+    ]) {
+      await page.route(`**/api/v1/me/${records}`, (route) => route.fulfill({ json: [] }))
+    }
+    await page.route('**/api/v1/me/recommendations?*', (route) => route.fulfill({ json: [] }))
+    await page.route(/\/api\/v1\/pathways(?:\?.*)?$/, (route) => {
+      curatedRequests++
+      return route.fulfill({ json: [] })
+    })
+    await page.goto('/qualifications')
+    await expect(cards(page)).toHaveCount(12)
+    await page.getByRole('button', { name: 'Show all qualifications', exact: true }).click()
+    await expect(cards(page)).toHaveCount(CATALOG.length)
+    const card = page.getByRole('article', { name: selected.name, exact: true })
+    await card.getByRole('button', { name: /^Add to My Progress/ }).click()
+    await expect(card.getByRole('button', { name: /^Added to My Progress/ })).toBeDisabled()
+    expect(writes).toEqual([{ title: selected.name, target_qualification_code: selected.code }])
+
+    // The selection survives a reload and never requires a predefined training or assessment route.
+    await page.reload()
+    await expect(card.getByRole('button', { name: /^Added to My Progress/ })).toBeDisabled()
+    expect(writes).toHaveLength(1)
+    expect(curatedRequests).toBe(0)
+    await expectAccessible(page)
+    await card.getByRole('link', { name: 'View My Progress', exact: true }).click()
+    await expect(page).toHaveURL('/progress')
+    const collection = page.getByRole('region', { name: 'My qualification goals' })
+    await expect(
+      collection.getByRole('article', { name: selected.name, exact: true }),
+    ).toBeVisible()
+    await expect(collection.getByText('1 qualification saved')).toBeVisible()
+    await expect(collection.getByText('BSRS not connected')).toBeVisible()
+    await expect(collection.getByRole('progressbar')).toHaveCount(0)
+    await expectAccessible(page)
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    )
+    expect(overflow).toBeLessThanOrEqual(0)
+    await collection.screenshot({ path: testInfo.outputPath('library-qualification-saved.png') })
+  })
+}

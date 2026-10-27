@@ -13,6 +13,7 @@ export type MatchResult = components['schemas']['MatchResult']
 export type Match = MatchResult['matches'][number]
 export type PathwayRecommendation = components['schemas']['PathwayRecommendation']
 export type CuratedPathway = components['schemas']['PathwayPublic']
+type Enrollment = components['schemas']['EnrollmentPublic']
 export type RecommendationSession = components['schemas']['RecommendationSessionPublic']
 export type Feedback = components['schemas']['FeedbackPublic']
 export type FeedbackReason = components['schemas']['FeedbackReasonUpdate']['reason']
@@ -134,8 +135,8 @@ export async function updateSession(sessionId: string, state: SessionState): Pro
 }
 
 /** Adds a curated pathway to My Progress. */
-export async function followPathway(pathwayId: number): Promise<void> {
-  await unwrap(api.POST('/api/v1/me/pathways', { body: { pathway_id: pathwayId } }))
+export async function followPathway(pathwayId: number): Promise<Enrollment> {
+  return unwrap(api.POST('/api/v1/me/pathways', { body: { pathway_id: pathwayId } }))
 }
 
 /**

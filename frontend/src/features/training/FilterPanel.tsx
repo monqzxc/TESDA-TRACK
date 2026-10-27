@@ -21,10 +21,12 @@ import {
   DELIVERY_MODES,
   KINDS,
   NO_FILTERS,
+  RADIUS_KM,
   WINDOWS,
   shortName,
   type CenterKind,
   type DeliveryMode,
+  type RadiusKm,
   type TrainingFilters,
 } from './address.ts'
 import { QualificationPicker } from './QualificationPicker.tsx'
@@ -99,6 +101,7 @@ export function FilterPanel({ results }: { results: CenterResults }) {
   const where = [
     ...(store.useLocation ? [copy.yourLocation] : []),
     ...(placeText ? [placeText] : []),
+    ...(filters.radius ? [copy.withinRadius(filters.radius)] : []),
   ]
   const regionName =
     results.regions.find((region) => region.code === results.region)?.name ?? results.region
@@ -228,6 +231,19 @@ export function FilterPanel({ results }: { results: CenterResults }) {
                 {copy.placeNotFound(placeText)}
               </p>
             )}
+            <SelectField
+              label={copy.radius}
+              options={[
+                { id: ALL, label: copy.allDistances },
+                ...RADIUS_KM.map((km) => ({ id: String(km), label: copy.withinRadius(km) })),
+              ]}
+              value={filters.radius ? String(filters.radius) : ALL}
+              onChange={(radius) =>
+                set({ radius: radius === ALL ? null : (Number(radius) as RadiusKm) })
+              }
+              isDisabled={!results.reference}
+              description={results.reference ? copy.radiusHelp : copy.radiusNeedsLocation}
+            />
           </Section>
 
           <Section
@@ -413,7 +429,8 @@ function LocationStatus() {
 export function filterCounts(filters: TrainingFilters, useLocation: boolean, placeText: string) {
   return {
     type: filters.kinds.length === 1 ? 1 : 0,
-    location: Number(useLocation) + Number(Boolean(placeText.trim())),
+    location:
+      Number(useLocation) + Number(Boolean(placeText.trim())) + Number(filters.radius !== null),
     region: Number(Boolean(filters.region)),
     province: Number(Boolean(filters.province)),
     qualification: filters.qualifications.length,

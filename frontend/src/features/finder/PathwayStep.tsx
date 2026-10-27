@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useId, useState } from 'react'
 import { Button } from 'react-aria-components'
 import { Link, useNavigate } from 'react-router'
@@ -13,6 +13,7 @@ import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
+import { pathwaysQuery, progressKeys, setPathwayStatus, type Enrollment } from '../progress/api.ts'
 import { shortName, trainingAddress } from '../training/address.ts'
 import { curatedPathwaysQuery, followPathway, type CuratedPathway } from './api.ts'
 import { FeedbackPrompt } from './FeedbackPrompt.tsx'
@@ -221,25 +222,46 @@ function CuratedPathway({
   return <PathwayCard pathway={pathway} />
 }
 
-function PathwayCard({ pathway }: { pathway: CuratedPathway }) {
+export function PathwayCard({ pathway }: { pathway: CuratedPathway }) {
   const en = useCopy()
   const copy = en.finder.pathway
 
   const requireAccount = useRequireAccount()
+  const { isSignedIn } = useAuth()
+  const queryClient = useQueryClient()
+  const enrollments = useQuery({ ...pathwaysQuery, enabled: isSignedIn })
+  const existing = enrollments.data?.find((item) => item.pathway.id === pathway.id)
+  const added = isSignedIn && existing !== undefined && existing.status !== 'withdrawn'
   const headingId = useId()
   const [outcome, setOutcome] = useState<{
     tone: 'success' | 'info' | 'error'
     message: string
   } | null>(null)
   const follow = useMutation({
-    mutationFn: () => followPathway(pathway.id),
-    onSuccess: () => setOutcome({ tone: 'success', message: copy.followed }),
-    onError: (failure) =>
-      setOutcome(
-        failure instanceof ApiError && failure.status === 409
-          ? { tone: 'info', message: copy.already }
-          : { tone: 'error', message: failureMessage(failure) },
-      ),
+    mutationFn: async () => {
+      // Read after sign-in as well: another tab may already have saved this pathway.
+      const records = await queryClient.fetchQuery(pathwaysQuery)
+      const saved = records.find((item) => item.pathway.id === pathway.id)
+      if (saved) {
+        return saved.status === 'withdrawn' ? setPathwayStatus(saved.id, 'active') : saved
+      }
+      return followPathway(pathway.id)
+    },
+    onSuccess: (enrollment) => {
+      queryClient.setQueryData<Enrollment[]>(progressKeys.pathways, (current) => [
+        ...(current ?? []).filter((item) => item.id !== enrollment.id),
+        enrollment,
+      ])
+      setOutcome({ tone: 'success', message: copy.followed })
+    },
+    onError: (failure) => {
+      if (failure instanceof ApiError && failure.status === 409) {
+        setOutcome({ tone: 'info', message: copy.already })
+        void queryClient.invalidateQueries({ queryKey: progressKeys.pathways })
+      } else {
+        setOutcome({ tone: 'error', message: failureMessage(failure) })
+      }
+    },
   })
 
   return (
@@ -266,18 +288,30 @@ function PathwayCard({ pathway }: { pathway: CuratedPathway }) {
           </li>
         ))}
       </ol>
-      {/* Following needs an account: signed out, it opens sign-in and carries on afterwards (US-02). */}
-      <Button
-        className={button()}
-        isPending={follow.isPending}
-        onPress={() => {
-          setOutcome(null)
-          requireAccount(() => follow.mutate())
-        }}
-      >
-        <Icon name="bookmark" />
-        {follow.isPending ? copy.following : copy.follow}
-      </Button>
+      <div className="mt-2 flex flex-col items-start gap-3 border-t border-border pt-4">
+        <p className={muted}>{copy.cart.hint}</p>
+        <div className="flex flex-wrap items-center gap-3">
+          {/* Saving needs an account; sign-in carries on with this qualification (US-02). */}
+          <Button
+            className={button({ variant: added ? 'secondary' : 'primary' })}
+            isPending={follow.isPending}
+            isDisabled={added || (isSignedIn && enrollments.isPending)}
+            onPress={() => {
+              setOutcome(null)
+              requireAccount(() => follow.mutate())
+            }}
+          >
+            <Icon name={added ? 'check' : 'bookmark'} />
+            {follow.isPending ? copy.following : added ? copy.cart.added : copy.cart.add}
+          </Button>
+          {added && (
+            <Link to={paths.progress} className={button({ variant: 'tertiary' })}>
+              {copy.cart.view}
+              <Icon name="arrowRight" />
+            </Link>
+          )}
+        </div>
+      </div>
       <div aria-live="polite">
         {outcome && (
           <p

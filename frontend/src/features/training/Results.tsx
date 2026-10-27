@@ -75,7 +75,11 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
     <section
       data-tour="training-results"
       aria-labelledby={headingId}
-      className="flex min-w-0 flex-col rounded-18 border border-border bg-surface p-4 max-xs:rounded-14 max-xs:p-[0.85rem]"
+      className={cx(
+        'flex min-w-0 flex-col rounded-18 border border-border bg-surface p-4 max-xs:rounded-14 max-xs:p-[0.85rem]',
+        hasMap &&
+          '@min-[1032px]/workspace:h-full @min-[1032px]/workspace:min-h-0 @min-[1032px]/workspace:overflow-y-auto @min-[1032px]/workspace:overscroll-contain',
+      )}
     >
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <h2 id={headingId} className="m-0 text-[1.2rem] text-navy">
@@ -99,6 +103,23 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
           </p>
         ) : (
           filters.sort === 'nearest' && <p className={note}>{copy.sortHint}</p>
+        )}
+        {results.radiusKm !== null && reference && (
+          <p className={note}>
+            <Icon name="distance" />
+            {copy.withinRadius(results.radiusKm, reference.mine ? copy.fromYou : reference.label)}
+          </p>
+        )}
+        {filters.radius !== null && !reference && (
+          <>
+            <p className={note}>{copy.radiusPending}</p>
+            <Button
+              className={cx(button({ variant: 'tertiary', text: 13 }), 'self-start')}
+              onPress={() => update({ radius: null, center: null })}
+            >
+              {copy.showAllDistances}
+            </Button>
+          </>
         )}
         {results.truncated && <p className={note}>{copy.truncated}</p>}
       </div>
@@ -222,11 +243,23 @@ function NoMatch({ results }: { results: CenterResults }) {
     ...(filters.within ? [en.training.availability[String(filters.within) as '30' | '90']] : []),
     ...(filters.scholarship ? [en.training.filters.scholarship] : []),
     ...(placeText.trim() ? [placeText.trim()] : []),
+    ...(results.radiusKm !== null ? [en.training.filters.withinRadius(results.radiusKm)] : []),
   ]
   return (
-    <EmptyState icon="search" heading={copy.none.heading} body={copy.none.body} headingLevel={3}>
+    <EmptyState
+      icon="search"
+      heading={copy.none.heading}
+      body={results.radiusKm !== null ? copy.none.radiusBody : copy.none.body}
+      headingLevel={3}
+    >
       {active.length > 0 && (
         <p className="m-0 basis-full text-14 text-ink">{copy.active(active)}</p>
+      )}
+      {results.radiusKm !== null && (
+        <Button className={button()} onPress={() => update({ radius: null, center: null })}>
+          <Icon name="distance" />
+          {copy.showAllDistances}
+        </Button>
       )}
       <Button
         className={button()}

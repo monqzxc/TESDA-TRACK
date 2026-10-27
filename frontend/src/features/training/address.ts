@@ -21,6 +21,8 @@ export const DELIVERY_MODES: readonly DeliveryMode[] = [
 ]
 export const WINDOWS = [30, 90] as const
 export type Window = (typeof WINDOWS)[number]
+export const RADIUS_KM = [5, 10, 25, 50, 100] as const
+export type RadiusKm = (typeof RADIUS_KM)[number]
 export const SORTS: readonly SortOrder[] = ['nearest', 'soonest', 'name']
 
 /** The query parameter for each filter. */
@@ -31,6 +33,7 @@ export const TRAINING_PARAMS = {
   qualification: 'qualification',
   mode: 'mode',
   within: 'within',
+  radius: 'radius',
   scholarship: 'scholarship',
   search: 'q',
   sort: 'sort',
@@ -46,6 +49,8 @@ export interface TrainingFilters {
   qualifications: string[]
   mode: DeliveryMode | null
   within: Window | null
+  /** Maximum straight-line distance from the current location or searched place, in kilometres. */
+  radius: RadiusKm | null
   scholarship: boolean
   /** Words in the search box. */
   search: string
@@ -61,6 +66,7 @@ export const NO_FILTERS: TrainingFilters = {
   qualifications: [],
   mode: null,
   within: null,
+  radius: null,
   scholarship: false,
   search: '',
   sort: 'nearest',
@@ -83,6 +89,7 @@ export function readTrainingAddress(query: URLSearchParams): TrainingFilters {
     qualifications: unique(query.getAll(p.qualification)),
     mode: oneOf(DELIVERY_MODES, query.get(p.mode)),
     within: oneOf(WINDOWS, query.get(p.within)),
+    radius: oneOf(RADIUS_KM, query.get(p.radius)),
     scholarship: query.get(p.scholarship) === '1',
     search: query.get(p.search) ?? '',
     sort: oneOf(SORTS, query.get(p.sort)) ?? 'nearest',
@@ -101,6 +108,7 @@ export function writeTrainingAddress(filters: Partial<TrainingFilters>): URLSear
   for (const code of filters.qualifications ?? []) query.append(p.qualification, code)
   if (filters.mode) query.set(p.mode, filters.mode)
   if (filters.within) query.set(p.within, String(filters.within))
+  if (filters.radius) query.set(p.radius, String(filters.radius))
   if (filters.scholarship) query.set(p.scholarship, '1')
   if (filters.search?.trim()) query.set(p.search, filters.search.trim())
   if (filters.sort && filters.sort !== 'nearest') query.set(p.sort, filters.sort)

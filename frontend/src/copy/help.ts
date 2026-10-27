@@ -29,13 +29,14 @@ export const helpCopy = {
     training:
       'Find training and assessment centers, compare their offerings, and explore nearby options.',
     progress:
-      'Pick up your pathway and review your saved recommendations, readiness checks, and achievements.',
+      'Track qualifications, pathways, readiness, milestones, and recommendations. Review activity, goals, certificates, and assessment applications in My Profile.',
     skills:
       'Describe your skills or work experience to explore related occupations and qualifications.',
     reports:
       'Explore pilot activity, qualification demand, and training supply using counts and averages.',
     admin: 'Manage access and pilot operations using the sections available to your account.',
-    profile: 'Review your account details and continue to your saved progress.',
+    profile:
+      'Review your account details, recent activity, goals, certificates, and assessment applications.',
     signIn: 'Sign in or create an account to save your progress and return to your pathway later.',
     privacy: 'Read how TESDA-TRACK uses information and how you can exercise your privacy rights.',
     notFound: 'This address could not be found. Use the page links or navigation to continue.',
@@ -197,25 +198,20 @@ export const helpCopy = {
       description:
         'This card offers a useful next action based on your saved pathway and activity. With no saved records yet, it helps you start a goal.',
     },
-    progressSummary: {
-      title: 'See your activity at a glance',
+    progressSections: {
+      title: 'Explore your progress',
       description:
-        'These figures summarize your saved recommendation sessions, readiness checks, and latest readiness result.',
+        'Use these tabs to switch between your qualifications, milestones and badges, pathways, readiness checks, and saved recommendations. Find activity, goals, certificates, and assessment applications in My Profile.',
     },
-    progressReadiness: {
-      title: 'Review your readiness over time',
+    progressQualifications: {
+      title: 'Build your qualification collection',
       description:
-        'See your past readiness checks here. When enough checks are available, compare results to understand how your self-ratings have changed.',
+        'Add qualifications from the library or save a pathway. Checklist progress comes from steps you complete; training progress will appear when BSRS records are connected.',
     },
-    progressHistory: {
-      title: 'Return to a saved recommendation',
+    profileSections: {
+      title: 'Keep your profile records together',
       description:
-        'Your saved goals and recommendations appear here. Open one to continue exploring its qualifications and pathway.',
-    },
-    progressGoals: {
-      title: 'Keep track of your goals',
-      description:
-        'Add the goals you want to work toward and review them as your plans develop. Your certifications are recorded alongside your goals.',
+        'Use My Profile to review recent activity, manage goals and certificates, and check your assessment applications.',
     },
     skillsInput: {
       title: 'Describe skills or work you know',

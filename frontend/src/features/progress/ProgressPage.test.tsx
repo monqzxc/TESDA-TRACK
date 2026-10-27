@@ -156,6 +156,13 @@ function serveLearner(records: Records = {}) {
         steps: enrollment.steps.map((step) => ({ ...step, status: 'completed' })),
       })
     }),
+    http.patch('*/api/v1/me/pathways/:id', async ({ request, params }) => {
+      await write(request)
+      return HttpResponse.json({
+        ...(records.enrollments?.find((item) => item.id === params.id) ?? enrollment),
+        status: 'withdrawn',
+      })
+    }),
     http.post('*/api/v1/me/assessment-applications/:id/withdraw', async ({ request }) => {
       await write(request)
       return HttpResponse.json({ ...application, status: 'withdrawn' })
@@ -176,9 +183,13 @@ function serveLearner(records: Records = {}) {
         { status: 201 },
       )
     }),
-    http.patch('*/api/v1/me/goals/:id', async ({ request }) => {
+    http.patch('*/api/v1/me/goals/:id', async ({ request, params }) => {
       await write(request)
-      return HttpResponse.json({ ...records.goals?.[0], status: 'achieved' })
+      const body = (await request.json()) as { status: Goal['status'] }
+      return HttpResponse.json({
+        ...records.goals?.find((goal) => goal.id === params.id),
+        status: body.status,
+      })
     }),
     http.post('*/api/v1/me/certifications', async ({ request }) => {
       await write(request)
@@ -204,13 +215,26 @@ function serveLearner(records: Records = {}) {
   return writes
 }
 
-async function openProgress() {
-  const view = renderApp('/progress')
+async function openProgress(section?: string) {
+  const view = renderApp(section ? `/progress?section=${section}` : '/progress')
   await screen.findByRole('heading', { level: 2, name: 'Continue your journey' })
   return view
 }
 
+async function openProfile(section: 'records' | 'applications') {
+  const view = renderApp(`/profile?section=${section}`)
+  await screen.findByRole('region', {
+    name: section === 'records' ? 'My goals' : 'My assessment applications',
+  })
+  return view
+}
+
 const region = (name: string) => screen.getByRole('region', { name })
+const sections = () => screen.getByRole('navigation', { name: 'My Progress sections' })
+const profileSections = () => screen.getByRole('navigation', { name: 'Profile sections' })
+async function openSection(name: string) {
+  await userEvent.click(within(sections()).getByRole('button', { name }))
+}
 
 beforeEach(() => {
   useFinderStore.getState().reset()
@@ -219,27 +243,102 @@ beforeEach(() => {
 })
 
 describe('My Progress', () => {
-  it('sends a learner with no records to the finder, and says what each part will hold', async () => {
+  it('sends a learner with no records to the finder, and opens qualification goals by default', async () => {
     serveLearner()
     await openProgress()
 
     expect(
       within(region('Continue your journey')).getByRole('link', { name: 'Find my pathway' }),
     ).toHaveAttribute('href', '/find')
+    expect(region('My qualification goals')).toBeVisible()
+    expect(screen.queryByRole('region', { name: 'My pathways' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('region', { name: 'Readiness over time' })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('region', { name: 'My assessment applications' }),
+    ).not.toBeInTheDocument()
+    expect(screen.queryByRole('region', { name: 'My goals' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('region', { name: 'Recommendation history' })).not.toBeInTheDocument()
+    expect(
+      within(sections()).queryByRole('button', { name: 'Recommendations' }),
+    ).not.toBeInTheDocument()
+    await openSection('Readiness')
     expect(
       screen.getByText(
         'Complete an Assessment Readiness check while signed in to start your history.',
       ),
     ).toBeVisible()
-    expect(screen.getByText('Goals you submit while signed in appear here.')).toBeVisible()
+    await openSection('Pathways')
     expect(
       screen.getByText('Follow a recommended pathway from Find my pathway to track it here.'),
     ).toBeVisible()
-    expect(screen.getByText('Apply for an assessment from Training & Assessment.')).toBeVisible()
-    expect(
-      await screen.findByText('A small goal is a good place to start. Add your first one below.'),
-    ).toBeVisible()
-    expect(screen.getByText('Keep the qualifications you’ve earned in one place.')).toBeVisible()
+    await openSection('Milestones')
+    expect(region('Milestones and badges')).toBeVisible()
+  })
+
+  it('switches sections at shareable addresses and shows only the selected content', async () => {
+    serveLearner({ sessions: [session] })
+    const { router } = await openProgress()
+    for (const [label, section, heading] of [
+      ['Pathways', 'pathways', 'My pathways'],
+      ['Readiness', 'readiness', 'Readiness over time'],
+      ['Recommendations', 'history', 'Recommendation history'],
+      ['Milestones', 'milestones', 'Milestones and badges'],
+      ['Qualifications', 'qualifications', 'My qualification goals'],
+    ]) {
+      await openSection(label)
+      expect(
+        new URLSearchParams(router.state.location.search).get('section') ?? 'qualifications',
+      ).toBe(section)
+      expect(within(sections()).getByRole('button', { name: label })).toHaveAttribute(
+        'aria-pressed',
+        'true',
+      )
+      expect(region(heading)).toBeVisible()
+      if (section !== 'qualifications')
+        expect(
+          screen.queryByRole('region', { name: 'My qualification goals' }),
+        ).not.toBeInTheDocument()
+    }
+  })
+
+  it.each(['unknown', 'history'])(
+    'falls back to Qualifications for unavailable section %s',
+    async (section) => {
+      serveLearner()
+      await openProgress(section)
+      expect(region('My qualification goals')).toBeVisible()
+      expect(
+        within(sections()).getByRole('button', { name: 'Qualifications' }),
+      ).toHaveAttribute('aria-pressed', 'true')
+    },
+  )
+
+  it('opens the application section from the next-step shortcut', async () => {
+    serveLearner({ applications: [application] })
+    const { router } = await openProgress()
+    await userEvent.click(
+      within(region('Continue your journey')).getByRole('button', {
+        name: 'View your application',
+      }),
+    )
+    await waitFor(() => expect(router.state.location.pathname).toBe('/profile'))
+    expect(new URLSearchParams(router.state.location.search).get('section')).toBe('applications')
+    expect(await screen.findByRole('region', { name: 'My assessment applications' })).toBeVisible()
+  })
+
+  it('retains an unsaved personal goal while switching sections', async () => {
+    serveLearner()
+    const user = userEvent.setup()
+    await openProfile('records')
+    await user.type(
+      within(region('My goals')).getByRole('textbox', { name: 'New goal' }),
+      'Earn my certificate',
+    )
+    await user.click(within(profileSections()).getByRole('button', { name: 'Overview' }))
+    await user.click(within(profileSections()).getByRole('button', { name: 'Goals & certificates' }))
+    expect(within(region('My goals')).getByRole('textbox', { name: 'New goal' })).toHaveValue(
+      'Earn my certificate',
+    )
   })
 
   it('offers the pathway with steps left first, and its button goes to it (US-10)', async () => {
@@ -253,6 +352,220 @@ describe('My Progress', () => {
     expect(screen.getByRole('heading', { name: 'My pathways' })).toHaveFocus()
   })
 
+  it('shows only saved pathways as qualification goals, with checklist progress and pending BSRS data', async () => {
+    serveLearner({
+      sessions: [session],
+      enrollments: [enrollment, { ...enrollment, id: 'withdrawn', status: 'withdrawn' }],
+    })
+    await openProgress()
+
+    const collection = region('My qualification goals')
+    expect(within(collection).getByText('1 qualification saved')).toBeVisible()
+    expect(within(collection).getAllByRole('article')).toHaveLength(1)
+    expect(within(collection).getByRole('heading', { name: welding.name })).toBeVisible()
+    expect(within(collection).getByRole('progressbar')).toHaveAttribute('aria-valuenow', '50')
+    expect(within(collection).getByText(/1 of 2 steps completed/)).toBeVisible()
+    expect(within(collection).getByText('BSRS not connected')).toBeVisible()
+    expect(within(collection).getByText(/A training percentage will be available/)).toBeVisible()
+  })
+
+  it('does not automatically add recommended qualifications to the collection', async () => {
+    serveLearner({ sessions: [session] })
+    await openProgress()
+
+    const collection = region('My qualification goals')
+    expect(within(collection).getByText('0 qualifications saved')).toBeVisible()
+    expect(within(collection).queryByRole('article')).not.toBeInTheDocument()
+    expect(within(collection).getByText('Build your learning collection')).toBeVisible()
+  })
+
+  it('shows a qualification saved from the library without inventing a pathway or percentage', async () => {
+    serveLearner({
+      goals: [
+        {
+          id: 'library-goal',
+          title: welding.name,
+          target_qualification: welding,
+          status: 'active',
+          target_date: null,
+          created_at: '2026-10-04T00:00:00Z',
+          updated_at: '2026-10-04T00:00:00Z',
+        },
+      ],
+    })
+    const user = userEvent.setup()
+    const { router } = await openProgress()
+
+    const collection = region('My qualification goals')
+    expect(within(collection).getByText('1 qualification saved')).toBeVisible()
+    expect(within(collection).getByText('Saved qualification')).toBeVisible()
+    expect(within(collection).getByText('No pathway selected yet')).toBeVisible()
+    expect(within(collection).queryByRole('progressbar')).not.toBeInTheDocument()
+    expect(within(collection).getByText('BSRS not connected')).toBeVisible()
+    expect(within(collection).getByRole('link', { name: 'Add a qualification' })).toHaveAttribute(
+      'href',
+      '/qualifications',
+    )
+
+    await user.click(within(collection).getByRole('button', { name: 'Explore this pathway' }))
+    await waitFor(() => expect(router.state.location.pathname).toBe('/find'))
+    expect(useFinderStore.getState().goal).toBe(`I want to pursue ${welding.name}.`)
+  })
+
+  it('merges a saved qualification goal and its pathway, and removes both records together', async () => {
+    const goal: Goal = {
+      id: 'library-goal',
+      title: welding.name,
+      target_qualification: welding,
+      status: 'active',
+      target_date: null,
+      created_at: '2026-10-04T00:00:00Z',
+      updated_at: '2026-10-04T00:00:00Z',
+    }
+    const writes = serveLearner({ goals: [goal], enrollments: [enrollment] })
+    const user = userEvent.setup()
+    await openProgress()
+    const collection = region('My qualification goals')
+    expect(within(collection).getAllByRole('article')).toHaveLength(1)
+    expect(within(collection).getByText('1 qualification saved')).toBeVisible()
+    expect(within(collection).getByRole('progressbar')).toHaveAttribute('aria-valuenow', '50')
+
+    await user.click(within(collection).getByRole('button', { name: `Remove: ${welding.name}` }))
+    expect(await within(collection).findByText('0 qualifications saved')).toBeVisible()
+    expect(writes).toEqual(
+      expect.arrayContaining([
+        {
+          method: 'PATCH',
+          path: '/api/v1/me/pathways/enrollment-1',
+          body: { status: 'withdrawn' },
+        },
+        { method: 'PATCH', path: '/api/v1/me/goals/library-goal', body: { status: 'archived' } },
+      ]),
+    )
+  })
+
+  it('excludes archived qualification goals and goals with no target qualification', async () => {
+    const goal: Goal = {
+      id: 'archived',
+      title: welding.name,
+      target_qualification: welding,
+      status: 'archived',
+      target_date: null,
+      created_at: '2026-10-04T00:00:00Z',
+      updated_at: '2026-10-04T00:00:00Z',
+    }
+    serveLearner({
+      goals: [goal, { ...goal, id: 'personal', status: 'active', target_qualification: null }],
+    })
+    await openProgress()
+    expect(
+      within(region('My qualification goals')).getByText('0 qualifications saved'),
+    ).toBeVisible()
+  })
+
+  it('groups saved routes for one qualification and removes the full selection', async () => {
+    const alternate = {
+      ...enrollment,
+      id: 'another-route',
+      pathway: { ...enrollment.pathway, id: 8, title: 'Prepare for assessment' },
+      created_at: '2026-10-01T00:00:00Z',
+    }
+    const writes = serveLearner({ enrollments: [enrollment, alternate] })
+    const user = userEvent.setup()
+    await openProgress()
+
+    const collection = region('My qualification goals')
+    expect(within(collection).getByText('1 qualification saved')).toBeVisible()
+    expect(within(collection).getAllByRole('article')).toHaveLength(1)
+    await user.click(within(collection).getByRole('button', { name: /Prepare for assessment/ }))
+    expect(
+      within(region('My pathways')).getByRole('heading', { name: 'Prepare for assessment' }),
+    ).toHaveFocus()
+
+    await openSection('Qualifications')
+    const returnedCollection = region('My qualification goals')
+    await user.click(
+      within(returnedCollection).getByRole('button', { name: `Remove: ${welding.name}` }),
+    )
+    expect(await within(returnedCollection).findByText('0 qualifications saved')).toBeVisible()
+    expect(writes.map((write) => write.path).sort()).toEqual([
+      '/api/v1/me/pathways/another-route',
+      '/api/v1/me/pathways/enrollment-1',
+    ])
+    expect(
+      within(returnedCollection).getByRole('heading', { name: 'My qualification goals' }),
+    ).toHaveFocus()
+  })
+
+  it('takes a saved qualification to its own checklist', async () => {
+    serveLearner({ enrollments: [enrollment] })
+    const user = userEvent.setup()
+    await openProgress()
+    await user.click(
+      within(region('My qualification goals')).getByRole('button', { name: 'View pathway steps' }),
+    )
+    expect(
+      within(region('My pathways')).getByRole('heading', { name: 'Close your skill gaps' }),
+    ).toHaveFocus()
+  })
+
+  it('keeps a failed route visible if another route was successfully removed', async () => {
+    const alternate = {
+      ...enrollment,
+      id: 'another-route',
+      pathway: { ...enrollment.pathway, id: 8 },
+    }
+    serveLearner({ enrollments: [enrollment, alternate] })
+    server.use(
+      http.patch('*/api/v1/me/pathways/another-route', () =>
+        HttpResponse.json({ detail: 'Unavailable' }, { status: 503 }),
+      ),
+    )
+    const user = userEvent.setup()
+    await openProgress()
+    const collection = region('My qualification goals')
+    await user.click(within(collection).getByRole('button', { name: `Remove: ${welding.name}` }))
+    expect(await within(collection).findByRole('alert')).toHaveTextContent(/couldn’t be removed/)
+    expect(within(collection).getByText('1 qualification saved')).toBeVisible()
+    await openSection('Pathways')
+    expect(within(region('My pathways')).getAllByRole('article')).toHaveLength(1)
+  })
+
+  it('removes a qualification from both the collection and checklist after the API saves it', async () => {
+    const writes = serveLearner({ enrollments: [enrollment] })
+    const user = userEvent.setup()
+    await openProgress()
+
+    const collection = region('My qualification goals')
+    await user.click(within(collection).getByRole('button', { name: `Remove: ${welding.name}` }))
+
+    expect(await within(collection).findByText('0 qualifications saved')).toBeVisible()
+    expect(writes).toEqual([
+      { method: 'PATCH', path: '/api/v1/me/pathways/enrollment-1', body: { status: 'withdrawn' } },
+    ])
+    expect(
+      within(collection).getByRole('heading', { name: 'My qualification goals' }),
+    ).toHaveFocus()
+    await openSection('Pathways')
+    expect(within(region('My pathways')).queryByRole('checkbox')).not.toBeInTheDocument()
+  })
+
+  it('keeps a qualification visible when removing it fails', async () => {
+    serveLearner({ enrollments: [enrollment] })
+    server.use(
+      http.patch('*/api/v1/me/pathways/:id', () =>
+        HttpResponse.json({ detail: 'Unavailable' }, { status: 503 }),
+      ),
+    )
+    const user = userEvent.setup()
+    await openProgress()
+
+    const collection = region('My qualification goals')
+    await user.click(within(collection).getByRole('button', { name: `Remove: ${welding.name}` }))
+    expect(await within(collection).findByRole('alert')).toHaveTextContent(/couldn’t be removed/)
+    expect(within(collection).getByText('1 qualification saved')).toBeVisible()
+  })
+
   it('compares readiness checks for a qualification, and says when they asked about different skills (US-11)', async () => {
     serveLearner({
       checks: [
@@ -260,7 +573,7 @@ describe('My Progress', () => {
         check('c-1', '2026-10-01T02:00:00Z', 35, { 1: 'confident' }),
       ],
     })
-    await openProgress()
+    await openProgress('readiness')
 
     const history = region('Readiness over time')
     const rows = within(within(history).getByRole('table')).getAllByRole('row')
@@ -284,7 +597,7 @@ describe('My Progress', () => {
       checks: [check('c-1', '2026-10-01T02:00:00Z', 35, { 1: 'confident' })],
     })
     const user = userEvent.setup()
-    const { router } = await openProgress()
+    const { router } = await openProgress('history')
 
     await user.click(screen.getByRole('button', { name: 'Continue: I want to be a welder.' }))
 
@@ -302,7 +615,7 @@ describe('My Progress', () => {
   it('ticks off a step, and shows the pathway as the API saves it', async () => {
     const writes = serveLearner({ enrollments: [enrollment] })
     const user = userEvent.setup()
-    await openProgress()
+    await openProgress('pathways')
 
     await user.click(screen.getByRole('checkbox', { name: '2. Take focused training' }))
 
@@ -319,7 +632,7 @@ describe('My Progress', () => {
   it('asks before withdrawing the specific application, then shows its status (US-09)', async () => {
     const writes = serveLearner({ applications: [application] })
     const user = userEvent.setup()
-    await openProgress()
+    await openProfile('applications')
     const applications = region('My assessment applications')
     expect(within(applications).getByText('Awaiting review')).toBeInTheDocument()
 
@@ -358,7 +671,7 @@ describe('My Progress', () => {
     }
     const writes = serveLearner({ goals: [goal] })
     const user = userEvent.setup()
-    await openProgress()
+    await openProfile('records')
     const goals = region('My goals')
 
     await user.click(within(goals).getByRole('button', { name: 'Add goal' }))
@@ -387,7 +700,7 @@ describe('My Progress', () => {
   it('adds a certification as self-reported', async () => {
     const writes = serveLearner()
     const user = userEvent.setup()
-    await openProgress()
+    await openProfile('records')
     const certifications = region('My certifications')
 
     await user.type(

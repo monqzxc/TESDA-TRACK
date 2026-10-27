@@ -171,6 +171,96 @@ async function expectSettledAndAccessible(page: Page) {
 
 const resultsRegion = (page: Page) => page.getByRole('region', { name: /^All results/ })
 
+test('the map and results fill the available height as the window resizes', async ({ page }) => {
+  await page.setViewportSize({ width: 1920, height: 900 })
+  await serveTraining(page)
+  await page.goto('/training')
+  await expect(page.locator('.center-map')).toBeVisible()
+
+  const expectFilledWorkspace = async () => {
+    await expect
+      .poll(() =>
+        page.evaluate(() => {
+          const map = document.querySelector<HTMLElement>('.center-map')!
+          const tiles = map.querySelector<HTMLElement>('.leaflet-container')!
+          const results = document.querySelector<HTMLElement>('[data-tour="training-results"]')!
+          const main = document.querySelector<HTMLElement>('main')!
+          const mapBounds = map.getBoundingClientRect()
+          const resultsBounds = results.getBoundingClientRect()
+          const bottom = innerHeight - parseFloat(getComputedStyle(main).paddingBottom)
+          return Math.max(
+            Math.abs(mapBounds.bottom - bottom),
+            Math.abs(resultsBounds.bottom - bottom),
+            Math.abs(mapBounds.height - resultsBounds.height),
+            Math.abs(tiles.clientHeight - map.clientHeight),
+            Math.abs(tiles.clientWidth - map.clientWidth),
+          )
+        }),
+      )
+      .toBeLessThanOrEqual(2)
+  }
+
+  for (const viewport of [
+    { width: 1920, height: 900 },
+    { width: 1920, height: 1200 },
+    { width: 1600, height: 700 },
+  ]) {
+    await page.setViewportSize(viewport)
+    await expectFilledWorkspace()
+  }
+
+  const results = resultsRegion(page)
+  const scroll = await results.evaluate((element) => {
+    element.scrollTop = element.scrollHeight
+    return { top: element.scrollTop, height: element.clientHeight, content: element.scrollHeight }
+  })
+  expect(scroll.content).toBeGreaterThan(scroll.height)
+  expect(scroll.top).toBeGreaterThan(0)
+  await expect(results.getByRole('button', { name: /^View details:/ }).last()).toBeInViewport()
+
+  await page.getByRole('button', { name: 'Hide map' }).click()
+  await expect(page.locator('.center-map')).toHaveCount(0)
+  await expect
+    .poll(() => results.evaluate((element) => element.scrollHeight - element.clientHeight))
+    .toBeLessThanOrEqual(1)
+  await page.getByRole('button', { name: 'Show map' }).click()
+  await expect(page.locator('.center-map')).toBeVisible()
+  await expectFilledWorkspace()
+})
+
+test('narrow and phone screens keep the results below the map in the page flow', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 812 })
+  await serveTraining(page)
+  await page.goto('/training')
+  await expect(page.locator('.center-map')).toBeVisible()
+  await page.getByRole('button', { name: 'Show filters' }).click()
+
+  for (const viewport of [
+    { width: 375, height: 812 },
+    { width: 812, height: 375 },
+    { width: 1366, height: 768 },
+  ]) {
+    await page.setViewportSize(viewport)
+    await expect
+      .poll(() =>
+        page.evaluate(() => {
+          const map = document.querySelector<HTMLElement>('.center-map')!.getBoundingClientRect()
+          const results = document.querySelector<HTMLElement>('[data-tour="training-results"]')!
+          return {
+            stacked: results.getBoundingClientRect().top >= map.bottom,
+            usableMapHeight: map.height > 300,
+            horizontalOverflow:
+              document.documentElement.scrollWidth - document.documentElement.clientWidth,
+            resultsOverflow: results.scrollHeight - results.clientHeight,
+          }
+        }),
+      )
+      .toEqual({ stacked: true, usableMapHeight: true, horizontalOverflow: 0, resultsOverflow: 0 })
+  }
+})
+
 for (const colorScheme of ['light', 'dark'] as const) {
   for (const [size, viewport] of Object.entries(SIZES)) {
     test(`${colorScheme} theme, ${size}: the map and the list, passing axe`, async ({ page }) => {
@@ -189,6 +279,45 @@ for (const colorScheme of ['light', 'dark'] as const) {
 }
 
 for (const [size, viewport] of Object.entries(SIZES)) {
+  test(`${size}: a near-me radius filters the map and list and can be cleared`, async ({
+    page,
+    context,
+  }) => {
+    await page.setViewportSize(viewport)
+    await page.emulateMedia({ colorScheme: size === 'phone' ? 'dark' : 'light' })
+    await context.grantPermissions(['geolocation'])
+    await context.setGeolocation({ latitude: 14.5547, longitude: 121.0244 })
+    await serveTraining(page)
+    await page.goto('/training')
+    await expect(page.getByRole('heading', { name: 'All results (3)' })).toBeVisible()
+    if (size === 'phone') await page.getByRole('button', { name: 'Show filters' }).click()
+
+    const radius = page.getByRole('button', { name: /Radius near me/ })
+    await expect(radius).toBeDisabled()
+    await page.getByText('Use my current location', { exact: true }).click()
+    await expect(radius).toBeEnabled()
+    await radius.click()
+    await page.getByRole('option', { name: 'Within 10 km', exact: true }).click()
+
+    await expect(page.getByRole('heading', { name: 'All results (2)' })).toBeVisible()
+    await expect(page.getByText('Within 10 km of your location', { exact: true })).toBeVisible()
+    await expect(page.locator('.center-map-radius')).toBeVisible()
+    await expect(
+      page.getByRole('button', { name: 'Cebu Skills Center, training center' }),
+    ).toHaveCount(0)
+    await expect(page).toHaveURL(/radius=10/)
+    await expectSettledAndAccessible(page)
+
+    await radius.click()
+    await page.getByRole('option', { name: 'Within 5 km', exact: true }).click()
+    await expect(page.getByRole('heading', { name: 'All results (0)' })).toBeVisible()
+    await expect(page.locator('.center-map-radius')).toBeVisible()
+    await page.getByRole('button', { name: 'Show all distances' }).click()
+    await expect(page.getByRole('heading', { name: 'All results (3)' })).toBeVisible()
+    await expect(page.locator('.center-map-radius')).toHaveCount(0)
+    await expect(radius).toContainText('All distances')
+  })
+
   test(`${size}: a failed region lookup retains filters and recovers locally`, async ({ page }) => {
     await page.setViewportSize(viewport)
     await serveTraining(page)

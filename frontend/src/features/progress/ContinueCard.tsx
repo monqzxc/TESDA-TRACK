@@ -10,8 +10,10 @@ import { useFinderStore } from '../finder/store.ts'
 import type { Continuation } from './journey.ts'
 import { resumeSession } from './resume.ts'
 
-/** The ids of the sections the card can lead to, on this page. */
+/** Heading ids used when the next-step card opens a saved record. */
 export const SECTION_IDS = { pathways: 'my-pathways', applications: 'my-applications' } as const
+
+export const pathwayHeadingId = (enrollmentId: string) => `saved-pathway-${enrollmentId}`
 
 /** Brings a section of this page into view, with focus on its heading. */
 export function goToSection(id: string): void {
@@ -21,7 +23,13 @@ export function goToSection(id: string): void {
 }
 
 /** The one next step for the learner, above their records (US-10). */
-export function ContinueCard({ next }: { next: Continuation }) {
+export function ContinueCard({
+  next,
+  onOpenRecord,
+}: {
+  next: Continuation
+  onOpenRecord?: (section: 'pathways' | 'applications') => void
+}) {
   const en = useCopy()
   const copy = en.progress.continue
 
@@ -36,7 +44,12 @@ export function ContinueCard({ next }: { next: Continuation }) {
     case 'pathway':
       text = copy.pathway(next.enrollment.pathway.title)
       action = (
-        <Button className={primary} onPress={() => goToSection(SECTION_IDS.pathways)}>
+        <Button
+          className={primary}
+          onPress={() =>
+            onOpenRecord ? onOpenRecord('pathways') : goToSection(SECTION_IDS.pathways)
+          }
+        >
           {copy.pathwayAction}
           <Icon name="arrowRight" />
         </Button>
@@ -45,7 +58,13 @@ export function ContinueCard({ next }: { next: Continuation }) {
     case 'application':
       text = copy.application(next.application.schedule.qualification.name)
       action = (
-        <Button className={primary} onPress={() => goToSection(SECTION_IDS.applications)}>
+        <Button
+          className={primary}
+          onPress={() => {
+            if (onOpenRecord) onOpenRecord('applications')
+            else void navigate(`${paths.profile}?section=applications`)
+          }}
+        >
           {copy.applicationAction}
           <Icon name="arrowRight" />
         </Button>

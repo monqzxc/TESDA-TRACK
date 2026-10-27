@@ -294,7 +294,7 @@ export const en = {
     progress: {
       title: 'My Progress · TESDA-TRACK',
       heading: 'My Progress',
-      lead: 'Your recommendations, readiness checks, and achievements, together in one place.',
+      lead: 'Save qualifications, follow pathways, and keep your learning journey organized.',
     },
     skills: {
       title: 'Skills Explorer · TESDA-TRACK',
@@ -314,7 +314,7 @@ export const en = {
     profile: {
       title: 'My Profile · TESDA-TRACK',
       heading: 'My Profile',
-      lead: 'Your account details, together in one place.',
+      lead: 'Your account, activity, goals, certificates and applications, together in one place.',
     },
     signIn: {
       title: 'Sign in · TESDA-TRACK',
@@ -369,6 +369,15 @@ export const en = {
   },
   // Qualifications Library (classic/app.py show_library).
   library: {
+    collection: {
+      add: 'Add to My Progress',
+      adding: 'Adding…',
+      added: 'Added to My Progress',
+      view: 'View My Progress',
+      showAll: 'Show all qualifications',
+      showPages: 'Show 12 per page',
+      saved: 'Qualification added to My Progress.',
+    },
     hero: {
       title: 'Find what sparks',
       accent: 'your interest.',
@@ -628,6 +637,12 @@ export const en = {
         'This self-reported score is not an official competency assessment result. Formal assessment is subject to official eligibility and requirements.',
       yourPathway: 'Your pathway',
       follow: 'Follow this pathway',
+      cart: {
+        add: 'Add to My Progress',
+        added: 'Added to My Progress',
+        view: 'View My Progress',
+        hint: 'Save this qualification and track your next steps.',
+      },
       following: 'Adding to My Progress…',
       followed: 'Added to My Progress. Tick off each step as you complete it.',
       already: 'You’re already following this pathway. Find it under My Progress.',
@@ -783,6 +798,12 @@ export const en = {
       place: 'Search location',
       placePlaceholder: 'Enter city, province, or region',
       placeHelp: 'Distances are measured from this place when your own location is off.',
+      radius: 'Radius near me',
+      allDistances: 'All distances',
+      withinRadius: (km: number) => `Within ${figure(km)} km`,
+      radiusHelp:
+        'Uses approximate straight-line distances. Centers without map coordinates are excluded when a radius is selected.',
+      radiusNeedsLocation: 'Turn on your location or search a place to apply a radius.',
       placeNotFound: (text: string) =>
         `We couldn’t find “${text}”. Try a city, province or region name.`,
       yourLocation: 'Your location',
@@ -819,11 +840,15 @@ export const en = {
       // Distances are as the crow flies, from a point that may itself be rounded (US-08).
       distancesFrom: (label: string) => `Approximate distances from ${label}`,
       fromYou: 'your location',
+      withinRadius: (km: number, label: string) => `Within ${figure(km)} km of ${label}`,
+      radiusPending: 'Share your location or search a place to apply the selected radius.',
+      showAllDistances: 'Show all distances',
       sortHint: 'Turn on your location or search a place to sort by distance.',
       truncated: 'Some listings aren’t shown. Choose a qualification to narrow your search.',
       none: {
         heading: 'No centers match your search',
         body: 'Try another place or qualification, or select Clear all.',
+        radiusBody: 'Try a larger radius or show all distances to find more centers.',
       },
       // The filters in use, when nothing matches them (US-07).
       active: (filters: readonly string[]) => `Filters on: ${filters.join(' · ')}`,
@@ -965,6 +990,86 @@ export const en = {
       accent: 'Watch your skills grow.',
     },
     loading: 'Loading your progress…',
+    sections: {
+      label: 'My Progress sections',
+      qualifications: 'Qualifications',
+      milestones: 'Milestones',
+      pathways: 'Pathways',
+      readiness: 'Readiness',
+      history: 'Recommendations',
+    },
+    milestones: {
+      heading: 'Milestones and badges',
+      lead: 'Small wins add up. These badges update from the progress you save here.',
+      earned: (count: number, total: number) => `${count} of ${total} badges earned`,
+      earnedLabel: 'Earned',
+      inProgress: 'In progress',
+      count: (current: number, target: number) => `${current} / ${target}`,
+      certificateNote:
+        'The certificate badge counts records you add, including self-reported certificates. Check each certificate’s verification status under Goals & certificates.',
+      badges: {
+        qualifications: {
+          title: 'Explore three qualifications',
+          description: 'Save three qualifications to your learning collection.',
+        },
+        steps: {
+          title: 'Complete five pathway steps',
+          description: 'Mark five checklist steps complete across your pathways.',
+        },
+        pathway: {
+          title: 'Finish a pathway',
+          description: 'Complete every step in one saved pathway.',
+        },
+        readiness: {
+          title: 'Check your readiness three times',
+          description: 'Complete three readiness checks to see how your skills change.',
+        },
+        goal: {
+          title: 'Achieve a personal goal',
+          description: 'Mark one of your goals as achieved.',
+        },
+        certificate: {
+          title: 'Record a certificate',
+          description: 'Add a certificate to your records.',
+        },
+      },
+    },
+    qualifications: {
+      heading: 'My qualification goals',
+      lead: 'Your picks from the Qualifications Library and Find my pathway, all in one place.',
+      add: 'Add a qualification',
+      saved: (count: number) =>
+        `${count} ${count === 1 ? 'qualification' : 'qualifications'} saved`,
+      overview: 'Your learning collection',
+      overviewBody:
+        'Choose your qualifications. Follow your steps. Build toward your next opportunity.',
+      active: 'Pathway in progress',
+      completed: 'Pathway complete',
+      emptyHeading: 'Build your learning collection',
+      empty:
+        'Browse the Qualifications Library and use “Add to My Progress” to save a qualification here.',
+      savedGoal: 'Saved qualification',
+      goalAchieved: 'Goal achieved',
+      noPathway: 'No pathway selected yet',
+      choosePathway: 'Explore a pathway to plan your next steps for this qualification.',
+      explore: 'Explore this pathway',
+      checklist: 'Pathway checklist',
+      checklistHelp: 'Based on the steps you mark complete.',
+      steps: (done: number, total: number) => `${done} of ${total} steps completed`,
+      next: 'Next step',
+      allDone: 'All pathway steps completed.',
+      noSteps: 'No pathway steps available yet.',
+      otherPathways: 'Other saved pathways',
+      view: 'View pathway steps',
+      training: 'Training progress',
+      bsrsPending: 'BSRS not connected',
+      bsrsHelp: 'A training percentage will be available when BSRS training records are connected.',
+      remove: 'Remove',
+      removing: 'Removing…',
+      removeFailed: 'This qualification couldn’t be removed. Try again.',
+      removed:
+        'Qualification removed. Add it again from the Qualifications Library to resume your steps.',
+    },
     // The next useful step (US-10), in this order: a pathway with steps left, an application in review, a
     // recommendation whose qualification has no readiness check yet, the latest recommendation, else the finder.
     continue: {
@@ -1027,6 +1132,22 @@ export const en = {
       },
       open: 'Continue',
     },
+    activity: {
+      heading: 'Recent activity',
+      lead: 'A timeline of the recommendations and records you have saved.',
+      empty: 'Your recent activity will appear here as you save progress.',
+      types: {
+        recommendation: 'Recommendation saved',
+        readiness: 'Readiness check saved',
+        pathway: 'Pathway saved',
+        pathwayUpdated: 'Pathway updated',
+        application: 'Assessment application submitted',
+        applicationUpdated: 'Assessment application updated',
+        goal: 'Goal added',
+        goalUpdated: 'Goal updated',
+        certification: 'Certificate recorded',
+      },
+    },
     pathways: {
       heading: 'My pathways',
       empty: 'Follow a recommended pathway from Find my pathway to track it here.',
@@ -1056,6 +1177,17 @@ export const en = {
       title: 'New goal',
       titlePlaceholder: 'For example: Earn my SMAW NC II this year',
       target: 'Target qualification (optional)',
+      targetDateOptional: 'Target date (optional)',
+      targetDate: 'Target date',
+      noTargetDate: 'No target date set',
+      setTargetDate: 'Set target date',
+      changeTargetDate: 'Change target date',
+      saveTargetDate: 'Save date',
+      cancelTargetDate: 'Cancel',
+      targetDateSaved: 'Target date saved.',
+      dueToday: 'Due today',
+      dueIn: (days: number) => `Due in ${days} ${days === 1 ? 'day' : 'days'}`,
+      overdue: (days: number) => `Overdue by ${days} ${days === 1 ? 'day' : 'days'}`,
       none: 'None',
       submit: 'Add goal',
       missing: 'Describe your goal first.',
@@ -1426,6 +1558,13 @@ export const en = {
     profile: {
       heading: 'Profile',
       view: 'View profile',
+      sections: {
+        label: 'Profile sections',
+        overview: 'Overview',
+        activity: 'Activity',
+        records: 'Goals & certificates',
+        applications: 'Applications',
+      },
       details: 'Account details',
       fullName: 'Full name',
       email: 'Email address',
@@ -1440,7 +1579,7 @@ export const en = {
               .join(' '),
       journey: {
         heading: 'Continue your journey',
-        body: 'See your saved recommendations, readiness checks, and achievements.',
+        body: 'Continue your qualifications, pathways, readiness checks and recommendations.',
         action: 'View my progress',
       },
       privacy: {
