@@ -1,0 +1,50 @@
+# API-only server: the React app is on Vercel, which passes /api/* here (frontend/vercel.json).
+# Activate with docker-compose.api.yml.
+{$DOMAIN} {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		-Server
+	}
+	# Behind Vercel the connecting address is Vercel's, so per-client limits are shared by everyone it forwards.
+	handle /api/* {
+		reverse_proxy api:8000 {
+			health_uri /api/v1/ready
+			health_interval 10s
+			health_timeout 3s
+			header_up X-Forwarded-For {remote_host}
+		}
+	}
+	# Partners reach the MCP server here directly, not through Vercel; PUBLIC_BASE_URL must be https://{$DOMAIN}.
+	@mcp path /mcp /mcp/
+	handle @mcp {
+		reverse_proxy api:8000 {
+			health_uri /api/v1/ready
+			health_interval 10s
+			health_timeout 3s
+			header_up X-Forwarded-For {remote_host}
+		}
+	}
+	handle /.well-known/oauth-protected-resource* {
+		reverse_proxy api:8000 {
+			health_uri /api/v1/ready
+			health_interval 10s
+			health_timeout 3s
+			header_up X-Forwarded-For {remote_host}
+		}
+	}
+	handle /.well-known/oauth-authorization-server {
+		reverse_proxy api:8000 {
+			health_uri /api/v1/ready
+			health_interval 10s
+			health_timeout 3s
+			header_up X-Forwarded-For {remote_host}
+		}
+	}
+	# No web app here.
+	handle {
+		respond 404
+	}
+}

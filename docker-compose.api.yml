@@ -1,0 +1,15 @@
+# API-only server: PostgreSQL, the API and Caddy. The React app is on Vercel (frontend/vercel.json) and Streamlit isn't
+# deployed. Use together with docker-compose.yml, most simply with this line in .env:
+#   COMPOSE_FILE=docker-compose.yml:docker-compose.api.yml
+services:
+  # Left out unless the frontend profile is turned on.
+  web:
+    profiles: [frontend]
+  app:
+    profiles: [frontend]
+
+  caddy:
+    depends_on: !override
+      - api
+    volumes:
+      - ./deploy/Caddyfile.api:/etc/caddy/Caddyfile:ro
