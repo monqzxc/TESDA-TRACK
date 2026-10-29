@@ -21,3 +21,6 @@ frontend/node_modules
 frontend/.agents/   
 frontend/.claude/
 tesda-e5-small-v4-scenarios-20261020-03.zip
+tesda-e5-small-v4-colab-1.zip
+# Claude Code session lock, written per machine.
+.claude/scheduled_tasks.lock
