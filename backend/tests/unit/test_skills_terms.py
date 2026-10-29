@@ -24,6 +24,12 @@ TERMS = ["welder", "programmer", "JavaScript", "network configuration"]
     ("welding, welding, Welding", ["welding", "Welding"]),
     (SENTENCE, TERMS),
     ("", []), (" , ;\n?!", []),
+    # A phrase with no skill or role in it isn't sent: Skills Bridge matches substrings, so "suggest" alone found
+    # "Suggestive selling" and animation roles at 44%.
+    ("i dont know what roles i want, suggest", []),
+    ("Not sure yet, cooking", ["cooking"]),
+    ("hindi ko alam, kahit ano", []),
+    ("help desk, quality assurance, IT", ["help desk", "quality assurance", "IT"]),
 ])
 def test_natural_language_skill_terms_are_extracted(text, expected):
     assert extract_skill_terms(text) == expected
@@ -102,6 +108,11 @@ def test_only_the_lookup_that_has_terms_runs():
     (",".join(f"skill{i}" for i in range(26)), "too_many_terms"),
     (",".join(f"cook{i} cook" for i in range(11)), "too_many_terms"),
     ("x" * 81, "term_too_long"),
+    ("and the", "no_terms"),
+    # The learner asked for ideas rather than naming a skill: the page points them to Find my pathway.
+    ("i dont know what roles i want, suggest", "asked_for_suggestions"),
+    ("I have no idea", "asked_for_suggestions"),
+    ("what jobs suit me?", "asked_for_suggestions"),
 ])
 def test_unusable_terms_stay_local(text, reason):
     lookup = FakeLookup()

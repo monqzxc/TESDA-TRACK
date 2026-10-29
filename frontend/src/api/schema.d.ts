@@ -4455,9 +4455,9 @@ export interface components {
             searched: boolean;
             /**
              * Reason
-             * @description Why nothing was searched: no terms, more than 25 terms (or 10 occupation titles), or a term longer than 80 characters.
+             * @description Why nothing was searched: no terms, no terms because the text only asked for ideas ("not sure, suggest"), more than 25 terms (or 10 occupation titles), or a term longer than 80 characters.
              */
-            reason?: ("no_terms" | "too_many_terms" | "term_too_long") | null;
+            reason?: ("no_terms" | "asked_for_suggestions" | "too_many_terms" | "term_too_long") | null;
             /**
              * Terms
              * @description The terms extracted from the text, for "We searched for: ...".

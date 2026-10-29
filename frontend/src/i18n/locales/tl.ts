@@ -735,6 +735,9 @@ export const tl: Record<string, string> = {
   'Start with what you know': 'Magsimula sa alam mo',
   'Skills Bridge connects your skills with occupations and qualifications. You can then review a role’s skills and international mappings.':
     'Iniuugnay ng Skills Bridge ang iyong mga kakayahan sa mga hanapbuhay at kwalipikasyon. Maaari mong suriin ang mga kakayahan ng tungkulin at mga internasyonal na ugnayan nito.',
+  'Not sure what you want yet?': 'Hindi ka pa sigurado kung ano ang gusto mo?',
+  'Skills Explorer needs something you can do or enjoy, like cooking, welding or fixing phones. Find my pathway asks about your goal and suggests TESDA programs for you.':
+    'Kailangan ng Tuklasin ang mga Kakayahan ng isang bagay na kaya mong gawin o gusto mo, tulad ng pagluluto, pagwe-welding o pag-aayos ng cellphone. Sa Hanapin ang aking landas, tatanungin ka tungkol sa iyong layunin at magmumungkahi ito ng mga programa ng TESDA para sa iyo.',
   'How your skills were understood': 'Paano naunawaan ang iyong mga kakayahan',
   unknown: 'hindi alam',
   'Occupations to explore': 'Mga hanapbuhay na maaaring tuklasin',

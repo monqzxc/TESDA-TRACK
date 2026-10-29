@@ -91,9 +91,10 @@ class SkillsBridgeExploreResponse(BaseModel):
     source_url: str = "https://skills-bridge.ph"
     retrieved_at: str | None = Field(default=None, description="When Skills Bridge answered; kept by cached answers.")
     searched: bool = Field(description="False when no usable terms were found, so Skills Bridge was not asked.")
-    reason: Literal["no_terms", "too_many_terms", "term_too_long"] | None = Field(
-        default=None, description="Why nothing was searched: no terms, more than 25 terms (or 10 occupation "
-                                  "titles), or a term longer than 80 characters.")
+    reason: Literal["no_terms", "asked_for_suggestions", "too_many_terms", "term_too_long"] | None = Field(
+        default=None, description="Why nothing was searched: no terms, no terms because the text only asked for "
+                                  "ideas (\"not sure, suggest\"), more than 25 terms (or 10 occupation titles), or a "
+                                  "term longer than 80 characters.")
     terms: list[str] = Field(description="The terms extracted from the text, for \"We searched for: ...\".")
     occupation_terms: list[str] = Field(description="Terms treated as target occupations (title lookup).")
     skill_terms: list[str] = Field(description="Terms treated as capabilities (skill matching).")

@@ -235,6 +235,45 @@ describe('Skills Explorer', () => {
     ).toBeVisible()
   })
 
+  it('points a learner asking for ideas to Find my pathway rather than searching', async () => {
+    serveSkillsBridge({
+      exploration: {
+        ...EXPLORATION,
+        searched: false,
+        reason: 'asked_for_suggestions',
+        terms: [],
+        occupation_terms: [],
+        skill_terms: [],
+        unmatched: [],
+        resolution: [],
+        occupations: [],
+        qualifications: [],
+      },
+    })
+    const user = userEvent.setup()
+    const { box } = await openExplorer()
+
+    await search(user, box, 'i dont know what roles i want, suggest')
+
+    expect(
+      await screen.findByRole('heading', { level: 2, name: 'Not sure what you want yet?' }),
+    ).toBeVisible()
+    const unsure = screen.getByRole('region', { name: 'Not sure what you want yet?' })
+    expect(within(unsure).getByRole('link', { name: 'Find my pathway' })).toHaveAttribute(
+      'href',
+      '/find',
+    )
+    // Not a mistake to fix: the box isn't marked invalid, and no occupations are shown.
+    expect(box).not.toHaveAttribute('aria-invalid', 'true')
+    expect(
+      screen.queryByText(/We couldn’t find usable skill or role terms/),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('heading', { name: 'Occupations to explore' }),
+    ).not.toBeInTheDocument()
+    expect(screen.getByRole('status')).toHaveTextContent('Not sure what you want yet?')
+  })
+
   it('shows what Skills Bridge understood, the occupations, and the linked qualifications', async () => {
     serveSkillsBridge()
     const user = userEvent.setup()

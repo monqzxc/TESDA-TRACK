@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useId, useRef, useState, type FormEvent } from 'react'
 import { Button, FieldError, Label, Text, TextArea, TextField } from 'react-aria-components'
+import { Link } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
 import { failureMessage } from '../../auth/fields.tsx'
 import { EmptyState } from '../../components/EmptyState.tsx'
@@ -10,6 +11,7 @@ import { PageHero } from '../../components/PageHero.tsx'
 import { WithCatalog } from '../../components/WithCatalog.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
+import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { clientConfigQuery } from '../training/api.ts'
 import { explore, type Exploration, type OccupationMatch } from './api.ts'
@@ -66,7 +68,8 @@ function Explorer({ catalog }: { catalog: Qualification[] }) {
     mutationFn: explore,
     onMutate: () => setOccupationId(null),
     onSuccess: (found) => {
-      if (!found.searched) {
+      // Asking for ideas isn't a mistake to fix: the learner is pointed to Find my pathway instead.
+      if (!found.searched && found.reason !== 'asked_for_suggestions') {
         setError(copy.search.noTerms)
         field.current?.focus()
       }
@@ -85,6 +88,7 @@ function Explorer({ catalog }: { catalog: Qualification[] }) {
   }
 
   const found = search.data?.searched ? search.data : null
+  const unsure = !search.isPending && search.data?.reason === 'asked_for_suggestions'
   return (
     <>
       <section aria-labelledby={headingId} className="mb-5 rounded-18 bg-surface p-5">
@@ -158,7 +162,9 @@ function Explorer({ catalog }: { catalog: Qualification[] }) {
           ? copy.search.pending
           : found
             ? copy.results.announce(found.occupations.length, found.qualifications.length)
-            : ''}
+            : unsure
+              ? `${copy.suggest.heading} ${copy.suggest.body}`
+              : ''}
       </p>
 
       {found ? (
@@ -168,6 +174,13 @@ function Explorer({ catalog }: { catalog: Qualification[] }) {
           occupationId={occupationId}
           onExplore={setOccupationId}
         />
+      ) : unsure ? (
+        <EmptyState icon="route" heading={copy.suggest.heading} body={copy.suggest.body}>
+          <Link to={paths.finder} className={button({ variant: 'primary' })}>
+            {copy.suggest.action}
+            <Icon name="arrowRight" />
+          </Link>
+        </EmptyState>
       ) : (
         !search.isPending && (
           <EmptyState icon="growth" heading={copy.start.heading} body={copy.start.body} />

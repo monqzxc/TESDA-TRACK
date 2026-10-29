@@ -1237,6 +1237,12 @@ export const en = {
       heading: 'Start with what you know',
       body: 'Skills Bridge connects your skills with occupations and qualifications. You can then review a role’s skills and international mappings.',
     },
+    // The text only asked for ideas ("not sure, suggest"), so nothing was searched (the API's reason).
+    suggest: {
+      heading: 'Not sure what you want yet?',
+      body: 'Skills Explorer needs something you can do or enjoy, like cooking, welding or fixing phones. Find my pathway asks about your goal and suggests TESDA programs for you.',
+      action: 'Find my pathway',
+    },
     results: {
       searched: (terms: readonly string[]) => `Searching Skills Bridge for: ${terms.join(', ')}`,
       source: (when: string) => `Source: Skills Bridge · Retrieved ${when}`,

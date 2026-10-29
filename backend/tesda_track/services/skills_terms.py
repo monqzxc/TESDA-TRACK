@@ -33,6 +33,28 @@ _OCCUPATION_WORDS = {
     "teacher", "accountant", "designer", "analyst", "farmer", "tailor", "machinist", "waiter", "waitress",
     "hairdresser", "housekeeper", "architect", "operator", "fabricator", "stylist", "manager",
 }
+# A phrase made only of these words names no skill or role, so it isn't sent: Skills Bridge matches substrings, and
+# "suggest" alone found "Suggestive selling" and dozens of others. English and Filipino, after normalise().
+_FILLER_WORDS = {
+    "i", "im", "m", "me", "my", "myself", "you", "your", "a", "an", "the", "to", "for", "of", "in", "on", "at",
+    "with", "about", "what", "which", "where", "how", "some", "something", "maybe", "please", "pls", "just", "yet",
+    "still", "really", "very", "also", "so", "or", "but", "if", "is", "are", "am", "be", "do", "does", "did", "dont",
+    "don", "t", "not", "no", "can", "could", "would", "should", "will", "ll", "ve", "d", "s", "re", "that", "this",
+    "there", "good", "best", "right", "kind", "want", "wants", "like", "need", "think", "give", "show", "tell",
+    "find", "get", "have", "skill", "skills", "one", "ok", "okay",
+    "hindi", "di", "ko", "ako", "ano", "anong", "ang", "ng", "sa", "mga", "na", "mo", "po", "ba", "gusto",
+    "pwede", "puwede", "paki", "naman", "lang", "yung",
+}
+# Words of a learner who doesn't know yet and is asking for ideas, including job words with no job named ("what
+# jobs suit me"). Text of only these and filler gets the reason "asked_for_suggestions": the page points to Find my
+# pathway.
+_UNSURE_WORDS = {
+    "know", "sure", "unsure", "idea", "ideas", "clue", "idk", "dunno", "undecided", "decide", "choose", "suggest",
+    "suggestion", "suggestions", "recommend", "recommendation", "recommendations", "advice", "advise", "help",
+    "any", "anything", "whatever", "fit", "fits", "suit", "suits", "suitable", "role", "roles", "job", "jobs",
+    "career", "careers", "work", "occupation", "occupations", "course", "courses", "option", "options", "path",
+    "pathway", "alam", "ewan", "kahit", "pakisuggest", "mungkahi", "tulong", "trabaho", "kurso",
+}
 
 Lookup = Callable[..., dict]
 
@@ -41,10 +63,26 @@ def extract_skill_terms(text: str) -> list[str]:
     """Turn a short natural-language skills request into provider search terms.
 
     Explicit comma/newline separated phrases remain intact so terms such as ``network configuration`` are not
-    broken apart. In a sentence, only the common request filler and a final ``and`` joiner are removed. This keeps
-    the transformation deterministic and visible to the learner.
+    broken apart. In a sentence, only the common request filler and a final ``and`` joiner are removed, and a phrase
+    with no skill or role word in it ("not sure", "suggest") is dropped. This keeps the transformation deterministic
+    and visible to the learner.
     """
-    terms: list[str] = []
+    return list(dict.fromkeys(phrase for phrase in _phrases(text) if not _words_only(phrase)))
+
+
+def asks_for_suggestions(text: str) -> bool:
+    """Whether the text asks for ideas ("i dont know what roles i want, suggest") rather than naming a skill."""
+    return any(words & _UNSURE_WORDS for phrase in _phrases(text) if (words := _words_only(phrase)))
+
+
+def _words_only(phrase: str) -> set[str]:
+    """The phrase's words when all of them are filler or unsure words, else an empty set."""
+    words = set(normalise(phrase).split())
+    return words if words and words <= _FILLER_WORDS | _UNSURE_WORDS else set()
+
+
+def _phrases(text: str) -> list[str]:
+    phrases: list[str] = []
     for chunk in re.split(r"[,;\n]+", text or ""):
         chunk = re.sub(r"[?.!]+$", "", chunk.strip())
         if not chunk:
@@ -59,8 +97,8 @@ def extract_skill_terms(text: str) -> list[str]:
             part = _ROLE_PREFIX.sub("", part.strip(), count=1).strip()
             part = re.sub(r"^(?:a|an|the)\s+", "", part, flags=re.IGNORECASE).strip()
             if part:
-                terms.append(part)
-    return list(dict.fromkeys(terms))
+                phrases.append(part)
+    return phrases
 
 
 def classify_terms(terms: list[str]) -> tuple[list[str], list[str]]:
@@ -115,8 +153,11 @@ def explore(text: str, lookup: Lookup) -> SkillsBridgeExploreResponse:
     """
     terms = extract_skill_terms(text)
     occupation_terms, skill_terms = classify_terms(terms)
+    reason = unusable_reason(terms, occupation_terms)
+    if reason == "no_terms" and asks_for_suggestions(text):
+        reason = "asked_for_suggestions"
     result = SkillsBridgeExploreResponse(terms=terms, occupation_terms=occupation_terms, skill_terms=skill_terms,
-                                         searched=False, reason=unusable_reason(terms, occupation_terms))
+                                         searched=False, reason=reason)
     if result.reason:
         return result
     occupation_response = (lookup("search_occupations", occupations=_unique(occupation_terms), limit=LOOKUP_LIMIT)
