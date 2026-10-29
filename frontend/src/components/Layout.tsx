@@ -72,6 +72,29 @@ export function HomeLayout() {
   )
 }
 
+/** A compact shell for partner apps opening TESDA-TRACK in a phone WebView. */
+export function WebviewLayout() {
+  return (
+    <>
+      <SkipLink />
+      <div className="min-h-dvh">
+        <header className="border-b border-border bg-surface px-4 py-3">
+          <div className="mx-auto max-w-2xl">
+            <Brand compact />
+          </div>
+        </header>
+        <main
+          id="main"
+          tabIndex={-1}
+          className="mx-auto w-full max-w-2xl px-4 py-6 pb-[max(2rem,env(safe-area-inset-bottom))] focus:outline-none max-xs:py-4"
+        >
+          <Outlet />
+        </main>
+      </div>
+    </>
+  )
+}
+
 /**
  * Every other page: the Streamlit app's sidebar beside the page, a white column with a border that stays put while
  * the page scrolls. On phones the sidebar becomes a bar across the top with the brand and a Menu button, which
@@ -99,7 +122,11 @@ export function AppLayout() {
             </div>
           </div>
           <div className="flex flex-1 flex-col max-md:hidden">
-            <SidebarContent isAdmin={canViewReports} canManage={canOpenAdmin} isSignedIn={isSignedIn} />
+            <SidebarContent
+              isAdmin={canViewReports}
+              canManage={canOpenAdmin}
+              isSignedIn={isSignedIn}
+            />
           </div>
         </header>
         <div className="flex min-h-screen min-w-0 flex-col">

@@ -262,6 +262,10 @@ export const en = {
       title: 'TESDA-TRACK · Your next step',
       heading: 'Every career has a track. Find yours.',
     },
+    tspWebview: {
+      title: 'Find a TESDA pathway · TESDA-TRACK',
+      heading: 'Find your TESDA pathway',
+    },
     finderGoal: {
       title: 'Your goal · Find my pathway · TESDA-TRACK',
       heading: 'Find my pathway',

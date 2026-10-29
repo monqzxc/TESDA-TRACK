@@ -16,6 +16,7 @@ export const helpCopy = {
     'Use Next and Back to explore. Press Escape or select Close tour to leave at any time.',
   fallback: 'Find your next step with TESDA-TRACK. You can open Help on any page for a short tour.',
   pages: {
+    tspWebview: 'Review the details TSP shared, then find TESDA qualifications for your goal.',
     home: 'Explore careers, qualifications, and training, then start with a goal in your own words.',
     finderGoal:
       'Start your pathway by telling us what work you want to do and what experience you have.',
