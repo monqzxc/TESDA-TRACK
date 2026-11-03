@@ -18,6 +18,7 @@ import { readItem, writeItem } from '../../lib/storage.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
 import {
+  ANY_DISTANCE,
   DELIVERY_MODES,
   KINDS,
   NO_FILTERS,
@@ -81,7 +82,9 @@ export function FilterPanel({ results }: { results: CenterResults }) {
     return saved ? saved === 'folded' : (window.matchMedia?.('(max-width: 640px)').matches ?? false)
   })
   const headingId = useId()
-  const counts = filterCounts(filters, store.useLocation, store.placeText)
+  // The radius in use, or the one chosen and waiting for a place to measure from.
+  const radiusKm = results.radiusKm ?? (typeof filters.radius === 'number' ? filters.radius : null)
+  const counts = filterCounts(filters, store.useLocation, store.placeText, radiusKm)
   const total = Object.values(counts).reduce((sum, count) => sum + count, 0)
 
   const fold = (next: boolean) => {
@@ -101,7 +104,7 @@ export function FilterPanel({ results }: { results: CenterResults }) {
   const where = [
     ...(store.useLocation ? [copy.yourLocation] : []),
     ...(placeText ? [placeText] : []),
-    ...(filters.radius ? [copy.withinRadius(filters.radius)] : []),
+    ...(radiusKm ? [copy.withinRadius(radiusKm)] : []),
   ]
   const regionName =
     results.regions.find((region) => region.code === results.region)?.name ?? results.region
@@ -237,9 +240,17 @@ export function FilterPanel({ results }: { results: CenterResults }) {
                 { id: ALL, label: copy.allDistances },
                 ...RADIUS_KM.map((km) => ({ id: String(km), label: copy.withinRadius(km) })),
               ]}
-              value={filters.radius ? String(filters.radius) : ALL}
+              value={radiusKm ? String(radiusKm) : ALL}
               onChange={(radius) =>
-                set({ radius: radius === ALL ? null : (Number(radius) as RadiusKm) })
+                set({
+                  radius:
+                    radius === ALL
+                      ? // Every distance is the default only around a searched place.
+                        results.reference?.mine
+                        ? ANY_DISTANCE
+                        : null
+                      : (Number(radius) as RadiusKm),
+                })
               }
               isDisabled={!results.reference}
               description={results.reference ? copy.radiusHelp : copy.radiusNeedsLocation}
@@ -426,11 +437,15 @@ function LocationStatus() {
 }
 
 /** How many filters each section sets. Both center types together filter nothing. */
-export function filterCounts(filters: TrainingFilters, useLocation: boolean, placeText: string) {
+export function filterCounts(
+  filters: TrainingFilters,
+  useLocation: boolean,
+  placeText: string,
+  radiusKm: number | null,
+) {
   return {
     type: filters.kinds.length === 1 ? 1 : 0,
-    location:
-      Number(useLocation) + Number(Boolean(placeText.trim())) + Number(filters.radius !== null),
+    location: Number(useLocation) + Number(Boolean(placeText.trim())) + Number(radiusKm !== null),
     region: Number(Boolean(filters.region)),
     province: Number(Boolean(filters.province)),
     qualification: filters.qualifications.length,

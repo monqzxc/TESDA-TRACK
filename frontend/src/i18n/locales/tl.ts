@@ -535,6 +535,9 @@ export const tl: Record<string, string> = {
   'Soonest start': 'Pinakamaagang simula',
   'Name (A–Z)': 'Pangalan (A–Z)',
   'Loading centers…': 'Nilo-load ang mga sentro…',
+  'Finding your location to show centers near you…':
+    'Hinahanap ang iyong lokasyon para maipakita ang mga sentrong malapit sa iyo…',
+  'Show all centers instead': 'Ipakita na lang ang lahat ng sentro',
   'your location': 'iyong lokasyon',
   'Turn on your location or search a place to sort by distance.':
     'Gamitin ang iyong lokasyon o maghanap ng lugar upang ayusin ayon sa layo.',

@@ -148,7 +148,7 @@ function DeliverySites({ code }: { code: string }) {
   const copy = en.skills
 
   const navigate = useNavigate()
-  const sites = useQuery(sitesQuery)
+  const sites = useQuery(sitesQuery())
   const listings = useQuery(listingsQuery([code]))
   const regions = useQuery(regionsQuery)
   const config = useQuery(clientConfigQuery)

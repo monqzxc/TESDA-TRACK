@@ -841,6 +841,9 @@ export const en = {
     results: {
       heading: (n: number) => `All results (${figure(n)})`,
       loading: 'Loading centers…',
+      // The page asks for the learner's location as it opens, and loads only their area (US-08).
+      locating: 'Finding your location to show centers near you…',
+      skipLocation: 'Show all centers instead',
       // Distances are as the crow flies, from a point that may itself be rounded (US-08).
       distancesFrom: (label: string) => `Approximate distances from ${label}`,
       fromYou: 'your location',

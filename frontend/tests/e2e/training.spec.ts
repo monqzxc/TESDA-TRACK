@@ -132,8 +132,10 @@ async function serveTraining(page: Page) {
     routing_enabled: true,
     skills_bridge_enabled: true,
   })
-  await json('**/api/v1/training-providers', [MANILA, CEBU])
-  await json('**/api/v1/assessment-centers', [MANILA_AC])
+  // With a query when the page asks only for the learner's area. Like the listings, these ignore the radius: the
+  // page applies its own.
+  await json('**/api/v1/training-providers*', [MANILA, CEBU])
+  await json('**/api/v1/assessment-centers*', [MANILA_AC])
   await json('**/api/v1/training-programs?*', [program(11, MANILA), program(12, CEBU)])
   await json('**/api/v1/assessment-schedules?*', [SCHEDULE])
   await json('**/api/v1/routes?*', {
@@ -279,7 +281,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
 }
 
 for (const [size, viewport] of Object.entries(SIZES)) {
-  test(`${size}: a near-me radius filters the map and list and can be cleared`, async ({
+  test(`${size}: opens on the learner’s area within 10 km, and the radius can be changed and cleared`, async ({
     page,
     context,
   }) => {
@@ -288,33 +290,37 @@ for (const [size, viewport] of Object.entries(SIZES)) {
     await context.grantPermissions(['geolocation'])
     await context.setGeolocation({ latitude: 14.5547, longitude: 121.0244 })
     await serveTraining(page)
+    const providers = page.waitForRequest(/\/api\/v1\/training-providers\?/)
     await page.goto('/training')
-    await expect(page.getByRole('heading', { name: 'All results (3)' })).toBeVisible()
-    if (size === 'phone') await page.getByRole('button', { name: 'Show filters' }).click()
 
-    const radius = page.getByRole('button', { name: /Radius near me/ })
-    await expect(radius).toBeDisabled()
-    await page.getByText('Use my current location', { exact: true }).click()
-    await expect(radius).toBeEnabled()
-    await radius.click()
-    await page.getByRole('option', { name: 'Within 10 km', exact: true }).click()
-
+    // Asked for as the page opens: only the learner's area is loaded, a little wider than the page's radius.
+    const asked = new URL((await providers).url()).searchParams
+    expect([asked.get('near_lat'), asked.get('near_lon'), asked.get('radius_km')]).toEqual([
+      '14.55',
+      '121.02',
+      '11',
+    ])
     await expect(page.getByRole('heading', { name: 'All results (2)' })).toBeVisible()
     await expect(page.getByText('Within 10 km of your location', { exact: true })).toBeVisible()
     await expect(page.locator('.center-map-radius')).toBeVisible()
     await expect(
       page.getByRole('button', { name: 'Cebu Skills Center, training center' }),
     ).toHaveCount(0)
-    await expect(page).toHaveURL(/radius=10/)
+    await expect(page).not.toHaveURL(/radius=/)
+    if (size === 'phone') await page.getByRole('button', { name: 'Show filters' }).click()
+    const radius = page.getByRole('button', { name: /Radius near me/ })
+    await expect(radius).toContainText('Within 10 km')
     await expectSettledAndAccessible(page)
 
     await radius.click()
     await page.getByRole('option', { name: 'Within 5 km', exact: true }).click()
     await expect(page.getByRole('heading', { name: 'All results (0)' })).toBeVisible()
+    await expect(page).toHaveURL(/radius=5/)
     await expect(page.locator('.center-map-radius')).toBeVisible()
     await page.getByRole('button', { name: 'Show all distances' }).click()
     await expect(page.getByRole('heading', { name: 'All results (3)' })).toBeVisible()
     await expect(page.locator('.center-map-radius')).toHaveCount(0)
+    await expect(page).toHaveURL(/radius=any/)
     await expect(radius).toContainText('All distances')
   })
 
@@ -379,9 +385,9 @@ test.describe('on a desktop', () => {
     await context.grantPermissions(['geolocation'])
     await context.setGeolocation({ latitude: 14.5547, longitude: 121.0244 })
     await serveTraining(page)
+    // The page asks for the location as it opens.
     await page.goto('/training?type=training')
 
-    await page.getByText('Use my location', { exact: true }).click()
     await expect(page.getByText('Approximate distances from your location')).toBeVisible()
     await resultsRegion(page).getByRole('button', { name: 'Get directions' }).click()
 

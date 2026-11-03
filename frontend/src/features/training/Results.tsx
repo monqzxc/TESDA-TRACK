@@ -8,7 +8,7 @@ import { SelectField } from '../../components/SelectField.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
-import { NO_FILTERS, SORTS, shortName, type SortOrder } from './address.ts'
+import { ANY_DISTANCE, NO_FILTERS, SORTS, shortName, type SortOrder } from './address.ts'
 import { placeLabel, summary, type Center } from './centers.ts'
 import { CenterDetail, KindBadges } from './CenterDetail.tsx'
 import { useTrainingFilters, useTrainingStore } from './state.ts'
@@ -110,7 +110,7 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
             {copy.withinRadius(results.radiusKm, reference.mine ? copy.fromYou : reference.label)}
           </p>
         )}
-        {filters.radius !== null && !reference && (
+        {typeof filters.radius === 'number' && !reference && (
           <>
             <p className={note}>{copy.radiusPending}</p>
             <Button
@@ -256,7 +256,13 @@ function NoMatch({ results }: { results: CenterResults }) {
         <p className="m-0 basis-full text-14 text-ink">{copy.active(active)}</p>
       )}
       {results.radiusKm !== null && (
-        <Button className={button()} onPress={() => update({ radius: null, center: null })}>
+        <Button
+          className={button()}
+          onPress={() =>
+            // Around the learner's own location, no radius would be the default 10 km again.
+            update({ radius: results.reference?.mine ? ANY_DISTANCE : null, center: null })
+          }
+        >
           <Icon name="distance" />
           {copy.showAllDistances}
         </Button>

@@ -87,6 +87,7 @@ beforeEach(() => {
   serveCatalog()
   useTrainingStore.setState({
     useLocation: false,
+    askedOnOpen: false,
     location: null,
     locating: false,
     locationError: null,
@@ -355,17 +356,13 @@ describe('Training & Assessment', () => {
     expect(screen.getByRole('heading', { level: 2, name: 'All results (4)' })).toBeInTheDocument()
   })
 
-  it('filters both kinds of centers and map pins by radius, then restores all distances', async () => {
+  it('opens on the learner’s area: only centers within 10 km of their location, asked of the API, until they choose all distances', async () => {
     shareLocation()
-    serveTrainingApi()
+    const api = serveTrainingApi()
     const user = userEvent.setup()
     const { router } = await openTraining()
-    await user.click(screen.getByText('Use my location'))
-    await screen.findByText('Approximate distances from your location')
 
-    await user.click(screen.getByRole('button', { name: /Radius near me$/ }))
-    await user.click(screen.getByRole('option', { name: 'Within 10 km' }))
-
+    expect(screen.getByRole('switch', { name: /Use my location/ })).toBeChecked()
     expect(screen.getByRole('heading', { level: 2, name: 'All results (2)' })).toBeVisible()
     expect(
       within(screen.getByTestId('map'))
@@ -375,14 +372,84 @@ describe('Training & Assessment', () => {
     expect(within(screen.getByTestId('map')).queryByText('Cebu Skills Center')).toBeNull()
     expect(within(screen.getByTestId('map')).queryByText('Mobile Training Unit')).toBeNull()
     expect(screen.getByText('Within 10 km of your location')).toBeVisible()
-    expect(router.state.location.search).toBe('?radius=10')
+    expect(screen.getByRole('button', { name: /Radius near me$/ })).toHaveTextContent(
+      'Within 10 km',
+    )
+    // The default isn't written into the address; the location never is.
+    expect(router.state.location.search).toBe('')
+    // Every list was asked for the learner's area only, a little wider than the page's own radius.
+    for (const path of [
+      '/api/v1/training-providers',
+      '/api/v1/assessment-centers',
+      '/api/v1/training-programs',
+      '/api/v1/assessment-schedules',
+    ]) {
+      const query = new URLSearchParams(sent(api.requests, 'GET', path)[0].search)
+      expect([query.get('near_lat'), query.get('near_lon'), query.get('radius_km')]).toEqual([
+        '14.55',
+        '121.02',
+        '11',
+      ])
+    }
 
     await user.click(screen.getByRole('button', { name: /Radius near me$/ }))
     await user.click(screen.getByRole('option', { name: 'All distances' }))
 
-    expect(screen.getByRole('heading', { level: 2, name: 'All results (4)' })).toBeVisible()
+    expect(await screen.findByRole('heading', { level: 2, name: 'All results (4)' })).toBeVisible()
     expect(within(screen.getByTestId('map')).getAllByRole('listitem')).toHaveLength(4)
-    expect(router.state.location.search).toBe('')
+    expect(router.state.location.search).toBe('?radius=any')
+    // Every site in the country; listings still nearest first, so a long list leaves out the farthest.
+    expect(sent(api.requests, 'GET', '/api/v1/training-providers').at(-1)!.search).toBe('')
+    const programs = new URLSearchParams(
+      sent(api.requests, 'GET', '/api/v1/training-programs').at(-1)!.search,
+    )
+    expect(programs.get('near_lat')).toBe('14.55')
+    expect(programs.get('radius_km')).toBeNull()
+  })
+
+  it('waits for the location before loading any centers, and can show every center instead', async () => {
+    // The browser is still waiting on the learner to answer its prompt.
+    const asked = vi.fn()
+    Object.defineProperty(navigator, 'geolocation', {
+      configurable: true,
+      value: { getCurrentPosition: asked },
+    })
+    const api = serveTrainingApi()
+    const user = userEvent.setup()
+    renderApp('/training')
+
+    expect(await screen.findByText('Finding your location to show centers near you…')).toBeVisible()
+    expect(asked).toHaveBeenCalledTimes(1)
+    expect(sent(api.requests, 'GET', '/api/v1/training-programs')).toHaveLength(0)
+    expect(sent(api.requests, 'GET', '/api/v1/training-providers')).toHaveLength(0)
+
+    await user.click(screen.getByRole('button', { name: 'Show all centers instead' }))
+
+    expect(await screen.findByRole('heading', { level: 2, name: 'All results (4)' })).toBeVisible()
+    expect(screen.getByRole('switch', { name: /Use my location/ })).not.toBeChecked()
+    expect(sent(api.requests, 'GET', '/api/v1/training-providers')[0].search).toBe('')
+  })
+
+  it('doesn’t ask for the location again on its own once the learner turned it off', async () => {
+    const asked = vi.fn((success: PositionCallback) =>
+      success({ coords: { latitude: 14.55471, longitude: 121.02441 } } as GeolocationPosition),
+    )
+    Object.defineProperty(navigator, 'geolocation', {
+      configurable: true,
+      value: { getCurrentPosition: asked },
+    })
+    serveTrainingApi()
+    const user = userEvent.setup()
+    const view = await openTraining()
+    await user.click(screen.getByText('Use my location'))
+    expect(screen.getByRole('switch', { name: /Use my location/ })).not.toBeChecked()
+
+    view.unmount()
+    await openTraining()
+
+    expect(asked).toHaveBeenCalledTimes(1)
+    expect(screen.getByRole('switch', { name: /Use my location/ })).not.toBeChecked()
+    expect(screen.getByRole('heading', { level: 2, name: 'All results (4)' })).toBeVisible()
   })
 
   it('keeps a radius pending without a location and applies it to a searched place', async () => {
@@ -422,18 +489,18 @@ describe('Training & Assessment', () => {
     serveTrainingApi()
     const user = userEvent.setup()
     const { router } = await openTraining('/training?type=training&q=Manila&radius=5')
-    await user.click(screen.getByText('Use my location'))
 
     expect(
       await screen.findByRole('heading', { name: 'No centers match your search' }),
     ).toBeVisible()
     await user.click(screen.getByRole('button', { name: 'Show all distances' }))
 
-    expect(screen.getByRole('heading', { level: 2, name: 'All results (1)' })).toBeVisible()
+    expect(await screen.findByRole('heading', { level: 2, name: 'All results (1)' })).toBeVisible()
     expect(screen.getByRole('searchbox', { name: 'Search centers' })).toHaveValue('Manila')
     expect(screen.getByRole('switch', { name: /Use my location/ })).toBeChecked()
     const query = new URLSearchParams(router.state.location.search)
-    expect(query.get('radius')).toBeNull()
+    // Not the default 10 km around the learner, but every distance.
+    expect(query.get('radius')).toBe('any')
     expect(query.get('type')).toBe('training')
     expect(query.get('q')).toBe('Manila')
   })
@@ -455,9 +522,9 @@ describe('Training & Assessment', () => {
     shareLocation()
     const api = serveTrainingApi({ missingModes: ['foot'] })
     const user = userEvent.setup()
+    // The page asks for the location as it opens.
     await openTraining('/training?type=training')
 
-    await user.click(screen.getByText('Use my location'))
     expect(await screen.findByText('Approximate distances from your location')).toBeInTheDocument()
     expect(
       within(featured()).getByRole('heading', { name: 'Manila Welding Institute' }),
@@ -480,9 +547,7 @@ describe('Training & Assessment', () => {
   it('links to Google Maps for directions when this server can’t route', async () => {
     shareLocation()
     serveTrainingApi({ routingEnabled: false })
-    const user = userEvent.setup()
     await openTraining('/training?type=training')
-    await user.click(screen.getByText('Use my location'))
     await screen.findByText('Approximate distances from your location')
 
     const link = within(featured()).getByRole('link', { name: 'Get directions' })
@@ -502,15 +567,15 @@ describe('Training & Assessment', () => {
     })
     serveTrainingApi()
     const user = userEvent.setup()
+    const declined = 'Location access was declined. Search a place or choose a region instead.'
+    // Asked as the page opens and refused: every center loads, and the learner, who didn't ask, isn't told why.
     await openTraining('/training?radius=10')
+    expect(screen.getByRole('switch', { name: /Use my location/ })).not.toBeChecked()
+    expect(screen.queryByText(declined)).not.toBeInTheDocument()
 
     await user.click(screen.getByText('Use my location'))
 
-    expect(
-      await screen.findByText(
-        'Location access was declined. Search a place or choose a region instead.',
-      ),
-    ).toBeInTheDocument()
+    expect(await screen.findByText(declined)).toBeInTheDocument()
     expect(screen.getByRole('switch', { name: /Use my location/ })).not.toBeChecked()
     expect(screen.getByRole('heading', { level: 2, name: 'All results (4)' })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /Radius near me$/ })).toBeDisabled()
@@ -525,9 +590,8 @@ describe('Training & Assessment', () => {
       sessionId: null,
       sessionOwner: null,
     })
-    const user = userEvent.setup()
     await openTraining('/training?qualification=SMAW-NCII&type=training')
-    await user.click(screen.getByText('Use my location'))
+    expect(screen.getByRole('switch', { name: /Use my location/ })).toBeChecked()
 
     expect(await screen.findByText('82% fit')).toBeInTheDocument()
     const bodies = sent(api.requests, 'POST', '/api/v1/recommendations/training').map((r) => r.body)

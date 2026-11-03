@@ -75,7 +75,13 @@ describe('readTrainingAddress and writeTrainingAddress', () => {
     expect(readTrainingAddress(query).radius).toBe(radius)
   })
 
-  it.each(['', '0', '-5', '1', 'NaN', 'Infinity', '5000', '10.5'])(
+  it('keeps a choice of every distance, over the default radius around the learner', () => {
+    const query = writeTrainingAddress({ radius: 'any' })
+    expect(query.toString()).toBe('radius=any')
+    expect(readTrainingAddress(query).radius).toBe('any')
+  })
+
+  it.each(['', '0', '-5', '1', 'NaN', 'Infinity', '5000', '10.5', 'ANY', 'all'])(
     'ignores an unsupported radius %j',
     (radius) => {
       expect(readTrainingAddress(new URLSearchParams({ radius }))).toEqual(NO_FILTERS)

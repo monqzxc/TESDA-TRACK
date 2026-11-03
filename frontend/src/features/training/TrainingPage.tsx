@@ -1,4 +1,4 @@
-import { lazy, Suspense, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
 import { Button, Input, Label, SearchField, Switch } from 'react-aria-components'
 import type { Qualification } from '../../api/queries.ts'
 import { Icon } from '../../components/Icon.tsx'
@@ -33,6 +33,8 @@ const mapStandIn =
  * header with its toolbar, then the map beside the results.
  */
 export default function TrainingPage() {
+  // The learner's area first: asked for alongside the catalog, so the centers near them load as soon as it's known.
+  useEffect(() => useTrainingStore.getState().locateOnOpen(), [])
   return (
     <div className="max-w-full">
       <Header />
@@ -118,6 +120,22 @@ function Workspace({ catalog }: { catalog: Qualification[] }) {
   const [show, setShow] = useState<ShowRequest | null>(null)
 
   if (results.loading) {
+    if (results.locating) {
+      // The browser may wait on the learner to answer its prompt: they needn't wait to see every center.
+      return (
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+          <p role="status" className="m-0 text-17 text-muted">
+            {copy.results.locating}
+          </p>
+          <Button
+            className={button({ variant: 'tertiary' })}
+            onPress={() => store().setUseLocation(false)}
+          >
+            {copy.results.skipLocation}
+          </Button>
+        </div>
+      )
+    }
     return (
       <p role="status" className="text-17 text-muted">
         {copy.results.loading}

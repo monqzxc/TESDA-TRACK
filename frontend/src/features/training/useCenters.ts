@@ -3,7 +3,15 @@ import { useMemo } from 'react'
 import { regionsQuery, type Qualification } from '../../api/queries.ts'
 import { useAuth } from '../../auth/useAuth.ts'
 import { useFinderStore } from '../finder/store.ts'
-import { clientConfigQuery, fitQuery, listingsQuery, sitesQuery, type ProgramFit } from './api.ts'
+import { ANY_DISTANCE, DEFAULT_RADIUS_KM } from './address.ts'
+import {
+  clientConfigQuery,
+  fitQuery,
+  listingsQuery,
+  sitesQuery,
+  type Nearby,
+  type ProgramFit,
+} from './api.ts'
 import {
   buildCenters,
   filterCenters,
@@ -30,16 +38,34 @@ export interface Reference extends Point {
  * classic/training_view.py show_training does: the centers that match, measured from the learner's location (or a
  * place they typed) and sorted; the one shown in full; and how well its programs fit. Each request that the page
  * can't do without reports a local error, so the learner can retry without losing their filters.
+ *
+ * With the learner's location, only their area is asked for (DEFAULT_RADIUS_KM until they choose another radius),
+ * which is far less to load than every center in the country; while the browser is still finding it, nothing is.
  */
 export function useCenters(catalog: readonly Qualification[]) {
   const { learner } = useAuth()
   const { filters } = useTrainingFilters()
   const location = useTrainingStore((state) => (state.useLocation ? state.location : null))
+  const locating = useTrainingStore(
+    (state) => state.useLocation && state.locating && !state.location,
+  )
   const placeText = useTrainingStore((state) => state.placeText)
   const goal = useFinderStore((state) => state.journey?.query ?? null)
 
+  // The radius around the learner's own location, or null for every distance. A searched place has no default.
+  const ownRadius = filters.radius === ANY_DISTANCE ? null : (filters.radius ?? DEFAULT_RADIUS_KM)
+  const near: Nearby | null = useMemo(
+    () => (location ? { ...location, radiusKm: ownRadius } : null),
+    [location, ownRadius],
+  )
+
   const regions = useQuery(regionsQuery)
-  const sites = useQuery(sitesQuery)
+  const sites = useQuery({
+    ...sitesQuery(near),
+    enabled: !locating,
+    // A new radius asks again; the last results stay on screen meanwhile.
+    placeholderData: keepPreviousData,
+  })
   const config = useQuery(clientConfigQuery)
 
   // Only qualifications the catalog has, so an old or mistyped address can't ask for listings of nothing.
@@ -50,8 +76,9 @@ export function useCenters(catalog: readonly Qualification[]) {
   const codesKey = filters.qualifications.filter((code) => names.has(code)).join(',')
   const codes = useMemo(() => (codesKey ? codesKey.split(',') : []), [codesKey])
   const listings = useQuery({
-    ...listingsQuery(codes),
-    // A new qualification asks again; the last results stay on screen meanwhile.
+    ...listingsQuery(codes, near),
+    enabled: !locating,
+    // A new qualification or radius asks again; the last results stay on screen meanwhile.
     placeholderData: keepPreviousData,
   })
 
@@ -97,6 +124,12 @@ export function useCenters(catalog: readonly Qualification[]) {
           : null,
     [location, place],
   )
+  // A radius only applies once its origin is known: around a searched place, only the one the learner chose.
+  const radius: number | null = location
+    ? ownRadius
+    : reference && typeof filters.radius === 'number'
+      ? filters.radius
+      : null
 
   const centers: Center[] = useMemo(() => {
     if (!everything) return []
@@ -118,7 +151,6 @@ export function useCenters(catalog: readonly Qualification[]) {
     const order = reference || filters.sort !== 'nearest' ? filters.sort : 'name'
     const measured = withDistances(matching, reference)
     // A radius only applies once its origin is known. Unmapped centers cannot be placed inside it.
-    const radius = reference ? filters.radius : null
     const nearby =
       radius === null
         ? measured
@@ -135,7 +167,7 @@ export function useCenters(catalog: readonly Qualification[]) {
     filters.within,
     filters.scholarship,
     filters.sort,
-    filters.radius,
+    radius,
     today,
     reference,
   ])
@@ -183,12 +215,14 @@ export function useCenters(catalog: readonly Qualification[]) {
 
   return {
     loading: everything === null && !failed,
+    /** Waiting for the browser to share the learner's location before asking for the centers near it. */
+    locating,
     failed,
     retry,
     retrying: regions.isFetching || sites.isFetching || listings.isFetching,
     hasData: everything !== null,
-    /** Fetching a new qualification's listings, with the last results still on screen. */
-    refreshing: listings.isPlaceholderData,
+    /** Fetching a new qualification's or radius's centers, with the last results still on screen. */
+    refreshing: listings.isPlaceholderData || sites.isPlaceholderData,
     truncated: listings.data?.truncated ?? false,
     regions: regions.data ?? [],
     names,
@@ -199,7 +233,7 @@ export function useCenters(catalog: readonly Qualification[]) {
     place,
     reference,
     centers,
-    radiusKm: reference ? filters.radius : null,
+    radiusKm: radius,
     featured,
     selected,
     nearestId,
