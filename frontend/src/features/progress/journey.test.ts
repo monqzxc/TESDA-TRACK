@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import type { Application, Enrollment, ReadinessCheck, RecommendationSession } from './api.ts'
-import { checkedQualifications, checksFor, compareChecks, nextStep } from './journey.ts'
+import {
+  checkForSession,
+  checkedQualifications,
+  checksFor,
+  compareChecks,
+  nextStep,
+} from './journey.ts'
 
 const welding = {
   code: 'SMAW-NCII',
@@ -133,6 +139,20 @@ describe('nextStep', () => {
       sector: 'Old',
     })
     expect(nextStep([gone], [], [], [], CATALOG)).toMatchObject({ kind: 'resume' })
+  })
+})
+
+describe('checkForSession', () => {
+  it('restores the newest check for the exact recommendation and qualification', () => {
+    const recommendation = session('s-1', '2026-10-01T00:00:00Z', welding)
+    const checks = [
+      check('elsewhere', welding, '2026-10-05T00:00:00Z', 70, undefined, 's-2'),
+      check('older', welding, '2026-10-02T00:00:00Z', 30, undefined, 's-1'),
+      check('latest', welding, '2026-10-03T00:00:00Z', 60, undefined, 's-1'),
+      check('other-qualification', cookery, '2026-10-06T00:00:00Z', 80, undefined, 's-1'),
+    ]
+    expect(checkForSession(recommendation, checks)?.id).toBe('latest')
+    expect(checkForSession(recommendation, [checks[0], checks[3]])).toBeNull()
   })
 })
 

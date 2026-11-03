@@ -1,4 +1,4 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueries, useQueryClient } from '@tanstack/react-query'
 import { useId, useState } from 'react'
 import { Button, ProgressBar } from 'react-aria-components'
 import { Link, useNavigate } from 'react-router'
@@ -12,16 +12,20 @@ import { cssVars, cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { localTime } from '../training/format.ts'
+import { curatedPathwaysQuery } from '../finder/api.ts'
+import { PathwayCard as RecommendedPathwayCard } from '../finder/PathwayStep.tsx'
+import { VERDICTS, verdictFor, type PathwayRoute } from '../finder/rules.ts'
 import {
   progressKeys,
   setStepStatus,
   withdrawApplication,
   type Application,
   type Enrollment,
+  type ReadinessCheck,
   type RecommendationSession,
 } from './api.ts'
 import { pathwayHeadingId, SECTION_IDS } from './ContinueCard.tsx'
-import { sessionQualification } from './journey.ts'
+import { checkForSession, sessionQualification } from './journey.ts'
 import { friendlyDate } from './ReadinessHistory.tsx'
 import { resumeSession } from './resume.ts'
 import { ui } from './styles.ts'
@@ -29,9 +33,11 @@ import { ui } from './styles.ts'
 /** The learner's saved recommendations, newest first, each reopening in Find my pathway (US-10). */
 export function RecommendationHistory({
   sessions,
+  checks = [],
   catalog,
 }: {
   sessions: readonly RecommendationSession[]
+  checks?: readonly ReadinessCheck[]
   catalog: ReadonlySet<string>
 }) {
   const en = useCopy()
@@ -80,8 +86,8 @@ export function RecommendationHistory({
                 aria-label={`${copy.history.open}: ${session.query}`}
                 onPress={() => {
                   if (!learner) return
-                  resumeSession(session, learner.id)
-                  void navigate(paths.finderMatches)
+                  const hasCheck = resumeSession(session, learner.id, checks)
+                  void navigate(hasCheck ? paths.finderPathway : paths.finderMatches)
                 }}
               >
                 {copy.history.open}
@@ -96,19 +102,48 @@ export function RecommendationHistory({
 }
 
 /** The pathways the learner follows, each step ticked off as they go. Completed ones stay, as achievements. */
-export function Pathways({ enrollments }: { enrollments: readonly Enrollment[] }) {
+export function Pathways({
+  enrollments,
+  sessions = [],
+  checks = [],
+}: {
+  enrollments: readonly Enrollment[]
+  sessions?: readonly RecommendationSession[]
+  checks?: readonly ReadinessCheck[]
+}) {
   const en = useCopy()
   const copy = en.progress
 
   const shown = enrollments.filter((enrollment) => enrollment.status !== 'withdrawn')
+  const candidates: { code: string; route: PathwayRoute }[] = []
+  for (const session of [...sessions].sort((a, b) => b.created_at.localeCompare(a.created_at))) {
+    const check = checkForSession(session, checks)
+    if (!check) continue
+    const code = check.qualification.code
+    const route = VERDICTS[verdictFor(check)].route
+    if (
+      enrollments.some(
+        (enrollment) =>
+          enrollment.pathway.qualification.code === code && enrollment.pathway.route === route,
+      ) ||
+      candidates.some((candidate) => candidate.code === code && candidate.route === route)
+    )
+      continue
+    candidates.push({ code, route })
+  }
+  const recommendedQueries = useQueries({
+    queries: candidates.map(({ code, route }) => curatedPathwaysQuery(code, route)),
+  })
+  const recommended = recommendedQueries
+    .map((result) => result.data?.[0])
+    .filter((pathway) => pathway !== undefined)
+  const searching = recommendedQueries.some((result) => result.isPending)
   return (
     <section aria-labelledby={SECTION_IDS.pathways} className={ui.card}>
       <h2 id={SECTION_IDS.pathways} tabIndex={-1} className={ui.sectionHeading}>
         {copy.pathways.heading}
       </h2>
-      {shown.length === 0 ? (
-        <p className={ui.empty}>{copy.pathways.empty}</p>
-      ) : (
+      {shown.length > 0 && (
         <ul className={ui.records}>
           {shown.map((enrollment) => (
             <li key={enrollment.id}>
@@ -117,6 +152,23 @@ export function Pathways({ enrollments }: { enrollments: readonly Enrollment[] }
           ))}
         </ul>
       )}
+      {recommended.length > 0 && (
+        <div className="mt-4 flex flex-col gap-3">
+          <h3 className="m-0 text-17 text-navy">{copy.pathways.suggested}</h3>
+          {recommended.map((pathway) => (
+            <RecommendedPathwayCard key={pathway.id} pathway={pathway} />
+          ))}
+        </div>
+      )}
+      {shown.length === 0 &&
+        recommended.length === 0 &&
+        (searching ? (
+          <p role="status" className={ui.muted}>
+            {copy.loading}
+          </p>
+        ) : (
+          <p className={ui.empty}>{copy.pathways.empty}</p>
+        ))}
     </section>
   )
 }

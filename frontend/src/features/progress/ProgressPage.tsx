@@ -28,12 +28,7 @@ import { ReadinessHistory } from './ReadinessHistory.tsx'
 import { QualificationGoals } from './QualificationGoals.tsx'
 import { Pathways, RecommendationHistory } from './Records.tsx'
 
-type ProgressSection =
-  | 'qualifications'
-  | 'milestones'
-  | 'pathways'
-  | 'readiness'
-  | 'history'
+type ProgressSection = 'qualifications' | 'milestones' | 'pathways' | 'readiness' | 'history'
 const SECTIONS: readonly { id: ProgressSection; icon: IconName }[] = [
   { id: 'qualifications', icon: 'learn' },
   { id: 'milestones', icon: 'sparkle' },
@@ -102,7 +97,8 @@ function Progress({ catalog }: { catalog: Qualification[] }) {
       void navigate(`${paths.profile}?section=${requested}`, { replace: true })
       return
     }
-    if (!sessions.data || requested === null || sections.some((item) => item.id === requested)) return
+    if (!sessions.data || requested === null || sections.some((item) => item.id === requested))
+      return
     setParams(
       (current) => {
         const updated = new URLSearchParams(current)
@@ -158,6 +154,7 @@ function Progress({ catalog }: { catalog: Qualification[] }) {
     <div className="flex flex-col gap-4">
       <ContinueCard
         next={nextStep(sessions.data, checks.data, pathways.data, applications.data, codes)}
+        checks={checks.data}
         onOpenRecord={(next) => {
           if (next === 'applications') {
             void navigate(`${paths.profile}?section=applications`)
@@ -209,7 +206,7 @@ function Progress({ catalog }: { catalog: Qualification[] }) {
         />
       </div>
       <div id="progress-panel-pathways" hidden={section !== 'pathways'}>
-        <Pathways enrollments={pathways.data} />
+        <Pathways enrollments={pathways.data} sessions={sessions.data} checks={checks.data} />
       </div>
       <div id="progress-panel-readiness" hidden={section !== 'readiness'}>
         <div className="flex flex-col gap-4">
@@ -233,7 +230,7 @@ function Progress({ catalog }: { catalog: Qualification[] }) {
         </div>
       </div>
       <div id="progress-panel-history" hidden={section !== 'history'}>
-        <RecommendationHistory sessions={sessions.data} catalog={codes} />
+        <RecommendationHistory sessions={sessions.data} checks={checks.data} catalog={codes} />
       </div>
     </div>
   )

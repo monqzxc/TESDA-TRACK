@@ -7,6 +7,7 @@ import { useCopy } from '../../i18n/copy.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { useFinderStore } from '../finder/store.ts'
+import type { ReadinessCheck } from './api.ts'
 import type { Continuation } from './journey.ts'
 import { resumeSession } from './resume.ts'
 
@@ -25,9 +26,11 @@ export function goToSection(id: string): void {
 /** The one next step for the learner, above their records (US-10). */
 export function ContinueCard({
   next,
+  checks = [],
   onOpenRecord,
 }: {
   next: Continuation
+  checks?: readonly ReadinessCheck[]
   onOpenRecord?: (section: 'pathways' | 'applications') => void
 }) {
   const en = useCopy()
@@ -77,7 +80,7 @@ export function ContinueCard({
           className={primary}
           onPress={() => {
             if (!learner) return
-            resumeSession(next.session, learner.id)
+            resumeSession(next.session, learner.id, checks)
             useFinderStore.getState().choose(next.code)
             void navigate(paths.finderReadiness)
           }}
@@ -94,8 +97,8 @@ export function ContinueCard({
           className={primary}
           onPress={() => {
             if (!learner) return
-            resumeSession(next.session, learner.id)
-            void navigate(paths.finderMatches)
+            const hasCheck = resumeSession(next.session, learner.id, checks)
+            void navigate(hasCheck ? paths.finderPathway : paths.finderMatches)
           }}
         >
           {copy.resumeAction}

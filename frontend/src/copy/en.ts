@@ -1150,6 +1150,7 @@ export const en = {
     },
     pathways: {
       heading: 'My pathways',
+      suggested: 'Recommended pathways to follow',
       empty: 'Follow a recommended pathway from Find my pathway to track it here.',
       complete: (percent: number) => `${percent}% complete`,
       completed: 'Completed',
