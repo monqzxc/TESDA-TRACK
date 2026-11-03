@@ -407,6 +407,7 @@ export const en = {
   // Find my pathway (classic/app.py show_finder and its steps).
   finder: {
     banner: {
+      eyebrow: 'Your journey, simplified',
       title: 'A little direction.',
       accent: 'A world of possibilities.',
       tiles: [
