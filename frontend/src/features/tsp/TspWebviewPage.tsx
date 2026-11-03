@@ -7,7 +7,8 @@ import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { analyzeGoal } from '../finder/api.ts'
 import { GOAL_MAX_LENGTH, useFinderStore } from '../finder/store.ts'
-import { parseTspParams, type TspLearnerParams } from './params.ts'
+import type { TspLearnerParams } from './params.ts'
+import { useTspState } from './TspState.tsx'
 
 const field =
   'min-h-11 w-full rounded-12 border border-border bg-surface px-3 py-2 text-16 text-navy focus:border-blue'
@@ -23,12 +24,7 @@ type Submission = Pick<
 export default function TspWebviewPage() {
   const location = useLocation()
   const navigate = useNavigate()
-  const [learner] = useState(() => parseTspParams(location.search))
-  const [goal, setGoal] = useState(learner.goal)
-  const [skills, setSkills] = useState(learner.skills)
-  const [experienceYears, setExperienceYears] = useState(learner.experienceYears)
-  const [hasCertification, setHasCertification] = useState(learner.hasCertification)
-  const [region, setRegion] = useState(learner.region)
+  const [learner, setLearner] = useTspState()
   const [error, setError] = useState<string | null>(null)
   const begin = useFinderStore((state) => state.begin)
   const setGoalInFinder = useFinderStore((state) => state.setGoal)
@@ -70,13 +66,19 @@ export default function TspWebviewPage() {
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const query = goal.trim()
+    const query = learner.goal.trim()
     if (!query) {
       setError('Enter a career goal to find a pathway.')
       return
     }
     setError(null)
-    analyze.mutate({ query, skills, experienceYears, hasCertification, region })
+    analyze.mutate({
+      query,
+      skills: learner.skills,
+      experienceYears: learner.experienceYears,
+      hasCertification: learner.hasCertification,
+      region: learner.region,
+    })
   }
 
   return (
@@ -110,8 +112,10 @@ export default function TspWebviewPage() {
           Career goal <span className="sr-only">required</span>
           <textarea
             className={`${field} min-h-28 resize-y`}
-            value={goal}
-            onChange={(event) => setGoal(event.target.value)}
+            value={learner.goal}
+            onChange={(event) =>
+              setLearner((current) => ({ ...current, goal: event.target.value }))
+            }
             maxLength={GOAL_MAX_LENGTH}
             placeholder="What work would you like to do?"
             required
@@ -121,8 +125,10 @@ export default function TspWebviewPage() {
           Existing skills
           <input
             className={field}
-            value={skills}
-            onChange={(event) => setSkills(event.target.value)}
+            value={learner.skills}
+            onChange={(event) =>
+              setLearner((current) => ({ ...current, skills: event.target.value }))
+            }
             maxLength={1600}
             placeholder="Separate skills with commas"
           />
@@ -137,17 +143,22 @@ export default function TspWebviewPage() {
               min="0"
               max="60"
               step="any"
-              value={experienceYears}
-              onChange={(event) => setExperienceYears(event.target.value)}
+              value={learner.experienceYears}
+              onChange={(event) =>
+                setLearner((current) => ({ ...current, experienceYears: event.target.value }))
+              }
             />
           </label>
           <label className={label}>
             TESDA certification
             <select
               className={field}
-              value={hasCertification}
+              value={learner.hasCertification}
               onChange={(event) =>
-                setHasCertification(event.target.value as typeof hasCertification)
+                setLearner((current) => ({
+                  ...current,
+                  hasCertification: event.target.value as TspLearnerParams['hasCertification'],
+                }))
               }
             >
               <option value="">Not specified</option>
@@ -160,8 +171,10 @@ export default function TspWebviewPage() {
           Region
           <input
             className={field}
-            value={region}
-            onChange={(event) => setRegion(event.target.value)}
+            value={learner.region}
+            onChange={(event) =>
+              setLearner((current) => ({ ...current, region: event.target.value }))
+            }
             maxLength={120}
             placeholder="Region code, e.g. NCR or VII"
           />

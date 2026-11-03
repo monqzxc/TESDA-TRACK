@@ -2,6 +2,11 @@
 
 Open the TESDA-TRACK frontend at `/tsp/webview` in TSP's mobile WebView. The route is relative to the frontend base path, including `/beta` where that deployment is used.
 
+The webview has four sections: **Pathways** on the launch page, **Qualification Library** at
+`/tsp/webview/qualifications`, **Training & Assessment** at `/tsp/webview/training`, and
+**Skill Explorer** at `/tsp/webview/skills`. The section navigation stays in the compact webview
+shell. Existing feature actions may continue into the full TESDA-TRACK app in the same WebView.
+
 Example launch URL:
 
 ```text

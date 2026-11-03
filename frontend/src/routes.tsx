@@ -50,7 +50,10 @@ export const routes: RouteObject[] = [
           {
             ErrorBoundary: RouteError,
             children: [
-              { index: true, ...page('home', () => import('./features/home/HomePage.tsx')) },
+              {
+                index: true,
+                ...page('home', () => import('./features/home/HomePage.tsx')),
+              },
             ],
           },
         ],
@@ -62,6 +65,18 @@ export const routes: RouteObject[] = [
           {
             path: paths.tspWebview,
             ...page('tspWebview', () => import('./features/tsp/TspWebviewPage.tsx')),
+          },
+          {
+            path: paths.tspQualifications,
+            ...page('qualifications', () => import('./features/library/LibraryPage.tsx')),
+          },
+          {
+            path: paths.tspTraining,
+            ...page('training', () => import('./features/training/TrainingPage.tsx')),
+          },
+          {
+            path: paths.tspSkills,
+            ...page('skills', () => import('./features/skills/SkillsPage.tsx')),
           },
         ],
       },
@@ -76,9 +91,18 @@ export const routes: RouteObject[] = [
                 path: paths.finder,
                 children: [
                   { index: true, ...page('finderGoal', finder) },
-                  { path: paths.finderMatches, ...page('finderMatches', finder) },
-                  { path: paths.finderReadiness, ...page('finderReadiness', finder) },
-                  { path: paths.finderPathway, ...page('finderPathway', finder) },
+                  {
+                    path: paths.finderMatches,
+                    ...page('finderMatches', finder),
+                  },
+                  {
+                    path: paths.finderReadiness,
+                    ...page('finderReadiness', finder),
+                  },
+                  {
+                    path: paths.finderPathway,
+                    ...page('finderPathway', finder),
+                  },
                 ],
               },
               {

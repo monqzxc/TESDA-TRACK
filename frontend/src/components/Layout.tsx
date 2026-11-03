@@ -2,6 +2,8 @@ import type { MouseEvent } from 'react'
 import { Outlet, ScrollRestoration } from 'react-router'
 import { useAuth } from '../auth/useAuth.ts'
 import { useCopy } from '../i18n/copy.ts'
+import { TspNav } from '../features/tsp/TspNav.tsx'
+import { TspStateProvider } from '../features/tsp/TspState.tsx'
 import { FirstVisitNotice } from '../features/privacy/FirstVisitNotice.tsx'
 import { GuidedHelp } from '../features/help/GuidedHelp.tsx'
 import { useCurrentPage, useFocusOnNavigation, usePageTitle } from '../lib/navigation.ts'
@@ -75,7 +77,7 @@ export function HomeLayout() {
 /** A compact shell for partner apps opening TESDA-TRACK in a phone WebView. */
 export function WebviewLayout() {
   return (
-    <>
+    <TspStateProvider>
       <SkipLink />
       <div className="min-h-dvh">
         <header className="border-b border-border bg-surface px-4 py-3">
@@ -83,6 +85,7 @@ export function WebviewLayout() {
             <Brand compact />
           </div>
         </header>
+        <TspNav />
         <main
           id="main"
           tabIndex={-1}
@@ -91,7 +94,7 @@ export function WebviewLayout() {
           <Outlet />
         </main>
       </div>
-    </>
+    </TspStateProvider>
   )
 }
 

@@ -52,6 +52,17 @@ describe('TSP WebView', () => {
     await waitFor(() => expect(router.state.location.search).toBe(''))
     expect(api.requests).toEqual([])
 
+    await user.click(screen.getByRole('link', { name: 'Qualification Library' }))
+    await waitFor(() => expect(router.state.location.pathname).toBe('/tsp/webview/qualifications'))
+    await user.click(screen.getByRole('link', { name: 'Pathways' }))
+    await waitFor(() => expect(router.state.location.pathname).toBe('/tsp/webview'))
+    expect(screen.getByRole('textbox', { name: /Career goal/ })).toHaveValue(
+      'I want to be a welder.',
+    )
+    expect(screen.getByRole('textbox', { name: 'Existing skills' })).toHaveValue(
+      'metal fabrication, welding',
+    )
+
     await user.click(screen.getByRole('button', { name: 'Find my pathway' }))
     await waitFor(() => expect(router.state.location.pathname).toBe('/find/matches'))
     await waitFor(() =>
