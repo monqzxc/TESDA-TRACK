@@ -13,6 +13,7 @@ const target = (name: string, copy: StepCopy): Target => ({
 function pageTargets(): Record<PageKey, readonly Target[]> {
   const copy = getCopy().help.steps
   return {
+    tspWebview: [{ selector: '#main form', copy: copy.goalInput }],
     home: [
       {
         selector: 'header a[href$="/find"], [data-home-hero] a[href$="/find"]',
