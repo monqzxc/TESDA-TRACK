@@ -609,7 +609,6 @@ export const en = {
           `Whether training or an NC assessment comes next for ${name} depends on the skills you rate.`,
         action: 'Go to the readiness check',
       },
-      kicker: 'Recommended for you',
       verdicts: {
         high: { headline: 'Apply for the NC assessment', action: 'See assessment schedules' },
         moderate: {
@@ -622,8 +621,6 @@ export const en = {
       score: 'Your readiness',
       strengths: 'Your strengths',
       improve: 'Skills to improve',
-      details: (strengths: number, gaps: number) =>
-        `Your strengths (${figure(strengths)}) and skills to improve (${figure(gaps)})`,
       noStrengths: 'No competencies marked confident yet.',
       noGaps: 'No self-reported gaps.',
       basedOn:
@@ -645,12 +642,9 @@ export const en = {
       followed: 'Added to My Progress. Tick off each step as you complete it.',
       already: 'You’re already following this pathway. Find it under My Progress.',
       diagnostics: 'Recommendation diagnostics',
-      // The personalized report under the verdict (POST /recommendations/report). Its sentences come from the API,
-      // worked out from the learner's answers, the catalog and the rankings; these are the words around them.
+      // The personalized report under the verdict (POST /recommendations/report), in tabs. Its sentences come from the
+      // API, worked out from the learner's answers, the catalog and the rankings; these are the words around them.
       report: {
-        kicker: 'Your personalized report',
-        heading: 'Recommendations for you',
-        lead: 'Worked out from your answers, this qualification’s units of competency, and the training and assessment options TESDA-TRACK lists.',
         loading: 'Preparing your report…',
         updating: 'Updating your report…',
         place: {
@@ -662,12 +656,9 @@ export const en = {
           scholarship: 'I need a scholarship',
           help: 'These only sort and explain the options. They aren’t saved.',
         },
-        training: 'Training to consider',
-        recommended: 'Recommended for you',
         alsoConsider: 'Also worth considering',
         improve: 'Skills you should improve',
         noGaps: 'You didn’t report any skill gaps.',
-        learn: 'Competencies to learn or practice',
         moreSkills: (n: number) => `${figure(n)} more ${n === 1 ? 'skill' : 'skills'}`,
         priority: { high: 'High priority', medium: 'Medium priority', low: 'Lower priority' },
         status: {
@@ -713,7 +704,6 @@ export const en = {
         scholarship: 'Scholarship listed',
         allOptions: 'See all options in Training & Assessment',
         steps: 'Your next steps',
-        final: 'Final recommendation',
         nextAction: 'Your next action',
       },
       // Floating at the foot of the screen under the recommendation. The answers measure how well matching works

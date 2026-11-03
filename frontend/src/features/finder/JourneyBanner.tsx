@@ -17,11 +17,20 @@ const TILES: readonly { icon: IconName; tile: string; tileIcon: string }[] = [
  * does. The banner is a size container, so its layout follows its own width, not the window's: narrower banners
  * move the cards under the heading and keep the scene to the top right, and narrower still drop the scene. Phones
  * keep the banner to its headline; the cards keep their titles.
+ *
+ * Compact, on Your pathway, it's the page's name alone, so the recommendation starts near the top of the screen.
  */
-export function JourneyBanner() {
+export function JourneyBanner({ compact = false }: { compact?: boolean }) {
   const en = useCopy()
   const copy = en.finder.banner
 
+  if (compact) {
+    return (
+      <PageHeading className="m-0 text-[length:clamp(1.5rem,1.25rem_+_0.8vw,1.85rem)] leading-[1.2] font-[750] tracking-[-0.03em] text-navy">
+        {en.pages.finderGoal.heading}
+      </PageHeading>
+    )
+  }
   return (
     <section className="@container relative min-h-64 overflow-hidden rounded-22 border border-banner-border bg-(image:--track-banner) px-[2.1rem] pt-[1.9rem] pb-6 max-xs:min-h-0 max-xs:rounded-16 max-xs:px-[1.2rem] max-xs:py-[1.3rem]">
       <JourneyScene className="pointer-events-none absolute top-0 right-0 bottom-0 left-[32%] h-full w-[68%] @max-[1101px]:bottom-auto @max-[1101px]:left-[46%] @max-[1101px]:h-[230px] @max-[1101px]:w-[54%] @max-[681px]:hidden" />
