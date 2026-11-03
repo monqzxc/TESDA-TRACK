@@ -30,6 +30,9 @@ def apply_update(session: Session, site, request) -> None:
         check_location(latitude, longitude)
     except ValueError as error:
         raise InvalidRequestError(str(error)) from None
+    if (latitude, longitude) != (site.latitude, site.longitude):
+        # Registry refreshes keep an administrator's correction, including a removed point.
+        site.location_source = "manual"
     for field in fields:
         value = getattr(request, field)
         if value is None and field in REQUIRED_FIELDS:

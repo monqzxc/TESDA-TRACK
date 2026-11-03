@@ -79,7 +79,36 @@ Identical registration duplicates retain separate history rows and create one op
 
 The same source, policy, snapshot and inspection date produce the same batch fingerprint. Repeating an apply skips that batch. Updated mappings or source files create a new history batch while existing operational links prevent duplication. Only newer declared snapshots refresh importer-owned source metadata. Operational dates, seats, fees, availability, active flags and confirmed delivery modes are preserved. Imported history never deletes or archives unrelated application records.
 
-If a training registration appears to move to a different institution/branch or qualification, apply stops and rolls back. Reconcile that identity before retrying. An assessment center name/address change may produce a separate conservative identity; do not assume cross-snapshot name changes have been automatically resolved. The importer does not currently join the separate UIID worksheet or perform geocoding.
+If a training registration appears to move to a different institution/branch or qualification, apply stops and rolls back. Reconcile that identity before retrying. An assessment center name/address change may produce a separate conservative identity; do not assume cross-snapshot name changes have been automatically resolved. The importer does not currently join the separate UIID worksheet or perform geocoding; see the next section for that.
+
+## Fix map points with Google geocoding
+
+Registry coordinates inside the Philippines' bounding box can still be typos that put a center in the sea or the wrong town. `geocode-centers` looks every provider's and center's address up with the Google Geocoding API (the key needs the Geocoding API enabled) and overwrites the point when Google's answer is in the site's own city or municipality:
+
+| Google found | Replaces the point when it is |
+| --- | --- |
+| the building or street address | further than 10 m away |
+| only the barangay | missing or further than 1 km away |
+| only a road or the town | missing or further than 5 km away |
+| only the province, another town, or nothing | never |
+
+Points an administrator changed in the admin pages are never touched. Replaced points get `location_source = 'google_geocoding'` and later registry imports keep them (they also keep `manual` corrections). Demo fixtures are skipped.
+
+On the AWS server, after deploying (the `migrate` service applies migration 0020):
+
+```bash
+# Try the key on 20 sites; it prompts for the key (or pass -e GOOGLE_MAPS_API_KEY).
+docker compose exec api python -m tesda_track.cli geocode-centers --report /tmp/geocode.json --limit 20
+# Preview every site, then copy the report out and read "summary" and the "replace" rows.
+docker compose exec api python -m tesda_track.cli geocode-centers --report /tmp/geocode.json
+docker compose cp api:/tmp/geocode.json ./geocode-preview.json
+# Overwrite. Reuses the answers in /tmp/geocode.json, so Google is not asked again.
+docker compose exec api python -m tesda_track.cli geocode-centers --report /tmp/geocode.json --apply
+```
+
+Locally: `..\.venv\Scripts\python.exe -m tesda_track.cli geocode-centers --report ..\reports\geocode\preview.json` from `backend\`. `--kind training|assessment` limits the run to one table, and `--refresh` asks Google again instead of reusing the report. The full registry is about 9,800 distinct addresses, roughly one month of Google's free Geocoding allowance, so keep using the same `--report` file between runs. Lookups that fail are retried by the next run.
+
+Google's Maps Platform terms limit how long geocoded coordinates may be stored and forbid showing them on a non-Google map; the center map uses CARTO/OpenStreetMap tiles. Confirm with TESDA that this use is acceptable before relying on the result.
 
 Report JSON contains counts, unmapped labels and row flags, without contact details. Source history in PostgreSQL contains business contacts from the selected source fields and should receive the same database access controls and backup handling as provider/center contact records. Generated reports are ignored by Git.
 
