@@ -68,6 +68,13 @@ AMBIGUOUS_KM = 0.3
 NAME_COVERS_OURS = 0.75
 NAME_COVERS_THEIRS = 0.5
 NAME_MIN_SCORE = 0.75
+# When every word of Google's name is in the center's, Google lists a shorter name; less of ours need be in it, as
+# long as Google's name has a word fewer than about 25 of the ~9,600 registry names use ("Edfher" in "EDFHER FARM";
+# not "Driving" in "B.N. Driving School", which 63 use).
+NAME_SHORTER_LISTING = 0.4
+NAME_DISTINCTIVE = 7.0
+# Two branches: the one whose address shares at least this many more words with the center's address wins.
+ADDRESS_TIE_BREAK = 2
 
 EXACT_TYPES = {"street_address", "premise", "subpremise", "establishment", "point_of_interest", "intersection",
                "plus_code"}
@@ -78,7 +85,8 @@ TOWN_TYPES = {"locality", "administrative_area_level_3"}
 FILLER_WORDS = {"city", "of", "municipality", "the"}
 ABBREVIATIONS = {"sto": "santo", "sta": "santa", "sn": "san", "gen": "general", "pres": "president",
                  "mt": "mountain", "brgy": "barangay", "bgy": "barangay", "pob": "poblacion"}
-NAME_FILLER = {"inc", "incorporated", "corp", "corporation", "co", "company", "ltd", "limited", "the", "of", "and",
+NAME_FILLER = {"inc", "incorporated", "incorporation", "corp", "corporation", "co", "company", "ltd", "limited", "the",
+               "of", "and", "for",
                # Words Google Maps listings add to the institution's name.
                "tesda", "accredited", "main", "campus", "branch", "annex", "extension", "satellite", "office",
                "building", "bldg"}
@@ -87,6 +95,13 @@ NAME_ABBREVIATIONS = {**ABBREVIATIONS, "st": "saint", "phils": "philippines", "p
                       "rtc": "regional training center", "centre": "center", "ctr": "center", "cntr": "center",
                       "trng": "training", "natl": "national", "nhs": "national high school",
                       "sat": "school of arts and trades"}
+# Left out of acronyms: "United School of Science and Technology" is USST, "Academy for International Culinary
+# Arts" AICA. Company words stay in: "Guimaras Skills Academy Corp." is GSAC.
+ACRONYM_SKIP = {"of", "and", "the", "for", "in", "at", "de", "del", "la", "sa", "ng"}
+# Address words too common to tell two places apart.
+ADDRESS_COMMON = {"street", "st", "avenue", "ave", "road", "rd", "barangay", "purok", "poblacion", "national",
+                  "highway", "hwy", "philippines", "blk", "block", "lot", "lots", "phase", "subdivision", "subd",
+                  "village", "zone", "district", "sitio", "building", "bldg", "floor", "unit", "corner", "cor"}
 OUTCOMES = ("replace", "unchanged", "kept_close", "kept_manual", "ambiguous", "other_town", "name_not_found",
             "too_vague", "outside_philippines", "not_found", "no_address", "lookup_failed")
 
@@ -241,9 +256,18 @@ def in_site_town(site: Site, answer: dict) -> bool:
     if not city:
         return in_province
     towns = {place_words(c.get("name")) for c in components if set(c.get("types", [])) & TOWN_TYPES} - {""}
-    if city.replace(" ", "") in {town.replace(" ", "") for town in towns}:
+    if any(_same_town(city, town) for town in towns):
         return True
     return in_province and any(contains(town, city) or contains(city, town) for town in towns)
+
+
+def _same_town(ours: str, theirs: str) -> bool:
+    """Equal place names, spaces aside ("Sultan Sabarongis") or with a word given as its initial ("Gen. E. Aguinaldo"
+    is "General Emilio Aguinaldo")."""
+    if ours.replace(" ", "") == theirs.replace(" ", ""):
+        return True
+    a, b = ours.split(), theirs.split()
+    return len(a) == len(b) and all(x == y or (min(len(x), len(y)) == 1 and x[0] == y[0]) for x, y in zip(a, b))
 
 
 def distance_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
@@ -286,12 +310,34 @@ def decide(site: Site, answers: dict) -> Decision:
     return Decision(site, query, outcome, moved_km=moved, **found)
 
 
-def name_tokens(value: str | None) -> frozenset[str]:
-    """The words of an institution's name: no accents, apostrophes, 'Inc.' or 'Corp.'; PTC spelled out."""
+def name_words(value: str | None) -> list[str]:
+    """An institution's name word by word: no accents or apostrophes; PTC and St. spelled out."""
     value = unicodedata.normalize("NFKD", value or "").encode("ascii", "ignore").decode().casefold()
     value = re.sub(r"['`’]", "", value)
-    words = " ".join(NAME_ABBREVIATIONS.get(word, word) for word in re.findall(r"[a-z0-9]+", value)).split()
-    return frozenset(word for word in words if word not in NAME_FILLER)
+    return " ".join(NAME_ABBREVIATIONS.get(word, word) for word in re.findall(r"[a-z0-9]+", value)).split()
+
+
+def name_tokens(value: str | None) -> frozenset[str]:
+    """The words that identify an institution: name_words without 'Inc.', 'Corp.', 'of', 'Main Campus' or initials."""
+    return frozenset(word for word in name_words(value)
+                     if word not in NAME_FILLER and (len(word) > 1 or word.isdigit()))
+
+
+def acronyms(value: str | None) -> dict[str, set[str]]:
+    """Every acronym of two to six consecutive words, with the words it stands for: "PWU" for "Philippine Women's
+    University"."""
+    words = [word for word in name_words(value) if word not in ACRONYM_SKIP]
+    runs: dict[str, set[str]] = {}
+    for start in range(len(words)):
+        for end in range(start + 2, min(len(words), start + 6) + 1):
+            runs.setdefault("".join(word[0] for word in words[start:end]), set()).update(words[start:end])
+    return runs
+
+
+def address_words(value: str | None, town_words: Iterable[str] = ()) -> set[str]:
+    """The words that tell one address from another nearby: house numbers, streets, subdivisions."""
+    words = set(place_words(value).split()) - ADDRESS_COMMON - set(town_words)
+    return {word for word in words if len(word) > 1 or word.isdigit()}
 
 
 class NameWeights:
@@ -312,41 +358,53 @@ def _same_word(a: str, b: str) -> bool:
 
 
 def name_match(ours: str, theirs: str | None, weights: Callable[[str], float],
-               town_words: Iterable[str] = (), address: str | None = None) -> float | None:
+               town_words: Iterable[str] = (), address: str | None = None,
+               their_address: str | None = None) -> float | None:
     """How well a Google place's name matches a center's, from 0 to 1, or None when it doesn't match.
 
     Each name's most distinctive word must be in the other: "Novaliches" for "STI College Novaliches", and "Tambis"
     rules "Tambis National High School" out for "Barobo National High School". Most of each name's weight must
-    be in the other's too. Words of the place's name may also come from the center's address, so "Cebu Skills
-    Institute - Banilad" is the center at "... Banilad, Cebu City". The center's own town and province words count
-    as little as "center": in Naga, "City College of Naga" and "Naga College Foundation" share nothing distinctive.
+    be in the other's too, or all of the place's when Google lists a shorter name ("EDFHER FARM" for "Edfher Farm
+    Agricultural Learning Site"). A word may also be found in the other side's address ("Cebu Skills Institute -
+    Banilad" at "... Banilad, Cebu City"), or as an acronym ("PWU" for "Philippine Women's University"). The
+    center's own town and province words count as little as "center": in Naga, "City College of Naga" and "Naga
+    College Foundation" share nothing distinctive.
     """
     a, b = name_tokens(ours), name_tokens(theirs)
     if not a or not b:
         return None
     town_words = set(town_words)
-    a_or_address = a | name_tokens(address)
+    a_runs, b_runs = acronyms(ours), acronyms(theirs)
+    # Words each side can find: the other's name and address, the other's acronyms, and its own words that an
+    # acronym in the other's name stands for.
+    for_a = (b | name_tokens(their_address), {k for k in b_runs if len(k) >= 3},
+             set().union(*(words for k, words in a_runs.items() if len(k) >= 3 and k in b)))
+    for_b = (a | name_tokens(address), {k for k in a_runs if len(k) >= 3},
+             set().union(*(words for k, words in b_runs.items() if len(k) >= 3 and k in a)))
 
     def weight(word):
-        return 1.0 if word in town_words else weights(word)
+        # "City" belongs with the town: "Lipa City Colleges" says nothing "St. Cecilia College of Lipa City" doesn't.
+        return 1.0 if word in town_words or word in FILLER_WORDS else weights(word)
 
-    def found(word, words):
-        return any(_same_word(word, other) for other in words)
+    def found(word, sources):
+        words, initials, explained = sources
+        return word in explained or word in initials or any(_same_word(word, other) for other in words)
 
-    def covered(words, by):
-        return sum(weight(word) for word in words if found(word, by)) / sum(weight(word) for word in words)
+    def covered(words, sources):
+        return sum(weight(word) for word in words if found(word, sources)) / sum(weight(word) for word in words)
 
-    def rarest_found(words, by):
+    def rarest_found(words, sources):
         rarest = max(weight(word) for word in words)
-        return any(found(word, by) for word in words if weight(word) == rarest)
+        return any(found(word, sources) for word in words if weight(word) == rarest)
 
-    if not rarest_found(a, b) or not rarest_found(b, a_or_address):
+    if not rarest_found(a, for_a) or not rarest_found(b, for_b):
         return None
-    ours_covered, theirs_covered = covered(a, b), covered(b, a_or_address)
+    ours_covered, theirs_covered = covered(a, for_a), covered(b, for_b)
     score = round((ours_covered + theirs_covered) / 2, 3)
-    if ours_covered < NAME_COVERS_OURS or theirs_covered < NAME_COVERS_THEIRS or score < NAME_MIN_SCORE:
-        return None
-    return score
+    alike = ours_covered >= NAME_COVERS_OURS and theirs_covered >= NAME_COVERS_THEIRS and score >= NAME_MIN_SCORE
+    shorter_listing = (theirs_covered >= 0.999 and ours_covered >= NAME_SHORTER_LISTING
+                       and max(weight(word) for word in b) >= NAME_DISTINCTIVE)
+    return score if alike or shorter_listing else None
 
 
 def decide_by_name(site: Site, answers: dict, weights: Callable[[str], float]) -> Decision:
@@ -361,7 +419,8 @@ def decide_by_name(site: Site, answers: dict, weights: Callable[[str], float]) -
     town_words = set(place_words(site.city).split()) | set(place_words(site.province).split())
     for place in answers[query] or []:
         latitude, longitude, flag = coordinates(place.get("latitude"), place.get("longitude"))
-        score = None if flag else name_match(site.name, place.get("name"), weights, town_words, site.address)
+        score = None if flag else name_match(site.name, place.get("name"), weights, town_words, site.address,
+                                             place.get("formatted_address"))
         if score is not None:
             matches.append((score, place, latitude, longitude))
     if not matches:
@@ -377,9 +436,16 @@ def decide_by_name(site: Site, answers: dict, weights: Callable[[str], float]) -
     if not in_town:
         return found(max(matches, key=lambda m: m[0]), outcome="other_town")
     best = max(in_town, key=lambda m: m[0])
-    if any(match is not best and match[0] >= best[0] - AMBIGUOUS_SCORE_GAP
-           and distance_km(best[2], best[3], match[2], match[3]) > AMBIGUOUS_KM for match in in_town):
-        return found(best, outcome="ambiguous")
+    rivals = [match for match in in_town if match is not best and match[0] >= best[0] - AMBIGUOUS_SCORE_GAP
+              and distance_km(best[2], best[3], match[2], match[3]) > AMBIGUOUS_KM]
+    if rivals:
+        # Branches of one name: the registry's address picks one ("360-A Don Placido Campos Ave") when it clearly can.
+        ours = address_words(site.address, town_words)
+        shared = sorted(((len(ours & address_words(m[1].get("formatted_address"), town_words)), i, m)
+                         for i, m in enumerate([best, *rivals])), key=lambda s: (-s[0], s[1]))
+        if shared[0][0] < ADDRESS_TIE_BREAK or shared[0][0] < shared[1][0] + ADDRESS_TIE_BREAK:
+            return found(best, outcome="ambiguous")
+        best = shared[0][2]
     if site.latitude is None:
         return found(best, outcome="replace")
     moved = distance_km(site.latitude, site.longitude, best[2], best[3])

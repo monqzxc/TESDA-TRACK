@@ -114,8 +114,8 @@ Geocoding an address often only finds the barangay or the road. `--by-name` inst
 
 - it is in the center's own city or municipality;
 - each name's most distinctive word is in the other ("Novaliches" for "STI College Novaliches"; "Tambis" rules "Tambis National High School" out for "Barobo National High School"); the center's own town and province words, and words listings add such as "TESDA", "Main Campus" or "Annex", count for little; a branch word may come from the center's address;
-- most of each name is in the other (score 0.75 or more). On the registry itself, about 500 of 192,000 same-town pairs of differently spelled names still match, mostly the same institution spelled twice;
-- no second matching place sits more than 300 m away in the same town (branches are reported as `ambiguous`).
+- most of each name is in the other (score 0.75 or more), or Google lists a shorter name made of the center's words with at least one word fewer than about 25 registry names use ("EDFHER FARM" for "Edfher Farm Agricultural Learning Site", not "B.N. Driving School"). Acronyms count ("PWU", "USST", "GSAC"), and a branch word may be in either side's address ("Sta. Mesa"). On the registry itself, about 700 of 192,000 same-town pairs of differently spelled names still match, and those checked were the same institution spelled twice;
+- no second matching place sits more than 300 m away in the same town, unless the registry address clearly names one of the two listings (Kin Yang Academy's "360-A Don Placido Campos Ave"); otherwise branches are reported as `ambiguous`.
 
 Enable **Places API (New)** in the Google Cloud project and add it to the key's API restrictions. Use a separate report file:
 

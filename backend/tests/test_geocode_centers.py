@@ -318,6 +318,81 @@ def test_town_words_do_not_make_two_institutions_alike_but_the_address_can_name_
                       {"cebu"}) is not None
 
 
+# Real cases from the first 50 centers searched on production (2026-11-03): registry name, Google's name, the
+# center's town and province words, and the center's and Google's addresses where they decide it.
+GENERIC = {"college", "colleges", "training", "center", "institute", "technical", "technological", "technology",
+           "school", "farm", "academy", "skills", "assessment", "science", "learning", "international",
+           "agricultural", "philippines", "university", "computer", "foundation", "arts"}
+
+
+def realistic(word):
+    """Roughly the weights of the ~9,600 registry names: common words about 3, words like "driving" (63 names)
+    about 6, brand names and acronyms 8.5 or more."""
+    return {"driving": 6.0, "south": 6.8}.get(word, 3.0 if word in GENERIC else 8.5)
+
+
+@pytest.mark.parametrize("ours,theirs,town,address,their_address", [
+    ("OneSource Technical Training and Assessment Institute Foundation Inc.",
+     "Onesource Technical Training and Assessment Institute Foundation Incorporation", {"carmona", "cavite"}, None, None),
+    ("Makati Science Technological Institute of the Philippines - Sta. Mesa Branch Inc.",
+     "Makati Science Technological Institute of the Philippines", {"manila"}, "4410 ERL Building, Old Sta. Mesa, Manila",
+     "4410 erl bldg, Mesa, Old Sta. Mesa St, Sampaloc, Manila, Metro Manila"),
+    ("PWU CDCEC - Fairview, Inc.", "Philippine Women's University - CDCEC Fairview", {"quezon"}, None, None),
+    ("United School of Science and Technology (USST) Colleges,Inc.", "United School of Science and Technology",
+     {"tarlac"}, None, None),
+    ("Eastfields Academy of St. James (EASJ), Inc.", "Eastfields Academy of St. James Inc", {"la", "paz", "tarlac"},
+     None, None),
+    ("Guimaras Skills Academy Corp.", "Guimaras Skills Academy Corporation (GSAC)", {"sibunag", "guimaras"}, None, None),
+    ("Academy for International Culinary Arts, Inc.", "Academy for International Culinary Arts (AICA)", {"pasig"},
+     None, None),
+    ("Edfher Farm Agricultural Learning Site Inc.", "EDFHER FARM", {"barobo", "surigao", "del", "sur"}, None, None),
+])
+def test_real_listings_of_the_same_center_match(ours, theirs, town, address, their_address):
+    assert name_match(ours, theirs, realistic, town, address, their_address) is not None
+
+
+@pytest.mark.parametrize("ours,theirs,town,address", [
+    ("Octa-M Institute of Technology Inc.", "Octa-M Farm Products", {"monkayo", "davao", "de", "oro"}, None),
+    ("St. Cecilia College of Lipa City Inc.", "Lipa City Colleges", {"lipa", "batangas"}, None),
+    ("TLC Tuguegarao Training and Learning Center Inc.", "TLC IELTS Review PH", {"tuguegarao", "cagayan"}, None),
+    ("Provincial Training Center - Calumpit", "TESDA TRAINING CENTER PHILSYS", {"calumpit", "bulacan"}, None),
+    ("Ilapan Farms PH Honey Bee Farm", "Tagkawayan Bee Farm", {"tagkawayan", "quezon"}, "Brgy. Bukal, Tagkawayan, Quezon"),
+    ("Informatic Technological College Of San Francisco Inc.", "Informatic Computer Institute Of Agusan Del Sur",
+     {"san", "francisco", "agusan", "del", "sur"}, "Purok 2A, Barangay 5 (Pob.), San Francisco, Agusan del Sur"),
+    ("STC Technical Training Institute Inc.", "STC Assessment Center", {"malitbog", "southern", "leyte"}, None),
+    ("Digos Institute of Technical Education and Driving School", "B.N. Driving School Co.", {"digos", "davao", "del", "sur"},
+     None),
+])
+def test_real_listings_of_other_businesses_do_not_match(ours, theirs, town, address):
+    assert name_match(ours, theirs, realistic, town, address) is None
+
+
+def test_the_registry_address_picks_between_two_listings_of_one_name():
+    kin_yang = site(name="Kin Yang Academy Inc.", city="Dasmariñas City", province="Cavite", region_code="IV-A",
+                    address="360-A Don Placido Campos Ave. Goldenville II, Sabang, Dasmariñas City")
+    listings = [place("Kin Yang Academy Inc.", (14.3200, 120.9370), "Dasmariñas", "Cavite", "a"),
+                place("Kin Yang Academy", (14.3300, 120.9450), "Dasmariñas", "Cavite", "b")]
+    listings[0]["formatted_address"] = "BLK 4 Lots 23, 25-28 Goldenville, Sabang, 8WWH+P26, Diamond, Dasmariñas, Cavite"
+    listings[1]["formatted_address"] = "360- A Don Placido Campos Avenue, Dasmariñas, 4114 Cavite"
+    decision = decide_by_name(kin_yang, {name_query_for(kin_yang): listings}, realistic)
+    assert decision.outcome == "replace" and decision.place_id == "b"
+
+    usat = site(name="USAT College of Sagay City, Inc.", city="Sagay City", province="Negros Occidental",
+                region_code="NIR", address="Sitio Amparo, Brgy. Old Sagay, Sagay City, Negros Occidental")
+    listings = [place("USAT College Sagay City, Inc. - Main Campus", (10.89, 123.42), "Sagay City", "Negros Occidental", "a"),
+                place("USAT College Sagay City, Inc.", (10.94, 123.43), "Sagay City", "Negros Occidental", "b")]
+    listings[0]["formatted_address"] = "National Highway, Sagay City, Negros Occidental"
+    listings[1]["formatted_address"] = "WC79+PHM, Prk. Yellowbells, Sagay City, 6122 Negros Occidental"
+    assert decide_by_name(usat, {name_query_for(usat): listings}, realistic).outcome == "ambiguous"
+
+
+def test_a_town_written_with_an_initial_is_the_same_town():
+    assert in_site_town(site(city="Gen. E. Aguinaldo", province="Cavite", region_code="IV-A"),
+                        answer(town="General Emilio Aguinaldo", province="Cavite"))
+    assert in_site_town(site(city="Remedios T. Romualdez", province="Agusan del Norte", region_code="XIII"),
+                        answer(town="Remedios Trinidad Romualdez", province="Agusan del Norte"))
+
+
 def test_the_center_moves_to_its_google_maps_place_in_its_own_town():
     decision = by_name(site(), [place(name="Some Other School"), place()])
     assert decision.outcome == "replace" and (decision.latitude, decision.longitude) == CEBU
