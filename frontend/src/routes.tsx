@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react'
 import type { RouteObject } from 'react-router'
-import { AppLayout, HomeLayout, Root } from './components/Layout.tsx'
+import { AppLayout, HomeLayout, Root, WebviewLayout } from './components/Layout.tsx'
 import { RootError, RouteError } from './components/RouteError.tsx'
 import type { PageKey, RouteHandle } from './lib/navigation.ts'
 import { paths } from './paths.ts'
@@ -52,6 +52,16 @@ export const routes: RouteObject[] = [
             children: [
               { index: true, ...page('home', () => import('./features/home/HomePage.tsx')) },
             ],
+          },
+        ],
+      },
+      {
+        Component: WebviewLayout,
+        ErrorBoundary: RouteError,
+        children: [
+          {
+            path: paths.tspWebview,
+            ...page('tspWebview', () => import('./features/tsp/TspWebviewPage.tsx')),
           },
         ],
       },
