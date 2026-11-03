@@ -1,6 +1,6 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useId, type ReactNode } from 'react'
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import { useRegions, type Qualification } from '../../api/queries.ts'
 import { useAuth } from '../../auth/useAuth.ts'
 import { CheckboxRow } from '../../components/CheckboxRow.tsx'
@@ -9,6 +9,7 @@ import { SelectField } from '../../components/SelectField.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
+import { paths } from '../../paths.ts'
 import {
   DELIVERY_MODES,
   shortName,
@@ -525,6 +526,7 @@ function Considerations({
   qualification: Qualification
 }) {
   const en = useCopy()
+  const inTsp = useLocation().pathname.startsWith(paths.tspWebview)
   const copy = en.finder.pathway.report
 
   const headingId = useId()
@@ -586,7 +588,7 @@ function Considerations({
             to={trainingAddress({
               qualifications: [qualification.code],
               search: shortName(qualification.name),
-            })}
+            }).replace(paths.training, inTsp ? paths.tspTraining : paths.training)}
             className={cx(button(), 'self-start')}
           >
             {copy.allOptions}

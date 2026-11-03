@@ -39,32 +39,30 @@ describe('TSP WebView', () => {
     )
 
     expect(
-      await screen.findByRole('heading', { level: 1, name: 'Find your TESDA pathway' }),
+      await screen.findByRole('heading', { level: 1, name: 'Find your TESDA qualification' }),
     ).toBeInTheDocument()
     expect(screen.getByText('Ana Santos')).toBeInTheDocument()
     expect(screen.getByText('Learner reference: TSP-42')).toBeInTheDocument()
-    expect(screen.getByRole('textbox', { name: /Career goal/ })).toHaveValue(
+    expect(screen.getByRole('textbox', { name: 'Career goal' })).toHaveValue(
       'I want to be a welder.',
-    )
-    expect(screen.getByRole('textbox', { name: 'Existing skills' })).toHaveValue(
-      'metal fabrication, welding',
     )
     await waitFor(() => expect(router.state.location.search).toBe(''))
     expect(api.requests).toEqual([])
 
-    await user.click(screen.getByRole('link', { name: 'Qualification Library' }))
+    await user.click(screen.getByRole('link', { name: /Browse all qualifications/ }))
     await waitFor(() => expect(router.state.location.pathname).toBe('/tsp/webview/qualifications'))
-    await user.click(screen.getByRole('link', { name: 'Pathways' }))
+    await user.click(await screen.findByRole('link', { name: 'Find my path' }))
     await waitFor(() => expect(router.state.location.pathname).toBe('/tsp/webview'))
-    expect(screen.getByRole('textbox', { name: /Career goal/ })).toHaveValue(
+    expect(screen.getByRole('textbox', { name: 'Career goal' })).toHaveValue(
       'I want to be a welder.',
     )
-    expect(screen.getByRole('textbox', { name: 'Existing skills' })).toHaveValue(
+    await user.click(screen.getByRole('button', { name: 'Find my match' }))
+    expect(screen.getByRole('textbox', { name: /Existing skills/ })).toHaveValue(
       'metal fabrication, welding',
     )
 
-    await user.click(screen.getByRole('button', { name: 'Find my pathway' }))
-    await waitFor(() => expect(router.state.location.pathname).toBe('/find/matches'))
+    await user.click(screen.getByRole('button', { name: 'Show my matches' }))
+    await waitFor(() => expect(router.state.location.pathname).toBe('/tsp/webview/matches'))
     await waitFor(() =>
       expect(
         api.requests.find((request) => request.path === '/api/v1/analysis/matches')?.body,
@@ -83,5 +81,14 @@ describe('TSP WebView', () => {
     expect(JSON.stringify(api.requests)).not.toContain('TSP-42')
     expect(JSON.stringify(api.requests)).not.toContain('Ana Santos')
     expect(useFinderStore.getState().place.region).toBe('VII')
+
+    await user.click((await screen.findAllByRole('button', { name: 'Am I ready?' }))[0])
+    await waitFor(() => expect(router.state.location.pathname).toBe('/tsp/webview/readiness'))
+    for (let skill = 0; skill < 4; skill++) {
+      await user.click(await screen.findByRole('button', { name: 'I can do it' }))
+      await user.click(await screen.findByRole('button', { name: skill === 3 ? 'See recommendation' : 'Next skill' }))
+    }
+    await waitFor(() => expect(router.state.location.pathname).toBe('/tsp/webview/recommendation'))
+    expect(api.requests.some((request) => request.path === '/api/v1/analysis/readiness')).toBe(true)
   })
 })

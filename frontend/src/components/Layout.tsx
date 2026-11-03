@@ -1,5 +1,5 @@
 import type { MouseEvent } from 'react'
-import { Outlet, ScrollRestoration } from 'react-router'
+import { Outlet, ScrollRestoration, useLocation, useNavigate } from 'react-router'
 import { useAuth } from '../auth/useAuth.ts'
 import { useCopy } from '../i18n/copy.ts'
 import { TspNav } from '../features/tsp/TspNav.tsx'
@@ -13,6 +13,7 @@ import { HomeHeader } from './HomeHeader.tsx'
 import { MobileMenu } from './MobileMenu.tsx'
 import { SidebarContent } from './Nav.tsx'
 import { PageFooter } from './PageFooter.tsx'
+import { paths } from '../paths.ts'
 
 /**
  * The root route, around every page: the title follows the page, focus moves to its heading after a navigation,
@@ -76,20 +77,34 @@ export function HomeLayout() {
 
 /** A compact shell for partner apps opening TESDA-TRACK in a phone WebView. */
 export function WebviewLayout() {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const isEntry = location.pathname === paths.tspWebview
+  const isTool =
+    location.pathname === paths.tspQualifications ||
+    location.pathname === paths.tspTraining ||
+    location.pathname === paths.tspSkills
   return (
     <TspStateProvider>
       <SkipLink />
-      <div className="min-h-dvh">
-        <header className="border-b border-border bg-surface px-4 py-3">
-          <div className="mx-auto max-w-2xl">
-            <Brand compact />
+      <div className="tsp-webview min-h-dvh">
+        <header className="tsp-header">
+          <div className="tsp-header-inner">
+            <button
+              type="button"
+              aria-label="Go back"
+              onClick={() => (isEntry ? navigate('/') : navigate(-1))}
+            >
+              ‹
+            </button>
+            <span>TESDA-TRACK</span>
           </div>
         </header>
-        <TspNav />
+        {isTool && <TspNav />}
         <main
           id="main"
           tabIndex={-1}
-          className="mx-auto w-full max-w-2xl px-4 py-6 pb-[max(2rem,env(safe-area-inset-bottom))] focus:outline-none max-xs:py-4"
+          className={`tsp-main ${isEntry ? 'tsp-main-entry' : isTool ? 'tsp-main-tool' : 'tsp-main-content'}`}
         >
           <Outlet />
         </main>

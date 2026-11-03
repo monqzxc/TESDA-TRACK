@@ -1,40 +1,41 @@
 import { useMutation } from '@tanstack/react-query'
 import { useEffect, useState, type FormEvent } from 'react'
-import { useLocation, useNavigate } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 import { failureMessage } from '../../auth/fields.tsx'
-import { PageHeading } from '../../components/PageHeading.tsx'
 import { paths } from '../../paths.ts'
-import { button } from '../../styles/buttons.ts'
 import { analyzeGoal } from '../finder/api.ts'
 import { GOAL_MAX_LENGTH, useFinderStore } from '../finder/store.ts'
 import type { TspLearnerParams } from './params.ts'
 import { useTspState } from './TspState.tsx'
 
-const field =
-  'min-h-11 w-full rounded-12 border border-border bg-surface px-3 py-2 text-16 text-navy focus:border-blue'
-const label = 'flex min-w-0 flex-col gap-1.5 text-14 font-semibold text-navy'
+const suggestions = ['Welder', 'Caregiver', 'Barista', 'Hotel work']
 type Submission = Pick<
   TspLearnerParams,
   'skills' | 'experienceYears' | 'hasCertification' | 'region'
-> & {
-  query: string
-}
+> & { query: string }
 
-/** A short handoff from TSP to the public pathway finder, sized for a native phone WebView. */
+/** TSP's first step: a goal, then a few optional details before matching. */
 export default function TspWebviewPage() {
   const location = useLocation()
   const navigate = useNavigate()
   const [learner, setLearner] = useTspState()
+  const [showQuestions, setShowQuestions] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const begin = useFinderStore((state) => state.begin)
   const setGoalInFinder = useFinderStore((state) => state.setGoal)
   const setPlace = useFinderStore((state) => state.setPlace)
 
-  // Names, identifiers and goals should not remain in the address while the learner uses the page.
   useEffect(() => {
     if (location.search)
       void navigate(location.pathname, { replace: true, preventScrollReset: true })
   }, [location.pathname, location.search, navigate])
+
+  useEffect(() => {
+    const suggestedGoal = (location.state as { goal?: unknown } | null)?.goal
+    if (typeof suggestedGoal !== 'string') return
+    setLearner((current) => ({ ...current, goal: suggestedGoal.slice(0, GOAL_MAX_LENGTH) }))
+    void navigate(location.pathname, { replace: true, state: null, preventScrollReset: true })
+  }, [location.pathname, location.state, navigate, setLearner])
 
   const analyze = useMutation({
     mutationFn: ({ query }: Submission) => analyzeGoal(query, null),
@@ -59,16 +60,27 @@ export default function TspWebviewPage() {
       })
       setGoalInFinder(query)
       setPlace({ region: region.trim().toUpperCase() || null })
-      void navigate(paths.finderMatches)
+      void navigate(paths.tspMatches)
     },
     onError: (failure) => setError(failureMessage(failure)),
   })
+
+  const openQuestions = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    if (!learner.goal.trim()) {
+      setError('Enter a job or career goal to find a match.')
+      return
+    }
+    setError(null)
+    setShowQuestions(true)
+  }
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const query = learner.goal.trim()
     if (!query) {
-      setError('Enter a career goal to find a pathway.')
+      setError('Enter a job or career goal to find a match.')
+      setShowQuestions(false)
       return
     }
     setError(null)
@@ -82,116 +94,170 @@ export default function TspWebviewPage() {
   }
 
   return (
-    <div className="min-w-0">
-      <p className="mb-2 text-12 font-bold tracking-[0.1em] text-blue uppercase">
-        TESDA Skill Passport
-      </p>
-      <PageHeading>Find your TESDA pathway</PageHeading>
-      <p className="mb-5 text-15 text-muted">
-        Review your details, then explore qualifications that match your goal and skills.
-      </p>
-
-      {(learner.name || learner.learnerId) && (
-        <div className="mb-5 rounded-14 border border-banner-border bg-tint px-4 py-3">
-          {learner.name && (
-            <p className="m-0 font-semibold wrap-anywhere text-navy">{learner.name}</p>
-          )}
-          {learner.learnerId && (
-            <p className="m-0 text-13 wrap-anywhere text-muted">
-              Learner reference: {learner.learnerId}
-            </p>
-          )}
-        </div>
+    <div className="tsp-entry">
+      {!showQuestions && (
+        <section className="tsp-intro">
+          <h1>Find your TESDA qualification</h1>
+          <p>Type the job you want. We’ll show the right course and where to take it.</p>
+        </section>
       )}
-
-      <form
-        onSubmit={submit}
-        className="flex min-w-0 flex-col gap-4 rounded-16 border border-border bg-surface p-5 shadow-card max-xs:p-4"
-      >
-        <label className={label}>
-          Career goal <span className="sr-only">required</span>
-          <textarea
-            className={`${field} min-h-28 resize-y`}
-            value={learner.goal}
-            onChange={(event) =>
-              setLearner((current) => ({ ...current, goal: event.target.value }))
-            }
-            maxLength={GOAL_MAX_LENGTH}
-            placeholder="What work would you like to do?"
-            required
-          />
-        </label>
-        <label className={label}>
-          Existing skills
-          <input
-            className={field}
-            value={learner.skills}
-            onChange={(event) =>
-              setLearner((current) => ({ ...current, skills: event.target.value }))
-            }
-            maxLength={1600}
-            placeholder="Separate skills with commas"
-          />
-        </label>
-        <div className="grid min-w-0 grid-cols-2 gap-3 max-xs:grid-cols-1">
-          <label className={label}>
-            Years of experience
-            <input
-              className={field}
-              type="number"
-              inputMode="decimal"
-              min="0"
-              max="60"
-              step="any"
-              value={learner.experienceYears}
-              onChange={(event) =>
-                setLearner((current) => ({ ...current, experienceYears: event.target.value }))
-              }
-            />
-          </label>
-          <label className={label}>
-            TESDA certification
-            <select
-              className={field}
-              value={learner.hasCertification}
-              onChange={(event) =>
-                setLearner((current) => ({
-                  ...current,
-                  hasCertification: event.target.value as TspLearnerParams['hasCertification'],
-                }))
-              }
-            >
-              <option value="">Not specified</option>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
-            </select>
-          </label>
-        </div>
-        <label className={label}>
-          Region
-          <input
-            className={field}
-            value={learner.region}
-            onChange={(event) =>
-              setLearner((current) => ({ ...current, region: event.target.value }))
-            }
-            maxLength={120}
-            placeholder="Region code, e.g. NCR or VII"
-          />
-        </label>
-        {error && (
-          <p role="alert" className="m-0 text-14 text-warn-ink">
-            {error}
-          </p>
+      <div className="tsp-entry-body">
+        {showQuestions && (
+          <div className="tsp-progress" aria-label="Step 1 of 3">
+            <div className="tsp-progress-label">
+              <strong>Step 1 of 3</strong>
+              <span>Your goal</span>
+            </div>
+            <div className="tsp-progress-track">
+              <span style={{ width: '33.333%' }} />
+            </div>
+          </div>
         )}
-        <button
-          type="submit"
-          className={button({ variant: 'primary', height: 48, wide: true })}
-          disabled={analyze.isPending}
-        >
-          {analyze.isPending ? 'Finding your pathway…' : 'Find my pathway'}
-        </button>
-      </form>
+        {!showQuestions ? (
+          <form onSubmit={openQuestions} className="tsp-card tsp-goal-form">
+            {(learner.name || learner.learnerId) && (
+              <div className="tsp-learner">
+                {learner.name && <strong>{learner.name}</strong>}
+                {learner.learnerId && <span>Learner reference: {learner.learnerId}</span>}
+              </div>
+            )}
+            <h2>What job do you want?</h2>
+            <label className="tsp-search-field">
+              <span className="sr-only">Career goal</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <circle cx="10.8" cy="10.8" r="6.8" />
+                <path d="m16 16 5 5" />
+              </svg>
+              <input
+                value={learner.goal}
+                onChange={(event) =>
+                  setLearner((current) => ({ ...current, goal: event.target.value }))
+                }
+                maxLength={GOAL_MAX_LENGTH}
+                placeholder="e.g. Cook in a hotel"
+                required
+              />
+            </label>
+            <div className="tsp-suggestions" aria-label="Suggested jobs">
+              {suggestions.map((goal) => (
+                <button
+                  key={goal}
+                  type="button"
+                  onClick={() => setLearner((current) => ({ ...current, goal }))}
+                >
+                  {goal}
+                </button>
+              ))}
+            </div>
+            {error && (
+              <p role="alert" className="tsp-error">
+                {error}
+              </p>
+            )}
+            <button className="tsp-primary" type="submit">
+              Find my match
+            </button>
+          </form>
+        ) : (
+          <form onSubmit={submit} className="tsp-questions">
+            <div className="tsp-goal-note">
+              <span>Your goal</span>
+              <strong>{learner.goal}</strong>
+              <button type="button" onClick={() => setShowQuestions(false)}>
+                Edit
+              </button>
+            </div>
+            <h1>A few quick questions</h1>
+            <p className="tsp-muted">Optional. Helps us match you better.</p>
+            <fieldset className="tsp-card tsp-choice-group">
+              <legend>Have you done this work before?</legend>
+              <div className="tsp-choices">
+                {(['', '0', '0.5', '1'] as const).map((years, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    className={learner.experienceYears === years ? 'is-selected' : ''}
+                    onClick={() =>
+                      setLearner((current) => ({ ...current, experienceYears: years }))
+                    }
+                  >
+                    {['Not sure', 'No', 'Less than 1 year', '1 year or more'][index]}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+            <fieldset className="tsp-card tsp-choice-group">
+              <legend>Do you have a TESDA certificate for it?</legend>
+              <div className="tsp-choices">
+                {(['no', 'yes', ''] as const).map((answer, index) => (
+                  <button
+                    key={index}
+                    type="button"
+                    className={learner.hasCertification === answer ? 'is-selected' : ''}
+                    onClick={() =>
+                      setLearner((current) => ({ ...current, hasCertification: answer }))
+                    }
+                  >
+                    {['No', 'Yes', 'Not sure'][index]}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+            <div className="tsp-card tsp-extra-fields">
+              <label>
+                Existing skills <span>(optional)</span>
+                <input
+                  value={learner.skills}
+                  maxLength={1600}
+                  placeholder="e.g. welding, reading drawings"
+                  onChange={(event) =>
+                    setLearner((current) => ({ ...current, skills: event.target.value }))
+                  }
+                />
+              </label>
+              <label>
+                Region <span>(optional)</span>
+                <input
+                  value={learner.region}
+                  maxLength={120}
+                  placeholder="e.g. NCR"
+                  onChange={(event) =>
+                    setLearner((current) => ({ ...current, region: event.target.value }))
+                  }
+                />
+              </label>
+            </div>
+            {error && (
+              <p role="alert" className="tsp-error">
+                {error}
+              </p>
+            )}
+            <div className="tsp-bottom-actions">
+              <button
+                type="button"
+                className="tsp-secondary"
+                onClick={() => setShowQuestions(false)}
+              >
+                Back
+              </button>
+              <button className="tsp-primary" type="submit" disabled={analyze.isPending}>
+                {analyze.isPending ? 'Finding matches…' : 'Show my matches'}
+              </button>
+            </div>
+          </form>
+        )}
+        <div className="tsp-entry-links">
+          <Link to={paths.tspQualifications}>
+            Browse all qualifications <span aria-hidden="true">›</span>
+          </Link>
+          <Link to={paths.tspTraining}>
+            Find a center near you <span aria-hidden="true">›</span>
+          </Link>
+        </div>
+        <p className="tsp-privacy">
+          Your answers stay in this webview session. Location is used only if you allow it.
+        </p>
+      </div>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useId, useState } from 'react'
 import { Button } from 'react-aria-components'
-import { Link, useNavigate } from 'react-router'
+import { Link, useLocation, useNavigate } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
 import { ApiError } from '../../api/errors.ts'
 import { failureMessage } from '../../auth/fields.tsx'
@@ -40,6 +40,7 @@ interface PathwayStepProps {
  * curated pathway for that route, and whether the learner is satisfied with it all.
  */
 export function PathwayStep({ qualification, profile, asked }: PathwayStepProps) {
+  const inTsp = useLocation().pathname.startsWith(paths.tspWebview)
   const en = useCopy()
   const copy = en.finder.pathway
 
@@ -57,7 +58,10 @@ export function PathwayStep({ qualification, profile, asked }: PathwayStepProps)
           {copy.pending.heading}
         </h3>
         <p className={muted}>{copy.pending.body(qualification.name)}</p>
-        <Link to={paths.finderReadiness} className={button({ variant: 'primary' })}>
+        <Link
+          to={inTsp ? paths.tspReadiness : paths.finderReadiness}
+          className={button({ variant: 'primary' })}
+        >
           <Icon name="arrowLeft" />
           {copy.pending.action}
         </Link>
@@ -93,6 +97,7 @@ function Verdict({
   const copy = en.finder.pathway
 
   const navigate = useNavigate()
+  const inTsp = useLocation().pathname.startsWith(paths.tspWebview)
   const headingId = useId()
   const { result } = check
   const verdict = verdictFor(result)
@@ -106,7 +111,7 @@ function Verdict({
         kinds: [kind],
         qualifications: [qualification.code],
         search: shortName(qualification.name),
-      }),
+      }).replace(paths.training, inTsp ? paths.tspTraining : paths.training),
     )
 
   return (

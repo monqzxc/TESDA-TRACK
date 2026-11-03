@@ -67,6 +67,18 @@ export const routes: RouteObject[] = [
             ...page('tspWebview', () => import('./features/tsp/TspWebviewPage.tsx')),
           },
           {
+            path: paths.tspMatches,
+            ...page('finderMatches', () => import('./features/tsp/TspJourneyPage.tsx')),
+          },
+          {
+            path: paths.tspReadiness,
+            ...page('finderReadiness', () => import('./features/tsp/TspJourneyPage.tsx')),
+          },
+          {
+            path: paths.tspRecommendation,
+            ...page('finderPathway', () => import('./features/tsp/TspJourneyPage.tsx')),
+          },
+          {
             path: paths.tspQualifications,
             ...page('qualifications', () => import('./features/library/LibraryPage.tsx')),
           },

@@ -3,10 +3,9 @@ import { describe, expect, it } from 'vitest'
 import { renderApp, serveCatalog } from '../../test/app.tsx'
 
 const sections = [
-  ['/tsp/webview', 'Find your TESDA pathway', 'Pathways'],
-  ['/tsp/webview/qualifications', 'Qualifications Library', 'Qualification Library'],
-  ['/tsp/webview/training', 'Training & Assessment', 'Training & Assessment'],
-  ['/tsp/webview/skills', 'Skills Explorer', 'Skill Explorer'],
+  ['/tsp/webview/qualifications', 'Qualifications Library', 'Qualifications'],
+  ['/tsp/webview/training', 'Training & Assessment', 'Centers'],
+  ['/tsp/webview/skills', 'Skills Explorer', 'Skills'],
 ] as const
 
 describe('TSP webview sections', () => {
@@ -18,7 +17,7 @@ describe('TSP webview sections', () => {
     const nav = screen.getByRole('navigation', {
       name: 'TSP webview sections',
     })
-    for (const [destination, , label] of sections) {
+    for (const [destination, label] of [['/tsp/webview', 'Find my path'], ...sections.map(([destination, , label]) => [destination, label])]) {
       expect(within(nav).getByRole('link', { name: label })).toHaveAttribute('href', destination)
     }
     expect(within(nav).getByRole('link', { name: current })).toHaveAttribute('aria-current', 'page')

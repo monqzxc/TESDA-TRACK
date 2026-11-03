@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useRef } from 'react'
 import { Button, Input, Label, SearchField } from 'react-aria-components'
-import { useNavigate, useSearchParams } from 'react-router'
+import { useLocation, useNavigate, useSearchParams } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
 import { EmptyState } from '../../components/EmptyState.tsx'
 import { Icon } from '../../components/Icon.tsx'
@@ -54,6 +54,7 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
 
   const [params, setParams] = useSearchParams()
   const navigate = useNavigate()
+  const inTsp = useLocation().pathname.startsWith(paths.tspWebview)
   const startWithGoal = useFinderStore((state) => state.startWithGoal)
   const summary = useRef<HTMLParagraphElement>(null)
   // Set by the pager, so only a move to another page (not a search, nor the first showing) moves focus.
@@ -129,8 +130,9 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
   }, [shown.page])
 
   const explore = (qualification: Qualification) => {
-    startWithGoal(copy.exploreGoal(qualification.name))
-    void navigate(paths.finder)
+    const goal = copy.exploreGoal(qualification.name)
+    startWithGoal(goal)
+    void navigate(inTsp ? paths.tspWebview : paths.finder, inTsp ? { state: { goal } } : undefined)
   }
 
   const sectorOptions = [
