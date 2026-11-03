@@ -796,66 +796,61 @@ describe('Find my pathway, feedback', () => {
 })
 
 describe('Find my pathway, report', () => {
-  /** From the welder goal to Your pathway, where the report's parts sit in tabs under the verdict. */
+  const STEPS = 'Your next steps'
+
+  /** From the welder goal to Your pathway, where the report's parts sit in rows under the verdict. */
   async function reachReport(user: UserEvent, withGap = true) {
     await submitGoal(user)
     await user.click(screen.getByRole('button', { name: 'Check my readiness' }))
     await screen.findByText('Part 1 of 3 · Basic skills')
     await rateAll(user, withGap)
     await user.click(screen.getByRole('button', { name: 'Analyze my skills' }))
-    return screen.findByRole('tablist', { name: 'Your pathway' })
+    return screen.findByRole('region', { name: STEPS })
   }
 
-  /** Opens a tab and returns its panel. */
-  async function openTab(user: UserEvent, name: RegExp) {
-    await user.click(screen.getByRole('tab', { name }))
-    return screen.getByRole('tabpanel')
-  }
-
-  it('reports on the recommendation from the learner’s own answers, a tab at a time', async () => {
+  it('reports on the recommendation from the learner’s own answers, row by row', async () => {
     serveFinderCatalog()
     const api = serveFinderApi()
     const user = userEvent.setup()
-    await reachReport(user)
+    const steps = await reachReport(user)
 
-    // The next action joins the verdict; the next steps and the curated pathway open first.
+    // The next action joins the verdict; the next steps come with the curated pathway to save.
     const verdict = screen.getByRole('region', {
       name: 'Take focused training, then the NC assessment',
     })
     expect(
       await within(verdict).findByText(/compare their schedules, fees and distance/),
     ).toBeInTheDocument()
-    const plan = screen.getByRole('tabpanel', { name: 'Your next steps' })
-    expect(within(plan).getByText('Compare training providers')).toBeInTheDocument()
-    expect(within(plan).getByRole('heading', { name: 'Close your skill gaps' })).toBeInTheDocument()
+    expect(within(steps).getByText('Compare training providers')).toBeInTheDocument()
+    expect(
+      within(steps).getByRole('heading', { name: 'Close your skill gaps' }),
+    ).toBeInTheDocument()
 
-    // Each unit once, under what to do with it, its reasons folded under it.
-    const skills = await openTab(user, /^Skills to improve/)
-    expect(within(skills).getByRole('heading', { name: /^Must learn/ })).toBeInTheDocument()
+    // Each unit once, with what to do with it, its reasons folded under it.
+    const skills = screen.getByRole('region', { name: /^Skills to improve/ })
     expect(within(skills).getAllByText('Weld carbon steel plates')).toHaveLength(1)
+    expect(within(skills).getByText('Must learn')).toBeInTheDocument()
     expect(within(skills).getByText('High priority')).toBeInTheDocument()
     expect(within(skills).getByText('Learn to weld carbon steel plates.')).not.toBeVisible()
     await user.click(within(skills).getByText('Weld carbon steel plates'))
     expect(within(skills).getByText('Learn to weld carbon steel plates.')).toBeVisible()
     expect(within(skills).getByText('A listed unit you reported not knowing')).toBeVisible()
-    expect(within(skills).getByRole('heading', { name: /^Your strengths/ })).toBeInTheDocument()
+    expect(within(skills).getByText('Your strengths:')).toBeInTheDocument()
 
-    const options = await openTab(user, /^Training & Assessment/)
-    expect(
-      within(options).getByText('Take focused training on your gaps, then the assessment'),
-    ).toBeInTheDocument()
-    expect(within(options).getByText('Recommended for you')).toBeInTheDocument()
-    expect(
-      within(options).getByRole('heading', { name: 'Other things to consider' }),
-    ).toBeInTheDocument()
-
-    const why = await openTab(user, /^Why we recommend these/)
+    const why = screen.getByRole('region', { name: 'Why we recommend these' })
     expect(
       within(why).getByRole('heading', { name: 'Your employment prospects' }),
     ).toBeInTheDocument()
+
+    // The recommended way is the verdict, so it isn't repeated with the options.
+    const options = screen.getByRole('region', { name: /^Training & Assessment/ })
     expect(
-      within(why).getByText(/doesn’t guarantee certification or employment/),
+      within(options).queryByText('Take focused training on your gaps, then the assessment'),
+    ).not.toBeInTheDocument()
+    expect(
+      within(options).getByRole('heading', { name: 'Other things to consider' }),
     ).toBeInTheDocument()
+    expect(screen.getByText(/doesn’t guarantee certification or employment/)).toBeInTheDocument()
     // Worked out from what the recommendation came from, as feedback is: the goal only in the body.
     expect(sent(api.requests, 'POST', '/api/v1/recommendations/report')[0].body).toEqual({
       query: GOAL,
@@ -885,9 +880,9 @@ describe('Find my pathway, report', () => {
     )
     const api = serveFinderApi()
     const user = userEvent.setup()
-    await reachReport(user)
-    await screen.findByText('Compare training providers')
-    const options = await openTab(user, /^Training & Assessment/)
+    const steps = await reachReport(user)
+    await within(steps).findByText('Compare training providers')
+    const options = screen.getByRole('region', { name: /^Training & Assessment/ })
     expect(
       within(options).getByText(
         'No training programs or assessment schedules are listed for this qualification yet.',
@@ -912,37 +907,33 @@ describe('Find my pathway, report', () => {
     serveFinderCatalog()
     serveFinderApi()
     const user = userEvent.setup()
-    await reachReport(user, false)
-    await screen.findByText('Compare training providers')
+    const steps = await reachReport(user, false)
+    await within(steps).findByText('Compare training providers')
 
-    // No gaps: no count on the tab, and no group of units in it.
-    expect(screen.getByRole('tab', { name: 'Skills to improve' })).toBeInTheDocument()
-    const skills = await openTab(user, /^Skills to improve/)
+    // No gaps: no count beside the heading, and no units under it.
+    const skills = screen.getByRole('region', { name: 'Skills to improve' })
     expect(within(skills).getByText('You didn’t report any skill gaps.')).toBeInTheDocument()
-    expect(within(skills).queryByRole('heading', { name: /^Must learn/ })).not.toBeInTheDocument()
-    const options = await openTab(user, /^Training & Assessment/)
-    expect(within(options).queryByText('Also worth considering')).not.toBeInTheDocument()
+    expect(within(skills).queryByText('Must learn')).not.toBeInTheDocument()
+    expect(screen.queryByText('Also worth considering')).not.toBeInTheDocument()
   })
 
   it('keeps the rest of the pathway when the report can’t be prepared, and Try again asks again', async () => {
     serveFinderCatalog()
     serveFinderApi({ failReport: 1 })
     const user = userEvent.setup()
-    await reachReport(user)
-    const plan = screen.getByRole('tabpanel', { name: 'Your next steps' })
+    const steps = await reachReport(user)
 
-    expect(await within(plan).findByRole('alert')).toHaveTextContent(
+    expect(await within(steps).findByRole('alert')).toHaveTextContent(
       "We can't reach the TESDA-TRACK service right now.",
     )
-    expect(screen.getByRole('heading', { name: 'Close your skill gaps' })).toBeInTheDocument()
+    expect(
+      within(steps).getByRole('heading', { name: 'Close your skill gaps' }),
+    ).toBeInTheDocument()
     // The skills still come from the readiness result.
-    const skills = await openTab(user, /^Skills to improve/)
+    const skills = screen.getByRole('region', { name: /^Skills to improve/ })
     expect(within(skills).getByText('Weld carbon steel plates')).toBeInTheDocument()
 
-    await user.click(screen.getByRole('tab', { name: 'Your next steps' }))
-    await user.click(
-      within(screen.getByRole('tabpanel')).getByRole('button', { name: 'Try again' }),
-    )
-    expect(await screen.findByText('Compare training providers')).toBeInTheDocument()
+    await user.click(within(steps).getByRole('button', { name: 'Try again' }))
+    expect(await within(steps).findByText('Compare training providers')).toBeInTheDocument()
   })
 })

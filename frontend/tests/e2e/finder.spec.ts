@@ -371,22 +371,19 @@ for (const colorScheme of ['light', 'dark'] as const) {
         page.getByRole('heading', { name: 'Take focused training, then the NC assessment' }),
       ).toBeVisible()
       await expect(page.getByRole('heading', { name: 'Close your skill gaps' })).toBeVisible()
-      // The personalized report under the verdict, a tab at a time, each passing axe.
-      await expect(
-        page.getByText('Start with your highest-priority gaps', { exact: true }),
-      ).toBeVisible()
-      await expectSettledAndAccessible(page)
-      await page.getByRole('tab', { name: /^Skills to improve/ }).click()
+      // The personalized report under the verdict, in rows, with a unit's reasons opened.
+      for (const name of [
+        'Your next steps',
+        /^Skills to improve/,
+        'Why we recommend these',
+        /^Training & Assessment/,
+      ]) {
+        await expect(page.getByRole('region', { name })).toBeVisible()
+      }
+      await expect(page.getByText('Manila Welding Institute', { exact: true })).toBeVisible()
       await page.getByText('Weld carbon steel plates', { exact: true }).click()
       await expect(page.getByText('Learn to weld carbon steel plates.')).toBeVisible()
       await expectSettledAndAccessible(page)
-      await page.getByRole('tab', { name: /^Training & Assessment/ }).click()
-      await expect(page.getByText('Manila Welding Institute', { exact: true })).toBeVisible()
-      await expectSettledAndAccessible(page)
-      await page.getByRole('tab', { name: 'Why we recommend these' }).click()
-      await expect(page.getByRole('heading', { name: 'Your employment prospects' })).toBeVisible()
-      await expectSettledAndAccessible(page)
-      await page.getByRole('tab', { name: 'Your next steps' }).click()
 
       // The question under the recommendation, a reason after No, and after the wrong match the optional question
       // of the one wanted, skipped here.

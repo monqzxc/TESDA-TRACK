@@ -1,6 +1,5 @@
 import { keepPreviousData, useQuery, type UseQueryResult } from '@tanstack/react-query'
 import { useId, type ReactNode } from 'react'
-import { Tab, TabList, TabPanel, Tabs } from 'react-aria-components'
 import { Link } from 'react-router'
 import { useRegions, type Qualification } from '../../api/queries.ts'
 import { useAuth } from '../../auth/useAuth.ts'
@@ -25,19 +24,21 @@ import { useFinderStore, type Profile, type SubmittedCheck } from './store.ts'
 import { card, muted, status } from './styles.ts'
 
 type Advice = Report['skills_to_improve'][number]
-type Option = Report['training_to_consider'][number]
 type Provider = Report['providers'][number]
 type ReportResult = UseQueryResult<Report>
 
-/** Skills shown in each group before the rest fold away: a learner new to a trade can have a dozen or more. */
+/** Skills shown before the rest fold away: a learner new to a trade can have a dozen or more. */
 const FIRST_SKILLS = 5
+/** Options shown here; the rest are a link away, in Training & Assessment. */
+const FIRST_PROVIDERS = 3
 const ANY = 'any'
 const ACTIONS = ['learn', 'practice', 'demonstrate'] as const
 
-/** A heading inside a tab: the tab names the panel, so these stay small. */
-const subheading = 'm-0 flex items-center gap-2 text-16 leading-[1.35] font-bold text-navy'
-const list = 'm-0 pl-[1.3rem] text-14 leading-[1.55] text-ink'
-const panel = 'min-w-0 rounded-14 bg-panel p-4'
+const rowHeading = 'm-0 flex items-center gap-2 text-18 leading-[1.3] font-bold text-navy'
+const panel = 'min-w-0 rounded-12 bg-panel'
+const section = cx(card, 'flex flex-col gap-4')
+const smallHeading = 'mt-0 mb-1 text-15 leading-[1.4] font-bold text-navy'
+const notes = 'm-0 grid gap-1.5 pl-[1.2rem] text-14 leading-[1.55] text-ink'
 
 /**
  * The personalized report (POST /recommendations/report), asked with the learner's own answers, the goal they typed
@@ -66,82 +67,40 @@ export function usePathwayReport(
   })
 }
 
-type Section = 'plan' | 'skills' | 'options' | 'why'
-
 interface PathwayDetailsProps {
   qualification: Qualification
   check: SubmittedCheck
   report: ReportResult
-  /** The curated pathway for the verdict's route, beside the next steps. */
+  /** The curated pathway for the verdict's route, under the next steps. */
   pathway: ReactNode
 }
 
 /**
- * Everything under the verdict, one part at a time so the page stays a screen tall: the next steps with the curated
- * pathway, the skills to work on, where to train or be assessed, and why. A part with nothing to say isn't shown.
+ * Everything under the verdict, in rows: the next steps with the curated pathway; the skills to work on beside why;
+ * where to train or be assessed across the page; then where the record comes from. Long lists fold, so the page
+ * stays a few screens tall.
  */
 export function PathwayDetails({ qualification, check, report, pathway }: PathwayDetailsProps) {
-  const en = useCopy()
-  const copy = en.finder.pathway
-
-  const skills = report.data ? mergedSkills(report.data).length : check.result.skill_gaps.length
-  const providers = report.data?.providers.length
-  const tabs: { id: Section; label: string; count?: number; tour?: string }[] = [
-    { id: 'plan', label: copy.report.steps },
-    { id: 'skills', label: copy.improve, count: skills, tour: 'pathway-skills' },
-    { id: 'options', label: en.nav.training, count: providers },
-    { id: 'why', label: copy.report.why },
-  ]
+  const data = report.data
   return (
-    <Tabs defaultSelectedKey="plan" className={cx(card, '@container flex flex-col gap-5')}>
-      <TabList
-        aria-label={copy.yourPathway}
-        className="grid grid-cols-4 gap-1 rounded-14 bg-panel p-1 @max-[640px]:grid-cols-2"
-      >
-        {tabs.map((tab) => (
-          <Tab
-            key={tab.id}
-            id={tab.id}
-            data-tour={tab.tour}
-            className="flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-10 px-3 py-2 text-center text-14 leading-[1.3] font-semibold text-ink transition-colors duration-150 ease-[ease] data-selected:bg-surface data-selected:text-navy data-selected:shadow-[0_1px_3px_rgb(var(--track-shadow-rgb)/0.14)] hovered:text-navy"
-          >
-            {tab.label}
-            {!!tab.count && (
-              <span className="rounded-full bg-tint px-2 text-12 leading-[1.6] font-bold text-blue">
-                {tab.count}
-              </span>
-            )}
-          </Tab>
-        ))}
-      </TabList>
-      <TabPanel id="plan" className="min-w-0">
-        <div className="flex flex-wrap items-start gap-5 *:min-w-[min(100%,20rem)] *:flex-1">
-          <Ready report={report}>
-            {(data) => data.next_steps.length > 0 && <NextSteps report={data} />}
-          </Ready>
-          {pathway}
+    <>
+      <NextSteps report={report} pathway={pathway} />
+      <div className="@container">
+        <div className={cx('grid min-w-0 gap-4', data && '@min-[860px]:grid-cols-2')}>
+          <Skills report={report} check={check} />
+          {data && <Reasons report={data} />}
         </div>
-      </TabPanel>
-      <TabPanel id="skills" className="min-w-0">
-        <SkillsPanel report={report} check={check} />
-      </TabPanel>
-      <TabPanel id="options" className="flex min-w-0 flex-col gap-5">
-        <PlaceFields />
-        <div aria-live="polite" className="empty:hidden">
-          {report.data && report.isPlaceholderData && (
-            <p className={muted}>{copy.report.updating}</p>
-          )}
+      </div>
+      <Options report={report} qualification={qualification} />
+      {data && (
+        <div className="@container">
+          <div className="grid min-w-0 gap-x-8 gap-y-3 px-1 @min-[860px]:grid-cols-2">
+            <DataProvenance value={qualification.provenance} />
+            <p className="m-0 text-13 leading-[1.5] text-muted">{data.disclaimer}</p>
+          </div>
         </div>
-        <Ready report={report}>
-          {(data) => <Options report={data} qualification={qualification} />}
-        </Ready>
-      </TabPanel>
-      <TabPanel id="why" className="min-w-0">
-        <Ready report={report}>
-          {(data) => <Reasons report={data} qualification={qualification} />}
-        </Ready>
-      </TabPanel>
-    </Tabs>
+      )}
+    </>
   )
 }
 
@@ -171,28 +130,49 @@ function Ready({
   )
 }
 
-/** The next steps, in order. */
-function NextSteps({ report }: { report: Report }) {
+function Count({ n }: { n: number }) {
   return (
-    <ol className="m-0 grid list-none p-0">
-      {report.next_steps.map((step) => (
-        <li
-          key={step.position}
-          className="relative m-0 flex items-start gap-[0.85rem] pb-4 not-last:before:absolute not-last:before:top-[34px] not-last:before:bottom-1 not-last:before:left-[15px] not-last:before:w-0.5 not-last:before:bg-line not-last:before:content-['']"
-        >
-          <span
-            aria-hidden="true"
-            className="grid size-8 shrink-0 place-items-center rounded-full bg-tint text-14 font-bold text-blue"
-          >
-            {step.position}
-          </span>
-          <div className="mt-[0.3rem] min-w-0">
-            <p className="m-0 text-15 leading-[1.5] font-semibold text-navy">{step.title}</p>
-            <p className="m-0 text-14 leading-[1.55] text-ink">{step.detail}</p>
-          </div>
-        </li>
-      ))}
-    </ol>
+    <span className="rounded-full bg-tint px-2 text-12 leading-[1.6] font-bold text-blue">{n}</span>
+  )
+}
+
+/** The next steps side by side, in order, with the curated pathway to save under them. */
+function NextSteps({ report, pathway }: { report: ReportResult; pathway: ReactNode }) {
+  const en = useCopy()
+  const copy = en.finder.pathway.report
+
+  const headingId = useId()
+  return (
+    <section aria-labelledby={headingId} className={section}>
+      <h3 id={headingId} className={rowHeading}>
+        {copy.steps}
+      </h3>
+      <Ready report={report}>
+        {(data) =>
+          data.next_steps.length > 0 && (
+            <ol className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,12.5rem),1fr))] gap-3 p-0">
+              {data.next_steps.map((step) => (
+                <li key={step.position} className={cx(panel, 'flex items-start gap-3 p-4')}>
+                  <span
+                    aria-hidden="true"
+                    className="grid size-8 shrink-0 place-items-center rounded-full bg-fill text-14 font-bold text-white"
+                  >
+                    {step.position}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="m-0 text-15 leading-[1.4] font-semibold text-navy">
+                      {step.title}
+                    </p>
+                    <p className="m-0 text-14 leading-[1.5] text-ink">{step.detail}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          )
+        }
+      </Ready>
+      {pathway}
+    </section>
   )
 }
 
@@ -226,55 +206,41 @@ const STATUS_TONES = {
 /**
  * The skills to improve and the competencies to learn or practice are mostly the same units: the second keeps the
  * essential ones and adds, for a learner going straight to assessment, the core units they'll have to show. Each unit
- * is listed once.
+ * is listed once, what to learn first.
  */
 function mergedSkills(report: Report): Advice[] {
   const units = new Map<number, Advice>()
   for (const item of [...report.skills_to_improve, ...report.competencies_to_learn_or_practice]) {
     if (!units.has(item.competency_id)) units.set(item.competency_id, item)
   }
-  return [...units.values()]
+  return ACTIONS.flatMap((action) => [...units.values()].filter((item) => item.action === action))
 }
 
-/** The units to work on, grouped by what to do (learn, practice, then be ready to show), and the strengths. */
-function SkillsPanel({ report, check }: { report: ReportResult; check: SubmittedCheck }) {
+/** The units to work on, a line each, then the strengths. */
+function Skills({ report, check }: { report: ReportResult; check: SubmittedCheck }) {
   const en = useCopy()
   const copy = en.finder.pathway
 
+  const headingId = useId()
   const { strengths, skill_gaps } = check.result
+  const skills = report.data ? mergedSkills(report.data) : null
   let gaps
-  if (report.data) {
-    const skills = mergedSkills(report.data)
+  if (skills) {
     gaps = skills.length ? (
-      ACTIONS.map((action) => [action, skills.filter((item) => item.action === action)] as const)
-        .filter(([, group]) => group.length > 0)
-        .map(([action, group]) => (
-          <div key={action} className="flex flex-col gap-2">
-            <h3 className={subheading}>
-              {copy.report.actions[action]}
-              <Count n={group.length} />
-            </h3>
-            <SkillList items={group} />
-          </div>
-        ))
+      <SkillList items={skills} />
     ) : (
       <p className={muted}>{copy.report.noGaps}</p>
     )
   } else if (report.isError) {
     // Without the report, the unit names from the readiness result.
-    gaps = (
-      <div className="flex flex-col gap-2">
-        <h3 className={subheading}>{copy.improve}</h3>
-        {skill_gaps.length ? (
-          <ul className={list}>
-            {skill_gaps.map((name) => (
-              <li key={name}>{name}</li>
-            ))}
-          </ul>
-        ) : (
-          <p className={muted}>{copy.noGaps}</p>
-        )}
-      </div>
+    gaps = skill_gaps.length ? (
+      <ul className="m-0 pl-[1.3rem] text-15 leading-[1.55] text-ink">
+        {skill_gaps.map((name) => (
+          <li key={name}>{name}</li>
+        ))}
+      </ul>
+    ) : (
+      <p className={muted}>{copy.noGaps}</p>
     )
   } else {
     gaps = (
@@ -283,31 +249,19 @@ function SkillsPanel({ report, check }: { report: ReportResult; check: Submitted
       </p>
     )
   }
+  const count = skills?.length ?? skill_gaps.length
   return (
-    <div className="grid min-w-0 items-start gap-6 @min-[760px]:grid-cols-[minmax(0,1.7fr)_minmax(0,1fr)]">
-      <div className="flex min-w-0 flex-col gap-5">{gaps}</div>
-      <div className={cx(panel, 'flex flex-col gap-2')}>
-        <h3 className={subheading}>
-          {copy.strengths}
-          <Count n={strengths.length} />
-        </h3>
-        {strengths.length ? (
-          <ul className={cx(list, "[list-style:'✓__']")}>
-            {strengths.map((name) => (
-              <li key={name}>{name}</li>
-            ))}
-          </ul>
-        ) : (
-          <p className={muted}>{copy.noStrengths}</p>
-        )}
-      </div>
-    </div>
-  )
-}
-
-function Count({ n }: { n: number }) {
-  return (
-    <span className="rounded-full bg-tint px-2 text-12 leading-[1.6] font-bold text-blue">{n}</span>
+    <section data-tour="pathway-skills" aria-labelledby={headingId} className={section}>
+      <h3 id={headingId} className={rowHeading}>
+        {copy.improve}
+        {count > 0 && <Count n={count} />}
+      </h3>
+      {gaps}
+      <p className={cx(panel, 'mt-auto px-4 py-3 text-14 leading-[1.55] text-ink')}>
+        <strong className="text-navy">{copy.strengths}:</strong>{' '}
+        {strengths.length ? strengths.join(', ') : copy.noStrengths}
+      </p>
+    </section>
   )
 }
 
@@ -318,7 +272,7 @@ function SkillList({ items }: { items: Advice[] }) {
   const first = items.slice(0, FIRST_SKILLS)
   const rest = items.slice(FIRST_SKILLS)
   return (
-    <>
+    <div className="flex flex-col gap-2">
       <ul className="m-0 grid list-none gap-2 p-0">
         {first.map((item) => (
           <SkillItem key={item.competency_id} item={item} />
@@ -340,21 +294,24 @@ function SkillList({ items }: { items: Advice[] }) {
           </ul>
         </details>
       )}
-    </>
+    </div>
   )
 }
 
-/** One line per unit, its priority beside it; what to do, why and how open under it. */
+/** One line per unit: what to do with it and its priority; what to do, why and how open under it. */
 function SkillItem({ item }: { item: Advice }) {
   const en = useCopy()
   const copy = en.finder.pathway.report
 
   return (
-    <li className="min-w-0 rounded-12 bg-panel">
+    <li className={panel}>
       <details className="group">
         <summary className="flex min-h-12 cursor-pointer list-none items-center gap-3 rounded-12 px-4 py-2 hovered:bg-soft [&::-webkit-details-marker]:hidden">
-          <span className="min-w-0 flex-1 text-15 leading-[1.4] font-semibold wrap-anywhere text-navy">
-            {item.name}
+          <span className="flex min-w-0 flex-1 flex-col">
+            <span className="text-15 leading-[1.35] font-semibold wrap-anywhere text-navy">
+              {item.name}
+            </span>
+            <span className="text-13 leading-[1.4] text-muted">{copy.actions[item.action]}</span>
           </span>
           <Tag tone={PRIORITY_TONES[item.priority]}>{copy.priority[item.priority]}</Tag>
           <Icon
@@ -369,7 +326,7 @@ function SkillItem({ item }: { item: Advice }) {
           {item.activities.length > 0 && (
             <div>
               <p className="m-0 font-semibold text-navy">{copy.how}</p>
-              <ul className={list}>
+              <ul className="m-0 pl-[1.3rem]">
                 {item.activities.map((activity) => (
                   <li key={activity}>{activity}</li>
                 ))}
@@ -386,7 +343,50 @@ function SkillItem({ item }: { item: Advice }) {
   )
 }
 
-/** Where to look for options. They sort and explain the options only, and stay in this tab. */
+/**
+ * Where to train or be assessed, across the page: where to look, the first few options the rankings found, the other
+ * ways forward, and what else to weigh.
+ */
+function Options({
+  report,
+  qualification,
+}: {
+  report: ReportResult
+  qualification: Qualification
+}) {
+  const en = useCopy()
+  const copy = en.finder.pathway.report
+
+  const headingId = useId()
+  const count = report.data?.providers.length ?? 0
+  return (
+    <section aria-labelledby={headingId} className={cx(section, '@container')}>
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
+        <h3 id={headingId} className={rowHeading}>
+          {en.nav.training}
+          {count > 0 && <Count n={count} />}
+        </h3>
+        <Link
+          to={trainingAddress({
+            qualifications: [qualification.code],
+            search: shortName(qualification.name),
+          })}
+          className={button({ variant: 'tertiary' })}
+        >
+          {copy.allOptions}
+          <Icon name="arrowRight" />
+        </Link>
+      </div>
+      <PlaceFields />
+      <div aria-live="polite" className="empty:hidden">
+        {report.data && report.isPlaceholderData && <p className={muted}>{copy.updating}</p>}
+      </div>
+      <Ready report={report}>{(data) => <OptionList report={data} />}</Ready>
+    </section>
+  )
+}
+
+/** They sort and explain the options only, and aren't saved. */
 function PlaceFields() {
   const en = useCopy()
   const copy = en.finder.pathway.report
@@ -400,12 +400,10 @@ function PlaceFields() {
       aria-describedby={helpId}
       className={cx(
         panel,
-        'm-0 grid grid-cols-[repeat(auto-fit,minmax(min(100%,13rem),1fr))] items-end gap-3 border-0',
+        'm-0 grid grid-cols-[repeat(auto-fit,minmax(min(100%,13rem),1fr))] items-end gap-x-4 gap-y-2 border-0 px-4 py-3',
       )}
     >
-      <legend className="col-span-full float-left mb-1 text-15 font-bold text-navy">
-        {copy.place.legend}
-      </legend>
+      <legend className="sr-only">{copy.place.legend}</legend>
       <SelectField
         label={copy.place.region}
         options={[
@@ -431,108 +429,71 @@ function PlaceFields() {
       >
         {copy.place.scholarship}
       </CheckboxRow>
-      <p id={helpId} className={cx(muted, 'col-span-full')}>
+      <p id={helpId} className="col-span-full m-0 text-13 leading-[1.5] text-muted">
         {copy.place.help}
       </p>
     </fieldset>
   )
 }
 
-/** The ways forward, the providers the rankings found, and what else to weigh. */
-function Options({ report, qualification }: { report: Report; qualification: Qualification }) {
+/**
+ * The options side by side, then the other ways forward and what else to weigh. The recommended way isn't repeated:
+ * it's the verdict at the top of the page.
+ */
+function OptionList({ report }: { report: Report }) {
   const en = useCopy()
   const copy = en.finder.pathway.report
 
   const today = philippineDay(new Date())
-  const recommended = report.training_to_consider.filter((option) => option.recommended)
   const others = report.training_to_consider.filter((option) => !option.recommended)
   return (
     <>
-      {report.training_to_consider.length > 0 && (
-        <div className="flex flex-col gap-3">
-          <h3 className={subheading}>{copy.training}</h3>
-          <ul className="m-0 grid list-none gap-3 p-0 @min-[640px]:grid-cols-2">
-            {[...recommended, ...others].map((option) => (
-              <OptionItem key={option.kind} option={option} />
-            ))}
-          </ul>
-        </div>
+      {report.providers.length ? (
+        <ul className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(min(100%,16rem),1fr))] gap-3 p-0">
+          {report.providers.slice(0, FIRST_PROVIDERS).map((provider) => (
+            <ProviderItem
+              key={`${provider.kind}-${provider.service_id}`}
+              provider={provider}
+              today={today}
+            />
+          ))}
+        </ul>
+      ) : (
+        <p className={muted}>{copy.noOptions}</p>
       )}
-      <div className="flex flex-col gap-3">
-        <h3 className={subheading}>
-          {copy.options}
-          {report.providers.length > 0 && <Count n={report.providers.length} />}
-        </h3>
-        {report.providers.length ? (
-          <ul className="m-0 grid min-w-0 list-none grid-cols-[repeat(auto-fill,minmax(min(100%,18rem),1fr))] gap-3 p-0">
-            {report.providers.map((provider) => (
-              <ProviderItem
-                key={`${provider.kind}-${provider.service_id}`}
-                provider={provider}
-                today={today}
-              />
-            ))}
-          </ul>
-        ) : (
-          <p className={muted}>{copy.noOptions}</p>
-        )}
-        <Link
-          to={trainingAddress({
-            qualifications: [qualification.code],
-            search: shortName(qualification.name),
-          })}
-          className={cx(button(), 'self-start')}
-        >
-          {copy.allOptions}
-          <Icon name="arrowRight" />
-        </Link>
-      </div>
-      {report.considerations.length > 0 && (
-        <div className="flex flex-col gap-2">
-          <h3 className={subheading}>{copy.consider}</h3>
-          <ul className={cx(list, 'grid gap-2')}>
-            {report.considerations.map((item) => (
-              <li key={item.topic}>
-                {item.text}
-                {!!item.items?.length && (
-                  <ul className="m-0 mt-1 pl-[1.1rem] text-muted">
-                    {item.items.map((line) => (
-                      <li key={line}>{line}</li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
-          </ul>
+      {(others.length > 0 || report.considerations.length > 0) && (
+        <div className="grid min-w-0 gap-x-8 gap-y-4 @min-[760px]:grid-cols-2">
+          {others.length > 0 && (
+            <div className="min-w-0">
+              <h4 className={smallHeading}>{copy.alsoConsider}</h4>
+              <ul className={notes}>
+                {others.map((option) => (
+                  <li key={option.kind}>
+                    <strong className="font-semibold text-navy">{option.title}.</strong>{' '}
+                    {option.reasons.join(' ')}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {report.considerations.length > 0 && (
+            <div className="min-w-0">
+              <h4 className={smallHeading}>{copy.consider}</h4>
+              <ul className={notes}>
+                {report.considerations.map((item) => (
+                  <li key={item.topic}>
+                    {item.text}
+                    {!!item.items?.length && (
+                      <span className="block text-13 text-muted">{item.items.join(' · ')}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       )}
     </>
-  )
-}
-
-function OptionItem({ option }: { option: Option }) {
-  const en = useCopy()
-  const copy = en.finder.pathway.report
-
-  return (
-    <li
-      className={cx(
-        'flex min-w-0 flex-col gap-1 rounded-12 p-4',
-        option.recommended ? 'bg-soft' : 'bg-panel',
-      )}
-    >
-      <p className="m-0 flex flex-wrap items-center gap-2">
-        <span className="text-15 font-semibold text-navy">{option.title}</span>
-        <Tag tone={option.recommended ? 'success' : 'neutral'}>
-          {option.recommended ? copy.recommended : copy.alsoConsider}
-        </Tag>
-      </p>
-      <ul className={list}>
-        {option.reasons.map((reason) => (
-          <li key={reason}>{reason}</li>
-        ))}
-      </ul>
-    </li>
   )
 }
 
@@ -562,53 +523,46 @@ function ProviderItem({ provider, today }: { provider: Provider; today: string }
   }
   if (provider.scholarship_available) facts.push(copy.scholarship)
   return (
-    <li className={cx(panel, 'flex flex-col gap-1')}>
+    <li className={cx(panel, 'flex flex-col gap-1 px-4 py-3')}>
       <p className="m-0 flex flex-wrap items-center gap-x-2 gap-y-1">
+        <span className="text-15 font-semibold text-navy">{provider.name}</span>
         <Tag tone="info">{copy.kinds[provider.kind]}</Tag>
         <Tag tone={STATUS_TONES[provider.status]}>{copy.statuses[provider.status]}</Tag>
       </p>
-      <p className="m-0 text-15 font-semibold text-navy">{provider.name}</p>
-      {provider.title && <p className="m-0 text-14 text-ink">{provider.title}</p>}
-      <p className="m-0 text-14 leading-[1.55] text-muted">{facts.join(' · ')}</p>
+      <p className="m-0 text-14 leading-[1.5] text-ink">
+        {[provider.title, ...facts].filter(Boolean).join(' · ')}
+      </p>
       {provider.notes.length > 0 && (
-        <ul className={cx(list, 'text-muted')}>
-          {provider.notes.map((note) => (
-            <li key={note}>{note}</li>
-          ))}
-        </ul>
+        <p className="m-0 text-13 leading-[1.5] text-muted">{provider.notes.join(' ')}</p>
       )}
     </li>
   )
 }
 
-/** Each part of the learner's data and what it means, then where the qualification's record comes from. */
-function Reasons({ report, qualification }: { report: Report; qualification: Qualification }) {
+/** Each part of the learner's data and what it means. */
+function Reasons({ report }: { report: Report }) {
   const en = useCopy()
   const copy = en.finder.pathway.report
 
+  const headingId = useId()
   return (
-    <div className="flex flex-col gap-6">
-      {report.reasoning.length > 0 && (
-        <div className="grid min-w-0 gap-x-8 gap-y-5 @min-[640px]:grid-cols-2">
-          {report.reasoning.map((reason) => (
-            <div key={reason.topic} className="flex min-w-0 flex-col gap-1">
-              <h3 className={subheading}>{copy.topics[reason.topic]}</h3>
-              <p className="m-0 max-w-[65ch] text-15 leading-[1.55] text-ink">{reason.summary}</p>
-              {reason.points.length > 0 && (
-                <ul className={cx(list, 'text-muted')}>
-                  {reason.points.map((point) => (
-                    <li key={point}>{point}</li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-      <div className={cx(panel, 'flex flex-col gap-3')}>
-        <DataProvenance value={qualification.provenance} />
-        <p className={muted}>{report.disclaimer}</p>
+    <section aria-labelledby={headingId} className={section}>
+      <h3 id={headingId} className={rowHeading}>
+        {copy.why}
+      </h3>
+      <div className="flex flex-col gap-4">
+        {report.reasoning.map((reason) => (
+          <div key={reason.topic} className="min-w-0">
+            <h4 className="m-0 text-15 leading-[1.4] font-bold text-navy">
+              {copy.topics[reason.topic]}
+            </h4>
+            <p className="m-0 text-14 leading-[1.55] text-ink">{reason.summary}</p>
+            {reason.points.length > 0 && (
+              <p className="m-0 text-13 leading-[1.5] text-muted">{reason.points.join(' · ')}</p>
+            )}
+          </div>
+        ))}
       </div>
-    </div>
+    </section>
   )
 }

@@ -8,7 +8,6 @@ import { failureMessage } from '../../auth/fields.tsx'
 import { useAuth, useRequireAccount } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { DataProvenance } from '../../components/DataProvenance.tsx'
-import { SkillBars } from '../../components/Meters.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
@@ -71,7 +70,7 @@ export function PathwayStep({ qualification, profile, asked }: PathwayStepProps)
   )
 }
 
-/** The verdict first, a screen's worth on its own; the report's parts under it, a tab at a time. */
+/** The verdict first, a screen's worth on its own; the report's parts under it, in rows. */
 function Result({
   qualification,
   check,
@@ -176,26 +175,42 @@ function Verdict({
         </Button>
       </div>
 
-      {/* After Streamlit's metric: a label over a big figure, the level beside it, then the bars. */}
-      <div className="flex min-w-0 flex-col gap-3 self-start rounded-14 bg-panel p-4">
+      {/* After Streamlit's metric: a label over a big figure, the level beside it, then the bars, on a solid field. */}
+      <div className="flex min-w-0 flex-col gap-4 self-start rounded-16 bg-step-current p-5 text-white">
         <div className="flex items-end justify-between gap-3">
           <div className="flex flex-col">
-            <span className="text-14 text-ink">{copy.score}</span>
-            <strong className="font-display text-[2.5rem] leading-[1.05] font-bold tracking-[-0.03em] text-navy">
+            <span className="text-14">{copy.score}</span>
+            <strong className="font-display text-[3rem] leading-none font-bold tracking-[-0.04em]">
               {score}%
             </strong>
           </div>
-          <span className="pb-1 text-right text-15 leading-[1.35] font-bold text-navy">
-            {result.level}
-          </span>
+          <span className="pb-1 text-right text-15 leading-[1.35] font-bold">{result.level}</span>
         </div>
         {total > 0 && (
-          <SkillBars
-            bars={[
-              { label: copy.strengths, count: result.strengths.length, total, tone: 'blue' },
-              { label: copy.improve, count: result.skill_gaps.length, total, tone: 'violet' },
-            ]}
-          />
+          <ul className="m-0 grid list-none gap-3 p-0">
+            {[
+              { label: copy.strengths, count: result.strengths.length, fill: 'bg-white' },
+              { label: copy.improve, count: result.skill_gaps.length, fill: 'bg-white/55' },
+            ].map((bar) => (
+              <li key={bar.label} className="grid gap-1 text-14">
+                <span className="flex justify-between gap-3">
+                  {bar.label}
+                  <b className="font-[650]">
+                    <span aria-hidden="true">
+                      {bar.count}/{total}
+                    </span>
+                    <span className="sr-only">{en.countOf(bar.count, total)}</span>
+                  </b>
+                </span>
+                <span className="h-2 overflow-hidden rounded-full bg-white/20" aria-hidden="true">
+                  <i
+                    className={cx('block h-full rounded-[inherit]', bar.fill)}
+                    style={{ width: `${(100 * bar.count) / total}%` }}
+                  />
+                </span>
+              </li>
+            ))}
+          </ul>
         )}
       </div>
 
@@ -223,7 +238,10 @@ function CuratedPathway({
   return <PathwayCard pathway={pathway} embedded />
 }
 
-/** A curated pathway to follow. Embedded, it sits in a panel inside the pathway's tabs, without its own card. */
+/**
+ * A curated pathway to follow. Embedded, it's a strip under the next steps: its title and steps in a line, and the
+ * button to save it beside them.
+ */
 export function PathwayCard({
   pathway,
   embedded = false,
@@ -272,20 +290,85 @@ export function PathwayCard({
     },
   })
 
-  return (
-    <section
-      data-tour="curated-pathway"
-      aria-labelledby={headingId}
-      className={embedded ? 'min-w-0 rounded-14 bg-panel p-4' : card}
-    >
-      {!embedded && <p className={kicker}>{copy.yourPathway}</p>}
-      <h3
-        id={headingId}
-        className={cx(
-          'mb-[0.3rem] text-navy',
-          embedded ? 'mt-0 text-16 font-bold' : 'mt-1 text-[1.15rem]',
-        )}
+  const save = (
+    <div className="flex flex-wrap items-center gap-3">
+      {/* Saving needs an account; sign-in carries on with this qualification (US-02). */}
+      <Button
+        className={button({ variant: added ? 'secondary' : 'primary' })}
+        isPending={follow.isPending}
+        isDisabled={added || (isSignedIn && enrollments.isPending)}
+        onPress={() => {
+          setOutcome(null)
+          requireAccount(() => follow.mutate())
+        }}
       >
+        {added && <Icon name="check" />}
+        {follow.isPending ? copy.following : added ? copy.cart.added : copy.cart.add}
+      </Button>
+      {added && (
+        <Link to={paths.progress} className={button({ variant: 'tertiary' })}>
+          {copy.cart.view}
+          <Icon name="arrowRight" />
+        </Link>
+      )}
+    </div>
+  )
+  const said = (
+    <div aria-live="polite" className={cx(embedded && 'basis-full empty:hidden')}>
+      {outcome && (
+        <p
+          className={cx(
+            notice(
+              outcome.tone === 'success'
+                ? 'success'
+                : outcome.tone === 'error'
+                  ? 'warning'
+                  : 'info',
+            ),
+            !embedded && 'mt-3',
+          )}
+        >
+          {outcome.message}
+        </p>
+      )}
+    </div>
+  )
+
+  if (embedded) {
+    return (
+      <section
+        data-tour="curated-pathway"
+        aria-labelledby={headingId}
+        className="flex min-w-0 flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-14 bg-soft px-5 py-4"
+      >
+        <div className="min-w-[min(100%,18rem)] flex-1">
+          <h4 id={headingId} className="m-0 text-16 leading-[1.35] font-bold text-navy">
+            {pathway.title}
+          </h4>
+          {pathway.description && <p className={muted}>{pathway.description}</p>}
+          <ol className="m-0 mt-2 flex list-none flex-wrap gap-x-4 gap-y-1 p-0 text-14 text-ink">
+            {pathway.steps.map((step) => (
+              <li key={step.id} className="flex items-center gap-2">
+                <span
+                  aria-hidden="true"
+                  className="grid size-6 shrink-0 place-items-center rounded-full bg-surface text-12 font-bold text-blue"
+                >
+                  {step.position}
+                </span>
+                {step.title}
+              </li>
+            ))}
+          </ol>
+        </div>
+        {save}
+        {said}
+      </section>
+    )
+  }
+  return (
+    <section data-tour="curated-pathway" aria-labelledby={headingId} className={card}>
+      <p className={kicker}>{copy.yourPathway}</p>
+      <h3 id={headingId} className="mt-1 mb-[0.3rem] text-[1.15rem] text-navy">
         {pathway.title}
       </h3>
       {pathway.description && <p className={muted}>{pathway.description}</p>}
@@ -306,53 +389,11 @@ export function PathwayCard({
           </li>
         ))}
       </ol>
-      <div
-        className={cx(
-          'flex flex-col items-start gap-3',
-          embedded ? 'mt-1' : 'mt-2 border-t border-border pt-4',
-        )}
-      >
+      <div className="mt-2 flex flex-col items-start gap-3 border-t border-border pt-4">
         <p className={muted}>{copy.cart.hint}</p>
-        <div className="flex flex-wrap items-center gap-3">
-          {/* Saving needs an account; sign-in carries on with this qualification (US-02). */}
-          <Button
-            className={button({ variant: added ? 'secondary' : 'primary' })}
-            isPending={follow.isPending}
-            isDisabled={added || (isSignedIn && enrollments.isPending)}
-            onPress={() => {
-              setOutcome(null)
-              requireAccount(() => follow.mutate())
-            }}
-          >
-            {added && <Icon name="check" />}
-            {follow.isPending ? copy.following : added ? copy.cart.added : copy.cart.add}
-          </Button>
-          {added && (
-            <Link to={paths.progress} className={button({ variant: 'tertiary' })}>
-              {copy.cart.view}
-              <Icon name="arrowRight" />
-            </Link>
-          )}
-        </div>
+        {save}
       </div>
-      <div aria-live="polite">
-        {outcome && (
-          <p
-            className={cx(
-              notice(
-                outcome.tone === 'success'
-                  ? 'success'
-                  : outcome.tone === 'error'
-                    ? 'warning'
-                    : 'info',
-              ),
-              'mt-3',
-            )}
-          >
-            {outcome.message}
-          </p>
-        )}
-      </div>
+      {said}
     </section>
   )
 }

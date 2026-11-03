@@ -662,8 +662,6 @@ export const en = {
           scholarship: 'I need a scholarship',
           help: 'These only sort and explain the options. They aren’t saved.',
         },
-        training: 'Training to consider',
-        recommended: 'Recommended for you',
         alsoConsider: 'Also worth considering',
         improve: 'Skills you should improve',
         noGaps: 'You didn’t report any skill gaps.',
