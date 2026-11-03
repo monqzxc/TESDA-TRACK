@@ -6,8 +6,7 @@ import type { Qualification } from '../../api/queries.ts'
 import { failureMessage } from '../../auth/fields.tsx'
 import { EmptyState } from '../../components/EmptyState.tsx'
 import { Icon } from '../../components/Icon.tsx'
-import { ScoreRing } from '../../components/Meters.tsx'
-import { PageHero } from '../../components/PageHero.tsx'
+import { PageTitle } from '../../components/PageTitle.tsx'
 import { WithCatalog } from '../../components/WithCatalog.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
@@ -37,16 +36,10 @@ export default function SkillsPage() {
   const config = useQuery(clientConfigQuery)
   return (
     <>
-      <PageHero
-        heading={page.heading}
-        title={copy.hero.title}
-        accent={copy.hero.accent}
-        lead={page.lead}
-        art="network"
-      />
+      <PageTitle heading={page.heading} lead={page.lead} />
       {/* Settings that can't be read leave the explorer on: a lookup then says what's wrong. */}
       {config.isPending ? null : config.data?.skills_bridge_enabled === false ? (
-        <EmptyState icon="cloud" heading={copy.off.heading} body={copy.off.body} />
+        <EmptyState heading={copy.off.heading} body={copy.off.body} />
       ) : (
         <WithCatalog>{(catalog) => <Explorer catalog={catalog} />}</WithCatalog>
       )}
@@ -91,7 +84,10 @@ function Explorer({ catalog }: { catalog: Qualification[] }) {
   const unsure = !search.isPending && search.data?.reason === 'asked_for_suggestions'
   return (
     <>
-      <section aria-labelledby={headingId} className="mb-5 rounded-18 bg-surface p-5">
+      <section
+        aria-labelledby={headingId}
+        className="mb-5 rounded-16 border border-border bg-surface p-5 max-xs:p-4"
+      >
         <h2 id={headingId} className="sr-only">
           {copy.search.label}
         </h2>
@@ -130,7 +126,7 @@ function Explorer({ catalog }: { catalog: Qualification[] }) {
             <FieldError className="text-14 font-semibold text-warn-ink">{error}</FieldError>
           </TextField>
           <p className="m-0 flex items-start gap-2 text-14 leading-[1.5] text-ink">
-            <Icon name="info" className="mt-[0.2rem] flex-none text-blue" />
+            <Icon name="info" className="mt-[0.2rem] flex-none text-muted" />
             {copy.search.privacy}
           </p>
           <Button
@@ -175,16 +171,14 @@ function Explorer({ catalog }: { catalog: Qualification[] }) {
           onExplore={setOccupationId}
         />
       ) : unsure ? (
-        <EmptyState icon="route" heading={copy.suggest.heading} body={copy.suggest.body}>
+        <EmptyState heading={copy.suggest.heading} body={copy.suggest.body}>
           <Link to={paths.finder} className={button({ variant: 'primary' })}>
             {copy.suggest.action}
             <Icon name="arrowRight" />
           </Link>
         </EmptyState>
       ) : (
-        !search.isPending && (
-          <EmptyState icon="growth" heading={copy.start.heading} body={copy.start.body} />
-        )
+        !search.isPending && <EmptyState heading={copy.start.heading} body={copy.start.body} />
       )}
     </>
   )
@@ -265,7 +259,6 @@ function Results({
         </p>
         {occupations.length === 0 ? (
           <EmptyState
-            icon="search"
             heading={copy.occupations.none.heading}
             body={copy.occupations.none.body}
             headingLevel={3}
@@ -339,39 +332,58 @@ function OccupationCard({
   return (
     <article
       aria-labelledby={headingId}
-      className={cx(
-        ui.cardFrame,
-        'flex-1',
-        chosen ? 'border-blue shadow-[0_0_0_1px_var(--track-blue)]' : 'border-border',
-      )}
+      className={cx(ui.cardFrame, 'flex-1', chosen ? 'border-navy' : 'border-border')}
     >
-      <p className="m-0 text-11 leading-[1.5] font-bold tracking-[0.1em] text-ink uppercase">
-        {occupation.sector || copy.occupations.careerOption}
-      </p>
+      <p className={ui.muted}>{occupation.sector || copy.occupations.careerOption}</p>
       <h3 id={headingId} className={ui.cardTitle}>
         {occupation.title}
       </h3>
-      <div className="mt-[0.35rem] mb-2 flex items-center gap-4">
-        <ScoreRing score={score} label={`${label}: ${score}%`} />
-        <div className="flex min-w-0 flex-col gap-[0.2rem]">
-          <p className="m-0 text-14 font-[650] text-navy">{label}</p>
-          <p className={ui.text}>{copy.occupations.matched(occupation.terms_matched)}</p>
-          {/* Title matches carry no count, and few job posts are recorded yet: only a real count shows. */}
-          {occupation.open_posts ? (
-            <p className={ui.muted}>{copy.occupations.openPosts(occupation.open_posts)}</p>
-          ) : null}
-        </div>
+      <MatchMeter score={score} label={label} />
+      <p className={ui.text}>{copy.occupations.matched(occupation.terms_matched)}</p>
+      {/* Title matches carry no count, and few job posts are recorded yet: only a real count shows. */}
+      {occupation.open_posts ? (
+        <p className={ui.muted}>{copy.occupations.openPosts(occupation.open_posts)}</p>
+      ) : null}
+      <div className="mt-auto pt-3">
+        <Button
+          className={button({ variant: chosen ? 'primary' : 'secondary', wide: true })}
+          aria-label={`${copy.occupations.explore}: ${occupation.title}`}
+          aria-pressed={chosen}
+          onPress={onExplore}
+        >
+          {copy.occupations.explore}
+          <Icon name="arrowRight" />
+        </Button>
       </div>
-      <Button
-        className={cx(button({ variant: chosen ? 'primary' : 'secondary', wide: true }), 'mt-auto')}
-        aria-label={`${copy.occupations.explore}: ${occupation.title}`}
-        aria-pressed={chosen}
-        onPress={onExplore}
-      >
-        {copy.occupations.explore}
-        <Icon name="arrowRight" />
-      </Button>
     </article>
+  )
+}
+
+/**
+ * How strongly the learner's terms connect to an occupation: the figure, then a thin bar filled to it in the page's
+ * one data blue. Screen readers hear its label and figure.
+ */
+function MatchMeter({ score, label }: { score: number; label: string }) {
+  return (
+    <div className="mt-2 flex flex-col gap-1.5">
+      <div className="flex items-baseline justify-between gap-3">
+        <span className="text-14 font-[650] text-navy">{label}</span>
+        <span
+          className="font-display text-24 leading-none font-bold text-navy tabular-nums"
+          aria-hidden="true"
+        >
+          {score}
+          <span className="ml-0.5 text-14 font-semibold text-muted">%</span>
+        </span>
+      </div>
+      <div
+        role="img"
+        aria-label={`${label}: ${score}%`}
+        className="h-1.5 overflow-hidden rounded-full bg-bar"
+      >
+        <i className="block h-full rounded-[inherit] bg-blue" style={{ width: `${score}%` }} />
+      </div>
+    </div>
   )
 }
 

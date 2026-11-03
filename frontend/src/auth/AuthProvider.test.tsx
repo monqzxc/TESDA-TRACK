@@ -17,7 +17,7 @@ import { renderApp, serveCatalog } from '../test/app.tsx'
 import { createTestQueryClient } from '../test/query.tsx'
 import { server } from '../test/server.ts'
 import { SESSION_HINT_KEY } from './session.ts'
-import { useAuth, useRequireAccount } from './useAuth.ts'
+import { useAuth, useRequireAccount, type SignInView } from './useAuth.ts'
 
 type User = ReturnType<typeof userEvent.setup>
 
@@ -214,7 +214,7 @@ describe('signing in', () => {
     })
   })
 
-  it('marks the email as the username for password managers, in both forms', async () => {
+  it('marks the email as the username for password managers', async () => {
     const user = userEvent.setup()
     serveAccountApi()
     await openApp()
@@ -226,13 +226,18 @@ describe('signing in', () => {
       'autocomplete',
       'current-password',
     )
-    await user.click(within(signIn).getByRole('button', { name: 'New here? Create an account' }))
-    const register = await screen.findByRole('dialog', { name: 'Create an account' })
-    expect(within(register).getByLabelText('Email')).toHaveAttribute('autocomplete', 'username')
-    expect(within(register).getByLabelText('Password')).toHaveAttribute(
-      'autocomplete',
-      'new-password',
-    )
+  })
+
+  it('offers no way to create an account', async () => {
+    const user = userEvent.setup()
+    serveAccountApi()
+    await openApp()
+    await user.click(screen.getByRole('button', { name: 'Sign in' }))
+
+    const signIn = await screen.findByRole('dialog', { name: 'Sign in' })
+    expect(
+      within(signIn).queryByRole('button', { name: 'New here? Create an account' }),
+    ).not.toBeInTheDocument()
   })
 
   it('drops guest training fits on sign-in while keeping public listings', async () => {
@@ -337,14 +342,39 @@ describe('signing in', () => {
 })
 
 describe('creating an account', () => {
-  async function openRegister(user: User) {
-    await user.click(screen.getByRole('button', { name: 'Sign in' }))
-    const signInDialog = await screen.findByRole('dialog', { name: 'Sign in' })
-    await user.click(
-      within(signInDialog).getByRole('button', { name: 'New here? Create an account' }),
+  /** Sign in no longer links to registration, so the tests open the form directly, as a caller still can. */
+  function OpenRegister() {
+    const { openSignIn } = useAuth()
+    return (
+      <button type="button" onClick={() => openSignIn({ view: 'register' })}>
+        Create an account
+      </button>
     )
+  }
+
+  function renderRegister() {
+    renderWithAuth(
+      <>
+        <AuthState />
+        <OpenRegister />
+      </>,
+    )
+  }
+
+  async function openRegister(user: User) {
+    await user.click(screen.getByRole('button', { name: 'Create an account' }))
     return screen.findByRole('dialog', { name: 'Create an account' })
   }
+
+  it('marks the email as the username for password managers', async () => {
+    const user = userEvent.setup()
+    serveAccountApi()
+    renderRegister()
+    const dialog = await openRegister(user)
+
+    expect(within(dialog).getByLabelText('Email')).toHaveAttribute('autocomplete', 'username')
+    expect(within(dialog).getByLabelText('Password')).toHaveAttribute('autocomplete', 'new-password')
+  })
 
   async function fillIn(user: User, dialog: HTMLElement) {
     await user.type(within(dialog).getByLabelText('Full name'), 'Maria Santos')
@@ -355,9 +385,8 @@ describe('creating an account', () => {
   it('shows the privacy notice, and creates the account and signs in once the learner agrees', async () => {
     const user = userEvent.setup()
     const account = serveAccountApi()
-    await openApp()
+    renderRegister()
     const dialog = await openRegister(user)
-    expect(within(dialog).getByLabelText('Full name')).toHaveFocus()
 
     await fillIn(user, dialog)
     const consent = within(dialog).getByRole('checkbox', { name: 'I agree to the privacy notice' })
@@ -369,7 +398,7 @@ describe('creating an account', () => {
     await user.click(consent)
     await user.click(within(dialog).getByRole('button', { name: 'Create account' }))
 
-    await findAccountButton()
+    await waitFor(() => expect(screen.getByTestId('auth')).toHaveTextContent('Maria Santos'))
     expect(account.requests.filter((r) => r.method === 'POST').map((r) => `${r.method} ${r.path}`)).toEqual([
       'POST /api/v1/auth/register',
       'POST /api/v1/auth/session',
@@ -385,7 +414,7 @@ describe('creating an account', () => {
   it('asks for consent, and sends nothing without it', async () => {
     const user = userEvent.setup()
     const account = serveAccountApi()
-    await openApp()
+    renderRegister()
     const dialog = await openRegister(user)
 
     await fillIn(user, dialog)
@@ -402,7 +431,7 @@ describe('creating an account', () => {
   it('says what each field needs', async () => {
     const user = userEvent.setup()
     serveAccountApi()
-    await openApp()
+    renderRegister()
     const dialog = await openRegister(user)
 
     await user.type(within(dialog).getByLabelText('Email'), 'maria@')
@@ -431,7 +460,7 @@ describe('creating an account', () => {
         ),
       ),
     )
-    await openApp()
+    renderRegister()
     const dialog = await openRegister(user)
 
     await fillIn(user, dialog)
@@ -449,7 +478,7 @@ describe('creating an account', () => {
     const user = userEvent.setup()
     serveAccountApi()
     server.use(http.post('*/api/v1/auth/session', () => HttpResponse.error()))
-    await openApp()
+    renderRegister()
     const dialog = await openRegister(user)
 
     await fillIn(user, dialog)
@@ -625,10 +654,10 @@ describe('another tab', () => {
 })
 
 describe('useRequireAccount', () => {
-  function FollowPathway({ onFollow }: { onFollow: () => void }) {
+  function FollowPathway({ onFollow, view }: { onFollow: () => void; view?: SignInView }) {
     const requireAccount = useRequireAccount()
     return (
-      <button type="button" onClick={() => requireAccount(onFollow)}>
+      <button type="button" onClick={() => requireAccount(onFollow, { view })}>
         Follow this pathway
       </button>
     )
@@ -716,10 +745,9 @@ describe('useRequireAccount', () => {
     const user = userEvent.setup()
     serveAccountApi()
     const onFollow = vi.fn()
-    renderWithAuth(<FollowPathway onFollow={onFollow} />)
+    renderWithAuth(<FollowPathway onFollow={onFollow} view="register" />)
 
     await user.click(screen.getByRole('button', { name: 'Follow this pathway' }))
-    await user.click(await screen.findByRole('button', { name: 'New here? Create an account' }))
     const dialog = await screen.findByRole('dialog', { name: 'Create an account' })
     await user.type(within(dialog).getByLabelText('Full name'), 'Maria Santos')
     await user.type(within(dialog).getByLabelText('Email'), maria.email)

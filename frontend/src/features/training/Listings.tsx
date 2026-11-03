@@ -7,8 +7,6 @@ import { useRequireAccount } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { DataProvenance, sourceLink } from '../../components/DataProvenance.tsx'
 import { ModalDialog } from '../../components/ModalDialog.tsx'
-import { tradePhoto } from '../../components/QualificationMedia.tsx'
-import centerPhoto from '../../components/img/center-thumb.jpg'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
@@ -22,8 +20,7 @@ import { deliveryLabel, localTime, programCost, programFacts, scheduleFee } from
 const PREVIEW = 2
 
 // A center's programs or assessments, after classic/training_view.py's listing cards, and their dialogs.
-const card = 'flex gap-[0.8rem] rounded-14 border border-border bg-surface p-3'
-const photo = 'size-19 flex-none rounded-10 object-cover'
+const card = 'flex rounded-12 border border-border bg-surface px-4 py-3'
 const body = 'flex min-w-0 flex-1 flex-col items-start gap-[0.3rem]'
 const cardTitle = 'm-0 font-text text-15 font-bold tracking-normal wrap-anywhere text-navy'
 const muted = 'm-0 text-13 leading-[1.5] text-muted'
@@ -31,7 +28,8 @@ const factLine = 'm-0 text-13 leading-[1.5] text-ink'
 const badges = 'm-0 flex flex-wrap gap-[0.35rem]'
 const badge =
   'inline-flex items-center gap-[0.3rem] rounded-full px-[0.6rem] py-[0.2rem] text-12 font-[650]'
-const fitBadge = cx(badge, 'bg-tint text-blue')
+/** How well a program fits the learner: a figure, in the page's one data blue. */
+const fitBadge = 'text-13 font-bold text-blue tabular-nums'
 const scholarshipBadge = cx(badge, 'bg-good-bg text-good-ink')
 const factList = cx(
   'mt-0 mb-[0.9rem] grid gap-[0.45rem]',
@@ -92,12 +90,6 @@ function ServiceEvidence({ service }: { service: Program | Schedule }) {
       )}
     </>
   )
-}
-
-/** The trade's photo when the listing is for one, the center's otherwise. Decoration: the text names it. */
-function listingPhoto(listing: Program | Schedule): string {
-  const text = `${'title' in listing ? listing.title : ''} ${listing.qualification.name}`
-  return tradePhoto(text, 'thumb') ?? centerPhoto
 }
 
 /** A center's training programs, soonest first, two until View all. */
@@ -196,7 +188,6 @@ function ProgramCard({
   const qualification = program.qualification.name
   return (
     <article className={card} aria-labelledby={headingId}>
-      <img className={photo} src={listingPhoto(program)} alt="" loading="lazy" />
       <div className={body}>
         <h4 id={headingId} className={cardTitle}>
           {program.title}
@@ -209,25 +200,18 @@ function ProgramCard({
         <p className={factLine}>{programFacts(program, today).join(' • ')}</p>
         <ServiceEvidence service={program} />
         {(fit || program.scholarship_available) && (
-          <p className={badges}>
+          <p className={cx(badges, 'items-center')}>
             {fit?.score !== undefined && (
-              <span className={fitBadge}>
-                <Icon name="sparkle" />
-                {copy.programs.fit(fit.score)}
-              </span>
+              <span className={fitBadge}>{copy.programs.fit(fit.score)}</span>
             )}
             {program.scholarship_available && (
-              <span className={scholarshipBadge}>
-                <Icon name="check" />
-                {copy.programs.scholarship}
-              </span>
+              <span className={scholarshipBadge}>{copy.programs.scholarship}</span>
             )}
           </p>
         )}
         {fit && fit.explanation.length > 0 && (
           <details>
             <summary className="inline-flex cursor-pointer items-center gap-[0.35rem] text-13 font-semibold text-blue">
-              <Icon name="info" />
               {fit.score === undefined ? 'Service verification' : copy.programs.why}
             </summary>
             <ul className="my-[0.4rem] pl-[1.1rem] text-13 text-ink">
@@ -288,26 +272,19 @@ function ProgramDialog({
       closeLabel={facts.close}
       wide
     >
-      <div className="mb-[0.8rem] flex items-center gap-4">
-        <img
-          className="size-27.5 flex-none rounded-12 object-cover"
-          src={listingPhoto(program)}
-          alt=""
-        />
-        <div>
-          <p className={muted}>
-            {program.qualification.name}
-            {program.qualification.sector ? ` · ${program.qualification.sector}` : ''}
-          </p>
-          <p className={badges}>
-            {fit?.score !== undefined && (
-              <span className={fitBadge}>{copy.programs.fit(fit.score)}</span>
-            )}
-            {program.scholarship_available && (
-              <span className={scholarshipBadge}>{copy.programs.scholarship}</span>
-            )}
-          </p>
-        </div>
+      <div className="mb-[0.8rem] flex flex-col gap-1">
+        <p className={muted}>
+          {program.qualification.name}
+          {program.qualification.sector ? ` · ${program.qualification.sector}` : ''}
+        </p>
+        <p className={cx(badges, 'items-center')}>
+          {fit?.score !== undefined && (
+            <span className={fitBadge}>{copy.programs.fit(fit.score)}</span>
+          )}
+          {program.scholarship_available && (
+            <span className={scholarshipBadge}>{copy.programs.scholarship}</span>
+          )}
+        </p>
       </div>
       <dl className={factList}>
         {rows
@@ -390,7 +367,6 @@ function ScheduleCard({ schedule, onApply }: { schedule: Schedule; onApply: () =
   const open = schedule.seats_left > 0
   return (
     <article className={card} aria-labelledby={headingId}>
-      <img className={photo} src={listingPhoto(schedule)} alt="" loading="lazy" />
       <div className={body}>
         <h4 id={headingId} className={cardTitle}>
           {localTime(schedule.scheduled_at)}

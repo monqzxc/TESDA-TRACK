@@ -4,17 +4,17 @@ import { cx } from '../../lib/style.ts'
 const ring =
   'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus'
 
-// The control: a row in the sidebar like the page links (Nav's, after Streamlit's .st-key-sidebar_account), or a
-// plain button in Home's top bar, which brings its own colors.
+// The control: a row in the sidebar like the page links (Nav's navRow), under a rule that sets it apart from the
+// display settings, or a plain button in Home's top bar, which brings its own colors.
 export const control = {
-  sidebar: 'flex flex-col',
+  sidebar: 'flex flex-col border-t border-rule pt-3',
   header: 'inline-flex min-w-0',
 }
 
 export const accountButton = {
   sidebar: cx(
-    'flex min-h-[54px] w-full cursor-pointer items-center gap-4 rounded-12 border border-border bg-surface px-[1.2rem] py-2 text-left text-16 leading-[1.3] font-medium text-navy [&_svg]:shrink-0',
-    'data-hovered:border-hover-border data-hovered:bg-soft data-pressed:border-hover-border data-pressed:bg-soft',
+    'flex min-h-10 w-full cursor-pointer items-center gap-3 rounded-8 border-0 bg-transparent px-3 py-2 text-left text-15 leading-[1.3] font-medium text-ink max-md:min-h-11 [&_svg]:shrink-0 [&_svg]:text-muted',
+    'data-hovered:bg-panel data-hovered:text-navy data-pressed:bg-chip',
     ring,
   ),
   header:

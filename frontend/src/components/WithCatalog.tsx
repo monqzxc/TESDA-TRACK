@@ -42,7 +42,7 @@ function CatalogLoader({ children, emptyState }: Required<WithCatalogProps>) {
   if (emptyState && catalog.data.length === 0) {
     const copy = en.catalog.empty
     return (
-      <EmptyState icon="learn" heading={copy.heading} body={copy.body}>
+      <EmptyState heading={copy.heading} body={copy.body}>
         <Button
           className={button()}
           onPress={() => void catalog.refetch()}

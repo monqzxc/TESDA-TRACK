@@ -101,7 +101,7 @@ export default function SignedInMenu({
     <>
       <MenuTrigger>
         <Button ref={trigger} className={buttonClass} aria-label={`${copy.menu.label}: ${name}`}>
-          <Icon name="person" size={variant === 'sidebar' ? '1.45rem' : '1.2rem'} />
+          <Icon name="person" size={variant === 'sidebar' ? '1.125rem' : '1.2rem'} />
           <span className={accountName}>{shownName(name, variant)}</span>
         </Button>
         <Popover

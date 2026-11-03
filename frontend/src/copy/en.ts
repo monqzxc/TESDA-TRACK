@@ -382,21 +382,15 @@ export const en = {
       showPages: 'Show 12 per page',
       saved: 'Qualification added to My Progress.',
     },
-    hero: {
-      title: 'Find what sparks',
-      accent: 'your interest.',
-    },
     filters: 'Filter qualifications',
     search: 'Search qualifications or careers',
     searchPlaceholder: 'Try welding, cookery, or computers',
     clearSearch: 'Clear search',
     sector: 'Sector',
     allSectors: 'All sectors',
-    // "12 of 319 qualifications · Showing 1–12 · Filtered results"
+    // "12 of 319 qualifications · Showing 1–12"
     count: (found: number, total: number) => `${figure(found)} of ${figure(total)} qualifications`,
     showing: (first: number, last: number) => `Showing ${figure(first)}–${figure(last)}`,
-    filtered: 'Filtered results',
-    unfiltered: 'Find your next possibility',
     clear: 'Clear filters',
     empty: {
       heading: 'No qualifications found',
@@ -764,7 +758,6 @@ export const en = {
   // Training & Assessment (classic/training_view.py).
   training: {
     hero: {
-      title: 'Find a training or assessment center',
       lead: 'Discover TESDA-accredited training centers and assessment centers near you or in any location.',
     },
     useLocation: 'Use my location',
@@ -1219,10 +1212,6 @@ export const en = {
   },
   // Skills Explorer (classic/skills_bridge_view.py).
   skills: {
-    hero: {
-      title: 'See where your skills',
-      accent: 'can take you.',
-    },
     off: {
       heading: 'Skills Explorer is turned off',
       body: 'This server doesn’t connect to Skills Bridge. Find my pathway and the Qualifications Library work as usual.',

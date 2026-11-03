@@ -11,7 +11,7 @@ import {
   type Key,
 } from 'react-aria-components'
 import { CheckboxRow } from '../../components/CheckboxRow.tsx'
-import { Icon, type IconName } from '../../components/Icon.tsx'
+import { Icon } from '../../components/Icon.tsx'
 import { SelectField } from '../../components/SelectField.tsx'
 import { useCopy, getCopy } from '../../i18n/copy.ts'
 import { readItem, writeItem } from '../../lib/storage.ts'
@@ -30,12 +30,14 @@ import {
   type RadiusKm,
   type TrainingFilters,
 } from './address.ts'
+import { KIND_DOTS } from './CenterDetail.tsx'
 import { QualificationPicker } from './QualificationPicker.tsx'
 import { useTrainingFilters, useTrainingStore } from './state.ts'
 import type { CenterResults } from './useCenters.ts'
 
+/** How many filters a section sets: a small grey count beside its title. */
 const badge =
-  'inline-block min-w-[1.4rem] rounded-full bg-fill px-[0.45rem] py-[0.05rem] text-center text-12 leading-[1.35] font-bold text-white'
+  'inline-block min-w-[1.4rem] rounded-full bg-chip px-[0.45rem] py-[0.05rem] text-center text-12 leading-[1.35] font-bold text-navy tabular-nums'
 const help = 'm-0 text-13 leading-[1.5] text-muted'
 const notice =
   'm-0 flex items-start gap-[0.4rem] rounded-10 bg-warn-bg px-[0.7rem] py-[0.55rem] text-14 font-semibold text-warn-ink'
@@ -43,23 +45,15 @@ const ring =
   'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus'
 
 /**
- * Center types as one joined bar: only the outer corners round, the chosen ones filled. Both chosen, a faint seam
- * keeps the two halves readable.
+ * Center types as a segmented control: a grey track, the chosen ones white with their label in ink. Each keeps its
+ * map pin's colour as a dot, so the choice reads against the map.
  */
-function kindClass(index: number, bothChosen: boolean): string {
-  return cx(
-    'inline-flex min-h-11 flex-[1_1_0] cursor-pointer items-center justify-center gap-[0.4rem] border border-border bg-surface px-2 text-13 font-semibold whitespace-nowrap text-navy',
-    'data-hovered:bg-soft data-selected:border-fill data-selected:bg-fill data-selected:text-white',
-    ring,
-    'data-focus-visible:relative data-focus-visible:z-1',
-    index === 0
-      ? 'rounded-[12px_0_0_12px]'
-      : cx(
-          'rounded-[0_12px_12px_0]',
-          bothChosen ? 'data-selected:border-l-[#ffffff59]' : 'border-l-0',
-        ),
-  )!
-}
+const kindClass = cx(
+  'inline-flex min-h-10 flex-[1_1_0] cursor-pointer items-center justify-center gap-2 rounded-10 border border-transparent px-2 text-14 font-medium whitespace-nowrap text-muted',
+  'data-hovered:text-navy data-selected:border-border data-selected:bg-surface data-selected:font-semibold data-selected:text-navy',
+  ring,
+  'data-focus-visible:relative data-focus-visible:z-1',
+)!
 
 /** Whether the panel is folded away, kept for this browser. */
 const FOLDED_KEY = 'tesda-track.training-filters'
@@ -124,9 +118,8 @@ export function FilterPanel({ results }: { results: CenterResults }) {
       >
         <h2
           id={headingId}
-          className="m-0 flex flex-1 items-center gap-2 font-text text-17 font-bold tracking-normal text-navy"
+          className="m-0 flex flex-1 items-center gap-2 font-text text-16 font-bold tracking-normal text-navy"
         >
-          <Icon name="filter" />
           {copy.heading}
           {total > 0 && (
             <span className={badge}>
@@ -143,7 +136,7 @@ export function FilterPanel({ results }: { results: CenterResults }) {
         </Button>
         {/* Fold the panel away: an icon button with its name for screen readers. */}
         <Button
-          className="grid size-9.5 cursor-pointer place-items-center rounded-10 border border-border bg-surface text-navy shadow-[0_1px_3px_rgb(var(--track-shadow-rgb)/0.06)] data-hovered:bg-soft"
+          className="grid size-9.5 cursor-pointer place-items-center rounded-10 border border-border bg-surface text-navy data-hovered:bg-panel"
           aria-label={folded ? copy.show : copy.hide}
           aria-expanded={!folded}
           onPress={() => fold(!folded)}
@@ -158,14 +151,13 @@ export function FilterPanel({ results }: { results: CenterResults }) {
       {!folded && (
         <div className="min-h-0 [scrollbar-width:thin] overflow-y-auto overscroll-contain [&>*+*]:border-t [&>*+*]:border-rule">
           <Section
-            icon="learn"
             title={copy.type}
             count={counts.type}
             summary={kinds.length === 1 ? en.training.kinds[kinds[0]] : en.training.bothKinds}
             open
           >
             <ToggleButtonGroup
-              className="flex"
+              className="flex gap-[3px] rounded-12 bg-chip p-[3px]"
               aria-label={copy.type}
               selectionMode="multiple"
               selectedKeys={kinds}
@@ -175,13 +167,12 @@ export function FilterPanel({ results }: { results: CenterResults }) {
                 set({ kinds: chosen.length === 1 ? chosen : [] })
               }}
             >
-              {KINDS.map((kind: CenterKind, index) => (
-                <ToggleButton
-                  key={kind}
-                  id={kind}
-                  className={kindClass(index, kinds.length === KINDS.length)}
-                >
-                  <Icon name={kind === 'training' ? 'learn' : 'clipboard'} />
+              {KINDS.map((kind: CenterKind) => (
+                <ToggleButton key={kind} id={kind} className={kindClass}>
+                  <i
+                    className={cx('size-2 flex-none rounded-full', KIND_DOTS[kind])}
+                    aria-hidden="true"
+                  />
                   {en.training.kinds[kind]}
                 </ToggleButton>
               ))}
@@ -189,7 +180,6 @@ export function FilterPanel({ results }: { results: CenterResults }) {
           </Section>
 
           <Section
-            icon="pin"
             title={copy.location}
             count={counts.location}
             summary={where.join(' · ') || copy.anywhere}
@@ -258,7 +248,6 @@ export function FilterPanel({ results }: { results: CenterResults }) {
           </Section>
 
           <Section
-            icon="network"
             title={copy.region}
             count={counts.region}
             summary={regionName ?? copy.allRegions}
@@ -279,7 +268,6 @@ export function FilterPanel({ results }: { results: CenterResults }) {
           </Section>
 
           <Section
-            icon="home"
             title={copy.province}
             count={counts.province}
             summary={results.province ?? copy.allProvinces}
@@ -307,7 +295,6 @@ export function FilterPanel({ results }: { results: CenterResults }) {
           </Section>
 
           <Section
-            icon="briefcase"
             title={copy.qualification}
             count={counts.qualification}
             summary={
@@ -323,12 +310,7 @@ export function FilterPanel({ results }: { results: CenterResults }) {
             />
           </Section>
 
-          <Section
-            icon="checklist"
-            title={copy.more}
-            count={counts.more}
-            summary={moreSummary(filters)}
-          >
+          <Section title={copy.more} count={counts.more} summary={moreSummary(filters)}>
             <SelectField<DeliveryMode | typeof ALL>
               label={copy.mode}
               description={copy.modeHelp}
@@ -370,14 +352,12 @@ export function FilterPanel({ results }: { results: CenterResults }) {
 
 /** A filter section: its title and count, and when folded, what it holds. */
 function Section({
-  icon,
   title,
   count,
   summary,
   open = false,
   children,
 }: {
-  icon: IconName
   title: string
   count: number
   summary: string
@@ -392,18 +372,17 @@ function Section({
       onToggle={(event) => setOpen(event.currentTarget.open)}
     >
       <summary className="flex cursor-pointer list-none items-start gap-3 pt-3 pb-[0.65rem] text-navy hovered:text-blue [&::-webkit-details-marker]:hidden">
-        <Icon name={icon} className="mt-[0.15rem] flex-none text-[1.3rem]" />
         <span className="flex min-w-0 flex-1 flex-col">
-          <span className="flex items-center gap-[0.4rem] text-17 font-semibold">
+          <span className="flex items-center gap-[0.4rem] text-15 font-semibold">
             {title}
             {count > 0 && <span className={badge}>{count}</span>}
           </span>
           {/* What a folded section holds, under its title. */}
-          {!isOpen && <span className="truncate text-15 text-muted">{summary}</span>}
+          {!isOpen && <span className="truncate text-14 text-muted">{summary}</span>}
         </span>
         <Icon
           name="chevron"
-          className="mt-[0.15rem] flex-none text-[1.3rem] transition-transform duration-200 ease-[ease] group-open:rotate-180"
+          className="mt-[0.15rem] flex-none text-muted transition-transform duration-200 ease-[ease] group-open:rotate-180"
         />
       </summary>
       <div className="flex flex-col gap-3 pb-[0.85rem]">{children}</div>

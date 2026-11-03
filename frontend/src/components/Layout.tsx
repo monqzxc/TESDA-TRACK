@@ -123,10 +123,10 @@ export function AppLayout() {
   return (
     <>
       <SkipLink />
-      <div className="grid min-h-screen grid-cols-[19rem_minmax(0,1fr)] max-md:block">
+      <div className="grid min-h-screen grid-cols-[16.5rem_minmax(0,1fr)] max-md:block">
         <header
           className={
-            'sticky top-0 flex h-dvh flex-col overflow-y-auto border-r border-border bg-surface px-5 pt-[1.3rem] pb-6 ' +
+            'sticky top-0 flex h-dvh flex-col overflow-y-auto border-r border-border bg-surface px-4 pt-5 pb-4 ' +
             'max-md:z-20 max-md:h-auto max-md:overflow-visible max-md:border-r-0 max-md:border-b max-md:px-4 max-md:py-[0.6rem]'
           }
         >
@@ -151,7 +151,7 @@ export function AppLayout() {
           <main
             id="main"
             tabIndex={-1}
-            className="w-full max-w-full flex-1 px-10 pt-[3.8rem] pb-8 focus:outline-none max-[1101px]:px-6 max-md:px-4 max-md:pt-6 max-md:pb-8"
+            className="w-full max-w-full flex-1 px-10 pt-9 pb-8 focus:outline-none max-[1101px]:px-6 max-md:px-4 max-md:pt-6 max-md:pb-8"
           >
             <Outlet />
           </main>

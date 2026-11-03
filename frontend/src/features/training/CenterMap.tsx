@@ -25,14 +25,13 @@ import {
   useMap,
 } from 'react-leaflet'
 import { Icon } from '../../components/Icon.tsx'
-import centerPhoto from '../../components/img/center-thumb.jpg'
 import { useCopy } from '../../i18n/copy.ts'
 import { readItem, writeItem } from '../../lib/storage.ts'
 import { cx } from '../../lib/style.ts'
 import type { CenterKind } from './address.ts'
 import { directionsQuery, type TravelMode } from './api.ts'
 import { placeLabel, summary, type Center, type Point } from './centers.ts'
-import { MODE_ICONS, googleMapsDirections } from './CenterDetail.tsx'
+import { KIND_DOTS, MODE_ICONS, googleMapsDirections } from './CenterDetail.tsx'
 import { kilometres, routeLabel } from './format.ts'
 import type { Reference } from './useCenters.ts'
 
@@ -64,18 +63,10 @@ const BASEMAP_KEY = 'tesda-track.basemap'
 
 // The map's own controls float over it. Leaflet's parts are styled in center-map.css.
 const floating = 'shadow-[0_4px_14px_rgb(var(--track-shadow-rgb)/0.12)]'
-const KIND_DOTS: Record<CenterKind, string> = {
-  training: 'bg-[#175cd3]',
-  assessment: 'bg-[#0d9488]',
-}
 // A pin's glow when it's selected, in its type's color.
 const SELECTED_GLOWS: Record<CenterKind, string> = {
   training: 'drop-shadow-[0_0_7px_#175cd3aa]',
   assessment: 'drop-shadow-[0_0_7px_#0d9488aa]',
-}
-const POPUP_CHIPS: Record<CenterKind, string> = {
-  training: 'border-tint bg-tint text-blue',
-  assessment: 'border-good-bg bg-good-bg text-good-ink',
 }
 
 type BasemapId = keyof ReturnType<typeof useCopy>['training']['map']['basemaps']
@@ -492,8 +483,6 @@ function CenterPopup({
       onCopied(copy.copyFailed(url))
     }
   }
-  const chip =
-    'inline-flex items-center gap-[5px] rounded-8 border px-2 py-1 text-[11.5px] font-semibold'
   const contact = 'inline-flex items-center gap-1.5 no-underline'
   const iconButton = (active = false) =>
     cx(
@@ -502,26 +491,24 @@ function CenterPopup({
     )
   // Leaflet's popup takes away its paragraphs' margins (center-map.css): those set here need !.
   return (
-    <div className="grid grid-cols-[76px_minmax(0,1fr)] gap-x-3.5 gap-y-3 text-12 text-muted max-sm:grid-cols-[56px_minmax(0,1fr)]">
-      <img
-        className="h-20 w-19 rounded-10 object-cover max-sm:h-15 max-sm:w-14"
-        src={centerPhoto}
-        alt=""
-      />
+    <div className="grid grid-cols-1 gap-y-3 text-13 text-muted">
       <div className="min-w-0 pr-[18px]">
         <p className="text-15 leading-[1.3] font-bold wrap-anywhere text-navy">{center.name}</p>
-        <p className="mt-1! flex items-center gap-1.5 text-[12.5px]">
-          <Icon name="pin" />
-          {placeLabel(center)}
-        </p>
-        <p className="mt-2.5! flex flex-wrap gap-1.5">
-          <span className={cx(chip, POPUP_CHIPS[center.kind])} data-kind={center.kind}>
-            <Icon name={center.kind === 'training' ? 'learn' : 'clipboard'} />
+        <p className="mt-1! text-13 text-ink">{placeLabel(center)}</p>
+        {/* The type with its pin's colour, and how far it is. */}
+        <p className="mt-2! flex flex-wrap items-center gap-x-3 gap-y-1">
+          <span
+            className="inline-flex items-center gap-1.5 font-semibold text-ink"
+            data-kind={center.kind}
+          >
+            <i
+              className={cx('size-2 flex-none rounded-full', KIND_DOTS[center.kind])}
+              aria-hidden="true"
+            />
             {en.training.kinds[center.kind]}
           </span>
           {center.distanceKm !== null && (
-            <span className={cx(chip, 'border-border bg-surface text-navy')}>
-              <Icon name="distance" />
+            <span className="tabular-nums">
               {en.training.center.away(kilometres(center.distanceKm))}
             </span>
           )}

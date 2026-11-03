@@ -22,16 +22,14 @@ export type NavProps = {
   onNavigate?: () => void
 }
 
-// After classic/styles.css: .st-key-primary_navigation and .st-key-sidebar_account, full-width rows with the icon
-// before the label; the open page is filled blue.
-const link =
-  'flex min-h-[54px] items-center gap-4 rounded-12 border px-[1.2rem] py-2 text-16 leading-[1.3] font-medium no-underline [&_svg]:shrink-0'
-const openLink =
-  'border-fill bg-fill text-white shadow-[0_10px_20px_-12px_var(--track-fill)] hovered:bg-fill-hover hovered:text-white'
-const otherLink =
-  'border-border bg-surface text-navy hovered:border-hover-border hovered:bg-soft hovered:text-navy'
+// Plain rows with a grey icon before the label, on the sidebar's own white. The open page sits on a neutral pill with
+// its label in ink; colour stays on the pages' data. Rows are 40px, and 44px in the phone menu, for a thumb.
+const navRow =
+  'flex min-h-10 items-center gap-3 rounded-8 px-3 py-2 text-15 leading-[1.3] no-underline max-md:min-h-11 [&_svg]:shrink-0'
+const openLink = 'bg-chip font-semibold text-navy [&_svg]:text-navy'
+const otherLink = 'font-medium text-ink [&_svg]:text-muted hovered:bg-panel hovered:text-navy'
 
-/** The page links. The current page is marked with aria-current="page" (NavLink's own), and drawn filled. */
+/** The page links. The current page is marked with aria-current="page" (NavLink's own), and drawn on a grey pill. */
 export function Nav({ isSignedIn = true, isAdmin = false, canManage = false, onNavigate }: NavProps) {
   const en = useCopy()
   const PAGES: readonly NavItem[] = [
@@ -47,15 +45,15 @@ export function Nav({ isSignedIn = true, isAdmin = false, canManage = false, onN
   const items = [...PAGES, ...(isAdmin ? [REPORTS] : []), ...(canManage ? [ADMIN] : [])]
   return (
     <nav aria-label={en.nav.label} data-tour="navigation">
-      <ul className="m-0 flex list-none flex-col gap-[0.6rem] p-0">
+      <ul className="m-0 flex list-none flex-col gap-0.5 p-0">
         {items.map(({ to, label, icon }) => (
           <li key={to}>
             <NavLink
               to={to}
-              className={({ isActive }) => cx(link, isActive ? openLink : otherLink)}
+              className={({ isActive }) => cx(navRow, isActive ? openLink : otherLink)}
               onClick={onNavigate}
             >
-              <Icon name={icon} size="1.45rem" />
+              <Icon name={icon} size="1.125rem" />
               {label}
             </NavLink>
           </li>
@@ -82,16 +80,12 @@ export function SidebarContent({
   returnFocus,
 }: SidebarContentProps) {
   return (
-    <div className="flex flex-1 flex-col gap-[0.6rem]">
+    <div className="flex flex-1 flex-col">
       <Nav isAdmin={isAdmin} isSignedIn={isSignedIn} canManage={canManage} onNavigate={onNavigate} />
       {/* In the phone menu, Sign in closes the menu first: the dialog opens over the page, not over the menu. */}
-      <div className="mt-auto shrink-0 pt-4">
-        <div className="mb-4">
-          <ThemeSwitch compact />
-        </div>
-        <div className="mb-4">
-          <LanguageSelector />
-        </div>
+      <div className="mt-auto flex shrink-0 flex-col gap-4 pt-6">
+        <ThemeSwitch compact />
+        <LanguageSelector />
         <AccountControl
           variant="sidebar"
           onOpenSignIn={onNavigate}

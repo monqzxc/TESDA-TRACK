@@ -34,7 +34,7 @@ function AccountButton({ learner, variant, className, isDisabled, onPress }: Acc
       className={className}
       aria-label={`${copy.menu.label}: ${learner.full_name}`}
     >
-      <Icon name="person" size={variant === 'sidebar' ? '1.45rem' : '1.2rem'} />
+      <Icon name="person" size={variant === 'sidebar' ? '1.125rem' : '1.2rem'} />
       <span className={accountName}>{shownName(learner.full_name, variant)}</span>
     </Button>
   )
@@ -164,7 +164,7 @@ export function AccountControl({
           onHoverStart={prepareSignIn}
           onFocus={prepareSignIn}
         >
-          <Icon name="person" size={variant === 'sidebar' ? '1.45rem' : '1.2rem'} />
+          <Icon name="person" size={variant === 'sidebar' ? '1.125rem' : '1.2rem'} />
           {copy.signIn}
         </Button>
       )}

@@ -29,44 +29,55 @@ const labels = {
   example: 'Example data',
 }
 
+/** The status's dot: green when verified, amber when something is missing, grey for an example. */
+const dots = {
+  verified: 'bg-good-ink',
+  incomplete: 'bg-warn-ink',
+  example: 'bg-muted',
+}
+
 function DateValue({ value }: { value?: string | null }) {
   if (!value || !Number.isFinite(Date.parse(value))) return <>Not recorded</>
   return <time dateTime={value}>{value.slice(0, 10)}</time>
 }
 
-/** Record provenance is distinct from a program's current authorization or available places. */
+/** What a status asks of the learner, for a list to say once above its cards (ProvenanceNotice). */
+export const statusAdvice = {
+  example: 'For demonstration. Confirm real services with the center before applying.',
+  incomplete:
+    'Some source or review information is missing. Confirm details before relying on them.',
+}
+
+/**
+ * Record provenance is distinct from a program's current authorization or available places. The status leads, as a
+ * dot and a word; the source and its dates follow as one quiet line of facts, so a card's own content stays first.
+ * `compact` keeps only the status. Without `advice`, the card leaves out what its status asks of the learner, as a
+ * list says it once above its cards (ProvenanceNotice).
+ */
 export function DataProvenance({
   value,
   compact = false,
+  advice = true,
 }: {
   value?: Provenance | null
   compact?: boolean
+  advice?: boolean
 }) {
   const status = value?.status ?? 'incomplete'
   const href = sourceLink(value?.source_url)
   return (
-    <div className="grid min-w-0 gap-1 text-13 leading-[1.5] wrap-anywhere text-ink">
-      <span
-        className={cx(
-          'w-fit rounded-full border border-border px-2 py-0.5 text-12 font-bold',
-          status === 'verified' ? 'bg-good-bg text-good-ink' : 'bg-soft text-ink',
-        )}
-      >
-        {labels[status]}
-      </span>
+    <div className="grid min-w-0 gap-0.5 text-13 leading-[1.5] wrap-anywhere text-muted">
+      <p className="m-0">
+        <span className="inline-flex items-center gap-1.5 font-semibold text-ink">
+          <i className={cx('size-2 flex-none rounded-full', dots[status])} aria-hidden="true" />
+          <span>{labels[status]}</span>
+        </span>
+        {!compact && advice && status !== 'verified' && <span> · {statusAdvice[status]}</span>}
+      </p>
       {!compact && (
-        <>
-          {status === 'example' && (
-            <p className="m-0">
-              For demonstration. Confirm real services with the center before applying.
-            </p>
-          )}
-          {status === 'incomplete' && (
-            <p className="m-0">
-              Some source or review information is missing. Confirm details before relying on them.
-            </p>
-          )}
-          <p className="m-0">
+        // Each fact wraps as a whole.
+        <p className="m-0 flex flex-wrap gap-x-3">
+          <span>
             Source:{' '}
             {href ? (
               <a
@@ -81,21 +92,49 @@ export function DataProvenance({
               value?.source_name || 'Not recorded'
             )}
             {!href && ' (public source link not recorded)'}
-          </p>
-          {value?.source_reference && <p className="m-0">Reference: {value.source_reference}</p>}
-          <p className="m-0">
+          </span>
+          {value?.source_reference && <span>Reference: {value.source_reference}</span>}
+          <span>
             Source updated: <DateValue value={value?.source_updated_on} />
-          </p>
-          <p className="m-0">
+          </span>
+          <span>
             Reviewed: <DateValue value={value?.reviewed_at} />
-          </p>
+          </span>
           {value?.record_updated_at && (
-            <p className="m-0 text-muted">
+            <span>
               Record updated: <DateValue value={value.record_updated_at} />
-            </p>
+            </span>
           )}
-        </>
+        </p>
       )}
+    </div>
+  )
+}
+
+/**
+ * What the unverified records in a list ask of the learner, said once above the list rather than on every card: one
+ * line for each status among them.
+ */
+export function ProvenanceNotice({
+  values,
+}: {
+  values: readonly (Provenance | null | undefined)[]
+}) {
+  const statuses = new Set(values.map((value) => value?.status ?? 'incomplete'))
+  const shown = (['incomplete', 'example'] as const).filter((status) => statuses.has(status))
+  if (!shown.length) return null
+  return (
+    <div className="mb-3 grid gap-0.5 text-13 leading-[1.5] text-muted">
+      {shown.map((status) => (
+        <p key={status} className="m-0 flex items-baseline gap-1.5">
+          <i
+            className={cx('size-2 flex-none translate-y-[-1px] rounded-full', dots[status])}
+            aria-hidden="true"
+          />
+          {/* The dot is the cards' own, so the line reads as theirs without naming them again. */}
+          <span>{statusAdvice[status]}</span>
+        </p>
+      ))}
     </div>
   )
 }

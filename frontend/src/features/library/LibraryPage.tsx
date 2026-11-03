@@ -2,9 +2,10 @@ import { useEffect, useId, useMemo, useRef } from 'react'
 import { Button, Input, Label, SearchField } from 'react-aria-components'
 import { useLocation, useNavigate, useSearchParams } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
+import { ProvenanceNotice } from '../../components/DataProvenance.tsx'
 import { EmptyState } from '../../components/EmptyState.tsx'
 import { Icon } from '../../components/Icon.tsx'
-import { PageHero } from '../../components/PageHero.tsx'
+import { PageTitle } from '../../components/PageTitle.tsx'
 import { Pager } from '../../components/Pager.tsx'
 import { SelectField } from '../../components/SelectField.tsx'
 import { WithCatalog } from '../../components/WithCatalog.tsx'
@@ -29,18 +30,11 @@ const ALL = 'all'
  */
 export default function LibraryPage() {
   const en = useCopy()
-  const copy = en.library
 
   const page = en.pages.qualifications
   return (
     <>
-      <PageHero
-        heading={page.heading}
-        title={copy.hero.title}
-        accent={copy.hero.accent}
-        lead={page.lead}
-        art="books"
-      />
+      <PageTitle heading={page.heading} lead={page.lead} />
       <WithCatalog emptyState>
         {(qualifications) => <Library qualifications={qualifications} />}
       </WithCatalog>
@@ -142,11 +136,11 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
 
   return (
     <>
-      {/* After classic/styles.css's .st-key-library_filters: the search beside the sector, on one card. */}
+      {/* The search beside the sector, in one row on the page. */}
       <section
         data-tour="library-filters"
         aria-labelledby={filtersId}
-        className="grid grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-4 rounded-18 bg-surface p-5 max-[801px]:grid-cols-1 max-xs:rounded-14 max-xs:p-[1.1rem]"
+        className="grid grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-4 max-[801px]:grid-cols-1"
       >
         <h2 id={filtersId} className="sr-only">
           {copy.filters}
@@ -186,7 +180,7 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
         />
       </section>
 
-      <div className="mt-4 mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
+      <div className="mt-5 mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <p
           ref={summary}
           tabIndex={-1}
@@ -197,7 +191,6 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
           {[
             copy.count(filtered.length, qualifications.length),
             shown.pages > 1 && copy.showing(shown.first, shown.last),
-            isFiltered ? copy.filtered : copy.unfiltered,
           ]
             .filter(Boolean)
             .join(' · ')}
@@ -221,8 +214,11 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
         </div>
       </div>
 
+      {filtered.length > 0 && (
+        <ProvenanceNotice values={shown.items.map((qualification) => qualification.provenance)} />
+      )}
       {filtered.length === 0 ? (
-        <EmptyState icon="search" heading={copy.empty.heading} body={copy.empty.body} />
+        <EmptyState heading={copy.empty.heading} body={copy.empty.body} />
       ) : (
         <ul className="m-0 grid list-none grid-cols-2 gap-4 p-0 max-[801px]:grid-cols-1">
           {shown.items.map((qualification) => (

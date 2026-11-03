@@ -3,8 +3,7 @@ import { Button, Input, Label, SearchField, Switch } from 'react-aria-components
 import type { Qualification } from '../../api/queries.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { LoadBoundary } from '../../components/LoadBoundary.tsx'
-import { PageHeading } from '../../components/PageHeading.tsx'
-import { eyebrowHeading } from '../../components/PageHero.tsx'
+import { PageTitle } from '../../components/PageTitle.tsx'
 import { WithCatalog } from '../../components/WithCatalog.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { readItem, writeItem } from '../../lib/storage.ts'
@@ -20,8 +19,6 @@ const CenterMap = lazy(() => import('./CenterMap.tsx'))
 
 /** Whether the learner hid the map, kept for this browser. */
 const MAP_KEY = 'tesda-track.training-map'
-
-const softShadow = 'shadow-[0_4px_16px_rgb(var(--track-shadow-rgb)/0.05)]'
 
 const mapStandIn =
   'm-0 grid h-[var(--center-map-height,680px)] place-items-center rounded-18 border border-border bg-map-water text-15 text-muted max-sm:h-[460px]'
@@ -51,30 +48,23 @@ function Header() {
   const useLocation = useTrainingStore((state) => state.useLocation)
   const setUseLocation = useTrainingStore((state) => state.setUseLocation)
   return (
-    <div className="mb-2 flex flex-wrap items-end justify-between gap-x-8 gap-y-4">
-      <div className="min-w-0 flex-[1_1_26rem]">
-        <PageHeading className={eyebrowHeading}>{en.pages.training.heading}</PageHeading>
-        <p className="mt-[0.3rem] mb-[0.4rem] font-display text-24 leading-[1.25] font-bold tracking-[-0.03em] text-navy">
-          {copy.hero.title}
-        </p>
-        <p className="m-0 max-w-[660px] text-15 leading-[1.6] text-muted">{copy.hero.lead}</p>
-      </div>
-      {/* A location switch pill and a wide rounded search. */}
-      <div className="flex flex-[1_1_30rem] flex-wrap items-center justify-end gap-[0.9rem] max-sm:justify-start">
+    <PageTitle heading={en.pages.training.heading} lead={copy.hero.lead}>
+      {/* The location switch and the search, one control height, on the title's row. */}
+      <div className="flex flex-[1_1_30rem] flex-wrap items-center justify-end gap-3 max-sm:justify-start">
         <Switch
           data-tour="training-location"
           className={cx(
-            'group inline-flex min-h-11.5 cursor-pointer items-center gap-[0.6rem] rounded-full bg-surface px-[1.1rem] py-[0.55rem] font-medium text-navy',
-            softShadow,
+            // On a phone it spans the row like the search under it, its toggle at the far end.
+            'group inline-flex min-h-11 cursor-pointer items-center gap-[0.6rem] rounded-12 border border-hover-border bg-surface px-4 py-2 text-15 font-medium text-navy data-hovered:border-blue max-sm:w-full',
             'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus',
           )}
           isSelected={useLocation}
           onChange={setUseLocation}
         >
-          <Icon name="pin" />
+          <Icon name="pin" className="text-muted" />
           {copy.useLocation}
           <span
-            className="relative ml-[0.4rem] h-6 w-[42px] flex-none rounded-full bg-dash transition-[background] duration-200 ease-[ease] group-data-selected:bg-fill"
+            className="relative ml-[0.4rem] h-6 w-[42px] flex-none rounded-full bg-dash transition-[background] duration-200 ease-[ease] group-data-selected:bg-fill max-sm:ml-auto"
             aria-hidden="true"
           >
             <span className="absolute top-[3px] left-[3px] size-4.5 rounded-full bg-white shadow-[0_1px_3px_rgb(0_0_0/0.25)] transition-transform duration-200 ease-[ease] group-data-selected:translate-x-[18px]" />
@@ -90,15 +80,12 @@ function Header() {
           <Label className="sr-only">{copy.search}</Label>
           <Icon name="search" className="pointer-events-none absolute left-4 text-muted" />
           <Input
-            className={cx(
-              'h-12.5 w-full rounded-full border border-transparent bg-surface py-0 pr-4 pl-[2.6rem] text-16 text-navy placeholder:text-muted placeholder:opacity-100 data-focused:border-blue',
-              softShadow,
-            )}
+            className="h-11 w-full rounded-12 border border-hover-border bg-surface py-0 pr-4 pl-[2.6rem] text-16 text-navy placeholder:text-muted placeholder:opacity-100 data-focused:border-blue data-hovered:border-blue"
             placeholder={copy.searchPlaceholder}
           />
         </SearchField>
       </div>
-    </div>
+    </PageTitle>
   )
 }
 
@@ -211,7 +198,7 @@ function Workspace({ catalog }: { catalog: Qualification[] }) {
               className={cx(
                 mapShown &&
                   results.hasData &&
-                  '@min-[640px]/stage:absolute @min-[640px]/stage:top-3.5 @min-[640px]/stage:left-3.5 @min-[640px]/stage:z-900 @min-[640px]/stage:flex @min-[640px]/stage:max-h-[calc(100%_-_28px)] @min-[640px]/stage:w-[360px] @min-[640px]/stage:flex-col @min-[640px]/stage:[&>section]:shadow-[0_12px_32px_rgb(var(--track-shadow-rgb)/0.15)]',
+                  '@min-[640px]/stage:absolute @min-[640px]/stage:top-3.5 @min-[640px]/stage:left-3.5 @min-[640px]/stage:z-900 @min-[640px]/stage:flex @min-[640px]/stage:max-h-[calc(100%_-_28px)] @min-[640px]/stage:w-[360px] @min-[640px]/stage:flex-col @min-[640px]/stage:[&>section]:shadow-[0_2px_8px_rgb(var(--track-shadow-rgb)/0.06)]',
               )}
             >
               <FilterPanel results={results} />
