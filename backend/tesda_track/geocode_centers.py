@@ -1,24 +1,32 @@
-"""Move training providers and assessment centers to where Google geocodes their address.
+"""Move training providers and assessment centers to where Google Maps puts them.
 
-Some registry coordinates are typing mistakes that put a center in the sea or in another town. This looks
-each site's address up with the Google Geocoding API and replaces the stored point when Google's answer lies
-in the site's own city or municipality and is specific enough:
+Some registry coordinates are typing mistakes that put a center in the sea or in another town. Two lookups fix
+them; both only move a point to somewhere in the site's own city or municipality, and never touch a point an
+administrator corrected.
+
+By address (the default) geocodes each site's address with the Geocoding API:
 
 - a building or street-address match always replaces the point;
 - a barangay match replaces it when the point is missing or more than 1 km away;
 - a match on only a road or the town replaces it when the point is missing or more than 5 km away, so a good
   registry point isn't moved to the middle of a highway or the town center;
-- province-only matches, matches in another town and points an administrator corrected are left alone.
+- province-only matches and matches in another town are left alone.
+
+By name (--by-name) searches Google Maps (Places API) for the center itself, "<name>, <town>, <province>", and
+moves the point to the place whose name matches. Names match on their distinctive words: "college" or "training
+center" count for little, so "STI College Novaliches" never matches "STI College Fairview". Two matching places
+far apart in the same town (branches) are reported as ambiguous instead of guessed between.
 
 Preview is the default; --apply writes. The report also keeps Google's answers: running again with the same
---report reuses them, so a preview followed by --apply looks each address up once. Replaced points are marked
-location_source = 'google_geocoding', and registry imports keep them.
+--report reuses them, so a preview followed by --apply asks Google once. Replaced points are marked
+location_source = 'google_geocoding' or 'google_places', and registry imports keep them.
 """
 from __future__ import annotations
 
 import json
 import math
 import re
+import threading
 import time
 import unicodedata
 from collections import Counter
@@ -26,8 +34,10 @@ from collections.abc import Callable, Iterable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from datetime import datetime, timezone
+from difflib import SequenceMatcher
 from pathlib import Path
 from typing import TextIO
+from urllib.parse import quote
 
 import httpx
 from sqlmodel import Session, select
@@ -36,12 +46,28 @@ from tesda_track.models import AssessmentCenter, TrainingProvider
 from tesda_track.registry_import import coordinates
 
 GEOCODE_URL = "https://maps.googleapis.com/maps/api/geocode/json"
-SOURCE = "google_geocoding"
+PLACES_URL = "https://places.googleapis.com/v1/places:searchText"
+PLACES_FIELDS = ",".join(f"places.{field}" for field in
+                         ("id", "displayName", "formattedAddress", "location", "types", "addressComponents",
+                          "businessStatus"))
+PHILIPPINES = {"low": {"latitude": 4.0, "longitude": 116.0}, "high": {"latitude": 22.0, "longitude": 127.0}}
+SOURCES = {"address": "google_geocoding", "name": "google_places"}
+SOURCE = SOURCES["address"]
 MODELS = {"training": TrainingProvider, "assessment": AssessmentCenter}
 # How far a point may sit from Google's answer and still be kept, by how precise the answer is.
 KEEP_WITHIN_KM = {"exact": 0.0, "barangay": 1.0, "road": 5.0, "town": 5.0}
 # Closer than this is the same point (Google's answers wobble by a few metres).
 SAME_POINT_KM = 0.01
+# Two places matching a name this well, this far apart, are branches; neither is picked.
+AMBIGUOUS_SCORE_GAP = 0.1
+AMBIGUOUS_KM = 0.3
+# Weighted share of the center's name found in the place's name, of the place's name found in the center's, and
+# their average. Measured on the registry itself: same-town pairs of different institutions score below 0.75
+# ("Tuguegarao Training and Assessment Center" / "Mallari Training and Assessment Center"), while the same
+# institution spelled two ways scores above it.
+NAME_COVERS_OURS = 0.75
+NAME_COVERS_THEIRS = 0.5
+NAME_MIN_SCORE = 0.75
 
 EXACT_TYPES = {"street_address", "premise", "subpremise", "establishment", "point_of_interest", "intersection",
                "plus_code"}
@@ -52,8 +78,17 @@ TOWN_TYPES = {"locality", "administrative_area_level_3"}
 FILLER_WORDS = {"city", "of", "municipality", "the"}
 ABBREVIATIONS = {"sto": "santo", "sta": "santa", "sn": "san", "gen": "general", "pres": "president",
                  "mt": "mountain", "brgy": "barangay", "bgy": "barangay", "pob": "poblacion"}
-OUTCOMES = ("replace", "unchanged", "kept_close", "kept_manual", "other_town", "too_vague", "outside_philippines",
-            "not_found", "no_address", "lookup_failed")
+NAME_FILLER = {"inc", "incorporated", "corp", "corporation", "co", "company", "ltd", "limited", "the", "of", "and",
+               # Words Google Maps listings add to the institution's name.
+               "tesda", "accredited", "main", "campus", "branch", "annex", "extension", "satellite", "office",
+               "building", "bldg"}
+NAME_ABBREVIATIONS = {**ABBREVIATIONS, "st": "saint", "phils": "philippines", "phil": "philippines",
+                      "ptc": "provincial training center",
+                      "rtc": "regional training center", "centre": "center", "ctr": "center", "cntr": "center",
+                      "trng": "training", "natl": "national", "nhs": "national high school",
+                      "sat": "school of arts and trades"}
+OUTCOMES = ("replace", "unchanged", "kept_close", "kept_manual", "ambiguous", "other_town", "name_not_found",
+            "too_vague", "outside_philippines", "not_found", "no_address", "lookup_failed")
 
 
 class GeocodeStop(Exception):
@@ -79,6 +114,10 @@ class Site:
                    row.latitude, row.longitude, row.location_source)
 
 
+def map_link(latitude: float | None, longitude: float | None) -> str | None:
+    return None if latitude is None else f"https://www.google.com/maps?q={latitude},{longitude}"
+
+
 @dataclass(frozen=True)
 class Decision:
     site: Site
@@ -90,15 +129,24 @@ class Decision:
     moved_km: float | None = None
     google_address: str | None = None
     partial_match: bool = False
+    google_name: str | None = None
+    place_id: str | None = None
+    name_score: float | None = None
 
     def report(self) -> dict:
         site = self.site
-        return {"kind": site.kind, "id": site.id, "name": site.name, "region": site.region_code,
-                "query": self.query, "outcome": self.outcome, "precision": self.precision,
-                "from": [site.latitude, site.longitude] if site.latitude is not None else None,
-                "to": [self.latitude, self.longitude] if self.latitude is not None else None,
-                "moved_km": None if self.moved_km is None else round(self.moved_km, 3),
-                "google_address": self.google_address, "partial_match": self.partial_match}
+        row = {"kind": site.kind, "id": site.id, "name": site.name, "region": site.region_code,
+               "query": self.query, "outcome": self.outcome, "precision": self.precision,
+               "from": [site.latitude, site.longitude] if site.latitude is not None else None,
+               "to": [self.latitude, self.longitude] if self.latitude is not None else None,
+               "moved_km": None if self.moved_km is None else round(self.moved_km, 3),
+               "google_address": self.google_address, "partial_match": self.partial_match,
+               "from_map": map_link(site.latitude, site.longitude), "to_map": map_link(self.latitude, self.longitude)}
+        if self.place_id:
+            row.update(google_name=self.google_name, place_id=self.place_id, name_score=self.name_score,
+                       to_map=f"https://www.google.com/maps/search/?api=1&query={quote(self.google_name or '')}"
+                              f"&query_place_id={self.place_id}")
+        return row
 
 
 def place_words(value: str | None) -> str:
@@ -118,15 +166,25 @@ def province_of(site: Site) -> str:
     return "" if site.region_code == "NCR" else place_words(site.province)
 
 
-def query_for(site: Site) -> str | None:
-    """The address, then the city and province when the address doesn't already name them."""
-    address = re.sub(r"\s+", " ", site.address or "").strip(" ,")
-    parts = [address] if address else []
+def _with_town(parts: list[str], site: Site) -> str | None:
+    """Adds the city and province when the text so far doesn't already name them."""
     for extra in (site.city, site.province if province_of(site) else None):
         extra = re.sub(r"\s+", " ", extra or "").strip(" ,")
         if extra and not contains(place_words(", ".join(parts)), place_words(extra)):
             parts.append(extra)
     return ", ".join([*parts, "Philippines"]) if parts else None
+
+
+def query_for(site: Site) -> str | None:
+    """The address, then the city and province when the address doesn't already name them."""
+    address = re.sub(r"\s+", " ", site.address or "").strip(" ,")
+    return _with_town([address] if address else [], site)
+
+
+def name_query_for(site: Site) -> str | None:
+    """The center's name, then its city and province: what someone would type into Google Maps."""
+    name = re.sub(r"\s+", " ", site.name or "").strip(" ,")
+    return _with_town([name], site) if name else None
 
 
 def answer_from(payload: dict) -> dict | None:
@@ -141,6 +199,17 @@ def answer_from(payload: dict) -> dict | None:
             "formatted_address": result.get("formatted_address"), "partial_match": bool(result.get("partial_match")),
             "components": [{"name": c.get("long_name"), "types": c.get("types", [])}
                            for c in result.get("address_components", [])]}
+
+
+def place_from(place: dict) -> dict:
+    """One Places search result, in the same shape as a geocoding answer plus its name and ID."""
+    location = place.get("location", {})
+    return {"name": (place.get("displayName") or {}).get("text"), "place_id": place.get("id"),
+            "latitude": location.get("latitude"), "longitude": location.get("longitude"),
+            "formatted_address": place.get("formattedAddress"), "types": place.get("types", []),
+            "status": place.get("businessStatus"),
+            "components": [{"name": c.get("longText"), "types": c.get("types", [])}
+                           for c in place.get("addressComponents", [])]}
 
 
 def precision_of(answer: dict) -> str:
@@ -160,9 +229,10 @@ def precision_of(answer: dict) -> str:
 def in_site_town(site: Site, answer: dict) -> bool:
     """Google placed the address in the site's city or municipality (or province, when the city is unknown).
 
-    The town's name must match Google's town exactly; a looser match (one name inside the other, as with "Island
-    Garden City of Samal" and "Samal") also needs the province to match, so "San Jose" never passes for "San Jose
-    del Monte". Only town names count: "Cebu City" must not match a Mandaue answer through its province, Cebu.
+    The town's name must match Google's town exactly (spaces aside: "Sultan Sabarongis" is "Sultan sa Barongis");
+    a looser match (one name inside the other, as with "Island Garden City of Samal" and "Samal") also needs the
+    province to match, so "San Jose" never passes for "San Jose del Monte". Only town names count: "Cebu City"
+    must not match a Mandaue answer through its province, Cebu.
     """
     components = answer.get("components", [])
     names = [answer.get("formatted_address") or "", *(c.get("name") or "" for c in components)]
@@ -171,7 +241,7 @@ def in_site_town(site: Site, answer: dict) -> bool:
     if not city:
         return in_province
     towns = {place_words(c.get("name")) for c in components if set(c.get("types", [])) & TOWN_TYPES} - {""}
-    if city in towns:
+    if city.replace(" ", "") in {town.replace(" ", "") for town in towns}:
         return True
     return in_province and any(contains(town, city) or contains(city, town) for town in towns)
 
@@ -216,6 +286,114 @@ def decide(site: Site, answers: dict) -> Decision:
     return Decision(site, query, outcome, moved_km=moved, **found)
 
 
+def name_tokens(value: str | None) -> frozenset[str]:
+    """The words of an institution's name: no accents, apostrophes, 'Inc.' or 'Corp.'; PTC spelled out."""
+    value = unicodedata.normalize("NFKD", value or "").encode("ascii", "ignore").decode().casefold()
+    value = re.sub(r"['`’]", "", value)
+    words = " ".join(NAME_ABBREVIATIONS.get(word, word) for word in re.findall(r"[a-z0-9]+", value)).split()
+    return frozenset(word for word in words if word not in NAME_FILLER)
+
+
+class NameWeights:
+    """How distinctive each word is across all center names: 'college' counts little, 'novaliches' a lot."""
+
+    def __init__(self, names: Iterable[str]):
+        documents = [name_tokens(name) for name in set(names)]
+        self.count = len(documents)
+        self.frequency = Counter(word for words in documents for word in words)
+
+    def __call__(self, word: str) -> float:
+        return math.log((self.count + 1) / (self.frequency[word] + 1)) + 1
+
+
+def _same_word(a: str, b: str) -> bool:
+    # Tolerates a typo in longer words ("Minadanao", "Mindanao") but not different short ones ("Iba", "Ibu").
+    return a == b or (min(len(a), len(b)) >= 5 and SequenceMatcher(None, a, b).ratio() >= 0.85)
+
+
+def name_match(ours: str, theirs: str | None, weights: Callable[[str], float],
+               town_words: Iterable[str] = (), address: str | None = None) -> float | None:
+    """How well a Google place's name matches a center's, from 0 to 1, or None when it doesn't match.
+
+    Each name's most distinctive word must be in the other: "Novaliches" for "STI College Novaliches", and "Tambis"
+    rules "Tambis National High School" out for "Barobo National High School". Most of each name's weight must
+    be in the other's too. Words of the place's name may also come from the center's address, so "Cebu Skills
+    Institute - Banilad" is the center at "... Banilad, Cebu City". The center's own town and province words count
+    as little as "center": in Naga, "City College of Naga" and "Naga College Foundation" share nothing distinctive.
+    """
+    a, b = name_tokens(ours), name_tokens(theirs)
+    if not a or not b:
+        return None
+    town_words = set(town_words)
+    a_or_address = a | name_tokens(address)
+
+    def weight(word):
+        return 1.0 if word in town_words else weights(word)
+
+    def found(word, words):
+        return any(_same_word(word, other) for other in words)
+
+    def covered(words, by):
+        return sum(weight(word) for word in words if found(word, by)) / sum(weight(word) for word in words)
+
+    def rarest_found(words, by):
+        rarest = max(weight(word) for word in words)
+        return any(found(word, by) for word in words if weight(word) == rarest)
+
+    if not rarest_found(a, b) or not rarest_found(b, a_or_address):
+        return None
+    ours_covered, theirs_covered = covered(a, b), covered(b, a_or_address)
+    score = round((ours_covered + theirs_covered) / 2, 3)
+    if ours_covered < NAME_COVERS_OURS or theirs_covered < NAME_COVERS_THEIRS or score < NAME_MIN_SCORE:
+        return None
+    return score
+
+
+def decide_by_name(site: Site, answers: dict, weights: Callable[[str], float]) -> Decision:
+    query = name_query_for(site)
+    if site.location_source == "manual":
+        return Decision(site, query, "kept_manual")
+    if query is None:
+        return Decision(site, None, "no_address")
+    if query not in answers:
+        return Decision(site, query, "lookup_failed")
+    matches = []
+    town_words = set(place_words(site.city).split()) | set(place_words(site.province).split())
+    for place in answers[query] or []:
+        latitude, longitude, flag = coordinates(place.get("latitude"), place.get("longitude"))
+        score = None if flag else name_match(site.name, place.get("name"), weights, town_words, site.address)
+        if score is not None:
+            matches.append((score, place, latitude, longitude))
+    if not matches:
+        return Decision(site, query, "name_not_found")
+
+    def found(match, **extra):
+        score, place, latitude, longitude = match
+        return Decision(site, query, precision="place", latitude=latitude, longitude=longitude,
+                        google_address=place.get("formatted_address"), google_name=place.get("name"),
+                        place_id=place.get("place_id"), name_score=score, **extra)
+
+    in_town = [match for match in matches if in_site_town(site, match[1])]
+    if not in_town:
+        return found(max(matches, key=lambda m: m[0]), outcome="other_town")
+    best = max(in_town, key=lambda m: m[0])
+    if any(match is not best and match[0] >= best[0] - AMBIGUOUS_SCORE_GAP
+           and distance_km(best[2], best[3], match[2], match[3]) > AMBIGUOUS_KM for match in in_town):
+        return found(best, outcome="ambiguous")
+    if site.latitude is None:
+        return found(best, outcome="replace")
+    moved = distance_km(site.latitude, site.longitude, best[2], best[3])
+    return found(best, outcome="unchanged" if moved < SAME_POINT_KM else "replace", moved_km=moved)
+
+
+def _error_message(response: httpx.Response) -> str:
+    try:
+        error = response.json().get("error", {})
+    except (ValueError, AttributeError):
+        return ""
+    return f"{error.get('status', '')}: {error.get('message', '')}".strip(": ") if isinstance(error, dict) else ""
+
+
 class GoogleGeocoder:
     """Looks addresses up in the Philippines. Never puts the key in an error message: Google's URLs carry it."""
 
@@ -246,6 +424,49 @@ class GoogleGeocoder:
         raise LookupError(query)
 
 
+class GooglePlaces:
+    """Searches Google Maps for places in the Philippines (Places API, Text Search), at most per_minute a minute."""
+
+    def __init__(self, api_key: str, client: httpx.Client | None = None, retries: int = 4, per_minute: int = 500,
+                 sleep: Callable[[float], None] = time.sleep):
+        self.api_key, self.retries, self.sleep = api_key, retries, sleep
+        self.client = client or httpx.Client(timeout=20)
+        self.interval, self.next_start, self.lock = 60 / per_minute, 0.0, threading.Lock()
+
+    def _wait_turn(self):
+        with self.lock:
+            wait = self.next_start - time.monotonic()
+            self.next_start = max(self.next_start, time.monotonic()) + self.interval
+        if wait > 0:
+            self.sleep(wait)
+
+    def lookup(self, query: str) -> list[dict] | None:
+        """Up to five places, best first, or None when Google found none. Raises LookupError when it couldn't ask."""
+        body = {"textQuery": query, "regionCode": "PH", "languageCode": "en", "pageSize": 5,
+                "locationRestriction": {"rectangle": PHILIPPINES}}
+        headers = {"X-Goog-Api-Key": self.api_key, "X-Goog-FieldMask": PLACES_FIELDS}
+        for attempt in range(self.retries + 1):
+            if attempt:
+                self.sleep(2 ** attempt)
+            self._wait_turn()
+            try:
+                response = self.client.post(PLACES_URL, json=body, headers=headers)
+            except httpx.HTTPError:
+                continue
+            if response.status_code == 200:
+                try:
+                    places = response.json().get("places", [])
+                except (ValueError, AttributeError):
+                    continue
+                return [place_from(place) for place in places] or None
+            if response.status_code in (401, 403):
+                raise GeocodeStop(f"Google refused the search (HTTP {response.status_code}). "
+                                  f"{_error_message(response)}".strip())
+            if response.status_code == 400:
+                break
+        raise LookupError(query)
+
+
 def load_sites(session: Session, kinds: Iterable[str], limit: int | None = None) -> list[Site]:
     """Every registry or hand-entered site (not the demo fixtures), training first, oldest first."""
     sites = []
@@ -256,13 +477,13 @@ def load_sites(session: Session, kinds: Iterable[str], limit: int | None = None)
     return sites[:limit] if limit else sites
 
 
-def look_up(queries: Iterable[str], answers: dict, lookup: Callable[[str], dict | None], workers: int = 8,
+def look_up(queries: Iterable[str], answers: dict, lookup: Callable[[str], object], workers: int = 8,
             checkpoint: Callable[[], None] | None = None, out: TextIO | None = None) -> int:
     """Adds an answer for every query not answered yet. Returns how many failed; they stay unanswered."""
     pending = sorted(set(queries) - set(answers))
     failed = done = 0
     if out and pending:
-        print(f"Looking up {len(pending)} addresses with Google…", file=out, flush=True)
+        print(f"Asking Google about {len(pending)} centers…", file=out, flush=True)
     with ThreadPoolExecutor(max_workers=workers) as pool:
         futures = {pool.submit(lookup, query): query for query in pending}
         try:
@@ -285,21 +506,21 @@ def look_up(queries: Iterable[str], answers: dict, lookup: Callable[[str], dict 
     return failed
 
 
-def apply_decisions(session: Session, decisions: Iterable[Decision]) -> int:
+def apply_decisions(session: Session, decisions: Iterable[Decision], source: str = SOURCE) -> int:
     """Writes every 'replace' decision. The caller commits."""
     written = 0
     for decision in decisions:
         if decision.outcome != "replace":
             continue
         row = session.get(MODELS[decision.site.kind], decision.site.id)
-        row.latitude, row.longitude, row.location_source = decision.latitude, decision.longitude, SOURCE
+        row.latitude, row.longitude, row.location_source = decision.latitude, decision.longitude, source
         session.add(row)
         written += 1
     session.flush()
     return written
 
 
-def read_answers(path: Path) -> dict:
+def read_answers(path: Path, lookup: str = "address") -> dict:
     """Google's answers kept in an earlier report; refuses to reuse (and later overwrite) any other file."""
     if not path.exists():
         return {}
@@ -309,16 +530,20 @@ def read_answers(path: Path) -> dict:
         report = None
     if not isinstance(report, dict) or not isinstance(report.get("answers"), dict):
         raise ValueError(f"{path} isn't a report from this command; choose another --report file.")
+    if report.get("lookup", "address") != lookup:
+        made = "with --by-name" if report.get("lookup") == "name" else "without --by-name"
+        raise ValueError(f"{path} was made {made}; use another --report file for this lookup.")
     return report["answers"]
 
 
-def write_report(path: Path, *, mode: str, decisions: list[Decision], answers: dict, written: int = 0) -> None:
+def write_report(path: Path, *, mode: str, decisions: list[Decision], answers: dict, written: int = 0,
+                 lookup: str = "address") -> None:
     summary: dict[str, Counter] = {}
     for decision in decisions:
         summary.setdefault(decision.site.kind, Counter())[decision.outcome] += 1
     order = {outcome: index for index, outcome in enumerate(OUTCOMES)}
     rows = sorted(decisions, key=lambda d: (order[d.outcome], -(d.moved_km or 0), d.site.kind, d.site.id))
-    report = {"mode": mode, "database_modified": written > 0, "points_written": written,
+    report = {"mode": mode, "lookup": lookup, "database_modified": written > 0, "points_written": written,
               "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
               "keep_within_km": KEEP_WITHIN_KM,
               "summary": {kind: dict(counts) for kind, counts in summary.items()},
@@ -331,32 +556,40 @@ def write_report(path: Path, *, mode: str, decisions: list[Decision], answers: d
     temporary.replace(path)
 
 
-def run(session: Session, *, report: Path, lookup: Callable[[str], dict | None], kinds: Iterable[str],
-        apply: bool = False, refresh: bool = False, limit: int | None = None, workers: int = 8,
-        out: TextIO | None = None) -> dict:
-    """Preview the geocoded points, or with apply=True write and commit them, then save the report."""
+def run(session: Session, *, report: Path, lookup: Callable[[str], object], kinds: Iterable[str],
+        apply: bool = False, refresh: bool = False, limit: int | None = None, by_name: bool = False,
+        workers: int = 8, out: TextIO | None = None) -> dict:
+    """Preview the new points, or with apply=True write and commit them, then save the report."""
     kinds = list(kinds)
-    answers = {} if refresh else read_answers(report)
+    kind_of_lookup = "name" if by_name else "address"
+    query_of = name_query_for if by_name else query_for
+    answers = {} if refresh else read_answers(report, kind_of_lookup)
     mode = "apply" if apply else "dry-run"
-    queries = {query_for(site) for site in load_sites(session, kinds, limit)
+    queries = {query_of(site) for site in load_sites(session, kinds, limit)
                if site.location_source != "manual"} - {None}
     # Don't hold a transaction open while Google answers; decide on the rows as they are afterwards.
     session.commit()
 
     def checkpoint():
-        write_report(report, mode="lookup in progress", decisions=[], answers=dict(answers))
+        write_report(report, mode="lookup in progress", decisions=[], answers=dict(answers), lookup=kind_of_lookup)
 
     try:
         failed = look_up(queries, answers, lookup, workers=workers, checkpoint=checkpoint, out=out)
     except BaseException:
         checkpoint()
         raise
-    decisions = [decide(site, answers) for site in load_sites(session, kinds, limit)]
+    sites = load_sites(session, kinds, limit)
+    if by_name:
+        # Word weights come from every center's name, so a --limit or --kind run judges names the same way.
+        weights = NameWeights(site.name for site in load_sites(session, MODELS))
+        decisions = [decide_by_name(site, answers, weights) for site in sites]
+    else:
+        decisions = [decide(site, answers) for site in sites]
     written = 0
     if apply:
-        written = apply_decisions(session, decisions)
+        written = apply_decisions(session, decisions, SOURCES[kind_of_lookup])
         session.commit()
-    write_report(report, mode=mode, decisions=decisions, answers=answers, written=written)
+    write_report(report, mode=mode, decisions=decisions, answers=answers, written=written, lookup=kind_of_lookup)
     counts = Counter(decision.outcome for decision in decisions)
     return {"mode": mode, "sites": len(decisions), "lookups_failed": failed, "points_written": written,
             "outcomes": {outcome: counts[outcome] for outcome in OUTCOMES if counts[outcome]}}

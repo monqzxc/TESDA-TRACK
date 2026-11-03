@@ -17,10 +17,12 @@ web app's generated types (`npm run api:types` in frontend/).
 
     python -m tesda_track.cli geocode-centers --report /tmp/geocode.json [--kind training|assessment] [--limit 20]
     python -m tesda_track.cli geocode-centers --report /tmp/geocode.json --apply
+    python -m tesda_track.cli geocode-centers --by-name --report /tmp/places.json [--apply]
 
-`geocode-centers` moves training providers and assessment centers to where Google geocodes their address (see
-tesda_track/geocode_centers.py for when a point is replaced). Preview is the default; --apply overwrites the
-coordinates. The Google Maps API key is read from GOOGLE_MAPS_API_KEY or prompted for.
+`geocode-centers` moves training providers and assessment centers to where Google geocodes their address, or with
+--by-name to the place Google Maps finds by the center's name (see tesda_track/geocode_centers.py for when a point
+is replaced). Preview is the default; --apply overwrites the coordinates. The Google Maps API key is read from
+GOOGLE_MAPS_API_KEY or prompted for; --by-name needs the Places API (New) enabled for it.
 """
 import argparse
 import getpass
@@ -114,7 +116,7 @@ def run_mcp_usage_command(session: Session, args: argparse.Namespace, out: TextI
 def google_maps_api_key() -> str:
     key = os.environ.get("GOOGLE_MAPS_API_KEY", "").strip()
     if not key and sys.stdin.isatty():
-        key = getpass.getpass("Google Maps API key (Geocoding API enabled): ").strip()
+        key = getpass.getpass("Google Maps API key: ").strip()
     if not key:
         raise ValueError("Set GOOGLE_MAPS_API_KEY or run the command in a terminal to be asked for the key.")
     return key
@@ -128,10 +130,12 @@ def run_geocode_command(session: Session, args: argparse.Namespace, out: TextIO,
     if args.report.suffix.casefold() != ".json":
         raise ValueError("--report must be a .json file.")
     if lookup is None:
-        lookup = geocode_centers.GoogleGeocoder(google_maps_api_key()).lookup
+        google = geocode_centers.GooglePlaces if args.by_name else geocode_centers.GoogleGeocoder
+        lookup = google(google_maps_api_key()).lookup
     kinds = [args.kind] if args.kind else list(geocode_centers.MODELS)
     result = geocode_centers.run(session, report=args.report, lookup=lookup, kinds=kinds, apply=args.apply,
-                                 refresh=args.refresh, limit=args.limit, out=out)
+                                 refresh=args.refresh, limit=args.limit, by_name=args.by_name,
+                                 workers=4 if args.by_name else 8, out=out)
     outcomes = ", ".join(f"{outcome}={count}" for outcome, count in result["outcomes"].items())
     print(f"{result['sites']} sites: {outcomes or 'none'}", file=out)
     if result["lookups_failed"]:
@@ -180,6 +184,8 @@ def build_parser() -> argparse.ArgumentParser:
     geocode.add_argument("--kind", choices=("training", "assessment"), help="only training providers or assessment centers")
     geocode.add_argument("--limit", type=int, help="only the first N sites, to try the key and check the results")
     geocode.add_argument("--refresh", action="store_true", help="ask Google again instead of reusing the report's answers")
+    geocode.add_argument("--by-name", action="store_true",
+                         help="search Google Maps for each center by name (Places API) instead of geocoding its address")
     return parser
 
 
