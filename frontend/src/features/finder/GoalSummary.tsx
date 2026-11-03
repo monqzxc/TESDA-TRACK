@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import { useAuth, useRequireAccount } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { useCopy } from '../../i18n/copy.ts'
+import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { Avatar } from './art.tsx'
@@ -15,6 +16,8 @@ interface GoalSummaryProps {
   code: string | null
   /** The session sync's state (useSessionSync). */
   sync: { saved: boolean; failed: boolean; retry: () => void }
+  /** Without the avatar and with less padding, on Your pathway. */
+  compact?: boolean
 }
 
 /**
@@ -22,7 +25,7 @@ interface GoalSummaryProps {
  * it's saved. A guest's Save to profile opens sign-in, then saves the journey as it is (US-02).
  * Drawn after classic/styles.css's .st-key-finder_goal_summary: the goal with a learner's avatar, and its actions.
  */
-export function GoalSummary({ journey, code, sync }: GoalSummaryProps) {
+export function GoalSummary({ journey, code, sync, compact = false }: GoalSummaryProps) {
   const en = useCopy()
   const copy = en.finder.summary
 
@@ -63,9 +66,14 @@ export function GoalSummary({ journey, code, sync }: GoalSummaryProps) {
   }
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-3 rounded-18 border border-border bg-surface py-[0.9rem] pr-5 pl-4 shadow-card">
+    <div
+      className={cx(
+        'flex flex-wrap items-center justify-between gap-x-5 gap-y-3 rounded-18 border border-border bg-surface pr-5 shadow-card',
+        compact ? 'py-3 pl-5' : 'py-[0.9rem] pl-4',
+      )}
+    >
       <div className="flex min-w-0 flex-[1_1_22rem] items-center gap-[1.1rem]">
-        <Avatar className="size-17 shrink-0 max-xs:size-12" />
+        {!compact && <Avatar className="size-17 shrink-0 max-xs:size-12" />}
         <div className="min-w-0">
           <p className="m-0 text-11 leading-[1.6] font-bold tracking-[0.12em] text-ink uppercase">
             {copy.label}

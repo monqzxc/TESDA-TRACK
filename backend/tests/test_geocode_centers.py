@@ -5,8 +5,9 @@ import json
 import httpx
 import pytest
 
-from tesda_track.geocode_centers import (GeocodeStop, GoogleGeocoder, Site, decide, in_site_town, precision_of,
-                                         query_for, run)
+from tesda_track.geocode_centers import (GeocodeStop, GoogleGeocoder, GooglePlaces, NameWeights, Site, decide,
+                                         decide_by_name, in_site_town, name_match, name_query_for, name_tokens,
+                                         precision_of, query_for, run)
 from tesda_track.models import AssessmentCenter, TrainingProvider
 
 CEBU = (10.3157, 123.8854)
@@ -100,6 +101,8 @@ def test_town_names_are_compared_without_accents_abbreviations_or_city_of():
                         answer(town="Samal", province="Davao del Norte"))
     assert not in_site_town(site(city="San Jose", province="Batangas"),
                             answer(town="San Jose del Monte", province="Bulacan"))
+    assert in_site_town(site(city="Sultan Sabarongis", province="Maguindanao del Sur"),
+                        answer(town="Sultan sa Barongis", province="Maguindanao del Sur"))
 
 
 def test_precision_reads_google_location_types():
@@ -246,3 +249,159 @@ def test_an_administrators_correction_is_marked_and_kept_from_geocoding(client, 
     renamed = make_provider(name="Untouched Institute")
     client.patch(f"/api/v1/admin/training-providers/{renamed['id']}", headers=admin, json={"name": "Renamed"})
     assert session.get(TrainingProvider, renamed["id"]).location_source is None
+
+
+# Searching Google Maps by name (--by-name).
+
+# Center names as the registry spells them: many colleges and training centers, few Novaliches or Iba ones.
+CORPUS = ["STI College Novaliches", "STI College Fairview", "STI College Cubao", "STI College Caloocan",
+          "Provincial Training Center - Iba", "Provincial Training Center - Bilar", "Provincial Training Center - Jagna",
+          "Benedicto College, Inc.", "Saint Mary's Angels College of Pampanga, Inc.", "Mindanao Autonomous College",
+          "Carigara Training and Assessment Center Inc.", "Cebu Skills Institute", "Cebu Technical College",
+          "Talisay Training Center", "Iloilo Training Center", "Davao Training Center",
+          "Naga College Foundation", "Holy Cross College Foundation", "Bicol Training Foundation"]
+WEIGHTS = NameWeights(CORPUS)
+
+
+def place(name="Cebu Skills Institute", point=CEBU, town="Cebu City", province="Cebu", place_id="p1"):
+    return {"name": name, "place_id": place_id, "latitude": point[0], "longitude": point[1],
+            "formatted_address": f"12 Osmeña Blvd, {town}, {province}, Philippines", "types": ["school"],
+            "status": "OPERATIONAL",
+            "components": [{"name": town, "types": ["locality", "political"]},
+                           {"name": province, "types": ["administrative_area_level_2", "political"]}]}
+
+
+def by_name(s, places):
+    return decide_by_name(s, {name_query_for(s): places}, WEIGHTS)
+
+
+def test_names_are_compared_without_inc_apostrophes_or_abbreviations():
+    assert name_tokens("SAINT MARY'S ANGELS COLLEGE OF PAMPANGA, INC.") == {"saint", "marys", "angels", "college",
+                                                                            "pampanga"}
+    assert name_tokens("PTC Iba") == name_tokens("Provincial Training Center - Iba")
+    assert name_query_for(site(name="Cebu Skills Institute", city="Talisay City")) == \
+        "Cebu Skills Institute, Talisay City, Philippines"
+    assert name_query_for(site(name="Provincial Training Center - Iba", city="Iba", province="Zambales",
+                               region_code="III")) == "Provincial Training Center - Iba, Zambales, Philippines"
+
+
+@pytest.mark.parametrize("ours,theirs", [
+    ("Provincial Training Center - Iba", "TESDA Provincial Training Center Iba"),
+    ("Saint Mary's Angels College of Pampanga, Inc.", "Saint Mary's Angels College of Pampanga"),
+    ("Minadanao Autonomous College", "Mindanao Autonomous College Foundation"),
+    ("Carigara Training and Assessment Center Inc.", "Carigara Training & Assessment Center"),
+])
+def test_the_same_institution_matches_despite_extra_words_and_typos(ours, theirs):
+    assert name_match(ours, theirs, WEIGHTS) is not None
+
+
+@pytest.mark.parametrize("ours,theirs", [
+    ("STI College Novaliches", "STI College Fairview"),   # same chain, another branch
+    ("Provincial Training Center - Iba", "Provincial Training Center - Bilar"),
+    ("Cebu Skills Institute", "Cebu Technical College"),
+    ("Talisay Training Center", "Talisay City Hall"),
+])
+def test_shared_generic_words_are_not_a_match(ours, theirs):
+    assert name_match(ours, theirs, WEIGHTS) is None
+
+
+def test_town_words_do_not_make_two_institutions_alike_but_the_address_can_name_a_branch():
+    weights = NameWeights(CORPUS + ["Barobo National High School", "Tambis National High School",
+                                    "Lianga National High School", "City College of Naga", "Naga College Foundation"])
+    # In Barobo, "Barobo" says nothing; "Tambis" names another school.
+    assert name_match("Barobo National High School", "Tambis National High School", weights, {"barobo"}) is None
+    assert name_match("City College of Naga", "Naga College Foundation", weights, {"naga"}) is None
+    assert name_match("Cebu Skills Institute", "Cebu Skills Institute - Banilad", weights, {"cebu"}) is None
+    assert name_match("Cebu Skills Institute", "Cebu Skills Institute - Banilad", weights, {"cebu"},
+                      address="2/F Gaisano Country Mall, Banilad, Cebu City") is not None
+    assert name_match("Cebu Skills Institute", "TESDA Accredited - Cebu Skills Institute Main Campus", weights,
+                      {"cebu"}) is not None
+
+
+def test_the_center_moves_to_its_google_maps_place_in_its_own_town():
+    decision = by_name(site(), [place(name="Some Other School"), place()])
+    assert decision.outcome == "replace" and (decision.latitude, decision.longitude) == CEBU
+    assert decision.google_name == "Cebu Skills Institute" and decision.place_id == "p1"
+    row = decision.report()
+    assert row["to_map"].endswith("query_place_id=p1")
+    assert row["from_map"] == f"https://www.google.com/maps?q={AT_SEA[0]},{AT_SEA[1]}"
+
+
+@pytest.mark.parametrize("places,outcome", [
+    (None, "name_not_found"),
+    ([place(name="Cebu Technical College")], "name_not_found"),
+    ([place(town="Mandaue City")], "other_town"),
+    ([place(place_id="a"), place(point=(10.35, 123.92), place_id="b")], "ambiguous"),   # two branches, 5 km apart
+    ([place(place_id="a"), place(point=(CEBU[0] + 0.001, CEBU[1]), place_id="b")], "replace"),  # one place, two pins
+])
+def test_places_that_are_not_clearly_this_center_are_left_alone(places, outcome):
+    assert by_name(site(), places).outcome == outcome
+
+
+def test_a_hand_corrected_point_is_not_searched_or_moved():
+    assert by_name(site(location_source="manual"), [place()]).outcome == "kept_manual"
+
+
+def places_api(responses, calls=None):
+    responses = iter(responses)
+
+    def handler(request):
+        if calls is not None:
+            calls.append(request)
+        status, payload = next(responses)
+        return httpx.Response(status, json=payload)
+
+    return GooglePlaces("secret-key", client=httpx.Client(transport=httpx.MockTransport(handler)),
+                        sleep=lambda seconds: None, per_minute=60000)
+
+
+PLACES_OK = {"places": [{
+    "id": "ChIJ1", "displayName": {"text": "Cebu Skills Institute", "languageCode": "en"},
+    "formattedAddress": "12 Osmeña Blvd, Cebu City, 6000 Cebu, Philippines", "types": ["school"],
+    "location": {"latitude": CEBU[0], "longitude": CEBU[1]}, "businessStatus": "OPERATIONAL",
+    "addressComponents": [{"longText": "Cebu City", "shortText": "Cebu City", "types": ["locality", "political"]}],
+}]}
+
+
+def test_places_search_sends_the_key_in_a_header_and_stays_in_the_philippines():
+    calls = []
+    found = places_api([(200, PLACES_OK)], calls).lookup("Cebu Skills Institute, Cebu City, Philippines")
+    assert found == [{"name": "Cebu Skills Institute", "place_id": "ChIJ1", "latitude": CEBU[0],
+                      "longitude": CEBU[1], "formatted_address": "12 Osmeña Blvd, Cebu City, 6000 Cebu, Philippines",
+                      "types": ["school"], "status": "OPERATIONAL",
+                      "components": [{"name": "Cebu City", "types": ["locality", "political"]}]}]
+    request = calls[0]
+    assert request.headers["X-Goog-Api-Key"] == "secret-key" and "secret-key" not in str(request.url)
+    assert "places.location" in request.headers["X-Goog-FieldMask"]
+    body = json.loads(request.content)
+    assert body["regionCode"] == "PH" and body["locationRestriction"]["rectangle"]["low"]["latitude"] == 4.0
+
+
+def test_places_search_retries_busy_answers_and_stops_on_a_refused_key():
+    assert places_api([(200, {})]).lookup("x") is None
+    assert places_api([(429, {}), (503, {}), (200, PLACES_OK)]).lookup("x")[0]["place_id"] == "ChIJ1"
+    with pytest.raises(LookupError):
+        places_api([(429, {})] * 5).lookup("x")
+    refused = (403, {"error": {"code": 403, "status": "PERMISSION_DENIED",
+                               "message": "Places API (New) has not been used in project 1 before or it is disabled."}})
+    with pytest.raises(GeocodeStop, match=r"Places API \(New\) has not been used"):
+        places_api([refused]).lookup("x")
+
+
+def test_by_name_apply_marks_points_as_google_places(session, sites, tmp_path):
+    at_sea, missing, _ = sites
+    report = tmp_path / "places.json"
+
+    def found(query):
+        return [place(name="Cebu Skills Institute"),
+                place(name="Cebu Assessment Center", place_id="p2", point=(10.32, 123.89))]
+
+    result = run(session, report=report, lookup=found, kinds=["training", "assessment"], by_name=True, apply=True)
+    assert result["outcomes"] == {"replace": 2}
+    session.refresh(at_sea)
+    session.refresh(missing)
+    assert (at_sea.latitude, at_sea.longitude, at_sea.location_source) == (*CEBU, "google_places")
+    assert (missing.latitude, missing.longitude, missing.location_source) == (10.32, 123.89, "google_places")
+    assert json.loads(report.read_text(encoding="utf-8"))["lookup"] == "name"
+    with pytest.raises(ValueError, match="made with --by-name"):
+        run(session, report=report, lookup=found, kinds=["training"])

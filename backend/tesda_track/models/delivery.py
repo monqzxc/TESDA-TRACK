@@ -21,7 +21,7 @@ SCHEDULE_STATUSES = ("open", "closed", "cancelled", "completed")
 APPLICATION_STATUSES = ("pending", "approved", "rejected", "withdrawn", "completed")
 ASSESSMENT_RESULTS = ("competent", "not_yet_competent")
 # Where a site's map point came from when it isn't the source record's own; registry refreshes keep these points.
-LOCATION_SOURCES = ("google_geocoding", "manual")
+LOCATION_SOURCES = ("google_geocoding", "google_places", "manual")
 LOCATION_CHECKS = (
     CheckConstraint("(latitude IS NULL) = (longitude IS NULL)", name="location_complete"),
     CheckConstraint("latitude IS NULL OR latitude BETWEEN -90 AND 90", name="latitude_range"),

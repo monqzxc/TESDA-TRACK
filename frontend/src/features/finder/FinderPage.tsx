@@ -43,7 +43,7 @@ export default function FinderPage() {
   if (step > GOAL && !journey) return <Navigate to={paths.finder} replace />
   return (
     <>
-      <JourneyBanner />
+      <JourneyBanner compact={step === PATHWAY && journey !== null} />
       <StepTabs current={step} unlocked={journey !== null} />
       <WithCatalog emptyState>
         {(catalog) => (
@@ -127,7 +127,12 @@ function JourneySteps({
 
   return (
     <>
-      <GoalSummary journey={journey} code={chosen?.code ?? null} sync={sync} />
+      <GoalSummary
+        journey={journey}
+        code={chosen?.code ?? null}
+        sync={sync}
+        compact={step === PATHWAY}
+      />
       <section aria-labelledby={headingId} className={stepBody}>
         <h2 id={headingId} className="sr-only">
           {copy.steps.names[step]}

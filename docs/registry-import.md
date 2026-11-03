@@ -108,6 +108,26 @@ docker compose exec api python -m tesda_track.cli geocode-centers --report /tmp/
 
 Locally: `..\.venv\Scripts\python.exe -m tesda_track.cli geocode-centers --report ..\reports\geocode\preview.json` from `backend\`. `--kind training|assessment` limits the run to one table, and `--refresh` asks Google again instead of reusing the report. The full registry is about 9,800 distinct addresses, roughly one month of Google's free Geocoding allowance, so keep using the same `--report` file between runs. Lookups that fail are retried by the next run.
 
+### Find centers by name
+
+Geocoding an address often only finds the barangay or the road. `--by-name` instead searches Google Maps (Places API, Text Search) for `<center name>, <town>, <province>` and moves the pin to the place whose name matches. It changes only `latitude`/`longitude`; names and addresses are never rewritten. A place is used only when:
+
+- it is in the center's own city or municipality;
+- each name's most distinctive word is in the other ("Novaliches" for "STI College Novaliches"; "Tambis" rules "Tambis National High School" out for "Barobo National High School"); the center's own town and province words, and words listings add such as "TESDA", "Main Campus" or "Annex", count for little; a branch word may come from the center's address;
+- most of each name is in the other (score 0.75 or more). On the registry itself, about 500 of 192,000 same-town pairs of differently spelled names still match, mostly the same institution spelled twice;
+- no second matching place sits more than 300 m away in the same town (branches are reported as `ambiguous`).
+
+Enable **Places API (New)** in the Google Cloud project and add it to the key's API restrictions. Use a separate report file:
+
+```bash
+docker compose exec api python -m tesda_track.cli geocode-centers --by-name --report /tmp/places.json --limit 50
+docker compose exec api python -m tesda_track.cli geocode-centers --by-name --report /tmp/places.json
+docker compose cp api:/tmp/places.json ./places-preview.json
+docker compose exec api python -m tesda_track.cli geocode-centers --by-name --report /tmp/places.json --apply
+```
+
+Replaced points get `location_source = 'google_places'` (migration 0021). Every row of either report has `from_map` and `to_map` Google Maps links for checking a center by hand. Searches are throttled to 500 a minute; a full run is about 7,000 searches, which costs more than geocoding (Text Search is billed per 1,000 beyond a smaller free allowance), so check the Maps Platform pricing page and set a daily quota first.
+
 Google's Maps Platform terms limit how long geocoded coordinates may be stored and forbid showing them on a non-Google map; the center map uses CARTO/OpenStreetMap tiles. Confirm with TESDA that this use is acceptable before relying on the result.
 
 Report JSON contains counts, unmapped labels and row flags, without contact details. Source history in PostgreSQL contains business contacts from the selected source fields and should receive the same database access controls and backup handling as provider/center contact records. Generated reports are ignored by Git.
