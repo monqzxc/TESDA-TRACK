@@ -41,6 +41,30 @@ def test_schedules_can_be_searched_near_a_point(client, make_center, make_schedu
     assert [s["id"] for s in by_region] == [cebu_schedule["id"]]
 
 
+def test_centers_can_be_listed_within_a_radius(client, make_center):
+    manila = make_center()
+    cebu = make_center(name="Cebu Assessment Center", region_code="VII", location=CEBU_CITY)
+    make_center(name="Unmapped Assessment Center", location=None)
+
+    def names(**params):
+        response = client.get("/api/v1/assessment-centers", params=params)
+        assert response.status_code == 200, response.text
+        return [center["name"] for center in response.json()]
+
+    assert names() == ["Cebu Assessment Center", "Manila Assessment Center", "Unmapped Assessment Center"]
+    # Quezon City to Manila is roughly 11 km; to Cebu City roughly 570 km. Unmapped centers can't be inside it.
+    assert names(near_lat=QUEZON_CITY[0], near_lon=QUEZON_CITY[1], radius_km=20) == [manila["name"]]
+    assert names(near_lat=CEBU_CITY[0], near_lon=CEBU_CITY[1], radius_km=20, region_code="VII") == [cebu["name"]]
+    # A point alone narrows nothing.
+    assert len(names(near_lat=QUEZON_CITY[0], near_lon=QUEZON_CITY[1])) == 3
+
+
+@pytest.mark.parametrize("params", [{"near_lat": 14.6}, {"radius_km": 10}, {"near_lat": 95, "near_lon": 120},
+                                    {"near_lat": 14.6, "near_lon": 121, "radius_km": 0}])
+def test_a_center_radius_needs_a_complete_valid_point(client, params):
+    assert client.get("/api/v1/assessment-centers", params=params).status_code == 422
+
+
 def test_learner_applies_once_per_schedule(client, learner, make_schedule):
     schedule = make_schedule()
     response = apply(client, learner, schedule)

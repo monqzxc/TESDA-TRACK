@@ -4,8 +4,8 @@ from sqlmodel import Session, select
 
 from tesda_track.errors import InvalidRequestError, NotFoundError
 from tesda_track.models import Qualification, TrainingProgram, TrainingProvider
-from tesda_track.schemas.delivery import (ProgramSearch, SiteSummary, TrainingProgramCreate, TrainingProgramPublic,
-                                          TrainingProgramUpdate, TrainingProviderCreate)
+from tesda_track.schemas.delivery import (ProgramSearch, SiteSearch, SiteSummary, TrainingProgramCreate,
+                                          TrainingProgramPublic, TrainingProgramUpdate, TrainingProviderCreate)
 from tesda_track.services import catalog, geo, sites, verification
 from tesda_track.services.provenance import validate_update
 
@@ -26,10 +26,12 @@ def program_public(program: TrainingProgram, distance_km: float | None = None) -
         distance_km=round(distance_km, 1) if distance_km is not None else None)
 
 
-def list_providers(session: Session, region_code: str | None) -> list[TrainingProvider]:
+def list_providers(session: Session, search: SiteSearch) -> list[TrainingProvider]:
     query = select(TrainingProvider).where(TrainingProvider.is_active)
-    if region_code:
-        query = query.where(TrainingProvider.region_code == region_code)
+    if search.region_code:
+        query = query.where(TrainingProvider.region_code == search.region_code)
+    if search.radius_km is not None:
+        query = query.where(geo.within_radius(TrainingProvider, search))
     return list(session.exec(query.order_by(TrainingProvider.name)))
 
 

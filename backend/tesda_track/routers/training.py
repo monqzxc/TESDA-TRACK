@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, Query, status
 
 from tesda_track.db import SessionDep
 from tesda_track.deps import require_permission
-from tesda_track.schemas.delivery import (ProgramSearch, RegionPublic, TrainingProgramCreate,
+from tesda_track.schemas.delivery import (ProgramSearch, RegionPublic, SiteSearch, TrainingProgramCreate,
                                           TrainingProgramPublic, TrainingProgramUpdate, TrainingProviderCreate,
                                           TrainingProviderPublic, TrainingProviderUpdate)
 from tesda_track.services import embeddings, sites, training
@@ -20,8 +20,9 @@ def list_regions(session: SessionDep):
 
 
 @router.get("/training-providers", response_model=list[TrainingProviderPublic])
-def list_providers(session: SessionDep, region_code: str | None = None):
-    return training.list_providers(session, region_code)
+def list_providers(session: SessionDep, search: Annotated[SiteSearch, Query()]):
+    """Active providers by name; give near_lat/near_lon with radius_km for only those within it."""
+    return training.list_providers(session, search)
 
 
 @router.get("/training-providers/{provider_id}", response_model=TrainingProviderPublic)

@@ -256,6 +256,23 @@ class ApplicationReview(BaseModel):
         return self
 
 
+class SiteSearch(BaseModel):
+    """Active sites, by name. radius_km around near_lat/near_lon leaves out anything farther (or unmapped)."""
+    model_config = ConfigDict(extra="forbid")
+
+    region_code: str | None = None
+    near_lat: Latitude | None = None
+    near_lon: Longitude | None = None
+    radius_km: Annotated[float, Field(gt=0, le=2000)] | None = None
+
+    @model_validator(mode="after")
+    def complete(self):
+        check_location(self.near_lat, self.near_lon)
+        if self.radius_km is not None and self.near_lat is None:
+            raise ValueError("radius_km needs near_lat and near_lon.")
+        return self
+
+
 class NearbySearch(BaseModel):
     """Optional point to sort by distance; radius_km also filters out anything farther (or unmapped)."""
     model_config = ConfigDict(extra="forbid")

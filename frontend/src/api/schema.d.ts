@@ -590,7 +590,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List Providers */
+        /**
+         * List Providers
+         * @description Active providers by name; give near_lat/near_lon with radius_km for only those within it.
+         */
         get: operations["list_providers_api_v1_training_providers_get"];
         put?: never;
         post?: never;
@@ -661,7 +664,10 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** List Centers */
+        /**
+         * List Centers
+         * @description Active centers by name; give near_lat/near_lon with radius_km for only those within it.
+         */
         get: operations["list_centers_api_v1_assessment_centers_get"];
         put?: never;
         post?: never;
@@ -6523,6 +6529,9 @@ export interface operations {
         parameters: {
             query?: {
                 region_code?: string | null;
+                near_lat?: number | null;
+                near_lon?: number | null;
+                radius_km?: number | null;
             };
             header?: never;
             path?: never;
@@ -6656,6 +6665,9 @@ export interface operations {
         parameters: {
             query?: {
                 region_code?: string | null;
+                near_lat?: number | null;
+                near_lon?: number | null;
+                radius_km?: number | null;
             };
             header?: never;
             path?: never;
