@@ -30,6 +30,10 @@ import { friendlyDate } from './ReadinessHistory.tsx'
 import { resumeSession } from './resume.ts'
 import { ui } from './styles.ts'
 
+/** My Progress's lists: one record a row, split by rules, inside the section's card. */
+const rows = 'm-0 mt-2 flex list-none flex-col divide-y divide-rule p-0'
+const row = 'flex flex-wrap items-center gap-x-4 gap-y-2 py-4 first:pt-2 last:pb-1'
+
 /** The learner's saved recommendations, newest first, each reopening in Find my pathway (US-10). */
 export function RecommendationHistory({
   sessions,
@@ -58,7 +62,7 @@ export function RecommendationHistory({
       <h2 id={headingId} className={ui.sectionHeading}>
         {copy.history.heading}
       </h2>
-      <ul className={ui.records}>
+      <ul className={rows}>
         {history.map((session) => {
           const qualification = sessionQualification(session)
           const route = session.pathway?.recommendation
@@ -68,7 +72,7 @@ export function RecommendationHistory({
           ]
           const missing = qualification !== null && !catalog.has(qualification.code)
           return (
-            <li key={session.id} className={ui.record}>
+            <li key={session.id} className={row}>
               <div className={ui.recordBody}>
                 <p className="m-0 text-12 text-muted">{friendlyDate(session.created_at)}</p>
                 {/* The goal as the learner typed it, as text. */}
@@ -144,9 +148,9 @@ export function Pathways({
         {copy.pathways.heading}
       </h2>
       {shown.length > 0 && (
-        <ul className={ui.records}>
+        <ul className={rows}>
           {shown.map((enrollment) => (
-            <li key={enrollment.id}>
+            <li key={enrollment.id} className="py-4 first:pt-2 last:pb-1">
               <PathwayCard enrollment={enrollment} />
             </li>
           ))}
@@ -154,7 +158,7 @@ export function Pathways({
       )}
       {recommended.length > 0 && (
         <div className="mt-4 flex flex-col gap-3">
-          <h3 className="m-0 text-17 text-navy">{copy.pathways.suggested}</h3>
+          <h3 className="m-0 text-16 text-navy">{copy.pathways.suggested}</h3>
           {recommended.map((pathway) => (
             <RecommendedPathwayCard key={pathway.id} pathway={pathway} />
           ))}
@@ -190,10 +194,7 @@ function PathwayCard({ enrollment }: { enrollment: Enrollment }) {
   })
   const completed = enrollment.status === 'completed'
   return (
-    <article
-      aria-labelledby={headingId}
-      className="flex flex-col items-stretch gap-[0.35rem] rounded-12 border border-border px-[0.95rem] py-[0.85rem]"
-    >
+    <article aria-labelledby={headingId} className="flex flex-col items-stretch gap-[0.35rem]">
       <h3
         id={headingId}
         tabIndex={-1}
@@ -201,8 +202,7 @@ function PathwayCard({ enrollment }: { enrollment: Enrollment }) {
       >
         {enrollment.pathway.title}
         {completed && (
-          <span className="inline-flex items-center gap-[0.3rem] rounded-full bg-good-bg px-[0.55rem] py-[0.15rem] text-12 font-[650] text-good-ink">
-            <Icon name="award" />
+          <span className="inline-flex flex-none items-center rounded-full bg-good-bg px-[0.55rem] py-[0.1rem] text-12 font-semibold text-good-ink">
             {copy.pathways.completed}
           </span>
         )}

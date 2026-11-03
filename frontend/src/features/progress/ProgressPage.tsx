@@ -4,14 +4,12 @@ import { Button } from 'react-aria-components'
 import { useNavigate, useSearchParams } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
 import { useAuth } from '../../auth/useAuth.ts'
-import { PageHero } from '../../components/PageHero.tsx'
-import { Icon, type IconName } from '../../components/Icon.tsx'
+import { PageTitle } from '../../components/PageTitle.tsx'
 import { throwWithoutData } from '../../components/QueryBoundary.tsx'
 import { WithCatalog } from '../../components/WithCatalog.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
-import { button } from '../../styles/buttons.ts'
 import { AccountGate } from '../account/AccountGate.tsx'
 import {
   applicationsQuery,
@@ -29,12 +27,12 @@ import { QualificationGoals } from './QualificationGoals.tsx'
 import { Pathways, RecommendationHistory } from './Records.tsx'
 
 type ProgressSection = 'qualifications' | 'milestones' | 'pathways' | 'readiness' | 'history'
-const SECTIONS: readonly { id: ProgressSection; icon: IconName }[] = [
-  { id: 'qualifications', icon: 'learn' },
-  { id: 'milestones', icon: 'sparkle' },
-  { id: 'pathways', icon: 'route' },
-  { id: 'readiness', icon: 'checklist' },
-  { id: 'history', icon: 'clock' },
+const SECTIONS: readonly { id: ProgressSection }[] = [
+  { id: 'qualifications' },
+  { id: 'milestones' },
+  { id: 'pathways' },
+  { id: 'readiness' },
+  { id: 'history' },
 ]
 
 /**
@@ -44,7 +42,6 @@ const SECTIONS: readonly { id: ProgressSection; icon: IconName }[] = [
  */
 export default function ProgressPage() {
   const en = useCopy()
-  const copy = en.progress
 
   const { isSignedIn } = useAuth()
   if (!isSignedIn) {
@@ -62,13 +59,7 @@ export default function ProgressPage() {
   const page = en.pages.progress
   return (
     <>
-      <PageHero
-        heading={page.heading}
-        title={copy.hero.title}
-        accent={copy.hero.accent}
-        lead={page.lead}
-        art="chart"
-      />
+      <PageTitle heading={page.heading} lead={page.lead} />
       <WithCatalog>{(catalog) => <Progress catalog={catalog} />}</WithCatalog>
     </>
   )
@@ -151,7 +142,7 @@ function Progress({ catalog }: { catalog: Qualification[] }) {
     : null
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       <ContinueCard
         next={nextStep(sessions.data, checks.data, pathways.data, applications.data, codes)}
         checks={checks.data}
@@ -163,31 +154,34 @@ function Progress({ catalog }: { catalog: Qualification[] }) {
           }
         }}
       />
+      {/* Underline tabs on a full-width rule. Narrow screens show every section at once, two a row, the selected one
+          filled: no tab is hidden off the edge. An odd last one takes the whole row. */}
       <nav
         data-tour="progress-sections"
         aria-label={copy.sections.label}
-        className="rounded-18 border border-border bg-surface p-2"
+        className="-mb-2 border-b border-border max-sm:mb-0 max-sm:border-b-0"
       >
-        <div className="flex flex-wrap gap-2">
-          {sections.map((item) => (
-            <Button
-              key={item.id}
-              className={cx(
-                button({
-                  variant: section === item.id ? 'primary' : 'tertiary',
-                  text: 14,
-                  height: 44,
-                }),
-                'grow',
-              )}
-              aria-pressed={section === item.id}
-              aria-controls={`progress-panel-${item.id}`}
-              onPress={() => selectSection(item.id)}
-            >
-              <Icon name={item.icon} />
-              {copy.sections[item.id]}
-            </Button>
-          ))}
+        <div className="flex gap-6 max-sm:grid max-sm:grid-cols-2 max-sm:gap-1 max-sm:rounded-14 max-sm:border max-sm:border-border max-sm:bg-surface max-sm:p-1 max-sm:[&>:last-child:nth-child(odd)]:col-span-2">
+          {sections.map((item) => {
+            const current = section === item.id
+            return (
+              <Button
+                key={item.id}
+                className={cx(
+                  '-mb-px flex min-h-11 flex-none cursor-pointer items-center border-0 border-b-2 bg-transparent px-0 pt-2 pb-[0.6rem] text-15 whitespace-nowrap transition-colors duration-150 ease-[ease]',
+                  'max-sm:mb-0 max-sm:justify-center max-sm:rounded-10 max-sm:border-b-0 max-sm:px-3 max-sm:py-2 max-sm:text-14',
+                  current
+                    ? 'border-navy font-semibold text-navy max-sm:bg-chip'
+                    : 'border-transparent font-medium text-muted hovered:border-hover-border hovered:text-navy max-sm:hovered:bg-soft',
+                )}
+                aria-pressed={current}
+                aria-controls={`progress-panel-${item.id}`}
+                onPress={() => selectSection(item.id)}
+              >
+                {copy.sections[item.id]}
+              </Button>
+            )
+          })}
         </div>
       </nav>
       <div id="progress-panel-qualifications" hidden={section !== 'qualifications'}>
@@ -210,9 +204,10 @@ function Progress({ catalog }: { catalog: Qualification[] }) {
       </div>
       <div id="progress-panel-readiness" hidden={section !== 'readiness'}>
         <div className="flex flex-col gap-4">
+          {/* One strip split by dividers, label over value. */}
           <dl
             data-tour="progress-summary"
-            className="m-0 grid grid-cols-3 gap-4 max-sm:grid-cols-1"
+            className="m-0 grid grid-cols-3 divide-x divide-border rounded-16 border border-border bg-surface max-sm:grid-cols-1 max-sm:divide-x-0 max-sm:divide-y"
           >
             <Stat
               label={copy.stats.sessions}
@@ -236,14 +231,16 @@ function Progress({ catalog }: { catalog: Qualification[] }) {
   )
 }
 
-/** A figure with its label, after Streamlit's st.metric with a border. */
+/** A figure with its label, after Streamlit's st.metric: one cell of the summary strip. */
 function Stat({ label, value, help }: { label: string; value: string; help?: string }) {
   return (
-    <div className="rounded-14 border border-border bg-surface px-5 py-[1.1rem]">
-      <dt className="text-14 text-ink">{label}</dt>
-      <dd className="mt-[0.2rem] mb-0 ml-0 flex flex-col gap-[0.2rem]">
-        <span className="font-display text-[2rem] leading-[1.15] font-bold text-navy">{value}</span>
-        {help && <span className="text-12 leading-[1.4] text-muted">{help}</span>}
+    <div className="px-5 py-4">
+      <dt className="text-14 text-muted">{label}</dt>
+      <dd className="mt-1 mb-0 ml-0 flex flex-col gap-1">
+        <span className="font-display text-[1.75rem] leading-[1.15] font-semibold text-navy tabular-nums">
+          {value}
+        </span>
+        {help && <span className="text-13 leading-[1.45] text-muted">{help}</span>}
       </dd>
     </div>
   )

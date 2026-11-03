@@ -87,7 +87,7 @@ export function PathwayDetails({ qualification, check, report, pathway }: Pathwa
     <>
       <NextSteps report={report} pathway={pathway} />
       <div className="@container">
-        <div className={cx('grid min-w-0 gap-4', data && '@min-[860px]:grid-cols-2')}>
+        <div className={cx('grid min-w-0 items-start gap-4', data && '@min-[860px]:grid-cols-2')}>
           <Skills report={report} check={check} />
           {data && <Reasons report={data} />}
         </div>
@@ -133,7 +133,9 @@ function Ready({
 
 function Count({ n }: { n: number }) {
   return (
-    <span className="rounded-full bg-tint px-2 text-12 leading-[1.6] font-bold text-blue">{n}</span>
+    <span className="rounded-full bg-chip px-2 text-12 leading-[1.6] font-semibold text-ink tabular-nums">
+      {n}
+    </span>
   )
 }
 
@@ -153,10 +155,10 @@ function NextSteps({ report, pathway }: { report: ReportResult; pathway: ReactNo
           data.next_steps.length > 0 && (
             <ol className="m-0 grid list-none grid-cols-[repeat(auto-fit,minmax(min(100%,12.5rem),1fr))] gap-3 p-0">
               {data.next_steps.map((step) => (
-                <li key={step.position} className={cx(panel, 'flex items-start gap-3 p-4')}>
+                <li key={step.position} className={cx(panel, 'flex items-baseline gap-3 p-4')}>
                   <span
                     aria-hidden="true"
-                    className="grid size-8 shrink-0 place-items-center rounded-full bg-fill text-14 font-bold text-white"
+                    className="w-4 flex-none text-15 font-semibold text-muted tabular-nums"
                   >
                     {step.position}
                   </span>
@@ -258,7 +260,7 @@ function Skills({ report, check }: { report: ReportResult; check: SubmittedCheck
         {count > 0 && <Count n={count} />}
       </h3>
       {gaps}
-      <p className={cx(panel, 'mt-auto px-4 py-3 text-14 leading-[1.55] text-ink')}>
+      <p className={cx(panel, 'px-4 py-3 text-14 leading-[1.55] text-ink')}>
         <strong className="text-navy">{copy.strengths}:</strong>{' '}
         {strengths.length ? strengths.join(', ') : copy.noStrengths}
       </p>

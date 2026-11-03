@@ -5,17 +5,16 @@ import { cx } from '../../lib/style.ts'
 export const cardFrame =
   'min-w-0 border border-border bg-surface [&_h3]:wrap-anywhere [&_h4]:wrap-anywhere [&_p]:wrap-anywhere'
 
-/** A card: its frame, padding and corners. A card with its own padding and corners uses cardFrame instead. */
-export const card = cx(
-  cardFrame,
-  'rounded-16 px-[1.4rem] py-[1.15rem] shadow-card max-xs:rounded-14 max-xs:px-[1.05rem] max-xs:py-4',
-)!
+/** A card: its frame, padding and corners, flat on the page. A card with its own padding uses cardFrame instead. */
+export const card = cx(cardFrame, 'rounded-16 px-6 py-5 max-xs:rounded-14 max-xs:px-4 max-xs:py-4')!
 
 /** A step's cards, one under the other. Each step slides in from the side the learner moved towards. */
 export const stepBody =
   'mt-[1.1rem] flex flex-col gap-4 motion-safe:data-[direction=back]:animate-enter-back motion-safe:data-[direction=forward]:animate-enter-forward'
 
-export const kicker = 'm-0 text-11 leading-[1.5] font-bold tracking-[0.1em] text-ink uppercase'
+/** A card's own heading, under the step's h2. */
+export const cardHeading =
+  'm-0 text-20 leading-[1.3] font-bold tracking-[-0.01em] text-navy max-xs:text-18'
 
 export const muted = 'm-0 text-14 leading-[1.6] text-muted'
 

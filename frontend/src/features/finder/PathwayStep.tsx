@@ -19,7 +19,7 @@ import { FeedbackPrompt } from './FeedbackPrompt.tsx'
 import { PathwayDetails, usePathwayReport } from './PathwayReport.tsx'
 import { VERDICTS, verdictFor } from './rules.ts'
 import { useFinderStore, type Answers, type Profile, type SubmittedCheck } from './store.ts'
-import { card, kicker, muted, notice } from './styles.ts'
+import { card, cardHeading, muted, notice } from './styles.ts'
 
 interface PathwayStepProps {
   qualification: Qualification
@@ -49,7 +49,7 @@ export function PathwayStep({ qualification, profile, asked }: PathwayStepProps)
         aria-labelledby={headingId}
         className={cx(card, 'flex flex-col items-start gap-[0.6rem]')}
       >
-        <h3 id={headingId} className="m-0 text-[1.3rem] text-navy">
+        <h3 id={headingId} className={cardHeading}>
           {copy.pending.heading}
         </h3>
         <p className={muted}>{copy.pending.body(qualification.name)}</p>
@@ -147,7 +147,7 @@ function Verdict({
       aria-labelledby={headingId}
       className={cx(
         card,
-        '@container grid gap-x-8 gap-y-5 py-6 @min-[720px]:grid-cols-[minmax(0,1fr)_minmax(16rem,20rem)]',
+        '@container grid gap-x-10 gap-y-6 py-6 @min-[720px]:grid-cols-[minmax(0,1fr)_minmax(16rem,20rem)]',
       )}
     >
       <div className="flex min-w-0 flex-col items-start gap-3">
@@ -180,34 +180,33 @@ function Verdict({
         </Button>
       </div>
 
-      {/* After Streamlit's metric: a label over a big figure, the level beside it, then the bars, on a solid field. */}
-      <div className="flex min-w-0 flex-col gap-4 self-start rounded-16 bg-step-current p-5 text-white">
-        <div className="flex items-end justify-between gap-3">
-          <div className="flex flex-col">
-            <span className="text-14">{copy.score}</span>
-            <strong className="font-display text-[3rem] leading-none font-bold tracking-[-0.04em]">
-              {score}%
-            </strong>
-          </div>
-          <span className="pb-1 text-right text-15 leading-[1.35] font-bold">{result.level}</span>
+      {/* After Streamlit's metric: a label over the screen's biggest figure, the level under it, then the bars. The
+          strengths, the part the learner already has, take the one hue; what's left to improve is ink. */}
+      <div className="flex min-w-0 flex-col gap-4 self-start border-border @max-[719px]:border-t @max-[719px]:pt-5 @min-[720px]:border-l @min-[720px]:pl-8">
+        <div className="flex flex-col gap-1">
+          <span className="text-14 text-muted">{copy.score}</span>
+          <strong className="font-display text-[2.5rem] leading-none font-semibold tracking-[-0.03em] text-navy tabular-nums">
+            {score}%
+          </strong>
+          <span className="text-15 leading-[1.35] text-ink">{result.level}</span>
         </div>
         {total > 0 && (
           <ul className="m-0 grid list-none gap-3 p-0">
             {[
-              { label: copy.strengths, count: result.strengths.length, fill: 'bg-white' },
-              { label: copy.improve, count: result.skill_gaps.length, fill: 'bg-white/55' },
+              { label: copy.strengths, count: result.strengths.length, fill: 'bg-blue' },
+              { label: copy.improve, count: result.skill_gaps.length, fill: 'bg-navy' },
             ].map((bar) => (
-              <li key={bar.label} className="grid gap-1 text-14">
+              <li key={bar.label} className="grid gap-1 text-14 text-ink">
                 <span className="flex justify-between gap-3">
                   {bar.label}
-                  <b className="font-[650]">
+                  <b className="font-semibold text-navy tabular-nums">
                     <span aria-hidden="true">
                       {bar.count}/{total}
                     </span>
                     <span className="sr-only">{en.countOf(bar.count, total)}</span>
                   </b>
                 </span>
-                <span className="h-2 overflow-hidden rounded-full bg-white/20" aria-hidden="true">
+                <span className="h-1.5 overflow-hidden rounded-full bg-bar" aria-hidden="true">
                   <i
                     className={cx('block h-full rounded-[inherit]', bar.fill)}
                     style={{ width: `${(100 * bar.count) / total}%` }}
@@ -344,20 +343,18 @@ export function PathwayCard({
       <section
         data-tour="curated-pathway"
         aria-labelledby={headingId}
-        className="flex min-w-0 flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-14 bg-soft px-5 py-4"
+        className="flex min-w-0 flex-wrap items-center justify-between gap-x-6 gap-y-3 rounded-12 bg-panel px-5 py-4"
       >
         <div className="min-w-[min(100%,18rem)] flex-1">
           <h4 id={headingId} className="m-0 text-16 leading-[1.35] font-bold text-navy">
             {pathway.title}
           </h4>
           {pathway.description && <p className={muted}>{pathway.description}</p>}
-          <ol className="m-0 mt-2 flex list-none flex-wrap gap-x-4 gap-y-1 p-0 text-14 text-ink">
+          {/* The steps in order, one after the other, each led by its place in the order. */}
+          <ol className="m-0 mt-2 flex list-none flex-wrap gap-x-5 gap-y-1 p-0 text-14 text-ink">
             {pathway.steps.map((step) => (
-              <li key={step.id} className="flex items-center gap-2">
-                <span
-                  aria-hidden="true"
-                  className="grid size-6 shrink-0 place-items-center rounded-full bg-surface text-12 font-bold text-blue"
-                >
+              <li key={step.id} className="flex items-baseline gap-[0.4rem]">
+                <span aria-hidden="true" className="text-13 font-semibold text-muted tabular-nums">
                   {step.position}
                 </span>
                 {step.title}
@@ -372,25 +369,21 @@ export function PathwayCard({
   }
   return (
     <section data-tour="curated-pathway" aria-labelledby={headingId} className={card}>
-      <p className={kicker}>{copy.yourPathway}</p>
-      <h3 id={headingId} className="mt-1 mb-[0.3rem] text-[1.15rem] text-navy">
+      <h3 id={headingId} className="mt-0 mb-[0.3rem] text-18 leading-[1.35] text-navy">
         {pathway.title}
       </h3>
       {pathway.description && <p className={muted}>{pathway.description}</p>}
-      {/* The steps as a timeline: a line runs from each number down to the next. */}
-      <ol className="mt-[0.8rem] mb-[0.6rem] grid list-none p-0">
+      {/* The steps in order, a rule between each. */}
+      <ol className="mt-3 mb-2 list-none divide-y divide-rule p-0">
         {pathway.steps.map((step) => (
-          <li
-            key={step.id}
-            className="relative m-0 flex items-start gap-[0.85rem] pb-[0.9rem] not-last:before:absolute not-last:before:top-[34px] not-last:before:bottom-0.5 not-last:before:left-[15px] not-last:before:w-0.5 not-last:before:bg-line not-last:before:content-['']"
-          >
+          <li key={step.id} className="m-0 flex items-baseline gap-3 py-[0.55rem]">
             <span
               aria-hidden="true"
-              className="grid size-8 shrink-0 place-items-center rounded-full bg-tint text-14 font-bold text-blue"
+              className="w-4 flex-none text-14 font-semibold text-muted tabular-nums"
             >
               {step.position}
             </span>
-            <p className="mt-[0.3rem] mb-0 text-15 leading-[1.5] text-navy">{step.title}</p>
+            <p className="m-0 text-15 leading-[1.5] text-navy">{step.title}</p>
           </li>
         ))}
       </ol>

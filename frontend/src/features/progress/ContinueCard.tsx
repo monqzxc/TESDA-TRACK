@@ -121,16 +121,15 @@ export function ContinueCard({
     <section
       data-tour="progress-next"
       aria-labelledby={headingId}
-      className="flex flex-wrap items-center gap-x-5 gap-y-4 rounded-18 border border-banner-border bg-(image:--track-banner) px-5 py-[1.1rem]"
+      className="flex flex-wrap items-center gap-x-6 gap-y-4 rounded-16 border border-border bg-surface px-6 py-5 max-xs:px-4"
     >
-      <span className="grid size-13 flex-none place-items-center rounded-14 bg-surface text-blue">
-        <Icon name="route" size={26} />
-      </span>
       <div className="min-w-0 flex-[1_1_18rem]">
-        <h2 id={headingId} className="mt-0 mb-[0.2rem] text-[1.2rem] text-navy">
+        <h2 id={headingId} className="m-0 text-14 leading-[1.4] font-normal text-muted">
           {copy.heading}
         </h2>
-        <p className="m-0 text-15 wrap-anywhere text-ink">{text}</p>
+        <p className="mt-1 mb-0 text-17 leading-[1.45] font-semibold wrap-anywhere text-navy">
+          {text}
+        </p>
       </div>
       {action}
     </section>

@@ -1,8 +1,7 @@
 import { useId, useMemo } from 'react'
 import { Link } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
-import { Icon, type IconName } from '../../components/Icon.tsx'
-import { PageArt } from '../../components/PageArt.tsx'
+import { Icon } from '../../components/Icon.tsx'
 import { SelectField } from '../../components/SelectField.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { catalogNames } from '../../lib/qualifications.ts'
@@ -20,7 +19,7 @@ import {
   type Journey,
   type Profile,
 } from './store.ts'
-import { card, notice, status } from './styles.ts'
+import { card, cardHeading, notice, status } from './styles.ts'
 import type { JourneyContext } from './useJourney.ts'
 
 interface MatchesStepProps {
@@ -56,16 +55,13 @@ export function MatchesStep({ journey, context, catalog, onCheck }: MatchesStepP
       {/* Qualifications for you: the heading with its link, then one wide card per match. */}
       <section data-tour="matches" aria-labelledby={headingId} className="mt-3 flex flex-col gap-4">
         <div className="flex flex-wrap items-end justify-between gap-x-4 gap-y-2">
-          <div className="flex min-w-0 items-start gap-3">
-            <Icon name="sparkle" size={26} className="mt-[0.2rem] shrink-0 text-[#f5a524]" />
-            <div>
-              <h3 id={headingId} className="m-0 text-[1.4rem] leading-[1.3] font-[750] text-navy">
-                {copy.matches.heading}
-              </h3>
-              <p className="mt-[0.2rem] mb-0 text-15 leading-[1.5] text-muted">
-                {found.length ? copy.matches.lead : copy.matches.leadNone}
-              </p>
-            </div>
+          <div className="min-w-0">
+            <h3 id={headingId} className={cardHeading}>
+              {copy.matches.heading}
+            </h3>
+            <p className="mt-1 mb-0 text-15 leading-[1.5] text-muted">
+              {found.length ? copy.matches.lead : copy.matches.leadNone}
+            </p>
           </div>
           <Link to={paths.qualifications} className={button({ variant: 'tertiary' })}>
             {copy.matches.viewAll}
@@ -141,25 +137,16 @@ export function MatchesStep({ journey, context, catalog, onCheck }: MatchesStepP
   )
 }
 
-const FACT_ICONS: readonly IconName[] = ['briefcase', 'clock', 'award', 'target']
+// Your starting point, after classic/styles.css's .start-point: the facts in one strip split by dividers, label over
+// value. The card is a size container, so the strip wraps by the card's width: two facts a row, then one.
 
-// Your starting point, after classic/styles.css's .start-point: the facts in a row with dividers, beside a stack of
-// books. The card is a size container, so the row wraps by the card's width: two facts a row, then one.
-const start = cx(
-  'grid grid-cols-[minmax(0,1fr)_auto] items-center gap-x-6 [grid-template-areas:"head_art"_"facts_art"_"skills_art"_"follow_follow"]',
-  '@max-[981px]:grid-cols-1 @max-[981px]:[grid-template-areas:"head"_"facts"_"skills"_"follow"]',
-)
-
-/**
- * A fact: its icon beside the label over the value. The icon sits in the label (dt), drawn in the fact's gutter
- * (--pad, then --icon-gap). The first of each row has no divider before it.
- */
+/** A fact: its label over its value. The first of each row has no divider before it. */
 function factClass(index: number): string {
   return cx(
-    'relative flex min-w-0 flex-col justify-center py-[0.15rem] pr-(--pad) pl-[calc(var(--pad)_+_var(--icon-gap))] [--icon-gap:calc(30px_+_0.85rem)]',
-    index === 0 ? 'border-l-0 [--pad:0.4rem]' : 'border-l border-border [--pad:1.25rem]',
-    index === 2 && '@max-[641px]:border-l-0 @max-[641px]:[--pad:0.4rem]',
-    '@max-[481px]:border-l-0 @max-[481px]:[--pad:0.4rem]',
+    'flex min-w-0 flex-col py-[0.15rem]',
+    index === 0 ? 'pr-5' : 'border-l border-border px-5',
+    index === 2 && '@max-[641px]:border-l-0 @max-[641px]:pl-0',
+    '@max-[481px]:border-l-0 @max-[481px]:px-0',
   )!
 }
 
@@ -207,40 +194,26 @@ function StartingPoint({ journey, profile }: { journey: Journey; profile: Profil
       aria-labelledby={headingId}
       className={cx(card, '@container')}
     >
-      <div className={start}>
-        <div className="[grid-area:head]">
-          <CardHeading icon="clipboard" id={headingId} description={startCopy.lead}>
-            {startCopy.heading}
-          </CardHeading>
-        </div>
-        <dl className="mt-[1.2rem] mb-0 grid grid-cols-[repeat(4,auto)] [grid-area:facts] @max-[641px]:grid-cols-2 @max-[641px]:gap-y-4 @max-[481px]:grid-cols-1 @max-[481px]:gap-y-[0.8rem]">
+      <div>
+        <CardHeading id={headingId} description={startCopy.lead}>
+          {startCopy.heading}
+        </CardHeading>
+        <dl className="mt-5 mb-0 grid grid-cols-[repeat(3,minmax(0,1fr))_minmax(0,1.4fr)] @max-[641px]:grid-cols-2 @max-[641px]:gap-y-4 @max-[481px]:grid-cols-1 @max-[481px]:gap-y-3">
           {facts.map(([label, value], i) => (
             <div key={label} className={factClass(i)}>
-              <dt className="text-13 leading-[1.4] font-[650] text-navy">
-                <Icon
-                  name={FACT_ICONS[i]}
-                  size={30}
-                  className="absolute top-1/2 left-(--pad) -translate-y-1/2 text-blue"
-                />
-                {label}
-              </dt>
-              <dd className="mt-[0.15rem] mb-0 ml-0 text-17 leading-[1.35] font-medium wrap-anywhere text-navy">
+              <dt className="text-13 leading-[1.4] text-muted">{label}</dt>
+              <dd className="mt-[0.2rem] mb-0 ml-0 text-17 leading-[1.35] font-semibold wrap-anywhere text-navy">
                 {value}
               </dd>
             </div>
           ))}
         </dl>
         {skills.length > 0 && (
-          <p className="mt-[0.8rem] mb-0 ml-[0.4rem] text-13 text-muted [grid-area:skills]">
-            {startCopy.skills(skills)}
-          </p>
+          <p className="mt-4 mb-0 text-13 text-muted">{startCopy.skills(skills)}</p>
         )}
-        <div className="w-[230px] [grid-area:art] @max-[981px]:hidden">
-          <PageArt name="books" />
-        </div>
 
         {(askExperience || askCertification) && (
-          <div className="mt-4 border-t border-border pt-4 [grid-area:follow]">
+          <div className="mt-5 border-t border-border pt-5">
             <p className="mt-0 mb-3 text-15 font-[650] text-navy">
               {followUp.heading}{' '}
               <span className="ml-[0.4rem] text-13 font-normal text-muted">{followUp.lead}</span>
