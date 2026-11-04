@@ -58,7 +58,7 @@ export function sectorArt(sector: string): SectorArt {
 }
 
 /** The trade's photo for a qualification, or undefined when its trade has none. */
-export function tradePhoto(name: string, size: 'card' | 'thumb'): string | undefined {
+function tradePhoto(name: string, size: 'card' | 'thumb'): string | undefined {
   const folded = name.toLocaleLowerCase('en-US')
   const found = TRADE_PHOTOS.find(([word]) => folded.includes(word))
   return found && (size === 'card' ? found[1] : found[2])

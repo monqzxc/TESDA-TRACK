@@ -10,7 +10,8 @@ from tesda_track.models import (AssessmentApplication, AssessmentCenter, Assessm
                                 Qualification, utcnow)
 from tesda_track.schemas.delivery import (ApplicationReview, AssessmentApplicationAdmin, AssessmentApplicationPublic,
                                           AssessmentCenterCreate, AssessmentScheduleCreate, AssessmentSchedulePublic,
-                                          AssessmentScheduleUpdate, LearnerSummary, NearbySearch, SiteSummary)
+                                          AssessmentScheduleUpdate, LearnerSummary, NearbySearch, SiteSearch,
+                                          SiteSummary)
 from tesda_track.services import catalog, geo, sites, verification
 from tesda_track.services.ownership import get_owned
 
@@ -45,10 +46,12 @@ def schedule_public(schedule: AssessmentSchedule, taken: int, distance_km: float
 
 # Centers
 
-def list_centers(session: Session, region_code: str | None) -> list[AssessmentCenter]:
+def list_centers(session: Session, search: SiteSearch) -> list[AssessmentCenter]:
     query = select(AssessmentCenter).where(AssessmentCenter.is_active)
-    if region_code:
-        query = query.where(AssessmentCenter.region_code == region_code)
+    if search.region_code:
+        query = query.where(AssessmentCenter.region_code == search.region_code)
+    if search.radius_km is not None:
+        query = query.where(geo.within_radius(AssessmentCenter, search))
     return list(session.exec(query.order_by(AssessmentCenter.name)))
 
 

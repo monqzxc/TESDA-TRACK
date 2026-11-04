@@ -329,6 +329,9 @@ def apply_plans(session, plans, qualification_ids):
             # Older or same-date snapshots cannot overwrite curated operational data.
             if snapshot > link.last_snapshot_date:
                 protected = {'provider_id','qualification_id','is_active','delivery_mode'} if kind == 'program' else {'is_active'}
+                # A geocoded or hand-corrected map point replaced the registry's on purpose.
+                if kind != 'program' and item.location_source:
+                    protected |= {'latitude','longitude'}
                 for name,value in values.items():
                     if name not in protected:
                         setattr(item,name,value)

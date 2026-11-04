@@ -79,7 +79,56 @@ Identical registration duplicates retain separate history rows and create one op
 
 The same source, policy, snapshot and inspection date produce the same batch fingerprint. Repeating an apply skips that batch. Updated mappings or source files create a new history batch while existing operational links prevent duplication. Only newer declared snapshots refresh importer-owned source metadata. Operational dates, seats, fees, availability, active flags and confirmed delivery modes are preserved. Imported history never deletes or archives unrelated application records.
 
-If a training registration appears to move to a different institution/branch or qualification, apply stops and rolls back. Reconcile that identity before retrying. An assessment center name/address change may produce a separate conservative identity; do not assume cross-snapshot name changes have been automatically resolved. The importer does not currently join the separate UIID worksheet or perform geocoding.
+If a training registration appears to move to a different institution/branch or qualification, apply stops and rolls back. Reconcile that identity before retrying. An assessment center name/address change may produce a separate conservative identity; do not assume cross-snapshot name changes have been automatically resolved. The importer does not currently join the separate UIID worksheet or perform geocoding; see the next section for that.
+
+## Fix map points with Google geocoding
+
+Registry coordinates inside the Philippines' bounding box can still be typos that put a center in the sea or the wrong town. `geocode-centers` looks every provider's and center's address up with the Google Geocoding API (the key needs the Geocoding API enabled) and overwrites the point when Google's answer is in the site's own city or municipality:
+
+| Google found | Replaces the point when it is |
+| --- | --- |
+| the building or street address | further than 10 m away |
+| only the barangay | missing or further than 1 km away |
+| only a road or the town | missing or further than 5 km away |
+| only the province, another town, or nothing | never |
+
+Points an administrator changed in the admin pages are never touched. Replaced points get `location_source = 'google_geocoding'` and later registry imports keep them (they also keep `manual` corrections). Demo fixtures are skipped.
+
+On the AWS server, after deploying (the `migrate` service applies migration 0020):
+
+```bash
+# Try the key on 20 sites; it prompts for the key (or pass -e GOOGLE_MAPS_API_KEY).
+docker compose exec api python -m tesda_track.cli geocode-centers --report /tmp/geocode.json --limit 20
+# Preview every site, then copy the report out and read "summary" and the "replace" rows.
+docker compose exec api python -m tesda_track.cli geocode-centers --report /tmp/geocode.json
+docker compose cp api:/tmp/geocode.json ./geocode-preview.json
+# Overwrite. Reuses the answers in /tmp/geocode.json, so Google is not asked again.
+docker compose exec api python -m tesda_track.cli geocode-centers --report /tmp/geocode.json --apply
+```
+
+Locally: `..\.venv\Scripts\python.exe -m tesda_track.cli geocode-centers --report ..\reports\geocode\preview.json` from `backend\`. `--kind training|assessment` limits the run to one table, and `--refresh` asks Google again instead of reusing the report. The full registry is about 9,800 distinct addresses, roughly one month of Google's free Geocoding allowance, so keep using the same `--report` file between runs. Lookups that fail are retried by the next run.
+
+### Find centers by name
+
+Geocoding an address often only finds the barangay or the road. `--by-name` instead searches Google Maps (Places API, Text Search) for `<center name>, <town>, <province>` and moves the pin to the place whose name matches. It changes only `latitude`/`longitude`; names and addresses are never rewritten. A place is used only when:
+
+- it is in the center's own city or municipality;
+- each name's most distinctive word is in the other ("Novaliches" for "STI College Novaliches"; "Tambis" rules "Tambis National High School" out for "Barobo National High School"); the center's own town and province words, and words listings add such as "TESDA", "Main Campus" or "Annex", count for little; a branch word may come from the center's address;
+- most of each name is in the other (score 0.75 or more), or Google lists a shorter name made of the center's words with at least one word fewer than about 25 registry names use ("EDFHER FARM" for "Edfher Farm Agricultural Learning Site", not "B.N. Driving School"). Acronyms count ("PWU", "USST", "GSAC"), and a branch word may be in either side's address ("Sta. Mesa"). On the registry itself, about 700 of 192,000 same-town pairs of differently spelled names still match, and those checked were the same institution spelled twice;
+- no second matching place sits more than 300 m away in the same town, unless the registry address clearly names one of the two listings (Kin Yang Academy's "360-A Don Placido Campos Ave"); otherwise branches are reported as `ambiguous`.
+
+Enable **Places API (New)** in the Google Cloud project and add it to the key's API restrictions. Use a separate report file:
+
+```bash
+docker compose exec api python -m tesda_track.cli geocode-centers --by-name --report /tmp/places.json --limit 50
+docker compose exec api python -m tesda_track.cli geocode-centers --by-name --report /tmp/places.json
+docker compose cp api:/tmp/places.json ./places-preview.json
+docker compose exec api python -m tesda_track.cli geocode-centers --by-name --report /tmp/places.json --apply
+```
+
+Replaced points get `location_source = 'google_places'` (migration 0021). Every row of either report has `from_map` and `to_map` Google Maps links for checking a center by hand. Searches are throttled to 500 a minute; a full run is about 7,000 searches, which costs more than geocoding (Text Search is billed per 1,000 beyond a smaller free allowance), so check the Maps Platform pricing page and set a daily quota first.
+
+Google's Maps Platform terms limit how long geocoded coordinates may be stored and forbid showing them on a non-Google map; the center map uses CARTO/OpenStreetMap tiles. Confirm with TESDA that this use is acceptable before relying on the result.
 
 Report JSON contains counts, unmapped labels and row flags, without contact details. Source history in PostgreSQL contains business contacts from the selected source fields and should receive the same database access controls and backup handling as provider/center contact records. Generated reports are ignored by Git.
 

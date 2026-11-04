@@ -17,6 +17,8 @@
   background: var(--track-map-water);
   font-family: inherit;
   font-size: 12px;
+  /* The clusters' counts keep their digits' widths. */
+  font-variant-numeric: tabular-nums;
 }
 
 /* Every link on the map, the popups' included. */
@@ -27,7 +29,7 @@
 .center-map .leaflet-control-attribution {
   background: var(--track-glass-soft);
   color: var(--track-muted);
-  font-size: 10px;
+  font-size: 11px;
 }
 
 /* Zoom sits under the locate button, top right, away from the filter panel. */

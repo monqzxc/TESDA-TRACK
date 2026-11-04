@@ -11,12 +11,12 @@ import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { analyzeGoal } from './api.ts'
 import { GOAL_MAX_LENGTH, useFinderStore } from './store.ts'
-import { cardFrame, muted } from './styles.ts'
+import { card, muted } from './styles.ts'
 import { ownsSession, useSaveJourney } from './useJourneySession.ts'
 import { createWriteRequestIds, isCurrentLearner, requireCurrentLearner } from './writeRequests.ts'
 
-/** The small labels over each row: "Need an idea? ...", "Or tell us in your own words". */
-const rowLabel = 'm-0 text-12 font-bold tracking-[0.08em] text-ink uppercase'
+/** The labels over each row: "Need an idea? ...", "Or tell us in your own words". */
+const rowLabel = 'm-0 text-14 leading-[1.4] font-semibold text-navy'
 
 const choices = 'm-0 flex list-none flex-wrap gap-2 p-0'
 
@@ -89,41 +89,34 @@ export function GoalStep() {
   // After classic/styles.css's .st-key-finder_panel: the step's heading, its two rows of ideas and the last goal, as
   // one card.
   return (
-    <section
-      className={cx(
-        cardFrame,
-        'flex flex-col gap-4 rounded-18 p-[1.4rem] shadow-[0_3px_16px_rgb(var(--track-shadow-rgb)/0.02)] max-xs:rounded-14 max-xs:p-[1.1rem]',
-      )}
-      aria-labelledby={headingId}
-    >
-      <div className="flex items-center gap-[1.1rem] max-xs:items-start max-xs:gap-[0.8rem]">
-        <span className="grid size-16 shrink-0 place-items-center rounded-16 bg-tint text-blue max-xs:size-12 max-xs:rounded-12">
-          <Icon name="target" size={34} />
-        </span>
-        <div>
-          <p className="m-0 text-11 leading-[1.6] font-bold tracking-[0.1em] text-muted uppercase">
-            {en.finder.steps.count(1, 4)} · {en.finder.steps.names[0]}
-          </p>
-          <h2
-            id={headingId}
-            className="mt-[0.15rem] mb-[0.3rem] text-[1.6rem] leading-[1.2] text-navy max-xs:text-[1.3rem]"
-          >
-            {copy.heading}
-          </h2>
-          <p className="m-0 text-15 leading-[1.5] text-muted">{copy.lead}</p>
-        </div>
+    <section className={cx(card, 'flex flex-col gap-5 py-6')} aria-labelledby={headingId}>
+      <div>
+        <h2
+          id={headingId}
+          className="m-0 text-24 leading-[1.25] font-bold tracking-[-0.015em] text-navy max-xs:text-20"
+        >
+          {copy.heading}
+        </h2>
+        <p className="mt-[0.35rem] mb-0 max-w-[62ch] text-15 leading-[1.5] text-muted">
+          {copy.lead}
+        </p>
       </div>
 
-      <p className={rowLabel}>{copy.examplesLabel}</p>
-      <ul className={choices} data-tour="goal-examples">
-        {copy.examples.map((example) => (
-          <li key={example.label}>
-            <Button className={button({ variant: 'pill' })} onPress={() => fillGoal(example.goal)}>
-              {example.label}
-            </Button>
-          </li>
-        ))}
-      </ul>
+      <div className="flex flex-col gap-[0.6rem]">
+        <p className={rowLabel}>{copy.examplesLabel}</p>
+        <ul className={choices} data-tour="goal-examples">
+          {copy.examples.map((example) => (
+            <li key={example.label}>
+              <Button
+                className={button({ variant: 'secondary', text: 14 })}
+                onPress={() => fillGoal(example.goal)}
+              >
+                {example.label}
+              </Button>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       {/* No Enter-to-send: the sample goals sit between the box and its button, as in the Streamlit app. */}
       <form className="flex flex-col gap-3" onSubmit={submit} noValidate>
@@ -136,14 +129,7 @@ export function GoalStep() {
           isInvalid={error !== null}
           validationBehavior="aria"
         >
-          <Label
-            className={cx(
-              rowLabel,
-              "flex items-center gap-[0.9rem] after:h-px after:flex-1 after:bg-border after:content-['']",
-            )}
-          >
-            {copy.ownWords}
-          </Label>
+          <Label className={rowLabel}>{copy.ownWords}</Label>
           <TextArea
             data-tour="goal-input"
             ref={field}
@@ -173,8 +159,10 @@ export function GoalStep() {
         >
           {copy.samples.map((sample) => (
             <li key={sample.label}>
-              <Button className={button({ variant: 'chip' })} onPress={() => fillGoal(sample.goal)}>
-                <Icon name="search" />
+              <Button
+                className={button({ variant: 'chip', height: 36, text: 13 })}
+                onPress={() => fillGoal(sample.goal)}
+              >
                 {sample.label}
               </Button>
             </li>
@@ -184,7 +172,10 @@ export function GoalStep() {
         <Button
           data-tour="goal-submit"
           type="submit"
-          className={cx(button({ variant: 'primary', wide: true, height: 48 }), 'mt-1')}
+          className={cx(
+            button({ variant: 'primary', height: 48 }),
+            'mt-2 self-start max-xs:self-stretch',
+          )}
           isPending={analyze.isPending}
         >
           {analyze.isPending ? copy.pending : copy.submit}
@@ -207,12 +198,9 @@ export function GoalStep() {
       )}
 
       {journey && (
-        <div className="flex min-w-0 items-center gap-[0.9rem] rounded-14 border border-panel-border bg-panel px-4 py-[0.85rem] max-xs:flex-wrap">
-          <span className="grid size-11 shrink-0 place-items-center rounded-12 bg-tint text-blue">
-            <Icon name="document" size={24} />
-          </span>
+        <div className="flex min-w-0 items-center gap-4 rounded-12 bg-panel px-4 py-3 max-xs:flex-wrap">
           <div className="min-w-0 flex-1">
-            <strong className="text-14 font-[650] text-navy">{copy.last}</strong>
+            <strong className="text-13 font-semibold text-muted">{copy.last}</strong>
             <p className="mt-[0.1rem] mb-0 text-15 leading-[1.5] wrap-anywhere text-ink">
               {journey.query}
             </p>

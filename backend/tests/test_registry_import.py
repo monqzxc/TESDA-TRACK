@@ -258,6 +258,26 @@ def test_newer_snapshot_refresh_preserves_curated_operational_fields(session,tmp
     assert (item.delivery_mode,item.slots,item.cost,item.start_date) == ('online',8,350,date(2026,11,1))
 
 
+@pytest.mark.parametrize('source', ['google_geocoding', 'manual'])
+def test_newer_snapshot_keeps_a_geocoded_or_corrected_point(session,tmp_path,source):
+    prepared,ids = plans(session,tmp_path,snapshot=date(2026,10,10))
+    apply_plans(session,prepared,ids)
+    provider = session.exec(select(TrainingProvider).where(TrainingProvider.name == 'Real Skills Center')).one()
+    provider.latitude, provider.longitude, provider.location_source = 14.5995, 120.9842, source
+    newer,ids = plans(session,tmp_path,[source_row(phone=9998887777)])
+    assert apply_plans(session,newer,ids)['providers_refreshed'] == 1
+    assert (provider.latitude, provider.longitude, provider.contact_phone) == (14.5995, 120.9842, '9998887777')
+
+
+def test_newer_snapshot_still_refreshes_a_registry_point(session,tmp_path):
+    prepared,ids = plans(session,tmp_path,snapshot=date(2026,10,10))
+    apply_plans(session,prepared,ids)
+    provider = session.exec(select(TrainingProvider).where(TrainingProvider.name == 'Real Skills Center')).one()
+    newer,ids = plans(session,tmp_path,[source_row(lat=14.61, lon=120.99)])
+    apply_plans(session,newer,ids)
+    assert (provider.latitude, provider.longitude) == (14.61, 120.99)
+
+
 def test_migration_metadata_has_no_drift(session):
     from alembic import command
     from alembic.config import Config

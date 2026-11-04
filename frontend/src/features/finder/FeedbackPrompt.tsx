@@ -274,14 +274,6 @@ export function FeedbackPrompt({ code, check, asked }: FeedbackPromptProps) {
       className={cx(floating, panel, shown === 'arriving' ? 'animate-float-in' : 'animate-notice')}
     >
       <div className="flex items-center gap-3">
-        <span
-          className={cx(
-            'grid size-9 shrink-0 place-items-center rounded-full',
-            done ? 'bg-good-bg text-good-ink' : 'bg-tint text-blue',
-          )}
-        >
-          <Icon name={done ? 'tick' : 'chat'} size="1.15rem" />
-        </span>
         <h3 id={headingId} className="m-0 flex-1 text-15 leading-[1.35] font-bold text-navy">
           {copy.question}
         </h3>

@@ -976,6 +976,21 @@ To try the full stack on your own machine, stop Laragon's Apache or Nginx first,
 ports 80 and 443. Then set `DOMAIN=localhost` and open https://localhost. It runs as a separate Compose
 project (`tesda-track`), with its own database volume.
 
+### API only (React app on Vercel)
+
+The server can run just PostgreSQL, the API and Caddy, with the React app on Vercel. Vercel passes `/api/*` to the
+server (`frontend/vercel.json`), so the app and the API share an origin and cookie sign-in works. Add this line to
+`.env`, then run `docker compose up -d --build` as usual:
+
+```bash
+COMPOSE_FILE=docker-compose.yml:docker-compose.api.yml
+```
+
+`docker-compose.api.yml` leaves out the Streamlit and React containers and swaps in `deploy/Caddyfile.api`, which serves
+only `/api/`, the partner MCP server and its OAuth metadata; everything else is a 404. Put the server's address in
+`frontend/vercel.json`. Every request then reaches the API from Vercel's addresses, so the per-client limits on Skills
+Bridge lookups, Directions and feedback are shared by everyone Vercel forwards from the same address.
+
 ## Deployment on Railway (demo)
 
 `.railway/railway.ts` describes a Railway project with the same database image (`deploy/postgres`) and API image

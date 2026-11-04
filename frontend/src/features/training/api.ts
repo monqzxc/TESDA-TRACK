@@ -23,26 +23,60 @@ const MINUTE = 60_000
 const PAGE_SIZE = 100
 const MAX_PAGES = 10
 
-export const trainingKeys = {
-  sites: ['training', 'sites'] as const,
-  listings: (codes: readonly string[]) => ['training', 'listings', [...codes].sort()] as const,
+/**
+ * Where to look: the learner's own location (already rounded to about 1 km), and how far around it, or every
+ * distance (null). The API leaves its query strings with a location out of its logs.
+ */
+export interface Nearby extends Point {
+  radiusKm: number | null
 }
 
-/** Every active training provider and assessment center, with its location when one is on file. */
-export const sitesQuery = queryOptions<
-  { providers: Provider[]; assessmentSites: AssessmentSite[] },
-  ApiError
->({
-  queryKey: trainingKeys.sites,
-  queryFn: async ({ signal }) => {
-    const [providers, assessmentSites] = await Promise.all([
-      unwrap(api.GET('/api/v1/training-providers', { signal })),
-      unwrap(api.GET('/api/v1/assessment-centers', { signal })),
-    ])
-    return { providers, assessmentSites }
-  },
-  staleTime: 5 * MINUTE,
-})
+/**
+ * The API is asked a little wider than the page's radius, so the page's own straight-line distances decide which
+ * centers are inside it.
+ */
+const RADIUS_MARGIN_KM = 1
+
+/** A nearby search's query: nearest first, and only within the radius when there is one. */
+function nearbyQuery(near: Nearby | null) {
+  if (!near) return {}
+  return {
+    near_lat: near.latitude,
+    near_lon: near.longitude,
+    ...(near.radiusKm ? { radius_km: near.radiusKm + RADIUS_MARGIN_KM } : {}),
+  }
+}
+
+const nearbyKey = (near: Nearby | null) =>
+  near ? `${near.latitude},${near.longitude}/${near.radiusKm ?? 'any'}` : 'everywhere'
+
+/** Sites have no order by distance, so only a radius changes which are asked for. */
+const sitesWithin = (near: Nearby | null) => (near?.radiusKm ? near : null)
+
+export const trainingKeys = {
+  sites: (near: Nearby | null = null) =>
+    ['training', 'sites', nearbyKey(sitesWithin(near))] as const,
+  listings: (codes: readonly string[], near: Nearby | null = null) =>
+    ['training', 'listings', [...codes].sort(), nearbyKey(near)] as const,
+}
+
+/**
+ * The active training providers and assessment centers, with their locations when on file: those within a radius
+ * of the learner, or every one in the country.
+ */
+export const sitesQuery = (near: Nearby | null = null) =>
+  queryOptions<{ providers: Provider[]; assessmentSites: AssessmentSite[] }, ApiError>({
+    queryKey: trainingKeys.sites(near),
+    queryFn: async ({ signal }) => {
+      const query = nearbyQuery(sitesWithin(near))
+      const [providers, assessmentSites] = await Promise.all([
+        unwrap(api.GET('/api/v1/training-providers', { params: { query }, signal })),
+        unwrap(api.GET('/api/v1/assessment-centers', { params: { query }, signal })),
+      ])
+      return { providers, assessmentSites }
+    },
+    staleTime: 5 * MINUTE,
+  })
 
 /** Every page of a listing, up to MAX_PAGES. `more` says whether some were left unread. */
 async function allPages<T>(
@@ -64,14 +98,17 @@ export interface Listings {
   truncated: boolean
 }
 
-/** The programs and assessment schedules for the chosen qualifications, or for all of them. */
-export const listingsQuery = (codes: readonly string[]) =>
+/**
+ * The programs and assessment schedules for the chosen qualifications, or for all of them. Near the learner, they
+ * come nearest first, so a list too long to read in full leaves out the farthest.
+ */
+export const listingsQuery = (codes: readonly string[], near: Nearby | null = null) =>
   queryOptions<Listings, ApiError>({
-    queryKey: trainingKeys.listings(codes),
+    queryKey: trainingKeys.listings(codes, near),
     queryFn: async ({ signal }) => {
       const result: Listings = { programs: [], schedules: [], truncated: false }
       for (const code of codes.length ? codes : [undefined]) {
-        const query = code ? { qualification_code: code } : {}
+        const query = { ...(code ? { qualification_code: code } : {}), ...nearbyQuery(near) }
         const [programs, schedules] = await Promise.all([
           allPages((offset) =>
             unwrap(

@@ -99,8 +99,26 @@ def test_nearby_search_orders_by_distance_and_applies_radius(client, make_provid
 
 
 @pytest.mark.parametrize("params", [{"near_lat": 14.6}, {"radius_km": 10}, {"near_lat": 95, "near_lon": 120}])
-def test_nearby_search_needs_a_complete_valid_point(client, params):
-    assert client.get("/api/v1/training-programs", params=params).status_code == 422
+@pytest.mark.parametrize("path", ["/api/v1/training-programs", "/api/v1/training-providers"])
+def test_nearby_search_needs_a_complete_valid_point(client, path, params):
+    assert client.get(path, params=params).status_code == 422
+
+
+def test_providers_can_be_listed_within_a_radius(client, make_provider):
+    manila = make_provider()
+    make_provider(name="Cebu Skills Center", region_code="VII", location=CEBU_CITY)
+    make_provider(name="No Address Yet", location=None)
+
+    def names(**params):
+        response = client.get("/api/v1/training-providers", params=params)
+        assert response.status_code == 200, response.text
+        return [provider["name"] for provider in response.json()]
+
+    assert names() == ["Cebu Skills Center", "Manila Welding Institute", "No Address Yet"]
+    # Quezon City to Manila is roughly 11 km. Unmapped providers can't be inside a radius.
+    assert names(near_lat=QUEZON_CITY[0], near_lon=QUEZON_CITY[1], radius_km=20) == [manila["name"]]
+    assert names(near_lat=QUEZON_CITY[0], near_lon=QUEZON_CITY[1], radius_km=5) == []
+    assert names(region_code="VII") == ["Cebu Skills Center"]
 
 
 def test_deactivated_programs_and_providers_are_hidden(client, admin, make_provider, make_program):

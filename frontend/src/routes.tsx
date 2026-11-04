@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react'
 import type { RouteObject } from 'react-router'
-import { AppLayout, HomeLayout, Root } from './components/Layout.tsx'
+import { AppLayout, HomeLayout, Root, WebviewLayout } from './components/Layout.tsx'
 import { RootError, RouteError } from './components/RouteError.tsx'
 import type { PageKey, RouteHandle } from './lib/navigation.ts'
 import { paths } from './paths.ts'
@@ -50,8 +50,45 @@ export const routes: RouteObject[] = [
           {
             ErrorBoundary: RouteError,
             children: [
-              { index: true, ...page('home', () => import('./features/home/HomePage.tsx')) },
+              {
+                index: true,
+                ...page('home', () => import('./features/home/HomePage.tsx')),
+              },
             ],
+          },
+        ],
+      },
+      {
+        Component: WebviewLayout,
+        ErrorBoundary: RouteError,
+        children: [
+          {
+            path: paths.tspWebview,
+            ...page('tspWebview', () => import('./features/tsp/TspWebviewPage.tsx')),
+          },
+          {
+            path: paths.tspMatches,
+            ...page('finderMatches', () => import('./features/tsp/TspJourneyPage.tsx')),
+          },
+          {
+            path: paths.tspReadiness,
+            ...page('finderReadiness', () => import('./features/tsp/TspJourneyPage.tsx')),
+          },
+          {
+            path: paths.tspRecommendation,
+            ...page('finderPathway', () => import('./features/tsp/TspJourneyPage.tsx')),
+          },
+          {
+            path: paths.tspQualifications,
+            ...page('qualifications', () => import('./features/library/LibraryPage.tsx')),
+          },
+          {
+            path: paths.tspTraining,
+            ...page('training', () => import('./features/training/TrainingPage.tsx')),
+          },
+          {
+            path: paths.tspSkills,
+            ...page('skills', () => import('./features/skills/SkillsPage.tsx')),
           },
         ],
       },
@@ -66,9 +103,18 @@ export const routes: RouteObject[] = [
                 path: paths.finder,
                 children: [
                   { index: true, ...page('finderGoal', finder) },
-                  { path: paths.finderMatches, ...page('finderMatches', finder) },
-                  { path: paths.finderReadiness, ...page('finderReadiness', finder) },
-                  { path: paths.finderPathway, ...page('finderPathway', finder) },
+                  {
+                    path: paths.finderMatches,
+                    ...page('finderMatches', finder),
+                  },
+                  {
+                    path: paths.finderReadiness,
+                    ...page('finderReadiness', finder),
+                  },
+                  {
+                    path: paths.finderPathway,
+                    ...page('finderPathway', finder),
+                  },
                 ],
               },
               {

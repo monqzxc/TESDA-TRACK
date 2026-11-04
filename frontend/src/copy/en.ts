@@ -262,6 +262,10 @@ export const en = {
       title: 'TESDA-TRACK · Your next step',
       heading: 'Every career has a track. Find yours.',
     },
+    tspWebview: {
+      title: 'Find a TESDA pathway · TESDA-TRACK',
+      heading: 'Find your TESDA pathway',
+    },
     finderGoal: {
       title: 'Your goal · Find my pathway · TESDA-TRACK',
       heading: 'Find my pathway',
@@ -378,21 +382,15 @@ export const en = {
       showPages: 'Show 12 per page',
       saved: 'Qualification added to My Progress.',
     },
-    hero: {
-      title: 'Find what sparks',
-      accent: 'your interest.',
-    },
     filters: 'Filter qualifications',
     search: 'Search qualifications or careers',
     searchPlaceholder: 'Try welding, cookery, or computers',
     clearSearch: 'Clear search',
     sector: 'Sector',
     allSectors: 'All sectors',
-    // "12 of 319 qualifications · Showing 1–12 · Filtered results"
+    // "12 of 319 qualifications · Showing 1–12"
     count: (found: number, total: number) => `${figure(found)} of ${figure(total)} qualifications`,
     showing: (first: number, last: number) => `Showing ${figure(first)}–${figure(last)}`,
-    filtered: 'Filtered results',
-    unfiltered: 'Find your next possibility',
     clear: 'Clear filters',
     empty: {
       heading: 'No qualifications found',
@@ -409,6 +407,7 @@ export const en = {
   // Find my pathway (classic/app.py show_finder and its steps).
   finder: {
     banner: {
+      eyebrow: 'Your journey, simplified',
       title: 'A little direction.',
       accent: 'A world of possibilities.',
       tiles: [
@@ -611,7 +610,6 @@ export const en = {
           `Whether training or an NC assessment comes next for ${name} depends on the skills you rate.`,
         action: 'Go to the readiness check',
       },
-      kicker: 'Recommended for you',
       verdicts: {
         high: { headline: 'Apply for the NC assessment', action: 'See assessment schedules' },
         moderate: {
@@ -624,8 +622,6 @@ export const en = {
       score: 'Your readiness',
       strengths: 'Your strengths',
       improve: 'Skills to improve',
-      details: (strengths: number, gaps: number) =>
-        `Your strengths (${figure(strengths)}) and skills to improve (${figure(gaps)})`,
       noStrengths: 'No competencies marked confident yet.',
       noGaps: 'No self-reported gaps.',
       basedOn:
@@ -647,12 +643,9 @@ export const en = {
       followed: 'Added to My Progress. Tick off each step as you complete it.',
       already: 'You’re already following this pathway. Find it under My Progress.',
       diagnostics: 'Recommendation diagnostics',
-      // The personalized report under the verdict (POST /recommendations/report). Its sentences come from the API,
-      // worked out from the learner's answers, the catalog and the rankings; these are the words around them.
+      // The personalized report under the verdict (POST /recommendations/report), in tabs. Its sentences come from the
+      // API, worked out from the learner's answers, the catalog and the rankings; these are the words around them.
       report: {
-        kicker: 'Your personalized report',
-        heading: 'Recommendations for you',
-        lead: 'Worked out from your answers, this qualification’s units of competency, and the training and assessment options TESDA-TRACK lists.',
         loading: 'Preparing your report…',
         updating: 'Updating your report…',
         place: {
@@ -664,12 +657,9 @@ export const en = {
           scholarship: 'I need a scholarship',
           help: 'These only sort and explain the options. They aren’t saved.',
         },
-        training: 'Training to consider',
-        recommended: 'Recommended for you',
         alsoConsider: 'Also worth considering',
         improve: 'Skills you should improve',
         noGaps: 'You didn’t report any skill gaps.',
-        learn: 'Competencies to learn or practice',
         moreSkills: (n: number) => `${figure(n)} more ${n === 1 ? 'skill' : 'skills'}`,
         priority: { high: 'High priority', medium: 'Medium priority', low: 'Lower priority' },
         status: {
@@ -715,7 +705,6 @@ export const en = {
         scholarship: 'Scholarship listed',
         allOptions: 'See all options in Training & Assessment',
         steps: 'Your next steps',
-        final: 'Final recommendation',
         nextAction: 'Your next action',
       },
       // Floating at the foot of the screen under the recommendation. The answers measure how well matching works
@@ -760,7 +749,6 @@ export const en = {
   // Training & Assessment (classic/training_view.py).
   training: {
     hero: {
-      title: 'Find a training or assessment center',
       lead: 'Discover TESDA-accredited training centers and assessment centers near you or in any location.',
     },
     useLocation: 'Use my location',
@@ -837,6 +825,9 @@ export const en = {
     results: {
       heading: (n: number) => `All results (${figure(n)})`,
       loading: 'Loading centers…',
+      // The page asks for the learner's location as it opens, and loads only their area (US-08).
+      locating: 'Finding your location to show centers near you…',
+      skipLocation: 'Show all centers instead',
       // Distances are as the crow flies, from a point that may itself be rounded (US-08).
       distancesFrom: (label: string) => `Approximate distances from ${label}`,
       fromYou: 'your location',
@@ -1150,6 +1141,7 @@ export const en = {
     },
     pathways: {
       heading: 'My pathways',
+      suggested: 'Recommended pathways to follow',
       empty: 'Follow a recommended pathway from Find my pathway to track it here.',
       complete: (percent: number) => `${percent}% complete`,
       completed: 'Completed',
@@ -1211,10 +1203,6 @@ export const en = {
   },
   // Skills Explorer (classic/skills_bridge_view.py).
   skills: {
-    hero: {
-      title: 'See where your skills',
-      accent: 'can take you.',
-    },
     off: {
       heading: 'Skills Explorer is turned off',
       body: 'This server doesn’t connect to Skills Bridge. Find my pathway and the Qualifications Library work as usual.',
@@ -1236,6 +1224,12 @@ export const en = {
     start: {
       heading: 'Start with what you know',
       body: 'Skills Bridge connects your skills with occupations and qualifications. You can then review a role’s skills and international mappings.',
+    },
+    // The text only asked for ideas ("not sure, suggest"), so nothing was searched (the API's reason).
+    suggest: {
+      heading: 'Not sure what you want yet?',
+      body: 'Skills Explorer needs something you can do or enjoy, like cooking, welding or fixing phones. Find my pathway asks about your goal and suggests TESDA programs for you.',
+      action: 'Find my pathway',
     },
     results: {
       searched: (terms: readonly string[]) => `Searching Skills Bridge for: ${terms.join(', ')}`,

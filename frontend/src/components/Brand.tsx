@@ -14,7 +14,7 @@ export function Brand({ compact = false }: { compact?: boolean }) {
   const [first, second] = en.brand.wordmark
 
   return (
-    <div className={cx(!compact && 'mt-[0.2rem] mb-[1.8rem]')}>
+    <div className={cx(!compact && 'mb-7')}>
       <Link
         to={paths.home}
         aria-label={en.brand.homeLink}
@@ -36,11 +36,7 @@ export function Brand({ compact = false }: { compact?: boolean }) {
           <span className="font-normal text-blue">{second}</span>
         </span>
       </Link>
-      {!compact && (
-        <p className="mt-[0.3rem] mb-0 text-[0.625rem] leading-[1.6] font-semibold tracking-[0.12em] text-muted uppercase">
-          {en.brand.tagline}
-        </p>
-      )}
+      {!compact && <p className="mt-2 mb-0 text-13 leading-[1.4] text-muted">{en.brand.tagline}</p>}
     </div>
   )
 }

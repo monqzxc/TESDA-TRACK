@@ -307,9 +307,10 @@ describe('My Progress', () => {
       serveLearner()
       await openProgress(section)
       expect(region('My qualification goals')).toBeVisible()
-      expect(
-        within(sections()).getByRole('button', { name: 'Qualifications' }),
-      ).toHaveAttribute('aria-pressed', 'true')
+      expect(within(sections()).getByRole('button', { name: 'Qualifications' })).toHaveAttribute(
+        'aria-pressed',
+        'true',
+      )
     },
   )
 
@@ -335,7 +336,9 @@ describe('My Progress', () => {
       'Earn my certificate',
     )
     await user.click(within(profileSections()).getByRole('button', { name: 'Overview' }))
-    await user.click(within(profileSections()).getByRole('button', { name: 'Goals & certificates' }))
+    await user.click(
+      within(profileSections()).getByRole('button', { name: 'Goals & certificates' }),
+    )
     expect(within(region('My goals')).getByRole('textbox', { name: 'New goal' })).toHaveValue(
       'Earn my certificate',
     )
@@ -591,17 +594,26 @@ describe('My Progress', () => {
     expect(within(latest).getByText('76%')).toBeInTheDocument()
   })
 
-  it('reopens a saved recommendation in the finder by its id, with no check from elsewhere (US-10)', async () => {
+  it('reopens a saved recommendation at its pathway with its linked readiness result', async () => {
     serveLearner({
       sessions: [session],
       checks: [check('c-1', '2026-10-01T02:00:00Z', 35, { 1: 'confident' })],
     })
+    server.use(
+      http.get('*/api/v1/pathways', () => HttpResponse.json([])),
+      http.post('*/api/v1/analysis/matches', () =>
+        HttpResponse.json({ profile: session.profile, matches: [] }),
+      ),
+      http.post('*/api/v1/recommendations/report', () =>
+        HttpResponse.json({ detail: 'Unavailable' }, { status: 503 }),
+      ),
+    )
     const user = userEvent.setup()
     const { router } = await openProgress('history')
 
     await user.click(screen.getByRole('button', { name: 'Continue: I want to be a welder.' }))
 
-    await waitFor(() => expect(router.state.location.pathname).toBe('/find/matches'))
+    await waitFor(() => expect(router.state.location.pathname).toBe('/find/pathway'))
     const finder = useFinderStore.getState()
     expect(finder.journey).toMatchObject({
       query: 'I want to be a welder.',
@@ -609,7 +621,46 @@ describe('My Progress', () => {
       sessionOwner: maria.id,
     })
     expect(finder.selected).toBe(welding.code)
-    expect(finder.checks).toEqual({})
+    expect(finder.answers[welding.code]).toEqual({ 1: 'confident' })
+    expect(finder.checks[welding.code]).toMatchObject({
+      saved: true,
+      result: { score: 35 },
+    })
+  })
+
+  it('offers a checked recommendation in My pathways and saves it when followed', async () => {
+    const writes = serveLearner({
+      sessions: [session],
+      checks: [check('c-1', '2026-10-01T02:00:00Z', 35, { 1: 'confident' })],
+    })
+    const suggested = {
+      ...enrollment,
+      pathway: {
+        ...enrollment.pathway,
+        route: 'TRAINING_AND_ASSESSMENT' as const,
+        title: 'Train then take assessment',
+      },
+    }
+    server.use(
+      http.get('*/api/v1/pathways', () => HttpResponse.json([suggested.pathway])),
+      http.post('*/api/v1/me/pathways', async ({ request }) => {
+        const body = await request.json()
+        writes.push({ method: 'POST', path: '/api/v1/me/pathways', body })
+        return HttpResponse.json(suggested, { status: 201 })
+      }),
+    )
+    await openProgress('pathways')
+    const pathways = region('My pathways')
+    expect(await within(pathways).findByText('Train then take assessment')).toBeVisible()
+    await userEvent.click(within(pathways).getByRole('button', { name: 'Add to My Progress' }))
+    await waitFor(() =>
+      expect(
+        within(pathways).getByRole('article', { name: 'Train then take assessment' }),
+      ).toBeVisible(),
+    )
+    expect(writes).toEqual([
+      { method: 'POST', path: '/api/v1/me/pathways', body: { pathway_id: suggested.pathway.id } },
+    ])
   })
 
   it('ticks off a step, and shows the pathway as the API saves it', async () => {

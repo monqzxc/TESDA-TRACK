@@ -1,6 +1,5 @@
 import { useId } from 'react'
 import { ProgressBar } from 'react-aria-components'
-import { Icon, type IconName } from '../../components/Icon.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cssVars, cx } from '../../lib/style.ts'
 import type { Certification, Enrollment, Goal, ReadinessCheck } from './api.ts'
@@ -8,7 +7,6 @@ import { ui } from './styles.ts'
 
 interface Milestone {
   id: string
-  icon: IconName
   title: string
   description: string
   current: number
@@ -46,7 +44,6 @@ export function Milestones({
   const milestones: Milestone[] = [
     {
       id: 'qualifications',
-      icon: 'learn',
       title: copy.badges.qualifications.title,
       description: copy.badges.qualifications.description,
       current: savedQualifications.size,
@@ -54,7 +51,6 @@ export function Milestones({
     },
     {
       id: 'steps',
-      icon: 'checklist',
       title: copy.badges.steps.title,
       description: copy.badges.steps.description,
       current: completedSteps,
@@ -62,7 +58,6 @@ export function Milestones({
     },
     {
       id: 'pathway',
-      icon: 'route',
       title: copy.badges.pathway.title,
       description: copy.badges.pathway.description,
       current: completedPathways,
@@ -70,7 +65,6 @@ export function Milestones({
     },
     {
       id: 'readiness',
-      icon: 'growth',
       title: copy.badges.readiness.title,
       description: copy.badges.readiness.description,
       current: checks.length,
@@ -78,7 +72,6 @@ export function Milestones({
     },
     {
       id: 'goal',
-      icon: 'target',
       title: copy.badges.goal.title,
       description: copy.badges.goal.description,
       current: achievedGoals,
@@ -86,7 +79,6 @@ export function Milestones({
     },
     {
       id: 'certificate',
-      icon: 'award',
       title: copy.badges.certificate.title,
       description: copy.badges.certificate.description,
       current: certifications.length,
@@ -98,71 +90,62 @@ export function Milestones({
   return (
     <section data-tour="progress-milestones" aria-labelledby={headingId}>
       <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
-        <div>
-          <h2 id={headingId} className="m-0 text-24 text-navy">
+        <div className="min-w-0">
+          <h2 id={headingId} className="m-0 text-20 leading-[1.3] text-navy">
             {copy.heading}
           </h2>
           <p className="mt-1 mb-0 text-15 text-muted">{copy.lead}</p>
         </div>
-        <p className="m-0 rounded-full bg-tint px-3 py-2 text-14 font-semibold text-blue">
+        <p className="m-0 text-15 font-semibold text-navy tabular-nums">
           {copy.earned(earned, milestones.length)}
         </p>
       </div>
-      <div className="grid grid-cols-2 items-stretch gap-4 max-md:grid-cols-1">
+      {/* One badge a row, split by rules: what it asks on the left, how far along on the right. Only an earned badge
+          carries a mark. */}
+      <ul className="m-0 list-none divide-y divide-rule rounded-16 border border-border bg-surface px-6 py-1 max-xs:px-4">
         {milestones.map((milestone) => {
           const isEarned = milestone.current >= milestone.target
           const progress = Math.min(milestone.current, milestone.target)
           const percent = (progress / milestone.target) * 100
           return (
-            <article
-              key={milestone.id}
-              aria-labelledby={`${headingId}-${milestone.id}`}
-              className={cx(
-                'flex min-w-0 gap-4 rounded-16 border bg-surface p-5',
-                isEarned ? 'border-good-bg' : 'border-border',
-              )}
-            >
-              <span
-                className={cx(
-                  'grid size-12 shrink-0 place-items-center rounded-full',
-                  isEarned ? 'bg-good-bg text-good-ink' : 'bg-chip text-muted',
-                )}
-                aria-hidden="true"
+            <li key={milestone.id}>
+              <article
+                aria-labelledby={`${headingId}-${milestone.id}`}
+                className="flex min-w-0 flex-wrap items-center justify-between gap-x-8 gap-y-3 py-4"
               >
-                <Icon name={milestone.icon} size={24} />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-start justify-between gap-2">
+                <div className="min-w-0 flex-[1_1_18rem]">
                   <h3
                     id={`${headingId}-${milestone.id}`}
-                    className="m-0 text-18 leading-snug text-navy"
+                    className="m-0 flex flex-wrap items-center gap-x-[0.6rem] gap-y-1 text-16 leading-snug text-navy"
                   >
                     {milestone.title}
+                    <span
+                      className={cx(
+                        'flex-none rounded-full px-[0.55rem] py-[0.1rem] text-12 font-semibold',
+                        isEarned ? 'bg-good-bg text-good-ink' : 'sr-only',
+                      )}
+                    >
+                      {isEarned ? copy.earnedLabel : copy.inProgress}
+                    </span>
                   </h3>
-                  <span
-                    className={cx(
-                      'rounded-full px-2.5 py-1 text-12 font-semibold',
-                      isEarned ? 'bg-good-bg text-good-ink' : 'bg-chip text-muted',
-                    )}
-                  >
-                    {isEarned ? copy.earnedLabel : copy.inProgress}
-                  </span>
+                  <p className={cx(ui.muted, 'mt-1')}>{milestone.description}</p>
                 </div>
-                <p className={cx(ui.muted, 'mt-2')}>{milestone.description}</p>
-                <div className="mt-3 flex items-center justify-between gap-3 text-13 text-muted">
-                  <span>{copy.count(progress, milestone.target)}</span>
+                <div className="flex w-56 flex-none items-center justify-end gap-3 text-14 max-xs:w-full max-xs:justify-start">
                   <ProgressBar
                     value={progress}
                     maxValue={milestone.target}
                     aria-label={`${milestone.title}: ${copy.count(progress, milestone.target)}`}
-                    className="w-28 shrink-0"
+                    className="flex-1"
                   >
                     <span
-                      className="block h-2 overflow-hidden rounded-full bg-bar"
+                      className="block h-1.5 overflow-hidden rounded-full bg-bar"
                       aria-hidden="true"
                     >
                       <i
-                        className="block h-full rounded-full bg-blue"
+                        className={cx(
+                          'block h-full rounded-full',
+                          isEarned ? 'bg-navy' : 'bg-blue',
+                        )}
                         style={cssVars(
                           { '--progress': percent },
                           { width: 'calc(var(--progress) * 1%)' },
@@ -170,13 +153,21 @@ export function Milestones({
                       />
                     </span>
                   </ProgressBar>
+                  <span
+                    className={cx(
+                      'w-12 flex-none text-right tabular-nums',
+                      progress === 0 ? 'text-muted' : 'font-semibold text-navy',
+                    )}
+                  >
+                    {copy.count(progress, milestone.target)}
+                  </span>
                 </div>
-              </div>
-            </article>
+              </article>
+            </li>
           )
         })}
-      </div>
-      <p className="mt-4 mb-0 rounded-12 border border-border bg-surface px-4 py-3 text-13 leading-relaxed text-muted">
+      </ul>
+      <p className="mt-3 mb-0 max-w-[80ch] text-13 leading-relaxed text-muted">
         {copy.certificateNote}
       </p>
     </section>

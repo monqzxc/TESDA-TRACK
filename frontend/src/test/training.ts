@@ -211,10 +211,15 @@ export function serveTrainingApi({
         skills_bridge_enabled: true,
       }),
     ),
-    http.get('*/api/v1/training-providers', () =>
-      HttpResponse.json([manilaInstitute, cebuCenter, mobileUnit]),
-    ),
-    http.get('*/api/v1/assessment-centers', () => HttpResponse.json([manilaAssessment])),
+    // Like the listings below, the sites ignore a radius: the page applies its own.
+    http.get('*/api/v1/training-providers', async ({ request }) => {
+      await record(request)
+      return HttpResponse.json([manilaInstitute, cebuCenter, mobileUnit])
+    }),
+    http.get('*/api/v1/assessment-centers', async ({ request }) => {
+      await record(request)
+      return HttpResponse.json([manilaAssessment])
+    }),
     http.get('*/api/v1/training-programs', async ({ request }) => {
       await record(request)
       return HttpResponse.json(byQualification(request, programs))

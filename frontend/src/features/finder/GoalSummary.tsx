@@ -3,9 +3,9 @@ import { Link } from 'react-router'
 import { useAuth, useRequireAccount } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { useCopy } from '../../i18n/copy.ts'
+import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
-import { Avatar } from './art.tsx'
 import type { Journey } from './store.ts'
 import { ownsSession, useSaveJourney } from './useJourneySession.ts'
 
@@ -15,14 +15,16 @@ interface GoalSummaryProps {
   code: string | null
   /** The session sync's state (useSessionSync). */
   sync: { saved: boolean; failed: boolean; retry: () => void }
+  /** With less padding, on Your pathway. */
+  compact?: boolean
 }
 
 /**
  * The submitted goal above steps 2 to 4, as typed (classic/app.py show_goal_summary), with Change goal and whether
  * it's saved. A guest's Save to profile opens sign-in, then saves the journey as it is (US-02).
- * Drawn after classic/styles.css's .st-key-finder_goal_summary: the goal with a learner's avatar, and its actions.
+ * Drawn after classic/styles.css's .st-key-finder_goal_summary: the goal as the learner typed it, and its actions.
  */
-export function GoalSummary({ journey, code, sync }: GoalSummaryProps) {
+export function GoalSummary({ journey, code, sync, compact = false }: GoalSummaryProps) {
   const en = useCopy()
   const copy = en.finder.summary
 
@@ -63,17 +65,17 @@ export function GoalSummary({ journey, code, sync }: GoalSummaryProps) {
   }
 
   return (
-    <div className="flex flex-wrap items-center justify-between gap-x-5 gap-y-3 rounded-18 border border-border bg-surface py-[0.9rem] pr-5 pl-4 shadow-card">
-      <div className="flex min-w-0 flex-[1_1_22rem] items-center gap-[1.1rem]">
-        <Avatar className="size-17 shrink-0 max-xs:size-12" />
-        <div className="min-w-0">
-          <p className="m-0 text-11 leading-[1.6] font-bold tracking-[0.12em] text-ink uppercase">
-            {copy.label}
-          </p>
-          <p className="mt-[0.15rem] mb-0 text-[1.1875rem] leading-[1.4] font-[650] wrap-anywhere text-navy max-xs:text-16">
-            {journey.query}
-          </p>
-        </div>
+    <div
+      className={cx(
+        'flex flex-wrap items-center justify-between gap-x-5 gap-y-3 rounded-14 border border-border bg-surface px-5 max-xs:px-4',
+        compact ? 'py-3' : 'py-4',
+      )}
+    >
+      <div className="min-w-0 flex-[1_1_22rem]">
+        <p className="m-0 text-13 leading-[1.5] text-muted">{copy.label}</p>
+        <p className="mt-[0.1rem] mb-0 text-17 leading-[1.4] font-semibold wrap-anywhere text-navy max-xs:text-16">
+          {journey.query}
+        </p>
       </div>
       <div className="flex flex-wrap items-center gap-x-[0.6rem] gap-y-1">
         <Link to={paths.finder} className={button({ variant: 'tertiary' })}>

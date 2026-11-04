@@ -910,7 +910,6 @@ function McpPartners() {
         )}
         {!clients.isLoading && !clients.isError && clients.data?.length === 0 && (
           <EmptyState
-            icon="network"
             heading="No partner clients yet"
             body="Add the first approved partner to issue scoped MCP credentials."
             headingLevel={3}

@@ -11,7 +11,7 @@ from tesda_track.models import APPLICATION_STATUSES
 from tesda_track.schemas.delivery import (ApplicationCreate, ApplicationReview, AssessmentApplicationAdmin,
                                           AssessmentApplicationPublic, AssessmentCenterCreate, AssessmentCenterPublic,
                                           AssessmentCenterUpdate, AssessmentScheduleCreate, AssessmentSchedulePublic,
-                                          AssessmentScheduleUpdate, NearbySearch)
+                                          AssessmentScheduleUpdate, NearbySearch, SiteSearch)
 from tesda_track.services import assessments, sites
 
 router = APIRouter(tags=["assessment"])
@@ -23,8 +23,9 @@ Offset = Annotated[int, Query(ge=0)]
 
 
 @router.get("/assessment-centers", response_model=list[AssessmentCenterPublic])
-def list_centers(session: SessionDep, region_code: str | None = None):
-    return assessments.list_centers(session, region_code)
+def list_centers(session: SessionDep, search: Annotated[SiteSearch, Query()]):
+    """Active centers by name; give near_lat/near_lon with radius_km for only those within it."""
+    return assessments.list_centers(session, search)
 
 
 @router.get("/assessment-schedules", response_model=list[AssessmentSchedulePublic])

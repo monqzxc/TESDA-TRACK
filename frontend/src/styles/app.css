@@ -4,7 +4,7 @@
 
    Layers keep the order predictable: the reset sits under the utilities, so a class always beats it. tokens.css
    only declares custom properties, so it stays outside the layers (and unchanged, for tokens.test.ts). */
-@layer theme, base, components, utilities;
+@layer theme, base, components, utilities, tsp;
 
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities);
@@ -14,6 +14,7 @@
 @import './tokens.css';
 @import './base.css' layer(base);
 @import './home.css' layer(base);
+@import '../features/tsp/tsp.css' layer(tsp);
 
 /* Only the app's own values: Tailwind's palette, type scale, corners, shadows and breakpoints are left out. */
 @theme {

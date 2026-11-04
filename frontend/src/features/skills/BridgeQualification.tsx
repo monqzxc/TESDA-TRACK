@@ -53,20 +53,21 @@ export function BridgeQualification({
   const evidence = 'evidence' in item ? (item.evidence ?? []) : []
   return (
     <article aria-labelledby={headingId} className={ui.card}>
-      <span className={ui.level}>
-        <Icon name="learn" />
-        {item.level_label || copy.qualification.fallbackLevel}
-      </span>
       <Heading id={headingId} className={ui.cardTitle}>
         {item.title || copy.qualification.fallbackTitle}
       </Heading>
+      {/* The level leads its facts, in the one data blue, as on the library's cards. */}
       <p className={ui.muted}>
-        {[
-          item.code,
-          status ? status[0].toUpperCase() + status.slice(1) : copy.qualification.noStatus,
-        ]
-          .filter(Boolean)
-          .join(' · ')}
+        <span className={ui.level}>{item.level_label || copy.qualification.fallbackLevel}</span>
+        <span aria-hidden="true"> · </span>
+        <span>
+          {[
+            item.code,
+            status ? status[0].toUpperCase() + status.slice(1) : copy.qualification.noStatus,
+          ]
+            .filter(Boolean)
+            .join(' · ')}
+        </span>
       </p>
       {matched.length > 0 && <p className={ui.text}>{copy.qualification.linkedSkills(matched)}</p>}
       {share !== null && share !== undefined && (
@@ -148,7 +149,7 @@ function DeliverySites({ code }: { code: string }) {
   const copy = en.skills
 
   const navigate = useNavigate()
-  const sites = useQuery(sitesQuery)
+  const sites = useQuery(sitesQuery())
   const listings = useQuery(listingsQuery([code]))
   const regions = useQuery(regionsQuery)
   const config = useQuery(clientConfigQuery)

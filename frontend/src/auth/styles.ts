@@ -41,7 +41,7 @@ export const formStyle = {
     'group-data-focus-visible:outline-3 group-data-focus-visible:outline-offset-2 group-data-focus-visible:outline-focus',
   ),
 
-  /** "New here? Create an account" and its way back. */
+  /** The registration form's way back to signing in. */
   switch: 'mt-[1.1rem] border-t border-border pt-4',
   textButton: cx(
     'min-h-11 cursor-pointer border-0 bg-transparent px-0 py-[0.4rem] font-bold text-blue underline underline-offset-3',

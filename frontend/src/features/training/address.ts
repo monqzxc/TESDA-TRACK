@@ -23,6 +23,10 @@ export const WINDOWS = [30, 90] as const
 export type Window = (typeof WINDOWS)[number]
 export const RADIUS_KM = [5, 10, 25, 50, 100] as const
 export type RadiusKm = (typeof RADIUS_KM)[number]
+/** The radius around the learner's own location until they choose another: the page opens on their area. */
+export const DEFAULT_RADIUS_KM: RadiusKm = 10
+/** In the address, a learner's choice of every distance (`radius=any`), over the default radius. */
+export const ANY_DISTANCE = 'any'
 export const SORTS: readonly SortOrder[] = ['nearest', 'soonest', 'name']
 
 /** The query parameter for each filter. */
@@ -49,8 +53,11 @@ export interface TrainingFilters {
   qualifications: string[]
   mode: DeliveryMode | null
   within: Window | null
-  /** Maximum straight-line distance from the current location or searched place, in kilometres. */
-  radius: RadiusKm | null
+  /**
+   * Maximum straight-line distance from the current location or searched place, in kilometres. Not chosen (null),
+   * it's DEFAULT_RADIUS_KM around the learner's own location and every distance around a searched place.
+   */
+  radius: RadiusKm | typeof ANY_DISTANCE | null
   scholarship: boolean
   /** Words in the search box. */
   search: string
@@ -89,7 +96,8 @@ export function readTrainingAddress(query: URLSearchParams): TrainingFilters {
     qualifications: unique(query.getAll(p.qualification)),
     mode: oneOf(DELIVERY_MODES, query.get(p.mode)),
     within: oneOf(WINDOWS, query.get(p.within)),
-    radius: oneOf(RADIUS_KM, query.get(p.radius)),
+    radius:
+      query.get(p.radius) === ANY_DISTANCE ? ANY_DISTANCE : oneOf(RADIUS_KM, query.get(p.radius)),
     scholarship: query.get(p.scholarship) === '1',
     search: query.get(p.search) ?? '',
     sort: oneOf(SORTS, query.get(p.sort)) ?? 'nearest',

@@ -14,6 +14,15 @@ web app's generated types (`npm run api:types` in frontend/).
     python -m tesda_track.cli mcp-usage fold [--days 180]
 
 `mcp-client` manages the outside systems that call the MCP server; a new secret is printed once.
+
+    python -m tesda_track.cli geocode-centers --report /tmp/geocode.json [--kind training|assessment] [--limit 20]
+    python -m tesda_track.cli geocode-centers --report /tmp/geocode.json --apply
+    python -m tesda_track.cli geocode-centers --by-name --report /tmp/places.json [--apply]
+
+`geocode-centers` moves training providers and assessment centers to where Google geocodes their address, or with
+--by-name to the place Google Maps finds by the center's name (see tesda_track/geocode_centers.py for when a point
+is replaced). Preview is the default; --apply overwrites the coordinates. The Google Maps API key is read from
+GOOGLE_MAPS_API_KEY or prompted for; --by-name needs the Places API (New) enabled for it.
 """
 import argparse
 import getpass
@@ -21,6 +30,7 @@ import json
 import os
 import sys
 import uuid
+from collections.abc import Callable
 from pathlib import Path
 from typing import TextIO
 
@@ -103,6 +113,40 @@ def run_mcp_usage_command(session: Session, args: argparse.Namespace, out: TextI
           file=out)
 
 
+def google_maps_api_key() -> str:
+    key = os.environ.get("GOOGLE_MAPS_API_KEY", "").strip()
+    if not key and sys.stdin.isatty():
+        key = getpass.getpass("Google Maps API key: ").strip()
+    if not key:
+        raise ValueError("Set GOOGLE_MAPS_API_KEY or run the command in a terminal to be asked for the key.")
+    return key
+
+
+def run_geocode_command(session: Session, args: argparse.Namespace, out: TextIO,
+                        lookup: Callable[[str], dict | None] | None = None) -> None:
+    """Runs `geocode-centers`; commits itself when --apply is given."""
+    from tesda_track import geocode_centers
+
+    if args.report.suffix.casefold() != ".json":
+        raise ValueError("--report must be a .json file.")
+    if lookup is None:
+        google = geocode_centers.GooglePlaces if args.by_name else geocode_centers.GoogleGeocoder
+        lookup = google(google_maps_api_key()).lookup
+    kinds = [args.kind] if args.kind else list(geocode_centers.MODELS)
+    result = geocode_centers.run(session, report=args.report, lookup=lookup, kinds=kinds, apply=args.apply,
+                                 refresh=args.refresh, limit=args.limit, by_name=args.by_name,
+                                 workers=4 if args.by_name else 8, out=out)
+    outcomes = ", ".join(f"{outcome}={count}" for outcome, count in result["outcomes"].items())
+    print(f"{result['sites']} sites: {outcomes or 'none'}", file=out)
+    if result["lookups_failed"]:
+        print(f"{result['lookups_failed']} lookups failed; run the command again to retry them.", file=out)
+    if args.apply:
+        print(f"Moved {result['points_written']} map points. Report: {args.report}", file=out)
+    else:
+        print(f"Preview only, nothing written. Report: {args.report}. Add --apply to move the "
+              f"{result['outcomes'].get('replace', 0)} 'replace' points; Google's answers are reused.", file=out)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="TESDA-TRACK administration")
     commands = parser.add_subparsers(dest="command", required=True)
@@ -132,6 +176,16 @@ def build_parser() -> argparse.ArgumentParser:
     usage_actions = mcp_usage_parser.add_subparsers(dest="action", required=True)
     fold = usage_actions.add_parser("fold", help="fold old calls into daily counts (the server also does this hourly)")
     fold.add_argument("--days", type=int, help="fold calls older than this; default MCP_CALL_LOG_RETENTION_DAYS")
+    geocode = commands.add_parser("geocode-centers",
+                                  help="move training providers and assessment centers to Google's point for their address")
+    geocode.add_argument("--report", type=Path, required=True,
+                         help="JSON report of every site's outcome; also keeps Google's answers for the next run")
+    geocode.add_argument("--apply", action="store_true", help="overwrite the coordinates (default: preview only)")
+    geocode.add_argument("--kind", choices=("training", "assessment"), help="only training providers or assessment centers")
+    geocode.add_argument("--limit", type=int, help="only the first N sites, to try the key and check the results")
+    geocode.add_argument("--refresh", action="store_true", help="ask Google again instead of reusing the report's answers")
+    geocode.add_argument("--by-name", action="store_true",
+                         help="search Google Maps for each center by name (Places API) instead of geocoding its address")
     return parser
 
 
@@ -172,6 +226,19 @@ def main() -> None:
             except (DomainError, ValueError) as error:
                 sys.exit(getattr(error, "detail", str(error)))
             session.commit()
+        return
+
+    if args.command == "geocode-centers":
+        from tesda_track.geocode_centers import GeocodeStop
+
+        with Session(get_engine()) as session:
+            try:
+                run_geocode_command(session, args, sys.stdout)
+            except (GeocodeStop, ValueError) as error:
+                sys.exit(str(error))
+            except OSError as error:
+                sys.exit(f"Couldn't save the report ({type(error).__name__}). With --apply the points are already "
+                         "written; running the same command again is safe.")
         return
 
     password = None

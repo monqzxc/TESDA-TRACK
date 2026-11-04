@@ -55,12 +55,8 @@ function WhyWeAsk({ profile, code }: { profile: Profile; code: string }) {
   if (!pathway.data) return null
   return (
     <section aria-labelledby={headingId} className={card}>
-      <CardHeading icon="lightbulb" id={headingId}>
-        {en.finder.why.heading}
-      </CardHeading>
-      <p className="mt-[0.9rem] mb-[0.4rem] text-15 leading-[1.6] text-ink">
-        {pathway.data.reason}
-      </p>
+      <CardHeading id={headingId}>{en.finder.why.heading}</CardHeading>
+      <p className="mt-3 mb-[0.4rem] text-15 leading-[1.6] text-ink">{pathway.data.reason}</p>
       <p className={muted}>
         {pathway.data.next_step} {en.finder.why.relevant}
       </p>
@@ -186,8 +182,8 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
         value={rated}
         maxValue={total || 1}
       >
-        <Label className="text-14 text-ink">{copy.progress(rated, total)}</Label>
-        <span className="h-2 overflow-hidden rounded-full bg-bar" aria-hidden="true">
+        <Label className="text-14 text-ink tabular-nums">{copy.progress(rated, total)}</Label>
+        <span className="h-1.5 overflow-hidden rounded-full bg-bar" aria-hidden="true">
           <i
             className="block h-full rounded-[inherit] bg-blue transition-[width] duration-250 ease-[ease]"
             style={{ width: `${total ? (100 * rated) / total : 0}%` }}
@@ -195,7 +191,7 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
         </span>
       </ProgressBar>
 
-      <div ref={questions} className="mt-4">
+      <div ref={questions} className="mt-6">
         <h4
           ref={partHeading}
           tabIndex={-1}
@@ -206,12 +202,13 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
         <p className={muted}>
           {en.qualification.categoryHelp[category] ?? en.qualification.categoryHelp.other}
         </p>
-        <ol className="mt-[0.9rem] mb-0 flex list-none flex-col gap-[0.6rem] p-0">
+        {/* One skill a row, split by rules. */}
+        <ol className="mt-3 mb-0 list-none divide-y divide-rule border-y border-rule p-0">
           {competencies.map((competency, i) => (
             <li key={competency.id} data-unrated={!answers[competency.id] || undefined}>
               <RadioGroup
                 data-tour="readiness-question"
-                className="flex flex-col gap-2 rounded-12 border border-panel-border bg-panel px-[0.95rem] py-[0.85rem]"
+                className="flex flex-col gap-[0.6rem] py-4"
                 orientation="horizontal"
                 value={answers[competency.id] ?? null}
                 onChange={(value) => {
@@ -275,7 +272,7 @@ function Heading({ id, name }: { id: string; name: string }) {
   const copy = en.finder.readiness
 
   return (
-    <CardHeading icon="checklist" id={id} kicker={copy.kicker} description={copy.lead(name)}>
+    <CardHeading id={id} description={copy.lead(name)}>
       {copy.heading}
     </CardHeading>
   )

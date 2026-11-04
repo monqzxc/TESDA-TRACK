@@ -17,6 +17,23 @@ export function sessionQualification(session: RecommendationSession) {
   return session.selected_qualification ?? session.matches[0]?.qualification ?? null
 }
 
+/** The latest check for this recommendation and qualification, never one from another goal. */
+export function checkForSession(
+  session: RecommendationSession,
+  checks: readonly ReadinessCheck[],
+): ReadinessCheck | null {
+  const code = sessionQualification(session)?.code
+  if (!code) return null
+  return (
+    checks
+      .filter(
+        (check) =>
+          check.recommendation_session_id === session.id && check.qualification.code === code,
+      )
+      .sort((a, b) => b.created_at.localeCompare(a.created_at))[0] ?? null
+  )
+}
+
 /**
  * The one next step to offer (US-10), in this order:
  *
@@ -54,12 +71,7 @@ export function nextStep(
   if (!latest) return { kind: 'start' }
   const qualification = sessionQualification(latest)
   if (qualification && catalog.has(qualification.code)) {
-    const checked = checks.some(
-      (check) =>
-        check.recommendation_session_id === latest.id &&
-        check.qualification.code === qualification.code,
-    )
-    if (!checked) {
+    if (!checkForSession(latest, checks)) {
       return {
         kind: 'readiness',
         session: latest,

@@ -66,14 +66,24 @@ def route_cache(session: SessionDep, settings: SettingsDep) -> RouteCache:
     return RouteCache(session, settings.routing_cache_ttl_seconds)
 
 
+NEAR_PARAMETERS = ("near_lat=", "near_lon=")
+
+
+def _holds_a_location(path: str, query: str) -> bool:
+    """Directions' origin, or a nearby search's point (Training & Assessment sends the learner's own location)."""
+    return path == PATH or any(f"&{name}" in f"&{query}" for name in NEAR_PARAMETERS)
+
+
 class HideCoordinatesFilter(logging.Filter):
-    """Drops the query string from uvicorn's access log line for /api/v1/routes: it holds the learner's location."""
+    """Drops the query string from uvicorn's access log line when it holds a location: /api/v1/routes, and any
+    nearby search (near_lat/near_lon), which can carry the learner's location."""
 
     def filter(self, record: logging.LogRecord) -> bool:
         args = record.args
-        if isinstance(args, tuple) and len(args) >= 3 and isinstance(args[2], str) \
-                and args[2].split("?", 1)[0] == PATH and "?" in args[2]:
-            record.args = (*args[:2], PATH, *args[3:])
+        if isinstance(args, tuple) and len(args) >= 3 and isinstance(args[2], str) and "?" in args[2]:
+            path, query = args[2].split("?", 1)
+            if _holds_a_location(path, query):
+                record.args = (*args[:2], path, *args[3:])
         return True
 
 

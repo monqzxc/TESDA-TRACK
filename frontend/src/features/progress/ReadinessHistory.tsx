@@ -7,7 +7,7 @@ import { checkedQualifications, checksFor, compareChecks } from './journey.ts'
 import { ui } from './styles.ts'
 
 const table = cx(
-  'w-full border-collapse text-14',
+  'w-full border-collapse text-14 tabular-nums',
   '[&_th]:border-b [&_th]:border-border [&_th]:px-[0.6rem] [&_th]:py-2 [&_th]:text-left [&_th]:font-semibold [&_th]:text-muted',
   '[&_td]:border-b [&_td]:border-rule [&_td]:px-[0.6rem] [&_td]:py-[0.55rem] [&_td]:text-navy',
 )

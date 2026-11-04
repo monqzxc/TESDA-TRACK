@@ -20,10 +20,14 @@ DELIVERY_MODES = ("institution_based", "enterprise_based", "community_based", "o
 SCHEDULE_STATUSES = ("open", "closed", "cancelled", "completed")
 APPLICATION_STATUSES = ("pending", "approved", "rejected", "withdrawn", "completed")
 ASSESSMENT_RESULTS = ("competent", "not_yet_competent")
+# Where a site's map point came from when it isn't the source record's own; registry refreshes keep these points.
+LOCATION_SOURCES = ("google_geocoding", "google_places", "manual")
 LOCATION_CHECKS = (
     CheckConstraint("(latitude IS NULL) = (longitude IS NULL)", name="location_complete"),
     CheckConstraint("latitude IS NULL OR latitude BETWEEN -90 AND 90", name="latitude_range"),
     CheckConstraint("longitude IS NULL OR longitude BETWEEN -180 AND 180", name="longitude_range"),
+    CheckConstraint(f"location_source IS NULL OR {one_of('location_source', LOCATION_SOURCES)}",
+                    name="location_source_valid"),
 )
 
 
@@ -49,6 +53,7 @@ class TrainingProvider(ProvenanceFields, table=True):
     address: str | None = Field(default=None, sa_type=String(300))
     latitude: float | None = None
     longitude: float | None = None
+    location_source: str | None = Field(default=None, sa_type=String(30))
     contact_email: str | None = Field(default=None, sa_type=String(254))
     contact_phone: str | None = Field(default=None, sa_type=String(50))
     website: str | None = Field(default=None, sa_type=String(300))
@@ -109,6 +114,7 @@ class AssessmentCenter(ProvenanceFields, table=True):
     address: str | None = Field(default=None, sa_type=String(300))
     latitude: float | None = None
     longitude: float | None = None
+    location_source: str | None = Field(default=None, sa_type=String(30))
     contact_email: str | None = Field(default=None, sa_type=String(254))
     contact_phone: str | None = Field(default=None, sa_type=String(50))
     is_active: bool = True

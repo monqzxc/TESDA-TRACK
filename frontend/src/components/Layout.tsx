@@ -1,7 +1,9 @@
 import type { MouseEvent } from 'react'
-import { Outlet, ScrollRestoration } from 'react-router'
+import { Outlet, ScrollRestoration, useLocation, useNavigate } from 'react-router'
 import { useAuth } from '../auth/useAuth.ts'
 import { useCopy } from '../i18n/copy.ts'
+import { TspNav } from '../features/tsp/TspNav.tsx'
+import { TspStateProvider } from '../features/tsp/TspState.tsx'
 import { FirstVisitNotice } from '../features/privacy/FirstVisitNotice.tsx'
 import { GuidedHelp } from '../features/help/GuidedHelp.tsx'
 import { useCurrentPage, useFocusOnNavigation, usePageTitle } from '../lib/navigation.ts'
@@ -11,6 +13,7 @@ import { HomeHeader } from './HomeHeader.tsx'
 import { MobileMenu } from './MobileMenu.tsx'
 import { SidebarContent } from './Nav.tsx'
 import { PageFooter } from './PageFooter.tsx'
+import { paths } from '../paths.ts'
 
 /**
  * The root route, around every page: the title follows the page, focus moves to its heading after a navigation,
@@ -72,6 +75,44 @@ export function HomeLayout() {
   )
 }
 
+/** A compact shell for partner apps opening TESDA-TRACK in a phone WebView. */
+export function WebviewLayout() {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const isEntry = location.pathname === paths.tspWebview
+  const isTool =
+    location.pathname === paths.tspQualifications ||
+    location.pathname === paths.tspTraining ||
+    location.pathname === paths.tspSkills
+  return (
+    <TspStateProvider>
+      <SkipLink />
+      <div className="tsp-webview min-h-dvh">
+        <header className="tsp-header">
+          <div className="tsp-header-inner">
+            <button
+              type="button"
+              aria-label="Go back"
+              onClick={() => (isEntry ? navigate('/') : navigate(-1))}
+            >
+              ‹
+            </button>
+            <span>TESDA-TRACK</span>
+          </div>
+        </header>
+        {isTool && <TspNav />}
+        <main
+          id="main"
+          tabIndex={-1}
+          className={`tsp-main ${isEntry ? 'tsp-main-entry' : isTool ? 'tsp-main-tool' : 'tsp-main-content'}`}
+        >
+          <Outlet />
+        </main>
+      </div>
+    </TspStateProvider>
+  )
+}
+
 /**
  * Every other page: the Streamlit app's sidebar beside the page, a white column with a border that stays put while
  * the page scrolls. On phones the sidebar becomes a bar across the top with the brand and a Menu button, which
@@ -82,10 +123,10 @@ export function AppLayout() {
   return (
     <>
       <SkipLink />
-      <div className="grid min-h-screen grid-cols-[19rem_minmax(0,1fr)] max-md:block">
+      <div className="grid min-h-screen grid-cols-[16.5rem_minmax(0,1fr)] max-md:block">
         <header
           className={
-            'sticky top-0 flex h-dvh flex-col overflow-y-auto border-r border-border bg-surface px-5 pt-[1.3rem] pb-6 ' +
+            'sticky top-0 flex h-dvh flex-col overflow-y-auto border-r border-border bg-surface px-4 pt-5 pb-4 ' +
             'max-md:z-20 max-md:h-auto max-md:overflow-visible max-md:border-r-0 max-md:border-b max-md:px-4 max-md:py-[0.6rem]'
           }
         >
@@ -99,14 +140,18 @@ export function AppLayout() {
             </div>
           </div>
           <div className="flex flex-1 flex-col max-md:hidden">
-            <SidebarContent isAdmin={canViewReports} canManage={canOpenAdmin} isSignedIn={isSignedIn} />
+            <SidebarContent
+              isAdmin={canViewReports}
+              canManage={canOpenAdmin}
+              isSignedIn={isSignedIn}
+            />
           </div>
         </header>
         <div className="flex min-h-screen min-w-0 flex-col">
           <main
             id="main"
             tabIndex={-1}
-            className="w-full max-w-full flex-1 px-10 pt-[3.8rem] pb-8 focus:outline-none max-[1101px]:px-6 max-md:px-4 max-md:pt-6 max-md:pb-8"
+            className="w-full max-w-full flex-1 px-10 pt-9 pb-8 focus:outline-none max-[1101px]:px-6 max-md:px-4 max-md:pt-6 max-md:pb-8"
           >
             <Outlet />
           </main>

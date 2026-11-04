@@ -38,7 +38,8 @@ const disabled =
   'data-disabled:cursor-not-allowed disabled:border-border disabled:bg-disabled-bg ' +
   'disabled:text-disabled-ink disabled:cursor-not-allowed'
 
-const inertLook = 'border-border bg-disabled-bg text-disabled-ink cursor-not-allowed'
+// No frame and a grey label: plainly not a button, and still readable (4.5:1), unlike the pale disabled fill.
+const inertLook = 'border-transparent bg-transparent text-muted cursor-default'
 
 const onLook = 'border-hover-border bg-tint text-blue [&_svg_path]:fill-current'
 

@@ -35,8 +35,10 @@ export function useTrainingFilters() {
 export type LocationError = 'denied' | 'unavailable' | 'unsupported'
 
 interface TrainingState {
-  /** The learner asked to use their location. */
+  /** The learner asked to use their location, or the page did when it opened. */
   useLocation: boolean
+  /** The page has asked for the location on its own during this visit, which it does only once. */
+  askedOnOpen: boolean
   /** Their approximate location (rounded to about 1 km), once the browser shares it. */
   location: Point | null
   locating: boolean
@@ -50,8 +52,16 @@ interface TrainingState {
   saved: string[]
 
   setUseLocation: (wanted: boolean) => void
-  /** Asks the browser for the learner's location (again). */
-  locate: () => void
+  /**
+   * Asks the browser for the learner's location (again). Asked `quietly`, by the page rather than the learner, a
+   * refusal only turns the location off: the learner wasn't the one asking, so they aren't told why.
+   */
+  locate: (options?: { quietly?: boolean }) => void
+  /**
+   * Asks for the location as the page opens, so it can show the learner's area first rather than every center in
+   * the country. Once a visit: turned off, or refused, it stays off until the learner turns it on.
+   */
+  locateOnOpen: () => void
   setPlaceText: (text: string) => void
   showRoute: (centerId: string | null) => void
   setTravelMode: (mode: TravelMode) => void
@@ -89,6 +99,7 @@ export const useTrainingStore = create<TrainingState>()(
   persist(
     (set, get) => ({
       useLocation: false,
+      askedOnOpen: false,
       location: null,
       locating: false,
       locationError: null,
@@ -111,7 +122,14 @@ export const useTrainingStore = create<TrainingState>()(
           routeTo: null,
         })
       },
-      locate: () => {
+      locateOnOpen: () => {
+        const state = get()
+        if (state.askedOnOpen || state.useLocation) return
+        set({ askedOnOpen: true })
+        // A browser that can't share a location is told so only when the learner asks.
+        if ('geolocation' in navigator) state.locate({ quietly: true })
+      },
+      locate: ({ quietly = false } = {}) => {
         if (!('geolocation' in navigator)) {
           set({ useLocation: false, locating: false, locationError: 'unsupported' })
           return
@@ -129,13 +147,20 @@ export const useTrainingStore = create<TrainingState>()(
               },
             })
           },
-          (error) =>
+          (error) => {
+            // Turned off while the browser was asking (Show all centers instead): there's nothing to explain.
+            if (!get().useLocation) return
             set({
               useLocation: false,
               location: null,
               locating: false,
-              locationError: error.code === error.PERMISSION_DENIED ? 'denied' : 'unavailable',
-            }),
+              locationError: quietly
+                ? null
+                : error.code === error.PERMISSION_DENIED
+                  ? 'denied'
+                  : 'unavailable',
+            })
+          },
           { enableHighAccuracy: false, maximumAge: 300_000, timeout: 10_000 },
         )
       },

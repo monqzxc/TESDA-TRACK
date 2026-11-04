@@ -208,3 +208,12 @@ def test_the_access_log_leaves_out_the_coordinates():
                               ("203.0.113.5:50000", "GET", "/api/v1/qualifications?q=welding", "1.1", 200), None)
     HideCoordinatesFilter().filter(other)
     assert "q=welding" in other.getMessage(), "other paths are logged as before"
+
+
+@pytest.mark.parametrize("path", ["/api/v1/training-providers", "/api/v1/assessment-schedules"])
+def test_the_access_log_leaves_out_a_nearby_searchs_point(path):
+    record = logging.LogRecord("uvicorn.access", logging.INFO, __file__, 1, '%s - "%s %s HTTP/%s" %d',
+                               ("203.0.113.5:50000", "GET", f"{path}?limit=100&near_lat=14.55&near_lon=121.02"
+                                "&radius_km=11", "1.1", 200), None)
+    assert HideCoordinatesFilter().filter(record)
+    assert record.getMessage() == f'203.0.113.5:50000 - "GET {path} HTTP/1.1" 200'

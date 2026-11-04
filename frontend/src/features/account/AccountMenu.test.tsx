@@ -423,14 +423,13 @@ describe('the /sign-in page', () => {
     await waitFor(() => expect(router.state.location.pathname).toBe('/training'))
   })
 
-  it('switches to creating an account', async () => {
-    const user = userEvent.setup()
+  it('offers no way to create an account', async () => {
     serveAccountApi()
     await openApp('/sign-in')
 
-    await user.click(screen.getByRole('button', { name: 'New here? Create an account' }))
-
-    expect(screen.getByRole('heading', { level: 1, name: 'Create an account' })).toBeInTheDocument()
-    await waitFor(() => expect(screen.getByLabelText('Full name')).toHaveFocus())
+    expect(screen.getByRole('heading', { level: 1, name: 'Sign in' })).toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: 'New here? Create an account' }),
+    ).not.toBeInTheDocument()
   })
 })

@@ -169,11 +169,16 @@ export function OccupationDetails({
           <ul className={ui.list}>
             {benchmarks.map((benchmark, index) => (
               <li key={index} className={ui.card}>
-                <span className={ui.level}>{capitalize(benchmark.status) || copy.unspecified}</span>
                 <h4 className={ui.cardTitle}>{benchmark.title || copy.fallbackMapping}</h4>
                 <p className={ui.muted}>
-                  {[benchmark.source, benchmark.standard].filter(Boolean).join(' · ') ||
-                    copy.noFramework}
+                  <span className="font-semibold text-ink">
+                    {capitalize(benchmark.status) || copy.unspecified}
+                  </span>
+                  <span aria-hidden="true"> · </span>
+                  <span>
+                    {[benchmark.source, benchmark.standard].filter(Boolean).join(' · ') ||
+                      copy.noFramework}
+                  </span>
                 </p>
                 <p className={ui.text}>{copy.sampleSkills(benchmark.sample_skills ?? [])}</p>
               </li>

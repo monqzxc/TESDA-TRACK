@@ -97,6 +97,8 @@ export interface FinderState {
   setPart: (code: string, part: number) => void
   /** A new result is a new recommendation, so any answer about the last one goes. */
   setCheck: (code: string, check: SubmittedCheck) => void
+  /** Reopens a saved check with the answers and result it was based on. */
+  restoreCheck: (code: string, check: SubmittedCheck) => void
   markCheckSaved: (code: string) => void
   setFeedback: (code: string, feedback: GivenFeedback) => void
   setPlace: (place: Partial<ReportPlace>) => void
@@ -178,6 +180,11 @@ export const useFinderStore = create<FinderState>()(
           delete feedback[code]
           return { checks: { ...state.checks, [code]: check }, feedback }
         }),
+      restoreCheck: (code, check) =>
+        set((state) => ({
+          answers: { ...state.answers, [code]: check.answers },
+          checks: { ...state.checks, [code]: check },
+        })),
       markCheckSaved: (code) =>
         set((state) => {
           const check = state.checks[code]

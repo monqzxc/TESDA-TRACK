@@ -1989,6 +1989,7 @@
           "training"
         ],
         "summary": "List Providers",
+        "description": "Active providers by name; give near_lat/near_lon with radius_km for only those within it.",
         "operationId": "list_providers_api_v1_training_providers_get",
         "parameters": [
           {
@@ -2005,6 +2006,60 @@
                 }
               ],
               "title": "Region Code"
+            }
+          },
+          {
+            "name": "near_lat",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "maximum": 90,
+                  "minimum": -90
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Near Lat"
+            }
+          },
+          {
+            "name": "near_lon",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "maximum": 180,
+                  "minimum": -180
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Near Lon"
+            }
+          },
+          {
+            "name": "radius_km",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "maximum": 2000,
+                  "exclusiveMinimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Radius Km"
             }
           }
         ],
@@ -2322,6 +2377,7 @@
           "assessment"
         ],
         "summary": "List Centers",
+        "description": "Active centers by name; give near_lat/near_lon with radius_km for only those within it.",
         "operationId": "list_centers_api_v1_assessment_centers_get",
         "parameters": [
           {
@@ -2338,6 +2394,60 @@
                 }
               ],
               "title": "Region Code"
+            }
+          },
+          {
+            "name": "near_lat",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "maximum": 90,
+                  "minimum": -90
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Near Lat"
+            }
+          },
+          {
+            "name": "near_lon",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "maximum": 180,
+                  "minimum": -180
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Near Lon"
+            }
+          },
+          {
+            "name": "radius_km",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "number",
+                  "maximum": 2000,
+                  "exclusiveMinimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Radius Km"
             }
           }
         ],
@@ -14041,6 +14151,7 @@
                 "type": "string",
                 "enum": [
                   "no_terms",
+                  "asked_for_suggestions",
                   "too_many_terms",
                   "term_too_long"
                 ]
@@ -14050,7 +14161,7 @@
               }
             ],
             "title": "Reason",
-            "description": "Why nothing was searched: no terms, more than 25 terms (or 10 occupation titles), or a term longer than 80 characters."
+            "description": "Why nothing was searched: no terms, no terms because the text only asked for ideas (\"not sure, suggest\"), more than 25 terms (or 10 occupation titles), or a term longer than 80 characters."
           },
           "terms": {
             "items": {

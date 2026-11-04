@@ -3,11 +3,11 @@ import { useId, type Ref } from 'react'
 import { Button, Radio, RadioGroup, ToggleButton } from 'react-aria-components'
 import { Icon, type IconName } from '../../components/Icon.tsx'
 import { DataProvenance } from '../../components/DataProvenance.tsx'
-import centerPhoto from '../../components/img/center-thumb.jpg'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
 import { directionsQuery, type TravelMode, type TravelRoute } from './api.ts'
+import type { CenterKind } from './address.ts'
 import { placeLabel, type Center, type Point } from './centers.ts'
 import { airportLabel, kilometres, travelTime } from './format.ts'
 import { Programs, Schedules, type Fits } from './Listings.tsx'
@@ -20,11 +20,15 @@ export const MODE_ICONS: Record<TravelMode, IconName> = {
   plane: 'plane',
 }
 
+/** A center type's dot, in the colour of its pins on the map (CenterMap draws them the same). */
+export const KIND_DOTS: Record<CenterKind, string> = {
+  training: 'bg-[#175cd3]',
+  assessment: 'bg-[#0d9488]',
+}
+
 // The featured center, after classic/training_view.py _detail's card.
 const muted = 'm-0 text-13 leading-[1.5] text-muted'
 const contact = 'inline-flex items-center gap-[0.3rem] wrap-anywhere text-blue'
-const badge =
-  'inline-flex items-center gap-[0.3rem] rounded-full px-[0.55rem] py-[0.15rem] text-12 font-[650]'
 const routeLine =
   'm-0 flex items-start gap-[0.4rem] text-15 font-[650] text-navy [&_svg]:mt-[0.2rem] [&_svg]:flex-none'
 /** A travel mode in the segmented bar of routes. */
@@ -89,48 +93,36 @@ export function CenterDetail({
         aria-labelledby={headingId}
         className="flex flex-col gap-3 rounded-16 border border-border bg-surface p-4"
       >
-        {isNearest && (
-          <span className="inline-flex items-center gap-[0.35rem] self-start rounded-full bg-tint px-[0.65rem] py-[0.2rem] text-13 font-[650] text-blue">
-            <Icon name="directions" />
-            {copy.center.nearest}
-          </span>
-        )}
-        <div className="flex gap-[0.9rem]">
-          <img className="size-23 flex-none rounded-12 object-cover" src={centerPhoto} alt="" />
-          <div className="flex min-w-0 flex-col gap-[0.3rem]">
-            <h3
-              id={headingId}
-              ref={headingRef}
-              tabIndex={-1}
-              className="m-0 scroll-mt-4 text-[1.15rem] wrap-anywhere text-navy focus:outline-none"
-            >
-              {center.name}
-            </h3>
-            <p className="m-0 flex items-center gap-[0.3rem] text-14 text-ink">
-              <Icon name="pin" />
-              {placeLabel(center)}
+        <div className="flex min-w-0 flex-col gap-[0.3rem]">
+          <h3
+            id={headingId}
+            ref={headingRef}
+            tabIndex={-1}
+            className="m-0 scroll-mt-4 text-[1.15rem] wrap-anywhere text-navy focus:outline-none"
+          >
+            {center.name}
+          </h3>
+          <p className="m-0 text-14 text-ink">{placeLabel(center)}</p>
+          <KindBadges center={center} saved={saved} nearest={isNearest} />
+          {center.address && <p className={muted}>{center.address}</p>}
+          {(center.phone || center.email) && (
+            <p className="m-0 flex flex-wrap gap-x-[0.9rem] gap-y-1 text-13">
+              {center.phone && (
+                <a className={contact} href={`tel:${center.phone.replace(/[^+\d]/g, '')}`}>
+                  <Icon name="phone" />
+                  {center.phone}
+                </a>
+              )}
+              {center.email && (
+                <a className={contact} href={`mailto:${center.email}`}>
+                  <Icon name="mail" />
+                  {center.email}
+                </a>
+              )}
             </p>
-            <KindBadges center={center} saved={saved} />
-            <DataProvenance value={center.provenance} />
-            {center.address && <p className={muted}>{center.address}</p>}
-            {(center.phone || center.email) && (
-              <p className="m-0 flex flex-wrap gap-x-[0.9rem] gap-y-1 text-13">
-                {center.phone && (
-                  <a className={contact} href={`tel:${center.phone.replace(/[^+\d]/g, '')}`}>
-                    <Icon name="phone" />
-                    {center.phone}
-                  </a>
-                )}
-                {center.email && (
-                  <a className={contact} href={`mailto:${center.email}`}>
-                    <Icon name="mail" />
-                    {center.email}
-                  </a>
-                )}
-              </p>
-            )}
-          </div>
+          )}
         </div>
+        <DataProvenance value={center.provenance} />
 
         <div className="flex flex-wrap items-center gap-2 [&>*]:min-h-10">
           {point ? (
@@ -202,30 +194,41 @@ export function CenterDetail({
   )
 }
 
-/** The center's type, how far it is, and whether the learner saved it. */
-export function KindBadges({ center, saved }: { center: Center; saved: boolean }) {
+/**
+ * The center's type (with its map pin's colour), whether it's the nearest, how far it is, and whether the learner
+ * saved it: one line of facts.
+ */
+export function KindBadges({
+  center,
+  saved,
+  nearest = false,
+}: {
+  center: Center
+  saved: boolean
+  nearest?: boolean
+}) {
   const en = useCopy()
   const copy = en.training
 
   return (
-    <p className="m-0 flex flex-wrap gap-[0.3rem]">
-      <span
-        className={cx(
-          badge,
-          center.kind === 'assessment' ? 'bg-good-bg text-good-ink' : 'bg-tint text-blue',
-        )}
-      >
-        <Icon name={center.kind === 'training' ? 'learn' : 'clipboard'} />
+    <p className="m-0 flex flex-wrap items-center gap-x-3 gap-y-1 text-13 leading-[1.5] text-muted">
+      <span className="inline-flex items-center gap-1.5 font-semibold text-ink">
+        <i
+          className={cx('size-2 flex-none rounded-full', KIND_DOTS[center.kind])}
+          aria-hidden="true"
+        />
         {copy.kinds[center.kind]}
       </span>
-      {center.distanceKm !== null && (
-        <span className={cx(badge, 'bg-chip text-ink')}>
-          <Icon name="distance" />
-          {copy.center.away(kilometres(center.distanceKm))}
+      {nearest && (
+        <span className="rounded-full bg-chip px-2 py-px text-12 font-semibold text-navy">
+          {copy.center.nearest}
         </span>
       )}
+      {center.distanceKm !== null && (
+        <span className="tabular-nums">{copy.center.away(kilometres(center.distanceKm))}</span>
+      )}
       {saved && (
-        <span className={cx(badge, 'bg-tile-icon-violet text-violet')}>
+        <span className="inline-flex items-center gap-1 font-semibold text-ink">
           <Icon name="bookmark" />
           {copy.center.saved}
         </span>

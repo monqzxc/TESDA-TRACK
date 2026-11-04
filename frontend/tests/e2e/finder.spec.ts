@@ -371,16 +371,17 @@ for (const colorScheme of ['light', 'dark'] as const) {
         page.getByRole('heading', { name: 'Take focused training, then the NC assessment' }),
       ).toBeVisible()
       await expect(page.getByRole('heading', { name: 'Close your skill gaps' })).toBeVisible()
-      // The personalized report, between the verdict and the curated pathway.
+      // The personalized report under the verdict, in rows, with a unit's reasons opened.
       for (const name of [
-        'Recommendations for you',
-        'Why we recommend these',
-        'Other things to consider',
         'Your next steps',
-        'Final recommendation',
+        /^Skills to improve/,
+        'Why we recommend these',
+        /^Training & Assessment/,
       ]) {
         await expect(page.getByRole('region', { name })).toBeVisible()
       }
+      await expect(page.getByText('Manila Welding Institute', { exact: true })).toBeVisible()
+      await page.getByText('Weld carbon steel plates', { exact: true }).click()
       await expect(page.getByText('Learn to weld carbon steel plates.')).toBeVisible()
       await expectSettledAndAccessible(page)
 

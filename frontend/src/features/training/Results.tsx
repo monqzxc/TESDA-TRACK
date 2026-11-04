@@ -3,18 +3,17 @@ import { Button } from 'react-aria-components'
 import { EmptyState } from '../../components/EmptyState.tsx'
 import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { Icon } from '../../components/Icon.tsx'
-import centerPhoto from '../../components/img/center-thumb.jpg'
 import { SelectField } from '../../components/SelectField.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
-import { NO_FILTERS, SORTS, shortName, type SortOrder } from './address.ts'
+import { ANY_DISTANCE, NO_FILTERS, SORTS, shortName, type SortOrder } from './address.ts'
 import { placeLabel, summary, type Center } from './centers.ts'
 import { CenterDetail, KindBadges } from './CenterDetail.tsx'
 import { useTrainingFilters, useTrainingStore } from './state.ts'
 import type { CenterResults } from './useCenters.ts'
 
-const note = 'm-0 flex items-center gap-[0.35rem] text-13 text-muted'
+const note = 'm-0 text-13 leading-[1.5] text-muted'
 
 /** Other centers listed at first, and how many more Show more adds. */
 const LIST_STEP = 2
@@ -82,7 +81,7 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
       )}
     >
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
-        <h2 id={headingId} className="m-0 text-[1.2rem] text-navy">
+        <h2 id={headingId} className="m-0 text-18 text-navy tabular-nums">
           {copy.heading(centers.length)}
         </h2>
         <SelectField<SortOrder>
@@ -98,7 +97,6 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
       <div className="mt-2 mb-3 flex flex-col gap-1" aria-live="polite">
         {reference ? (
           <p className={note}>
-            <Icon name="distance" />
             {copy.distancesFrom(reference.mine ? copy.fromYou : reference.label)}
           </p>
         ) : (
@@ -106,11 +104,10 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
         )}
         {results.radiusKm !== null && reference && (
           <p className={note}>
-            <Icon name="distance" />
             {copy.withinRadius(results.radiusKm, reference.mine ? copy.fromYou : reference.label)}
           </p>
         )}
-        {filters.radius !== null && !reference && (
+        {typeof filters.radius === 'number' && !reference && (
           <>
             <p className={note}>{copy.radiusPending}</p>
             <Button
@@ -146,7 +143,7 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
           />
           {others.length > 0 && (
             <>
-              <h3 className="mt-4 mb-[0.2rem] text-[1.05rem] text-navy">
+              <h3 className="mt-5 mb-1 text-16 text-navy tabular-nums">
                 {copy.others(others.length)}
               </h3>
               <ul className="m-0 flex list-none flex-col p-0">
@@ -177,7 +174,7 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
   )
 }
 
-/** A center in the list: its picture, name, place, badges and what it offers next. */
+/** A center in the list: its name, place, type, distance, and what it offers next. */
 function CenterRow({
   center,
   saved,
@@ -193,20 +190,11 @@ function CenterRow({
   const copy = en.training.results
 
   return (
-    <li className="flex flex-wrap items-center gap-3 border-t border-rule px-[0.3rem] py-[0.7rem] hovered:bg-row-hover">
-      <img
-        className="size-15 flex-none rounded-10 object-cover"
-        src={centerPhoto}
-        alt=""
-        loading="lazy"
-      />
+    <li className="flex flex-wrap items-center gap-3 border-t border-rule px-1 py-3 hovered:bg-row-hover">
       {/* Room for the name; with less, View details goes under the row. */}
       <div className="flex min-w-0 flex-[1_1_12rem] flex-col gap-[0.2rem]">
-        <p className="m-0 text-15 font-bold wrap-anywhere text-navy">{center.name}</p>
-        <p className="m-0 flex items-center gap-[0.3rem] text-13 text-ink">
-          <Icon name="pin" />
-          {placeLabel(center)}
-        </p>
+        <p className="m-0 text-15 font-semibold wrap-anywhere text-navy">{center.name}</p>
+        <p className="m-0 text-13 text-ink">{placeLabel(center)}</p>
         <KindBadges center={center} saved={saved} />
         <DataProvenance value={center.provenance} compact />
         <p className="m-0 text-13 text-muted">{summary(center, today)}</p>
@@ -247,7 +235,6 @@ function NoMatch({ results }: { results: CenterResults }) {
   ]
   return (
     <EmptyState
-      icon="search"
       heading={copy.none.heading}
       body={results.radiusKm !== null ? copy.none.radiusBody : copy.none.body}
       headingLevel={3}
@@ -256,7 +243,13 @@ function NoMatch({ results }: { results: CenterResults }) {
         <p className="m-0 basis-full text-14 text-ink">{copy.active(active)}</p>
       )}
       {results.radiusKm !== null && (
-        <Button className={button()} onPress={() => update({ radius: null, center: null })}>
+        <Button
+          className={button()}
+          onPress={() =>
+            // Around the learner's own location, no radius would be the default 10 km again.
+            update({ radius: results.reference?.mine ? ANY_DISTANCE : null, center: null })
+          }
+        >
           <Icon name="distance" />
           {copy.showAllDistances}
         </Button>

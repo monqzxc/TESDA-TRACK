@@ -66,14 +66,12 @@ export function AccountForms({
           }
         />
       )}
-      {/* Learners can't create accounts (guest-only): sign-in is left for staff. */}
-      {learnerAccounts() && (
+      {/* Sign in offers no way to create an account (learners are guest-only); the registration form keeps its way
+          back for callers that open it directly (openSignIn({ view: 'register' })). */}
+      {!isSignIn && (
         <div className={formStyle.switch}>
-          <Button
-            className={formStyle.textButton}
-            onPress={() => switchTo(isSignIn ? 'register' : 'signIn')}
-          >
-            {isSignIn ? copy.signInForm.toRegister : copy.registerForm.toSignIn}
+          <Button className={formStyle.textButton} onPress={() => switchTo('signIn')}>
+            {copy.registerForm.toSignIn}
           </Button>
         </div>
       )}

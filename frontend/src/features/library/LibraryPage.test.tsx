@@ -60,9 +60,7 @@ describe('Qualifications Library', () => {
     const { router } = await openLibrary()
 
     expect(cards()).toHaveLength(12)
-    expect(
-      screen.getByText('16 of 16 qualifications · Showing 1–12 · Find your next possibility'),
-    ).toBeInTheDocument()
+    expect(screen.getByText('16 of 16 qualifications · Showing 1–12')).toBeInTheDocument()
     const pager = screen.getByRole('navigation', { name: 'Pages' })
     expect(within(pager).getByText('Page 1 of 2')).toBeInTheDocument()
     expect(within(pager).queryByRole('link', { name: 'Previous' })).not.toBeInTheDocument()
@@ -83,7 +81,7 @@ describe('Qualifications Library', () => {
     await user.type(screen.getByRole('searchbox'), 'fabricator')
 
     expect(cardNames()).toEqual([welding.name, welding2.name])
-    expect(screen.getByText('2 of 16 qualifications · Filtered results')).toBeInTheDocument()
+    expect(screen.getByText('2 of 16 qualifications')).toBeInTheDocument()
     expect(router.state.location.search).toBe('?q=fabricator')
     expect(screen.queryByRole('navigation', { name: 'Pages' })).not.toBeInTheDocument()
 

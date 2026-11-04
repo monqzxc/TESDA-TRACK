@@ -172,8 +172,8 @@ for (const colorScheme of ['light', 'dark'] as const) {
         await expectAccessible(page)
       })
 
-      test('creates an account with the privacy notice and consent', async ({ page }) => {
-        const api = await serveApi(page)
+      test('offers no way to create an account from sign in', async ({ page }) => {
+        await serveApi(page)
         await page.goto('/training')
         await expect(
           page.getByRole('heading', { level: 1, name: 'Training & Assessment' }),
@@ -181,42 +181,12 @@ for (const colorScheme of ['light', 'dark'] as const) {
 
         const area = await accountArea(page, phone)
         await area.getByRole('button', { name: 'Sign in' }).click()
-        await page.getByRole('button', { name: 'New here? Create an account' }).click()
 
-        const dialog = page.getByRole('dialog', { name: 'Create an account' })
-        await expect(dialog.getByLabel('Full name')).toBeFocused()
-        await expect(dialog.getByText(/are never sold/)).toBeVisible()
-
-        // Without consent nothing is sent.
-        await dialog.getByLabel('Full name').fill('Maria Santos')
-        await dialog.getByLabel('Email').fill(LEARNER.email)
-        await dialog.getByLabel('Password').fill(PASSWORD)
-        await dialog.getByRole('button', { name: 'Create account' }).click()
+        const dialog = page.getByRole('dialog', { name: 'Sign in' })
+        await expect(dialog.getByLabel('Email')).toBeVisible()
         await expect(
-          dialog.getByText('Agree to the privacy notice to create your account.'),
-        ).toBeVisible()
-        expect(api.registered).toBeNull()
-        await expectAccessible(page)
-
-        // The box is drawn by its label (the input itself is visually hidden), so that's what a learner clicks.
-        await dialog.getByText('I agree to the privacy notice').click()
-        await expect(
-          dialog.getByRole('checkbox', { name: 'I agree to the privacy notice' }),
-        ).toBeChecked()
-        await dialog.getByRole('button', { name: 'Create account' }).click()
-
-        await expect(dialog).toBeHidden()
-        expect(api.registered).toEqual({
-          full_name: 'Maria Santos',
-          email: LEARNER.email,
-          password: PASSWORD,
-          privacy_consent: true,
-        })
-        expect(api.signedIn).toBe(true)
-        const signedIn = phone ? await accountArea(page, phone) : area
-        await expect(
-          signedIn.getByRole('button', { name: 'Your account: Maria Santos' }),
-        ).toBeVisible()
+          dialog.getByRole('button', { name: 'New here? Create an account' }),
+        ).toHaveCount(0)
       })
 
       test('deletes the account after confirming', async ({ page }) => {

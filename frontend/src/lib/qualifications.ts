@@ -64,21 +64,31 @@ export function qualificationTags(
 
   const copy = en.qualification.tags
   const tags: QualificationTag[] = []
-  const match = NC_LEVEL.exec(qualification.name)
-  const level = match ? (match[1] as NcLevel) : null
+  const level = ncLevel(qualification.name)
   if (level) tags.push({ icon: 'check', text: copy.level(level) })
   const competencies = qualification.competencies.length
   if (competencies) tags.push({ text: copy.competencies(competencies) })
   const careers = qualification.possible_jobs.length
   if (careers) tags.push({ text: copy.careers(careers) })
-  if (match && level) {
-    const base = qualification.name.slice(0, match.index)
-    const higher = NC_LEVELS.slice(NC_LEVELS.indexOf(level) + 1).find((numeral) =>
-      names.has(fold(`${base}NC ${numeral}`)),
-    )
-    if (higher) tags.push({ icon: 'route', text: copy.higher(higher) })
-  }
+  const higher = higherLevel(qualification, names)
+  if (higher) tags.push({ icon: 'route', text: copy.higher(higher) })
   return tags
+}
+
+/** The next NC level up of the same qualification, when the catalog has one ("Cookery NC II" has III). */
+export function higherLevel(
+  qualification: Qualification,
+  names: ReadonlySet<string>,
+): NcLevel | null {
+  const match = NC_LEVEL.exec(qualification.name)
+  if (!match) return null
+  const level = match[1] as NcLevel
+  const base = qualification.name.slice(0, match.index)
+  return (
+    NC_LEVELS.slice(NC_LEVELS.indexOf(level) + 1).find((numeral) =>
+      names.has(fold(`${base}NC ${numeral}`)),
+    ) ?? null
+  )
 }
 
 /** A sentence or two about a qualification: the jobs it leads to and what it covers. */
