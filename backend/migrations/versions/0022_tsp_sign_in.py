@@ -1,7 +1,7 @@
 """Learners signed in through TESDA Skill Passport: their identity link, pending consents and the audit trail.
 
-Such learners have no password and may have no email, so both columns of learner become nullable. Downgrading
-deletes those learners (everything they own cascades), since the older schema can't hold them.
+Such learners have neither a password nor an email, so both columns of learner become nullable. Downgrading is
+refused while any exist: the older schema can't hold them, and deleting them would take everything they own.
 """
 from alembic import op
 import sqlalchemy as sa
@@ -42,7 +42,6 @@ def upgrade():
         sa.Column("uli", sa.String(length=64), nullable=True),
         sa.Column("scopes", postgresql.JSONB(astext_type=sa.Text()), nullable=False),
         sa.Column("profile", postgresql.JSONB(astext_type=sa.Text()), nullable=False),
-        sa.Column("email", sa.String(length=254), nullable=True),
         sa.Column("expires_at", sa.DateTime(timezone=True), nullable=False),
         sa.PrimaryKeyConstraint("id", name=op.f("pk_tsp_pending_sign_in")),
     )
@@ -64,11 +63,14 @@ def upgrade():
 
 
 def downgrade():
+    if op.get_bind().execute(sa.text(
+        "SELECT count(*) FROM learner WHERE password_hash IS NULL OR email IS NULL"
+    )).scalar():
+        raise RuntimeError("TSP-linked learners exist; delete or migrate them before downgrading 0022.")
     op.drop_index(op.f("ix_tsp_sign_in_audit_subject"), table_name="tsp_sign_in_audit")
     op.drop_table("tsp_sign_in_audit")
     op.drop_index(op.f("ix_tsp_pending_sign_in_expires_at"), table_name="tsp_pending_sign_in")
     op.drop_table("tsp_pending_sign_in")
     op.drop_table("learner_identity")
-    op.execute("DELETE FROM learner WHERE password_hash IS NULL OR email IS NULL")
     op.alter_column("learner", "password_hash", existing_type=sa.String(length=255), nullable=False)
     op.alter_column("learner", "email", existing_type=sa.String(length=254), nullable=False)

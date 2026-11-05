@@ -3,8 +3,8 @@
 The page hands over the one-time code TSP gave it. sign_in trades it with Hercules for the learner's profile and
 then either signs in the account already linked to that sso_id, or, on a first visit, keeps the cleaned profile
 for a few minutes and asks the learner to consent. consent creates the account and the link, or forgets the
-profile. Accounts are linked by sso_id only, never by email; a known sso_id arriving with a different ULI is
-refused, so two people are never mixed up. Every step is recorded in tsp_sign_in_audit.
+profile. Accounts are linked by sso_id only, and TSP's email is never kept; a known sso_id arriving with another ULI
+(or none, once one is stored) is refused, so two people are never mixed up. Every step is recorded in tsp_sign_in_audit.
 """
 import logging
 import secrets
@@ -18,7 +18,6 @@ from tesda_track.errors import TspSignInError
 from tesda_track.models import Learner, utcnow
 from tesda_track.models.identity import TSP_PROVIDER, LearnerIdentity, TspPendingSignIn, TspSignInAudit
 from tesda_track.schemas.hercules import TrackerProfile
-from tesda_track.services.accounts import find_by_email, normalize_email
 from tesda_track.services.hercules import (CLIENT_REJECTED, SIGN_IN_EXPIRED, UNAVAILABLE, HerculesClient,
                                            HerculesClientRejected, HerculesCodeRejected, HerculesNotConfigured,
                                            HerculesTokenRejected, HerculesUnavailable)
@@ -54,11 +53,8 @@ def sign_in(session: Session, client: HerculesClient, code: str) -> Learner | Co
     kept, scopes, now = kept_profile(profile), sorted(token.scopes), utcnow()
     link = _identity(session, profile.sso_id)
     if link is None:
-        email = profile.personal_information.email_address
         pending = TspPendingSignIn(id=secrets.token_urlsafe(32), subject=profile.sso_id, uli=profile.uli,
-                                   scopes=scopes, profile=kept,
-                                   email=normalize_email(email) if email and len(email) <= 254 else None,
-                                   expires_at=now + PENDING_LIFETIME)
+                                   scopes=scopes, profile=kept, expires_at=now + PENDING_LIFETIME)
         session.add(pending)
         _audit(session, profile.sso_id, "consent_requested", scopes)
         session.flush()
@@ -76,8 +72,7 @@ def consent(session: Session, pending_id: str, accept: bool) -> Learner | None:
         session.flush()
         return None
     now = utcnow()
-    email = pending.email if pending.email and find_by_email(session, pending.email) is None else None
-    learner = Learner(email=email, password_hash=None, full_name=_full_name(pending.profile), privacy_consent_at=now)
+    learner = Learner(email=None, password_hash=None, full_name=_full_name(pending.profile), privacy_consent_at=now)
     try:
         # A second consent for the same person can race this one: the unique link decides, and the loser signs in
         # to the winner's account below.
@@ -116,7 +111,7 @@ def _exchange(client: HerculesClient, code: str):
 
 def _sign_in_linked(session: Session, link: LearnerIdentity, *, uli: str | None, profile: dict,
                     scopes: list) -> Learner:
-    if link.uli and uli and link.uli != uli:
+    if link.uli and uli != link.uli:
         _audit(session, link.subject, "uli_mismatch", scopes, link.learner_id)
         # Committed here because the request ends in an error response, which rolls back.
         session.commit()

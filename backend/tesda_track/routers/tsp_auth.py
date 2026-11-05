@@ -22,8 +22,9 @@ from tesda_track.services.hercules import HerculesClient
 from tesda_track.services.rate_limit import client_address_key
 
 router = APIRouter(prefix="/auth/tsp", tags=["auth"])
-# Each attempt costs two Hercules calls; a learner needs one or two.
-RATE_LIMIT_PER_MINUTE = 10
+# Every WebView open signs in again, and a training center's class or a mobile carrier's NAT shares one address;
+# codes are single-use and minted by TSP, so this only keeps one address from flooding Hercules.
+RATE_LIMIT_PER_MINUTE = 60
 
 
 def enabled_settings(settings: Annotated[Settings, Depends(get_settings)]) -> Settings:

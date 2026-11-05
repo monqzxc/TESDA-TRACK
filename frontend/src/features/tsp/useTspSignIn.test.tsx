@@ -2,6 +2,7 @@ import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { api } from '../../api/client.ts'
 import { maria } from '../../test/account.tsx'
 import { renderApp } from '../../test/app.tsx'
 import { server } from '../../test/server.ts'
@@ -143,8 +144,14 @@ describe('signing in from TSP’s WebView', () => {
     expect(
       await screen.findByRole('heading', { name: 'Save your Skill Passport details in TESDA-TRACK?' }),
     ).toBeInTheDocument()
+    expect(
+      screen.getByText('Your name, your ULI, and a link to your Skill Passport account'),
+    ).toBeInTheDocument()
     expect(screen.getByText('Your skills')).toBeInTheDocument()
-    expect(screen.getByText('Your province and region')).toBeInTheDocument()
+    expect(screen.getByText('Your town or city, province, region and country')).toBeInTheDocument()
+    expect(
+      screen.getByText("We don't keep your phone number, email, birth date, sex or street address."),
+    ).toBeInTheDocument()
     expect(screen.queryByText('Your education')).not.toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Agree and continue' }))
     await waitFor(() => expect(types()).toContain('tsp.tracker.signed_in'))
@@ -218,6 +225,35 @@ describe('signing in from TSP’s WebView', () => {
     await user.click(await screen.findByRole('button', { name: 'Sign in again' }))
     await waitFor(() => expect(readies()).toHaveLength(2))
     expect(readies()[1].reason).toBe('retry')
+  })
+
+  it('an expired session asks TSP for a new code instead of opening the password dialog', async () => {
+    serveTsp()
+    installHost()
+    server.use(
+      http.get('*/api/v1/me/goals', () =>
+        HttpResponse.json({ detail: 'Your session has expired.' }, { status: 401 }),
+      ),
+    )
+    renderApp('/tsp/webview')
+    await answerReady(0)
+    await waitFor(() => expect(types()).toContain('tsp.tracker.signed_in'))
+    await api.GET('/api/v1/me/goals')
+    await waitFor(() => expect(readies()).toHaveLength(2))
+    expect(readies()[1].reason).toBe('session_expired')
+    expect(screen.queryByRole('dialog', { name: 'Sign in' })).not.toBeInTheDocument()
+  })
+
+  it('logout clears what the launch URL prefilled', async () => {
+    serveTsp()
+    installHost()
+    renderApp('/tsp/webview?name=Ana%20Santos&goal=I%20want%20to%20weld')
+    expect(await screen.findByText('Ana Santos')).toBeInTheDocument()
+    await answerReady(0)
+    await waitFor(() => expect(types()).toContain('tsp.tracker.signed_in'))
+    deliver({ type: 'tsp.tracker.logout' })
+    await waitFor(() => expect(screen.queryByText('Ana Santos')).not.toBeInTheDocument())
+    expect(await screen.findByRole('textbox', { name: 'Career goal' })).toHaveValue('')
   })
 
   it('logout ends the session and returns to /tsp/webview', async () => {

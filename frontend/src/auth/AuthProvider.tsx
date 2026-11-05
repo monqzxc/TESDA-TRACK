@@ -13,6 +13,7 @@ import { onSignInRequired } from '../api/client.ts'
 import { LoadBoundary } from '../components/LoadBoundary.tsx'
 import { useCopy } from '../i18n/copy.ts'
 import { FINDER_KEY } from '../features/finder/key.ts'
+import { isBridgeConnected } from '../features/tsp/bridge.ts'
 import { focusedElement, returnFocus } from '../lib/focus.ts'
 import { navigationTarget } from '../lib/navigation.ts'
 import { reloadPage } from '../lib/reload.ts'
@@ -207,7 +208,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       onSignInRequired(() => {
         if (!queryClient.getQueryData<Learner | null>(sessionKey)) return
         void endSession({ keepFinder: true })
-        openSignIn({ message: en.account.expired })
+        // Inside TSP's app the learner has no password: TSP signs them in again (useTspSignIn), not this dialog.
+        if (!isBridgeConnected()) openSignIn({ message: en.account.expired })
       }),
     [queryClient, endSession, openSignIn, en.account.expired],
   )

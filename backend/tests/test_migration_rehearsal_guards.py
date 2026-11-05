@@ -39,3 +39,9 @@ def test_role_guard_classification_never_exposes_custom_role_values():
     assert downgrade_refusal_reason(RuntimeError("Reassign staff accounts to learner or admin before downgrading RBAC.")) == \
         "staff_role_assignments_require_reassignment_before_0015"
     assert downgrade_refusal_reason(Exception("PRIVATE ROW VALUES")) == "migration_failed"
+
+
+def test_downgrade_refusal_reason_names_tsp_learners_without_values():
+    reason = downgrade_refusal_reason(
+        RuntimeError("TSP-linked learners exist; delete or migrate them before downgrading 0022."))
+    assert reason == "tsp_linked_learners_require_removal_before_0022"

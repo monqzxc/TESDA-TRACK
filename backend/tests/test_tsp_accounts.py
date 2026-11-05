@@ -58,3 +58,17 @@ def test_deleting_the_learner_deletes_the_identity(session):
     session.flush()
     session.expire_all()
     assert session.get(LearnerIdentity, link_id) is None
+
+
+def test_downgrade_refuses_while_tsp_learners_exist(session):
+    """Rolling back must not quietly delete learners and everything they own."""
+    from pathlib import Path
+
+    from alembic import command
+    from alembic.config import Config
+
+    tsp_learner(session)
+    config = Config(Path(__file__).resolve().parents[1] / "alembic.ini")
+    config.attributes.update(connection=session.connection(), configure_logger=False)
+    with pytest.raises(RuntimeError, match="TSP-linked learners exist"):
+        command.downgrade(config, "0021")

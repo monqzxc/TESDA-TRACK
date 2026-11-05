@@ -4,7 +4,7 @@ import pytest
 from pydantic import HttpUrl, SecretStr
 
 from tesda_track.config import get_settings
-from tesda_track.routers.tsp_auth import hercules_client
+from tesda_track.routers.tsp_auth import RATE_LIMIT_PER_MINUTE, hercules_client
 from tesda_track.services.hercules import HerculesClient
 
 PROFILE = {"sso_id": "sso-abc", "uli": "ULI-1",
@@ -78,10 +78,15 @@ def test_requested_with_required(client, tsp):
     assert client.post("/api/v1/auth/tsp/session", json={"code": "code"}).status_code == 403
 
 
+def test_rate_limit_leaves_room_for_a_shared_network(client, tsp):
+    # A training center's class shares one address, and every WebView open signs in again.
+    assert RATE_LIMIT_PER_MINUTE >= 60
+
+
 def test_rate_limited(client, tsp):
     tsp["token"] = REJECTED
-    statuses = [sign_in(client).status_code for _ in range(11)]
-    assert statuses[:10] == [401] * 10
+    statuses = [sign_in(client).status_code for _ in range(RATE_LIMIT_PER_MINUTE)]
+    assert set(statuses) == {401}
     last = sign_in(client)
     assert last.status_code == 429 and last.json()["code"] == "unavailable"
 

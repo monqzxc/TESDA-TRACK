@@ -1,8 +1,8 @@
 """Learners signed in through TESDA Skill Passport (docs/contracts/tsp-tracker-embed/CONTRACT.md).
 
-A TSP learner's account has no password: it is reached only through TSP's handoff, and it is linked by Hercules'
-sso_id, never by email. Before an account exists the learner consents; until then the cleaned profile waits in
-tsp_pending_sign_in for a few minutes. Every link, sign-in and refusal is recorded in tsp_sign_in_audit.
+A TSP learner's account has no password and no email: it is reached only through TSP's handoff, and it is linked by
+Hercules' sso_id. TSP's email is never kept, so it can't claim the address of another account. Before an account
+exists the learner consents; until then the cleaned profile waits in tsp_pending_sign_in for a few minutes. Every link, sign-in and refusal is recorded in tsp_sign_in_audit.
 """
 import uuid
 from datetime import datetime
@@ -44,7 +44,6 @@ class TspPendingSignIn(SQLModel, table=True):
     uli: str | None = Field(default=None, sa_type=String(64))
     scopes: list = Field(sa_type=JSONB)
     profile: dict = Field(sa_type=JSONB)
-    email: str | None = Field(default=None, sa_type=String(254))
     expires_at: datetime = Field(sa_type=DateTime(timezone=True), index=True)
 
 

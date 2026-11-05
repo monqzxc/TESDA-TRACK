@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { api } from '../../api/client.ts'
+import { api, onSignInRequired } from '../../api/client.ts'
 import type { components } from '../../api/schema.d.ts'
 import type { Learner } from '../../auth/session.ts'
 import { useAuth, type Auth } from '../../auth/useAuth.ts'
@@ -25,6 +25,8 @@ export interface TspSignIn {
   canRetry: boolean
   retry: () => void
   answerConsent: (accept: boolean) => Promise<void>
+  /** Goes up on TSP's logout: what the launch URL prefilled belongs to the learner who left. */
+  resets: number
 }
 
 type ContractError = Exclude<ErrorCode, 'timeout'>
@@ -82,6 +84,7 @@ interface View {
  */
 function createSignIn(bridge: Bridge, view: View, auth: () => Auth) {
   let closed = false
+  let signedIn = false
   let pendingId: string | null = null
 
   const fail = (canRetry: boolean) => {
@@ -108,6 +111,7 @@ function createSignIn(bridge: Bridge, view: View, auth: () => Auth) {
     if ('signedIn' in outcome) {
       await auth().adoptSession(outcome.signedIn)
       if (closed) return
+      signedIn = true
       bridge.signedIn()
       view.setSummary(null)
       view.setState('signed_in')
@@ -145,6 +149,12 @@ function createSignIn(bridge: Bridge, view: View, auth: () => Auth) {
     retry() {
       if (!closed) void attempt('retry', false)
     },
+    /** The API refused the session (it expired): ask TSP for a new code, as the contract says. */
+    sessionExpired() {
+      if (closed || !signedIn) return
+      signedIn = false
+      void attempt('session_expired', false)
+    },
     async answerConsent(accept: boolean) {
       if (closed || !pendingId) return
       const answering = pendingId
@@ -165,6 +175,7 @@ export function useTspSignIn(): TspSignIn {
   const [state, setState] = useState<TspSignInState>('guest')
   const [summary, setSummary] = useState<TspConsentSummary | null>(null)
   const [canRetry, setCanRetry] = useState(false)
+  const [resets, setResets] = useState(0)
   const signIn = useRef<ReturnType<typeof createSignIn> | null>(null)
   // The connection outlives renders, so it reads the latest auth actions and navigate from here.
   const latest = useRef({ auth, navigate })
@@ -184,11 +195,14 @@ export function useTspSignIn(): TspSignIn {
       setSummary(null)
       setCanRetry(false)
       setState('guest')
+      setResets((count) => count + 1)
       void latest.current.auth.signOut().catch(() => undefined)
       void latest.current.navigate(paths.tspWebview)
     })
+    const stopExpiry = onSignInRequired(() => current.sessionExpired())
     void current.start()
     return () => {
+      stopExpiry()
       stopLogout()
       current.close()
       bridge.close()
@@ -201,5 +215,5 @@ export function useTspSignIn(): TspSignIn {
     (accept: boolean) => signIn.current?.answerConsent(accept) ?? Promise.resolve(),
     [],
   )
-  return { state, summary, canRetry, retry, answerConsent }
+  return { state, summary, canRetry, retry, answerConsent, resets }
 }

@@ -55,7 +55,7 @@ def test_new_learner_needs_consent(session):
 def test_consent_accept_creates_linked_account(session):
     learner = linked_learner(session)
     assert learner.password_hash is None and learner.privacy_consent_at is not None
-    assert (learner.full_name, learner.email, learner.role) == ("Ana Santos", "ana@example.com", "learner")
+    assert (learner.full_name, learner.email, learner.role) == ("Ana Santos", None, "learner")
     link = session.exec(select(LearnerIdentity).where(LearnerIdentity.learner_id == learner.id)).one()
     assert (link.provider, link.subject, link.uli) == ("tsp", "sso-abc", "ULI-1")
     assert link.scopes == ["experience", "profile", "skills"]
@@ -121,11 +121,18 @@ def test_kept_profile_holds_only_allowed_fields():
     assert set(kept) == {"personal_information", "skills", "experience", "education", "qualifications", "credentials"}
 
 
-def test_email_kept_only_when_unused(session):
-    session.add(Learner(email="ana@example.com", password_hash="x", full_name="Someone Else",
-                        privacy_consent_at=utcnow()))
-    session.flush()
+def test_tsp_email_is_never_kept(session):
+    """The consent screen says contact details aren't kept, and an email could claim another account's address."""
+    assert "email" not in TspPendingSignIn.model_fields
     assert linked_learner(session).email is None
+
+
+def test_missing_uli_against_stored_uli_refuses(session):
+    linked_learner(session)
+    with pytest.raises(TspSignInError) as error:
+        tsp_sign_in.sign_in(session, hercules({**PROFILE, "uli": None}), "code")
+    assert (error.value.code, error.value.status_code) == ("unavailable", 409)
+    assert events(session)[-1] == "uli_mismatch"
 
 
 @pytest.mark.parametrize("response, code, status", [

@@ -32,6 +32,11 @@ export const HANDOFF_TIMEOUT_MS = 10_000
 const VERSION = 1
 const CODE_MAX_LENGTH = 4096
 
+/** Whether a bridge is connected now: the page runs inside TSP's app, which signs the learner in. */
+export function isBridgeConnected(win: Window = window): boolean {
+  return win.TspTracker !== undefined
+}
+
 /** 32 random bytes as base64url without padding: 43 characters, the contract's nonce. */
 export function newNonce(): string {
   const bytes = crypto.getRandomValues(new Uint8Array(32))

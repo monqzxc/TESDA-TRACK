@@ -25,6 +25,7 @@ export function TspConsent({
       <p>{copy.greeting(summary.name)}</p>
       <p>{copy.lead}</p>
       <ul>
+        <li>{copy.always}</li>
         {summary.keeps.map((kept) => (
           <li key={kept}>{copy.keeps[kept]}</li>
         ))}

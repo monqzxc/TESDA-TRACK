@@ -92,7 +92,8 @@ export function WebviewLayout() {
     location.pathname === paths.tspTraining ||
     location.pathname === paths.tspSkills
   return (
-    <TspStateProvider>
+    // A new provider after TSP's logout: nothing the last learner's launch URL prefilled stays.
+    <TspStateProvider key={tsp.resets}>
       <SkipLink />
       <div className="tsp-webview min-h-dvh">
         <header className="tsp-header">
