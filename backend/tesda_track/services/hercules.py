@@ -69,13 +69,23 @@ class TrackerToken:
     scopes: frozenset[str]
 
 
-def parse_profile(data: dict) -> TrackerProfile:
+def profile_problems(data: dict) -> list[str]:
+    """Where ``data`` doesn't fit TrackerProfile, as field paths without values; empty when it parses."""
     try:
-        return TrackerProfile.model_validate(data)
+        TrackerProfile.model_validate(data)
     except ValidationError as error:
-        # The validation error quotes the input, which is the learner's personal information: never chain it.
-        logger.warning("Hercules sent a profile TESDA-TRACK can't read (%d problems)", error.error_count())
-        raise HerculesUnavailable() from None
+        return sorted({".".join(map(str, problem["loc"])) for problem in error.errors(include_input=False)})
+    return []
+
+
+def parse_profile(data: dict) -> TrackerProfile:
+    # Raised outside the validation error, which quotes the input (the learner's personal information), so it
+    # isn't even the context of what callers catch.
+    problems = profile_problems(data)
+    if problems:
+        logger.warning("Hercules sent a profile TESDA-TRACK can't read: %s", ", ".join(problems))
+        raise HerculesUnavailable()
+    return TrackerProfile.model_validate(data)
 
 
 def describe_profile(data: dict) -> dict:
@@ -97,8 +107,22 @@ def describe_profile(data: dict) -> dict:
         "unexpected_fields": sorted([key for key in data if key not in TrackerProfile.model_fields]
                                     + [f"personal_information.{key}" for key in personal
                                        if key not in PersonalInformation.model_fields]),
-        "sensitive_fields_sent": sorted(SENSITIVE_FIELDS & (data.keys() | personal.keys())),
+        "sensitive_fields_sent": sorted(set(_sensitive_paths(data))),
     }
+
+
+def _sensitive_paths(value, path: str = ""):
+    """Paths such as skills[].nat_id to every SENSITIVE_FIELDS key in ``value``."""
+    if isinstance(value, dict):
+        for key, item in value.items():
+            here = f"{path}.{key}" if path else key
+            if key in SENSITIVE_FIELDS:
+                yield here
+            else:
+                yield from _sensitive_paths(item, here)
+    elif isinstance(value, list):
+        for item in value:
+            yield from _sensitive_paths(item, f"{path}[]")
 
 
 def _section(items) -> dict:

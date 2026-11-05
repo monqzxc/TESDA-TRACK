@@ -43,3 +43,18 @@ def test_http_base_url_allowed_in_development():
 
 def test_secret_is_hidden_in_repr():
     assert "s" * 64 not in repr(settings(**HERCULES))
+
+
+TELLTALE_SECRET = "SECRETVALUE-abcdefghijklmnopqrstuvwxyz0123456789"
+
+
+@pytest.mark.parametrize("mistake", [
+    {"hercules_base_url": None},
+    {"hercules_base_url": "http://hercules.example.test", "environment": "production"},
+    {"tracker_client_secret": TELLTALE_SECRET + "x" * 1024},
+], ids=["partial", "http-in-production", "too-long"])
+def test_configuration_errors_never_echo_the_secret(mistake):
+    # The error is printed when the API starts, so it ends up in the container logs.
+    with pytest.raises(ValidationError) as error:
+        settings(**{**HERCULES, "tracker_client_secret": TELLTALE_SECRET, **mistake})
+    assert "SECRETVALUE" not in str(error.value) and "0123456789" not in str(error.value)

@@ -157,6 +157,15 @@ def test_profile_drops_sensitive_fields():
     assert profile.personal_information.first_name == "Juana"
 
 
+def test_profile_drops_sensitive_fields_at_any_depth():
+    data = {**PROFILE_DATA, "skills": [{"name": "Welding", "nat_id": "1234-5678"}],
+            "credentials": {"certificates": [{"title": "SMAW NC II", "holder": {"face_url": "https://faces.example/1"}}]}}
+    profile = client(FakeHercules(profile_response=ok(data))).fetch_profile(TOKEN)
+    dumped = json.dumps(profile.model_dump())
+    assert "1234-5678" not in dumped and "faces.example" not in dumped
+    assert profile.skills == [{"name": "Welding"}]
+
+
 def test_profile_sections_missing_for_narrower_scope_are_empty():
     profile = client(FakeHercules(profile_response=ok({"sso_id": "sso-abc"}))).fetch_profile(TOKEN)
     assert profile.skills == [] and profile.credentials.certificates == []
@@ -190,13 +199,17 @@ def test_failures_never_log_secret_code_or_token(caplog):
         (FakeHercules(token_response=httpx.Response(502, text="Bad gateway")), "exchange"),
         (FakeHercules(token_response=timeout), "exchange"),
         (FakeHercules(profile_response=httpx.Response(401, json=TOKEN_MISSING)), "profile"),
-        (FakeHercules(profile_response=ok({**PROFILE_DATA, "sso_id": 42})), "profile"),
+        # The failing field is the personal information itself, so a leak of the validation error would show it.
+        (FakeHercules(profile_response=ok({**PROFILE_DATA, "personal_information": {"first_name": ["Juana"]}})),
+         "profile"),
     ]
     messages = []
     for fake, call in failures:
         with pytest.raises(HerculesError) as error:
             client(fake).exchange_code(CODE) if call == "exchange" else client(fake).fetch_profile(TOKEN)
         messages.append(str(error.value))
+    # Not even a suppressed context: error reporters read __context__ too.
+    assert error.value.__cause__ is None and error.value.__context__ is None
     assert caplog.records, "failures should be logged for operators"
     for text in (caplog.text, *messages):
         assert not any(value in text for value in (SECRET, CODE, "tok-123", "Juana", "+639170000000"))

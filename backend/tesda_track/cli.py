@@ -120,17 +120,19 @@ def run_mcp_usage_command(session: Session, args: argparse.Namespace, out: TextI
           file=out)
 
 
-def run_tracker_exchange(client, code: str, out: TextIO) -> None:
-    """Runs `tracker-exchange` with a HerculesClient: prints the token's lifetime and scopes and the profile's shape.
-    A profile TESDA-TRACK couldn't read raises HerculesUnavailable before anything is printed."""
-    from tesda_track.services.hercules import describe_profile, parse_profile
+def run_tracker_exchange(client, code: str, out: TextIO) -> bool:
+    """Runs `tracker-exchange` with a HerculesClient: prints the token's lifetime and scopes and the profile's shape,
+    and returns whether TESDA-TRACK can read the profile. The shape is printed either way, since a code works once
+    and a profile that doesn't fit is the one worth seeing."""
+    from tesda_track.services.hercules import describe_profile, profile_problems
 
     token = client.exchange_code(code)
     data = client.fetch_profile_data(token)
-    parse_profile(data)
+    problems = profile_problems(data)
     summary = {"token": {"expires_in": token.expires_in, "scopes": sorted(token.scopes)},
-               "profile": describe_profile(data)}
+               "profile": describe_profile(data), "parses": not problems, "parse_problems": problems}
     print(json.dumps(summary, indent=2, ensure_ascii=False), file=out)
+    return not problems
 
 
 def google_maps_api_key() -> str:
@@ -228,9 +230,11 @@ def main() -> None:
         # Prompted for rather than an argument, so the code stays out of the shell history.
         code = os.environ.get("TRACKER_HANDOFF_CODE", "").strip() or getpass.getpass("Handoff code: ").strip()
         try:
-            run_tracker_exchange(HerculesClient(get_settings()), code, sys.stdout)
+            parses = run_tracker_exchange(HerculesClient(get_settings()), code, sys.stdout)
         except HerculesError as error:
             sys.exit(str(error))
+        if not parses:
+            sys.exit("TESDA-TRACK can't read this profile yet: see parse_problems above.")
         return
 
     from tesda_track.db import get_engine

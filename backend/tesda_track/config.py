@@ -40,8 +40,9 @@ class PersonalizationWeights(BaseModel):
 
 
 class Settings(BaseSettings):
+    # Errors leave the values out: they are printed when the API starts, and the input holds every secret.
     model_config = SettingsConfigDict(env_file=ROOT_ENV_FILE, env_file_encoding="utf-8", extra="ignore",
-                                      env_nested_delimiter="__")
+                                      env_nested_delimiter="__", hide_input_in_errors=True)
 
     environment: Literal["development", "test", "production"] = "development"
     database_url: str = Field(description="SQLAlchemy URL, e.g. postgresql+psycopg://user:pass@host:5432/tesda_track")

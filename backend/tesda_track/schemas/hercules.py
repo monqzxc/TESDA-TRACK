@@ -5,10 +5,21 @@ leaves out (national and digital IDs, blood type, face images) never reach TESDA
 sending them. List items stay as plain JSON until real profiles show their shape (python -m tesda_track.cli
 tracker-exchange reports it).
 """
-from pydantic import BaseModel, ConfigDict, Field, JsonValue
+from pydantic import BaseModel, ConfigDict, Field, JsonValue, model_validator
 
-# Named in the spec as intentionally excluded. Never kept; tracker-exchange reports it if Hercules sends one.
+# Named in the spec as intentionally excluded. Never kept at any depth; tracker-exchange reports where Hercules
+# sent one.
 SENSITIVE_FIELDS = frozenset({"nat_id", "digital_id", "blood_type", "face_url"})
+
+
+def without_sensitive_fields(value):
+    """``value`` with every SENSITIVE_FIELDS key removed, however deep: list items are kept as plain JSON, so the
+    field whitelist alone doesn't reach inside them."""
+    if isinstance(value, dict):
+        return {key: without_sensitive_fields(item) for key, item in value.items() if key not in SENSITIVE_FIELDS}
+    if isinstance(value, list):
+        return [without_sensitive_fields(item) for item in value]
+    return value
 
 
 class _Ignoring(BaseModel):
@@ -50,3 +61,8 @@ class TrackerProfile(_Ignoring):
     education: list[JsonValue] = []
     qualifications: list[JsonValue] = []
     credentials: TrackerCredentials = TrackerCredentials()
+
+    @model_validator(mode="before")
+    @classmethod
+    def drop_sensitive_fields(cls, data):
+        return without_sensitive_fields(data)
