@@ -54,7 +54,8 @@
         "FRONT-OFFICE",
         "FBS",
         "FOOD-BEVERAGE"
-      ]
+      ],
+      "note": "Answer key adjusted 2026-11-05 after the first run: added CUSTOMER-SERVICES (Customer Services NC II), a direct match the first key missed."
     },
     {
       "kind": "single_skill",
@@ -92,7 +93,8 @@
       "expect": [
         "PIPEFITTING",
         "PLUMBING"
-      ]
+      ],
+      "note": "Answer key adjusted 2026-11-05 after the first run: added PIPEFITTING (Pipefitting (Metallic) NC II), the qualification named for the skill; the first key had only Plumbing."
     },
     {
       "kind": "single_skill",
@@ -128,7 +130,8 @@
         "LBTRS",
         "DOMESTIC-REFRIGERATION",
         "PACU"
-      ]
+      ],
+      "note": "Answer key adjusted 2026-11-05 after the first run: added CACIS (Commercial Air-conditioning Installation and Servicing NC III), an air-conditioning qualification the first key missed."
     },
     {
       "kind": "multi_skill",
@@ -149,7 +152,8 @@
         "CUSTOMER-SERVICES",
         "CONTACT-CENTER",
         "FRONT-OFFICE"
-      ]
+      ],
+      "note": "Answer key adjusted 2026-11-05 after the first run: added CUSTOMER-SERVICES (Customer Services NC II), a direct match the first key missed."
     },
     {
       "kind": "multi_skill",
@@ -304,7 +308,8 @@
       "expect": [
         "DOMESTIC-WORK",
         "HOUSEKEEPING"
-      ]
+      ],
+      "note": "Answer key adjusted 2026-11-05 after the first run: added DOMESTIC-WORK (Domestic Work NC II), which lists Housekeeper among its jobs; Housekeeping NC II stays accepted and ranks second."
     },
     {
       "kind": "occupation",
@@ -381,5 +386,6 @@
       "text": "and the",
       "expect": []
     }
-  ]
+  ],
+  "answer_key": "Fixed on 2026-11-05. Five cases were widened once, after the first run and before this key was fixed; each carries a note. Change the key only in a new version of this file."
 }
