@@ -7,6 +7,8 @@ from tesda_track.models.catalog import (COMPETENCY_CATEGORIES, RELATIONS, Compet
 from tesda_track.models.delivery import (APPLICATION_STATUSES, ASSESSMENT_RESULTS, DELIVERY_MODES, SCHEDULE_STATUSES,
                                          AssessmentApplication, AssessmentCenter, AssessmentSchedule, Region,
                                          TrainingProgram, TrainingProvider)
+from tesda_track.models.identity import (AUDIT_EVENTS, TSP_PROVIDER, LearnerIdentity, TspPendingSignIn,
+                                         TspSignInAudit)
 from tesda_track.models.feedback import FEEDBACK_REASONS, SHARED_GOAL_CONSENT, RecommendationFeedback, SharedGoal
 from tesda_track.models.rbac import Role
 from tesda_track.models.learners import (ANSWER_CODES, GOAL_STATUSES, Certification, Goal, Learner,
@@ -25,6 +27,7 @@ __all__ = [
     "OfficialQualificationCode", "RELATIONS",
     "ApiClient", "McpCallDaily", "McpCallLog", "McpDemandSnapshot", "NO_CLIENT", "OUTCOMES",
     "WriteReceipt",
+    "AUDIT_EVENTS", "TSP_PROVIDER", "LearnerIdentity", "TspPendingSignIn", "TspSignInAudit",
     "RegistryBatch", "RegistryLink", "RegistryRecord",
     "LearnerAssessment",
     "ServiceVerification",
