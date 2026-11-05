@@ -20,7 +20,7 @@ export function useJourney(journey: Journey, catalog: readonly Qualification[]) 
   )
   // New answers ask again; the last matches stay on screen meanwhile.
   const matches = useQuery({
-    ...matchesQuery(journey.query, profile),
+    ...matchesQuery(journey.query, profile, journey.mode),
     placeholderData: keepPreviousData,
   })
 

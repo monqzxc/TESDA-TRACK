@@ -120,7 +120,7 @@ function JourneySteps({
       <PathwayStep
         qualification={chosen}
         profile={profile}
-        asked={{ query: journey.query, profile: context.profile }}
+        asked={{ query: journey.query, profile: context.profile, mode: journey.mode }}
       />
     )
   }

@@ -825,7 +825,7 @@ def build(session: Session, request: PathwayReportRequest, embedder: Embedder | 
     units = units_with_answers(qualification, request.answers)
     readiness = analysis.score_readiness(qualification, request.answers) \
         if units and all(u.status != "not_answered" for u in units) else None
-    evidence = analysis.match_evidence(session, request.query, request.profile, embedder)
+    evidence = analysis.match_evidence(session, request.query, request.profile, embedder, mode=request.mode)
     route = analysis.pathway(session, evidence.profile, qualification.code)
 
     # The existing rankings, unchanged: they audit what they return, so the report's options can be traced.

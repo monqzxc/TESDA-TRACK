@@ -487,10 +487,33 @@ export const en = {
       signInToSave: 'Sign in to save your progress',
       last: 'Your last submitted goal',
       useAgain: 'Use again',
+      // Two ways to search: a goal in a sentence, or a list of skills or jobs (each matched on its own).
+      modes: {
+        label: 'How would you like to search?',
+        goal: 'My goal',
+        skills: 'A skill or job',
+      },
+      skills: {
+        lead: 'List the skills you have or the jobs you want. We match each one to TESDA qualifications.',
+        label: 'Your skills or the jobs you want',
+        help: 'Separate them with commas, for example: welding, blueprint reading.',
+        placeholder: 'Example: welding, electrician, customer service',
+        examplesLabel: 'Try one:',
+        examples: [
+          'Welding',
+          'Electrician',
+          'Cooking, baking',
+          'Customer service',
+          'Computer repair',
+        ],
+        empty: 'Type at least one skill or job to get started.',
+        last: 'Your last skills search',
+      },
     },
     // The submitted goal, above steps 2 to 4.
     summary: {
       label: 'Your goal',
+      skillsLabel: 'Your skills or jobs',
       change: 'Change goal',
       saved: 'Saved to My Progress',
       save: 'Save to profile',
@@ -565,6 +588,17 @@ export const en = {
       relevant: 'Relevant skills',
       develop: 'Skills to develop',
       check: 'Check my readiness',
+      // A skills search: what it matched with, what it couldn't use, and the way to centers for each result.
+      skillsLead:
+        'These match the skills and jobs you listed. Find training centers, or check your readiness.',
+      skillsNone:
+        'We couldn’t match these skills or jobs. Try a job title such as “electrician”, or describe your goal instead.',
+      searched: (terms: readonly string[]) => `Matched with: ${terms.join(', ')}`,
+      unmatched: (terms: readonly string[]) =>
+        `Not used: ${terms.join(', ')}. These don’t name a skill or job TESDA trains for.`,
+      skillMatch: 'Skill match',
+      skillMatchScore: (score: number) => `Skill match: ${score}%`,
+      centers: 'Find training centers',
       other: 'Or choose any qualification to explore',
       careers: (careers: readonly string[]) => `Sample career options: ${careers.join(', ')}`,
     },

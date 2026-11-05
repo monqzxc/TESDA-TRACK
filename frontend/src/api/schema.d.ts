@@ -2838,6 +2838,12 @@ export interface components {
             };
             /** Satisfied */
             satisfied: boolean;
+            /**
+             * Mode
+             * @default goal
+             * @enum {string}
+             */
+            mode: "goal" | "skills";
         };
         /** FeedbackPublic */
         FeedbackPublic: {
@@ -3145,12 +3151,20 @@ export interface components {
             /** Query */
             query: string;
             profile: components["schemas"]["Profile"];
+            /**
+             * Mode
+             * @default goal
+             * @enum {string}
+             */
+            mode: "goal" | "skills";
         };
         /** MatchResult */
         MatchResult: {
             profile: components["schemas"]["Profile"];
             /** Matches */
             matches: components["schemas"]["Match"][];
+            /** @description Skills searches only */
+            search?: components["schemas"]["SkillTerms"] | null;
         };
         /**
          * MatchSummary
@@ -3482,6 +3496,12 @@ export interface components {
              * @default false
              */
             needs_scholarship: boolean;
+            /**
+             * Mode
+             * @default goal
+             * @enum {string}
+             */
+            mode: "goal" | "skills";
         };
         /** PathwayRequest */
         PathwayRequest: {
@@ -4402,6 +4422,19 @@ export interface components {
             latitude: number | null;
             /** Longitude */
             longitude: number | null;
+        };
+        /**
+         * SkillTerms
+         * @description How a skills search read the learner's list: the terms it matched with, and those it couldn't use.
+         */
+        SkillTerms: {
+            /** Terms */
+            terms: string[];
+            /**
+             * Unmatched
+             * @description Terms that name no trade or career TESDA trains for
+             */
+            unmatched: string[];
         };
         /**
          * SkillsBridgeBenchmark

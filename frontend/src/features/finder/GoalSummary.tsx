@@ -34,7 +34,10 @@ export function GoalSummary({ journey, code, sync, compact = false }: GoalSummar
   const owned = ownsSession(learner, journey.sessionOwner) && journey.sessionId !== null
 
   let status
-  if (owned && sync.failed) {
+  if (journey.mode === 'skills') {
+    // A list of skills or jobs isn't saved as a session.
+    status = null
+  } else if (owned && sync.failed) {
     status = (
       <>
         <span className="text-14 font-semibold text-warn-ink">{en.finder.save.syncFailed}</span>
@@ -72,7 +75,9 @@ export function GoalSummary({ journey, code, sync, compact = false }: GoalSummar
       )}
     >
       <div className="min-w-0 flex-[1_1_22rem]">
-        <p className="m-0 text-13 leading-[1.5] text-muted">{copy.label}</p>
+        <p className="m-0 text-13 leading-[1.5] text-muted">
+          {journey.mode === 'skills' ? copy.skillsLabel : copy.label}
+        </p>
         <p className="mt-[0.1rem] mb-0 text-17 leading-[1.4] font-semibold wrap-anywhere text-navy max-xs:text-16">
           {journey.query}
         </p>

@@ -14,7 +14,7 @@ import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { pathwaysQuery, progressKeys, setPathwayStatus, type Enrollment } from '../progress/api.ts'
 import { shortName, trainingAddress } from '../training/address.ts'
-import { curatedPathwaysQuery, followPathway, type CuratedPathway } from './api.ts'
+import { curatedPathwaysQuery, followPathway, type Asked, type CuratedPathway } from './api.ts'
 import { FeedbackPrompt } from './FeedbackPrompt.tsx'
 import { PathwayDetails, usePathwayReport } from './PathwayReport.tsx'
 import { VERDICTS, verdictFor } from './rules.ts'
@@ -26,7 +26,7 @@ interface PathwayStepProps {
   /** For administrators' diagnostics. */
   profile: Profile
   /** What the matches were asked with, for the learner's feedback. */
-  asked: { query: string; profile: Profile }
+  asked: Asked
 }
 
 /**

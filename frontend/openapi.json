@@ -9737,6 +9737,15 @@
           "satisfied": {
             "type": "boolean",
             "title": "Satisfied"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "goal",
+              "skills"
+            ],
+            "title": "Mode",
+            "default": "goal"
           }
         },
         "type": "object",
@@ -10541,6 +10550,15 @@
           },
           "profile": {
             "$ref": "#/components/schemas/Profile"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "goal",
+              "skills"
+            ],
+            "title": "Mode",
+            "default": "goal"
           }
         },
         "type": "object",
@@ -10561,6 +10579,17 @@
             },
             "type": "array",
             "title": "Matches"
+          },
+          "search": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SkillTerms"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Skills searches only"
           }
         },
         "type": "object",
@@ -11542,6 +11571,15 @@
             "type": "boolean",
             "title": "Needs Scholarship",
             "default": false
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "goal",
+              "skills"
+            ],
+            "title": "Mode",
+            "default": "goal"
           }
         },
         "additionalProperties": false,
@@ -14019,6 +14057,32 @@
           "longitude"
         ],
         "title": "SiteSummary"
+      },
+      "SkillTerms": {
+        "properties": {
+          "terms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Terms"
+          },
+          "unmatched": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Unmatched",
+            "description": "Terms that name no trade or career TESDA trains for"
+          }
+        },
+        "type": "object",
+        "required": [
+          "terms",
+          "unmatched"
+        ],
+        "title": "SkillTerms",
+        "description": "How a skills search read the learner's list: the terms it matched with, and those it couldn't use."
       },
       "SkillsBridgeBenchmark": {
         "properties": {

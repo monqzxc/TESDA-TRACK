@@ -21,6 +21,11 @@ def analyze_goal(request: GoalRequest, session: SessionDep, embedder: EmbedderDe
 @router.post("/matches", response_model=MatchResult)
 def match_qualifications(request: MatchRequest, session: SessionDep, embedder: EmbedderDep,
                          background: BackgroundTasks, learner: OptionalLearner):
+    if request.mode == "skills":
+        # A list of skills or job titles: saved assessment answers describe a goal, so they don't apply.
+        evidence = analysis.match_evidence(session, request.query, request.profile, embedder, mode="skills")
+        background.add_task(match_stats.record, no_match=not evidence.matches)
+        return MatchResult(profile=evidence.profile, matches=evidence.matches, search=evidence.search)
     answers, _ = learner_assessments.resolve(session, learner, request)
     profile, matches = analysis.match(session, request.query, request.profile, embedder, answers)
     background.add_task(match_stats.record, no_match=not matches)

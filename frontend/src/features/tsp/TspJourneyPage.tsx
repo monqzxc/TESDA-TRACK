@@ -150,7 +150,7 @@ function JourneyContent({ journey, catalog }: { journey: Journey; catalog: Quali
             <PathwayStep
               qualification={chosen}
               profile={context.matchedProfile ?? context.profile}
-              asked={{ query: journey.query, profile: context.profile }}
+              asked={{ query: journey.query, profile: context.profile, mode: journey.mode }}
             />
           </>
         ) : (

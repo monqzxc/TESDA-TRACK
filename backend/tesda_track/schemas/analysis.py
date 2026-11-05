@@ -12,6 +12,9 @@ Intent = Literal["training_recommendation", "training_and_assessment", "assessme
                  "career_exploration", "unknown"]
 Route = Literal["ADDITIONAL_QUESTIONS", "TRAINING_AND_ASSESSMENT", "ASSESSMENT_READINESS", "SKILL_GAP_CHECK"]
 AnswerCode = Literal["confident", "some_experience", "not_familiar"]
+# goal: one sentence about what the learner wants (the finder's first way in). skills: a list of skills or job
+# titles, each matched on its own (services/skill_search.py). A request without a mode is a goal request.
+SearchMode = Literal["goal", "skills"]
 
 
 class Profile(BaseModel):
@@ -35,6 +38,7 @@ class GoalAnalysis(BaseModel):
 class MatchRequest(AssessmentReference):
     query: GoalText
     profile: Profile
+    mode: SearchMode = "goal"
 
 
 class MatchComponents(BaseModel):
@@ -58,9 +62,23 @@ class Match(BaseModel):
         return result
 
 
+class SkillTerms(BaseModel):
+    """How a skills search read the learner's list: the terms it matched with, and those it couldn't use."""
+    terms: list[str]
+    unmatched: list[str] = Field(description="Terms that name no trade or career TESDA trains for")
+
+
 class MatchResult(BaseModel):
     profile: Profile
     matches: list[Match]
+    search: SkillTerms | None = Field(default=None, description="Skills searches only")
+
+    @model_serializer(mode="wrap")
+    def preserve_goal_shape(self, handler):
+        result = handler(self)
+        if self.search is None:
+            result.pop("search", None)
+        return result
 
 
 class PathwayRequest(BaseModel):

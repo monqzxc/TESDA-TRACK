@@ -1,0 +1,385 @@
+{
+  "version": 1,
+  "description": "Find my pathway skill and job search: hand-written inputs with the qualification families a reviewer accepts as the top match. expect lists code prefixes; an empty list means nothing should match.",
+  "cases": [
+    {
+      "kind": "single_skill",
+      "text": "welding",
+      "expect": [
+        "MMAW",
+        "FCAW",
+        "GMAW",
+        "GTAW",
+        "SAW",
+        "GAS-WELDING"
+      ]
+    },
+    {
+      "kind": "single_skill",
+      "text": "wiring",
+      "expect": [
+        "EIM"
+      ]
+    },
+    {
+      "kind": "single_skill",
+      "text": "cooking",
+      "expect": [
+        "COOKERY",
+        "FOOD-PRODUCTION"
+      ]
+    },
+    {
+      "kind": "single_skill",
+      "text": "baking",
+      "expect": [
+        "FOOD-PRODUCTION-NC-II",
+        "BREAD"
+      ]
+    },
+    {
+      "kind": "single_skill",
+      "text": "computer repair",
+      "expect": [
+        "CSS",
+        "EPAS"
+      ]
+    },
+    {
+      "kind": "single_skill",
+      "text": "customer service",
+      "expect": [
+        "CUSTOMER-SERVICES",
+        "CONTACT-CENTER",
+        "FRONT-OFFICE",
+        "FBS",
+        "FOOD-BEVERAGE"
+      ]
+    },
+    {
+      "kind": "single_skill",
+      "text": "massage",
+      "expect": [
+        "MASSAGE",
+        "HILOT"
+      ]
+    },
+    {
+      "kind": "single_skill",
+      "text": "haircut",
+      "expect": [
+        "HAIRDRESSING"
+      ]
+    },
+    {
+      "kind": "single_skill",
+      "text": "nail care",
+      "expect": [
+        "BEAUTY-CARE"
+      ]
+    },
+    {
+      "kind": "single_skill",
+      "text": "sewing",
+      "expect": [
+        "DRESSMAKING",
+        "TAILORING"
+      ]
+    },
+    {
+      "kind": "single_skill",
+      "text": "pipe fitting",
+      "expect": [
+        "PIPEFITTING",
+        "PLUMBING"
+      ]
+    },
+    {
+      "kind": "single_skill",
+      "text": "farming",
+      "expect": [
+        "AGRICULTURAL-CROPS",
+        "ORGANIC-AGRICULTURE"
+      ]
+    },
+    {
+      "kind": "single_skill",
+      "text": "graphic design",
+      "expect": [
+        "VISUAL-GRAPHIC",
+        "ANIMATION"
+      ]
+    },
+    {
+      "kind": "single_skill",
+      "text": "java",
+      "expect": [
+        "JAVA",
+        "PROGRAMMING"
+      ]
+    },
+    {
+      "kind": "single_skill",
+      "text": "aircon repair",
+      "expect": [
+        "CACIS",
+        "RAC",
+        "CRIS",
+        "LBTRS",
+        "DOMESTIC-REFRIGERATION",
+        "PACU"
+      ]
+    },
+    {
+      "kind": "multi_skill",
+      "text": "welding, blueprint reading",
+      "expect": [
+        "MMAW",
+        "FCAW",
+        "GMAW",
+        "GTAW",
+        "SAW",
+        "GAS-WELDING"
+      ]
+    },
+    {
+      "kind": "multi_skill",
+      "text": "customer service, typing",
+      "expect": [
+        "CUSTOMER-SERVICES",
+        "CONTACT-CENTER",
+        "FRONT-OFFICE"
+      ]
+    },
+    {
+      "kind": "multi_skill",
+      "text": "cooking, food safety, kitchen work",
+      "expect": [
+        "COOKERY",
+        "FOOD-PRODUCTION"
+      ]
+    },
+    {
+      "kind": "multi_skill",
+      "text": "engine repair, changing oil, brakes",
+      "expect": [
+        "AUTOMOTIVE",
+        "MOTORCYCLE"
+      ]
+    },
+    {
+      "kind": "multi_skill",
+      "text": "caring for the elderly, first aid",
+      "expect": [
+        "CAREGIVING"
+      ]
+    },
+    {
+      "kind": "multi_skill",
+      "text": "cleaning rooms, making beds",
+      "expect": [
+        "HOUSEKEEPING"
+      ]
+    },
+    {
+      "kind": "multi_skill",
+      "text": "laying bricks, mixing cement",
+      "expect": [
+        "MASONRY"
+      ]
+    },
+    {
+      "kind": "multi_skill",
+      "text": "coffee, latte art",
+      "expect": [
+        "BARISTA"
+      ]
+    },
+    {
+      "kind": "multi_skill",
+      "text": "accounting, recording transactions",
+      "expect": [
+        "BOOKKEEPING"
+      ]
+    },
+    {
+      "kind": "multi_skill",
+      "text": "welding, basketball",
+      "expect": [
+        "MMAW",
+        "FCAW",
+        "GMAW",
+        "GTAW",
+        "SAW",
+        "GAS-WELDING"
+      ]
+    },
+    {
+      "kind": "occupation",
+      "text": "electrician",
+      "expect": [
+        "EIM"
+      ]
+    },
+    {
+      "kind": "occupation",
+      "text": "welder",
+      "expect": [
+        "MMAW",
+        "FCAW",
+        "GMAW",
+        "GTAW",
+        "SAW",
+        "GAS-WELDING"
+      ]
+    },
+    {
+      "kind": "occupation",
+      "text": "caregiver",
+      "expect": [
+        "CAREGIVING"
+      ]
+    },
+    {
+      "kind": "occupation",
+      "text": "barista",
+      "expect": [
+        "BARISTA"
+      ]
+    },
+    {
+      "kind": "occupation",
+      "text": "bartender",
+      "expect": [
+        "BARTENDING"
+      ]
+    },
+    {
+      "kind": "occupation",
+      "text": "call center agent",
+      "expect": [
+        "CONTACT-CENTER"
+      ]
+    },
+    {
+      "kind": "occupation",
+      "text": "carpenter",
+      "expect": [
+        "CARPENTRY"
+      ]
+    },
+    {
+      "kind": "occupation",
+      "text": "plumber",
+      "expect": [
+        "PLUMBING"
+      ]
+    },
+    {
+      "kind": "occupation",
+      "text": "driver",
+      "expect": [
+        "DRIVING"
+      ]
+    },
+    {
+      "kind": "occupation",
+      "text": "programmer",
+      "expect": [
+        "PROGRAMMING",
+        "JAVA",
+        "GAME-PROGRAMMING"
+      ]
+    },
+    {
+      "kind": "occupation",
+      "text": "auto mechanic",
+      "expect": [
+        "AUTOMOTIVE"
+      ]
+    },
+    {
+      "kind": "occupation",
+      "text": "housekeeper",
+      "expect": [
+        "DOMESTIC-WORK",
+        "HOUSEKEEPING"
+      ]
+    },
+    {
+      "kind": "occupation",
+      "text": "receptionist",
+      "expect": [
+        "FRONT-OFFICE"
+      ]
+    },
+    {
+      "kind": "occupation",
+      "text": "chef",
+      "expect": [
+        "COOKERY",
+        "FOOD-PRODUCTION"
+      ]
+    },
+    {
+      "kind": "occupation",
+      "text": "waiter",
+      "expect": [
+        "FBS",
+        "FOOD-BEVERAGE"
+      ]
+    },
+    {
+      "kind": "occupation",
+      "text": "manghihinang",
+      "expect": [
+        "MMAW",
+        "FCAW",
+        "GMAW",
+        "GTAW",
+        "SAW",
+        "GAS-WELDING"
+      ]
+    },
+    {
+      "kind": "irrelevant",
+      "text": "I want to be rich",
+      "expect": []
+    },
+    {
+      "kind": "irrelevant",
+      "text": "asdfgh",
+      "expect": []
+    },
+    {
+      "kind": "irrelevant",
+      "text": "Facebook",
+      "expect": []
+    },
+    {
+      "kind": "irrelevant",
+      "text": "basketball",
+      "expect": []
+    },
+    {
+      "kind": "irrelevant",
+      "text": "astronaut",
+      "expect": []
+    },
+    {
+      "kind": "irrelevant",
+      "text": "doctor, lawyer",
+      "expect": []
+    },
+    {
+      "kind": "irrelevant",
+      "text": "watching movies, sleeping",
+      "expect": []
+    },
+    {
+      "kind": "irrelevant",
+      "text": "and the",
+      "expect": []
+    }
+  ]
+}

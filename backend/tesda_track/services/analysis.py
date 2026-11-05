@@ -8,8 +8,9 @@ from sqlmodel import Session
 from tesda_track.config import get_settings
 from tesda_track.errors import InvalidRequestError
 from tesda_track.models import Qualification
-from tesda_track.schemas.analysis import Match, MatchComponents, PathwayRecommendation, Profile, ReadinessResult
-from tesda_track.services import catalog, embeddings, goal_rules, pathways
+from tesda_track.schemas.analysis import (Match, MatchComponents, PathwayRecommendation, Profile, ReadinessResult,
+                                          SearchMode, SkillTerms)
+from tesda_track.services import catalog, embeddings, goal_rules, pathways, skill_search
 from tesda_track.services.catalog import CatalogItem
 from tesda_track.services.embeddings import Embedder
 from tesda_track.services.intent_service import analyze_user_query
@@ -56,6 +57,7 @@ class MatchEvidence:
     z_scores: dict[int, float]  # z-score of meaning similarity by qualification id; empty without the model
     model: str | None
     params: MatchParams | None
+    search: SkillTerms | None = None  # a skills search's terms; None for a goal
 
 
 def semantic_strength(value: float, floor: float, ceiling: float) -> float:
@@ -155,7 +157,10 @@ def structured_matches(items: Sequence[CatalogItem], assessment: AssessmentAnswe
 
 def match(session: Session, query: str, profile: Profile,
           embedder: Embedder | None = None, assessment: AssessmentAnswers | None = None,
-          limit: int = 3) -> tuple[Profile, list[Match]]:
+          limit: int = 3, mode: SearchMode = "goal") -> tuple[Profile, list[Match]]:
+    if mode == "skills":
+        evidence = match_evidence(session, query, profile, embedder, limit, mode)
+        return evidence.profile, evidence.matches
     if assessment is not None:
         if assessment.career_goal is None and query.strip():
             assessment = assessment.model_copy(update={"career_goal": query.strip()})
@@ -173,9 +178,15 @@ def match(session: Session, query: str, profile: Profile,
 
 
 def match_evidence(session: Session, query: str, profile: Profile,
-                   embedder: Embedder | None = None, limit: int = 3) -> MatchEvidence:
+                   embedder: Embedder | None = None, limit: int = 3, mode: SearchMode = "goal") -> MatchEvidence:
     refined = Profile.model_validate(refine_profile(profile.model_dump()))
     current = catalog.snapshot(session)
+    if mode == "skills":
+        params = match_params(embedder)
+        found = skill_search.search(session, current.items, current.rule_views, query, embedder, params,
+                                    limit=max(limit, skill_search.LIMIT))
+        return MatchEvidence(refined, found.matches, found.keyword, found.z_scores,
+                             embedder.model_name if embedder else None, params if embedder else None, found.search)
     # With semantic search on, keywords count only as direct evidence in the learner's own words: the
     # career/sector bonuses would otherwise reward every qualification near a career the model inferred.
     evidence_profile = refined.model_dump() if embedder is None else {}
