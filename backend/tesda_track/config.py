@@ -121,7 +121,16 @@ class Settings(BaseSettings):
     # The earliest quarter get_qualification_demand will freeze a snapshot for (the pilot's first quarter).
     mcp_demand_earliest_quarter: str = Field(default="2025-Q1", pattern=r"^[0-9]{4}-Q[1-4]$")
 
-    @field_validator("mcp_token_secret", mode="before")
+    # Signing in from TESDA Skill Passport (31-TRACKER_IFRAME_INTEGRATION.md). Hercules, TSP's identity backend,
+    # trades the one-time code TSP hands the embedded app for a learner's profile. Hercules issues the client; the
+    # three values go together, and the secret is only ever sent from this server to Hercules, never to a browser.
+    hercules_base_url: HttpUrl | None = None
+    tracker_client_id: str | None = Field(default=None, max_length=256)
+    tracker_client_secret: SecretStr | None = Field(default=None, max_length=1024)
+    hercules_timeout_seconds: float = Field(default=10, gt=0)
+
+    @field_validator("mcp_token_secret", "hercules_base_url", "tracker_client_id", "tracker_client_secret",
+                     mode="before")
     @classmethod
     def empty_secret_is_unset(cls, value):
         return value or None
@@ -142,6 +151,19 @@ class Settings(BaseSettings):
         if bool(self.skills_bridge_client_id) != bool(self.skills_bridge_client_secret):
             raise ValueError("Set both SKILLS_BRIDGE_CLIENT_ID and SKILLS_BRIDGE_CLIENT_SECRET, or neither.")
         return self
+
+    @model_validator(mode="after")
+    def tracker_integration_complete(self):
+        values = (self.hercules_base_url, self.tracker_client_id, self.tracker_client_secret)
+        if any(values) and not all(values):
+            raise ValueError("Set HERCULES_BASE_URL, TRACKER_CLIENT_ID and TRACKER_CLIENT_SECRET together, or none of them.")
+        if self.environment == "production" and self.hercules_base_url and self.hercules_base_url.scheme != "https":
+            raise ValueError("HERCULES_BASE_URL must use https in production.")
+        return self
+
+    @property
+    def tracker_integration_enabled(self) -> bool:
+        return bool(self.hercules_base_url and self.tracker_client_id and self.tracker_client_secret)
 
     @model_validator(mode="after")
     def paths_from_repository_root(self):
