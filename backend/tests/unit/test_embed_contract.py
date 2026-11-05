@@ -11,10 +11,20 @@ from jsonschema import Draft202012Validator
 CONTRACT_DIR = Path(__file__).resolve().parents[3] / "docs" / "contracts" / "tsp-tracker-embed"
 MESSAGE_TYPES = ("tsp.tracker.ready", "tsp.tracker.signed_in", "tsp.tracker.error", "tsp.tracker.handoff",
                  "tsp.tracker.handoff_failed", "tsp.tracker.logout")
-REQUIRED_INVALID = {"tsp.tracker.handoff--missing-state", "tsp.tracker.ready--version-2",
-                    "tsp.tracker.ready--short-nonce", "tsp.tracker.ready--standard-base64-nonce",
-                    "tsp.tracker.ready--string-version", "tsp.tracker.error--unknown-code",
-                    "tsp.tracker.handoff--empty-code"}
+# Each invalid example and the check it must fail: (JSON Schema keyword, field). Pinning the reason stops an
+# example from passing as "invalid" because of some other mistake in it.
+INVALID_BECAUSE = {
+    "tsp.tracker.handoff--missing-state": ("required", ()),
+    "tsp.tracker.ready--version-2": ("const", ("version",)),
+    "tsp.tracker.ready--short-nonce": ("pattern", ("nonce",)),
+    "tsp.tracker.ready--standard-base64-nonce": ("pattern", ("nonce",)),
+    # 43 characters, so only the alphabet (+ and /) is wrong: what a host using the wrong encoder sends.
+    "tsp.tracker.ready--standard-base64-unpadded-nonce": ("pattern", ("nonce",)),
+    "tsp.tracker.ready--string-version": ("type", ("version",)),
+    "tsp.tracker.error--unknown-code": ("enum", ("code",)),
+    "tsp.tracker.handoff--empty-code": ("minLength", ("code",)),
+}
+REQUIRED_INVALID = set(INVALID_BECAUSE)
 
 
 def load(path: Path):
@@ -61,8 +71,9 @@ def test_valid_examples_pass(path):
 
 
 @pytest.mark.parametrize("path", examples("invalid"), ids=lambda path: path.stem)
-def test_invalid_examples_fail(path):
-    assert not validator(schema_of(path)).is_valid(load(path))
+def test_invalid_examples_fail_for_their_reason(path):
+    errors = {(error.validator, tuple(error.absolute_path)) for error in validator(schema_of(path)).iter_errors(load(path))}
+    assert INVALID_BECAUSE[path.stem] in errors
 
 
 def test_the_required_invalid_cases_exist():

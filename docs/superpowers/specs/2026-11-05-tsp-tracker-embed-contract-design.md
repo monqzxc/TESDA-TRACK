@@ -71,7 +71,9 @@ This removes the "open it again from Skill Passport" dead end. It also works whe
 - If neither `handoff` nor `handoff_failed` arrives **10 seconds** after a `ready`, Tracker sends `error(timeout)` and carries on as a guest, with a "Sign in again" button that sends a new `ready(reason=retry)`.
 - Every failure, including `client_rejected` and `handoff_failed`, ends in guest mode with a short "not signed in" notice. A failed sign-in never blocks the learner from using TESDA-TRACK.
 
-**Logout.** When the learner signs out of TSP or switches accounts, TSP sends `logout`. Tracker ends its session and returns to the guest entry page, `/tsp/webview`, with no learner data on it. It doesn't request a new code until TSP loads the embed again.
+**Logout.** When the learner signs out of TSP or switches accounts, TSP sends `logout`. Tracker ends its session and returns to the guest entry page, `/tsp/webview`, with no learner data on it. It doesn't request a new code until TSP loads the embed again. Mobile hosts also clear the WebView's cookies and local storage on sign-out (they outlive the screen); web hosts send `logout` before removing the iframe.
+
+**Fresh-load guarantee** (added after review, because a `logout` can be lost when the iframe is removed at once or the app is closed). On every load the page sends `ready` and shows no learner data until that load's handoff succeeds. A failed handoff drops any earlier session and continues as a guest. A handoff for a different learner replaces the session. Tracker's implementation must keep this, and must keep `host=web` across reloads: `/tsp/webview` strips its query string on open (`frontend/src/features/tsp/TspWebviewPage.tsx`).
 
 ### 5. Error codes and suggested TSP responses
 
@@ -93,7 +95,7 @@ How these map onto the Hercules client (for the internal plan): `HerculesCodeRej
 
 Every other cell reads "to be agreed", and that includes both TSP staging origins we need from TSP. The contract asks for production Tracker to be hosted under `*.tesda.gov.ph`, because Tracker's session then works inside the iframe without third-party cookies. `tesda-track.vercel.app` is a different site from TSP, so in staging Tracker keeps its embedded session without cookies. That is Tracker's concern, and TSP builds nothing for it.
 
-**Handoff `target`.** TSP sends the Tracker origin of the environment as `target` in `POST /v1/tracker/handoff`; for staging that is `https://tesda-track.vercel.app`. The contract also gives TSP the Hercules client ID, `tesda-tracker`.
+**Handoff `target`.** TSP sends the Tracker origin of the environment as `target` in `POST /v1/tracker/handoff`; for staging that is `https://tesda-track.vercel.app`. The contract also gives TSP the Hercules client ID, `tesda-tracker`, and the scopes to request: `profile`, `skills`, `experience` and `credentials`. Tracker sends messages only to the TSP web origins in the table, so a TSP page on any other origin (including `localhost`) gets no `ready`; development origins are added to staging on request.
 
 **Embed URL.** One route for both hosts, the `/tsp/webview` page TSP mobile already opens (`docs/tsp-webview.md`):
 - web iframe: `https://<tracker-origin>/tsp/webview?host=web`

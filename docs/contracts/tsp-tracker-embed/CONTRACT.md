@@ -40,8 +40,12 @@ TSP host (web or Flutter)            TESDA-TRACK page                     Hercul
 
 - **Handoff `target`:** the environment's TESDA-TRACK origin, e.g. `https://tesda-track.vercel.app` in staging.
 - **Hercules client ID:** `tesda-tracker`.
-- **What we need from TSP:** your web origins for staging and production. TESDA-TRACK only accepts messages
-  from, and only lets itself be framed by, the origins in this table.
+- **Scopes:** request `["profile", "skills", "experience", "credentials"]` in every `/v1/tracker/handoff`
+  call. TESDA-TRACK uses all four to prefill the learner's pathway.
+- **What we need from TSP:** your web origins for staging and production. The page sends messages only to, and
+  accepts them only from, the TSP web origins in this table. A TSP page on any other origin, including
+  `localhost` during development, gets no `ready`, and the page runs as a guest. Tell us the development
+  origins you need and we'll add them to staging.
 - **Production hosting request:** we ask for production TESDA-TRACK to be hosted under `*.tesda.gov.ph` (e.g.
   `tracker.tesda.gov.ph`). Same-site with `app.tesda.gov.ph`, the embedded session works without third-party
   cookies, which browsers increasingly block.
@@ -150,7 +154,9 @@ message (see [Error codes](#error-codes)). Schema:
 ### `tsp.tracker.logout` (TSP → TESDA-TRACK)
 
 The learner signed out of TSP or switched accounts. TESDA-TRACK ends its session and returns to the guest entry
-page with no learner data on it. Schema:
+page with no learner data on it. Send it before you remove the iframe or close the WebView; if it never
+arrives, the [fresh-load guarantee](#sequence-and-timing) still keeps the next learner from seeing this
+learner's data. Schema:
 [`schemas/tsp.tracker.logout.schema.json`](schemas/tsp.tracker.logout.schema.json)
 
 ```json
@@ -180,6 +186,12 @@ page with no learner data on it. Schema:
   sends a new `ready(reason = retry)`. A failed sign-in never blocks the learner.
 - After `logout`, the page doesn't ask for a new code until TSP opens it again.
 
+**Fresh-load guarantee.** Every time the page loads, it sends `ready` and shows no learner data until that
+load's handoff succeeds. If the handoff fails, it drops any earlier session and continues as a guest. A handoff
+for a different learner replaces the session. So even when a `logout` is lost, for example because the iframe
+was removed straight away or the app was closed, the next person to open TESDA-TRACK sees only their own data
+or a guest page.
+
 ## Error codes
 
 | `code` | Cause | Suggested TSP response |
@@ -195,13 +207,13 @@ page with no learner data on it. Schema:
 
 **Your page's CSP:** `frame-src <tesda-track-origin>`
 
-**The iframe:**
+**The iframe** takes these attributes (the example below sets them):
 
-```html
-<iframe src="https://tesda-track.vercel.app/tsp/webview?host=web"
-        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"
-        allow="geolocation" referrerpolicy="strict-origin"></iframe>
-```
+- `sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox"`
+- `allow="geolocation"`
+- `referrerpolicy="strict-origin"`
+
+Why each one:
 
 - `allow-scripts allow-same-origin` keep the page's real origin. Without `allow-same-origin` its origin is
   `null`, and it can't call its own API or check where your messages come from.
@@ -210,9 +222,12 @@ page with no learner data on it. Schema:
 - `allow="geolocation"` is for the "near me" training search; the browser still asks the learner.
 - `referrerpolicy="strict-origin"` sends only your origin, never your page's path.
 
+**Register your message listener before the iframe loads.** The page sends `ready` once per load; a listener
+added later misses it, and the learner ends up a guest after 10 seconds.
+
 ```js
 const TRACKER_ORIGIN = "https://tesda-track.vercel.app";
-const iframe = document.querySelector("#tesda-track");
+const iframe = document.createElement("iframe");
 
 function sendToTracker(message) {
   iframe.contentWindow.postMessage(message, TRACKER_ORIGIN); // the exact origin, never "*"
@@ -242,7 +257,14 @@ window.addEventListener("message", async (event) => {
   }
 });
 
-// When the learner signs out or switches accounts:
+// Only now create the iframe, so the listener above is in place for the first ready.
+iframe.sandbox = "allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox";
+iframe.allow = "geolocation";
+iframe.referrerPolicy = "strict-origin";
+iframe.src = `${TRACKER_ORIGIN}/tsp/webview?host=web`;
+document.querySelector("#tesda-track-slot").append(iframe);
+
+// When the learner signs out or switches accounts, before removing the iframe or navigating away:
 // sendToTracker({ type: "tsp.tracker.logout", version: 1 });
 ```
 
@@ -269,37 +291,43 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 const trackerOrigin = 'https://tesda-track.vercel.app';
-late final WebViewController controller;
+const scopes = ['profile', 'skills', 'experience', 'credentials'];
+WebViewController? controller; // the open TESDA-TRACK screen's, or null while none is open
 
 // A channel message carries no origin: only talk to the page while the WebView is on TESDA-TRACK.
-Future<bool> onTracker() async {
-  final url = await controller.currentUrl();
-  return url != null && Uri.parse(url).origin == trackerOrigin;
+// tryParse and the scheme check matter: Uri.origin throws for tel:, mailto: and about:blank.
+bool isTracker(String? url) {
+  final uri = Uri.tryParse(url ?? '');
+  return uri != null && uri.isScheme('https') && uri.origin == trackerOrigin;
 }
 
 Future<void> sendToTracker(Map<String, dynamic> message) async {
-  if (!await onTracker()) return;
-  await controller.runJavaScript('window.TspTracker.receive(${jsonEncode(jsonEncode(message))})');
+  final webView = controller;
+  if (webView == null || !isTracker(await webView.currentUrl())) return;
+  await webView.runJavaScript('window.TspTracker.receive(${jsonEncode(jsonEncode(message))})');
 }
 
-void openTesdaTrack() {
-  controller = WebViewController()
+// Create a new controller each time the TESDA-TRACK screen opens; set `controller = null` when it closes.
+WebViewController openTesdaTrack() {
+  late final WebViewController webView;
+  webView = WebViewController()
     ..setJavaScriptMode(JavaScriptMode.unrestricted)
     ..setNavigationDelegate(NavigationDelegate(onNavigationRequest: (request) {
-      if (Uri.parse(request.url).origin == trackerOrigin) return NavigationDecision.navigate;
-      launchUrl(Uri.parse(request.url), mode: LaunchMode.externalApplication); // e.g. Google Maps
+      if (!request.isMainFrame || isTracker(request.url)) return NavigationDecision.navigate;
+      final uri = Uri.tryParse(request.url);
+      if (uri != null) launchUrl(uri, mode: LaunchMode.externalApplication); // Maps, tel:, mailto:
       return NavigationDecision.prevent;
     }))
     ..addJavaScriptChannel('TspTrackerHost', onMessageReceived: (message) async {
-      if (!await onTracker()) return;
+      if (!isTracker(await webView.currentUrl())) return;
       final msg = jsonDecode(message.message);
       if (msg is! Map || msg['version'] != 1) return;
       if (msg['type'] != 'tsp.tracker.ready') return; // signed_in and error: update your own UI here
       final state = msg['nonce'] as String;
       try {
         // Your existing Hercules call from spec 31: POST /v1/tracker/handoff with the Atlas JWT,
-        // body {"target": trackerOrigin, "state": state, "scopes": [...]}; returns data.code.
-        final code = await requestHandoffCode(target: trackerOrigin, state: state);
+        // body {"target": trackerOrigin, "state": state, "scopes": scopes}; returns data.code.
+        final code = await requestHandoffCode(target: trackerOrigin, state: state, scopes: scopes);
         await sendToTracker({'type': 'tsp.tracker.handoff', 'version': 1, 'code': code, 'state': state});
       } on NotSignedIn {
         await sendToTracker({'type': 'tsp.tracker.handoff_failed', 'version': 1, 'state': state,
@@ -310,10 +338,17 @@ void openTesdaTrack() {
       }
     })
     ..loadRequest(Uri.parse('$trackerOrigin/tsp/webview'));
+  controller = webView;
+  return webView;
 }
 
-// When the learner signs out or switches accounts:
-//   sendToTracker({'type': 'tsp.tracker.logout', 'version': 1});
+// When the learner signs out or switches accounts, whether or not TESDA-TRACK is open. Clearing the
+// WebView's cookies and storage matters on shared phones: they outlive the screen.
+Future<void> signOutOfTesdaTrack() async {
+  await sendToTracker({'type': 'tsp.tracker.logout', 'version': 1});
+  await WebViewCookieManager().clearCookies();
+  await (controller ?? WebViewController()).clearLocalStorage();
+}
 ```
 
 `requestHandoffCode` and `NotSignedIn` stand for your own Hercules call and its "session expired" error.
@@ -342,7 +377,8 @@ For the TSP mobile release:
 1. Register the `TspTrackerHost` channel and the `ready` handler above.
 2. Add the `currentUrl()` check and the `NavigationDelegate`.
 3. Stop sending `name` and `learner_id`. Keep `goal` if you have it.
-4. Send `tsp.tracker.logout` when the learner signs out or switches accounts.
+4. On sign-out or account switch, call `signOutOfTesdaTrack()` above: it sends `tsp.tracker.logout` and clears
+   the WebView's cookies and storage.
 
 ## Security checklist for TSP
 
@@ -358,7 +394,12 @@ For the TSP mobile release:
       `runJavaScript`.
 - [ ] Mobile: the `NavigationDelegate` keeps the WebView on the TESDA-TRACK origin and opens other links outside.
 - [ ] Mobile: messages are encoded with `jsonEncode(jsonEncode(message))`.
-- [ ] Both: send `tsp.tracker.logout` on sign-out and account switch.
+- [ ] Web: the message listener is registered before the iframe is created.
+- [ ] Mobile: the URL check uses `Uri.tryParse` and an https scheme check, so `tel:`, `mailto:` and
+      `about:blank` don't throw.
+- [ ] Mobile: on sign-out or account switch, clear the WebView's cookies and local storage, open or not.
+- [ ] Both: request the scopes `profile skills experience credentials`.
+- [ ] Both: send `tsp.tracker.logout` on sign-out and account switch, before removing the iframe or WebView.
 - [ ] Both: ignore unknown message types, unknown fields and unsupported versions.
 
 ## Versioning
