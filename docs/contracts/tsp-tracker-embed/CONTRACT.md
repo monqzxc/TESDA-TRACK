@@ -305,6 +305,8 @@ The messages are the same JSON as on web. Only the transport differs:
   reloads the WebView, the page sends `ready(reason = reload)`; handle it like any other.
 - **How the page detects you:** without `host=web`, the page looks for `window.TspTrackerHost`. If the channel
   is there, it starts the handoff; if not (app versions released before this contract), it runs as a guest.
+- **Don't cover the WebView with a loading indicator.** On a learner's first visit, TESDA-TRACK shows its own
+  consent screen before it sends `signed_in`, and the learner has to be able to see and answer it.
 
 ```dart
 import 'dart:convert';
