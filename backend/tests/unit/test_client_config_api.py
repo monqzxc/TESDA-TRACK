@@ -23,12 +23,19 @@ def test_reports_the_map_key_and_the_optional_services():
                                       skills_bridge_mcp_enabled=True))
     assert response.status_code == 200
     assert response.json() == {"carto_key": "carto-public-key", "routing_enabled": True,
-                               "skills_bridge_enabled": True}
+                               "skills_bridge_enabled": True, "tsp_sign_in": False}
 
 
 def test_reports_services_that_are_turned_off():
     response = client_config(settings(routing_url=" ", skills_bridge_mcp_enabled=False))
-    assert response.json() == {"carto_key": "", "routing_enabled": False, "skills_bridge_enabled": False}
+    assert response.json() == {"carto_key": "", "routing_enabled": False, "skills_bridge_enabled": False,
+                               "tsp_sign_in": False}
+
+
+def test_reports_tsp_sign_in():
+    response = client_config(settings(hercules_base_url="https://hercules.example.test", tracker_client_id="tesda-tracker",
+                                      tracker_client_secret="s" * 64, tsp_sign_in_enabled=True))
+    assert response.json()["tsp_sign_in"] is True
 
 
 def test_can_be_cached_for_a_few_minutes():
@@ -54,4 +61,4 @@ def test_the_app_serves_it_from_the_environment_without_sign_in_or_a_database(en
     response = TestClient(create_app()).get("/api/v1/client-config")
     assert response.status_code == 200
     assert response.json() == {"carto_key": "carto-from-the-environment", "routing_enabled": False,
-                               "skills_bridge_enabled": True}
+                               "skills_bridge_enabled": True, "tsp_sign_in": False}

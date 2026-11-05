@@ -20,4 +20,5 @@ def client_config(response: Response, settings: SettingsDep):
     # .env.example says to restrict it to the deployment's domain in CARTO. Handing it out here reveals nothing new.
     return ClientConfig(carto_key=settings.carto_api.strip(),
                         routing_enabled=bool(settings.routing_url.strip()),
-                        skills_bridge_enabled=settings.skills_bridge_mcp_enabled)
+                        skills_bridge_enabled=settings.skills_bridge_mcp_enabled,
+                        tsp_sign_in=settings.tsp_sign_in_enabled)

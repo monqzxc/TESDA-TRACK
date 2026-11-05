@@ -1699,6 +1699,43 @@ export interface paths {
         patch: operations["update_role_api_v1_admin_roles__key__patch"];
         trace?: never;
     };
+    "/api/v1/auth/tsp/session": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Start Tsp Session
+         * @description Sign in with a TSP handoff code. The session is set as the HttpOnly cookie, as for POST /auth/session.
+         */
+        post: operations["start_tsp_session_api_v1_auth_tsp_session_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/auth/tsp/consent": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Answer Tsp Consent */
+        post: operations["answer_tsp_consent_api_v1_auth_tsp_consent_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -2516,6 +2553,11 @@ export interface components {
              * @description Whether the Skills Bridge lookups behind Skills Explorer are turned on.
              */
             skills_bridge_enabled: boolean;
+            /**
+             * Tsp Sign In
+             * @description Whether /tsp/webview signs learners in through TSP's WebView bridge (POST /api/v1/auth/tsp/session). False: it stays guest-only.
+             */
+            tsp_sign_in: boolean;
         };
         /** ClientUsage */
         ClientUsage: {
@@ -3087,7 +3129,7 @@ export interface components {
              */
             id: string;
             /** Email */
-            email: string;
+            email: string | null;
             /** Full Name */
             full_name: string;
             /** Role */
@@ -3110,7 +3152,7 @@ export interface components {
             /** Full Name */
             full_name: string;
             /** Email */
-            email: string;
+            email: string | null;
         };
         /** LearnerUpdate */
         LearnerUpdate: {
@@ -5018,6 +5060,55 @@ export interface components {
              * @default 10
              */
             limit: number;
+        };
+        /** TspConsentRequest */
+        TspConsentRequest: {
+            /** Pending Id */
+            pending_id: string;
+            /**
+             * Accept
+             * @description True creates the linked account; false forgets the profile.
+             */
+            accept: boolean;
+        };
+        /**
+         * TspConsentRequired
+         * @description A first sign-in: the learner consents (POST /api/v1/auth/tsp/consent) before an account is created.
+         */
+        TspConsentRequired: {
+            /**
+             * Consent Required
+             * @default true
+             * @constant
+             */
+            consent_required: true;
+            /**
+             * Pending Id
+             * @description Valid for 10 minutes.
+             */
+            pending_id: string;
+            summary: components["schemas"]["TspConsentSummary"];
+        };
+        /** TspConsentSummary */
+        TspConsentSummary: {
+            /**
+             * Name
+             * @description The learner's name from TSP. Learner text: render it as text.
+             */
+            name: string;
+            /**
+             * Keeps
+             * @description What TESDA-TRACK will keep from the TSP profile.
+             */
+            keeps: ("skills" | "experience" | "education" | "qualifications" | "certificates" | "location")[];
+        };
+        /** TspSessionRequest */
+        TspSessionRequest: {
+            /**
+             * Code
+             * @description The one-time handoff code TSP gave the page.
+             */
+            code: string;
         };
         /** UnconfirmedAssessment */
         UnconfirmedAssessment: {
@@ -8594,6 +8685,88 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["RolePublic"];
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    start_tsp_session_api_v1_auth_tsp_session_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TspSessionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionResponse"];
+                };
+            };
+            /** @description First visit: ask for consent. */
+            202: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TspConsentRequired"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    answer_tsp_consent_api_v1_auth_tsp_consent_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TspConsentRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SessionResponse"];
+                };
+            };
+            /** @description Declined: nothing was kept. */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {

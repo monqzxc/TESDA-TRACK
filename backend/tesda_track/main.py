@@ -14,7 +14,7 @@ from tesda_track.errors import AuthenticationError, DomainError, SessionCookieEr
 from tesda_track.mcp.server import install_mcp, run_mcp
 from tesda_track.routers import (mcp_admin, analysis, assessments, auth, certifications, feedback, goals, health, integrations, learner_assessments, me, meta,
                                  oauth, pathways, qualifications, readiness_checks, recommendation_sessions, recommendations,
-                                 reports, roles, routes, skills_bridge, training, verification, users)
+                                 reports, roles, routes, skills_bridge, training, tsp_auth, verification, users)
 from tesda_track.security import clear_session_cookie
 from tesda_track.services import cache, mcp_usage
 from tesda_track.services.embeddings import get_embedder
@@ -53,6 +53,7 @@ def create_app() -> FastAPI:
     app.state.route_limits = routes.RouteLimits()
     app.state.feedback_limits = RateLimiter()
     app.state.oauth_limits = oauth.new_limits()
+    app.state.tsp_sign_in_limits = RateLimiter()
     routes.hide_coordinates_in_access_log()
     if settings.cors_origins:
         app.add_middleware(CORSMiddleware, allow_origins=settings.cors_origins, allow_methods=["*"],
@@ -90,7 +91,7 @@ def create_app() -> FastAPI:
                    pathways.router, pathways.learner_router, training.router, assessments.router,
                    assessments.learner_router, recommendations.router, pathways.admin_router, training.admin_router,
                    assessments.admin_router, integrations.router, reports.router, skills_bridge.router, verification.router,
-                   learner_assessments.router, routes.router, meta.router, oauth.router, mcp_admin.router, users.router, roles.router):
+                   learner_assessments.router, routes.router, meta.router, oauth.router, mcp_admin.router, users.router, roles.router, tsp_auth.router):
         api.include_router(router)
     app.include_router(api)
     install_mcp(app)

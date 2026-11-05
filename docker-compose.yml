@@ -29,6 +29,11 @@ x-backend-environment: &backend-environment
   SKILLS_BRIDGE_CLIENT_SECRET: ${SKILLS_BRIDGE_CLIENT_SECRET:-}
   SKILLS_BRIDGE_TOKEN_URL: ${SKILLS_BRIDGE_TOKEN_URL:-https://skills-bridge.ph/oauth/token}
   SKILLS_BRIDGE_TIMEOUT_SECONDS: ${SKILLS_BRIDGE_TIMEOUT_SECONDS:-10}
+  # Signing in from TESDA Skill Passport (docs/contracts/tsp-tracker-embed/CONTRACT.md).
+  HERCULES_BASE_URL: ${HERCULES_BASE_URL:-}
+  TRACKER_CLIENT_ID: ${TRACKER_CLIENT_ID:-}
+  TRACKER_CLIENT_SECRET: ${TRACKER_CLIENT_SECRET:-}
+  TSP_SIGN_IN_ENABLED: ${TSP_SIGN_IN_ENABLED:-false}
   # Road routes for Directions (GET /api/v1/routes); empty turns them off.
   ROUTING_URL: ${ROUTING_URL-https://routing.openstreetmap.de/routed-car}
   # CARTO basemaps key for the center map, handed to the React app by GET /api/v1/client-config.
