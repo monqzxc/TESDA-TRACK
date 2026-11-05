@@ -86,15 +86,19 @@ How these map onto the Hercules client (for the internal plan): `HerculesCodeRej
 ### 6. Origins, URL and headers
 
 **Origins table.** The contract has one row per environment (staging, production), with columns for TSP web origin, Tracker origin and Hercules base URL. Values known today:
+- Tracker staging: `https://tesda-track.vercel.app`. This is the current deployment: Vercel serves the app and passes `/api/*` to the API.
 - Hercules staging: `https://hercules-api-staging.tesdabest.com`
 - TSP production: `https://app.tesda.gov.ph`
 
-Every other cell reads "to be agreed". The contract asks for Tracker to be hosted under `*.tesda.gov.ph`, because Tracker's session then works inside the iframe without third-party cookies.
+Every other cell reads "to be agreed", and that includes both TSP staging origins we need from TSP. The contract asks for production Tracker to be hosted under `*.tesda.gov.ph`, because Tracker's session then works inside the iframe without third-party cookies. `tesda-track.vercel.app` is a different site from TSP, so in staging Tracker keeps its embedded session without cookies. That is Tracker's concern, and TSP builds nothing for it.
+
+**Handoff `target`.** TSP sends the Tracker origin of the environment as `target` in `POST /v1/tracker/handoff`; for staging that is `https://tesda-track.vercel.app`. The contract also gives TSP the Hercules client ID, `tesda-tracker`.
 
 **Embed URL.** `https://<tracker-origin>/tsp?host=web` in the iframe, `?host=mobile` in the WebView. `host` is the only query parameter allowed, and it carries no tokens or PII.
 
 **Tracker serves on `/tsp`:**
-- `Content-Security-Policy: … frame-ancestors <TSP web origins>`. Every other path keeps the current `frame-ancestors 'none'` (`frontend/Caddyfile`).
+- `Content-Security-Policy: … frame-ancestors <TSP web origins>`. Every other path sends `frame-ancestors 'none'`.
+- Where the headers come from depends on the deployment. On Vercel (staging) they come from `frontend/vercel.json`, which sets no headers today, so the staging app can currently be framed by any site. Behind Caddy they come from `frontend/Caddyfile`, which already sends `frame-ancestors 'none'`. The contract states what TSP can expect to see on each environment, and Tracker's implementation plan updates both files.
 - `Permissions-Policy: geolocation=(self)`, unchanged.
 - Tracker sends web messages to its configured TSP origin for that environment, never to `"*"`.
 
@@ -135,6 +139,7 @@ The contract lists these in a "Changes requested" section, each with its reason.
 
 5. Document the real error shape, `{message, error, statusCode}` (seen on staging 2026-11-05), not the `{success, data}` envelope.
 6. Return different errors for an expired code and an already-used code.
+6a. Register `https://tesda-track.vercel.app` as an allowed handoff `target` for client `tesda-tracker` in staging, and the production Tracker origin once it's agreed.
 
 **Questions for Hercules:**
 
