@@ -12,7 +12,7 @@ The contract has to be precise enough for TSP to build and test without asking u
 
 **Success:** TSP can build both hosts from the contract alone. Every message payload has a JSON Schema and examples that a test validates. Every place we depart from spec 31 is listed as an explicit change request.
 
-**Out of scope:** how Tracker implements the contract (the frontend bridge module and the backend session endpoint), and whether Tracker keeps its session in a cookie or an in-memory token. TSP builds nothing against those, so they stay internal and get their own plan once the contract is agreed. The Hercules client is already planned in `docs/superpowers/plans/2026-11-05-tracker-hercules-client.md`.
+**Out of scope:** how Tracker implements the contract: the frontend bridge in `/tsp/webview`, the backend session endpoint, TSP-only learner accounts with no password (the rest of TESDA-TRACK stays guest-only for learners), and whether Tracker keeps its session in a cookie or an in-memory token. TSP builds nothing against those, so they stay internal and get their own plan once the contract is agreed. The Hercules client is already planned in `docs/superpowers/plans/2026-11-05-tracker-hercules-client.md`.
 
 ## Deliverables
 
@@ -66,11 +66,12 @@ This removes the "open it again from Skill Passport" dead end. It also works whe
 5. **Tracker signs in.** Its backend exchanges the code (spec 31 steps 3–5), then Tracker sends `signed_in`, or `error(code)`.
 
 **Tracker's retry rules.** TSP has no retry logic of its own:
-- On `handoff_expired`, Tracker sends one automatic `ready(reason=retry)` with a new nonce. If that fails too, it sends `error(handoff_expired)` and shows the error.
+- On `handoff_expired`, Tracker sends one automatic `ready(reason=retry)` with a new nonce. If that fails too, it sends `error(handoff_expired)` and carries on as a guest (§7a).
 - On `client_rejected`, Tracker never retries.
-- If neither `handoff` nor `handoff_failed` arrives **10 seconds** after a `ready`, Tracker sends `error(timeout)` and shows a "Try again" button. The button sends a new `ready(reason=retry)`.
+- If neither `handoff` nor `handoff_failed` arrives **10 seconds** after a `ready`, Tracker sends `error(timeout)` and carries on as a guest, with a "Sign in again" button that sends a new `ready(reason=retry)`.
+- Every failure, including `client_rejected` and `handoff_failed`, ends in guest mode with a short "not signed in" notice. A failed sign-in never blocks the learner from using TESDA-TRACK.
 
-**Logout.** When the learner signs out of TSP or switches accounts, TSP sends `logout`. Tracker ends its session and shows a neutral screen with no learner data on it. It doesn't request a new code until TSP loads the embed again.
+**Logout.** When the learner signs out of TSP or switches accounts, TSP sends `logout`. Tracker ends its session and returns to the guest entry page, `/tsp/webview`, with no learner data on it. It doesn't request a new code until TSP loads the embed again.
 
 ### 5. Error codes and suggested TSP responses
 
@@ -94,10 +95,14 @@ Every other cell reads "to be agreed", and that includes both TSP staging origin
 
 **Handoff `target`.** TSP sends the Tracker origin of the environment as `target` in `POST /v1/tracker/handoff`; for staging that is `https://tesda-track.vercel.app`. The contract also gives TSP the Hercules client ID, `tesda-tracker`.
 
-**Embed URL.** `https://<tracker-origin>/tsp?host=web` in the iframe, `?host=mobile` in the WebView. `host` is the only query parameter allowed, and it carries no tokens or PII.
+**Embed URL.** One route for both hosts, the `/tsp/webview` page TSP mobile already opens (`docs/tsp-webview.md`):
+- web iframe: `https://<tracker-origin>/tsp/webview?host=web`
+- Flutter WebView: `https://<tracker-origin>/tsp/webview`, so today's launch URL stays valid.
+
+`host=web` is the only new parameter. The URL never carries a code or token; the older hint parameters are covered in §7a.
 
 **Tracker serves on `/tsp`:**
-- `Content-Security-Policy: … frame-ancestors <TSP web origins>`. Every other path sends `frame-ancestors 'none'`.
+- `Content-Security-Policy: … frame-ancestors <TSP web origins>` on `/tsp/webview` and every page under it. Every other path sends `frame-ancestors 'none'`.
 - Where the headers come from depends on the deployment. On Vercel (staging) they come from `frontend/vercel.json`, which sets no headers today, so the staging app can currently be framed by any site. Behind Caddy they come from `frontend/Caddyfile`, which already sends `frame-ancestors 'none'`. The contract states what TSP can expect to see on each environment, and Tracker's implementation plan updates both files.
 - `Permissions-Policy: geolocation=(self)`, unchanged.
 - Tracker sends web messages to its configured TSP origin for that environment, never to `"*"`.
@@ -118,6 +123,24 @@ Every other cell reads "to be agreed", and that includes both TSP staging origin
 - **TSP must** check that `await controller.currentUrl()` is on the Tracker origin before handling any channel message and before every `runJavaScript`. It must also use a `NavigationDelegate` that keeps top-level navigation on the Tracker origin and opens other links in the system browser (e.g. `url_launcher`).
 - TSP grants geolocation when the WebView asks.
 - The contract includes a short, complete Dart snippet (controller set-up, origin check, the `ready` handler) and the equivalent JavaScript for the web host.
+- **How Tracker picks the transport:** with `host=web` it uses postMessage to the parent window. Without it, Tracker checks whether `window.TspTrackerHost` exists. If it does, Tracker starts the handoff over the channel. If it doesn't (TSP app versions released before this contract), Tracker runs as a guest exactly as it does today. Old app versions keep working with no change on either side.
+
+### 7a. Signed in, guest fallback, and today's launch URL
+
+**Signed in.** When the handoff succeeds, the learner is signed in to a TESDA-TRACK account linked to their TSP identity. Tracker creates the account on the first visit, and it has no password; learners can sign in to TESDA-TRACK only through TSP. How Tracker stores accounts is internal (§ Out of scope).
+
+**Guest fallback.** When the host has no bridge, or the handoff fails after Tracker's one retry, the learner uses `/tsp/webview` as a guest, as today. Tracker shows a short "not signed in" notice and still reports the failure with `tsp.tracker.error`.
+
+**The launch URL hints.** TSP mobile's current URL carries hints (`docs/tsp-webview.md`). The contract phases them out:
+
+| Parameter | Contract v1 |
+|---|---|
+| `host` | New; `web` for the iframe. |
+| `goal` | Kept, optional. The profile has no goal. |
+| `skills`, `experience_years`, `has_certification`, `region` | Deprecated. Still accepted as guest prefill; once the learner is signed in, the profile replaces them. |
+| `name`, `learner_id` | Deprecated, and **TSP removes them in the same release that adds the handoff**: they are personal information in a URL. Tracker reads them only for older app versions. |
+
+The contract has a "Migrating from today's launch URL" section for the TSP mobile team: register the channel, add the `ready` handler, remove `name` and `learner_id`, and optionally keep `goal`.
 
 ### 8. Versioning
 
@@ -134,6 +157,7 @@ The contract lists these in a "Changes requested" section, each with its reason.
 2. New messages `tsp.tracker.handoff_failed` and `tsp.tracker.logout`, and the `signed_in` and `error` statuses.
 3. Remove deep-link code transport. It puts the code in a URL, which spec 31's own security rules forbid.
 4. Host Tracker under `*.tesda.gov.ph`.
+4a. Stop sending `name` and `learner_id` in the `/tsp/webview` URL, in the same release that adds the handoff (§7a).
 
 **For Hercules:**
 
@@ -143,7 +167,7 @@ The contract lists these in a "Changes requested" section, each with its reason.
 
 **Questions for Hercules:**
 
-7. Is `sso_id` permanent and unique for each person, given that profiles are keyed by `sub` or `uli` depending on onboarding?
+7. **Blocking for sign-in:** is `sso_id` permanent and unique for each person, given that profiles are keyed by `sub` or `uli` depending on onboarding? Tracker links accounts to it.
 8. Is the profile email verified? Can `email_verified` be added?
 
 ## Testing

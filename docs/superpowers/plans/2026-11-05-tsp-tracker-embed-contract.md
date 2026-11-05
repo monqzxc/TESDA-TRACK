@@ -22,15 +22,15 @@
   - `error.code`: `handoff_expired`, `unavailable`, `client_rejected`, `timeout`
   - `handoff_failed.reason`: `not_signed_in`, `unavailable`
 - Flutter names (§7): channel `TspTrackerHost`, Tracker function `window.TspTracker.receive(json)`.
-- Embed URL (§6): `https://<tracker-origin>/tsp?host=web|mobile`. Timeout: 10 seconds. One automatic retry, on `handoff_expired` only.
+- Embed URL (§6): `https://<tracker-origin>/tsp/webview?host=web` (iframe) and `https://<tracker-origin>/tsp/webview` (Flutter WebView; today's launch URL, unchanged). Timeout: 10 seconds. One automatic retry, on `handoff_expired` only.
 - Known origins (§6). Write them as these exact strings wherever the contract uses them:
-  - Tracker staging: `https://tesda-track.vercel.app`, so the embed URLs are `https://tesda-track.vercel.app/tsp?host=web` and `https://tesda-track.vercel.app/tsp?host=mobile`.
+  - Tracker staging: `https://tesda-track.vercel.app`, so the embed URLs are `https://tesda-track.vercel.app/tsp/webview?host=web` and `https://tesda-track.vercel.app/tsp/webview`.
   - Hercules staging: `https://hercules-api-staging.tesdabest.com`
   - TSP production: `https://app.tesda.gov.ph`
   - Every other cell reads "to be agreed".
   - Client ID: `tesda-tracker`. Handoff `target`: the environment's Tracker origin.
 - Pin `jsonschema==4.26.0` in `requirements-dev.txt`. The file uses CRLF line endings; keep them.
-- Unit suite command: `.venv/Scripts/python -m pytest --confcutdir=backend/tests/unit backend/tests/unit -q`. **Baseline: 270 passed, 3 failed.** The 3 failures are the known `ModuleNotFoundError: No module named 'mcp'` ones in `test_client_config_api.py` and `test_openapi_schema.py`.
+- Unit suite command: `.venv/Scripts/python -m pytest --confcutdir=backend/tests/unit backend/tests/unit -q`. **Baseline: 278 passed, 0 failed** (`mcp` is now installed in `.venv`).
 - Audience for `CONTRACT.md`: the TSP web and Flutter developers. Write for them; leave out how Tracker implements its side (§ Out of scope).
 
 ## Review Focus
@@ -135,7 +135,7 @@ Run: `.venv/Scripts/python -m pytest --confcutdir=backend/tests/unit backend/tes
 Expected: 23 passed. That is 3 single tests, 6 schema tests, 7 valid examples and 7 invalid examples.
 
 Run: `.venv/Scripts/python -m pytest --confcutdir=backend/tests/unit backend/tests/unit -q`
-Expected: 293 passed, plus the 3 baseline `mcp` failures.
+Expected: 301 passed, 0 failed.
 
 - [ ] **Step 7: Commit**
 
@@ -191,13 +191,14 @@ Use these sections in this order. Each takes its content from the spec section n
    - the request to host production Tracker under `*.tesda.gov.ph`, with its reason
    - a note on the framing headers on each environment (§6). On staging they are not yet in place, so the iframe works today but isn't restricted to TSP; the contract says when Tracker will restrict it.
 4. **Messages.** Common rules (§2), then one subsection per type. Each subsection gives the direction, when it is sent, a field table, one ```` ```json ```` example (copy the valid example file), and a link `schemas/<type>.schema.json`.
-5. **Sequence and timing.** The steps, retry rules, timeout and logout from §4. Say explicitly that TSP never retries; Tracker does.
+5. **Sequence and timing.** The steps, retry rules, timeout and logout from §4. Say explicitly that TSP never retries; Tracker does, and that every failure leaves the learner using TESDA-TRACK as a guest (§7a).
 6. **Error codes.** The table from §5, with the suggested TSP responses.
 7. **Web host (iframe).** The embed URL, the CSP and iframe attributes with a reason for each flag (§6), and a complete JavaScript example (≤ 40 lines). It creates the iframe, checks `event.source` and `event.origin`, handles `ready` by calling TSP's backend `POST /tracker/handoff` (spec 31) with `state = nonce`, posts `handoff` or `handoff_failed` to the exact Tracker origin, and sends `logout` on sign-out.
-8. **Mobile host (Flutter `webview_flutter`).** The bridge from §7, with a complete Dart example (≤ 60 lines) covering the controller set-up, the `TspTrackerHost` channel, the `currentUrl()` origin check before handling and before every `runJavaScript`, `NavigationDelegate` with `url_launcher` for other origins, the `ready` handler, and `logout`. Also cover location permission and the `?host=mobile` URL. The JSON for each message is the same as on web.
+8. **Mobile host (Flutter `webview_flutter`).** The bridge from §7, with a complete Dart example (≤ 60 lines) covering the controller set-up, the `TspTrackerHost` channel, the `currentUrl()` origin check before handling and before every `runJavaScript`, `NavigationDelegate` with `url_launcher` for other origins, the `ready` handler, and `logout`. Also cover location permission, the unchanged `/tsp/webview` URL, and how Tracker detects the bridge (§7). The JSON for each message is the same as on web.
+8a. **Migrating from today's launch URL.** From §7a: the parameter table, that old app versions keep working as guests, and the steps for the TSP mobile release (register the channel, add the `ready` handler, remove `name` and `learner_id`, optionally keep `goal`).
 9. **Security checklist for TSP.** One bulleted list of every "TSP must" from §6 and §7, so TSP can tick it off in review.
 10. **Versioning.** From §8.
-11. **Changes requested from spec 31.** Items 1–6a from §9, each with its reason.
+11. **Changes requested from spec 31.** Items 1–6a from §9, including 4a, each with its reason.
 12. **Questions for Hercules.** Items 7–8 from §9.
 13. **Files.** What `schemas/` and `examples/` hold, and that `backend/tests/unit/test_embed_contract.py` checks them, including this document's JSON blocks.
 
@@ -209,7 +210,7 @@ Run: `.venv/Scripts/python -m pytest --confcutdir=backend/tests/unit backend/tes
 Expected: 25 passed.
 
 Run: `.venv/Scripts/python -m pytest --confcutdir=backend/tests/unit backend/tests/unit -q`
-Expected: 295 passed, plus the 3 baseline `mcp` failures.
+Expected: 303 passed, 0 failed.
 
 - [ ] **Step 5: Commit**
 
