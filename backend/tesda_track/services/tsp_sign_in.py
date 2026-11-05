@@ -30,6 +30,13 @@ PENDING_LIFETIME = timedelta(minutes=10)
 SECTIONS = ("skills", "experience", "education", "qualifications")
 KEPT_PERSONAL = ("first_name", "middle_name", "last_name", "municipality", "province", "region", "country")
 DEFAULT_NAME = "Skill Passport learner"
+# Hercules hasn't fixed the shape of a section's entries yet: an entry is a string, or an object whose label is the
+# first of these keys it has.
+LABEL_KEYS = ("name", "title", "skill", "skill_name", "qualification", "qualification_title", "qualification_name",
+              "job_title", "position", "occupation", "degree", "course", "program", "school", "certificate_name",
+              "training", "label")
+CREDENTIAL_KINDS = ("certificates", "trainings", "assessments", "external_certificates")
+LABEL_LIMIT = 200
 
 
 @dataclass(frozen=True)
@@ -46,6 +53,21 @@ def kept_profile(profile: TrackerProfile) -> dict:
     return {"personal_information": {key: personal[key] for key in KEPT_PERSONAL if personal[key]},
             **{section: getattr(profile, section) for section in SECTIONS},
             "credentials": profile.credentials.model_dump()}
+
+
+def profile_labels(profile: dict) -> dict[str, list[str]]:
+    """A kept profile as readable labels per section, each list without repeats. Entries with no label are left
+    out."""
+    credentials = profile.get("credentials", {})
+    sections = {section: profile.get(section, []) for section in SECTIONS}
+    sections["credentials"] = [entry for kind in CREDENTIAL_KINDS for entry in credentials.get(kind, [])]
+    return {section: list(dict.fromkeys(filter(None, map(_label, entries)))) for section, entries in sections.items()}
+
+
+def linked_profile(session: Session, learner: Learner) -> dict | None:
+    link = session.exec(select(LearnerIdentity).where(LearnerIdentity.provider == TSP_PROVIDER,
+                                                      LearnerIdentity.learner_id == learner.id)).first()
+    return link.profile if link else None
 
 
 def sign_in(session: Session, client: HerculesClient, code: str) -> Learner | ConsentRequired:
@@ -142,6 +164,14 @@ def _full_name(profile: dict) -> str:
     name = " ".join(part for part in (personal.get("first_name"), personal.get("middle_name"),
                                       personal.get("last_name")) if part)
     return name[:150] or DEFAULT_NAME
+
+
+def _label(entry) -> str | None:
+    if isinstance(entry, dict):
+        entry = next((entry[key] for key in LABEL_KEYS if isinstance(entry.get(key), str) and entry[key].strip()), None)
+    if not isinstance(entry, str):
+        return None
+    return " ".join(entry.split())[:LABEL_LIMIT] or None
 
 
 def _keeps(profile: dict) -> list[str]:

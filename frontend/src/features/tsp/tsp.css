@@ -634,3 +634,74 @@
   gap: 0.5rem;
   margin-bottom: 0.75rem;
 }
+/* The Skill Passport line at the top of the goal card: a dot that pulses while data is on its way. */
+.tsp-passport {
+  margin: 0 0 12px;
+  color: var(--track-ink);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.tsp-passport > summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  list-style: none;
+}
+.tsp-passport > summary::-webkit-details-marker {
+  display: none;
+}
+p.tsp-passport {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tsp-passport-dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--track-good-ink);
+}
+.tsp-passport-dot.is-busy {
+  background: var(--track-blue);
+  animation: tsp-passport-pulse 1.2s ease-in-out infinite;
+}
+.tsp-passport-toggle {
+  margin-left: auto;
+  color: var(--track-blue);
+  font-weight: 700;
+}
+.tsp-passport[open] .tsp-passport-toggle {
+  visibility: hidden;
+}
+.tsp-passport dl {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 9px 10px;
+  border-radius: 8px;
+  background: var(--track-soft);
+}
+.tsp-passport dt {
+  color: var(--track-muted);
+  font-size: 11px;
+}
+.tsp-passport dd {
+  margin: 0;
+  color: var(--track-navy);
+}
+.tsp-passport .tsp-muted {
+  margin: 6px 0 0;
+  font-size: 11px;
+}
+@keyframes tsp-passport-pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tsp-passport-dot.is-busy {
+    animation: none;
+  }
+}

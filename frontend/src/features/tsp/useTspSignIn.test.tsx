@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { api } from '../../api/client.ts'
 import { maria } from '../../test/account.tsx'
 import { renderApp } from '../../test/app.tsx'
+import { serveFinderApi, serveFinderCatalog } from '../../test/finder.ts'
 import { server } from '../../test/server.ts'
 import { useFinderStore } from '../finder/store.ts'
 
@@ -350,6 +351,49 @@ describe('signing in from TSP’s WebView', () => {
     await waitFor(() => expect(router.state.location.pathname).toBe('/tsp/webview'))
     await waitFor(() =>
       expect(order.filter((entry) => entry === 'end-session').length).toBe(ended + 1),
+    )
+  })
+
+  it('shows the Skill Passport coming in and adds its skills to the search', async () => {
+    serveTsp()
+    serveFinderCatalog()
+    const finder = serveFinderApi()
+    server.use(
+      http.get('*/api/v1/auth/tsp/profile', () =>
+        HttpResponse.json({
+          skills: ['Welding', 'Metal cutting'],
+          experience: ['Helper'],
+          education: [],
+          qualifications: ['SMAW NC I'],
+          credentials: [],
+        }),
+      ),
+    )
+    installHost()
+    const user = userEvent.setup()
+    const { router } = renderApp('/tsp/webview')
+    expect(await screen.findByText('Connecting to your Skill Passport…')).toBeInTheDocument()
+    await answerReady(0)
+    await user.click(await screen.findByText('Skill Passport connected'))
+    expect(screen.getByText('Welding, Metal cutting')).toBeVisible()
+    expect(screen.getByText('SMAW NC I')).toBeVisible()
+
+    await user.type(screen.getByRole('textbox', { name: 'Career goal' }), 'I want to be a welder.')
+    await user.click(screen.getByRole('button', { name: 'Find my match' }))
+    // The passport's skills are sent, not written into the form.
+    expect(screen.getByRole('textbox', { name: /Existing skills/ })).toHaveValue('')
+    await user.type(
+      screen.getByRole('textbox', { name: /Existing skills/ }),
+      'welding, reading drawings',
+    )
+    await user.click(screen.getByRole('button', { name: 'Show my matches' }))
+    await waitFor(() => expect(router.state.location.pathname).toBe('/tsp/webview/matches'))
+    await waitFor(() =>
+      expect(
+        finder.requests.find((request) => request.path === '/api/v1/analysis/matches')?.body,
+      ).toMatchObject({
+        profile: { existing_skills: ['welding', 'reading drawings', 'Metal cutting'] },
+      }),
     )
   })
 })

@@ -102,3 +102,24 @@ def test_consent_decline_204(client, tsp):
 def test_consent_for_unknown_pending_is_404_with_code(client, tsp):
     response = client.post("/api/v1/auth/tsp/consent", json={"pending_id": "nope", "accept": True}, headers=HEADERS)
     assert (response.status_code, response.json()["code"]) == (404, "handoff_expired")
+
+
+def test_profile_gives_the_signed_in_learner_their_passport(client, tsp):
+    pending_id = sign_in(client).json()["pending_id"]
+    client.post("/api/v1/auth/tsp/consent", json={"pending_id": pending_id, "accept": True}, headers=HEADERS)
+    response = client.get("/api/v1/auth/tsp/profile")
+    assert response.status_code == 200
+    assert response.json() == {"skills": ["Welding"], "experience": [], "education": [], "qualifications": [],
+                               "credentials": []}
+
+
+def test_profile_needs_a_session(client, tsp):
+    assert client.get("/api/v1/auth/tsp/profile").status_code == 401
+
+
+def test_profile_404_while_disabled(client):
+    assert client.get("/api/v1/auth/tsp/profile").status_code == 404
+
+
+def test_profile_404_for_an_account_without_a_passport(client, tsp, learner):
+    assert client.get("/api/v1/auth/tsp/profile", headers=learner).status_code == 404

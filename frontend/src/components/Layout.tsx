@@ -110,7 +110,8 @@ export function WebviewLayout() {
           ) : tsp.state === 'consent' && tsp.summary ? (
             <TspConsent summary={tsp.summary} onAnswer={tsp.answerConsent} />
           ) : (
-            <Outlet />
+            // The entry page shows the sign-in's progress (TspPassportStatus).
+            <Outlet context={tsp.state} />
           )}
         </main>
       </div>

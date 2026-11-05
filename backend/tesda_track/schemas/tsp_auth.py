@@ -23,3 +23,16 @@ class TspConsentRequired(BaseModel):
     consent_required: Literal[True] = True
     pending_id: str = Field(description="Valid for 10 minutes.")
     summary: TspConsentSummary
+
+
+Labels = list[str]
+
+
+class TspProfile(BaseModel):
+    """The signed-in learner's Skill Passport, as kept at their last sign-in: one readable label per entry. Learner
+    text: render it as text."""
+    skills: Labels
+    experience: Labels
+    education: Labels
+    qualifications: Labels
+    credentials: Labels = Field(description="Certificates, trainings, assessments and external certificates.")

@@ -1,12 +1,15 @@
 import { useMutation } from '@tanstack/react-query'
 import { useEffect, useState, type FormEvent } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router'
+import { Link, useLocation, useNavigate, useOutletContext } from 'react-router'
 import { failureMessage } from '../../auth/fields.tsx'
 import { paths } from '../../paths.ts'
 import { analyzeGoal } from '../finder/api.ts'
 import { GOAL_MAX_LENGTH, useFinderStore } from '../finder/store.ts'
 import type { TspLearnerParams } from './params.ts'
+import { usePassport, withPassport } from './passport.ts'
+import { TspPassportStatus } from './TspPassportStatus.tsx'
 import { useTspState } from './TspState.tsx'
+import type { TspSignInState } from './useTspSignIn.ts'
 
 const suggestions = ['Welder', 'Caregiver', 'Barista', 'Hotel work']
 type Submission = Pick<
@@ -24,6 +27,8 @@ export default function TspWebviewPage() {
   const begin = useFinderStore((state) => state.begin)
   const setGoalInFinder = useFinderStore((state) => state.setGoal)
   const setPlace = useFinderStore((state) => state.setPlace)
+  const signIn = useOutletContext<TspSignInState | undefined>()
+  const passport = usePassport(signIn)
 
   useEffect(() => {
     if (location.search)
@@ -47,14 +52,18 @@ export default function TspWebviewPage() {
         .slice(0, 20)
       begin({
         query,
-        profile: {
-          ...profile,
-          existing_skills: suppliedSkills.length ? suppliedSkills : profile.existing_skills,
-          experience_years:
-            experienceYears === '' ? profile.experience_years : Number(experienceYears),
-          has_certification:
-            hasCertification === '' ? profile.has_certification : hasCertification === 'yes',
-        },
+        // The Skill Passport's skills go after the learner's own, without showing in the form.
+        profile: withPassport(
+          {
+            ...profile,
+            existing_skills: suppliedSkills.length ? suppliedSkills : profile.existing_skills,
+            experience_years:
+              experienceYears === '' ? profile.experience_years : Number(experienceYears),
+            has_certification:
+              hasCertification === '' ? profile.has_certification : hasCertification === 'yes',
+          },
+          passport.data,
+        ),
         sessionId: null,
         sessionOwner: null,
       })
@@ -115,6 +124,7 @@ export default function TspWebviewPage() {
         )}
         {!showQuestions ? (
           <form onSubmit={openQuestions} className="tsp-card tsp-goal-form">
+            <TspPassportStatus signIn={signIn} passport={passport} />
             {(learner.name || learner.learnerId) && (
               <div className="tsp-learner">
                 {learner.name && <strong>{learner.name}</strong>}
