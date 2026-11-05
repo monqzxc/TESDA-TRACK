@@ -85,7 +85,7 @@ export function GoalSummary({ journey, code, sync, compact = false }: GoalSummar
       <div className="flex flex-wrap items-center gap-x-[0.6rem] gap-y-1">
         <Link to={paths.finder} className={button({ variant: 'tertiary' })}>
           <Icon name="edit" />
-          {copy.change}
+          {journey.mode === 'skills' ? copy.changeSkills : copy.change}
         </Link>
         <div
           className="flex flex-wrap items-center gap-x-2 gap-y-1 border-l border-border pl-[0.6rem] max-xs:border-l-0 max-xs:pl-0"

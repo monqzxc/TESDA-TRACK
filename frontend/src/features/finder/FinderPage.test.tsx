@@ -984,6 +984,8 @@ describe('Find my pathway, skills search', () => {
       `/training?qualification=${welding.code}`,
     )
     expect(within(card).getByRole('button', { name: /Check my readiness/ })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Change skill or job' })).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Change goal' })).not.toBeInTheDocument()
   })
 
   it('asks for a skill or job before searching', async () => {
@@ -1042,6 +1044,7 @@ describe('Find my pathway, skills search', () => {
     expect(
       within(card).queryByRole('link', { name: 'Find training centers' }),
     ).not.toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Change goal' })).toBeInTheDocument()
     expect(sent(api.requests, 'POST', '/api/v1/analysis/matches').at(-1)?.body).toMatchObject({
       mode: 'goal',
     })

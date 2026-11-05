@@ -1539,4 +1539,5 @@ export const tl: Record<string, string> = {
   'Skill match': 'Pagkakatugma sa kasanayan',
   'Skill match: {0}%': 'Pagkakatugma sa kasanayan: {0}%',
   'Find training centers': 'Maghanap ng training center',
+  'Change skill or job': 'Palitan ang kasanayan o trabaho',
 }

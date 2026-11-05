@@ -515,6 +515,7 @@ export const en = {
       label: 'Your goal',
       skillsLabel: 'Your skills or jobs',
       change: 'Change goal',
+      changeSkills: 'Change skill or job',
       saved: 'Saved to My Progress',
       save: 'Save to profile',
       saving: 'Saving…',
