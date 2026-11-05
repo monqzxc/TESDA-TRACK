@@ -1,0 +1,5 @@
+{
+  "type": "tsp.tracker.error",
+  "version": 1,
+  "code": "boom"
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tesda-track:tsp-tracker-embed:tsp.tracker.handoff:v1",
+  "title": "tsp.tracker.handoff",
+  "description": "TSP → Tracker. The one-time code from POST /v1/tracker/handoff, answering a ready.",
+  "type": "object",
+  "required": [
+    "type",
+    "version",
+    "code",
+    "state"
+  ],
+  "properties": {
+    "type": {
+      "const": "tsp.tracker.handoff",
+      "description": "The message type."
+    },
+    "version": {
+      "const": 1,
+      "type": "integer",
+      "description": "Contract version. A number, not a string."
+    },
+    "code": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "description": "The one-time handoff code from Hercules. Valid for 60 seconds, once."
+    },
+    "state": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$",
+      "description": "The nonce from the ready being answered, echoed back unchanged."
+    }
+  },
+  "additionalProperties": true
+}
