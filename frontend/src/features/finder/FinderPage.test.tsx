@@ -1050,3 +1050,116 @@ describe('Find my pathway, skills search', () => {
     })
   })
 })
+
+describe('Find my pathway, related occupations', () => {
+  async function searchSkills(user: UserEvent, text: string) {
+    const view = await openFinder()
+    await user.click(await screen.findByRole('radio', { name: 'A skill or job' }))
+    await user.type(screen.getByRole('textbox', { name: 'Your skills or the jobs you want' }), text)
+    await user.click(screen.getByRole('button', { name: 'Get recommendation' }))
+    await screen.findByRole('article', { name: welding.name })
+    return view
+  }
+
+  it('shows the matches’ jobs from the catalog before a qualification is chosen', async () => {
+    serveFinderCatalog()
+    serveFinderApi({ search: { terms: ['fabricator'], unmatched: [] } })
+    const user = userEvent.setup()
+    const { router } = await searchSkills(user, 'fabricator')
+
+    const section = screen.getByRole('region', { name: 'Related occupations' })
+    // The catalog's own titles, the learner's job first; nothing else.
+    expect(
+      within(section)
+        .getAllByRole('button')
+        .map((button) => button.textContent),
+    ).toEqual(['Fabricator', 'Welder'])
+    expect(router.state.location.pathname).toBe('/find/matches')
+  })
+
+  it('opens an occupation to show its qualifications and their core skills', async () => {
+    serveFinderCatalog()
+    serveFinderApi()
+    const user = userEvent.setup()
+    await searchSkills(user, 'welding')
+    const section = screen.getByRole('region', { name: 'Related occupations' })
+
+    const welder = within(section).getByRole('button', { name: 'Welder' })
+    expect(welder).toHaveAttribute('aria-expanded', 'false')
+    await user.click(welder)
+
+    expect(welder).toHaveAttribute('aria-expanded', 'true')
+    expect(within(section).getByRole('heading', { level: 4, name: 'Welder' })).toHaveFocus()
+    expect(within(section).getByText('One TESDA qualification leads to this job.')).toBeVisible()
+    const skills = within(section).getByRole('list', { name: `Core skills: ${welding.name}` })
+    // Core competencies only: the basic and common ones aren't the job's own skills.
+    expect(
+      within(skills)
+        .getAllByRole('listitem')
+        .map((item) => item.textContent),
+    ).toEqual(['Weld carbon steel plates'])
+
+    await user.click(welder)
+    expect(welder).toHaveAttribute('aria-expanded', 'false')
+    expect(within(section).queryByRole('heading', { level: 4 })).not.toBeInTheDocument()
+  })
+
+  it('goes from an occupation’s qualification to its training centers', async () => {
+    serveFinderCatalog()
+    serveFinderApi()
+    const user = userEvent.setup()
+    const { router } = await searchSkills(user, 'welding')
+    const section = screen.getByRole('region', { name: 'Related occupations' })
+    await user.click(within(section).getByRole('button', { name: 'Welder' }))
+
+    await user.click(
+      within(section).getByRole('link', { name: `Find training centers: ${welding.name}` }),
+    )
+
+    await waitFor(() => expect(router.state.location.pathname).toBe('/training'))
+    expect(new URLSearchParams(router.state.location.search).getAll('qualification')).toEqual([
+      welding.code,
+    ])
+  })
+
+  it('goes from an occupation’s qualification to its readiness check', async () => {
+    serveFinderCatalog()
+    serveFinderApi()
+    const user = userEvent.setup()
+    await searchSkills(user, 'welding')
+    const section = screen.getByRole('region', { name: 'Related occupations' })
+    await user.click(within(section).getByRole('button', { name: 'Welder' }))
+
+    await user.click(
+      within(section).getByRole('button', { name: `Check my readiness: ${welding.name}` }),
+    )
+
+    expect(
+      await screen.findByRole('heading', { level: 2, name: 'Readiness check' }),
+    ).toBeInTheDocument()
+  })
+
+  it('shows no occupations when nothing matched, and none for a goal', async () => {
+    serveFinderCatalog()
+    serveFinderApi({ matches: [], search: { terms: ['basketball'], unmatched: [] } })
+    const user = userEvent.setup()
+    await openFinder()
+    await user.click(await screen.findByRole('radio', { name: 'A skill or job' }))
+    await user.type(
+      screen.getByRole('textbox', { name: 'Your skills or the jobs you want' }),
+      'basketball',
+    )
+    await user.click(screen.getByRole('button', { name: 'Get recommendation' }))
+    await screen.findByText(/We couldn’t match these skills or jobs/)
+    expect(screen.queryByRole('region', { name: 'Related occupations' })).not.toBeInTheDocument()
+  })
+
+  it('leaves goal results without related occupations', async () => {
+    serveFinderCatalog()
+    serveFinderApi()
+    const user = userEvent.setup()
+    await submitGoal(user)
+
+    expect(screen.queryByRole('region', { name: 'Related occupations' })).not.toBeInTheDocument()
+  })
+})

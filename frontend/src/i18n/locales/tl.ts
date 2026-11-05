@@ -1540,4 +1540,13 @@ export const tl: Record<string, string> = {
   'Skill match: {0}%': 'Pagkakatugma sa kasanayan: {0}%',
   'Find training centers': 'Maghanap ng training center',
   'Change skill or job': 'Palitan ang kasanayan o trabaho',
+  'Related occupations': 'Mga kaugnay na trabaho',
+  'Jobs these qualifications lead to, from TESDA’s Training Regulations. Choose one to see its skills and qualifications.':
+    'Mga trabahong maaaring pasukin gamit ang mga kwalipikasyong ito, mula sa Training Regulations ng TESDA. Pumili ng isa para makita ang mga kasanayan at kwalipikasyon nito.',
+  'One TESDA qualification leads to this job.':
+    'Isang kwalipikasyon ng TESDA ang patungo sa trabahong ito.',
+  '{0} TESDA qualifications lead to this job.':
+    '{0} kwalipikasyon ng TESDA ang patungo sa trabahong ito.',
+  'No core skills are listed for this qualification yet.':
+    'Wala pang nakalistang pangunahing kasanayan para sa kwalipikasyong ito.',
 }

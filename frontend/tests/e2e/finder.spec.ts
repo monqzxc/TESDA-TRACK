@@ -416,6 +416,39 @@ for (const colorScheme of ['light', 'dark'] as const) {
   }
 }
 
+// A skill or job search (US-20): related occupations on the matches step, one opened to its qualification and
+// core skills, then that qualification's training centers.
+for (const colorScheme of ['light', 'dark'] as const) {
+  for (const [size, viewport] of Object.entries(SIZES)) {
+    test(`${colorScheme} theme, ${size}: skill search to an occupation's centers, passing axe`, async ({
+      page,
+    }) => {
+      await page.setViewportSize(viewport)
+      await page.emulateMedia({ colorScheme })
+      await serveFinder(page)
+      await page.goto('/find')
+
+      await page.locator('label').filter({ hasText: 'A skill or job' }).click()
+      await page.getByRole('textbox', { name: 'Your skills or the jobs you want' }).fill('welding')
+      await expectSettledAndAccessible(page)
+      await page.getByRole('button', { name: 'Get recommendation' }).click()
+
+      const occupations = page.getByRole('region', { name: 'Related occupations' })
+      await expect(occupations.getByRole('button', { name: 'Welder' })).toBeVisible()
+      await expectSettledAndAccessible(page)
+      await occupations.getByRole('button', { name: 'Welder' }).click()
+      await expect(occupations.getByRole('heading', { level: 4, name: 'Welder' })).toBeFocused()
+      await expect(occupations.getByText('Weld carbon steel plates')).toBeVisible()
+      await expectSettledAndAccessible(page)
+
+      await occupations
+        .getByRole('link', { name: `Find training centers: ${welding.name}` })
+        .click()
+      await expect(page).toHaveURL(/\/training\?qualification=SMAW-NCII$/)
+    })
+  }
+}
+
 test.describe('on a desktop', () => {
   test.use({ viewport: SIZES.desktop })
 

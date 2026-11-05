@@ -603,6 +603,17 @@ export const en = {
       other: 'Or choose any qualification to explore',
       careers: (careers: readonly string[]) => `Sample career options: ${careers.join(', ')}`,
     },
+    // A skills search's related occupations (US-20): the jobs the matches lead to, from the catalog's possible jobs.
+    occupations: {
+      heading: 'Related occupations',
+      lead: 'Jobs these qualifications lead to, from TESDA’s Training Regulations. Choose one to see its skills and qualifications.',
+      leadsTo: (count: number) =>
+        count === 1
+          ? 'One TESDA qualification leads to this job.'
+          : `${figure(count)} TESDA qualifications lead to this job.`,
+      skills: 'Core skills',
+      noSkills: 'No core skills are listed for this qualification yet.',
+    },
     // Steps 3 and 4 need a qualification, and a goal with no match has none until the learner picks one.
     choose: {
       heading: 'Choose a qualification first',
