@@ -1,6 +1,7 @@
 """Database-free checks that the TSP embed contract's schemas, examples and document agree. Run with
 --confcutdir=backend/tests/unit."""
 import json
+import re
 from functools import cache
 from pathlib import Path
 
@@ -66,3 +67,24 @@ def test_invalid_examples_fail(path):
 
 def test_the_required_invalid_cases_exist():
     assert REQUIRED_INVALID <= {path.stem for path in examples("invalid")}
+
+
+def contract_json_blocks() -> list[dict]:
+    """Every ```json block in CONTRACT.md that is a message (its "type" starts "tsp.tracker."). A block that isn't
+    valid JSON fails here, so the document can't show TSP broken JSON."""
+    text = (CONTRACT_DIR / "CONTRACT.md").read_text(encoding="utf-8")
+    blocks = [json.loads(block) for block in re.findall(r"```json\r?\n(.*?)\r?\n```", text, re.DOTALL)]
+    return [block for block in blocks
+            if isinstance(block, dict) and str(block.get("type", "")).startswith("tsp.tracker.")]
+
+
+def test_contract_json_blocks_match_their_schemas():
+    blocks = contract_json_blocks()
+    assert {block["type"] for block in blocks} == set(MESSAGE_TYPES)
+    for block in blocks:
+        validator(block["type"]).validate(block)
+
+
+def test_contract_links_every_schema():
+    text = (CONTRACT_DIR / "CONTRACT.md").read_text(encoding="utf-8")
+    assert all(f"schemas/{message_type}.schema.json" in text for message_type in MESSAGE_TYPES)
