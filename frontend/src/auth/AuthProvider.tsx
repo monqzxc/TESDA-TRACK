@@ -255,6 +255,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     [signIn],
   )
 
+  const adoptSession = useCallback(
+    async (signedIn: Learner) => {
+      setNotice(null)
+      await startSession(signedIn)
+    },
+    [startSession],
+  )
+
   const signOut = useCallback(async () => {
     // Only once the API has cleared the cookie: otherwise the browser would still be signed in after a reload.
     await requestSignOut()
@@ -284,12 +292,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isChecking: session.isLoading,
       signIn,
       register,
+      adoptSession,
       signOut,
       deleteAccount,
       openSignIn,
       notify: setNotice,
     }
-  }, [learner, session.isLoading, signIn, register, signOut, deleteAccount, openSignIn])
+  }, [learner, session.isLoading, signIn, register, adoptSession, signOut, deleteAccount, openSignIn])
 
   return (
     <AuthContext.Provider value={auth}>

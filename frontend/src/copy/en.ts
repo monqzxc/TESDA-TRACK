@@ -1885,6 +1885,29 @@ export const en = {
       href: 'https://privacy.gov.ph',
     },
   },
+  // Signing in from TESDA Skill Passport's WebView (features/tsp/useTspSignIn.ts).
+  tspSignIn: {
+    consent: {
+      heading: 'Save your Skill Passport details in TESDA-TRACK?',
+      greeting: (name: string) => `You're signed in to TESDA Skill Passport as ${name}.`,
+      lead: 'TESDA-TRACK can keep these details from your Skill Passport, to recommend qualifications and training near you and to remember your progress:',
+      keeps: {
+        skills: 'Your skills',
+        experience: 'Your work experience',
+        education: 'Your education',
+        qualifications: 'Your qualifications',
+        certificates: 'Your certificates and trainings',
+        location: 'Your province and region',
+      },
+      privacy: "We don't keep your contact details, birth date or address.",
+      accept: 'Agree and continue',
+      decline: 'Not now',
+    },
+    notice: {
+      message: "You're using TESDA-TRACK without signing in.",
+      retry: 'Sign in again',
+    },
+  },
   theme: {
     // The accessible name of the System / Light / Dark switch.
     label: 'Theme',

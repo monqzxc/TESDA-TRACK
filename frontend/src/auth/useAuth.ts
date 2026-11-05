@@ -47,6 +47,11 @@ export interface Auth {
   signIn: (email: string, password: string) => Promise<Learner>
   /** Creates the account, then signs in. Rejects with SignInAfterRegistrationError if only the first worked. */
   register: (details: Registration) => Promise<Learner>
+  /**
+   * Takes on a session the API started some other way (TESDA Skill Passport's WebView sign-in): the cookie is set
+   * already; this shows the learner, as signing in does.
+   */
+  adoptSession: (learner: Learner) => Promise<void>
   /** Ends the session, then clears the learner's data and finder work from this browser. */
   signOut: () => Promise<void>
   /** Permanently deletes the account and its records, then signs out the same way. */
