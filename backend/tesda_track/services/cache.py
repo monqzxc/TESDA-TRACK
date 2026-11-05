@@ -45,11 +45,15 @@ def purge_expired(session: Session) -> int:
 def purge_until_stopped(open_session: Callable[[], AbstractContextManager[Session]], stop: threading.Event,
                         interval_seconds: float) -> None:
     """Delete expired entries every interval until `stop` is set. Entries can hold terms sent to Skills Bridge,
-    so they are deleted once expired rather than only ignored."""
+    so they are deleted once expired rather than only ignored; so are expired TSP sign-ins waiting for consent,
+    which hold the learner's profile."""
+    from tesda_track.services.tsp_sign_in import purge_expired_pending
+
     while not stop.wait(interval_seconds):
         try:
             with open_session() as session:
                 purge_expired(session)
+                purge_expired_pending(session)
                 session.commit()
         except Exception:  # A database outage must not end the loop.
             logger.exception("Could not purge expired cache entries")

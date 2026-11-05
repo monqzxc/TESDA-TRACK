@@ -61,7 +61,10 @@ def create_app() -> FastAPI:
     @app.exception_handler(DomainError)
     async def domain_error(request: Request, error: DomainError):
         headers = {"WWW-Authenticate": "Bearer"} if isinstance(error, AuthenticationError) else None
-        response = JSONResponse({"detail": error.detail}, status_code=error.status_code, headers=headers)
+        body = {"detail": error.detail}
+        if code := getattr(error, "code", None):
+            body["code"] = code
+        response = JSONResponse(body, status_code=error.status_code, headers=headers)
         if isinstance(error, SessionCookieError):
             clear_session_cookie(response, settings)
         return response

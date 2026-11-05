@@ -58,3 +58,13 @@ def test_configuration_errors_never_echo_the_secret(mistake):
     with pytest.raises(ValidationError) as error:
         settings(**{**HERCULES, "tracker_client_secret": TELLTALE_SECRET, **mistake})
     assert "SECRETVALUE" not in str(error.value) and "0123456789" not in str(error.value)
+
+
+def test_tsp_sign_in_off_by_default():
+    assert settings(**HERCULES).tsp_sign_in_enabled is False
+
+
+def test_tsp_sign_in_needs_the_hercules_client():
+    with pytest.raises(ValidationError, match="before TSP_SIGN_IN_ENABLED"):
+        settings(tsp_sign_in_enabled=True)
+    assert settings(**HERCULES, tsp_sign_in_enabled=True).tsp_sign_in_enabled is True

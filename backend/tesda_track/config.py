@@ -129,6 +129,9 @@ class Settings(BaseSettings):
     tracker_client_id: str | None = Field(default=None, max_length=256)
     tracker_client_secret: SecretStr | None = Field(default=None, max_length=1024)
     hercules_timeout_seconds: float = Field(default=10, gt=0)
+    # Lets TSP's WebView sign learners in to linked accounts (POST /api/v1/auth/tsp/session). Off until Hercules
+    # confirms its sso_id is permanent, since accounts are linked by it.
+    tsp_sign_in_enabled: bool = False
 
     @field_validator("mcp_token_secret", "hercules_base_url", "tracker_client_id", "tracker_client_secret",
                      mode="before")
@@ -160,6 +163,9 @@ class Settings(BaseSettings):
             raise ValueError("Set HERCULES_BASE_URL, TRACKER_CLIENT_ID and TRACKER_CLIENT_SECRET together, or none of them.")
         if self.environment == "production" and self.hercules_base_url and self.hercules_base_url.scheme != "https":
             raise ValueError("HERCULES_BASE_URL must use https in production.")
+        if self.tsp_sign_in_enabled and not all(values):
+            raise ValueError("Set HERCULES_BASE_URL, TRACKER_CLIENT_ID and TRACKER_CLIENT_SECRET before "
+                             "TSP_SIGN_IN_ENABLED.")
         return self
 
     @property
