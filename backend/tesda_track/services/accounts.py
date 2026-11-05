@@ -37,7 +37,8 @@ def register(session: Session, request: RegisterRequest) -> Learner:
 def authenticate(session: Session, email: str, password: str, settings: Settings) -> Learner:
     """Commits failure counters itself, because the request ends in an error response."""
     learner = find_by_email(session, email)
-    if learner is None:
+    # No account, or one reached only through TESDA Skill Passport: the same answer, in the same time.
+    if learner is None or learner.password_hash is None:
         burn_verification_time(password)
         raise AuthenticationError()
     now = utcnow()
@@ -63,6 +64,8 @@ def authenticate(session: Session, email: str, password: str, settings: Settings
 
 
 def change_password(session: Session, learner: Learner, current_password: str, new_password: str) -> None:
+    if learner.password_hash is None:
+        raise InvalidRequestError("This account signs in through TESDA Skill Passport and has no password.")
     valid, _ = verify_password(current_password, learner.password_hash)
     if not valid:
         raise InvalidRequestError("Your current password is incorrect.")

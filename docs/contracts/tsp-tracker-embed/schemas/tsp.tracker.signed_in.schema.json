@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tesda-track:tsp-tracker-embed:tsp.tracker.signed_in:v1",
+  "title": "tsp.tracker.signed_in",
+  "description": "Tracker → TSP. Tracker's session is set up; TSP can hide its loading indicator.",
+  "type": "object",
+  "required": [
+    "type",
+    "version"
+  ],
+  "properties": {
+    "type": {
+      "const": "tsp.tracker.signed_in",
+      "description": "The message type."
+    },
+    "version": {
+      "const": 1,
+      "type": "integer",
+      "description": "Contract version. A number, not a string."
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:tesda-track:tsp-tracker-embed:tsp.tracker.ready:v1",
+  "title": "tsp.tracker.ready",
+  "description": "Tracker → TSP. Tracker is ready and asks for a handoff code. May be sent again at any time; TSP answers every one.",
+  "type": "object",
+  "required": [
+    "type",
+    "version",
+    "nonce",
+    "reason"
+  ],
+  "properties": {
+    "type": {
+      "const": "tsp.tracker.ready",
+      "description": "The message type."
+    },
+    "version": {
+      "const": 1,
+      "type": "integer",
+      "description": "Contract version. A number, not a string."
+    },
+    "nonce": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_-]{43}$",
+      "description": "32 random bytes, base64url without padding (43 characters). New for every ready. TSP passes it to POST /v1/tracker/handoff as state."
+    },
+    "reason": {
+      "enum": [
+        "initial",
+        "reload",
+        "session_expired",
+        "retry"
+      ],
+      "description": "Why Tracker is asking. Informational: TSP handles every reason the same way."
+    }
+  },
+  "additionalProperties": true
+}

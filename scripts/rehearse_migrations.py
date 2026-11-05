@@ -46,6 +46,8 @@ def downgrade_refusal_reason(error):
             return "custom_role_assignments_require_reassignment_before_0017"
         if message.startswith("Reassign staff accounts to learner or admin"):
             return "staff_role_assignments_require_reassignment_before_0015"
+        if message.startswith("TSP-linked learners exist"):
+            return "tsp_linked_learners_require_removal_before_0022"
     return "migration_failed"
 
 

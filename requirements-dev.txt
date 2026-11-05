@@ -2,5 +2,7 @@
 -r backend/requirements.txt
 -r classic/requirements.txt
 pytest==9.1.1
+# Checks the TSP embed contract's examples against its JSON Schemas (backend/tests/unit/test_embed_contract.py).
+jsonschema==4.26.0
 # Reads TESDA Training Regulation PDFs (python -m tesda_track.training_regulations build).
 pymupdf==1.28.2

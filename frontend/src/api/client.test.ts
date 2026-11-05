@@ -56,4 +56,18 @@ describe('onSignInRequired', () => {
     await api.GET('/api/v1/me/goals')
     expect(listener).toHaveBeenCalledTimes(1)
   })
+
+  it('a refused handoff does not open the sign-in dialog', async () => {
+    // A TSP code that expired is a sign-in that didn't work, not a session that ended.
+    server.use(
+      http.post('*/api/v1/auth/tsp/session', () =>
+        HttpResponse.json({ detail: 'Expired.', code: 'handoff_expired' }, { status: 401 }),
+      ),
+    )
+    const listener = vi.fn()
+    const unsubscribe = onSignInRequired(listener)
+    await api.POST('/api/v1/auth/tsp/session', { body: { code: 'expired' } })
+    unsubscribe()
+    expect(listener).not.toHaveBeenCalled()
+  })
 })

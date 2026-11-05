@@ -15,8 +15,14 @@ const requestedWith: Middleware = {
 type Listener = () => void
 const signInRequiredListeners = new Set<Listener>()
 
-// The sign-in routes answer 401 for a wrong email or password. That isn't a session ending.
-const SIGN_IN_PATHS: ReadonlySet<string> = new Set(['/api/v1/auth/session', '/api/v1/auth/token'])
+// The sign-in routes answer 401 for a wrong email or password, or a TSP handoff code that expired. That isn't a
+// session ending.
+const SIGN_IN_PATHS: ReadonlySet<string> = new Set([
+  '/api/v1/auth/session',
+  '/api/v1/auth/token',
+  '/api/v1/auth/tsp/session',
+  '/api/v1/auth/tsp/consent',
+])
 
 /** Tells the listeners about every 401: the request needed a sign-in the browser doesn't have (any more). */
 const sessionWatch: Middleware = {

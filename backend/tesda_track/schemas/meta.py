@@ -8,3 +8,5 @@ class ClientConfig(BaseModel):
                                               "Maps instead.")
     skills_bridge_enabled: bool = Field(description="Whether the Skills Bridge lookups behind Skills Explorer are "
                                                     "turned on.")
+    tsp_sign_in: bool = Field(description="Whether /tsp/webview signs learners in through TSP's WebView bridge "
+                                          "(POST /api/v1/auth/tsp/session). False: it stays guest-only.")

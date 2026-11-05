@@ -3,7 +3,10 @@ import { Outlet, ScrollRestoration, useLocation, useNavigate } from 'react-route
 import { useAuth } from '../auth/useAuth.ts'
 import { useCopy } from '../i18n/copy.ts'
 import { TspNav } from '../features/tsp/TspNav.tsx'
+import { TspConsent } from '../features/tsp/TspConsent.tsx'
+import { TspSignInNotice } from '../features/tsp/TspSignInNotice.tsx'
 import { TspStateProvider } from '../features/tsp/TspState.tsx'
+import { useTspSignIn } from '../features/tsp/useTspSignIn.ts'
 import { FirstVisitNotice } from '../features/privacy/FirstVisitNotice.tsx'
 import { GuidedHelp } from '../features/help/GuidedHelp.tsx'
 import { useCurrentPage, useFocusOnNavigation, usePageTitle } from '../lib/navigation.ts'
@@ -75,9 +78,13 @@ export function HomeLayout() {
   )
 }
 
-/** A compact shell for partner apps opening TESDA-TRACK in a phone WebView. */
+/**
+ * A compact shell for partner apps opening TESDA-TRACK in a phone WebView. Inside TSP's app it also signs the learner
+ * in (useTspSignIn): a first visit asks for consent in place of the page.
+ */
 export function WebviewLayout() {
   const location = useLocation()
+  const tsp = useTspSignIn()
   const navigate = useNavigate()
   const isEntry = location.pathname === paths.tspWebview
   const isTool =
@@ -85,7 +92,8 @@ export function WebviewLayout() {
     location.pathname === paths.tspTraining ||
     location.pathname === paths.tspSkills
   return (
-    <TspStateProvider>
+    // A new provider after TSP's logout: nothing the last learner's launch URL prefilled stays.
+    <TspStateProvider key={tsp.resets}>
       <SkipLink />
       <div className="tsp-webview min-h-dvh">
         <header className="tsp-header">
@@ -106,7 +114,12 @@ export function WebviewLayout() {
           tabIndex={-1}
           className={`tsp-main ${isEntry ? 'tsp-main-entry' : isTool ? 'tsp-main-tool' : 'tsp-main-content'}`}
         >
-          <Outlet />
+          {tsp.state === 'failed' && <TspSignInNotice canRetry={tsp.canRetry} onRetry={tsp.retry} />}
+          {tsp.state === 'consent' && tsp.summary ? (
+            <TspConsent summary={tsp.summary} onAnswer={tsp.answerConsent} />
+          ) : (
+            <Outlet />
+          )}
         </main>
       </div>
     </TspStateProvider>

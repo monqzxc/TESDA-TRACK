@@ -20,7 +20,7 @@ class LearnerPublic(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     id: uuid.UUID
-    email: str
+    email: str | None
     full_name: str
     role: str
     # Read from the account's role row by Learner.permissions, so it always matches what the guards enforce.

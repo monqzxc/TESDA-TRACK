@@ -235,7 +235,7 @@ class LearnerSummary(BaseModel):
 
     id: uuid.UUID
     full_name: str
-    email: str
+    email: str | None
 
 
 class AssessmentApplicationAdmin(AssessmentApplicationPublic):

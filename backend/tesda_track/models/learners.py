@@ -19,8 +19,9 @@ CERTIFICATION_SOURCES = ("self_reported", "assessment")
 
 class Learner(Timestamped, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
-    email: str = Field(sa_type=String(254), unique=True)
-    password_hash: str = Field(sa_type=String(255))
+    # Both empty for learners who sign in only through TESDA Skill Passport (models/identity.py).
+    email: str | None = Field(default=None, sa_type=String(254), unique=True)
+    password_hash: str | None = Field(default=None, sa_type=String(255))
     full_name: str = Field(sa_type=String(150))
     # RESTRICT, so a role still assigned to somebody cannot be deleted out from under them.
     role: str = Field(default="learner", sa_type=String(50), foreign_key="app_role.key", ondelete="RESTRICT")

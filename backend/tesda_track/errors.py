@@ -38,3 +38,13 @@ class SessionCookieError(AuthenticationError):
 
 class TooManyAttemptsError(DomainError):
     status_code = 429
+
+
+class TspSignInError(DomainError):
+    """Signing in through TESDA Skill Passport failed. `code` is the embed contract's error code, which the page
+    passes on to TSP (docs/contracts/tsp-tracker-embed/CONTRACT.md); the response carries it beside the detail."""
+
+    def __init__(self, code: str, status_code: int, detail: str):
+        super().__init__(detail)
+        self.code = code
+        self.status_code = status_code

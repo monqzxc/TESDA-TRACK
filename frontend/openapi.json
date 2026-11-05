@@ -5959,6 +5959,102 @@
           }
         }
       }
+    },
+    "/api/v1/auth/tsp/session": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Start Tsp Session",
+        "description": "Sign in with a TSP handoff code. The session is set as the HttpOnly cookie, as for POST /auth/session.",
+        "operationId": "start_tsp_session_api_v1_auth_tsp_session_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TspSessionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "First visit: ask for consent.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TspConsentRequired"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/tsp/consent": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Answer Tsp Consent",
+        "operationId": "answer_tsp_consent_api_v1_auth_tsp_consent_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TspConsentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SessionResponse"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "Declined: nothing was kept."
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -8926,13 +9022,19 @@
             "type": "boolean",
             "title": "Skills Bridge Enabled",
             "description": "Whether the Skills Bridge lookups behind Skills Explorer are turned on."
+          },
+          "tsp_sign_in": {
+            "type": "boolean",
+            "title": "Tsp Sign In",
+            "description": "Whether /tsp/webview signs learners in through TSP's WebView bridge (POST /api/v1/auth/tsp/session). False: it stays guest-only."
           }
         },
         "type": "object",
         "required": [
           "carto_key",
           "routing_enabled",
-          "skills_bridge_enabled"
+          "skills_bridge_enabled",
+          "tsp_sign_in"
         ],
         "title": "ClientConfig"
       },
@@ -10379,7 +10481,14 @@
             "title": "Id"
           },
           "email": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Email"
           },
           "full_name": {
@@ -10426,7 +10535,14 @@
             "title": "Full Name"
           },
           "email": {
-            "type": "string",
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
             "title": "Email"
           }
         },
@@ -16298,6 +16414,99 @@
         ],
         "title": "TrainingRankingRequest",
         "description": "Sent as a POST body so the learner's goal never appears in URLs or access logs."
+      },
+      "TspConsentRequest": {
+        "properties": {
+          "pending_id": {
+            "type": "string",
+            "maxLength": 64,
+            "minLength": 1,
+            "title": "Pending Id"
+          },
+          "accept": {
+            "type": "boolean",
+            "title": "Accept",
+            "description": "True creates the linked account; false forgets the profile."
+          }
+        },
+        "type": "object",
+        "required": [
+          "pending_id",
+          "accept"
+        ],
+        "title": "TspConsentRequest"
+      },
+      "TspConsentRequired": {
+        "properties": {
+          "consent_required": {
+            "type": "boolean",
+            "const": true,
+            "title": "Consent Required",
+            "default": true
+          },
+          "pending_id": {
+            "type": "string",
+            "title": "Pending Id",
+            "description": "Valid for 10 minutes."
+          },
+          "summary": {
+            "$ref": "#/components/schemas/TspConsentSummary"
+          }
+        },
+        "type": "object",
+        "required": [
+          "pending_id",
+          "summary"
+        ],
+        "title": "TspConsentRequired",
+        "description": "A first sign-in: the learner consents (POST /api/v1/auth/tsp/consent) before an account is created."
+      },
+      "TspConsentSummary": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name",
+            "description": "The learner's name from TSP. Learner text: render it as text."
+          },
+          "keeps": {
+            "items": {
+              "type": "string",
+              "enum": [
+                "skills",
+                "experience",
+                "education",
+                "qualifications",
+                "certificates",
+                "location"
+              ]
+            },
+            "type": "array",
+            "title": "Keeps",
+            "description": "What TESDA-TRACK will keep from the TSP profile."
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "keeps"
+        ],
+        "title": "TspConsentSummary"
+      },
+      "TspSessionRequest": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "maxLength": 4096,
+            "minLength": 1,
+            "title": "Code",
+            "description": "The one-time handoff code TSP gave the page."
+          }
+        },
+        "type": "object",
+        "required": [
+          "code"
+        ],
+        "title": "TspSessionRequest"
       },
       "UnconfirmedAssessment": {
         "properties": {

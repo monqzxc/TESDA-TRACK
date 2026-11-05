@@ -11,5 +11,5 @@ def test_client_config_is_public_and_follows_the_settings(client, monkeypatch):
 
     assert response.status_code == 200
     assert response.json() == {"carto_key": "carto-public-key", "routing_enabled": False,
-                               "skills_bridge_enabled": False}
+                               "skills_bridge_enabled": False, "tsp_sign_in": False}
     assert response.headers["cache-control"] == "public, max-age=300"
