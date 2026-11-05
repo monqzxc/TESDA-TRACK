@@ -1,6 +1,6 @@
 # TSP ↔ TESDA-TRACK embed contract (version 1)
 
-**Status:** Draft for TSP review, 2026-11-05
+**Status:** Version 1, final, 2026-11-05. Changes from here on follow [Versioning](#versioning).
 **Builds on:** `31-TRACKER_IFRAME_INTEGRATION.md` (TSP/Hercules)
 
 This contract covers what the TSP hosts do to show TESDA-TRACK and sign the learner in: the web app (an iframe)
@@ -8,8 +8,16 @@ and the Flutter mobile app (a WebView, which already opens TESDA-TRACK today). H
 specified in spec 31 and are not repeated here. How TESDA-TRACK implements its side is internal; nothing here
 depends on it. TSP may renumber this document to fit its own series.
 
-**Current state:** TSP can build against this contract now. Until TESDA-TRACK ships its side, the page ignores
-the bridge and keeps working as a guest, exactly as today.
+**Current state:** TSP can build and release against this contract now. Until TESDA-TRACK ships its side, the
+page ignores the bridge and keeps working as a guest, exactly as today, so a TSP release is safe either way.
+End-to-end testing needs TESDA-TRACK's side; we will tell you when staging sends `ready`.
+
+**Open dependencies.** None of these change a message or the TSP code below; they are values and answers we
+still need:
+
+- TSP's web origins for staging, production and development ([Environments](#environments)).
+- The production TESDA-TRACK origin.
+- Hercules' answers to [Questions for Hercules](#questions-for-hercules); question 1 blocks signing in.
 
 ## At a glance
 
@@ -61,6 +69,9 @@ Rules for every message:
 - Ignore fields you don't know, and ignore message types or versions you don't support. Both sides can add
   fields later without breaking the other.
 - No message carries personal information or account identifiers: no `sso_id`, ULI, name or email.
+- **On web**, messages are posted as plain JavaScript objects (structured clone), not JSON strings. **In the
+  Flutter app**, they travel as JSON strings (see [Mobile host](#mobile-host-flutter-webview_flutter)).
+- Check that a `nonce` matches the pattern before you call Hercules with it, and drop the message if it doesn't.
 - `nonce` and `state` are 43 characters of base64url without padding (`^[A-Za-z0-9_-]{43}$`).
 
 ### `tsp.tracker.ready` (TESDA-TRACK → TSP)
@@ -172,8 +183,10 @@ learner's data. Schema:
 2. TSP checks the message came from the TESDA-TRACK page (see the host sections), calls `/v1/tracker/handoff`
    with `state = N`, and sends `handoff(code, state = N)`, or `handoff_failed(state = N)`.
 3. The page accepts a `handoff` only for a nonce it is still waiting on, and only once. Anything else is
-   ignored without an error.
-4. The page signs in and sends `signed_in`, or `error`.
+   ignored without an error, including a `handoff` that arrives after the page has sent `error(timeout)` for
+   that nonce: the page has stopped waiting by then.
+4. The page signs in and sends `signed_in`, or `error`. After a `handoff_failed` it sends neither, since you
+   already know; it continues as a guest.
 
 **TSP never retries; TESDA-TRACK does.**
 
@@ -182,8 +195,13 @@ learner's data. Schema:
 - After `client_rejected` the page doesn't retry: it's a configuration problem on the TESDA-TRACK side.
 - If neither `handoff` nor `handoff_failed` arrives within **10 seconds** of a `ready`, the page sends
   `error(timeout)`.
-- **Every failure ends in guest mode**, with a short "not signed in" notice and a "Sign in again" button that
-  sends a new `ready(reason = retry)`. A failed sign-in never blocks the learner.
+- **Every failure ends in guest mode**, with a short "not signed in" notice. A failed sign-in never blocks the
+  learner.
+- The notice has a "Sign in again" button, which sends a new `ready(reason = retry)`, after every failure except
+  `client_rejected` and `handoff_failed(not_signed_in)`. Retrying can't fix those two; the learner has to sign
+  in to TSP again, or we have to fix our configuration.
+- 10 seconds covers the app's own call to Hercules on a slow mobile connection in most cases. If staging shows
+  otherwise, we will raise it in a version 1 update; the "Sign in again" button covers the rest.
 - After `logout`, the page doesn't ask for a new code until TSP opens it again.
 
 **Fresh-load guarantee.** Every time the page loads, it sends `ready` and shows no learner data until that
@@ -196,7 +214,7 @@ or a guest page.
 
 | `code` | Cause | Suggested TSP response |
 |---|---|---|
-| `handoff_expired` | Hercules refused the code or token, and the automatic retry also failed. | "Please try again", with a button that reloads the page. |
+| `handoff_expired` | Hercules refused the code or token, and the automatic retry also failed. | "Please try again", with a button that reloads TESDA-TRACK (the iframe or the WebView). |
 | `unavailable` | Hercules or TESDA-TRACK is down. | "TESDA-TRACK is unavailable right now." |
 | `client_rejected` | TESDA-TRACK's Hercules client credentials are wrong or missing. | Same as `unavailable`; also alert your ops so they can tell us. |
 | `timeout` | No `handoff` or `handoff_failed` within 10 seconds. | Same as `unavailable`; check your `/handoff` call and `ready` handler. |
@@ -219,7 +237,9 @@ Why each one:
   `null`, and it can't call its own API or check where your messages come from.
 - `allow-forms` lets the learner submit goals and answers.
 - `allow-popups allow-popups-to-escape-sandbox` let directions open Google Maps in a new tab.
-- `allow="geolocation"` is for the "near me" training search; the browser still asks the learner.
+- `allow="geolocation"` is for the "near me" training search; the browser still asks the learner. If your own
+  pages send a `Permissions-Policy` header, its `geolocation` list must include the TESDA-TRACK origin too, e.g.
+  `geolocation=(self "https://tesda-track.vercel.app")`; otherwise the iframe's `allow` has no effect.
 - `referrerpolicy="strict-origin"` sends only your origin, never your page's path.
 
 **Register your message listener before the iframe loads.** The page sends `ready` once per load; a listener
@@ -227,6 +247,7 @@ added later misses it, and the learner ends up a guest after 10 seconds.
 
 ```js
 const TRACKER_ORIGIN = "https://tesda-track.vercel.app";
+const NONCE = /^[A-Za-z0-9_-]{43}$/;
 const iframe = document.createElement("iframe");
 
 function sendToTracker(message) {
@@ -237,7 +258,7 @@ window.addEventListener("message", async (event) => {
   if (event.source !== iframe.contentWindow || event.origin !== TRACKER_ORIGIN) return;
   const message = event.data;
   if (message?.version !== 1) return;
-  if (message.type !== "tsp.tracker.ready") return; // signed_in and error: update your own UI here
+  if (message.type !== "tsp.tracker.ready" || !NONCE.test(message.nonce)) return; // signed_in, error: your UI
   const state = message.nonce;
   try {
     // Your server route from spec 31; it calls Hercules /v1/tracker/handoff server-to-server.
@@ -246,7 +267,7 @@ window.addEventListener("message", async (event) => {
       headers: { "Content-Type": "application/json", "X-CSRF-TOKEN": csrfToken() },
       body: JSON.stringify({ target: TRACKER_ORIGIN, state, scopes: ["profile", "skills", "experience", "credentials"] }),
     });
-    if (response.status === 401) {
+    if (response.status === 401 || response.status === 419) { // 419: Laravel's expired session
       return sendToTracker({ type: "tsp.tracker.handoff_failed", version: 1, state, reason: "not_signed_in" });
     }
     if (!response.ok) throw new Error(`handoff ${response.status}`);
@@ -292,6 +313,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 const trackerOrigin = 'https://tesda-track.vercel.app';
 const scopes = ['profile', 'skills', 'experience', 'credentials'];
+final nonce = RegExp(r'^[A-Za-z0-9_-]{43}$');
 WebViewController? controller; // the open TESDA-TRACK screen's, or null while none is open
 
 // A channel message carries no origin: only talk to the page while the WebView is on TESDA-TRACK.
@@ -320,10 +342,16 @@ WebViewController openTesdaTrack() {
     }))
     ..addJavaScriptChannel('TspTrackerHost', onMessageReceived: (message) async {
       if (!isTracker(await webView.currentUrl())) return;
-      final msg = jsonDecode(message.message);
+      final Object? msg;
+      try {
+        msg = jsonDecode(message.message);
+      } on FormatException {
+        return;
+      }
       if (msg is! Map || msg['version'] != 1) return;
       if (msg['type'] != 'tsp.tracker.ready') return; // signed_in and error: update your own UI here
-      final state = msg['nonce'] as String;
+      final state = msg['nonce'];
+      if (state is! String || !nonce.hasMatch(state)) return;
       try {
         // Your existing Hercules call from spec 31: POST /v1/tracker/handoff with the Atlas JWT,
         // body {"target": trackerOrigin, "state": state, "scopes": scopes}; returns data.code.

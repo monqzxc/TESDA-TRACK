@@ -80,13 +80,16 @@ def test_the_required_invalid_cases_exist():
     assert REQUIRED_INVALID <= {path.stem for path in examples("invalid")}
 
 
-def contract_json_blocks() -> list[dict]:
-    """Every ```json block in CONTRACT.md that is a message (its "type" starts "tsp.tracker."). A block that isn't
-    valid JSON fails here, so the document can't show TSP broken JSON."""
+def contract_json_blocks() -> list:
+    """Every ```json block in CONTRACT.md, parsed. A block that isn't valid JSON fails here, so the document can't
+    show TSP broken JSON."""
     text = (CONTRACT_DIR / "CONTRACT.md").read_text(encoding="utf-8")
-    blocks = [json.loads(block) for block in re.findall(r"```json\r?\n(.*?)\r?\n```", text, re.DOTALL)]
-    return [block for block in blocks
-            if isinstance(block, dict) and str(block.get("type", "")).startswith("tsp.tracker.")]
+    return [json.loads(block) for block in re.findall(r"```json\r?\n(.*?)\r?\n```", text, re.DOTALL)]
+
+
+def test_every_contract_json_block_is_a_known_message():
+    # A mistyped type would otherwise be skipped as "not a message" and never checked.
+    assert all(isinstance(block, dict) and block.get("type") in MESSAGE_TYPES for block in contract_json_blocks())
 
 
 def test_contract_json_blocks_match_their_schemas():

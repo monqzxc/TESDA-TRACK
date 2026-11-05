@@ -70,6 +70,12 @@ This removes the "open it again from Skill Passport" dead end. It also works whe
 - On `client_rejected`, Tracker never retries.
 - If neither `handoff` nor `handoff_failed` arrives **10 seconds** after a `ready`, Tracker sends `error(timeout)` and carries on as a guest, with a "Sign in again" button that sends a new `ready(reason=retry)`.
 - Every failure, including `client_rejected` and `handoff_failed`, ends in guest mode with a short "not signed in" notice. A failed sign-in never blocks the learner from using TESDA-TRACK.
+- Settled when finalizing version 1:
+  - "Sign in again" appears after every failure except `client_rejected` and `handoff_failed(not_signed_in)`, which a retry can't fix.
+  - A `handoff` arriving after `error(timeout)` for its nonce is ignored.
+  - After `handoff_failed` the page sends no `error`.
+  - Both hosts check the nonce pattern before calling Hercules.
+  - Web messages are plain objects; Flutter channel messages are JSON strings.
 
 **Logout.** When the learner signs out of TSP or switches accounts, TSP sends `logout`. Tracker ends its session and returns to the guest entry page, `/tsp/webview`, with no learner data on it. It doesn't request a new code until TSP loads the embed again. Mobile hosts also clear the WebView's cookies and local storage on sign-out (they outlive the screen); web hosts send `logout` before removing the iframe.
 
