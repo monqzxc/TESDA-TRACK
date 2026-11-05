@@ -63,6 +63,19 @@ class MatchResult(BaseModel):
     matches: list[Match]
 
 
+class SuggestionRequest(BaseModel):
+    """A suggestion is worked out from the learner's profile alone: there is no goal to send."""
+    profile: Profile
+    limit: int = Field(default=3, ge=1, le=10)
+
+
+class SuggestionResult(BaseModel):
+    profile: Profile
+    suggestions: list[Match]
+    basis: list[str] = Field(default_factory=list,
+                             description="What the suggestions were worked out from, in the learner's own terms")
+
+
 class PathwayRequest(BaseModel):
     profile: Profile
     qualification_code: str = Field(max_length=40)

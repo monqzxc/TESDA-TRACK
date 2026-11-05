@@ -97,3 +97,53 @@ def test_matches_fall_back_to_keywords_when_the_model_has_no_embeddings(client, 
         "has_certification": None, "intent": "unknown"}})
     assert response.status_code == 200
     assert "SMAW-NC-II" in [m["qualification"]["code"] for m in response.json()["matches"]]
+
+
+# --- Profile-only suggestions (TSP webview entry page) ---
+
+
+def test_suggestions_rank_qualifications_from_the_profile_alone(client):
+    profile = {"career_goal": None, "possible_sector": None, "existing_skills": ["welding", "reading drawings"],
+               "experience_years": 0, "has_certification": False, "intent": "unknown"}
+    response = client.post("/api/v1/analysis/suggestions", json={"profile": profile})
+    assert response.status_code == 200
+    body = response.json()
+    codes = [item["qualification"]["code"] for item in body["suggestions"]]
+    assert "SMAW-NC-II" in codes
+    assert body["profile"]["intent"] == "training_and_assessment"
+
+
+def test_suggestions_never_claim_the_learner_typed_the_words(client):
+    profile = {"existing_skills": ["welding"], "experience_years": 0}
+    body = client.post("/api/v1/analysis/suggestions", json={"profile": profile}).json()
+    assert body["suggestions"], "expected at least one suggestion from a welding skill"
+    for item in body["suggestions"]:
+        assert not item["reason"].startswith("Matched your words")
+
+
+def test_suggestions_report_what_they_were_worked_out_from(client):
+    profile = {"career_goal": "Welder", "existing_skills": ["welding"], "experience_years": 2,
+               "has_certification": False}
+    body = client.post("/api/v1/analysis/suggestions", json={"profile": profile}).json()
+    assert "Your TSP career goal: Welder" in body["basis"]
+    assert "Skills on your TSP profile: welding" in body["basis"]
+    assert "2 year(s) of experience reported" in body["basis"]
+    assert "No TESDA certificate reported" in body["basis"]
+
+
+def test_an_empty_profile_suggests_nothing(client):
+    body = client.post("/api/v1/analysis/suggestions", json={"profile": {}}).json()
+    assert body["suggestions"] == []
+    assert body["basis"] == []
+
+
+def test_suggestions_respect_the_requested_limit(client):
+    profile = {"existing_skills": ["welding", "cooking", "caregiving", "driving"]}
+    body = client.post("/api/v1/analysis/suggestions", json={"profile": profile, "limit": 2}).json()
+    assert len(body["suggestions"]) <= 2
+
+
+@pytest.mark.parametrize("limit", [0, 11])
+def test_suggestion_limit_is_bounded(client, limit):
+    assert client.post("/api/v1/analysis/suggestions",
+                       json={"profile": {"existing_skills": ["welding"]}, "limit": limit}).status_code == 422

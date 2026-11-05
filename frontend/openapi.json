@@ -213,6 +213,48 @@
         ]
       }
     },
+    "/api/v1/analysis/suggestions": {
+      "post": {
+        "tags": [
+          "analysis"
+        ],
+        "summary": "Suggest Qualifications",
+        "description": "Qualifications to suggest from a learner profile alone, for the TSP webview's entry page.\n\nNothing is typed here: the profile comes from the TSP launch hints and the learner's Skill Passport, so the\nsuggestions are worked out from those and `basis` says which of them were used. Like the rest of analysis,\nthe profile is neither stored nor logged.",
+        "operationId": "suggest_qualifications_api_v1_analysis_suggestions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SuggestionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SuggestionResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/analysis/pathway": {
       "post": {
         "tags": [
@@ -14934,6 +14976,54 @@
           "status"
         ],
         "title": "StepWithStatus"
+      },
+      "SuggestionRequest": {
+        "properties": {
+          "profile": {
+            "$ref": "#/components/schemas/Profile"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 10,
+            "minimum": 1,
+            "title": "Limit",
+            "default": 3
+          }
+        },
+        "type": "object",
+        "required": [
+          "profile"
+        ],
+        "title": "SuggestionRequest",
+        "description": "A suggestion is worked out from the learner's profile alone: there is no goal to send."
+      },
+      "SuggestionResult": {
+        "properties": {
+          "profile": {
+            "$ref": "#/components/schemas/Profile"
+          },
+          "suggestions": {
+            "items": {
+              "$ref": "#/components/schemas/Match"
+            },
+            "type": "array",
+            "title": "Suggestions"
+          },
+          "basis": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Basis",
+            "description": "What the suggestions were worked out from, in the learner's own terms"
+          }
+        },
+        "type": "object",
+        "required": [
+          "profile",
+          "suggestions"
+        ],
+        "title": "SuggestionResult"
       },
       "TokenResponse": {
         "properties": {

@@ -1908,7 +1908,8 @@ export const en = {
     notice: {
       message: "You're using TESDA-TRACK without signing in.",
       preparing: 'Preparing your session…',
-      blocked: "We couldn't end the previous session. Check your connection and reopen TESDA-TRACK, or try again.",
+      blocked:
+        "We couldn't end the previous session. Check your connection and reopen TESDA-TRACK, or try again.",
       retry: 'Sign in again',
     },
     // The line on the entry page while TSP signs the learner in (features/tsp/TspPassportStatus.tsx).
@@ -1928,6 +1929,20 @@ export const en = {
       none: 'None yet',
       used: 'We add your skills to your search to match you better.',
     },
+  },
+  // Qualifications suggested from the TSP profile alone, on the webview's entry page
+  // (features/tsp/TspSuggestions.tsx). Nothing here is a match for a goal: the learner hasn't given one yet.
+  tspSuggestions: {
+    heading: 'Suggested for you',
+    lead: 'From the skills on your TSP profile. Tap one, or type your own goal below.',
+    loading: 'Looking at your TSP profile…',
+    failed: "We couldn't load suggestions. You can still type your goal below.",
+    retry: 'Try again',
+    basis: 'Why these',
+    choose: 'See my pathway',
+    centers: 'Find centers',
+    // Shown when the profile has skills but nothing in the catalog is close to them.
+    none: 'Nothing close to your skills yet. Type the job you want below.',
   },
   theme: {
     // The accessible name of the System / Light / Dark switch.

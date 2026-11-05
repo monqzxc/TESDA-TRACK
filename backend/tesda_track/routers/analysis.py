@@ -4,7 +4,8 @@ from fastapi import APIRouter, BackgroundTasks
 from tesda_track.db import SessionDep
 from tesda_track.deps import OptionalLearner
 from tesda_track.schemas.analysis import (GoalAnalysis, GoalRequest, MatchRequest, MatchResult, PathwayRecommendation,
-                                          PathwayRequest, ReadinessRequest, ReadinessResult)
+                                          PathwayRequest, ReadinessRequest, ReadinessResult, SuggestionRequest,
+                                          SuggestionResult)
 from tesda_track.services import analysis, match_stats
 from tesda_track.services import learner_assessments
 from tesda_track.services.embeddings import EmbedderDep
@@ -25,6 +26,19 @@ def match_qualifications(request: MatchRequest, session: SessionDep, embedder: E
     profile, matches = analysis.match(session, request.query, request.profile, embedder, answers)
     background.add_task(match_stats.record, no_match=not matches)
     return MatchResult(profile=profile, matches=matches)
+
+
+@router.post("/suggestions", response_model=SuggestionResult)
+def suggest_qualifications(request: SuggestionRequest, session: SessionDep, embedder: EmbedderDep):
+    """Qualifications to suggest from a learner profile alone, for the TSP webview's entry page.
+
+    Nothing is typed here: the profile comes from the TSP launch hints and the learner's Skill Passport, so the
+    suggestions are worked out from those and `basis` says which of them were used. Like the rest of analysis,
+    the profile is neither stored nor logged.
+    """
+    profile, suggestions = analysis.suggest(session, request.profile, embedder, request.limit)
+    return SuggestionResult(profile=profile, suggestions=suggestions,
+                            basis=analysis.suggestion_basis(profile))
 
 
 @router.post("/pathway", response_model=PathwayRecommendation)

@@ -49,6 +49,13 @@ export const weldingMatch: Match = {
   reason: 'Matched your words: welder',
 }
 
+/** A suggestion never claims the learner typed anything: it comes from their TSP profile. */
+export const suggestedWelding: Match = {
+  qualification: summary(welding),
+  score: 70,
+  reason: 'From your TSP profile: welding',
+}
+
 export interface FinderRequest {
   method: string
   path: string
@@ -204,6 +211,10 @@ interface FinderApiOptions {
   failFeedback?: number
   /** Fail the pathway report this many times first. */
   failReport?: number
+  /** What the TSP webview's profile-only suggestions return. */
+  suggestions?: Match[]
+  /** Fail the suggestions request this many times first. */
+  failSuggestions?: number
 }
 
 /** The finder's routes, with every request recorded in `requests` (bodies parsed). */
@@ -212,12 +223,15 @@ export function serveFinderApi({
   failMatches = 0,
   failFeedback = 0,
   failReport = 0,
+  suggestions = [suggestedWelding],
+  failSuggestions = 0,
 }: FinderApiOptions = {}) {
   const state = {
     requests: [] as FinderRequest[],
     matchFailures: failMatches,
     feedbackFailures: failFeedback,
     reportFailures: failReport,
+    suggestionFailures: failSuggestions,
     followed: new Set<number>(),
   }
   let latestPathway: components['schemas']['PathwayPublic'] | undefined
@@ -264,6 +278,21 @@ export function serveFinderApi({
     http.post('*/api/v1/analysis/goal', async ({ request }) => {
       await record(request)
       return HttpResponse.json({ profile: welderProfile, source: 'rules' })
+    }),
+    http.post('*/api/v1/analysis/suggestions', async ({ request }) => {
+      await record(request)
+      if (state.suggestionFailures > 0) {
+        state.suggestionFailures--
+        return HttpResponse.error()
+      }
+      const { profile } = (await request.json()) as { profile: Profile }
+      return HttpResponse.json({
+        profile,
+        suggestions,
+        basis: profile.existing_skills.length
+          ? [`Skills on your TSP profile: ${profile.existing_skills.join(', ')}`]
+          : [],
+      })
     }),
     http.post('*/api/v1/me/recommendations', async ({ request }) => {
       await record(request)

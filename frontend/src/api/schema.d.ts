@@ -103,6 +103,30 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/analysis/suggestions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Suggest Qualifications
+         * @description Qualifications to suggest from a learner profile alone, for the TSP webview's entry page.
+         *
+         *     Nothing is typed here: the profile comes from the TSP launch hints and the learner's Skill Passport, so the
+         *     suggestions are worked out from those and `basis` says which of them were used. Like the rest of analysis,
+         *     the profile is neither stored nor logged.
+         */
+        post: operations["suggest_qualifications_api_v1_analysis_suggestions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/analysis/pathway": {
         parameters: {
             query?: never;
@@ -4747,6 +4771,29 @@ export interface components {
              */
             status: "not_started" | "in_progress" | "completed";
         };
+        /**
+         * SuggestionRequest
+         * @description A suggestion is worked out from the learner's profile alone: there is no goal to send.
+         */
+        SuggestionRequest: {
+            profile: components["schemas"]["Profile"];
+            /**
+             * Limit
+             * @default 3
+             */
+            limit: number;
+        };
+        /** SuggestionResult */
+        SuggestionResult: {
+            profile: components["schemas"]["Profile"];
+            /** Suggestions */
+            suggestions: components["schemas"]["Match"][];
+            /**
+             * Basis
+             * @description What the suggestions were worked out from, in the learner's own terms
+             */
+            basis?: string[];
+        };
         /** TokenResponse */
         TokenResponse: {
             /** Access Token */
@@ -5443,6 +5490,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["MatchResult"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    suggest_qualifications_api_v1_analysis_suggestions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SuggestionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SuggestionResult"];
                 };
             };
             /** @description Validation Error */

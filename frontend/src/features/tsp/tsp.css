@@ -421,7 +421,8 @@
   display: grid;
   gap: 15px;
 }
-.tsp-section-heading h1 {
+.tsp-section-heading h1,
+.tsp-section-heading h2 {
   margin: 0 0 5px;
   font-size: 22px;
   line-height: 1.25;
@@ -481,6 +482,46 @@
 }
 .tsp-match-actions > * {
   flex: 1;
+}
+/* Suggested for you: the entry page's head start, above the goal box. */
+.tsp-suggestions {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.tsp-suggestions .tsp-section-heading h2 {
+  font-size: 18px;
+}
+.tsp-suggestion-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.tsp-suggestion-card {
+  padding: 16px;
+}
+.tsp-suggestion-sector {
+  color: #939ca5;
+  font-size: 11px;
+}
+.tsp-suggestion-card h3 {
+  margin: 10px 0;
+  font-size: 17px;
+  line-height: 1.35;
+}
+.tsp-suggestion-basis summary {
+  color: #0645b5;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.tsp-suggestion-basis ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+  color: #6b747d;
+  font-size: 13px;
 }
 .tsp-journey [data-tour='readiness-question'] {
   background: white;

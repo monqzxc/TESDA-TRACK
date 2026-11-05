@@ -197,6 +197,78 @@ def match_evidence(session: Session, query: str, profile: Profile,
     return MatchEvidence(refined, score_matches(current.items, keyword, similarities, params, limit=limit, query=query),
                          strength, z_scores(similarities), embedder.model_name, params)
 
+KEYWORD_REASON_PREFIX = "Matched your words: "
+SUGGESTION_REASON_PREFIX = "From your TSP profile: "
+SUGGESTION_SEMANTIC_REASON = "Close in meaning to the skills on your TSP profile."
+
+
+def suggestion_terms(profile: Profile) -> list[str]:
+    """The learner's own words to suggest from: their stated career first, then their skills."""
+    terms = [profile.career_goal] if profile.career_goal else []
+    terms += [skill for skill in profile.existing_skills if skill.strip()]
+    seen: set[str] = set()
+    unique = []
+    for term in terms:
+        key = term.strip().casefold()
+        if key and key not in seen:
+            seen.add(key)
+            unique.append(term.strip())
+    return unique
+
+
+def suggestion_basis(profile: Profile) -> list[str]:
+    """Plain-language notes on what a suggestion came from, so the webview can show it without guessing."""
+    basis = []
+    if profile.career_goal:
+        basis.append(f"Your TSP career goal: {profile.career_goal}")
+    skills = [skill.strip() for skill in profile.existing_skills if skill.strip()]
+    if skills:
+        basis.append("Skills on your TSP profile: " + ", ".join(skills[:5]))
+    if profile.experience_years is not None:
+        basis.append("No experience reported yet" if profile.experience_years == 0
+                     else f"{profile.experience_years:g} year(s) of experience reported")
+    if profile.has_certification is not None:
+        basis.append("You already hold a TESDA certificate" if profile.has_certification
+                     else "No TESDA certificate reported")
+    return basis
+
+
+def _as_suggestion_reason(reason: str) -> str:
+    """The learner typed nothing here, so matching's "your words" phrasing would be untrue."""
+    if reason.startswith(KEYWORD_REASON_PREFIX):
+        return SUGGESTION_REASON_PREFIX + reason[len(KEYWORD_REASON_PREFIX):]
+    if reason == SEMANTIC_REASON:
+        return SUGGESTION_SEMANTIC_REASON
+    return reason
+
+
+def suggest(session: Session, profile: Profile, embedder: Embedder | None = None,
+            limit: int = 3) -> tuple[Profile, list[Match]]:
+    """Qualifications to suggest from a learner profile with no goal behind it (the TSP webview's entry).
+
+    The profile is the only evidence there is, so unlike `match` it always counts as keyword evidence, and the
+    plain-language goal rules are skipped: there is no typed goal for them to read. An empty profile suggests
+    nothing rather than falling back to whatever the catalog happens to rank first.
+    """
+    refined = Profile.model_validate(refine_profile(profile.model_dump()))
+    terms = suggestion_terms(refined)
+    if not terms:
+        return refined, []
+    text = ", ".join(terms)
+    current = catalog.snapshot(session)
+    keyword = {r["qualification"]["code"]: r
+               for r in score_qualifications(text, refined.model_dump(), current.rule_views)}
+    if embedder is None:
+        by_code = {item.code: item for item in current.items}
+        matches = [Match(qualification=by_code[code].summary, score=r["score"], reason=r["reason"])
+                   for code, r in list(keyword.items())[:limit] if code in by_code]
+    else:
+        params = match_params(embedder)
+        similarities = embeddings.qualification_similarities(session, embedder, text)
+        matches = score_matches(current.items, keyword, similarities, params, limit=limit)
+    return refined, [m.model_copy(update={"reason": _as_suggestion_reason(m.reason)}) for m in matches]
+
+
 def pathway(session: Session, profile: Profile, qualification_code: str) -> PathwayRecommendation:
     qualification = catalog.get_active_qualification(session, qualification_code)
     recommendation = PathwayRecommendation.model_validate(

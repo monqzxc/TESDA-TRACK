@@ -7,7 +7,9 @@ import { analyzeGoal } from '../finder/api.ts'
 import { GOAL_MAX_LENGTH, useFinderStore } from '../finder/store.ts'
 import type { TspLearnerParams } from './params.ts'
 import { usePassport, withPassport } from './passport.ts'
+import { suggestionProfile } from './suggestions.ts'
 import { TspPassportStatus } from './TspPassportStatus.tsx'
+import { TspSuggestions } from './TspSuggestions.tsx'
 import { useTspState } from './TspState.tsx'
 import type { TspSignInState } from './useTspSignIn.ts'
 
@@ -74,6 +76,23 @@ export default function TspWebviewPage() {
     onError: (failure) => setError(failureMessage(failure)),
   })
 
+  /**
+   * A suggestion is a head start, not a shortcut: its qualification name becomes the goal and goes through the
+   * same analysis as a typed one, so the matches and recommendation steps work from a goal the learner chose.
+   */
+  const chooseSuggestion = (qualificationName: string) => {
+    const query = qualificationName.slice(0, GOAL_MAX_LENGTH)
+    setError(null)
+    setLearner((current) => ({ ...current, goal: query }))
+    analyze.mutate({
+      query,
+      skills: learner.skills,
+      experienceYears: learner.experienceYears,
+      hasCertification: learner.hasCertification,
+      region: learner.region,
+    })
+  }
+
   const openQuestions = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (!learner.goal.trim()) {
@@ -121,6 +140,14 @@ export default function TspWebviewPage() {
               <span style={{ width: '33.333%' }} />
             </div>
           </div>
+        )}
+        {/* Only while the goal box is empty: a learner who already knows what they want needs no suggestion. */}
+        {!showQuestions && !learner.goal.trim() && (
+          <TspSuggestions
+            profile={suggestionProfile(learner, passport.data)}
+            onChoose={chooseSuggestion}
+            busy={analyze.isPending}
+          />
         )}
         {!showQuestions ? (
           <form onSubmit={openQuestions} className="tsp-card tsp-goal-form">
