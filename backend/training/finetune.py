@@ -22,7 +22,8 @@ from tesda_track.models import Qualification
 from tesda_track.services.embeddings import qualification_text
 from training.catalog import load_catalog
 from tesda_track.utils.helpers import normalize
-from training.pairs import eval_exclusions, family, load_synthetic, names_a_level, training_pairs
+from training.pairs import (PROFILES, eval_exclusions, family, load_synthetic, names_a_level, profile_enrich,
+                            training_pairs)
 
 BASE_MODEL = "intfloat/multilingual-e5-small"
 HELD_OUT = 0.05
@@ -202,7 +203,7 @@ def main() -> None:
     parser.add_argument("--augment-share", type=float, default=0.15, help="share of synthetic queries given a typo copy")
     parser.add_argument("--no-synthetic", action="store_true", help="omit legacy data/synthetic (v3/v4 enrichment still applies)")
     parser.add_argument("--resume", action="store_true", help="continue from the checkpoint in <output>/checkpoints")
-    parser.add_argument("--profile", choices=("v2", "v3", "v4"), default="v2")
+    parser.add_argument("--profile", choices=PROFILES, default="v2")
     parser.add_argument("--save-steps", type=int, default=100, help="checkpoint interval, including Colab disconnects")
     args = parser.parse_args()
     if not 0 <= args.augment_share <= 1 or args.save_steps < 1:
@@ -226,11 +227,7 @@ def main() -> None:
     synthetic = {} if args.no_synthetic else load_synthetic()
     exclusions = eval_exclusions()
     coverage = None
-    if args.profile in ("v3", "v4"):
-        if args.profile == "v4":
-            from training.v4 import enrich
-        else:
-            from training.v3 import enrich
+    if enrich := profile_enrich(args.profile):
         synthetic, coverage = enrich(qualifications, synthetic, exclusions)
     pairs = training_pairs(qualifications, exclusions, synthetic, args.augment_share)
     plain = len(training_pairs(qualifications, exclusions, synthetic, 0))

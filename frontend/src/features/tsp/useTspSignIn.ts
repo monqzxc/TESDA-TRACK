@@ -11,14 +11,16 @@ import { connectBridge, type Bridge, type ErrorCode, type ReadyReason } from './
 
 // Signing in from TESDA Skill Passport's WebView (docs/contracts/tsp-tracker-embed/CONTRACT.md). On every load the
 // page first ends any earlier session, then asks TSP for a code (the contract's fresh-load guarantee), so the next
-// person on a shared phone never sees the last one's data. Every failure leaves the learner using the page as a
-// guest, as before this existed.
+// person on a shared phone never sees the last one's data. Pages stay closed until that cleanup succeeds; a
+// failed handoff after cleanup leaves the learner using the page as a guest.
 
 export type TspConsentSummary = components['schemas']['TspConsentSummary']
 export type TspSignInState = 'guest' | 'signing_in' | 'consent' | 'signed_in' | 'failed'
 
 export interface TspSignIn {
   state: TspSignInState
+  /** Keep account-backed pages closed until the previous session has been cleared. */
+  blocked: boolean
   /** What the consent screen shows, while `state` is 'consent'. */
   summary: TspConsentSummary | null
   /** Whether "Sign in again" can help: not after client_rejected or a TSP session that ended. */
@@ -41,7 +43,9 @@ const CONTRACT_ERRORS: readonly string[] = ['handoff_expired', 'unavailable', 'c
 /** The contract error code the API sent with a refusal; anything else counts as unavailable. */
 function errorCode(body: unknown): ContractError {
   const code = (body as { code?: unknown } | undefined)?.code
-  return typeof code === 'string' && CONTRACT_ERRORS.includes(code) ? (code as ContractError) : 'unavailable'
+  return typeof code === 'string' && CONTRACT_ERRORS.includes(code)
+    ? (code as ContractError)
+    : 'unavailable'
 }
 
 async function postSession(code: string): Promise<Outcome> {
@@ -73,6 +77,7 @@ async function postConsent(pendingId: string, accept: boolean): Promise<Outcome>
 }
 
 interface View {
+  setBlocked: (blocked: boolean) => void
   setState: (state: TspSignInState) => void
   setSummary: (summary: TspConsentSummary | null) => void
   setCanRetry: (canRetry: boolean) => void
@@ -86,6 +91,7 @@ function createSignIn(bridge: Bridge, view: View, auth: () => Auth) {
   let closed = false
   let signedIn = false
   let pendingId: string | null = null
+  let sessionCleared = false
 
   const fail = (canRetry: boolean) => {
     view.setCanRetry(canRetry)
@@ -137,17 +143,25 @@ function createSignIn(bridge: Bridge, view: View, auth: () => Auth) {
     report(outcome.error)
   }
 
+  async function start(reason: ReadyReason) {
+    view.setBlocked(true)
+    view.setState('signing_in')
+    try {
+      await auth().signOut()
+    } catch {
+      if (!closed) report('unavailable')
+      return
+    }
+    if (closed) return
+    sessionCleared = true
+    view.setBlocked(false)
+    await attempt(reason, false)
+  }
+
   return {
-    async start() {
-      try {
-        await auth().signOut()
-      } catch {
-        // Offline or already signed out: the API refuses a stale cookie anyway.
-      }
-      if (!closed) await attempt('initial', false)
-    },
+    start: () => start('initial'),
     retry() {
-      if (!closed) void attempt('retry', false)
+      if (!closed) void (sessionCleared ? attempt('retry', false) : start('retry'))
     },
     /** The API refused the session (it expired): ask TSP for a new code, as the contract says. */
     sessionExpired() {
@@ -171,8 +185,13 @@ function createSignIn(bridge: Bridge, view: View, auth: () => Auth) {
 export function useTspSignIn(): TspSignIn {
   const auth = useAuth()
   const navigate = useNavigate()
-  const enabled = useQuery(clientConfigQuery).data?.tsp_sign_in === true
+  const configuration = useQuery(clientConfigQuery)
+  const enabled = configuration.data?.tsp_sign_in === true
+  const hasHost =
+    typeof window.TspTrackerHost?.postMessage === 'function' &&
+    new URLSearchParams(window.location.search).get('host') !== 'web'
   const [state, setState] = useState<TspSignInState>('guest')
+  const [sessionBlocked, setBlocked] = useState(true)
   const [summary, setSummary] = useState<TspConsentSummary | null>(null)
   const [canRetry, setCanRetry] = useState(false)
   const [resets, setResets] = useState(0)
@@ -187,22 +206,38 @@ export function useTspSignIn(): TspSignIn {
     if (!enabled) return
     const bridge = connectBridge()
     if (!bridge) return
-    const current = createSignIn(bridge, { setState, setSummary, setCanRetry }, () => latest.current.auth)
+    let active = true
+    const current = createSignIn(
+      bridge,
+      { setState, setSummary, setCanRetry, setBlocked },
+      () => latest.current.auth,
+    )
     signIn.current = current
     const stopLogout = bridge.onLogout(() => {
       // Until TSP opens the page again, no code is asked for or accepted.
       current.close()
       setSummary(null)
       setCanRetry(false)
-      setState('guest')
       setResets((count) => count + 1)
-      void latest.current.auth.signOut().catch(() => undefined)
+      setBlocked(true)
+      setState('signing_in')
+      void latest.current.auth
+        .signOut()
+        .then(() => {
+          if (!active) return
+          setBlocked(false)
+          setState('guest')
+        })
+        .catch(() => {
+          if (active) setState('failed')
+        })
       void latest.current.navigate(paths.tspWebview)
     })
     const stopExpiry = onSignInRequired(() => current.sessionExpired())
     void current.start()
     return () => {
       stopExpiry()
+      active = false
       stopLogout()
       current.close()
       bridge.close()
@@ -210,10 +245,26 @@ export function useTspSignIn(): TspSignIn {
     }
   }, [enabled])
 
-  const retry = useCallback(() => signIn.current?.retry(), [])
+  const configurationError = configuration.isError
+  const refetchConfiguration = configuration.refetch
+  const retry = useCallback(() => {
+    if (configurationError) void refetchConfiguration()
+    else signIn.current?.retry()
+  }, [configurationError, refetchConfiguration])
   const answerConsent = useCallback(
     (accept: boolean) => signIn.current?.answerConsent(accept) ?? Promise.resolve(),
     [],
   )
-  return { state, summary, canRetry, retry, answerConsent, resets }
+  const blocked =
+    hasHost && (configuration.isPending || configuration.isError || enabled) && sessionBlocked
+  const configurationFailed = blocked && configuration.isError
+  return {
+    state: configurationFailed ? 'failed' : state,
+    blocked,
+    summary,
+    canRetry: configurationFailed || canRetry,
+    retry,
+    answerConsent,
+    resets,
+  }
 }

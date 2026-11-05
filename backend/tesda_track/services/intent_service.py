@@ -1,6 +1,7 @@
 import re
 
 from tesda_track.services import goal_rules
+from tesda_track.services.catalog_terms import catalog_activity, named_qualification
 from tesda_track.utils.helpers import contains, fuzzy_matches, normalize
 
 
@@ -11,7 +12,9 @@ def analyze_user_query(query: str, qualifications: list[dict]) -> dict:
     matches = [q for q in qualifications
                if any((contains(text, word) or word in near) and not goal_rules.is_generic(word)
                       for word in q["career_keywords"])]
-    qualification = matches[0] if matches else None
+    qualification = next((q for q in qualifications if named_qualification(text, q)), None)
+    if qualification is None:
+        qualification = matches[0] if matches else next((q for q in qualifications if catalog_activity(text, q)), None)
     years = re.search(r"(\d+(?:\.\d+)?)\s*(?:\+\s*)?(?:years?|yrs?)\b", text)
     months = re.search(r"(\d+)\s*months?\b", text)
     experience = float(years[1]) if years else float(months[1]) / 12 if months else None
@@ -31,13 +34,14 @@ def analyze_user_query(query: str, qualifications: list[dict]) -> dict:
                           if any(contains(sentence, word) or word in near_sentence for word in q["career_keywords"]))
     if experience == 0:
         skills = []
-    exploration = any(phrase in text for phrase in ("don't know which", "not sure which", "explore", "work in a hotel"))
+    hotel_work = goal_rules.is_hotel_work_goal(query)
+    exploration = hotel_work or any(phrase in text for phrase in ("don't know which", "not sure which", "explore"))
     intent = "unknown"
     if qualification:
         intent = "training_and_assessment" if experience == 0 else "assessment_recommendation" if (experience is not None and experience >= 3) or (skills and "certif" in text) else "training_recommendation"
     if exploration:
         intent = "career_exploration"
-    return {"career_goal": qualification["possible_jobs"][0] if qualification else None,
+    return {"career_goal": (qualification["possible_jobs"] or [qualification["name"]])[0] if qualification and not hotel_work else None,
             "possible_sector": qualification["sector"] if qualification else "Tourism" if exploration else None,
             "existing_skills": list(dict.fromkeys(skills)), "experience_years": experience,
             "has_certification": certification, "intent": intent}

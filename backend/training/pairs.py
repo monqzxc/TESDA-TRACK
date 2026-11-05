@@ -129,6 +129,22 @@ def load_synthetic(directory: Path = SYNTHETIC_DIR, learner_path: Path | None = 
     return {name: list(dict.fromkeys(queries)) for name, queries in merged.items()}
 
 
+PROFILES = ("v2", "v3", "v4", "v5")
+
+
+def profile_enrich(profile: str):
+    """The enrich function of a training recipe (training/v3.py, v4.py, v5_demand.py); None for v2, which trains on the
+    catalog and synthetic queries alone."""
+    if profile not in PROFILES:
+        raise ValueError(f"unknown profile {profile!r}; choose from {', '.join(PROFILES)}")
+    if profile == "v2":
+        return None
+    from importlib import import_module
+
+    module = "v5_demand" if profile == "v5" else profile
+    return import_module(f"training.{module}").enrich
+
+
 DATA_DIR = Path(__file__).resolve().parent / "data"
 EXCLUSIONS_PATH = DATA_DIR / "exclusions.json"
 

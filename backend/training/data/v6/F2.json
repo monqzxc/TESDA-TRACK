@@ -1,0 +1,6641 @@
+[
+ {
+  "query": "may training ba kayo ng automotive electrical assembly NC III",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging electrical rectifier sa car assembly plant",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-ayos ng sira sa wiring ng bagong kotse sa planta",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-kumpuni ng kuryente sa linya ng pagbubuo ng sasakyan",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinahanap ko kung bakit hindi umiilaw ang headlight ng bagong buong kotse sa linya",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko ang mga sensor sa makina bago ilabas ang bagong unit sa planta",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang mga stereo at screen na ayaw gumana sa bagong gawang sasakyan",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-troubleshoot ng ECU at electronic units habang assembly",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapalitan ko ang maling kabit na wiring sa mga ilaw sa labas ng kotse sa pabrika",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "fixing ng power window at wiper na hindi gumagana sa end of line",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "electrical rectifier",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "otomotiv elektrikal asembli nc3",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "rektipayer ng elektrikal sa planta ng kotse",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 taon na akong assembler ng wiring sa car plant, gusto ko na mag-NC III para maging rectifier",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nag-aayos ng depekto sa kuryente ng mga bagong sasakyan sa pabrika, kailangan ko ng sertipiko",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang tinatawag sa linya kapag may ayaw umandar na ilaw o radyo sa bagong unit",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ma-promote mula sa assembly line papuntang quality repair ng electrical",
+  "accept": [
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "automotive mechanical assembly NC II, may slot pa po ba",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging taga-kabit ng piyesa ng makina at preno sa planta ng kotse",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "mechanical assembly technician sa car plant",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manggagawa sa linya ng pagbubuo ng mga kotse",
+  "accept": [
+   "Automotive Mechanical Assembly NC II",
+   "Automotive Electrical Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng preno at linya ng gasolina sa mga bagong sasakyan",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagamit ako ng jig at fixture sa pagbubuo ng mga piyesa ng kotse",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ng suspensyon at ehe sa linya ng pagawaan ng sasakyan",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-install ng upuan, dashboard at trim parts sa bagong kotse",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapaandar ko ang makina ng bagong buong sasakyan bago ilabas",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nag-aayos ng tamang tindig ng gulong ng mga unit bago ilabas sa planta",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mechanical assembly",
+  "accept": [
+   "Automotive Mechanical Assembly NC II",
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "kotse assembler",
+  "accept": [
+   "Automotive Mechanical Assembly NC II",
+   "Automotive Electrical Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "otomotib mekanikal asembli nc2",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pde po b mag aply asembler s planta ng kotse",
+  "accept": [
+   "Automotive Mechanical Assembly NC II",
+   "Automotive Electrical Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 years na ako sa chassis line, nagkakabit ng makina at transmission, gusto ko magpa-assess ng NC II",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dating kontraktwal ako sa pagawaan ng kotse bilang taga-kabit ng gulong at suspensyon, gusto ko ng NC",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako mismo ang bumubuo ng makina, preno at gulong ng mga bagong kotse sa pabrika",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong makita yung kotseng ako ang nag-assemble ng drive train",
+  "accept": [
+   "Automotive Mechanical Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "wiring harness assembly NC II po saan pwede",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging taga-gawa ng wiring harness",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-buo ng harness sa pabrika sa Laguna",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manggagawa sa pabrika ng mga kable ng sasakyan",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpuputol at nagbabalat ako ng kawad para sa kable ng kotse",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-crimp ng terminal sa dulo ng wire harness",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "binabalot ko ng tape at tinatali ang mga kable para maging isang bungkos",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-sort ng mga wire, connector at terminal ayon sa kulay at sukat bago i-assemble",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong maghinang ng mga terminal ng kable ng sasakyan",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko kung tama ang pagkakakabit ng bawat terminal sa harness bago ipasa",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "wire harness",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "harness assembly",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "waring harnes asembler",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mag work s harness factory",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "2 years na ako sa wiring harness company bilang operator, gusto ko magka-NC II",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dati akong nagkakabit ng terminal sa mga kable sa pabrika, gusto kong magpa-assess",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "maraming hiring sa mga pabrika ng kable ng kotse sa ecozone, ano dapat kong kunin",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa pabrikang gumagawa ng mga kable na nakakabit sa loob ng kotse",
+  "accept": [
+   "Automotive Wiring Harness Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may kurso ba kayo ng Forging NC II",
+  "accept": [
+   "Forging NC II"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging panday",
+  "accept": [
+   "Forging NC II",
+   "Forging NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "panday ng itak at gulok sa probinsya",
+  "accept": [
+   "Forging NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "blacksmith sa pandayan",
+  "accept": [
+   "Forging NC II",
+   "Forging NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapainit ko ang bakal sa baga tapos pinupukpok hanggang maging itak",
+  "accept": [
+   "Forging NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng hand forging gamit ang martilyo at palihan",
+  "accept": [
+   "Forging NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng kutsilyo mula sa lumang muelye ng sasakyan",
+  "accept": [
+   "Forging NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagamit ako ng makinang martilyo para hubugin ang mainit na bakal",
+  "accept": [
+   "Forging NC II",
+   "Forging NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "binababad ko sa tubig ang mainit na talim para tumigas",
+  "accept": [
+   "Forging NC II",
+   "Heat Treatment NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutunan ang tempering at annealing ng bakal pagkatapos i-forge",
+  "accept": [
+   "Forging NC II",
+   "Heat Treatment NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "panday",
+  "accept": [
+   "Forging NC II",
+   "Forging NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pandayan",
+  "accept": [
+   "Forging NC II",
+   "Forging NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pandai ng bolo",
+  "accept": [
+   "Forging NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "blaksmit kurso",
+  "accept": [
+   "Forging NC II",
+   "Forging NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 taon na akong panday ng itak dito sa amin, gusto kong magkaroon ng NC II",
+  "accept": [
+   "Forging NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught bladesmith ako, gusto ko ng certificate sa forging",
+  "accept": [
+   "Forging NC II",
+   "Forging NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "namana ko sa lolo ko ang pandayan, gusto kong ituloy nang tama",
+  "accept": [
+   "Forging NC II",
+   "Forging NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa at magbenta ng sariling gawang-kamay na itak at kutsilyo",
+  "accept": [
+   "Forging NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Forging NC III assessment po schedule",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "forging machine operator sa pabrika ng piyesa",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng makinang pamanday sa planta",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "bihasang panday na gumagawa ng masalimuot na hugis",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapatakbo ako ng drop hammer para gumawa ng piyesa ng sasakyan",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng masalimuot na hugis ng bakal gamit lang ang kamay at martilyo",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "upset forging ng bolts at shaft ang trabaho ko",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinupukpok ko sa malaking martilyong makina ang bakal para maging hugis ng gear",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng closed die forging para sa mga auto parts",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinuhubog ko ang mainit na bakal sa hulmahang bakal gamit ang pindutang makina",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "drop forging",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "forging operator",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "forjing nc3",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "forging mashin operetor",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa forging at 4 years na sa shop, gusto ko na mag-NC III",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagpapatakbo ng martilyong makina sa pagawaan ng piyesa, kailangan ko ng NC III",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong umangat mula sa simpleng panday papunta sa paggawa ng piyesa ng makina sa pabrika",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinahanap ng kumpanya ang marunong sa die forging para sa promotion ko",
+  "accept": [
+   "Forging NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Foundry Melting and Casting NC II may training ba",
+  "accept": [
+   "Foundry Melting/Casting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging foundry melter",
+  "accept": [
+   "Foundry Melting/Casting NC II",
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-tunaw ng bakal sa pandayan ng metal",
+  "accept": [
+   "Foundry Melting/Casting NC II",
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "trabahador sa hurno ng funderya",
+  "accept": [
+   "Foundry Melting/Casting NC II",
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapatakbo ako ng hurnong de-uling para tunawin ang bakal",
+  "accept": [
+   "Foundry Melting/Casting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapatakbo ako ng cupola na hurno sa funderya",
+  "accept": [
+   "Foundry Melting/Casting NC II",
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto gumamit ng induction furnace para magtunaw ng metal",
+  "accept": [
+   "Foundry Melting/Casting NC II",
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tinatanggal ko ang sobrang metal at kinikinis ang mga bagong hulmang piyesa",
+  "accept": [
+   "Foundry Melting/Casting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aayos ako ng sirang laryo sa loob ng hurno",
+  "accept": [
+   "Foundry Melting/Casting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagamit ako ng caliper at thermometer para sukatin ang tinunaw na bakal",
+  "accept": [
+   "Foundry Melting/Casting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "foundry melter",
+  "accept": [
+   "Foundry Melting/Casting NC II",
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagtunaw ng metal",
+  "accept": [
+   "Foundry Melting/Casting NC II",
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "foundri melting kasting",
+  "accept": [
+   "Foundry Melting/Casting NC II",
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pundirya melter nc2",
+  "accept": [
+   "Foundry Melting/Casting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "anim na taon na akong taga-tunaw sa pandayan ng metal, gusto kong ma-assess",
+  "accept": [
+   "Foundry Melting/Casting NC II",
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "furnace tender ako sa foundry for 3 years, need ko ng NC II",
+  "accept": [
+   "Foundry Melting/Casting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "sanay ako sa init ng hurno at tinunaw na bakal, saan ako pwedeng mag-training",
+  "accept": [
+   "Foundry Melting/Casting NC II",
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-recycle ng lumang aluminum at bakal sa pamamagitan ng pagtunaw",
+  "accept": [
+   "Foundry Melting/Casting NC II",
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "foundry melting casting NC III po sched ng assessment",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "alloy melter sa foundry",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalubhasang taga-tunaw ng haluang metal",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "punong taga-tunaw sa planta ng cast iron",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtutunaw ako ng aluminum-silicon alloy para sa mga piyesang dadaan sa safety test",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagamit ako ng coreless induction na hurno sa pagtunaw ng metal",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa kami ng gray iron castings para sa engine block gamit ang cupola",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tinitimpla ko ang tamang halo ng aluminyo at silikon bago ibuhos",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko ang timpla ng tinunaw na metal bago ibuhos sa molde",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutunan ang pagtunaw ng bakal para sa mga piyesa ng sasakyan",
+  "accept": [
+   "Foundry Melting/Casting NC III",
+   "Foundry Melting/Casting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "alloy melting",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gray iron casting",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "aluminun aloy melter",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "fundry meltng nc 3",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa melting, 5 years na, gusto ko mag-upgrade sa NC III",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagtutunaw ng aluminyo para sa mga gulong ng kotse, kailangan ko ng sertipiko",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako na ang inaasahan sa planta pag may bagong timpla ng metal na tutunawin",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging head ng melting section sa automotive foundry",
+  "accept": [
+   "Foundry Melting/Casting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Foundry Molding NC II enrollment po",
+  "accept": [
+   "Foundry Molding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "foundry molder sa pagawaan ng piyesa",
+  "accept": [
+   "Foundry Molding NC II",
+   "Foundry Molding NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-hulma ng buhangin sa funderya",
+  "accept": [
+   "Foundry Molding NC II",
+   "Foundry Molding NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ng hulmahan para sa tinunaw na bakal",
+  "accept": [
+   "Foundry Molding NC II",
+   "Foundry Molding NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtitimpla ako ng buhangin at luwad para sa hulmahan ng metal",
+  "accept": [
+   "Foundry Molding NC II",
+   "Foundry Molding NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng sand mold by hand para sa mga custom na piyesa",
+  "accept": [
+   "Foundry Molding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng core na buhangin para sa butas ng piyesa",
+  "accept": [
+   "Foundry Molding NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapatakbo ako ng makinang panghulma ng buhangin sa planta",
+  "accept": [
+   "Foundry Molding NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbubuhos ako ng tinunaw na bakal sa mga hulmahan",
+  "accept": [
+   "Foundry Molding NC II",
+   "Foundry Molding NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapatakbo ko ang makinang gumagawa ng core sa aming pagawaan",
+  "accept": [
+   "Foundry Molding NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "hulmahang buhangin",
+  "accept": [
+   "Foundry Molding NC II",
+   "Foundry Molding NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "sand molding",
+  "accept": [
+   "Foundry Molding NC II",
+   "Foundry Molding NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "foundri molder nc2",
+  "accept": [
+   "Foundry Molding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mgtrbaho bilang moldir sa pundirya",
+  "accept": [
+   "Foundry Molding NC II",
+   "Foundry Molding NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "apat na taon na akong taga-hulma sa funderya, gusto kong magpa-assess",
+  "accept": [
+   "Foundry Molding NC II",
+   "Foundry Molding NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "core maker ako for 2 years, kailangan ng company na may NC II ako",
+  "accept": [
+   "Foundry Molding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig akong gumawa ng hulma sa buhangin, may trabaho bang ganun sa pabrika ng bakal",
+  "accept": [
+   "Foundry Molding NC II",
+   "Foundry Molding NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa foundry pero ayoko sa harap ng furnace, mas gusto ko yung paghahanda ng mold",
+  "accept": [
+   "Foundry Molding NC II",
+   "Foundry Molding NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Foundry Molding NC III po meron ba",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "jobbing molder ng mabibigat na casting",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalubhasang taga-hulma ng malalaking piyesa ng bakal",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinuno ng mga taga-hulma sa funderya ng mabibigat na piyesa",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng malalaking hulmahan ng buhangin para sa mabibigat na piyesa",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahanda ako ng sand mixture para sa heavy castings tulad ng valve body at hub",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbubuhos kami ng tinunaw na bakal sa malaking hulmahan gamit ang ladle at crane",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "kamay lang ang gamit ko sa paghuhulma ng mga piyesang tumitimbang ng daan-daang kilo",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang hulmahan para hindi magkabutas o magkabitak ang malaking piyesa",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng pit molding para sa malalaking casting",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "heavy casting molder",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "jobbing molder",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hevy kasting moldr",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "foundry molding nc 3 pu",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "7 years na akong molder, gusto ko na mag-NC III para sa heavy castings",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa paghuhulma sa funderya, gusto kong ituloy sa mas mataas na antas",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang tinatawag pag malaki at mabigat ang ibubuhos na piyesa sa pagawaan",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ma-assign sa heavy section ng foundry kasi mas malaki ang sweldo",
+  "accept": [
+   "Foundry Molding NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Foundry Pattern Making NC II may training ba sa TESDA",
+  "accept": [
+   "Foundry Pattern Making NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "pattern maker sa foundry",
+  "accept": [
+   "Foundry Pattern Making NC II",
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-gawa ng modelong kahoy para sa hulmahan ng bakal",
+  "accept": [
+   "Foundry Pattern Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "karpintero ng pattern sa funderya",
+  "accept": [
+   "Foundry Pattern Making NC II",
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "inuukit ko sa kahoy ang hugis ng piyesa bago ito gawing hulmahan",
+  "accept": [
+   "Foundry Pattern Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng pattern gamit ang resin at polymer",
+  "accept": [
+   "Foundry Pattern Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-assemble ng match plate pattern para sa molding machine",
+  "accept": [
+   "Foundry Pattern Making NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagamit ako ng lagari, katam at lathe sa kahoy para sa mga pattern",
+  "accept": [
+   "Foundry Pattern Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng pattern na ginagamit sa maramihang paghuhulma",
+  "accept": [
+   "Foundry Pattern Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusukat ko nang eksakto ang modelo gamit ang vernier bago ipasa sa taga-hulma",
+  "accept": [
+   "Foundry Pattern Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pattern making",
+  "accept": [
+   "Foundry Pattern Making NC II",
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "wood pattern",
+  "accept": [
+   "Foundry Pattern Making NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "paturn maker foundry",
+  "accept": [
+   "Foundry Pattern Making NC II",
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "patern mking nc2",
+  "accept": [
+   "Foundry Pattern Making NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "sampung taon akong karpintero, ngayon gumagawa na ako ng modelong kahoy sa funderya, gusto kong ma-certify",
+  "accept": [
+   "Foundry Pattern Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught ako sa paggawa ng wooden pattern, need ko ng NC II para sa abroad",
+  "accept": [
+   "Foundry Pattern Making NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "magaling akong mag-ukit ng kahoy, gusto kong gamitin yun sa paggawa ng piyesang bakal",
+  "accept": [
+   "Foundry Pattern Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang gumagawa ng original model bago i-cast sa metal",
+  "accept": [
+   "Foundry Pattern Making NC II",
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Foundry Pattern Making NC III po",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "patternmaker ng die cast mold",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalubhasang gumagawa ng masalimuot na pattern sa funderya",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "shell core pattern maker",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng corebox para sa shell core sand",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng pattern ng elisi ng bangka at turnilyo ng conveyor",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-develop ng gravity die casting mold",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng modelo ng gear na eksakto ang ngipin",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng bakal na hulmahan para sa die casting ng aluminyo",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "binubuo ko ang kahon ng core para sa mga piyesang may butas sa loob",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "corebox making",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "propeller pattern",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pattern mekng nc3 dye cast",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "shel kor patern",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 years na akong patternmaker at may NC II na, gusto ko mag-NC III",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong gumagawa ng pattern ng elisi para sa mga bangka, gusto kong magpa-assess",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nilalapitan pag mahirap ang hugis ng ipapa-cast na piyesa sa planta",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-supply ng propeller at gear patterns sa mga foundry",
+  "accept": [
+   "Foundry Pattern Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Heat Treatment NC II po may schedule ba",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging heat treater",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-patigas ng bakal sa pabrika",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng hurno na nagpapainit at nagpapalamig ng piyesa",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapainit at binababad ko sa langis ang mga gear para tumigas",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pumipili ako ng tamang heat treatment process depende sa klase ng steel",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinalalambot ko ulit ang bakal sa mabagal na paglamig para madaling i-makina",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapainit ko ulit nang bahagya ang mga kagamitan at dies para hindi malutong",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "binabasa ko ang temperatura ng hurno at sinusukat ang tigas ng bakal pagkatapos",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng case hardening at carburizing",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "heat treatment",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpapatigas ng bakal",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "heet tritment nc2",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "hit treater trabaho",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "anim na taon na akong nagpapatigas ng piyesa sa pagawaan, kailangan ko ng NC II",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "QC ako dati sa hardness testing, ngayon gusto kong ma-certify sa heat treatment",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "laging nababasag o nababaluktot ang mga piyesang gawa namin, gusto kong matutunan kung paano patibayin sa init",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong malaman paano nagiging matigas pero hindi malutong ang talim ng tools",
+  "accept": [
+   "Heat Treatment NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Moldmaking NC II po saan may training",
+  "accept": [
+   "Moldmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging mold maker",
+  "accept": [
+   "Moldmaking NC II",
+   "Mold Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ng molde ng plastik sa pabrika",
+  "accept": [
+   "Moldmaking NC II",
+   "Mold Making NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "mold and die maker sa toolroom",
+  "accept": [
+   "Moldmaking NC II",
+   "Mold Making NC III",
+   "Tool and Die Making NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagamit ako ng lathe at milling para gawin ang mga piyesa ng molde",
+  "accept": [
+   "Moldmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-assemble ako ng mold base, core at cavity nang precise",
+  "accept": [
+   "Moldmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapakinis ko ang loob ng molde para makinis ang labas ng produktong plastik",
+  "accept": [
+   "Moldmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ikinakabit ko nang sakto ang ejector pins at guide pins sa molde",
+  "accept": [
+   "Moldmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng molde ng bote at lalagyan",
+  "accept": [
+   "Moldmaking NC II",
+   "Mold Making NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ginigiling at binubutasan ko ang mga piyesa ng molde sa surface grinder at drill press",
+  "accept": [
+   "Moldmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "molde",
+  "accept": [
+   "Moldmaking NC II",
+   "Mold Making NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mold maker",
+  "accept": [
+   "Moldmaking NC II",
+   "Mold Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mold mekr nc2",
+  "accept": [
+   "Moldmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mol maker sa toolrum",
+  "accept": [
+   "Moldmaking NC II",
+   "Mold Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "4 years na akong toolroom helper sa mold shop, gusto ko na magpa-assess ng NC II",
+  "accept": [
+   "Moldmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nag-aayos at gumagawa ng molde sa pabrika ng plastik, wala pa akong sertipiko",
+  "accept": [
+   "Moldmaking NC II",
+   "Mold Making NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang gumagawa ng hulmahang pinanggagalingan ng mga plastik na laruan at timba",
+  "accept": [
+   "Moldmaking NC II",
+   "Mold Making NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng maliit na shop na gumagawa ng molds para sa mga plastic factory",
+  "accept": [
+   "Moldmaking NC II",
+   "Mold Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Painting Machine Operation NC II may slot pa po",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "paint line operator sa car plant",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng makinang pampintura sa pagawaan ng sasakyan",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng robot na pampintura sa pabrika ng sasakyan",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbabantay ako ng pretreatment at ED coating ng mga car body",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inilulubog namin ang kaha ng kotse sa tangke ng primer na may kuryente",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-apply ng gray primer sa body bago ang top coat sa paint shop ng plant",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapatakbo ko ang makinang nag-i-spray ng huling kulay sa mga bagong kotse",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang setting ng spray robot at oven sa pintahan ng planta ng kotse",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nililinis at hinahanda ang katawan ng kotse bago dumaan sa pintahan ng pabrika",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paint line",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "ED coating",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinting mashin operater",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "paint machine oprtion nc2",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 years na akong operator sa paint shop ng car assembly, need ko ng NC II",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dati akong taga-bantay ng makinang pampintura sa planta, gusto kong ma-assess",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa bahagi ng pabrika kung saan kinukulayan ang mga bagong sasakyan",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mas gusto ko yung automated na pagpipintura sa planta kaysa manual spray sa talyer",
+  "accept": [
+   "Painting Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Plastic Machine Operation NC II po pwede mag-enroll",
+  "accept": [
+   "Plastic Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "injection molding operator sa pabrika",
+  "accept": [
+   "Plastic Machine Operation NC II",
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng makina sa pagawaan ng plastik",
+  "accept": [
+   "Plastic Machine Operation NC II",
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "blow molding operator ng bote",
+  "accept": [
+   "Plastic Machine Operation NC II",
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtitimpla ako ng plastik na pellets at kulay bago ipasok sa makina",
+  "accept": [
+   "Plastic Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapatakbo ako ng injection machine na gumagawa ng plastic na upuan",
+  "accept": [
+   "Plastic Machine Operation NC II",
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa kami ng bote ng softdrinks gamit ang makinang hinihipan ang plastik",
+  "accept": [
+   "Plastic Machine Operation NC II",
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "binabantayan ko ang init at presyon ng makina habang may produksyon",
+  "accept": [
+   "Plastic Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tinatanggal ko ang sobrang plastik sa gilid ng produkto at iniimpake",
+  "accept": [
+   "Plastic Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahanda ako ng mga hulmahan para sa paggawa ng composite",
+  "accept": [
+   "Plastic Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "plastic molding",
+  "accept": [
+   "Plastic Machine Operation NC II",
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "injection molding",
+  "accept": [
+   "Plastic Machine Operation NC II",
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "plastik masheen operator",
+  "accept": [
+   "Plastic Machine Operation NC II",
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "injeksyon molding oprator nc2",
+  "accept": [
+   "Plastic Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "2 years na akong machine operator sa plastic factory, gusto kong magka-NC II",
+  "accept": [
+   "Plastic Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagpapatakbo ng makina ng plastik na timba at palanggana, gusto kong ma-assess",
+  "accept": [
+   "Plastic Machine Operation NC II",
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "maraming pabrika ng plastik dito sa Valenzuela na naghahanap ng tao, ano ang kukunin ko",
+  "accept": [
+   "Plastic Machine Operation NC II",
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong malaman paano ginagawa ang plastic na bote at lalagyan sa factory",
+  "accept": [
+   "Plastic Machine Operation NC II",
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Plastic Machine Operation NC III para sa supervisor",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "team leader sa plastic injection plant",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "superbisor ng mga operator sa pabrika ng plastik",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinuno ng linya sa seksyon ng blow molding",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapalit ako ng dies at molds ng machine bago ang bagong production run",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inihahanda at pinapaandar ko ang mga makina bago magsimula ang produksyon",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang mga setting ng injection na makina para walang tapong produkto",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nag-aayos ng setting ng makina kapag may depekto ang hinihipang bote",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-mold change at machine setup sa plastic plant",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinamamahalaan ko ang paggawa ng mga produktong plastik mula umpisa hanggang matapos ang shift",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mold changer",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "machine setter plastic",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "plastik mashin oprasyon nc3",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tim leader s plastik planta",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako at 5 years na operator, gusto ko na mag-NC III para maging team leader",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako na ang nagtuturo sa mga bagong operator ng makina ng plastik, gusto kong magkaroon ng NC III",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ma-promote mula operator papuntang pinuno ng linya sa pabrika ng plastik",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako lagi ang tinatawag pag kailangang palitan ang molde ng makina",
+  "accept": [
+   "Plastic Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Process Inspection NC III po meron ba",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "QC inspector sa automotive parts factory",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagasuri ng kalidad ng produkto sa pabrika",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinuno ng pagsusuri ng kalidad sa linya ng produksyon",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-apply ako ng quality system tulad ng ISO sa planta",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko kung pasok sa sukat at pamantayan ang mga piyesang gawa ng linya",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng process capability study gamit ang Cpk at control chart",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "binabantayan ko kung sinusunod ng mga operator ang tamang proseso ng kalidad",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "itinatala ko ang mga depekto at gumagawa ng ulat kung paano itatama",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutunan kung paano suriin ang proseso para mabawasan ang sira sa produkto",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "QC inspector",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "quality control",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "kwality inspektor sa planta",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "proses inspekson nc3",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "4 years na akong QC sa car parts plant, gusto ko ng NC III para maging leader",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong taga-inspeksyon ng piyesa sa pabrika, kailangan ko ng sertipiko para ma-promote",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mabusisi ako at gusto kong ako ang nagsasabi kung pasado o hindi ang gawa ng pabrika",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging bantay ng quality para walang depektibong piyesa na lalabas sa planta",
+  "accept": [
+   "Process Inspection NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Auto Engine Rebuilding NC II may training po ba",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "engine rebuilder sa machine shop",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-rebuild ng makina ng sasakyan",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "makinista sa talyerang nagre-rebuild ng makina",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagre-rebore ako ng cylinder block at nagre-reface ng cylinder head",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "binabaklas ko ang buong makina at sinusuri isa-isa ang mga piyesa",
+  "accept": [
+   "Auto Engine Rebuilding NC II",
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagsusukat ako ng clearance gamit ang micrometer at bore gauge",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nililiha at nire-regrind ko ang crankshaft sa makinang panggiling",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "binabasa ko ang engine manual para sa tamang tolerance bago i-assemble",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "binubuo ko ulit ang makina at hinihigpitan sa tamang torque ang cylinder head",
+  "accept": [
+   "Auto Engine Rebuilding NC II",
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "engine rebuild",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "rebore ng makina",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "enjin ribilding nc2",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "otu engine rebilder",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "8 years na akong machinist sa rebuild shop, wala pa akong NC II",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagre-rebore ng makina ng jeep at trak, gusto kong magpa-assess",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "yung mga makinang patay na at itatapon na, gusto kong ako ang bumubuhay ulit",
+  "accept": [
+   "Auto Engine Rebuilding NC II",
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng sariling engine machine shop sa probinsya",
+  "accept": [
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Automotive Body Painting Finishing NC I po",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging pintor ng kotse",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "auto painter sa talyer",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "katulong na pintor sa pintahan ng sasakyan",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Painting NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "kinikiskis ko ng liha ang pintura ng kotse bago pinturahan ulit",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Painting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagma-masking tape ako ng salamin at goma bago mag-spray",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Painting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-i-spray ako ng isang kulay lang na pintura sa kotse",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Painting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapakinis at pinapakintab ko ang pintura ng kotse gamit ang buffer",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Painting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tinatanggal ko ang masking pagkatapos matuyo ang pintura nang hindi nasisira ang gilid",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Painting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng single stage painting ng motor at kotse",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Painting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "car paint",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pintura ng kotse",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "otomotiv pinter nc1",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mtuto mg pintura ng oto",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalawang taon na akong helper sa pintahan ng kotse, gusto kong magka-NC I",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong na ako mag-spray at mag-polish ng kotse, need ko ng certificate pang-entry level",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig akong magpakintab at magpaganda ng lumang kotse ng tito ko",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Painting NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magsimula sa pintahan ng sasakyan pero baguhan pa lang ako",
+  "accept": [
+   "Automotive Body Painting/Finishing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Automotive Body Painting Finishing NC III saan po pwede",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "auto paint contractor",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalubhasang pintor ng kotse na marunong ng pearl na kulay",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "body paint finisher sa casa",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "itinutugma ko ang kulay na pearl white sa muling pagpipintura ng kotse",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-i-spray ako ng tatlong patong: base, pearl at clear",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng color matching ng mica at metallic",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tinitimpla ko ang pintura para kapareho ng orihinal na kulay ng sasakyan",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinipinturahan ko ulit ang mamahaling kotse na tatlong patong ang tapos",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang hindi pantay na kulay ng pearl pagkatapos i-spray",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pearl paint",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "color matching",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "perl kolor pinter",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "otomotib body painting nc 3",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa automotive painting at 6 years na, gusto ko mag-NC III",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "sampung taon na akong pintor ng kotse, gusto kong makuha ang pinakamataas na sertipiko",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang lapitan ng may-ari ng mamahaling kotse para sa perpektong kulay",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "plano kong magbukas ng sariling paint shop na kayang mag-repaint ng luxury cars",
+  "accept": [
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Automotive Body Repairing NC II po sched",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "hojalatero ng kotse",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "latero sa talyer",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "body repair technician sa casa",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinupukpok ko pabalik ang yupi sa pinto ng kotse",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagre-remove at nag-i-install ako ng bumper at fender",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagmamasilya ako ng kaha bago pinturahan",
+  "accept": [
+   "Automotive Body Repairing NC II",
+   "Automotive Painting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapalit ako ng body panel na nabangga",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinihinang ko ang butas at kalawang na bahagi ng kaha ng jeep",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang mga nabanggang sasakyan bago i-pintura",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "yupi ng kotse",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hojalatero",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mging ojalatero",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "bodi riper ng kotse",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "labindalawang taon na akong hojalatero, gusto kong magka-NC II para sa abroad",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught ako sa body repair ng mga nabanggang kotse, need ko ng certificate",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi akong tinatawag ng kapitbahay pag nabangga o nayupi ang sasakyan nila",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng sariling talyer para sa mga nabanggang kotse",
+  "accept": [
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Automotive Diagnosis Chassis NC III po",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "chassis diagnosis specialist sa casa",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalubhasang taga-suri ng sira sa transmisyon at manibela",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalubhasa sa transmisyon ng mga awtomatikong kotse",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagda-diagnose ako ng automatic transmission na may electronic control",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang kotseng CVT na umuugong at hindi umaarangkada",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "kinukumpuni ko ang de-kuryenteng power steering na mabigat ang manibela",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko ang sira ng 4x4 na hindi pumapasok ang four wheel drive",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "troubleshooting ng vehicle stability control at traction sa chassis",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III",
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagamit ako ng scanner para hanapin ang sira sa transmisyon",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "CVT repair",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "automotive diagnosis",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III",
+   "Automotive Diagnosis (Electrical) NC III",
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "otomotiv dayagnosis chasis",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "transmision espesyalist nc3",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa chassis repair, gusto ko mag-NC III sa diagnosis",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nag-aayos ng awtomatikong transmisyon, kailangan ko ng NC III",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi akong pinapatawag pag may automatic na kotse na ayaw kumambyo nang maayos",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging expert sa mga bagong 4x4 at SUV na puro electronic na ang drive system",
+  "accept": [
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may assessment po ba ng Automotive Diagnosis Electrical NC III",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "electrical diagnosis technician ng kotse",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalubhasang elektrisyan ng mga modernong sasakyan",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "auto electronics specialist",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang immobilizer kapag ayaw umandar ng kotse",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang airbag na laging nakailaw ang ilaw sa dashboard",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagda-diagnose ng keyless entry at push start na hindi gumagana",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinahanap ko ang sira sa alarma ng kotse na kusang tumutunog",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "troubleshooting ng body control module at CAN communication",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III",
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang awtomatikong aircon ng kotse na hindi sumusunod sa temperatura",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III",
+   "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "immobilizer repair",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "airbag SRS",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "imobilaser ng kotse ayaw mag start",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "otomotib elektrikal dayagnosis nc3",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "auto electrician ako for 7 years, gusto ko na ng NC III sa electrical diagnosis",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa elektrikal ng sasakyan, gusto kong umakyat sa mas mataas na antas",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "puro computer na ang mga bagong kotse ngayon, gusto kong ako ang marunong mag-ayos ng mga ganun",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III",
+   "Automotive Diagnosis (Engine) NC III",
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "nawala ang susi ng kotse ng kaibigan ko at ayaw na mag-start, gusto kong matutunan ayusin yun",
+  "accept": [
+   "Automotive Diagnosis (Electrical) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Automotive Diagnosis Engine NC III may batch po ba",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "engine control specialist sa casa",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalubhasang mekaniko ng makinang de-EFI",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "fuel injection specialist ng gasoline at diesel",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko gamit ang scanner kung bakit nakailaw ang check engine at inaayos ang EFI",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang mausok na tambutso para pumasa sa emission test",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III",
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagda-diagnose ako ng common rail diesel injection",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III",
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang turbo ng sasakyan na nawawalan ng hatak",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "chine-check ko ang ignition timing at sensors ng electronic spark advance",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nililinis at sinusubok ko ang mga injector ng makina ng kotse",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "EFI diagnosis",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "check engine",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "chek enjin layt repair",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "otomotiv dayagnosis enjin",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "engine mechanic ako ng 10 years na may NC II, gusto ko na mag-NC III diagnosis",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nag-aayos ng mga makinang de-EFI, gusto kong mapatunayan sa sertipiko",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "maraming kotse sa amin ang nakailaw ang check engine pero walang marunong mag-ayos",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging expert sa turbo diesel engines ng mga bagong pickup",
+  "accept": [
+   "Automotive Diagnosis (Engine) NC III",
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Automotive Mechanical Assembly NC III po",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "mechanical rectifier sa car assembly plant",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-ayos ng depekto sa mga bagong buong sasakyan sa planta",
+  "accept": [
+   "Automotive Mechanical Assembly NC III",
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "rectification technician sa end of line",
+  "accept": [
+   "Automotive Mechanical Assembly NC III",
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagko-conduct ako ng engine hot test sa mga bagong makina",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang maling pagkakabit ng preno at linya ng gasolina sa bagong unit",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nire-rectify ko ang mga assembly faults sa suspension at drive train",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinahanap ko kung bakit may tagas o ingay ang bagong gawang sasakyan bago ilabas",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko kung tama ang pagkakakabit ng makina at kambyo sa bagong unit",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapaandar at sinusuri ko ang makina habang mainit para makita ang depekto",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "hot test",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mechanical rectifier",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekanikal asembli rektifayer",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "otomotiv mechanical asembly nc 3",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "6 years na akong assembler sa planta at may NC II na, gusto ko na mag-NC III",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako na ang nag-aayos ng mga mali sa linya ng pagbubuo ng kotse, kailangan ko ng sertipiko",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang nag-aayos ng anumang sablay sa makina bago ilabas ang bagong sasakyan",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ma-promote from assembler to troubleshooter ng mechanical sa plant",
+  "accept": [
+   "Automotive Mechanical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Automotive Painting NC II po kailan ang start",
+  "accept": [
+   "Automotive Painting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "auto refinishing technician",
+  "accept": [
+   "Automotive Painting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pintor sa pintahan ng kotse",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "car painter sa body shop",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tinatanggal ko ang lumang pintura ng sasakyan gamit ang paint remover at liha",
+  "accept": [
+   "Automotive Painting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglalagay ako ng primer surfacer bago ang kulay",
+  "accept": [
+   "Automotive Painting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapatakbo ako ng paint booth at pampatuyo ng pintura",
+  "accept": [
+   "Automotive Painting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagma-masilya at nagsa-sanding ako ng body panel bago i-spray",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "binabalutan ko ng papel at tape ang mga bahaging hindi dapat pinturahan",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "repaint ng buong kotse mula primer hanggang polish",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "auto paint",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pintahan ng kotse",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "otomotiv peynting nc2",
+  "accept": [
+   "Automotive Painting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "kar pinter sa bodi shap",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC I",
+   "Automotive Body Painting/Finishing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong pintor sa talyer, gusto kong magka-NC II",
+  "accept": [
+   "Automotive Painting NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "4 years na akong nag-re-repaint ng kotse sa casa, need ko ng NC II para sa Saudi",
+  "accept": [
+   "Automotive Painting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang nagpapaganda ulit ng mga kupas at gasgas na kotse",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Painting/Finishing NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "plano kong magbukas ng paint and body shop sa bayan namin",
+  "accept": [
+   "Automotive Painting NC II",
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Automotive Servicing Chassis Repair NC II po",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "chassis mechanic sa talyer",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekaniko ng preno at suspensyon",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "underchassis specialist ng kotse",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-o-overhaul ako ng manwal na transmisyon",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapalit ako ng clutch lining at pressure plate",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang kalampag sa ilalim ng kotse, shock absorber at ball joint",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagre-repair ako ng differential at propeller shaft",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapalitan ko ang brake pads at nire-refacing ang rotor",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang steering na maluwag at may lagitik",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "preno ng kotse",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "clutch repair",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "chasis riper nc2",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekaniko ng transmison at klats",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 years na akong underchassis mechanic, wala pa akong NC II",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nag-aayos ng preno at kambyo ng jeep, gusto kong magpa-assess",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag may kumakalampag sa ilalim ng sasakyan ng kapitbahay, ako agad ang tinatawag",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng sariling shop para sa brake, clutch at suspension",
+  "accept": [
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Automotive Servicing Electrical Repair NC II po",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "elektrisyan ng sasakyan",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "auto electrician sa talyer",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "aircon technician ng kotse",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II",
+   "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapalit ako ng starter at alternator ng kotse",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang ilaw, busina at wiper ng sasakyan na ayaw gumana",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-re-recharge ako ng freon at nagli-leak test ng car aircon",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II",
+   "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang magnetic clutch ng compressor ng aircon ng kotse",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II",
+   "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko kung bakit laging lowbat ang baterya ng kotse",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinahanap ko ang sira sa ignition kung bakit hindi nag-i-spark ang kandila",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "auto electrical",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "car aircon",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II",
+   "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "oto elektrisyan",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "kar aircon tekniyan",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II",
+   "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "auto electrician ako for 6 years pero walang certificate, kailangan ko ng NC II",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nag-aayos ng aircon at wiring ng mga jeep, gusto kong magpa-assess",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II",
+   "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi akong tinatawag pag ayaw mag-start o patay ang ilaw ng sasakyan ng kapitbahay",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mainit sa loob ng kotse namin kasi sira aircon, gusto kong ako na mag-ayos ng ganun",
+  "accept": [
+   "Automotive Servicing (Electrical Repair) NC II",
+   "Land-Based Transport Mobile Air-conditioning (MAC) Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Automotive Servicing Engine Repair NC II po",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekaniko ng makina ng kotse",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging mekaniko ng sasakyan",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "engine technician sa talyer",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang radiator at water pump ng kotse na nag-o-overheat",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapalit ako ng oil pump at nag-aayos ng tagas ng langis sa makina",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-o-overhaul ako ng makina ng sasakyan",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II",
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagre-repair ako ng exhaust manifold at muffler na may leak",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang makinang mahina ang hatak at mausok",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang luwag ng balbula at pinapalitan ang timing belt",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekaniko ng kotse",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "engine repair",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mikaniko ng oto",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "enjin riper nc2 kotse",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "15 taon na akong mekaniko sa talyer ng kotse pero wala akong sertipiko",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught ako sa engine overhaul, kailangan ko ng NC II para makapag-abroad",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II",
+   "Auto Engine Rebuilding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi kong inaayos ang owner type jeep ng tatay ko pag nag-o-overheat",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng sariling talyer ng kotse sa probinsya",
+  "accept": [
+   "Automotive Servicing (Engine Repair) NC II",
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Chassis Repair) NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Automotive Servicing NC I po para sa beginner",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "tekniko ng regular na pagmementena ng sasakyan sa casa",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "katulong ng mekaniko sa talyer",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pre-delivery inspector ng bagong sasakyan",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-che-change oil at nagpapalit ng oil filter ng kotse",
+  "accept": [
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko ang bagong kotse bago ibigay sa may-ari",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpe-PMS ako ng sasakyan every 10,000 km",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nililinis at ina-adjust ko ang preno sa regular na maintenance",
+  "accept": [
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Chassis Repair) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinisilip ko ang tie rod, shock at manibela tuwing regular na pagmementena",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapalit ako ng langis ng transmisyon at grasa ng ehe",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "PMS ng kotse",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "change oil",
+  "accept": [
+   "Automotive Servicing NC I",
+   "Automotive Servicing (Engine Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "otomotib servising nc1",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg helper s talyer ng kotse",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalawang taon na akong katulong sa talyer, gusto kong magka-NC I muna",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-change oil at PMS na ako sa casa ng 1 year, need ko ng NC I",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "wala pa akong alam sa kotse pero gusto kong magsimula sa talyer",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "fresh grad ako ng senior high, gusto kong magsimula sa basic na pag-aalaga ng sasakyan",
+  "accept": [
+   "Automotive Servicing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Automotive Servicing NC IV po meron ba",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "service shop supervisor",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "punong mekaniko ng talyer",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "master automotive technician",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagse-service ako ng ABS at traction control na may warning light",
+  "accept": [
+   "Automotive Servicing NC IV",
+   "Automotive Diagnosis (Chassis) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-e-estimate ako ng presyo at oras ng malalaking repair sa talyer",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinamamahalaan ko ang mga mekaniko at imbentaryo ng piyesa sa talyer",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinisiguro kong ligtas ang talyer at sumusunod sa batas pangkalikasan",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagda-diagnose ako ng diesel engine management system at injection pump",
+  "accept": [
+   "Automotive Servicing NC IV",
+   "Automotive Diagnosis (Engine) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinaplano ko ang pagsusuri ng mga gawa ng mekaniko at kung paano mapapabuti ang serbisyo",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "service analyst",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "head mechanic",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "otomotiv servising nc4",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mastr mekaniko sertipiko",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC III na ako at 12 years na mekaniko, gusto ko mag-NC IV para maging supervisor",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako na ang namamahala sa talyer namin ng sampung taon, kailangan ko ng pinakamataas na sertipiko",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako na ang mamahala sa buong service center ng casa",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ready na ako mag-lead ng team ng mekaniko at mag-handle ng customer estimates",
+  "accept": [
+   "Automotive Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Driving Articulated Vehicle NC III po",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "drayber ng trailer truck",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "trailer driver sa pantalan",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tsuper ng mahabang trak na may kargang container",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagmamaneho ako ng prime mover na may kabit na container",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko ang fifth wheel at air brake bago bumiyahe",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong umatras at lumiko ng trailer sa makikitid na daan",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbibiyahe ako ng 20-footer at 40-footer na container mula sa pantalan",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aayos ako ng maliliit na sira ng trak at nagpapalit ng gulong sa daan",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III",
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "alam ko ang gagawin pag may aksidente sa highway habang may karga",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III",
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "trailer driver",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "restriction code 8",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "trayler drayber",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "artikulated vehikol driving nc3",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 years na akong truck driver ng 10-wheeler, gusto ko mag-upgrade sa trailer",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagmamaneho ng trailer pero walang NC III, kailangan ng kumpanya",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maghatid ng mga container mula pantalan papunta sa bodega",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "malaki daw sweldo ng trailer drivers sa Canada, ano kailangan kong cert",
+  "accept": [
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may training po ba sa Driving Passenger Bus Straight Truck NC III",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "drayber ng bus",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "truck driver ng 10-wheeler",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tsuper ng pampasaherong bus pa-probinsya",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagmamaneho ako ng trak na may dalang graba at semento",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagsasakay ako ng pasahero sa provincial bus at sumusunod sa traffic rules",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko ang preno, ilaw at gulong ng bus bago umalis sa terminal",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahatid ako ng kargamento gamit ang trak na anim ang gulong",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "alam ko kung paano ilikas ang mga pasahero pag nagkaaberya ang bus",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagmamaneho ako ng closed van na trak para maghatid ng paninda",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "drayber ng trak",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III",
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "bus driver",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "bus drayver nc3",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "trak drybr 10 wiler",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "walong taon na akong drayber ng bus, kailangan ko ng NC III para sa abroad",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may restriction code 3 na ako at 4 years truck driver, gusto ko magpa-assess",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maghatid ng mga pasahero mula Maynila papuntang Bicol araw-araw",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "hiring ng delivery truck drivers sa Japan, ano TESDA cert ang kailangan",
+  "accept": [
+   "Driving (Passenger Bus/Straight Truck) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Driving NC II po magkano at kailan",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging family driver",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tsuper ng jeep",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "company driver ng service na van",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong na akong magmaneho ng kotse pero gusto kong maging propesyonal na drayber",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tinitingnan ko ang langis, tubig at gulong ng sasakyan bago bumiyahe",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusunod ko ang batas trapiko at mga senyas sa kalsada",
+  "accept": [
+   "Driving NC II",
+   "Driving (Passenger Bus/Straight Truck) NC III",
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng defensive driving para sa trabaho",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "alam ko ang gagawin kapag may nabangga o naaksidente sa daan",
+  "accept": [
+   "Driving NC II",
+   "Driving (Passenger Bus/Straight Truck) NC III",
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagmamaneho ako ng van at pickup para maghatid ng gamit ng kumpanya",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "drayber",
+  "accept": [
+   "Driving NC II",
+   "Driving (Passenger Bus/Straight Truck) NC III",
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagmamaneho",
+  "accept": [
+   "Driving NC II",
+   "Driving (Passenger Bus/Straight Truck) NC III",
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "drayving nc2",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg drayber s abroad",
+  "accept": [
+   "Driving NC II",
+   "Driving (Passenger Bus/Straight Truck) NC III",
+   "Driving (Articulated Vehicle) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "anim na taon na akong tsuper ng jeep, gusto ko ng NC II para makapag-abroad",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may professional license na ako at 3 years driver, need ko ng NC II",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ipagmaneho ang isang pamilya o amo araw-araw",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may lisensya na ako pero gusto kong maging driver sa Middle East",
+  "accept": [
+   "Driving NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Motorcycle Small Engine Servicing NC II po",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekaniko ng motor",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aayos ng motorsiklo sa gilid ng kalsada",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "small engine mechanic ng mga water pump at generator",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapalit ako ng langis, kadena at brake shoe ng motor",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-o-overhaul ako ng makina ng scooter",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang ilaw, busina at baterya ng motorsiklo",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtu-tune up ako ng carburetor ng motor",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang makina ng bangka, grass cutter at lagaring de-gasolina",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapalit ako ng shock at gulong at inaayos ang preno ng motor",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "motorsiklo",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "motor repair",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mikaniko ng motor sklo",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag ayos ng motr po aq",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pitong taon na akong nag-aayos ng motor sa talyer, gusto ko ng NC II",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught motorcycle mechanic ako, need ko ng certificate para sa casa",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang gumagawa ng motor ng mga kabarkada ko pag nasisira",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng motor shop malapit sa terminal ng tricycle",
+  "accept": [
+   "Motorcycle/Small Engine Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Speed Limitation Device Servicing NC II po",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "speed limiter installer",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-kabit ng speed limiter sa mga bus at trak",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "speed limiter technician sa transport company",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng aparatong naglilimita ng bilis sa mga pampublikong sasakyan",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-i-inspect muna ako ng makina at wiring bago mag-install ng speed limiter",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos at itinatakda ko ang pinakamataas na bilis sa limiter ng trak",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagma-maintain ako ng speed limiter para pumasa sa LTO inspection",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusubok ko kung gumagana ang limiter sa takbong 60 kph",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "kinukumpuni ko at itinatama ang sukat ng sirang speed limiter",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "speed limiter",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "speed governor",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "spid limiter instaler",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "spid limitasyon dibays",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "auto electrician ako na nag-i-install na ng speed limiter, need ko ng NC II",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalawang taon na akong nagkakabit ng limiter sa mga bus sa terminal, gusto kong magpa-assess",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may bagong batas na kailangang lagyan ng limiter ang mga bus, gusto kong ako ang gumagawa nun",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong makatulong bawasan ang aksidente ng humaharurot na bus gamit ang device sa makina",
+  "accept": [
+   "Speed Limitation Device Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Chemical Process Operations NC III po",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "chemical plant operator",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator sa planta ng kemikal",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "process operator sa refinery",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagmo-monitor ako ng temperature, pressure at flow sa reactor",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "kumukuha ako ng sample ng produkto para suriin kung pasado",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapatakbo ko ang mga bomba, boiler at distillation column sa planta",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "binabasa at sinusuri ko ang datos ng proseso sa control room",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ligtas kong pinapatay at pinapaandar ang mga kagamitan sa proseso ng planta",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaalam ko kung ano ang kailangang hilaw na materyales at kondisyon ng proseso",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "chemical operator",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "process plant",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "kemikal proses operetor",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "chemical process oprasyon nc3",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 years na akong board operator sa chemical plant, gusto ko ng NC III",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong operator sa planta ng sabon at detergent, gusto kong ma-certify",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig ako sa kemistri pero hindi ako nakatapos ng kolehiyo, may trabaho bang pang-planta",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa control room ng factory na gumagawa ng fertilizer at kemikal",
+  "accept": [
+   "Chemical Process Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Carpentry NC II po may slot pa",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging karpintero",
+  "accept": [
+   "Carpentry NC II",
+   "Carpentry NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "anluwagi sa konstruksyon",
+  "accept": [
+   "Carpentry NC II",
+   "Carpentry NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "rough carpenter sa site",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng porma ng kahoy para sa buhos ng poste at biga",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng hamba ng pinto at bintana",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng hagdanang kahoy sa bahay",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ng kisame at dingding na plywood",
+  "accept": [
+   "Carpentry NC II",
+   "Carpentry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng kilo at yero sa bubong",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng aparador na kahoy para sa kusina",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "karpintero",
+  "accept": [
+   "Carpentry NC II",
+   "Carpentry NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "carpentry",
+  "accept": [
+   "Carpentry NC II",
+   "Carpentry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "karpintiro nc2",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mgkarpentero s abroad",
+  "accept": [
+   "Carpentry NC II",
+   "Carpentry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalawampung taon na akong karpintero sa mga bahay, gusto kong magka-NC II",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught carpenter ako, kailangan ko ng NC II para sa Saudi",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako mismo ang magtayo ng bahay na kahoy para sa pamilya ko",
+  "accept": [
+   "Carpentry NC II",
+   "Carpentry NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi akong tumutulong sa tito ko sa pag-aayos ng bubong at pinto, gusto ko itong gawing trabaho",
+  "accept": [
+   "Carpentry NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Carpentry NC III assessment po",
+  "accept": [
+   "Carpentry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "finishing carpenter sa condo",
+  "accept": [
+   "Carpentry NC III",
+   "Carpentry NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalubhasang karpintero ng kisame at dingding",
+  "accept": [
+   "Carpentry NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "drywall installer",
+  "accept": [
+   "Carpentry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-i-install ako ng gypsum board na partition",
+  "accept": [
+   "Carpentry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng palamuting moldings sa kisame at dingding",
+  "accept": [
+   "Carpentry NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng acoustic na kisame sa opisina",
+  "accept": [
+   "Carpentry NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng laminate na sahig sa bahay",
+  "accept": [
+   "Carpentry NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng soffit at sibi sa ilalim ng bubong",
+  "accept": [
+   "Carpentry NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng cladding sa labas ng pader",
+  "accept": [
+   "Carpentry NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "laminate flooring",
+  "accept": [
+   "Carpentry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gypsum ceiling",
+  "accept": [
+   "Carpentry NC III",
+   "Carpentry NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "drai wal instaler",
+  "accept": [
+   "Carpentry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "karpentri nc3 po",
+  "accept": [
+   "Carpentry NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa carpentry at 8 years na, gusto ko mag-NC III",
+  "accept": [
+   "Carpentry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong gumagawa ng kisame at partisyon sa mga mall, gusto kong ma-assess",
+  "accept": [
+   "Carpentry NC III",
+   "Carpentry NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang nagpapaganda ng loob ng condo at opisina",
+  "accept": [
+   "Carpentry NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mas gusto ko yung fit-out ng interior kaysa sa pagbubuhos sa site",
+  "accept": [
+   "Carpentry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Construction Lift Passenger Material Elevator Operation NC II po",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "construction elevator operator",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng elevator sa ginagawang gusali",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "hoist operator sa high-rise site",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapaandar ko ang elevator na nagdadala ng semento at bakal sa itaas ng gusali",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-che-check ako ng brakes, gate at limit switch ng construction lift bago gamitin",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahatid ako ng mga trabahador paakyat at pababa sa ginagawang building",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinisiguro kong hindi lalampas sa kayang buhatin ng material hoist ang karga",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nakikipag-ugnayan ako sa signalman gamit ang radyo habang umaakyat ang lift",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagla-log ako ng daily inspection ng passenger hoist sa site",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "material hoist",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "construction lift",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "elebeytor operetor construction",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "konstruksyon lift operater",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 years na akong nag-o-operate ng lift sa condo project, need ko ng NC II",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dating helper ako sa konstruksyon at ngayon ako na ang nagpapatakbo ng elevator ng materyales, gusto kong magpa-assess",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ayoko nang magbuhat ng hollow blocks paakyat, gusto kong ako na lang ang magpatakbo ng makinang naghahatid",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa high-rise construction pero hindi mabigat ang trabaho, yung nasa loob ng lift",
+  "accept": [
+   "Construction Lift Passenger/Material Elevator Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ }
+]

@@ -1,0 +1,185 @@
+{
+  "source": "Skills Bridge MCP (mcp.skills-bridge.ph), read-only tools",
+  "snapshot_date": "2026-11-04",
+  "demand_by_occupation_all_statuses": [
+    {
+      "occupation": "Web Developer",
+      "posts": 1,
+      "workers": 10
+    },
+    {
+      "occupation": "Data Analyst",
+      "posts": 1,
+      "workers": 3
+    },
+    {
+      "occupation": "Web Designer",
+      "posts": 1,
+      "workers": 1
+    }
+  ],
+  "demand_by_occupation_open": [
+    {
+      "occupation": "Web Developer",
+      "posts": 1,
+      "workers": 10
+    },
+    {
+      "occupation": "Data Analyst",
+      "posts": 1,
+      "workers": 3
+    },
+    {
+      "occupation": "Web Designer",
+      "posts": 1,
+      "workers": 1
+    }
+  ],
+  "occupation_demand_by_region": [
+    {
+      "area": "National Capital Region",
+      "total_posts": 2,
+      "occupations": [
+        {
+          "title": "Web Developer",
+          "posts": 1,
+          "workers": 10
+        },
+        {
+          "title": "Web Designer",
+          "posts": 1,
+          "workers": 1
+        }
+      ]
+    }
+  ],
+  "area_demand": [
+    {
+      "region": "National Capital Region",
+      "posts": 2,
+      "workers": 11
+    }
+  ],
+  "job_post_trend_24_months": [
+    {
+      "period": "2024-12",
+      "label": "Dec",
+      "value": 0
+    },
+    {
+      "period": "2025-01",
+      "label": "Jan",
+      "value": 0
+    },
+    {
+      "period": "2025-02",
+      "label": "Feb",
+      "value": 0
+    },
+    {
+      "period": "2025-03",
+      "label": "Mar",
+      "value": 0
+    },
+    {
+      "period": "2025-04",
+      "label": "Apr",
+      "value": 0
+    },
+    {
+      "period": "2025-05",
+      "label": "May",
+      "value": 0
+    },
+    {
+      "period": "2025-06",
+      "label": "Jun",
+      "value": 0
+    },
+    {
+      "period": "2025-07",
+      "label": "Jul",
+      "value": 0
+    },
+    {
+      "period": "2025-08",
+      "label": "Aug",
+      "value": 0
+    },
+    {
+      "period": "2025-09",
+      "label": "Sep",
+      "value": 0
+    },
+    {
+      "period": "2025-10",
+      "label": "Oct",
+      "value": 0
+    },
+    {
+      "period": "2025-11",
+      "label": "Nov",
+      "value": 0
+    },
+    {
+      "period": "2025-12",
+      "label": "Dec",
+      "value": 0
+    },
+    {
+      "period": "2026-01",
+      "label": "Jan",
+      "value": 0
+    },
+    {
+      "period": "2026-02",
+      "label": "Feb",
+      "value": 0
+    },
+    {
+      "period": "2026-03",
+      "label": "Mar",
+      "value": 0
+    },
+    {
+      "period": "2026-04",
+      "label": "Apr",
+      "value": 0
+    },
+    {
+      "period": "2026-05",
+      "label": "May",
+      "value": 0
+    },
+    {
+      "period": "2026-06",
+      "label": "Jun",
+      "value": 0
+    },
+    {
+      "period": "2026-07",
+      "label": "Jul",
+      "value": 3
+    },
+    {
+      "period": "2026-08",
+      "label": "Aug",
+      "value": 0
+    },
+    {
+      "period": "2026-09",
+      "label": "Sep",
+      "value": 0
+    },
+    {
+      "period": "2026-10",
+      "label": "Oct",
+      "value": 0
+    },
+    {
+      "period": "2026-11",
+      "label": "Nov",
+      "value": 0
+    }
+  ]
+}

@@ -1,17 +1,14 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware'
 import type { components } from '../../api/schema.d.ts'
-import { FINDER_KEY } from './key.ts'
+import { FINDER_KEY, GOAL_MAX_LENGTH } from './key.ts'
 
 // The finder's state: the learner's goal and their work towards a pathway. It lives in sessionStorage, so a refresh
 // keeps the learner's work (US-14) and closing the tab clears it, which suits shared computers. The goal never goes
 // into an address: pages that start the finder with a goal (Home, the Library) call startWithGoal, then navigate.
 // Nothing here calls the API; the finder's pages do, and record what came back.
 
-export { FINDER_KEY }
-
-/** The goal box's limit, as in the Streamlit app and the API. */
-export const GOAL_MAX_LENGTH = 500
+export { FINDER_KEY, GOAL_MAX_LENGTH }
 
 export type Profile = components['schemas']['Profile']
 export type ReadinessResult = components['schemas']['ReadinessResult']

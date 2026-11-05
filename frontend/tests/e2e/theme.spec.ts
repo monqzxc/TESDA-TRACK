@@ -1,5 +1,6 @@
 import { AxeBuilder } from '@axe-core/playwright'
 import { expect, test, type Page } from '@playwright/test'
+import { iconNames } from '../../src/components/icons.ts'
 
 // Must match THEME_KEY in src/lib/storage.ts and public/theme-init.js.
 const THEME_KEY = 'tesda-track.theme'
@@ -116,10 +117,12 @@ test('System follows the device while the page is open', async ({ page }) => {
 
 test('shows every icon', async ({ page }) => {
   await page.goto('/dev/tokens')
-  // 62 named in the gallery, and again in the light and dark previews.
-  await expect(page.getByRole('region', { name: 'Icons' }).getByRole('listitem')).toHaveCount(62)
+  // Every registered icon appears in the gallery and both theme previews.
+  const gallery = page.getByRole('region', { name: 'Icons' })
+  await expect(gallery.getByRole('listitem')).toHaveCount(iconNames.length)
+  await expect(gallery.locator('code')).toHaveText(iconNames)
   for (const theme of ['Light', 'Dark']) {
     const preview = page.getByRole('region', { name: theme, exact: true })
-    await expect(preview.locator('svg')).toHaveCount(62)
+    await expect(preview.locator('svg')).toHaveCount(iconNames.length)
   }
 })

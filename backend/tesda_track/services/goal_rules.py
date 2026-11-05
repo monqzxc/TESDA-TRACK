@@ -33,6 +33,37 @@ def strip_negated(text: str) -> str:
     return re.sub(r"\s+", " ", _NEGATED.sub(" ", text)).strip(" ,;.")
 
 
+# The finder presents these three entry-level hotel pathways. Keys are catalog codes so
+# inactive or unavailable qualifications can never be synthesized from a workplace name.
+HOTEL_PATHWAYS = {
+    "HOUSEKEEPING-NC-II": "Housekeeping prepares you for hotel room attendant and cleaning jobs.",
+    "FBS-NC-II": "Food and Beverage Services prepares you to serve guests in a hotel restaurant.",
+    "FRONT-OFFICE-SERVICES-NC-II": "Front Office Services prepares you for front desk and guest reception work in a hotel.",
+}
+_HOTEL_JOB = re.compile(
+    r"(?:(?:i (?:want|would like|hope) to )?(?:work|find (?:a )?job) (?:in|at|for) (?:a |an |the )?hotels?"
+    r"|(?:i want |(?:i(?:'m| am) )?looking for )(?:a job|work) (?:in|at) (?:a |the )?hotels?"
+    r"|(?:(?:i(?:'m| am) )?looking for |i want )?(?:a )?hotel (?:jobs?|work|employment)"
+    r"|(?:(?:gusto|nais) ko(?:ng)? )?(?:magtrabaho|motrabaho|trabaho) (?:sa|ha) (?:isang |mga )?hotel"
+    r"|(?:kayatko nga )?agtrabaho iti hotel|(?:buri kung )?magobra king hotel|(?:labay kon )?mankimey ed hotel"
+    r"|naghahanap ako ng trabaho sa (?:isang )?hotel|hotel work ang career goal ko"
+    r"|ganahan ko motrabaho sa (?:usa ka )?hotel|gusto ko magtrabaho sa isa ka hotel"
+    r"|karuyag ko magtrabaho ha hotel)"
+)
+_UNDECIDED_HOTEL_SUFFIX = re.compile(
+    r"\s*,?\s*(?:but (?:i (?:don't know|do not know|am not sure) which qualification "
+    r"(?:is suitable(?: for me)?|fits me))|pero hindi ko alam kung aling kwalipikasyon ang angkop sa akin)$"
+)
+
+
+def is_hotel_work_goal(query: str) -> bool:
+    """A learner seeking hotel work broadly. Leave roles, exclusions and guest requests to normal matching."""
+    if "hotel" not in query.lower():
+        return False
+    text = normalize(query).strip(" .?!")
+    return bool(_HOTEL_JOB.fullmatch(_UNDECIDED_HOTEL_SUFFIX.sub("", text)))
+
+
 # --- 2. words that are not a trade ------------------------------------------------------------------------------
 
 # Corpus words of the catalog's own text (Trainers Methodology, Web Development ...) that say nothing about a trade

@@ -79,8 +79,9 @@ def alignment(answers: AssessmentAnswers, item) -> dict[str, ScoreFactor]:
         career_score = 100.0 if item.code in answers.preferred_qualification_codes else 0.0
         career_factor = observed(career_score, "Alignment with your explicitly selected qualification pathway.")
     elif career and normalize(career) not in interest_tokens:
+        role_reason = goal_rules.HOTEL_PATHWAYS.get(item.code) if goal_rules.is_hotel_work_goal(career) else None
         career_factor = observed(100.0 if matches_term(career, item.rules) else 0.0,
-                                 "Alignment with your stated career goal using catalog keywords, jobs and documented occupational phrases.")
+                                 role_reason or "Alignment with your stated career goal using catalog keywords, jobs and documented occupational phrases.")
     else:
         career_factor = omitted("No independent career-goal signal was supplied; repeated interest evidence is counted once.")
     return {"interest": interest, "skill": skill, "career": career_factor}

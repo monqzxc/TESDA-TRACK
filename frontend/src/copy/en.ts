@@ -1907,6 +1907,8 @@ export const en = {
     },
     notice: {
       message: "You're using TESDA-TRACK without signing in.",
+      preparing: 'Preparing your session…',
+      blocked: "We couldn't end the previous session. Check your connection and reopen TESDA-TRACK, or try again.",
       retry: 'Sign in again',
     },
   },

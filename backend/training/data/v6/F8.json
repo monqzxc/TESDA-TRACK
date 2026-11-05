@@ -1,0 +1,6433 @@
+[
+ {
+  "query": "may TM 2 po ba kayo, yung para sa training designer",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tagagawa ng curriculum para sa mga training",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "instructional designer po ang target kong trabaho",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagadisenyo ng training program sa isang technical school",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong bumuo ng curriculum para sa isang kurso sa TESDA",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano alamin kung anong training ang kailangan ng mga empleyado ng kumpanya",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng modules at handouts para sa mga trainee",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng written exam at demo checklist para sa assessment ng trainees",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong mag-design ng e-learning modules na online",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagbabantay na laging bago at tama ang mga materyales at kurikulum ng pagsasanay",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "curriculum design",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "TM2",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mging curiculum desiner sa tesda",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "trainers metodology level 2 pano mag enrol",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "trainer na ako na may TM1, gusto ko nang kumuha ng level II para maging designer",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong gumagawa ng mga module ng pagsasanay sa kumpanya, gusto kong magkaroon ng sertipiko",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako na ang bumuo ng buong kurso, hindi lang magturo",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong magtrabaho sa likod ng mga programa ng pagsasanay, yung nagpaplano ng ituturo",
+  "accept": [
+   "Trainers Methodology Level II (Training Designer/Developer)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "attractions and theme park operations po, may slot pa ba",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging ride operator sa theme park",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "bantay ng mga rides sa amusement park",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapag-alaga ng mga hayop sa zoo o wildlife park",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magbigay ng impormasyon at tulong sa mga bisita ng parke",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako yung nagche-check ng tickets at bilang ng tao sa entrance ng park",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong maging tagapagpaliwanag ng mga patakaran bago sumakay ang mga tao sa ride",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magpatakbo ng mga palaro at booth sa perya o theme park",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpapakain at pag-aalaga ng mga hayop sa mini zoo ng resort",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko mag-guide ng tourists sa loob ng park habang may script na kwento",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "theme park",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "perya rides",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "rayd operetor sa tim park",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "attractions n theme parks nc 2 pls",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tatlong taon na akong kawani sa amusement park, gusto kong magkaroon ng NC II",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtrabaho ako sa perya bilang operator ng mga rides, pwede ba akong ma-assess",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig ako sa mga rides at gusto kong magtrabaho kung saan masaya ang mga bata",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa malaking amusement park sa ibang bansa",
+  "accept": [
+   "Attractions and Theme Parks Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "barista NC II po, kailan ang next batch",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging barista sa coffee shop",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagatimpla ng kape sa kapihan",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "crew sa café na gumagawa ng latte at frappe",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-pull ng espresso shot gamit ang machine",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-steam ng milk para sa cappuccino at latte art",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong magtimpla ng iba't ibang inuming kape tulad ng mocha at americano",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong maglinis at mag-maintain ng coffee machine at grinder",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nasa kaha at nagtitimpla rin ng kape sa maliit na kapihan",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng tamang paggiling at pagsiksik ng giniling na kape",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "kape",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "latte art",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "baresta sa cofee shop",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q matuto mag barista",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalawang taon na akong barista sa kapihan, gusto kong magpasuri para sa NC II",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught ako sa paggawa ng coffee sa bahay, need ko ng certificate para makapag-abroad",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng sariling maliit na kapihan sa bayan namin",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "adik ako sa kape at gusto kong gawin itong hanapbuhay",
+  "accept": [
+   "Barista NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "bartending nc2 may training ba dito",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging bartender sa hotel",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagahalo ng inumin sa bar",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "bar utility o katulong sa likod ng bar",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-mix ng cocktails at mocktails",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-flair at mag-shake ng drinks sa bar",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong magsilbi ng alak na wine sa mga bisita",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang naglilinis at nag-aayos ng mga baso at bote sa bar",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-operate ng bar at mag-asikaso ng orders ng customers",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "matuto gumawa ng mga inuming walang alak para sa hindi umiinom",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "cocktails",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "bartender",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "bartendr sa barko po",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "bar tending nc ii enrol",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "apat na taon na akong bartender sa resort, gusto kong magkaroon ng NC II",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dati akong bar utility, gusto ko nang ma-assess bilang bartender",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig akong magtimpla ng inumin tuwing may inuman ang barkada",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa likod ng bar ng isang barkong pampasahero",
+  "accept": [
+   "Bartending NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "cookery nc ii po, pwede bang mag-enroll",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging kusinero sa restawran",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagaluto sa karinderya",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "kitchen helper o assistant cook sa hotel",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magluto ng adobo, sinigang at iba pang ulam",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng sabaw, sarsa at sopas mula sa buto",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magluto ng isda at hipon pero gusto ko pang matuto",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong gumawa ng salad, sandwich at appetizer",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-pack ng mga lutong pagkain para i-deliver",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilinis ako ng kusina at mga gamit pagkatapos magluto",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "luto",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "cook",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mging kusinro",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "cookry nc2 schedul",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "sampung taon na akong tagaluto sa canteen ng school, gusto kong magka-NC II",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagluluto ako sa handaan at fiesta ng barangay, need ko ng certificate para sa abroad",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi akong pinagluluto ng pamilya tuwing may okasyon, baka ito na ang trabaho ko",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa kusina ng isang hotel sa Dubai",
+  "accept": [
+   "Cookery NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "events management nc iii po may schedule",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging events coordinator",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagaplano ng kasal at debut",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "coordinator ng mga conference at seminar sa hotel",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng proposal para sa isang event",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong mag-isip ng tema at konsepto para sa mga party at kasalan",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng programa o daloy ng isang okasyon",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang naghahanap at pumipili ng venue para sa mga events",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-handle ng suppliers tulad ng caterer, sounds at lights",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matuto ng tamang protocol sa mga pormal na okasyon ng gobyerno",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "wedding planner",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "events organizer",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "evnts coordenator pano maging",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko mag event planer",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "ilang taon na akong nag-oorganize ng birthday at kasal, gusto kong magka-certificate",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong on-site coordinator sa mga corporate event, pwede ba akong ma-assess",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako lagi ang nag-aayos ng mga salu-salo ng pamilya at sa opisina",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong magkaroon ng sariling negosyo ng pag-aayos ng mga okasyon",
+  "accept": [
+   "Events Management Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "bread and patisserie nc ii po kailan simula",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging panadero",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-bake ng cake sa bakeshop",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "katulong sa pastry kitchen ng hotel",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng pandesal at tinapay",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-bake at mag-decorate ng cake",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong gumawa ng pie, tart at iba pang pastry",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto gumawa ng tsokolate at chocolate candies",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong gumawa ng leche flan at ice cream pero gusto kong matuto pa ng ibang desserts",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang naglilinis ng oven at mga gamit sa panaderya",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pandesal",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pastry",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mtuto mag bake ng cake",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "panadiro sa panaderya",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong panadero sa panaderya, gusto kong masuri",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "home baker ako ng cakes at cupcakes, need ko ng NC II",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong magkaroon ng maliit na bakeshop sa harap ng bahay namin",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "tuwing pasko ako ang gumagawa ng cookies at brownies na pang-regalo",
+  "accept": [
+   "Food Production (Bread and Patisserie) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "professional cookery nc iii po",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging head chef",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "kitchen supervisor sa hotel",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "punong kusinero sa banquet ng hotel",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magplano at mag-cost ng menu ng restaurant",
+  "accept": [
+   "Food Production (Professional Cookery) NC III",
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano magluto nang maramihan para sa buffet",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matuto magluto ng international cuisine tulad ng Japanese at Italian",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng garde manger tulad ng cold cuts, terrine at pang-display na pagkain",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagbabantay ng kalinisan at kalidad ng pagkain sa buong kusina",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto kung anong alak at inumin ang bagay sa bawat pagkain",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "head chef",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "chef supervisor",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "profesional cookry nc3",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mging hed chef",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 years na akong line cook at may Cookery NC II na, gusto ko nang mag-NC III",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagluluto sa handaan ng hotel, gusto kong masuri bilang punong tagaluto",
+  "accept": [
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko na ako ang namamahala sa buong kusina at hindi lang tagaluto",
+  "accept": [
+   "Food Production (Professional Cookery) NC III",
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong maging chef sa malaking hotel at gumawa ng sariling menu",
+  "accept": [
+   "Food Production (Professional Cookery) NC III",
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "professional cookery nc 4 po meron ba",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging sous chef",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "executive sous chef sa cruise ship",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangalawang pinuno ng kusina sa hotel",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mamahala ng food production para sa catering",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng menu para sa may diabetes, vegetarian o halal",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong gumawa ng bid o tender para sa catering contract",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong bantayan ang gastos at kita ng catering",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng food safety program para sa kusina",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagpaplano ng buong menu at pagkain para sa malalaking okasyon",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV",
+   "Food Production (Professional Cookery) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sous chef",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "chef nc4",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "su chef nc4 pano",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mging sous shef sa hotel",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC III na ako sa professional cookery at 6 years nang head cook, gusto ko na ng NC IV",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong sous chef sa resort pero wala akong sertipiko",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong patakbuhin ang kusina ng catering namin at hawakan ang budget",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong maging kanang kamay ng executive chef",
+  "accept": [
+   "Food Production (Professional Cookery) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "food and beverage services nc2 po may bakante pa",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging waiter sa restaurant",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "serbidora sa kainan",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagasilbi ng pagkain sa hotel",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-ayos ng mesa at kubyertos bago magbukas ang restawran",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano kumuha ng order at magsilbi ng pagkain sa mga kostumer",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong maghatid ng pagkain sa kwarto ng bisita sa hotel",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang naglilinis at nagsasara ng kainan pagkatapos ng serbisyo",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-serve ng drinks at food sa banquet",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-tray ng pagkain at mag-refill ng tubig sa mga table",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "waiter",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "FnB",
+  "accept": [
+   "Food and Beverage Services NC II",
+   "Food and Beverage Services NC III",
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "weyter sa resto",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "food n bevrage servises nc2",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tatlong taon na akong serbidora sa restawran, gusto kong magpasuri",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtrabaho ako bilang serbidor sa catering, need ko ng NC II para sa barko",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa dining area ng hotel at makipag-usap sa mga bisita",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mabilis akong kumilos at mahilig makipag-usap sa tao, bagay ba ako sa restawran",
+  "accept": [
+   "Food and Beverage Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "food and beverage services nc iii po",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging head waiter",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "captain waiter sa hotel restaurant",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "maitre d sa fine dining",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong pamunuan ang mga serbidor sa kainan",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matuto ng tableside service tulad ng flambé at paghiwa ng karne sa harap ng guest",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-organize ng banquet at function sa hotel",
+  "accept": [
+   "Food and Beverage Services NC III",
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang humahawak ng bayad at resibo ng mga kumakain sa restawran",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong bantayan ang stock ng inumin at gamit sa restawran",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong mag-promote ng food at wine sa guests habang nagse-serve",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "head waiter",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "kapitan ng mga waiter",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "captin weyter nc3",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "hed waitres sa restawran",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako at limang taon nang serbidor, gusto ko nang kumuha ng NC III",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong banquet captain pero walang certificate",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko nang ma-promote mula waiter para ako na ang nag-uutos sa floor",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang laging pinagkakatiwalaan ng manedyer na mag-asikaso ng mga espesyal na bisita sa restawran",
+  "accept": [
+   "Food and Beverage Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "F&B services nc iv po may training ba",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging restaurant supervisor",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "assistant manager ng restaurant",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "banquet supervisor sa hotel",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-manage ng buong service team ng restaurant",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano bantayan ang takbo ng kainan araw-araw",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong gumawa ng promos at events para dumami ang customers ng restaurant",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nag-aayos ng catering para sa mga kasal at okasyon ng kumpanya",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-schedule at mag-train ng mga waiter",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano hawakan ang reklamo ng kostumer bilang superbisor ng restawran",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "F&B supervisor",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "outlet supervisor",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "restorant superviser",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "fnb nc4 pano mag enroll",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pitong taon na ako sa restawran at superbisor na ngayon, gusto kong magkaroon ng NC IV",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "catering supervisor ako sa hotel ng ilang taon, pwede ba akong ma-assess",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong pamahalaan ang sariling restawran balang araw",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong umakyat mula captain waiter hanggang manager",
+  "accept": [
+   "Food and Beverage Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "front office services nc ii po",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging receptionist sa hotel",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagatanggap ng bisita sa front desk ng resort",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "bellboy o concierge sa hotel",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong tumanggap ng reserbasyon ng kwarto sa hotel",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gamitin ang reservation system sa computer ng hotel",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong mag-check in at check out ng mga guest",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagbubuhat ng bagahe at naghahatid ng bisita sa kwarto",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng night audit sa hotel",
+  "accept": [
+   "Front Office Services NC II",
+   "Front Office Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "humahawak ako ng bayad ng mga bisita sa front desk",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "receptionist",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "front desk",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "frunt ofis nc2",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "resepsyonista sa otel",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalawang taon na akong nasa front desk ng isang maliit na hotel, gusto kong magpasuri",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtrabaho ako bilang bellman sa hotel, need ko ng NC II para sa abroad",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "maayos akong makipag-usap sa tao at gusto kong ako ang unang sumasalubong sa mga bisita ng hotel",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magwork sa lobby ng isang five star hotel",
+  "accept": [
+   "Front Office Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "front office nc 3 po meron ba kayong schedule",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging front office supervisor",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "team leader ng mga receptionist sa hotel",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinuno ng front desk sa resort",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong bantayan ang araw-araw na takbo ng front desk",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong turuan at gabayan ang mga bagong tauhan sa front desk",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagsusuri ng mga talaan ng bisita at ng kanilang mga bayarin",
+  "accept": [
+   "Front Office Services NC III",
+   "Front Office Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano panatilihing ligtas ang mga bisita at ang kanilang gamit sa hotel",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-monitor ng cash at financial standards ng front office",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng shift schedule ng mga receptionist",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "FO supervisor",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "front desk team leader",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "frontdesk superbisor",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "front opis nc3 enrol",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong resepsyonista at may NC II, gusto ko nang kumuha ng NC III",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "acting supervisor ako ngayon sa front desk ng hotel, need ko ng certificate",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko nang ma-promote sa front desk para ako na ang humahawak ng shift",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang laging ipinapalit ng manedyer para bantayan ang mga kasama sa front desk",
+  "accept": [
+   "Front Office Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "front office services nc iv po",
+  "accept": [
+   "Front Office Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging front office manager",
+  "accept": [
+   "Front Office Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "night auditor sa hotel",
+  "accept": [
+   "Front Office Services NC IV",
+   "Front Office Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "guest relations manager sa resort",
+  "accept": [
+   "Front Office Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong bumuo ng sistema at proseso para sa front office",
+  "accept": [
+   "Front Office Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong mag-lead at mag-manage ng mga tao sa front desk",
+  "accept": [
+   "Front Office Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano ayusin ang away o reklamo ng mga bisita sa hotel",
+  "accept": [
+   "Front Office Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang namamahala sa mga talaan ng bayarin ng mga bisita sa hotel",
+  "accept": [
+   "Front Office Services NC IV",
+   "Front Office Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong i-handle ang mga VIP at relasyon sa guests ng hotel",
+  "accept": [
+   "Front Office Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano suriin ang lahat ng transaksyon ng hotel tuwing gabi",
+  "accept": [
+   "Front Office Services NC IV",
+   "Front Office Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "guest relations",
+  "accept": [
+   "Front Office Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "night audit",
+  "accept": [
+   "Front Office Services NC IV",
+   "Front Office Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "frant office maneger nc4",
+  "accept": [
+   "Front Office Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "nyt auditor sa hotel",
+  "accept": [
+   "Front Office Services NC IV",
+   "Front Office Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "front office supervisor ako ng 6 years, gusto ko nang kumuha ng NC IV",
+  "accept": [
+   "Front Office Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong tagapangasiwa ng relasyon sa mga bisita sa resort, puwede ba ako sa NC IV",
+  "accept": [
+   "Front Office Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong maging manedyer ng buong lobby at front desk ng hotel",
+  "accept": [
+   "Front Office Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang umaayos kapag nagagalit ang mga bisita at may gulo sa hotel",
+  "accept": [
+   "Front Office Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "housekeeping nc ii po may scholarship ba",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging room attendant sa hotel",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagalinis ng kwarto sa resort",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "laundry attendant sa hotel",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-ayos ng kama at maglinis ng kwarto ng bisita",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano maglaba at mamalantsa ng kumot at damit ng mga bisita",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong maglinis ng lobby, CR at hallway ng hotel",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng valet o butler service",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang naghahatid ng tuwalya at gamit sa kwarto kapag may hiling ang bisita",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano harapin ang bisitang lasing sa hotel",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "room attendant",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "housekeeping",
+  "accept": [
+   "Housekeeping NC II",
+   "Housekeeping NC III",
+   "Housekeeping NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hauskeeping nc2",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga linis sa hotell",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "apat na taon akong tagalinis ng kwarto sa hotel, gusto kong magpasuri para sa NC II",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtrabaho ako bilang cleaner sa mall, need ko ng NC II para makapag-abroad sa hotel",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gustong-gusto kong maglinis at mag-ayos ng kwarto kaya gusto kong magtrabaho sa hotel",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magwork sa barko bilang cabin attendant",
+  "accept": [
+   "Housekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "housekeeping nc 3 po",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging housekeeping supervisor",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "floor supervisor sa hotel",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "laundry supervisor sa resort",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong bantayan ang paglilinis ng mga kwarto ng mga room attendant",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano siyasatin ang kwarto bago ibigay sa bisita",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong pamahalaan ang lost and found sa hotel",
+  "accept": [
+   "Housekeeping NC III",
+   "Housekeeping NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nag-aasikaso ng labahing linen at uniporme sa hotel",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong i-supervise ang housekeeping services para sa guests",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano hatiin ang mga kwarto sa bawat room attendant",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "linen supervisor",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "housekeeping supervisor",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hauskiping superbisor",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "housekeepng nc3 pls",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "anim na taon na akong room attendant, gusto ko na ng NC III para umangat",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "public area supervisor ako sa mall pero walang NC",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ayoko nang maglinis, gusto ko ako na ang sumusuri sa gawa ng iba",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang pinahahawak ng manedyer sa isang buong palapag ng hotel",
+  "accept": [
+   "Housekeeping NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "housekeeping nc iv po kailan ang assessment",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging executive housekeeper",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "laundry manager sa hotel",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "head housekeeper ng resort",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magplano ng pag-aayos at pagkukumpuni ng mga gamit sa hotel",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong i-manage ang buong housekeeping department",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-imbentaryo at mamigay ng linen at uniporme",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagpaplano ng serbisyo ng housekeeping para sa mga bisita",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong patakbuhin ang laundry at valet service ng hotel",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng patakaran sa lost and found ng hotel",
+  "accept": [
+   "Housekeeping NC IV",
+   "Housekeeping NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "housekeeping manager",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "executive housekeeper",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hed hauskeeper nc4",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "houskeeping maneger",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "housekeeping supervisor ako ng 8 years, gusto ko nang mag-NC IV",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong assistant executive housekeeper sa barko, need ko ng certificate",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong pamunuan ang lahat ng tagalinis at labandera ng isang malaking hotel",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong umakyat hanggang manedyer sa housekeeping",
+  "accept": [
+   "Housekeeping NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "local guiding services nc ii po",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tour guide sa bayan namin",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagagabay ng mga turista sa probinsya",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "local guide sa isla",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong saliksikin ang kasaysayan at pasyalan ng lugar namin para ikwento sa turista",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano ayusin ang lakad ng mga bisita, kasama ang sasakyan at kainan",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong samahan ang mga turista sa mga pasyalan at ipaliwanag ang bawat lugar",
+  "accept": [
+   "Local Guiding Services NC II",
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-tour ng mga bisita sa simbahan at museo ng bayan",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang naghahatid ng mga turista sa talon at dagat dito sa amin",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magsalita sa harap ng grupo ng turista habang naglalakad",
+  "accept": [
+   "Local Guiding Services NC II",
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tour guide",
+  "accept": [
+   "Local Guiding Services NC II",
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gabay ng turista",
+  "accept": [
+   "Local Guiding Services NC II",
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tor gaid sa amin",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "lokal guide nc2",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "ilang taon na akong nag-gaguide ng tourists sa isla namin, gusto kong ma-accredit",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "boluntaryong gabay ako sa lumang bayan namin, kailangan ko ng NC II",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "kilala ko ang bawat sulok ng bayan namin at gusto kong ipakita ito sa mga dayo",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "dumarami ang turista sa probinsya namin, gusto kong ako ang magdala sa kanila sa mga pasyalan",
+  "accept": [
+   "Local Guiding Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "tour guiding services nc3 po may batch ba",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging regional tour guide",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tour guide na sumasama sa multi-day tours sa iba't ibang probinsya",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gabay ng mga turista sa buong rehiyon",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong pag-aralan ang mga destinasyon sa buong Visayas para sa tour",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong i-manage ang tour arrangements sa ibang probinsya, hotel at transport",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano samahan ang grupo ng turista sa ilang araw na biyahe",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tour escort ng foreign tourists sa Pilipinas",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagpapaliwanag ng kultura at kasaysayan habang nasa bus ang mga turista",
+  "accept": [
+   "Tour Guiding Services NC III",
+   "Local Guiding Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano sundan ang itinerary habang naggagabay sa iba't ibang lalawigan",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tour escort",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "regional guide",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tour gayd nc3",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "rehiyonal na tur gaid",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa local guiding, gusto ko nang kumuha ng NC III",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong tour guide ng travel agencies sa buong Luzon, gusto kong ma-assess",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maglibot sa iba't ibang probinsya habang may kasamang mga turista",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong ipakilala ang buong Mindanao sa mga dayuhan",
+  "accept": [
+   "Tour Guiding Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "tour packaging services nc ii po",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tour packaging staff sa travel agency",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagagawa ng mga pakete ng lakbay sa ahensya ng biyahe",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "costing staff ng tour operator",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng itinerary para sa domestic tour package",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano kuwentahin ang presyo ng pakete ng tour para may tubo",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong sagutin ang hiling ng mga gustong maglakbay nang mag-isa o maliit na grupo",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagbubuo ng package na may hotel, transport at tour sa Palawan",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-quote ng tour packages sa clients",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano pagsamahin ang mga pasyalan, kainan at matutuluyan sa isang murang biyahe",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tour package",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pakete ng biyahe",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tor packeging nc2",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gawa ng tur pakage",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "2 years na akong gumagawa ng tour packages sa online travel agency, gusto kong magka-NC II",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aayos ako ng mga joiner na lakad sa Batanes at Siargao, puwede ba akong masuri",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng sariling travel and tours business",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II",
+   "Travel Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako lagi ang nagpaplano ng mga bakasyon ng barkada at pamilya",
+  "accept": [
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "tourism promotion services nc ii po",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tourism officer sa munisipyo",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tourist information desk sa LGU",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "travel consultant na nagpo-promote ng destinations",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magbigay ng impormasyon sa mga turista tungkol sa mga pasyalan sa bayan",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-promote ang turismo ng probinsya namin sa social media",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong gumamit ng computer system para sa tourist information",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang sumasagot sa mga tanong ng turista sa tanggapan ng turismo",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magbenta at mag-promote ng tourism products at services",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano magpayo sa mga bisita kung saan magandang pumunta at kumain",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tourism officer",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "promosyon ng turismo",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "turismo promosyon nc2",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tourist info oficer",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tatlong taon na akong kawani sa tanggapan ng turismo ng bayan, gusto kong magkaroon ng NC II",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtrabaho ako sa tourist info booth sa airport, pwede ba akong ma-assess",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong makilala ng mga turista sa buong bansa ang bayan namin",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig akong mag-post tungkol sa magagandang lugar sa probinsya at gusto kong gawin itong trabaho",
+  "accept": [
+   "Tourism Promotion Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "travel services nc2 po meron ba",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging ticketing staff sa travel agency",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagabenta ng tiket ng eroplano",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "travel agent sa office",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-book ng flights at hotel para sa clients",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano tumulong sa pag-aayos ng pasaporte at visa ng mga kostumer",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong mag-issue ng plane tickets",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang tumatanggap ng mga tanong at hiling ng mga gustong bumiyahe",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto gumamit ng reservation system ng airlines",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-rebook at magkansela ng tiket ng pasahero",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ticketing",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "travel agency",
+  "accept": [
+   "Travel Services NC II",
+   "Tour Packaging (Fit Ad Hoc Domestic) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tiketing staff sa travel ajency",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "travel serbis nc2",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalawang taon na akong nasa kawnter ng ahensya ng biyahe, gusto kong masuri",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbo-book ako ng flights ng mga kamag-anak bilang raket, gusto kong magka-certificate",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho kung saan ako ang nag-aayos ng biyahe ng ibang tao",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "balak kong magbukas ng maliit na ticketing outlet sa palengke",
+  "accept": [
+   "Travel Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "multimodal transport and logistics nc iii po",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging import coordinator",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagaasikaso ng mga kargamentong galing sa ibang bansa",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "freight forwarding staff sa pier",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magbigay ng impormasyon sa mga kostumer tungkol sa pagpapadala ng kargamento",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-promote ng freight services sa mga negosyante",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong alamin at kumpirmahin ang kailangan ng kostumer sa pagpapadala ng container",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagbabantay sa container mula barko hanggang bodega",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong ayusin ang mga dokumento ng inangkat na kargamento",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-coordinate ng trucking at release ng container sa pier",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "seafreight import",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "kargamento sa barko",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "multimodal transpot nc3",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "imprt cordinator sa shipping",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 years na ako sa forwarding company bilang import staff, gusto kong ma-assess sa NC III",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nag-aasikaso ng kargamento sa adwana at pantalan, kailangan ko ng sertipiko",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa daungan at asikasuhin ang mga produktong dumarating mula sa ibang bansa",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "interested ako sa logistics ng mga barko at container",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "seafreight import nc iv po",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging seafreight import supervisor",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinuno ng import team sa forwarding",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "import manager sa freight forwarder",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong i-manage ang operations ng import sea freight",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano bantayan ang galing at trabaho ng import team",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong makipag-ugnayan sa mga ahente sa ibang bansa kapag may problema sa padala",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagkokontrol ng shipping documents tulad ng bill of lading",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-asikaso ng claims kapag nasira o nawala ang kargamento",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng reports para sa customs at management tungkol sa imports",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "import supervisor",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "cargo claims",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "seafriegth suprvisor nc4",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "multimodal nc 4 enrol",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong import coordinator, gusto ko nang kumuha ng NC IV",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "supervisor ako ng import documentation sa forwarder pero walang NC",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako na ang nagpapasya sa lahat ng pag-aangkat ng kumpanya",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong pamunuan ang isang freight forwarding team",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "warehousing services nc iii po",
+  "accept": [
+   "Warehousing Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging inventory clerk sa bodega",
+  "accept": [
+   "Warehousing Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagatala ng pumapasok at lumalabas na paninda sa bodega",
+  "accept": [
+   "Warehousing Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "warehouse admin officer",
+  "accept": [
+   "Warehousing Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng dokumento ng pagtanggap at pagpapadala ng paninda",
+  "accept": [
+   "Warehousing Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano siyasatin ang mga nakaimbak na produkto sa bodega",
+  "accept": [
+   "Warehousing Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong mag-maintain ng records ng stocks at deliveries",
+  "accept": [
+   "Warehousing Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang kasama sa bilangan ng imbentaryo tuwing katapusan ng buwan",
+  "accept": [
+   "Warehousing Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong asikasuhin ang mga kostumer na kukuha ng order sa bodega",
+  "accept": [
+   "Warehousing Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gamitin ang inventory system sa computer ng warehouse",
+  "accept": [
+   "Warehousing Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "bodega",
+  "accept": [
+   "Warehousing Services NC III",
+   "Warehousing Services NC II",
+   "Warehousing Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "inventory clerk",
+  "accept": [
+   "Warehousing Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "werhouse nc3",
+  "accept": [
+   "Warehousing Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "invintory klerk sa bodiga",
+  "accept": [
+   "Warehousing Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "apat na taon na akong tagabilang ng stock sa bodega, gusto kong masuri",
+  "accept": [
+   "Warehousing Services NC III",
+   "Warehousing Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong warehouse receiving officer, need ko ng NC III",
+  "accept": [
+   "Warehousing Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa likod ng mga online shop, sa pag-aayos ng mga paninda bago ipadala",
+  "accept": [
+   "Warehousing Services NC III",
+   "Warehousing Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "maayos ako sa bilang at listahan, bagay ba ako sa bodega",
+  "accept": [
+   "Warehousing Services NC III",
+   "Warehousing Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "warehousing nc iv po may training",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging warehouse supervisor",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "logistics supervisor sa distribution center",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinuno ng bodega",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong pamunuan ang grupo ng mga tauhan sa bodega",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano bantayan ang forklifts, racks at facilities ng warehouse",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong i-supervise ang buong operasyon ng bodega mula receiving hanggang dispatch",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang naghahanap ng paraan para bumilis at umayos ang proseso sa bodega",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng inventory planning at control para sa supply chain",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano hatiin ang gawain at oras ng trabaho ng mga tauhan sa bodega",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "warehouse supervisor",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "supply chain officer",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "werhaus supervaisor",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "warehousng nc4 pls",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "anim na taon na akong lider ng grupo sa bodega, gusto ko nang kumuha ng NC IV",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "materials supervisor ako sa pabrika pero wala pang certificate",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako na ang namamahala sa buong bodega ng kumpanya",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong maging superbisor sa malaking sentro ng distribusyon ng mga produkto",
+  "accept": [
+   "Warehousing Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "diesel power plant maintenance nc iii po",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging senior maintenance technician sa diesel power plant",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekaniko ng planta ng kuryente na de-diesel",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III",
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "technician na nag-o-overhaul ng engine sa power plant",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-overhaul ng malaking diesel engine",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano hanapin ang sira at ayusin ang makinang diesel ng planta",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III",
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong kumpunihin ang alternator at generator ng planta",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III",
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nag-aayos ng sistemang elektrikal ng planta ng kuryenteng de-diesel",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magbaklas at magbuo ng makina ng malaking genset",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-troubleshoot ng wiring at controls ng generator sa planta",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "diesel plant mekaniko",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III",
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "genset overhaul",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "disel power plant mentenance",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III",
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg overhaul ng diesel engne sa planta",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "walong taon na akong mekaniko sa planta ng kooperatiba ng kuryente sa isla, gusto kong masuri",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III",
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa diesel power plant, gusto ko na ng NC III sa maintenance",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "sa isla namin galing sa planta na de-diesel ang kuryente, gusto kong ako ang mag-ayos nito kapag nasira",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III",
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig ako sa malalaking makina at gusto kong magwork sa power plant",
+  "accept": [
+   "Diesel Power Plant Maintenance NC III",
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "diesel power plant operation and maintenance nc ii po",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging operator ng diesel power plant",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "bantay ng makina sa planta ng kuryente",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "power plant maintenance technician",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III",
+   "Diesel Power Plant Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magbantay at magpaandar ng makinang diesel sa planta",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano suriin ang langis, tubig at init ng makina ng planta",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong mag-maintain ng fuel system at cooling system ng diesel engine",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang naglilinis at nagpapalit ng filter ng generator sa planta",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-repair ng alternator ng diesel power plant",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III",
+   "Diesel Power Plant Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-log ng readings ng engine habang tumatakbo",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "power plant operator",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "planta ng kuryente",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III",
+   "Diesel Power Plant Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "disel plant operetor nc2",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mgtrabaho sa diesel na planta",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III",
+   "Diesel Power Plant Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tatlong taon na akong katulong sa planta ng kuryenteng de-diesel, gusto kong magkaroon ng NC II",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbabantay ako ng genset sa pabrika ng 5 years, pwede ba akong ma-assess sa power plant",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "laging brownout sa probinsya namin, gusto kong magtrabaho sa planta para makatulong",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III",
+   "Diesel Power Plant Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tagapagpaandar ng makinang nagbibigay ng kuryente sa buong isla",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC II",
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "diesel power plant operation nc iii po",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "senior operator sa diesel power plant",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator na pang-shift sa planta ng kuryente",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III",
+   "Diesel Power Plant Operation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging plant operator na may hawak ng buong planta",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-operate ng buong diesel power plant at mag-synchronize ng generators",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano kontrolin ang karga at labas ng kuryente ng planta",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong mag-switch ng breakers at mag-parallel ng generators sa planta",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagbabantay ng control panel ng planta tuwing panggabing shift",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong kumpunihin ang sistema ng paglamig at langis ng makina",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III",
+   "Diesel Power Plant Operation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano paandarin at patayin nang ligtas ang buong planta",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "plant operator",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III",
+   "Diesel Power Plant Operation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "power plant nc3",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III",
+   "Diesel Power Plant Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "dizel power plant opereysyon nc3",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "operater ng planta ng kuryinte",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III",
+   "Diesel Power Plant Operation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa diesel power plant at 4 years nang operator, gusto ko na ng NC III",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong operator sa planta ng kooperatiba ng kuryente pero wala akong sertipiko",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III",
+   "Diesel Power Plant Operation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang humahawak ng panel na nagpapatakbo ng kuryente sa bayan",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong maging operator sa power plant abroad",
+  "accept": [
+   "Diesel Power Plant Operation and Maintenance NC III",
+   "Diesel Power Plant Operation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "electric power distribution line construction nc ii po",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging lineman ng kooperatiba ng kuryente",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II",
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagaakyat ng poste ng kuryente",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II",
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "line worker sa construction ng linya ng kuryente",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magtayo ng poste ng kuryente",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano umakyat sa poste at magkabit ng mga kable",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II",
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong magkabit ng transformer at cutout sa linya",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II",
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagkakabit ng linya ng kuryente papunta sa metro ng bahay",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II",
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-install ng crossarm at insulator sa poste",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II",
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano maglatag ng bagong linya ng kuryente sa bagong subdibisyon",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "lineman",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II",
+   "Electric Power Distribution Operation and Maintenance NC III",
+   "Transmission Line Installation and Maintenance NC II",
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "poste ng kuryente",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II",
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "lainman sa kuryente",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II",
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mging linemn sa electric coop",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II",
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalawang taon na akong katulong ng lineman sa kooperatiba, gusto kong magkaroon ng NC II",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng service drop at metro sa mga bahay, pwede ba akong ma-assess",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II",
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "hindi ako takot sa taas at gusto kong magtrabaho sa mga poste ng kuryente",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II",
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong tumulong magpailaw sa mga baryong wala pang kuryente",
+  "accept": [
+   "Electric Power Distribution Line Construction NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "electric power distribution operation and maintenance nc iii po",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging maintenance lineman",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagaayos ng linya ng kuryente kapag may sira",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III",
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "line worker na nagre-repair sa electric coop",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magpalit ng sirang poste at kable ng kuryente",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano magpalit ng transformer at gamit sa three-phase na linya",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong magpalit ng service connection ng consumers",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagtatabas ng puno at sanga na tumatama sa linya ng kuryente",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magpalit ng crossarm at insulator sa lumang poste",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano ibalik ang kuryente pagkatapos ng bagyo sa mga linya",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III",
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "maintenance lineman",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tabas ng puno sa linya",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mentenance laynman",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "distribusyon ng kuryinte nc3",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa line construction at 3 years nang lineman, gusto ko na ng NC III",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong lineman sa kooperatiba pero wala akong NC",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III",
+   "Electric Power Distribution Line Construction NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "tuwing may bagyo, gusto kong ako ang umaakyat para ibalik ang kuryente sa bayan",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa kooperatiba ng kuryente na tinitiyak na maayos ang linya araw-araw",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "electric power distribution nc iv po",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging lead lineman",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "line supervisor sa electric cooperative",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinuno ng mga lineman sa distribusyon ng kuryente",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-test ng mga naka-install na transformer at equipment sa linya",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano hanapin ang fault sa distribution line at ayusin ito",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong pangasiwaan ang pagmamantini ng linya ng kuryente",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagsisiyasat ng mga bagong kabit na linya bago padaluyan ng kuryente",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-troubleshoot ng brownout sa isang feeder",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano pamahalaan ang grupo ng mga lineman sa operasyon ng distribusyon",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "lead lineman",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "line supervisor",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "led linemen nc4",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "superbaysor ng linya ng kuryinte",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "sampung taon na akong lineman at may NC III, gusto ko nang kumuha ng NC IV",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "foreman ako ng line crew sa kooperatiba, need ko ng certificate",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ayoko nang umakyat lang ng poste, gusto ko ako na ang mamumuno sa grupo ng kooperatiba",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong maging superbisor ng mga lineman sa kooperatiba ng kuryente",
+  "accept": [
+   "Electric Power Distribution Operation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "sanitary landfill operations nc ii po",
+  "accept": [
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging spotter sa sanitary landfill",
+  "accept": [
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagagabay ng trak ng basura sa tapunan",
+  "accept": [
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "trabahador sa tapunan ng basura ng munisipyo",
+  "accept": [
+   "Sanitary Landfill Operations NC II",
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutunan kung saan dapat itapon ang basura sa landfill",
+  "accept": [
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano idirekta ang mga trak ng basura sa tamang hukay",
+  "accept": [
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagtatabon ng lupa sa basura pagkatapos itapon",
+  "accept": [
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong suriin ang laman ng trak bago magtapon sa landfill",
+  "accept": [
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng tamang pagtatapon para hindi madumihan ang tubig at lupa sa paligid",
+  "accept": [
+   "Sanitary Landfill Operations NC II",
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-clean up at mag-ayos ng area pagkatapos ng dumping",
+  "accept": [
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "landfill",
+  "accept": [
+   "Sanitary Landfill Operations NC II",
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "sanitari lanfill nc2",
+  "accept": [
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "spoter sa tapunan ng basura",
+  "accept": [
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tatlong taon na akong nagtatrabaho sa tapunan ng basura ng bayan, gusto kong magkaroon ng NC II",
+  "accept": [
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dati akong garbage collector, ngayon nasa landfill na ako, gusto kong ma-assess",
+  "accept": [
+   "Sanitary Landfill Operations NC II",
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa pasilidad kung saan dinadala ang basura ng buong lungsod",
+  "accept": [
+   "Sanitary Landfill Operations NC II",
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-hire ang munisipyo ng tauhan para sa bagong landfill, gusto kong mag-apply",
+  "accept": [
+   "Sanitary Landfill Operations NC II",
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "transmission line installation and maintenance nc ii po",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging transmission lineman",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II",
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagaakyat ng tore ng kuryente",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II",
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "lineman sa linya ng mataas na boltahe",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II",
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-inspect ng towers at kable ng transmission line",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano magtrabaho sa lupa sa paghahanda ng tore at linya",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong mag-maintenance sa itaas ng tower",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II",
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang umiikot para tingnan kung may sira ang mga tore ng high voltage",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong maglinis at magpalit ng insulators sa transmission tower",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II",
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano ihanda ang mga gamit at lubid para sa pag-akyat ng tore",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "transmission lineman",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II",
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "high voltage tower",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II",
+   "Transmission Line Installation and Maintenance NC III",
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "transmision layn nc2",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "trasmission lineman pano",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II",
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "2 years na akong ground man sa transmission line crew, gusto kong magka-NC II",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtrabaho ako sa pagtatayo ng mga tore ng kuryente, puwede ba akong masuri",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II",
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa mga tore ng kuryente na tumatawid sa bundok",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II",
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "hindi ako takot sa napakataas na tore ng kuryente at gusto kong kumita nang malaki",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC II",
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "transmission line nc iii po may batch ba",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "senior transmission lineman",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "lineman na nagtatayo ng bagong towers ng transmission",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "beteranong lineman ng mataas na boltahe",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magtayo ng bagong tore ng transmission line",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-install ng emergency tower kapag bumagsak ang linya dahil sa bagyo",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong mag-test ng ground resistance ng tower",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nag-i-string ng kable sa pagitan ng mga tower",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng overhead work sa linya ng 230kV",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III",
+   "Transmission Line Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano buuin ang bakal na tore ng transmission",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ERS tower",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tower erection",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "senyor transmision lineman",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "transmissn line nc3 enrol",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa transmission line at limang taon nang lineman, gusto ko nang kumuha ng NC III",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagtatayo ng tower ng kuryente sa probinsya, need ko ng NC III",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging bahagi ng grupong nagpapatayo ulit ng mga tore pagkatapos ng bagyo",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong umasenso mula ground man hanggang senior lineman",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "transmission line installation nc iv po",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging transmission line foreman",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "kapatas ng mga lineman sa transmission",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "foreman ng high voltage line crew",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magplano ng maintenance work sa transmission line",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-supervise ang crew habang nagme-maintenance sa tower",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong alamin ang ugat ng sira o pag-trip ng linya",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang naghahati ng trabaho at nagbabantay ng kaligtasan ng grupo sa linya",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng schedule ng outage at maintenance ng transmission line",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng ulat kung bakit nagka-fault ang linya",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "transmission foreman",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "kapatas ng tower crew",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "transmision foremen",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tranmission line nc 4",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "sampung taon na akong senior lineman sa transmisyon at may NC III, gusto ko nang kumuha ng NC IV",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "acting foreman ako ng transmission crew, need ko ng NC IV",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko nang ako ang nagpaplano at nag-uutos sa grupo na nagtatrabaho sa mga tore",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong maging kapatas sa mga proyekto ng transmisyon sa buong bansa",
+  "accept": [
+   "Transmission Line Installation and Maintenance NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "photography nc ii po paano mag-enroll",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging photographer",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagakuha ng litrato sa kasal at binyag",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "studio photographer sa mall",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumamit ng DSLR at mag-compose ng magandang shot",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-setup ng lights at backdrop sa studio",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong mag-edit ng mga litrato sa kompyuter",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagpi-print at naglalagay sa album ng mga litrato ng kliyente",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong kumuha ng product photos para sa online selling",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano kumuha ng larawan ng tao na maganda ang liwanag at anggulo",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "camera",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "litrato",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fotografer sa kasal",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mtuto mg pikture ng events",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tatlong taon na akong kumukuha ng litrato sa mga debut at binyag, gusto kong magkaroon ng NC II",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught ako sa photography gamit ang cellphone at camera, need ko ng certificate",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig akong kumuha ng litrato tuwing may handaan at gusto kong kumita rito",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magbukas ng maliit na photo studio sa bayan namin",
+  "accept": [
+   "Photography NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "customer services nc ii po may training ba",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging saleslady sa mall",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "kahera sa grocery",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "promodiser sa supermarket",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-ayos at mag-display ng paninda sa estante",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano magbenta at mag-alok ng produkto sa mga mamimili",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong kumausap at tumulong sa mga namimili sa tindahan",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang gumagamit ng cash register at barcode scanner sa grocery",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magtugma ng pera sa kaha sa pagtatapos ng shift",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-count at mag-arrange ng stocks sa store",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "cashier",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "bagger",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "saleslady sa mol",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "kustomer servis nc2",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong kahera sa supermarket, gusto kong masuri",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dati akong service crew sa fastfood, need ko ng NC II para sa work abroad",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig akong makipag-usap sa tao at magbenta, gusto kong sa mall magtrabaho",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa department store para may sweldo habang nag-aaral",
+  "accept": [
+   "Customer Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ }
+]

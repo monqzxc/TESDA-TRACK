@@ -1,5 +1,5 @@
 import type { MouseEvent } from 'react'
-import { Outlet, ScrollRestoration, useLocation, useNavigate } from 'react-router'
+import { Outlet, ScrollRestoration, useLocation } from 'react-router'
 import { useAuth } from '../auth/useAuth.ts'
 import { useCopy } from '../i18n/copy.ts'
 import { TspNav } from '../features/tsp/TspNav.tsx'
@@ -83,9 +83,9 @@ export function HomeLayout() {
  * in (useTspSignIn): a first visit asks for consent in place of the page.
  */
 export function WebviewLayout() {
+  const copy = useCopy().tspSignIn.notice
   const location = useLocation()
   const tsp = useTspSignIn()
-  const navigate = useNavigate()
   const isEntry = location.pathname === paths.tspWebview
   const isTool =
     location.pathname === paths.tspQualifications ||
@@ -96,26 +96,18 @@ export function WebviewLayout() {
     <TspStateProvider key={tsp.resets}>
       <SkipLink />
       <div className="tsp-webview min-h-dvh">
-        <header className="tsp-header">
-          <div className="tsp-header-inner">
-            <button
-              type="button"
-              aria-label="Go back"
-              onClick={() => (isEntry ? navigate('/') : navigate(-1))}
-            >
-              ‹
-            </button>
-            <span>TESDA-TRACK</span>
-          </div>
-        </header>
         {isTool && <TspNav />}
         <main
           id="main"
           tabIndex={-1}
           className={`tsp-main ${isEntry ? 'tsp-main-entry' : isTool ? 'tsp-main-tool' : 'tsp-main-content'}`}
         >
-          {tsp.state === 'failed' && <TspSignInNotice canRetry={tsp.canRetry} onRetry={tsp.retry} />}
-          {tsp.state === 'consent' && tsp.summary ? (
+          {tsp.state === 'failed' && (
+            <TspSignInNotice canRetry={tsp.canRetry} onRetry={tsp.retry} blocked={tsp.blocked} />
+          )}
+          {tsp.blocked ? (
+            tsp.state !== 'failed' && <p role="status">{copy.preparing}</p>
+          ) : tsp.state === 'consent' && tsp.summary ? (
             <TspConsent summary={tsp.summary} onAnswer={tsp.answerConsent} />
           ) : (
             <Outlet />
@@ -143,7 +135,7 @@ export function AppLayout() {
             'max-md:z-20 max-md:h-auto max-md:overflow-visible max-md:border-r-0 max-md:border-b max-md:px-4 max-md:py-[0.6rem]'
           }
         >
-          <div className="shrink-0 max-md:flex max-md:items-center max-md:gap-3">
+          <div className="shrink-0 max-md:flex max-md:flex-wrap max-md:items-center max-md:gap-3">
             <MobileMenu isAdmin={canViewReports} canManage={canOpenAdmin} isSignedIn={isSignedIn} />
             <div className="max-md:hidden">
               <Brand />

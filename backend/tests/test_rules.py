@@ -70,8 +70,58 @@ def test_undecided_hotel_goal_is_career_exploration(qualifications):
     assert analyze_user_query(query, qualifications)["intent"] == "career_exploration"
 
 
+HOTEL_CODES = {"HOUSEKEEPING-NC-II", "FBS-NC-II", "FRONT-OFFICE-SERVICES-NC-II"}
+
+
+@pytest.mark.parametrize("goal", [
+    "i want to work in hotel", "I want to work in a hotel but I don’t know which qualification is suitable for me.",
+    "I want a job in a hotel", "Hotel work", "Motrabaho sa hotel", "Magtrabaho ha hotel", "Agtrabaho iti hotel",
+    "Magobra king hotel", "Mankimey ed hotel", "Gusto kong magtrabaho sa hotel pero hindi ko alam kung aling kwalipikasyon ang angkop sa akin.",
+])
+def test_hotel_work_explores_three_distinct_roles(catalog_rules, goal):
+    profile = analyze_user_query(goal, catalog_rules)
+    assert (profile["intent"], profile["possible_sector"], profile["career_goal"]) == ("career_exploration", "Tourism", None)
+    hits = match_qualifications(goal, profile, catalog_rules)
+    assert {h["qualification"]["code"] for h in hits} == HOTEL_CODES
+    assert len({h["reason"] for h in hits}) == 3
+
+
+@pytest.mark.parametrize("goal", [
+    "I want to work in a hotel kitchen", "I want to work in a hotel as an electrician",
+    "I don't want to work in a hotel", "I want to work in hotel but I don't want to clean rooms",
+    "I want to book a hotel room", "I want to manage a hotel", "magkano ang hotel",
+])
+def test_hotel_work_rule_preserves_other_intents(goal):
+    from tesda_track.services.goal_rules import is_hotel_work_goal
+    assert not is_hotel_work_goal(goal)
+
+
+def test_hotel_work_returns_active_routes_in_hybrid_and_structured_scoring():
+    from training.catalog import load_catalog
+    from tesda_track.schemas.learner_assessments import AssessmentAnswers
+    from tesda_track.services.analysis import MatchParams, score_matches, structured_matches
+
+    _, catalog = load_catalog()
+    # An absent route must not be fabricated; unrelated semantic evidence must not displace a route.
+    items = [item for item in catalog if item.code != "FBS-NC-II"]
+    goal = "I want to work in hotel"
+    rules = [item.rules for item in items]
+    keyword = {hit["qualification"]["code"]: hit for hit in score_qualifications(goal, {}, rules)}
+    sims = {item.id: float(item.code == "COOKERY-NC-II") for item in items}
+    expected = HOTEL_CODES - {"FBS-NC-II"}
+    hybrid = score_matches(items, keyword, sims, MatchParams(3.5, 6.5, 0.3, 15), query=goal)
+    structured = structured_matches(items, AssessmentAnswers(career_goal=goal))
+    assert {m.qualification.code for m in hybrid} == {m.qualification.code for m in structured} == expected
+    assert all("hotel" in m.reason for m in structured)
+
+
 def test_unknown_career_has_no_matches(qualifications):
     assert match_qualifications("astronaut", analyze_user_query("astronaut", qualifications), qualifications) == []
+
+
+def test_malformed_catalog_job_does_not_match_regional_function_word(catalog_rules):
+    for query in ("Sin-o ang nagdaog sa basketball kagab-i?", "Hin-o an nagdaog ha basketball kakulop?"):
+        assert score_qualifications(query, {}, catalog_rules) == []
 
 
 @pytest.mark.parametrize("years, certified, intent", [

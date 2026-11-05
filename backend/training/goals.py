@@ -15,11 +15,12 @@ DATA_DIR = Path(__file__).resolve().parent / "data"
 V1_PATH = DATA_DIR / "eval_goals.json"
 GOALS_V2_DIR = DATA_DIR / "goals_v2"
 SETS = ("dev", "test_v1", "sealed")
-# "learner": a goal a learner shared, once reviewed (training/shared_goals.py).
+# "learner": a goal a learner shared, once reviewed (training/shared_goals.py). "demand": a job title employers post,
+# held out of training (training/demand_labeled.py).
 TAGS = frozenset({"job_title", "task", "indirect", "experience", "certification", "abroad", "typo", "short", "long",
-                  "multi", "negation", "near_tvet", "no_tvet", "vague", "non_goal", "learner"})
+                  "multi", "negation", "near_tvet", "no_tvet", "vague", "non_goal", "learner", "demand"})
 LANGS = frozenset({"en", "tl", "taglish", "ceb", "ilo", "hil", "pam"})
-GROUPS = frozenset({"G1", "G2", "G3", "G4", "G5", "G6", "X", "learner"})
+GROUPS = frozenset({"G1", "G2", "G3", "G4", "G5", "G6", "X", "learner", "demand"})
 
 
 def normalise(goal: str) -> str:

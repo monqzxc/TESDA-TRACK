@@ -1,4 +1,5 @@
 from tesda_track.services import goal_rules
+from tesda_track.services.catalog_terms import catalog_activity, named_qualification
 from tesda_track.utils.helpers import contains, fuzzy_matches, normalize
 
 
@@ -8,6 +9,10 @@ def match_qualifications(query: str, profile: dict, qualifications: list[dict]) 
 
 def score_qualifications(query: str, profile: dict, qualifications: list[dict]) -> list[dict]:
     """Keyword scores (0-95) for every qualification with any evidence, best first."""
+    if goal_rules.is_hotel_work_goal(query):
+        by_code = {q["code"]: q for q in qualifications}
+        return [{"qualification": by_code[code], "score": 65, "reason": reason}
+                for code, reason in goal_rules.HOTEL_PATHWAYS.items() if code in by_code]
     text = normalize(goal_rules.strip_negated(query))
     context = normalize(" ".join([profile.get("career_goal") or "", *profile.get("existing_skills", [])]))
     results = []
@@ -25,13 +30,17 @@ def score_qualifications(query: str, profile: dict, qualifications: list[dict]) 
         score = min(95, 55 + 10 * len(hits)) if hits else 0
         if any(contains(context, word) for word in qualification["career_keywords"]):
             score = min(95, score + 15)
-        if contains(text, normalize(qualification["name"])):
+        reason = "Matched your words: " + ", ".join(hits) if hits else "Matched your reported career, skills, or sector."
+        if named_qualification(text, qualification):
             score = 95
+            reason = f"You named {qualification['name']}."
+        elif not hits and (activity := catalog_activity(text, qualification)):
+            score = max(score, 75)
+            reason = f"Matches a catalog job or skill: {activity}."
         if contains(text, normalize(qualification["sector"])) or profile.get("possible_sector") == qualification["sector"]:
             score = min(95, score + 20)
         if score:
-            results.append({"qualification": qualification, "score": score,
-                            "reason": "Matched your words: " + ", ".join(hits) if hits else "Matched your reported career, skills, or sector."})
+            results.append({"qualification": qualification, "score": score, "reason": reason})
     return sorted(results, key=lambda item: item["score"], reverse=True)
 
 

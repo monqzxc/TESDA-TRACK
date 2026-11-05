@@ -41,6 +41,8 @@ class Metrics:
     by_lang: dict[str, float]  # top-1 per language over related goals
     by_tag: dict[str, dict] = field(default_factory=dict)  # per tag: n, top1/top3 (related), rejection (no TVET)
     language_details: dict[str, dict] = field(default_factory=dict)
+    # Share of each related goal's accepted qualifications that are shown, out of as many as fit in the top three.
+    all_related: float = 0.0
 
 
 @dataclass
@@ -63,6 +65,8 @@ def metrics(results: list[GoalResult]) -> Metrics:
     reciprocal = [next((1 / rank for rank, name in enumerate(r.shown[:3], 1) if name in r.goal["accept"]), 0.0)
                   for r in related]
     rejection = _mean([not r.shown for r in unrelated])
+    all_related = _mean([len(set(r.shown[:3]) & set(r.goal["accept"])) / min(len(set(r.goal["accept"])), 3)
+                         for r in related])
     by_lang = {lang: _mean([hit for r, hit in zip(related, top1) if r.goal["lang"] == lang])
                for lang in sorted({r.goal["lang"] for r in related})}
     by_tag = {}
@@ -87,7 +91,7 @@ def metrics(results: list[GoalResult]) -> Metrics:
             "rejection": _mean(rejected) if rejected else None}
     return Metrics(top1=_mean(top1), top3=_mean(top3), mrr=_mean(reciprocal), rejection=rejection,
                    objective=0.4 * _mean(top1) + 0.2 * _mean(top3) + 0.4 * rejection, by_lang=by_lang,
-                   by_tag=by_tag, language_details=language_details)
+                   by_tag=by_tag, language_details=language_details, all_related=all_related)
 
 
 def errors(results: list[GoalResult]) -> list[dict]:
@@ -150,7 +154,7 @@ def calibrate(prepared: list[Prepared], items: list[CatalogItem], grid: dict[str
 def _format(label: str, m: Metrics) -> str:
     langs = "  ".join(f"{lang}={value:.3f}" for lang, value in m.by_lang.items())
     text = (f"{label:<7} top1={m.top1:.3f}  top3={m.top3:.3f}  mrr={m.mrr:.3f}  rejection={m.rejection:.3f}  "
-            f"objective={m.objective:.3f}\n        top-1 by language: {langs}")
+            f"all_related={m.all_related:.3f}  objective={m.objective:.3f}\n        top-1 by language: {langs}")
     for tag, row in m.by_tag.items():
         values = "  ".join(f"{k}={row[k]:.3f}" for k in ("top1", "top3", "rejection") if k in row)
         text += f"\n        [{tag}] n={row['n']}  {values}"
@@ -172,7 +176,15 @@ def main(argv: list[str] | None = None) -> None:
                              "goals with no TVET match")
     parser.add_argument("--params", nargs=4, type=float, metavar=("FLOOR", "CEILING", "WEIGHT", "MIN"))
     parser.add_argument("--json", type=Path, default=None, help="write the numbers to this file")
+    parser.add_argument("--save-calibration", action="store_true",
+                        help="with --calibrate and --model-path, write the dev-calibrated parameters to the model's "
+                             "calibration.json (refused when one exists)")
     args = parser.parse_args(argv)
+    if args.save_calibration:
+        if not (args.calibrate and args.model_path):
+            parser.error("--save-calibration needs --calibrate and --model-path")
+        if (args.model_path / "calibration.json").exists():
+            parser.error(f"{args.model_path / 'calibration.json'} exists; a model keeps its first calibration")
     if args.goal_set and args.split:
         parser.error("use --set or --split, not both")
     requested = ([args.goal_set] if args.goal_set else
@@ -199,6 +211,10 @@ def main(argv: list[str] | None = None) -> None:
         print(f"Calibrated on dev in {time.perf_counter() - started:.0f}s")
         if args.min_rejection is not None and dev.rejection < args.min_rejection:
             print(f"No parameters reach rejection {args.min_rejection} on dev; using those that reject the most")
+        if args.save_calibration:
+            (args.model_path / "calibration.json").write_text(json.dumps(asdict(params), indent=2) + "\n",
+                                                              encoding="utf-8", newline="\n")
+            print(f"Saved {args.model_path / 'calibration.json'}")
     results = {name: evaluate(prepared[name], items, params) for name in requested}
     shown = {name: metrics(r) for name, r in results.items()}
     if len(requested) > 1:

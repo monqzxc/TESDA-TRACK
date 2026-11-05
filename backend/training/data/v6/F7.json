@@ -1,0 +1,6898 @@
+[
+ {
+  "query": "pwede po ba mag-enroll sa GMAW NC I",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging MIG welder sa pabrika",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "plate welder na naka-MIG, paano magsimula",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manghihinang na gamit ang MIG na makina",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong maghinang ng bakal na plate gamit ang MIG",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-set ng wire speed at boltahe sa MIG machine",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "I want to learn MIG welding ng mild steel na plate, beginner lang ako",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagdugtong ng dalawang plate na bakal gamit ang semi-automatic na MIG",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-fillet weld at butt weld sa plate gamit ang MIG gun",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "magpalit ng tangke ng gas at rolyo ng alambre sa MIG na makina",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "MIG welding",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinang MIG",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gmaw nc1 po sana mg enrol aq",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mig weldr beginer",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "2 years na akong helper sa MIG welding, gusto ko na ng NC I",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong na ako mag-MIG sa plate, pa-assess po ako",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "yung welding na tuloy-tuloy lumalabas ang alambre sa baril, yun ang gusto kong aralin",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko yung welding na mabilis at malinis, yung ginagamit sa auto body shop",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may schedule ba ng GMAW NC II ngayong buwan",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "pipe welder na MIG ang gamit",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko maging pipe welder sa planta, MIG process",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manghihinang ng tubo sa construction ng planta gamit ang MIG",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-MIG weld ng tubo na nakapirmi at hindi naiikot",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-root pass sa pipe gamit ang MIG",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "MIG welding ng pipe sa 6G position",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagdugtong ng tubo ng tubig at langis sa pabrika gamit ang MIG",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-bevel at mag-fit up ng pipe bago i-MIG weld",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutunan ang pag-MIG sa tubo at plato para sa barko",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III",
+   "Gas Metal Arc Welding (GMAW) NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "MIG pipe",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinang tubo MIG",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gmaw nc2 asan po may training",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pipe weldr MIG gsto q",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 taon na akong nagwe-welding ng tubo gamit ang MIG sa shipyard, kailangan ko ng NC II",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC I na ako sa GMAW, next step ko na yung pipe",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-abroad bilang welder ng pipeline sa Middle East, MIG ang alam ko",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "yung mga tubo sa planta ng kuryente, gusto kong ako ang nagdudugtong niyan gamit ang MIG",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "GMAW NC III po, meron ba sa inyo",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "welder ng stainless at alloy gamit ang MIG",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging high-level MIG welder sa alloy pipe",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "mataas na antas na manghihinang sa MIG para sa alloy na bakal",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-MIG weld ng stainless na plate nang hindi nasusunog",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagwe-welding ng alloy na tubo gamit ang MIG at shielding gas",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "learn MIG welding on chrome-moly pipes para sa planta",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-preheat ng alloy steel bago i-weld gamit ang MIG",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ano ang tamang gas mixture para sa MIG ng stainless",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng MIG welding para sa tangke ng gatas na stainless",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "MIG stainless",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "alloy MIG welding",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gmaw nc3 alloy pipe weldng",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "stenless MIG weldr",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa GMAW, gusto ko na mag-level up sa alloy",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "sampung taon na akong MIG welder sa barko, alloy na tubo na ang hawak ko, pa-assess po",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mas malaki raw ang sahod pag kaya mo nang i-MIG ang stainless, doon ako papunta",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "sa food factory stainless lahat ng pipes, gusto kong ako ang mag-MIG ng mga yun",
+  "accept": [
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "TIG NC II enrollment po",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging TIG welder",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "argon welder sa shop",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "TIG welder sa piping ng planta, saan pwede mag-training",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-TIG weld ng manipis na bakal na plate",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggamit ng tungsten at filler rod sa paghinang ng tubo",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "learn TIG sa carbon steel pipe, mula root pass hanggang cap",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghasa ng tungsten electrode at pag-set ng amperage sa TIG",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagdugtong ng maliit na tubo na kailangan malinis at maganda ang tahi gamit ang argon",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng argon welding para sa mga plate na bakal",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "TIG welding",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "argon hinang",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tig weldng nc2 po pde b",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "argun welding",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong naga-argon welding sa motor shop, gusto ko ng NC II",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught TIG welder ako, kailangan ko ng certificate para sa abroad",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko yung welding na pinakamalinis ang resulta, yung parang nakapatong na mga barya",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "hilig ko ang custom na frame ng bike na pinagdudugtong nang malinis, gusto kong gawin yun",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "GTAW NC IV, ano po ang requirements",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "TIG welder ng stainless na tubo",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging alloy pipe welder gamit ang TIG",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinakamataas na level ng argon welder",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-TIG ng stainless na tubo para sa planta ng kemikal",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-purge ng argon sa loob ng pipe habang nagwe-weld",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "TIG welding ng chrome-moly at inconel",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghinang ng alloy na plate sa lahat ng posisyon gamit ang tungsten",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumawa ng tambutso ng motor na stainless gamit ang TIG",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "advanced TIG para sa stainless piping ng pharmaceutical plant",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "TIG stainless pipe",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "argon sa stainless",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gtaw nc4 asessment",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tig weldr stenless tubo",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa GTAW at 6 years na, gusto ko na kunin yung NC IV",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "12 taon na akong TIG welder ng stainless sa Saudi, kailangan ko ng mataas na NC",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ang pinakamahirap daw na hinang ay stainless na tubo gamit ang argon, yun ang gusto kong ma-master",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "sa refinery, mga alloy pipe na TIG ang kailangan, doon ko gustong magtrabaho",
+  "accept": [
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Gas Welding NC I po, may slot pa ba",
+  "accept": [
+   "Gas Welding NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging oxy-acetylene welder",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manghihinang gamit ang acetylene",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gas welder sa talyer",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano ang tamang timpla ng oxygen at acetylene sa sulo",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-ayos ng torch at regulator ng gas tank bago maghinang",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagdugtong ng manipis na tubo ng bakal gamit ang apoy ng gas",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "learn gas welding ng plate at maliliit na tubes",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-ignite at pag-adjust ng neutral flame bago mag-weld",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghinang gamit ang filler rod at apoy, hindi kuryente",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinang gamit acetylene",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gas welding course",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "oxy acetylin welding",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gas weldng nc1 sched",
+  "accept": [
+   "Gas Welding NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong gumagamit ng acetylene sa junkshop pang-putol at pang-dugtong, gusto ko ng NC",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "helper ako ng gas welder for 3 years, pwede na ba ako mag-assess sa NC I",
+  "accept": [
+   "Gas Welding NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "yung hinang na may asul na apoy galing sa dalawang tangke, yun ang gusto kong matutunan",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "walang kuryente sa site namin kaya gusto ko yung welding na gas lang ang gamit",
+  "accept": [
+   "Gas Welding NC I",
+   "GAS Welding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Machining NC I po, kailan ang sunod na batch",
+  "accept": [
+   "Machining NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging machinist helper",
+  "accept": [
+   "Machining NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng shaper machine",
+  "accept": [
+   "Machining NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "katulong sa machine shop na nagla-lathe",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II",
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-file, mag-drill at mag-tap ng bakal sa bench",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II",
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumamit ng lathe para pakinisin ang bakal na baras",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II",
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-shape ng metal gamit ang shaper machine",
+  "accept": [
+   "Machining NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-ayos ng sirang piyesa ng makina sa machine shop",
+  "accept": [
+   "Machining NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "basic milling ng workpiece, beginner pa lang ako",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II",
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-grind ng surface ng bakal para pumantay",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II",
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "machine shop",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II",
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "makinang shaper",
+  "accept": [
+   "Machining NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "machining nc1 traning",
+  "accept": [
+   "Machining NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mtuto mg lathe",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II",
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "2 years na akong helper sa machine shop, gusto ko ng NC I",
+  "accept": [
+   "Machining NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong ako mag-lathe at mag-drill dahil sa tatay ko, gusto kong magpa-assess",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II",
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako mismo ang gumagawa ng piyesa ng makina na hindi na mabili",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II",
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi akong nakatambay sa machine shop ng tito ko, gusto ko ring matuto doon",
+  "accept": [
+   "Machining NC I",
+   "Machining NC II",
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Machining NC II, may scholarship po ba",
+  "accept": [
+   "Machining NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "lathe operator sa pabrika",
+  "accept": [
+   "Machining NC II",
+   "Machining NC I",
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging milling machine operator",
+  "accept": [
+   "Machining NC II",
+   "Machining NC I",
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "precision grinder operator sa machine shop",
+  "accept": [
+   "Machining NC II",
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-thread ng bakal na baras sa lathe",
+  "accept": [
+   "Machining NC II",
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-mill ng slot at keyway sa workpiece",
+  "accept": [
+   "Machining NC II",
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagbasa ng blueprint at pagsukat gamit ang micrometer bago mag-machine",
+  "accept": [
+   "Machining NC II",
+   "Machining NC I",
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-assemble at mag-fit ng mga piyesa sa bench, yung mas komplikado na",
+  "accept": [
+   "Machining NC II",
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "precision grinding ng shaft hanggang sa tamang sukat",
+  "accept": [
+   "Machining NC II",
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumawa ng gear at bushing gamit ang milling at lathe",
+  "accept": [
+   "Machining NC II",
+   "Machining NC I",
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "torno",
+  "accept": [
+   "Machining NC II",
+   "Machining NC I",
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "milling machine",
+  "accept": [
+   "Machining NC II",
+   "Machining NC I",
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "maching nc2",
+  "accept": [
+   "Machining NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "latheoperator po aq",
+  "accept": [
+   "Machining NC II",
+   "Machining NC I",
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "6 na taon na akong lathe operator sa Laguna pero wala pa akong NC II",
+  "accept": [
+   "Machining NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC I na ako sa Machining, gusto ko naman yung NC II",
+  "accept": [
+   "Machining NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong magtrabaho sa pabrika ng piyesa ng sasakyan na nagpapatakbo ng torno",
+  "accept": [
+   "Machining NC II",
+   "Machining NC I",
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "hilig ko ang pagsukat ng metal hanggang sa pinakamaliit na milimetro at paggawa ng parts",
+  "accept": [
+   "Machining NC II",
+   "Machining NC I",
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Machining NC III, may assessment center ba dito",
+  "accept": [
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "senior machinist sa tool room",
+  "accept": [
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging advanced na lathe at milling machinist",
+  "accept": [
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "mataas na antas na manggagawa ng piyesa sa machine shop",
+  "accept": [
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "advanced na pag-thread at taper turning sa lathe",
+  "accept": [
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggawa ng gear sa milling gamit ang dividing head",
+  "accept": [
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-machine ng piyesa na isang daan ng milimetro ang tolerance",
+  "accept": [
+   "Machining NC III",
+   "Machining NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-mill ng komplikadong hugis at anggulo sa piyesa",
+  "accept": [
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagsukat ng workpiece gamit ang dial indicator at gauge block",
+  "accept": [
+   "Machining NC III",
+   "Machining NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "complex na grinding at fitting ng mga parte ng makina",
+  "accept": [
+   "Machining NC III",
+   "Machining NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "machinist nc3",
+  "accept": [
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "advanced lathe",
+  "accept": [
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "machning nc 3 asessment",
+  "accept": [
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "advance machnist",
+  "accept": [
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "15 years na akong machinist at may NC II na, gusto ko na ng NC III",
+  "accept": [
+   "Machining NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako na ang gumagawa ng pinakamahihirap na piyesa sa shop namin, gusto kong ma-certify sa pinakamataas",
+  "accept": [
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging lead sa machine shop at magturo sa mga bagong operator ng torno",
+  "accept": [
+   "Machining NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapagawa sa akin ang mga custom na piyesa na wala pang drawing, gusto ko na itong gawing propesyon",
+  "accept": [
+   "Machining NC III",
+   "Machining NC I",
+   "Machining NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "SMAW NC I po, saan pwede mag-training",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "beginner na stick welder",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "helper na manghihinang sa construction gamit ang electrode",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "plate welder gamit ang welding rod",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-set up ang stick welding machine at kable bago maghinang",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-fit up at mag-tack weld ng dalawang plate gamit ang electrode",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano magpatama ng arc gamit ang electrode na 6013",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "learn basic stick welding sa flat na plate",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghinang ng bakal na plate gamit ang rod at arc",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-chip ng slag at pag-wire brush pagkatapos mag-stick welding",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "SMAW",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinang electrode",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "smaw nc1 enrol po",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mtuto mag welding gmit electrode",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong na akong mag-stick welding ng plate, gusto ko ng NC I",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "helper ako sa welding shop na puro electrode ang gamit, one year na, pwede na ba mag-assess",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "yung welding na may stick na umiikli habang nagwe-weld, yun ang gusto kong matutunan",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako na lang ang gumawa ng gate at grills namin kaysa magpagawa pa",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "SMAW NC II po, kailan ang start ng klase",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging welder",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III",
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "fabricator sa shop ng bakal",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "structural welder sa building construction",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghinang ng tubong bakal gamit ang electrode",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-weld ng plate na nakatayo at nakabaliktad gamit ang stick",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-bevel at mag-fit up ng tubo bago hinangin gamit ang 7018",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumawa ng steel truss at poste para sa warehouse gamit ang stick welding",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagwe-welding ako ng gate, bintana at grills pero gusto ko pang gumaling",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "learn stick welding ng plate at pipe sa lahat ng position",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC IV",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinang",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III",
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "stick welding",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mging weldr",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III",
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "smaw nc2 skolar",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "8 taon na akong welder sa construction pero wala pa akong NC II sa SMAW",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught welder ako, kailangan ko ng NC II para makapag-abroad",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "GAS Welding NC II",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong magtrabaho sa shipyard o malalaking construction sa abroad, puro bakal ang hawak",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III",
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV",
+   "Gas Welding NC I",
+   "GAS Welding NC II",
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng maliit na pagawaan ng gate at railings sa bayan namin",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "MMAW NC III po, ano ang requirements",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "stainless plate welder gamit ang stick",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manghihinang ng stainless gamit ang electrode",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging stick welder ng hindi kinakalawang na bakal",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano maghinang ng stainless na plate gamit ang 308 na electrode",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "iwas sa sobrang init at distortion ng stainless plate habang nag-stick welding",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-stick weld ng austenitic stainless sa lahat ng posisyon",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglinis ng slag at kulay ng hinang sa stainless na plate pagkatapos mag-electrode",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-fit up ng stainless na plate bago hinangin ng stick",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "learn SMAW sa stainless steel plates para sa food equipment",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "stainless stick welding",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinang stainless",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV",
+   "Gas Metal Arc Welding (GMAW) NC III",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "smaw nc3 stenles",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "stainles electrod welding",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa SMAW, gusto ko naman mag-NC III sa stainless",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "7 taon na akong naghihinang ng stainless na plate gamit ang electrode sa pagawaan ng kusina",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng stainless na mesa at lababo para sa mga kainan, stick welding ang alam ko",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mas mataas daw ang bayad sa welder ng stainless kaysa ordinary steel, gusto kong umakyat doon",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV",
+   "Gas Metal Arc Welding (GMAW) NC III",
+   "Gas Tungsten Arc Welding (GTAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "MMAW NC IV, may assessor ba sa region namin",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "stainless pipe welder gamit electrode",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinakamataas na level na stick welder",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manghihinang ng tubong stainless sa planta",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV",
+   "Gas Tungsten Arc Welding (GTAW) NC IV",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-weld ng stainless na pipe gamit ang stick sa 6G",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-root pass sa stainless pipe gamit electrode",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagdugtong ng tubo at plato na hindi kinakalawang gamit ang rod",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpili ng tamang electrode para sa tubong stainless",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghinang ng stainless na piping sa barko gamit ang SMAW",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "fit up at tack weld ng stainless pipe joints bago mag-stick welding",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "SMAW stainless pipe",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tubong stainless hinang",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV",
+   "Gas Tungsten Arc Welding (GTAW) NC IV",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "smaw nc4 stenless pipe",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mmaw nc 4 asesment",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC III na ako sa MMAW, gusto ko na tapusin hanggang NC IV",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "20 taon na akong naghihinang ng tubong stainless gamit ang electrode, gusto ko ng pinakamataas na NC",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging pinakamagaling na stick welder sa amin, yung kaya pati tubong stainless",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "sa refinery at chemical plant daw kailangan ng welder na kaya ang stainless pipe gamit SMAW",
+  "accept": [
+   "Manual Metal Arc Welding (MMAW) NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Mechanical Drafting NC I po, online ba ito",
+  "accept": [
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging mechanical draftsman",
+  "accept": [
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "draftsman ng mga piyesa ng makina",
+  "accept": [
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "CAD drafter sa engineering firm",
+  "accept": [
+   "Mechanical Drafting NC I",
+   "Technical Drafting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumuhit ng plano ng piyesa ng makina gamit ang AutoCAD",
+  "accept": [
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagguhit ng orthographic at isometric na view ng bolt at gear",
+  "accept": [
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "learn detail drawing with dimensions at tolerances",
+  "accept": [
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng drawing ng shaft na may sukat para sa machine shop",
+  "accept": [
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagbasa at pagguhit ng blueprint ng mechanical parts",
+  "accept": [
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-drafting gamit ang lapis, T-square at ruler bago mag-computer",
+  "accept": [
+   "Mechanical Drafting NC I",
+   "Technical Drafting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "draftsman",
+  "accept": [
+   "Mechanical Drafting NC I",
+   "Technical Drafting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "guhit piyesa CAD",
+  "accept": [
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mechanical drafing nc1",
+  "accept": [
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "drafsman sa pabrika",
+  "accept": [
+   "Mechanical Drafting NC I",
+   "Technical Drafting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 years na akong nagda-draft ng machine parts sa AutoCAD, gusto ko ng NC",
+  "accept": [
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "hindi ako tapos ng engineering pero marunong akong gumuhit ng plano ng makina, pa-assess po",
+  "accept": [
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig akong gumuhit pero gusto ko yung teknikal, yung mga piyesa at sukat",
+  "accept": [
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang gumagawa ng drawing na sinusundan ng mga machinist",
+  "accept": [
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Mold Designing NC IV po, may training ba",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging mold designer",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-disenyo ng hulmahan ng plastik",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "plastic injection mold designer sa factory",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-design ng hulmahan ng plastik gamit ang CAD software",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagtukoy ng shrinkage, gate at runner ng mold",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "i-simulate ang daloy ng plastik sa hulmahan bago ito gawin",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumawa ng 3D model ng mold at i-revise base sa feedback",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumawa ng fabrication drawing para sa mga gumagawa ng hulmahan",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagdisenyo ng hulmahan ng takip ng bote at lalagyan",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mold design",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "disenyo ng hulmahan",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mold desiging nc4",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mould designer trning",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 years na akong mold maker, gusto ko nang mag-design ng mold at magpa-NC IV",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong ako ng 3D CAD at gumagawa na ako ng disenyo ng hulmahan, gusto kong ma-certify",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang nag-iisip ng hugis ng hulmahan para sa mga laruan at lalagyang plastik",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "curious ako kung paano dine-design ang molds ng mga plastic products",
+  "accept": [
+   "Mold Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Mold Making NC III po, saan may assessment",
+  "accept": [
+   "Mold Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong maging mold maker sa pabrika ng plastik",
+  "accept": [
+   "Mold Making NC III",
+   "Moldmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "CNC machinist sa pagawaan ng mold",
+  "accept": [
+   "Mold Making NC III",
+   "Moldmaking NC II",
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III",
+   "CNC Lathe Machine Operation NC II",
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-assemble at taga-setup ng mold sa injection machine",
+  "accept": [
+   "Mold Making NC III",
+   "Moldmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggawa ng piyesa ng hulmahan gamit ang CNC milling",
+  "accept": [
+   "Mold Making NC III",
+   "Moldmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-polish ng cavity ng mold para kumintab ang plastik",
+  "accept": [
+   "Mold Making NC III",
+   "Moldmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-assemble at mag-fit ng core at cavity ng mold",
+  "accept": [
+   "Mold Making NC III",
+   "Moldmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-ayos ng sira at gasgas sa hulmahan ng plastik",
+  "accept": [
+   "Mold Making NC III",
+   "Moldmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-program ng CNC para sa mold components",
+  "accept": [
+   "Mold Making NC III",
+   "Moldmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-grind ng mold plates hanggang sa tamang kapal",
+  "accept": [
+   "Mold Making NC III",
+   "Moldmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mold maker job",
+  "accept": [
+   "Mold Making NC III",
+   "Moldmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gawa ng mold",
+  "accept": [
+   "Mold Making NC III",
+   "Moldmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mold makng nc3",
+  "accept": [
+   "Mold Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "moldmaker cnc trainig",
+  "accept": [
+   "Mold Making NC III",
+   "Moldmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 years na akong nag-aayos at nag-a-assemble ng mold sa plastic factory, gusto ko ng NC III",
+  "accept": [
+   "Mold Making NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa Moldmaking, gusto ko na mag-NC III",
+  "accept": [
+   "Mold Making NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "sa pabrika ng plastik laging nasisira ang mga hulma, gusto kong ako ang gumagawa at nag-aayos ng mga iyon",
+  "accept": [
+   "Mold Making NC III",
+   "Moldmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa toolroom ng plastic parts factory sa CALABARZON",
+  "accept": [
+   "Mold Making NC III",
+   "Moldmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pa-enroll po sa Plant Maintenance NC I",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "maintenance mechanic sa factory",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging taga-maintenance ng makina sa planta",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekaniko ng mga makina sa pabrika",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-grasa, pag-check ng belt at bearing ng makina araw-araw",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-ayos ng makina na biglang nasira sa gitna ng produksyon",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-install at mag-align ng bagong makina sa planta",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumawa ng simpleng bracket at guard gamit ang bakal",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "preventive maintenance ng mga pump, motor at conveyor",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpalit ng sirang bearing at seal ng makina",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "plant maintenance",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "maintenance ng makina",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "plant maintenace nc1",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mentenance sa factory",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "4 na taon na akong maintenance sa pabrika ng sardinas, gusto ko ng NC",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang taga-ayos ng makina sa planta namin pero walang certificate, pa-assess po",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag may sira ang conveyor sa trabaho, ako lagi ang tinatawag, gusto ko na itong gawing career",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ayokong natitigil ang produksyon dahil sa sirang makina, gusto kong ako ang nag-aalaga ng mga makina",
+  "accept": [
+   "Plant Maintenance NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Press Machine Operation NC I, kailan ang klase",
+  "accept": [
+   "Press Machine Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "press worker sa pabrika",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging operator ng press machine",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-pindot ng press sa pagawaan ng piyesa",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-set ng die sa press machine bago mag-produce",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-operate ng mechanical press para bumuo ng metal parts",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano ang ligtas na paggamit ng press para hindi maipit ang kamay",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpasok ng sheet metal sa press at pagtanggal ng tapos na piyesa",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "check ng stroke at pressure ng press bago gamitin",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-press ng mga bracket ng sasakyan sa planta",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "press operator",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "makinang pang-press",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pres machine operator",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "press mchine nc1",
+  "accept": [
+   "Press Machine Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "2 years na akong press operator sa ecozone, gusto ko ng NC I",
+  "accept": [
+   "Press Machine Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagpapatakbo ng press sa pagawaan ng piyesa ng motor, pa-assess po",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong makapasok sa pabrika ng piyesa ng sasakyan, yung pumipindot ng malaking makina na humuhubog ng bakal",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "nakita ko sa video yung makina na pumipisa ng bakal para maging parts, gusto kong yun ang trabaho ko",
+  "accept": [
+   "Press Machine Operation NC I",
+   "Metal Stamping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Submerged Arc Welding NC I po, may training ba",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "SAW welder sa pagawaan ng tangke",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng submerged arc na welding machine",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "plate welder gamit ang automatic na welding na may flux",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagdugtong ng makakapal na plate ng bakal para sa barko gamit ang SAW",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-set up ng wire, flux at travel speed ng SAW machine",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-ayos ng tractor-type welding carriage sa plate",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagkuha at pagpuno ulit ng flux habang naghihinang ang makina",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "learn submerged arc welding ng steel plates sa fabrication shop",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghinang ng mahahabang tahi ng beam at girder nang tuloy-tuloy gamit ang SAW",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "submerged arc",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinang SAW",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "submerge arc weldng",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "saw nc1 skedyul",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 years na akong operator ng SAW sa shipyard, gusto ko ng NC I",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong na ako mag-submerged arc sa plate pero wala akong certificate",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "yung hinang na hindi mo nakikita ang apoy kasi natatakpan ng pulbos, yun ang gusto kong aralin",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa pagawaan ng malalaking tangke at barko kung saan machine ang nagwe-weld",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "SAW NC II, ano po ang requirements",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "pipe welder ng submerged arc",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "SAW operator sa pagawaan ng tubo",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging manghihinang ng malalaking tubo gamit ang automatic SAW",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghinang ng malalaking tubo na umiikot gamit ang submerged arc",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-set up ng pipe rotator at SAW head",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagdugtong ng tubo ng tubig at gas pipeline gamit SAW",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "longitudinal at circumferential na weld sa pipe gamit flux",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagsuri ng hinang ng tubo pagkatapos mag-SAW",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "learn SAW for spiral pipes sa pipe mill",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "SAW pipe",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinang tubo SAW",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "submerg arc pipe weldr",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "saw nc 2 asesment po",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC I na ako sa SAW, gusto ko naman ang pipe",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "anim na taon na akong naghihinang ng pipeline gamit ang submerged arc, pa-assess sa NC II",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa pagawaan ng malalaking tubo ng patubig kung saan makina ang humihinang",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "yung malalaking pipes ng pipeline, gusto ko ako ang nagpapatakbo ng makinang humihinang doon",
+  "accept": [
+   "Submerged Arc Welding (SAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Tool and Die Making NC II po, may scholarship ba",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tool and die maker",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "die maker sa pabrika ng piyesa",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-gawa ng die na ginagamit sa press",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-machine ng punch at die plate",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-assemble at pag-fit ng die set",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-test at pag-try out ng bagong die sa press machine",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumawa ng die na pang-butas at pang-putol ng yero",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-ayos ng die na hindi pantay ang hiwa sa sheet metal",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "learn tool making gamit ang lathe, milling at grinding",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tool and die",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gawa ng die",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tool n die makng",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tool and dye maker",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 years na akong helper sa tool room at marunong na gumawa ng die, pa-assess po",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "machinist ako na gusto nang mag-espesyalisa sa paggawa ng die, kailangan ko ng NC II",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "sa pabrika namin pag pumutok ang die ng press, gusto kong ako ang gumagawa ng bago",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko yung trabaho na gumagawa ng mga gamit na panghubog ng ibang piyesa",
+  "accept": [
+   "Tool and Die Making NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Garbage Collection NC I po, may libreng training ba",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging basurero sa munisipyo",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "palero sa trak ng basura",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "garbage collector sa barangay",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagkolekta ng basura sa bahay-bahay gamit ang trak",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghiwalay ng nabubulok at di-nabubulok bago isakay",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagsuot ng gloves, bota at mask bago mangolekta ng basura",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagbuhat at pagsakay ng sako ng basura sa truck nang ligtas",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagsunod sa ruta at iskedyul ng pangongolekta ng basura sa barangay",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "collection ng recyclables at residual waste sa subdivision",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "basurero",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "garbage collector",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "garbage colector trabaho",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "garbej collection nc1",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 taon na akong palero sa munisipyo, gusto kong magkaroon ng NC I",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong taga-kolekta ng basura sa barangay at kailangan daw ng certificate",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong makatulong na luminis ang bayan namin at magkatrabaho sa trak ng munisipyo",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "sumasabit ako sa likod ng garbage truck tuwing umaga, gusto ko maging regular",
+  "accept": [
+   "Garbage Collection NC I"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Illustration NC II po, may klase ba",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging komiks artist",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "illustrator ng children's book",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "cartoonist sa diyaryo",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumuhit ng mga karakter at eksena para sa komiks",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagguhit gamit ang lapis, tinta at watercolor",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumawa ng konsepto at sketch para sa sarili kong kuwento",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "drawing ng illustrations para sa magazine at libro pambata",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-shading at perspective sa drawing",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-ayos at pag-iingat ng portfolio ng mga natapos kong artwork",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "drawing",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagguhit",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "ilustrasyon nc2",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg drawing ng komiks",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagpo-post ng komiks na drawing ko online, gusto ko ng NC II",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught na tagaguhit ako, gusto kong magpa-assess para ma-certify",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "bata pa lang ako puno na ng drawing ang mga notebook ko, gusto ko itong gawing trabaho",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong makita ang mga guhit ko sa librong pambata",
+  "accept": [
+   "Illustration NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Laboratory and Metrology NC II, may training center ba dito",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "calibration technician sa laboratory",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II",
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging technician na nagka-calibrate ng mga panukat",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II",
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "metrology technician sa pabrika",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II",
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-calibrate ng timbangan at panukat ng presyon",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II",
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagsukat ng piyesa gamit ang vernier caliper at micrometer",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II",
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano malalaman kung tama pa ang sukat ng isang gauge",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II",
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "engineering measurement ng haba, temperatura at pressure",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "precision measurement ng mechanical parts sa lab",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II",
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagtala ng resulta ng kalibrasyon at paglagay ng label sa instrumento",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II",
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "calibration",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II",
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "kalibrasyon",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II",
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "calibraton tech",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II",
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "metroloji nc2",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 years na akong QC na nagka-calibrate ng mga gauge, gusto ko ng NC II",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagsusukat at nagka-calibrate ng mga instrumento sa planta namin, pa-assess po",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II",
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko yung trabaho na sinisigurado na tama ang timbang at sukat ng mga makina",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II",
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig ako sa eksaktong sukat at numbers, gusto kong magtrabaho sa lab ng factory",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC II",
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Laboratory and Metrology/Calibration NC III po",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "senior calibration technician",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "CMM operator sa quality lab",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "punong technician sa laboratoryo ng kalibrasyon",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagsukat ng piyesa gamit ang coordinate measuring machine",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggamit ng comparator, height gauge at dial indicator sa pagsukat",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggawa ng graph at simpleng estadistika ng resulta ng pagsukat",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-compute ng average, range at standard deviation ng measurements",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-program ng CMM para sa inspection ng mold parts",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagsuri ng control chart ng sukat ng produkto",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "CMM",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "panukat na CMM",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "cordinate measuring machin",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "calibraion nc3",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa metrology, gusto ko na mag-NC III",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "8 taon na akong nagpapatakbo ng CMM sa pabrika ng piyesa, pa-assess po sa NC III",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang nagbabasa ng datos ng sukat at nagsasabi kung pasado ang produkto",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-supervise sa calibration lab balang araw",
+  "accept": [
+   "Laboratory and Metrology/Calibration Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Metal Stamping NC II po, may assessment ba",
+  "accept": [
+   "Metal Stamping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "metal stamping operator sa factory",
+  "accept": [
+   "Metal Stamping NC II",
+   "Press Machine Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-stamp ng bakal sa pagawaan ng piyesa",
+  "accept": [
+   "Metal Stamping NC II",
+   "Press Machine Operation NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "press worker sa stamping plant",
+  "accept": [
+   "Metal Stamping NC II",
+   "Press Machine Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-shear o pagputol ng yero gamit ang makina",
+  "accept": [
+   "Metal Stamping NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghubog ng bakal na sheet sa press para maging bracket",
+  "accept": [
+   "Metal Stamping NC II",
+   "Press Machine Operation NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-set ng die at stroke ng stamping press",
+  "accept": [
+   "Metal Stamping NC II",
+   "Press Machine Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagputol ng plate ayon sa sukat gamit ang shearing machine",
+  "accept": [
+   "Metal Stamping NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "bending at forming ng metal sheets sa press",
+  "accept": [
+   "Metal Stamping NC II",
+   "Press Machine Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-check ng stamped parts kung pasok sa sukat",
+  "accept": [
+   "Metal Stamping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "metal stamping",
+  "accept": [
+   "Metal Stamping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagstamp ng bakal",
+  "accept": [
+   "Metal Stamping NC II",
+   "Press Machine Operation NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "metal stampng nc2",
+  "accept": [
+   "Metal Stamping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "stamping operater",
+  "accept": [
+   "Metal Stamping NC II",
+   "Press Machine Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC I na ako sa press machine, gusto ko na mag-Metal Stamping NC II",
+  "accept": [
+   "Metal Stamping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "6 na taon na akong taga-shear at taga-press sa pabrika, gusto ko ng NC II",
+  "accept": [
+   "Metal Stamping NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong makagawa ng mga piyesang bakal na pare-pareho ang hugis gamit ang malaking makina",
+  "accept": [
+   "Metal Stamping NC II",
+   "Press Machine Operation NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "sa pabrika ng appliances sila yung humuhubog ng bakal na katawan ng ref, yun ang gusto ko",
+  "accept": [
+   "Metal Stamping NC II",
+   "Press Machine Operation NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Microfinance Technology NC IV po, paano mag-apply",
+  "accept": [
+   "Microfinance Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "supervisor ng mga loan officer sa microfinance",
+  "accept": [
+   "Microfinance Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "team leader sa microfinance na nagpapautang sa maliliit na negosyo",
+  "accept": [
+   "Microfinance Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging pinuno ng mga kolektor at loan officer sa pautangan sa probinsya",
+  "accept": [
+   "Microfinance Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-monitor ng performance ng mga loan officer at ng koleksyon nila",
+  "accept": [
+   "Microfinance Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpapatupad ng mga loan product para sa mga nanay sa barangay",
+  "accept": [
+   "Microfinance Technology NC IV",
+   "Microfinance Technology NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-check ng workplan at target ng branch ng microfinance",
+  "accept": [
+   "Microfinance Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-evaluate at pag-coach sa mga staff na nagpapautang",
+  "accept": [
+   "Microfinance Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagbantay sa mga delingkwenteng account at pagtulong sa mga loan officer na maningil",
+  "accept": [
+   "Microfinance Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pamamahala ng mga grupo ng nanghihiram sa isang sentro",
+  "accept": [
+   "Microfinance Technology NC IV",
+   "Microfinance Technology NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "superbisor ng pautang",
+  "accept": [
+   "Microfinance Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "microfinance lending",
+  "accept": [
+   "Microfinance Technology NC IV",
+   "Microfinance Technology NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "microfinanse nc4",
+  "accept": [
+   "Microfinance Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "micro finance team lider",
+  "accept": [
+   "Microfinance Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 years na akong loan officer sa microfinance, gusto ko nang maging supervisor at kumuha ng NC IV",
+  "accept": [
+   "Microfinance Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa Microfinance, gusto ko nang umakyat sa NC IV",
+  "accept": [
+   "Microfinance Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong tulungan ang mga nanay na magkapuhunan at pamunuan ang mga nagpapautang sa kanila",
+  "accept": [
+   "Microfinance Technology NC IV",
+   "Microfinance Technology NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "sa lending company na pinapasukan ko, ako na ang nagtuturo sa mga bagong kolektor, gusto ko ng promotion",
+  "accept": [
+   "Microfinance Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Multimodal Transport Operations and Logistics NC II po",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "documentation clerk sa freight forwarder",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "liaison sa customs at pantalan",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging import documentation staff sa forwarding",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-asikaso ng bill of lading at papeles ng kargamento galing abroad",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-compute ng freight charges at duties ng import",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggawa ng billing at request for payment ng shipment",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-follow up ng kargamento sa pantalan at sa customs",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggawa ng ulat kung ilang container ang dumating ngayong buwan",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-aayos ng problema kapag naantala ang container sa daungan",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "freight forwarding",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "papeles ng import",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "frieght forwarder clerk",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "multimodal trasport nc2",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 years na akong liaison ng customs broker, gusto kong magkaroon ng NC II",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nag-aasikaso ng papeles ng mga container sa pantalan, pa-assess po",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa pier at asikasuhin ang mga kargamentong galing ibang bansa",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "interesado ako sa logistics, lalo na yung shipping ng mga container na pumapasok sa bansa",
+  "accept": [
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC III",
+   "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Sanitary Landfill Operations NC III po, may training ba",
+  "accept": [
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "foreman sa sanitary landfill",
+  "accept": [
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "superbisor sa tambakan ng basura ng munisipyo",
+  "accept": [
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "site supervisor ng landfill",
+  "accept": [
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagbantay sa mga trak ng basura na pumapasok sa landfill",
+  "accept": [
+   "Sanitary Landfill Operations NC III",
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-supervise ng pagtatambak at pagtatakip ng lupa sa basura araw-araw",
+  "accept": [
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-maintain ng saradong landfill para hindi tumagas ang leachate",
+  "accept": [
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagtiyak na tama ang pagkakalatag at pagsiksik ng basura sa cell",
+  "accept": [
+   "Sanitary Landfill Operations NC III",
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-monitor ng gas at tubig na lumalabas sa lumang tambakan",
+  "accept": [
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pamamahala ng mga tauhan at heavy equipment sa landfill",
+  "accept": [
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sanitary landfill",
+  "accept": [
+   "Sanitary Landfill Operations NC III",
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tambakan ng basura",
+  "accept": [
+   "Sanitary Landfill Operations NC III",
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "sanitary lanfill nc3",
+  "accept": [
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "landfil foreman",
+  "accept": [
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "7 years na akong nagtatrabaho sa landfill ng probinsya, gusto ko ng NC III para maging foreman",
+  "accept": [
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa Sanitary Landfill, pwede na ba akong mag-NC III",
+  "accept": [
+   "Sanitary Landfill Operations NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong pamunuan ang tamang pagtatapon ng basura ng buong bayan para hindi bumaho at bumaha",
+  "accept": [
+   "Sanitary Landfill Operations NC III",
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aalala ako sa open dumpsite sa amin, gusto kong ako ang mangasiwa ng maayos na tambakan",
+  "accept": [
+   "Sanitary Landfill Operations NC III",
+   "Sanitary Landfill Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Warehousing Services NC II po, kailan ang enrollment",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "bodegero sa grocery",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "warehouse picker at packer",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "checker sa bodega ng distribution center",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagtanggap at pagbilang ng dumating na stocks sa bodega",
+  "accept": [
+   "Warehousing Services NC II",
+   "Warehousing Services NC III",
+   "Warehousing Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-ayos ng mga kahon sa rack ayon sa code",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagkuha ng order sa shelves at pag-impake bago i-deliver",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-dispatch ng mga produkto papunta sa mga branch",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggamit ng pallet jack at kariton sa bodega",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inventory ng stocks gamit ang scanner at stock card",
+  "accept": [
+   "Warehousing Services NC II",
+   "Warehousing Services NC III",
+   "Warehousing Services NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "bodegero",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "warehouse staff",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "warehose packer",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "bodigero po aq",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "4 na taon na akong bodegero sa supermarket, gusto ko ng NC II",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "warehouse checker ako sa logistics company, kailangan ko ng NC para ma-regular",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko ng trabaho sa malaking bodega ng online shopping na nag-iimpake ng order",
+  "accept": [
+   "Warehousing Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "maayos ako mag-ayos ng gamit at magbilang, bagay daw ako sa bodega",
+  "accept": [
+   "Warehousing Services NC II",
+   "Warehousing Services NC III",
+   "Warehousing Services NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Fish Products Packaging NC II po, saan may training",
+  "accept": [
+   "Fish Products Packaging NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "fish packaging worker sa planta",
+  "accept": [
+   "Fish Products Packaging NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-impake ng tuyo at daing",
+  "accept": [
+   "Fish Products Packaging NC II",
+   "Food Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manggagawa sa pabrika ng de-latang isda",
+  "accept": [
+   "Fish Products Packaging NC II",
+   "Food Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-vacuum pack ng tinapa at tuyo para ibenta",
+  "accept": [
+   "Fish Products Packaging NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglagay ng gourmet tuyo sa bote at pag-sterilize nito",
+  "accept": [
+   "Fish Products Packaging NC II",
+   "Food Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "canning ng sardinas at tuna",
+  "accept": [
+   "Fish Products Packaging NC II",
+   "Food Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-seal ng plastic ng daing gamit ang heat sealer",
+  "accept": [
+   "Fish Products Packaging NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglalagay ng label at expiry date sa nakaboteng isda",
+  "accept": [
+   "Fish Products Packaging NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagsuri kung maayos ang selyo ng lata at bote ng isda",
+  "accept": [
+   "Fish Products Packaging NC II",
+   "Food Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "bottled tuyo",
+  "accept": [
+   "Fish Products Packaging NC II",
+   "Food Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-empake ng isda",
+  "accept": [
+   "Fish Products Packaging NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fish pakaging nc2",
+  "accept": [
+   "Fish Products Packaging NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "vacum pack ng tuyo",
+  "accept": [
+   "Fish Products Packaging NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 years na akong nagbobote ng gourmet tuyo sa bahay, gusto ko ng NC II para sa FDA",
+  "accept": [
+   "Fish Products Packaging NC II",
+   "Food Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagtatrabaho sa canning ng isda sa GenSan, gusto kong magpa-assess",
+  "accept": [
+   "Fish Products Packaging NC II",
+   "Food Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maibenta sa grocery ang tinapa namin kaya kailangan maganda ang balot",
+  "accept": [
+   "Fish Products Packaging NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may maliit kaming negosyo ng bangus, gusto naming i-vacuum seal para tumagal at ma-export",
+  "accept": [
+   "Fish Products Packaging NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Food Processing NC I po, may slot pa",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "helper sa pabrika ng pagkain",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-tanggal ng tinik ng bangus",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "production aide sa food factory",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-debone at pag-fillet ng bangus",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglinis at pag-sanitize ng mga gamit sa pagproseso ng pagkain",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagtimbang at paghahanda ng ingredients para sa production",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghahanda ng bote, garapon at plastik bago ibalot ang produkto",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagtulong sa quality check ng mga food products",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpapatakbo ng simpleng makina tulad ng sealer at timbangan",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "boneless bangus",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "helper pabrika pagkain",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fud processing nc1",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "deboner ng bangus pde b",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "2 taon na akong nagtatanggal ng tinik ng bangus sa palengke, gusto ko ng sertipiko",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dating production helper ako sa food factory, gusto ko magka-NC I",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong makapasok sa pabrika ng pagkain kahit sa simula lang",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "bata pa lang ako tumutulong na ako kay nanay sa paggawa ng boneless na bangus",
+  "accept": [
+   "Food Processing NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Food Processing NC II po, kailan ang klase",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "tocino maker para sa maliit na negosyo",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagagawa ng tinapa sa probinsya",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "food processing worker sa planta",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumawa ng tocino, longganisa at tapa para ibenta",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagbuburo ng atsara at bagoong",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggawa ng jam, minatamis at preserved na prutas",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpapatuyo ng mangga at isda para tumagal",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-pasteurize at canning ng pagkain sa bahay",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-smoke ng isda para gawing tinapa",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tocino",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "food processing",
+  "accept": [
+   "Food Processing NC II",
+   "Food Processing NC I",
+   "Food Processing NC III",
+   "Food Processing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tosino making",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto q mtuto gumwa ng atchara at longanisa",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 taon na akong gumagawa ng tocino at longganisa sa bahay, gusto kong magpa-assess",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbebenta ako ng homemade na peanut butter at jam online, kailangan ko ng NC II",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng negosyo ng pasalubong na dried mangoes",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "sobra ang ani ng mangga at kamatis namin, gusto kong gawin itong produkto para hindi mabulok",
+  "accept": [
+   "Food Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Food Processing NC III po, may assessment ba",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "line operator sa food processing plant",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "leading hand sa pabrika ng pagkain",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng packaging line ng pagkain",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpapatakbo ng boiler sa planta ng pagkain",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-operate ng pumps at makina sa production line",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-imbak at pagkontrol ng stocks sa freezer storage",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghawak ng mga kemikal at mapanganib na materyales sa planta ng pagkain",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-test ng raw materials at finished products bago i-release",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-order at pagbilang ng stocks ng sangkap sa planta",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "food line operator",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator pabrika pagkain",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "food procesing nc3",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "line operater food plant",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa Food Processing, gusto ko na mag-NC III",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "8 taon na akong operator sa pabrika ng hotdog, pa-assess po ako",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang nagbabantay sa buong linya ng makina sa pabrika ng de-lata",
+  "accept": [
+   "Food Processing NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong maging leader ng team sa production floor ng isang food company",
+  "accept": [
+   "Food Processing NC III",
+   "Food Processing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pwede po ba mag-assess sa Food Processing NC IV",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "production supervisor sa food company",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "superbisor ng packaging sa pabrika ng pagkain",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinuno ng produksyon sa planta ng pagkain",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagsali sa HACCP team ng planta",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-audit ng food safety sa production",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "taste test at sensory evaluation ng bagong produkto",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagtiyak na ligtas ang pagkain habang ikinakarga at ibinibiyahe",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-set up ng production process at packaging system",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagsubaybay sa trabaho ng mga tauhan at pagpapabuti ng proseso sa planta",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "HACCP",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "superbisor pabrika pagkain",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "food prosesing nc4",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "hasap team food plant",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 taon na ako sa pabrika ng pagkain at superbisor na ako, gusto ko ng NC IV",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC III na ako sa food processing, next na NC IV",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang may hawak ng buong produksyon ng isang pabrika ng meryenda",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong maging food safety head ng isang malaking food manufacturer",
+  "accept": [
+   "Food Processing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Slaughtering Operations Large Animal NC II po",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "matadero ng baka sa katayan",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "butcher sa slaughterhouse ng baka at kalabaw",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging magkakatay sa katayan ng munisipyo",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II",
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagkatay ng baka nang tama at malinis",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagbalat at paghati ng karne ng kalabaw",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghasa at tamang paghawak ng kutsilyo sa katayan",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II",
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-stun at pag-bleed ng baka bago katayin",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglinis ng lamang-loob at pagtimbang ng carcass",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II",
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-inspect ng karne bago ilabas sa palengke",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II",
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "katay baka",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "butcher ng baka",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "slaugter house butcher",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II",
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "matadro ng baka",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 taon na akong matadero sa katayan ng bayan, kailangan ko ng NC II",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II",
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "experienced na ako sa pagkatay ng baka pag may fiesta, gusto ko ng certification",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa katayan na pinagkukunan ng karne ng palengke namin",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II",
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may nagbebenta ng beef sa amin, gusto kong ako na ang mag-supply mula sa sarili kong katay",
+  "accept": [
+   "Slaughtering Operations (Large Animal) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Slaughtering Operations Swine NC II, kailan ang next batch",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "matadero ng baboy",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "butcher ng baboy sa slaughterhouse",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-katay ng baboy sa katayan ng bayan",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagkatay ng baboy at pagtanggal ng balahibo",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "scalding at dehairing ng baboy",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghati ng baboy sa liempo, kasim at pigue",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglinis ng bituka at lamang-loob ng baboy",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "humane na pagkatay ng baboy ayon sa regulasyon",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-hang at pag-chill ng carcass ng baboy",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "katay baboy",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pig butcher",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "magkatay ng baboi",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "slautering swine nc2",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi akong tinatawag pagkakatay ng baboy sa mga handaan, gusto ko ng NC II",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 years na akong butcher ng baboy sa palengke, pa-assess po",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may babuyan kami, gusto kong ako na ang magproseso ng karne bago ibenta",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtitinda kami ng lechon, gusto kong ako na ang maghanda ng baboy from the start",
+  "accept": [
+   "Slaughtering Operations (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Pyrotechnics NC II po, may training sa Bulacan",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ng paputok",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pyrotechnician sa fireworks display",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "katulong na pyrotechnician sa pagawaan ng paputok",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggawa ng kwitis at fountain",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-imbak ng pulbura at kemikal nang ligtas",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggawa ng mitsa ng paputok",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggawa ng tubo o casing ng paputok gamit ang papel",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpuno ng kemikal sa casing at pagbalot ng paputok",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "learn safe handling ng chemicals for fireworks",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paputok",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fireworks",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pyrotecnics nc2",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumawa ng paputk",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "lumaki ako sa Bocaue at gumagawa na kami ng paputok, gusto ko ng NC II",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong helper sa fireworks factory, kailangan daw ng certificate",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "tuwing Bagong Taon, pangarap kong ako ang gumagawa ng mga pailaw sa langit",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-supply ng fireworks display sa mga kasal at pista",
+  "accept": [
+   "Pyrotechnics NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Trainers Methodology Level I In-Company Trainer po",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "in-company trainer sa factory",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "training officer sa kompanya",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tagasanay ng mga empleyado sa planta",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagtuturo sa mga bagong empleyado habang mismong nagtatrabaho sa planta",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumawa ng job analysis bago magplano ng training",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-conduct ng on-the-job training sa mga staff",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagtasa sa natutunan ng empleyado pagkatapos ng pagsasanay",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghahanda ng training plan at materials para sa workplace",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagtuturo ng tamang paggamit ng makina sa mga bagong hire",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "TM1 in-company",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagasanay sa kompanya",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "trainors methodology in company",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "workplace trainor",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "superbisor ako at ako na ang nagtuturo sa mga bago, gusto ko ng TM para sa kompanya",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 years na akong HR training officer, kailangan ko ng TM1 in-company",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ng kompanya namin na may sariling tagapagsanay sa loob, ako ang napili",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mas gusto kong nagtuturo kaysa nag-ooperate ng makina sa planta",
+  "accept": [
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Trainers Methodology Level I Trainer/Assessor, kailan po ang batch",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging TESDA trainer",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "competency assessor ng TESDA",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "TVET instructor sa technical school",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagtuturo ng kurso sa training center at paggawa ng session plan",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-facilitate ng hands-on na klase sa vocational school",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-supervise ng mga trainee sa OJT o work immersion",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagsasagawa ng competency assessment sa mga kandidato",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-aalaga ng workshop at mga kagamitan sa training center",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggamit ng presentation at video sa pagtuturo ng mga trainee",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "TM1",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)",
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagasanay sa TESDA",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "trainers metodology lvl 1",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)",
+   "Trainers Methodology Level I (In-Company Trainer)"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tesda traynor",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa Cookery at 5 years sa industry, gusto ko nang magturo, kailangan ko ng TM1",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagtuturo ng welding sa barangay, gusto kong maging certified na trainer at assessor",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ibahagi ang galing ko sa electrical sa mga kabataan sa training center",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong maging guro ng mga gustong matuto ng hanapbuhay na gamit ang kamay",
+  "accept": [
+   "Trainers Methodology Level I (Trainer/Assessor)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ }
+]

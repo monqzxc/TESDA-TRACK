@@ -89,10 +89,12 @@ beforeEach(() => {
   sent = []
   order = []
   useFinderStore.getState().reset()
+  window.localStorage.clear()
   window.sessionStorage.clear()
 })
 
 afterEach(() => {
+  window.localStorage.clear()
   delete window.TspTrackerHost
   delete window.TspTracker
   vi.useRealTimers()
@@ -125,6 +127,37 @@ describe('signing in from TSP’s WebView', () => {
     expect(readies()[0].reason).toBe('initial')
   })
 
+  it('keeps the page closed while checking whether TSP sign-in is enabled', async () => {
+    serveTsp()
+    let release!: () => void
+    const pending = new Promise<void>((resolve) => {
+      release = resolve
+    })
+    server.use(
+      http.get('*/api/v1/client-config', async () => {
+        await pending
+        return HttpResponse.json({
+          carto_key: '',
+          routing_enabled: false,
+          skills_bridge_enabled: false,
+          tsp_sign_in: true,
+        })
+      }),
+    )
+    installHost()
+    renderApp('/tsp/webview')
+    expect(await screen.findByText('Preparing your session…')).toBeInTheDocument()
+    expect(
+      screen.queryByRole('heading', { name: 'Find your TESDA qualification' }),
+    ).not.toBeInTheDocument()
+    expect(readies()).toHaveLength(0)
+    release()
+    await waitFor(() => expect(readies()).toHaveLength(1))
+    expect(
+      await screen.findByRole('heading', { name: 'Find your TESDA qualification' }),
+    ).toBeInTheDocument()
+  })
+
   it('200 signs in and calls signedIn', async () => {
     const calls = serveTsp()
     installHost()
@@ -135,6 +168,44 @@ describe('signing in from TSP’s WebView', () => {
     expect(screen.queryByText(/without signing in/)).not.toBeInTheDocument()
   })
 
+  it('blocks the page and retries clearing a previous session before asking for a code', async () => {
+    const user = userEvent.setup()
+    const calls = serveTsp()
+    server.use(http.delete('*/api/v1/auth/session', () => HttpResponse.error()))
+    installHost()
+    renderApp('/tsp/webview')
+    expect(await screen.findByText(/couldn't end the previous session/)).toBeInTheDocument()
+    expect(
+      screen.queryByRole('heading', { name: 'Find your TESDA qualification' }),
+    ).not.toBeInTheDocument()
+    expect(readies()).toHaveLength(0)
+    expect(calls.session).toBe(0)
+
+    server.use(http.delete('*/api/v1/auth/session', () => new HttpResponse(null, { status: 204 })))
+    await user.click(screen.getByRole('button', { name: 'Sign in again' }))
+    await waitFor(() => expect(readies()).toHaveLength(1))
+    expect(readies()[0].reason).toBe('retry')
+    expect(
+      await screen.findByRole('heading', { name: 'Find your TESDA qualification' }),
+    ).toBeInTheDocument()
+  })
+
+  it('keeps the page blocked when TSP logout cannot clear the session', async () => {
+    serveTsp()
+    installHost()
+    renderApp('/tsp/webview')
+    await answerReady(0)
+    await waitFor(() => expect(types()).toContain('tsp.tracker.signed_in'))
+    server.use(http.delete('*/api/v1/auth/session', () => HttpResponse.error()))
+    deliver({ type: 'tsp.tracker.logout' })
+    expect(await screen.findByText(/couldn't end the previous session/)).toBeInTheDocument()
+    expect(
+      screen.queryByRole('heading', { name: 'Find your TESDA qualification' }),
+    ).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Sign in again' })).not.toBeInTheDocument()
+    expect(readies()).toHaveLength(1)
+  })
+
   it('202 shows consent; accepting signs in', async () => {
     const user = userEvent.setup()
     const calls = serveTsp({ session: consentRequired })
@@ -142,7 +213,9 @@ describe('signing in from TSP’s WebView', () => {
     renderApp('/tsp/webview')
     await answerReady(0)
     expect(
-      await screen.findByRole('heading', { name: 'Save your Skill Passport details in TESDA-TRACK?' }),
+      await screen.findByRole('heading', {
+        name: 'Save your Skill Passport details in TESDA-TRACK?',
+      }),
     ).toBeInTheDocument()
     expect(
       screen.getByText('Your name, your ULI, and a link to your Skill Passport account'),
@@ -150,13 +223,17 @@ describe('signing in from TSP’s WebView', () => {
     expect(screen.getByText('Your skills')).toBeInTheDocument()
     expect(screen.getByText('Your town or city, province, region and country')).toBeInTheDocument()
     expect(
-      screen.getByText("We don't keep your phone number, email, birth date, sex or street address."),
+      screen.getByText(
+        "We don't keep your phone number, email, birth date, sex or street address.",
+      ),
     ).toBeInTheDocument()
     expect(screen.queryByText('Your education')).not.toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Agree and continue' }))
     await waitFor(() => expect(types()).toContain('tsp.tracker.signed_in'))
     expect(calls.consent).toEqual([{ pending_id: 'pending-1', accept: true }])
-    expect(screen.queryByRole('heading', { name: /Save your Skill Passport/ })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('heading', { name: /Save your Skill Passport/ }),
+    ).not.toBeInTheDocument()
   })
 
   it('declining stays guest', async () => {
@@ -170,7 +247,9 @@ describe('signing in from TSP’s WebView', () => {
     await answerReady(0)
     await user.click(await screen.findByRole('button', { name: 'Not now' }))
     await waitFor(() =>
-      expect(screen.queryByRole('heading', { name: /Save your Skill Passport/ })).not.toBeInTheDocument(),
+      expect(
+        screen.queryByRole('heading', { name: /Save your Skill Passport/ }),
+      ).not.toBeInTheDocument(),
     )
     expect(calls.consent).toEqual([{ pending_id: 'pending-1', accept: false }])
     expect(types()).not.toContain('tsp.tracker.signed_in')
@@ -205,7 +284,11 @@ describe('signing in from TSP’s WebView', () => {
     installHost()
     renderApp('/tsp/webview')
     await waitFor(() => expect(readies()).toHaveLength(1))
-    deliver({ type: 'tsp.tracker.handoff_failed', state: readies()[0].nonce, reason: 'not_signed_in' })
+    deliver({
+      type: 'tsp.tracker.handoff_failed',
+      state: readies()[0].nonce,
+      reason: 'not_signed_in',
+    })
     expect(await screen.findByText(/without signing in/)).toBeInTheDocument()
     expect(types()).not.toContain('tsp.tracker.error')
     expect(screen.queryByRole('button', { name: 'Sign in again' })).not.toBeInTheDocument()

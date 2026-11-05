@@ -5,8 +5,8 @@ from tesda_track.models import Qualification, QualificationEmbedding, TrainingPr
 from tesda_track.services import embeddings
 from tesda_track.services.analysis import hybrid_score, semantic_strength, z_scores
 
-# Shares "install", "operating", "systems" and "software" with Computer Systems Servicing, but no catalog keyword.
-HARDWARE_GOAL = "I install operating systems and software"
+# Shares words with Computer Systems Servicing, but no keyword or complete catalog activity phrase.
+HARDWARE_GOAL = "I install software and operating systems"
 
 
 def test_sync_embeds_every_active_qualification_once(session, semantic):
@@ -54,6 +54,18 @@ def test_without_semantic_search_unfamiliar_wording_finds_nothing(client):
     assert profile["source"] == "rules" and profile["profile"]["career_goal"] is None
     response = client.post("/api/v1/analysis/matches", json={"query": HARDWARE_GOAL, "profile": profile["profile"]})
     assert response.json()["matches"] == []
+
+
+def test_without_semantic_search_literal_catalog_skill_still_matches(client):
+    query = "I install operating systems and software"
+    analysis = client.post("/api/v1/analysis/goal", json={"query": query}).json()
+    assert analysis["source"] == "rules"
+    assert analysis["profile"]["career_goal"] == "Computer Technician"
+    response = client.post("/api/v1/analysis/matches", json={"query": query, "profile": analysis["profile"]})
+    assert response.status_code == 200
+    match = response.json()["matches"][0]
+    assert match["qualification"]["code"] == "CSS-NC-II"
+    assert match["reason"] == "Matches a catalog job or skill: Install operating systems and software."
 
 
 def test_semantic_search_matches_goals_that_share_no_keywords(client, semantic):

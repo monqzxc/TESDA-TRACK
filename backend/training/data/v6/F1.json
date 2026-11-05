@@ -1,0 +1,6609 @@
+[
+ {
+  "query": "may training ba kayo ng Agricultural Crops Production NC I",
+  "accept": [
+   "Agricultural Crops Production NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging trabahador sa bukid",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "katulong ng magsasaka sa sakahan",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "farm helper ang gusto kong trabaho, kahit entry level lang",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magbunot ng damo at magdilig ng mga punla",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tumutulong ako maglagay ng lupa sa mga plastic bag ng punla sa nursery",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong tumulong sa pag-harvest ng mais at palay",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II",
+   "Grains Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagabukas ng patubig at tagalinis ng kanal sa palayan",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "kaya kong mag-spray at maglagay ng fertilizer sa gulayan basta may nag-uutos",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magtanim ng gulay, wala pa akong alam talaga",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "farm helper",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagbubukid",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II",
+   "Agricultural Crops Production NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg wrk sa farm kht helper lng",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pede b aq mag aral ng pagtatanim khit d aq tapos",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tatlong taon na akong upahang manggagawa sa bukid, gusto kong magka-NC",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong farm laborer sa hacienda, pwede ba ako ma-assess",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lumaki ako sa probinsya at lagi akong tumutulong sa taniman ng lolo ko",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "walang trabaho ngayon, may nag-aalok ng arawang upa sa taniman ng gulay, ano ang pwede kong aralin",
+  "accept": [
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ACP NC II po, may slot pa ba",
+  "accept": [
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "magsasaka ng gulay sa bukid ang gusto ko",
+  "accept": [
+   "Agricultural Crops Production NC II",
+   "Agricultural Crops Production NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-alaga ng nursery ng mga punla",
+  "accept": [
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "katiwala sa sakahan",
+  "accept": [
+   "Agricultural Crops Production NC II",
+   "Agricultural Crops Production NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magpasibol ng buto sa seedling tray bago itanim",
+  "accept": [
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-transplant ng punla ng kamatis at talong sa garden plot",
+  "accept": [
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aalaga ako ng tanim, naglalagay ng abono at nagdidilig araw-araw",
+  "accept": [
+   "Agricultural Crops Production NC II",
+   "Agricultural Crops Production NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-harvest at mag-sort ng gulay bago dalhin sa palengke",
+  "accept": [
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto kung kailan dapat anihin ang mga pananim at paano iimbak",
+  "accept": [
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtatanim ako ng pechay at sitaw sa likod-bahay, gusto ko pang matuto",
+  "accept": [
+   "Agricultural Crops Production NC II",
+   "Agricultural Crops Production NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "magtanim",
+  "accept": [
+   "Agricultural Crops Production NC II",
+   "Agricultural Crops Production NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "crop farming",
+  "accept": [
+   "Agricultural Crops Production NC II",
+   "Agricultural Crops Production NC I",
+   "Agricultural Crops Production NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pano mag tanem ng gulay pra mabenta",
+  "accept": [
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "agri crops nc2 schedul po",
+  "accept": [
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "sampung taon na akong nagtatanim ng gulay sa Benguet, gusto ko ng NC II",
+  "accept": [
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "farm worker ako for 5 years sa isang vegetable farm, pa-assess po ako",
+  "accept": [
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may kalahating ektaryang lupa ang pamilya namin na nakatiwangwang, gusto ko itong pagtamnan",
+  "accept": [
+   "Agricultural Crops Production NC II",
+   "Agricultural Crops Production NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahal ang gulay sa palengke kaya gusto kong mag-produce ng sarili naming supply",
+  "accept": [
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may Agricultural Crops Production NC III ba sa inyong training center",
+  "accept": [
+   "Agricultural Crops Production NC III"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging may-ari ng sariling sakahan",
+  "accept": [
+   "Agricultural Crops Production NC III",
+   "Horticulture NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "leading hand o foreman ng mga trabahador sa farm",
+  "accept": [
+   "Agricultural Crops Production NC III",
+   "Horticulture NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "malayang magsasaka na may sariling taniman ng mais",
+  "accept": [
+   "Agricultural Crops Production NC III",
+   "Grains Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-araro at maghanda ng lupa bago magtanim",
+  "accept": [
+   "Agricultural Crops Production NC III",
+   "Horticulture NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng fertilizer program para sa buong taniman",
+  "accept": [
+   "Agricultural Crops Production NC III",
+   "Horticulture NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano maghalo at mag-spray ng herbicide nang ligtas",
+  "accept": [
+   "Agricultural Crops Production NC III",
+   "Horticulture NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-iipon ako ng binhi pagkatapos ng ani at sini-store ko para sa susunod na taniman",
+  "accept": [
+   "Agricultural Crops Production NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "problema namin ang daga sa taniman, gusto kong matutong kontrolin ito",
+  "accept": [
+   "Agricultural Crops Production NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-manage ng harvesting ng mani at mais sa malawak na lupa",
+  "accept": [
+   "Agricultural Crops Production NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "farm owner",
+  "accept": [
+   "Agricultural Crops Production NC III",
+   "Horticulture NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "sariling sakahan",
+  "accept": [
+   "Agricultural Crops Production NC III",
+   "Horticulture NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto ko mging independent na mgsasaka",
+  "accept": [
+   "Agricultural Crops Production NC III",
+   "Horticulture NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pano mgplano ng pag aani at pag iimbak ng ani",
+  "accept": [
+   "Agricultural Crops Production NC III",
+   "Horticulture NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "farm supervisor ako ng 6 years, gusto ko ma-certify ng NC III",
+  "accept": [
+   "Agricultural Crops Production NC III",
+   "Horticulture NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa pagtatanim, gusto ko nang umakyat sa susunod na antas",
+  "accept": [
+   "Agricultural Crops Production NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "minana ko ang lupa ng tatay ko at ako na ang magpapatakbo ng taniman",
+  "accept": [
+   "Agricultural Crops Production NC III",
+   "Horticulture NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako na ang mag-decide kung ano itatanim at kailan, hindi na lang utusan",
+  "accept": [
+   "Agricultural Crops Production NC III",
+   "Horticulture NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Agri Machinery Operation NC II, kailan ang next batch",
+  "accept": [
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tagamaneho ng traktora sa bukid",
+  "accept": [
+   "Agricultural Machinery Operation NC II",
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng harvester sa farm",
+  "accept": [
+   "Agricultural Machinery Operation NC II",
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng makinang panggiik at patuyuan ng palay",
+  "accept": [
+   "Agricultural Machinery Operation NC II",
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magpaandar ng kuliglig at mag-araro gamit ito",
+  "accept": [
+   "Agricultural Machinery Operation NC II",
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-operate ng four-wheel tractor para sa land prep",
+  "accept": [
+   "Agricultural Machinery Operation NC II",
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapatakbo ako ng corn sheller tuwing anihan",
+  "accept": [
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gamitin ang grass cutter at power sprayer sa taniman",
+  "accept": [
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magpatakbo ng mechanical dryer ng mais at palay",
+  "accept": [
+   "Agricultural Machinery Operation NC II",
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "kaya kong mag-operate ng water pump at tiller sa gulayan",
+  "accept": [
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "traktora",
+  "accept": [
+   "Agricultural Machinery Operation NC II",
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "farm machine operator",
+  "accept": [
+   "Agricultural Machinery Operation NC II",
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg drive ng tractor s bukid",
+  "accept": [
+   "Agricultural Machinery Operation NC II",
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "operetor ng makina sa sakahan",
+  "accept": [
+   "Agricultural Machinery Operation NC II",
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong nagmamaneho ng traktora sa kooperatiba, gusto kong magka-NC II",
+  "accept": [
+   "Agricultural Machinery Operation NC II",
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught ako sa pag-operate ng farm machines, need ko ng certificate para sa trabaho",
+  "accept": [
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "bumili ang samahan namin ng bagong traktora pero walang marunong gumamit",
+  "accept": [
+   "Agricultural Machinery Operation NC II",
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ayokong magbungkal ng lupa nang mano-mano, gusto ko yung makina na lang ang gamit",
+  "accept": [
+   "Agricultural Machinery Operation NC II",
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "4-wheel tractor servicing NC III po, saan pwede mag-enroll",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekaniko ng traktora",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "senior mechanic ng mga farm tractor",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tagaayos ng sirang traktora sa aming bayan",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-overhaul ng makina ng traktora",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-troubleshoot ng electrical wiring ng tractor",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang hydraulic ng traktora kapag hindi na umaangat ang araro",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-repair ng transmission at clutch ng four-wheel tractor",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapalit ako ng bearing at nag-aayos ng ehe ng traktora",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-diagnose kung bakit ayaw mag-start ng tractor",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tractor mechanic",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "ayos traktora",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekanko ng tracktor",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tractor repar nc3 meron b",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "walong taon na akong mekaniko ng traktora sa hacienda pero walang papeles",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may experience ako sa diesel engine repair ng mga tractor, gusto ko ng NC III",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "laging nasisira ang traktora ng kooperatiba at sa bayan pa ipinapaayos",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig ako sa makina at lumaki sa farm, gusto ko yung pag-aayos ng malalaking farm equipment",
+  "accept": [
+   "Agricultural Machinery Servicing (4-Wheel Tractor) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may kurso ba kayo ng Agroentrepreneurship NC II",
+  "accept": [
+   "Agroentrepreneurship NC II"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "marketing coordinator ng mga produkto ng farm",
+  "accept": [
+   "Agroentrepreneurship NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapag-ugnay ng produksyon sa sakahan",
+  "accept": [
+   "Agroentrepreneurship NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging negosyanteng magsasaka",
+  "accept": [
+   "Agroentrepreneurship NC II",
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong malaman kung anong pananim ang may magandang presyo sa merkado",
+  "accept": [
+   "Agroentrepreneurship NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng production plan para sa gulayan namin, ilang kilo at kailan aanihin",
+  "accept": [
+   "Agroentrepreneurship NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtatala ako ng gastos at kita ng aming bukid",
+  "accept": [
+   "Agroentrepreneurship NC II",
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano ibenta direkta sa mga restaurant ang ani namin para mas malaki ang kita",
+  "accept": [
+   "Agroentrepreneurship NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-budget ng puhunan para sa susunod na taniman",
+  "accept": [
+   "Agroentrepreneurship NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-research kung ano ang demand ng mga buyer bago magtanim",
+  "accept": [
+   "Agroentrepreneurship NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "agribusiness",
+  "accept": [
+   "Agroentrepreneurship NC II",
+   "Agroentrepreneurship NC III",
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "negosyong pang-agrikultura",
+  "accept": [
+   "Agroentrepreneurship NC II",
+   "Agroentrepreneurship NC III",
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "agro entreprenuership nc2",
+  "accept": [
+   "Agroentrepreneurship NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pano kumita s pgbebenta ng ani nmin",
+  "accept": [
+   "Agroentrepreneurship NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagbebenta ng aming gulay sa bayan, gusto kong magpa-assess",
+  "accept": [
+   "Agroentrepreneurship NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may small farm business ako for 4 years, gusto ko ng certificate sa agri business",
+  "accept": [
+   "Agroentrepreneurship NC II",
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi kaming nalulugi kasi binabarat ng middleman ang ani namin",
+  "accept": [
+   "Agroentrepreneurship NC II",
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "graduate ako ng business pero gusto kong mag-farming na may kita talaga",
+  "accept": [
+   "Agroentrepreneurship NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Agroentrepreneurship NC III po, ano requirements",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinuno ng samahan ng mga magsasaka",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "farmer leader sa aming cooperative",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging lider ng kooperatiba ng mga magsasaka",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nakikipag-usap ako sa munisipyo at mga mamimili para sa aming samahan",
+  "accept": [
+   "Agroentrepreneurship NC III",
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinisiguro ko na tuloy-tuloy ang supply ng gulay sa buyer namin",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "hawak ko ang pondo at libro ng aming samahan ng magsasaka",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong i-organize ang mga magsasaka para sabay-sabay magbenta, collective marketing",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinihikayat ko ang mga kasapi na umattend ng mga pagsasanay",
+  "accept": [
+   "Agroentrepreneurship NC III",
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagko-consolidate ako ng ani ng mga kasama ko para isang deliver lang sa supermarket",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "lider magsasaka",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "farmers coop leader",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "agroentrep nc3 skedyul",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pnu ako ng asosasyon ng mgsasaka, anu pwede aralin",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "anim na taon na akong presidente ng samahan ng magsasaka, gusto kong magka-NC III",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa agroentrepreneurship, next level na ba ako",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong pagkaisahin ang mga magsasaka sa barangay para hindi kami madaya sa presyo",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako lagi ang inuutusan ng mga kapitbahay naming farmers na makipag-negotiate sa buyer",
+  "accept": [
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Agroentrepreneurship NC IV, saan may assessment",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging facilitator ng agroenterprise sa mga probinsya",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapagsanay ng mga magsasaka sa pagnenegosyo",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "community organizer para sa farm enterprises",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtuturo ako sa mga magsasaka kung paano magnegosyo ng kanilang ani",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagfa-facilitate ako ng meeting ng farmers, LGU at private buyers",
+  "accept": [
+   "Agroentrepreneurship NC IV",
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong pakilusin ang buong komunidad para magtayo ng negosyong pang-agrikultura",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagmo-monitor at evaluate ako ng mga agri projects ng mga farmer groups",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng ulat kung umaasenso ba ang mga negosyo ng mga magsasaka",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-design ng training para sa farmers sa marketing at pricing",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "agri facilitator",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagsasanay ng magsasaka",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "agroentrepreneurshp nc4 trainer",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pasilitator ng mgsasaka sa negosyo",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 years na ako sa NGO na tumutulong sa farmers mag-market, need ko ng NC IV",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong extension worker sa munisipyo, gusto kong ma-certify bilang facilitator",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong umikot sa mga baryo para turuan ang mga magsasaka na kumita nang mas malaki",
+  "accept": [
+   "Agroentrepreneurship NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong i-transform ang buong barangay namin into an agri business hub",
+  "accept": [
+   "Agroentrepreneurship NC IV",
+   "Agroentrepreneurship NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Animal Health Care and Management NC III po, may training ba",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tekniko sa kalusugan ng mga hayop",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "vet tech sa livestock farm",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "katulong ng beterinaryo sa bukid ng baka at baboy",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magturok ng bakuna at bitamina sa baboy at baka",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-restrain ng baka nang ligtas bago gamutin",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "kumukuha ako ng dugo at dumi ng hayop para ipasuri sa laboratoryo",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-store ng vaccines at gamot ng hayop sa tamang temperatura",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ipatupad ang paglilinis at disinfection sa farm para hindi pasukin ng sakit",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagde-deworm ako ng mga kambing at kalabaw sa barangay",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gamot sa hayop",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "animal health tech",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "beterenaryo asistant",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pano mg vaccinate ng baboy at manok, may kurso b",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pitong taon na akong tagabakuna ng hayop sa munisipyo, gusto kong magka-NC III",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "farm hand ako na laging nag-iinject ng gamot sa pigs, pwede ba ako ma-assess",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "maraming alagang hayop ang namamatay sa amin dahil walang marunong gumamot",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "hindi ako nakapag-vet med pero gusto ko pa ring mag-alaga ng may sakit na hayop",
+  "accept": [
+   "Animal Health Care and Management NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Animal Production Poultry NC II, open pa ba enrollment",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tagapag-alaga sa manukan",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "broiler raiser sa probinsya",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manggagawa sa manukang pang-itlog",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-alaga ng sisiw hanggang lumaki",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilinis at nagdi-disinfect ako ng poultry house bago dumating ang bagong batch",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aalaga ako ng manok na nangingitlog at nangongolekta ng itlog araw-araw",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-trim ng tuka ng mga pullet",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magpalaki ng manok na karne para ibenta sa palengke",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aadjust ako ng ilaw at temperatura sa brooder ng mga sisiw",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "manukan",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "broiler farming",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pg aalaga ng manok pra sa itlog",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "poltry farm worker nc2",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong nagtatrabaho sa manukan ng broiler, gusto kong magpa-assess",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may backyard poultry ako for years, need ko ng NC II para sa abroad",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may maliit na lupa sa likod ng bahay, balak kong gawing alagaan ng daan-daang manok",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-supply ng itlog sa mga sari-sari store sa bayan namin",
+  "accept": [
+   "Animal Production (Poultry-Chicken) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may Animal Production Ruminants NC II ba kayo",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tagapag-alaga ng baka at kambing",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "goat raiser sa probinsya",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "trabahador sa rantso ng baka",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapastol ako ng kalabaw at baka araw-araw",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtanim ng napier grass para pakain sa kambing",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magpalahi ng kambing at mag-asikaso ng nanganganak",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilinis ako ng kulungan at nag-aayos ng kural ng mga baka",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magpataba ng baka para ibenta bilang karne",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aalaga ako ng dairy goats at kumukuha ng gatas",
+  "accept": [
+   "Animal Production (Ruminants) NC II",
+   "Milking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "kambingan",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "cattle raising",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pg aalaga ng baka at kmbing",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "livestok raiser nc2 po",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mula pagkabata ay nag-aalaga na ako ng baka, gusto kong magkaroon ng sertipiko",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "7 years akong cattle farm hand sa ranch, pwede na ba ako mag-assessment",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may namanang kalabaw at dalawang baka, gusto kong paramihin ang mga ito",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "malawak ang damuhan sa lupa namin, sayang kung walang hayop na nagpapastol",
+  "accept": [
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Swine production NC II, kailan ang schedule",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging magbababoy",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "swine technician sa malaking piggery",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapag-alaga sa babuyan",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magpaanak ng inahing baboy at mag-alaga ng biik",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-wean ng piglets at pakainin nang tama",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapataba ako ng baboy para ibenta sa katayan",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aalaga ako ng barako at inahin para sa breeding",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilinis ako ng kulungan ng baboy at nag-a-apply ng disinfectant para iwas ASF",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-maintain ang tamang temperatura at kalinisan ng piggery",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "babuyan",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "piggery",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mg aalaga aq ng baboy pra kumita",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "swain raiser nc2",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "anim na taon na akong caretaker sa babuyan, gusto kong magka-NC II",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may backyard piggery ako ng 10 inahin, gusto ko ma-certify",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "naubos ang mga baboy namin dahil sa sakit, gusto kong matuto bago mag-umpisa ulit",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-supply ng buhay na baboy sa mga meat shop sa bayan",
+  "accept": [
+   "Animal Production (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Aquaculture grow-out NC II, may batch ba this month",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tagapag-alaga ng palaisdaan",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "fishpond caretaker ng bangus",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "katiwala sa sugpuan",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong maghanda ng palaisdaan, magpatuyo at maglagay ng apog",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong pumili ng tamang site para sa fishpond",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aalaga ako ng similya ng bangus sa nursery pond bago ilipat",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapakain ako ng bangus at hipon at nagmo-monitor ng tubig sa pond",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-ani ng isda sa palaisdaan at mag-ayos bago ibenta",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-culture ng isda sa fish cage sa lawa",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "palaisdaan",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fishpond",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pg aalga ng bangus s pond",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "aquakultur grow out",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagtatrabaho sa palaisdaan ng bangus sa Pangasinan, gusto kong magpa-assess",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "8 years na akong fishpond worker, kailangan ko ng NC II",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may palaisdaan ang tiyuhin ko na walang nag-aasikaso, gusto kong ako na",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-business ng isda pero hindi panghuhuli, kundi pag-aalaga",
+  "accept": [
+   "Aquaculture (Grow-Out Operation) NC II",
+   "Aquaculture (Tilapia Culture) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may kurso ba ng Aquaculture Hatchery Operation NC II",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "trabahador sa hatchery ng isda",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "hatchery technician ng hipon at bangus",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapagpalahi ng isda para sa similya",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aalaga ako ng mga inahing isda at pinapangitlog sila",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-culture ng plankton at rotifers bilang pagkain ng larvae",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahanda ako ng mga tangke at nagsasala ng tubig dagat sa hatchery",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapakain ako ng fry at chine-check ang health ng stock araw-araw",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto kung paano mag-ani at magbilang ng fingerlings para ibenta",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-produce ng sariling fry ng bangus sa hatchery",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "fish hatchery",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "similya",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pnu mgpaitlog ng isda s hatchery",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "hatcery operator nc2",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong katulong sa hatchery ng hipon, gusto kong magkaroon ng NC II",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may experience ako sa fry production pero walang certificate",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahal ang binibili naming similya, gusto kong kami na lang ang magparami",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-supply ng fingerlings sa mga fishpond owners sa probinsya",
+  "accept": [
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Tilapia culture NC II po, saan available",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging magtitilapia",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II",
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tilapia farm technician sa Laguna",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapag-alaga ng tilapia sa kulungan sa lawa",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II",
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong maghanda ng pond bago maglagay ng tilapia",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II",
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-breed ng tilapia at mag-produce ng fingerlings",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II",
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapalaki ako ng tilapia sa fishpond hanggang pwede nang ibenta",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II",
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-sex reverse ng tilapia fry para puro lalaki",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II",
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong malaman kung gaano karaming pakain ang kailangan ng tilapia bawat araw",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagmo-monitor ako ng water quality sa tilapia ponds namin",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II",
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tilapia",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tilapia farming",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II",
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pg aalaga ng tilpia sa bakuran",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tilapya culture nc 2",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may tatlong palaisdaan ako ng tilapia, gusto kong magpa-assess",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II",
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "4 years na akong worker sa tilapia hatchery, need ko ng NC",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II",
+   "Aquaculture (Hatchery Operation) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may maliit na sapa sa lupa namin, gusto kong pag-alagaan ng isda para may ulam at pambenta",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II",
+   "Aquaculture (Grow-Out Operation) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-start ng backyard fish tank business, yung tilapia ang ibebenta",
+  "accept": [
+   "Aquaculture (Tilapia Culture) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Artificial Insemination Large Ruminants NC II, may training ba",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging AI technician ng baka at kalabaw",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "artificial inseminator sa barangay",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II",
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapagpalahi ng baka gamit ang semilya",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong tumingin kung nasa heat na ang baka",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-thaw ng frozen semen at mag-load sa AI gun",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagsasagawa ako ng pagpapalahi sa kalabaw nang walang bulog",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng records at reports ng mga baka na na-AI ko",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano ihanda ang liquid nitrogen tank at kagamitan bago mag-AI sa baka",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-AI ng dairy cattle para gumanda ang lahi",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "AI sa baka",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpapalahi ng kalabaw",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II",
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "artipisyal insemination ng baka",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pnu mag a.i ng kalabaw",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "anim na taon na akong nag-a-AI ng baka sa munisipyo, gusto kong magka-NC II",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "trained ako ng LGU sa AI ng cattle pero walang NC, pwede ma-assess",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "maliliit ang mga baka sa amin, gusto kong pagandahin ang lahi nila",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "walang bulugan sa barangay namin kaya hirap magpabuntis ng baka",
+  "accept": [
+   "Artificial Insemination (Large Ruminants) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may Artificial Insemination Swine NC II ba sa TESDA",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "swine AI technician sa piggery",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapagpalahi ng baboy gamit ang semilya ng barako",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "swine breeding tech",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong kumuha ng semilya ng barako",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-check kung ready na sa AI ang gilt",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-i-insemina ako ng inahing baboy gamit ang catheter",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-e-extend at nag-store ako ng boar semen sa tamang temperatura",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng tala ng mga inahing nabuntis pagkatapos ng AI",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano malalaman kung nasa heat na ang sow bago i-AI",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "AI sa baboy",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "semilya ng barako",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "swine artipisyal insemenation",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pg a.i ng inahin na baboy",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nag-a-AI ng baboy sa mga backyard raiser, gusto kong magka-sertipiko",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 years na ako sa breeding section ng piggery, pa-assess po sa swine AI",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ayaw ko nang magpahiram ng barako sa kapitbahay, gusto ko na lang mag-AI",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-offer ng serbisyo sa mga nag-aalaga ng inahin sa barangay para mabuntis sila",
+  "accept": [
+   "Artificial Insemination (Swine) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Bamboo Processing NC II po, engineered bamboo",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "manggagawa sa pagawaan ng produktong kawayan",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "bamboo processor sa factory",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng makina sa pagproseso ng kawayan",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magbiyak at magkayas ng kawayan para gawing slat",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-treat ng bamboo para hindi bukbukin",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapatuyo ako ng kawayan sa kiln bago gamitin",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagla-laminate ako ng bamboo strips para gawing board at flooring",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng tabla mula sa pinagdikit-dikit na kawayan",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagsa-sanding at nagva-varnish ako ng bamboo panels",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "engineered bamboo",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "kawayang tabla",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "bambo prosesing nc2",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pg gawa ng plywood n kawayan",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pitong taon na akong nagtatrabaho sa pagawaan ng kawayan, gusto kong magpa-assess",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may experience ako sa bamboo laminating machine, need ko ng certificate",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "maraming kawayan sa amin pero hilaw lang naibebenta, gusto kong gawing produkto",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-supply ng eco-friendly na bamboo flooring sa mga construction",
+  "accept": [
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may Bamboo Production NC II ba sa probinsya",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "magsasaka ng kawayan",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "bamboo nursery worker",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagaputol at tagaani ng kawayan",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magpatubo ng punla ng kawayan mula sa sanga",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtatanim ako ng bamboo sa gilid ng ilog para hindi gumuho ang lupa",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilinis at nagpapaganda ako ng mga lumang kumpol ng kawayan",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano malalaman kung mature na ang kawayan bago i-harvest",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng taniman ng kawayan sa bundok namin",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahakot at nagso-sort ako ng harvested bamboo poles",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "kawayan",
+  "accept": [
+   "Bamboo Production NC II",
+   "Bamboo Processing (Engineered-Bamboo) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "bamboo farm",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pg tanim ng kwayan",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "bamboo prodaksyon nc2",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nag-aani ng kawayan sa bundok, gusto kong magka-NC II",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "farm worker ako sa bamboo plantation for 3 years, pa-assess po",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "maraming humihingi ng poste ng kawayan sa amin, gusto kong paramihin ang tanim namin",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-supply ng bamboo poles sa mga furniture makers",
+  "accept": [
+   "Bamboo Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Beekeeping NC II po, may slot pa ba",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tagapag-alaga ng bubuyog",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "apiary worker sa isang bee farm",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manggagawa sa pukyutan",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-ani ng pulot-pukyutan",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-set up ng bee boxes sa bakuran",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aalaga ako ng mga bubuyog at sinisilip ko ang reyna sa kahon",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-split ng colony para dumami ang bubuyog",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapahiram ako ng kahon ng bubuyog sa mga taniman ng mangga para sa polinasyon",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagha-harvest ako ng honey at beeswax para ibenta",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pulot",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "honey bee farming",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pg aalaga ng bubuyug",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "bee keeping nc 2 skedyul",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong nag-aalaga ng bubuyog sa bundok, gusto kong magpa-assess",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may 20 hives ako ng stingless bees, need ko ng NC II",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "maraming namumulaklak na puno sa lupa namin, gusto kong samantalahin para sa pulot",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magbenta ng pure honey online galing mismo sa sarili kong farm",
+  "accept": [
+   "Beekeeping NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may Biogas Plant Installation NC III ba",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging kapatas sa paggawa ng biogas",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tubero ng biogas system sa mga farm",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "foreman sa construction ng biogas digester",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong maghukay at maghanda ng lugar para sa biogas digester",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-supervise ng pag-build ng biogas tank sa piggery",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng tubo mula sa digester papunta sa kalan",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-install ang gas pipe at valve ng biogas para walang leak",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng tangke na ginagawang gas ang dumi ng baboy",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagle-lead ako ng team na nagse-semento ng biogas digester",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "biogas installer",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "biogas sa babuyan",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "bio gas plant instalation nc3",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pnu gumawa ng biyogas sa babuyan",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "nakagawa na ako ng ilang biogas digester sa mga babuyan, gusto kong magkaroon ng NC III",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "construction foreman ako na may experience sa biogas projects, need ko ng certification",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ang baho ng dumi ng baboy sa amin, gusto ko sanang gawing panggatong",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong tulungan ang mga farm na makatipid sa LPG gamit ang sarili nilang waste",
+  "accept": [
+   "Biogas Plant Installation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Drying and Milling Plant Servicing NC III, saan may training",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "tekniko sa kiskisan ng palay",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "rice mill maintenance technician",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagakumpuni ng makina sa gilingan ng mais",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-ayos ng sirang dryer ng palay",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapalit ako ng rubber roll at nag-a-adjust ng husker sa rice mill",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagmementena ako ng makina sa gilingan ng mais",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-troubleshoot ng flatbed dryer at recirculating dryer",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilinis at nagpapalit ako ng belt at bearing sa kiskisan",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-calibrate ng whitener at polisher sa rice mill",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "kiskisan",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III",
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "rice mill repair",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekaniko s kiskisan ng palay",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "drying and miling servicng nc3",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "sampung taon na akong mekaniko sa kiskisan, gusto kong magka-NC III",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "maintenance ako sa grains processing complex for 6 years, pa-assess po",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "tuwing anihan laging nasisira ang dryer sa kooperatiba at walang marunong mag-ayos",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging go-to technician ng mga rice mill sa buong probinsya",
+  "accept": [
+   "Drying and Milling Plant Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may Fish Capture NC I ba kayo",
+  "accept": [
+   "Fish Capture NC I"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tripulante sa bangkang pangisda",
+  "accept": [
+   "Fish Capture NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "deckhand sa fishing boat",
+  "accept": [
+   "Fish Capture NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "ultimo sa basnig",
+  "accept": [
+   "Fish Capture NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magbaba at magkarga ng banyera ng isda sa bangka",
+  "accept": [
+   "Fish Capture NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagre-repair ako ng sirang lambat pagkatapos ng biyahe",
+  "accept": [
+   "Fish Capture NC I",
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tumutulong ako sa paghila ng lambat at paglilinis ng kubyerta",
+  "accept": [
+   "Fish Capture NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng safety sa barko pangisda bilang baguhang crew",
+  "accept": [
+   "Fish Capture NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbubuo ako ng bagong lambat mula sa tali at pabigat",
+  "accept": [
+   "Fish Capture NC I",
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbubuhat ako ng yelo at supplies paakyat sa fishing vessel",
+  "accept": [
+   "Fish Capture NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mangingisda",
+  "accept": [
+   "Fish Capture NC I",
+   "Fish Capture NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fishing crew",
+  "accept": [
+   "Fish Capture NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tripulante s barko pngisda",
+  "accept": [
+   "Fish Capture NC I"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "fish captur nc1 pls",
+  "accept": [
+   "Fish Capture NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong ultimo sa malaking bangka, gusto kong magka-sertipiko",
+  "accept": [
+   "Fish Capture NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong crew ng commercial fishing boat, pwede ba ako ma-assess",
+  "accept": [
+   "Fish Capture NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-baybayin kami at gusto kong sumama sa malalaking bangka na lumalaot",
+  "accept": [
+   "Fish Capture NC I",
+   "Fish Capture NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "wala akong sariling bangka pero gusto kong kumita sa pangingisda bilang crew",
+  "accept": [
+   "Fish Capture NC I"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Fish Capture NC II po, ano ang requirements",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging mangingisdang may sariling bangka",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "municipal fisherman sa aming bayan",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "bangkero na nangingisda sa baybayin",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magpaandar at mag-ayos ng makina ng bangka",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-set ng gill net at kumuha ng huli",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nanghuhuli ako ng isda gamit ang kawil at pain",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglalagay ako ng bubo at traps para sa alimango",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "binabasa ko ang lagay ng panahon bago pumalaot",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagme-maintain ako ng bangka at chine-check kung safe bago lumabas sa dagat",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangingisda",
+  "accept": [
+   "Fish Capture NC II",
+   "Fish Capture NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fishing boat operator",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mngingisda aq gsto q ng nc2",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "fishcapture nc 2 skedyul",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalawampung taon na akong mangingisda, gusto kong magkaroon ng sertipiko",
+  "accept": [
+   "Fish Capture NC II",
+   "Fish Capture NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may sariling bangka ako at matagal nang nangingisda, pa-assess po sa NC II",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "bata pa lang sumasama na ako kay tatay sa laot, yun na rin ang gusto kong buhay",
+  "accept": [
+   "Fish Capture NC II",
+   "Fish Capture NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gawing hanapbuhay ang dagat, may bangka naman kami",
+  "accept": [
+   "Fish Capture NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Fishing Gear Repair and Maintenance NC III, may batch ba",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging pinuno ng mga tagaayos ng lambat",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "net mender supervisor sa fishport",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagaayos ng lambat",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III",
+   "Fish Capture NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko kung maayos ang pagkakatahi ng lambat ng mga tauhan ko",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagsu-supervise ako ng loading at unloading ng nets mula sa barko",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahati ako ng trabaho sa mga manggagawa ng lambat at binabantayan ang progreso",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-estimate kung gaano katagal ang repair ng purse seine",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtuturo ako sa mga baguhan kung paano magtagpi ng punit na lambat",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagche-check ako ng mesh size at quality ng ni-repair na lambat bago ibalik sa boat",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagpi ng lambat",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III",
+   "Fish Capture NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "net mending",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III",
+   "Fish Capture NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pg aayos ng lambat ng pngisda",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III",
+   "Fish Capture NC I"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "fising gear repair nc3",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "labinlimang taon na akong nananahi ng lambat, ako na ang lider ng grupo, gusto kong magka-NC III",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "head net mender ako sa commercial fishing company pero walang NC",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang inaasahan ng amo namin na magbantay sa mga nag-aayos ng lambat ng barko",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ang daming punit na lambat after ng bawat biyahe, gusto kong ma-manage ang team na nag-aayos",
+  "accept": [
+   "Fishing Gear Repair and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Fishport Wharf Operation NC I po, saan pwede",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "kargador ng isda sa pantalan",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "fish handler sa fishport",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagabuhat ng banyera sa daungan ng mga bangkang pangisda",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbababa ako ng mga banyera ng isda mula sa bangka papunta sa bagsakan",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagso-sort ako ng isda ayon sa laki at klase bago i-auction",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakarga ako ng yelo at isda sa trak sa pier",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto kung paano i-grade ang quality ng isda sa wharf",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinaghihiwalay ko ang galunggong, tulingan at tamban sa daungan",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagha-handle ako ng fresh fish sa port nang malinis at may yelo",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "bagsakan ng isda",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fish port worker",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "kargadur s fishport",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "fishport warf operation nc1",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong kargador sa pantalan ng isda, gusto kong magka-sertipiko",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "4 years na akong fish sorter sa port, pa-assess po",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "malapit kami sa daungan ng mga bangkang pangisda, gusto kong magtrabaho doon tuwing madaling-araw",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko ng trabaho sa bagsakan kahit pagod, basta may kita araw-araw",
+  "accept": [
+   "Fishport/Wharf Operation NC I"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may Grains Production NC II ba sa munisipyo",
+  "accept": [
+   "Grains Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "magsasaka ng palay",
+  "accept": [
+   "Grains Production NC II",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "corn farmer sa probinsya",
+  "accept": [
+   "Grains Production NC II",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging magmamais",
+  "accept": [
+   "Grains Production NC II",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong pumili ng magandang binhi ng palay bago itanim",
+  "accept": [
+   "Grains Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagla-land prep ako ng palayan gamit ang kalabaw at araro",
+  "accept": [
+   "Grains Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilipat-tanim ako ng punla ng palay sa putikan",
+  "accept": [
+   "Grains Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-apply ako ng fertilizer at nagma-manage ng tubig sa palayan",
+  "accept": [
+   "Grains Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-ani at magpatuyo ng palay nang tama para hindi masira",
+  "accept": [
+   "Grains Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-direct seeding ng mais sa bukid",
+  "accept": [
+   "Grains Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "palayan",
+  "accept": [
+   "Grains Production NC II",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "rice farming",
+  "accept": [
+   "Grains Production NC II",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pg tatanim ng palay at mias",
+  "accept": [
+   "Grains Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "grains prodaction nc2",
+  "accept": [
+   "Grains Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "buong buhay ko magsasaka ng palay, gusto ko nang magkaroon ng NC II",
+  "accept": [
+   "Grains Production NC II",
+   "Agricultural Crops Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "15 years na akong nagtatanim ng corn, need ko ng certificate para sa programa ng LGU",
+  "accept": [
+   "Grains Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may dalawang ektaryang palayan kami na ako na ang mag-aasikaso",
+  "accept": [
+   "Grains Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong tumaas ang ani ng palay namin kada cropping",
+  "accept": [
+   "Grains Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Horticulture NC III po, may training ba",
+  "accept": [
+   "Horticulture NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging hortikulturista",
+  "accept": [
+   "Horticulture NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "farm manager ng prutasan at gulayan",
+  "accept": [
+   "Horticulture NC III",
+   "Agricultural Crops Production NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "may-ari ng taniman ng prutas",
+  "accept": [
+   "Horticulture NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-grafting ng mangga at kalamansi",
+  "accept": [
+   "Horticulture NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-budding sa field ng citrus at rambutan",
+  "accept": [
+   "Horticulture NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpaparami ako ng halaman gamit ang marcotting at pagtatanim ng sanga",
+  "accept": [
+   "Horticulture NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagko-coordinate ako ng harvest ng high-value vegetables",
+  "accept": [
+   "Horticulture NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong pamahalaan ang pag-aalaga ng gulayan at prutasan mula pagtatanim hanggang ani",
+  "accept": [
+   "Horticulture NC III",
+   "Agricultural Crops Production NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng fertilizer schedule para sa mga puno ng prutas",
+  "accept": [
+   "Horticulture NC III",
+   "Agricultural Crops Production NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghugpong",
+  "accept": [
+   "Horticulture NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fruit tree grafting",
+  "accept": [
+   "Horticulture NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pg grapting ng mga puno ng prutas",
+  "accept": [
+   "Horticulture NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "horticultur nc3 schedule",
+  "accept": [
+   "Horticulture NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagpapatubo ng punla ng prutas para ibenta, gusto kong magpa-assess",
+  "accept": [
+   "Horticulture NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II ako sa crops, gusto kong mag-NC III sa horticulture",
+  "accept": [
+   "Horticulture NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gawing prutasan ang lupa namin at magbenta ng sariling punla",
+  "accept": [
+   "Horticulture NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-start ako ng plant nursery sa bahay, gusto kong i-level up into a real farm",
+  "accept": [
+   "Horticulture NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may Landscape Installation and Maintenance NC II ba kayo",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "hardinero sa subdivision",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "landscape gardener sa resort",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapag-alaga ng halaman at damuhan sa mga parke",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong maggupit ng damo at magtabas ng halaman",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-install ng bermuda grass at ornamental plants sa garden",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilinis ako ng lote at nagpapatag ng lupa bago taniman",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpu-prune ako ng mga puno at shrubs sa mga hotel garden",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagdidilig, naglalagay ng pataba at nagbubunot ng damo sa hardin ng mga bahay",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng compost mula sa mga tuyong dahon at damo sa garden",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "hardinero",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "garden maintenance",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hardenero s mga subdibisyon",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "landscaping nc2 softscape po",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pitong taon na akong hardinero sa isang mansyon, gusto kong magkaroon ng NC II",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gardener ako sa condo for 5 years, kailangan ko ng NC para sa abroad",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi akong pinupuri sa ganda ng hardin ng nanay ko, baka ito na ang trabaho ko",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-offer ng garden makeover sa mga bagong bahay sa subdivision",
+  "accept": [
+   "Landscape Installation and Maintenance (Softscape) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Milking Operation NC II, kailan ang training",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagagatas ng baka",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "milker sa dairy farm",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manggagatas ng kalabaw",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilinis ako ng suso ng baka at ng lalagyan bago maggatas",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumamit ng milking machine",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong maggatas ng kambing gamit ang kamay",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinasala at pinapalamig ko ang fresh milk pagkatapos maggatas",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nililinis ko ang mga kagamitan sa paggagatas pagkatapos gamitin",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagche-check ako kung may mastitis ang baka bago i-milk",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggagatas",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "dairy milker",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mg gatas ng bka",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "milkin operation nc2",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong manggagatas sa dairy farm, gusto kong magpa-assess",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may experience ako sa paggatas ng carabao, need ko ng NC II",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may tatlong gatasang baka kami, gusto kong malinis at marami ang makuha naming gatas",
+  "accept": [
+   "Milking Operation NC II",
+   "Animal Production (Ruminants) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-supply ng fresh carabao milk sa mga gumagawa ng pastillas",
+  "accept": [
+   "Milking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may Organic Agriculture Production NC II ba sa inyo",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "magsasaka ng organikong gulay",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "organic farmer sa probinsya",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ng organikong pataba",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong gumawa ng vermicast gamit ang bulate",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng fermented plant juice at fish amino acid",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtatanim ako ng gulay nang walang kemikal na pestisidyo",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aalaga ako ng native chicken na organic ang feeds",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-alaga ng baboy na walang antibiotic at organiko ang pakain",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng compost at IMO para sa garden",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "organikong pagsasaka",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "organic farming",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pg gawa ng organik n pataba",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "organik agrikulture nc2",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "anim na taon na akong organic farmer sa Bukidnon, gusto kong magkaroon ng NC II",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbebenta ako ng organic veggies for years, gusto ko ma-certify",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkasakit ang tatay ko dahil sa pestisidyo, kaya gusto kong magsaka nang natural",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-supply ng chemical-free na gulay sa mga health-conscious buyers",
+  "accept": [
+   "Organic Agriculture Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Pest Management Vegetables NC II, open ba",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "tekniko sa pagkontrol ng peste sa gulayan",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pest control technician sa vegetable farm",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapag-spray ng pamatay-peste sa gulayan",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilibot ako sa taniman para bilangin ang mga uod at insekto sa dahon",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumamit ng friendly insects at trichogramma laban sa peste",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-iikot-tanim ako para hindi dumami ang peste sa repolyo",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglalagay ako ng yellow sticky traps at net sa gulayan",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong maghalo at mag-spray ng insecticide nang tama at ligtas",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagmo-monitor ako kung gumana ba ang spray at nire-report ko sa farm owner",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "peste sa gulay",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "IPM vegetables",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pnu ptayin ang uod s repolyo",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pest managment nc2 gulay",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong taga-spray sa gulayan, gusto kong magkaroon ng NC II",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "farm tech ako sa highland veggie farm na focus sa pest control, pa-assess po",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "laging inuubos ng uod at aphids ang tanim naming pechay",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong tulungan ang mga farmers na hindi masayang ang ani dahil sa insects",
+  "accept": [
+   "Pest Management (Vegetables) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may Pressurized Irrigation System Installation NC II ba",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagakabit ng drip irrigation sa mga taniman",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "irrigation technician sa greenhouse",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "sprinkler system installer sa farm",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magkabit ng bomba ng tubig at filter para sa patubig",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-i-install ako ng PE pipes at drippers sa bawat hanay ng tanim",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nililinis ko ang mga baradong dripper at inaayos ang tagas ng tubo",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-set up ng sprinkler para sa buong farm",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng balbula at pressure gauge sa linya ng patubig",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-maintain ng fertigation system sa greenhouse",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "drip irrigation",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "patubig sa taniman",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "drip irigation instaler",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pg kabit ng sprinkler s bukid",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong nagkakabit ng patubig sa mga greenhouse, gusto kong magpa-assess",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may experience ako sa irrigation installation sa mga plantation, need ko ng NC",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "laging tuyot ang taniman namin tuwing tag-araw at sayang ang tubig sa pagdidilig ng balde",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong i-automate ang pagdidilig ng mga halaman para hindi na manual",
+  "accept": [
+   "Pressurized Irrigation System Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Rice Machinery Operations NC II po, may slot pa",
+  "accept": [
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng combine harvester sa palayan",
+  "accept": [
+   "Rice Machinery Operations NC II",
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "rice transplanter operator",
+  "accept": [
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapagpatakbo ng makina sa kiskisan ng bigas",
+  "accept": [
+   "Rice Machinery Operations NC II",
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-araro ng palayan gamit ang hand tractor",
+  "accept": [
+   "Rice Machinery Operations NC II",
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-operate ng mechanical rice transplanter",
+  "accept": [
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapatakbo ako ng reaper at thresher tuwing anihan ng palay",
+  "accept": [
+   "Rice Machinery Operations NC II",
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-o-operate ako ng batch dryer para sa basang palay",
+  "accept": [
+   "Rice Machinery Operations NC II",
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagamit ako ng power sprayer at fertilizer applicator sa palayan",
+  "accept": [
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gamitin ang drum seeder sa direct seeding ng palay",
+  "accept": [
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "makina sa palayan",
+  "accept": [
+   "Rice Machinery Operations NC II",
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "combine harvester",
+  "accept": [
+   "Rice Machinery Operations NC II",
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "operatur ng kuliglig s palayan",
+  "accept": [
+   "Rice Machinery Operations NC II",
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "rice machinary operation nc2",
+  "accept": [
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "anim na taon na akong nagpapatakbo ng combine harvester ng kooperatiba, gusto kong magka-NC II",
+  "accept": [
+   "Rice Machinery Operations NC II",
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "rice mill operator ako for 8 years, need ko ng certificate",
+  "accept": [
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dumating na ang mga bagong makinang pampalayan sa aming asosasyon, gusto kong ako ang mag-operate",
+  "accept": [
+   "Rice Machinery Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "kulang na ang tao sa palayan tuwing anihan kaya gusto kong mag-operate na lang ng makina",
+  "accept": [
+   "Rice Machinery Operations NC II",
+   "Agricultural Machinery Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may Rubber Processing NC II ba sa Mindanao",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagatanggap ng latex sa pagawaan ng goma",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "machine operator sa rubber processing plant",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manggagawa sa planta ng goma",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tumatanggap ako ng latex at tinitimbang ito mula sa mga magsasaka",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng rubber sheet mula sa latex",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapatuyo ako ng mga piraso ng goma sa smokehouse",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapatakbo ako ng creping machine at sheeter sa planta",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko ang kalidad at linis ng cuplumps bago tanggapin",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-coagulate ang latex gamit ang acid bago i-press",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "goma",
+  "accept": [
+   "Rubber Processing NC II",
+   "Rubber Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "rubber sheet",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pg proseso ng gma at latex",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "raber processing nc2",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong trabahador sa pabrika ng goma, gusto kong magpa-assess",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "latex receiver ako for years sa isang processing plant, need ko ng NC II",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mura ang bili sa hilaw na latex namin, gusto kong kami na ang magproseso",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng maliit na processing ng rubber sa barangay namin",
+  "accept": [
+   "Rubber Processing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Rubber Production NC II, saan may assessment",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "manggagatas ng goma",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "rubber tapper sa plantation",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "magsasaka ng goma",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-tapping ng puno ng goma tuwing madaling-araw",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-budding ng rubber seedlings",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aalaga ako ng nursery ng punla ng goma",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahanda ako ng budsticks mula sa budwood garden",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilinis at naglalagay ng abono sa taniman ng goma",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagko-collect ako ng latex sa cups at nagdadala sa collection point",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-tapping",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "rubber plantation",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "taper s taniman ng goma",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "rubbr tapping trainig",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "sampung taon na akong nag-tatapping ng goma sa Zamboanga, gusto kong magka-NC II",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "farm worker ako sa rubber plantation, pa-assess po para tumaas sahod",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may tatlong ektaryang lupa kami sa Mindanao, gusto kong taniman ng puno na may latex",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong kumita araw-araw sa pagkuha ng dagta ng puno",
+  "accept": [
+   "Rubber Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may Seaweed Production NC II ba sa Visayas",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "magsasaka ng damong-dagat",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "seaweed farmer sa coastal area",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "mangangalakal ng tuyong guso",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtatali ako ng punla ng agar-agar sa lubid sa dagat",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-set up ng seaweed nursery sa mababaw na dagat",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapatuyo ako ng guso sa araw bago ibenta",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-farm ng carrageenan seaweed gamit ang floating long line method",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahanap ako ng mamimili ng tuyong seaweed sa labas ng isla",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagha-harvest ako ng seaweed every 45 days at sine-sort ko",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "guso",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "seaweed farming",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pg tatanim ng sea weeds s dagat",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "seawed prodaksyon nc2",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "lumaki ako sa pagsasaka ng guso kasama ng aking mga magulang, gusto kong magpa-assess",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may seaweed farm kami for 10 years, gusto ko ng NC II",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mababaw ang dagat sa amin at maraming nag-aalaga ng halamang-dagat, gusto ko ring sumali",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-supply ng raw material sa mga gumagawa ng gulaman at carrageenan",
+  "accept": [
+   "Seaweed Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Sugarcane Production NC II po",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "magsasaka ng tubo",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "sakada sa tubuhan",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "sugarcane farm worker sa Negros",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtatanim ako ng puntod ng tubo sa tudling",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-establish ng nursery ng sugarcane seedlings",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aalaga ako ng muling sumibol na tubo pagkatapos ng tabas",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-apply ako ng fertilizer at nagbubunot ng damo sa tubuhan",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magtabas at magkarga ng tubo sa trak papuntang azucarera",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano malalaman kung hinog na ang tubo para i-harvest",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tubuhan",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "sugarcane farming",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pg tatanim ng tbo",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "sugar cane prodaksyon nc2",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalawampung taon na akong sakada, gusto kong magkaroon ng sertipiko",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "planter ako ng sugarcane for 6 years, need ko ng NC II",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may lupa kami malapit sa sugar mill, gusto kong taniman ng pananim na doon ibebenta",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-supply ng cane sa sugar central tuwing milling season",
+  "accept": [
+   "Sugarcane Production NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Tinsmithing NC II po, automotive manufacturing",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "latero ng sasakyan",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II",
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tinsmith sa car assembly plant",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manghihinang ng katawan ng kotse sa pabrika",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-spot weld ng mga piyesa ng body shell",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-braze ng sheet metal ng sasakyan",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapakinis ako ng yupi at kurba ng yerong bakal ng kotse sa assembly line",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-adjust ako ng gaps ng pinto at hood bago i-paint ang body",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagamit ako ng martilyo at dolly para ayusin ang hugis ng panel",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II",
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-work sa body shop ng planta na nagwe-weld ng car frames",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "latero",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II",
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tinsmith",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II",
+   "Automotive Body Repairing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "lateru s planta ng kotse",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tinsmiting nc2 automotive",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "anim na taon na akong latero sa pagawaan ng sasakyan, gusto kong magpa-assess",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "body shop welder ako sa car manufacturer for 4 years, need ko ng NC II",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang humuhubog ng bakal na katawan ng mga bagong kotse",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig ako sa sheet metal work at gusto kong pumasok sa car factory",
+  "accept": [
+   "Tinsmithing (Automotive Manufacturing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may Automotive Electrical Assembly NC II ba",
+  "accept": [
+   "Automotive Electrical Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagakabit ng kable at ilaw sa planta ng sasakyan",
+  "accept": [
+   "Automotive Electrical Assembly NC II",
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "automotive electrical assembler sa car plant",
+  "accept": [
+   "Automotive Electrical Assembly NC II",
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "line worker sa electrical assembly ng kotse",
+  "accept": [
+   "Automotive Electrical Assembly NC II",
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng alternator, starter at wiring sa makina ng kotse sa assembly line",
+  "accept": [
+   "Automotive Electrical Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-i-install ako ng dashboard instruments at gauges sa bagong sasakyan",
+  "accept": [
+   "Automotive Electrical Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magkabit ng ilaw sa loob ng kotse at mga switch sa pinto",
+  "accept": [
+   "Automotive Electrical Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagfi-fit ako ng headlights, tail lights at horn sa exterior ng car",
+  "accept": [
+   "Automotive Electrical Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-adjust ako ng tutok ng headlight bago lumabas ang sasakyan sa planta",
+  "accept": [
+   "Automotive Electrical Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-install ng car stereo at backup camera",
+  "accept": [
+   "Automotive Electrical Assembly NC II",
+   "Automotive Servicing (Electrical Repair) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "auto electrical assembly",
+  "accept": [
+   "Automotive Electrical Assembly NC II",
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "wiring sa planta",
+  "accept": [
+   "Automotive Electrical Assembly NC II",
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "automotiv electrical asembly nc2",
+  "accept": [
+   "Automotive Electrical Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tgakabit ng wireng s kotse sa planta",
+  "accept": [
+   "Automotive Electrical Assembly NC II",
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong nagkakabit ng electrical parts sa pabrika ng kotse, gusto kong magka-NC II",
+  "accept": [
+   "Automotive Electrical Assembly NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "production operator ako sa auto plant, electrical line, pa-assess po",
+  "accept": [
+   "Automotive Electrical Assembly NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa pabrika na bumubuo ng mga bagong kotse, sa parte ng mga ilaw at kable",
+  "accept": [
+   "Automotive Electrical Assembly NC II",
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-hire ang car manufacturer malapit sa amin ng electrical assemblers, ano ang dapat kong aralin",
+  "accept": [
+   "Automotive Electrical Assembly NC II",
+   "Automotive Electrical Assembly NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ }
+]
