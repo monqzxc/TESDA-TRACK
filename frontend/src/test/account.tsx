@@ -8,7 +8,10 @@ import { SESSION_HINT_KEY, type Learner } from '../auth/session.ts'
 import { createTestQueryClient } from './query.tsx'
 import { server } from './server.ts'
 
-export const maria: Learner = {
+/** An account that signs in with a password, so it always has an email (TSP-linked accounts may not). */
+export type PasswordLearner = Learner & { email: string }
+
+export const maria: PasswordLearner = {
   id: '6f1c2a52-8b7e-4d3a-9c51-2f0e7a1b3c4d',
   email: 'maria@example.com',
   full_name: 'Maria Santos',
@@ -17,7 +20,7 @@ export const maria: Learner = {
   created_at: '2026-10-01T08:00:00Z',
 }
 
-export const admin: Learner = {
+export const admin: PasswordLearner = {
   ...maria,
   id: '0b9d7e1f-3c2a-4b5d-8e6f-7a1b2c3d4e5f',
   email: 'admin@example.com',
