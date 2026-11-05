@@ -15,7 +15,7 @@ import httpx
 from pydantic import ValidationError
 
 from tesda_track.config import Settings
-from tesda_track.schemas.hercules import TrackerProfile
+from tesda_track.schemas.hercules import SENSITIVE_FIELDS, PersonalInformation, TrackerCredentials, TrackerProfile
 
 logger = logging.getLogger("tesda_track")
 
@@ -76,6 +76,36 @@ def parse_profile(data: dict) -> TrackerProfile:
         # The validation error quotes the input, which is the learner's personal information: never chain it.
         logger.warning("Hercules sent a profile TESDA-TRACK can't read (%d problems)", error.error_count())
         raise HerculesUnavailable() from None
+
+
+def describe_profile(data: dict) -> dict:
+    """The shape of a profile as Hercules sent it, for checking it against the spec: field names, counts and item
+    keys, never values. The sso_id shows only its first 4 characters."""
+    personal = data.get("personal_information")
+    personal = personal if isinstance(personal, dict) else {}
+    credentials = data.get("credentials")
+    credentials = credentials if isinstance(credentials, dict) else {}
+    sections = {name: _section(data.get(name)) for name in ("skills", "experience", "education", "qualifications")}
+    sections |= {f"credentials.{name}": _section(credentials.get(name)) for name in TrackerCredentials.model_fields}
+    sso_id = str(data.get("sso_id") or "")
+    return {
+        "sso_id": f"{sso_id[:4]}… ({len(sso_id)} chars)",
+        "uli": bool(data.get("uli")),
+        "personal_information": sorted(key for key, value in personal.items()
+                                       if key in PersonalInformation.model_fields and value),
+        "sections": sections,
+        "unexpected_fields": sorted([key for key in data if key not in TrackerProfile.model_fields]
+                                    + [f"personal_information.{key}" for key in personal
+                                       if key not in PersonalInformation.model_fields]),
+        "sensitive_fields_sent": sorted(SENSITIVE_FIELDS & (data.keys() | personal.keys())),
+    }
+
+
+def _section(items) -> dict:
+    items = items if isinstance(items, list) else []
+    keys = {key for item in items if isinstance(item, dict) for key in item}
+    types = {type(item).__name__ for item in items if not isinstance(item, dict)}
+    return {"count": len(items), "item_keys": sorted(keys | types)}
 
 
 class HerculesClient:

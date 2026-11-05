@@ -23,6 +23,13 @@ web app's generated types (`npm run api:types` in frontend/).
 --by-name to the place Google Maps finds by the center's name (see tesda_track/geocode_centers.py for when a point
 is replaced). Preview is the default; --apply overwrites the coordinates. The Google Maps API key is read from
 GOOGLE_MAPS_API_KEY or prompted for; --by-name needs the Places API (New) enabled for it.
+
+    python -m tesda_track.cli tracker-exchange
+
+`tracker-exchange` trades a TSP handoff code (read from TRACKER_HANDOFF_CODE or prompted for; it lasts 60 seconds
+and works once) for a Hercules token and profile, and prints the profile's shape, meaning field names and counts
+but never values, to check what Hercules really sends. Needs HERCULES_BASE_URL, TRACKER_CLIENT_ID and
+TRACKER_CLIENT_SECRET.
 """
 import argparse
 import getpass
@@ -113,6 +120,19 @@ def run_mcp_usage_command(session: Session, args: argparse.Namespace, out: TextI
           file=out)
 
 
+def run_tracker_exchange(client, code: str, out: TextIO) -> None:
+    """Runs `tracker-exchange` with a HerculesClient: prints the token's lifetime and scopes and the profile's shape.
+    A profile TESDA-TRACK couldn't read raises HerculesUnavailable before anything is printed."""
+    from tesda_track.services.hercules import describe_profile, parse_profile
+
+    token = client.exchange_code(code)
+    data = client.fetch_profile_data(token)
+    parse_profile(data)
+    summary = {"token": {"expires_in": token.expires_in, "scopes": sorted(token.scopes)},
+               "profile": describe_profile(data)}
+    print(json.dumps(summary, indent=2, ensure_ascii=False), file=out)
+
+
 def google_maps_api_key() -> str:
     key = os.environ.get("GOOGLE_MAPS_API_KEY", "").strip()
     if not key and sys.stdin.isatty():
@@ -156,6 +176,8 @@ def build_parser() -> argparse.ArgumentParser:
     admin.add_argument("--keep-password", action="store_true", help="promote an existing account without a new password")
     openapi = commands.add_parser("openapi", help="write the API's OpenAPI schema to a file (no database needed)")
     openapi.add_argument("path", type=Path)
+    commands.add_parser("tracker-exchange",
+                        help="trade a real TSP handoff code for its profile's shape (no database needed)")
     seed = commands.add_parser("seed-accounts", help="create role accounts from a JSON file; never overwrite existing accounts")
     seed.add_argument("path", type=Path)
     mcp_client = commands.add_parser("mcp-client", help="manage the outside systems that call the MCP server")
@@ -197,6 +219,18 @@ def main() -> None:
         os.environ.setdefault("DATABASE_URL", "postgresql+psycopg://unused@127.0.0.1:1/unused")
         os.environ.setdefault("SECRET_KEY", "placeholder-for-writing-the-openapi-schema-only")
         write_openapi_schema(args.path)
+        return
+
+    if args.command == "tracker-exchange":
+        from tesda_track.config import get_settings
+        from tesda_track.services.hercules import HerculesClient, HerculesError
+
+        # Prompted for rather than an argument, so the code stays out of the shell history.
+        code = os.environ.get("TRACKER_HANDOFF_CODE", "").strip() or getpass.getpass("Handoff code: ").strip()
+        try:
+            run_tracker_exchange(HerculesClient(get_settings()), code, sys.stdout)
+        except HerculesError as error:
+            sys.exit(str(error))
         return
 
     from tesda_track.db import get_engine
