@@ -366,6 +366,25 @@ def paired_bootstrap(a: list[float], b: list[float], resamples: int = 2000, seed
             "ci95": [float(np.percentile(means, 2.5)), float(np.percentile(means, 97.5))]}
 
 
+def misses(cases: list[Case], shown: list[list[str]], items: list[CatalogItem], limit: int = 60) -> list[dict]:
+    """Where `suggest` went wrong: a suggestion for a profile that should get none, or no relevant one in the three.
+    Nudges that should not have happened come first."""
+    name_of = {item.code: item.summary.name for item in items}
+    found = []
+    for case, codes in zip(cases, shown):
+        if case.expect_empty and codes:
+            found.append({"id": case.id, "kind": case.kind, "skills": case.skills, "problem": "suggested_for_no_fit",
+                          "shown": [name_of[c] for c in codes]})
+        elif case.positive and not any(case.judgments.get(c, 0) > 0 for c in codes):
+            found.append({"id": case.id, "kind": case.kind, "skills": case.skills,
+                          "problem": "abstained" if not codes else "no_relevant_in_three",
+                          "shown": [name_of[c] for c in codes],
+                          "expected": [name_of[c] for c, g in sorted(case.judgments.items(), key=lambda kv: -kv[1])
+                                       if g >= 2][:3]})
+    found.sort(key=lambda row: row["problem"] != "suggested_for_no_fit")
+    return found[:limit]
+
+
 def per_case(cases: list[Case], shown: list[list[str]], metric: str) -> list[float]:
     return [relevance(s, c.judgments, K)[metric] for c, s in zip(cases, shown) if c.positive]
 
@@ -639,6 +658,8 @@ def evaluate(args) -> dict:
         prepared = prepare(cases, items, passages, embed_queries)
         runs = systems(prepared, items, params, popularity, args.random_runs, args.seed)
         report["sources"][name] = summarise(cases, runs, items, args.k if name == "real" else 1)
+        if name != "real":  # team-written cases only: never a learner's words
+            report["sources"][name]["suggest_misses"] = misses(cases, runs["suggest"][0], items)
         if args.calibrate and name == "goal_sets" and params is not None:
             tune = [p for p in prepared if split_half(p.case) == "tune" and p.case.labeled]
             test = [p for p in prepared if split_half(p.case) == "test" and p.case.labeled]

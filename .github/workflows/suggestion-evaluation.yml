@@ -54,6 +54,11 @@ jobs:
       - name: Suggestions with the settings' defaults (what v6-colab gets today), plus a suggestion-tuned check
         continue-on-error: true
         run: python -m evaluation.suggestions --model-path "$MODEL_DIR" --calibrate --output ../reports/suggestion-evaluation.json
+      - name: Suggestions with parameters tuned for suggestions (on the goal sets' tune half)
+        continue-on-error: true
+        run: |
+          python -c "import json; r = json.load(open('../reports/suggestion-evaluation.json')); json.dump({'params': r['calibration_check']['tuned_params']}, open('../reports/suggestion-tuned-params.json', 'w'))"
+          python -m evaluation.suggestions --model-path "$MODEL_DIR" --params-from ../reports/suggestion-tuned-params.json --params-source "tuned for suggestions on the goal sets' tune half (its goal_sets numbers include that half; adversarial is independent)" --output ../reports/suggestion-evaluation-tuned.json
       - name: Suggestions with matching's calibration (inherited)
         continue-on-error: true
         run: python -m evaluation.suggestions --model-path "$MODEL_DIR" --params-from ../reports/matching-calibration.json --params-source "v6-colab matching calibration (dev goals, min rejection 0.9)" --output ../reports/suggestion-evaluation-inherited.json

@@ -21,7 +21,7 @@ import json
 import re
 import sys
 from collections import Counter, defaultdict
-from datetime import UTC, datetime
+from datetime import UTC, date, datetime, time
 from pathlib import Path
 
 from sqlmodel import Session, select
@@ -190,8 +190,12 @@ def sections_of(profile: dict) -> dict[str, list]:
     return {name: entries if isinstance(entries, list) else [] for name, entries in found.items()}
 
 
-def census(session: Session, k: int) -> dict:
-    rows = session.exec(select(LearnerIdentity.profile, LearnerIdentity.scopes)).all()
+def census(session: Session, k: int, since: datetime | None = None, exclude: frozenset[str] = frozenset()) -> dict:
+    """Only learners linked on or after `since`, and none of the `exclude` sso_ids (such as TSP test accounts)."""
+    query = select(LearnerIdentity.profile, LearnerIdentity.scopes).where(LearnerIdentity.subject.not_in(exclude))
+    if since:
+        query = query.where(LearnerIdentity.linked_at >= since)
+    rows = session.exec(query).all()
     profiles = [profile or {} for profile, _ in rows]
     current = catalog.snapshot(session)
     english, tagalog = lexicons(current.rule_views)
@@ -255,13 +259,18 @@ def census(session: Session, k: int) -> dict:
         proxy["with_skills_and_catalog_mappable_qualification_or_credential"] += mappable
 
     regions = Counter((p.get("personal_information") or {}).get("region") or "(none)" for p in profiles)
-    audit = session.exec(select(TspSignInAudit.event, TspSignInAudit.subject, TspSignInAudit.occurred_at)).all()
+    audit_query = select(TspSignInAudit.event, TspSignInAudit.subject, TspSignInAudit.occurred_at).where(
+        TspSignInAudit.subject.not_in(exclude))
+    if since:
+        audit_query = audit_query.where(TspSignInAudit.occurred_at >= since)
+    audit = session.exec(audit_query).all()
     months = sorted(row.occurred_at.strftime("%Y-%m") for row in audit if row.occurred_at)
     pending = len(session.exec(select(TspPendingSignIn.id)).all())
 
     return {
         "census_version": CENSUS_VERSION,
         "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
+        "filters": {"since": since.date().isoformat() if since else None, "excluded_subjects": len(exclude)},
         "privacy": {"k": k, "rule": "Label text and region counts are shown only when at least k learners share "
                                     "them; no identifiers, names or single-learner values are printed."},
         "catalog_qualifications": len(current.items),
@@ -297,6 +306,10 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--k", type=int, default=5, help="minimum learners before a label or region count is shown")
     parser.add_argument("--out", type=Path, help="write the JSON here instead of standard output")
+    parser.add_argument("--since", type=date.fromisoformat, default=None,
+                        help="only learners linked on or after this date (YYYY-MM-DD), e.g. after a staging reset")
+    parser.add_argument("--exclude-subjects", type=Path, default=None,
+                        help="a file of sso_ids to leave out, one per line (TSP test accounts)")
     args = parser.parse_args(argv)
     if args.k < 2:
         parser.error("--k must be at least 2")
@@ -305,7 +318,9 @@ def main(argv: list[str] | None = None) -> int:
         if engine.dialect.name == "postgresql":
             session.connection().exec_driver_sql("SET TRANSACTION READ ONLY")
         try:
-            report = census(session, args.k)
+            since = datetime.combine(args.since, time.min, UTC) if args.since else None
+            exclude = frozenset(args.exclude_subjects.read_text().split()) if args.exclude_subjects else frozenset()
+            report = census(session, args.k, since, exclude)
         finally:
             session.rollback()
     text = json.dumps(report, indent=2, ensure_ascii=False)

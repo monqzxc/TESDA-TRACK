@@ -78,3 +78,14 @@ def test_counts_learners_whose_credentials_could_serve_as_weak_labels(session):
     proxy = census_of(session)["proxy_label_feasibility"]
     assert proxy["with_skills"] == 6
     assert proxy["with_skills_and_any_qualification_or_credential"] == 5
+
+
+def test_leaves_out_excluded_subjects_and_learners_linked_before_a_date(session):
+    from datetime import UTC, datetime, timedelta
+
+    census_of(session)
+    module = load_census()
+    excluded = module.census(session, 5, exclude=frozenset({"rare-1", "empty-1"}))
+    assert excluded["learners"]["linked"] == 5 and excluded["filters"]["excluded_subjects"] == 2
+    later = module.census(session, 5, since=datetime.now(UTC) + timedelta(days=1))
+    assert later["learners"]["linked"] == 0 and later["sign_in_events"]["distinct_subjects"] == 0
