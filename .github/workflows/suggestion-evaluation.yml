@@ -12,6 +12,7 @@ on:
       - backend/evaluation/**
       - backend/tesda_track/services/analysis.py
       - backend/tesda_track/services/recommendation_service.py
+      - backend/tesda_track/services/tsp_profile.py
       - backend/seed/qualifications.json
       - .github/workflows/suggestion-evaluation.yml
 
@@ -65,6 +66,9 @@ jobs:
       - name: Suggestions without a model (keyword only)
         continue-on-error: true
         run: python -m evaluation.suggestions --no-model --output ../reports/suggestion-evaluation-keyword.json
+      - name: Competency-aware representations (skills against TSP credential evidence), as the API ranks
+        continue-on-error: true
+        run: python -m evaluation.competency --model-path "$MODEL_DIR" --output ../reports/competency-evaluation.json
       - name: Print the reports (in chunks; the log drops very long lines)
         if: always()
         run: |
