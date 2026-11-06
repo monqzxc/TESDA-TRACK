@@ -585,7 +585,8 @@ def evaluate(args) -> dict:
                                     dtype=np.float64))
         embed_queries = embedder.embed_queries
         if args.params:
-            params, params_source = MatchParams(*args.params[:3], int(args.params[3])), "--params"
+            params = MatchParams(*args.params[:3], int(args.params[3]))
+            params_source = args.params_source or "--params"
         else:
             params = match_params(embedder)
             params_source = "model calibration.json" if embedder.calibration else "settings defaults (no calibration.json)"
@@ -690,6 +691,9 @@ def main(argv=None) -> int:
     parser.add_argument("--no-model", action="store_true", help="keyword, popularity and random legs only")
     parser.add_argument("--params", nargs=4, type=float, metavar=("FLOOR", "CEILING", "WEIGHT", "MIN"),
                         help="score parameters for `suggest` instead of the model's calibration or the settings")
+    parser.add_argument("--params-source", default=None, help="with --params, where they came from (for the report)")
+    parser.add_argument("--params-from", type=Path, default=None,
+                        help="read --params from a training.evaluate --json report (its calibrated 'params')")
     parser.add_argument("--sources", nargs="+", default=["goal_sets", "adversarial"],
                         choices=["goal_sets", "adversarial"])
     parser.add_argument("--goal-split", default="dev", choices=["dev", "test_v1"])
@@ -708,6 +712,10 @@ def main(argv=None) -> int:
                         help="also tune suggestion parameters on half the goal-set cases and compare on the other half")
     parser.add_argument("--gates", type=Path, default=GATES)
     args = parser.parse_args(argv)
+    if args.params_from:
+        found = json.loads(args.params_from.read_text(encoding="utf-8"))["params"]
+        args.params = [found["z_floor"], found["z_ceiling"], found["keyword_weight"], found["min_score"]]
+        args.params_source = args.params_source or f"calibrated params in {args.params_from.name}"
     if args.no_model and (args.model or args.model_path or args.params):
         parser.error("--no-model excludes --model, --model-path and --params")
     if args.k < 2:

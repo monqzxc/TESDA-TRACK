@@ -21,7 +21,7 @@ permissions:
 jobs:
   evaluate:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 75
     env:
       # Settings require these; the evaluation never connects to a database.
       DATABASE_URL: postgresql+psycopg://unused:unused@127.0.0.1:1/unused
@@ -48,21 +48,34 @@ jobs:
           python -c "import os; from huggingface_hub import snapshot_download; snapshot_download(os.environ['MODEL_REPO'], local_dir=os.environ['MODEL_DIR'])"
           echo "$MODEL_SHA256  $MODEL_DIR/onnx/model.onnx" | sha256sum --check
           test ! -e "$MODEL_DIR/calibration.json" || echo "::notice::model has a calibration.json"
-      - name: Evaluate with the model (as the API would serve it), with a calibration check
+      - name: Calibrate the model for goal matching, as a new model normally is (dev goals, rejection at least 0.9)
+        continue-on-error: true
+        run: python -m training.evaluate --model-path "$MODEL_DIR" --set dev --calibrate --min-rejection 0.9 --json ../reports/matching-calibration.json
+      - name: Suggestions with the settings' defaults (what v6-colab gets today), plus a suggestion-tuned check
         continue-on-error: true
         run: python -m evaluation.suggestions --model-path "$MODEL_DIR" --calibrate --output ../reports/suggestion-evaluation.json
-      - name: Evaluate without a model (keyword only)
+      - name: Suggestions with matching's calibration (inherited)
+        continue-on-error: true
+        run: python -m evaluation.suggestions --model-path "$MODEL_DIR" --params-from ../reports/matching-calibration.json --params-source "v6-colab matching calibration (dev goals, min rejection 0.9)" --output ../reports/suggestion-evaluation-inherited.json
+      - name: Suggestions without a model (keyword only)
         continue-on-error: true
         run: python -m evaluation.suggestions --no-model --output ../reports/suggestion-evaluation-keyword.json
-      - name: Print the reports
+      - name: Print the reports (in chunks; the log drops very long lines)
         if: always()
         run: |
-          for report in ../reports/suggestion-evaluation*.json; do
-            echo "=== $report"; python -c "import json,sys; print(json.dumps(json.load(open(sys.argv[1])), separators=(',', ':')))" "$report"
+          for report in ../reports/*.json; do
+            python - "$report" <<'EOF'
+          import json, sys
+          name = sys.argv[1].rsplit("/", 1)[-1]
+          text = json.dumps(json.load(open(sys.argv[1])), separators=(",", ":"), ensure_ascii=True)
+          chunks = [text[i:i + 16000] for i in range(0, len(text), 16000)]
+          for number, chunk in enumerate(chunks, 1):
+              print(f"@@REPORT {name} {number}/{len(chunks)} {chunk}")
+          EOF
           done
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: suggestion-evaluation
-          path: reports/suggestion-evaluation*.json
+          path: reports/*.json
           if-no-files-found: warn
