@@ -43,6 +43,8 @@ import hashlib
 import json
 import random
 import re
+import sys
+import time
 from collections import Counter, defaultdict
 from collections.abc import Callable, Mapping
 from dataclasses import asdict, dataclass, field, replace
@@ -97,8 +99,12 @@ class Catalog:
     sector_of: dict[str, str] = field(init=False)
     core_titles: dict[str, frozenset[str]] = field(init=False)
     official: dict[str, str] = field(init=False)
+    # One list, always the same object: the keyword scorer caches its typo index by the list's identity, and a new
+    # list per call rebuilds it every time (that made a CI run take over an hour).
+    rules: list[dict] = field(init=False)
 
     def __post_init__(self):
+        self.rules = [item.rules for item in self.items]
         self.name_of = {q.code: q.summary.name for q in self.items}
         self.sector_of = {q.code: q.sector for q in self.items}
         by_code = {q["code"]: q for q in self.qualifications}
@@ -189,10 +195,16 @@ def score(profiles: list[Scored], catalog: Catalog, embed: Callable[[list[str]],
     """Fill each profile's `shown` for every representation and system, with the API's ranking."""
     plans = [(p, r, evidence(p.profile, r, catalog)) for p in profiles for r in REPRESENTATIONS]
     texts = sorted({piece for _, _, groups in plans for pieces in groups.values() for piece in pieces})
+    started = time.monotonic()
     vectors = dict(zip(texts, _unit(np.asarray(embed(texts), dtype=np.float64)))) if texts else {}
-    rules = [item.rules for item in catalog.items]
+    _progress(f"embedded {len(texts)} texts in {time.monotonic() - started:.0f}s; ranking {len(plans)} plans")
+    rules = catalog.rules
     semantic = replace(params, keyword_weight=0.0)
-    for scored, representation, groups in plans:
+    keywords: dict[tuple, dict] = {}  # the keyword scorer is the slow part, and profiles share texts
+    started = time.monotonic()
+    for done, (scored, representation, groups) in enumerate(plans, 1):
+        if done % 2000 == 0:
+            _progress(f"ranked {done}/{len(plans)} in {time.monotonic() - started:.0f}s")
         if not groups or (representation != CONTROL and not groups.keys() & STRONG_GROUPS):
             for system in SYSTEMS:
                 scored.shown[(representation, system)] = []
@@ -201,9 +213,15 @@ def score(profiles: list[Scored], catalog: Catalog, embed: Callable[[list[str]],
         sims = {item.id: float(value) for item, value in zip(catalog.items, cosine)}
         text = ", ".join(piece for pieces in groups.values() for piece in pieces)
         skills = [s[:SKILL_LENGTH] for s in scored.profile.skills][:SKILL_LIMIT]
-        keyword = suggestion_keyword(text, Profile(existing_skills=skills), rules)
+        if (text, tuple(skills)) not in keywords:
+            keywords[(text, tuple(skills))] = suggestion_keyword(text, Profile(existing_skills=skills), rules)
+        keyword = keywords[(text, tuple(skills))]
         scored.shown[(representation, "semantic")] = _codes(rank_suggestions(catalog.items, {}, sims, semantic, K))
         scored.shown[(representation, "hybrid")] = _codes(rank_suggestions(catalog.items, keyword, sims, params, K))
+
+
+def _progress(message: str) -> None:
+    print(f"[competency] {message}", file=sys.stderr, flush=True)
 
 
 def _codes(matches) -> list[str]:
@@ -347,7 +365,7 @@ def evidence_sectors(scored: Scored, catalog: Catalog) -> set[str]:
     codes |= {a.qualification.catalog_code for a in p.assessments if a.qualification}
     if p.skills:
         hits = suggestion_keyword(", ".join(p.skills), Profile(existing_skills=list(p.skills)[:SKILL_LIMIT]),
-                                  [item.rules for item in catalog.items])
+                                  catalog.rules)
         codes |= set(list(hits)[:5])
     codes |= {code for code, grade in scored.judgments.items() if grade > 0}
     scored.sectors = {catalog.sector_of[c] for c in codes if c in catalog.sector_of}
@@ -484,6 +502,7 @@ def evaluate(args, embed: Callable | None = None, passages: np.ndarray | None = 
         exclude = set(Path(args.exclude_subjects).read_text().split()) if args.exclude_subjects else set()
         datasets["real"], datasets["real_held_out"], real_notes = real(catalog, args.since, exclude)
     for name, profiles in datasets.items():
+        _progress(f"{name}: {len(profiles)} profiles")
         score(profiles, catalog, embed, passages, params)
     report["datasets"]["augmented"] = {"profiles": len(datasets["augmented"]),
                                        "results": section(datasets["augmented"], catalog, lambda p: p.kind)}

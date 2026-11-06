@@ -178,6 +178,60 @@ after the census shows real profiles carry trade skills, suggestion parameters a
 negatives, and the assessor gates pass. If the census shows most Skill Passports hold only soft skills or nothing,
 remove the feature rather than tune it.
 
+### Competency-aware evidence (TSP credentials)
+
+Today suggestions read only the Skill Passport's self-declared skills. A real staging tracker profile (6 November
+2026) shows what else it carries: qualifications as T2MIS codes (`ALTDRV204`), and certificates with a status, a
+human-written expiry date ("18th of July, 2031 ") and their units of competency, each with a unit code and a BASIC,
+COMMON or CORE type. Assessments use PascalCase keys and repeat the learner's ULI. Sign-in
+(`tsp_sign_in.kept_profile`) stores the whole credentials object today, so certificate numbers, assessment and
+certificate ids, the ULI inside assessments and external credential URLs and file keys are kept in
+`learner_identity.profile` although nothing reads them; the normalized profile never does.
+
+`tesda_track/services/tsp_profile.py` turns that into recommendation evidence with no identifiers: skills;
+qualifications mapped to the catalog through the code crosswalk; certificates with their validity today; units, one per
+unit code, with the qualifications they came from, their type, and whether any of those certificates is still valid;
+assessment results; trainings and experience. An expired certificate is history: its units stay, but it is not held
+today, so suggesting it again is a renewal, not a duplicate. Contradictions (an Active status past its expiry date, a
+unit given two types, an unreadable date) resolve conservatively and are listed as warnings.
+`backend/tests/unit/test_tsp_profile.py` covers empty, partial, inconsistent, duplicated and expired data.
+
+`backend/evaluation/competency.py` asks whether that evidence helps. It compares six representations, each ranked by
+the API's `rank_suggestions` as semantic-only and as the existing hybrid, with the parameters the model gets today:
+
+| Representation | Evidence (group weights, fixed before any run) |
+| --- | --- |
+| `skills_only` | Self-declared skills: today's `suggest()` (hybrid) |
+| `core_only` | CORE units, each embedded and averaged |
+| `all_units_flat` | Every unit at equal weight: a control, to show what generic units do |
+| `type_weighted` | CORE 1.0, COMMON 0.25, BASIC 0 |
+| `quals_core` | Held qualifications (catalog names) 1.0, CORE 1.0 |
+| `combined` | Skills 1.0, qualifications 0.5, CORE 1.0, COMMON 0.25, trainings and experience 0.5 |
+
+BASIC unit titles appear in 88 to 178 catalog qualifications each, so they carry no occupational signal. Except in
+the control, a ranking needs occupational evidence (skills, CORE units, a qualification, training or experience):
+COMMON and BASIC can add to it, never start it.
+
+Profiles: `augmented` takes 300 of the team's labeled dev skills and gives each a certificate built from real catalog
+units in TSP's shape, from the same sector (supporting), another sector (unrelated), another sector's BASIC and COMMON
+units only (generic), the supporting one expired, or the answer itself (duplicate bait, unlabeled). The labels stay the
+skill's answers: a certificate is evidence of what someone learned, never of what they want next. `safety` holds
+credential-only profiles with no right answer, only right behaviour. With `--from-db`, real stored profiles get the
+same safety checks, and a weak label from leaving one certificate out and asking for it back.
+
+Checks: suggestions for profiles with insufficient evidence; duplicates of a qualification held today; renewals of an
+expired one (reported, not counted as errors); suggestions from a sector the profile gives no evidence for; and
+unrelated ones (such a sector and no CORE unit in common). No threshold is tuned and the sealed goal set is never read.
+
+```bash
+cd backend
+python -m evaluation.competency --model-path models/tesda-e5-small-v6-colab --output ../reports/competency.json
+# On the server, adding stored profiles (aggregates only; mount the code as for evaluation.suggestions):
+python -m evaluation.competency --model-path ... --from-db --since YYYY-MM-DD --k 5 --output ...
+```
+
+The suggestion-evaluation workflow runs it on every change, with the checksum-verified v6-colab.
+
 ### Pilot: typed goals against tapped suggestions
 
 The webview says where each goal came from: typed there, or a tapped suggestion. `funnel_daily_stat` counts per day,
