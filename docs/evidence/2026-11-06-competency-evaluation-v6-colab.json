@@ -1,0 +1,4150 @@
+{
+  "evaluation_version": "competency-evaluation-v1",
+  "generated_at": "2026-11-06T07:36:45+00:00",
+  "model": "tesda-track/tesda-e5-small-v6-colab",
+  "params": {
+    "z_floor": 3.0,
+    "z_ceiling": 5.0,
+    "keyword_weight": 0.5,
+    "min_score": 20
+  },
+  "params_source": "settings defaults (no calibration.json)",
+  "representations": {
+    "skills_only": {
+      "skills": 1.0
+    },
+    "core_only": {
+      "core": 1.0
+    },
+    "all_units_flat": {
+      "units": 1.0
+    },
+    "type_weighted": {
+      "core": 1.0,
+      "common": 0.25,
+      "basic": 0.0
+    },
+    "quals_core": {
+      "quals": 1.0,
+      "core": 1.0
+    },
+    "combined": {
+      "skills": 1.0,
+      "quals": 0.5,
+      "core": 1.0,
+      "common": 0.25,
+      "history": 0.5
+    }
+  },
+  "current": "skills_only/hybrid",
+  "k": 3,
+  "limitations": [
+    "Augmented and safety profiles are built from catalog units in TSP's certificate shape, not from real learners; augmented labels are the team-written goal labels (engineering draft).",
+    "Certificates are never labels of what a learner wants: augmented keeps the skill's answers, and the real held-out label only asks whether evidence points back to a qualification the learner did earn.",
+    "No threshold was tuned; every system uses the parameters the model gets in the API.",
+    "Not evidence of production readiness: that needs assessor-labeled real profiles (evaluation.labeling)."
+  ],
+  "datasets": {
+    "augmented": {
+      "profiles": 892,
+      "results": {
+        "skills_only/semantic": {
+          "checks": {
+            "profiles": 892,
+            "with_suggestion": 838,
+            "abstention": 0.06053811659192825,
+            "insufficient_evidence_profiles": 0,
+            "insufficient_evidence_suggested": null,
+            "duplicate_held_today_profiles": 0.162291169451074,
+            "renewal_of_expired_profiles": 0.0059665871121718375,
+            "cross_sector_unsupported_slots": 0.08805418719211823,
+            "unrelated_slots": 0.08805418719211823
+          },
+          "by_kind": {
+            "expired_supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 137,
+              "abstention": 0.06164383561643835,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.0364963503649635,
+              "cross_sector_unsupported_slots": 0.08270676691729323,
+              "unrelated_slots": 0.08270676691729323,
+              "positive_cases": 146,
+              "recall_at_3": 0.8568493150684932,
+              "ndcg_at_3": 0.8546625662588629,
+              "mrr_at_3": 0.865296803652968,
+              "hit_at_3": 0.8835616438356164,
+              "abstained_on_positive": 0.06164383561643835,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": 0.036986301369863014,
+                "ci95": [
+                  -0.004109589041095891,
+                  0.08047945205479452
+                ]
+              }
+            },
+            "generic": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 141,
+              "abstention": 0.06,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.08791208791208792,
+              "unrelated_slots": 0.08791208791208792,
+              "positive_cases": 150,
+              "recall_at_3": 0.8606666666666666,
+              "ndcg_at_3": 0.8585382311586267,
+              "mrr_at_3": 0.8688888888888889,
+              "hit_at_3": 0.8866666666666667,
+              "abstained_on_positive": 0.06,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": 0.036000000000000004,
+                "ci95": [
+                  -0.0033499999999999992,
+                  0.07833333333333334
+                ]
+              }
+            },
+            "held_answer": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 141,
+              "abstention": 0.06,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.9290780141843972,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.10256410256410256,
+              "unrelated_slots": 0.10256410256410256,
+              "positive_cases": 0,
+              "recall_at_3": null,
+              "ndcg_at_3": null,
+              "mrr_at_3": null,
+              "hit_at_3": null,
+              "abstained_on_positive": null,
+              "recall_vs_current": null
+            },
+            "none": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 141,
+              "abstention": 0.06,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.08791208791208792,
+              "unrelated_slots": 0.08791208791208792,
+              "positive_cases": 150,
+              "recall_at_3": 0.8606666666666666,
+              "ndcg_at_3": 0.8585382311586267,
+              "mrr_at_3": 0.8688888888888889,
+              "hit_at_3": 0.8866666666666667,
+              "abstained_on_positive": 0.06,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": 0.036000000000000004,
+                "ci95": [
+                  -0.0033499999999999992,
+                  0.07833333333333334
+                ]
+              }
+            },
+            "supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 137,
+              "abstention": 0.06164383561643835,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0364963503649635,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.08270676691729323,
+              "unrelated_slots": 0.08270676691729323,
+              "positive_cases": 146,
+              "recall_at_3": 0.8568493150684932,
+              "ndcg_at_3": 0.8546625662588629,
+              "mrr_at_3": 0.865296803652968,
+              "hit_at_3": 0.8835616438356164,
+              "abstained_on_positive": 0.06164383561643835,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": 0.036986301369863014,
+                "ci95": [
+                  -0.004109589041095891,
+                  0.08047945205479452
+                ]
+              }
+            },
+            "unrelated": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 141,
+              "abstention": 0.06,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.08424908424908426,
+              "unrelated_slots": 0.08424908424908426,
+              "positive_cases": 150,
+              "recall_at_3": 0.8606666666666666,
+              "ndcg_at_3": 0.8585382311586267,
+              "mrr_at_3": 0.8688888888888889,
+              "hit_at_3": 0.8866666666666667,
+              "abstained_on_positive": 0.06,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": 0.036000000000000004,
+                "ci95": [
+                  -0.0033499999999999992,
+                  0.07833333333333334
+                ]
+              }
+            }
+          },
+          "labeled": {
+            "positive_cases": 742,
+            "recall_at_3": 0.8591644204851752,
+            "ndcg_at_3": 0.8570130368854043,
+            "mrr_at_3": 0.8674752920035939,
+            "hit_at_3": 0.8854447439353099,
+            "abstained_on_positive": 0.06064690026954178
+          },
+          "per_sector": {
+            "Agriculture, Forestry and Fishery": {
+              "n": 125,
+              "recall_at_3": 0.88
+            },
+            "Automotive Manufacturing": {
+              "n": 20,
+              "recall_at_3": 0.5
+            },
+            "Automotive and Land Transportation": {
+              "n": 45,
+              "recall_at_3": 0.7777777777777778
+            },
+            "Chemical/Plastic/Petrochemicals": {
+              "n": 6,
+              "recall_at_3": 1.0
+            },
+            "Construction": {
+              "n": 110,
+              "recall_at_3": 0.8863636363636364
+            },
+            "Decorative Crafts": {
+              "n": 8,
+              "recall_at_3": 0.375
+            },
+            "Electrical and Electronics": {
+              "n": 35,
+              "recall_at_3": 0.8571428571428571
+            },
+            "Garments": {
+              "n": 10,
+              "recall_at_3": 1.0
+            },
+            "Health, Social and Other Community Development Services": {
+              "n": 90,
+              "recall_at_3": 0.9166666666666666
+            },
+            "Heating, Ventilation, Air Conditioning and Refrigeration Technology": {
+              "n": 15,
+              "recall_at_3": 1.0
+            },
+            "Human Health/Health Care": {
+              "n": 25,
+              "recall_at_3": 0.8
+            },
+            "Information and Communication Technology": {
+              "n": 70,
+              "recall_at_3": 1.0
+            },
+            "Maritime": {
+              "n": 30,
+              "recall_at_3": 0.6666666666666666
+            },
+            "Metals and Engineering": {
+              "n": 40,
+              "recall_at_3": 0.6375
+            },
+            "Other": {
+              "n": 20,
+              "recall_at_3": 0.75
+            },
+            "Processed Food and Beverages": {
+              "n": 20,
+              "recall_at_3": 1.0
+            },
+            "Tourism": {
+              "n": 60,
+              "recall_at_3": 0.9166666666666666
+            },
+            "Utilities": {
+              "n": 10,
+              "recall_at_3": 1.0
+            },
+            "Wholesale and Retail Trading": {
+              "n": 3,
+              "recall_at_3": 1.0
+            }
+          },
+          "recall_vs_current": {
+            "n": 742,
+            "mean_difference": 0.03638814016172507,
+            "ci95": [
+              0.01785377358490566,
+              0.05512297843665768
+            ]
+          }
+        },
+        "skills_only/hybrid": {
+          "checks": {
+            "profiles": 892,
+            "with_suggestion": 808,
+            "abstention": 0.09417040358744394,
+            "insufficient_evidence_profiles": 0,
+            "insufficient_evidence_suggested": null,
+            "duplicate_held_today_profiles": 0.16336633663366337,
+            "renewal_of_expired_profiles": 0.006188118811881188,
+            "cross_sector_unsupported_slots": 0.03856382978723404,
+            "unrelated_slots": 0.03856382978723404
+          },
+          "by_kind": {
+            "expired_supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 132,
+              "abstention": 0.0958904109589041,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.03787878787878788,
+              "cross_sector_unsupported_slots": 0.032520325203252036,
+              "unrelated_slots": 0.032520325203252036,
+              "positive_cases": 146,
+              "recall_at_3": 0.8198630136986301,
+              "ndcg_at_3": 0.8034052247444567,
+              "mrr_at_3": 0.815068493150685,
+              "hit_at_3": 0.8561643835616438,
+              "abstained_on_positive": 0.0958904109589041
+            },
+            "generic": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 136,
+              "abstention": 0.09333333333333334,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.039525691699604744,
+              "unrelated_slots": 0.039525691699604744,
+              "positive_cases": 150,
+              "recall_at_3": 0.8246666666666667,
+              "ndcg_at_3": 0.8086477520846046,
+              "mrr_at_3": 0.82,
+              "hit_at_3": 0.86,
+              "abstained_on_positive": 0.09333333333333334
+            },
+            "held_answer": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 136,
+              "abstention": 0.09333333333333334,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.9338235294117647,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.04743083003952569,
+              "unrelated_slots": 0.04743083003952569,
+              "positive_cases": 0,
+              "recall_at_3": null,
+              "ndcg_at_3": null,
+              "mrr_at_3": null,
+              "hit_at_3": null,
+              "abstained_on_positive": null
+            },
+            "none": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 136,
+              "abstention": 0.09333333333333334,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.039525691699604744,
+              "unrelated_slots": 0.039525691699604744,
+              "positive_cases": 150,
+              "recall_at_3": 0.8246666666666667,
+              "ndcg_at_3": 0.8086477520846046,
+              "mrr_at_3": 0.82,
+              "hit_at_3": 0.86,
+              "abstained_on_positive": 0.09333333333333334
+            },
+            "supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 132,
+              "abstention": 0.0958904109589041,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.03787878787878788,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.032520325203252036,
+              "unrelated_slots": 0.032520325203252036,
+              "positive_cases": 146,
+              "recall_at_3": 0.8198630136986301,
+              "ndcg_at_3": 0.8034052247444567,
+              "mrr_at_3": 0.815068493150685,
+              "hit_at_3": 0.8561643835616438,
+              "abstained_on_positive": 0.0958904109589041
+            },
+            "unrelated": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 136,
+              "abstention": 0.09333333333333334,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.039525691699604744,
+              "unrelated_slots": 0.039525691699604744,
+              "positive_cases": 150,
+              "recall_at_3": 0.8246666666666667,
+              "ndcg_at_3": 0.8086477520846046,
+              "mrr_at_3": 0.82,
+              "hit_at_3": 0.86,
+              "abstained_on_positive": 0.09333333333333334
+            }
+          },
+          "labeled": {
+            "positive_cases": 742,
+            "recall_at_3": 0.8227762803234502,
+            "ndcg_at_3": 0.8065846550720396,
+            "mrr_at_3": 0.8180592991913747,
+            "hit_at_3": 0.8584905660377359,
+            "abstained_on_positive": 0.09433962264150944
+          },
+          "per_sector": {
+            "Agriculture, Forestry and Fishery": {
+              "n": 125,
+              "recall_at_3": 0.82
+            },
+            "Automotive Manufacturing": {
+              "n": 20,
+              "recall_at_3": 0.625
+            },
+            "Automotive and Land Transportation": {
+              "n": 45,
+              "recall_at_3": 0.7222222222222222
+            },
+            "Chemical/Plastic/Petrochemicals": {
+              "n": 6,
+              "recall_at_3": 1.0
+            },
+            "Construction": {
+              "n": 110,
+              "recall_at_3": 0.9090909090909091
+            },
+            "Decorative Crafts": {
+              "n": 8,
+              "recall_at_3": 0.375
+            },
+            "Electrical and Electronics": {
+              "n": 35,
+              "recall_at_3": 0.8571428571428571
+            },
+            "Garments": {
+              "n": 10,
+              "recall_at_3": 1.0
+            },
+            "Health, Social and Other Community Development Services": {
+              "n": 90,
+              "recall_at_3": 0.8611111111111112
+            },
+            "Heating, Ventilation, Air Conditioning and Refrigeration Technology": {
+              "n": 15,
+              "recall_at_3": 1.0
+            },
+            "Human Health/Health Care": {
+              "n": 25,
+              "recall_at_3": 0.8
+            },
+            "Information and Communication Technology": {
+              "n": 70,
+              "recall_at_3": 1.0
+            },
+            "Maritime": {
+              "n": 30,
+              "recall_at_3": 0.4166666666666667
+            },
+            "Metals and Engineering": {
+              "n": 40,
+              "recall_at_3": 0.65
+            },
+            "Other": {
+              "n": 20,
+              "recall_at_3": 0.75
+            },
+            "Processed Food and Beverages": {
+              "n": 20,
+              "recall_at_3": 0.75
+            },
+            "Tourism": {
+              "n": 60,
+              "recall_at_3": 0.8333333333333334
+            },
+            "Utilities": {
+              "n": 10,
+              "recall_at_3": 1.0
+            },
+            "Wholesale and Retail Trading": {
+              "n": 3,
+              "recall_at_3": 1.0
+            }
+          }
+        },
+        "core_only/semantic": {
+          "checks": {
+            "profiles": 892,
+            "with_suggestion": 592,
+            "abstention": 0.336322869955157,
+            "insufficient_evidence_profiles": 0,
+            "insufficient_evidence_suggested": null,
+            "duplicate_held_today_profiles": 0.7533783783783784,
+            "renewal_of_expired_profiles": 0.24662162162162163,
+            "cross_sector_unsupported_slots": 0.05245901639344262,
+            "unrelated_slots": 0.05245901639344262
+          },
+          "by_kind": {
+            "expired_supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 146,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 1.0,
+              "cross_sector_unsupported_slots": 0.04421768707482993,
+              "unrelated_slots": 0.04421768707482993,
+              "positive_cases": 146,
+              "recall_at_3": 0.03767123287671233,
+              "ndcg_at_3": 0.022463301835266535,
+              "mrr_at_3": 0.0182648401826484,
+              "hit_at_3": 0.0410958904109589,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.7821917808219179,
+                "ci95": [
+                  -0.850693493150685,
+                  -0.7109503424657535
+                ]
+              }
+            },
+            "generic": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 1.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            },
+            "held_answer": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.06060606060606061,
+              "unrelated_slots": 0.06060606060606061,
+              "positive_cases": 0,
+              "recall_at_3": null,
+              "ndcg_at_3": null,
+              "mrr_at_3": null,
+              "hit_at_3": null,
+              "abstained_on_positive": null,
+              "recall_vs_current": null
+            },
+            "none": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 1.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            },
+            "supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 146,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.04421768707482993,
+              "unrelated_slots": 0.04421768707482993,
+              "positive_cases": 146,
+              "recall_at_3": 0.03767123287671233,
+              "ndcg_at_3": 0.022463301835266535,
+              "mrr_at_3": 0.0182648401826484,
+              "hit_at_3": 0.0410958904109589,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.7821917808219179,
+                "ci95": [
+                  -0.850693493150685,
+                  -0.7109503424657535
+                ]
+              }
+            },
+            "unrelated": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.05970149253731343,
+              "unrelated_slots": 0.05970149253731343,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            }
+          },
+          "labeled": {
+            "positive_cases": 742,
+            "recall_at_3": 0.014824797843665768,
+            "ndcg_at_3": 0.00884000557398629,
+            "mrr_at_3": 0.007187780772686433,
+            "hit_at_3": 0.016172506738544475,
+            "abstained_on_positive": 0.40431266846361186
+          },
+          "per_sector": {
+            "Agriculture, Forestry and Fishery": {
+              "n": 125,
+              "recall_at_3": 0.0
+            },
+            "Automotive Manufacturing": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Automotive and Land Transportation": {
+              "n": 45,
+              "recall_at_3": 0.0
+            },
+            "Chemical/Plastic/Petrochemicals": {
+              "n": 6,
+              "recall_at_3": 0.0
+            },
+            "Construction": {
+              "n": 110,
+              "recall_at_3": 0.01818181818181818
+            },
+            "Decorative Crafts": {
+              "n": 8,
+              "recall_at_3": 0.25
+            },
+            "Electrical and Electronics": {
+              "n": 35,
+              "recall_at_3": 0.0
+            },
+            "Garments": {
+              "n": 10,
+              "recall_at_3": 0.0
+            },
+            "Health, Social and Other Community Development Services": {
+              "n": 90,
+              "recall_at_3": 0.0
+            },
+            "Heating, Ventilation, Air Conditioning and Refrigeration Technology": {
+              "n": 15,
+              "recall_at_3": 0.13333333333333333
+            },
+            "Human Health/Health Care": {
+              "n": 25,
+              "recall_at_3": 0.0
+            },
+            "Information and Communication Technology": {
+              "n": 70,
+              "recall_at_3": 0.05714285714285714
+            },
+            "Maritime": {
+              "n": 30,
+              "recall_at_3": 0.0
+            },
+            "Metals and Engineering": {
+              "n": 40,
+              "recall_at_3": 0.0
+            },
+            "Other": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Processed Food and Beverages": {
+              "n": 20,
+              "recall_at_3": 0.05
+            },
+            "Tourism": {
+              "n": 60,
+              "recall_at_3": 0.0
+            },
+            "Utilities": {
+              "n": 10,
+              "recall_at_3": 0.0
+            },
+            "Wholesale and Retail Trading": {
+              "n": 3,
+              "recall_at_3": 0.0
+            }
+          },
+          "recall_vs_current": {
+            "n": 742,
+            "mean_difference": -0.8079514824797843,
+            "ci95": [
+              -0.834983153638814,
+              -0.7815330188679245
+            ]
+          }
+        },
+        "core_only/hybrid": {
+          "checks": {
+            "profiles": 892,
+            "with_suggestion": 592,
+            "abstention": 0.336322869955157,
+            "insufficient_evidence_profiles": 0,
+            "insufficient_evidence_suggested": null,
+            "duplicate_held_today_profiles": 0.7533783783783784,
+            "renewal_of_expired_profiles": 0.24662162162162163,
+            "cross_sector_unsupported_slots": 0.08791208791208792,
+            "unrelated_slots": 0.08453085376162299
+          },
+          "by_kind": {
+            "expired_supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 146,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 1.0,
+              "cross_sector_unsupported_slots": 0.07553956834532374,
+              "unrelated_slots": 0.07553956834532374,
+              "positive_cases": 146,
+              "recall_at_3": 0.02054794520547945,
+              "ndcg_at_3": 0.01296431000489296,
+              "mrr_at_3": 0.010273972602739725,
+              "hit_at_3": 0.02054794520547945,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.7993150684931507,
+                "ci95": [
+                  -0.863013698630137,
+                  -0.7311558219178083
+                ]
+              }
+            },
+            "generic": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 1.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            },
+            "held_answer": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.10891089108910891,
+              "unrelated_slots": 0.10561056105610561,
+              "positive_cases": 0,
+              "recall_at_3": null,
+              "ndcg_at_3": null,
+              "mrr_at_3": null,
+              "hit_at_3": null,
+              "abstained_on_positive": null,
+              "recall_vs_current": null
+            },
+            "none": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 1.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            },
+            "supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 146,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.07553956834532374,
+              "unrelated_slots": 0.07553956834532374,
+              "positive_cases": 146,
+              "recall_at_3": 0.02054794520547945,
+              "ndcg_at_3": 0.01296431000489296,
+              "mrr_at_3": 0.010273972602739725,
+              "hit_at_3": 0.02054794520547945,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.7993150684931507,
+                "ci95": [
+                  -0.863013698630137,
+                  -0.7311558219178083
+                ]
+              }
+            },
+            "unrelated": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.08950617283950617,
+              "unrelated_slots": 0.08024691358024691,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            }
+          },
+          "labeled": {
+            "positive_cases": 742,
+            "recall_at_3": 0.008086253369272238,
+            "ndcg_at_3": 0.0051018578455913005,
+            "mrr_at_3": 0.004043126684636119,
+            "hit_at_3": 0.008086253369272238,
+            "abstained_on_positive": 0.40431266846361186
+          },
+          "per_sector": {
+            "Agriculture, Forestry and Fishery": {
+              "n": 125,
+              "recall_at_3": 0.0
+            },
+            "Automotive Manufacturing": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Automotive and Land Transportation": {
+              "n": 45,
+              "recall_at_3": 0.0
+            },
+            "Chemical/Plastic/Petrochemicals": {
+              "n": 6,
+              "recall_at_3": 0.0
+            },
+            "Construction": {
+              "n": 110,
+              "recall_at_3": 0.01818181818181818
+            },
+            "Decorative Crafts": {
+              "n": 8,
+              "recall_at_3": 0.25
+            },
+            "Electrical and Electronics": {
+              "n": 35,
+              "recall_at_3": 0.0
+            },
+            "Garments": {
+              "n": 10,
+              "recall_at_3": 0.0
+            },
+            "Health, Social and Other Community Development Services": {
+              "n": 90,
+              "recall_at_3": 0.0
+            },
+            "Heating, Ventilation, Air Conditioning and Refrigeration Technology": {
+              "n": 15,
+              "recall_at_3": 0.13333333333333333
+            },
+            "Human Health/Health Care": {
+              "n": 25,
+              "recall_at_3": 0.0
+            },
+            "Information and Communication Technology": {
+              "n": 70,
+              "recall_at_3": 0.0
+            },
+            "Maritime": {
+              "n": 30,
+              "recall_at_3": 0.0
+            },
+            "Metals and Engineering": {
+              "n": 40,
+              "recall_at_3": 0.0
+            },
+            "Other": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Processed Food and Beverages": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Tourism": {
+              "n": 60,
+              "recall_at_3": 0.0
+            },
+            "Utilities": {
+              "n": 10,
+              "recall_at_3": 0.0
+            },
+            "Wholesale and Retail Trading": {
+              "n": 3,
+              "recall_at_3": 0.0
+            }
+          },
+          "recall_vs_current": {
+            "n": 742,
+            "mean_difference": -0.8146900269541779,
+            "ci95": [
+              -0.842117587601078,
+              -0.7889454177897574
+            ]
+          }
+        },
+        "all_units_flat/semantic": {
+          "checks": {
+            "profiles": 892,
+            "with_suggestion": 141,
+            "abstention": 0.8419282511210763,
+            "insufficient_evidence_profiles": 0,
+            "insufficient_evidence_suggested": null,
+            "duplicate_held_today_profiles": 0.6808510638297872,
+            "renewal_of_expired_profiles": 0.2127659574468085,
+            "cross_sector_unsupported_slots": 0.0,
+            "unrelated_slots": 0.0
+          },
+          "by_kind": {
+            "expired_supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 32,
+              "abstention": 0.7808219178082192,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.9375,
+              "cross_sector_unsupported_slots": 0.0,
+              "unrelated_slots": 0.0,
+              "positive_cases": 146,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 0.7808219178082192,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.8198630136986301,
+                "ci95": [
+                  -0.8815068493150684,
+                  -0.7554708904109589
+                ]
+              }
+            },
+            "generic": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 4,
+              "abstention": 0.9733333333333334,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.0,
+              "unrelated_slots": 0.0,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 0.9733333333333334,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            },
+            "held_answer": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 33,
+              "abstention": 0.78,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.9696969696969697,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.0,
+              "unrelated_slots": 0.0,
+              "positive_cases": 0,
+              "recall_at_3": null,
+              "ndcg_at_3": null,
+              "mrr_at_3": null,
+              "hit_at_3": null,
+              "abstained_on_positive": null,
+              "recall_vs_current": null
+            },
+            "none": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 1.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            },
+            "supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 32,
+              "abstention": 0.7808219178082192,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.9375,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.0,
+              "unrelated_slots": 0.0,
+              "positive_cases": 146,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 0.7808219178082192,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.8198630136986301,
+                "ci95": [
+                  -0.8815068493150684,
+                  -0.7554708904109589
+                ]
+              }
+            },
+            "unrelated": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 40,
+              "abstention": 0.7333333333333333,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.85,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.0,
+              "unrelated_slots": 0.0,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 0.7333333333333333,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            }
+          },
+          "labeled": {
+            "positive_cases": 742,
+            "recall_at_3": 0.0,
+            "ndcg_at_3": 0.0,
+            "mrr_at_3": 0.0,
+            "hit_at_3": 0.0,
+            "abstained_on_positive": 0.8544474393530997
+          },
+          "per_sector": {
+            "Agriculture, Forestry and Fishery": {
+              "n": 125,
+              "recall_at_3": 0.0
+            },
+            "Automotive Manufacturing": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Automotive and Land Transportation": {
+              "n": 45,
+              "recall_at_3": 0.0
+            },
+            "Chemical/Plastic/Petrochemicals": {
+              "n": 6,
+              "recall_at_3": 0.0
+            },
+            "Construction": {
+              "n": 110,
+              "recall_at_3": 0.0
+            },
+            "Decorative Crafts": {
+              "n": 8,
+              "recall_at_3": 0.0
+            },
+            "Electrical and Electronics": {
+              "n": 35,
+              "recall_at_3": 0.0
+            },
+            "Garments": {
+              "n": 10,
+              "recall_at_3": 0.0
+            },
+            "Health, Social and Other Community Development Services": {
+              "n": 90,
+              "recall_at_3": 0.0
+            },
+            "Heating, Ventilation, Air Conditioning and Refrigeration Technology": {
+              "n": 15,
+              "recall_at_3": 0.0
+            },
+            "Human Health/Health Care": {
+              "n": 25,
+              "recall_at_3": 0.0
+            },
+            "Information and Communication Technology": {
+              "n": 70,
+              "recall_at_3": 0.0
+            },
+            "Maritime": {
+              "n": 30,
+              "recall_at_3": 0.0
+            },
+            "Metals and Engineering": {
+              "n": 40,
+              "recall_at_3": 0.0
+            },
+            "Other": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Processed Food and Beverages": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Tourism": {
+              "n": 60,
+              "recall_at_3": 0.0
+            },
+            "Utilities": {
+              "n": 10,
+              "recall_at_3": 0.0
+            },
+            "Wholesale and Retail Trading": {
+              "n": 3,
+              "recall_at_3": 0.0
+            }
+          },
+          "recall_vs_current": {
+            "n": 742,
+            "mean_difference": -0.8227762803234502,
+            "ci95": [
+              -0.848862870619946,
+              -0.7978402964959569
+            ]
+          }
+        },
+        "all_units_flat/hybrid": {
+          "checks": {
+            "profiles": 892,
+            "with_suggestion": 645,
+            "abstention": 0.2769058295964126,
+            "insufficient_evidence_profiles": 0,
+            "insufficient_evidence_suggested": null,
+            "duplicate_held_today_profiles": 0.6821705426356589,
+            "renewal_of_expired_profiles": 0.22170542635658916,
+            "cross_sector_unsupported_slots": 0.23727486296006264,
+            "unrelated_slots": 0.2341425215348473
+          },
+          "by_kind": {
+            "expired_supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 146,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.9794520547945206,
+              "cross_sector_unsupported_slots": 0.21602787456445993,
+              "unrelated_slots": 0.21602787456445993,
+              "positive_cases": 146,
+              "recall_at_3": 0.030821917808219176,
+              "ndcg_at_3": 0.022341503473581607,
+              "mrr_at_3": 0.022831050228310504,
+              "hit_at_3": 0.0410958904109589,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.7890410958904109,
+                "ci95": [
+                  -0.8558304794520548,
+                  -0.7181335616438358
+                ]
+              }
+            },
+            "generic": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 53,
+              "abstention": 0.6466666666666666,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.6122448979591837,
+              "unrelated_slots": 0.6122448979591837,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 0.6466666666666666,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            },
+            "held_answer": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.9866666666666667,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.20748299319727892,
+              "unrelated_slots": 0.20408163265306123,
+              "positive_cases": 0,
+              "recall_at_3": null,
+              "ndcg_at_3": null,
+              "mrr_at_3": null,
+              "hit_at_3": null,
+              "abstained_on_positive": null,
+              "recall_vs_current": null
+            },
+            "none": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 1.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            },
+            "supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 146,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.9794520547945206,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.21602787456445993,
+              "unrelated_slots": 0.21602787456445993,
+              "positive_cases": 146,
+              "recall_at_3": 0.030821917808219176,
+              "ndcg_at_3": 0.022341503473581607,
+              "mrr_at_3": 0.022831050228310504,
+              "hit_at_3": 0.0410958904109589,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.7890410958904109,
+                "ci95": [
+                  -0.8558304794520548,
+                  -0.7181335616438358
+                ]
+              }
+            },
+            "unrelated": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.9933333333333333,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.1864951768488746,
+              "unrelated_slots": 0.17684887459807075,
+              "positive_cases": 150,
+              "recall_at_3": 0.006666666666666667,
+              "ndcg_at_3": 0.0033333333333333335,
+              "mrr_at_3": 0.0022222222222222222,
+              "hit_at_3": 0.006666666666666667,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8180000000000001,
+                "ci95": [
+                  -0.875,
+                  -0.7566583333333334
+                ]
+              }
+            }
+          },
+          "labeled": {
+            "positive_cases": 742,
+            "recall_at_3": 0.013477088948787063,
+            "ndcg_at_3": 0.00946592859068171,
+            "mrr_at_3": 0.009433962264150943,
+            "hit_at_3": 0.01752021563342318,
+            "abstained_on_positive": 0.3328840970350404
+          },
+          "per_sector": {
+            "Agriculture, Forestry and Fishery": {
+              "n": 125,
+              "recall_at_3": 0.0
+            },
+            "Automotive Manufacturing": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Automotive and Land Transportation": {
+              "n": 45,
+              "recall_at_3": 0.0
+            },
+            "Chemical/Plastic/Petrochemicals": {
+              "n": 6,
+              "recall_at_3": 0.0
+            },
+            "Construction": {
+              "n": 110,
+              "recall_at_3": 0.0
+            },
+            "Decorative Crafts": {
+              "n": 8,
+              "recall_at_3": 0.0
+            },
+            "Electrical and Electronics": {
+              "n": 35,
+              "recall_at_3": 0.0
+            },
+            "Garments": {
+              "n": 10,
+              "recall_at_3": 0.0
+            },
+            "Health, Social and Other Community Development Services": {
+              "n": 90,
+              "recall_at_3": 0.0
+            },
+            "Heating, Ventilation, Air Conditioning and Refrigeration Technology": {
+              "n": 15,
+              "recall_at_3": 0.13333333333333333
+            },
+            "Human Health/Health Care": {
+              "n": 25,
+              "recall_at_3": 0.0
+            },
+            "Information and Communication Technology": {
+              "n": 70,
+              "recall_at_3": 0.0
+            },
+            "Maritime": {
+              "n": 30,
+              "recall_at_3": 0.1
+            },
+            "Metals and Engineering": {
+              "n": 40,
+              "recall_at_3": 0.025
+            },
+            "Other": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Processed Food and Beverages": {
+              "n": 20,
+              "recall_at_3": 0.15
+            },
+            "Tourism": {
+              "n": 60,
+              "recall_at_3": 0.016666666666666666
+            },
+            "Utilities": {
+              "n": 10,
+              "recall_at_3": 0.0
+            },
+            "Wholesale and Retail Trading": {
+              "n": 3,
+              "recall_at_3": 0.0
+            }
+          },
+          "recall_vs_current": {
+            "n": 742,
+            "mean_difference": -0.8092991913746631,
+            "ci95": [
+              -0.837131064690027,
+              -0.7834181266846361
+            ]
+          }
+        },
+        "type_weighted/semantic": {
+          "checks": {
+            "profiles": 892,
+            "with_suggestion": 590,
+            "abstention": 0.33856502242152464,
+            "insufficient_evidence_profiles": 0,
+            "insufficient_evidence_suggested": null,
+            "duplicate_held_today_profiles": 0.752542372881356,
+            "renewal_of_expired_profiles": 0.24745762711864408,
+            "cross_sector_unsupported_slots": 0.041343669250646,
+            "unrelated_slots": 0.041343669250646
+          },
+          "by_kind": {
+            "expired_supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 146,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 1.0,
+              "cross_sector_unsupported_slots": 0.02877697841726619,
+              "unrelated_slots": 0.02877697841726619,
+              "positive_cases": 146,
+              "recall_at_3": 0.030821917808219176,
+              "ndcg_at_3": 0.0184887866924459,
+              "mrr_at_3": 0.014840182648401826,
+              "hit_at_3": 0.03424657534246575,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.7890410958904109,
+                "ci95": [
+                  -0.8561643835616438,
+                  -0.7205479452054795
+                ]
+              }
+            },
+            "generic": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 1.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            },
+            "held_answer": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 148,
+              "abstention": 0.013333333333333334,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.05244755244755245,
+              "unrelated_slots": 0.05244755244755245,
+              "positive_cases": 0,
+              "recall_at_3": null,
+              "ndcg_at_3": null,
+              "mrr_at_3": null,
+              "hit_at_3": null,
+              "abstained_on_positive": null,
+              "recall_vs_current": null
+            },
+            "none": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 1.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            },
+            "supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 146,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.02877697841726619,
+              "unrelated_slots": 0.02877697841726619,
+              "positive_cases": 146,
+              "recall_at_3": 0.030821917808219176,
+              "ndcg_at_3": 0.0184887866924459,
+              "mrr_at_3": 0.014840182648401826,
+              "hit_at_3": 0.03424657534246575,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.7890410958904109,
+                "ci95": [
+                  -0.8561643835616438,
+                  -0.7205479452054795
+                ]
+              }
+            },
+            "unrelated": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.05329153605015674,
+              "unrelated_slots": 0.05329153605015674,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            }
+          },
+          "labeled": {
+            "positive_cases": 742,
+            "recall_at_3": 0.012129380053908356,
+            "ndcg_at_3": 0.007275910666029923,
+            "mrr_at_3": 0.005840071877807726,
+            "hit_at_3": 0.013477088948787063,
+            "abstained_on_positive": 0.40431266846361186
+          },
+          "per_sector": {
+            "Agriculture, Forestry and Fishery": {
+              "n": 125,
+              "recall_at_3": 0.0
+            },
+            "Automotive Manufacturing": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Automotive and Land Transportation": {
+              "n": 45,
+              "recall_at_3": 0.044444444444444446
+            },
+            "Chemical/Plastic/Petrochemicals": {
+              "n": 6,
+              "recall_at_3": 0.0
+            },
+            "Construction": {
+              "n": 110,
+              "recall_at_3": 0.01818181818181818
+            },
+            "Decorative Crafts": {
+              "n": 8,
+              "recall_at_3": 0.25
+            },
+            "Electrical and Electronics": {
+              "n": 35,
+              "recall_at_3": 0.0
+            },
+            "Garments": {
+              "n": 10,
+              "recall_at_3": 0.0
+            },
+            "Health, Social and Other Community Development Services": {
+              "n": 90,
+              "recall_at_3": 0.0
+            },
+            "Heating, Ventilation, Air Conditioning and Refrigeration Technology": {
+              "n": 15,
+              "recall_at_3": 0.13333333333333333
+            },
+            "Human Health/Health Care": {
+              "n": 25,
+              "recall_at_3": 0.0
+            },
+            "Information and Communication Technology": {
+              "n": 70,
+              "recall_at_3": 0.0
+            },
+            "Maritime": {
+              "n": 30,
+              "recall_at_3": 0.0
+            },
+            "Metals and Engineering": {
+              "n": 40,
+              "recall_at_3": 0.0
+            },
+            "Other": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Processed Food and Beverages": {
+              "n": 20,
+              "recall_at_3": 0.05
+            },
+            "Tourism": {
+              "n": 60,
+              "recall_at_3": 0.0
+            },
+            "Utilities": {
+              "n": 10,
+              "recall_at_3": 0.0
+            },
+            "Wholesale and Retail Trading": {
+              "n": 3,
+              "recall_at_3": 0.0
+            }
+          },
+          "recall_vs_current": {
+            "n": 742,
+            "mean_difference": -0.8106469002695418,
+            "ci95": [
+              -0.8386135444743935,
+              -0.7841627358490566
+            ]
+          }
+        },
+        "type_weighted/hybrid": {
+          "checks": {
+            "profiles": 892,
+            "with_suggestion": 592,
+            "abstention": 0.336322869955157,
+            "insufficient_evidence_profiles": 0,
+            "insufficient_evidence_suggested": null,
+            "duplicate_held_today_profiles": 0.7533783783783784,
+            "renewal_of_expired_profiles": 0.24662162162162163,
+            "cross_sector_unsupported_slots": 0.1542513167795335,
+            "unrelated_slots": 0.15124153498871332
+          },
+          "by_kind": {
+            "expired_supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 146,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 1.0,
+              "cross_sector_unsupported_slots": 0.15123456790123457,
+              "unrelated_slots": 0.15123456790123457,
+              "positive_cases": 146,
+              "recall_at_3": 0.0410958904109589,
+              "ndcg_at_3": 0.02623488089499013,
+              "mrr_at_3": 0.023972602739726026,
+              "hit_at_3": 0.0547945205479452,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.7787671232876713,
+                "ci95": [
+                  -0.8486301369863014,
+                  -0.703416095890411
+                ]
+              }
+            },
+            "generic": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 1.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            },
+            "held_answer": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.17272727272727273,
+              "unrelated_slots": 0.1696969696969697,
+              "positive_cases": 0,
+              "recall_at_3": null,
+              "ndcg_at_3": null,
+              "mrr_at_3": null,
+              "hit_at_3": null,
+              "abstained_on_positive": null,
+              "recall_vs_current": null
+            },
+            "none": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 1.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            },
+            "supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 146,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.15123456790123457,
+              "unrelated_slots": 0.15123456790123457,
+              "positive_cases": 146,
+              "recall_at_3": 0.0410958904109589,
+              "ndcg_at_3": 0.02623488089499013,
+              "mrr_at_3": 0.023972602739726026,
+              "hit_at_3": 0.0547945205479452,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.7787671232876713,
+                "ci95": [
+                  -0.8486301369863014,
+                  -0.703416095890411
+                ]
+              }
+            },
+            "unrelated": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.14245014245014245,
+              "unrelated_slots": 0.1339031339031339,
+              "positive_cases": 150,
+              "recall_at_3": 0.006666666666666667,
+              "ndcg_at_3": 0.0033333333333333335,
+              "mrr_at_3": 0.0022222222222222222,
+              "hit_at_3": 0.006666666666666667,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8180000000000001,
+                "ci95": [
+                  -0.875,
+                  -0.7566583333333334
+                ]
+              }
+            }
+          },
+          "labeled": {
+            "positive_cases": 742,
+            "recall_at_3": 0.01752021563342318,
+            "ndcg_at_3": 0.010998093290211747,
+            "mrr_at_3": 0.009883198562443844,
+            "hit_at_3": 0.022911051212938006,
+            "abstained_on_positive": 0.40431266846361186
+          },
+          "per_sector": {
+            "Agriculture, Forestry and Fishery": {
+              "n": 125,
+              "recall_at_3": 0.0
+            },
+            "Automotive Manufacturing": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Automotive and Land Transportation": {
+              "n": 45,
+              "recall_at_3": 0.0
+            },
+            "Chemical/Plastic/Petrochemicals": {
+              "n": 6,
+              "recall_at_3": 0.0
+            },
+            "Construction": {
+              "n": 110,
+              "recall_at_3": 0.01818181818181818
+            },
+            "Decorative Crafts": {
+              "n": 8,
+              "recall_at_3": 0.25
+            },
+            "Electrical and Electronics": {
+              "n": 35,
+              "recall_at_3": 0.0
+            },
+            "Garments": {
+              "n": 10,
+              "recall_at_3": 0.0
+            },
+            "Health, Social and Other Community Development Services": {
+              "n": 90,
+              "recall_at_3": 0.0
+            },
+            "Heating, Ventilation, Air Conditioning and Refrigeration Technology": {
+              "n": 15,
+              "recall_at_3": 0.13333333333333333
+            },
+            "Human Health/Health Care": {
+              "n": 25,
+              "recall_at_3": 0.0
+            },
+            "Information and Communication Technology": {
+              "n": 70,
+              "recall_at_3": 0.0
+            },
+            "Maritime": {
+              "n": 30,
+              "recall_at_3": 0.1
+            },
+            "Metals and Engineering": {
+              "n": 40,
+              "recall_at_3": 0.025
+            },
+            "Other": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Processed Food and Beverages": {
+              "n": 20,
+              "recall_at_3": 0.1
+            },
+            "Tourism": {
+              "n": 60,
+              "recall_at_3": 0.016666666666666666
+            },
+            "Utilities": {
+              "n": 10,
+              "recall_at_3": 0.0
+            },
+            "Wholesale and Retail Trading": {
+              "n": 3,
+              "recall_at_3": 0.0
+            }
+          },
+          "recall_vs_current": {
+            "n": 742,
+            "mean_difference": -0.805256064690027,
+            "ci95": [
+              -0.8333574797843666,
+              -0.7785714285714286
+            ]
+          }
+        },
+        "quals_core/semantic": {
+          "checks": {
+            "profiles": 892,
+            "with_suggestion": 742,
+            "abstention": 0.1681614349775785,
+            "insufficient_evidence_profiles": 0,
+            "insufficient_evidence_suggested": null,
+            "duplicate_held_today_profiles": 0.8032345013477089,
+            "renewal_of_expired_profiles": 0.1967654986522911,
+            "cross_sector_unsupported_slots": 0.07051671732522796,
+            "unrelated_slots": 0.07051671732522796
+          },
+          "by_kind": {
+            "expired_supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 146,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 1.0,
+              "cross_sector_unsupported_slots": 0.05846153846153846,
+              "unrelated_slots": 0.05846153846153846,
+              "positive_cases": 146,
+              "recall_at_3": 0.0410958904109589,
+              "ndcg_at_3": 0.023116484245947762,
+              "mrr_at_3": 0.0182648401826484,
+              "hit_at_3": 0.04794520547945205,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.7787671232876713,
+                "ci95": [
+                  -0.8458904109589042,
+                  -0.7095719178082193
+                ]
+              }
+            },
+            "generic": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.09006211180124224,
+              "unrelated_slots": 0.09006211180124224,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            },
+            "held_answer": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.07836990595611286,
+              "unrelated_slots": 0.07836990595611286,
+              "positive_cases": 0,
+              "recall_at_3": null,
+              "ndcg_at_3": null,
+              "mrr_at_3": null,
+              "hit_at_3": null,
+              "abstained_on_positive": null,
+              "recall_vs_current": null
+            },
+            "none": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 1.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            },
+            "supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 146,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.05846153846153846,
+              "unrelated_slots": 0.05846153846153846,
+              "positive_cases": 146,
+              "recall_at_3": 0.0410958904109589,
+              "ndcg_at_3": 0.023116484245947762,
+              "mrr_at_3": 0.0182648401826484,
+              "hit_at_3": 0.04794520547945205,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.7787671232876713,
+                "ci95": [
+                  -0.8458904109589042,
+                  -0.7095719178082193
+                ]
+              }
+            },
+            "unrelated": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.06779661016949153,
+              "unrelated_slots": 0.06779661016949153,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            }
+          },
+          "labeled": {
+            "positive_cases": 742,
+            "recall_at_3": 0.016172506738544475,
+            "ndcg_at_3": 0.009097053099483485,
+            "mrr_at_3": 0.007187780772686433,
+            "hit_at_3": 0.018867924528301886,
+            "abstained_on_positive": 0.20215633423180593
+          },
+          "per_sector": {
+            "Agriculture, Forestry and Fishery": {
+              "n": 125,
+              "recall_at_3": 0.0
+            },
+            "Automotive Manufacturing": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Automotive and Land Transportation": {
+              "n": 45,
+              "recall_at_3": 0.044444444444444446
+            },
+            "Chemical/Plastic/Petrochemicals": {
+              "n": 6,
+              "recall_at_3": 0.0
+            },
+            "Construction": {
+              "n": 110,
+              "recall_at_3": 0.01818181818181818
+            },
+            "Decorative Crafts": {
+              "n": 8,
+              "recall_at_3": 0.25
+            },
+            "Electrical and Electronics": {
+              "n": 35,
+              "recall_at_3": 0.0
+            },
+            "Garments": {
+              "n": 10,
+              "recall_at_3": 0.0
+            },
+            "Health, Social and Other Community Development Services": {
+              "n": 90,
+              "recall_at_3": 0.0
+            },
+            "Heating, Ventilation, Air Conditioning and Refrigeration Technology": {
+              "n": 15,
+              "recall_at_3": 0.13333333333333333
+            },
+            "Human Health/Health Care": {
+              "n": 25,
+              "recall_at_3": 0.0
+            },
+            "Information and Communication Technology": {
+              "n": 70,
+              "recall_at_3": 0.02857142857142857
+            },
+            "Maritime": {
+              "n": 30,
+              "recall_at_3": 0.0
+            },
+            "Metals and Engineering": {
+              "n": 40,
+              "recall_at_3": 0.0
+            },
+            "Other": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Processed Food and Beverages": {
+              "n": 20,
+              "recall_at_3": 0.1
+            },
+            "Tourism": {
+              "n": 60,
+              "recall_at_3": 0.0
+            },
+            "Utilities": {
+              "n": 10,
+              "recall_at_3": 0.0
+            },
+            "Wholesale and Retail Trading": {
+              "n": 3,
+              "recall_at_3": 0.0
+            }
+          },
+          "recall_vs_current": {
+            "n": 742,
+            "mean_difference": -0.8066037735849056,
+            "ci95": [
+              -0.834501347708895,
+              -0.7795822102425877
+            ]
+          }
+        },
+        "quals_core/hybrid": {
+          "checks": {
+            "profiles": 892,
+            "with_suggestion": 742,
+            "abstention": 0.1681614349775785,
+            "insufficient_evidence_profiles": 0,
+            "insufficient_evidence_suggested": null,
+            "duplicate_held_today_profiles": 0.8032345013477089,
+            "renewal_of_expired_profiles": 0.1967654986522911,
+            "cross_sector_unsupported_slots": 0.07548273844353423,
+            "unrelated_slots": 0.07489760093622001
+          },
+          "by_kind": {
+            "expired_supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 146,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 1.0,
+              "cross_sector_unsupported_slots": 0.07058823529411765,
+              "unrelated_slots": 0.07058823529411765,
+              "positive_cases": 146,
+              "recall_at_3": 0.04452054794520548,
+              "ndcg_at_3": 0.02700986166735628,
+              "mrr_at_3": 0.0228310502283105,
+              "hit_at_3": 0.0547945205479452,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.7753424657534247,
+                "ci95": [
+                  -0.8424657534246576,
+                  -0.706498287671233
+                ]
+              }
+            },
+            "generic": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.07476635514018691,
+              "unrelated_slots": 0.07476635514018691,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            },
+            "held_answer": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.07692307692307693,
+              "unrelated_slots": 0.07692307692307693,
+              "positive_cases": 0,
+              "recall_at_3": null,
+              "ndcg_at_3": null,
+              "mrr_at_3": null,
+              "hit_at_3": null,
+              "abstained_on_positive": null,
+              "recall_vs_current": null
+            },
+            "none": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 1.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            },
+            "supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 146,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.07058823529411765,
+              "unrelated_slots": 0.07058823529411765,
+              "positive_cases": 146,
+              "recall_at_3": 0.04452054794520548,
+              "ndcg_at_3": 0.02700986166735628,
+              "mrr_at_3": 0.0228310502283105,
+              "hit_at_3": 0.0547945205479452,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.7753424657534247,
+                "ci95": [
+                  -0.8424657534246576,
+                  -0.706498287671233
+                ]
+              }
+            },
+            "unrelated": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.08378378378378379,
+              "unrelated_slots": 0.08108108108108109,
+              "positive_cases": 150,
+              "recall_at_3": 0.0,
+              "ndcg_at_3": 0.0,
+              "mrr_at_3": 0.0,
+              "hit_at_3": 0.0,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.8246666666666667,
+                "ci95": [
+                  -0.88,
+                  -0.7643250000000001
+                ]
+              }
+            }
+          },
+          "labeled": {
+            "positive_cases": 742,
+            "recall_at_3": 0.01752021563342318,
+            "ndcg_at_3": 0.010629217799013524,
+            "mrr_at_3": 0.00898472596585804,
+            "hit_at_3": 0.0215633423180593,
+            "abstained_on_positive": 0.20215633423180593
+          },
+          "per_sector": {
+            "Agriculture, Forestry and Fishery": {
+              "n": 125,
+              "recall_at_3": 0.0
+            },
+            "Automotive Manufacturing": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Automotive and Land Transportation": {
+              "n": 45,
+              "recall_at_3": 0.044444444444444446
+            },
+            "Chemical/Plastic/Petrochemicals": {
+              "n": 6,
+              "recall_at_3": 0.0
+            },
+            "Construction": {
+              "n": 110,
+              "recall_at_3": 0.01818181818181818
+            },
+            "Decorative Crafts": {
+              "n": 8,
+              "recall_at_3": 0.25
+            },
+            "Electrical and Electronics": {
+              "n": 35,
+              "recall_at_3": 0.0
+            },
+            "Garments": {
+              "n": 10,
+              "recall_at_3": 0.0
+            },
+            "Health, Social and Other Community Development Services": {
+              "n": 90,
+              "recall_at_3": 0.0
+            },
+            "Heating, Ventilation, Air Conditioning and Refrigeration Technology": {
+              "n": 15,
+              "recall_at_3": 0.26666666666666666
+            },
+            "Human Health/Health Care": {
+              "n": 25,
+              "recall_at_3": 0.0
+            },
+            "Information and Communication Technology": {
+              "n": 70,
+              "recall_at_3": 0.0
+            },
+            "Maritime": {
+              "n": 30,
+              "recall_at_3": 0.0
+            },
+            "Metals and Engineering": {
+              "n": 40,
+              "recall_at_3": 0.025
+            },
+            "Other": {
+              "n": 20,
+              "recall_at_3": 0.0
+            },
+            "Processed Food and Beverages": {
+              "n": 20,
+              "recall_at_3": 0.1
+            },
+            "Tourism": {
+              "n": 60,
+              "recall_at_3": 0.0
+            },
+            "Utilities": {
+              "n": 10,
+              "recall_at_3": 0.0
+            },
+            "Wholesale and Retail Trading": {
+              "n": 3,
+              "recall_at_3": 0.0
+            }
+          },
+          "recall_vs_current": {
+            "n": 742,
+            "mean_difference": -0.805256064690027,
+            "ci95": [
+              -0.832885781671159,
+              -0.7786371293800539
+            ]
+          }
+        },
+        "combined/semantic": {
+          "checks": {
+            "profiles": 892,
+            "with_suggestion": 839,
+            "abstention": 0.05941704035874439,
+            "insufficient_evidence_profiles": 0,
+            "insufficient_evidence_suggested": null,
+            "duplicate_held_today_profiles": 0.532777115613826,
+            "renewal_of_expired_profiles": 0.16686531585220502,
+            "cross_sector_unsupported_slots": 0.045940843297671494,
+            "unrelated_slots": 0.045940843297671494
+          },
+          "by_kind": {
+            "expired_supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 141,
+              "abstention": 0.03424657534246575,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.9929078014184397,
+              "cross_sector_unsupported_slots": 0.014492753623188406,
+              "unrelated_slots": 0.014492753623188406,
+              "positive_cases": 146,
+              "recall_at_3": 0.2876712328767123,
+              "ndcg_at_3": 0.1856811376972694,
+              "mrr_at_3": 0.15182648401826485,
+              "hit_at_3": 0.3013698630136986,
+              "abstained_on_positive": 0.03424657534246575,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.5321917808219179,
+                "ci95": [
+                  -0.6147517123287671,
+                  -0.4486301369863014
+                ]
+              }
+            },
+            "generic": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 120,
+              "abstention": 0.2,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.09166666666666666,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.054455445544554455,
+              "unrelated_slots": 0.054455445544554455,
+              "positive_cases": 150,
+              "recall_at_3": 0.7177777777777778,
+              "ndcg_at_3": 0.7083945944471871,
+              "mrr_at_3": 0.7266666666666667,
+              "hit_at_3": 0.7533333333333333,
+              "abstained_on_positive": 0.2,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.10688888888888888,
+                "ci95": [
+                  -0.16445555555555558,
+                  -0.04888888888888889
+                ]
+              }
+            },
+            "held_answer": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.06493506493506493,
+              "unrelated_slots": 0.06493506493506493,
+              "positive_cases": 0,
+              "recall_at_3": null,
+              "ndcg_at_3": null,
+              "mrr_at_3": null,
+              "hit_at_3": null,
+              "abstained_on_positive": null,
+              "recall_vs_current": null
+            },
+            "none": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 141,
+              "abstention": 0.06,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.08791208791208792,
+              "unrelated_slots": 0.08791208791208792,
+              "positive_cases": 150,
+              "recall_at_3": 0.8606666666666666,
+              "ndcg_at_3": 0.8585382311586267,
+              "mrr_at_3": 0.8688888888888889,
+              "hit_at_3": 0.8866666666666667,
+              "abstained_on_positive": 0.06,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": 0.036000000000000004,
+                "ci95": [
+                  -0.0033499999999999992,
+                  0.07833333333333334
+                ]
+              }
+            },
+            "supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 141,
+              "abstention": 0.03424657534246575,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.9929078014184397,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.014492753623188406,
+              "unrelated_slots": 0.014492753623188406,
+              "positive_cases": 146,
+              "recall_at_3": 0.2876712328767123,
+              "ndcg_at_3": 0.1856811376972694,
+              "mrr_at_3": 0.15182648401826485,
+              "hit_at_3": 0.3013698630136986,
+              "abstained_on_positive": 0.03424657534246575,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.5321917808219179,
+                "ci95": [
+                  -0.6147517123287671,
+                  -0.4486301369863014
+                ]
+              }
+            },
+            "unrelated": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 146,
+              "abstention": 0.02666666666666667,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.03937007874015748,
+              "unrelated_slots": 0.03937007874015748,
+              "positive_cases": 150,
+              "recall_at_3": 0.08833333333333333,
+              "ndcg_at_3": 0.05947568081756638,
+              "mrr_at_3": 0.05444444444444444,
+              "hit_at_3": 0.1,
+              "abstained_on_positive": 0.02666666666666667,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.7363333333333334,
+                "ci95": [
+                  -0.8000166666666667,
+                  -0.6663250000000001
+                ]
+              }
+            }
+          },
+          "labeled": {
+            "positive_cases": 742,
+            "recall_at_3": 0.4501572327044025,
+            "ndcg_at_3": 0.4018600649206329,
+            "mrr_at_3": 0.39330637915543576,
+            "hit_at_3": 0.47035040431266845,
+            "abstained_on_positive": 0.07142857142857142
+          },
+          "per_sector": {
+            "Agriculture, Forestry and Fishery": {
+              "n": 125,
+              "recall_at_3": 0.54
+            },
+            "Automotive Manufacturing": {
+              "n": 20,
+              "recall_at_3": 0.175
+            },
+            "Automotive and Land Transportation": {
+              "n": 45,
+              "recall_at_3": 0.3703703703703704
+            },
+            "Chemical/Plastic/Petrochemicals": {
+              "n": 6,
+              "recall_at_3": 0.8333333333333334
+            },
+            "Construction": {
+              "n": 110,
+              "recall_at_3": 0.5136363636363637
+            },
+            "Decorative Crafts": {
+              "n": 8,
+              "recall_at_3": 0.5625
+            },
+            "Electrical and Electronics": {
+              "n": 35,
+              "recall_at_3": 0.45714285714285713
+            },
+            "Garments": {
+              "n": 10,
+              "recall_at_3": 0.7
+            },
+            "Health, Social and Other Community Development Services": {
+              "n": 90,
+              "recall_at_3": 0.35555555555555557
+            },
+            "Heating, Ventilation, Air Conditioning and Refrigeration Technology": {
+              "n": 15,
+              "recall_at_3": 0.7333333333333333
+            },
+            "Human Health/Health Care": {
+              "n": 25,
+              "recall_at_3": 0.44
+            },
+            "Information and Communication Technology": {
+              "n": 70,
+              "recall_at_3": 0.44285714285714284
+            },
+            "Maritime": {
+              "n": 30,
+              "recall_at_3": 0.325
+            },
+            "Metals and Engineering": {
+              "n": 40,
+              "recall_at_3": 0.33999999999999997
+            },
+            "Other": {
+              "n": 20,
+              "recall_at_3": 0.4
+            },
+            "Processed Food and Beverages": {
+              "n": 20,
+              "recall_at_3": 0.7
+            },
+            "Tourism": {
+              "n": 60,
+              "recall_at_3": 0.31666666666666665
+            },
+            "Utilities": {
+              "n": 10,
+              "recall_at_3": 0.5
+            },
+            "Wholesale and Retail Trading": {
+              "n": 3,
+              "recall_at_3": 1.0
+            }
+          },
+          "recall_vs_current": {
+            "n": 742,
+            "mean_difference": -0.3726190476190476,
+            "ci95": [
+              -0.40969564240790657,
+              -0.3366745283018869
+            ]
+          }
+        },
+        "combined/hybrid": {
+          "checks": {
+            "profiles": 892,
+            "with_suggestion": 878,
+            "abstention": 0.01569506726457399,
+            "insufficient_evidence_profiles": 0,
+            "insufficient_evidence_suggested": null,
+            "duplicate_held_today_profiles": 0.6742596810933941,
+            "renewal_of_expired_profiles": 0.1662870159453303,
+            "cross_sector_unsupported_slots": 0.08579088471849866,
+            "unrelated_slots": 0.08489722966934764
+          },
+          "by_kind": {
+            "expired_supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 146,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 1.0,
+              "cross_sector_unsupported_slots": 0.08883248730964467,
+              "unrelated_slots": 0.08883248730964467,
+              "positive_cases": 146,
+              "recall_at_3": 0.416324200913242,
+              "ndcg_at_3": 0.270567473285376,
+              "mrr_at_3": 0.2226027397260274,
+              "hit_at_3": 0.4589041095890411,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.40353881278538817,
+                "ci95": [
+                  -0.488013698630137,
+                  -0.32305936073059366
+                ]
+              }
+            },
+            "generic": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.98,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.07673267326732673,
+              "unrelated_slots": 0.07673267326732673,
+              "positive_cases": 150,
+              "recall_at_3": 0.5467777777777778,
+              "ndcg_at_3": 0.4655699358492552,
+              "mrr_at_3": 0.46111111111111114,
+              "hit_at_3": 0.6,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.2778888888888889,
+                "ci95": [
+                  -0.34779166666666667,
+                  -0.21288888888888888
+                ]
+              }
+            },
+            "held_answer": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.10933333333333334,
+              "unrelated_slots": 0.10933333333333334,
+              "positive_cases": 0,
+              "recall_at_3": null,
+              "ndcg_at_3": null,
+              "mrr_at_3": null,
+              "hit_at_3": null,
+              "abstained_on_positive": null,
+              "recall_vs_current": null
+            },
+            "none": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 136,
+              "abstention": 0.09333333333333334,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.039525691699604744,
+              "unrelated_slots": 0.039525691699604744,
+              "positive_cases": 150,
+              "recall_at_3": 0.8246666666666667,
+              "ndcg_at_3": 0.8086477520846046,
+              "mrr_at_3": 0.82,
+              "hit_at_3": 0.86,
+              "abstained_on_positive": 0.09333333333333334,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": 0.0,
+                "ci95": [
+                  0.0,
+                  0.0
+                ]
+              }
+            },
+            "supporting": {
+              "n": 146,
+              "profiles": 146,
+              "with_suggestion": 146,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.08883248730964467,
+              "unrelated_slots": 0.08883248730964467,
+              "positive_cases": 146,
+              "recall_at_3": 0.416324200913242,
+              "ndcg_at_3": 0.270567473285376,
+              "mrr_at_3": 0.2226027397260274,
+              "hit_at_3": 0.4589041095890411,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 146,
+                "mean_difference": -0.40353881278538817,
+                "ci95": [
+                  -0.488013698630137,
+                  -0.32305936073059366
+                ]
+              }
+            },
+            "unrelated": {
+              "n": 150,
+              "profiles": 150,
+              "with_suggestion": 150,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.9933333333333333,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.09569377990430622,
+              "unrelated_slots": 0.09090909090909091,
+              "positive_cases": 150,
+              "recall_at_3": 0.30522222222222223,
+              "ndcg_at_3": 0.19265884049929174,
+              "mrr_at_3": 0.16,
+              "hit_at_3": 0.3466666666666667,
+              "abstained_on_positive": 0.0,
+              "recall_vs_current": {
+                "n": 150,
+                "mean_difference": -0.5194444444444445,
+                "ci95": [
+                  -0.5977916666666667,
+                  -0.4388750000000001
+                ]
+              }
+            }
+          },
+          "labeled": {
+            "positive_cases": 742,
+            "recall_at_3": 0.502785265049416,
+            "ndcg_at_3": 0.4030150693588983,
+            "mrr_at_3": 0.3789308176100629,
+            "hit_at_3": 0.545822102425876,
+            "abstained_on_positive": 0.018867924528301886
+          },
+          "per_sector": {
+            "Agriculture, Forestry and Fishery": {
+              "n": 125,
+              "recall_at_3": 0.612
+            },
+            "Automotive Manufacturing": {
+              "n": 20,
+              "recall_at_3": 0.425
+            },
+            "Automotive and Land Transportation": {
+              "n": 45,
+              "recall_at_3": 0.38148148148148153
+            },
+            "Chemical/Plastic/Petrochemicals": {
+              "n": 6,
+              "recall_at_3": 0.5
+            },
+            "Construction": {
+              "n": 110,
+              "recall_at_3": 0.7
+            },
+            "Decorative Crafts": {
+              "n": 8,
+              "recall_at_3": 0.5
+            },
+            "Electrical and Electronics": {
+              "n": 35,
+              "recall_at_3": 0.24285714285714285
+            },
+            "Garments": {
+              "n": 10,
+              "recall_at_3": 0.3
+            },
+            "Health, Social and Other Community Development Services": {
+              "n": 90,
+              "recall_at_3": 0.4388888888888889
+            },
+            "Heating, Ventilation, Air Conditioning and Refrigeration Technology": {
+              "n": 15,
+              "recall_at_3": 0.4666666666666667
+            },
+            "Human Health/Health Care": {
+              "n": 25,
+              "recall_at_3": 0.4
+            },
+            "Information and Communication Technology": {
+              "n": 70,
+              "recall_at_3": 0.4142857142857143
+            },
+            "Maritime": {
+              "n": 30,
+              "recall_at_3": 0.4166666666666667
+            },
+            "Metals and Engineering": {
+              "n": 40,
+              "recall_at_3": 0.34750000000000003
+            },
+            "Other": {
+              "n": 20,
+              "recall_at_3": 0.35
+            },
+            "Processed Food and Beverages": {
+              "n": 20,
+              "recall_at_3": 0.475
+            },
+            "Tourism": {
+              "n": 60,
+              "recall_at_3": 0.6833333333333333
+            },
+            "Utilities": {
+              "n": 10,
+              "recall_at_3": 0.3
+            },
+            "Wholesale and Retail Trading": {
+              "n": 3,
+              "recall_at_3": 1.0
+            }
+          },
+          "recall_vs_current": {
+            "n": 742,
+            "mean_difference": -0.3199910152740342,
+            "ci95": [
+              -0.35568283917340526,
+              -0.28831985624438455
+            ]
+          }
+        }
+      }
+    },
+    "safety": {
+      "profiles": 190,
+      "results": {
+        "skills_only/semantic": {
+          "checks": {
+            "profiles": 190,
+            "with_suggestion": 0,
+            "abstention": 1.0,
+            "insufficient_evidence_profiles": 49,
+            "insufficient_evidence_suggested": 0.0,
+            "duplicate_held_today_profiles": null,
+            "renewal_of_expired_profiles": null,
+            "cross_sector_unsupported_slots": null,
+            "unrelated_slots": null
+          },
+          "by_kind": {
+            "active_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "empty": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "expired_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "generic_only": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 47,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "two_sectors": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "unmapped": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            }
+          }
+        },
+        "skills_only/hybrid": {
+          "checks": {
+            "profiles": 190,
+            "with_suggestion": 0,
+            "abstention": 1.0,
+            "insufficient_evidence_profiles": 49,
+            "insufficient_evidence_suggested": 0.0,
+            "duplicate_held_today_profiles": null,
+            "renewal_of_expired_profiles": null,
+            "cross_sector_unsupported_slots": null,
+            "unrelated_slots": null
+          },
+          "by_kind": {
+            "active_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "empty": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "expired_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "generic_only": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 47,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "two_sectors": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "unmapped": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            }
+          }
+        },
+        "core_only/semantic": {
+          "checks": {
+            "profiles": 190,
+            "with_suggestion": 139,
+            "abstention": 0.26842105263157895,
+            "insufficient_evidence_profiles": 49,
+            "insufficient_evidence_suggested": 0.0,
+            "duplicate_held_today_profiles": 0.6618705035971223,
+            "renewal_of_expired_profiles": 0.3381294964028777,
+            "cross_sector_unsupported_slots": 0.10247349823321555,
+            "unrelated_slots": 0.09540636042402827
+          },
+          "by_kind": {
+            "active_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.12871287128712872,
+              "unrelated_slots": 0.1188118811881188
+            },
+            "empty": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "expired_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 1.0,
+              "cross_sector_unsupported_slots": 0.12871287128712872,
+              "unrelated_slots": 0.1188118811881188
+            },
+            "generic_only": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 47,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "two_sectors": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 45,
+              "abstention": 0.0425531914893617,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.037037037037037035,
+              "unrelated_slots": 0.037037037037037035
+            },
+            "unmapped": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            }
+          }
+        },
+        "core_only/hybrid": {
+          "checks": {
+            "profiles": 190,
+            "with_suggestion": 141,
+            "abstention": 0.2578947368421053,
+            "insufficient_evidence_profiles": 49,
+            "insufficient_evidence_suggested": 0.0,
+            "duplicate_held_today_profiles": 0.6666666666666666,
+            "renewal_of_expired_profiles": 0.3333333333333333,
+            "cross_sector_unsupported_slots": 0.1178343949044586,
+            "unrelated_slots": 0.09872611464968153
+          },
+          "by_kind": {
+            "active_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.1276595744680851,
+              "unrelated_slots": 0.10638297872340426
+            },
+            "empty": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "expired_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 1.0,
+              "cross_sector_unsupported_slots": 0.1276595744680851,
+              "unrelated_slots": 0.10638297872340426
+            },
+            "generic_only": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 47,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "two_sectors": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.10317460317460317,
+              "unrelated_slots": 0.0873015873015873
+            },
+            "unmapped": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            }
+          }
+        },
+        "all_units_flat/semantic": {
+          "checks": {
+            "profiles": 190,
+            "with_suggestion": 25,
+            "abstention": 0.868421052631579,
+            "insufficient_evidence_profiles": 49,
+            "insufficient_evidence_suggested": 0.0,
+            "duplicate_held_today_profiles": 0.52,
+            "renewal_of_expired_profiles": 0.4,
+            "cross_sector_unsupported_slots": 0.0,
+            "unrelated_slots": 0.0
+          },
+          "by_kind": {
+            "active_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 11,
+              "abstention": 0.7659574468085106,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.9090909090909091,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.0,
+              "unrelated_slots": 0.0
+            },
+            "empty": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "expired_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 11,
+              "abstention": 0.7659574468085106,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.9090909090909091,
+              "cross_sector_unsupported_slots": 0.0,
+              "unrelated_slots": 0.0
+            },
+            "generic_only": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 47,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "two_sectors": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 3,
+              "abstention": 0.9361702127659575,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.0,
+              "unrelated_slots": 0.0
+            },
+            "unmapped": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            }
+          }
+        },
+        "all_units_flat/hybrid": {
+          "checks": {
+            "profiles": 190,
+            "with_suggestion": 157,
+            "abstention": 0.1736842105263158,
+            "insufficient_evidence_profiles": 49,
+            "insufficient_evidence_suggested": 0.32653061224489793,
+            "duplicate_held_today_profiles": 0.5796178343949044,
+            "renewal_of_expired_profiles": 0.2929936305732484,
+            "cross_sector_unsupported_slots": 0.3020527859237537,
+            "unrelated_slots": 0.2844574780058651
+          },
+          "by_kind": {
+            "active_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.9787234042553191,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.2777777777777778,
+              "unrelated_slots": 0.25555555555555554
+            },
+            "empty": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "expired_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.9787234042553191,
+              "cross_sector_unsupported_slots": 0.2777777777777778,
+              "unrelated_slots": 0.25555555555555554
+            },
+            "generic_only": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 16,
+              "abstention": 0.6595744680851063,
+              "insufficient_evidence_profiles": 47,
+              "insufficient_evidence_suggested": 0.3404255319148936,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.8214285714285714,
+              "unrelated_slots": 0.8214285714285714
+            },
+            "two_sectors": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.9574468085106383,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.22556390977443608,
+              "unrelated_slots": 0.21052631578947367
+            },
+            "unmapped": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            }
+          }
+        },
+        "type_weighted/semantic": {
+          "checks": {
+            "profiles": 190,
+            "with_suggestion": 137,
+            "abstention": 0.2789473684210526,
+            "insufficient_evidence_profiles": 49,
+            "insufficient_evidence_suggested": 0.0,
+            "duplicate_held_today_profiles": 0.656934306569343,
+            "renewal_of_expired_profiles": 0.34306569343065696,
+            "cross_sector_unsupported_slots": 0.09505703422053231,
+            "unrelated_slots": 0.08745247148288973
+          },
+          "by_kind": {
+            "active_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.11224489795918367,
+              "unrelated_slots": 0.10204081632653061
+            },
+            "empty": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "expired_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 1.0,
+              "cross_sector_unsupported_slots": 0.11224489795918367,
+              "unrelated_slots": 0.10204081632653061
+            },
+            "generic_only": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 47,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "two_sectors": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 43,
+              "abstention": 0.0851063829787234,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.04477611940298507,
+              "unrelated_slots": 0.04477611940298507
+            },
+            "unmapped": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            }
+          }
+        },
+        "type_weighted/hybrid": {
+          "checks": {
+            "profiles": 190,
+            "with_suggestion": 141,
+            "abstention": 0.2578947368421053,
+            "insufficient_evidence_profiles": 49,
+            "insufficient_evidence_suggested": 0.0,
+            "duplicate_held_today_profiles": 0.6666666666666666,
+            "renewal_of_expired_profiles": 0.3333333333333333,
+            "cross_sector_unsupported_slots": 0.2088235294117647,
+            "unrelated_slots": 0.19117647058823528
+          },
+          "by_kind": {
+            "active_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.23076923076923078,
+              "unrelated_slots": 0.21153846153846154
+            },
+            "empty": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "expired_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 1.0,
+              "cross_sector_unsupported_slots": 0.23076923076923078,
+              "unrelated_slots": 0.21153846153846154
+            },
+            "generic_only": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 47,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "two_sectors": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.17424242424242425,
+              "unrelated_slots": 0.1590909090909091
+            },
+            "unmapped": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            }
+          }
+        },
+        "quals_core/semantic": {
+          "checks": {
+            "profiles": 190,
+            "with_suggestion": 188,
+            "abstention": 0.010526315789473684,
+            "insufficient_evidence_profiles": 49,
+            "insufficient_evidence_suggested": 0.9591836734693877,
+            "duplicate_held_today_profiles": 0.75,
+            "renewal_of_expired_profiles": 0.25,
+            "cross_sector_unsupported_slots": 0.1187648456057007,
+            "unrelated_slots": 0.11401425178147269
+          },
+          "by_kind": {
+            "active_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.13333333333333333,
+              "unrelated_slots": 0.12380952380952381
+            },
+            "empty": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "expired_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 1.0,
+              "cross_sector_unsupported_slots": 0.13333333333333333,
+              "unrelated_slots": 0.12380952380952381
+            },
+            "generic_only": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 47,
+              "insufficient_evidence_suggested": 1.0,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.16037735849056603,
+              "unrelated_slots": 0.16037735849056603
+            },
+            "two_sectors": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.047619047619047616,
+              "unrelated_slots": 0.047619047619047616
+            },
+            "unmapped": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            }
+          }
+        },
+        "quals_core/hybrid": {
+          "checks": {
+            "profiles": 190,
+            "with_suggestion": 188,
+            "abstention": 0.010526315789473684,
+            "insufficient_evidence_profiles": 49,
+            "insufficient_evidence_suggested": 0.9591836734693877,
+            "duplicate_held_today_profiles": 0.75,
+            "renewal_of_expired_profiles": 0.25,
+            "cross_sector_unsupported_slots": 0.10091743119266056,
+            "unrelated_slots": 0.09174311926605505
+          },
+          "by_kind": {
+            "active_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.11650485436893204,
+              "unrelated_slots": 0.10679611650485436
+            },
+            "empty": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "expired_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 1.0,
+              "cross_sector_unsupported_slots": 0.11650485436893204,
+              "unrelated_slots": 0.10679611650485436
+            },
+            "generic_only": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 47,
+              "insufficient_evidence_suggested": 1.0,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.09473684210526316,
+              "unrelated_slots": 0.09473684210526316
+            },
+            "two_sectors": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.08148148148148149,
+              "unrelated_slots": 0.06666666666666667
+            },
+            "unmapped": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            }
+          }
+        },
+        "combined/semantic": {
+          "checks": {
+            "profiles": 190,
+            "with_suggestion": 188,
+            "abstention": 0.010526315789473684,
+            "insufficient_evidence_profiles": 49,
+            "insufficient_evidence_suggested": 0.9591836734693877,
+            "duplicate_held_today_profiles": 0.75,
+            "renewal_of_expired_profiles": 0.25,
+            "cross_sector_unsupported_slots": 0.10051546391752578,
+            "unrelated_slots": 0.09536082474226804
+          },
+          "by_kind": {
+            "active_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.12,
+              "unrelated_slots": 0.11
+            },
+            "empty": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "expired_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 1.0,
+              "cross_sector_unsupported_slots": 0.12,
+              "unrelated_slots": 0.11
+            },
+            "generic_only": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 47,
+              "insufficient_evidence_suggested": 1.0,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.0967741935483871,
+              "unrelated_slots": 0.0967741935483871
+            },
+            "two_sectors": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.06315789473684211,
+              "unrelated_slots": 0.06315789473684211
+            },
+            "unmapped": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            }
+          }
+        },
+        "combined/hybrid": {
+          "checks": {
+            "profiles": 190,
+            "with_suggestion": 188,
+            "abstention": 0.010526315789473684,
+            "insufficient_evidence_profiles": 49,
+            "insufficient_evidence_suggested": 0.9591836734693877,
+            "duplicate_held_today_profiles": 0.75,
+            "renewal_of_expired_profiles": 0.25,
+            "cross_sector_unsupported_slots": 0.1777301927194861,
+            "unrelated_slots": 0.16916488222698073
+          },
+          "by_kind": {
+            "active_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.20535714285714285,
+              "unrelated_slots": 0.19642857142857142
+            },
+            "empty": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            },
+            "expired_single": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 0.0,
+              "renewal_of_expired_profiles": 1.0,
+              "cross_sector_unsupported_slots": 0.20535714285714285,
+              "unrelated_slots": 0.19642857142857142
+            },
+            "generic_only": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 47,
+              "insufficient_evidence_suggested": 1.0,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.20192307692307693,
+              "unrelated_slots": 0.20192307692307693
+            },
+            "two_sectors": {
+              "n": 47,
+              "profiles": 47,
+              "with_suggestion": 47,
+              "abstention": 0.0,
+              "insufficient_evidence_profiles": 0,
+              "insufficient_evidence_suggested": null,
+              "duplicate_held_today_profiles": 1.0,
+              "renewal_of_expired_profiles": 0.0,
+              "cross_sector_unsupported_slots": 0.11510791366906475,
+              "unrelated_slots": 0.10071942446043165
+            },
+            "unmapped": {
+              "n": 1,
+              "profiles": 1,
+              "with_suggestion": 0,
+              "abstention": 1.0,
+              "insufficient_evidence_profiles": 1,
+              "insufficient_evidence_suggested": 0.0,
+              "duplicate_held_today_profiles": null,
+              "renewal_of_expired_profiles": null,
+              "cross_sector_unsupported_slots": null,
+              "unrelated_slots": null
+            }
+          }
+        }
+      }
+    }
+  }
+}

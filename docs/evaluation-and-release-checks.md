@@ -232,6 +232,42 @@ python -m evaluation.competency --model-path ... --from-db --since YYYY-MM-DD --
 
 The suggestion-evaluation workflow runs it on every change, with the checksum-verified v6-colab.
 
+#### Findings (6 November 2026, v6-colab, settings defaults)
+
+Workflow run 42181879043, job `competency`; the report is `docs/evidence/2026-11-06-competency-evaluation-v6-colab.json`.
+150 labeled skills x 6 certificate variants (892 profiles) and 190 credential-only safety profiles. No real profile
+was evaluated: the leave-one-out weak label needs `--from-db` on the server.
+
+| Representation (hybrid) | Recall@3, no certificate | with supporting | unrelated | generic only | Suggests a qualification held today |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| skills_only (today) | 0.825 | 0.820 | 0.825 | 0.825 | 16% of profiles (93% when the answer is held) |
+| combined | 0.825 | 0.416 | 0.305 | 0.547 | 67% |
+| core_only, type_weighted, quals_core | 0 | 0.02-0.05 | 0-0.01 | 0 | 75-80% |
+
+- **Credentials do not improve relevance; they pull suggestions away from what the learner said.** Adding any
+  certificate to the skills (`combined`) costs 0.28 to 0.52 Recall@3 (hybrid; 95% intervals all below -0.2), and every
+  sector loses (Electrical and Electronics 0.86 to 0.24, ICT 1.00 to 0.41).
+- **Retrieval from CORE units finds what the learner already holds.** For a single active certificate, CORE-only and
+  type-weighted suggest that same qualification in 100% of profiles; for an expired one, 100% renewals. Similarity to
+  a held qualification's units answers "what do you have", not "what next".
+- **Generic units need the rule that they cannot start a ranking.** With it, no BASIC/COMMON-only profile got a
+  suggestion; the flat control (hybrid) suggested for 34% of them, 82% from sectors with no evidence. The
+  `quals_core` and `combined` rates for those profiles (96%) are the qualification's own name pulling it back: all
+  duplicates.
+- **Suggestions from sectors with no evidence**: 4-9% of slots from skills; 10-21% on credential-only profiles,
+  worst with the keyword scorer on long unit lists (type_weighted hybrid 21%).
+- **Expired certificates are handled as history.** Their units count as evidence (supporting and expired-supporting
+  score the same), they are never counted as held, and suggesting them again is reported as a renewal.
+- **Skills alone still need a held-qualification filter**: when the stated skill's answer is a qualification the
+  learner holds, `suggest()` suggests it to 93% of them.
+- Semantic-only on skills again beats today's hybrid (+0.036 Recall@3, 0.018 to 0.055).
+
+Recommendation: do not pursue competency similarity as retrieval evidence. Pursue credentials as constraints instead:
+leave out qualifications held today, offer renewal of expired ones explicitly, and, only once assessors agree it helps,
+next levels of a held qualification through TESDA's own ladder rather than guessed from similarity. Re-run with
+`--from-db` on the server for the real-profile safety checks and the leave-one-out label before deciding further.
+Nothing here shows production readiness; suggestions stay off.
+
 ### Pilot: typed goals against tapped suggestions
 
 The webview says where each goal came from: typed there, or a tapped suggestion. `funnel_daily_stat` counts per day,
