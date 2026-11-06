@@ -1,0 +1,57 @@
+{
+  "version": "suggestion-adversarial-v1",
+  "review_status": "engineering_draft",
+  "provenance": "Cold-start and adversarial Skill Passport profiles written for the suggestion evaluation on 2026-11-06, before any suggestion run. Grades: 3 the obvious entry qualification, 2 another level or variant a counselor would accept, 1 adjacent. Expected-empty cases should get no suggestion. Engineering expectations pending TESDA assessor review; not learner records.",
+  "reviewers": [],
+  "cases": [
+    {"id": "empty-no-skills", "kind": "empty", "language": "none", "skills": [], "expect_empty": true, "judgments": {}},
+    {"id": "empty-blank-skill", "kind": "empty", "language": "none", "skills": ["   "], "expect_empty": true, "judgments": {}},
+    {"id": "empty-experience-only", "kind": "empty", "language": "none", "skills": [], "experience_years": 3, "has_certification": false, "expect_empty": true, "judgments": {}},
+
+    {"id": "generic-communication", "kind": "generic", "language": "en", "skills": ["communication"], "expect_empty": true, "judgments": {}},
+    {"id": "generic-teamwork", "kind": "generic", "language": "en", "skills": ["teamwork"], "expect_empty": true, "judgments": {}},
+    {"id": "generic-leadership", "kind": "generic", "language": "en", "skills": ["leadership"], "expect_empty": true, "judgments": {}},
+    {"id": "generic-time-management", "kind": "generic", "language": "en", "skills": ["time management"], "expect_empty": true, "judgments": {}},
+    {"id": "generic-problem-solving", "kind": "generic", "language": "en", "skills": ["problem solving"], "expect_empty": true, "judgments": {}},
+    {"id": "generic-hardworking", "kind": "generic", "language": "en", "skills": ["hardworking", "honest", "flexible"], "expect_empty": true, "judgments": {}},
+    {"id": "generic-soft-skills-pair", "kind": "generic", "language": "en", "skills": ["communication", "teamwork"], "expect_empty": true, "judgments": {}},
+    {"id": "generic-tl-masipag", "kind": "generic", "language": "tl", "skills": ["masipag", "matiyaga"], "expect_empty": true, "judgments": {}},
+    {"id": "generic-taglish-communication", "kind": "generic", "language": "taglish", "skills": ["magaling sa communication"], "expect_empty": true, "judgments": {}},
+
+    {"id": "tl-welding", "kind": "taglish", "language": "taglish", "skills": ["marunong mag-welding"], "judgments": {"MMAW-NC-II": 3, "MMAW-NC-I": 2, "MMAW-NC-III": 1}},
+    {"id": "tl-cooking", "kind": "taglish", "language": "tl", "skills": ["pagluluto ng ulam"], "judgments": {"COOKERY-NC-II": 3}},
+    {"id": "tl-aircon", "kind": "taglish", "language": "tl", "skills": ["nag-aayos ng aircon"], "judgments": {"RAC-SERVICING-NC-II": 3}},
+    {"id": "tl-elderly-care", "kind": "taglish", "language": "tl", "skills": ["pag-aalaga ng matanda"], "judgments": {"CAREGIVING-NC-II-2": 3, "CAREGIVING-NC-II-5": 2, "CAREGIVING-NC-II": 1}},
+    {"id": "tl-sewing", "kind": "taglish", "language": "tl", "skills": ["marunong manahi ng damit", "paggawa ng palda at blusa"], "judgments": {"DRESSMAKING-NC-II": 3}},
+    {"id": "tl-vegetables", "kind": "taglish", "language": "tl", "skills": ["pagtatanim ng gulay"], "judgments": {"AGRICULTURAL-CROPS-PRODUCTION-NC-II": 3, "ORGANIC-AGRICULTURE-PRODUCTION-NC-II": 2}},
+    {"id": "tl-motorcycle", "kind": "taglish", "language": "tl", "skills": ["nagkukumpuni ng makina ng motorsiklo"], "judgments": {"MOTORCYCLE-SMALL-ENGINE-SERVICING-NC-II": 3}},
+    {"id": "tl-haircut", "kind": "taglish", "language": "tl", "skills": ["paggupit ng buhok"], "judgments": {"BARBERING-NC-II": 3, "HAIRDRESSING-NC-II": 2}},
+    {"id": "tl-hilot", "kind": "taglish", "language": "tl", "skills": ["tradisyonal na paghihilot", "pagmamasahe ng likod"], "judgments": {"HILOT-NC-II": 3, "MASSAGE-THERAPY-NC-II": 2}},
+    {"id": "taglish-computer", "kind": "taglish", "language": "taglish", "skills": ["pag-aayos ng computer", "network setup"], "judgments": {"CSS-NC-II": 3}},
+    {"id": "taglish-housekeeping", "kind": "taglish", "language": "taglish", "skills": ["paglilinis ng kwarto sa hotel", "laundry"], "judgments": {"HOUSEKEEPING-NC-II": 3, "HOUSEKEEPING-NC-III": 1}},
+
+    {"id": "typo-welding", "kind": "typo", "language": "en", "skills": ["weldng"], "judgments": {"MMAW-NC-II": 3, "MMAW-NC-I": 2, "MMAW-NC-III": 1}},
+    {"id": "typo-cookery", "kind": "typo", "language": "en", "skills": ["cookry"], "judgments": {"COOKERY-NC-II": 3}},
+    {"id": "typo-carpentry", "kind": "typo", "language": "en", "skills": ["carpentery"], "judgments": {"CARPENTRY-NC-II": 3, "CARPENTRY-NC-III": 1}},
+    {"id": "typo-electrical", "kind": "typo", "language": "en", "skills": ["electrial wiring instalation"], "judgments": {"EIM-NC-II": 3}},
+    {"id": "typo-plumbing", "kind": "typo", "language": "en", "skills": ["plumbng"], "judgments": {"PLUMBING-NC-II": 3, "PLUMBING-NC-I": 2}},
+    {"id": "typo-caregiving", "kind": "typo", "language": "en", "skills": ["caregiveing"], "judgments": {"CAREGIVING-NC-II-5": 3, "CAREGIVING-NC-II-2": 2, "CAREGIVING-NC-II": 2}},
+    {"id": "typo-css", "kind": "typo", "language": "en", "skills": ["computer sytem servicing"], "judgments": {"CSS-NC-II": 3}},
+
+    {"id": "nofit-law", "kind": "no_fit", "language": "en", "skills": ["corporate law", "legal research"], "expect_empty": true, "judgments": {}},
+    {"id": "nofit-medicine", "kind": "no_fit", "language": "en", "skills": ["medical diagnosis", "surgery"], "expect_empty": true, "judgments": {}},
+    {"id": "nofit-piano", "kind": "no_fit", "language": "en", "skills": ["piano", "music theory"], "expect_empty": true, "judgments": {}},
+    {"id": "nofit-finance", "kind": "no_fit", "language": "en", "skills": ["investment banking", "financial modelling"], "expect_empty": true, "judgments": {}},
+    {"id": "nofit-sports", "kind": "no_fit", "language": "en", "skills": ["volleyball", "basketball"], "expect_empty": true, "judgments": {}},
+    {"id": "nofit-politics", "kind": "no_fit", "language": "taglish", "skills": ["pangangampanya sa eleksyon"], "expect_empty": true, "judgments": {}},
+
+    {"id": "multi-welding", "kind": "multi_skill", "language": "en", "skills": ["welding", "blueprint reading", "grinding"], "judgments": {"MMAW-NC-II": 3, "MMAW-NC-I": 2, "MMAW-NC-III": 2}},
+    {"id": "multi-cooking", "kind": "multi_skill", "language": "en", "skills": ["cooking", "food safety", "kitchen sanitation"], "judgments": {"COOKERY-NC-II": 3, "FBS-NC-II": 1}},
+    {"id": "multi-electrical", "kind": "multi_skill", "language": "en", "skills": ["electrical wiring", "conduit installation", "reading wiring diagrams"], "judgments": {"EIM-NC-II": 3}},
+    {"id": "multi-housekeeping", "kind": "multi_skill", "language": "en", "skills": ["room cleaning", "bed making", "laundry"], "judgments": {"HOUSEKEEPING-NC-II": 3, "HOUSEKEEPING-NC-III": 1}},
+    {"id": "multi-noise-driving", "kind": "multi_skill", "language": "en", "skills": ["communication", "teamwork", "MS Word", "MS Excel", "time management", "driving"], "judgments": {"DRIVING-NC-II": 3}},
+
+    {"id": "mixed-welding-cooking", "kind": "mixed", "language": "en", "skills": ["welding", "cooking"], "judgments": {"MMAW-NC-II": 3, "COOKERY-NC-II": 3}},
+    {"id": "mixed-tl-sewing-haircut", "kind": "mixed", "language": "tl", "skills": ["marunong manahi", "paggupit ng buhok"], "judgments": {"DRESSMAKING-NC-II": 3, "BARBERING-NC-II": 3, "HAIRDRESSING-NC-II": 2}}
+  ]
+}

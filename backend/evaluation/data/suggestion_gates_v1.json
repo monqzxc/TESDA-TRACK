@@ -1,0 +1,60 @@
+{
+  "version": "suggestion-gates-v1",
+  "status": "proposed",
+  "set_on": "2026-11-06",
+  "note": "Proposed before any suggestion result was seen, for the release owner to approve or change. Do not loosen a threshold after seeing a failure. 'required' gates block release; a gate that is not_measured blocks too. The assessor gates read the labels TESDA assessors give through evaluation.labeling (source file:suggestion_assessor_v1).",
+  "gates": [
+    {"id": "assessor_beats_every_baseline", "required": true,
+     "metric": "derived.file:suggestion_assessor_v1.recall_margin_ci_low_vs_best_baseline", "minimum": 0.001,
+     "why": "The lower end of the 95% paired-bootstrap interval of Recall@3(suggest) minus Recall@3(baseline) is above zero for keyword-only, semantic-only, most-popular and random. If suggest() cannot beat a static list, it is not personalising."},
+    {"id": "assessor_shown_are_relevant", "required": true,
+     "metric": "sources.file:suggestion_assessor_v1.systems.suggest.labeled.shown_judged_grade2plus", "minimum": 0.8,
+     "why": "At least 80% of the suggestions learners would see are rated relevant (2) or strongly relevant (3) by assessors."},
+    {"id": "assessor_shown_rarely_inappropriate", "required": true,
+     "metric": "sources.file:suggestion_assessor_v1.systems.suggest.labeled.shown_judged_grade0", "maximum": 0.05,
+     "why": "At most 1 in 20 shown suggestions is rated irrelevant: a bad nudge costs more than no nudge."},
+    {"id": "assessor_hit_at_3", "required": true,
+     "metric": "sources.file:suggestion_assessor_v1.systems.suggest.labeled.hit_at_3", "minimum": 0.7,
+     "why": "For profiles with an appropriate qualification, one appears in the three shown (abstaining counts as a miss)."},
+    {"id": "assessor_origin_gap", "required": true,
+     "metric": "derived.file:suggestion_assessor_v1.origin_recall_gap_max", "maximum": 0.1,
+     "why": "Passport-present and hints-only learners get recall within 0.10 of everyone's."},
+
+    {"id": "adversarial_empty_never_suggests", "required": true,
+     "metric": "sources.adversarial.systems.suggest.by_kind.empty.abstention_on_expected_empty", "minimum": 1.0,
+     "why": "No skills, no suggestion, without exception."},
+    {"id": "adversarial_generic_abstains", "required": true,
+     "metric": "sources.adversarial.systems.suggest.by_kind.generic.abstention_on_expected_empty", "minimum": 0.9,
+     "why": "A lone soft skill such as 'communication' says nothing about a trade."},
+    {"id": "adversarial_no_fit_abstains", "required": true,
+     "metric": "sources.adversarial.systems.suggest.by_kind.no_fit.abstention_on_expected_empty", "minimum": 0.9,
+     "why": "Skills outside TVET get nothing rather than the nearest trade."},
+    {"id": "goal_sets_expected_empty_abstains", "required": true,
+     "metric": "sources.goal_sets.systems.suggest.labeled.abstention_on_expected_empty", "minimum": 0.9,
+     "why": "Matches matching's own rejection floor (model_acceptance.json: rejection 0.9)."},
+    {"id": "goal_sets_hit_at_3", "required": false,
+     "metric": "sources.goal_sets.systems.suggest.labeled.hit_at_3", "minimum": 0.7,
+     "why": "Engineering check on team-written labels before assessor labels exist; not a release claim."},
+    {"id": "goal_sets_beats_every_baseline", "required": false,
+     "metric": "derived.goal_sets.recall_margin_ci_low_vs_best_baseline", "minimum": 0.001,
+     "why": "Engineering check on team-written labels before assessor labels exist."},
+
+    {"id": "real_no_collapse_top5", "required": true,
+     "metric": "sources.real.systems.suggest.distribution.top5_share", "maximum": 0.4,
+     "why": "On real Skill Passport profiles, the five most-shown qualifications take at most 40% of what is shown."},
+    {"id": "real_no_collapse_single", "required": true,
+     "metric": "sources.real.systems.suggest.distribution.max_single_share", "maximum": 0.15,
+     "why": "No single qualification takes more than 15% of what real learners are shown."},
+    {"id": "real_region_gap", "required": true,
+     "metric": "derived.real.region_abstention_gap_max", "maximum": 0.1,
+     "why": "Every region with enough learners to report is within 0.10 of the overall share left without a suggestion."}
+  ],
+  "agreement": {
+    "required": true, "metric": "krippendorff_alpha_ordinal", "minimum": 0.667,
+    "why": "Assessor labels count only once independent raters agree (Krippendorff's tentative floor; 0.8 for firm conclusions). Read from evaluation.labeling's agreement report."
+  },
+  "sample": {
+    "minimum_assessor_profiles": 150, "minimum_raters_per_profile": 2,
+    "why": "With 150 profiles a Recall@3 difference of about 0.10 is detectable; every profile needs two raters for agreement."
+  }
+}

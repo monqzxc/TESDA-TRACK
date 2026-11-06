@@ -251,22 +251,40 @@ def suggest(session: Session, profile: Profile, embedder: Embedder | None = None
     nothing rather than falling back to whatever the catalog happens to rank first.
     """
     refined = Profile.model_validate(refine_profile(profile.model_dump()))
-    terms = suggestion_terms(refined)
-    if not terms:
+    text = suggestion_text(refined)
+    if text is None:
         return refined, []
-    text = ", ".join(terms)
     current = catalog.snapshot(session)
-    keyword = {r["qualification"]["code"]: r
-               for r in score_qualifications(text, refined.model_dump(), current.rule_views)}
+    keyword = suggestion_keyword(text, refined, current.rule_views)
     if embedder is None:
-        by_code = {item.code: item for item in current.items}
+        return refined, rank_suggestions(current.items, keyword, None, None, limit)
+    similarities = embeddings.qualification_similarities(session, embedder, text)
+    return refined, rank_suggestions(current.items, keyword, similarities, match_params(embedder), limit)
+
+
+def suggestion_text(profile: Profile) -> str | None:
+    """The one text a suggestion is worked out from (the learner's terms, joined), or None when there are none."""
+    terms = suggestion_terms(profile)
+    return ", ".join(terms) if terms else None
+
+
+def suggestion_keyword(text: str, profile: Profile, rule_views: list[dict]) -> dict[str, dict]:
+    """Keyword evidence for a suggestion, by qualification code, best first."""
+    return {r["qualification"]["code"]: r for r in score_qualifications(text, profile.model_dump(), rule_views)}
+
+
+def rank_suggestions(items: Sequence[CatalogItem], keyword: dict[str, dict], similarities: dict[int, float] | None,
+                     params: MatchParams | None, limit: int = 3) -> list[Match]:
+    """The suggestion ranking itself, shared by the API and the offline evaluation (evaluation/suggestions.py).
+
+    Without similarities (no model) it is the keyword evidence alone, in its own order."""
+    if similarities is None:
+        by_code = {item.code: item for item in items}
         matches = [Match(qualification=by_code[code].summary, score=r["score"], reason=r["reason"])
                    for code, r in list(keyword.items())[:limit] if code in by_code]
     else:
-        params = match_params(embedder)
-        similarities = embeddings.qualification_similarities(session, embedder, text)
-        matches = score_matches(current.items, keyword, similarities, params, limit=limit)
-    return refined, [m.model_copy(update={"reason": _as_suggestion_reason(m.reason)}) for m in matches]
+        matches = score_matches(items, keyword, similarities, params, limit=limit)
+    return [m.model_copy(update={"reason": _as_suggestion_reason(m.reason)}) for m in matches]
 
 
 def pathway(session: Session, profile: Profile, qualification_code: str) -> PathwayRecommendation:
