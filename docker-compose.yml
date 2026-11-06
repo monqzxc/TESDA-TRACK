@@ -34,6 +34,8 @@ x-backend-environment: &backend-environment
   TRACKER_CLIENT_ID: ${TRACKER_CLIENT_ID:-}
   TRACKER_CLIENT_SECRET: ${TRACKER_CLIENT_SECRET:-}
   TSP_SIGN_IN_ENABLED: ${TSP_SIGN_IN_ENABLED:-false}
+  # "Suggested for you" in the TSP webview. Leave off until docs/evaluation-and-release-checks.md's suggestion gates pass.
+  TSP_SUGGESTIONS_ENABLED: ${TSP_SUGGESTIONS_ENABLED:-false}
   # Road routes for Directions (GET /api/v1/routes); empty turns them off.
   ROUTING_URL: ${ROUTING_URL-https://routing.openstreetmap.de/routed-car}
   # CARTO basemaps key for the center map, handed to the React app by GET /api/v1/client-config.

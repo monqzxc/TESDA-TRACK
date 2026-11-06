@@ -1,8 +1,10 @@
 import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { http, HttpResponse } from 'msw'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { renderApp } from '../../test/app.tsx'
 import { serveFinderApi, serveFinderCatalog } from '../../test/finder.ts'
+import { server } from '../../test/server.ts'
 import { useFinderStore } from '../finder/store.ts'
 import { suggestionProfile, hasSuggestionSignal } from './suggestions.ts'
 
@@ -55,7 +57,36 @@ describe('suggestionProfile', () => {
   })
 })
 
+function suggestionsTurnedOn(on: boolean) {
+  server.use(
+    http.get('*/api/v1/client-config', () =>
+      HttpResponse.json({
+        carto_key: '',
+        routing_enabled: false,
+        skills_bridge_enabled: false,
+        tsp_sign_in: false,
+        tsp_suggestions: on,
+      }),
+    ),
+  )
+}
+
 describe('Suggested for you', () => {
+  beforeEach(() => suggestionsTurnedOn(true))
+
+  it('stays off, without asking, until the server turns suggestions on', async () => {
+    suggestionsTurnedOn(false)
+    serveFinderCatalog()
+    const api = serveFinderApi()
+    renderApp(WITH_SKILLS)
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Find your TESDA qualification' }),
+    ).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Suggested for you' })).not.toBeInTheDocument()
+    expect(api.requests.some((r) => r.path === '/api/v1/analysis/suggestions')).toBe(false)
+  })
+
   it('suggests from the TSP profile alone and carries the choice into the matching flow', async () => {
     serveFinderCatalog()
     const api = serveFinderApi()
@@ -74,8 +105,10 @@ describe('Suggested for you', () => {
 
     await user.click(screen.getByRole('button', { name: 'See my pathway' }))
     await waitFor(() => expect(router.state.location.pathname).toBe('/tsp/webview/matches'))
+    // Counted as a tapped suggestion, apart from typed goals, so uptake can be compared in the pilot.
     expect(api.requests.find((r) => r.path === '/api/v1/analysis/goal')?.body).toEqual({
       query: 'Shielded Metal Arc Welding (SMAW) NC II',
+      origin: 'suggestion',
     })
   })
 

@@ -10,6 +10,7 @@ from sqlmodel import Field, Relationship, SQLModel
 from tesda_track.models.base import Timestamped, one_of, timestamp_field
 from tesda_track.models.catalog import Qualification
 from tesda_track.models.rbac import Role
+from tesda_track.models.stats import GOAL_ORIGINS
 from tesda_track.rbac import known_permissions
 GOAL_STATUSES = ("active", "achieved", "archived")
 ANALYSIS_SOURCES = ("rules", "ai")
@@ -58,7 +59,8 @@ class Goal(Timestamped, table=True):
 
 class RecommendationSession(Timestamped, table=True):
     __tablename__ = "recommendation_session"
-    __table_args__ = (CheckConstraint(one_of("analysis_source", ANALYSIS_SOURCES), name="analysis_source_valid"),)
+    __table_args__ = (CheckConstraint(one_of("analysis_source", ANALYSIS_SOURCES), name="analysis_source_valid"),
+                      CheckConstraint(f"origin IS NULL OR {one_of('origin', GOAL_ORIGINS)}", name="origin_valid"))
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     learner_id: uuid.UUID = Field(foreign_key="learner.id", ondelete="CASCADE", index=True)
@@ -66,6 +68,8 @@ class RecommendationSession(Timestamped, table=True):
     goal_id: uuid.UUID | None = Field(default=None, foreign_key="goal.id", ondelete="SET NULL")
     query: str = Field(sa_type=Text)
     analysis_source: str = Field(sa_type=String(10))
+    # From the TSP webview: typed there, or a TSP profile suggestion tapped. None elsewhere and before it was recorded.
+    origin: str | None = Field(default=None, sa_type=String(10))
     # The profile as first analyzed; follow-up answers are re-applied to it, never accumulated.
     analysis_profile: dict = Field(sa_type=JSONB)
     profile: dict = Field(sa_type=JSONB)

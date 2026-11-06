@@ -2602,6 +2602,12 @@ export interface components {
              * @description Whether /tsp/webview signs learners in through TSP's WebView bridge (POST /api/v1/auth/tsp/session). False: it stays guest-only.
              */
             tsp_sign_in: boolean;
+            /**
+             * Tsp Suggestions
+             * @description Whether /tsp/webview shows qualifications suggested from the TSP profile (POST /api/v1/analysis/suggestions). False: the goal box only.
+             * @default false
+             */
+            tsp_suggestions: boolean;
         };
         /** ClientUsage */
         ClientUsage: {
@@ -2924,6 +2930,11 @@ export interface components {
             };
             /** Satisfied */
             satisfied: boolean;
+            /**
+             * Origin
+             * @description Sent by the TSP webview only: whether the learner typed the goal there or tapped a suggestion from their TSP profile. Counted per day, never with the goal; omitted elsewhere, and then not counted.
+             */
+            origin?: ("typed" | "suggestion") | null;
         };
         /** FeedbackPublic */
         FeedbackPublic: {
@@ -3112,6 +3123,11 @@ export interface components {
         GoalRequest: {
             /** Query */
             query: string;
+            /**
+             * Origin
+             * @description Sent by the TSP webview only: whether the learner typed the goal there or tapped a suggestion from their TSP profile. Counted per day, never with the goal; omitted elsewhere, and then not counted.
+             */
+            origin?: ("typed" | "suggestion") | null;
         };
         /** GoalUpdate */
         GoalUpdate: {
@@ -3379,6 +3395,47 @@ export interface components {
             detail: string;
             /** Competency Ids */
             competency_ids?: number[];
+        };
+        /**
+         * OriginSignals
+         * @description How far TSP webview goals get by where they came from. Counts are of requests and answers, not learners.
+         */
+        OriginSignals: {
+            /**
+             * Origin
+             * @description not_recorded: sessions and answers from the main finder, or from before the origin was recorded
+             * @enum {string}
+             */
+            origin: "typed" | "suggestion" | "not_recorded";
+            /**
+             * Goals Started
+             * @description Goals analysed in the TSP webview, from the daily counters
+             */
+            goals_started: number;
+            /**
+             * Readiness Checked
+             * @description Readiness results worked out, from the daily counters
+             */
+            readiness_checked: number;
+            /**
+             * Readiness Rate
+             * @description Readiness checks / goals started; null with no goals
+             */
+            readiness_rate: number | null;
+            /**
+             * Saved Sessions
+             * @description Signed-in recommendation sessions created
+             */
+            saved_sessions: number;
+            /** Feedback Answers */
+            feedback_answers: number;
+            /**
+             * Accepted
+             * @description Positive satisfaction answers
+             */
+            accepted: number;
+            /** Acceptance Rate */
+            acceptance_rate: number | null;
         };
         /** Overview */
         Overview: {
@@ -4039,6 +4096,11 @@ export interface components {
             answers: {
                 [key: string]: "confident" | "some_experience" | "not_familiar";
             };
+            /**
+             * Origin
+             * @description Sent by the TSP webview only: whether the learner typed the goal there or tapped a suggestion from their TSP profile. Counted per day, never with the goal; omitted elsewhere, and then not counted.
+             */
+            origin?: ("typed" | "suggestion") | null;
             /** Request Id */
             request_id?: string | null;
             /** Recommendation Session Id */
@@ -4120,6 +4182,11 @@ export interface components {
             answers: {
                 [key: string]: "confident" | "some_experience" | "not_familiar";
             };
+            /**
+             * Origin
+             * @description Sent by the TSP webview only: whether the learner typed the goal there or tapped a suggestion from their TSP profile. Counted per day, never with the goal; omitted elsewhere, and then not counted.
+             */
+            origin?: ("typed" | "suggestion") | null;
         };
         /** ReadinessResult */
         ReadinessResult: {
@@ -4169,6 +4236,9 @@ export interface components {
             demand: components["schemas"]["RecommendationDemand"];
             /** Improvement Priorities */
             improvement_priorities: components["schemas"]["ImprovementPriority"][];
+            /** Goal Origins */
+            goal_origins?: components["schemas"]["OriginSignals"][];
+            suggestions?: components["schemas"]["SuggestionSignals"] | null;
         };
         /** RecommendationDemand */
         RecommendationDemand: {
@@ -4237,6 +4307,11 @@ export interface components {
             query: string;
             /** Goal Id */
             goal_id?: string | null;
+            /**
+             * Origin
+             * @description Sent by the TSP webview only: whether the learner typed the goal there or tapped a suggestion from their TSP profile. Counted per day, never with the goal; omitted elsewhere, and then not counted.
+             */
+            origin?: ("typed" | "suggestion") | null;
         };
         /** RecommendationSessionPublic */
         RecommendationSessionPublic: {
@@ -4256,6 +4331,11 @@ export interface components {
              * @enum {string}
              */
             analysis_source: "rules" | "ai";
+            /**
+             * Origin
+             * @description From the TSP webview: typed or a tapped suggestion
+             */
+            origin?: ("typed" | "suggestion") | null;
             profile: components["schemas"]["Profile"];
             /** Matches */
             matches: components["schemas"]["Match"][];
@@ -4793,6 +4873,32 @@ export interface components {
              * @description What the suggestions were worked out from, in the learner's own terms
              */
             basis?: string[];
+        };
+        /**
+         * SuggestionSignals
+         * @description The TSP webview's profile suggestions: how often a list had something, and how often one was taken.
+         */
+        SuggestionSignals: {
+            /**
+             * Lists Shown
+             * @description Suggestion lists with at least one qualification
+             */
+            lists_shown: number;
+            /**
+             * Lists Empty
+             * @description Suggestion lists for a profile with skills that found nothing
+             */
+            lists_empty: number;
+            /**
+             * Taken
+             * @description Goals started by tapping a suggestion
+             */
+            taken: number;
+            /**
+             * Take Rate
+             * @description Taken / lists shown. A visit can load a list more than once, so this is per list, not per learner
+             */
+            take_rate: number | null;
         };
         /** TokenResponse */
         TokenResponse: {
@@ -5524,6 +5630,13 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["SuggestionResult"];
                 };
+            };
+            /** @description Suggestions are turned off on this server (TSP_SUGGESTIONS_ENABLED) */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {

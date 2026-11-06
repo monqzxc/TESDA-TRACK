@@ -132,6 +132,9 @@ class Settings(BaseSettings):
     # Lets TSP's WebView sign learners in to linked accounts (POST /api/v1/auth/tsp/session). Off until Hercules
     # confirms its sso_id is permanent, since accounts are linked by it.
     tsp_sign_in_enabled: bool = False
+    # Shows the TSP webview's "Suggested for you" (POST /api/v1/analysis/suggestions). Off until its release gates pass
+    # (docs/evaluation-and-release-checks.md#profile-only-suggestions): a wrong nudge costs a learner more than none.
+    tsp_suggestions_enabled: bool = False
 
     @field_validator("mcp_token_secret", "hercules_base_url", "tracker_client_id", "tracker_client_secret",
                      mode="before")

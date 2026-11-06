@@ -27,6 +27,8 @@ os.environ.update({
     # Tests use an injected test embedder; the real model is exercised only by opt-in tests.
     "SEMANTIC_SEARCH_ENABLED": "false",
     "TSP_SIGN_IN_ENABLED": "false",
+    # On, so the suggestion endpoint's own tests reach it; test_goal_origin checks that off means 404.
+    "TSP_SUGGESTIONS_ENABLED": "true",
     "HERCULES_BASE_URL": "",
     "TRACKER_CLIENT_ID": "",
     "TRACKER_CLIENT_SECRET": "",
@@ -82,11 +84,12 @@ def session(engine):
 
 @pytest.fixture
 def clean_match_stats(engine):
-    """The goal-matching counter commits on its own session, so a test asserting its totals starts and ends with
-    an empty table rather than whatever earlier tests searched."""
+    """The goal-matching and funnel counters commit on their own session, so a test asserting their totals starts and
+    ends with empty tables rather than whatever earlier tests searched."""
     def clear():
         with engine.begin() as connection:
             connection.execute(text("DELETE FROM match_daily_stat"))
+            connection.execute(text("DELETE FROM funnel_daily_stat"))
 
     clear()
     yield

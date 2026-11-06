@@ -19,7 +19,8 @@ FOLLOW_UP_FIELDS = ("experience_years", "has_certification")
 def to_public(record: RecommendationSession) -> RecommendationSessionPublic:
     return RecommendationSessionPublic(
         assessment_id=record.assessment_id,
-        id=record.id, goal_id=record.goal_id, query=record.query, analysis_source=record.analysis_source,
+        id=record.id, goal_id=record.goal_id, query=record.query, origin=record.origin,
+        analysis_source=record.analysis_source,
         profile=Profile.model_validate(record.profile), matches=[Match.model_validate(m) for m in record.matches],
         selected_qualification=catalog.summary(record.qualification) if record.qualification else None,
         pathway=PathwayRecommendation.model_validate(record.pathway) if record.pathway else None,
@@ -45,7 +46,7 @@ def start(session: Session, learner: Learner, request: RecommendationSessionCrea
     refined, matches = analysis.match(session, request.query, analyzed.profile, embedder, answers)
     record = RecommendationSession(
         learner_id=learner.id, assessment_id=assessment_id, goal_id=goal.id if goal else None, query=request.query,
-        analysis_source=analyzed.source, analysis_profile=analyzed.profile.model_dump(mode="json"),
+        origin=request.origin, analysis_source=analyzed.source, analysis_profile=analyzed.profile.model_dump(mode="json"),
         profile=refined.model_dump(mode="json"), matches=[m.model_dump(mode="json") for m in matches])
     session.add(record)
     session.flush()

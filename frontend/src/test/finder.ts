@@ -286,12 +286,11 @@ export function serveFinderApi({
         return HttpResponse.error()
       }
       const { profile } = (await request.json()) as { profile: Profile }
+      const skills = profile.existing_skills ?? []
       return HttpResponse.json({
         profile,
         suggestions,
-        basis: profile.existing_skills.length
-          ? [`Skills on your TSP profile: ${profile.existing_skills.join(', ')}`]
-          : [],
+        basis: skills.length ? [`Skills on your TSP profile: ${skills.join(', ')}`] : [],
       })
     }),
     http.post('*/api/v1/me/recommendations', async ({ request }) => {

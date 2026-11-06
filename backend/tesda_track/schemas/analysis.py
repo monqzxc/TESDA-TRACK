@@ -8,6 +8,10 @@ from tesda_track.schemas.learner_assessments import AssessmentReference, Persona
 
 GoalText = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=1000)]
 ShortText = Annotated[str, StringConstraints(strip_whitespace=True, max_length=200)]
+GoalOrigin = Literal["typed", "suggestion"]
+ORIGIN_DESCRIPTION = ("Sent by the TSP webview only: whether the learner typed the goal there or tapped a suggestion "
+                      "from their TSP profile. Counted per day, never with the goal; omitted elsewhere, and then "
+                      "not counted.")
 Intent = Literal["training_recommendation", "training_and_assessment", "assessment_recommendation",
                  "career_exploration", "unknown"]
 Route = Literal["ADDITIONAL_QUESTIONS", "TRAINING_AND_ASSESSMENT", "ASSESSMENT_READINESS", "SKILL_GAP_CHECK"]
@@ -25,6 +29,7 @@ class Profile(BaseModel):
 
 class GoalRequest(BaseModel):
     query: GoalText
+    origin: GoalOrigin | None = Field(default=None, description=ORIGIN_DESCRIPTION)
 
 
 class GoalAnalysis(BaseModel):
@@ -91,6 +96,7 @@ class PathwayRecommendation(BaseModel):
 class ReadinessRequest(BaseModel):
     qualification_code: str = Field(max_length=40)
     answers: dict[int, AnswerCode] = Field(max_length=100, description="Answer per competency id")
+    origin: GoalOrigin | None = Field(default=None, description=ORIGIN_DESCRIPTION)
 
 
 class ReadinessResult(BaseModel):

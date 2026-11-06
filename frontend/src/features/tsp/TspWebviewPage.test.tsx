@@ -77,6 +77,7 @@ describe('TSP WebView', () => {
     )
     expect(api.requests.find((request) => request.path === '/api/v1/analysis/goal')?.body).toEqual({
       query: 'I want to be a welder.',
+      origin: 'typed',
     })
     expect(JSON.stringify(api.requests)).not.toContain('TSP-42')
     expect(JSON.stringify(api.requests)).not.toContain('Ana Santos')

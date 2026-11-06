@@ -24,11 +24,12 @@ export function TspReadiness({
   const answers = useFinderStore((state) => state.answers[qualification.code] ?? EMPTY_ANSWERS)
   const answer = useFinderStore((state) => state.answer)
   const setCheck = useFinderStore((state) => state.setCheck)
+  const origin = useFinderStore((state) => state.journey?.origin)
   const skills = qualification.competencies
   const current = skills[index]
   const rated = skills.filter((skill) => answers[skill.id]).length
   const submit = useMutation({
-    mutationFn: (sent: Answers) => submitReadiness(qualification.code, sent, null),
+    mutationFn: (sent: Answers) => submitReadiness(qualification.code, sent, null, origin),
     onSuccess: (result, sent) => {
       setCheck(qualification.code, { result, answers: sent, saved: false })
       onResult()

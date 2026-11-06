@@ -242,6 +242,9 @@
               }
             }
           },
+          "404": {
+            "description": "Suggestions are turned off on this server (TSP_SUGGESTIONS_ENABLED)"
+          },
           "422": {
             "description": "Validation Error",
             "content": {
@@ -9102,6 +9105,12 @@
             "type": "boolean",
             "title": "Tsp Sign In",
             "description": "Whether /tsp/webview signs learners in through TSP's WebView bridge (POST /api/v1/auth/tsp/session). False: it stays guest-only."
+          },
+          "tsp_suggestions": {
+            "type": "boolean",
+            "title": "Tsp Suggestions",
+            "description": "Whether /tsp/webview shows qualifications suggested from the TSP profile (POST /api/v1/analysis/suggestions). False: the goal box only.",
+            "default": false
           }
         },
         "type": "object",
@@ -9914,6 +9923,22 @@
           "satisfied": {
             "type": "boolean",
             "title": "Satisfied"
+          },
+          "origin": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "typed",
+                  "suggestion"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin",
+            "description": "Sent by the TSP webview only: whether the learner typed the goal there or tapped a suggestion from their TSP profile. Counted per day, never with the goal; omitted elsewhere, and then not counted."
           }
         },
         "type": "object",
@@ -10368,6 +10393,22 @@
             "maxLength": 1000,
             "minLength": 1,
             "title": "Query"
+          },
+          "origin": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "typed",
+                  "suggestion"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin",
+            "description": "Sent by the TSP webview only: whether the learner typed the goal there or tapped a suggestion from their TSP profile. Counted per day, never with the goal; omitted elsewhere, and then not counted."
           }
         },
         "type": "object",
@@ -11203,6 +11244,80 @@
           "detail"
         ],
         "title": "NextStep"
+      },
+      "OriginSignals": {
+        "properties": {
+          "origin": {
+            "type": "string",
+            "enum": [
+              "typed",
+              "suggestion",
+              "not_recorded"
+            ],
+            "title": "Origin",
+            "description": "not_recorded: sessions and answers from the main finder, or from before the origin was recorded"
+          },
+          "goals_started": {
+            "type": "integer",
+            "title": "Goals Started",
+            "description": "Goals analysed in the TSP webview, from the daily counters"
+          },
+          "readiness_checked": {
+            "type": "integer",
+            "title": "Readiness Checked",
+            "description": "Readiness results worked out, from the daily counters"
+          },
+          "readiness_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Readiness Rate",
+            "description": "Readiness checks / goals started; null with no goals"
+          },
+          "saved_sessions": {
+            "type": "integer",
+            "title": "Saved Sessions",
+            "description": "Signed-in recommendation sessions created"
+          },
+          "feedback_answers": {
+            "type": "integer",
+            "title": "Feedback Answers"
+          },
+          "accepted": {
+            "type": "integer",
+            "title": "Accepted",
+            "description": "Positive satisfaction answers"
+          },
+          "acceptance_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acceptance Rate"
+          }
+        },
+        "type": "object",
+        "required": [
+          "origin",
+          "goals_started",
+          "readiness_checked",
+          "readiness_rate",
+          "saved_sessions",
+          "feedback_answers",
+          "accepted",
+          "acceptance_rate"
+        ],
+        "title": "OriginSignals",
+        "description": "How far TSP webview goals get by where they came from. Counts are of requests and answers, not learners."
       },
       "Overview": {
         "properties": {
@@ -13006,6 +13121,22 @@
             "title": "Answers",
             "description": "Answer per competency id"
           },
+          "origin": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "typed",
+                  "suggestion"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin",
+            "description": "Sent by the TSP webview only: whether the learner typed the goal there or tapped a suggestion from their TSP profile. Counted per day, never with the goal; omitted elsewhere, and then not counted."
+          },
           "request_id": {
             "anyOf": [
               {
@@ -13231,6 +13362,22 @@
             "maxProperties": 100,
             "title": "Answers",
             "description": "Answer per competency id"
+          },
+          "origin": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "typed",
+                  "suggestion"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin",
+            "description": "Sent by the TSP webview only: whether the learner typed the goal there or tapped a suggestion from their TSP profile. Counted per day, never with the goal; omitted elsewhere, and then not counted."
           }
         },
         "type": "object",
@@ -13385,6 +13532,23 @@
             },
             "type": "array",
             "title": "Improvement Priorities"
+          },
+          "goal_origins": {
+            "items": {
+              "$ref": "#/components/schemas/OriginSignals"
+            },
+            "type": "array",
+            "title": "Goal Origins"
+          },
+          "suggestions": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SuggestionSignals"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -13525,6 +13689,22 @@
               }
             ],
             "title": "Goal Id"
+          },
+          "origin": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "typed",
+                  "suggestion"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin",
+            "description": "Sent by the TSP webview only: whether the learner typed the goal there or tapped a suggestion from their TSP profile. Counted per day, never with the goal; omitted elsewhere, and then not counted."
           }
         },
         "type": "object",
@@ -13575,6 +13755,22 @@
               "ai"
             ],
             "title": "Analysis Source"
+          },
+          "origin": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "typed",
+                  "suggestion"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin",
+            "description": "From the TSP webview: typed or a tapped suggestion"
           },
           "profile": {
             "$ref": "#/components/schemas/Profile"
@@ -15024,6 +15220,46 @@
           "suggestions"
         ],
         "title": "SuggestionResult"
+      },
+      "SuggestionSignals": {
+        "properties": {
+          "lists_shown": {
+            "type": "integer",
+            "title": "Lists Shown",
+            "description": "Suggestion lists with at least one qualification"
+          },
+          "lists_empty": {
+            "type": "integer",
+            "title": "Lists Empty",
+            "description": "Suggestion lists for a profile with skills that found nothing"
+          },
+          "taken": {
+            "type": "integer",
+            "title": "Taken",
+            "description": "Goals started by tapping a suggestion"
+          },
+          "take_rate": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Take Rate",
+            "description": "Taken / lists shown. A visit can load a list more than once, so this is per list, not per learner"
+          }
+        },
+        "type": "object",
+        "required": [
+          "lists_shown",
+          "lists_empty",
+          "taken",
+          "take_rate"
+        ],
+        "title": "SuggestionSignals",
+        "description": "The TSP webview's profile suggestions: how often a list had something, and how often one was taken."
       },
       "TokenResponse": {
         "properties": {

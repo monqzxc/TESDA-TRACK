@@ -41,9 +41,17 @@ export interface ReportPlace {
   scholarship: boolean
 }
 
+/**
+ * Where a goal entered in the TSP webview came from: typed there, or a suggestion from the learner's TSP profile that
+ * they tapped. Only the webview sets it; the API counts webview steps by it, so pilot uptake can be compared.
+ */
+export type GoalOrigin = 'typed' | 'suggestion'
+
 /** A submitted goal. */
 export interface Journey {
   query: string
+  /** Set only in the TSP webview (see GoalOrigin). */
+  origin?: GoalOrigin
   /** The API's reading of the goal alone. Its blanks are what the follow-up questions ask about. */
   profile: Profile
   /** The signed-in learner's recommendation session for this goal (/me/recommendations), once there is one. */
@@ -86,7 +94,9 @@ export interface FinderState {
   /** The learner typing in the goal box. */
   setGoal: (goal: string) => void
   /** A new goal was analysed: it starts a new journey, and the old goal's answers and results go (US-01). */
-  begin: (journey: Pick<Journey, 'query' | 'profile' | 'sessionId' | 'sessionOwner'>) => void
+  begin: (
+    journey: Pick<Journey, 'query' | 'origin' | 'profile' | 'sessionId' | 'sessionOwner'>,
+  ) => void
   setExperience: (answer: ExperienceAnswer) => void
   setCertification: (answer: CertificationAnswer) => void
   choose: (code: string) => void

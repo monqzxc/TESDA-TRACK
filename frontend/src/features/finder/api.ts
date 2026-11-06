@@ -4,7 +4,7 @@ import type { ApiError } from '../../api/errors.ts'
 import { unwrap } from '../../api/errors.ts'
 import type { components } from '../../api/schema.d.ts'
 import type { PathwayRoute } from './rules.ts'
-import type { Answers, Profile, ReadinessResult, SessionState } from './store.ts'
+import type { Answers, GoalOrigin, Profile, ReadinessResult, SessionState } from './store.ts'
 
 // The finder's requests. The goal goes in request bodies only, never in an address (the plan's privacy rules).
 // Query keys hold it in memory for the cache; they're never sent anywhere.
@@ -22,16 +22,22 @@ export type ReportRequest = components['schemas']['PathwayReportRequest']
 
 const MINUTE = 60_000
 
-/** A goal's analysis: the API's reading of it. Signed in, it starts a saved recommendation session. */
+/**
+ * A goal's analysis: the API's reading of it. Signed in, it starts a saved recommendation session. The TSP webview
+ * says where the goal came from (origin); elsewhere it's left out and not counted.
+ */
 export async function analyzeGoal(
   query: string,
   requestId: string | null,
+  origin?: GoalOrigin,
 ): Promise<{ profile: Profile; sessionId: string | null }> {
   if (requestId) {
-    const session = await startSession(query, requestId)
+    const session = await startSession(query, requestId, origin)
     return { profile: session.profile, sessionId: session.id }
   }
-  const analysis = await unwrap(api.POST('/api/v1/analysis/goal', { body: { query } }))
+  const analysis = await unwrap(
+    api.POST('/api/v1/analysis/goal', { body: origin ? { query, origin } : { query } }),
+  )
   return { profile: analysis.profile, sessionId: null }
 }
 
@@ -98,7 +104,9 @@ export async function submitReadiness(
   code: string,
   answers: Answers,
   saveTo: { sessionId: string | null; requestId: string } | null,
+  origin?: GoalOrigin,
 ): Promise<ReadinessResult> {
+  const from = origin ? { origin } : {}
   if (saveTo) {
     return unwrap(
       api.POST('/api/v1/me/readiness-checks', {
@@ -107,12 +115,15 @@ export async function submitReadiness(
           answers,
           recommendation_session_id: saveTo.sessionId,
           request_id: saveTo.requestId,
+          ...from,
         },
       }),
     )
   }
   return unwrap(
-    api.POST('/api/v1/analysis/readiness', { body: { qualification_code: code, answers } }),
+    api.POST('/api/v1/analysis/readiness', {
+      body: { qualification_code: code, answers, ...from },
+    }),
   )
 }
 
@@ -120,8 +131,13 @@ export async function submitReadiness(
 export async function startSession(
   query: string,
   requestId: string,
+  origin?: GoalOrigin,
 ): Promise<RecommendationSession> {
-  return unwrap(api.POST('/api/v1/me/recommendations', { body: { query, request_id: requestId } }))
+  return unwrap(
+    api.POST('/api/v1/me/recommendations', {
+      body: origin ? { query, request_id: requestId, origin } : { query, request_id: requestId },
+    }),
+  )
 }
 
 /** Saves the follow-up answers and the chosen qualification to the learner's recommendation session. */
@@ -149,6 +165,7 @@ export async function sendFeedback(body: {
   qualification_code: string
   answers: Answers
   satisfied: boolean
+  origin?: GoalOrigin
 }): Promise<Feedback> {
   return unwrap(api.POST('/api/v1/feedback/recommendations', { body }))
 }

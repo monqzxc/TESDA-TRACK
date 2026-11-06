@@ -20,6 +20,10 @@ ROOT = Path(__file__).resolve().parents[1]
 # A pending expert review is a fact about the evaluation data rather than a broken build: routine CI runs report it
 # as a warning (--review-warns), and a release run fails on it.
 REVIEW_PENDING = "expert_relevance_review_pending"
+# The same for profile-only suggestions: gates that need assessor labels or real profiles that don't exist yet.
+SUGGESTION_REVIEW_PENDING = "suggestion_review_pending"
+WARNABLE = frozenset({REVIEW_PENDING, SUGGESTION_REVIEW_PENDING})
+SUGGESTION_GATES = ROOT / "backend" / "evaluation" / "data" / "suggestion_gates_v1.json"
 
 
 def command(args, *, cwd=ROOT, env=None, timeout=1200):
@@ -80,6 +84,7 @@ def compose_check():
     checks["model_path_is_container_path"] = not model_path or model_path.startswith("/app/finetuned/")
     return {"passed": all(checks.values()), "checks": checks, "seconds": duration,
             "policy_environment": {k: api[k] for k in keys}, "semantic_search_enabled": api.get("SEMANTIC_SEARCH_ENABLED"),
+            "tsp_suggestions_enabled": api.get("TSP_SUGGESTIONS_ENABLED", "false"),
             "model_path": model_path,
             "model_path_remedy": "Set DOCKER_EMBEDDING_MODEL_PATH=/app/finetuned/<folder> when EMBEDDING_MODEL_PATH is a host path." if not checks["model_path_is_container_path"] else None}
 
@@ -159,7 +164,33 @@ def image_smoke():
 
 def failing_blockers(blockers: list[str], review_warns: bool) -> list[str]:
     """The blockers that fail this run. Every blocker still keeps the release from being ready."""
-    return [name for name in blockers if not (review_warns and name == REVIEW_PENDING)]
+    return [name for name in blockers if not (review_warns and name in WARNABLE)]
+
+
+def suggestion_blockers(report: dict | None, agreement: dict | None, gates: dict) -> list[str]:
+    """What keeps TSP profile suggestions from shipping when a deployment turns them on.
+
+    A required gate that failed always blocks. One that couldn't be measured yet (no assessor labels or real profiles),
+    or an assessor agreement report that is missing, is a pending review: a warning on routine runs, a blocker for a
+    release. Agreement measured below the minimum blocks, since labels raters disagree on can't pass anything."""
+    if report is None:
+        return ["suggestion_evaluation_missing"]
+    results = report.get("gates", {})
+    blocks, pending = [], False
+    for gate in gates["gates"]:
+        if not gate.get("required"):
+            continue
+        status = results.get(gate["id"], {}).get("status", "not_measured")
+        if status == "fail":
+            blocks.append(f"suggestion_gate_failed:{gate['id']}")
+        elif status != "pass":
+            pending = True
+    alpha = (agreement or {}).get(gates["agreement"]["metric"])
+    if alpha is None:
+        pending = True
+    elif alpha < gates["agreement"]["minimum"]:
+        blocks.append("suggestion_assessor_agreement_below_minimum")
+    return blocks + ([SUGGESTION_REVIEW_PENDING] if pending else [])
 
 
 def main(argv=None):
@@ -169,6 +200,10 @@ def main(argv=None):
     parser.add_argument("--skip-model", action="store_true", help="Reports the optional real-model guard as not run")
     parser.add_argument("--review-warns", action="store_true",
                         help="Report a pending expert relevance review as a warning instead of failing (routine CI runs)")
+    parser.add_argument("--suggestion-report", type=Path, default=None,
+                        help="evaluation.suggestions report for the release's model (CI workflow or the server run)")
+    parser.add_argument("--suggestion-agreement", type=Path, default=None,
+                        help="evaluation.labeling agreement report from the TESDA assessors")
     args = parser.parse_args(argv)
     output = args.output_dir.resolve()
     output.mkdir(parents=True, exist_ok=True)
@@ -222,6 +257,14 @@ def main(argv=None):
         blocks.append("service_evaluation_missing")
     if not args.build_images:
         blocks.append("container_builds_not_checked")
+    suggestions_on = checks["compose_configuration"].get("tsp_suggestions_enabled", "false").lower() == "true"
+    read = lambda path: json.loads(path.read_text(encoding="utf-8")) if path and path.is_file() else None
+    suggestion_report, agreement = read(args.suggestion_report), read(args.suggestion_agreement)
+    report["suggestions"] = {"enabled": suggestions_on, "gates": (suggestion_report or {}).get("gates"),
+                             "agreement_alpha": (agreement or {}).get("krippendorff_alpha_ordinal")}
+    if suggestions_on:
+        blocks += suggestion_blockers(suggestion_report, agreement,
+                                      json.loads(SUGGESTION_GATES.read_text(encoding="utf-8")))
     failing = failing_blockers(blocks, args.review_warns)
     report.update(completed_at=datetime.now(timezone.utc).isoformat(), blockers=blocks, failing=failing,
                   release_ready=not blocks, limitations=["Source records and relevance judgments need expert review before a production rollout.",
@@ -230,6 +273,9 @@ def main(argv=None):
     destination.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     print(json.dumps({"report": str(destination), "release_ready": report["release_ready"], "blockers": blocks,
                       "failing": failing, "regression": checks["full_regression"]}, indent=2), flush=True)
+    if SUGGESTION_REVIEW_PENDING in blocks and SUGGESTION_REVIEW_PENDING not in failing:
+        print("::warning title=Suggestion review pending::TSP profile suggestions are turned on but their assessor or "
+              "real-profile gates are not measured yet. Not ready for a production release.", flush=True)
     if REVIEW_PENDING in blocks and REVIEW_PENDING not in failing:
         # GitHub Actions shows this line as a warning on the run.
         print("::warning title=Expert relevance review pending::The qualification relevance cases are an engineering "

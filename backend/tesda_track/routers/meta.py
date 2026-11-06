@@ -21,4 +21,5 @@ def client_config(response: Response, settings: SettingsDep):
     return ClientConfig(carto_key=settings.carto_api.strip(),
                         routing_enabled=bool(settings.routing_url.strip()),
                         skills_bridge_enabled=settings.skills_bridge_mcp_enabled,
-                        tsp_sign_in=settings.tsp_sign_in_enabled)
+                        tsp_sign_in=settings.tsp_sign_in_enabled,
+                        tsp_suggestions=settings.tsp_suggestions_enabled)

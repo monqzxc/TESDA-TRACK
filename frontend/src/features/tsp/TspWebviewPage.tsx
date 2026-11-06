@@ -1,10 +1,11 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useLocation, useNavigate, useOutletContext } from 'react-router'
 import { failureMessage } from '../../auth/fields.tsx'
 import { paths } from '../../paths.ts'
 import { analyzeGoal } from '../finder/api.ts'
-import { GOAL_MAX_LENGTH, useFinderStore } from '../finder/store.ts'
+import { GOAL_MAX_LENGTH, useFinderStore, type GoalOrigin } from '../finder/store.ts'
+import { clientConfigQuery } from '../training/api.ts'
 import type { TspLearnerParams } from './params.ts'
 import { usePassport, withPassport } from './passport.ts'
 import { suggestionProfile } from './suggestions.ts'
@@ -17,7 +18,7 @@ const suggestions = ['Welder', 'Caregiver', 'Barista', 'Hotel work']
 type Submission = Pick<
   TspLearnerParams,
   'skills' | 'experienceYears' | 'hasCertification' | 'region'
-> & { query: string }
+> & { query: string; origin: GoalOrigin }
 
 /** TSP's first step: a goal, then a few optional details before matching. */
 export default function TspWebviewPage() {
@@ -31,6 +32,8 @@ export default function TspWebviewPage() {
   const setPlace = useFinderStore((state) => state.setPlace)
   const signIn = useOutletContext<TspSignInState | undefined>()
   const passport = usePassport(signIn)
+  // Suggestions stay off until the server turns them on (TSP_SUGGESTIONS_ENABLED), once their release gates pass.
+  const suggestionsOn = useQuery(clientConfigQuery).data?.tsp_suggestions === true
 
   useEffect(() => {
     if (location.search)
@@ -45,8 +48,11 @@ export default function TspWebviewPage() {
   }, [location.pathname, location.state, navigate, setLearner])
 
   const analyze = useMutation({
-    mutationFn: ({ query }: Submission) => analyzeGoal(query, null),
-    onSuccess: ({ profile }, { query, skills, experienceYears, hasCertification, region }) => {
+    mutationFn: ({ query, origin }: Submission) => analyzeGoal(query, null, origin),
+    onSuccess: (
+      { profile },
+      { query, origin, skills, experienceYears, hasCertification, region },
+    ) => {
       const suppliedSkills = skills
         .split(',')
         .map((skill) => skill.trim().slice(0, 80))
@@ -54,6 +60,7 @@ export default function TspWebviewPage() {
         .slice(0, 20)
       begin({
         query,
+        origin,
         // The Skill Passport's skills go after the learner's own, without showing in the form.
         profile: withPassport(
           {
@@ -86,6 +93,8 @@ export default function TspWebviewPage() {
     setLearner((current) => ({ ...current, goal: query }))
     analyze.mutate({
       query,
+      // Counted apart from typed goals, so how often suggestions are taken, and how far they go, can be compared.
+      origin: 'suggestion',
       skills: learner.skills,
       experienceYears: learner.experienceYears,
       hasCertification: learner.hasCertification,
@@ -114,6 +123,7 @@ export default function TspWebviewPage() {
     setError(null)
     analyze.mutate({
       query,
+      origin: 'typed',
       skills: learner.skills,
       experienceYears: learner.experienceYears,
       hasCertification: learner.hasCertification,
@@ -142,7 +152,7 @@ export default function TspWebviewPage() {
           </div>
         )}
         {/* Only while the goal box is empty: a learner who already knows what they want needs no suggestion. */}
-        {!showQuestions && !learner.goal.trim() && (
+        {suggestionsOn && !showQuestions && !learner.goal.trim() && (
           <TspSuggestions
             profile={suggestionProfile(learner, passport.data)}
             onChoose={chooseSuggestion}

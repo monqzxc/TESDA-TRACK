@@ -61,6 +61,96 @@ database to `0018`, attempts the downgrade to `0004`, and verifies backup restor
 complete-content fingerprints. The current staff-role guard intentionally refuses the downgrade at `0015`;
 the backup restoration succeeds, the restored copy upgrades to head, and the source remains unchanged.
 
+## Profile-only suggestions
+
+The TSP webview's "Suggested for you" (`POST /api/v1/analysis/suggestions`) ranks qualifications from a Skill
+Passport profile with no goal behind it. It is **off by default** (`TSP_SUGGESTIONS_ENABLED=false`): the endpoint
+answers 404, client-config reports `tsp_suggestions: false`, and the webview shows only the goal box. Turn it on only
+once the gates below pass.
+
+### What is measured
+
+`backend/evaluation/suggestions.py` ranks every case with `analysis.rank_suggestions`, the function the API calls
+(two parity tests hold the offline ranking to the endpoint, with and without a model), and compares `suggest()` with
+keyword-only, semantic-only, a keyword-weight sweep (0.0 to 1.0), a most-popular list and random picks. It reports
+Recall@3, MRR@3 and nDCG@3 from `evaluation.metrics`, abstention where nothing should be suggested, catalog
+coverage, normalised entropy and top-five share of what is shown (collapse), per-sector recall, slices by kind,
+language, profile size, region and origin, and 95% paired-bootstrap intervals for `suggest()` minus each baseline.
+`--calibrate` tunes suggestion parameters on half the labeled goal-set cases and compares them with the inherited
+ones on the other half.
+
+Cases come from separate sources, reported separately:
+
+| Source | What it is | Labels |
+| --- | --- | --- |
+| `goal_sets` | The team's labeled dev goals used as skills (held out of v6 training): short searches, job titles, typos and near-TVET goals as single skills, composed multi-skill and mixed profiles, and no-TVET/vague/non-goals that should get nothing | Engineering draft |
+| `adversarial` | `evaluation/data/suggestion_adversarial_v1.json`: empty, generic soft skills, Filipino/Taglish, typos, no-fit, multi-skill, mixed. Checked against all training and goal data for overlap | Engineering draft |
+| `file:suggestion_assessor_v1` | TESDA assessors' grades from the labeling sheet (below) | Expert reviewed |
+| `real` | `--from-db`: the TSP profiles stored on a server. No answers, so distribution and abstention, plus recall where a learner's own credential maps to the catalog (a weak label: what they hold, not what to train in next). Aggregates only; slices under `--k` are suppressed | Weak or none |
+
+The goal-set and adversarial cases are written by the team, not TSP payloads. Until the census below shows what real
+Skill Passport skills look like, they say how `suggest()` handles skill-like text, not how it handles real profiles.
+
+### Run it
+
+In CI, `.github/workflows/suggestion-evaluation.yml` downloads the public `Nyanta19/tesda-e5-small-v6-colab`
+(checksum-verified), calibrates it for goal matching the usual way, and evaluates suggestions three ways: with the
+settings' defaults (what the model gets today, having no `calibration.json`), with the inherited matching
+calibration, and without a model. It uses only committed cases and needs no secrets, so anyone can rerun it.
+
+On the server, where the real profiles are (read-only; nothing a learner wrote leaves the server):
+
+```bash
+# 1. What real Skill Passport profiles look like: shape, empties, length, language, free text vs catalog terms
+docker compose exec -T api python - --k 5 < scripts/tsp_profile_census.py > tsp-census.json
+# 2. The model, once (public; about 470 MB)
+hf download Nyanta19/tesda-e5-small-v6-colab --local-dir backend/models/tesda-e5-small-v6-colab
+# 3. The evaluation with real profiles added: the evaluation code is mounted into a one-off API container
+mkdir -p reports
+docker compose run --rm --user root -v "$PWD/backend/evaluation:/app/evaluation" \
+  -v "$PWD/backend/training:/app/training" -v "$PWD/backend/models:/app/eval-models" -v "$PWD/reports:/app/reports" \
+  api python -m evaluation.suggestions --model-path /app/eval-models/tesda-e5-small-v6-colab \
+  --from-db --k 5 --output /app/reports/suggestion-evaluation-real.json
+```
+
+`--since YYYY-MM-DD` keeps only learners linked after a date (for example after a staging reset), and
+`--exclude-subjects FILE` leaves out known TSP test accounts.
+
+### Assessor labels and agreement
+
+`backend/evaluation/labeling.py sheet` makes a blind, stratified sheet: profiles sampled by whether `suggest()`
+showed anything, profile size and region, each with every qualification any system would show, in random order and
+without system names, plus "no TESDA qualification fits" and "something better" rows. `INSTRUCTIONS.md` beside it
+explains the 0-3 grades. With `--from-db` the sheet shows assessors learners' skills (no names or identifiers), which
+needs `--allow-learner-text`: confirm the data-use approval first. Each assessor fills in their own copy without
+discussing it; `labeling.py agreement` then reports Krippendorff's alpha (ordinal), Fleiss' kappa (relevant or not)
+and pairwise quadratic-weighted Cohen's kappa, and `labeling.py cases` writes
+`evaluation/data/suggestion_assessor_v1.json` with the reviewers named.
+
+### Gates
+
+`evaluation/data/suggestion_gates_v1.json` holds the proposed gates. They were set before any model result was seen,
+for the release owner to approve; do not loosen one after seeing a failure. In short, with assessor labels: `suggest()`
+beats every baseline on Recall@3 (bootstrap interval above zero), at least 80% of shown suggestions are rated relevant,
+at most 5% irrelevant, a relevant one is in the three for at least 70% of profiles, and passport-present and
+hints-only learners are within 0.10. Without labels: no suggestion for an empty profile, at least 90% abstention for
+generic soft skills, no-fit skills and the goal sets' no-TVET goals. On real profiles: the five most-shown
+qualifications take at most 40% of what is shown, no single one more than 15%, and every reportable region is within
+0.10 of the overall abstention. Assessors must reach alpha 0.667 before their labels count, with at least 150 profiles
+and two raters each.
+
+`scripts/release_check.py` applies the gates only when Docker Compose turns suggestions on. It then needs
+`--suggestion-report` and `--suggestion-agreement`: a failed gate or agreement below the minimum blocks; gates that
+cannot be measured yet are `suggestion_review_pending`, a warning on routine runs and a blocker for a release.
+
+### Pilot: typed goals against tapped suggestions
+
+The webview says where each goal came from: typed there, or a tapped suggestion. `funnel_daily_stat` counts per day,
+by origin, suggestion lists shown and empty, goals started and readiness checks (totals only); feedback answers and
+saved sessions keep the origin too. The main finder sends none, so these are the webview's numbers alone. The
+recommendation analytics report (`goal_origins`, `suggestions`) compares how often suggestions are taken and how far
+each kind of goal gets. Counts are of requests, not learners.
+
 ## Deployment configuration
 
 Docker Compose now passes personalization/training weights, proximity radius and the semantic-search toggle to both API and migration services. `DOCKER_EMBEDDING_MODEL_PATH` allows the Docker path to differ from the host path:

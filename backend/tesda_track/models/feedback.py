@@ -12,6 +12,7 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Field, SQLModel
 
 from tesda_track.models.base import one_of, timestamp_field
+from tesda_track.models.stats import GOAL_ORIGINS
 
 FEEDBACK_REASONS = ("wrong_qualification", "readiness_off", "pathway_not_helpful")
 # The privacy policy's version (frontend features/privacy/notice.ts) that tells learners what sharing a goal means.
@@ -25,6 +26,7 @@ class RecommendationFeedback(SQLModel, table=True):
         CheckConstraint("reason IS NULL OR NOT satisfied", name="reason_only_when_unsatisfied"),
         CheckConstraint("wanted_qualification_id IS NULL OR reason = 'wrong_qualification'",
                         name="wanted_only_when_wrong"),
+        CheckConstraint(f"origin IS NULL OR {one_of('origin', GOAL_ORIGINS)}", name="origin_valid"),
     )
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
@@ -38,6 +40,8 @@ class RecommendationFeedback(SQLModel, table=True):
                             name="fk_recommendation_feedback_wanted_qualification"), nullable=True))
     query_hash: str = Field(sa_type=String(64))
     signed_in: bool
+    # From the TSP webview: typed there or a tapped TSP profile suggestion. None elsewhere and before it was recorded.
+    origin: str | None = Field(default=None, sa_type=String(10))
     # The learner's situation, as matching read it.
     intent: str = Field(sa_type=String(40))
     experience_years: float | None = None

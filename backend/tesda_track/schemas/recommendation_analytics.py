@@ -66,6 +66,28 @@ class ImprovementPriority(BaseModel):
     recommendation: str
 
 
+class OriginSignals(BaseModel):
+    """How far TSP webview goals get by where they came from. Counts are of requests and answers, not learners."""
+    origin: Literal["typed", "suggestion", "not_recorded"] = Field(
+        description="not_recorded: sessions and answers from the main finder, or from before the origin was recorded")
+    goals_started: int = Field(description="Goals analysed in the TSP webview, from the daily counters")
+    readiness_checked: int = Field(description="Readiness results worked out, from the daily counters")
+    readiness_rate: float | None = Field(description="Readiness checks / goals started; null with no goals")
+    saved_sessions: int = Field(description="Signed-in recommendation sessions created")
+    feedback_answers: int
+    accepted: int = Field(description="Positive satisfaction answers")
+    acceptance_rate: float | None
+
+
+class SuggestionSignals(BaseModel):
+    """The TSP webview's profile suggestions: how often a list had something, and how often one was taken."""
+    lists_shown: int = Field(description="Suggestion lists with at least one qualification")
+    lists_empty: int = Field(description="Suggestion lists for a profile with skills that found nothing")
+    taken: int = Field(description="Goals started by tapping a suggestion")
+    take_rate: float | None = Field(
+        description="Taken / lists shown. A visit can load a list more than once, so this is per list, not per learner")
+
+
 class RecommendationAnalytics(BaseModel):
     feedback_answers: int
     accepted: int = Field(description="Positive Yes satisfaction answers, not explicit agreement or enrollment")
@@ -74,3 +96,5 @@ class RecommendationAnalytics(BaseModel):
     qualification_groups: list[QualificationSignals]
     demand: RecommendationDemand
     improvement_priorities: list[ImprovementPriority]
+    goal_origins: list[OriginSignals] = Field(default_factory=list)
+    suggestions: SuggestionSignals | None = None

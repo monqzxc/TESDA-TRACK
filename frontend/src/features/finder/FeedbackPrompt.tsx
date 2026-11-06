@@ -69,6 +69,8 @@ export function FeedbackPrompt({ code, check, asked }: FeedbackPromptProps) {
 
   const given = useFinderStore((state) => state.feedback[code])
   const setFeedback = useFinderStore((state) => state.setFeedback)
+  // Set only in the TSP webview: the answer then says whether the goal was typed or a tapped suggestion.
+  const origin = useFinderStore((state) => state.journey?.origin)
   const [shown, setShown] = useState<Shown>(() => (finished(given) ? 'closed' : 'arriving'))
   const [givenBefore] = useState(given)
   // After the answer: the offer to share the goal, and after the wrong match the question of the one wanted, until
@@ -89,7 +91,13 @@ export function FeedbackPrompt({ code, check, asked }: FeedbackPromptProps) {
   }
   const answer = useMutation({
     mutationFn: (satisfied: boolean) =>
-      sendFeedback({ ...asked, qualification_code: code, answers: check.answers, satisfied }),
+      sendFeedback({
+        ...asked,
+        ...(origin ? { origin } : {}),
+        qualification_code: code,
+        answers: check.answers,
+        satisfied,
+      }),
     onSuccess: (feedback) => setFeedback(code, feedback),
   })
   const explain = useMutation({

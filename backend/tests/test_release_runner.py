@@ -59,3 +59,37 @@ def test_a_pending_review_warns_on_routine_runs_but_fails_a_release():
     assert release_check.failing_blockers([review], review_warns=False) == [review]
     assert release_check.failing_blockers(["full_regression", review], review_warns=True) == ["full_regression"], \
         "only the review is downgraded"
+
+
+def gates():
+    return json.loads(release_check.SUGGESTION_GATES.read_text(encoding="utf-8"))
+
+
+def every_gate(status):
+    return {"gates": {gate["id"]: {"status": status} for gate in gates()["gates"]}}
+
+
+def test_suggestions_need_a_report_passing_gates_and_assessors_who_agree():
+    agreed = {"krippendorff_alpha_ordinal": 0.8}
+    assert release_check.suggestion_blockers(None, agreed, gates()) == ["suggestion_evaluation_missing"]
+    assert release_check.suggestion_blockers(every_gate("pass"), agreed, gates()) == []
+    failed = every_gate("pass")
+    failed["gates"]["adversarial_no_fit_abstains"] = {"status": "fail"}
+    assert release_check.suggestion_blockers(failed, agreed, gates()) == ["suggestion_gate_failed:adversarial_no_fit_abstains"]
+    assert release_check.suggestion_blockers(every_gate("pass"), {"krippendorff_alpha_ordinal": 0.5}, gates()) == [
+        "suggestion_assessor_agreement_below_minimum"]
+
+
+def test_unmeasured_suggestion_gates_warn_on_routine_runs_but_block_a_release():
+    blocks = release_check.suggestion_blockers(every_gate("not_measured"), None, gates())
+    assert blocks == [release_check.SUGGESTION_REVIEW_PENDING]
+    assert release_check.failing_blockers(blocks, review_warns=True) == []
+    assert release_check.failing_blockers(blocks, review_warns=False) == blocks
+
+
+def test_optional_suggestion_gates_never_block():
+    report = every_gate("pass")
+    for gate in gates()["gates"]:
+        if not gate["required"]:
+            report["gates"][gate["id"]] = {"status": "fail"}
+    assert release_check.suggestion_blockers(report, {"krippendorff_alpha_ordinal": 0.9}, gates()) == []

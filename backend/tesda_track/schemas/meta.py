@@ -10,3 +10,5 @@ class ClientConfig(BaseModel):
                                                     "turned on.")
     tsp_sign_in: bool = Field(description="Whether /tsp/webview signs learners in through TSP's WebView bridge "
                                           "(POST /api/v1/auth/tsp/session). False: it stays guest-only.")
+    tsp_suggestions: bool = Field(default=False, description="Whether /tsp/webview shows qualifications suggested from "
+                                  "the TSP profile (POST /api/v1/analysis/suggestions). False: the goal box only.")

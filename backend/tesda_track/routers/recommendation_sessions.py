@@ -1,13 +1,13 @@
 import uuid
 from typing import Annotated
 
-from fastapi import APIRouter, Query, Response, status
+from fastapi import APIRouter, BackgroundTasks, Query, Response, status
 
 from tesda_track.db import SessionDep
 from tesda_track.deps import CurrentLearner
 from tesda_track.schemas.records import (RecommendationSessionCreate, RecommendationSessionPublic,
                                          RecommendationSessionUpdate)
-from tesda_track.services import analysis, recommendation_sessions
+from tesda_track.services import analysis, match_stats, recommendation_sessions
 from tesda_track.services import write_receipts
 from tesda_track.models import RecommendationSession
 from tesda_track.services.embeddings import EmbedderDep
@@ -24,9 +24,12 @@ def list_sessions(learner: CurrentLearner, session: SessionDep, limit: Annotated
 
 @router.post("", response_model=RecommendationSessionPublic, status_code=status.HTTP_201_CREATED)
 def start_session(request: RecommendationSessionCreate, learner: CurrentLearner, session: SessionDep,
-                  embedder: EmbedderDep):
+                  embedder: EmbedderDep, background: BackgroundTasks):
     def create():
         analyzed = analysis.analyze_goal(session, request.query, embedder)
+        # Counted only for a new session, not when a retried request returns the one it already made.
+        if request.origin:
+            background.add_task(match_stats.count, "goal_started", request.origin)
         return recommendation_sessions.start(session, learner, request, analyzed, embedder)
     record = write_receipts.perform(session, learner, "recommendation", request, RecommendationSession, create)
     session.commit()

@@ -16,7 +16,7 @@ from tesda_track.models.learners import (ANSWER_CODES, GOAL_STATUSES, Certificat
 from tesda_track.rbac import ROLES
 from tesda_track.models.pathways import (ENROLLMENT_STATUSES, ROUTES, STEP_KINDS, STEP_STATUSES, Pathway,
                                          PathwayEnrollment, PathwayStep, StepProgress)
-from tesda_track.models.stats import MatchDailyStat
+from tesda_track.models.stats import FUNNEL_EVENTS, GOAL_ORIGINS, FunnelDailyStat, MatchDailyStat
 from tesda_track.models.write_receipt import WriteReceipt
 from tesda_track.models.partners import NO_CLIENT, OUTCOMES, ApiClient, McpCallDaily, McpCallLog, McpDemandSnapshot
 from tesda_track.models.registry import RegistryBatch, RegistryLink, RegistryRecord
@@ -38,7 +38,7 @@ __all__ = [
     "STEP_STATUSES",
     "Role",
     "AssessmentApplication", "AssessmentCenter", "AssessmentSchedule", "Certification", "Competency", "Goal",
-    "Learner", "MatchDailyStat", "Pathway", "PathwayEnrollment", "PathwayStep", "Qualification", "ReadinessAnswer", "ReadinessCheck",
+    "Learner", "MatchDailyStat", "FunnelDailyStat", "FUNNEL_EVENTS", "GOAL_ORIGINS", "Pathway", "PathwayEnrollment", "PathwayStep", "Qualification", "ReadinessAnswer", "ReadinessCheck",
     "RecommendationFeedback", "RecommendationSession", "Region", "Sector", "SharedGoal", "StepProgress", "Timestamped",
     "TrainingProgram",
     "TrainingProvider", "one_of", "utcnow",

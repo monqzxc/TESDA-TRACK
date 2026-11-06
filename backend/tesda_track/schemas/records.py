@@ -6,8 +6,8 @@ from typing import Annotated, Literal
 from pydantic import BaseModel, Field, StringConstraints, model_validator
 
 from tesda_track.schemas.accounts import LearnerPublic
-from tesda_track.schemas.analysis import (AnswerCode, GoalText, Match, PathwayRecommendation, Profile,
-                                          ReadinessRequest, ReadinessResult)
+from tesda_track.schemas.analysis import (ORIGIN_DESCRIPTION, AnswerCode, GoalOrigin, GoalText, Match,
+                                          PathwayRecommendation, Profile, ReadinessRequest, ReadinessResult)
 from tesda_track.schemas.catalog import QualificationSummary
 from tesda_track.schemas.delivery import AssessmentApplicationPublic
 from tesda_track.schemas.pathways import EnrollmentPublic
@@ -50,6 +50,7 @@ class RecommendationSessionCreate(AssessmentReference):
     request_id: uuid.UUID | None = None
     query: GoalText
     goal_id: uuid.UUID | None = None
+    origin: GoalOrigin | None = Field(default=None, description=ORIGIN_DESCRIPTION)
 
 
 class RecommendationSessionUpdate(BaseModel):
@@ -66,6 +67,7 @@ class RecommendationSessionPublic(BaseModel):
     goal_id: uuid.UUID | None
     query: str
     analysis_source: Literal["rules", "ai"]
+    origin: GoalOrigin | None = Field(default=None, description="From the TSP webview: typed or a tapped suggestion")
     profile: Profile
     matches: list[Match]
     selected_qualification: QualificationSummary | None

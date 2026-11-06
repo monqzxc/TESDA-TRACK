@@ -7,7 +7,7 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlmodel import Session
 
 from tesda_track.db import get_engine
-from tesda_track.models import MatchDailyStat
+from tesda_track.models import FunnelDailyStat, MatchDailyStat
 
 PHILIPPINE_TIME = timezone(timedelta(hours=8))
 logger = logging.getLogger("tesda_track")
@@ -31,3 +31,20 @@ def record(*, no_match: bool) -> None:
             session.commit()
     except Exception as error:
         logger.warning("Could not count a goal-matching request (%s).", type(error).__name__)
+
+
+def count(event: str, origin: str) -> None:
+    """Add one to today's total for a step of the goal funnel (models.stats.FUNNEL_EVENTS), by where the goal came
+    from. Best effort, on its own session, like record: a counter problem never breaks the request."""
+    try:
+        with Session(get_engine()) as session:
+            session.execute(text("SET LOCAL lock_timeout = '2s'"))
+            session.execute(text("SET LOCAL statement_timeout = '5s'"))
+            statement = insert(FunnelDailyStat).values(date=datetime.now(PHILIPPINE_TIME).date(), origin=origin,
+                                                       event=event, count=1)
+            session.execute(statement.on_conflict_do_update(
+                index_elements=[FunnelDailyStat.date, FunnelDailyStat.origin, FunnelDailyStat.event],
+                set_={"count": FunnelDailyStat.count + 1}))
+            session.commit()
+    except Exception as error:
+        logger.warning("Could not count a %s step (%s).", event, type(error).__name__)

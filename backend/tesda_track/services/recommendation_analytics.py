@@ -10,9 +10,10 @@ from sqlalchemy import distinct, func, or_
 from sqlalchemy.orm import selectinload
 from sqlmodel import Session, select
 
-from tesda_track.models import Qualification, RecommendationFeedback, RecommendationSession
+from tesda_track.models import FunnelDailyStat, Qualification, RecommendationFeedback, RecommendationSession
 from tesda_track.schemas.recommendation_analytics import (
-    DemandProjection, ImprovementPriority, QualificationSignals, RecommendationAnalytics, RecommendationDemand,
+    DemandProjection, ImprovementPriority, OriginSignals, QualificationSignals, RecommendationAnalytics,
+    RecommendationDemand, SuggestionSignals,
 )
 from tesda_track.schemas.reports import DateRange
 from tesda_track.services import catalog
@@ -137,4 +138,35 @@ def recommendation_analytics(session: Session, period: DateRange) -> Recommendat
             forecast_from=end + timedelta(days=1), forecast_to=end + timedelta(days=WINDOW_DAYS),
             window_days=WINDOW_DAYS, minimum_recent_learners=MINIMUM_RECENT,
             minimum_previous_learners=MINIMUM_PREVIOUS, qualifications=projections),
-        improvement_priorities=priorities)
+        improvement_priorities=priorities, **_origins(session, period))
+
+
+def _origins(session: Session, period: DateRange) -> dict:
+    """TSP webview goals by where they came from (typed or a tapped suggestion), and how often suggestions were
+    taken. Answers and sessions without an origin come from the main finder or from before it was recorded."""
+    stat = FunnelDailyStat
+    days = [stat.date >= period.date_from] if period.date_from else []
+    days += [stat.date <= period.date_to] if period.date_to else []
+    counted = {(origin, event): total for origin, event, total in session.exec(
+        select(stat.origin, stat.event, func.sum(stat.count)).where(*days).group_by(stat.origin, stat.event))}
+    feedback, saved = RecommendationFeedback, RecommendationSession
+    answers = {origin or "not_recorded": (n, yes) for origin, n, yes in session.exec(
+        select(feedback.origin, func.count(), func.count().filter(feedback.satisfied))
+        .where(*_within(feedback.created_at, period)).group_by(feedback.origin))}
+    sessions = {origin or "not_recorded": n for origin, n in session.exec(
+        select(saved.origin, func.count()).where(*_within(saved.created_at, period)).group_by(saved.origin))}
+    rows = []
+    for origin in ("typed", "suggestion", "not_recorded"):
+        started, checked = counted.get((origin, "goal_started"), 0), counted.get((origin, "readiness_checked"), 0)
+        n, yes = answers.get(origin, (0, 0))
+        if origin == "not_recorded" and not (n or sessions.get(origin)):
+            continue
+        rows.append(OriginSignals(origin=origin, goals_started=started, readiness_checked=checked,
+                                  readiness_rate=_rate(checked, started), saved_sessions=sessions.get(origin, 0),
+                                  feedback_answers=n, accepted=yes, acceptance_rate=_rate(yes, n)))
+    shown = counted.get(("suggestion", "suggestions_shown"), 0)
+    taken = counted.get(("suggestion", "goal_started"), 0)
+    return {"goal_origins": rows,
+            "suggestions": SuggestionSignals(lists_shown=shown,
+                                             lists_empty=counted.get(("suggestion", "suggestions_empty"), 0),
+                                             taken=taken, take_rate=_rate(taken, shown))}
