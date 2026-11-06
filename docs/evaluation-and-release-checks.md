@@ -143,6 +143,41 @@ and two raters each.
 `--suggestion-report` and `--suggestion-agreement`: a failed gate or agreement below the minimum blocks; gates that
 cannot be measured yet are `suggestion_review_pending`, a warning on routine runs and a blocker for a release.
 
+### Findings (6 November 2026, v6-colab)
+
+From workflow runs 42138808787 and 42141478632, on team-written cases only: no real Skill Passport profile has been
+evaluated yet, and no assessor has labeled anything, so every assessor and real-profile gate is `not_measured`.
+Recall@3 on the goal-set skills (853 with an answer, 178 that should get nothing):
+
+| Parameters | Recall@3 | No suggestion where one fits | Nothing for no-fit goals | Adversarial: generic / no-fit left empty |
+| --- | ---: | ---: | ---: | ---: |
+| Settings defaults (what v6-colab gets today: z 3-5, keyword 0.5) | 0.788 | 10.2% | 96.6% | 9/9 / 5/6 |
+| Matching's own calibration of v6-colab (z 2-5, keyword 0.3) | 0.877 | 3.2% | 89.3% | 7/9 / 3/6 |
+| Tuned for suggestions on half the goal sets (z 2-4, keyword 0.4, min 30) | 0.865 | 4.0% | 91.6% | 8/9 / 4/6 |
+| Keyword only (no model) | 0.408 | 36.3% | 100% | 9/9 / 5/6 |
+
+- **Against the baselines.** `suggest()` beats keyword-only (+0.38 Recall@3, 95% interval +0.35 to +0.41), the best
+  possible fixed list (+0.75) and random (+0.78). It does **not** beat semantic-only: with today's parameters it is
+  worse (-0.028, interval -0.043 to -0.011), with the tuned ones slightly worse (-0.013, -0.023 to -0.003), and with
+  matching's it ties (-0.002, -0.011 to +0.006). The keyword half adds abstention, not recall.
+- **Inheriting matching's calibration is not defensible.** Matching reaches 0.97 rejection on dev goals with the
+  plain-language goal rules (`goal_rules.gives_no_match`); `suggest()` skips those rules, so the same parameters
+  nudge "teamwork" and "investment banking" to Microfinance Technology NC IV, election campaigning to Public
+  Employment Services NC IV, and "medical diagnosis, surgery" to Medical Coding and Claims Processing NC III.
+- **Tuning on the goal sets doesn't fix it.** Their no-fit cases are sentences ("gusto kong maging abogado"), not
+  skill tags, so parameters tuned on them still nudge soft skills and out-of-scope professions. Suggestions need
+  their own calibration, on skill-shaped negatives from real profiles.
+- **Collapse.** None on the goal sets (coverage 0.96, normalised entropy 0.93, top five 13% of what is shown), but
+  they spread evenly across the catalog by construction. The wrong nudges gather on a few broad qualifications
+  (Microfinance Technology NC IV, Contact Center Services NC II), which is what to watch on real profiles.
+- **Weak spots.** Tagalog skills (Recall@3 0.61 with today's parameters, against 0.84 English), two trades in one
+  profile (0.64), near-TVET skills (0.16).
+
+Verdict: not shippable on this evidence. Suggestions stay off (`TSP_SUGGESTIONS_ENABLED=false`). Turn them on only
+after the census shows real profiles carry trade skills, suggestion parameters are calibrated on real skill-shaped
+negatives, and the assessor gates pass. If the census shows most Skill Passports hold only soft skills or nothing,
+remove the feature rather than tune it.
+
 ### Pilot: typed goals against tapped suggestions
 
 The webview says where each goal came from: typed there, or a tapped suggestion. `funnel_daily_stat` counts per day,
