@@ -1,0 +1,20 @@
+{
+  "source_id": "philjobnet-postings-2026-11-04-x",
+  "version": 1,
+  "publisher": "DOLE-BLE / PhilJobNet",
+  "title": "PhilJobNet posting snapshot — X — 4 November 2026",
+  "evidence_class": "observed_posting",
+  "geographic_scope": "regional",
+  "region_code": "X",
+  "period_label": "Observed 2026-11-04",
+  "period_start_year": 2026,
+  "period_end_year": 2026,
+  "source_url": "https://philjobnet.gov.ph/job-vacancies/",
+  "file_sha256": "fd521092ac5ae07768b5173405043c546235a0a4102805481cfe5ff751a3015f",
+  "notes": "Dated list-page snapshot, not live vacancies or a forecast; counts are postings, not workers.",
+  "metadata": {
+    "git_commit": "884a3897d38287e8331ae99645bfe683cebd5fdc",
+    "source_file": "philjobnet_vacancies_2026-11-04.csv",
+    "snapshot_date": "2026-11-04"
+  }
+}

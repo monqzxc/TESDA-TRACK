@@ -75,11 +75,12 @@ def search(session: Session, items: Sequence[CatalogItem], rule_views: list[dict
         match = Match(qualification=item.summary, score=score, reason=_reason(supporting, len(terms)),
                       components=MatchComponents(keyword=round(keyword / analysis.KEYWORD_SCALE, 3),
                                                  semantic=round(semantic, 3)) if embedder else None)
-        scored.append((match, len(supporting), keyword))
+        raw = max((row.get(item.id, 0.0) for row in similarities), default=0.0)
+        scored.append((match, len(supporting), keyword, raw))
 
     # Equal scores: the qualification more of the terms point to first, then the one the words name directly.
-    scored.sort(key=lambda entry: (-entry[0].score, -entry[1], -entry[2], entry[0].qualification.code))
-    matches = goal_rules.order_within_families([m for m, _, _ in scored], items, text)[:limit]
+    scored.sort(key=lambda entry: (-entry[0].score, -entry[1], -entry[2], -entry[3], entry[0].qualification.code))
+    matches = goal_rules.order_within_families([entry[0] for entry in scored], items, text)[:limit]
     keyword_strength = {}
     for found in keyword_by_term.values():
         for code, r in found.items():

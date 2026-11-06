@@ -9,6 +9,7 @@ from sqlmodel import Session, select
 from tesda_track.errors import InvalidRequestError, NotFoundError
 from tesda_track.models import Competency, Qualification
 from tesda_track.schemas.catalog import CompetencyPublic, QualificationPublic, QualificationSummary
+from tesda_track.services import occupation_catalog
 
 # Every inserted, updated or deleted row gets a new xmin (the id of the transaction that wrote it), so the row
 # count plus the sum of xmins changes whenever the catalog does: from the seed in another process, or inside a
@@ -53,7 +54,7 @@ class CatalogSnapshot:
 def catalog_item(qualification: Qualification) -> CatalogItem:
     """One qualification as the plain values the snapshot and the offline evaluation work with."""
     return CatalogItem(id=qualification.id, code=qualification.code, sector=qualification.sector.name,
-                       possible_jobs=tuple(qualification.possible_jobs), rules=rule_view(qualification),
+                       possible_jobs=tuple(occupation_catalog.jobs(qualification.code, qualification.possible_jobs)), rules=rule_view(qualification),
                        summary=summary(qualification), public=to_public(qualification))
 
 
@@ -92,9 +93,11 @@ def active_competencies(qualification: Qualification) -> list[Competency]:
 
 
 def rule_view(qualification: Qualification) -> dict:
+    jobs = occupation_catalog.jobs(qualification.code, qualification.possible_jobs)
     return {"code": qualification.code, "name": qualification.name, "sector": qualification.sector.name,
-            "skill_label": qualification.skill_label, "career_keywords": list(qualification.career_keywords),
-            "possible_jobs": list(qualification.possible_jobs),
+            "skill_label": qualification.skill_label,
+            "career_keywords": list(dict.fromkeys([*qualification.career_keywords, *[job.lower() for job in jobs]])),
+            "possible_jobs": jobs,
             "competencies": [{"id": c.id, "name": c.name, "category": c.category}
                              for c in active_competencies(qualification)]}
 
@@ -105,6 +108,8 @@ def summary(qualification: Qualification) -> QualificationSummary:
 
 
 def to_public(qualification: Qualification) -> QualificationPublic:
-    return QualificationPublic(**summary(qualification).model_dump(), possible_jobs=list(qualification.possible_jobs),
+    return QualificationPublic(**summary(qualification).model_dump(),
+                               possible_jobs=occupation_catalog.jobs(qualification.code, qualification.possible_jobs),
+                               occupation_source=occupation_catalog.source(qualification.code),
                                competencies=[CompetencyPublic.model_validate(c)
                                              for c in active_competencies(qualification)])

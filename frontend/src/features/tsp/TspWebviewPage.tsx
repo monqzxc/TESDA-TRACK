@@ -39,7 +39,10 @@ export default function TspWebviewPage() {
 
   const analyze = useMutation({
     mutationFn: ({ query }: Submission) => analyzeGoal(query, null),
-    onSuccess: ({ profile }, { query, skills, experienceYears, hasCertification, region }) => {
+    onSuccess: (
+      { profile, mode },
+      { query, skills, experienceYears, hasCertification, region },
+    ) => {
       const suppliedSkills = skills
         .split(',')
         .map((skill) => skill.trim().slice(0, 80))
@@ -55,6 +58,7 @@ export default function TspWebviewPage() {
           has_certification:
             hasCertification === '' ? profile.has_certification : hasCertification === 'yes',
         },
+        mode,
         sessionId: null,
         sessionOwner: null,
       })
@@ -98,7 +102,10 @@ export default function TspWebviewPage() {
       {!showQuestions && (
         <section className="tsp-intro">
           <h1>Find your TESDA qualification</h1>
-          <p>Type the job you want. We’ll show the right course and where to take it.</p>
+          <p>
+            Tell us your career goal, an occupation, or your skills. We’ll help you find a
+            qualification and where to take it.
+          </p>
         </section>
       )}
       <div className="tsp-entry-body">
@@ -121,9 +128,9 @@ export default function TspWebviewPage() {
                 {learner.learnerId && <span>Learner reference: {learner.learnerId}</span>}
               </div>
             )}
-            <h2>What job do you want?</h2>
+            <h2>What would you like to do?</h2>
             <label className="tsp-search-field">
-              <span className="sr-only">Career goal</span>
+              <span className="sr-only">Your career interests or skills</span>
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="10.8" cy="10.8" r="6.8" />
                 <path d="m16 16 5 5" />

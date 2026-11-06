@@ -406,6 +406,47 @@ export const en = {
   },
   // Find my pathway (classic/app.py show_finder and its steps).
   finder: {
+    unified: {
+      eyebrow: 'YOUR NEXT CHAPTER',
+      heading: 'Where would you like to go?',
+      lead: 'Start with a career you want, something you can do, or a skill you’d like to learn. We’ll help you find a TESDA pathway.',
+      label: 'Your career interests or skills',
+      placeholder: 'For example: I want to become an electrician, Welding, or Cooking and baking',
+      help: 'Use your own words. Separate multiple skills with commas.',
+      empty: 'Enter a career goal, occupation, or skill to continue.',
+      ideas: 'Try a starting point',
+      examples: [
+        'I want to become an electrician.',
+        'Welder',
+        'Welding, blueprint reading',
+        'I enjoy caring for older people.',
+      ],
+      submit: 'Find my pathways',
+      last: 'Your previous search',
+      summary: 'Your interests and skills',
+      change: 'Edit your input',
+      saved: 'Your goal is saved to your account.',
+      selected: 'Your selected qualification',
+      setCareerGoal: 'Set as My Goal',
+      careerGoalSelected: 'Goal Selected',
+      careerGoalLabel: 'Your career goal',
+      careerGoalHelp:
+        'Saved for this journey in this tab. Selecting a goal keeps your matching and readiness results.',
+      careerGoalEmpty:
+        'Choose an occupation as your career goal. You can change it at any time during this journey.',
+      noCatalogJobs: 'No occupations are listed for this qualification in the catalog yet.',
+      noDemandJobs:
+        'No approved forecast occupation matches this request for this qualification yet.',
+      demandLoading: 'Checking labor-market information…',
+      qualificationLead:
+        'Your readiness result applies to the selected qualification. Explore an alternative to check its own competencies.',
+      selectedBadge: 'Selected qualification',
+      alternativeBadge: 'Recommended alternative',
+      associatedBadge: 'Also associated with this occupation',
+      associatedHelp:
+        'Readiness results apply to the selected qualification. Other catalog associations are additional options, not necessarily scored recommendations.',
+      jobsLead: 'Explore jobs linked to your selected qualification.',
+    },
     banner: {
       eyebrow: 'Your journey, simplified',
       title: 'A little direction.',

@@ -21,6 +21,7 @@ import { button } from '../../styles/buttons.ts'
 import { AccountGate } from '../account/AccountGate.tsx'
 import { RecommendationAnalytics } from '../reports/RecommendationAnalytics.tsx'
 import { McpToolSelector, toolTitle } from './McpToolSelector.tsx'
+import { OccupationMappingReview } from './OccupationMappingReview.tsx'
 import { McpActivity } from './McpActivity.tsx'
 import {
   adminUsersQuery,
@@ -54,7 +55,7 @@ import {
 } from '../reports/api.ts'
 
 type Section =
-  'overview' | 'learners' | 'rbac' | 'mcp' | 'mcp-activity' | 'recommendations' | 'feedback'
+  'labor-market' | 'overview' | 'learners' | 'rbac' | 'mcp' | 'mcp-activity' | 'recommendations' | 'feedback'
 // Each section needs the permission its own endpoints are guarded by, so an account only sees what it can use.
 const SECTIONS: readonly { id: Section; label: string; icon: IconName; permission: string }[] = [
   { id: 'overview', label: 'Overview', icon: 'bars', permission: 'reports:read' },
@@ -64,6 +65,7 @@ const SECTIONS: readonly { id: Section; label: string; icon: IconName; permissio
   { id: 'mcp-activity', label: 'MCP Activity', icon: 'bars', permission: 'mcp:manage' },
   { id: 'recommendations', label: 'Recommendation', icon: 'compass', permission: 'reports:read' },
   { id: 'feedback', label: 'Feedback', icon: 'growth', permission: 'reports:read' },
+  { id: 'labor-market', label: 'Occupation mappings', icon: 'briefcase', permission: 'labor-market:review' },
 ]
 const ACCESS_LABELS: Record<string, string> = {
   'catalog:read': 'Read catalog and service listings',
@@ -200,6 +202,7 @@ export default function AdminPage() {
           })}
         </div>
       </nav>
+      {section === 'labor-market' && <OccupationMappingReview />}
       {section === 'overview' && <Overview />}
       {section === 'learners' && <Learners />}
       {section === 'rbac' && <RbacManagement />}

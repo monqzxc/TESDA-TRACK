@@ -28,17 +28,27 @@ class Profile(BaseModel):
 
 class GoalRequest(BaseModel):
     query: GoalText
+    interpret_input: bool = Field(default=False, description="Resolve a unified input into an existing matching strategy")
 
 
 class GoalAnalysis(BaseModel):
     profile: Profile
     source: Literal["rules", "ai"]
+    matching_mode: SearchMode | None = None
+
+    @model_serializer(mode="wrap")
+    def preserve_legacy_shape(self, handler):
+        result = handler(self)
+        if self.matching_mode is None:
+            result.pop("matching_mode", None)
+        return result
 
 
 class MatchRequest(AssessmentReference):
     query: GoalText
     profile: Profile
     mode: SearchMode = "goal"
+    region_code: str | None = Field(default=None, max_length=20)
 
 
 class MatchComponents(BaseModel):
@@ -53,12 +63,15 @@ class Match(BaseModel):
     score: int
     reason: str
     components: MatchComponents | None = None
+    basis: Literal['demand_evidence'] | None = None
 
     @model_serializer(mode="wrap")
     def preserve_legacy_shape(self, handler):
         result = handler(self)
         if self.personalization is None:
             result.pop("personalization", None)
+        if self.basis is None:
+            result.pop('basis', None)
         return result
 
 
@@ -72,12 +85,15 @@ class MatchResult(BaseModel):
     profile: Profile
     matches: list[Match]
     search: SkillTerms | None = Field(default=None, description="Skills searches only")
+    eligible_qualification_codes: list[str] | None = None
 
     @model_serializer(mode="wrap")
     def preserve_goal_shape(self, handler):
         result = handler(self)
         if self.search is None:
             result.pop("search", None)
+        if self.eligible_qualification_codes is None:
+            result.pop('eligible_qualification_codes', None)
         return result
 
 

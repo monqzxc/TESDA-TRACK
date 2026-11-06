@@ -14,13 +14,14 @@ export function useJourney(journey: Journey, catalog: readonly Qualification[]) 
   const experience = useFinderStore((state) => state.experience)
   const certification = useFinderStore((state) => state.certification)
   const selected = useFinderStore((state) => state.selected)
+  const region = useFinderStore((state) => state.place.region)
   const profile = useMemo(
     () => answeredProfile(journey.profile, experience, certification),
     [journey.profile, experience, certification],
   )
   // New answers ask again; the last matches stay on screen meanwhile.
   const matches = useQuery({
-    ...matchesQuery(journey.query, profile, journey.mode),
+    ...matchesQuery(journey.query, profile, journey.mode, region),
     placeholderData: keepPreviousData,
   })
 
@@ -33,10 +34,15 @@ export function useJourney(journey: Journey, catalog: readonly Qualification[]) 
       const index = ranked.indexOf(code)
       return index === -1 ? ranked.length : index
     }
-    return [...catalog].sort((a, b) => rank(a.code) - rank(b.code))
-  }, [catalog, ranked])
+    const eligible = matches.data?.eligible_qualification_codes
+    return catalog
+      .filter((q) => !eligible || eligible.includes(q.code))
+      .sort((a, b) => rank(a.code) - rank(b.code))
+  }, [catalog, ranked, matches.data?.eligible_qualification_codes])
 
-  const code = selected ?? ranked[0] ?? null
+  const eligible = matches.data?.eligible_qualification_codes
+  const code =
+    (selected && (!eligible || eligible.includes(selected)) ? selected : null) ?? ranked[0] ?? null
   const chosen = code === null ? null : qualificationFor(code, catalog, matches.data)
 
   return {

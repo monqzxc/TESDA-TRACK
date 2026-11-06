@@ -1,0 +1,22 @@
+{
+  "source_id": "dole-ble-national-jlmf-2025-2026",
+  "version": 1,
+  "publisher": "DOLE-BLE",
+  "title": "National Jobs and Labor Market Forecast 2025-2026 Report",
+  "publication_label": "May 2025",
+  "publication_date": null,
+  "evidence_class": "national_forecast",
+  "geographic_scope": "national",
+  "region_code": null,
+  "period_label": "2025-2026",
+  "period_start_year": 2025,
+  "period_end_year": 2026,
+  "source_url": "https://ble.dole.gov.ph/jobs-and-labor-market-forecast/",
+  "source_url_kind": "publication_index_not_verified_pdf_download",
+  "file_sha256": "04d0b32dca7889e312e28d126de5a879b9c3c3210da9b8b80cf9e7c94181cc52",
+  "notes": "Table 2, PDF pp. 38-45 (printed 27-34). Lists come from DOLE regional consultations aggregated nationally; they are not regional lists.",
+  "research": {
+    "evidence": "data-review/phase4/datasets/forecast_occupation_coverage.csv",
+    "mappings": "data-review/phase4/datasets/reviewed_mapping_dataset.csv"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "source_id": "dole-ble-jobsfit-2022-regional",
+  "version": 1,
+  "publisher": "DOLE-BLE",
+  "title": "JobsFit 2022 Regional Reports",
+  "publication_label": null,
+  "publication_date": null,
+  "evidence_class": "historical_forecast",
+  "geographic_scope": "regional",
+  "region_code": "NCR",
+  "period_label": "JobsFit 2022 cycle",
+  "period_start_year": null,
+  "period_end_year": 2022,
+  "source_url": "https://ble.dole.gov.ph/wp-content/uploads/2022/06/JobsFit-2022-Regional-Reports.pdf",
+  "source_url_kind": "pdf",
+  "file_sha256": "7850981e1554d2626bfc4e883da371aeedff2fd0d02062dbe728c5b5707f5c0e",
+  "notes": "NCR section 7, Jobs of the Future, PDF pp. 57-58; its figures cite 2013-2017 data.",
+  "research": {
+    "evidence": "data-review/phase3/research-2026-11-05/datasets/historical_ncr_jobsfit_2022.csv"
+  }
+}

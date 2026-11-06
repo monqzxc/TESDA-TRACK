@@ -88,3 +88,66 @@ describe('finder store', () => {
     expect(useFinderStore.getState().goal).toBe('Be a cook')
   })
 })
+
+describe('final recommendation career goal', () => {
+  it('replaces one selected occupation, survives rehydration, and preserves matching and readiness', async () => {
+    const store = useFinderStore.getState()
+    store.begin({
+      query: 'Electrician',
+      profile: { intent: 'unknown' },
+      sessionId: null,
+      sessionOwner: null,
+    })
+    store.choose('EIM-NC-II')
+    store.answer('EIM-NC-II', 1, 'confident')
+    store.setCheck('EIM-NC-II', {
+      result: {
+        score: 80,
+        level: 'High readiness',
+        strengths: [],
+        skill_gaps: [],
+        recommendation: '',
+      },
+      answers: { '1': 'confident' },
+      saved: false,
+    })
+    const before = useFinderStore.getState()
+    store.setCareerGoal({ key: 'electrician', title: 'Electrician' })
+    store.setCareerGoal({
+      key: 'electrical maintenance worker',
+      title: 'Electrical Maintenance Worker',
+    })
+    await useFinderStore.persist.rehydrate()
+    const after = useFinderStore.getState()
+    expect(after.careerGoal?.title).toBe('Electrical Maintenance Worker')
+    expect(after.journey).toEqual(before.journey)
+    expect(after.selected).toBe(before.selected)
+    expect(after.checks).toEqual(before.checks)
+    expect(after.answers).toEqual(before.answers)
+    store.begin({
+      query: 'Cook',
+      profile: { intent: 'unknown' },
+      sessionId: null,
+      sessionOwner: null,
+    })
+    expect(useFinderStore.getState().careerGoal).toBeNull()
+  })
+
+  it('opens legacy version-2 journeys without an occupation and clears selection on reset', async () => {
+    useFinderStore.getState().reset()
+    const journey = {
+      query: 'Welder',
+      profile: { intent: 'unknown' },
+      sessionId: null,
+      sessionOwner: null,
+      synced: null,
+    }
+    window.sessionStorage.setItem(FINDER_KEY, JSON.stringify({ state: { journey }, version: 2 }))
+    await useFinderStore.persist.rehydrate()
+    expect(useFinderStore.getState().journey?.query).toBe('Welder')
+    expect(useFinderStore.getState().careerGoal).toBeNull()
+    useFinderStore.getState().setCareerGoal({ key: 'welder', title: 'Welder' })
+    useFinderStore.getState().reset()
+    expect(useFinderStore.getState().careerGoal).toBeNull()
+  })
+})

@@ -1736,6 +1736,108 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/labor-market/indicators": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Public Indicators */
+        get: operations["public_indicators_api_v1_labor_market_indicators_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/labor-market/mappings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Mappings */
+        get: operations["mappings_api_v1_admin_labor_market_mappings_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/labor-market/mappings/{mapping_id}/review": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Review Mapping */
+        post: operations["review_mapping_api_v1_admin_labor_market_mappings__mapping_id__review_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/labor-market/datasets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Datasets */
+        get: operations["datasets_api_v1_admin_labor_market_datasets_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/admin/labor-market/datasets/{dataset_id}/status": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Dataset Status */
+        post: operations["dataset_status_api_v1_admin_labor_market_datasets__dataset_id__status_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/goals/career-selection/{journey_key}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Career Selection */
+        put: operations["career_selection_api_v1_me_goals_career_selection__journey_key__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -2696,6 +2798,16 @@ export interface components {
             /** Items */
             items?: string[];
         };
+        /** DatasetStatusInput */
+        DatasetStatusInput: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "active" | "retired";
+            /** Note */
+            note: string;
+        };
         /** DayUsage */
         DayUsage: {
             /**
@@ -3032,6 +3144,8 @@ export interface components {
              * @enum {string}
              */
             source: "rules" | "ai";
+            /** Matching Mode */
+            matching_mode?: ("goal" | "skills") | null;
         };
         /** GoalCreate */
         GoalCreate: {
@@ -3074,6 +3188,12 @@ export interface components {
         GoalRequest: {
             /** Query */
             query: string;
+            /**
+             * Interpret Input
+             * @description Resolve a unified input into an existing matching strategy
+             * @default false
+             */
+            interpret_input: boolean;
         };
         /** GoalUpdate */
         GoalUpdate: {
@@ -3174,6 +3294,8 @@ export interface components {
             /** Reason */
             reason: string;
             components?: components["schemas"]["MatchComponents"] | null;
+            /** Basis */
+            basis?: "demand_evidence" | null;
         };
         /**
          * MatchComponents
@@ -3199,6 +3321,8 @@ export interface components {
              * @enum {string}
              */
             mode: "goal" | "skills";
+            /** Region Code */
+            region_code?: string | null;
         };
         /** MatchResult */
         MatchResult: {
@@ -3207,6 +3331,8 @@ export interface components {
             matches: components["schemas"]["Match"][];
             /** @description Skills searches only */
             search?: components["schemas"]["SkillTerms"] | null;
+            /** Eligible Qualification Codes */
+            eligible_qualification_codes?: string[] | null;
         };
         /**
          * MatchSummary
@@ -3349,6 +3475,21 @@ export interface components {
             detail: string;
             /** Competency Ids */
             competency_ids?: number[];
+        };
+        /** OccupationSource */
+        OccupationSource: {
+            /** Title */
+            title: string;
+            /** Url */
+            url: string;
+            /** Reference */
+            reference: string;
+            /** Year */
+            year: number;
+            /** Purpose */
+            purpose: string;
+            /** Occupations */
+            occupations: string[];
         };
         /** Overview */
         Overview: {
@@ -3833,6 +3974,7 @@ export interface components {
             possible_jobs: string[];
             /** Competencies */
             competencies: components["schemas"]["CompetencyPublic"][];
+            occupation_source?: components["schemas"]["OccupationSource"] | null;
         };
         /** QualificationRecommendationRequest */
         QualificationRecommendationRequest: {
@@ -4320,6 +4462,21 @@ export interface components {
             possible_jobs: string[];
             /** Unit Count */
             unit_count: number;
+        };
+        /** ReviewInput */
+        ReviewInput: {
+            /**
+             * Decision
+             * @enum {string}
+             */
+            decision: "approved" | "rejected" | "pending";
+            /**
+             * Expected Decision
+             * @enum {string}
+             */
+            expected_decision: "approved" | "rejected" | "pending";
+            /** Note */
+            note: string;
         };
         /** RoadRoute */
         RoadRoute: {
@@ -8800,6 +8957,209 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    public_indicators_api_v1_labor_market_indicators_get: {
+        parameters: {
+            query: {
+                qualification_code: string;
+                region_code?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    mappings_api_v1_admin_labor_market_mappings_get: {
+        parameters: {
+            query?: {
+                status?: ("pending" | "approved" | "rejected") | null;
+                confidence?: ("high_confidence" | "needs_review" | "rejected") | null;
+                classification?: ("in_demand" | "hard_to_fill" | "observed_posting" | "cross_cutting") | null;
+                search?: string;
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    review_mapping_api_v1_admin_labor_market_mappings__mapping_id__review_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                mapping_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ReviewInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    datasets_api_v1_admin_labor_market_datasets_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    }[];
+                };
+            };
+        };
+    };
+    dataset_status_api_v1_admin_labor_market_datasets__dataset_id__status_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                dataset_id: number;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["DatasetStatusInput"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        [key: string]: unknown;
+                    };
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    career_selection_api_v1_me_goals_career_selection__journey_key__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                journey_key: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GoalCreate"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GoalPublic"];
+                };
             };
             /** @description Validation Error */
             422: {

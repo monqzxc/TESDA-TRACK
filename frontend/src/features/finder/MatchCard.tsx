@@ -83,7 +83,11 @@ export function MatchCard({
                     badge === 'choice' ? 'bg-chip text-ink' : 'bg-good-bg text-good-ink',
                   )}
                 >
-                  {badge === 'top' ? copy.topMatch : copy.yourChoice}
+                  {match?.basis === 'demand_evidence'
+                    ? 'Demand-linked pathway'
+                    : badge === 'top'
+                      ? copy.topMatch
+                      : copy.yourChoice}
                 </span>
               )}
             </div>
@@ -102,14 +106,20 @@ export function MatchCard({
       <div className="min-w-0">
         <div className="flex h-full min-w-0 flex-col gap-3 rounded-12 bg-panel px-5 py-4">
           <p className="m-0 flex items-center gap-[0.35rem] text-14 text-muted">
-            {match ? (mode === 'skills' ? copy.skillMatch : copy.goalMatch) : qualification.name}
-            {match && (
+            {match?.basis === 'demand_evidence'
+              ? 'Demand-linked pathway'
+              : match
+                ? mode === 'skills'
+                  ? copy.skillMatch
+                  : copy.goalMatch
+                : qualification.name}
+            {match && match.basis !== 'demand_evidence' && (
               <span className="inline-grid cursor-help" title={copy.hint}>
                 <Icon name="info" size={15} label={copy.hint} />
               </span>
             )}
           </p>
-          {match && (
+          {match && match.basis !== 'demand_evidence' && (
             <MatchScore
               score={match.score}
               label={

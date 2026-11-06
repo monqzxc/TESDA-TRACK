@@ -5,6 +5,7 @@ import { unwrap } from '../../api/errors.ts'
 import type { components } from '../../api/schema.d.ts'
 import type { PathwayRoute } from './rules.ts'
 import type { Answers, Profile, ReadinessResult, SearchMode, SessionState } from './store.ts'
+import { demandPreference } from './demandIntent.ts'
 
 // The finder's requests. The goal goes in request bodies only, never in an address (the plan's privacy rules).
 // Query keys hold it in memory for the cache; they're never sent anywhere.
@@ -36,26 +37,49 @@ export const modeOf = (mode: SearchMode | undefined): SearchMode => mode ?? 'goa
 export async function analyzeGoal(
   query: string,
   requestId: string | null,
-): Promise<{ profile: Profile; sessionId: string | null }> {
-  if (requestId) {
+  beforeSave?: () => void,
+): Promise<{ profile: Profile; sessionId: string | null; mode: SearchMode }> {
+  const analysis = await unwrap(
+    api.POST('/api/v1/analysis/goal', { body: { query, interpret_input: true } }),
+  )
+  const mode = analysis.matching_mode ?? 'goal'
+  // Preserve the existing policy: a skills list does not create a saved goal session.
+  if (requestId && mode === 'goal') {
+    beforeSave?.()
     const session = await startSession(query, requestId)
-    return { profile: session.profile, sessionId: session.id }
+    return { profile: session.profile, sessionId: session.id, mode }
   }
-  const analysis = await unwrap(api.POST('/api/v1/analysis/goal', { body: { query } }))
-  return { profile: analysis.profile, sessionId: null }
+  return { profile: analysis.profile, sessionId: null, mode }
 }
 
 /**
  * The qualifications that match a goal, given the profile with the learner's answers. The API re-reads the intent
  * from the answers. The same goal and answers get the same matches, so they're kept for the visit.
  */
-export const matchesQuery = (query: string, profile: Profile, mode?: SearchMode) =>
+export const matchesQuery = (
+  query: string,
+  profile: Profile,
+  mode?: SearchMode,
+  region?: string | null,
+) =>
   queryOptions<MatchResult, ApiError>({
-    queryKey: ['finder', 'matches', query, profile, modeOf(mode)],
+    queryKey: [
+      'finder',
+      'matches',
+      query,
+      profile,
+      modeOf(mode),
+      ...(demandPreference(query) ? [region ?? null] : []),
+    ],
     queryFn: ({ signal }) =>
       unwrap(
         api.POST('/api/v1/analysis/matches', {
-          body: { query, profile, mode: modeOf(mode) },
+          body: {
+            query,
+            profile,
+            mode: modeOf(mode),
+            ...(demandPreference(query) && region ? { region_code: region } : {}),
+          },
           signal,
         }),
       ),

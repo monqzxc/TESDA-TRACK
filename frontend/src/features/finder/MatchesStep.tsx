@@ -11,8 +11,6 @@ import { button } from '../../styles/buttons.ts'
 import { trainingAddress } from '../training/address.ts'
 import { CardHeading } from './CardHeading.tsx'
 import { MatchCard } from './MatchCard.tsx'
-import { jobIndex, relatedOccupations } from './occupations.ts'
-import { RelatedOccupations } from './RelatedOccupations.tsx'
 import { RequestFailed } from './RequestFailed.tsx'
 import { asksCertification, asksExperience } from './rules.ts'
 import {
@@ -24,6 +22,7 @@ import {
 } from './store.ts'
 import { card, cardHeading, notice, status } from './styles.ts'
 import type { JourneyContext } from './useJourney.ts'
+import { DemandLocation } from './DemandLocation.tsx'
 
 interface MatchesStepProps {
   journey: Journey
@@ -60,28 +59,11 @@ export function MatchesStep({ journey, context, catalog, onCheck }: MatchesStepP
       inTsp ? paths.tspTraining : paths.training,
     )
   const centersFor = (code: string) => (skills ? centersHref(code) : undefined)
-  // A skills search shows the jobs its matches lead to before a qualification is chosen (US-20).
-  const jobs = useMemo(() => jobIndex(catalog), [catalog])
-  const occupations = useMemo(
-    () =>
-      skills
-        ? relatedOccupations(
-            found.map((match) => match.qualification.code),
-            search?.terms ?? [],
-            jobs,
-            catalog,
-          )
-        : [],
-    [skills, found, search, jobs, catalog],
-  )
 
   return (
     <>
       <StartingPoint journey={journey} profile={context.matchedProfile ?? context.profile} />
-
-      {skills && (
-        <RelatedOccupations occupations={occupations} centersFor={centersHref} onCheck={onCheck} />
-      )}
+      <DemandLocation query={journey.query} />
 
       {/* Qualifications for you: the heading with its link, then one wide card per match. */}
       <section data-tour="matches" aria-labelledby={headingId} className="mt-3 flex flex-col gap-4">

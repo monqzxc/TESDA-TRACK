@@ -119,6 +119,8 @@ function JourneySteps({
     body = (
       <PathwayStep
         qualification={chosen}
+        catalog={catalog}
+        matches={context.matches.data?.matches ?? []}
         profile={profile}
         asked={{ query: journey.query, profile: context.profile, mode: journey.mode }}
       />

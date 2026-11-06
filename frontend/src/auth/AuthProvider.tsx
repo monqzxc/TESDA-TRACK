@@ -291,8 +291,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isAdmin: learner?.role === 'admin',
       can,
       canViewReports: can('reports:read'),
-      // The sections of the admin workspace between them need one of these three.
-      canOpenAdmin: ['users:manage', 'mcp:manage', 'reports:read'].some(can),
+      // Each admin section requires one of these permissions.
+      canOpenAdmin: ['users:manage', 'mcp:manage', 'reports:read', 'labor-market:review'].some(can),
       isChecking: session.isLoading,
       signIn,
       register,

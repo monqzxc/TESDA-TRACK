@@ -15,6 +15,8 @@ import { button } from '../../styles/buttons.ts'
 import { pathwaysQuery, progressKeys, setPathwayStatus, type Enrollment } from '../progress/api.ts'
 import { shortName, trainingAddress } from '../training/address.ts'
 import { curatedPathwaysQuery, followPathway, type Asked, type CuratedPathway } from './api.ts'
+import { FinalCareerOptions } from './FinalCareerOptions.tsx'
+import type { Match } from './api.ts'
 import { FeedbackPrompt } from './FeedbackPrompt.tsx'
 import { PathwayDetails, usePathwayReport } from './PathwayReport.tsx'
 import { VERDICTS, verdictFor } from './rules.ts'
@@ -23,6 +25,8 @@ import { card, cardHeading, muted, notice } from './styles.ts'
 
 interface PathwayStepProps {
   qualification: Qualification
+  catalog?: readonly Qualification[]
+  matches?: readonly Match[]
   /** For administrators' diagnostics. */
   profile: Profile
   /** What the matches were asked with, for the learner's feedback. */
@@ -34,7 +38,13 @@ interface PathwayStepProps {
  * assessment, with its score, the next action and the button to the centers that fit; under it, in tabs, the
  * personalized report with the curated pathway for that route; and whether the learner is satisfied with it all.
  */
-export function PathwayStep({ qualification, profile, asked }: PathwayStepProps) {
+export function PathwayStep({
+  qualification,
+  profile,
+  asked,
+  catalog = [],
+  matches = [],
+}: PathwayStepProps) {
   const inTsp = useLocation().pathname.startsWith(paths.tspWebview)
   const en = useCopy()
   const copy = en.finder.pathway
@@ -70,6 +80,8 @@ export function PathwayStep({ qualification, profile, asked }: PathwayStepProps)
       answers={answers}
       profile={profile}
       asked={asked}
+      catalog={catalog}
+      matches={matches}
     />
   )
 }
@@ -81,6 +93,8 @@ function Result({
   answers,
   profile,
   asked,
+  catalog = [],
+  matches = [],
 }: PathwayStepProps & { check: SubmittedCheck; answers: Answers | undefined }) {
   const report = usePathwayReport(qualification, check, asked)
   return (
@@ -91,6 +105,7 @@ function Result({
         changed={!sameAnswers(answers, check.answers)}
         nextAction={report.data?.final.next_action}
       />
+      <FinalCareerOptions qualification={qualification} catalog={catalog} matches={matches} />
       <PathwayDetails
         qualification={qualification}
         check={check}

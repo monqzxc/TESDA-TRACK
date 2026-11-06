@@ -1,4 +1,56 @@
 import type { Qualification } from '../../api/queries.ts'
+import type { DemandPreference } from './demandIntent.ts'
+
+interface ApprovedOccupation {
+  occupation_title: string
+  occupation_key: string
+  classification: 'in_demand' | 'hard_to_fill' | 'observed_posting'
+}
+
+/** Ordinary discovery retains catalog jobs; explicit demand requests use approved evidence only. */
+export function finalOccupations(
+  qualification: Qualification,
+  catalog: readonly Qualification[],
+  evidence: readonly ApprovedOccupation[],
+  preference: DemandPreference | null,
+): Occupation[] {
+  const available = catalog.some((item) => item.code === qualification.code)
+    ? catalog
+    : [qualification, ...catalog]
+  const inDemand = new Set(
+    evidence
+      .filter((item) => item.classification === 'in_demand')
+      .map((item) => jobKey(item.occupation_title)),
+  )
+  const excluded = new Set(
+    evidence
+      .filter(
+        (item) =>
+          item.classification === 'hard_to_fill' && !inDemand.has(jobKey(item.occupation_title)),
+      )
+      .map((item) => jobKey(item.occupation_title)),
+  )
+  const approved = evidence.filter(
+    (item) =>
+      item.classification !== 'hard_to_fill' &&
+      !excluded.has(jobKey(item.occupation_title)) &&
+      (!preference ||
+        ((preference === 'in_demand' || preference === 'either') &&
+          item.classification === 'in_demand')),
+  )
+  const found = preference
+    ? []
+    : relatedOccupations([qualification.code], [], jobIndex(available), available)
+  for (const item of approved) {
+    const key = jobKey(item.occupation_title)
+    if (!found.some((job) => job.key === key))
+      found.push({ key, title: item.occupation_title, qualifications: [qualification] })
+  }
+  const supported = new Set(approved.map((item) => jobKey(item.occupation_title)))
+  return found
+    .filter((job) => !excluded.has(job.key))
+    .sort((a, b) => Number(supported.has(b.key)) - Number(supported.has(a.key)))
+}
 
 // Related occupations for a skill or job search (US-20): the jobs that the matched qualifications lead to, as the
 // catalog lists them (possible_jobs, from TESDA's Training Regulations), and for each job every qualification that

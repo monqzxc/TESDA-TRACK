@@ -1,0 +1,19 @@
+{
+  "source_id": "dole-iva-jlmf-2026-2027",
+  "version": 1,
+  "publisher": "DOLE Region IV-A",
+  "title": "CALABARZON Jobs and Labor Market Forecast 2026–2027",
+  "evidence_class": "regional_forecast",
+  "geographic_scope": "regional",
+  "region_code": "IV-A",
+  "period_label": "2026–2027",
+  "period_start_year": 2026,
+  "period_end_year": 2027,
+  "source_url": "https://sites.google.com/dole.gov.ph/employment-programs/home/jlmf",
+  "file_sha256": "475dd827562e62bc05554a7cd8b4c6329b990fba2e6bffe9bf91cdfcf41c4993",
+  "notes": "Latest-main page-checked transcription; source portal retained. Consultation date 2025-11-14 per source README; PDF page as in CSV.",
+  "metadata": {
+    "git_commit": "884a3897d38287e8331ae99645bfe683cebd5fdc",
+    "source_file": "jlmf_calabarzon_2026_2027_priority_occupations.csv"
+  }
+}

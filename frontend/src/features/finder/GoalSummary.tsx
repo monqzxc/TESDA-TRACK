@@ -75,9 +75,7 @@ export function GoalSummary({ journey, code, sync, compact = false }: GoalSummar
       )}
     >
       <div className="min-w-0 flex-[1_1_22rem]">
-        <p className="m-0 text-13 leading-[1.5] text-muted">
-          {journey.mode === 'skills' ? copy.skillsLabel : copy.label}
-        </p>
+        <p className="m-0 text-13 leading-[1.5] text-muted">{en.finder.unified.summary}</p>
         <p className="mt-[0.1rem] mb-0 text-17 leading-[1.4] font-semibold wrap-anywhere text-navy max-xs:text-16">
           {journey.query}
         </p>
@@ -85,7 +83,7 @@ export function GoalSummary({ journey, code, sync, compact = false }: GoalSummar
       <div className="flex flex-wrap items-center gap-x-[0.6rem] gap-y-1">
         <Link to={paths.finder} className={button({ variant: 'tertiary' })}>
           <Icon name="edit" />
-          {journey.mode === 'skills' ? copy.changeSkills : copy.change}
+          {en.finder.unified.change}
         </Link>
         <div
           className="flex flex-wrap items-center gap-x-2 gap-y-1 border-l border-border pl-[0.6rem] max-xs:border-l-0 max-xs:pl-0"

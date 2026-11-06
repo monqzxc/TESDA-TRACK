@@ -12,6 +12,7 @@ import re
 
 # permission -> what an administrator granting it is allowing. Shown beside the checkboxes in the admin UI.
 PERMISSIONS: dict[str, str] = {
+    "labor-market:review": "Review occupation mappings and manage labor-market dataset versions",
     "training:manage": "Create and edit training providers and programs",
     "pathways:manage": "Create and edit learner pathways",
     "assessments:manage": "Manage assessment centers and schedules",

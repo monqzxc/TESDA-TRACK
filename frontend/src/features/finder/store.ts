@@ -77,6 +77,9 @@ export interface FinderState {
   /** The Goal step's tab. */
   searchMode: SearchMode
   journey: Journey | null
+  /** One occupation chosen in final recommendations; independent of matching and readiness. */
+  careerGoal: { key: string; title: string } | null
+  careerGoalJourneyKey: string | null
   experience: ExperienceAnswer | null
   certification: CertificationAnswer | null
   /** The qualification the learner chose. Until they do, the finder goes with the top match. */
@@ -105,6 +108,8 @@ export interface FinderState {
   ) => void
   setExperience: (answer: ExperienceAnswer) => void
   setCertification: (answer: CertificationAnswer) => void
+  setCareerGoalJourneyKey: (key: string) => void
+  setCareerGoal: (goal: { key: string; title: string }) => void
   choose: (code: string) => void
   answer: (code: string, competencyId: number, answer: Answer) => void
   setPart: (code: string, part: number) => void
@@ -127,6 +132,8 @@ const EMPTY = {
   skills: '',
   searchMode: 'goal' as SearchMode,
   journey: null,
+  careerGoal: null,
+  careerGoalJourneyKey: null,
   experience: null,
   certification: null,
   selected: null,
@@ -176,6 +183,8 @@ export const useFinderStore = create<FinderState>()(
       begin: (journey) =>
         set({
           journey: { ...journey, synced: null },
+          careerGoal: null,
+          careerGoalJourneyKey: crypto.randomUUID(),
           experience: null,
           certification: null,
           selected: null,
@@ -186,6 +195,8 @@ export const useFinderStore = create<FinderState>()(
         }),
       setExperience: (experience) => set({ experience }),
       setCertification: (certification) => set({ certification }),
+      setCareerGoalJourneyKey: (careerGoalJourneyKey) => set({ careerGoalJourneyKey }),
+      setCareerGoal: (careerGoal) => set((state) => (state.journey ? { careerGoal } : {})),
       choose: (selected) => set({ selected }),
       answer: (code, competencyId, answer) =>
         set((state) => ({

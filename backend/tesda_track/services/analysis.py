@@ -10,7 +10,7 @@ from tesda_track.errors import InvalidRequestError
 from tesda_track.models import Qualification
 from tesda_track.schemas.analysis import (Match, MatchComponents, PathwayRecommendation, Profile, ReadinessResult,
                                           SearchMode, SkillTerms)
-from tesda_track.services import catalog, embeddings, goal_rules, pathways, skill_search
+from tesda_track.services import catalog, embeddings, goal_rules, pathways, skill_search, labor_market, pathway_input
 from tesda_track.services.catalog import CatalogItem
 from tesda_track.services.embeddings import Embedder
 from tesda_track.services.intent_service import analyze_user_query
@@ -58,6 +58,7 @@ class MatchEvidence:
     model: str | None
     params: MatchParams | None
     search: SkillTerms | None = None  # a skills search's terms; None for a goal
+    eligible_codes: list[str] | None = None
 
 
 def semantic_strength(value: float, floor: float, ceiling: float) -> float:
@@ -107,7 +108,10 @@ def score_matches(items: Sequence[CatalogItem], keyword: dict[str, dict], simila
                                  reason=evidence["reason"] if evidence else SEMANTIC_REASON,
                                  components=MatchComponents(keyword=round(keyword_score / KEYWORD_SCALE, 3),
                                                             semantic=round(semantic, 3))))
-    matches.sort(key=lambda m: m.score, reverse=True)
+    ids = {item.code: item.id for item in items}
+    # Calibration can saturate several similarities at 1.0. Keep the model's
+    # actual ordering when final scores tie instead of falling back to catalog order.
+    matches.sort(key=lambda m: (-m.score, -similarities.get(ids[m.qualification.code], 0.0)))
     if query is not None:
         matches = goal_rules.order_within_families(matches, items, query)
     return matches[:limit]
@@ -116,16 +120,18 @@ def score_matches(items: Sequence[CatalogItem], keyword: dict[str, dict], simila
 def analyze_goal(session: Session, query: str, embedder: Embedder | None = None) -> GoalAnalysisResult:
     """Rules first; when they find no career at all, the closest qualification in meaning fills the gap."""
     current = catalog.snapshot(session)
-    profile = Profile.model_validate(analyze_user_query(query, current.rule_views))
+    profile = Profile.model_validate(analyze_user_query(query, labor_market.matching_rule_views(session, current.rule_views)))
+    if pathway_input.demand_preference(query):
+        return GoalAnalysisResult(profile.model_copy(update={'career_goal':query[:200], 'intent':'career_exploration'}),'rules')
     if embedder is None or profile.career_goal is not None or profile.intent != "unknown":
         return GoalAnalysisResult(profile, "rules")
     params = match_params(embedder)
-    semantic_by_id = strengths(embeddings.qualification_similarities(session, embedder, goal_rules.strip_negated(query)),
-                               params)
+    raw = embeddings.qualification_similarities(session, embedder, goal_rules.strip_negated(query))
+    semantic_by_id = strengths(raw, params)
     candidates = [item for item in current.items if item.id in semantic_by_id]
     if not candidates:
         return GoalAnalysisResult(profile, "rules")
-    best = max(candidates, key=lambda q: semantic_by_id[q.id])
+    best = max(candidates, key=lambda q: (semantic_by_id[q.id], raw.get(q.id, 0.0)))
     if hybrid_score(0, semantic_by_id[best.id], params.keyword_weight) < params.min_score:
         return GoalAnalysisResult(profile, "rules")
     years = profile.experience_years
@@ -178,12 +184,17 @@ def match(session: Session, query: str, profile: Profile,
 
 
 def match_evidence(session: Session, query: str, profile: Profile,
-                   embedder: Embedder | None = None, limit: int = 3, mode: SearchMode = "goal") -> MatchEvidence:
+                   embedder: Embedder | None = None, limit: int = 3, mode: SearchMode = "goal", region_code: str | None = None) -> MatchEvidence:
     refined = Profile.model_validate(refine_profile(profile.model_dump()))
     current = catalog.snapshot(session)
+    if pathway_input.demand_preference(query):
+        from tesda_track.services import demand_discovery
+        params=match_params(embedder)
+        matches,codes,keyword=demand_discovery.discover(session,current,query,refined,embedder,params,region_code,limit=max(limit,5))
+        return MatchEvidence(refined,matches,keyword,{},embedder.model_name if embedder else None,params,eligible_codes=codes)
     if mode == "skills":
         params = match_params(embedder)
-        found = skill_search.search(session, current.items, current.rule_views, query, embedder, params,
+        found = skill_search.search(session, current.items, labor_market.matching_rule_views(session, current.rule_views), query, embedder, params,
                                     limit=max(limit, skill_search.LIMIT))
         return MatchEvidence(refined, found.matches, found.keyword, found.z_scores,
                              embedder.model_name if embedder else None, params if embedder else None, found.search)
@@ -191,7 +202,7 @@ def match_evidence(session: Session, query: str, profile: Profile,
     # career/sector bonuses would otherwise reward every qualification near a career the model inferred.
     evidence_profile = refined.model_dump() if embedder is None else {}
     keyword = {r["qualification"]["code"]: r for r in score_qualifications(query, evidence_profile,
-                                                                            current.rule_views)}
+                                                                            labor_market.matching_rule_views(session, current.rule_views))}
     strength = {code: round(r["score"] / KEYWORD_SCALE, 3) for code, r in keyword.items()}
     if embedder is None:
         by_code = {item.code: item for item in current.items}
