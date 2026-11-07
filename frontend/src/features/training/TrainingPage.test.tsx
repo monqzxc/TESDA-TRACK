@@ -284,14 +284,7 @@ describe('Training & Assessment', () => {
     )
     expect(screen.queryByRole('heading', { name: /^All results/ })).not.toBeInTheDocument()
     expect(screen.queryByRole('heading', { name: 'Cebu Skills Center' })).not.toBeInTheDocument()
-    const regionSection = screen
-      .getAllByText('Region', { exact: true })
-      .map((element) => element.closest('details'))
-      .find((element) => element !== null)!
-    const regionSummary = regionSection.querySelector('summary')!
-    expect(regionSummary).toHaveTextContent('NCR')
-    await user.click(regionSummary)
-    expect(within(regionSection).getByRole('button', { name: /Region$/ })).toHaveTextContent('NCR')
+    expect(screen.getByRole('button', { name: /Region$/ })).toHaveTextContent('NCR')
     expect(new URLSearchParams(router.state.location.search).get('region')).toBe('NCR')
     await user.type(screen.getByRole('searchbox', { name: 'Search centers' }), 'manila')
     await user.type(screen.getByRole('searchbox', { name: 'Search location' }), 'Cebu City')
@@ -302,16 +295,9 @@ describe('Training & Assessment', () => {
     expect(
       await screen.findByRole('heading', { name: 'Manila Welding Institute' }),
     ).toBeInTheDocument()
-    const restoredRegionSection = screen
-      .getAllByText('Region', { exact: true })
-      .map((element) => element.closest('details'))
-      .find((element) => element !== null)!
-    if (!restoredRegionSection.open) {
-      await user.click(restoredRegionSection.querySelector('summary')!)
-    }
-    expect(
-      within(restoredRegionSection).getByRole('button', { name: /Region$/ }),
-    ).toHaveTextContent('National Capital Region')
+    expect(screen.getByRole('button', { name: /Region$/ })).toHaveTextContent(
+      'National Capital Region',
+    )
     expect(screen.getByRole('searchbox', { name: 'Search centers' })).toHaveValue('manila')
     expect(screen.getByRole('searchbox', { name: 'Search location' })).toHaveValue('Cebu City')
     expect(new URLSearchParams(router.state.location.search).get('region')).toBe('NCR')

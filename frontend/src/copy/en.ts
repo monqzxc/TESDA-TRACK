@@ -846,7 +846,6 @@ export const en = {
     retryLoad: 'Try loading the list again',
     staleResults: 'Showing the last loaded results. They may be out of date.',
     kinds: { training: 'Training center', assessment: 'Assessment center' },
-    bothKinds: 'Training and assessment centers',
     filters: {
       heading: 'Filters',
       // Read after the heading: "Filters, 2 on".
@@ -854,13 +853,12 @@ export const en = {
       clear: 'Clear all',
       hide: 'Hide filters',
       show: 'Show filters',
+      showResults: 'Show results',
       type: 'Type',
-      typeHelp: 'Tap a type to show or hide its centers on the map and list.',
       location: 'Location',
       region: 'Region',
       province: 'Province',
       qualification: 'Qualification / skills / job',
-      more: 'More filters',
       useCurrent: 'Use my current location',
       locationHelp:
         'Your browser asks first. We round your location to about 1 km and never save it. We use it to measure distances and, when you ask for directions, share it with an OpenStreetMap routing service to plan the route.',
@@ -883,7 +881,6 @@ export const en = {
       placeNotFound: (text: string) =>
         `We couldn’t find “${text}”. Try a city, province or region name.`,
       yourLocation: 'Your location',
-      anywhere: 'Anywhere',
       allRegions: 'All regions',
       allProvinces: 'All provinces',
       noProvinces: 'No provinces listed yet',
