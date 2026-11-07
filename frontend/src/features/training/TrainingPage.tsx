@@ -188,7 +188,7 @@ function Workspace({ catalog }: { catalog: Qualification[] }) {
               '@min-[1032px]/workspace:h-[var(--training-workspace-height,680px)] @min-[1032px]/workspace:items-stretch',
             mapShown
               ? 'grid-cols-[minmax(0,3fr)_minmax(380px,1fr)]'
-              : 'grid-cols-[minmax(280px,360px)_minmax(0,1fr)]',
+              : 'grid-cols-[minmax(300px,420px)_minmax(0,1fr)]',
           )}
         >
           {/* The filters float over the map's left edge. Where the map is too narrow for that, they sit above
@@ -198,14 +198,14 @@ function Workspace({ catalog }: { catalog: Qualification[] }) {
               className={cx(
                 mapShown &&
                   results.hasData &&
-                  '@min-[640px]/stage:absolute @min-[640px]/stage:top-3.5 @min-[640px]/stage:left-3.5 @min-[640px]/stage:z-900 @min-[640px]/stage:flex @min-[640px]/stage:max-h-[calc(100%_-_28px)] @min-[640px]/stage:w-[360px] @min-[640px]/stage:flex-col @min-[640px]/stage:[&>section]:shadow-[0_2px_8px_rgb(var(--track-shadow-rgb)/0.06)]',
+                  '@min-[720px]/stage:absolute @min-[720px]/stage:top-3.5 @min-[720px]/stage:left-3.5 @min-[720px]/stage:z-900 @min-[720px]/stage:flex @min-[720px]/stage:max-h-[calc(100%_-_28px)] @min-[720px]/stage:w-[420px] @min-[720px]/stage:flex-col @min-[720px]/stage:[&>section]:shadow-[0_2px_8px_rgb(var(--track-shadow-rgb)/0.06)]',
               )}
             >
               <FilterPanel results={results} />
             </div>
             {mapShown && results.hasData && (
-              // Read by the map, so its pins, routes and popups keep clear of the panel: 14px + 360px + 14px.
-              <div className="@min-[640px]/stage:[--map-overlay-inset:388px] @min-[1032px]/workspace:min-h-0 @min-[1032px]/workspace:flex-1 @min-[1032px]/workspace:[--center-map-height:100%]">
+              // Read by the map, so its pins, routes and popups keep clear of the panel: 14px + 420px + 14px.
+              <div className="@min-[720px]/stage:[--map-overlay-inset:448px] @min-[1032px]/workspace:min-h-0 @min-[1032px]/workspace:flex-1 @min-[1032px]/workspace:[--center-map-height:100%]">
                 <LoadBoundary fallback={<p className={mapStandIn}>{copy.map.failed}</p>}>
                   <Suspense
                     fallback={

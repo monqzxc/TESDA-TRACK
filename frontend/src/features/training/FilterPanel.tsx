@@ -47,10 +47,10 @@ const groupTitle =
 
 /**
  * Center types as tick-box buttons, so they read as choices rather than a legend: a chosen one fills indigo with its
- * box ticked white, the other stays white with an empty box.
+ * box ticked white, the other stays white with an empty box. The two sit side by side in equal columns.
  */
 const kindClass = cx(
-  'group inline-flex min-h-12 flex-none cursor-pointer items-center gap-2.5 rounded-14 border px-4 py-2 text-left text-15 leading-[1.25] font-semibold',
+  'group flex min-h-12 min-w-0 cursor-pointer items-center gap-2.5 rounded-14 border px-3.5 py-2 text-left text-15 leading-[1.25] font-semibold',
   'shadow-[0_1px_2px_rgb(16_24_40/0.06)] transition-[background,border-color,color,transform] duration-150 ease-[ease] data-pressed:scale-[0.98]',
   'border-border bg-surface text-navy data-hovered:border-blue data-hovered:bg-soft',
   'data-selected:border-fill data-selected:bg-fill data-selected:text-white data-selected:data-hovered:border-fill-hover data-selected:data-hovered:bg-fill-hover',
@@ -59,10 +59,11 @@ const kindClass = cx(
 
 /**
  * The panel's own indigo accent, in place of the app's blue: its fills, switches, links and focus borders take it.
- * Lists that open from it sit outside, so they keep the app's blue.
+ * The theme inlines its colors as var(--track-*), so those are what change here. Lists that open from the panel sit
+ * outside it, so they keep the app's blue.
  */
 const indigo =
-  '[--color-fill:#4f46e5] [--color-fill-hover:#4338ca] [--color-blue:#4f46e5] dark:[--color-fill:#6366f1] dark:[--color-fill-hover:#4f46e5] dark:[--color-blue:#a5b4fc]'
+  '[--track-fill:#4f46e5] [--track-fill-hover:#4338ca] [--track-blue:#4f46e5] dark:[--track-fill:#6366f1] dark:[--track-fill-hover:#4f46e5] dark:[--track-blue:#a5b4fc]'
 
 /** Whether the panel is folded away, kept for this browser. */
 const FOLDED_KEY = 'tesda-track.training-filters'
@@ -161,7 +162,7 @@ export function FilterPanel({ results }: { results: CenterResults }) {
             <div className={group}>
               <GroupTitle icon="grid">{copy.type}</GroupTitle>
               <ToggleButtonGroup
-                className="flex flex-wrap gap-2"
+                className="grid grid-cols-2 gap-2"
                 aria-label={copy.type}
                 selectionMode="multiple"
                 // One type always stays on: unticking the last would otherwise show every center again.
