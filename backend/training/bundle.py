@@ -14,7 +14,7 @@ import zipfile
 from pathlib import Path
 
 from training import goals, shared_goals
-from training.pairs import exclusion_hash
+from training.pairs import HashedExclusions, exclusion_hash
 
 BACKEND = Path(__file__).resolve().parents[1]
 
@@ -35,6 +35,7 @@ def bundle_files() -> list[Path]:
     files += sorted((BACKEND / "training" / "data" / "synthetic").glob("*.json"))
     files += sorted((BACKEND / "training" / "data" / "v3").glob("*.json"))
     files += sorted((BACKEND / "training" / "data" / "v4").glob("*.json"))
+    files += sorted((BACKEND / "training" / "data" / "v5").glob("*.json"))
     files.append(BACKEND / "training" / "requirements.txt")
     files.append(BACKEND / "requirements.txt")
     return files
@@ -52,9 +53,19 @@ def _clean_negatives(text: str, hashes: set[str]) -> str:
     return json.dumps(rows, ensure_ascii=False, indent=1) + "\n"
 
 
+def _clean_demand(text: str, hashes: set[str]) -> str:
+    """Only the demand titles v5 trains on (training/v5_demand.py: trainable): dev and sealed titles are evaluation goals."""
+    from training import v5_demand as v5
+
+    hashed = HashedExclusions(hashes)
+    rows = [r for r in json.loads(text) if r["split"] == "train" and v5.trainable(r, hashed)]
+    return json.dumps(rows, ensure_ascii=False, indent=1) + "\n"
+
+
 def _learner_training_goals(hashes: set[str]) -> list[dict]:
     """The reviewed training goals learners shared, with only what training reads: no ids, dates or other splits."""
     return [{"goal": row["goal"], "accept": row["accept"], "lang": row["lang"], "split": "train",
+             **({"shown": row["shown"]} if row.get("shown") else {}),
              "review_status": "reviewed"} for row in shared_goals.read()
             if row["split"] == "train" and row["review_status"] == "reviewed"
             and exclusion_hash(row["goal"]) not in hashes]
@@ -69,6 +80,8 @@ def build(output: Path, hard_negatives: Path | None = None) -> Path:
             name = f"backend/{path.relative_to(BACKEND).as_posix()}"
             if path.parent.name == "synthetic":
                 bundle.writestr(name, _clean_synthetic(path.read_text(encoding="utf-8"), known))
+            elif path.parent.name == "v5":
+                bundle.writestr(name, _clean_demand(path.read_text(encoding="utf-8"), known))
             elif path.parent.name in ("v3", "v4"):
                 rows = json.loads(path.read_text(encoding="utf-8"))
                 bundle.writestr(name, json.dumps([r for r in rows if exclusion_hash(r["query"]) not in known],

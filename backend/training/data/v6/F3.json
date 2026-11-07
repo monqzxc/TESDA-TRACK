@@ -1,0 +1,6589 @@
+[
+ {
+  "query": "may training ba kayo ng Construction Painting NC II",
+  "accept": [
+   "Construction Painting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging pintor ng mga bahay at gusali",
+  "accept": [
+   "Construction Painting NC II",
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "painter sa construction site, anong course ang dapat kunin",
+  "accept": [
+   "Construction Painting NC II",
+   "Construction Painting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-pintura sa mga bagong bahay na ginagawa",
+  "accept": [
+   "Construction Painting NC II",
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magliha ng pader at magmasilya bago pinturahan",
+  "accept": [
+   "Construction Painting NC II",
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-roller at brush ng pintura sa pader",
+  "accept": [
+   "Construction Painting NC II",
+   "Construction Painting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpipintura ako ng kisame at dingding ng bahay namin",
+  "accept": [
+   "Construction Painting NC II",
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-retouch ng mga gasgas sa bagong pinturang pader",
+  "accept": [
+   "Construction Painting NC II",
+   "Construction Painting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumamit ng spray gun sa pagpipintura ng gusali",
+  "accept": [
+   "Construction Painting NC II",
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-prepare ng primer, thinner at brush bago mag-paint ng building",
+  "accept": [
+   "Construction Painting NC II",
+   "Construction Painting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pintor ng bahay",
+  "accept": [
+   "Construction Painting NC II",
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "house painting",
+  "accept": [
+   "Construction Painting NC II",
+   "Construction Painting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mging pintor sa construksyon",
+  "accept": [
+   "Construction Painting NC II",
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "house paintr po nc2",
+  "accept": [
+   "Construction Painting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 taon na akong pintor sa mga construction, gusto kong magpa-assess",
+  "accept": [
+   "Construction Painting NC II",
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "experienced painter ako sa mga condo project, need ko ng NC II",
+  "accept": [
+   "Construction Painting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako lagi ang taga-pintura ng bahay tuwing magpapasko, baka pwede kong gawing trabaho",
+  "accept": [
+   "Construction Painting NC II",
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko sumama sa contractor na nagre-repaint ng mga apartment",
+  "accept": [
+   "Construction Painting NC II",
+   "Construction Painting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Construction Painting NC III po, may assessment ba dito",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "head painter sa mga gusali, anong NC ang kailangan",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging pintor na marunong mag-tinting ng kulay",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "maestro ng mga pintor sa construction",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magtimpla at mag-match ng kulay ng pintura",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-compute kung ilang galon ng paint ang kailangan sa isang bahay",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-estimate ng materyales sa pagpipintura ng gusali",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagre-repaint ako ng lumang pader na nagbabakbak na ang paint",
+  "accept": [
+   "Construction Painting NC III",
+   "Construction Painting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-tint ng white paint para makuha yung kulay na gusto ng client",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magtanggal ng lumang pintura at pinturahang muli ang buong bahay",
+  "accept": [
+   "Construction Painting NC III",
+   "Construction Painting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paint tinting",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "timpla ng pintura",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "painter nc3 pano mg enroll",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong aq mag tinting ng pintora",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 taon na akong pintor at ako na ang nag-e-estimate ng pintura, pwede ba akong mag-NC III",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "senior painter ako sa contractor, gusto ko ng mas mataas na level ng certificate",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang pinagkakatiwalaan ng amo ko na pumili at maghalo ng kulay ng pintura",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko maging painting contractor at ako mismo ang mag-quote ng materials sa client",
+  "accept": [
+   "Construction Painting NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "EIM NC II po, kailan ang next batch",
+  "accept": [
+   "Electrical Installation and Maintenance NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging elektrisyan",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "electrician sa mga bahay at apartment",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-wiring sa ginagawang mga bahay",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magkabit ng outlet at switch ng ilaw",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-wiring ng buong bahay mula sa metro",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-install ng breaker at panel board sa bahay",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng conduit at kable sa mga bagong bahay",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko matuto mag-install ng grounding at lightning arrester",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aayos ako ng short circuit at pundidong ilaw sa bahay",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "elektrisyan",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "house wiring",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto ko mging electrician pro wla pang exp",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "elektrisyan nc2 saan pwde mag aral",
+  "accept": [
+   "Electrical Installation and Maintenance NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "7 taon na akong nagwa-wiring ng bahay pero walang sertipiko, gusto kong magpa-assess",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "helper ng electrician ako for 3 years, gusto ko na ng sariling NC",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang tinatawag ng mga kapitbahay kapag nawalan ng kuryente sa bahay nila",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko mag-apply sa Saudi bilang building maintenance na hawak ang kuryente",
+  "accept": [
+   "Electrical Installation and Maintenance NC II",
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Heavy Equipment Operation Articulated Dump Truck NC II, may slot pa ba",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng articulated dump truck sa minahan",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging drayber ng dump truck na nababaluktot sa gitna",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "ADT operator sa quarry",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagha-haul ako ng lupa at bato gamit ang articulated truck sa loob ng mining site",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magmaneho ng malaking dump truck sa putikan at matarik na daan ng minahan",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pre-operation check ng articulated hauler bago ang shift",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-grease at maglinis ng air filter ng articulated dump truck",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahakot ako ng lupa mula sa excavator papunta sa tapunan gamit ang trak na pang-off-road",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "maingat na pagbababa ng karga sa gilid ng tambakan gamit ang articulated truck",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "articulated dump truck",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "ADT hauler",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "artikulated dumptruck operator po",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg drive ng ADT sa mina",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "4 years na akong nagda-drive ng articulated truck sa nickel mine, gusto ko ng NC II",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong operator ng dump truck sa minahan, kailangan ko ng sertipiko",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa minahan sa Surigao na nagmamaneho ng malalaking trak",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap ko maghakot ng ore sa mining site gamit ang articulated hauler",
+  "accept": [
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Backhoe Loader NC II po, saan may training",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging backhoe operator",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II",
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng backhoe loader sa munisipyo",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-maneho ng backhoe na may gulong at pala sa harap",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghuhukay ako ng kanal para sa tubo gamit ang backhoe loader",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto gamitin yung bucket sa harap at yung panghukay sa likod ng backhoe loader",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakarga ng buhangin at graba sa trak gamit ang backhoe loader",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-check ng hydraulic oil at gulong ng backhoe loader bago gamitin",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagbaba ng stabilizer at pagpo-posisyon ng backhoe loader bago maghukay",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "backfilling ng kanal at paglilinis ng debris sa site gamit backhoe loader",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "backhoe loader",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "backhoe",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II",
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "bakhoe operater training",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II",
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mtuto mg backhoe",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II",
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 taon na akong nagba-backhoe loader sa construction, wala pa akong NC II",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dati akong operator ng backhoe sa barangay, gusto kong magpa-assess",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II",
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nakikita ko yung makinang naghuhukay ng kanal sa kalye namin, gusto kong ako ang nagmamaneho nun",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II",
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko ng trabaho sa road project na nag-o-operate ng makinang may pala sa harap at panghukay sa likod",
+  "accept": [
+   "Heavy Equipment Operation (Backhoe Loader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Heavy Equipment Operation Bulldozer NC II, may scholarship ba",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "bulldozer operator sa road construction",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging operator ng dozer",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-patag ng lupa gamit ang bulldozer",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtutulak ako ng lupa at bato gamit ang blade ng bulldozer",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-land clearing ng lote gamit ang dozer",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-check ang track at undercarriage ng bulldozer bago mag-operate",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapatag ako ng lupa para sa bagong subdivision gamit dozer",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-ripping ng matigas na lupa gamit ang ripper ng bulldozer",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglilinis ng kadena at pag-grease ng bulldozer pagkatapos ng trabaho",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "buldoser",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "dozer operator",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "buldozer oparetor po",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pano maging bulldoser operator",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "anim na taon na akong nagbu-bulldozer sa paggawa ng kalsada, gusto kong magka-NC II",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "experienced dozer operator ako sa mining, need ko ng TESDA cert para sa abroad",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang magpatag ng bundok para sa bagong highway",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-e-enjoy ako manood ng malaking makinang nagtutulak ng lupa sa construction, gusto ko yun maging trabaho",
+  "accept": [
+   "Heavy Equipment Operation (Bulldozer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Concrete Pump NC II po, available ba",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng concrete pump sa ginagawang gusali",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "boom pump operator sa high-rise",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-pump ng semento sa mga gusali",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbubuhos ako ng semento sa itaas na palapag gamit ang boom ng concrete pump",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-set up ng outrigger ng concrete pump truck",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglilinis ng hose at tubo ng concrete pump pagkatapos ng buhos",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-control ang boom ng pump habang nagbubuhos ng slab",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-check ng hydraulic at pipeline ng concrete pump bago ang pour",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-o-operate ako ng line pump para sa buhos ng sahig",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "concrete pump",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pump ng semento",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "konkreto pamp operator",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "concrete pamp nc2 sched",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 years na akong concrete pump operator sa Maynila, gusto ko magpa-certify",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong taga-buhos ng semento gamit ang pump, wala pa akong NC",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko yung trabaho na ako ang nagpapadaloy ng semento hanggang ika-20 palapag",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "sa construction gusto ko ma-assign sa pumping ng concrete tuwing may buhos",
+  "accept": [
+   "Heavy Equipment Operation (Concrete Pump) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Container Stacker NC II, may training ba para sa pier",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng reach stacker sa pantalan",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "container handler operator sa port",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-patong ng container sa yarda ng pier",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbubuhat at nagpapatong ako ng container van gamit ang stacker",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-stack ng 40-footer na container sa container yard",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-check ang spreader at gulong ng reach stacker bago mag-shift",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilipat ako ng mga container mula sa trak papunta sa yarda gamit ang stacker",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-grease at paglilinis ng container stacker pagkatapos ng operasyon",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "loading ng container sa chassis ng trailer gamit reach stacker",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "reach stacker",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "stacker sa pier",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "reach staker opereytor",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto q mag opereyt ng stacker sa pantalan",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 taon na akong reach stacker operator sa Batangas port, kailangan ko ng NC II",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dati akong forklift sa bodega at ngayon stacker na sa pier, gusto kong magpa-assess",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa pantalan na nag-aayos ng tambak ng mga container van",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "fascinated ako sa malalaking makina sa port na nagbubuhat ng container, gusto ko yun",
+  "accept": [
+   "Heavy Equipment Operation (Container Stacker) NC II",
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Crawler Crane NC III po, ano ang requirements",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "crawler crane operator",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng crane na naka-kadena",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-opera ng crawler crane sa paggawa ng tulay",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbubuhat ako ng mabibigat na bakal gamit ang crawler crane",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-compute gamit ang load chart ng crawler crane",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-assemble ng boom ng crawler crane bago mag-lift",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-check ang wire rope at kadena ng crane na de-track",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-lift ng piles at steel sa pundasyon ng tulay gamit crawler",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagmamantini ng makina at hydraulic ng crawler crane",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "crawler crane",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "crane na de-kadena",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "krawler crane oparetor",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto ko mag krawler kreyn",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 years na akong crawler crane operator sa bridge projects, need ko ng NC III",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dati akong rigger, ngayon nag-o-operate na ng crawler crane, gusto kong magpa-assess",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa pagpapatayo ng tulay gamit ang malaking crane na gumagapang sa kadena",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap ko mag-operate ng heavy lift crane na naka-track sa mga power plant project",
+  "accept": [
+   "Heavy Equipment Operation (Crawler Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "forklift NC II, saan pwede mag-training",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-maneho ng forklift sa pabrika",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng forklift sa bodega ng grocery",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "forklift driver sa warehouse",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbubuhat ako ng mga pallet gamit ang forklift",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-stack ng pallet sa mataas na rack gamit forklift",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-check ang battery, gulong at tinidor ng forklift bago gamitin",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglo-load at nag-a-unload ako ng kargamento sa trak gamit forklift",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpapalit ng tangke ng LPG at paglilinis ng forklift",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "maingat na pagmamaneho ng forklift sa makitid na pasilyo ng bodega",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "forklift",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "forklift sa bodega",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "porklift operator po",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg forklip",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "2 taon na akong nagfo-forklift sa bodega pero walang NC",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "experienced forklift operator ako, kailangan ng NC II para sa Japan",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko magtrabaho sa warehouse pero ayoko magbuhat ng kahon gamit kamay, gusto ko yung makina",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi kong pinapanood yung nagbubuhat ng mga pallet sa pabrika, gusto ko yung trabaho niya",
+  "accept": [
+   "Heavy Equipment Operation (Forklift) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Hydraulic Excavator NC II po, kailan ang enrollment",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "excavator operator sa construction",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng excavator sa quarry",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-hukay gamit ang excavator sa proyekto laban sa baha",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghuhukay ako ng pundasyon ng gusali gamit ang excavator",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-dredge ng ilog gamit ang long arm excavator",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagkarga ng lupa sa dump truck gamit ang bucket ng excavator",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-check ang hydraulic hose at track ng excavator bago mag-operate",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggiba ng lumang gusali gamit ang breaker ng excavator",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "trenching at slope cutting gamit excavator sa road project",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "excavator",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "backhoe na de-kadena",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "excavtor operater",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg excavator sa mina",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "8 years na akong excavator operator sa flood control, gusto ko ng NC II",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "natuto ako mag-operate ng excavator ng tito ko, pwede ba akong magpa-assessment",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa paghuhukay ng mga kanal at ilog para iwas baha",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap ko ma-hire sa mining para mag-operate ng malaking makinang may mahabang braso at bucket",
+  "accept": [
+   "Heavy Equipment Operation (Hydraulic Excavator) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Motor Grader NC II, may batch pa ba",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "grader operator sa kalsada",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng motor grader sa proyekto ng kalsada",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-pantay ng kalsada gamit ang grader",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapatag at naghuhugis ako ng kalsada bago aspaltuhin gamit ang grader",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-adjust ng blade ng motor grader para sa slope ng daan",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggawa ng kanal sa gilid ng kalsada gamit ang grader",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-check ang gulong, langis at blade ng grader bago mag-shift",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-spread ng graba sa farm-to-market road gamit grader",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglilinis at pag-grease ng motor grader pagkatapos ng trabaho",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "motor grader",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "grader sa kalsada",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "motor greyder operator",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mag grader",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong grader operator sa probinsya pero walang NC II",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 years experience sa motor grader, need ko TESDA certificate for abroad",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang nagpapakinis ng lupang kalsada bago lagyan ng aspalto",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "trip ko yung makinang may mahabang blade sa gitna na nagpapantay ng kalsada",
+  "accept": [
+   "Heavy Equipment Operation (Motor Grader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Overhead and Gantry Crane NC III po, may assessment ba",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "overhead crane operator sa pabrika ng bakal",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng gantry crane sa pantalan",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-opera ng crane na nakasabit sa kisame ng planta",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbubuhat ako ng coil at bakal sa loob ng planta gamit ang overhead crane",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-operate ng gantry crane na naglo-load ng container sa barko",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gamitin ang pendant control ng overhead crane",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-inspeksiyon ng kawit, wire rope at preno ng overhead crane bago gamitin",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglilipat ng mabibigat na molde sa shop gamit ang bridge crane",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpapadulas at pag-check ng riles ng gantry crane",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "overhead crane",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gantry sa pier",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "ovrhead kreyn operator",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gantri crane sa port po",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 taon na akong nag-o-overhead crane sa steel plant, gusto ko ng NC III",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "experienced gantry crane operator ako sa container terminal, need ko ng certification",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "sa factory namin may crane na tumatakbo sa kisame, gusto ko ako ang mag-operate nun",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap ko yung trabaho sa pier na naglilipat ng container mula sa barko gamit ang higanteng crane",
+  "accept": [
+   "Heavy Equipment Operation (Overhead and Gantry Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Paver NC II po, saan meron",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "paver operator sa asphalt road",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng asphalt paver sa highway",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-latag ng aspalto gamit ang paver",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglalatag ako ng aspalto sa kalsada gamit ang paver",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-operate ng concrete paver sa highway",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-check ng conveyor at auger ng paver bago magsimula",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano panatilihin ang tamang bilis ng paver habang naglalatag",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglilinis ng hopper ng paver pagkatapos mag-aspalto",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "coordination sa dump truck habang nagpapakarga ng asphalt sa paver",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "asphalt paver",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "paver sa kalsada",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pavr operator nc2",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "aspalto peyver operator",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "6 taon na akong nag-o-operate ng paver sa mga highway project, gusto kong magpa-assess",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "asphalt paving operator ako for years, need ko ng NC II",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa pag-aaspalto ng mga bagong kalsada",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II",
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "excited ako tuwing may bagong aspalto sa amin, gusto ko ma-hire sa road paving crew",
+  "accept": [
+   "Heavy Equipment Operation (Paver) NC II",
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Rigid Off-Highway Dump Truck NC II, kailan ang klase",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng rigid dump truck sa minahan",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "mining haul truck driver",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-maneho ng higanteng dump truck sa open pit",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahakot ako ng ore at bato gamit ang rigid haul truck sa open pit mine",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-operate ng rigid dump truck na 100 tonelada",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pre-start inspection ng gulong at preno ng mining truck",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-dump ng karga sa crusher gamit ang rigid truck",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglilinis ng radiator at air filter ng malaking dump truck sa minahan",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagmamaneho ng rigid hauler pababa sa matarik na haul road",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "rigid dump truck",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "trak sa minahan",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "rigid dumtruck opereytor",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "haul trak drayber sa mina",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 years na akong nagda-drive ng rigid haul truck sa nickel mine, need ko ng NC",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dati akong driver ng dump truck sa kalsada, gusto ko lumipat sa minahan at magpa-assess",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong magmaneho ng trak na kasing-laki ng bahay sa mining site",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko ma-hire sa open pit mining abroad bilang haul truck operator",
+  "accept": [
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Rigid On-Highway Dump Truck NC II po, may training ba",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "dump truck driver sa construction",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "drayber ng 10-wheeler na dump truck",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-hakot ng buhangin at graba gamit ang dump truck",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagde-deliver ako ng buhangin at graba sa mga construction site gamit dump truck",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-dump ng karga gamit ang hydraulic ng 10-wheeler",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-check ng ilaw, preno at gulong ng dump truck bago bumiyahe sa highway",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghahakot ng tinibag na lupa mula sa site papunta sa tapunan sa kabilang bayan",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-grease at pagpapalit ng langis ng dump truck",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "safe driving ng loaded dump truck sa trapik ng siyudad",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "dump truck",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "trak ng graba",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "dump trak drayber po",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Rigid Off-Highway Dump Truck) NC II",
+   "Heavy Equipment Operation (Articulated Off-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 wheeler dumtruk driver nc2",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "8 taon na akong drayber ng dump truck sa mga proyekto ng kalsada, gusto kong magka-NC II",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may professional license ako at 3 years nagda-drive ng dump truck, need ko ng TESDA cert",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maghakot ng lupa at bato papunta sa mga construction site gamit malaking trak na tumataas ang likod",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag-sideline sa quarry na maghakot ng aggregates gamit tipper truck",
+  "accept": [
+   "Heavy Equipment Operation (Rigid On-Highway Dump Truck) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Road Roller NC II po, may schedule ba",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "pison operator",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng road roller sa kalsada",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "compactor operator sa road project",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpipison ako ng aspalto pagkatapos latagan",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-compact ng lupa at graba gamit ang vibratory roller",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-check ang tubig, langis at drum ng pison bago gamitin",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpapasiksik ng base course ng kalsada bago aspaltuhin",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-operate ng tandem roller sa bagong asphalt overlay",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglilinis ng drum at scraper ng road roller pagkatapos ng shift",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pison",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "road roller",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pisun opereytor",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "rodroler operator nc2",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagpipison sa mga kalsada, gusto ko ng sertipiko",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 years compactor operator sa subdivision projects, pwede ba magpa-assess",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko yung trabaho na pinapasiksik ang bagong aspalto gamit ang mabigat na makina",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko ma-hire sa road crew bilang nagpapatakbo ng makinang may malaking bakal na gulong",
+  "accept": [
+   "Heavy Equipment Operation (Road Roller) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Rough Terrain Crane NC III, may assessment center ba dito",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "RT crane operator",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng rough terrain crane sa planta",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging operator ng crane na may malalaking gulong para sa maputik na site",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbubuhat ako ng mga tubo at bakal sa construction site gamit RT crane",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-set up ng outrigger ng rough terrain crane sa lupang hindi pantay",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto magbasa ng load chart ng RT crane",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-check ng gulong, boom at wire rope ng rough terrain crane bago magbuhat",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglilipat ng crane sa loob ng site na lubak-lubak ang daan",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "maintenance ng hydraulic system ng rough terrain crane",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "rough terrain crane",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "RT crane",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "raf terrain kreyn",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "RT krane operatr nc3",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "7 taon na akong nag-o-operate ng RT crane sa mga refinery project, gusto ko ng NC III",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "galing ako sa rigging, now RT crane operator na, need ko ng certification",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko mag-operate ng crane sa mga lugar na putik at bato, hindi sa kalsada",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "interesado ako sa crane jobs sa oil and gas sites na rough ang ground",
+  "accept": [
+   "Heavy Equipment Operation (Rough Terrain Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Screed NC I po, may training ba",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "screed operator sa likod ng paver",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-kontrol ng screed sa aspaltuhan",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "screedman sa road paving",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang kapal at lapad ng aspalto sa likod ng paver",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-adjust ng screed para pantay ang aspalto",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-check ng heater at extension ng screed bago magsimula ang paving",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagbabantay sa taas ng aspaltong inilalatag ng paver",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-monitor ang slope at crown ng bagong aspalto",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglilinis ng screed plate pagkatapos ng aspaltuhan",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "screed operator",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "screed ng aspalto",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "skreed operator nc1",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg screed sa aspaltuhan",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "2 taon na akong screedman sa proyekto ng kalsada, gusto kong magpa-assess",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "experience ko sa paving crew ay sa screed, need ko ng NC I",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "sa aspaltuhan ako yung nakatayo sa likod ng makina at nag-aayos ng kapal, anong kurso yun",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko magsimula sa road paving crew kahit entry-level lang",
+  "accept": [
+   "Heavy Equipment Operation (Screed) NC I",
+   "Heavy Equipment Operation (Paver) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pwede ba mag-enroll sa Tower Crane NC III kahit galing sa rigging",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "tower crane operator sa high-rise",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng crane sa tuktok ng ginagawang gusali",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "crane operator sa condo construction na nasa cabin sa taas",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbubuhat ako ng rebar at formworks paakyat sa mataas na palapag gamit tower crane",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "umaakyat ako sa cabin ng tower crane at sumusunod sa senyas ng signalman",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-lift ng concrete bucket gamit ang tower crane",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-inspeksiyon ng wire rope, kawit at limit switch ng tower crane",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano magpatakbo ng tower crane kapag malakas ang hangin",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "daily checklist at greasing ng tower crane bago mag-operate",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tower crane",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "crane sa building",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tawer kreyn operator",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "towr crane nc3 pano",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "12 taon na akong tower crane operator sa Maynila, kailangan ko ng NC III para sa Middle East",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dating signalman, ngayon tower crane operator na ako, gusto ko magpa-certify",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "hindi ako takot sa taas, gusto kong magtrabaho sa itaas ng ginagawang condo at magbuhat ng materyales",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap ko yung trabaho sa cabin sa tuktok ng ginagawang matayog na gusali",
+  "accept": [
+   "Heavy Equipment Operation (Tower Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Transit Mixer NC II, may batch ba this month",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "drayber ng transit mixer",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "mixer truck operator sa batching plant",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-deliver ng ready-mix na semento",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagde-deliver ako ng ready-mix concrete sa mga site gamit ang mixer truck",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapaikot ko ang drum ng trak para hindi tumigas ang semento",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magbuhos ng semento mula sa chute ng transit mixer",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglilinis ng drum ng transit mixer pagkatapos ng delivery",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-check ng tubig, langis at hydraulic ng mixer truck bago bumiyahe",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-coordinate sa concrete pump operator habang nagdi-discharge ng mixer",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "transit mixer",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "trak ng semento",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tranzit mixer drayber",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mixer truk operator po",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 taon na akong drayber ng transit mixer pero walang NC II",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "experienced mixer truck driver ako sa batching plant, need ko ng certification para sa abroad",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magmaneho ng trak na may umiikot na drum",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtatrabaho ako sa hardware at gusto ko maging driver ng ready-mix delivery",
+  "accept": [
+   "Heavy Equipment Operation (Transit Mixer) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Truck Mounted Crane NC III po, may training ba kayo",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "boom truck operator",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng crane na nakakabit sa trak",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-opera ng boom truck sa pagtatayo ng poste",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbubuhat ako ng poste ng kuryente gamit ang boom truck",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-set up ng outrigger ng truck mounted crane sa kalsada",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagkarga at pagbaba ng generator gamit ang crane ng trak",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano basahin ang load chart ng boom truck",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-inspect ng boom, hook at hydraulics ng truck crane bago bumiyahe",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagmamaneho at pagpo-posisyon ng trak na may crane sa site",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "boom truck",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "crane ng trak",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "bom trak operator",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "truck mounted kreyn nc3",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "6 years na akong boom truck operator sa electric coop, need ko ng NC III",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nag-o-operate ng crane ng trak sa pagde-deliver ng bakal, gusto kong magpa-assess",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang nag-o-operate ng trak na may braso na nagbubuhat ng poste at transformer",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "nakikita ko yung truck na may crane na nagbubuhat ng container van sa probinsya, gusto ko yun",
+  "accept": [
+   "Heavy Equipment Operation (Truck Mounted Crane) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Wheel Loader NC II po, saan pwede mag-aral",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "payloader operator",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng payloader sa quarry",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-karga ng buhangin gamit ang wheel loader",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakarga ako ng graba sa dump truck gamit payloader",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-stockpile ng aggregates gamit wheel loader",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-check ang gulong, langis at bucket ng payloader",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglilinis ng gumuhong lupa sa kalsada gamit ang wheel loader",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-feed ng materials sa crusher gamit payloader",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-grease ng pivot at pagpapalit ng filter ng wheel loader",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "payloader",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "wheel loader",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "payloder operator",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pay loader opereytor po",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "4 na taon na akong nagpa-payloader sa quarry, wala pang NC",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "experienced wheel loader operator sa cement plant, need ko ng NC II",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko yung malaking makinang de-gulong na may pala lang sa harap na nagkakarga ng buhangin sa trak",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap ko maging operator sa quarry na nagtatambak at nagkakarga ng graba",
+  "accept": [
+   "Heavy Equipment Operation (Wheel Loader) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Heavy Equipment Servicing NC II, may training ba",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekaniko ng heavy equipment",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "heavy equipment mechanic sa mining",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-ayos ng mga backhoe at bulldozer",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aayos ako ng makina ng mga bulldozer at excavator",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-repair ng hydraulic system ng heavy equipment",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpapalit ng track at roller ng undercarriage ng dozer",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-troubleshoot ng transmission at power train ng payloader",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-o-overhaul ako ng diesel engine ng mga excavator",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-aayos ng tagas ng hydraulic cylinder at hose ng backhoe",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "heavy equipment mechanic",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekaniko ng backhoe",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hevy ekwipment mekaniko",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "heavy equipmnt mechanic nc2",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 taon na akong mekaniko ng heavy equipment sa minahan, gusto ko ng NC II",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught diesel mechanic ako ng construction equipment, need ko ng certificate",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi akong tumutulong sa pag-aayos ng sirang backhoe ng kontratista sa amin",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mas gusto ko ayusin yung heavy equipment kaysa i-operate",
+  "accept": [
+   "Heavy Equipment Servicing (Mechanical) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Masonry NC I po, pang-beginner ba yun",
+  "accept": [
+   "Masonry NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "piyon sa construction",
+  "accept": [
+   "Masonry NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "helper ng mason sa site",
+  "accept": [
+   "Masonry NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "katulong ng kantero sa pagtatayo ng bahay",
+  "accept": [
+   "Masonry NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahalo ako ng semento, buhangin at graba para sa kantero",
+  "accept": [
+   "Masonry NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong maghanda ng mga gamit ng kantero tulad ng kutsara at timba",
+  "accept": [
+   "Masonry NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-hakot ng hollow blocks at buhangin sa site",
+  "accept": [
+   "Masonry NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "basic masonry lang muna, marunong ako mag-mix ng mortar",
+  "accept": [
+   "Masonry NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagtatali ng lubid at pagkuha ng hulog bago maglatag ng hollow blocks",
+  "accept": [
+   "Masonry NC I",
+   "Masonry NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tumutulong ako mag-hollow blocks at magbuhos sa maliit na bahay",
+  "accept": [
+   "Masonry NC I",
+   "Masonry NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "piyon",
+  "accept": [
+   "Masonry NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mason helper",
+  "accept": [
+   "Masonry NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pyon sa konstraksyon",
+  "accept": [
+   "Masonry NC I"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "helpr mason nc1",
+  "accept": [
+   "Masonry NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "2 taon na akong piyon, gusto ko ng sertipiko para umangat",
+  "accept": [
+   "Masonry NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong construction helper, pwede ba magpa-assess sa basic masonry",
+  "accept": [
+   "Masonry NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "wala akong alam pero gusto kong magsimula sa construction bilang tagahalo ng semento",
+  "accept": [
+   "Masonry NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-apply ako sa contractor pero kailangan daw muna ng basic cert sa paghahalo ng semento at pagbubuhat ng hollow blocks",
+  "accept": [
+   "Masonry NC I"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Masonry NC II, saan may training center",
+  "accept": [
+   "Masonry NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging kantero",
+  "accept": [
+   "Masonry NC II",
+   "Masonry NC I",
+   "Masonry NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "mason sa construction ng bahay",
+  "accept": [
+   "Masonry NC II",
+   "Masonry NC I",
+   "Masonry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-hollow blocks at palitada",
+  "accept": [
+   "Masonry NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong maglatag ng hollow blocks para sa pader",
+  "accept": [
+   "Masonry NC II",
+   "Masonry NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto magpalitada ng pader",
+  "accept": [
+   "Masonry NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-plaster ng wall na pantay at hindi nagbibitak",
+  "accept": [
+   "Masonry NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtatayo ako ng bakod na hollow blocks sa bakuran",
+  "accept": [
+   "Masonry NC II",
+   "Masonry NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-lay ng CHB na tuwid at naka-hulog",
+  "accept": [
+   "Masonry NC II",
+   "Masonry NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magtayo ng pader ng bahay mula pundasyon",
+  "accept": [
+   "Masonry NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "kantero",
+  "accept": [
+   "Masonry NC II",
+   "Masonry NC I",
+   "Masonry NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "CHB laying",
+  "accept": [
+   "Masonry NC II",
+   "Masonry NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "kantiro nc2 po",
+  "accept": [
+   "Masonry NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto ko mag mason pro wla p ako exp",
+  "accept": [
+   "Masonry NC II",
+   "Masonry NC I",
+   "Masonry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "15 taon na akong kantero sa probinsya, gusto kong magpa-assess para makapag-abroad",
+  "accept": [
+   "Masonry NC II",
+   "Masonry NC I",
+   "Masonry NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mason ako for 5 years sa mga subdivision, need ko ng NC II",
+  "accept": [
+   "Masonry NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagtayo ng pader at bakod ng bahay namin, gusto kong gawing hanapbuhay",
+  "accept": [
+   "Masonry NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko ako mismo mag-hollow blocks at palitada ng extension ng bahay namin",
+  "accept": [
+   "Masonry NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Masonry NC III po, para sa finishing mason",
+  "accept": [
+   "Masonry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "finishing mason sa building",
+  "accept": [
+   "Masonry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "kanterong pang-finishing",
+  "accept": [
+   "Masonry NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-tiles at taga-finishing ng sahig",
+  "accept": [
+   "Masonry NC III",
+   "Tile Setting NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magkabit ng tiles sa sahig at banyo",
+  "accept": [
+   "Masonry NC III",
+   "Tile Setting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-finish ng concrete floor na makinis",
+  "accept": [
+   "Masonry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-aayos ng mga bitak at hindi pantay na pader na semento",
+  "accept": [
+   "Masonry NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-steel trowel finish ng sahig habang basa pa ang semento",
+  "accept": [
+   "Masonry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagre-repair ng honeycomb at depekto sa poste at pader",
+  "accept": [
+   "Masonry NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tile setting sa kitchen counter at wall",
+  "accept": [
+   "Masonry NC III",
+   "Tile Setting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "finishing mason",
+  "accept": [
+   "Masonry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpapakinis ng sahig",
+  "accept": [
+   "Masonry NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "finising mason nc3",
+  "accept": [
+   "Masonry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "kantero na pang finishng po",
+  "accept": [
+   "Masonry NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong kantero at ako na ang nagfi-finishing, gusto ko ng NC III",
+  "accept": [
+   "Masonry NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa masonry, gusto ko mag-upgrade sa next level",
+  "accept": [
+   "Masonry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko yung trabaho na ako ang nagpapakinis ng sahig at pader bilang huling ayos ng bahay",
+  "accept": [
+   "Masonry NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako yung tinatawag pag may bitak o pangit na plaster sa site",
+  "accept": [
+   "Masonry NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "PV System Design NC III, may offering ba",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "solar system designer",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-disenyo ng solar panel system ng bahay",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagaplano ng solar power system",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagko-compute ako kung ilang solar panel at baterya ang kailangan ng isang bahay",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-sizing ng inverter at battery bank",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng bill of materials para sa solar project",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-alam sa konsumo ng kuryente ng kliyente bago magdisenyo ng solar",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng wiring diagram at layout ng solar panels sa bubong",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "load analysis at system sizing ng off-grid solar",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "solar design",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "disenyo ng solar",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "solar sistem dezign",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pano mg compute ng solar panel pra sa bahay",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "electrical engineer ako at nagdidisenyo na ng solar setup, gusto ko ng NC III",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa PV installation, gusto ko naman mag-design",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng negosyong nagpaplano ng solar para sa mga bahay at tindahan",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ang taas ng bill namin sa kuryente, gusto ko matutong magplano ng sariling solar setup",
+  "accept": [
+   "PV System Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "PV Systems Installation NC II po, kelan start",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "solar panel installer",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-kabit ng solar panel sa bubong",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "solar technician",
+  "accept": [
+   "PV Systems Installation NC II",
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng solar panel at mounting sa bubong",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-install ng inverter at battery ng solar",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-inspeksiyon ng bubong at lugar bago maglagay ng solar",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-test at i-commission ang bagong solar setup",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-check kung tama ang specs ng panel, kable at breaker bago ikabit",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "wiring ng solar panels papunta sa charge controller",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "solar installer",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "kabit solar",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "solar panle instaler",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg kabit ng solar",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "2 taon na akong helper ng solar installer, gusto kong magpa-assess",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "electrician ako na nag-i-install na rin ng solar, need ko ng NC II sa PV",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dumarami ang naglalagay ng solar sa amin, gusto kong pasukin ang trabahong yun",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko magtrabaho sa renewable energy na hands-on sa bubong",
+  "accept": [
+   "PV Systems Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "PV Systems Servicing NC III, may training ba dito",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "solar repair technician",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-ayos ng sirang solar system",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "solar maintenance technician sa solar farm",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang solar setup na hindi na nagcha-charge ng baterya",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-troubleshoot ng inverter na nag-e-error",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano hanapin kung aling panel ang sira gamit multimeter",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagbabantay sa output ng solar system araw-araw",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpapalit ng sirang charge controller at kable ng solar",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "preventive maintenance at cleaning ng solar panels sa solar farm",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "solar repair",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "ayos solar",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "solar sirvicing nc3",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "sira solar nmin pano ayusin",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 taon na akong technician sa solar farm, gusto ko ng NC III sa servicing",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may PV installation NC II na ako, gusto ko mag-level up sa servicing",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "maraming solar sa amin ang nasisira pagkatapos ng bagyo, gusto kong ako ang mag-ayos",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko ng trabaho sa solar farm na nagmo-monitor ng performance ng panels",
+  "accept": [
+   "PV Systems Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Pipefitting NC II po, kailan ang assessment",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "pipefitter sa planta",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging pipefitter abroad",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-kabit ng tubong bakal sa pabrika",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng malalaking tubong bakal sa refinery",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto magbasa ng isometric drawing ng piping",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-fabricate ng spool pipe at flange",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglalagay ng underground na tubong bakal sa planta",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagkakabit ng pipe support at mga tubong nakabitin sa kisame ng pabrika",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-fit-up ng elbow at tee bago i-weld",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pipefitter",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tubong bakal",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "paypfiter abroad",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pipe fiter nc2 po",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "8 taon na akong pipefitter sa mga planta, kailangan ko ng NC II para sa Saudi",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "pipefitter helper ako for 3 years sa shipyard, gusto ko magpa-assess",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa oil refinery na nagkakabit ng mga tubo",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "naiinggit ako sa tito ko sa Qatar, nag-i-install siya ng pipeline sa planta",
+  "accept": [
+   "Pipefitting (Metallic) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Plumbing NC I po, pwede ba sa beginner",
+  "accept": [
+   "Plumbing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "plumber helper",
+  "accept": [
+   "Plumbing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tubero",
+  "accept": [
+   "Plumbing NC I",
+   "Plumbing NC II",
+   "Plumbing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "baguhang tubero",
+  "accept": [
+   "Plumbing NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magdugtong ng PVC na tubo gamit ang solvent",
+  "accept": [
+   "Plumbing NC I",
+   "Plumbing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagkakabit ng isang lababo sa kusina",
+  "accept": [
+   "Plumbing NC I",
+   "Plumbing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-thread at mag-joint ng GI pipe",
+  "accept": [
+   "Plumbing NC I",
+   "Plumbing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng layout ng tubo bago magkabit sa bahay",
+  "accept": [
+   "Plumbing NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paghuhukay at pagbubuhos ng semento para sa daanan ng tubo",
+  "accept": [
+   "Plumbing NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "install ng inidoro at gripo sa isang CR",
+  "accept": [
+   "Plumbing NC I",
+   "Plumbing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tubero",
+  "accept": [
+   "Plumbing NC I",
+   "Plumbing NC II",
+   "Plumbing NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "basic plumbing",
+  "accept": [
+   "Plumbing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tuberu po aq gsto",
+  "accept": [
+   "Plumbing NC I",
+   "Plumbing NC II",
+   "Plumbing NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "plambing nc1 sched",
+  "accept": [
+   "Plumbing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalawang taon na akong tumutulong sa tito kong tubero, gusto ko ng sertipiko",
+  "accept": [
+   "Plumbing NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit na ako ng gripo at lababo sa bahay namin, gusto ko ng NC I",
+  "accept": [
+   "Plumbing NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako na ang mag-ayos ng tubo sa bahay para hindi na kami tumawag ng iba",
+  "accept": [
+   "Plumbing NC I",
+   "Plumbing NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko ng skill na mabilis pagkakitaan tulad ng pagkakabit ng tubo at gripo",
+  "accept": [
+   "Plumbing NC I",
+   "Plumbing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Plumbing NC II, may slot pa ba sa batch",
+  "accept": [
+   "Plumbing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "tubero sa mga gusali",
+  "accept": [
+   "Plumbing NC II",
+   "Plumbing NC I",
+   "Plumbing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "plumber sa construction",
+  "accept": [
+   "Plumbing NC II",
+   "Plumbing NC I",
+   "Plumbing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-ayos ng tagas sa mga condo",
+  "accept": [
+   "Plumbing NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aayos ako ng tumatagas na tubo at gripo",
+  "accept": [
+   "Plumbing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-pressure test ng tubo para malaman kung may leak",
+  "accept": [
+   "Plumbing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-compute ng materyales para sa tubo ng ilang banyo",
+  "accept": [
+   "Plumbing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng plumbing ng maraming CR sa isang building",
+  "accept": [
+   "Plumbing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-alis ng bara sa lababo at inidoro",
+  "accept": [
+   "Plumbing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "repair at maintenance ng water line ng bahay",
+  "accept": [
+   "Plumbing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagas ng tubo",
+  "accept": [
+   "Plumbing NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "plumber",
+  "accept": [
+   "Plumbing NC II",
+   "Plumbing NC I",
+   "Plumbing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "plumer nc2 po",
+  "accept": [
+   "Plumbing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga ayus ng tagas ng tubo",
+  "accept": [
+   "Plumbing NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 taon na akong tubero, gusto kong magpa-assess para sa NC II",
+  "accept": [
+   "Plumbing NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught plumber ako sa mga subdivision, need ko ng certificate",
+  "accept": [
+   "Plumbing NC II",
+   "Plumbing NC I",
+   "Plumbing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "laging may tagas sa barangay namin at ako ang tinatawag nila",
+  "accept": [
+   "Plumbing NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko mag-maintenance sa building para sa mga sirang CR at tubo",
+  "accept": [
+   "Plumbing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Plumbing NC III po, may training ba",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "plumbing foreman sa high-rise",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "lead plumber sa malaking building",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapamahala ng mga tubero sa proyekto",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-install ng water pump at pressure tank",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagkakabit ng tubo ng mainit at malamig na tubig sa hotel",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-i-install ako ng riser at distribution pipe sa high-rise",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagsasaayos ng mga fixture at finishing ng banyo bago i-turnover",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangangasiwa sa mga tubero at pag-check ng trabaho nila",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano magkabit ng booster pump sa tangke ng tubig",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "hot water piping",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "bomba ng tubig",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "plumbng nc3 requirments",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tubero n pang hayrayz building",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa plumbing at 5 taon nang tubero, gusto kong mag-NC III",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "plumbing supervisor ako sa site, need ko ng higher cert",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang humawak ng buong sistema ng tubo ng mga hotel at ospital",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko ma-assign sa plumbing ng mga high-rise condo",
+  "accept": [
+   "Plumbing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Reinforcing Steel Works NC II, saan may training",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "steelman sa construction",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "magbabakal sa construction",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-tali ng bakal sa poste at biga",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpuputol at nagbabaluktot ako ng rebar",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto magtali ng bakal para sa slab at poste",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano magbasa ng bar schedule at magputol ng rebar ayon sa sukat",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggawa ng estribo para sa biga at poste",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-install ng rebar sa footing bago buhusan",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "bar bending at cutting gamit ang makina sa site",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "rebar",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tali ng bakal",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "stilman sa konstruksyon",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "rebar workr nc2",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "6 na taon na akong steelman, gusto ko ng NC II para sa abroad",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "rebar fixer ako sa high-rise projects, need ko ng certification",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako lagi ang inuutusang magtali ng bakal ng foreman namin",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko yung trabaho sa construction na hawak ang bakal bago buhusan ng semento",
+  "accept": [
+   "Reinforcing Steel Works NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Rigging NC I po, may schedule ba",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "rigger sa construction",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "signalman ng crane",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-kabit ng lubid at kadena sa ibubuhat ng crane",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-iinspeksiyon ako ng sling, shackle at wire rope bago magbuhat",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto magtali ng karga para sa crane",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-hand signal sa crane operator",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagkakabit ng sling sa bakal na ibubuhat ng crane",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paggamit ng tagline para i-guide ang load habang binubuhat",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagtantiya kung kaya ng sling ang bigat ng karga",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "rigger",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagasenyas ng crane",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "rigar sa site",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "rigr nc1 traning",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 taon na akong rigger sa shipyard pero walang sertipiko",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "signalman ako sa high-rise project, need ko ng NC I para ma-promote",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagsesenyas sa operator kapag nagbubuhat ng bakal ang crane",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko maging part ng lifting team sa construction pero hindi operator",
+  "accept": [
+   "Rigging NC I"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Scaffolding Works NC II po, available ba",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "scaffolder sa construction",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-plantsa sa construction",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-tayo ng scaffolding sa gusali",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtatayo at nagbabaklas ako ng scaffolding",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-assemble ng frame scaffold nang safe",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-aayos at pagtatambak ng mga tubo at clamp ng scaffold",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano maglagay ng base plate at bracing sa plantsa",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "dismantling ng scaffold pagkatapos ng painting job sa building",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-check kung matibay ang plantsa bago akyatin ng mga trabahador",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "plantsa sa construction",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "scaffolder",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "skapolder sa site",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "scafolding nc2 po",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "4 na taon na akong scaffolder sa refinery, gusto ko ng NC II",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "experienced scaffolder sa shutdown projects, need ko TESDA cert",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagtatayo ng tinutuntungan ng mga trabahador sa matataas na pader",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko magtrabaho sa taas pero hindi pagpipintura, yung nagse-setup ng tinatapakan nila",
+  "accept": [
+   "Scaffolding Works NC II (Supported Type Scaffold)"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Structural Erection NC II, may training ba",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "steel erector sa construction",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-kabit ng bakal na istruktura ng gusali",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "structural ironworker sa high-rise",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng steel beam at column ng bodega",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-bolt at mag-fit-up ng steel beams",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagpo-posisyon ng bakal na poste habang binubuhat ng crane",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tack welding ng steel members bago i-full weld",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-align at pagtutuwid ng hulog ng bakal na poste",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "assembly ng steel truss sa bubong ng pabrika",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "steel erector",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "bakal na istruktura",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "structual erector",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "stil erektor sa site",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 taon na akong nagkakabit ng steel frame ng bodega, gusto ko ng NC II",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "steel erector ako sa warehouse projects, need ko ng certification",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang nagtatayo ng balangkas na bakal ng mga pabrika at mall",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko yung trabaho na umaakyat sa steel frame ng building at nagbo-bolt",
+  "accept": [
+   "Structural Erection NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "System Formworks Installation NC II po, saan meron",
+  "accept": [
+   "System Formworks Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "formworks installer sa high-rise",
+  "accept": [
+   "System Formworks Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-kabit ng aluminum formworks",
+  "accept": [
+   "System Formworks Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-porma ng pader at slab gamit ang system formworks",
+  "accept": [
+   "System Formworks Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-assemble ako ng aluminum na porma para sa pader at slab",
+  "accept": [
+   "System Formworks Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-install ng shoring at props sa ilalim ng slab",
+  "accept": [
+   "System Formworks Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagbabaklas ng system formworks pagkatapos tumigas ang semento",
+  "accept": [
+   "System Formworks Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-align at i-brace ang system formwork bago buhusan",
+  "accept": [
+   "System Formworks Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paglilinis at paglalagay ng form oil sa mga panel ng porma",
+  "accept": [
+   "System Formworks Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "stripping at paglipat ng table forms sa susunod na floor",
+  "accept": [
+   "System Formworks Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "system formworks",
+  "accept": [
+   "System Formworks Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "porma sa construction",
+  "accept": [
+   "System Formworks Installation NC II",
+   "Carpentry NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "formwork instaler nc2",
+  "accept": [
+   "System Formworks Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pormworks sa site po",
+  "accept": [
+   "System Formworks Installation NC II",
+   "Carpentry NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 taon na akong formworks installer sa condo project, gusto ko ng NC II",
+  "accept": [
+   "System Formworks Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "experience ko ay aluminum formworks sa high-rise, need ko ng TESDA cert",
+  "accept": [
+   "System Formworks Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagbubuo ng hulmahan bago buhusan ng semento ang bawat palapag",
+  "accept": [
+   "System Formworks Installation NC II",
+   "Carpentry NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko magtrabaho sa modern construction na mabilis ang buhos ng bawat floor",
+  "accept": [
+   "System Formworks Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Technical Drafting NC II, kailan ang enrollment",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging draftsman sa construction",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "AutoCAD operator sa architectural firm",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-drawing ng plano ng bahay",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng floor plan at elevation ng bahay",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-AutoCAD para sa plano ng building",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-drawing ng electrical layout ng bahay",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng plumbing at sanitary layout sa plano",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pagguhit ng detalye ng poste, biga at footing",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "drafting ng mechanical layout ng aircon at ducting sa building",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "drafting",
+  "accept": [
+   "Technical Drafting NC II",
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "plano ng bahay",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "draftsmn nc2",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mtuto mg autocad",
+  "accept": [
+   "Technical Drafting NC II",
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 taon na akong draftsman ng isang contractor, gusto ko ng NC II",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught ako sa AutoCAD at nagde-drawing ng house plans, need ko ng certificate",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig akong gumuhit ng mga bahay mula pagkabata, pwede ko ba itong gawing trabaho",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko magtrabaho sa architecture office kahit hindi ako graduate ng college",
+  "accept": [
+   "Technical Drafting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ }
+]

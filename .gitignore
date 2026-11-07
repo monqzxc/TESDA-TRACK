@@ -8,6 +8,8 @@ __pycache__/
 backend/models/*
 !backend/models/README.md
 backend/seed/sources/tr-pdfs/
+# Source PDFs for the labor-demand CSVs (26 MB+); the CSVs and README are kept.
+backend/seed/sources/labor_demand/pdfs/
 T2MISDB.bak
 *.bak
 worker_profiles_*.csv
@@ -32,4 +34,8 @@ tesda-e5-small-v4-colab-1.zip
 /.railway
 /tmp32ao24ul
 /.vscode
+tesda-e5-small-v5-mvp.zip
+tesda-e5-small-v6-colab.zip
+docs/aws-ec2-runbook.md
+/models
 31-TRACKER_IFRAME_INTEGRATION.md

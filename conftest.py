@@ -26,6 +26,10 @@ os.environ.update({
     "SECRET_KEY": "test-only-secret-key-that-is-long-enough-0123456789",
     # Tests use an injected test embedder; the real model is exercised only by opt-in tests.
     "SEMANTIC_SEARCH_ENABLED": "false",
+    "TSP_SIGN_IN_ENABLED": "false",
+    "HERCULES_BASE_URL": "",
+    "TRACKER_CLIENT_ID": "",
+    "TRACKER_CLIENT_SECRET": "",
     "SKILLS_BRIDGE_BASE_URL": "",
     "SKILLS_BRIDGE_API_TOKEN": "",
     "SKILLS_BRIDGE_CLIENT_ID": "",

@@ -25,41 +25,8 @@
 .tsp-webview input {
   font: inherit;
 }
-.tsp-header {
-  height: 112px;
-  background: #073da5;
-  color: white;
-}
-.tsp-header-inner {
-  position: relative;
-  display: flex;
-  align-items: end;
-  justify-content: center;
-  max-width: 760px;
-  height: 100%;
-  margin: auto;
-  padding: 0 20px 18px;
-  font-size: 20px;
-  font-weight: 650;
-  letter-spacing: 0.01em;
-}
-.tsp-header-inner button {
-  position: absolute;
-  bottom: 12px;
-  left: 18px;
-  width: 34px;
-  height: 34px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: white;
-  font-size: 30px;
-  line-height: 1;
-  cursor: pointer;
-}
 .tsp-main {
   max-width: 760px;
-  min-height: calc(100dvh - 112px);
   margin: auto;
   padding-bottom: max(32px, env(safe-area-inset-bottom));
   outline: none;
@@ -619,10 +586,44 @@
 }
 
 /* Signing in from TSP: the consent step and the notice when signing in didn't work. */
+.tsp-consent {
+  margin: 16px;
+  padding: 20px;
+}
+
+.tsp-consent h1 {
+  margin: 0 0 16px;
+  font-size: 22px;
+  line-height: 1.3;
+}
+
+.tsp-consent p {
+  margin: 12px 0;
+  line-height: 1.55;
+}
+
+.tsp-consent .tsp-muted {
+  color: #52647e;
+}
+
 .tsp-consent ul {
   margin: 0.75rem 0;
   padding-left: 1.25rem;
   list-style: disc;
+}
+
+.tsp-consent .tsp-bottom-actions {
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.tsp-consent .tsp-secondary {
+  flex: 0 0 auto;
+  min-width: 88px;
+}
+
+.tsp-main-entry > [role='status'] {
+  margin: 16px;
 }
 
 .tsp-sign-in-notice {
@@ -632,4 +633,75 @@
   justify-content: space-between;
   gap: 0.5rem;
   margin-bottom: 0.75rem;
+}
+/* The Skill Passport line at the top of the goal card: a dot that pulses while data is on its way. */
+.tsp-passport {
+  margin: 0 0 12px;
+  color: var(--track-ink);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.tsp-passport > summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  list-style: none;
+}
+.tsp-passport > summary::-webkit-details-marker {
+  display: none;
+}
+p.tsp-passport {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.tsp-passport-dot {
+  flex: none;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--track-good-ink);
+}
+.tsp-passport-dot.is-busy {
+  background: var(--track-blue);
+  animation: tsp-passport-pulse 1.2s ease-in-out infinite;
+}
+.tsp-passport-toggle {
+  margin-left: auto;
+  color: var(--track-blue);
+  font-weight: 700;
+}
+.tsp-passport[open] .tsp-passport-toggle {
+  visibility: hidden;
+}
+.tsp-passport dl {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 9px 10px;
+  border-radius: 8px;
+  background: var(--track-soft);
+}
+.tsp-passport dt {
+  color: var(--track-muted);
+  font-size: 11px;
+}
+.tsp-passport dd {
+  margin: 0;
+  color: var(--track-navy);
+}
+.tsp-passport .tsp-muted {
+  margin: 6px 0 0;
+  font-size: 11px;
+}
+@keyframes tsp-passport-pulse {
+  50% {
+    opacity: 0.3;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tsp-passport-dot.is-busy {
+    animation: none;
+  }
 }

@@ -6055,6 +6055,39 @@
           }
         }
       }
+    },
+    "/api/v1/auth/tsp/profile": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Read Tsp Profile",
+        "description": "What the learner's Skill Passport held at their last sign-in. Refreshed each time they sign in from TSP.",
+        "operationId": "read_tsp_profile_api_v1_auth_tsp_profile_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TspProfile"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The learner isn't linked to a Skill Passport."
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
     }
   },
   "components": {
@@ -16427,6 +16460,56 @@
           "keeps"
         ],
         "title": "TspConsentSummary"
+      },
+      "TspProfile": {
+        "properties": {
+          "skills": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Skills"
+          },
+          "experience": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Experience"
+          },
+          "education": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Education"
+          },
+          "qualifications": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Qualifications"
+          },
+          "credentials": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Credentials",
+            "description": "Certificates, trainings, assessments and external certificates."
+          }
+        },
+        "type": "object",
+        "required": [
+          "skills",
+          "experience",
+          "education",
+          "qualifications",
+          "credentials"
+        ],
+        "title": "TspProfile",
+        "description": "The signed-in learner's Skill Passport, as kept at their last sign-in: one readable label per entry. Learner\ntext: render it as text."
       },
       "TspSessionRequest": {
         "properties": {

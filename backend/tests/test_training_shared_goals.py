@@ -111,6 +111,24 @@ def test_reviewed_goals_join_their_set_and_pending_ones_are_still_kept_out_of_tr
     assert not any("Juan" in query for queries in synthetic.values() for query in queries)
 
 
+def test_training_negatives_keep_only_reviewed_train_corrections(review_file):
+    write_review(review_file,
+                 {"goal": "Weld a gate", "accept": [MMAW, COOKERY], "shown": "Computer Systems Servicing NC II", "split": "train"},
+                 {"goal": "weld pipes", "shown": COOKERY, "split": "train"},
+                 {"goal": "Accepted recommendation", "shown": MMAW, "split": "train"},
+                 {"goal": "No wrong answer", "split": "train"},
+                 {"goal": "Pending", "shown": COOKERY, "split": "train", "review_status": "pending"},
+                 {"goal": "Rejected", "shown": COOKERY, "split": "train", "review_status": "rejected"},
+                 {"goal": "Dev goal", "shown": COOKERY, "split": "dev"},
+                 {"goal": "Sealed goal", "shown": COOKERY, "split": "sealed"})
+
+    negatives = shared_goals.train_negatives(review_file)
+    assert negatives == [
+        {"query": query, "positive_name": name, "negative_name": "Computer Systems Servicing NC II"}
+        for query in ("Weld a gate", "weld a gate") for name in (MMAW, COOKERY)
+    ] + [{"query": "weld pipes", "positive_name": MMAW, "negative_name": COOKERY}]
+
+
 def test_a_reviewed_goal_needs_a_language_and_a_qualification(review_file):
     write_review(review_file, {"goal": "Gusto ko mag weld", "lang": "", "split": "train"})
     with pytest.raises(ValueError, match="unknown lang"):

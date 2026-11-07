@@ -1,0 +1,6731 @@
+[
+ {
+  "query": "may tile setting NC II po ba kayo dito",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tile setter sa construction",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagalatag ng tiles sa mga bagong bahay",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tagakabit ng baldosa",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong maglagay ng tiles sa sahig ng sala",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto magdikit ng tiles sa pader ng CR",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano magkabit ng tiles sa pabilog na pader o poste",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aayos ako ng mga basag at natanggal na tiles sa bahay",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "I want to learn grouting at pag-level ng floor tiles",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "how to replace ng sirang tiles sa banyo without sinisira yung katabi",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "baldosa",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tiles installer",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q matuto mag tiles ng sahig",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "tyle seter job po",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 taon na akong nagti-tiles sa mga subdivision, gusto ko ng NC II",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "helper ako ng tile setter dati, pwede na ba ako magpa-assess",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang naglagay ng tiles sa bagong kusina namin at mukhang maganda naman",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "plano kong tumanggap ng bathroom renovation projects sa barangay namin",
+  "accept": [
+   "Tile Setting NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "audio production services NC I, may training ba nito",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging sound technician sa mga concert",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-ayos ng sound system sa mga handaan at kasalan",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "assistant sa recording studio",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magkabit ng speaker, mixer at mikropono sa entablado",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-set up ng sound system para sa misa at piyesta",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako yung taga-hawak ng boom mic sa shooting",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aayos ako ng mga kable ng audio kapag may ugong o walang tunog",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-troubleshoot ng mic na walang sound during live show",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tumutulong ako sa dubbing at voice recording sa studio",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sound system setup",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "soundman",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto ko mging sound tech sa banda",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "audio prodaksyon servis",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong soundman sa mga sayawan sa barangay, gusto ko ng sertipiko",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 years na akong roadie ng isang banda, pwede ba ako ma-assess sa audio",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi akong nakatayo sa likod ng mixer pag may konsiyerto sa plaza, ganun ang gusto kong trabaho",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong magtrabaho sa technical side ng radio at TV broadcast",
+  "accept": [
+   "Audio Production Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "film and video postproduction NC III po saan pwede",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging video editor",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapag-edit ng pelikula at patalastas",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "colorist o VFX artist sa production house",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-edit ng mga bidyo para sa kasal at debut",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-color grading ng mga short film",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano maglagay ng special effects sa bidyo",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng tunog ng yabag at pinto para sa pelikula gamit ang mga gamit sa bahay",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "i-sync ang audio at video bago i-export ang final cut",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako nag-oorganize at nagba-backup ng footage mula sa camera after ng shoot",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "video editing",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-edit ng bidyo",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "vidyo editor po aq",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko mag edting ng films",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "freelance video editor ako for 4 years, gusto ko ng NC III",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nag-e-edit ng vlog ng ibang tao, pwede ba akong ma-assess",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako lagi ang nag-e-edit ng mga bidyo ng barkada at gusto kong gawin itong hanapbuhay",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "dream ko magtrabaho sa post-production ng mga teleserye",
+  "accept": [
+   "Film and Video Postproduction NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may backstrap weaving NC II ba sa TESDA",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "manghahabi gamit ang habihang nakatali sa baywang",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging backstrap weaver tulad ng mga lola namin",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manghahabi ng tela sa probinsya",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II",
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong maghabi ng tela gamit ang strap sa likod",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-warp ng sinulid bago maghabi",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II",
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano maghabi ng malong at kumot sa tradisyonal na paraan na nakaupo sa sahig",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagtatapos ng gilid at palawit ng tela galing sa backstrap",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong maghabi ng disenyo ng tribu namin gamit ang backstrap loom",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahabi ako ng tela na nakatali ang isang dulo sa puno o poste",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "habi",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II",
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "backstrap loom",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "bakstrap weving",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q matuto mghabi",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II",
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "bata pa lang ako naghahabi na sa backstrap, gusto ko ng NC II para makapagturo",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "20 taon na akong naghahabi gamit ang habihang nakasabit sa baywang, pwede bang magpa-assess",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ituloy ang paghahabi ng lola ko bago ito mawala sa tribu namin",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II",
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "plano kong magbenta online ng hinabing bag at tela galing sa bundok namin",
+  "accept": [
+   "Handloom Weaving (Backstrap) NC II",
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "handloom weaving upright NC II schedule po",
+  "accept": [
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "handloom operator sa habihan",
+  "accept": [
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manghahabi sa malaking habihang kahoy na de-pedal",
+  "accept": [
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging handloom weaver",
+  "accept": [
+   "Handloom Weaving (Upright) NC II",
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong gumamit ng habihang nakatayo na may pedal sa paa",
+  "accept": [
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto maglagay ng sinulid sa malaking loom bago maghabi",
+  "accept": [
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahabi ako ng tela para sa barong at panuelo gamit ang upright loom",
+  "accept": [
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-set up ng habihang de-paa at magbilang ng sinulid",
+  "accept": [
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng tuwalya at kumot sa handloom",
+  "accept": [
+   "Handloom Weaving (Upright) NC II",
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tinatanggal ko sa habihan ang tela, pinuputol ang sobrang sinulid at tinatahi ang gilid",
+  "accept": [
+   "Handloom Weaving (Upright) NC II",
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "habihan",
+  "accept": [
+   "Handloom Weaving (Upright) NC II",
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "upright loom",
+  "accept": [
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hanlum weaving",
+  "accept": [
+   "Handloom Weaving (Upright) NC II",
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag habe sa loom na nakatayo",
+  "accept": [
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 years na akong weaver sa habihang de-pedal sa Iloilo, gusto ko ng certificate",
+  "accept": [
+   "Handloom Weaving (Upright) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong na akong maghabi sa habihang kahoy, gusto ko lang magpa-assess",
+  "accept": [
+   "Handloom Weaving (Upright) NC II",
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may lumang habihan ang lola ko sa silong at gusto kong paganahin ulit",
+  "accept": [
+   "Handloom Weaving (Upright) NC II",
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng maliit na weaving center para sa mga nanay sa barangay",
+  "accept": [
+   "Handloom Weaving (Upright) NC II",
+   "Handloom Weaving (Backstrap) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "lighting for live performances NC II available po ba",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging lights man sa mga concert",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-ilaw sa teatro at mga palabas",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "lighting operator sa events",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magkabit ng mga stage lights at moving heads",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagpapatakbo ng ilaw habang may palabas sa entablado",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-program ng ilaw na sumasabay sa tugtog",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-set up ng ilaw ayon sa lighting plot ng direktor",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbabaklas at nag-iimpake ako ng mga ilaw pagkatapos ng palabas",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilinis at nag-aayos ako ng mga sirang spotlight at kable",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "stage lights",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "ilaw sa entablado",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "laytingman sa konsert",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "lights crew po aq sa mga gig",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 years na akong lights crew sa isang production, gusto ko ng NC II",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dati akong tagailaw sa mga dula sa paaralan, pwede ba akong ma-assess",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag nanonood ako ng konsiyerto, mas tinitingnan ko pa ang mga ilaw kaysa sa kumakanta",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang nagpapailaw sa mga musical at theater play",
+  "accept": [
+   "Lighting for Live Performances NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "jewelry making NC II po, may slot pa",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging alahero",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II",
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-pulido ng alahas sa pagawaan",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "jewelry plater sa jewelry shop",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magpakinis at magpakintab ng singsing at kwintas",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-gold plating ng mga alahas",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng gomang hulmahan para sa mga alahas",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng simpleng singsing at hikaw mula sa pilak",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "I want to learn mag-solder ng chain at clasp ng bracelet",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapakintab ko ang mga lumang alahas para magmukhang bago",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "alahas",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II",
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "jewelry polishing",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "juwelri making",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II",
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q gumawa ng alahas",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II",
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 taon na akong taga-pulido sa alahasan sa Meycauayan, gusto ko ng NC II",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "helper ako sa jewelry shop, gusto ko magpa-assess sa basic jewelry making",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig akong gumawa ng sariling hikaw at gusto kong gawing negosyo",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II",
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "plano kong magbukas ng maliit na jewelry repair at plating stall sa mall",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "jewelry making fine jewelry NC III",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "stone setter sa alahasan",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-ukit ng disenyo sa singsing",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tagahulma ng ginto",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magkabit ng diyamante at bato sa singsing",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng wax carving para sa mga custom na singsing",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-casting ng ginto at pilak gamit ang wax model",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-uukit ako ng pangalan at disenyo sa mga alahas",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng masalimuot na alahas na maraming parte tulad ng kwintas na may palawit at locket",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "I want to make intricate na engagement rings na detailed ang design",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "stone setting",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "ukit sa alahas",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "jwelry engraver po",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mag cast ng gintu",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "8 years na akong platero at stone setter, gusto ko ng NC III",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa jewelry making, next step ko na ba ang NC III",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako mismo ang gumawa ng engagement ring na may diamond para sa girlfriend ko",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong magkaroon ng sariling pagawaan ng alahas na ako ang nagdidisenyo at nag-uukit",
+  "accept": [
+   "Jewelry Making (Fine Jewelry) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "consumer electronics servicing NC III, may assessment center ba dito",
+  "accept": [
+   "Consumer Electronics Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "senior technician sa repair shop ng TV at audio",
+  "accept": [
+   "Consumer Electronics Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging senior na teknisyan ng mga appliance",
+  "accept": [
+   "Consumer Electronics Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "senior cellphone technician",
+  "accept": [
+   "Consumer Electronics Servicing NC III",
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagko-commission ako ng mga bagong sound system at CCTV bago i-turnover sa kliyente",
+  "accept": [
+   "Consumer Electronics Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng sistema sa pag-repair at pagsubaybay ng mga job order sa shop namin",
+  "accept": [
+   "Consumer Electronics Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako na ang nagtuturo sa mga bagong teknisyan sa shop",
+  "accept": [
+   "Consumer Electronics Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-test at mag-commission ng home theater at smart TV setup",
+  "accept": [
+   "Consumer Electronics Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-assemble at nagse-set up ako ng mga audio-video system sa mga bahay at opisina",
+  "accept": [
+   "Consumer Electronics Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "I handle yung mahirap na repair ng appliances na hindi kaya ng ibang tech",
+  "accept": [
+   "Consumer Electronics Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "senior electronics tech",
+  "accept": [
+   "Consumer Electronics Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "CES NC3",
+  "accept": [
+   "Consumer Electronics Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "consumer elektroniks servising",
+  "accept": [
+   "Consumer Electronics Servicing NC III",
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinior teknisyan ng tibi",
+  "accept": [
+   "Consumer Electronics Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa EPAS at 6 years na sa repair, gusto ko na ng NC III",
+  "accept": [
+   "Consumer Electronics Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong teknisyan ng mga appliance at ako na nagtuturo sa mga baguhan, pwede ba akong ma-assess",
+  "accept": [
+   "Consumer Electronics Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi akong tinatawag ng amo pag may mahirap na sira na hindi kaya ng ibang teknisyan",
+  "accept": [
+   "Consumer Electronics Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging trainer ng mga technician sa electronics shop namin balang araw",
+  "accept": [
+   "Consumer Electronics Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "consumer electronics servicing NC IV requirements",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "supervisor ng mga technician sa service center ng appliances",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tagapamahala ng serbisyo sa electronics repair center",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "service supervisor sa cellphone repair center",
+  "accept": [
+   "Consumer Electronics Servicing NC IV",
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong i-manage ang buong servicing system ng electronics shop namin",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtuturo ako sa mga superbisor ng teknisyan kung paano patakbuhin ang shop",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng patakaran at proseso para sa warranty at pag-repair ng mga appliance",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nag-iiskedyul at nagbabantay sa trabaho ng mga teknisyan",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "I oversee ang quality ng mga repair at service records ng team",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "humahawak ako ng supervisor training para sa mga branch ng service center",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "electronics service supervisor",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "CES NC IV",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "suprvisor ng elektronik serbis",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "consumer electronic NC4 po",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC III na ako sa consumer electronics at supervisor na ako ngayon, gusto ko ng NC IV",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "15 taon na ako sa pag-aayos ng TV at radyo at ako na ang namamahala sa shop",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko nang tumigil sa paghawak ng tester at mag-manage na lang ng buong service center",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong maging hepe ng mga teknisyan sa isang malaking appliance center",
+  "accept": [
+   "Consumer Electronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "EIM NC III po saan pwede mag-enroll",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "industrial electrician sa pabrika",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging kapatas ng mga elektrisyan",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "electrical leadman sa construction project",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-wiring ng three-phase na linya sa pabrika",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng motor control panel at starter ng mga makina",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-ayos ng motor na ayaw umandar sa planta",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano magkabit ng metro at mga instrumentong sumusukat ng kuryente sa panel",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagra-roughing-in ako ng conduit para sa ilaw at power sa commercial building",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "I want to learn ang wiring ng DOL at star-delta starter",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "3-phase wiring",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "elektrisyan sa pabrika",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "industrail electrision",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mag wiring ng motor kontrol",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may EIM NC II na ako at 5 years sa planta, gusto ko na mag-NC III",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong elektrisyan sa isang pagawaan, gusto ko ng mas mataas na sertipiko",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako na ang mamahala sa mga elektrisyan sa site namin",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "laging nagti-trip ang breaker ng mga makina sa planta at gusto kong ako yung marunong mag-fix",
+  "accept": [
+   "Electrical Installation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "EPAS NC II po may training ba kayo",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "teknisyan ng TV at radyo",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging electronics technician",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "assembler sa electronics factory",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-ayos ng sirang bentilador, rice cooker at plantsa",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto maghinang ng mga piyesa sa circuit board",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-assemble ako ng mga electronic kit tulad ng amplifier",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano ayusin ang TV na may tunog pero walang larawan",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagre-repair ako ng power supply at control board ng mga makina sa pabrika",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "I want to fix sirang speaker at amplifier ng videoke",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "electronics repair",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "ayos TV",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "elektroniks tecnician",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mg ayos ng radyu at tibi",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught technician ako ng appliances, kailangan ko ng NC II para sa abroad",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "7 taon na akong nag-aayos ng TV at radyo sa palengke, gusto kong magpa-assess",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lahat ng sirang appliance sa bahay, ako ang nagbubukas at nag-aayos",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magbukas ng sariling electronics repair shop sa kanto",
+  "accept": [
+   "Electronic Products Assembly and Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "electronics back-end operation NC II",
+  "accept": [
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "back-end operator sa electronics company",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator sa testing at packing ng electronics sa pabrika",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manggagawa sa linya ng pag-iimpake at pagsubok ng mga piyesa ng electronics",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-operate ng molding at marking machine sa linya",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inihahanda ko ang workstation at materyales bago magsimula ang shift sa back-end",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-monitor ng output at yield ng linya",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-o-operate ako ng trim and form at test handler machine",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "chine-check ko kung pasado sa quality standard ang bawat lote bago i-ship",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglalagay ako ng mga produkto sa tape and reel at nagla-label para sa shipping",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "back-end operator",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator sa back-end",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "bakend operator po aq",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "elektroniks bakend",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "2 taon na akong operator sa back-end ng isang electronics plant, gusto ko ng NC II",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "contractual operator ako sa EOL, need ko ng NC para ma-regular",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa dulo ng linya ng pabrika kung saan sinusubok at iniimpake ang mga produkto",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "lumipat ako sa Laguna para mag-apply sa electronics plant, sa packing at testing area ako gusto",
+  "accept": [
+   "Electronics Back-end Operation NC II",
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "electronics front-of-line operation NC II po",
+  "accept": [
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "FOL operator sa electronics company",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator sa cleanroom ng pabrika",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II",
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging front-of-line operator",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II",
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-o-operate ako ng wafer saw at die attach machine",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-wire bond sa front-of-line",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahanda ako ng mga materyales at makina bago magsimula ang FOL",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magsuri sa mikroskopyo ng mga die bago ipasa sa susunod na proseso",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbabantay ako ng output at nagtatala ng rejects sa front-of-line",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naka-bunny suit ako buong shift habang nag-a-assemble ng maliliit na electronic parts",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "FOL electronics",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "die attach",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "frontof line operater",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II",
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "elektroniks FOL operetor",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "1 taon na akong FOL operator sa electronics, gusto ko ng NC II",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "experienced wire bond operator ako, pwede ba ako magpa-assess ng front-of-line",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa pabrika na naka-puting suit at gumagamit ng mikroskopyo",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II",
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-apply sa assembly ng chips sa electronics plant, yung bago pa i-mold",
+  "accept": [
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Front-of-Line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "electronics semiconductor production line machine servicing NC III",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "machine technician sa semiconductor company",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging teknisyan ng makina sa pabrika ng chips",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "equipment technician sa electronics plant",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagko-convert ako ng setup ng makina kapag nagpalit ng produkto sa linya",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-troubleshoot ng wire bonder at die bonder na nag-e-error",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-preventive maintenance at calibration ng mga makina sa production",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "binabantayan ko ang takbo ng makina at ang downtime sa linya",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano ayusin ang test handler na laging nagja-jam",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapalit ako ng sirang piyesa ng makina sa cleanroom",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "machine tech semicon",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "teknisyan ng makina sa semicon",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "semikonduktor makina teknisyan",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "machine maintenace tech po",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ako ng 4 na taon at tumutulong na ako sa pag-aayos ng makina, gusto ko ng NC III",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 years na akong equipment tech sa semicon, kailangan ko ng NC for promotion",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako palagi ang tinatawag pag huminto ang makina sa linya kahit operator lang ako",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong umangat from operator to technician sa planta namin",
+  "accept": [
+   "Electronics/Semiconductor Production Line Machine Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "HDD FOL operations NC II po",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator sa pabrika ng hard disk",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging HDD operator",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manggagawa sa pagbuo ng hard drive",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-assemble ako ng head stack ng hard disk sa cleanroom",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong gumamit ng mikroskopyo para suriin ang mga piyesa ng hard drive",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inihahanda ko ang workstation at tools bago mag-start ang shift sa HDD line",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagmo-monitor ako ng output at reject ng hard disk drive line",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong suriin kung pasado sa kalidad ang mga hard disk",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano hawakan ang maselang piyesa ng hard drive para hindi madumihan",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "hard disk operator",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "HDD",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hard disc drayb operator",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "hdd fol operater po",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dati akong operator sa pabrika ng hard drive, gusto kong magpa-assess",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 years experience sa HDD manufacturing, need ko ng NC II",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa gumagawa ng imbakan ng data ng mga computer sa Laguna",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "yung kapatid ko nag-a-assemble ng parts ng hard drive, ganun din gusto ko",
+  "accept": [
+   "Hard Disk Drive (HDD) Front-of-line (FOL) Operations NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mechatronics servicing NC II po may scholarship",
+  "accept": [
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging mechatronics technician",
+  "accept": [
+   "Mechatronics Servicing NC II",
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "installer ng automation sa pabrika",
+  "accept": [
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-kabit ng mga sensor at makina sa planta",
+  "accept": [
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magkabit ng sensor, solenoid at pneumatic cylinder",
+  "accept": [
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-wiring ng mga automation device sa conveyor",
+  "accept": [
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusubok ko kung tama ang takbo ng automated na makina pagkatapos ikabit",
+  "accept": [
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-configure ng sensor at actuator sa isang automation system",
+  "accept": [
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-assemble ako ng pneumatic at electro-pneumatic circuit sa training board",
+  "accept": [
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng pinagsamang mekanikal at elektronika sa mga makina",
+  "accept": [
+   "Mechatronics Servicing NC II",
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekatroniks",
+  "accept": [
+   "Mechatronics Servicing NC II",
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pneumatics",
+  "accept": [
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekatronix servising",
+  "accept": [
+   "Mechatronics Servicing NC II",
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mechatonics NC2",
+  "accept": [
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "electrician ako sa pabrika at sanay na sa sensors, gusto ko ng NC II sa mechatronics",
+  "accept": [
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 taon na akong nagkakabit ng automated na makina, gusto kong magpa-assess",
+  "accept": [
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig akong gumawa ng robot at maliliit na makinang gumagalaw mag-isa",
+  "accept": [
+   "Mechatronics Servicing NC II",
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa mga pabrikang puro robot at automated ang linya",
+  "accept": [
+   "Mechatronics Servicing NC II",
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mechatronics NC III po",
+  "accept": [
+   "Mechatronics Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "PLC programmer sa pabrika",
+  "accept": [
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "programmer-technician ng automation",
+  "accept": [
+   "Mechatronics Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tagaprograma ng mga makina sa planta",
+  "accept": [
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-program ng PLC gamit ang ladder diagram",
+  "accept": [
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto gumawa ng control circuit para sa conveyor at makina",
+  "accept": [
+   "Mechatronics Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagse-set up ako ng motion control ng servo at stepper motor",
+  "accept": [
+   "Mechatronics Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aayos ako ng sirang makina na pinapatakbo ng PLC",
+  "accept": [
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-configure ang sistema para sabay gumalaw ang mga motor",
+  "accept": [
+   "Mechatronics Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagre-repair at nagme-maintain ako ng automation system sa production",
+  "accept": [
+   "Mechatronics Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "PLC",
+  "accept": [
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-program ng PLC",
+  "accept": [
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pls programing",
+  "accept": [
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekatroniks NC3",
+  "accept": [
+   "Mechatronics Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa mechatronics, gusto ko na mag-level up sa NC III",
+  "accept": [
+   "Mechatronics Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ilang taon na akong nag-aayos ng PLC sa planta, gusto ko ng sertipiko",
+  "accept": [
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang gagawa ng programang nagpapatakbo sa mga makina ng planta",
+  "accept": [
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "na-amaze ako sa automated na bottling line, gusto ko ma-program ang ganun",
+  "accept": [
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mechatronics servicing NC IV schedule ng assessment",
+  "accept": [
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging industrial automation technician",
+  "accept": [
+   "Mechatronics Servicing NC IV",
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "HMI at PLC programmer sa planta",
+  "accept": [
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "senior na teknisyan ng automation sa pabrika",
+  "accept": [
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong gumawa ng HMI screen na naka-connect sa PLC",
+  "accept": [
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagko-commission ako ng bagong automated line bago i-turnover",
+  "accept": [
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-diagnose ng mahirap na sira sa PLC at HMI system",
+  "accept": [
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpo-program ako ng advanced na PLC na may analog at network communication",
+  "accept": [
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng touchscreen na kontrol para sa mga makina sa planta",
+  "accept": [
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaalam ko kung bakit humihinto ang buong automated na sistema at inaayos ko ito",
+  "accept": [
+   "Mechatronics Servicing NC IV",
+   "Mechatronics Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "HMI programming",
+  "accept": [
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "automation sa planta",
+  "accept": [
+   "Mechatronics Servicing NC IV",
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mechatronix NC4",
+  "accept": [
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "otomasyon teknisyan",
+  "accept": [
+   "Mechatronics Servicing NC IV",
+   "Mechatronics Servicing NC III",
+   "Mechatronics Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC III na ako sa mechatronics at 6 na taon sa planta, gusto ko ng NC IV",
+  "accept": [
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "senior automation tech ako, need ko ng NC IV para sa abroad",
+  "accept": [
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang hawak sa buong automation ng planta from programming hanggang commissioning",
+  "accept": [
+   "Mechatronics Servicing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong maging pinakamagaling na teknisyan sa mga robot ng pabrika kahit walang diploma",
+  "accept": [
+   "Mechatronics Servicing NC IV",
+   "Mechatronics Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mobile phones and handheld gadgets servicing NC III",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "teknisyan ng cellphone",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging cellphone repairman",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-ayos ng tablet at cellphone sa mall",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magpalit ng LCD at battery ng cellphone",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-reprogram at mag-flash ng software ng android",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano ayusin ang cellphone na nabasa at ayaw nang bumukas",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagre-reball at nagso-solder ako ng IC sa board ng phone",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaalam ko muna kung hardware o software ang sira ng gadget bago ayusin",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusubok ko ang camera, speaker at charging port pagkatapos mag-repair at itinatala ko",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "cp repair",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "ayos selpon",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "selpon teknisyan",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "cellfone repair po gusto q",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "4 na taon na akong nag-aayos ng cellphone sa puwesto ko, gusto ko ng NC III",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught phone tech ako, natuto lang sa mga video online, need ko ng certificate",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lahat ng sirang cellphone ng mga kapitbahay sa akin dinadala",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magbukas ng gadget repair stall sa palengke",
+  "accept": [
+   "Mobile Phones and Handheld Gadgets Servicing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "semiconductor back-end operation NC II",
+  "accept": [
+   "Semiconductor Back-End Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator sa back-end ng semiconductor company",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manggagawa sa pagsubok ng mga chip sa pabrika",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging operator sa end-of-line ng semicon",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-o-operate ako ng mold press para sa encapsulation ng chips",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-plating at mag-mark ng mga IC",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inihahanda ko ang work area at lot traveler bago magsimula sa back-end",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko sa mikroskopyo ang mga chip kung may lamat o depekto bago ibalot",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbabantay ako ng yield at nag-uulat kapag dumami ang reject sa linya",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-operate ng final test at pagbabalot ng chips",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "semicon back-end",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pag-test ng chips",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "semikondaktor bakend",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "semicon BE operater",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 taon na ako sa back-end ng isang semiconductor plant sa Cavite, gusto ko ng NC II",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "agency worker ako sa semicon, need ko ng NC II para ma-direct hire",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong makapasok sa pabrika ng microchips na ipinapadala sa ibang bansa, sa pagbabalot at pagsubok",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "yung ate ko nasa semicon, malaki ang OT, gusto ko rin doon sa back-end",
+  "accept": [
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "semiconductor front-of-line operation NC II",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "FOL operator sa semiconductor",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator sa wafer area ng semicon",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manggagawa sa cleanroom ng pabrika ng chips",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-o-operate ako ng wafer mount at wafer saw sa semicon",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-die attach at mag-cure ng epoxy",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahanda ako ng mga wafer at materyales bago magsimula ang proseso",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "binabantayan ko sa wire bond kung tama ang pagkakakabit ng maliliit na kawad",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong suriin ang wafer kung may gasgas o dumi",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilista ako ng output at rejects ng FOL every shift",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "semicon FOL",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng wafer",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "semikonduktor front of lyn",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "wirebond operater po",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalawang taon na akong wire bond operator sa isang semicon, gusto kong magpa-assess",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ex-FOL operator ako sa semiconductor, need ko ng NC II para makabalik",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho kung saan binubuo ang mga chip ng cellphone at computer",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II",
+   "Semiconductor Back-End Operation NC II",
+   "Electronics Back-end Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ok lang sa akin naka-bunny suit buong araw basta stable ang work sa semicon",
+  "accept": [
+   "Semiconductor Front-of-Line Operation NC II",
+   "Electronics Front-of-line Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "furniture making finishing NC II po",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapagbarnis ng muwebles",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging furniture finisher",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pintor ng muwebles sa pagawaan",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magliha at magmasilya ng mesa bago pinturahan",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-spray ng lacquer at barnis gamit ang spray gun",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano pakintabin ang upuang narra",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilinis at nagme-maintain ako ng spray gun at spray booth",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-apply ako ng stain at sealer sa mga cabinet",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos at pinipinturahan kong muli ang mga lumang aparador para magmukhang bago",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "barnis",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "wood finishing",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "furnichur finisher",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag barniz ng muebles",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "8 taon na akong taga-spray sa pagawaan ng muwebles sa Pampanga, gusto ko ng NC II",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "furniture painter ako abroad dati, need ko ng certificate pang-apply ulit",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may mga lumang upuan si lola na gusto kong pakintabin at ibenta ulit",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "plano kong mag-offer ng furniture refinishing service sa mga bahay dito sa amin",
+  "accept": [
+   "Furniture Making (Finishing) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "dressmaking NC II po may enrollment ba",
+  "accept": [
+   "Dressmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "mananahi ng damit pambabae",
+  "accept": [
+   "Dressmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging modista",
+  "accept": [
+   "Dressmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "garment sewer sa pabrika",
+  "accept": [
+   "Dressmaking NC II",
+   "Tailoring NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong manahi ng blusa at palda",
+  "accept": [
+   "Dressmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng padron ng bestida",
+  "accept": [
+   "Dressmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-sukat at mag-cut ng tela para sa dress",
+  "accept": [
+   "Dressmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nananahi ako ng uniporme ng mga estudyante gamit ang makina",
+  "accept": [
+   "Dressmaking NC II",
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglalagay ako ng butones, siper at laylayan sa mga damit",
+  "accept": [
+   "Dressmaking NC II",
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "I want to learn mag-draft ng pattern ng gown at casual dress",
+  "accept": [
+   "Dressmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pananahi",
+  "accept": [
+   "Dressmaking NC II",
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "sewing",
+  "accept": [
+   "Dressmaking NC II",
+   "Tailoring NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "dresmaking po",
+  "accept": [
+   "Dressmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q matuto manahe ng damit",
+  "accept": [
+   "Dressmaking NC II",
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 taon na akong modista sa bahay, gusto ko ng NC II para makapag-abroad",
+  "accept": [
+   "Dressmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "sewer ako sa garments factory, pwede ba ako magpa-assess sa dressmaking",
+  "accept": [
+   "Dressmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi kong tinatahi at binabago ang mga damit ng mga anak ko",
+  "accept": [
+   "Dressmaking NC II",
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-open ng small dress shop na ako ang tumatahi",
+  "accept": [
+   "Dressmaking NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "fashion design apparel NC III",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging fashion designer",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagadisenyo ng damit",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "fashion stylist o illustrator",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagdodrowing ako ng mga disenyo ng damit at gown",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong kuwentahin ang tela at materyales para sa isang koleksyon",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-supervise ng mass production ng damit sa pabrika",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko kung tama ang tahi at sukat ng tapos na damit bago ibenta",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpo-promote ako ng sariling clothing line sa fashion show at online",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "I handle ang packaging at pagpapadala ng mga order ng damit ng brand namin",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "fashion design",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "disenyo ng damit",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fashon dezigner",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mging designer ng damet",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa dressmaking at gumagawa na ng sariling designs, gusto ko ng NC III",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagdidisenyo ng gown para sa mga pageant sa probinsya, gusto kong magpa-assess",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong magkaroon ng sariling clothing brand",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig akong mag-sketch ng mga damit sa kuwaderno simula bata pa ako",
+  "accept": [
+   "Fashion Design (Apparel) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "tailoring NC II po saan meron",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging sastre",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "mananahi ng pantalon at polo",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tailor sa patahian",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong manahi ng pantalong panlalaki",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng barong at amerikana",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-take ng sukat at mag-draft ng pattern ng polo",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapaikli at nagpapaliit ako ng pantalon ng mga suki ko",
+  "accept": [
+   "Tailoring NC II",
+   "Dressmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "I want to learn mag-cut ng tela para sa slacks at blazer",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng butones at nagtatastas ng tahi para ayusin ang uniporme",
+  "accept": [
+   "Tailoring NC II",
+   "Dressmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "patahian",
+  "accept": [
+   "Tailoring NC II",
+   "Dressmaking NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tailor shop",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "tayloring NC2",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mging sastri",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "15 taon na akong sastre sa palengke, gusto ko ng NC II",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "tailor ako sa uniform shop, need ko ng certification for Canada",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako na ang tumahi ng barong ko sa kasal",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "plano kong magbukas ng alteration at tailoring shop malapit sa school",
+  "accept": [
+   "Tailoring NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "barbering NC II po",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging barbero",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manggugupit sa barberya",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "barber sa barbershop",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-gupit ng fade at undercut",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-ahit ng balbas at bigote gamit ang labaha",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkukulay ako ng buhok ng mga lalaking parokyano",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-hair and scalp treatment sa barbershop",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "minamasahe ko ang balikat at ulo ng parokyano pagkatapos gupitan",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "I want to learn mag-trim at mag-style ng beard",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gupit",
+  "accept": [
+   "Barbering NC II",
+   "Hairdressing NC II",
+   "Hairdressing NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "barbershop",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "barbiro po aq",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "barbring NC2",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 taon na akong naggugupit sa barberya, gusto ko ng NC II",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught barber ako, nagho-home service ng haircut, need ko ng certificate",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang laging naggugupit ng buhok ng mga pinsan at kapatid kong lalaki",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng sariling barbershop sa kanto namin",
+  "accept": [
+   "Barbering NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "beauty care nail care NC II po",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "manikurista sa salon",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging manikurista at pedikurista",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nail technician sa spa",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II",
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong maglinis at magkulay ng kuko sa kamay at paa",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-foot spa at hand spa",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagho-home service ako ng manicure at pedicure sa mga kapitbahay",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano tanggalin ang cuticle nang hindi nasusugatan ang customer",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "binababad, kinikiskis at minamasahe ko ang paa ng mga suki",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaalagaan ko ang kuko ng mga matatanda sa bahay, ginugupit at nililinis",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "kuko",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II",
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mani pedi",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "manikyur pedikyur",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "nail kare NC2",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "8 taon na akong manikurista sa parlor, gusto ko ng NC II",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "home service mani-pedi ako for 3 years, pwede ba ako magpa-assess",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang taga-ayos ng kuko ng mga tita ko tuwing may okasyon",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng maliit na nail spa sa harap ng bahay",
+  "accept": [
+   "Beauty Care (Nail Care) Services NC II",
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "nail enhancement technology NC III",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging nail specialist",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nail artist sa salon",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-gawa ng pekeng kuko sa salon",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong maglagay ng acrylic nails at gel extension",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng nail art at 3D na disenyo sa kuko",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano magtanggal ng gel polish nang hindi nasisira ang kuko",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-apply ako ng polygel at tips para humaba ang nails",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inihahanda ko ang UV lamp, primer at mga brush bago mag-gel",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapayuhan ko ang kliyente kung paano alagaan ang kuko pagkatapos ng extension",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gel nails",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pahaba ng kuko",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "akrilik nails",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "nail extention specialist",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa nail care, gusto ko naman ng nail enhancement",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 taon na akong gumagawa ng gel at acrylic sa bahay, gusto kong magpa-assess",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi akong nanonood ng magagandang disenyo ng kuko at ginagaya ko sa sarili ko",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-offer ng nail extensions sa mga bride at debutante",
+  "accept": [
+   "Beauty Care (Nail Enhancement Technology) Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "beauty care skin care NC II po",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging facialist",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-wax sa parlor",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "beauty therapist sa spa",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong maglinis ng mukha at magtanggal ng blackheads",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-wax ng kilikili at binti",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-apply ako ng body scrub sa mga customer ng spa",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gawin ang facial step by step para sa oily skin",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtatanggal ako ng buhok sa mukha gamit ang sinulid",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglalagay ako ng mask at toner pagkatapos linisin ang mukha ng kliyente",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "facial",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "linis mukha",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fashal treatment",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mg waks ng balahibo",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 taon na akong taga-facial sa isang beauty clinic, gusto ko ng NC II",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "spa attendant ako, body scrub at waxing ang trabaho ko, need ko ng NC",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig akong mag-skincare at ako ang nagfe-facial sa mga pinsan ko",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng maliit na pa-facial at pa-wax sa bahay",
+  "accept": [
+   "Beauty Care (Skin Care) Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "bookkeeping NC III po",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging bookkeeper",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagatala ng libro ng kuwenta sa negosyo",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "accounting clerk sa opisina",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagre-record ako ng mga resibo at gastos sa journal",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng trial balance",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng income statement at balance sheet ng maliit na tindahan",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inililipat ko ang mga entry mula journal papunta sa ledger",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang may hawak ng listahan ng benta, utang at gastos ng sari-sari store namin",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko kung may butas sa paghawak ng pera at resibo ng kumpanya",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "bookkeeping",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "libro ng kuwenta",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "bukkeeper",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg bokkiping",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 years na akong accounting clerk sa isang hardware store, gusto ko ng NC III",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong humahawak ng libro ng kooperatiba namin, pwede ba akong magpa-assess",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "magaling ako sa numbers at gusto kong humawak ng records ng pera ng negosyo",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagbabalanse ng kita at gastos ng karinderya ng nanay ko tuwing katapusan",
+  "accept": [
+   "Bookkeeping NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "caregiving NC II po, kailan ang next batch",
+  "accept": [
+   "Caregiving NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging caregiver sa abroad",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Elderly) NC II",
+   "Caregiving (Newborn to Pre-Schooler) NC II",
+   "Caregiving (Grade Schooler to Adolescent) NC II",
+   "Caregiving (Clients with Special Needs) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapag-alaga ng matatanda",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Elderly) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "yaya ng sanggol",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Newborn to Pre-Schooler) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong magpaligo, magpakain at magpainom ng gamot sa lolo ko",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Elderly) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aalaga ako ng batang may autism sa bahay",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Clients with Special Needs) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magpalit ng diaper at magtimpla ng gatas ng baby",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Newborn to Pre-Schooler) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tinuturuan ko ang mga bata ng laro at kanta para sa kanilang paglaki",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Newborn to Pre-Schooler) NC II",
+   "Caregiving (Grade Schooler to Adolescent) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-first aid kapag nadulas o nabulunan ang inaalagaan",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Elderly) NC II",
+   "Caregiving (Newborn to Pre-Schooler) NC II",
+   "Caregiving (Grade Schooler to Adolescent) NC II",
+   "Caregiving (Clients with Special Needs) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilinis ako ng kwarto, naglalaba at nagluluto para sa matandang inaalagaan ko",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Elderly) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "caregiver",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Elderly) NC II",
+   "Caregiving (Newborn to Pre-Schooler) NC II",
+   "Caregiving (Grade Schooler to Adolescent) NC II",
+   "Caregiving (Clients with Special Needs) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "alaga ng matanda",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Elderly) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "keyrgiver",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Elderly) NC II",
+   "Caregiving (Newborn to Pre-Schooler) NC II",
+   "Caregiving (Grade Schooler to Adolescent) NC II",
+   "Caregiving (Clients with Special Needs) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg alaga ng lola",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Elderly) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 years na akong caregiver sa Israel, kailangan ko ng NC II para makabalik",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Elderly) NC II",
+   "Caregiving (Newborn to Pre-Schooler) NC II",
+   "Caregiving (Grade Schooler to Adolescent) NC II",
+   "Caregiving (Clients with Special Needs) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal ko nang inaalagaan ang lola kong naka-wheelchair, gusto kong magka-sertipiko",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Elderly) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa Canada o Japan na nag-aalaga ng tao",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Elderly) NC II",
+   "Caregiving (Newborn to Pre-Schooler) NC II",
+   "Caregiving (Grade Schooler to Adolescent) NC II",
+   "Caregiving (Clients with Special Needs) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "after ko alagaan si nanay nung na-stroke siya, parang ito na ang calling ko",
+  "accept": [
+   "Caregiving NC II",
+   "Caregiving (Elderly) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "dental lab tech fixed dentures NC II",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-gawa ng jacket ng ngipin sa dental lab",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "dental technician para sa crown at bridge",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "teknisyan sa dental laboratory",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Laboratory Technology Services NC I",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong gumawa ng metal na korona at tulay ng ngipin",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-layer ng porcelain sa crown",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng fixed na restoration gamit ang composite",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-solder ng metal frame ng bridge",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagwa-wax at nagka-cast ako ng metal coping para sa crown",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto gumawa ng ngiping nakadikit na hindi natatanggal",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "dental crown",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "jacket ng ngipin",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "dentl lab teknisyan",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Laboratory Technology Services NC I",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "porselin crown maker",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "4 years na akong gumagawa ng porcelain crown sa lab, gusto ko ng NC II",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong katulong sa dental lab sa korona at tulay ng ngipin, pwede bang magpa-assess",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang gumagawa ng mga ngiping ipinapakabit ng dentista",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Laboratory Technology Services NC I",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "nakita ko kung paano ginagawa ang ceramic crowns at gusto ko yun gawin",
+  "accept": [
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "dental laboratory removable dentures NC II po",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ng pustiso",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "denture technician sa dental lab",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-ayos ng sirang pustiso",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-ayos ng ngipin sa pustisong buo",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng partial denture",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagwa-wax at nagpo-process ako ng acrylic na pustiso",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng retainer at iba pang orthodontic appliance",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang basag na pustiso at nagdadagdag ng ngipin",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng flexible na pustiso gamit ang thermoforming",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pustiso",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "denture repair",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q gumawa ng pustso",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dencher technician",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 taon na akong gumagawa ng pustiso sa probinsya, gusto ko ng NC II",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dental lab assistant ako na gumagawa ng retainers, pwede ba ako ma-assess",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "maraming matanda sa barangay namin na kailangan ng pustiso, gusto kong ako ang gumawa",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magbukas ng maliit na denture lab sa bayan",
+  "accept": [
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "dental laboratory technology NC I",
+  "accept": [
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "dental lab aide",
+  "accept": [
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "katulong sa dental laboratory",
+  "accept": [
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging dental lab assistant",
+  "accept": [
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbubuhos ako ng plaster sa impression para gumawa ng modelo ng ngipin",
+  "accept": [
+   "Dental Laboratory Technology Services NC I",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng custom tray para sa impression",
+  "accept": [
+   "Dental Laboratory Technology Services NC I",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng bite rim gamit ang wax",
+  "accept": [
+   "Dental Laboratory Technology Services NC I",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano ilagay ang modelo ng ngipin sa articulator",
+  "accept": [
+   "Dental Laboratory Technology Services NC I",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng pananggalang sa ngipin para sa mga atleta",
+  "accept": [
+   "Dental Laboratory Technology Services NC I",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagti-trim at naglilinis ako ng mga stone model sa lab",
+  "accept": [
+   "Dental Laboratory Technology Services NC I",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mouthguard",
+  "accept": [
+   "Dental Laboratory Technology Services NC I",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "modelo ng ngipin",
+  "accept": [
+   "Dental Laboratory Technology Services NC I",
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "dental lab eyd",
+  "accept": [
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "katulong sa dentl lab",
+  "accept": [
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "1 taon na akong helper sa dental lab, gusto ko ng NC I",
+  "accept": [
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-OJT ako sa dental lab, gumagawa ng models at trays, pwede na ba ako ma-assess",
+  "accept": [
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magsimula sa pinakamababang posisyon sa dental lab tapos umangat",
+  "accept": [
+   "Dental Laboratory Technology Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "fresh grad ako ng senior high, gusto ko sa dental lab pero walang pang-college",
+  "accept": [
+   "Dental Laboratory Technology Services NC I",
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II",
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "dental technology NC IV po",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "dental technologist",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapamahala ng dental laboratory",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "head ng dental lab",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong na akong gumawa ng pustiso, korona at tulay, gusto ko yung pinakamataas na antas",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-manage ng production at schedule ng dental lab",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang humahawak ng mga order ng dentista, talaan at gamit ng laboratoryo",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano patakbuhin ang sariling dental laboratory",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagsu-supervise ako ng mga dental technician sa trabaho nila",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng lahat ng klase ng dental appliance mula modelo hanggang ceramic",
+  "accept": [
+   "Dental Technology NC IV",
+   "Dental Laboratory Technology Services (Fixed Dentures/Restorations) NC II",
+   "Dental Laboratory Technology Services (Removable Dentures/Appliances) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "dental lab manager",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pamamahala ng dental lab",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "dentel teknolohiya NC4",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dental tech NC 4 po",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa fixed at removable, gusto ko na kunin ang NC IV",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "20 taon na ako sa dental lab at ako na ang namamahala, gusto kong magpa-assess",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong magkaroon ng sariling dental laboratory na may mga tauhan",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong umangat from dental technician to lab supervisor",
+  "accept": [
+   "Dental Technology NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "domestic work NC II po",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging kasambahay sa abroad",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "katulong sa bahay",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "housemaid sa Hong Kong",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong maglinis ng bahay, maglaba at mamalantsa",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magluto ng ulam at maghain sa amo",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilinis ako ng kusina at banyo araw-araw",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-hand wash ng delicate na damit at linen",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "I want to learn mag-set ng table at mag-serve ng pagkain sa bahay",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "namamalantsa at nagtutupi ako ng damit ng buong pamilya",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "kasambahay",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "housemaid",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "kasambhay po aq",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "domestik helper abroad",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "6 years na akong DH sa Saudi, kailangan ko ng NC II para sa bagong kontrata",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong katulong sa Maynila, gusto kong magpa-assess",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-abroad bilang helper para makatulong sa pamilya",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "sanay ako sa gawaing bahay, yun lang ang alam ko pero gusto kong magka-sertipiko",
+  "accept": [
+   "Domestic Work NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ECCD NC III po",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "day care worker sa barangay",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "guro sa day care center",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "child development worker",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tinuturuan ko ang mga batang 3 hanggang 5 taon ng kulay, numero at kanta",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto gumawa ng lesson plan para sa mga preschooler",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sinusuri ko ang paglaki at pagkatuto ng bawat bata sa klase at iniuulat sa magulang",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano patakbuhin ang isang child development center",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aayos ako ng mga laro at gawain para sa mga batang paslit",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "I handle ang records at enrollment ng daycare namin",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "day care",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "guro ng paslit",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "deycare titser",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "early childhod care",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "8 years na akong day care worker sa barangay, kailangan ko ng NC III",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagtuturo sa mga bata sa simbahan tuwing Sabado, gusto kong magpa-assess",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahal ko ang mga batang maliliit at gusto kong turuan sila bago mag-kinder",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magbukas ng maliit na learning center para sa toddlers sa subdivision",
+  "accept": [
+   "Early Childhood Care and Development Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "emergency medical services NC II",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "first aider sa kumpanya",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "rescuer ng MDRRMO",
+  "accept": [
+   "Emergency Medical Services NC II",
+   "Emergency Medical Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "katulong sa ambulansya",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-CPR at gumamit ng AED",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magbigay ng paunang lunas sa mga naaksidente sa daan",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagmamaneho ng ambulansya ng munisipyo",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano ilabas nang ligtas ang pasyente mula sa naipit na sasakyan",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-a-assist ako sa paglipat ng pasyente mula bahay papuntang ospital",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-radyo at mag-coordinate sa dispatch ng ambulansya",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "first aid",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "ambulansya",
+  "accept": [
+   "Emergency Medical Services NC II",
+   "Emergency Medical Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "emerdyensi medikal serbis",
+  "accept": [
+   "Emergency Medical Services NC II",
+   "Emergency Medical Services NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "medical first responer",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 years na akong volunteer rescuer sa barangay, gusto ko ng NC II",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong drayber ng ambulansya ng bayan, gusto kong magka-sertipiko",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi akong unang tumutulong pag may aksidente sa kalsada namin",
+  "accept": [
+   "Emergency Medical Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong sumali sa rescue team ng LGU pag may bagyo at sakuna",
+  "accept": [
+   "Emergency Medical Services NC II",
+   "Emergency Medical Services NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "hairdressing NC II po",
+  "accept": [
+   "Hairdressing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "hairdresser sa parlor",
+  "accept": [
+   "Hairdressing NC II",
+   "Hairdressing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-gupit at taga-kulay ng buhok sa salon",
+  "accept": [
+   "Hairdressing NC II",
+   "Hairdressing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging junior hairdresser",
+  "accept": [
+   "Hairdressing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-rebond at mag-straight ng buhok",
+  "accept": [
+   "Hairdressing NC II",
+   "Hairdressing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magkulay at mag-highlight ng buhok",
+  "accept": [
+   "Hairdressing NC II",
+   "Hairdressing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpe-perm ako ng buhok para kumulot",
+  "accept": [
+   "Hairdressing NC II",
+   "Hairdressing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-hair spa at treatment sa anit na may balakubak",
+  "accept": [
+   "Hairdressing NC II",
+   "Hairdressing NC III",
+   "Barbering NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naggugupit ako ng buhok ng mga babae at bata sa bahay",
+  "accept": [
+   "Hairdressing NC II",
+   "Hairdressing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagsha-shampoo at nagbo-blower ako ng customer bago at pagkatapos ng serbisyo",
+  "accept": [
+   "Hairdressing NC II",
+   "Hairdressing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "parlor",
+  "accept": [
+   "Hairdressing NC II",
+   "Hairdressing NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hair color",
+  "accept": [
+   "Hairdressing NC II",
+   "Hairdressing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "herdresser po",
+  "accept": [
+   "Hairdressing NC II",
+   "Hairdressing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg rebon ng buhok",
+  "accept": [
+   "Hairdressing NC II",
+   "Hairdressing NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "7 taon na akong taga-gupit sa parlor, gusto ko ng NC II",
+  "accept": [
+   "Hairdressing NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "assistant ako sa salon for 2 years, pwede na ba ako mag-take ng assessment sa hairdressing",
+  "accept": [
+   "Hairdressing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nag-aayos ng buhok ng mga kaibigan ko tuwing may prom at kasal",
+  "accept": [
+   "Hairdressing NC II",
+   "Hairdressing NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtayo ng sariling hair salon sa bayan",
+  "accept": [
+   "Hairdressing NC II",
+   "Hairdressing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ }
+]

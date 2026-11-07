@@ -73,6 +73,22 @@ def train_queries(path: Path | None = None) -> dict[str, list[str]]:
     return queries
 
 
+def train_negatives(path: Path | None = None) -> list[dict]:
+    """Reviewed training corrections in the miner's (query, positive, negative) format."""
+    from tesda_track.utils.helpers import normalize
+
+    negatives = []
+    for row in read(path):
+        shown = row.get("shown")
+        if row["split"] != "train" or row["review_status"] != "reviewed" or not shown or shown in row["accept"]:
+            continue
+        query = " ".join(row["goal"].split())
+        for variant in dict.fromkeys((query, normalize(query))):
+            for name in dict.fromkeys(row["accept"]):
+                negatives.append({"query": variant, "positive_name": name, "negative_name": shown})
+    return negatives
+
+
 def _split(goal_id: uuid.UUID, rule: str) -> str:
     if rule == "train":
         return "train"

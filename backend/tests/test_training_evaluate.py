@@ -28,6 +28,16 @@ def test_metrics_reward_right_answers_and_empty_results_for_unrelated_goals():
     assert (m.top1, m.top3, m.mrr, m.rejection) == pytest.approx((1 / 3, 2 / 3, 0.5, 0.5))
     assert m.objective == pytest.approx(0.4 / 3 + 0.2 * 2 / 3 + 0.2)
     assert m.by_lang == pytest.approx({"en": 0.5, "tl": 0.0})
+    assert m.all_related == pytest.approx(2 / 3)
+
+
+def test_all_related_counts_every_accepted_qualification_that_fits_in_three():
+    m = evaluate.metrics([
+        result(["A", "B"], ["A", "C"]),                 # one of two shown
+        result(["A", "B", "C", "D"], ["B", "A", "D"]),  # three shown: as many as fit
+        result(["A"], []),                              # abstained
+    ])
+    assert m.all_related == pytest.approx((0.5 + 1 + 0) / 3)
 
 
 class Bag:

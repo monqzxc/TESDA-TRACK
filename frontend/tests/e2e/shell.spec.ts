@@ -214,11 +214,11 @@ test.describe('on a desktop', () => {
 
     await page
       .getByRole('navigation', { name: 'Main' })
-      .getByRole('link', { name: 'My Progress' })
+      .getByRole('link', { name: 'Find my pathway' })
       .click()
 
-    await expect(page.getByRole('heading', { level: 1, name: 'My Progress' })).toBeFocused()
-    await expect(page).toHaveTitle('My Progress · TESDA-TRACK')
+    await expect(page.getByRole('heading', { level: 1, name: 'Find my pathway' })).toBeFocused()
+    await expect(page).toHaveTitle('Your goal · Find my pathway · TESDA-TRACK')
   })
 
   test('a new page starts at the top, and Back returns to where the learner was', async ({

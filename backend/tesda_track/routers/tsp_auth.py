@@ -2,7 +2,9 @@
 
 The page posts the one-time code TSP handed it. A learner already linked is signed in with the usual session
 cookie; a first visit answers 202 and waits for the learner's consent. Errors carry the contract's error `code`,
-which the page passes on to TSP. Both routes answer 404 while TSP_SIGN_IN_ENABLED is off.
+which the page passes on to TSP. GET /profile gives the signed-in learner's Skill
+Passport back to the page, which adds it to what "Find my match" sends. Every route answers 404 while
+TSP_SIGN_IN_ENABLED is off.
 """
 from typing import Annotated
 
@@ -11,11 +13,12 @@ from fastapi.responses import JSONResponse
 
 from tesda_track.config import Settings, get_settings
 from tesda_track.db import SessionDep
-from tesda_track.deps import RequestedWith
+from tesda_track.deps import CurrentLearner, RequestedWith
 from tesda_track.errors import NotFoundError, TspSignInError
 from tesda_track.models import Learner
 from tesda_track.schemas.accounts import LearnerPublic, SessionResponse
-from tesda_track.schemas.tsp_auth import TspConsentRequest, TspConsentRequired, TspConsentSummary, TspSessionRequest
+from tesda_track.schemas.tsp_auth import (TspConsentRequest, TspConsentRequired, TspConsentSummary, TspProfile,
+                                          TspSessionRequest)
 from tesda_track.security import create_access_token, set_session_cookie
 from tesda_track.services import tsp_sign_in
 from tesda_track.services.hercules import HerculesClient
@@ -71,6 +74,16 @@ def answer_tsp_consent(body: TspConsentRequest, response: Response, session: Ses
     if learner is None:
         return Response(status_code=status.HTTP_204_NO_CONTENT)
     return _start_session(learner, response, settings)
+
+
+@router.get("/profile", response_model=TspProfile, dependencies=[Depends(enabled_settings)],
+            responses={404: {"description": "The learner isn't linked to a Skill Passport."}})
+def read_tsp_profile(learner: CurrentLearner, session: SessionDep):
+    """What the learner's Skill Passport held at their last sign-in. Refreshed each time they sign in from TSP."""
+    profile = tsp_sign_in.linked_profile(session, learner)
+    if profile is None:
+        raise NotFoundError("This account isn't linked to a Skill Passport.")
+    return TspProfile(**tsp_sign_in.profile_labels(profile))
 
 
 def _start_session(learner: Learner, response: Response, settings: Settings) -> SessionResponse:

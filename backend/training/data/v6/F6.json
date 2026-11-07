@@ -1,0 +1,6699 @@
+[
+ {
+  "query": "pwede po ba mag-enroll sa 3D Animation NC III",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging 3D animator sa isang studio",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong maging taga-gawa ng 3D na karakter para sa mga cartoon",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "3D render artist sa advertising, yun ang target ko",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng 3D model ng tao at hayop sa computer",
+  "accept": [
+   "3D Animation NC III",
+   "3D Game Art Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano maglagay ng texture at kulay sa 3D model para magmukhang totoo",
+  "accept": [
+   "3D Animation NC III",
+   "3D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto ko matuto mag-rig ng character para gumalaw yung mga buto niya",
+  "accept": [
+   "3D Animation NC III",
+   "3D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapagalaw ko yung 3D na karakter frame by frame, gusto ko pang gumaling",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutunan ang tamang pag-iilaw at pag-render ng 3D na eksena",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng sariling 3D short film para sa portfolio ko",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "3D na animasyon",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "3d rigging po",
+  "accept": [
+   "3D Animation NC III",
+   "3D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q matuto ng 3d animashun",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3d modler pano mag start",
+  "accept": [
+   "3D Animation NC III",
+   "3D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 taon na akong freelance 3D animator, gusto kong magka-NC III",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught ako sa 3D software, pwede ba akong magpa-assess sa 3D animation",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig ako sa mga 3D na pelikulang pambata at gusto kong gumawa ng ganun balang araw",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi akong nagdo-drawing ng characters tapos gusto ko silang gawing 3D at pagalawin",
+  "accept": [
+   "3D Animation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "3D game art NC III, may training ba kayo",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging game artist na gumagawa ng 3D na mga karakter",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong magtrabaho bilang taga-disenyo ng itsura ng mga laro sa mobile",
+  "accept": [
+   "3D Game Art Development NC III",
+   "2D Game Art Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "texture artist sa isang game company",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng concept art ng mga karakter at mundo ng isang laro",
+  "accept": [
+   "3D Game Art Development NC III",
+   "2D Game Art Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng storyboard at listahan ng assets para sa isang video game",
+  "accept": [
+   "3D Game Art Development NC III",
+   "2D Game Art Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng 3D na espada, baluti at bahay para sa laro",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong mag-texture ng mga 3D props para sa game",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto kung paano pagalawin ang karakter sa loob ng laro, yung tumatakbo at tumatalon",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng low poly na models para sa mobile game",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "3d game asset",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "3D game artist",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto q mging game artst 3d",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pano mg modelling ng charcter pang online game",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "ilang taon na akong gumagawa ng 3D assets para sa indie games, gusto ko ng sertipiko",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may portfolio na ako ng game characters, pwede ba ako dumiretso sa assessment ng NC III",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "adik ako sa paglalaro at gusto kong ako mismo ang gumawa ng itsura ng mga karakter",
+  "accept": [
+   "3D Game Art Development NC III",
+   "2D Game Art Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong makita ang gawa kong halimaw at armas sa isang sikat na online game",
+  "accept": [
+   "3D Game Art Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Animation NC II po, kailan ang susunod na batch",
+  "accept": [
+   "Animation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging in-betweener sa animation studio",
+  "accept": [
+   "Animation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "clean-up artist ang gusto kong trabaho, yung naglilinis ng drawing",
+  "accept": [
+   "Animation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-drawing ng cartoons sa isang studio",
+  "accept": [
+   "Animation NC II",
+   "2D Animation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumuhit ng mga galaw sa pagitan ng dalawang key pose",
+  "accept": [
+   "Animation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong gumuhit gamit lapis pero gusto kong matuto ng animation",
+  "accept": [
+   "Animation NC II",
+   "2D Animation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nililinis ko ang magulong sketch para maging malinis na linya",
+  "accept": [
+   "Animation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng digital na in-between gamit drawing tablet",
+  "accept": [
+   "Animation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng tradisyunal na animation sa papel at light box",
+  "accept": [
+   "Animation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aaral akong mag-ink ng drawings sa computer para sa 2D cartoon",
+  "accept": [
+   "Animation NC II",
+   "2D Animation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "animasyon",
+  "accept": [
+   "Animation NC II",
+   "2D Animation NC III",
+   "3D Animation NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "inbetween artist",
+  "accept": [
+   "Animation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg drawing ng cartoon na gumagalaw",
+  "accept": [
+   "Animation NC II",
+   "2D Animation NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "animtion nc2 enrol po",
+  "accept": [
+   "Animation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dati akong in-between artist sa studio sa Manila, gusto kong magpa-assess",
+  "accept": [
+   "Animation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong nagdo-drawing ng anime style, may NC II ba para dito",
+  "accept": [
+   "Animation NC II",
+   "2D Animation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mula bata pa ako gumagawa na ako ng flipbook na gumagalaw sa likod ng notebook",
+  "accept": [
+   "Animation NC II",
+   "2D Animation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong makatulong gumawa ng mga cartoon na pinapanood ng mga bata sa TV",
+  "accept": [
+   "Animation NC II",
+   "2D Animation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "may Broadband Installation NC II ba sa inyo",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging installer ng wireless na internet sa mga bahay",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "technician na nagkakabit ng antenna ng internet sa bubong",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "trabaho bilang tagakabit ng internet sa probinsya",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II",
+   "Telecom OSP Installation (Fiber Optic Cable) NC II",
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtatayo ako ng poste o mast sa bubong para sa antenna ng internet",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-align ng antenna para lumakas ang signal ng wifi",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-configure ang modem at router ng customer pagkatapos ikabit",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong maglatag ng kable mula antenna papunta sa loob ng bahay",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "kaya kong mag-set up ng wireless internet sa sitio na walang fiber",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng dish antenna ng internet at sinusubukan ang bilis nito sa harap ng customer",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "wifi installer",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "kabit internet",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II",
+   "Telecom OSP Installation (Fiber Optic Cable) NC II",
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "wireles internet instaler trabaho",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pano mg kabit ng antena pra sa internet",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 taon na akong nagkakabit ng wireless broadband sa probinsya, kailangan ko ng NC II",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "subcon installer ako ng internet antenna, gusto ko magpa-assess para ma-regular",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "walang internet sa barangay namin kaya gusto kong ako ang magkabit ng signal sa mga bahay",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig akong umakyat sa bubong at mag-ayos ng antenna para lumakas ang signal",
+  "accept": [
+   "Broadband Installation (Fixed Wireless Systems) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Cable TV Installation NC II, saan pwede mag-training",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging installer ng cable TV",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagakabit ng cable sa mga bahay",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "technician ng cable sa bayan namin",
+  "accept": [
+   "Cable TV Installation NC II",
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto magkabit ng hardware at clamp sa poste para sa cable",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglalatag ako ng coaxial na kable mula poste papunta sa bahay",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng splitter at amplifier ng cable TV",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-install ng cable box sa bahay ng subscriber",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano magkabit ng cable TV sa buong condo o apartment building",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "umaakyat ako sa poste para ikabit ang kable ng telebisyon",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "cable installer",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "kable ng TV",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "cabl tv instaler trabho",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit aq ng kable sa poste",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "apat na taon na akong nagkakabit ng cable TV sa subdivision, gusto ko ng NC II",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "helper ako dati ng cable installer, gusto ko nang magpa-assess",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "madalas akong tinatawag ng kapitbahay pag nawawala ang channel nila",
+  "accept": [
+   "Cable TV Installation NC II",
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong sumama sa mga umaakyat ng poste para magkabit ng linya ng TV",
+  "accept": [
+   "Cable TV Installation NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "CSS NC II po, may slot pa ba",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging computer technician",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "IT support sa opisina ang gusto kong trabaho",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-ayos ng kompyuter sa computer shop",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong akong mag-reformat at mag-install ng Windows",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-assemble ng PC mula sa piyesa",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng LAN cable at nag-se-set up ng network sa opisina",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-set up ng server para sa maliit na opisina",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang mga laptop na ayaw mag-on",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-crimp ng kable at mag-configure ng router",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "computer repair",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "ayos kompyuter",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg aral ng computr repair",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "kompyuter tekniko",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "anim na taon na akong nagre-repair ng PC sa sariling shop, kailangan ko ng NC II",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "IT staff ako sa paaralan pero walang certificate, pwede ba mag-assess sa CSS",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako lagi ang tinatawag ng buong pamilya pag nagloloko ang laptop",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magbukas ng computer shop na may repair at piso net",
+  "accept": [
+   "Computer Systems Servicing NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Contact Center Services NC II, libre ba",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging call center agent",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong magtrabaho sa BPO bilang ahente",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "customer service representative sa telepono",
+  "accept": [
+   "Contact Center Services NC II",
+   "Customer Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong humusay mag-Ingles para makasagot ng tawag ng mga customer",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano sumagot ng reklamo ng customer sa phone nang mahinahon",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-outbound call at mag-alok ng produkto",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sumasagot ako ng chat at email ng mga kliyente mula ibang bansa",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong sanayin ang aking accent at pagsasalita ng Ingles para sa BPO",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto gumamit ng headset at system habang kausap ang caller",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "call center",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "ahente sa call center",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "col center ahent",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto q mg call centr kaso mahina english q",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "2 taon na akong CSR sa isang BPO, gusto kong magka-NC II",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dati akong agent sa inbound account, kailangan ko ng certificate pang-apply ulit",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "magaling akong makipag-usap sa English at okay lang sa akin ang night shift",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong kumita nang malaki sa gabi kahit hindi ako tapos ng kolehiyo",
+  "accept": [
+   "Contact Center Services NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Cyber Threat Mitigation NC II, may offer ba",
+  "accept": [
+   "Cyber Threat Mitigation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging cybersecurity analyst",
+  "accept": [
+   "Cyber Threat Mitigation NC II",
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "IT security support ang target kong trabaho",
+  "accept": [
+   "Cyber Threat Mitigation NC II",
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "cyber defense analyst sa bangko",
+  "accept": [
+   "Cyber Threat Mitigation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-patch ng mga butas sa security ng system",
+  "accept": [
+   "Cyber Threat Mitigation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano harangin ang hacker na pumapasok sa network ng kumpanya",
+  "accept": [
+   "Cyber Threat Mitigation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang mga vulnerability na nakita sa scan",
+  "accept": [
+   "Cyber Threat Mitigation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matuto kung paano linisin ang computer na tinamaan ng ransomware",
+  "accept": [
+   "Cyber Threat Mitigation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-configure ng firewall para protektado ang opisina",
+  "accept": [
+   "Cyber Threat Mitigation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinoprotektahan ko ang mga server laban sa virus at hacking",
+  "accept": [
+   "Cyber Threat Mitigation NC II",
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "cybersecurity",
+  "accept": [
+   "Cyber Threat Mitigation NC II",
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "pigil hacker",
+  "accept": [
+   "Cyber Threat Mitigation NC II",
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "cyber securty traning",
+  "accept": [
+   "Cyber Threat Mitigation NC II",
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg ethical hackr",
+  "accept": [
+   "Cyber Threat Mitigation NC II",
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "IT support ako ng tatlong taon at gusto kong lumipat sa cybersecurity, may NC II ba",
+  "accept": [
+   "Cyber Threat Mitigation NC II",
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may experience na ako sa pag-handle ng security incidents, gusto kong magpa-assess",
+  "accept": [
+   "Cyber Threat Mitigation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "na-hack ang page ng negosyo namin kaya gusto kong matutong protektahan ito",
+  "accept": [
+   "Cyber Threat Mitigation NC II",
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging tagapagtanggol laban sa mga scammer at hacker online",
+  "accept": [
+   "Cyber Threat Mitigation NC II",
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Cyber Threat Monitoring NC I po, beginner pa lang ako",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging SOC analyst level 1",
+  "accept": [
+   "Cyber Threat Monitoring NC I",
+   "Cyber Threat Mitigation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "help desk sa cybersecurity",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-monitor ng security alerts sa gabi",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbabantay ako ng mga alert sa screen at nirereport ko kung may kahina-hinala",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-scan ng mga computer kung may butas sa security",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano malalaman kung may phishing email na pumasok sa opisina",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutunan ang pagbasa ng logs para makita ang atake",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng report tungkol sa mga cyber threat na nakita",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumamit ng vulnerability scanner sa network",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "cyber monitoring",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "bantay cyber",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "sayber security basic kurso",
+  "accept": [
+   "Cyber Threat Monitoring NC I",
+   "Cyber Threat Mitigation NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "cybersecurty entry levl",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "isang taon na akong help desk, gusto kong mag-NC I sa cyber threat monitoring",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-intern ako sa security operations center, pwede ba akong magpa-assess",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "curious ako kung paano nalalaman ng mga kumpanya na may umaatake sa kanila online",
+  "accept": [
+   "Cyber Threat Monitoring NC I"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magsimula sa IT pero sa pagbabantay ng seguridad ng computer",
+  "accept": [
+   "Cyber Threat Monitoring NC I",
+   "Cyber Threat Mitigation NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Game Programming NC III, ilang buwan ang training",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging game programmer",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "game tester ang pangarap kong trabaho",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ng code para sa mga laro sa cellphone",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-code ng laro gamit C#",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng script para tumalon at bumaril ang karakter",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aaral ako ng object-oriented programming para sa game development",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng sariling laro mula umpisa hanggang mailabas",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-program ng scoring at level system sa isang laro",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahanap ako ng bug sa mga laro at sinusubukan lahat ng level",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "game dev",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumawa ng laro",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gme programer pano maging",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto q gumwa ng sarili kong mobile game",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "nakagawa na ako ng ilang laro sa game engine, gusto kong magka-NC III",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "IT graduate ako na marunong mag-C++, pwede ba akong mag-assess sa game programming",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi akong naglalaro at gusto kong ako mismo ang gumawa ng code sa likod nito",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong may larong ako ang gumawa na nilalaro ng mga kaibigan ko",
+  "accept": [
+   "Game Programming NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Medical Coding NC III, may scholarship ba",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging medical coder",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "claims specialist sa healthcare BPO",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-proseso ng claims ng ospital at insurance",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-assign ng code sa diagnosis ng pasyente",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-process ng billing ng ospital para sa health insurance",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang mga denied claims at inaalam kung bakit tinanggihan",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matuto ng ICD at CPT na mga code",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbabasa ako ng medical records at isinasalin ko sa code",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa billing ng clinic pero work from home",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "medical coding",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "medical billing",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "medikal koding",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "medcal claims procesing",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "nurse ako dati at gusto ko lumipat sa medical coding, kailangan ko ng NC III",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalawang taon na akong nagbi-billing sa ospital, gusto kong magpa-assess",
+  "accept": [
+   "Medical Coding and Claims Processing NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nursing graduate ako pero ayaw ko na sa ospital, gusto ko sa harap ng computer na lang",
+  "accept": [
+   "Medical Coding and Claims Processing NC III",
+   "Medical Transcription NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gamitin ang alam ko sa mga terminong medikal sa trabahong pang-opisina",
+  "accept": [
+   "Medical Coding and Claims Processing NC III",
+   "Medical Transcription NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Medical Transcription NC II po, may batch ba ngayong buwan",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging medical transcriptionist",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-type ng dinidikta ng doktor",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "transcriber na home-based",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nakikinig ako ng recording ng doktor at tina-type ko",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng medical terms para sa transcription",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "mabilis akong mag-type at gusto kong gamitin yun sa medical field",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumamit ng foot pedal at software sa pag-transcribe ng audio",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutunan ang tamang baybay ng mga gamot at sakit",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng ulat ng pasyente mula sa dictation ng doktor",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "transcriptionist",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-transcribe",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "medcal transcripsyon",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg trnscribe sa bahay",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 taon na akong general transcriptionist online, gusto ko ng NC II sa medical",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dati akong medical secretary at sanay sa mga termino, pwede ba ako magpa-assess",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mabilis akong mag-type at magaling makinig, gusto ko ng trabahong pwedeng gawin sa bahay",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong kumita habang nasa bahay gamit ang headset at keyboard sa medical na trabaho",
+  "accept": [
+   "Medical Transcription NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": ".NET programming NC III po",
+  "accept": [
+   "Programming (.Net Technology) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging .NET developer",
+  "accept": [
+   "Programming (.Net Technology) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "programmer sa isang kumpanya",
+  "accept": [
+   "Programming (.Net Technology) NC III",
+   "Programming (JAVA) NC III",
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "ASP.NET web developer ang gusto kong trabaho",
+  "accept": [
+   "Programming (.Net Technology) NC III",
+   "Web Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng C# at ASP.NET MVC",
+  "accept": [
+   "Programming (.Net Technology) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng website gamit HTML, CSS at JavaScript",
+  "accept": [
+   "Programming (.Net Technology) NC III",
+   "Web Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng web application na may login at database sa .NET",
+  "accept": [
+   "Programming (.Net Technology) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong mag-code ng sistema para sa enrollment ng paaralan gamit C#",
+  "accept": [
+   "Programming (.Net Technology) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng inventory system na tumatakbo sa browser gamit C#",
+  "accept": [
+   "Programming (.Net Technology) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aaral ako ng MVC pattern sa pag-program",
+  "accept": [
+   "Programming (.Net Technology) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "c# programming",
+  "accept": [
+   "Programming (.Net Technology) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "dotnet",
+  "accept": [
+   "Programming (.Net Technology) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "dot net programing nc3",
+  "accept": [
+   "Programming (.Net Technology) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q matuto mg program sa c sharp",
+  "accept": [
+   "Programming (.Net Technology) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalawang taon na akong developer gamit C#, gusto kong magka-NC III",
+  "accept": [
+   "Programming (.Net Technology) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "self-taught programmer ako sa .NET, kailangan ko ng certificate para ma-hire",
+  "accept": [
+   "Programming (.Net Technology) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng sariling sistema para sa tindahan namin na makikita sa browser",
+  "accept": [
+   "Programming (.Net Technology) NC III",
+   "Web Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig ako sa computer at gusto kong ako ang gumagawa ng mga software, hindi lang gumagamit",
+  "accept": [
+   "Programming (.Net Technology) NC III",
+   "Programming (JAVA) NC III",
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Java programming NC III, may schedule ba",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging Java developer",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "software developer na Java ang gamit",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-gawa ng program sa computer",
+  "accept": [
+   "Programming (JAVA) NC III",
+   "Programming (.Net Technology) NC III",
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng object-oriented programming sa Java",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng class, object at inheritance sa Java",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng maliit na Java app para sa grades ng estudyante",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong mag-design ng UML diagram bago mag-code",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pinapabilis at inaayos ko ang mga bug sa Java na programa",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng desktop application gamit ang Java",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "java",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "java programmer",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "jaba programing",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto q matuto ng jva",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "IT graduate ako at tatlong taon nang nagja-Java, gusto kong magpa-assess",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may experience ako sa Java pero walang NC, kailangan ko para sa trabaho abroad",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutunan ang wikang pang-programa na gamit ng maraming bangko at lumang Android app",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ang daming job post na naghahanap ng marunong sa Java kaya yun ang gusto kong aralin",
+  "accept": [
+   "Programming (JAVA) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Oracle Database programming NC III po",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging database programmer",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "DBA o database administrator ang pangarap ko",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "PL/SQL developer sa bangko",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng mga table at relasyon sa database",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagsusulat ako ng SQL query para kumuha ng report",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng stored procedure at trigger sa PL/SQL",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong pabilisin ang mabagal na query sa database",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang mga rekord ng kumpanya sa malaking database",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng SQL para sa data ng negosyo",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "sql",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "database",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "orakel database",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "pl sql programing pano mag aral",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "4 na taon na akong gumagawa ng SQL reports sa opisina, gusto ko ng NC III",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may background ako sa database pero walang certificate, pwede mag-assess sa Oracle",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang humahawak ng lahat ng datos ng isang kumpanya",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig ako mag-ayos ng data sa spreadsheet at gusto kong umakyat sa totoong database",
+  "accept": [
+   "Programming (Oracle Database) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Telecom OSP fiber optic NC II, saan may training",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging fiber optic technician",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "lineman ng fiber optic sa telco",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-splice ng fiber",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-splice ng fiber optic gamit fusion splicer",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglalatag ako ng kable ng fiber optic sa ilalim ng lupa",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng fiber sa mga poste sa kalye",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumamit ng OTDR para hanapin ang putol sa fiber",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong i-repair ang naputol na fiber optic cable",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matuto mag-test ng signal loss sa fiber gamit power meter",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "fiber optic",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fiber splicing",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fayber optik instaler",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "fiber optik splisin",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 taon na akong helper sa fiber installation, gusto kong magka-NC II",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong na akong mag-splice ng fiber pero walang certificate, pwede mag-assess",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong sumama sa mga crew na naglalagay ng kable ng internet sa ilalim ng kalsada",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "naiintriga ako sa mga kableng salamin na nagdadala ng ilaw para sa internet",
+  "accept": [
+   "Telecom OSP Installation (Fiber Optic Cable) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Telecom OSP copper cable at DSL NC II, may course ba",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging telephone lineman",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "technician ng landline at DSL",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagakabit ng linya ng telepono sa bahay",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng terminal box at line wire sa poste ng telepono",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-splice ng tansong kable ng telepono",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano hanapin ang sira sa linya ng telepono na walang dial tone",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-i-install ako ng DSL internet gamit linya ng landline",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong maglatag ng main cable ng telepono sa kalsada",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagkakabit ako ng bagong landline sa bahay ng subscriber",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "landline installer",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "linya ng telepono",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "telepone lineman trabho",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dsl instaler pno mag apply",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "ilang taon na akong lineman ng telepono, gusto ko ng NC II para sa promotion",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may karanasan ako sa pagkakabit ng copper na kable, gusto kong magpa-assess",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "madalas mawalan ng dial tone ang telepono namin at gusto kong ako na ang mag-ayos ng linya",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa telco na umaakyat ng poste para ayusin ang linya ng telepono",
+  "accept": [
+   "Telecom OSP and Subscriber Line Installation (Copper Cable/POTS and DSL) NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Visual Graphic Design NC III, pwede ba online",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging graphic designer",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "layout artist sa advertising agency",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-disenyo ng logo at poster",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng logo para sa mga maliliit na negosyo",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-layout ng tarpaulin, flyers at poster",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano idisenyo ang itsura ng app para madaling gamitin",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong gumawa ng disenyo ng pakete ng produkto",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-design ng booth para sa trade fair",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-e-edit ako ng pubmats para sa social media ng mga negosyo",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "graphic design",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "logo design",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "grapic desiner",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto q mg layot ng tarp",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "freelance graphic designer ako ng 4 na taon, gusto ko ng NC III",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang gumagawa ng pubmat sa opisina namin pero walang certificate, pwede ba mag-assess",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "mahilig akong gumawa ng poster sa cellphone para sa mga okasyon sa barangay",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ayusin ang itsura ng display window ng mga tindahan sa mall",
+  "accept": [
+   "Visual Graphic Design NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Web Development NC III po, may batch ba ngayon",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging web developer",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "front-end developer ang pangarap ko",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-gawa ng website",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng website na maganda rin tingnan sa cellphone",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng backend at database para sa online store",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng interactive na website na may form at animation",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matuto ng agile at scrum sa pagbuo ng website",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-code ng full stack, harap at likod ng website",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagdi-design ako ng landing page para sa mga negosyo",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "web dev",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gawa website",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "web devloper trabaho",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q matuto gumwa ng websayt",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "freelancer ako na gumagawa ng website ng mga kliyente, gusto ko ng NC III",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "bootcamp graduate ako sa full stack, pwede ba akong magpa-assess",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng online na tindahan para sa negosyo ng nanay ko",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "lagi kong sinisilip ang code ng mga website at gusto kong gumawa ng sarili ko",
+  "accept": [
+   "Web Development NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "AB Deck NC II po, saan pwede kumuha",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging seaman sa deck",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)",
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "able seaman sa barko ang target ko",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marino na deckhand sa barkong pangkargamento",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)",
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magtali at mag-ayos ng kargamento sa barko",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtatanggal ako ng kalawang at nagpipintura ng deck ng barko",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-mooring at humawak ng lubid kapag dumadaong ang barko",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magtimon ng barko at magbantay sa bridge",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)",
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tumutulong ako sa pag-load at pag-secure ng container sa barko",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumamit ng lifeboat at magligtas ng tao sa barko",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)",
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marino sa deck",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)",
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "able seaman",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto q mg seaman pero deck",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)",
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "ab dek nc2",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "OS na ako ng dalawang kontrata, kailangan ko na ng AB NC II para ma-promote",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong deckhand sa inter-island na barko, gusto kong magpa-assess",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)",
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong makapaglayag sa iba't ibang bansa at magtrabaho sa labas ng barko",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)",
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "galing ako sa pamilya ng mangingisda at gusto kong sumakay sa malaking barko bilang tripulante",
+  "accept": [
+   "Able Seafarer Deck NC II (II-5)",
+   "Rating Forming Part of a Navigational Watch NC II (II-4)",
+   "Able Seafarer Engine NC II (III-5)",
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "AB Engine NC II, may assessment ba sa inyo",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging oiler sa barko",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)",
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "able seafarer sa engine room ang target ko",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "marino sa makina ng barko",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)",
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tumutulong ako sa paglilinis at pag-overhaul ng makina ng barko",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong magpalit ng langis at filter ng pump sa engine room",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumamit nang ligtas ng mga de-kuryenteng kagamitan sa barko",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aayos ako ng mga tubo at balbula sa ilalim ng barko",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong maglipat ng krudo at bantayan ang mga bomba sa barko",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagme-maintain ako ng generator at compressor sa barko bilang tulong ng engineer",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "AB engine",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "oiler",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)",
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "oyler sa barko",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)",
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "ab enjin nc 2",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "wiper ako ng dalawang kontrata, gusto ko nang mag-AB engine",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may karanasan na ako sa engine room ng barkong pangisda, gusto kong magpa-assess",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)",
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong sumakay ng barko pero sa loob ng makina, hindi sa labas",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)",
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mekaniko ako sa lupa at gusto kong dalhin ang galing ko sa barko",
+  "accept": [
+   "Able Seafarer Engine NC II (III-5)",
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Marine Electricity NC II po, ilang linggo ang training",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging electrician sa barko",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "cadet marine electrician ang gusto kong simulan",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "elektrisyan ng barko",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aayos ako ng generator ng barko",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-rewind at mag-ayos ng de-kuryenteng motor sa barko",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano alagaan ang mga baterya na pang-emergency sa barko",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapalit ako ng ilaw at wiring sa mga cabin ng barko",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong ayusin ang sistema ng alarma sa barko",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang mga electric na gamit sa galley ng barko gaya ng oven at ref",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "marine electrician",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "kuryente sa barko",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "marin elektrisyan",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "electrican sa barko pano",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "elektrisyan ako sa lupa at gusto kong mag-barko, kailangan ko ba ng Marine Electricity NC II",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-OJT ako bilang electrician sa barko, gusto ko magpa-assess",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong ako sa kuryente at pangarap ko ring makapaglayag",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang nag-aayos pag nag-brownout sa barko habang nasa gitna ng dagat",
+  "accept": [
+   "Marine Electricity NC II"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Rating forming part of a navigational watch NC II, kailangan ba ito para maging seaman",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging ordinary seaman",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "timonel ng barko",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)",
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "deck rating sa barkong pang-international",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)",
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong sumunod sa utos ng kapitan sa pagmamaneho ng barko",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)",
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbabantay ako sa unahan ng barko kung may ibang barko o bato",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-lookout sa gabi gamit lang ang mata at tainga",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumamit ng salbabida, pamatay-sunog at lifeboat sa barko",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)",
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong magbantay sa bridge kasama ang opisyal ng barko",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tumutulong ako sa pag-monitor ng watch habang naglalayag",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "deck watch",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)",
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "lookout sa barko",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "rateng navigational wach",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mg seaman ordinary",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "kakatapos ko ng BT at gusto kong kumuha ng II-4 para makasampa",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nakasampa na ako bilang deck cadet, gusto ko ng NC II para sa watchkeeping",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging bahagi ng nagbabantay sa dagat habang naglalayag ang barko",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong maging kapitan balang araw kaya gusto kong magsimula sa pinakamababa sa deck",
+  "accept": [
+   "Rating Forming Part of a Navigational Watch NC II (II-4)",
+   "Able Seafarer Deck NC II (II-5)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "III-4 engineering watch NC II po, saan pwede",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging wiper sa barko",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "engine rating sa barko",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)",
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "katulong ng inhinyero sa engine room",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)",
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbabantay ako ng gauge at temperatura ng makina habang naka-duty",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong bantayan ang tubig at pressure ng boiler",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gawin ang routine sa engine room tuwing watch",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto gumamit ng fire pump at emergency equipment sa engine room",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nililinis ko ang engine room at isinusulat ang mga reading",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong mag-ulat agad sa engineer kapag may tagas o alarma",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "engine watch",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "wiper barko",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "enjineering wach III-4",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "wayper sa barko pano mag apply",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "ilang taon na akong naglilinis sa engine room ng barkong pang-ilog, gusto ko ng NC II",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "tapos ako ng marine engineering pero kulang ang sea time, kailangan ko ng III-4",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong sumakay ng barko at matutunan muna ang makina mula sa pinakababa",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)",
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "sanay ako sa init at ingay ng makina, kaya gusto kong magtrabaho sa ilalim ng barko",
+  "accept": [
+   "Rating Forming Part of an Engineering Watch NC II (III-4)",
+   "Able Seafarer Engine NC II (III-5)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Ship's Catering Services NC I, para ba ito sa messman",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging messman sa barko",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "steward sa barko ang gusto kong trabaho",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-serbisyo ng pagkain sa barko",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagseserbisyo ako ng pagkain sa mga tripulante sa mess hall",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong maglinis ng mga kuwarto at kumot sa barko",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "tumutulong ako sa pagtanggap at pag-iimbak ng supplies ng barko",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-ayos ng mesa at maghugas ng pinggan sa barko",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong mag-inventory ng mga pagkain sa storeroom ng barko",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghahain ako ng almusal sa mga opisyal ng barko",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "messman",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "catering sa barko",
+  "accept": [
+   "Ship's Catering Services NC I",
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "mesman sa barko",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q mging mesman",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "waiter ako sa restaurant ng 3 taon, gusto ko mag-messman sa barko, kailangan ba ng NC I",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "naging utility ako sa barkong pampasahero, gusto kong magpa-assess",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong makasakay ng barko kahit sa paghahain lang ng pagkain sa crew",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "sanay akong maglinis at magserbisyo, gusto ko itong gawin habang naglalayag",
+  "accept": [
+   "Ship's Catering Services NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Ships' Cook NC III po, may training ba kayo",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging kusinero sa barko",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagaluto ng mga marino",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "chief cook sa barkong pangkargamento",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng menu para sa buong buwan ng crew",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagluluto ako para sa dalawampu't limang tripulante araw-araw",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano panatilihing malinis at ligtas ang pagkain sa barko",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-manage ng galley at mag-supervise ng messman",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong maghiwalay at magtapon ng basura ayon sa patakaran sa barko",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagluluto ako ng pagkaing masustansya at balanse para sa mga marino",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ship cook",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "galley cook",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "kok sa barko",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "ships kuk nc3",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 taon na akong kusinero sa restaurant, gusto kong maging cook sa barko",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "messman ako ng ilang kontrata at gusto ko nang ma-promote bilang cook",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "masarap daw ako magluto at gusto kong magtrabaho sa dagat",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "pangarap kong pakainin ang mga marino habang nasa gitna sila ng karagatan",
+  "accept": [
+   "Ships' Catering NC III (Ships' Cooks)"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Cable TV Operation and Maintenance NC III, may training ba",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging headend technician ng cable TV",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "superbisor ng mga installer ng cable",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng cable TV sa bayan",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang mahinang signal ng cable TV sa buong subdivision",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-maintain ng headend at mga receiver ng cable",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-commission at i-test ang bagong cable TV system",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagbabantay ako sa control room ng cable TV para tuloy-tuloy ang mga channel",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-troubleshoot ng amplifier at node sa linya ng cable",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-iiskedyul ako ng regular na pagsusuri at pagmementena ng linya ng cable",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "catv technician",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III",
+   "Cable TV Installation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "headend",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "cabol tv maintenance",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "katv operator trabho",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "installer ako ng cable TV ng 6 na taon, gusto ko nang mag-NC III",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may experience ako sa pag-maintain ng cable system sa probinsya, gusto kong magpa-assess",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang may hawak ng buong sistema ng cable sa bayan namin",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "naiinis ako pag nawawala ang channel kaya gusto kong ako ang mag-ayos mula sa pinanggagalingan",
+  "accept": [
+   "Cable TV Operation and Maintenance NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "5-axis CNC NC III po, may training ba sa inyo",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging 5-axis CNC programmer",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "CNC operator sa pabrika",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III",
+   "CNC Lathe Machine Operation NC II",
+   "CNC Lathe Machine Operation NC III",
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng makinang 5-axis sa planta",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-program ng 5-axis na makina para sa komplikadong piyesa",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagse-set up ako ng cutting tools at workpiece sa 5-axis machine",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng impeller gamit CNC na gumagalaw sa limang axis",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong mag-inspeksyon at maglinis ng piyesa pagkatapos ng 5-axis machining",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapatakbo ako ng CNC machining center na may umiikot at tumatagilid na mesa",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng G-code para sa simultaneous 5-axis",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 axis cnc",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "cnc programmer",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III",
+   "CNC Lathe Machine Operation NC II",
+   "CNC Lathe Machine Operation NC III",
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 aksis cnc oprator",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "fayv axis cnc",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "7 taon na akong CNC milling operator at gusto ko nang mag-5-axis NC III",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "ako ang nagpapatakbo ng 5-axis sa planta pero walang certificate, pwede ba mag-assess",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng piyesa ng eroplano na sobrang tumpak gamit makina",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "namangha ako sa makinang kayang mag-ukit ng metal mula sa iba't ibang anggulo nang sabay",
+  "accept": [
+   "5-Axis CNC Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "CAD/CAM Operation NC III, may slot pa po",
+  "accept": [
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging CAD operator sa pabrika",
+  "accept": [
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "CAD/CAM programmer ng CNC",
+  "accept": [
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-drawing ng piyesa sa computer",
+  "accept": [
+   "CAD/CAM Operation NC III",
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng 3D na drawing ng piyesa sa computer",
+  "accept": [
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gawing toolpath at G-code ang drawing para sa CNC",
+  "accept": [
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagdo-drawing ako ng mechanical parts gamit AutoCAD",
+  "accept": [
+   "CAD/CAM Operation NC III",
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matuto ng CAM para kusang makagawa ng programa ng makina",
+  "accept": [
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-simulate ng machining sa computer bago patakbuhin ang CNC",
+  "accept": [
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng 2D at 3D na drawing ng mga jig at fixture",
+  "accept": [
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "cad cam",
+  "accept": [
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "cad drawing",
+  "accept": [
+   "CAD/CAM Operation NC III",
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "cad kam operator",
+  "accept": [
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q matuto ng autocad pra sa makina",
+  "accept": [
+   "CAD/CAM Operation NC III",
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "5 taon na akong drafter sa machine shop gamit CAD, gusto ko ng NC III",
+  "accept": [
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong na akong gumawa ng programa ng CNC mula sa drawing, gusto kong magpa-assess",
+  "accept": [
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang gumagawa ng disenyo sa computer na susundan ng makina",
+  "accept": [
+   "CAD/CAM Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mechanical engineering undergrad ako, gusto kong magtrabaho sa computer drawing ng piyesa",
+  "accept": [
+   "CAD/CAM Operation NC III",
+   "Mechanical Drafting NC I"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "EDM Wire Cut NC III po, kailan ang assessment",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging wire cut operator",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "EDM operator sa tool and die shop",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III",
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "programmer ng makinang wire cut",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-program ng wire cut para sa paggawa ng die",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagse-set up ako ng wire at workpiece sa EDM wire cut",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano ipasok ang brass wire sa makina ng wire cut",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "pumuputol ako ng matigas na bakal gamit kuryente at manipis na alambre",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong sukatin at linisin ang piyesa pagkatapos ng wire cut",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto gumawa ng punch at die gamit wire EDM",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "wire cut",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "edm",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III",
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "wayr cut operator",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "edm wirecut makina pano matuto",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ako ng wire cut ng 4 na taon sa isang planta, gusto kong magka-NC III",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "machinist ako na gustong lumipat sa wire EDM, may assessment ba",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutunan ang makinang pumuputol ng bakal na parang sinulid ang gamit",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagtataka ako paano nakakagawa ng sobrang pinong hugis sa matigas na metal ang mga tool and die shop",
+  "accept": [
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III",
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "CNC Lathe NC II, kailan ang enrollment",
+  "accept": [
+   "CNC Lathe Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging operator ng CNC lathe",
+  "accept": [
+   "CNC Lathe Machine Operation NC II",
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "trabaho bilang tagapatakbo ng CNC lathe sa pabrika",
+  "accept": [
+   "CNC Lathe Machine Operation NC II",
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "basic CNC lathe operator",
+  "accept": [
+   "CNC Lathe Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-program ng simpleng G-code para sa CNC lathe",
+  "accept": [
+   "CNC Lathe Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ikinakabit ko ang workpiece sa chuck at inaayos ang tool sa CNC lathe",
+  "accept": [
+   "CNC Lathe Machine Operation NC II",
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-turning ng bolt at shaft gamit CNC",
+  "accept": [
+   "CNC Lathe Machine Operation NC II",
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong gumawa ng thread at uka sa CNC lathe",
+  "accept": [
+   "CNC Lathe Machine Operation NC II",
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-set ng tool offset sa CNC lathe",
+  "accept": [
+   "CNC Lathe Machine Operation NC II",
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-uumpisa pa lang ako sa CNC at gusto kong matutong magpatakbo ng lathe",
+  "accept": [
+   "CNC Lathe Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "cnc lathe",
+  "accept": [
+   "CNC Lathe Machine Operation NC II",
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "cnc turning",
+  "accept": [
+   "CNC Lathe Machine Operation NC II",
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "cnc leyt operator",
+  "accept": [
+   "CNC Lathe Machine Operation NC II",
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto q matuto ng cnc lath",
+  "accept": [
+   "CNC Lathe Machine Operation NC II",
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "manual lathe operator ako ng 5 taon, gusto kong matuto at magpa-assess sa CNC lathe",
+  "accept": [
+   "CNC Lathe Machine Operation NC II",
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "isang taon na akong nagpapatakbo ng CNC lathe pero hindi pa marunong mag-program, gusto ko ng NC II",
+  "accept": [
+   "CNC Lathe Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng bilog na piyesa ng motor gaya ng shaft at bushing gamit makinang may computer",
+  "accept": [
+   "CNC Lathe Machine Operation NC II",
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "nakita ko sa machine shop ang makinang umiikot at kusang humuhubog ng bakal, gusto kong matuto niyon",
+  "accept": [
+   "CNC Lathe Machine Operation NC II",
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "CNC Lathe Machine Operation NC III po, may schedule ba",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "advanced CNC lathe operator",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "CNC turning programmer sa planta",
+  "accept": [
+   "CNC Lathe Machine Operation NC III",
+   "CNC Lathe Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "beteranong operator ng CNC lathe",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-program ng CNC lathe na may live tooling",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagse-set up ako ng multi-axis na CNC lathe na may sub-spindle",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng komplikadong piyesa sa CNC lathe gamit macro at subprogram",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutunan ang mas mataas na operasyon ng CNC lathe gaya ng pag-mill habang naka-lathe",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong paikliin ang cycle time sa CNC lathe",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng eccentric at taper na piyesa sa CNC turning center",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "cnc lathe advance",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "turning center",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "cnc leyth nc3",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "advans cnc lathe",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa CNC lathe, gusto ko nang mag-NC III",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "8 taon na akong CNC lathe programmer, gusto kong magpa-assess sa advanced",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging pinakamagaling sa CNC lathe sa planta namin para ma-promote",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "kaya ko na ang simpleng turning, gusto ko na ang mas mahirap na piyesa na maraming axis",
+  "accept": [
+   "CNC Lathe Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "CNC Milling NC II po, may training ba",
+  "accept": [
+   "CNC Milling Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging operator ng CNC milling",
+  "accept": [
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "makinista sa CNC milling",
+  "accept": [
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "baguhang operator ng CNC milling",
+  "accept": [
+   "CNC Milling Machine Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-program ng simpleng pocket at drilling sa CNC mill",
+  "accept": [
+   "CNC Milling Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "ikinakabit ko ang vise at workpiece sa mesa ng CNC milling",
+  "accept": [
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-set ng work offset at tool length sa CNC mill",
+  "accept": [
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong magpatag at mag-uka ng bakal gamit CNC milling",
+  "accept": [
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong gumawa ng mold plate sa CNC milling",
+  "accept": [
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagpapalit ako ng end mill at nagra-run ng program sa CNC",
+  "accept": [
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "cnc milling",
+  "accept": [
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "cnc mill operator",
+  "accept": [
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "cnc miling oprator",
+  "accept": [
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gsto q matuto ng cnc miling",
+  "accept": [
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ako ng conventional milling at gusto ko nang mag-CNC, may NC II ba",
+  "accept": [
+   "CNC Milling Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "dalawang taon na akong nagpapatakbo ng CNC mill sa pabrika, gusto kong magpa-assess",
+  "accept": [
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong gumawa ng patag at may butas na piyesang bakal gamit makinang may computer",
+  "accept": [
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "bilib ako sa makinang kusang umuukit ng metal ayon sa programa, gusto kong matuto niyon",
+  "accept": [
+   "CNC Milling Machine Operation NC II",
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "CNC Milling Machine Operation NC III, ilang oras ang training",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "advanced CNC milling operator",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "CNC milling programmer sa die shop",
+  "accept": [
+   "CNC Milling Machine Operation NC III",
+   "CNC Milling Machine Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "beteranong makinista ng CNC milling",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-program ng 3D contour sa CNC milling",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagse-set up ako ng 4th axis na rotary table sa CNC mill",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumamit ng macro at subprogram sa CNC milling",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong gumawa ng komplikadong cavity ng hulma sa CNC mill",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng high speed machining sa CNC milling",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng piyesang kailangan ng maraming setup sa CNC machining center",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "cnc milling advance",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "4 axis milling",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "cnc miling nc3",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "advans cnc milling programing",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may NC II na ako sa CNC milling at gusto ko nang umakyat sa NC III",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "sampung taon na akong nagpapatakbo ng CNC machining center, gusto ko ng mas mataas na NC",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "kaya ko na ang simpleng milling, gusto ko na ang mga hulma at hugis na paikot-ikot",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang pinagkakatiwalaan ng planta sa pinakamahirap na piyesa sa milling",
+  "accept": [
+   "CNC Milling Machine Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Die Designing NC IV po, ano ang requirements",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging die designer",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "taga-disenyo ng die para sa stamping",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "design engineer ng press die sa planta",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong kalkulahin ang tonnage at clearance ng die",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagdi-design ako ng progressive die sa CAD",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano subukan sa simulation ang disenyo ng die bago ito gawin",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong gumawa ng fabrication drawing ng die para sa toolroom",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "inaayos ko ang disenyo ng die kapag may problema sa trial",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-layout ng strip para sa stamping die",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "die design",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "disenyo ng die",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "day designer",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "dye designing nc4",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "15 taon na akong die maker at gusto ko nang mag-design, may NC IV ba",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "tool and die designer ako sa planta pero walang NC, gusto kong magpa-assess",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong ako ang gumagawa ng plano ng hulmahang bakal na pantabas ng piyesa ng sasakyan",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "mula sa pagiging toolmaker, gusto kong umangat bilang taga-disenyo sa harap ng computer",
+  "accept": [
+   "Die Designing NC IV"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "EDM Sinking NC II po, may training ba",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging EDM sinker operator",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "operator ng die sinking EDM",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "tagapatakbo ng EDM sa mold shop",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II",
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-set up ng electrode at workpiece sa EDM",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagawa ako ng cavity ng hulma gamit copper electrode",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gumawa ng graphite electrode para sa EDM sinking",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong mag-ukit ng hugis sa matigas na bakal gamit kuryente at langis",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naglilinis at nagsusukat ako ng piyesa pagkatapos ng EDM",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II",
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-set ng current at gap sa sinker EDM",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "edm sinking",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "spark erosion",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II",
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "edm singking operator",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "idm sinking makina",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "3 taon na akong EDM operator sa mold shop, gusto ko ng NC II",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "helper ako sa EDM ng isang planta, gusto ko magpa-assess",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II",
+   "CNC Electric Discharge Machine (EDM) Wire Cut Operation NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutunan ang makinang lumilikha ng hugis sa bakal gamit kislap ng kuryente sa ilalim ng langis",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magtrabaho sa mold shop sa makinang gumagamit ng electrode na tanso",
+  "accept": [
+   "Electric Discharge Machine (EDM) Sinking Operation NC II"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "FCAW NC I po, para ba sa baguhan",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging FCAW welder",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "plate welder na flux core ang gamit",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manghihinang ng bakal sa construction",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III",
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV",
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV",
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II",
+   "GAS Welding NC II",
+   "Gas Welding NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong maghinang ng plato ng bakal gamit flux core wire",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-set ng boltahe at wire speed sa FCAW machine",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagwe-weld ako ng fillet joint sa carbon steel gamit flux core",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "baguhan pa lang ako at gusto kong matutong mag-tack weld at mag-fillet gamit FCAW",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong tanggalin ang slag pagkatapos maghinang ng flux core",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghihinang ako ng plato sa patag at pahalang na posisyon gamit flux core",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "fcaw",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "flux core welding",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "flaks kor welding",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "mag welding aq ng flux cor",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "helper ako sa welding shop ng isang taon, gusto ko kumuha ng FCAW NC I",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "marunong na akong mag-flux core sa plato, gusto kong magpa-assess",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto ng paghihinang na hindi na kailangang magpalit ng rod kada ilang minuto",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "ang tatay ko ay manghihinang sa shipyard at gusto kong sumunod sa yapak niya",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III",
+   "Gas Metal Arc Welding (GMAW) NC I",
+   "Gas Metal Arc Welding (GMAW) NC II",
+   "Gas Metal Arc Welding (GMAW) NC III",
+   "Gas Tungsten Arc Welding (GTAW) NC II",
+   "Gas Tungsten Arc Welding (GTAW) NC IV",
+   "Manual Metal Arc Welding (MMAW) NC I",
+   "Manual Metal Arc Welding (MMAW) NC II",
+   "Manual Metal Arc Welding (MMAW) NC III",
+   "Manual Metal Arc Welding (MMAW) NC IV",
+   "Submerged Arc Welding (SAW) NC I",
+   "Submerged Arc Welding (SAW) NC II",
+   "GAS Welding NC II",
+   "Gas Welding NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "Flux-Cored Arc Welding NC II, may assessment ba",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "pipe welder gamit FCAW",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manghihinang ng tubo sa planta gamit flux core",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "FCAW welder sa shipyard",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC I",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-weld ng tubo ng carbon steel gamit flux core",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nagwe-weld ako ng pipe sa 2G at 5G na posisyon gamit FCAW",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano gawin ang root pass at cap sa tubo gamit flux core wire",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong maghinang ng tubo ng tubig at langis sa planta gamit FCAW",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto mag-bevel at mag-fit-up ng tubo bago i-weld sa FCAW",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghihinang ako ng tubo na dumadaan sa x-ray test gamit flux core",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "fcaw pipe",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fcaw nc2",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fcaw payp welder",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "fluxcore welding sa tubo pno",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may FCAW NC I na ako, gusto ko nang mag-NC II sa pipe",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "limang taon na akong naghihinang ng tubo gamit flux core sa planta, gusto kong ma-certify",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong mag-abroad bilang welder sa mga oil and gas na proyekto gamit flux core",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "plato lang lagi ang hinihinang ko gamit flux core, gusto ko nang subukan ang tubo",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC II",
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "FCAW NC III po, para sa alloy steel",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "alloy steel welder gamit FCAW",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging mataas na antas na manghihinang ng alloy sa planta gamit flux core",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manghihinang ng alloy na plato at tubo gamit flux core",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong mag-weld ng alloy steel na plato gamit FCAW",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghihinang ako ng chrome-moly na tubo gamit flux core",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano mag-preheat at bantayan ang interpass temperature kapag nag-flux core sa alloy steel",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong maghinang ng tubong alloy sa 6G na posisyon gamit flux core",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matuto pumili ng tamang flux core wire para sa iba't ibang alloy",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghihinang ako ng stainless na plato gamit flux-cored wire",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "fcaw alloy",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fcaw 6g",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III",
+   "Flux-Cored Arc Welding (FCAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "fcaw aloy steel welder",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "flux kord welding nc3",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "may FCAW NC II na ako, gusto ko nang mag-NC III para sa alloy",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "10 taon na akong welder sa refinery gamit flux core, kailangan ko ng NC III para sa abroad",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III",
+   "Flux-Cored Arc Welding (FCAW) NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "carbon steel lang ang alam kong hinangin gamit wire na may flux, gusto ko nang subukan ang mas mamahaling metal",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging manghihinang sa planta ng kuryente kung saan espesyal na bakal ang hinihinang gamit flux core",
+  "accept": [
+   "Flux-Cored Arc Welding (FCAW) NC III"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "GAS Welding NC II po, oxy-acetylene ba yan",
+  "accept": [
+   "GAS Welding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "name",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong maging gas welder",
+  "accept": [
+   "GAS Welding NC II",
+   "Gas Welding NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "manghihinang gamit acetylene",
+  "accept": [
+   "GAS Welding NC II",
+   "Gas Welding NC I"
+  ],
+  "lang": "tl",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "oxy-acetylene welder sa talyer",
+  "accept": [
+   "GAS Welding NC II",
+   "Gas Welding NC I"
+  ],
+  "lang": "taglish",
+  "kind": "job",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong maghinang ng manipis na tubo gamit oxygen at acetylene",
+  "accept": [
+   "GAS Welding NC II",
+   "Gas Welding NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "paano i-adjust ang apoy ng torch para maging neutral flame",
+  "accept": [
+   "GAS Welding NC II",
+   "Gas Welding NC I"
+  ],
+  "lang": "taglish",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "naghihinang ako ng alloy steel na plato gamit gas torch",
+  "accept": [
+   "GAS Welding NC II"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "nais kong matutong magkabit ng regulator at hose ng tangke ng oxygen at acetylene",
+  "accept": [
+   "GAS Welding NC II",
+   "Gas Welding NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong matutong maghinang ng tubo ng bisikleta at tambutso gamit gas",
+  "accept": [
+   "GAS Welding NC II",
+   "Gas Welding NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gumagamit ako ng filler rod at torch para pagdugtungin ang bakal",
+  "accept": [
+   "GAS Welding NC II",
+   "Gas Welding NC I"
+  ],
+  "lang": "tl",
+  "kind": "task",
+  "review_status": "draft"
+ },
+ {
+  "query": "gas welding",
+  "accept": [
+   "GAS Welding NC II",
+   "Gas Welding NC I"
+  ],
+  "lang": "taglish",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "hinang acetylene",
+  "accept": [
+   "GAS Welding NC II",
+   "Gas Welding NC I"
+  ],
+  "lang": "tl",
+  "kind": "short",
+  "review_status": "draft"
+ },
+ {
+  "query": "oxy asetilin welding",
+  "accept": [
+   "GAS Welding NC II",
+   "Gas Welding NC I"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "gas weldng nc2 pno mag enrol",
+  "accept": [
+   "GAS Welding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "typo",
+  "review_status": "draft"
+ },
+ {
+  "query": "matagal na akong naghihinang gamit acetylene sa talyer, gusto ko ng NC II",
+  "accept": [
+   "GAS Welding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "may Gas Welding NC I na ako, gusto ko nang mag-NC II",
+  "accept": [
+   "GAS Welding NC II"
+  ],
+  "lang": "taglish",
+  "kind": "experience",
+  "review_status": "draft"
+ },
+ {
+  "query": "nag-aayos ang tatay ko ng tambutso gamit asul na apoy, gusto kong matutunan iyon",
+  "accept": [
+   "GAS Welding NC II",
+   "Gas Welding NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ },
+ {
+  "query": "gusto kong magbukas ng pagawaan ng tubo sa probinsya na walang kuryente, apoy at tangke lang ang gamit",
+  "accept": [
+   "GAS Welding NC II",
+   "Gas Welding NC I"
+  ],
+  "lang": "tl",
+  "kind": "indirect",
+  "review_status": "draft"
+ }
+]

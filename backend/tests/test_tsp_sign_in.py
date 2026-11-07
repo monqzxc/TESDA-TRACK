@@ -183,3 +183,19 @@ def test_background_purge_removes_expired_pending(session):
 
     cache.purge_until_stopped(open_session, stop, interval_seconds=0)
     assert session.exec(select(TspPendingSignIn)).all() == []
+
+
+def test_profile_labels_read_strings_and_objects():
+    profile = {"skills": ["Welding", {"name": " Brazing  work "}, {"name": "Welding"}, {"id": 7}, 3],
+               "experience": [{"job_title": "Helper", "company": "ACME"}], "education": [{"school": "Cebu NHS"}],
+               "qualifications": [{"qualification_title": "SMAW NC II"}],
+               "credentials": {"certificates": [{"title": "NC II"}], "trainings": ["Safety 101"], "assessments": [],
+                               "external_certificates": [{"name": "First aid"}]}}
+    assert tsp_sign_in.profile_labels(profile) == {
+        "skills": ["Welding", "Brazing work"], "experience": ["Helper"], "education": ["Cebu NHS"],
+        "qualifications": ["SMAW NC II"], "credentials": ["NC II", "Safety 101", "First aid"]}
+
+
+def test_linked_profile_is_the_kept_profile(session):
+    learner = linked_learner(session)
+    assert tsp_sign_in.linked_profile(session, learner)["skills"] == [{"name": "Welding"}]

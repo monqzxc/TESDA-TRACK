@@ -1907,7 +1907,26 @@ export const en = {
     },
     notice: {
       message: "You're using TESDA-TRACK without signing in.",
+      preparing: 'Preparing your session…',
+      blocked: "We couldn't end the previous session. Check your connection and reopen TESDA-TRACK, or try again.",
       retry: 'Sign in again',
+    },
+    // The line on the entry page while TSP signs the learner in (features/tsp/TspPassportStatus.tsx).
+    passport: {
+      connecting: 'Connecting to your Skill Passport…',
+      loading: 'Getting your Skill Passport details…',
+      connected: 'Skill Passport connected',
+      unavailable: "Skill Passport connected. We couldn't load your details.",
+      details: 'See details',
+      sections: {
+        skills: 'Skills',
+        experience: 'Experience',
+        education: 'Education',
+        qualifications: 'Qualifications',
+        credentials: 'Certificates and trainings',
+      },
+      none: 'None yet',
+      used: 'We add your skills to your search to match you better.',
     },
   },
   theme: {

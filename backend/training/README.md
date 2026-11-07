@@ -1,5 +1,16 @@
 # Matching model: evaluation and fine-tuning
 
+**Version 6 (every related qualification):** [Colab notebook](colab/train_colab_v6.ipynb) and
+[guide](V6.md). Continues the v4 encoder with every owner of a query as a positive, the whole catalog as negatives,
+5,736 Filipino/Taglish drafts for all 319 qualifications and 520 goals that must get no match.
+
+**Version 5 (demand jobs):** [self-contained Colab notebook](colab/train_colab_v5.ipynb) and
+[run notes](V5.md). Continues from the verified v4 encoder using catalog-linked job titles
+in the November 4, 2026 demand snapshot.
+The [multilingual MVP notebook](colab/train_colab_v5_mvp.ipynb) adds learner goals,
+qualification requests, jobs and skills across ten language varieties.
+Use `python -m training.try_mvp` to ask questions locally with the trained MVP and the app's matcher.
+
 **Version 4 (Kapampangan + Ilocano):** use [the v4 Colab notebook](colab/train_colab_v4.ipynb)
 and [step-by-step guide](V4.md). Keeps English, Filipino/Taglish, Cebuano and Hiligaynon;
 adds Kapampangan starter data, more Ilocano tasks, English meanings and a native-speaker
@@ -199,3 +210,17 @@ carries only the reviewed train ones. The next `collect` deletes reviewed, rejec
 database and empties rejected rows, so the server keeps a shared goal only until its review and the review file holds
 the only copy of the reviewed ones: back it up outside git. Real goals are the best test of the model, so keep the
 default split until the dev and sealed sets hold a few hundred of them.
+
+
+## V5 worktree integration
+
+The local projection workflow remains in `training/demand.py`, `training/v5.py` and the V5 Colab notebooks.
+The separate labeled-demand recipe from `feature/model-v5-demand` lives in `training/demand_labeled.py`
+and `training/v5_demand.py`. Fine-tuning and mining select that recipe with `--profile v5`; their default
+remains `v2`. Run its report with `python -m training.v5_demand --output training/runs/v5-demand.json`.
+
+The worktree did not contain `training/data/v5/demand_jobs.json` or the generated
+`training/data/goals_v2/{dev,sealed}/V5_demand.json` files. Before using this recipe, create and label
+a worksheet with `python -m training.demand_labeled worksheet --help`, then generate those files with
+`python -m training.demand_labeled build --help`. Dataset-dependent integration tests in
+`tests/test_training_v5_demand.py` skip until the labeled dataset exists; unit tests run without it.

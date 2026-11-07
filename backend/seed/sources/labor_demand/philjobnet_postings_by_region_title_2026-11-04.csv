@@ -1,0 +1,1837 @@
+region,title_normalized,postings,employers,median_salary_php,education_most_common,snapshot_date
+NCR,service crew,73,35,18070,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,call center agent,62,13,22500,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,customer service assistant,55,32,20000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,sales associate professional,53,35,19692,Educ level not specified,2026-11-04
+NCR,merchandiser,48,16,20000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,cashier,45,37,19630,Educ level not specified,2026-11-04
+NCR,delivery driver,43,27,19630,Educ level not specified,2026-11-04
+NCR,store supervisor,38,17,21000,COLLEGE GRADUATE,2026-11-04
+NCR,company driver,34,28,25000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,promo salesperson,29,14,,Educ level not specified,2026-11-04
+NCR,sales clerk,29,18,18070,Educ level not specified,2026-11-04
+NCR,accounting assistant,26,21,20000,COLLEGE GRADUATE,2026-11-04
+NCR,electrician (general),25,16,20000,Educ level not specified,2026-11-04
+NCR,salesman,24,10,19000,Educ level not specified,2026-11-04
+NCR,airconditioning technician,21,18,22000,VOCATIONAL GRADUATE,2026-11-04
+NCR,delivery helper,21,13,19630,Educ level not specified,2026-11-04
+NCR,administrative assistant,20,17,19600,COLLEGE GRADUATE,2026-11-04
+NCR,warehouse helper,19,17,19630,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,kitchen crew,18,11,19630,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,sales executive,17,14,25000,COLLEGE GRADUATE,2026-11-04
+NCR,truck driver,16,9,20000,Educ level not specified,2026-11-04
+NCR,technical support staff,15,12,22000,COLLEGE GRADUATE,2026-11-04
+NCR,warehouseman,15,12,,Educ level not specified,2026-11-04
+NCR,automotive mechanic,14,11,20000,VOCATIONAL GRADUATE,2026-11-04
+NCR,carpenter (general),14,8,25000,Educ level not specified,2026-11-04
+NCR,accounting clerk,13,11,19000,COLLEGE GRADUATE,2026-11-04
+NCR,human resource development assistant,12,12,20000,COLLEGE GRADUATE,2026-11-04
+NCR,barista,11,5,18000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,office clerk,11,10,19000,COLLEGE GRADUATE,2026-11-04
+NCR,accounting staff,10,9,20000,COLLEGE GRADUATE,2026-11-04
+NCR,data encoder,10,7,18000,Educ level not specified,2026-11-04
+NCR,production worker,10,8,20000,Educ level not specified,2026-11-04
+NCR,sales & marketing assistant,10,7,19000,COLLEGE GRADUATE,2026-11-04
+NCR,stock clerk,10,7,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,store helper,10,2,,COLLEGE GRADUATE,2026-11-04
+NCR,accounts executive,9,8,25000,COLLEGE GRADUATE,2026-11-04
+NCR,assistant store manager,9,3,26000,COLLEGE GRADUATE,2026-11-04
+NCR,marketing specialist,9,8,35000,COLLEGE GRADUATE,2026-11-04
+NCR,marketing staff,9,9,22900,COLLEGE GRADUATE,2026-11-04
+NCR,sales coordinator,9,9,22000,COLLEGE GRADUATE,2026-11-04
+NCR,accounts manager,8,8,30000,COLLEGE GRADUATE,2026-11-04
+NCR,bagger,8,5,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,civil engineer (general),8,7,70000,COLLEGE GRADUATE,2026-11-04
+NCR,customer relations officer,8,6,24000,Educ level not specified,2026-11-04
+NCR,janitor,8,6,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,kitchen helper,8,5,18070,SECONDARY (K-12),2026-11-04
+NCR,purchasing clerk,8,8,21000,COLLEGE GRADUATE,2026-11-04
+NCR,accountant (general),7,7,25000,Educ level not specified,2026-11-04
+NCR,butcher (general),7,2,18070,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,graphic artist,7,7,32000,Educ level not specified,2026-11-04
+NCR,marketing assistant,7,7,18000,COLLEGE GRADUATE,2026-11-04
+NCR,marketing officer,7,7,18000,COLLEGE GRADUATE,2026-11-04
+NCR,painter,7,7,25000,Educ level not specified,2026-11-04
+NCR,plumber,7,7,20000,Educ level not specified,2026-11-04
+NCR,production helper,7,7,19630,Educ level not specified,2026-11-04
+NCR,saleslady,7,5,19630,Educ level not specified,2026-11-04
+NCR,store salesperson,7,7,18070,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,accounting analyst,6,6,25000,COLLEGE GRADUATE,2026-11-04
+NCR,accounting officer,6,6,22000,COLLEGE GRADUATE,2026-11-04
+NCR,accounting supervisor,6,6,30000,COLLEGE GRADUATE,2026-11-04
+NCR,assistant cook,6,5,21500,Educ level not specified,2026-11-04
+NCR,collection assistant,6,5,24000,Educ level not specified,2026-11-04
+NCR,construction laborer,6,3,,Educ level not specified,2026-11-04
+NCR,data analyst,6,4,30000,COLLEGE GRADUATE,2026-11-04
+NCR,electrical engineer (general),6,6,30000,COLLEGE GRADUATE,2026-11-04
+NCR,financial analyst,6,6,21000,COLLEGE GRADUATE,2026-11-04
+NCR,human resource supervisor,6,4,35000,Educ level not specified,2026-11-04
+NCR,machinist,6,5,,Educ level not specified,2026-11-04
+NCR,maintenance crew,6,5,8000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,mason (general),6,6,,Educ level not specified,2026-11-04
+NCR,mechanical engineer (general),6,6,22650,COLLEGE GRADUATE,2026-11-04
+NCR,medical representative,6,5,20000,COLLEGE GRADUATE,2026-11-04
+NCR,parking attendant,6,6,18127,GRADE XII (FOR K TO 12),2026-11-04
+NCR,product specialist,6,6,150000,Educ level not specified,2026-11-04
+NCR,project manager,6,4,50000,COLLEGE GRADUATE,2026-11-04
+NCR,restaurant supervisor,6,4,22500,COLLEGE GRADUATE,2026-11-04
+NCR,safety officer,6,5,70000,COLLEGE GRADUATE,2026-11-04
+NCR,sales manager,6,6,30000,COLLEGE GRADUATE,2026-11-04
+NCR,sales representative i (gov),6,4,25000,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+NCR,technical and commercial sales representative,6,6,22000,COLLEGE GRADUATE,2026-11-04
+NCR,utility worker,6,5,2000000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,warehouse clerk,6,6,20000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,accounting manager,5,4,70000,COLLEGE GRADUATE,2026-11-04
+NCR,area operations manager,5,4,38000,COLLEGE GRADUATE,2026-11-04
+NCR,building maintenance man,5,4,25000,VOCATIONAL GRADUATE,2026-11-04
+NCR,business development officer,5,4,30000,COLLEGE GRADUATE,2026-11-04
+NCR,computer programmer,5,4,,COLLEGE GRADUATE,2026-11-04
+NCR,dishwasher,5,4,18070,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,driver (gov),5,2,,Educ level not specified,2026-11-04
+NCR,electronics technician,5,4,20000,Educ level not specified,2026-11-04
+NCR,food server,5,5,19630,Educ level not specified,2026-11-04
+NCR,forklift operator,5,4,,Educ level not specified,2026-11-04
+NCR,human resource development manager,5,5,60000,COLLEGE GRADUATE,2026-11-04
+NCR,production supervisor,5,4,23000,COLLEGE GRADUATE,2026-11-04
+NCR,quality assurance staff,5,5,20000,COLLEGE GRADUATE,2026-11-04
+NCR,receptionist (general),5,4,19000,GRADE XII (FOR K TO 12),2026-11-04
+NCR,welder,5,4,19692,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,administrative clerk,4,2,18070,Educ level not specified,2026-11-04
+NCR,administrative officer,4,4,20000,COLLEGE GRADUATE,2026-11-04
+NCR,architectural designer,4,4,,Educ level not specified,2026-11-04
+NCR,auditor,4,4,61000,COLLEGE GRADUATE,2026-11-04
+NCR,autocad operator,4,4,20000,Educ level not specified,2026-11-04
+NCR,beauty consultant,4,3,22000,COLLEGE GRADUATE,2026-11-04
+NCR,claims processor,4,4,16500,Educ level not specified,2026-11-04
+NCR,documentation staff,4,3,20000,Educ level not specified,2026-11-04
+NCR,executive assistant,4,4,25000,Educ level not specified,2026-11-04
+NCR,finance manager,4,4,150000,COLLEGE GRADUATE,2026-11-04
+NCR,graphic designer,4,3,18000,COLLEGE GRADUATE,2026-11-04
+NCR,logistics coordinator,4,3,25000,Educ level not specified,2026-11-04
+NCR,marketing supervisor,4,3,32000,COLLEGE GRADUATE,2026-11-04
+NCR,merchandising assistant,4,2,,2ND YEAR COLLEGE LEVEL,2026-11-04
+NCR,messenger,4,4,17000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,motorcycle driver/rider,4,4,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,payroll clerk,4,4,18500,COLLEGE GRADUATE,2026-11-04
+NCR,production machine operator,4,3,20000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,project coordinator,4,4,45000,COLLEGE GRADUATE,2026-11-04
+NCR,purchasing officer,4,4,21060,COLLEGE GRADUATE,2026-11-04
+NCR,real estate salesman,4,4,18000,Educ level not specified,2026-11-04
+NCR,refrigeration and airconditioning technician,4,4,24000,VOCATIONAL GRADUATE,2026-11-04
+NCR,restaurant general manager,4,4,30000,COLLEGE GRADUATE,2026-11-04
+NCR,sales and marketing manager,4,3,20000,COLLEGE GRADUATE,2026-11-04
+NCR,sales and promotion supervisor,4,3,20000,COLLEGE GRADUATE,2026-11-04
+NCR,sales officer,4,3,28000,COLLEGE GRADUATE,2026-11-04
+NCR,stockman,4,4,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,store manager,4,4,80000,COLLEGE GRADUATE,2026-11-04
+NCR,telemarketer,4,3,18000,Educ level not specified,2026-11-04
+NCR,trailer driver,4,4,23000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,agent,3,2,16000,Educ level not specified,2026-11-04
+NCR,ambassador,3,1,,GRADE XII (FOR K TO 12),2026-11-04
+NCR,assistant food and beverage manager,3,2,,Educ level not specified,2026-11-04
+NCR,audit assistant,3,3,,Educ level not specified,2026-11-04
+NCR,bank teller,3,2,,COLLEGE GRADUATE,2026-11-04
+NCR,billing clerk,3,3,30000,COLLEGE GRADUATE,2026-11-04
+NCR,branch manager,3,3,30000,COLLEGE GRADUATE,2026-11-04
+NCR,building electrician,3,3,20000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,busboy,3,2,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,business analyst,3,3,,COLLEGE GRADUATE,2026-11-04
+NCR,computer aided design (cad) operator,3,3,20000,COLLEGE GRADUATE,2026-11-04
+NCR,construction carpenter,3,2,260000,VOCATIONAL GRADUATE,2026-11-04
+NCR,cook (general),3,3,22000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,credit/billing/collection officer,3,3,30000,COLLEGE GRADUATE,2026-11-04
+NCR,debt collector,3,2,20300,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,department store salesperson,3,2,20000,Educ level not specified,2026-11-04
+NCR,draftsman (general),3,3,22000,COLLEGE GRADUATE,2026-11-04
+NCR,estimator,3,3,,Educ level not specified,2026-11-04
+NCR,facial/skin treatment consultant,3,3,20000,1ST YEAR HIGH SCHOOL/GRADE VII (FOR K TO 12),2026-11-04
+NCR,finishing carpenter,3,3,25000,Educ level not specified,2026-11-04
+NCR,front desk officer,3,2,23000,COLLEGE GRADUATE,2026-11-04
+NCR,heavy truck driver,3,3,1041,Educ level not specified,2026-11-04
+NCR,hotel and restaurant manager,3,3,30000,Educ level not specified,2026-11-04
+NCR,household attendant,3,1,2100,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,human resource development officer,3,3,25000,COLLEGE GRADUATE,2026-11-04
+NCR,human resource development specialist,3,2,20000,COLLEGE GRADUATE,2026-11-04
+NCR,human resource management assistant,3,3,20000,COLLEGE GRADUATE,2026-11-04
+NCR,information technology (it) specialist,3,3,30000,COLLEGE GRADUATE,2026-11-04
+NCR,inventory clerk,3,3,22000,COLLEGE GRADUATE,2026-11-04
+NCR,jr. supervisor (management trainee),3,1,20000,COLLEGE GRADUATE,2026-11-04
+NCR,liaison officer,3,3,19692,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,loans assistant,3,3,17000,COLLEGE GRADUATE,2026-11-04
+NCR,logistics & warehouse officer,3,3,20000,Educ level not specified,2026-11-04
+NCR,logistics supervisor,3,3,25000,COLLEGE GRADUATE,2026-11-04
+NCR,maintenance electrician,3,3,22000,VOCATIONAL GRADUATE,2026-11-04
+NCR,maintenance technician (electrical),3,3,22000,Educ level not specified,2026-11-04
+NCR,market salesperson,3,3,,COLLEGE GRADUATE,2026-11-04
+NCR,marketing executive,3,3,200000,COLLEGE GRADUATE,2026-11-04
+NCR,marketing manager,3,3,35000,Educ level not specified,2026-11-04
+NCR,office secretary,3,2,22900,COLLEGE GRADUATE,2026-11-04
+NCR,operations manager,3,3,80000,COLLEGE GRADUATE,2026-11-04
+NCR,phlebotomist,3,2,22000,COLLEGE GRADUATE,2026-11-04
+NCR,private tutor,3,3,8800,COLLEGE GRADUATE,2026-11-04
+NCR,production engineer,3,3,30000,COLLEGE GRADUATE,2026-11-04
+NCR,project supervisor,3,3,40000,COLLEGE GRADUATE,2026-11-04
+NCR,radiologic technologist,3,2,25000,COLLEGE GRADUATE,2026-11-04
+NCR,recruitment officer,3,3,21000,COLLEGE GRADUATE,2026-11-04
+NCR,sales supervisor,3,3,35000,COLLEGE GRADUATE,2026-11-04
+NCR,semi-skilled worker (skilled technician) (afp),3,3,20000,Educ level not specified,2026-11-04
+NCR,service engineer,3,3,20000,COLLEGE GRADUATE,2026-11-04
+NCR,technical assistant,3,3,27000,COLLEGE GRADUATE,2026-11-04
+NCR,telecommunications engineer,3,1,,COLLEGE GRADUATE,2026-11-04
+NCR,tile setter,3,3,25000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,tinsmith,3,3,18070,Educ level not specified,2026-11-04
+NCR,warehouse supervisor,3,3,25000,COLLEGE GRADUATE,2026-11-04
+NCR,web developer,3,3,22000,COLLEGE GRADUATE,2026-11-04
+NCR,accounts coordinator,2,2,19630,Educ level not specified,2026-11-04
+NCR,accounts officer,2,2,,Educ level not specified,2026-11-04
+NCR,administrative secretary,2,1,,COLLEGE GRADUATE,2026-11-04
+NCR,administrative supervisor,2,2,35000,COLLEGE GRADUATE,2026-11-04
+NCR,advertising salesman,2,2,20000,2ND YEAR COLLEGE LEVEL,2026-11-04
+NCR,architect,2,2,,COLLEGE GRADUATE,2026-11-04
+NCR,assistant accounting manager,2,2,60000,COLLEGE GRADUATE,2026-11-04
+NCR,assistant manager,2,2,45000,COLLEGE GRADUATE,2026-11-04
+NCR,assistant operations manager,2,2,80000,COLLEGE GRADUATE,2026-11-04
+NCR,audit manager,2,2,110000,Educ level not specified,2026-11-04
+NCR,automotive electrician,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,automotive services manager,2,2,45000,Educ level not specified,2026-11-04
+NCR,baker (general),2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,bookkeeper,2,2,50000,Educ level not specified,2026-11-04
+NCR,building concierge,2,2,,Educ level not specified,2026-11-04
+NCR,building painter,2,2,,VOCATIONAL GRADUATE,2026-11-04
+NCR,business development manager,2,2,,COLLEGE GRADUATE,2026-11-04
+NCR,cadet engineer (mechanical),2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,carpenter (gov),2,1,,Educ level not specified,2026-11-04
+NCR,chauffeur/family driver,2,2,18127,Educ level not specified,2026-11-04
+NCR,company nurse,2,2,18000,COLLEGE GRADUATE,2026-11-04
+NCR,computer applications engineer,2,2,120000,COLLEGE GRADUATE,2026-11-04
+NCR,construction painter,2,2,19000,ELEMENTARY GRADUATE,2026-11-04
+NCR,credit analyst,2,2,35000,Educ level not specified,2026-11-04
+NCR,customer service manager,2,2,50000,COLLEGE GRADUATE,2026-11-04
+NCR,dealer,2,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,drilling/grinding metal machine operator,2,1,,Educ level not specified,2026-11-04
+NCR,electrical inspector,2,1,,VOCATIONAL GRADUATE,2026-11-04
+NCR,electrician (gov),2,1,,Educ level not specified,2026-11-04
+NCR,enumerator,2,1,,COLLEGE GRADUATE,2026-11-04
+NCR,finance clerk,2,2,,COLLEGE GRADUATE,2026-11-04
+NCR,finance officer,2,2,,COLLEGE GRADUATE,2026-11-04
+NCR,financial consultant,2,2,20000,COLLEGE GRADUATE,2026-11-04
+NCR,food service manager,2,1,18000,COLLEGE GRADUATE,2026-11-04
+NCR,head waiter,2,1,23000,COLLEGE GRADUATE,2026-11-04
+NCR,"heating, ventilation and aircondition technician",2,2,,VOCATIONAL GRADUATE,2026-11-04
+NCR,helper technician,2,2,,Educ level not specified,2026-11-04
+NCR,hotel housekeeping attendant,2,2,19630,Educ level not specified,2026-11-04
+NCR,housekeeper (private),2,2,19692,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,housemaid,2,2,10000,Educ level not specified,2026-11-04
+NCR,industrial electrician,2,1,,Educ level not specified,2026-11-04
+NCR,information technology manager,2,2,40000,COLLEGE GRADUATE,2026-11-04
+NCR,information technology officer,2,2,,Educ level not specified,2026-11-04
+NCR,internal auditor,2,2,18000,COLLEGE GRADUATE,2026-11-04
+NCR,inventory control analyst,2,2,20000,COLLEGE GRADUATE,2026-11-04
+NCR,kiosk salesperson,2,2,,Educ level not specified,2026-11-04
+NCR,kitchen supervisor,2,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,language teacher (secondary education),2,2,,COLLEGE GRADUATE,2026-11-04
+NCR,master electrician,2,1,,Educ level not specified,2026-11-04
+NCR,mechanic,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,mechanical engineering technician (general),2,2,25000,VOCATIONAL GRADUATE,2026-11-04
+NCR,medical technologist,2,1,25000,Educ level not specified,2026-11-04
+NCR,mobile crane operator,2,2,26127,ELEMENTARY GRADUATE,2026-11-04
+NCR,office administrator,2,2,20000,COLLEGE GRADUATE,2026-11-04
+NCR,operations analyst,2,2,,COLLEGE GRADUATE,2026-11-04
+NCR,operations coordinator,2,2,19630,COLLEGE GRADUATE,2026-11-04
+NCR,operations officer,2,2,22000,COLLEGE GRADUATE,2026-11-04
+NCR,pastry chef,2,2,38000,Educ level not specified,2026-11-04
+NCR,payroll master,2,2,30000,COLLEGE GRADUATE,2026-11-04
+NCR,pest control worker,2,2,19630,Educ level not specified,2026-11-04
+NCR,pharmacist (general),2,2,30000,Educ level not specified,2026-11-04
+NCR,procurement assistant,2,2,20000,Educ level not specified,2026-11-04
+NCR,production assistant,2,2,,Educ level not specified,2026-11-04
+NCR,property consultant,2,1,15000,2ND YEAR COLLEGE LEVEL,2026-11-04
+NCR,quality assurance supervisor,2,1,,Educ level not specified,2026-11-04
+NCR,quantity surveyor,2,2,22000,COLLEGE GRADUATE,2026-11-04
+NCR,retail associate,2,2,20000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,room attendant,2,2,,VOCATIONAL UNDERGRADUATE,2026-11-04
+NCR,sales analyst,2,2,25000,COLLEGE GRADUATE,2026-11-04
+NCR,sales director,2,2,,Educ level not specified,2026-11-04
+NCR,sales engineer,2,2,20000,COLLEGE GRADUATE,2026-11-04
+NCR,second marine engineer,2,2,,Educ level not specified,2026-11-04
+NCR,shop service advisor,2,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,site engineer,2,2,,Educ level not specified,2026-11-04
+NCR,software designer,2,2,20000,COLLEGE GRADUATE,2026-11-04
+NCR,steel bending machine operator,2,1,,VOCATIONAL UNDERGRADUATE,2026-11-04
+NCR,systems developer (computer),2,2,40000,COLLEGE GRADUATE,2026-11-04
+NCR,systems engineer,2,2,40000,COLLEGE GRADUATE,2026-11-04
+NCR,telephone salesperson,2,1,,SECONDARY (K-12),2026-11-04
+NCR,training specialist,2,2,37000,Educ level not specified,2026-11-04
+NCR,valet,2,2,,GRADE XII (FOR K TO 12),2026-11-04
+NCR,varnisher,2,2,19692,Educ level not specified,2026-11-04
+NCR,waiter (general),2,2,,VOCATIONAL GRADUATE,2026-11-04
+NCR,account analyst,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,adding machine technician,1,1,19000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,administration services aide,1,1,,Educ level not specified,2026-11-04
+NCR,administrator,1,1,,Educ level not specified,2026-11-04
+NCR,advertising officer,1,1,13000,GRADE XII (FOR K TO 12),2026-11-04
+NCR,alterer,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,architectural draftsman,1,1,25000,COLLEGE GRADUATE,2026-11-04
+NCR,architectural engineer,1,1,,Educ level not specified,2026-11-04
+NCR,assistant pharmacist,1,1,19630,COLLEGE GRADUATE,2026-11-04
+NCR,assistant secretary,1,1,,GRADE XII (FOR K TO 12),2026-11-04
+NCR,assistant store supervisor,1,1,,Educ level not specified,2026-11-04
+NCR,associate accountant,1,1,19000,COLLEGE GRADUATE,2026-11-04
+NCR,audio-visual aid technician (gov),1,1,,VOCATIONAL GRADUATE,2026-11-04
+NCR,audit analyst,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,audit supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,auditing clerk,1,1,,Educ level not specified,2026-11-04
+NCR,automotive painter,1,1,30000,Educ level not specified,2026-11-04
+NCR,auxilliary machine operator iv (gov),1,1,19630,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,baby sitter,1,1,,Educ level not specified,2026-11-04
+NCR,barber,1,1,20866,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,barber-hairdresser,1,1,25000,ELEMENTARY GRADUATE,2026-11-04
+NCR,bill collector,1,1,,GRADE XII (FOR K TO 12),2026-11-04
+NCR,biology teacher (secondary education),1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,biomedical technician,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,bread baker,1,1,,Educ level not specified,2026-11-04
+NCR,bread production machine operator,1,1,,Educ level not specified,2026-11-04
+NCR,building administrator,1,1,,Educ level not specified,2026-11-04
+NCR,bus driver,1,1,20000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,business development supervisor,1,1,35000,Educ level not specified,2026-11-04
+NCR,business development/marketing assistant (gov),1,1,20000,Educ level not specified,2026-11-04
+NCR,business development/marketing assistant b (iug- sg-08)(gov),1,1,30000,COLLEGE GRADUATE,2026-11-04
+NCR,business development/marketing specialist,1,1,20000,COLLEGE GRADUATE,2026-11-04
+NCR,business services general manager,1,1,,MASTERAL/POST GRADUATE LEVEL,2026-11-04
+NCR,butler,1,1,2000,COLLEGE GRADUATE,2026-11-04
+NCR,buyer,1,1,,Educ level not specified,2026-11-04
+NCR,cadet engineer (civil),1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,cadet engineer (electrical),1,1,21570,COLLEGE GRADUATE,2026-11-04
+NCR,caregiver (home-based),1,1,2000,VOCATIONAL GRADUATE,2026-11-04
+NCR,cash clerk i (gov),1,1,,Educ level not specified,2026-11-04
+NCR,casino dealer,1,1,28000,Educ level not specified,2026-11-04
+NCR,checker,1,1,,Educ level not specified,2026-11-04
+NCR,chemical engineer (general),1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,chemical process engineer,1,1,20000,COLLEGE GRADUATE,2026-11-04
+NCR,chemistry teacher (secondary education),1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,chief engineer,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,chief mate,1,1,,Educ level not specified,2026-11-04
+NCR,chief overseas operations officer (gov),1,1,500000,COLLEGE GRADUATE,2026-11-04
+NCR,chief safety officer (gov),1,1,,Educ level not specified,2026-11-04
+NCR,civil engineering technician (general),1,1,,Educ level not specified,2026-11-04
+NCR,clinical supervisor,1,1,30000,COLLEGE GRADUATE,2026-11-04
+NCR,communication consultant/specialist,1,1,56000,COLLEGE GRADUATE,2026-11-04
+NCR,community relations officer,1,1,25000,COLLEGE GRADUATE,2026-11-04
+NCR,computer engineer,1,1,22000,COLLEGE GRADUATE,2026-11-04
+NCR,construction foreman,1,1,22170,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,construction manager,1,1,,Educ level not specified,2026-11-04
+NCR,corporate legal counsel (gov),1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,cost accountant,1,1,,Educ level not specified,2026-11-04
+NCR,cost engineer,1,1,23000,COLLEGE GRADUATE,2026-11-04
+NCR,counter clerk,1,1,18070,Educ level not specified,2026-11-04
+NCR,courier,1,1,19000,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,credit investigator,1,1,16000,Educ level not specified,2026-11-04
+NCR,credit/collection specialist,1,1,18000,COLLEGE GRADUATE,2026-11-04
+NCR,data encoder-controller (gov),1,1,19630,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,delivery checker,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,die-cut operator,1,1,19000,GRADE XII (FOR K TO 12),2026-11-04
+NCR,diesel engine mechanic,1,1,,Educ level not specified,2026-11-04
+NCR,dispatch rider,1,1,19000,Educ level not specified,2026-11-04
+NCR,dispatcher (sales services),1,1,18000,VOCATIONAL GRADUATE,2026-11-04
+NCR,district supervisor,1,1,22860,COLLEGE GRADUATE,2026-11-04
+NCR,driver/mechanic,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,ductman,1,1,,Educ level not specified,2026-11-04
+NCR,editor,1,1,18000,VOCATIONAL GRADUATE,2026-11-04
+NCR,electrical draftsman,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,electrical engineering technician (general),1,1,,VOCATIONAL GRADUATE,2026-11-04
+NCR,electrical engineering technician (high voltage),1,1,22630,Educ level not specified,2026-11-04
+NCR,electrical generator fitter,1,1,25000,VOCATIONAL GRADUATE,2026-11-04
+NCR,electrical technician,1,1,,VOCATIONAL GRADUATE,2026-11-04
+NCR,electro mechanical technician,1,1,22600,Educ level not specified,2026-11-04
+NCR,electronic product test engineer,1,1,24100,COLLEGE GRADUATE,2026-11-04
+NCR,electronics and communications engineer,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,electronics engineering technician,1,1,,Educ level not specified,2026-11-04
+NCR,engineering manager,1,1,65000,Educ level not specified,2026-11-04
+NCR,environmental specialist,1,1,70000,COLLEGE GRADUATE,2026-11-04
+NCR,export/import coordinator,1,1,22000,COLLEGE GRADUATE,2026-11-04
+NCR,fashion consultant,1,1,,Educ level not specified,2026-11-04
+NCR,field interviewer,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,finance associate professional,1,1,18000,COLLEGE GRADUATE,2026-11-04
+NCR,finance director,1,1,150000,COLLEGE GRADUATE,2026-11-04
+NCR,fitness instructor,1,1,18128,Educ level not specified,2026-11-04
+NCR,food attendant,1,1,18128,Educ level not specified,2026-11-04
+NCR,food service dispatcher,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,food technologist,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,front desk clerk,1,1,19630,1ST YEAR COLLEGE LEVEL,2026-11-04
+NCR,fuel/gas attendant,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,garbage collector,1,1,,Educ level not specified,2026-11-04
+NCR,gasoline pump boy,1,1,,Educ level not specified,2026-11-04
+NCR,general manager (gfi - sg-30),1,1,50000,COLLEGE GRADUATE,2026-11-04
+NCR,geodetic engineer,1,1,60000,COLLEGE GRADUATE,2026-11-04
+NCR,governess,1,1,1700,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,government licensing official,1,1,19000,COLLEGE GRADUATE,2026-11-04
+NCR,hair stylist,1,1,70000,VOCATIONAL GRADUATE,2026-11-04
+NCR,head internal audit,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,heavy equipment mechanic,1,1,28000,GRADE VI,2026-11-04
+NCR,heavy equipment operator,1,1,,VOCATIONAL GRADUATE,2026-11-04
+NCR,hostess,1,1,28000,Educ level not specified,2026-11-04
+NCR,hotel & restaurant butcher,1,1,,GRADE XII (FOR K TO 12),2026-11-04
+NCR,houseboy,1,1,1500,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,housekeeping manager,1,1,,Educ level not specified,2026-11-04
+NCR,housekeeping supervisor,1,1,,1ST YEAR COLLEGE LEVEL,2026-11-04
+NCR,human resource development clerk,1,1,20000,Educ level not specified,2026-11-04
+NCR,human resource management officer,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,industrial engineer,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,industrial machinery and tools technician,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,information clerk,1,1,,Educ level not specified,2026-11-04
+NCR,information technology consultant,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,insurance manager,1,1,25000,COLLEGE GRADUATE,2026-11-04
+NCR,insurance salesman,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,inventory control assistant,1,1,22000,COLLEGE GRADUATE,2026-11-04
+NCR,inventory supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,jr. site engineer,1,1,16000,VOCATIONAL GRADUATE,2026-11-04
+NCR,labor relations officer,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,laboratory technician,1,1,21200,COLLEGE GRADUATE,2026-11-04
+NCR,laborer,1,1,19692,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,land surveyor,1,1,28000,VOCATIONAL UNDERGRADUATE,2026-11-04
+NCR,laundry worker,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,leadman (general),1,1,25000,COLLEGE GRADUATE,2026-11-04
+NCR,leasing manager,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,lifeguard,1,1,,Educ level not specified,2026-11-04
+NCR,lineman,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,loans and credit officer,1,1,15900,Educ level not specified,2026-11-04
+NCR,logistics officer,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,machine shop foreman,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,maintenance engineer,1,1,30000,COLLEGE GRADUATE,2026-11-04
+NCR,maintenance technician (electronics),1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,management and audit officer i (gov),1,1,20000,Educ level not specified,2026-11-04
+NCR,manicurist/pedicurist,1,1,20000,Educ level not specified,2026-11-04
+NCR,manufacturing general manager,1,1,70000,COLLEGE GRADUATE,2026-11-04
+NCR,marketing analyst a (gov),1,1,60000,Educ level not specified,2026-11-04
+NCR,marketing coordinator,1,1,,Educ level not specified,2026-11-04
+NCR,materials procurement officer,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,mathematics teacher (secondary education),1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,mechanical engineering technician (motors and engines),1,1,,Educ level not specified,2026-11-04
+NCR,medical transcriptionist,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,merchandising supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,motor vehicle mechanic,1,1,18070,VOCATIONAL GRADUATE,2026-11-04
+NCR,motorpool maintenance clerk,1,1,,Educ level not specified,2026-11-04
+NCR,natural science teacher (secondary education),1,1,,Educ level not specified,2026-11-04
+NCR,naval architect,1,1,,Educ level not specified,2026-11-04
+NCR,network engineer,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,nurse ii (gov),1,1,4025,COLLEGE GRADUATE,2026-11-04
+NCR,occupational therapist,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,offset machine operator,1,1,,Educ level not specified,2026-11-04
+NCR,operations supervisor,1,1,23000,COLLEGE GRADUATE,2026-11-04
+NCR,other supervisor not elsewhere classified,1,1,,MASTERAL/POST GRADUATE,2026-11-04
+NCR,pastry cook,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,permits and licensing officer (gov),1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,physician/practitioner (general),1,1,23000,COLLEGE GRADUATE,2026-11-04
+NCR,physics teacher (secondary education),1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,planning manager,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,plant engineer,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,plant maintenance mechanic,1,1,25000,VOCATIONAL GRADUATE,2026-11-04
+NCR,plant maintenance supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,plant mechanic,1,1,,VOCATIONAL GRADUATE,2026-11-04
+NCR,"postman i (utility, messenger) (gov)",1,1,18070,Educ level not specified,2026-11-04
+NCR,private service cook,1,1,18070,Educ level not specified,2026-11-04
+NCR,procurement specialist,1,1,,Educ level not specified,2026-11-04
+NCR,product support engineer,1,1,22000,COLLEGE GRADUATE,2026-11-04
+NCR,production controller,1,1,20000,COLLEGE GRADUATE,2026-11-04
+NCR,production planner,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,project inspector,1,1,22000,Educ level not specified,2026-11-04
+NCR,project officer,1,1,22000,COLLEGE GRADUATE,2026-11-04
+NCR,project planner,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,public relations assistant (gov),1,1,,Educ level not specified,2026-11-04
+NCR,purchasing manager,1,1,40000,COLLEGE GRADUATE,2026-11-04
+NCR,quality control assistant,1,1,,Educ level not specified,2026-11-04
+NCR,quality control chemist,1,1,23000,COLLEGE GRADUATE,2026-11-04
+NCR,quality control supervisor,1,1,,Educ level not specified,2026-11-04
+NCR,quality inspector,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,railway manager,1,1,248000,COLLEGE GRADUATE,2026-11-04
+NCR,real estate broker,1,1,30000,2ND YEAR COLLEGE LEVEL,2026-11-04
+NCR,receiving clerk,1,1,,VOCATIONAL UNDERGRADUATE,2026-11-04
+NCR,refrigeration and air-conditioning technician (gov),1,1,,Educ level not specified,2026-11-04
+NCR,research and development specialist,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,researcher,1,1,24000,COLLEGE GRADUATE,2026-11-04
+NCR,retail trade salesman,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,retail/wholesale establishment salesperson,1,1,,Educ level not specified,2026-11-04
+NCR,right-of-way officer (gov),1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,roasting cook,1,1,,Educ level not specified,2026-11-04
+NCR,rough carpenter,1,1,,ELEMENTARY GRADUATE,2026-11-04
+NCR,safety manager,1,1,,Educ level not specified,2026-11-04
+NCR,sales supervisor (wholesale trade),1,1,33000,COLLEGE GRADUATE,2026-11-04
+NCR,scaffolder,1,1,,Educ level not specified,2026-11-04
+NCR,second mate,1,1,,Educ level not specified,2026-11-04
+NCR,senior accountant,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,senior bank manager,1,1,,Educ level not specified,2026-11-04
+NCR,senior engineer (civil),1,1,20000,COLLEGE GRADUATE,2026-11-04
+NCR,senior tax specialist (gov),1,1,30000,Educ level not specified,2026-11-04
+NCR,ship master,1,1,,Educ level not specified,2026-11-04
+NCR,shoes and bags repairer,1,1,19693,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,social benefits officer,1,1,18500,Educ level not specified,2026-11-04
+NCR,special education teacher,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,speech therapist (gov),1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,stall salesperson,1,1,,Educ level not specified,2026-11-04
+NCR,steelman,1,1,,Educ level not specified,2026-11-04
+NCR,street sweeper,1,1,,Educ level not specified,2026-11-04
+NCR,structural engineer,1,1,,Educ level not specified,2026-11-04
+NCR,systems administrator,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,teacher (elementary mathematics),1,1,,Educ level not specified,2026-11-04
+NCR,teacher assistant,1,1,4400,2ND YEAR COLLEGE LEVEL,2026-11-04
+NCR,technical salesman,1,1,,Educ level not specified,2026-11-04
+NCR,technical support supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,telecommunications technician,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NCR,telemarketing supervisor,1,1,35000,COLLEGE GRADUATE,2026-11-04
+NCR,telephone operator,1,1,18000,COLLEGE GRADUATE,2026-11-04
+NCR,third marine engineer,1,1,,Educ level not specified,2026-11-04
+NCR,training assistant,1,1,20000,COLLEGE GRADUATE,2026-11-04
+NCR,training manager,1,1,,COLLEGE GRADUATE,2026-11-04
+NCR,training officer,1,1,,Educ level not specified,2026-11-04
+NCR,treasury assistant,1,1,,Educ level not specified,2026-11-04
+NCR,video electronics repairman,1,1,,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+NCR,vocational/technical trainor,1,1,,ELEMENTARY GRADUATE,2026-11-04
+NCR,water treatment plant operator (waterworks),1,1,22600,Educ level not specified,2026-11-04
+NCR,waterworks technician,1,1,20000,VOCATIONAL GRADUATE,2026-11-04
+CAR,customer service assistant,9,5,15000,Educ level not specified,2026-11-04
+CAR,cashier,8,7,,Educ level not specified,2026-11-04
+CAR,service crew,6,4,12000,HIGH SCHOOL GRADUATE,2026-11-04
+CAR,call center agent,5,3,18000,Educ level not specified,2026-11-04
+CAR,accounting assistant,3,3,14000,COLLEGE GRADUATE,2026-11-04
+CAR,baker (general),3,3,,Educ level not specified,2026-11-04
+CAR,sales associate professional,3,3,15600,Educ level not specified,2026-11-04
+CAR,sales clerk,3,3,,Educ level not specified,2026-11-04
+CAR,sales executive,3,3,,COLLEGE GRADUATE,2026-11-04
+CAR,technical and commercial sales representative,3,1,18000,Educ level not specified,2026-11-04
+CAR,accounting clerk,2,2,,COLLEGE GRADUATE,2026-11-04
+CAR,assistant cook,2,2,13130,HIGH SCHOOL GRADUATE,2026-11-04
+CAR,bagger,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+CAR,building maintenance man,2,2,13000,VOCATIONAL GRADUATE,2026-11-04
+CAR,butcher (general),2,2,,Educ level not specified,2026-11-04
+CAR,chief insurance/risk officer (gov),2,1,35000,COLLEGE GRADUATE,2026-11-04
+CAR,dishwasher,2,2,13000,GRADE XII (FOR K TO 12),2026-11-04
+CAR,gardener,2,2,,Educ level not specified,2026-11-04
+CAR,housekeeping supervisor,2,2,13130,Educ level not specified,2026-11-04
+CAR,management information system staff,2,2,,Educ level not specified,2026-11-04
+CAR,operations supervisor,2,1,18000,COLLEGE GRADUATE,2026-11-04
+CAR,promo salesperson,2,2,14000,HIGH SCHOOL GRADUATE,2026-11-04
+CAR,room attendant,2,2,13130,Educ level not specified,2026-11-04
+CAR,salesman,2,2,13000,Educ level not specified,2026-11-04
+CAR,stock clerk,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+CAR,store supervisor,2,2,,COLLEGE GRADUATE,2026-11-04
+CAR,telephone salesperson,2,1,1000,HIGH SCHOOL GRADUATE,2026-11-04
+CAR,waiter (general),2,2,,VOCATIONAL UNDERGRADUATE,2026-11-04
+CAR,accounting supervisor,1,1,,Educ level not specified,2026-11-04
+CAR,accounts officer,1,1,15000,COLLEGE GRADUATE,2026-11-04
+CAR,agent,1,1,,Educ level not specified,2026-11-04
+CAR,automotive mechanic,1,1,,VOCATIONAL GRADUATE,2026-11-04
+CAR,banquet supervisor,1,1,,Educ level not specified,2026-11-04
+CAR,barista,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+CAR,bellboy,1,1,,Educ level not specified,2026-11-04
+CAR,cake decorator,1,1,,Educ level not specified,2026-11-04
+CAR,car driver,1,1,,Educ level not specified,2026-11-04
+CAR,commis chef,1,1,,Educ level not specified,2026-11-04
+CAR,company driver,1,1,,Educ level not specified,2026-11-04
+CAR,cook (general),1,1,,Educ level not specified,2026-11-04
+CAR,cost accountant,1,1,,Educ level not specified,2026-11-04
+CAR,credit/billing/collection officer,1,1,,COLLEGE GRADUATE,2026-11-04
+CAR,data encoder,1,1,,COLLEGE GRADUATE,2026-11-04
+CAR,data entry operator,1,1,,Educ level not specified,2026-11-04
+CAR,delivery driver,1,1,,Educ level not specified,2026-11-04
+CAR,electro mechanical technician,1,1,,Educ level not specified,2026-11-04
+CAR,finance associate professional,1,1,,COLLEGE GRADUATE,2026-11-04
+CAR,financial analyst,1,1,,Educ level not specified,2026-11-04
+CAR,financial consultant,1,1,,COLLEGE GRADUATE,2026-11-04
+CAR,food and beverage supervisor,1,1,13130,COLLEGE GRADUATE,2026-11-04
+CAR,food server,1,1,,Educ level not specified,2026-11-04
+CAR,food service dispatcher,1,1,,Educ level not specified,2026-11-04
+CAR,front desk clerk,1,1,13130,HIGH SCHOOL GRADUATE,2026-11-04
+CAR,front desk officer,1,1,,COLLEGE GRADUATE,2026-11-04
+CAR,fuel/gas attendant,1,1,,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+CAR,hotel housekeeping attendant,1,1,12000,Educ level not specified,2026-11-04
+CAR,hotel supervisor,1,1,13130,COLLEGE GRADUATE,2026-11-04
+CAR,industrial electrician,1,1,,VOCATIONAL GRADUATE,2026-11-04
+CAR,internal auditor,1,1,,Educ level not specified,2026-11-04
+CAR,kiosk salesperson,1,1,,GRADE XII (FOR K TO 12),2026-11-04
+CAR,kitchen crew,1,1,13000,HIGH SCHOOL GRADUATE,2026-11-04
+CAR,kitchen helper,1,1,,SECONDARY (K-12),2026-11-04
+CAR,laboratory analyst,1,1,,COLLEGE GRADUATE,2026-11-04
+CAR,laborer,1,1,13000,HIGH SCHOOL GRADUATE,2026-11-04
+CAR,materials engineer,1,1,,COLLEGE GRADUATE,2026-11-04
+CAR,mechanic,1,1,,VOCATIONAL GRADUATE,2026-11-04
+CAR,metallurgist,1,1,,COLLEGE GRADUATE,2026-11-04
+CAR,mining engineer (general),1,1,,Educ level not specified,2026-11-04
+CAR,non-formal education teacher,1,1,11000,Educ level not specified,2026-11-04
+CAR,pastry chef,1,1,,Educ level not specified,2026-11-04
+CAR,pest control worker,1,1,13200,Educ level not specified,2026-11-04
+CAR,production helper,1,1,,Educ level not specified,2026-11-04
+CAR,purchaser,1,1,15000,VOCATIONAL GRADUATE,2026-11-04
+CAR,recreation facilities attendant/aide,1,1,,VOCATIONAL GRADUATE,2026-11-04
+CAR,research and development assistant,1,1,20000,COLLEGE GRADUATE,2026-11-04
+CAR,restaurant supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+CAR,safety officer,1,1,,COLLEGE GRADUATE,2026-11-04
+CAR,sales officer,1,1,,COLLEGE GRADUATE,2026-11-04
+CAR,secretary,1,1,,COLLEGE GRADUATE,2026-11-04
+CAR,service engineer,1,1,,COLLEGE GRADUATE,2026-11-04
+CAR,service supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+CAR,shielded metal arc welder,1,1,,VOCATIONAL GRADUATE,2026-11-04
+CAR,shop service advisor,1,1,,COLLEGE GRADUATE,2026-11-04
+CAR,software designer,1,1,,Educ level not specified,2026-11-04
+CAR,stockman,1,1,13000,HIGH SCHOOL GRADUATE,2026-11-04
+CAR,store helper,1,1,,Educ level not specified,2026-11-04
+CAR,technical assistant,1,1,,COLLEGE GRADUATE,2026-11-04
+CAR,valet,1,1,,Educ level not specified,2026-11-04
+I,accounts officer,2,1,,COLLEGE GRADUATE,2026-11-04
+I,technical and commercial sales representative,2,1,,VOCATIONAL GRADUATE,2026-11-04
+I,accounting assistant,1,1,,COLLEGE GRADUATE,2026-11-04
+I,automotive engineering technician,1,1,,COLLEGE GRADUATE,2026-11-04
+I,barista,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+I,call center agent,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+I,company nurse,1,1,16060,COLLEGE GRADUATE,2026-11-04
+I,finance clerk,1,1,13130,COLLEGE GRADUATE,2026-11-04
+I,finance manager,1,1,70000,COLLEGE GRADUATE,2026-11-04
+I,forklift operator,1,1,,VOCATIONAL GRADUATE,2026-11-04
+I,manufacturing general manager,1,1,70000,COLLEGE GRADUATE,2026-11-04
+I,merchandiser,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+I,motorcycle driver/rider,1,1,,Educ level not specified,2026-11-04
+I,product specialist,1,1,,Educ level not specified,2026-11-04
+I,sales clerk,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+I,senior accountant,1,1,,COLLEGE GRADUATE,2026-11-04
+I,technical salesman,1,1,30000,COLLEGE GRADUATE,2026-11-04
+II,product demonstrator,4,1,,HIGH SCHOOL GRADUATE,2026-11-04
+II,accounts officer,3,2,,COLLEGE GRADUATE,2026-11-04
+II,salesman,2,2,,Educ level not specified,2026-11-04
+II,call center agent,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+II,card dealer,1,1,30000,HIGH SCHOOL GRADUATE,2026-11-04
+II,cashier,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+II,construction carpenter,1,1,19761,ELEMENTARY GRADUATE,2026-11-04
+II,construction stonemason,1,1,20422,ELEMENTARY GRADUATE,2026-11-04
+II,delivery driver,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+II,housekeeping supervisor,1,1,14000,HIGH SCHOOL GRADUATE,2026-11-04
+II,loans and credit officer,1,1,,VOCATIONAL GRADUATE,2026-11-04
+II,plumber,1,1,19761,GRADE VI,2026-11-04
+II,technical and commercial sales representative,1,1,,VOCATIONAL GRADUATE,2026-11-04
+II,technical salesman,1,1,30000,COLLEGE GRADUATE,2026-11-04
+II,telemarketer,1,1,,GRADE XII (FOR K TO 12),2026-11-04
+III,call center agent,10,5,23000,HIGH SCHOOL GRADUATE,2026-11-04
+III,merchandiser,10,6,16500,Educ level not specified,2026-11-04
+III,janitor,9,3,,Educ level not specified,2026-11-04
+III,service crew,8,6,,Educ level not specified,2026-11-04
+III,administrative assistant,7,7,35000,Educ level not specified,2026-11-04
+III,company driver,7,6,15000,Educ level not specified,2026-11-04
+III,salesman,6,4,,Educ level not specified,2026-11-04
+III,cashier,5,5,100000,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+III,sales & marketing assistant,5,2,15000,HIGH SCHOOL GRADUATE,2026-11-04
+III,accounting supervisor,4,3,30000,COLLEGE GRADUATE,2026-11-04
+III,airconditioning technician,4,4,40000,VOCATIONAL GRADUATE,2026-11-04
+III,business development officer,4,2,20000,ELEMENTARY GRADUATE,2026-11-04
+III,fiber picker,4,1,,Educ level not specified,2026-11-04
+III,forklift operator,4,4,17000,HIGH SCHOOL GRADUATE,2026-11-04
+III,production machine operator,4,3,,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+III,sales associate professional,4,4,,COLLEGE GRADUATE,2026-11-04
+III,sales supervisor,4,2,18000,COLLEGE GRADUATE,2026-11-04
+III,company nurse,3,3,30000,Educ level not specified,2026-11-04
+III,delivery helper,3,3,,HIGH SCHOOL GRADUATE,2026-11-04
+III,electrical engineer (general),3,3,,COLLEGE GRADUATE,2026-11-04
+III,industrial engineer,3,3,,COLLEGE GRADUATE,2026-11-04
+III,medical representative,3,2,,Educ level not specified,2026-11-04
+III,production & operations manager (manufacturing),3,3,16000,HIGH SCHOOL GRADUATE,2026-11-04
+III,production helper,3,3,,HIGH SCHOOL GRADUATE,2026-11-04
+III,production worker,3,3,18000,HIGH SCHOOL GRADUATE,2026-11-04
+III,project officer,3,2,,Educ level not specified,2026-11-04
+III,safety officer,3,3,,Educ level not specified,2026-11-04
+III,sales executive,3,3,25000,COLLEGE GRADUATE,2026-11-04
+III,steelman,3,2,,Educ level not specified,2026-11-04
+III,truck driver,3,3,,Educ level not specified,2026-11-04
+III,accountant (general),2,2,35000,COLLEGE GRADUATE,2026-11-04
+III,accounting assistant,2,2,,Educ level not specified,2026-11-04
+III,accounts officer,2,2,15000,COLLEGE GRADUATE,2026-11-04
+III,automotive mechanic,2,2,18000,VOCATIONAL GRADUATE,2026-11-04
+III,bagger,2,2,,Educ level not specified,2026-11-04
+III,branch manager,2,1,20000,Educ level not specified,2026-11-04
+III,cash collector,2,1,12540,Educ level not specified,2026-11-04
+III,civil engineer (general),2,2,45000,COLLEGE GRADUATE,2026-11-04
+III,college instructor,2,1,50400,COLLEGE GRADUATE,2026-11-04
+III,customer service assistant,2,2,,COLLEGE GRADUATE,2026-11-04
+III,delivery driver,2,2,,Educ level not specified,2026-11-04
+III,electrical engineering technician (general),2,2,,Educ level not specified,2026-11-04
+III,estimator,2,1,35000,Educ level not specified,2026-11-04
+III,heavy equipment operator,2,2,,Educ level not specified,2026-11-04
+III,human resource development assistant,2,2,18000,COLLEGE GRADUATE,2026-11-04
+III,human resource management assistant,2,2,18000,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+III,human resource supervisor,2,2,,COLLEGE GRADUATE,2026-11-04
+III,land surveyor,2,1,26000,HIGH SCHOOL GRADUATE,2026-11-04
+III,loans and credit officer,2,2,15900,Educ level not specified,2026-11-04
+III,maintenance supervisor,2,1,,Educ level not specified,2026-11-04
+III,marketing assistant,2,2,,COLLEGE GRADUATE,2026-11-04
+III,marketing staff,2,2,15000,COLLEGE GRADUATE,2026-11-04
+III,mechanic,2,2,20000,Educ level not specified,2026-11-04
+III,production supervisor,2,2,,COLLEGE GRADUATE,2026-11-04
+III,security guard,2,2,15000,HIGH SCHOOL GRADUATE,2026-11-04
+III,shop service advisor,2,2,,COLLEGE GRADUATE,2026-11-04
+III,systems developer (computer),2,2,,Educ level not specified,2026-11-04
+III,waiter (general),2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+III,warehouse helper,2,2,,Educ level not specified,2026-11-04
+III,welder,2,2,19630,Educ level not specified,2026-11-04
+III,accounting clerk,1,1,,Educ level not specified,2026-11-04
+III,accounting manager,1,1,40000,Educ level not specified,2026-11-04
+III,accounts manager,1,1,19000,COLLEGE GRADUATE,2026-11-04
+III,administrative clerk,1,1,,Educ level not specified,2026-11-04
+III,administrative secretary,1,1,,Educ level not specified,2026-11-04
+III,administrator,1,1,17085,COLLEGE GRADUATE,2026-11-04
+III,advertising manager,1,1,45000,COLLEGE GRADUATE,2026-11-04
+III,advertising officer,1,1,30000,COLLEGE GRADUATE,2026-11-04
+III,aluminum fabricator,1,1,14820,Educ level not specified,2026-11-04
+III,architectural designer,1,1,35000,Educ level not specified,2026-11-04
+III,architectural draftsman,1,1,40000,Educ level not specified,2026-11-04
+III,assistant executive director,1,1,30000,COLLEGE GRADUATE,2026-11-04
+III,assistant pharmacist,1,1,,COLLEGE GRADUATE,2026-11-04
+III,autocad operator,1,1,30000,COLLEGE GRADUATE,2026-11-04
+III,automotive electrician (gov),1,1,,VOCATIONAL GRADUATE,2026-11-04
+III,automotive engineering technician,1,1,,SECONDARY (K-12),2026-11-04
+III,automotive mechanic (light duty),1,1,20000,VOCATIONAL GRADUATE,2026-11-04
+III,bank clerk,1,1,,COLLEGE GRADUATE,2026-11-04
+III,barista,1,1,12000,Educ level not specified,2026-11-04
+III,biomedical technician,1,1,,Educ level not specified,2026-11-04
+III,bookkeeper,1,1,30000,COLLEGE GRADUATE,2026-11-04
+III,branch head (gov),1,1,,COLLEGE GRADUATE,2026-11-04
+III,bus driver,1,1,14820,Educ level not specified,2026-11-04
+III,carpenter (general),1,1,,Educ level not specified,2026-11-04
+III,casino dealer,1,1,,COLLEGE GRADUATE,2026-11-04
+III,checker,1,1,15600,COLLEGE GRADUATE,2026-11-04
+III,commercial artist,1,1,20000,COLLEGE GRADUATE,2026-11-04
+III,commis chef,1,1,,VOCATIONAL GRADUATE,2026-11-04
+III,computer aided design (cad) operator,1,1,20000,COLLEGE GRADUATE,2026-11-04
+III,computer engineer,1,1,20000,COLLEGE GRADUATE,2026-11-04
+III,computer graphics artist,1,1,30000,COLLEGE GRADUATE,2026-11-04
+III,construction laborer,1,1,,Educ level not specified,2026-11-04
+III,cook (general),1,1,,Educ level not specified,2026-11-04
+III,corporate accountant,1,1,55000,COLLEGE GRADUATE,2026-11-04
+III,credit officer,1,1,15000,Educ level not specified,2026-11-04
+III,customer service manager,1,1,,COLLEGE GRADUATE,2026-11-04
+III,data analyst,1,1,20000,VOCATIONAL GRADUATE,2026-11-04
+III,data encoder,1,1,,Educ level not specified,2026-11-04
+III,data entry clerk (computer),1,1,25000,Educ level not specified,2026-11-04
+III,dentist (general),1,1,,Educ level not specified,2026-11-04
+III,diesel engine mechanic (except motor vehicle),1,1,,Educ level not specified,2026-11-04
+III,docking and rigging foreman,1,1,,Educ level not specified,2026-11-04
+III,driver (gov),1,1,,Educ level not specified,2026-11-04
+III,driver courier,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+III,dump truck driver,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+III,electric arc welder (general),1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+III,electrical foreman,1,1,,VOCATIONAL GRADUATE,2026-11-04
+III,electrician (general),1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+III,electro mechanical technician,1,1,25000,COLLEGE GRADUATE,2026-11-04
+III,electronic equipment assembler,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+III,engineer b (gov),1,1,,COLLEGE GRADUATE,2026-11-04
+III,engineering manager,1,1,,Educ level not specified,2026-11-04
+III,environmental analyst,1,1,,Educ level not specified,2026-11-04
+III,executive assistant,1,1,35000,Educ level not specified,2026-11-04
+III,extruding machine operator (plastics),1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+III,finance clerk,1,1,,Educ level not specified,2026-11-04
+III,finishing carpenter,1,1,,Educ level not specified,2026-11-04
+III,food attendant,1,1,,COLLEGE GRADUATE,2026-11-04
+III,food server,1,1,14820,HIGH SCHOOL GRADUATE,2026-11-04
+III,front desk clerk,1,1,,COLLEGE GRADUATE,2026-11-04
+III,front desk officer,1,1,,Educ level not specified,2026-11-04
+III,graphic artist,1,1,30000,Educ level not specified,2026-11-04
+III,graphic designer,1,1,35000,Educ level not specified,2026-11-04
+III,heavy equipment mechanic,1,1,,VOCATIONAL GRADUATE,2026-11-04
+III,heavy truck driver,1,1,,Educ level not specified,2026-11-04
+III,hotel housekeeping attendant,1,1,,Educ level not specified,2026-11-04
+III,housekeeper (hotel and resorts),1,1,,Educ level not specified,2026-11-04
+III,human resource development officer,1,1,20000,COLLEGE GRADUATE,2026-11-04
+III,human resource management officer,1,1,,COLLEGE GRADUATE,2026-11-04
+III,information technology (it) specialist,1,1,,COLLEGE GRADUATE,2026-11-04
+III,information technology officer,1,1,,COLLEGE GRADUATE,2026-11-04
+III,instructor,1,1,,COLLEGE GRADUATE,2026-11-04
+III,internal auditor,1,1,,Educ level not specified,2026-11-04
+III,kiosk salesperson,1,1,,SECONDARY (K-12),2026-11-04
+III,kitchen crew,1,1,,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+III,laboratory analyst,1,1,,COLLEGE GRADUATE,2026-11-04
+III,laborer,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+III,loans assistant,1,1,,Educ level not specified,2026-11-04
+III,machine tool machine operator,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+III,machinist,1,1,,Educ level not specified,2026-11-04
+III,maintenance laborer,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+III,maintenance technician (electrical),1,1,,Educ level not specified,2026-11-04
+III,marketing specialist,1,1,25000,COLLEGE GRADUATE,2026-11-04
+III,marketing supervisor,1,1,,Educ level not specified,2026-11-04
+III,mason (general),1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+III,mechanic helper,1,1,,Educ level not specified,2026-11-04
+III,mechanical engineer (general),1,1,,COLLEGE GRADUATE,2026-11-04
+III,medical doctor,1,1,,Educ level not specified,2026-11-04
+III,messenger,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+III,mobile crane operator,1,1,,COLLEGE GRADUATE,2026-11-04
+III,motor truck mechanic,1,1,,VOCATIONAL GRADUATE,2026-11-04
+III,motorcycle driver/rider,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+III,office clerk,1,1,,Educ level not specified,2026-11-04
+III,operations coordinator,1,1,,COLLEGE GRADUATE,2026-11-04
+III,operations supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+III,outside plant engineer,1,1,,Educ level not specified,2026-11-04
+III,product demonstrator,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+III,production engineer,1,1,,Educ level not specified,2026-11-04
+III,production planner,1,1,,COLLEGE GRADUATE,2026-11-04
+III,promo salesperson,1,1,,Educ level not specified,2026-11-04
+III,purchasing officer,1,1,,Educ level not specified,2026-11-04
+III,quality control assistant,1,1,,VOCATIONAL GRADUATE,2026-11-04
+III,quality control/assurance officer,1,1,,Educ level not specified,2026-11-04
+III,quality inspector,1,1,,Educ level not specified,2026-11-04
+III,quantity surveyor,1,1,40000,Educ level not specified,2026-11-04
+III,receptionist (general),1,1,16000,2ND YEAR COLLEGE LEVEL,2026-11-04
+III,recruitment officer,1,1,,COLLEGE GRADUATE,2026-11-04
+III,room attendant,1,1,,COLLEGE GRADUATE,2026-11-04
+III,safety supervisor,1,1,,Educ level not specified,2026-11-04
+III,sales clerk,1,1,,Educ level not specified,2026-11-04
+III,sales engineer,1,1,25000,COLLEGE GRADUATE,2026-11-04
+III,sales officer,1,1,,VOCATIONAL GRADUATE,2026-11-04
+III,saleslady,1,1,,Educ level not specified,2026-11-04
+III,scaffolder,1,1,40000,Educ level not specified,2026-11-04
+III,senior accountant,1,1,55000,COLLEGE GRADUATE,2026-11-04
+III,senior architect (gov),1,1,40000,COLLEGE GRADUATE,2026-11-04
+III,service engineer,1,1,,COLLEGE GRADUATE,2026-11-04
+III,shielded metal arc welder,1,1,,ELEMENTARY GRADUATE,2026-11-04
+III,ship electrician,1,1,,Educ level not specified,2026-11-04
+III,ship painter,1,1,,Educ level not specified,2026-11-04
+III,site engineer,1,1,,Educ level not specified,2026-11-04
+III,software designer,1,1,15000,COLLEGE GRADUATE,2026-11-04
+III,sous chef,1,1,,Educ level not specified,2026-11-04
+III,steel fabrication manager,1,1,,Educ level not specified,2026-11-04
+III,stock clerk,1,1,,Educ level not specified,2026-11-04
+III,structural engineer,1,1,45000,Educ level not specified,2026-11-04
+III,technical and commercial sales representative,1,1,15600,COLLEGE GRADUATE,2026-11-04
+III,technical support staff,1,1,,COLLEGE GRADUATE,2026-11-04
+III,telecommunication equipment installer,1,1,,VOCATIONAL GRADUATE,2026-11-04
+III,tig welder,1,1,,Educ level not specified,2026-11-04
+III,tire production machine operator,1,1,20000,HIGH SCHOOL GRADUATE,2026-11-04
+III,utility worker,1,1,,Educ level not specified,2026-11-04
+III,utilityman,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+III,veterinary assistant,1,1,,Educ level not specified,2026-11-04
+III,video technician,1,1,,Educ level not specified,2026-11-04
+III,waitress,1,1,15000,HIGH SCHOOL GRADUATE,2026-11-04
+III,warehouse supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+III,warehouseman,1,1,,Educ level not specified,2026-11-04
+III,washing/laundry machine operator,1,1,,Educ level not specified,2026-11-04
+III,web developer,1,1,40000,Educ level not specified,2026-11-04
+IV-A,merchandiser,12,3,,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+IV-A,service crew,12,7,12000,Educ level not specified,2026-11-04
+IV-A,plumber,9,3,,Educ level not specified,2026-11-04
+IV-A,production & operations manager (manufacturing),9,7,50000,COLLEGE GRADUATE,2026-11-04
+IV-A,sales associate professional,7,6,16000,Educ level not specified,2026-11-04
+IV-A,cashier,6,4,,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,promo salesperson,6,3,,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+IV-A,construction laborer,5,5,,Educ level not specified,2026-11-04
+IV-A,production technician,5,5,95000,VOCATIONAL GRADUATE,2026-11-04
+IV-A,company nurse,4,4,17092,COLLEGE GRADUATE,2026-11-04
+IV-A,delivery driver,4,4,16000,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,dump truck driver,4,3,20000,Educ level not specified,2026-11-04
+IV-A,forklift operator,4,4,15000,Educ level not specified,2026-11-04
+IV-A,maintenance crew,4,4,,VOCATIONAL GRADUATE,2026-11-04
+IV-A,maintenance technician (electrical),4,4,,VOCATIONAL UNDERGRADUATE,2026-11-04
+IV-A,manufacturing general manager,4,4,72384,COLLEGE GRADUATE,2026-11-04
+IV-A,medical representative,4,2,20000,3RD YEAR COLLEGE LEVEL,2026-11-04
+IV-A,production machine operator,4,4,15600,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,production worker,4,4,,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,sales & marketing assistant,4,3,16500,COLLEGE GRADUATE,2026-11-04
+IV-A,truck driver,4,4,30000,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,call center agent,3,2,22000,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,chemical engineer (general),3,3,,COLLEGE GRADUATE,2026-11-04
+IV-A,construction carpenter,3,3,18933,Educ level not specified,2026-11-04
+IV-A,crane operator,3,1,,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,delivery helper,3,3,16500,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+IV-A,electrician (general),3,3,,VOCATIONAL GRADUATE,2026-11-04
+IV-A,gasoline pump boy,3,2,,Educ level not specified,2026-11-04
+IV-A,mechanical engineer (general),3,3,20000,COLLEGE GRADUATE,2026-11-04
+IV-A,process engineer,3,3,23000,COLLEGE GRADUATE,2026-11-04
+IV-A,refrigeration and airconditioning technician,3,3,,Educ level not specified,2026-11-04
+IV-A,road roller operator,3,2,,Educ level not specified,2026-11-04
+IV-A,sales clerk,3,3,,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,sales manager,3,3,100000,COLLEGE GRADUATE,2026-11-04
+IV-A,salesman,3,3,17500,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,semi-skilled worker (skilled technician) (afp),3,1,20000,VOCATIONAL GRADUATE,2026-11-04
+IV-A,store supervisor,3,2,21000,COLLEGE GRADUATE,2026-11-04
+IV-A,technical service adviser,3,3,60000,COLLEGE GRADUATE,2026-11-04
+IV-A,trailer driver,3,3,,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,warehouseman,3,3,14000,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+IV-A,accounting assistant,2,2,,COLLEGE GRADUATE,2026-11-04
+IV-A,accounting staff,2,2,17000,COLLEGE GRADUATE,2026-11-04
+IV-A,accounts executive,2,2,20000,COLLEGE GRADUATE,2026-11-04
+IV-A,administrative officer,2,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,bulldozer operator,2,2,,Educ level not specified,2026-11-04
+IV-A,butcher (general),2,2,18070,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,civil engineer (general),2,2,50000,COLLEGE GRADUATE,2026-11-04
+IV-A,company driver,2,2,16000,Educ level not specified,2026-11-04
+IV-A,customer relations officer,2,2,50000,2ND YEAR COLLEGE LEVEL,2026-11-04
+IV-A,customer service assistant,2,2,,COLLEGE GRADUATE,2026-11-04
+IV-A,electrical engineer (general),2,2,23000,COLLEGE GRADUATE,2026-11-04
+IV-A,electrician (gov),2,1,,VOCATIONAL UNDERGRADUATE,2026-11-04
+IV-A,electro mechanical technician,2,2,22000,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,graphic artist,2,1,,VOCATIONAL GRADUATE,2026-11-04
+IV-A,heavy equipment mechanic,2,2,1200,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+IV-A,heavy truck driver,2,1,,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+IV-A,janitor,2,2,20000,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+IV-A,kiosk salesperson,2,1,,GRADE XII (FOR K TO 12),2026-11-04
+IV-A,managing director (gov),2,2,,Educ level not specified,2026-11-04
+IV-A,mechanical engineering technician (general),2,2,25000,VOCATIONAL GRADUATE,2026-11-04
+IV-A,motor grader operator,2,2,,Educ level not specified,2026-11-04
+IV-A,motorcycle driver/rider,2,1,,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,production supervisor,2,2,,COLLEGE GRADUATE,2026-11-04
+IV-A,project manager,2,2,,COLLEGE GRADUATE,2026-11-04
+IV-A,quality inspector,2,2,,VOCATIONAL GRADUATE,2026-11-04
+IV-A,radiologic technologist,2,2,23000,COLLEGE GRADUATE,2026-11-04
+IV-A,safety engineer,2,2,18000,COLLEGE GRADUATE,2026-11-04
+IV-A,safety officer,2,2,20000,4TH YEAR COLLEGE LEVEL,2026-11-04
+IV-A,sales executive,2,2,,COLLEGE GRADUATE,2026-11-04
+IV-A,stockman,2,2,,VOCATIONAL GRADUATE,2026-11-04
+IV-A,technical and commercial sales representative,2,2,18000,VOCATIONAL GRADUATE,2026-11-04
+IV-A,tractor driver,2,2,,Educ level not specified,2026-11-04
+IV-A,warehouse helper,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,welder,2,2,25000,Educ level not specified,2026-11-04
+IV-A,wheel loader operator,2,2,,Educ level not specified,2026-11-04
+IV-A,accountant (general),1,1,30000,COLLEGE GRADUATE,2026-11-04
+IV-A,accounting manager,1,1,80000,COLLEGE GRADUATE,2026-11-04
+IV-A,accounting officer,1,1,60000,COLLEGE GRADUATE,2026-11-04
+IV-A,accounting supervisor,1,1,40000,COLLEGE GRADUATE,2026-11-04
+IV-A,accounts coordinator,1,1,21000,Educ level not specified,2026-11-04
+IV-A,accounts manager,1,1,50000,COLLEGE GRADUATE,2026-11-04
+IV-A,accounts officer,1,1,,SECONDARY (K-12),2026-11-04
+IV-A,airconditioning technician,1,1,,Educ level not specified,2026-11-04
+IV-A,architect,1,1,,Educ level not specified,2026-11-04
+IV-A,architectural designer,1,1,40000,COLLEGE GRADUATE,2026-11-04
+IV-A,assistant branch manager,1,1,,Educ level not specified,2026-11-04
+IV-A,assistant cook,1,1,,ELEMENTARY GRADUATE,2026-11-04
+IV-A,automotive electrician,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,automotive mechanic,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,boiler operator,1,1,,Educ level not specified,2026-11-04
+IV-A,branch manager,1,1,20000,COLLEGE GRADUATE,2026-11-04
+IV-A,business development officer,1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,business development/marketing specialist,1,1,17000,COLLEGE GRADUATE,2026-11-04
+IV-A,buyer,1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,cadet engineer (chemical),1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,cadet engineer (electrical),1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,cadet engineer (industrial),1,1,,Educ level not specified,2026-11-04
+IV-A,cadet engineer (mechanical),1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,chemical process engineer,1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,chief credit investigator (gov),1,1,14500,Educ level not specified,2026-11-04
+IV-A,computer systems engineer,1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,construction stonemason,1,1,20422,GRADE VI,2026-11-04
+IV-A,cook (general),1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,department manager,1,1,45000,MASTERAL/POST GRADUATE LEVEL,2026-11-04
+IV-A,driver courier,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,electric cable jointer,1,1,,Educ level not specified,2026-11-04
+IV-A,electronic product test engineer,1,1,24000,COLLEGE GRADUATE,2026-11-04
+IV-A,equipment control engineer,1,1,25000,COLLEGE GRADUATE,2026-11-04
+IV-A,export/import clerk,1,1,20000,COLLEGE GRADUATE,2026-11-04
+IV-A,farm supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,front desk officer,1,1,15600,COLLEGE GRADUATE,2026-11-04
+IV-A,general manager (gov),1,1,50000,Educ level not specified,2026-11-04
+IV-A,geodetic engineer,1,1,50000,Educ level not specified,2026-11-04
+IV-A,heavy equipment operator,1,1,,Educ level not specified,2026-11-04
+IV-A,housekeeper (hotel and resorts),1,1,,2ND YEAR COLLEGE LEVEL,2026-11-04
+IV-A,housekeeping services assistant (gov),1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,housekeeping supervisor,1,1,17000,VOCATIONAL GRADUATE,2026-11-04
+IV-A,human resource supervisor,1,1,,Educ level not specified,2026-11-04
+IV-A,hydraullic backhoe excavator operator,1,1,,Educ level not specified,2026-11-04
+IV-A,industrial engineer,1,1,20000,COLLEGE GRADUATE,2026-11-04
+IV-A,industrial plant mechanic,1,1,1000,VOCATIONAL GRADUATE,2026-11-04
+IV-A,information technology (it) specialist,1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,instrumentation & control engineer,1,1,80000,COLLEGE GRADUATE,2026-11-04
+IV-A,interpreter,1,1,30000,COLLEGE GRADUATE,2026-11-04
+IV-A,jr. supervisor (management trainee),1,1,20000,COLLEGE GRADUATE,2026-11-04
+IV-A,line installer,1,1,,Educ level not specified,2026-11-04
+IV-A,logistics & warehouse officer,1,1,20000,COLLEGE GRADUATE,2026-11-04
+IV-A,logistics coordinator,1,1,,Educ level not specified,2026-11-04
+IV-A,logistics officer,1,1,,Educ level not specified,2026-11-04
+IV-A,machinist,1,1,,VOCATIONAL GRADUATE,2026-11-04
+IV-A,marketing officer,1,1,78095,COLLEGE GRADUATE,2026-11-04
+IV-A,marketing staff,1,1,16000,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,mason (general),1,1,,Educ level not specified,2026-11-04
+IV-A,materials planning officer,1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,meat cutter,1,1,,Educ level not specified,2026-11-04
+IV-A,oil tanker pumpman,1,1,,Educ level not specified,2026-11-04
+IV-A,operations supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,other supervisor not elsewhere classified,1,1,16000,COLLEGE GRADUATE,2026-11-04
+IV-A,parking attendant,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,pharmacist (general),1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,pipe fitter,1,1,,VOCATIONAL GRADUATE,2026-11-04
+IV-A,plant manager,1,1,65000,COLLEGE GRADUATE,2026-11-04
+IV-A,plumber (gov),1,1,,Educ level not specified,2026-11-04
+IV-A,poultry farm worker,1,1,,ELEMENTARY GRADUATE,2026-11-04
+IV-A,press operator (metal),1,1,15600,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,production & operations specialist,1,1,30000,VOCATIONAL GRADUATE,2026-11-04
+IV-A,production assistant,1,1,19000,COLLEGE GRADUATE,2026-11-04
+IV-A,production engineer,1,1,,Educ level not specified,2026-11-04
+IV-A,production helper,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,professional social worker,1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,project supervisor,1,1,40000,COLLEGE GRADUATE,2026-11-04
+IV-A,purchasing clerk,1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,quality analyst,1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,quality assurance inspector,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,quality assurance staff,1,1,25000,COLLEGE GRADUATE,2026-11-04
+IV-A,research and development manager,1,1,120000,MASTERAL/POST GRADUATE,2026-11-04
+IV-A,research and development specialist,1,1,20000,COLLEGE GRADUATE,2026-11-04
+IV-A,restaurant supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,retail trade salesman,1,1,17600,Educ level not specified,2026-11-04
+IV-A,room attendant,1,1,15600,COLLEGE GRADUATE,2026-11-04
+IV-A,safety supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,sales coordinator,1,1,20000,VOCATIONAL GRADUATE,2026-11-04
+IV-A,sales engineer,1,1,22000,COLLEGE GRADUATE,2026-11-04
+IV-A,sales officer,1,1,,COLLEGE GRADUATE,2026-11-04
+IV-A,sanitary engineer,1,1,,Educ level not specified,2026-11-04
+IV-A,scaffolder,1,1,,VOCATIONAL GRADUATE,2026-11-04
+IV-A,senior chemist (gov),1,1,80000,MASTERAL/POST GRADUATE,2026-11-04
+IV-A,shielded metal arc welder,1,1,,Educ level not specified,2026-11-04
+IV-A,site engineer,1,1,,Educ level not specified,2026-11-04
+IV-A,software designer,1,1,40000,COLLEGE GRADUATE,2026-11-04
+IV-A,sous chef,1,1,23000,Educ level not specified,2026-11-04
+IV-A,store manager,1,1,,Educ level not specified,2026-11-04
+IV-A,storekeeper,1,1,,Educ level not specified,2026-11-04
+IV-A,supply manager,1,1,50000,Educ level not specified,2026-11-04
+IV-A,technical salesman,1,1,40000,COLLEGE GRADUATE,2026-11-04
+IV-A,tig welder,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,truck mounted crane operator,1,1,,Educ level not specified,2026-11-04
+IV-A,utility worker,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+IV-A,warehouse clerk,1,1,16000,COLLEGE GRADUATE,2026-11-04
+IV-A,water treatment plant operator,1,1,,Educ level not specified,2026-11-04
+IX,business development officer,8,1,20000,ELEMENTARY GRADUATE,2026-11-04
+IX,automotive mechanic,2,1,,VOCATIONAL GRADUATE,2026-11-04
+IX,watchman,2,1,,HIGH SCHOOL GRADUATE,2026-11-04
+IX,attorney iv (gov),1,1,45653,MASTERAL/POST GRADUATE,2026-11-04
+IX,branch manager,1,1,20000,COLLEGE GRADUATE,2026-11-04
+IX,business development manager,1,1,,Educ level not specified,2026-11-04
+IX,business development/marketing specialist,1,1,,COLLEGE GRADUATE,2026-11-04
+IX,company driver,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+IX,electrician (general),1,1,,GRADE XII (FOR K TO 12),2026-11-04
+IX,forklift operator,1,1,,Educ level not specified,2026-11-04
+IX,loans and credit officer,1,1,17000,COLLEGE GRADUATE,2026-11-04
+IX,medical officer (gov),1,1,70303,COLLEGE GRADUATE,2026-11-04
+IX,psychologist (gov),1,1,42178,MASTERAL/POST GRADUATE,2026-11-04
+IX,restaurant general manager,1,1,,COLLEGE GRADUATE,2026-11-04
+IX,sales clerk,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+IX,sales supervisor,1,1,,1ST YEAR HIGH SCHOOL/GRADE VII (FOR K TO 12),2026-11-04
+IX,technical salesman,1,1,30000,COLLEGE GRADUATE,2026-11-04
+IX,warehouseman,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+MIMAROPA,front desk officer,4,4,13191,4TH YEAR COLLEGE LEVEL,2026-11-04
+MIMAROPA,room attendant,4,4,13000,Educ level not specified,2026-11-04
+MIMAROPA,accounts coordinator,2,1,,GRADE XII (FOR K TO 12),2026-11-04
+MIMAROPA,assistant cook,2,2,,Educ level not specified,2026-11-04
+MIMAROPA,automotive mechanic,2,1,,VOCATIONAL GRADUATE,2026-11-04
+MIMAROPA,bartender,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+MIMAROPA,cashier,2,2,1600,Educ level not specified,2026-11-04
+MIMAROPA,civil engineer (general),2,2,22000,COLLEGE GRADUATE,2026-11-04
+MIMAROPA,delivery driver,2,1,11868,Educ level not specified,2026-11-04
+MIMAROPA,food server,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+MIMAROPA,hotel housekeeping attendant,2,2,,SECONDARY (K-12),2026-11-04
+MIMAROPA,sales officer,2,2,26000,COLLEGE GRADUATE,2026-11-04
+MIMAROPA,service crew,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+MIMAROPA,accounting clerk,1,1,16000,COLLEGE GRADUATE,2026-11-04
+MIMAROPA,administrative assistant,1,1,14868,Educ level not specified,2026-11-04
+MIMAROPA,assistant general manager,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,barista,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,boiler operator,1,1,,VOCATIONAL GRADUATE,2026-11-04
+MIMAROPA,branch head (gov),1,1,,COLLEGE GRADUATE,2026-11-04
+MIMAROPA,bread baker,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,building administrator,1,1,25000,4TH YEAR COLLEGE LEVEL,2026-11-04
+MIMAROPA,business development officer,1,1,12000,COLLEGE GRADUATE,2026-11-04
+MIMAROPA,chemist (general),1,1,,Educ level not specified,2026-11-04
+MIMAROPA,commis chef,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,company driver,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+MIMAROPA,crane operator,1,1,1035,Educ level not specified,2026-11-04
+MIMAROPA,delivery helper,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,deliveryman,1,1,17000,VOCATIONAL GRADUATE,2026-11-04
+MIMAROPA,department manager,1,1,305987,COLLEGE GRADUATE,2026-11-04
+MIMAROPA,driver/mechanic,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+MIMAROPA,dump truck driver,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,electrician (general),1,1,,Educ level not specified,2026-11-04
+MIMAROPA,food attendant,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,forklift operator,1,1,,VOCATIONAL GRADUATE,2026-11-04
+MIMAROPA,front office manager,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,gasoline pump boy,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,human resource development officer,1,1,,COLLEGE GRADUATE,2026-11-04
+MIMAROPA,hydraullic backhoe excavator operator,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,industrial pharmacist,1,1,24000,COLLEGE GRADUATE,2026-11-04
+MIMAROPA,inventory clerk,1,1,,4TH YEAR COLLEGE LEVEL,2026-11-04
+MIMAROPA,kitchen helper,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,laundry worker,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,loans and credit officer,1,1,14114,COLLEGE GRADUATE,2026-11-04
+MIMAROPA,maintenance crew,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+MIMAROPA,maintenance supervisor,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,marketing officer,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,mechanic,1,1,,SECONDARY (K-12),2026-11-04
+MIMAROPA,mechanic/technician (gov),1,1,,Educ level not specified,2026-11-04
+MIMAROPA,mechanical machinery assembler,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,motorcycle driver/rider,1,1,1700,Educ level not specified,2026-11-04
+MIMAROPA,nursery aide,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+MIMAROPA,payloader operator,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+MIMAROPA,port operations chief (gov),1,1,,COLLEGE GRADUATE,2026-11-04
+MIMAROPA,production supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+MIMAROPA,purchasing supervisor,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,receptionist (general),1,1,,Educ level not specified,2026-11-04
+MIMAROPA,researcher,1,1,12000,COLLEGE GRADUATE,2026-11-04
+MIMAROPA,road grader and scraper operator,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,salesman,1,1,,COLLEGE GRADUATE,2026-11-04
+MIMAROPA,sous chef,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,steward,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,store manager,1,1,,COLLEGE GRADUATE,2026-11-04
+MIMAROPA,telemarketer,1,1,16000,COLLEGE GRADUATE,2026-11-04
+MIMAROPA,trailer driver,1,1,,VOCATIONAL GRADUATE,2026-11-04
+MIMAROPA,tricycle driver,1,1,17000,HIGH SCHOOL GRADUATE,2026-11-04
+MIMAROPA,utility worker,1,1,,Educ level not specified,2026-11-04
+MIMAROPA,warehouseman,1,1,,COLLEGE GRADUATE,2026-11-04
+NIR,customer service assistant,6,5,13000,Educ level not specified,2026-11-04
+NIR,cashier,5,4,,Educ level not specified,2026-11-04
+NIR,call center agent,4,4,,HIGH SCHOOL GRADUATE,2026-11-04
+NIR,delivery driver,4,4,17000,HIGH SCHOOL GRADUATE,2026-11-04
+NIR,motorcycle driver/rider,4,1,,Educ level not specified,2026-11-04
+NIR,bagger,3,2,,Educ level not specified,2026-11-04
+NIR,sales clerk,3,2,,Educ level not specified,2026-11-04
+NIR,salesman,3,2,25000,COLLEGE GRADUATE,2026-11-04
+NIR,warehouseman,3,2,13000,Educ level not specified,2026-11-04
+NIR,mechanical engineering technician (general),2,2,,Educ level not specified,2026-11-04
+NIR,merchandiser,2,2,,Educ level not specified,2026-11-04
+NIR,network engineer,2,2,25000,COLLEGE GRADUATE,2026-11-04
+NIR,operations manager,2,2,,COLLEGE GRADUATE,2026-11-04
+NIR,plumber,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+NIR,store supervisor,2,2,15000,Educ level not specified,2026-11-04
+NIR,accounts coordinator,1,1,18000,COLLEGE GRADUATE,2026-11-04
+NIR,administrative clerk,1,1,,Educ level not specified,2026-11-04
+NIR,assistant pharmacist,1,1,,GRADE XII (FOR K TO 12),2026-11-04
+NIR,autocad operator,1,1,,COLLEGE GRADUATE,2026-11-04
+NIR,automotive mechanic,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NIR,baker (general),1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NIR,barista,1,1,12716,COLLEGE GRADUATE,2026-11-04
+NIR,batch still operator (chemical processes except petroleum),1,1,,Educ level not specified,2026-11-04
+NIR,billing clerk,1,1,,Educ level not specified,2026-11-04
+NIR,building administrator,1,1,,COLLEGE GRADUATE,2026-11-04
+NIR,business development officer,1,1,20000,Educ level not specified,2026-11-04
+NIR,chemist (general),1,1,23000,COLLEGE GRADUATE,2026-11-04
+NIR,chief accountant,1,1,30000,COLLEGE GRADUATE,2026-11-04
+NIR,cook (general),1,1,13678,VOCATIONAL GRADUATE,2026-11-04
+NIR,credit and collection clerk,1,1,,Educ level not specified,2026-11-04
+NIR,customer relations officer,1,1,,Educ level not specified,2026-11-04
+NIR,data encoder,1,1,,COLLEGE GRADUATE,2026-11-04
+NIR,dishwasher,1,1,13000,HIGH SCHOOL GRADUATE,2026-11-04
+NIR,environmental specialist,1,1,,Educ level not specified,2026-11-04
+NIR,executive assistant,1,1,15000,Educ level not specified,2026-11-04
+NIR,finance associate professional,1,1,,COLLEGE GRADUATE,2026-11-04
+NIR,finance manager,1,1,,Educ level not specified,2026-11-04
+NIR,forklift operator,1,1,,Educ level not specified,2026-11-04
+NIR,human resource management officer,1,1,18000,Educ level not specified,2026-11-04
+NIR,kitchen crew,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NIR,logistics supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+NIR,marketing assistant,1,1,15000,COLLEGE GRADUATE,2026-11-04
+NIR,marketing supervisor,1,1,30000,Educ level not specified,2026-11-04
+NIR,mechanical draftsman,1,1,18000,COLLEGE GRADUATE,2026-11-04
+NIR,motor vehicle mechanic,1,1,,VOCATIONAL GRADUATE,2026-11-04
+NIR,operations supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+NIR,pharmacist (general),1,1,,Educ level not specified,2026-11-04
+NIR,process engineer,1,1,14300,COLLEGE GRADUATE,2026-11-04
+NIR,promo staff,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NIR,quality control/assurance officer,1,1,14300,Educ level not specified,2026-11-04
+NIR,real estate broker,1,1,30000,COLLEGE GRADUATE,2026-11-04
+NIR,sales coordinator,1,1,,Educ level not specified,2026-11-04
+NIR,sales manager,1,1,24000,COLLEGE GRADUATE,2026-11-04
+NIR,sales officer,1,1,,Educ level not specified,2026-11-04
+NIR,senior accountant,1,1,,COLLEGE GRADUATE,2026-11-04
+NIR,service crew,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NIR,store manager,1,1,,COLLEGE GRADUATE,2026-11-04
+NIR,technical and commercial sales representative,1,1,,VOCATIONAL GRADUATE,2026-11-04
+NIR,trailer driver,1,1,,VOCATIONAL GRADUATE,2026-11-04
+NIR,truck driver,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+NIR,utilityman,1,1,,Educ level not specified,2026-11-04
+NIR,waiter (general),1,1,13678,Educ level not specified,2026-11-04
+NIR,warehouse helper,1,1,,COLLEGE GRADUATE,2026-11-04
+NIR,warehouse supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+NIR,web developer,1,1,,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,staff nurse,16,9,28407,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,domestic helper,15,6,22000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,welder,13,8,76450,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,beautician,5,5,35000,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,commis chef,5,1,37624,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,cook (general),5,5,35123,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,kitchen helper,5,4,55000,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,waiter (general),5,5,34120,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,carpenter (general),4,3,173259,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,chef,4,3,107127,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,chief mate,4,2,559639,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,domestic cleaner,4,3,23000,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,food server,4,4,30724,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,hydraullic backhoe excavator operator,4,2,263832,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,office cleaner,4,3,25000,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,painter,4,3,71573,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,physical therapist,4,3,42000,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,pipe fitter,4,4,48000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,second marine engineer,4,2,406976,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,trailer driver,4,4,106638,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,waitress,4,3,55000,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,barista,3,3,30724,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,caregiver (home-based),3,2,38000,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,furniture & cabinet maker,3,2,,1ST YEAR COLLEGE LEVEL,2026-11-04
+OVERSEAS/OTHER,hairdresser,3,3,32000,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,plumber,3,2,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,scaffolder,3,3,102080,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,steelman,3,2,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,accountant (general),2,2,1300,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,automotive electrician,2,2,62000,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,baby sitter,2,2,38000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,bartender,2,2,71102,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,bus driver,2,2,48000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,cashier,2,2,34113,1ST YEAR COLLEGE LEVEL,2026-11-04
+OVERSEAS/OTHER,construction and maintenance man (gov),2,2,1700,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,construction laborer,2,2,42433,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,dialysis nurse,2,2,,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,dishwasher,2,2,71102,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,electrician (general),2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,food repacker,2,2,55000,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,glazier,2,1,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,heavy equipment mechanic,2,2,290000,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,hotel cleaner,2,2,71102,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,hotel housekeeping attendant,2,2,31000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,housemaid,2,2,25000,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,laborer,2,1,79204,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,logistics manager,2,1,1200,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,machinist,2,2,297000,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,midwife i (gov),2,2,30000,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,nail artisan / technician,2,2,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,occupational therapist,2,2,85000,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,professional nurse (general),2,2,,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,refrigeration and airconditioning technician,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,restaurant supervisor,2,2,50176,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,sales manager,2,1,1500,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,service crew,2,2,34113,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,tile setter,2,2,,1ST YEAR COLLEGE LEVEL,2026-11-04
+OVERSEAS/OTHER,truck driver,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,warehouse manager,2,2,1400,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,able seaman,1,1,1568,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,administration manager,1,1,,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,administrative assistant,1,1,40000,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,air transport service supervisor,1,1,82384,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,air-conditioning technician i (gov),1,1,50000,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,aluminum installer,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,assistant store manager,1,1,50166,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,autobody repairman,1,1,131000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,automobile mechanic,1,1,200000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,automotive mechanic,1,1,94219,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,automotive painter,1,1,63000,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,automotive upholsterer,1,1,50000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,baggage porter,1,1,71102,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,baked goods machine operator,1,1,2589,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,baker (general),1,1,55000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,beauty consultant,1,1,21061,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,branch manager,1,1,,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,bridge or gantry crane operator,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,building electrician,1,1,1000,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,building exterior cleaner,1,1,25000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,butcher (general),1,1,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,cadet engineer (civil),1,1,,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,cake decorator,1,1,45000,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,caregiver (institution-based),1,1,83200,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,chauffeur/family driver,1,1,50000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,chief marine engineer,1,1,517441,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,chief security officer,1,1,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,cleaning services manager,1,1,40735,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,clinic nurse,1,1,,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,company driver,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,construction bricklayer,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,cook (except private service),1,1,37632,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,crane operator,1,1,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,customer service manager,1,1,1200,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,distribution manager,1,1,,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,dressmaker,1,1,60000,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,driver courier,1,1,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,electric arc welder (general),1,1,200000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,electric machine rewinder,1,1,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,electrical engineering technician (high voltage),1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,electrical equipment assembler,1,1,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,electrical foreman,1,1,4000,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,electrical technician,1,1,30000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,engine fitter (marine),1,1,122092,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,executive assistant,1,1,,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,facial/skin treatment consultant,1,1,21061,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,fibrous plasterer,1,1,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,finishing carpenter,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,fishmonger,1,1,1500,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+OVERSEAS/OTHER,flight steward,1,1,65000,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,florist,1,1,34000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,food service supervisor,1,1,50647,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,formal service waiter,1,1,,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,fourth marine engineer,1,1,173512,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,freight/dispatching and receiving clerk,1,1,106638,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,gas turbine system technician,1,1,30000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,general insurance officer i (gov),1,1,2200,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,head internal audit,1,1,1350,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,"heating, ventilation and aircondition technician",1,1,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,heavy equipment operator,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,hostess,1,1,37632,1ST YEAR COLLEGE LEVEL,2026-11-04
+OVERSEAS/OTHER,hotel general manager,1,1,75000,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,hotel receptionist,1,1,71102,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,housekeeping services assistant (gov),1,1,28000,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,industrial electrician,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,instrument technician,1,1,30000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,insulation worker,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,inventory control manager,1,1,1200,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,iron works fabricator,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,japanese sous chef,1,1,,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,lathe operator (capstan/metalworking),1,1,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,light equipment operator (gov),1,1,43227,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,machinery fitter-assembler (general),1,1,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,maintenance electrician,1,1,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,make-up artist,1,1,38000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,manicurist/pedicurist,1,1,39906,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,manufacturing laborer,1,1,1500,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,mason (general),1,1,,1ST YEAR COLLEGE LEVEL,2026-11-04
+OVERSEAS/OTHER,masseur,1,1,71102,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,materials planning officer,1,1,40000,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,mechanic,1,1,,1ST YEAR COLLEGE LEVEL,2026-11-04
+OVERSEAS/OTHER,mechanical engineer (general),1,1,,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,medical clerk,1,1,,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,medical x-ray technician,1,1,3000,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,merchandiser,1,1,1800,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,metal-wheel grinder,1,1,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,motor truck mechanic,1,1,290000,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,nursing aide,1,1,,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,office secretary,1,1,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,park maintenance laborer,1,1,45159,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,physical trainer,1,1,30000,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,physiotherapist,1,1,3000,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,pipe insulator,1,1,79116,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,pipe welder,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,plumber foreman,1,1,4000,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,port manager (gov),1,1,,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,poultry farm worker,1,1,55000,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,private service cook,1,1,33000,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,production & operations manager (bussiness services),1,1,94000,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,production supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,production worker,1,1,28854,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,quality control assistant,1,1,,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,radiologic technologist,1,1,3000,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,receptionist (general),1,1,2200,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,restaurant general manager,1,1,1200,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,roofer,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,sales associate professional,1,1,2040,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,sales clerk,1,1,35845,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,sales officer,1,1,1500,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,second mate,1,1,209302,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,senior automotive electrician (gov),1,1,63000,VOCATIONAL UNDERGRADUATE,2026-11-04
+OVERSEAS/OTHER,sewer,1,1,63000,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,sheet-metal worker (general),1,1,,1ST YEAR COLLEGE LEVEL,2026-11-04
+OVERSEAS/OTHER,ship electrician,1,1,281210,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,ship fitter,1,1,56000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,skilled worker (field crops),1,1,200000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,sous chef,1,1,,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,spray painter (except construction),1,1,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,steel fabricator,1,1,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,steel fabricator supervisor,1,1,60000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,store helper,1,1,25000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,store manager,1,1,,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,structural fitter,1,1,238100,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,structural steel worker,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,supervising procurement officer (gov),1,1,,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,surgical nurse,1,1,,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,telephone technician,1,1,,VOCATIONAL GRADUATE,2026-11-04
+OVERSEAS/OTHER,third marine engineer,1,1,209302,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,third mate,1,1,179496,Educ level not specified,2026-11-04
+OVERSEAS/OTHER,tig welder,1,1,75000,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,upholsterer,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+OVERSEAS/OTHER,veterinarian (general),1,1,94000,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,waiter a (gov),1,1,55000,COLLEGE GRADUATE,2026-11-04
+OVERSEAS/OTHER,well drilling supervisor (gov),1,1,,COLLEGE GRADUATE,2026-11-04
+PH-UNSPECIFIED,able seaman,2,2,29600,Educ level not specified,2026-11-04
+PH-UNSPECIFIED,chief marine engineer,1,1,,Educ level not specified,2026-11-04
+PH-UNSPECIFIED,chief mate,1,1,,Educ level not specified,2026-11-04
+PH-UNSPECIFIED,fourth marine engineer,1,1,,COLLEGE GRADUATE,2026-11-04
+PH-UNSPECIFIED,messman,1,1,,COLLEGE GRADUATE,2026-11-04
+PH-UNSPECIFIED,oil tanker pumpman,1,1,,Educ level not specified,2026-11-04
+PH-UNSPECIFIED,ordinary seaman,1,1,,Educ level not specified,2026-11-04
+PH-UNSPECIFIED,sea ship's master,1,1,,COLLEGE GRADUATE,2026-11-04
+PH-UNSPECIFIED,second mate,1,1,,Educ level not specified,2026-11-04
+PH-UNSPECIFIED,ship cook,1,1,,COLLEGE GRADUATE,2026-11-04
+PH-UNSPECIFIED,ship fitter,1,1,,VOCATIONAL UNDERGRADUATE,2026-11-04
+PH-UNSPECIFIED,ship master,1,1,141134,Educ level not specified,2026-11-04
+PH-UNSPECIFIED,third mate,1,1,,COLLEGE GRADUATE,2026-11-04
+PH-UNSPECIFIED,wiper (marine craft),1,1,,COLLEGE GRADUATE,2026-11-04
+V,technical and commercial sales representative,3,1,15000,VOCATIONAL GRADUATE,2026-11-04
+V,business development officer,2,1,20000,Educ level not specified,2026-11-04
+V,industrial machinery and tools technician,2,2,60000,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+V,service crew,2,1,13000,Educ level not specified,2026-11-04
+V,accounting staff,1,1,13000,COLLEGE GRADUATE,2026-11-04
+V,accounting supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+V,airconditioning technician,1,1,13000,Educ level not specified,2026-11-04
+V,bookkeeper,1,1,15000,COLLEGE GRADUATE,2026-11-04
+V,branch manager,1,1,25000,Educ level not specified,2026-11-04
+V,call center agent,1,1,20000,HIGH SCHOOL GRADUATE,2026-11-04
+V,cost accounting supervisor,1,1,15000,COLLEGE GRADUATE,2026-11-04
+V,delivery driver,1,1,,VOCATIONAL GRADUATE,2026-11-04
+V,delivery helper,1,1,,Educ level not specified,2026-11-04
+V,executive assistant,1,1,17000,COLLEGE GRADUATE,2026-11-04
+V,human resource management officer,1,1,13000,COLLEGE GRADUATE,2026-11-04
+V,human resource supervisor,1,1,25000,COLLEGE GRADUATE,2026-11-04
+V,laboratory analyst,1,1,25000,COLLEGE GRADUATE,2026-11-04
+V,marketing staff,1,1,13000,COLLEGE GRADUATE,2026-11-04
+V,purchaser,1,1,15000,COLLEGE GRADUATE,2026-11-04
+V,sales associate professional,1,1,13000,COLLEGE GRADUATE,2026-11-04
+V,store manager,1,1,,Educ level not specified,2026-11-04
+V,systems engineer,1,1,18000,Educ level not specified,2026-11-04
+VI,call center agent,10,8,16000,HIGH SCHOOL GRADUATE,2026-11-04
+VI,motorcycle driver/rider,9,1,,Educ level not specified,2026-11-04
+VI,accountant (general),4,4,30000,COLLEGE GRADUATE,2026-11-04
+VI,customer service assistant,4,4,20000,COLLEGE GRADUATE,2026-11-04
+VI,copy editor,3,1,15000,COLLEGE GRADUATE,2026-11-04
+VI,dump truck driver,3,3,,HIGH SCHOOL GRADUATE,2026-11-04
+VI,electrician (general),3,3,15000,Educ level not specified,2026-11-04
+VI,welder,3,2,1000,Educ level not specified,2026-11-04
+VI,wholesale and retail trade salesman,3,1,15780,COLLEGE GRADUATE,2026-11-04
+VI,accounting assistant,2,2,,COLLEGE GRADUATE,2026-11-04
+VI,automotive mechanic,2,2,15000,VOCATIONAL GRADUATE,2026-11-04
+VI,bagger,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+VI,branch manager,2,2,20000,Educ level not specified,2026-11-04
+VI,civil engineer (general),2,2,20000,COLLEGE GRADUATE,2026-11-04
+VI,delivery driver,2,2,13000,HIGH SCHOOL GRADUATE,2026-11-04
+VI,gardener,2,1,1000,Educ level not specified,2026-11-04
+VI,graphic designer,2,2,,Educ level not specified,2026-11-04
+VI,hydraullic backhoe excavator operator,2,2,,Educ level not specified,2026-11-04
+VI,information technology (it) specialist,2,2,20000,COLLEGE GRADUATE,2026-11-04
+VI,loans and credit officer,2,1,17000,COLLEGE GRADUATE,2026-11-04
+VI,marketing officer,2,2,15780,COLLEGE GRADUATE,2026-11-04
+VI,merchandiser,2,2,16000,Educ level not specified,2026-11-04
+VI,payroll clerk,2,2,15000,COLLEGE GRADUATE,2026-11-04
+VI,plumber,2,2,55800,HIGH SCHOOL GRADUATE,2026-11-04
+VI,production worker,2,2,53400,Educ level not specified,2026-11-04
+VI,road roller operator,2,2,,Educ level not specified,2026-11-04
+VI,sales associate professional,2,2,,Educ level not specified,2026-11-04
+VI,sales manager,2,2,23000,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+VI,salesman,2,2,12480,COLLEGE GRADUATE,2026-11-04
+VI,service crew,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+VI,warehouse supervisor,2,2,20000,COLLEGE GRADUATE,2026-11-04
+VI,web developer,2,2,20000,COLLEGE GRADUATE,2026-11-04
+VI,accounting analyst,1,1,,Educ level not specified,2026-11-04
+VI,accounting clerk,1,1,,COLLEGE GRADUATE,2026-11-04
+VI,accounting staff,1,1,,COLLEGE GRADUATE,2026-11-04
+VI,accounts manager,1,1,25000,COLLEGE GRADUATE,2026-11-04
+VI,accounts officer,1,1,15000,HIGH SCHOOL GRADUATE,2026-11-04
+VI,administrator,1,1,,Educ level not specified,2026-11-04
+VI,airconditioning technician,1,1,,VOCATIONAL GRADUATE,2026-11-04
+VI,architectural designer,1,1,,Educ level not specified,2026-11-04
+VI,area operations manager,1,1,,Educ level not specified,2026-11-04
+VI,artistic painter,1,1,1000,Educ level not specified,2026-11-04
+VI,assistant pharmacist,1,1,,COLLEGE GRADUATE,2026-11-04
+VI,auto service technician,1,1,14300,Educ level not specified,2026-11-04
+VI,automotive electrician,1,1,,VOCATIONAL GRADUATE,2026-11-04
+VI,barber-hairdresser,1,1,1000,Educ level not specified,2026-11-04
+VI,bookkeeper,1,1,25000,COLLEGE GRADUATE,2026-11-04
+VI,bulldozer operator,1,1,,Educ level not specified,2026-11-04
+VI,business development officer,1,1,20000,Educ level not specified,2026-11-04
+VI,business development supervisor,1,1,20000,Educ level not specified,2026-11-04
+VI,checker,1,1,,Educ level not specified,2026-11-04
+VI,computer applications engineer,1,1,20000,Educ level not specified,2026-11-04
+VI,construction foreman,1,1,,Educ level not specified,2026-11-04
+VI,construction manager,1,1,35000,COLLEGE GRADUATE,2026-11-04
+VI,construction painter,1,1,1000,Educ level not specified,2026-11-04
+VI,corporate accountant,1,1,,COLLEGE GRADUATE,2026-11-04
+VI,corporate secretary,1,1,,COLLEGE GRADUATE,2026-11-04
+VI,credit and collection clerk,1,1,15000,Educ level not specified,2026-11-04
+VI,data encoder,1,1,1000,Educ level not specified,2026-11-04
+VI,deliveryman,1,1,,VOCATIONAL GRADUATE,2026-11-04
+VI,editor,1,1,,COLLEGE GRADUATE,2026-11-04
+VI,electrical engineer (general),1,1,20000,COLLEGE GRADUATE,2026-11-04
+VI,estimator,1,1,,Educ level not specified,2026-11-04
+VI,facial/skin treatment consultant,1,1,1000,Educ level not specified,2026-11-04
+VI,farm technician,1,1,,Educ level not specified,2026-11-04
+VI,fiberglass maker,1,1,1000,Educ level not specified,2026-11-04
+VI,finance officer,1,1,,MASTERAL/POST GRADUATE LEVEL,2026-11-04
+VI,financial/accounts specialist,1,1,14752,COLLEGE GRADUATE,2026-11-04
+VI,food attendant,1,1,,2ND YEAR HIGH SCHOOL/GRADE VIII (FOR K TO 12),2026-11-04
+VI,forklift operator,1,1,,Educ level not specified,2026-11-04
+VI,front desk clerk,1,1,,COLLEGE GRADUATE,2026-11-04
+VI,graphic artist,1,1,1000,Educ level not specified,2026-11-04
+VI,housekeeper (private),1,1,1000,Educ level not specified,2026-11-04
+VI,human resource development clerk,1,1,,COLLEGE GRADUATE,2026-11-04
+VI,internal auditor,1,1,17000,COLLEGE GRADUATE,2026-11-04
+VI,inventory control analyst,1,1,17358,COLLEGE GRADUATE,2026-11-04
+VI,"laborer/helper, fishery",1,1,,Educ level not specified,2026-11-04
+VI,laundry worker,1,1,1000,Educ level not specified,2026-11-04
+VI,maintenance technician (electrical),1,1,12480,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+VI,make-up artist,1,1,1000,Educ level not specified,2026-11-04
+VI,marketing coordinator,1,1,,COLLEGE GRADUATE,2026-11-04
+VI,mechanical draftsman,1,1,,COLLEGE GRADUATE,2026-11-04
+VI,nail artisan / technician,1,1,1000,Educ level not specified,2026-11-04
+VI,operations supervisor,1,1,17358,COLLEGE GRADUATE,2026-11-04
+VI,painter,1,1,48100,HIGH SCHOOL GRADUATE,2026-11-04
+VI,pest control worker,1,1,1000,Educ level not specified,2026-11-04
+VI,photographer (gov),1,1,1000,Educ level not specified,2026-11-04
+VI,private nurse,1,1,18000,COLLEGE GRADUATE,2026-11-04
+VI,product support engineer,1,1,20000,COLLEGE GRADUATE,2026-11-04
+VI,production & operations manager (manufacturing),1,1,20000,COLLEGE GRADUATE,2026-11-04
+VI,programmer and designer,1,1,,COLLEGE GRADUATE,2026-11-04
+VI,project manager,1,1,,COLLEGE GRADUATE,2026-11-04
+VI,purchaser,1,1,,COLLEGE GRADUATE,2026-11-04
+VI,purchasing officer,1,1,,COLLEGE GRADUATE,2026-11-04
+VI,quality analyst,1,1,20000,COLLEGE GRADUATE,2026-11-04
+VI,quality assurance staff,1,1,23000,Educ level not specified,2026-11-04
+VI,real estate salesman,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VI,reinforcing iron worker,1,1,51920,Educ level not specified,2026-11-04
+VI,safety officer,1,1,,COLLEGE GRADUATE,2026-11-04
+VI,sales and marketing manager,1,1,15000,COLLEGE GRADUATE,2026-11-04
+VI,sales coordinator,1,1,20000,COLLEGE GRADUATE,2026-11-04
+VI,sales executive,1,1,,2ND YEAR COLLEGE LEVEL,2026-11-04
+VI,sales officer,1,1,15000,1ST YEAR COLLEGE LEVEL,2026-11-04
+VI,scaffolder,1,1,53400,HIGH SCHOOL GRADUATE,2026-11-04
+VI,senior quality control/assurance inspector (non-padc) (gov),1,1,20000,COLLEGE GRADUATE,2026-11-04
+VI,sign painter,1,1,15600,HIGH SCHOOL GRADUATE,2026-11-04
+VI,software designer,1,1,28000,COLLEGE GRADUATE,2026-11-04
+VI,stock clerk,1,1,,COLLEGE GRADUATE,2026-11-04
+VI,store helper,1,1,12000,Educ level not specified,2026-11-04
+VI,surveyor (general),1,1,,COLLEGE GRADUATE,2026-11-04
+VI,technical and commercial sales representative,1,1,,Educ level not specified,2026-11-04
+VI,technical salesman,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VI,tinsmith,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VI,trailer driver,1,1,,Educ level not specified,2026-11-04
+VI,travel guide,1,1,30000,COLLEGE GRADUATE,2026-11-04
+VI,truck driver,1,1,,Educ level not specified,2026-11-04
+VI,warehouse helper,1,1,12000,Educ level not specified,2026-11-04
+VII,cashier,22,16,14040,Educ level not specified,2026-11-04
+VII,call center agent,15,6,22000,HIGH SCHOOL GRADUATE,2026-11-04
+VII,production & operations specialist,12,2,,Educ level not specified,2026-11-04
+VII,service crew,12,6,13000,GRADE XII (FOR K TO 12),2026-11-04
+VII,sales clerk,11,10,14040,Educ level not specified,2026-11-04
+VII,bagger,10,6,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,delivery driver,7,7,14040,Educ level not specified,2026-11-04
+VII,stock clerk,7,3,,Educ level not specified,2026-11-04
+VII,technical support staff,7,3,22000,2ND YEAR COLLEGE LEVEL,2026-11-04
+VII,utility worker,7,3,,Educ level not specified,2026-11-04
+VII,company driver,6,5,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,production worker,6,6,,GRADE I,2026-11-04
+VII,sales associate professional,6,5,15400,Educ level not specified,2026-11-04
+VII,sales executive,6,6,20000,COLLEGE GRADUATE,2026-11-04
+VII,automotive mechanic,5,5,16000,Educ level not specified,2026-11-04
+VII,forklift operator,5,4,18000,Educ level not specified,2026-11-04
+VII,warehouse helper,5,3,,Educ level not specified,2026-11-04
+VII,assistant operations manager,4,2,40000,COLLEGE GRADUATE,2026-11-04
+VII,customer service assistant,4,3,22000,COLLEGE GRADUATE,2026-11-04
+VII,sales coordinator,4,4,20000,COLLEGE GRADUATE,2026-11-04
+VII,sales officer,4,2,,Educ level not specified,2026-11-04
+VII,salesman,4,4,19000,COLLEGE GRADUATE,2026-11-04
+VII,sewer,4,3,14000,ELEMENTARY GRADUATE,2026-11-04
+VII,accounting clerk,3,2,,COLLEGE GRADUATE,2026-11-04
+VII,accounting manager,3,2,,Educ level not specified,2026-11-04
+VII,accounting staff,3,3,,COLLEGE GRADUATE,2026-11-04
+VII,administrative assistant,3,3,,Educ level not specified,2026-11-04
+VII,credit and collection clerk,3,2,20000,3RD YEAR COLLEGE LEVEL,2026-11-04
+VII,electrician (general),3,3,,Educ level not specified,2026-11-04
+VII,heavy truck driver,3,2,18500,HIGH SCHOOL GRADUATE,2026-11-04
+VII,language teacher (secondary education),3,3,12000,1ST YEAR COLLEGE LEVEL,2026-11-04
+VII,office clerk,3,3,15000,Educ level not specified,2026-11-04
+VII,plumber,3,3,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,safety officer,3,2,,COLLEGE GRADUATE,2026-11-04
+VII,warehouseman,3,3,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,welder,3,3,,Educ level not specified,2026-11-04
+VII,airconditioning technician,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,audit assistant,2,2,23000,Educ level not specified,2026-11-04
+VII,auditor,2,2,,Educ level not specified,2026-11-04
+VII,auto service technician,2,2,20000,VOCATIONAL GRADUATE,2026-11-04
+VII,buyer,2,2,,COLLEGE GRADUATE,2026-11-04
+VII,canvasser,2,2,,COLLEGE GRADUATE,2026-11-04
+VII,cash collector,2,2,,COLLEGE GRADUATE,2026-11-04
+VII,company nurse,2,2,,COLLEGE GRADUATE,2026-11-04
+VII,delivery helper,2,2,,Educ level not specified,2026-11-04
+VII,finance manager,2,2,,MASTERAL/POST GRADUATE,2026-11-04
+VII,financial analyst,2,2,200000,COLLEGE GRADUATE,2026-11-04
+VII,hotel concierge,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,hotel housekeeping attendant,2,2,,VOCATIONAL GRADUATE,2026-11-04
+VII,industrial sewing machine mechanic,2,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,inventory clerk,2,2,,Educ level not specified,2026-11-04
+VII,janitor,2,2,13400,HIGH SCHOOL GRADUATE,2026-11-04
+VII,jr. supervisor (management trainee),2,2,,COLLEGE GRADUATE,2026-11-04
+VII,kitchen crew,2,2,,COLLEGE GRADUATE,2026-11-04
+VII,lineman,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,logistics & warehouse officer,2,2,25000,Educ level not specified,2026-11-04
+VII,maintenance electrician,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,maintenance laborer,2,2,,Educ level not specified,2026-11-04
+VII,mason (general),2,2,,Educ level not specified,2026-11-04
+VII,medical representative,2,2,,COLLEGE GRADUATE,2026-11-04
+VII,merchandiser,2,2,,Educ level not specified,2026-11-04
+VII,merchandising supervisor,2,1,,COLLEGE GRADUATE,2026-11-04
+VII,messenger,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,motorcycle mechanic,2,2,,VOCATIONAL GRADUATE,2026-11-04
+VII,operations manager,2,2,,COLLEGE GRADUATE,2026-11-04
+VII,operations supervisor,2,2,,COLLEGE GRADUATE,2026-11-04
+VII,production & operations manager (manufacturing),2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,production assistant,2,2,,VOCATIONAL GRADUATE,2026-11-04
+VII,production helper,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,production machine operator,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,production planner,2,2,,COLLEGE GRADUATE,2026-11-04
+VII,purchaser,2,2,,COLLEGE GRADUATE,2026-11-04
+VII,purchasing clerk,2,1,,Educ level not specified,2026-11-04
+VII,receptionist (general),2,2,14040,Educ level not specified,2026-11-04
+VII,sales representative i (gov),2,2,30000,Educ level not specified,2026-11-04
+VII,site engineer,2,2,,Educ level not specified,2026-11-04
+VII,steward,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,store supervisor,2,2,19000,COLLEGE GRADUATE,2026-11-04
+VII,utilityman,2,2,,Educ level not specified,2026-11-04
+VII,waiter (general),2,2,,COLLEGE GRADUATE,2026-11-04
+VII,warehouse clerk,2,2,16000,2ND YEAR COLLEGE LEVEL,2026-11-04
+VII,accountant (general),1,1,22000,COLLEGE GRADUATE,2026-11-04
+VII,accounting assistant,1,1,,Educ level not specified,2026-11-04
+VII,accounting officer,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,accounting supervisor,1,1,,Educ level not specified,2026-11-04
+VII,accounts coordinator,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,accounts executive,1,1,20000,VOCATIONAL GRADUATE,2026-11-04
+VII,accounts manager,1,1,,4TH YEAR COLLEGE LEVEL,2026-11-04
+VII,administrative clerk,1,1,,Educ level not specified,2026-11-04
+VII,administrative officer,1,1,13026,2ND YEAR COLLEGE LEVEL,2026-11-04
+VII,advertising consultant,1,1,55000,HIGH SCHOOL GRADUATE,2026-11-04
+VII,animal husbandry technician,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,area operations manager,1,1,15000,COLLEGE GRADUATE,2026-11-04
+VII,assistant cook,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,audit supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,auditing clerk,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,automotive electrician,1,1,,VOCATIONAL GRADUATE,2026-11-04
+VII,automotive mechanic (gov),1,1,,Educ level not specified,2026-11-04
+VII,baker (general),1,1,16000,COLLEGE GRADUATE,2026-11-04
+VII,barber,1,1,,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+VII,bargeman,1,1,,Educ level not specified,2026-11-04
+VII,barista,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,biomedical technician,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,building maintenance man,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,business development/marketing specialist,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,butcher (general),1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,car driver,1,1,,Educ level not specified,2026-11-04
+VII,carpenter (general),1,1,,ELEMENTARY GRADUATE,2026-11-04
+VII,chicken egg producer,1,1,,Educ level not specified,2026-11-04
+VII,chief marine engineer,1,1,,Educ level not specified,2026-11-04
+VII,chief mate,1,1,,Educ level not specified,2026-11-04
+VII,chief security officer,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,commis chef,1,1,,VOCATIONAL GRADUATE,2026-11-04
+VII,construction carpenter,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,construction laborer,1,1,,Educ level not specified,2026-11-04
+VII,construction laborer (building),1,1,,Educ level not specified,2026-11-04
+VII,cook (except private service),1,1,,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+VII,cook (general),1,1,,Educ level not specified,2026-11-04
+VII,cost analyst,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,credit analyst,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,customer relations officer,1,1,22000,Educ level not specified,2026-11-04
+VII,division manager,1,1,,Educ level not specified,2026-11-04
+VII,documentation staff,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,domestic helper,1,1,10000,HIGH SCHOOL GRADUATE,2026-11-04
+VII,draftsman (general),1,1,,Educ level not specified,2026-11-04
+VII,driver/mechanic,1,1,,Educ level not specified,2026-11-04
+VII,electrical fitter (general),1,1,,COLLEGE GRADUATE,2026-11-04
+VII,electrical technician,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,electro mechanical technician,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,engineering and maintenance supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,environmental specialist,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,equipment control engineer,1,1,,Educ level not specified,2026-11-04
+VII,facilitator,1,1,53000,COLLEGE GRADUATE,2026-11-04
+VII,fiber optic technician,1,1,,SECONDARY (K-12),2026-11-04
+VII,field researcher,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,finance associate professional,1,1,16000,COLLEGE GRADUATE,2026-11-04
+VII,financial consultant,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,freight/dispatching and receiving clerk,1,1,,Educ level not specified,2026-11-04
+VII,fruit picker,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,gardener,1,1,,ELEMENTARY GRADUATE,2026-11-04
+VII,gasoline pump boy,1,1,,Educ level not specified,2026-11-04
+VII,graphic artist,1,1,30000,COLLEGE GRADUATE,2026-11-04
+VII,"heating, ventilation and aircondition technician",1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,heavy equipment mechanic,1,1,18500,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+VII,hotel/resort maintenance supervisor (gov),1,1,,COLLEGE GRADUATE,2026-11-04
+VII,housekeeping supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,human resource development assistant,1,1,16000,COLLEGE GRADUATE,2026-11-04
+VII,human resource development officer,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,human resource management assistant,1,1,20000,Educ level not specified,2026-11-04
+VII,industrial engineer,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,information technology (it) specialist,1,1,,Educ level not specified,2026-11-04
+VII,instructor,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,interpreter,1,1,,Educ level not specified,2026-11-04
+VII,iron works fabricator,1,1,15000,HIGH SCHOOL GRADUATE,2026-11-04
+VII,leasing officer,1,1,,MASTERAL/POST GRADUATE,2026-11-04
+VII,liaison assistant,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,loans and credit analyst,1,1,17000,COLLEGE GRADUATE,2026-11-04
+VII,loans and credit officer,1,1,17000,COLLEGE GRADUATE,2026-11-04
+VII,logistics officer,1,1,18000,COLLEGE GRADUATE,2026-11-04
+VII,maintenance supervisor,1,1,,Educ level not specified,2026-11-04
+VII,maintenance technician (electronics),1,1,,Educ level not specified,2026-11-04
+VII,manufacturing general manager,1,1,,Educ level not specified,2026-11-04
+VII,marketing assistant,1,1,20000,Educ level not specified,2026-11-04
+VII,marketing director,1,1,20000,COLLEGE GRADUATE,2026-11-04
+VII,marketing staff,1,1,,2ND YEAR COLLEGE LEVEL,2026-11-04
+VII,marketing supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,mechanical engineer (general),1,1,,COLLEGE GRADUATE,2026-11-04
+VII,mechanical helper,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,motorpool supervisor i (gov),1,1,30000,COLLEGE GRADUATE,2026-11-04
+VII,occupational therapist,1,1,,Educ level not specified,2026-11-04
+VII,oiler,1,1,,Educ level not specified,2026-11-04
+VII,operations officer,1,1,15000,COLLEGE GRADUATE,2026-11-04
+VII,pig farm worker,1,1,,Educ level not specified,2026-11-04
+VII,pipe fabricator,1,1,15000,HIGH SCHOOL GRADUATE,2026-11-04
+VII,plant mechanic,1,1,,VOCATIONAL GRADUATE,2026-11-04
+VII,president and ceo (gov),1,1,,COLLEGE GRADUATE,2026-11-04
+VII,process engineer,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,procurement officer (gov),1,1,25000,COLLEGE GRADUATE,2026-11-04
+VII,product specialist,1,1,,4TH YEAR COLLEGE LEVEL,2026-11-04
+VII,production engineer,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,production supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,promo salesperson,1,1,,Educ level not specified,2026-11-04
+VII,property consultant,1,1,15000,2ND YEAR COLLEGE LEVEL,2026-11-04
+VII,purchasing officer,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,quality assurance staff,1,1,18000,COLLEGE GRADUATE,2026-11-04
+VII,quality assurance supervisor,1,1,,Educ level not specified,2026-11-04
+VII,quality control/assurance officer,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,quantity surveyor,1,1,23000,4TH YEAR COLLEGE LEVEL,2026-11-04
+VII,quarter master,1,1,,Educ level not specified,2026-11-04
+VII,real estate broker,1,1,15000,HIGH SCHOOL GRADUATE,2026-11-04
+VII,receiving clerk,1,1,,Educ level not specified,2026-11-04
+VII,refrigeration and airconditioning technician,1,1,,4TH YEAR HIGH SCHOOL/GRADE X (FOR K TO 12),2026-11-04
+VII,restaurant supervisor,1,1,20000,COLLEGE GRADUATE,2026-11-04
+VII,retail associate,1,1,,1ST YEAR COLLEGE LEVEL,2026-11-04
+VII,sales & marketing assistant,1,1,,Educ level not specified,2026-11-04
+VII,sales manager,1,1,40000,COLLEGE GRADUATE,2026-11-04
+VII,sales representative iv (gov),1,1,15000,1ST YEAR COLLEGE LEVEL,2026-11-04
+VII,sales supervisor,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,saleslady,1,1,,Educ level not specified,2026-11-04
+VII,second marine engineer,1,1,,Educ level not specified,2026-11-04
+VII,second mate,1,1,,Educ level not specified,2026-11-04
+VII,shielded metal arc welder,1,1,13000,VOCATIONAL UNDERGRADUATE,2026-11-04
+VII,ship master,1,1,,Educ level not specified,2026-11-04
+VII,solar power plant operator,1,1,,Educ level not specified,2026-11-04
+VII,stockman,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,store manager,1,1,27000,COLLEGE GRADUATE,2026-11-04
+VII,store salesperson,1,1,13026,HIGH SCHOOL GRADUATE,2026-11-04
+VII,systems analyst and programmer,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,taxi driver,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VII,technical and commercial sales representative,1,1,20000,HIGH SCHOOL GRADUATE,2026-11-04
+VII,technical assistant,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,technical salesman,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,technical service adviser,1,1,20000,COLLEGE GRADUATE,2026-11-04
+VII,telecommunications technician,1,1,,Educ level not specified,2026-11-04
+VII,test operator,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,test technician,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,third marine engineer,1,1,,Educ level not specified,2026-11-04
+VII,third mate,1,1,,Educ level not specified,2026-11-04
+VII,travel coordinator,1,1,20000,COLLEGE GRADUATE,2026-11-04
+VII,travel guide,1,1,25000,Educ level not specified,2026-11-04
+VII,truck helper,1,1,,Educ level not specified,2026-11-04
+VII,waitress,1,1,,COLLEGE GRADUATE,2026-11-04
+VII,warehouse supervisor,1,1,20000,Educ level not specified,2026-11-04
+VIII,delivery driver,20,1,,HIGH SCHOOL GRADUATE,2026-11-04
+VIII,truck driver,5,1,,VOCATIONAL GRADUATE,2026-11-04
+VIII,sales clerk,4,2,,COLLEGE GRADUATE,2026-11-04
+VIII,electrical engineer (general),3,2,25000,COLLEGE GRADUATE,2026-11-04
+VIII,instructor,3,1,,COLLEGE GRADUATE,2026-11-04
+VIII,business development officer,2,2,20000,Educ level not specified,2026-11-04
+VIII,farm worker,2,1,,ELEMENTARY GRADUATE,2026-11-04
+VIII,heavy truck driver,2,2,20000,ELEMENTARY GRADUATE,2026-11-04
+VIII,mechanical engineer (general),2,1,,COLLEGE GRADUATE,2026-11-04
+VIII,bagger,1,1,,Educ level not specified,2026-11-04
+VIII,business development manager,1,1,,Educ level not specified,2026-11-04
+VIII,construction carpenter,1,1,,Educ level not specified,2026-11-04
+VIII,delivery helper,1,1,,Educ level not specified,2026-11-04
+VIII,driver/mechanic,1,1,,VOCATIONAL GRADUATE,2026-11-04
+VIII,heavy equipment operator,1,1,18000,ELEMENTARY GRADUATE,2026-11-04
+VIII,houseboy,1,1,10000,Educ level not specified,2026-11-04
+VIII,housemaid,1,1,8000,ELEMENTARY GRADUATE,2026-11-04
+VIII,janitor,1,1,,Educ level not specified,2026-11-04
+VIII,medical representative,1,1,,COLLEGE GRADUATE,2026-11-04
+VIII,technical and commercial sales representative,1,1,,VOCATIONAL GRADUATE,2026-11-04
+VIII,utilityman,1,1,,Educ level not specified,2026-11-04
+X,business development officer,5,1,20000,ELEMENTARY GRADUATE,2026-11-04
+X,baker (general),3,1,,1ST YEAR HIGH SCHOOL/GRADE VII (FOR K TO 12),2026-11-04
+X,cook (general),2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+X,technical salesman,2,1,30000,COLLEGE GRADUATE,2026-11-04
+X,warehouseman,2,2,,HIGH SCHOOL GRADUATE,2026-11-04
+X,accounting supervisor,1,1,27000,COLLEGE GRADUATE,2026-11-04
+X,accounts officer,1,1,,COLLEGE GRADUATE,2026-11-04
+X,assistant cook,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+X,call center agent,1,1,14000,HIGH SCHOOL GRADUATE,2026-11-04
+X,chemist (general),1,1,,COLLEGE GRADUATE,2026-11-04
+X,company driver,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+X,deputy general manager (gov),1,1,50000,COLLEGE GRADUATE,2026-11-04
+X,food server,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+X,gardener,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+X,general manager (gov),1,1,70000,COLLEGE GRADUATE,2026-11-04
+X,hotel housekeeping attendant,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+X,human resource management assistant,1,1,,COLLEGE GRADUATE,2026-11-04
+X,maintenance crew,1,1,18000,COLLEGE GRADUATE,2026-11-04
+X,millwright,1,1,,COLLEGE GRADUATE,2026-11-04
+X,operations coordinator,1,1,18000,COLLEGE GRADUATE,2026-11-04
+X,operations officer,1,1,,COLLEGE GRADUATE,2026-11-04
+X,plant manager,1,1,,MASTERAL/POST GRADUATE LEVEL,2026-11-04
+X,quality assurance staff,1,1,,COLLEGE GRADUATE,2026-11-04
+X,store supervisor,1,1,16000,COLLEGE GRADUATE,2026-11-04
+X,waitress,1,1,,COLLEGE GRADUATE,2026-11-04
+XI,call center agent,12,2,,HIGH SCHOOL GRADUATE,2026-11-04
+XI,business development officer,9,1,20000,ELEMENTARY GRADUATE,2026-11-04
+XI,sales clerk,4,4,,Educ level not specified,2026-11-04
+XI,administration services aide,2,2,,Educ level not specified,2026-11-04
+XI,delivery driver,2,2,13000,HIGH SCHOOL GRADUATE,2026-11-04
+XI,sales associate professional,2,2,,COLLEGE GRADUATE,2026-11-04
+XI,sales executive,2,2,14000,VOCATIONAL GRADUATE,2026-11-04
+XI,sales officer,2,2,14000,COLLEGE GRADUATE,2026-11-04
+XI,accounting clerk,1,1,,Educ level not specified,2026-11-04
+XI,administrative assistant,1,1,,COLLEGE GRADUATE,2026-11-04
+XI,administrative clerk,1,1,,COLLEGE GRADUATE,2026-11-04
+XI,administrative officer,1,1,,Educ level not specified,2026-11-04
+XI,agricultural technician (gov),1,1,,Educ level not specified,2026-11-04
+XI,assistant sales manager,1,1,30000,HIGH SCHOOL GRADUATE,2026-11-04
+XI,autocad operator,1,1,,COLLEGE GRADUATE,2026-11-04
+XI,baker (general),1,1,,Educ level not specified,2026-11-04
+XI,barista,1,1,,Educ level not specified,2026-11-04
+XI,bookkeeper,1,1,20000,COLLEGE GRADUATE,2026-11-04
+XI,computer operator i (gov),1,1,,Educ level not specified,2026-11-04
+XI,construction laborer,1,1,,Educ level not specified,2026-11-04
+XI,cook (general),1,1,,Educ level not specified,2026-11-04
+XI,customer service assistant,1,1,16000,HIGH SCHOOL GRADUATE,2026-11-04
+XI,domestic cleaner,1,1,,Educ level not specified,2026-11-04
+XI,electronics technician,1,1,,Educ level not specified,2026-11-04
+XI,financial consultant,1,1,,Educ level not specified,2026-11-04
+XI,geologist,1,1,30000,COLLEGE GRADUATE,2026-11-04
+XI,hairdresser,1,1,,Educ level not specified,2026-11-04
+XI,human resource development assistant,1,1,16000,COLLEGE GRADUATE,2026-11-04
+XI,laborer,1,1,,Educ level not specified,2026-11-04
+XI,make-up artist,1,1,,Educ level not specified,2026-11-04
+XI,managing director (gov),1,1,80000,COLLEGE GRADUATE,2026-11-04
+XI,market inspector ii (gov),1,1,,Educ level not specified,2026-11-04
+XI,market salesperson,1,1,30000,HIGH SCHOOL GRADUATE,2026-11-04
+XI,marketing officer,1,1,,Educ level not specified,2026-11-04
+XI,marketing supervisor,1,1,,Educ level not specified,2026-11-04
+XI,mining engineer (general),1,1,30000,Educ level not specified,2026-11-04
+XI,nail artisan / technician,1,1,,Educ level not specified,2026-11-04
+XI,office cleaner,1,1,,Educ level not specified,2026-11-04
+XI,pharmacist (general),1,1,,COLLEGE GRADUATE,2026-11-04
+XI,procurement specialist,1,1,32000,COLLEGE GRADUATE,2026-11-04
+XI,production machine operator,1,1,,Educ level not specified,2026-11-04
+XI,sales engineer,1,1,19000,COLLEGE GRADUATE,2026-11-04
+XI,sales manager,1,1,,Educ level not specified,2026-11-04
+XI,salesman,1,1,13000,COLLEGE GRADUATE,2026-11-04
+XI,secretary,1,1,15000,COLLEGE GRADUATE,2026-11-04
+XI,social welfare assistant (gov),1,1,,Educ level not specified,2026-11-04
+XI,welder (gov),1,1,,Educ level not specified,2026-11-04
+XII,business development manager,1,1,,Educ level not specified,2026-11-04
+XII,cashier,1,1,,1ST YEAR COLLEGE LEVEL,2026-11-04
+XII,graphic artist,1,1,,COLLEGE GRADUATE,2026-11-04
+XII,janitor,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+XII,machine tool machine operator,1,1,20000,COLLEGE GRADUATE,2026-11-04
+XII,teller,1,1,,COLLEGE GRADUATE,2026-11-04
+XIII,business development officer,8,1,20000,ELEMENTARY GRADUATE,2026-11-04
+XIII,cashier,2,2,13000,HIGH SCHOOL GRADUATE,2026-11-04
+XIII,electrician (general),2,2,16000,ELEMENTARY GRADUATE,2026-11-04
+XIII,accountant (general),1,1,20000,Educ level not specified,2026-11-04
+XIII,accounting officer,1,1,,Educ level not specified,2026-11-04
+XIII,accounting staff,1,1,13000,COLLEGE GRADUATE,2026-11-04
+XIII,administrative clerk,1,1,,COLLEGE GRADUATE,2026-11-04
+XIII,automotive electrician,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+XIII,civil engineer (general),1,1,,COLLEGE GRADUATE,2026-11-04
+XIII,company driver,1,1,,Educ level not specified,2026-11-04
+XIII,delivery helper,1,1,13000,Educ level not specified,2026-11-04
+XIII,dump truck driver,1,1,,Educ level not specified,2026-11-04
+XIII,human resource development officer,1,1,,Educ level not specified,2026-11-04
+XIII,hydraullic backhoe excavator operator,1,1,,Educ level not specified,2026-11-04
+XIII,information technology officer,1,1,,COLLEGE GRADUATE,2026-11-04
+XIII,jr. supervisor (management trainee),1,1,,COLLEGE GRADUATE,2026-11-04
+XIII,maintenance laborer,1,1,,ELEMENTARY GRADUATE,2026-11-04
+XIII,mechanical engineer (general),1,1,25000,Educ level not specified,2026-11-04
+XIII,mechanical helper,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+XIII,medical representative,1,1,,COLLEGE GRADUATE,2026-11-04
+XIII,merchandiser,1,1,13000,SECONDARY (K-12),2026-11-04
+XIII,production & operations manager (restaurants),1,1,35000,COLLEGE GRADUATE,2026-11-04
+XIII,production helper,1,1,12350,HIGH SCHOOL GRADUATE,2026-11-04
+XIII,production worker,1,1,,ELEMENTARY GRADUATE,2026-11-04
+XIII,purchaser,1,1,,COLLEGE GRADUATE,2026-11-04
+XIII,sales analyst,1,1,13000,COLLEGE GRADUATE,2026-11-04
+XIII,salesman,1,1,13000,COLLEGE GRADUATE,2026-11-04
+XIII,warehouseman,1,1,,HIGH SCHOOL GRADUATE,2026-11-04
+XIII,welder,1,1,,ELEMENTARY GRADUATE,2026-11-04

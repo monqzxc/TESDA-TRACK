@@ -91,6 +91,11 @@ def score_matches(items: Sequence[CatalogItem], keyword: dict[str, dict], simila
 
     With the learner's `query`, the plain-language rules apply: no match when it names no trade, and the level
     they need comes first within a family (see goal_rules)."""
+    if query is not None and goal_rules.is_hotel_work_goal(query):
+        # These are alternative starting roles, not a semantic guess at the learner's preference.
+        by_code = {item.code: item for item in items}
+        return [Match(qualification=by_code[code].summary, score=keyword[code]["score"], reason=keyword[code]["reason"])
+                for code in goal_rules.HOTEL_PATHWAYS if code in keyword and code in by_code][:limit]
     if query is not None and goal_rules.gives_no_match(query, bool(keyword)):
         return []
     semantic_by_id = strengths(similarities, params)
@@ -182,7 +187,7 @@ def match_evidence(session: Session, query: str, profile: Profile,
     keyword = {r["qualification"]["code"]: r for r in score_qualifications(query, evidence_profile,
                                                                             current.rule_views)}
     strength = {code: round(r["score"] / KEYWORD_SCALE, 3) for code, r in keyword.items()}
-    if embedder is None:
+    if embedder is None or goal_rules.is_hotel_work_goal(query):
         by_code = {item.code: item for item in current.items}
         matches = [Match(qualification=by_code[code].summary, score=r["score"], reason=r["reason"])
                    for code, r in list(keyword.items())[:limit]]

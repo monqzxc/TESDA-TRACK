@@ -1,4 +1,4 @@
-import { GOAL_MAX_LENGTH } from '../finder/store.ts'
+import { GOAL_MAX_LENGTH } from '../finder/key.ts'
 
 export interface TspLearnerParams {
   learnerId: string
