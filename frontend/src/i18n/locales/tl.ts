@@ -631,6 +631,27 @@ export const tl: Record<string, string> = {
   'Your approximate location': 'Ang iyong tinatayang lokasyon',
   'Copy a link to this location': 'Kopyahin ang link sa lokasyong ito',
   'Link to this location copied.': 'Nakopya ang link sa lokasyong ito.',
+  'The detailed map could not load, so the OpenStreetMap map is shown instead.':
+    'Hindi ma-load ang detalyadong mapa, kaya ang mapa ng OpenStreetMap ang ipinapakita.',
+  'The map stopped drawing. Restoring it…': 'Huminto ang pagguhit ng mapa. Ibinabalik ito…',
+  Satellite: 'Satellite',
+  'Zoom in': 'Palakihin',
+  'Zoom out': 'Paliitin',
+  'Turn the map back to north': 'Ibalik ang mapa sa hilaga',
+  'Show buildings in 3D': 'Ipakita ang mga gusali sa 3D',
+  'Zoom in to see buildings in 3D.': 'Palakihin ang mapa upang makita ang mga gusali sa 3D.',
+  'No building heights are recorded here yet, so buildings stay flat.':
+    'Wala pang nakatalang taas ng gusali rito, kaya patag pa ang mga gusali.',
+  'No buildings are mapped here yet.': 'Wala pang nakamapang gusali rito.',
+  '{0} centers here: zoom in': '{0} sentro rito: palakihin',
+  '{0} centers at this spot': '{0} sentro sa lugar na ito',
+  'Map. Arrow keys move it, plus and minus zoom.':
+    'Mapa. Iginagalaw ito ng mga arrow key; nagpapalaki at nagpapaliit ang plus at minus.',
+  'Map credits': 'Mga pinagmulan ng mapa',
+  'Use two fingers to move the map': 'Gumamit ng dalawang daliri upang igalaw ang mapa',
+  'Use Ctrl + scroll to zoom the map':
+    'Gamitin ang Ctrl + scroll upang palakihin o paliitin ang mapa',
+  'Use ⌘ + scroll to zoom the map': 'Gamitin ang ⌘ + scroll upang palakihin o paliitin ang mapa',
   'Every step counts.': 'Mahalaga ang bawat hakbang.',
   'Watch your skills grow.': 'Masdan ang pag-unlad ng iyong kakayahan.',
   'Loading your progress…': 'Nilo-load ang iyong progreso…',
@@ -1011,8 +1032,8 @@ export const tl: Record<string, string> = {
   'Receives only the skill and role words from your Skills Explorer searches. Its answers are kept for up to an hour, so the same search isn’t sent twice.':
     'Mga salita para sa kakayahan at tungkulin lamang mula sa paghahanap sa Tuklasin ang mga Kakayahan ang natatanggap nito. Itinatago ang mga sagot nang hanggang isang oras upang hindi maipadala nang dalawang beses ang parehong paghahanap.',
   'Directions and maps': 'Mga direksyon at mapa',
-  'For directions, our server sends a route’s start and end points to a routing service built on OpenStreetMap. Found routes are kept for up to an hour, under a code that can’t be searched by place. Map images come from OpenStreetMap or CARTO, which see your network address and the part of the map you view. Google Maps opens only if you choose it, with the center’s location.':
-    'Para sa mga direksyon, ipinapadala ng server ang simula at dulo ng ruta sa serbisyong nakabatay sa OpenStreetMap. Itinatago ang mga rutang nahanap nang hanggang isang oras sa ilalim ng code na hindi mahahanap ayon sa lugar. Mula sa OpenStreetMap o CARTO ang mga larawan ng mapa; nakikita nila ang iyong address sa network at bahaging tinitingnan sa mapa. Magbubukas lamang ang Google Maps kung pipiliin mo ito, kasama ang lokasyon ng sentro.',
+  'For directions, our server sends a route’s start and end points to a routing service built on OpenStreetMap. Found routes are kept for up to an hour, under a code that can’t be searched by place. Map images come from OpenStreetMap, CARTO or MapTiler, which see your network address and the part of the map you view. Google Maps opens only if you choose it, with the center’s location.':
+    'Para sa mga direksyon, ipinapadala ng server ang simula at dulo ng ruta sa serbisyong nakabatay sa OpenStreetMap. Itinatago ang mga rutang nahanap nang hanggang isang oras sa ilalim ng code na hindi mahahanap ayon sa lugar. Mula sa OpenStreetMap, CARTO o MapTiler ang mga larawan ng mapa; nakikita nila ang iyong address sa network at bahaging tinitingnan sa mapa. Magbubukas lamang ang Google Maps kung pipiliin mo ito, kasama ang lokasyon ng sentro.',
   Authorities: 'Mga awtoridad',
   'Only when the law requires us to share it.': 'Kapag iniaatas lamang ng batas na ibahagi ito.',
   'How long we keep it': 'Gaano katagal namin ito itinatago',

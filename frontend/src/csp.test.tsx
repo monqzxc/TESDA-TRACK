@@ -40,4 +40,18 @@ describe('the Content Security Policy', () => {
     expect(directive('script-src')).toEqual(["'self'"])
     expect(readAppFile('index.html')).not.toMatch(/<script(?![^>]*\bsrc=)[^>]*>/)
   })
+
+  it('lets the MapLibre map fetch its tiles, and draw in a worker from the site itself', () => {
+    // MapLibre fetches tiles and their TileJSON rather than loading them as pictures.
+    expect(directive('connect-src')).toEqual(
+      expect.arrayContaining([
+        "'self'",
+        'https://api.maptiler.com',
+        'https://tile.openstreetmap.org',
+      ]),
+    )
+    // The worker is one of the app's files (setWorkerUrl), never a blob: script.
+    expect(directive('worker-src')).toEqual(["'self'"])
+    expect(directive('img-src')).toEqual(expect.arrayContaining(['https://api.maptiler.com']))
+  })
 })

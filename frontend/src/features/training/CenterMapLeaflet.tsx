@@ -199,6 +199,7 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
     <div
       ref={shell}
       className="center-map relative isolate h-[var(--center-map-height,680px)] overflow-hidden rounded-18 border border-border bg-map-water shadow-[0_6px_24px_rgb(var(--track-shadow-rgb)/0.05)] max-sm:h-[min(var(--center-map-height,460px),460px)]"
+      data-engine="leaflet"
       data-soft={basemap.soft || undefined}
       role="region"
       aria-label={copy.label}

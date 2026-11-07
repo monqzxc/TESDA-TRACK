@@ -12,7 +12,10 @@
 	header {
 		# Scripts, styles, fonts and API calls come from the site itself; pictures also from the map's tile servers.
 		# The style hash is React Aria's one injected rule, for touch screens (src/csp.test.tsx checks it).
-		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'sha256-38RhXrc7EdReTKsOm23ZPOCUgniTUUcjky8QOOrQx6o='; img-src 'self' data: https://*.tile.openstreetmap.org https://*.basemaps.cartocdn.com; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+		# The MapLibre map (docs/center-map.md) fetches its tiles rather than loading them as pictures, from MapTiler and
+		# OpenStreetMap, and draws in a worker that is one of the site's own files. With MAP_TILES_URL, add its host to
+		# connect-src.
+		Content-Security-Policy "default-src 'self'; script-src 'self'; style-src 'self' 'sha256-38RhXrc7EdReTKsOm23ZPOCUgniTUUcjky8QOOrQx6o='; img-src 'self' data: blob: https://tile.openstreetmap.org https://*.tile.openstreetmap.org https://*.basemaps.cartocdn.com https://api.maptiler.com; font-src 'self'; connect-src 'self' https://api.maptiler.com https://tile.openstreetmap.org; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
 		X-Content-Type-Options "nosniff"
 		Referrer-Policy "strict-origin-when-cross-origin"
 		Permissions-Policy "geolocation=(self), camera=(), microphone=()"

@@ -1,0 +1,188 @@
+/* The MapLibre map's parts in the page (CenterMapLibre.tsx), after maplibre-gl.css, which these style over: the
+   attribution, popups, the two-finger hint, and the buttons the renderer lays over the pins so they can be reached
+   with a keyboard or a screen reader. The map itself is drawn on a canvas. Like center-map.css for Leaflet, this file
+   is imported only by its renderer, right after the library's own styles, so it lands after them in the same
+   stylesheet; the rules are scoped to the map's shell (.center-map). */
+
+/* The map's own buttons and links, the popups' included. */
+.center-map :is(button, a):focus-visible {
+  outline: 3px solid var(--track-focus);
+  outline-offset: 2px;
+}
+
+/* maplibre-gl.css makes its container position: relative, outside Tailwind's layers, so it would beat absolute inset-0:
+   the map fills its shell here instead. */
+.center-map .maplibregl-map {
+  position: absolute;
+  inset: 0;
+  font-family: inherit;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.center-map .maplibregl-canvas:focus-visible {
+  outline: 3px solid var(--track-focus);
+  outline-offset: -3px;
+}
+
+.center-map .maplibregl-ctrl.maplibregl-ctrl-attrib {
+  background: var(--track-glass-soft);
+  color: var(--track-muted);
+  font-size: 11px;
+}
+
+.center-map .maplibregl-ctrl-attrib a,
+.center-map .maplibregl-popup-content a {
+  color: var(--track-blue);
+}
+
+.center-map .maplibregl-ctrl-attrib.maplibregl-compact {
+  background: var(--track-surface);
+}
+
+/* The credits' (i) button is a dark icon: at night it's turned light. */
+:root[data-theme='dark'] .center-map .maplibregl-ctrl-attrib-button {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* The popup's width follows the room beside the filter panel (cqw: the map's width). */
+.center-map[data-engine='maplibre'] {
+  container-type: inline-size;
+}
+
+/* A pin's popup, as the Leaflet map's: its paragraphs lose the browser's margins, and CenterPopup's classes add their
+   own (with !). Where the panel leaves too little room, it may cover the map's buttons (above them, z-index 850), but
+   never the status line (860). */
+.center-map .center-map-popup {
+  z-index: 850;
+  max-width: none;
+}
+
+.center-map .center-map-popup .maplibregl-popup-content {
+  box-sizing: border-box;
+  width: 392px;
+  width: min(392px, max(282px, calc(100cqw - var(--map-overlay-inset, 0px) - 40px)));
+  max-width: calc(100vw - 48px);
+  padding: 16px;
+  border-radius: 16px;
+  background: var(--track-surface);
+  box-shadow: 0 12px 32px rgb(var(--track-shadow-rgb) / 0.2);
+  color: var(--track-ink);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.center-map .maplibregl-popup-content p {
+  margin: 0;
+}
+
+.center-map .maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+  border-top-color: var(--track-surface);
+}
+
+.center-map .maplibregl-popup-anchor-top .maplibregl-popup-tip {
+  border-bottom-color: var(--track-surface);
+}
+
+.center-map .center-map-popup .maplibregl-popup-close-button {
+  top: 12px;
+  right: 12px;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  color: var(--track-muted);
+  font:
+    400 22px/24px Arial,
+    sans-serif;
+}
+
+.center-map .center-map-popup .maplibregl-popup-close-button:hover {
+  background: var(--track-soft);
+}
+
+/* The learner's location or searched place, named when pointed at. */
+.center-map .center-map-tip {
+  pointer-events: none;
+}
+
+.center-map .center-map-tip .maplibregl-popup-content {
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--track-surface);
+  box-shadow: 0 2px 10px rgb(var(--track-shadow-rgb) / 0.18);
+  color: var(--track-ink);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+/* On a touch screen, the hint that two fingers move the map. */
+.center-map .maplibregl-cooperative-gesture-screen {
+  padding: 24px;
+  background: rgb(var(--track-shadow-rgb) / 0.55);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* The buttons over the pins and clusters, and the routes' labels: placed by CenterMapLibre.tsx on each frame (a
+   transform from the map's top left), each the size of what it covers. The pins themselves are drawn on the canvas. */
+.center-map .center-map-hit {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.center-map .center-map-hit > * {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: auto;
+  will-change: transform;
+}
+
+.center-map .center-map-pin,
+.center-map .center-map-cluster {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.center-map .center-map-pin {
+  width: 34px;
+  height: 44px;
+  margin: -43px 0 0 -17px;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+}
+
+.center-map .center-map-pin[data-selected] {
+  width: 44px;
+  height: 57px;
+  margin: -56px 0 0 -22px;
+}
+
+.center-map .center-map-cluster {
+  width: 46px;
+  height: 46px;
+  margin: -23px 0 0 -23px;
+  border-radius: 50%;
+}
+
+.center-map .center-map-anchor {
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.center-map .center-map-anchor > * {
+  pointer-events: auto;
+}
+
+@media (max-width: 640px) {
+  .center-map .center-map-popup .maplibregl-popup-content {
+    width: 282px;
+  }
+}

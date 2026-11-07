@@ -5,6 +5,11 @@ import { defineConfig } from 'vitest/config'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  build: {
+    // MapLibre is most of a megabyte, in the center map's own chunk, downloaded only when that map is shown on a
+    // browser that can draw it (src/features/training/CenterMap.tsx). Warn about anything larger than it.
+    chunkSizeWarningLimit: 1200,
+  },
   server: {
     // The FastAPI backend, run with `uvicorn tesda_track.main:app --reload` (see the README). API_PROXY points it
     // elsewhere, e.g. http://host.docker.internal:8000 when this dev server runs in a container.
