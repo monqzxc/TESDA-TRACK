@@ -32,11 +32,18 @@ async function openFinder(path = '/find') {
   return view
 }
 
+const FIELD = 'Your career interests or skills'
+
+/** Types a goal or a list of skills into the one field, and sends it. */
+async function search(user: UserEvent, text: string) {
+  await user.type(await screen.findByRole('textbox', { name: FIELD }), text)
+  await user.click(screen.getByRole('button', { name: 'Find my pathways' }))
+}
+
 /** Sends the welder goal from Your goal, and waits for Your match. */
 async function submitGoal(user: UserEvent) {
   const view = await openFinder()
-  await user.click(await screen.findByRole('button', { name: 'Become a welder' }))
-  await user.click(screen.getByRole('button', { name: 'Get recommendation' }))
+  await search(user, GOAL)
   await screen.findByRole('heading', { level: 2, name: 'Your match' })
   await screen.findByRole('article', { name: welding.name })
   return view
@@ -75,17 +82,17 @@ describe('Find my pathway', () => {
     const user = userEvent.setup()
     await openFinder()
 
-    await user.click(await screen.findByRole('button', { name: 'Work in a hotel' }))
-    const box = screen.getByRole('textbox', { name: 'Or tell us in your own words' })
-    expect(box).toHaveValue(
-      'I want to work in a hotel but I don’t know which qualification is suitable for me.',
+    await user.click(
+      await screen.findByRole('button', { name: 'I enjoy caring for older people.' }),
     )
+    const box = screen.getByRole('textbox', { name: FIELD })
+    expect(box).toHaveValue('I enjoy caring for older people.')
     expect(api.requests).toEqual([])
 
     await user.clear(box)
-    await user.click(screen.getByRole('button', { name: 'Get recommendation' }))
+    await user.click(screen.getByRole('button', { name: 'Find my pathways' }))
 
-    expect(screen.getByText('Describe your career goal or skills to get started.')).toBeVisible()
+    expect(screen.getByText('Enter a career goal, occupation, or skill to continue.')).toBeVisible()
     expect(box).toHaveFocus()
     expect(api.requests).toEqual([])
   })
@@ -98,7 +105,10 @@ describe('Find my pathway', () => {
 
     expect(router.state.location.pathname).toBe('/find/matches')
     expect(router.state.location.search).toBe('')
-    expect(sent(api.requests, 'POST', '/api/v1/analysis/goal')[0].body).toEqual({ query: GOAL })
+    expect(sent(api.requests, 'POST', '/api/v1/analysis/goal')[0].body).toEqual({
+      query: GOAL,
+      interpret_input: true,
+    })
     expect(screen.getByText(GOAL)).toBeInTheDocument()
     expect(document.title).not.toContain('welder')
     // The goal is kept for this tab only.
@@ -153,8 +163,7 @@ describe('Find my pathway', () => {
     serveFinderApi({ matches: [] })
     const user = userEvent.setup()
     await openFinder()
-    await user.click(await screen.findByRole('button', { name: 'Become a welder' }))
-    await user.click(screen.getByRole('button', { name: 'Get recommendation' }))
+    await search(user, GOAL)
 
     expect(await screen.findByText(/We couldn’t find a clear match/)).toBeInTheDocument()
     await user.click(screen.getByRole('link', { name: 'Next: Readiness check' }))
@@ -260,7 +269,7 @@ describe('Find my pathway', () => {
     serveFinderApi()
     const { router } = renderApp('/find/pathway')
 
-    await screen.findByRole('heading', { level: 2, name: 'What would you like to achieve?' })
+    await screen.findByRole('heading', { level: 2, name: 'Where would you like to go?' })
     expect(router.state.location.pathname).toBe('/find')
   })
 
@@ -269,8 +278,7 @@ describe('Find my pathway', () => {
     serveFinderApi({ failMatches: 1 })
     const user = userEvent.setup()
     await openFinder()
-    await user.click(await screen.findByRole('button', { name: 'Become a welder' }))
-    await user.click(screen.getByRole('button', { name: 'Get recommendation' }))
+    await search(user, GOAL)
 
     expect(await screen.findByRole('alert')).toHaveTextContent(
       "We can't reach the TESDA-TRACK service right now.",
@@ -329,11 +337,7 @@ describe('Find my pathway', () => {
     )
     const user = userEvent.setup()
     const { router } = await openFinder()
-    await user.type(
-      await screen.findByRole('textbox', { name: 'Or tell us in your own words' }),
-      GOAL,
-    )
-    await user.click(screen.getByRole('button', { name: 'Get recommendation' }))
+    await search(user, GOAL)
     await user.click(await screen.findByRole('button', { name: 'Check my readiness' }))
     await screen.findByText('Part 1 of 3 · Basic skills')
     await rateAll(user)
@@ -377,9 +381,10 @@ describe('Find my pathway, signed in', () => {
     )
     const user = userEvent.setup()
     await openFinder()
-    await screen.findByText('Your results are saved to My Progress.')
-    await user.click(screen.getByRole('button', { name: 'Become a welder' }))
-    const send = () => user.click(screen.getByRole('button', { name: 'Get recommendation' }))
+    await screen.findByRole('button', { name: 'Your account: Maria Santos' })
+    const box = screen.getByRole('textbox', { name: FIELD })
+    await user.type(box, GOAL)
+    const send = () => user.click(screen.getByRole('button', { name: 'Find my pathways' }))
 
     await send()
     await screen.findByText(
@@ -387,11 +392,12 @@ describe('Find my pathway, signed in', () => {
     )
     await send()
     await waitFor(() => expect(bodies).toHaveLength(2))
-    await screen.findByRole('button', { name: 'Get recommendation' })
+    await screen.findByRole('button', { name: 'Find my pathways' })
     expect(bodies[1].request_id).toBe(bodies[0].request_id)
     expect(bodies[0].request_id).toMatch(/^[0-9a-f-]{36}$/i)
 
-    await user.click(screen.getByRole('button', { name: 'Work in a hotel' }))
+    await user.clear(box)
+    await user.type(box, 'I want to work in a hotel.')
     await send()
     await screen.findByRole('article', { name: welding.name })
     expect(bodies[2].request_id).not.toBe(bodies[0].request_id)
@@ -404,17 +410,16 @@ describe('Find my pathway, signed in', () => {
     const api = serveFinderApi()
     const user = userEvent.setup()
     await openFinder()
-    await screen.findByText('Your results are saved to My Progress.')
+    await screen.findByRole('button', { name: 'Your account: Maria Santos' })
 
-    await user.click(await screen.findByRole('button', { name: 'Become a welder' }))
-    await user.click(screen.getByRole('button', { name: 'Get recommendation' }))
+    await search(user, GOAL)
     await screen.findByRole('article', { name: welding.name })
 
     expect(sent(api.requests, 'POST', '/api/v1/me/recommendations')[0].body).toEqual({
       query: GOAL,
       request_id: expect.any(String),
     })
-    expect(sent(api.requests, 'POST', '/api/v1/analysis/goal')).toEqual([])
+    expect(sent(api.requests, 'POST', '/api/v1/analysis/goal')).toHaveLength(1)
     expect(screen.getByText('Saved to My Progress')).toBeInTheDocument()
 
     await choose(user, /Do you already have welding experience/, 'More than 3 years')
@@ -943,23 +948,16 @@ describe('Find my pathway, report', () => {
 describe('Find my pathway, skills search', () => {
   async function searchSkills(user: UserEvent, text: string) {
     await openFinder()
-    await user.click(await screen.findByRole('radio', { name: 'A skill or job' }))
-    await user.type(screen.getByRole('textbox', { name: 'Your skills or the jobs you want' }), text)
-    await user.click(screen.getByRole('button', { name: 'Get recommendation' }))
+    await search(user, text)
   }
 
-  it('starts on the goal tab, as before', async () => {
+  it('takes a goal or a list of skills in one field, without tabs', async () => {
     serveFinderCatalog()
     serveFinderApi()
     await openFinder()
 
-    expect(await screen.findByRole('radio', { name: 'My goal' })).toBeChecked()
-    expect(
-      screen.getByRole('textbox', { name: 'Or tell us in your own words' }),
-    ).toBeInTheDocument()
-    expect(
-      screen.queryByRole('textbox', { name: 'Your skills or the jobs you want' }),
-    ).not.toBeInTheDocument()
+    expect(await screen.findByRole('textbox', { name: FIELD })).toBeInTheDocument()
+    expect(screen.queryByRole('radio', { name: 'A skill or job' })).not.toBeInTheDocument()
   })
 
   it('sends a list of skills as a skills search, and offers centers for each result', async () => {
@@ -971,6 +969,10 @@ describe('Find my pathway, skills search', () => {
     await searchSkills(user, 'welding, blueprint reading')
 
     const card = await screen.findByRole('article', { name: welding.name })
+    expect(sent(api.requests, 'POST', '/api/v1/analysis/goal')[0].body).toEqual({
+      query: 'welding, blueprint reading',
+      interpret_input: true,
+    })
     expect(sent(api.requests, 'POST', '/api/v1/analysis/matches').at(-1)?.body).toMatchObject({
       query: 'welding, blueprint reading',
       mode: 'skills',
@@ -984,21 +986,7 @@ describe('Find my pathway, skills search', () => {
       `/training?qualification=${welding.code}`,
     )
     expect(within(card).getByRole('button', { name: /Check my readiness/ })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Change skill or job' })).toBeInTheDocument()
-    expect(screen.queryByRole('link', { name: 'Change goal' })).not.toBeInTheDocument()
-  })
-
-  it('asks for a skill or job before searching', async () => {
-    serveFinderCatalog()
-    const api = serveFinderApi()
-    const user = userEvent.setup()
-    await openFinder()
-    await user.click(await screen.findByRole('radio', { name: 'A skill or job' }))
-    await user.click(screen.getByRole('button', { name: 'Get recommendation' }))
-
-    expect(screen.getByText('Type at least one skill or job to get started.')).toBeInTheDocument()
-    expect(screen.getByRole('textbox', { name: 'Your skills or the jobs you want' })).toHaveFocus()
-    expect(sent(api.requests, 'POST', '/api/v1/analysis/goal')).toEqual([])
+    expect(screen.getByRole('link', { name: 'Edit your input' })).toHaveAttribute('href', '/find')
   })
 
   it('says which terms it could not use when nothing matches', async () => {
@@ -1013,27 +1001,6 @@ describe('Find my pathway, skills search', () => {
     ).toBeInTheDocument()
   })
 
-  it('keeps the goal and the list apart when switching tabs', async () => {
-    serveFinderCatalog()
-    serveFinderApi()
-    const user = userEvent.setup()
-    await openFinder()
-    await user.type(
-      await screen.findByRole('textbox', { name: 'Or tell us in your own words' }),
-      'Be a chef',
-    )
-    await user.click(await screen.findByRole('radio', { name: 'A skill or job' }))
-    await user.type(
-      screen.getByRole('textbox', { name: 'Your skills or the jobs you want' }),
-      'baking',
-    )
-    await user.click(screen.getByRole('radio', { name: 'My goal' }))
-
-    expect(screen.getByRole('textbox', { name: 'Or tell us in your own words' })).toHaveValue(
-      'Be a chef',
-    )
-  })
-
   it('leaves goal results without the centers link', async () => {
     serveFinderCatalog()
     const api = serveFinderApi()
@@ -1044,7 +1011,7 @@ describe('Find my pathway, skills search', () => {
     expect(
       within(card).queryByRole('link', { name: 'Find training centers' }),
     ).not.toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Change goal' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Edit your input' })).toBeInTheDocument()
     expect(sent(api.requests, 'POST', '/api/v1/analysis/matches').at(-1)?.body).toMatchObject({
       mode: 'goal',
     })
@@ -1054,102 +1021,69 @@ describe('Find my pathway, skills search', () => {
 describe('Find my pathway, related occupations', () => {
   async function searchSkills(user: UserEvent, text: string) {
     const view = await openFinder()
-    await user.click(await screen.findByRole('radio', { name: 'A skill or job' }))
-    await user.type(screen.getByRole('textbox', { name: 'Your skills or the jobs you want' }), text)
-    await user.click(screen.getByRole('button', { name: 'Get recommendation' }))
+    await search(user, text)
     await screen.findByRole('article', { name: welding.name })
     return view
   }
 
-  it('shows the matches’ jobs from the catalog before a qualification is chosen', async () => {
+  /** From the welder goal to Your pathway, where the chosen qualification's jobs are listed. */
+  async function reachOccupations(user: UserEvent) {
+    await submitGoal(user)
+    await user.click(screen.getByRole('button', { name: 'Check my readiness' }))
+    await screen.findByText('Part 1 of 3 · Basic skills')
+    await rateAll(user)
+    await user.click(screen.getByRole('button', { name: 'Analyze my skills' }))
+    return screen.findByRole('region', { name: 'Related occupations' })
+  }
+
+  it('waits for a qualification: a skills search’s matches list no occupations', async () => {
     serveFinderCatalog()
     serveFinderApi({ search: { terms: ['fabricator'], unmatched: [] } })
     const user = userEvent.setup()
     const { router } = await searchSkills(user, 'fabricator')
 
-    const section = screen.getByRole('region', { name: 'Related occupations' })
-    // The catalog's own titles, the learner's job first; nothing else.
+    expect(router.state.location.pathname).toBe('/find/matches')
+    expect(screen.queryByRole('region', { name: 'Related occupations' })).not.toBeInTheDocument()
+  })
+
+  it('lists the chosen qualification’s jobs from the catalog on Your pathway', async () => {
+    serveFinderCatalog()
+    serveFinderApi()
+    const user = userEvent.setup()
+    const section = await reachOccupations(user)
+
+    // The catalog's own titles; nothing else.
     expect(
       within(section)
-        .getAllByRole('button')
-        .map((button) => button.textContent),
-    ).toEqual(['Fabricator', 'Welder'])
-    expect(router.state.location.pathname).toBe('/find/matches')
+        .getAllByRole('heading', { level: 4 })
+        .map((heading) => heading.textContent),
+    ).toEqual(welding.possible_jobs)
   })
 
-  it('opens an occupation to show its qualifications and their core skills', async () => {
+  it('sets an occupation as the journey’s career goal', async () => {
     serveFinderCatalog()
     serveFinderApi()
     const user = userEvent.setup()
-    await searchSkills(user, 'welding')
-    const section = screen.getByRole('region', { name: 'Related occupations' })
+    const section = await reachOccupations(user)
+    const welder = within(section).getByRole('button', { name: 'Set as My Goal: Welder' })
+    expect(welder).toHaveAttribute('aria-pressed', 'false')
 
-    const welder = within(section).getByRole('button', { name: 'Welder' })
-    expect(welder).toHaveAttribute('aria-expanded', 'false')
     await user.click(welder)
 
-    expect(welder).toHaveAttribute('aria-expanded', 'true')
-    expect(within(section).getByRole('heading', { level: 4, name: 'Welder' })).toHaveFocus()
-    expect(within(section).getByText('One TESDA qualification leads to this job.')).toBeVisible()
-    const skills = within(section).getByRole('list', { name: `Core skills: ${welding.name}` })
-    // Core competencies only: the basic and common ones aren't the job's own skills.
-    expect(
-      within(skills)
-        .getAllByRole('listitem')
-        .map((item) => item.textContent),
-    ).toEqual(['Weld carbon steel plates'])
-
-    await user.click(welder)
-    expect(welder).toHaveAttribute('aria-expanded', 'false')
-    expect(within(section).queryByRole('heading', { level: 4 })).not.toBeInTheDocument()
-  })
-
-  it('goes from an occupation’s qualification to its training centers', async () => {
-    serveFinderCatalog()
-    serveFinderApi()
-    const user = userEvent.setup()
-    const { router } = await searchSkills(user, 'welding')
-    const section = screen.getByRole('region', { name: 'Related occupations' })
-    await user.click(within(section).getByRole('button', { name: 'Welder' }))
-
-    await user.click(
-      within(section).getByRole('link', { name: `Find training centers: ${welding.name}` }),
+    expect(within(section).getByRole('button', { name: 'Goal Selected: Welder' })).toHaveAttribute(
+      'aria-pressed',
+      'true',
     )
-
-    await waitFor(() => expect(router.state.location.pathname).toBe('/training'))
-    expect(new URLSearchParams(router.state.location.search).getAll('qualification')).toEqual([
-      welding.code,
-    ])
+    expect(within(section).getByRole('status')).toHaveTextContent('Your career goal: Welder')
+    expect(useFinderStore.getState().careerGoal).toMatchObject({ title: 'Welder' })
   })
 
-  it('goes from an occupation’s qualification to its readiness check', async () => {
-    serveFinderCatalog()
-    serveFinderApi()
-    const user = userEvent.setup()
-    await searchSkills(user, 'welding')
-    const section = screen.getByRole('region', { name: 'Related occupations' })
-    await user.click(within(section).getByRole('button', { name: 'Welder' }))
-
-    await user.click(
-      within(section).getByRole('button', { name: `Check my readiness: ${welding.name}` }),
-    )
-
-    expect(
-      await screen.findByRole('heading', { level: 2, name: 'Readiness check' }),
-    ).toBeInTheDocument()
-  })
-
-  it('shows no occupations when nothing matched, and none for a goal', async () => {
+  it('shows no occupations when nothing matched', async () => {
     serveFinderCatalog()
     serveFinderApi({ matches: [], search: { terms: ['basketball'], unmatched: [] } })
     const user = userEvent.setup()
     await openFinder()
-    await user.click(await screen.findByRole('radio', { name: 'A skill or job' }))
-    await user.type(
-      screen.getByRole('textbox', { name: 'Your skills or the jobs you want' }),
-      'basketball',
-    )
-    await user.click(screen.getByRole('button', { name: 'Get recommendation' }))
+    await search(user, 'basketball')
     await screen.findByText(/We couldn’t match these skills or jobs/)
     expect(screen.queryByRole('region', { name: 'Related occupations' })).not.toBeInTheDocument()
   })

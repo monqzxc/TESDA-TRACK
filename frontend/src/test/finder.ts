@@ -266,7 +266,12 @@ export function serveFinderApi({
   server.use(
     http.post('*/api/v1/analysis/goal', async ({ request }) => {
       await record(request)
-      return HttpResponse.json({ profile: welderProfile, source: 'rules' })
+      const body = (await request.json()) as { query: string; interpret_input?: boolean }
+      if (!body.interpret_input)
+        return HttpResponse.json({ profile: welderProfile, source: 'rules' })
+      // As the API's pathway_input.matching_mode reads it: a sentence is a goal, a short list is skills.
+      const mode = /[.!?]|\b(i|want|my)\b/i.test(body.query) ? 'goal' : 'skills'
+      return HttpResponse.json({ profile: welderProfile, source: 'rules', matching_mode: mode })
     }),
     http.post('*/api/v1/me/recommendations', async ({ request }) => {
       await record(request)

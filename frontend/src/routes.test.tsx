@@ -6,7 +6,7 @@ import { basename } from './routes.tsx'
 import { renderApp, serveCatalog } from './test/app.tsx'
 import { server } from './test/server.ts'
 
-const GOAL_STEP = 'What would you like to achieve?'
+const GOAL_STEP = 'Where would you like to go?'
 const GOAL_TITLE = 'Your goal · Find my pathway · TESDA-TRACK'
 
 // Every address, its h1, the step it shows (the finder's h2), its document title, and whether it loads the catalog.
