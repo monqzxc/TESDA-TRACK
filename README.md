@@ -325,8 +325,9 @@ of Tailwind's. A few things to know:
   `src/styles/buttons.ts` pick one class per property for that reason.
 - **React Aria's states** have variants: `data-hovered:`, `data-pressed:`, `data-selected:` and so on, and
   `hovered:` for mouse hover on both React Aria widgets and plain links.
-- **Leaflet's own markup** (map controls, popups) is styled in `src/features/training/center-map.css`, outside
-  the layers so it beats `leaflet.css`.
+- **Leaflet's and MapLibre's own markup** (map controls, popups, attribution) is styled in
+  `src/features/training/center-map.css`, outside the layers so it beats `leaflet.css` and `maplibre-gl.css`. The
+  center map's renderers, settings and 3D buildings are described in [docs/center-map.md](docs/center-map.md).
 - `npm run format` sorts the classes (`prettier-plugin-tailwindcss`).
 
 ## Troubleshooting
@@ -828,8 +829,10 @@ an administrator's email (as `username`) and password. Then use the admin endpoi
   flight for long trips, so the router sees the server's address, not the learner's. `ROUTING_URL` picks the
   router (see `.env.example`); set it empty to turn Directions off, and the app links to Google Maps instead.
   The learner's location is rounded to about 1 km first and never logged.
-- **App settings:** the React app asks `GET /api/v1/client-config` for the map's CARTO key (`CARTO_API`) and
-  whether Directions and Skills Bridge are on, so one build runs in every deployment.
+- **App settings:** the React app asks `GET /api/v1/client-config` for the map's CARTO key (`CARTO_API`), its
+  vector tiles and renderer (`MAPTILER_KEY` or `MAP_TILES_URL`, `MAP_ENGINE`, `MAP_3D_ENABLED`; see
+  [docs/center-map.md](docs/center-map.md)), and whether Directions and Skills Bridge are on, so one build runs in
+  every deployment.
 
 ## Reports
 
@@ -965,8 +968,10 @@ after the switch, build it with `BASE_PATH: /` and point the site's catch-all `h
 - Files under `assets/` have hashed names and are cached for a year. Fonts and pictures are cached for a week, and
   `index.html`, `theme-init.js` and the icon are checked on every visit, so a release shows at once.
 - The app's Content Security Policy is in `frontend/Caddyfile`: everything from the site itself, plus the map's tile
-  servers for pictures. React Aria adds one small style element, allowed by its hash. If a React Aria upgrade
-  changes it, `src/csp.test.tsx` fails with the new hash to put in `frontend/Caddyfile`.
+  servers: for pictures, and for the MapLibre map's fetches (`connect-src`: MapTiler and OpenStreetMap; add the host of
+  `MAP_TILES_URL` if you set one). MapLibre's worker is one of the site's own files. React Aria adds one small style
+  element, allowed by its hash. If a React Aria upgrade changes it, `src/csp.test.tsx` fails with the new hash to put
+  in `frontend/Caddyfile`.
 
 The first build is slow. It installs the Python packages and downloads the embedding model into the API
 image. On the slow connection we tested, that took about 45 minutes. Later builds reuse Docker's cache.

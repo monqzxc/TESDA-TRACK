@@ -26,6 +26,15 @@ https://<frontend-host>/tsp/webview?learner_id=TSP-42&name=Ana%20Santos&goal=I%2
 | `has_certification` | `yes`/`no`, `true`/`false`, or `1`/`0`. Passed to matching. |
 | `region` | TESDA region code, such as `NCR` or `VII`. Used for later local options. |
 
+## The centers map
+
+**Centers** (`/tsp/webview/training`) shows the same map as Training & Assessment ([docs/center-map.md](center-map.md)).
+In TSP's WebView it is drawn by MapLibre where the WebView has WebGL 2 (Android's Chrome WebView; iOS 15 and later),
+and by Leaflet otherwise. One finger scrolls the page past the map and two move it, so the learner isn't trapped in
+it. The map changes neither the address nor Back and keeps no position. It never asks for the learner's location by
+itself: the page asks as it always has (once a visit as it opens, and when the learner turns location on), and the
+map's locate button asks again. Learner suggestions, matching and sign-in are unaffected.
+
 ## Suggested for you
 
 While the goal box is still empty, the entry page shows up to three qualifications worked out from what TSP
