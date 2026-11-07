@@ -483,45 +483,161 @@
 .tsp-match-actions > * {
   flex: 1;
 }
-/* Suggested for you: the entry page's head start, above the goal box. */
-.tsp-suggestions {
-  display: grid;
-  gap: 12px;
-  margin-bottom: 16px;
+/* Suggested for you: the entry page's head start, folded into one row above the goal box (the page's task) until
+   the learner opens it. Its class names are its own: the goal chips' .tsp-suggestions rules never reach it. */
+.tsp-suggested {
+  margin-bottom: 14px;
+  overflow: hidden;
 }
-.tsp-suggestions .tsp-section-heading h2 {
-  font-size: 18px;
-}
-.tsp-suggestion-list {
+.tsp-suggested-header {
+  position: relative;
   display: grid;
-  gap: 12px;
+  grid-template-columns: 34px minmax(0, 1fr);
+  align-items: center;
+  gap: 2px 12px;
+  padding: 12px 14px;
+}
+/* With suggestions to show, the row is the accordion's button: room on the right for its chevron. */
+.tsp-suggested[data-open] .tsp-suggested-header {
+  padding-right: 46px;
+}
+.tsp-suggested-icon {
+  display: grid;
+  grid-row: 1 / span 2;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #eaf5ff;
+  color: #0645b5;
+}
+.tsp-suggested-header h2 {
+  margin: 0;
+  color: #3d444a;
+  font-size: 15px;
+  line-height: 1.3;
+}
+.tsp-suggested-header h2 button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+/* The whole row opens and closes the section, the line under the heading included. */
+.tsp-suggested-header h2 button::after {
+  position: absolute;
+  inset: 0;
+  content: '';
+}
+.tsp-suggested-header h2 button:focus-visible {
+  outline: none;
+}
+.tsp-suggested-header h2 button:focus-visible::after {
+  border-radius: 12px;
+  outline: 3px solid #0645b5;
+  outline-offset: -3px;
+}
+@media (hover: hover) {
+  .tsp-suggested[data-open] .tsp-suggested-header:hover {
+    background: #f6faff;
+  }
+}
+.tsp-suggested-chevron {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  margin-top: -10px;
+  color: #0645b5;
+  transition: transform 160ms ease;
+}
+.tsp-suggested-header button[aria-expanded='true'] .tsp-suggested-chevron {
+  transform: rotate(180deg);
+}
+.tsp-suggested-summary {
+  grid-column: 2;
+  margin: 0;
+  color: #5f6870;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+.tsp-suggested .tsp-suggested-retry {
+  grid-column: 2;
+  justify-self: start;
+  margin-top: 4px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #0645b5;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+.tsp-suggested-panel {
+  border-top: 1px solid #e6eaee;
+  animation: tsp-suggested-open 160ms ease-out;
+}
+.tsp-suggested-list {
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.tsp-suggestion-card {
-  padding: 16px;
+.tsp-suggested-item {
+  padding: 13px 14px 14px;
 }
-.tsp-suggestion-sector {
-  color: #939ca5;
-  font-size: 11px;
+.tsp-suggested-item + .tsp-suggested-item {
+  border-top: 1px solid #eef1f3;
 }
-.tsp-suggestion-card h3 {
-  margin: 10px 0;
-  font-size: 17px;
+.tsp-suggested-item h3 {
+  margin: 0 0 3px;
+  color: #3d444a;
+  font-size: 15px;
   line-height: 1.35;
 }
-.tsp-suggestion-basis summary {
+/* Neutral, not the matches' green: a suggestion is not a match. */
+.tsp-suggested-reason {
+  margin: 0 0 10px;
+  color: #59616a;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+.tsp-suggested-actions {
+  display: flex;
+  gap: 8px;
+}
+.tsp-suggested-actions > .tsp-primary,
+.tsp-suggested-actions > .tsp-secondary {
+  flex: 1;
+  min-height: 40px;
+  padding: 7px 10px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.tsp-suggested-basis {
+  padding: 11px 14px 13px;
+  border-top: 1px solid #eef1f3;
+  background: #f8f9fa;
+}
+.tsp-suggested-basis summary {
   color: #0645b5;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
 }
-.tsp-suggestion-basis ul {
+.tsp-suggested-basis ul {
   margin: 8px 0 0;
   padding-left: 18px;
-  color: #6b747d;
+  color: #59616a;
   font-size: 13px;
+}
+@keyframes tsp-suggested-open {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
 }
 .tsp-journey [data-tour='readiness-question'] {
   background: white;
@@ -742,7 +858,11 @@ p.tsp-passport {
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  .tsp-passport-dot.is-busy {
+  .tsp-passport-dot.is-busy,
+  .tsp-suggested-panel {
     animation: none;
+  }
+  .tsp-suggested-chevron {
+    transition: none;
   }
 }

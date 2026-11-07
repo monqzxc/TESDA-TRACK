@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { renderApp } from '../../test/app.tsx'
-import { serveFinderApi, serveFinderCatalog } from '../../test/finder.ts'
+import { cookery, serveFinderApi, serveFinderCatalog, suggestedWelding } from '../../test/finder.ts'
 import { server } from '../../test/server.ts'
 import { useFinderStore } from '../finder/store.ts'
 import { suggestionProfile, hasSuggestionSignal } from './suggestions.ts'
@@ -14,6 +14,12 @@ beforeEach(() => {
 })
 
 const WITH_SKILLS = '/tsp/webview?skills=welding,metal%20fabrication&experience_years=2&region=VII'
+
+const suggestedCookery = {
+  qualification: { code: cookery.code, name: cookery.name, sector: cookery.sector },
+  score: 60,
+  reason: 'From your TSP profile: cooking',
+}
 
 describe('suggestionProfile', () => {
   it('carries the TSP hints without the goal the learner is typing', () => {
@@ -94,8 +100,11 @@ describe('Suggested for you', () => {
     const { router } = renderApp(WITH_SKILLS)
 
     expect(await screen.findByRole('heading', { name: 'Suggested for you' })).toBeInTheDocument()
-    expect(await screen.findByText('Shielded Metal Arc Welding (SMAW) NC II')).toBeInTheDocument()
-    expect(screen.getByText('From your TSP profile: welding')).toBeInTheDocument()
+    await user.click(await screen.findByRole('button', { name: 'Suggested for you' }))
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'Shielded Metal Arc Welding (SMAW) NC II' }),
+    ).toBeVisible()
+    expect(screen.getByText('From your TSP profile: welding')).toBeVisible()
 
     const request = api.requests.find((r) => r.path === '/api/v1/analysis/suggestions')
     expect(request?.body).toMatchObject({
@@ -112,13 +121,71 @@ describe('Suggested for you', () => {
     })
   })
 
+  it('folds the suggestions into one row above the goal box until the learner opens them', async () => {
+    serveFinderCatalog()
+    serveFinderApi()
+    const user = userEvent.setup()
+    renderApp(WITH_SKILLS)
+
+    const toggle = await screen.findByRole('button', { name: 'Suggested for you' })
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    // The row says what's behind it, and is read with the button.
+    expect(toggle).toHaveAccessibleDescription('1 qualification based on your TSP profile')
+    expect(screen.queryByRole('button', { name: 'See my pathway' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Find centers' })).not.toBeInTheDocument()
+    // The goal box follows the row, ready to type in.
+    const goal = screen.getByRole('textbox', { name: 'Career goal' })
+    expect(goal).toBeVisible()
+    expect(toggle.compareDocumentPosition(goal) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+
+    await user.click(toggle)
+    expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    expect(screen.getByRole('button', { name: 'See my pathway' })).toBeEnabled()
+    expect(screen.getByRole('link', { name: 'Find centers' })).toHaveAttribute(
+      'href',
+      expect.stringContaining('/tsp/webview/training'),
+    )
+
+    await user.click(toggle)
+    expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    expect(screen.queryByRole('button', { name: 'See my pathway' })).not.toBeInTheDocument()
+  })
+
+  it('counts the suggestions behind the row', async () => {
+    serveFinderCatalog()
+    serveFinderApi({ suggestions: [suggestedWelding, suggestedCookery] })
+    renderApp(WITH_SKILLS)
+
+    expect(
+      await screen.findByText('2 qualifications based on your TSP profile'),
+    ).toBeInTheDocument()
+  })
+
+  it('stays open for the rest of the visit once the learner opens it', async () => {
+    serveFinderCatalog()
+    serveFinderApi()
+    const user = userEvent.setup()
+    const first = renderApp(WITH_SKILLS)
+    await user.click(await screen.findByRole('button', { name: 'Suggested for you' }))
+    first.unmount()
+
+    // Back from a center list, say: the same tab finds the suggestions as the learner left them.
+    renderApp(WITH_SKILLS)
+    expect(await screen.findByRole('button', { name: 'Suggested for you' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    )
+    expect(screen.getByRole('button', { name: 'See my pathway' })).toBeVisible()
+  })
+
   it('shows why the suggestions were made', async () => {
     serveFinderCatalog()
     serveFinderApi()
     const user = userEvent.setup()
     renderApp(WITH_SKILLS)
 
-    await user.click(await screen.findByText('Why these'))
+    await user.click(await screen.findByRole('button', { name: 'Suggested for you' }))
+    await user.click(screen.getByText('Why these'))
     expect(
       await screen.findByText('Skills on your TSP profile: welding, metal fabrication'),
     ).toBeInTheDocument()

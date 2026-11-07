@@ -1957,7 +1957,9 @@ export const en = {
   // (features/tsp/TspSuggestions.tsx). Nothing here is a match for a goal: the learner hasn't given one yet.
   tspSuggestions: {
     heading: 'Suggested for you',
-    lead: 'From the skills on your TSP profile. Tap one, or type your own goal below.',
+    // The folded section's one line: how many suggestions are behind it.
+    count: (n: number) =>
+      `${figure(n)} ${n === 1 ? 'qualification' : 'qualifications'} based on your TSP profile`,
     loading: 'Looking at your TSP profile…',
     failed: "We couldn't load suggestions. You can still type your goal below.",
     retry: 'Try again',
