@@ -43,6 +43,11 @@ skills on their Skill Passport once TSP has signed them in. It calls `POST /api/
 profile in the request body; like the rest of `/analysis`, the profile is neither stored nor logged, and no name or
 learner reference is ever sent.
 
+The suggestions sit folded into one row above the goal box, "Suggested for you" with how many there are, so the goal
+box stays on the first screen of a phone. Tapping the row opens them as a short list, each with **See my pathway**
+and **Find centers**. They stay open for the rest of the visit once opened (the tab's session storage keeps only
+that), so a learner coming back from a center list finds them as they left them.
+
 A suggestion is not a match: the learner has given no goal, so nothing is phrased as if they had. Reasons read
 "From your TSP profile: …" rather than matching's "Matched your words: …", and the response's `basis` lists what
 the suggestions were worked out from, shown behind **Why these**. Tapping **See my pathway** puts the
