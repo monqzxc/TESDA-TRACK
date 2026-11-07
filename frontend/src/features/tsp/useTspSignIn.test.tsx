@@ -337,7 +337,7 @@ describe('signing in from TSP’s WebView', () => {
     await waitFor(() => expect(types()).toContain('tsp.tracker.signed_in'))
     deliver({ type: 'tsp.tracker.logout' })
     await waitFor(() => expect(screen.queryByText('Ana Santos')).not.toBeInTheDocument())
-    expect(await screen.findByRole('textbox', { name: 'Career goal' })).toHaveValue('')
+    expect(await screen.findByRole('textbox', { name: 'Your career interests or skills' })).toHaveValue('')
   })
 
   it('logout ends the session and returns to /tsp/webview', async () => {
@@ -378,7 +378,7 @@ describe('signing in from TSP’s WebView', () => {
     expect(screen.getByText('Welding, Metal cutting')).toBeVisible()
     expect(screen.getByText('SMAW NC I')).toBeVisible()
 
-    await user.type(screen.getByRole('textbox', { name: 'Career goal' }), 'I want to be a welder.')
+    await user.type(screen.getByRole('textbox', { name: 'Your career interests or skills' }), 'I want to be a welder.')
     await user.click(screen.getByRole('button', { name: 'Find my match' }))
     // The passport's skills are sent, not written into the form.
     expect(screen.getByRole('textbox', { name: /Existing skills/ })).toHaveValue('')

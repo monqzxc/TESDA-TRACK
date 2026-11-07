@@ -43,7 +43,7 @@ describe('TSP WebView', () => {
     ).toBeInTheDocument()
     expect(screen.getByText('Ana Santos')).toBeInTheDocument()
     expect(screen.getByText('Learner reference: TSP-42')).toBeInTheDocument()
-    expect(screen.getByRole('textbox', { name: 'Career goal' })).toHaveValue(
+    expect(screen.getByRole('textbox', { name: 'Your career interests or skills' })).toHaveValue(
       'I want to be a welder.',
     )
     await waitFor(() => expect(router.state.location.search).toBe(''))
@@ -53,7 +53,7 @@ describe('TSP WebView', () => {
     await waitFor(() => expect(router.state.location.pathname).toBe('/tsp/webview/qualifications'))
     await user.click(await screen.findByRole('link', { name: 'Find my path' }))
     await waitFor(() => expect(router.state.location.pathname).toBe('/tsp/webview'))
-    expect(screen.getByRole('textbox', { name: 'Career goal' })).toHaveValue(
+    expect(screen.getByRole('textbox', { name: 'Your career interests or skills' })).toHaveValue(
       'I want to be a welder.',
     )
     await user.click(screen.getByRole('button', { name: 'Find my match' }))
@@ -77,6 +77,7 @@ describe('TSP WebView', () => {
     )
     expect(api.requests.find((request) => request.path === '/api/v1/analysis/goal')?.body).toEqual({
       query: 'I want to be a welder.',
+      interpret_input: true,
     })
     expect(JSON.stringify(api.requests)).not.toContain('TSP-42')
     expect(JSON.stringify(api.requests)).not.toContain('Ana Santos')

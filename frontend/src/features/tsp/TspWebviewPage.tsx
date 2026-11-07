@@ -67,6 +67,7 @@ export default function TspWebviewPage() {
           },
           passport.data,
         ),
+        mode,
         sessionId: null,
         sessionOwner: null,
       })
