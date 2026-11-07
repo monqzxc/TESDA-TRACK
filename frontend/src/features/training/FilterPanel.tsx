@@ -30,7 +30,6 @@ import {
   type RadiusKm,
   type TrainingFilters,
 } from './address.ts'
-import { KIND_DOTS } from './CenterDetail.tsx'
 import { QualificationPicker } from './QualificationPicker.tsx'
 import { useTrainingFilters, useTrainingStore } from './state.ts'
 import type { CenterResults } from './useCenters.ts'
@@ -45,15 +44,26 @@ const ring =
   'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus'
 
 /**
- * Center types as a segmented control: a grey track, the chosen ones white with their label in ink. Each keeps its
- * map pin's colour as a dot, so the choice reads against the map.
+ * Center types as toggle cards, so they read as choices rather than a legend: each has a tick box in its map pin's
+ * colour (an outline when off, filled and ticked when on), and a chosen card takes that colour's border and tint.
  */
 const kindClass = cx(
-  'inline-flex min-h-10 flex-[1_1_0] cursor-pointer items-center justify-center gap-2 rounded-10 border border-transparent px-2 text-14 font-medium whitespace-nowrap text-muted',
-  'data-hovered:text-navy data-selected:border-border data-selected:bg-surface data-selected:font-semibold data-selected:text-navy',
+  'group inline-flex min-h-11 flex-[1_1_auto] cursor-pointer items-center gap-2 rounded-12 border-2 border-border bg-surface py-1.5 pr-3 pl-2.5 text-left text-14 leading-[1.25] font-semibold text-navy',
+  'shadow-[0_1px_2px_rgb(16_24_40/0.06)] transition-[background,border-color,transform] duration-150 ease-[ease]',
+  'data-hovered:border-hover-border data-hovered:bg-panel data-pressed:scale-[0.98]',
   ring,
-  'data-focus-visible:relative data-focus-visible:z-1',
 )!
+
+const KIND_CARDS: Record<CenterKind, { card: string; box: string }> = {
+  training: {
+    card: 'data-selected:border-[#175cd3] data-selected:bg-[#175cd3]/8 data-selected:data-hovered:bg-[#175cd3]/14',
+    box: 'border-[#175cd3] group-data-selected:bg-[#175cd3]',
+  },
+  assessment: {
+    card: 'data-selected:border-[#0d9488] data-selected:bg-[#0d9488]/8 data-selected:data-hovered:bg-[#0d9488]/14',
+    box: 'border-[#0d9488] group-data-selected:bg-[#0d9488]',
+  },
+}
 
 /** Whether the panel is folded away, kept for this browser. */
 const FOLDED_KEY = 'tesda-track.training-filters'
@@ -156,23 +166,40 @@ export function FilterPanel({ results }: { results: CenterResults }) {
             summary={kinds.length === 1 ? en.training.kinds[kinds[0]] : en.training.bothKinds}
             open
           >
+            <p className={help}>{copy.typeHelp}</p>
             <ToggleButtonGroup
-              className="flex gap-[3px] rounded-12 bg-chip p-[3px]"
+              className="flex flex-wrap gap-2"
               aria-label={copy.type}
               selectionMode="multiple"
+              // One type always stays on: unticking the last would otherwise show every center again.
+              disallowEmptySelection
               selectedKeys={kinds}
               onSelectionChange={(keys: Set<Key>) => {
                 const chosen = KINDS.filter((kind) => keys.has(kind))
-                // Both, or neither, is every center.
+                // Both is every center.
                 set({ kinds: chosen.length === 1 ? chosen : [] })
               }}
             >
               {KINDS.map((kind: CenterKind) => (
-                <ToggleButton key={kind} id={kind} className={kindClass}>
-                  <i
-                    className={cx('size-2 flex-none rounded-full', KIND_DOTS[kind])}
+                <ToggleButton key={kind} id={kind} className={cx(kindClass, KIND_CARDS[kind].card)}>
+                  {/* A tick box in the map pin's colour, filled when the type is shown. */}
+                  <span
+                    className={cx(
+                      'grid size-5 flex-none place-items-center rounded-6 border-2 bg-surface text-white transition-colors duration-150',
+                      KIND_CARDS[kind].box,
+                    )}
                     aria-hidden="true"
-                  />
+                  >
+                    <svg
+                      viewBox="0 0 18 18"
+                      focusable="false"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="invisible size-3.5 fill-none stroke-current stroke-[2.6] group-data-selected:visible"
+                    >
+                      <polyline points="3.5 9.5 7.5 13.5 14.5 5" />
+                    </svg>
+                  </span>
                   {en.training.kinds[kind]}
                 </ToggleButton>
               ))}

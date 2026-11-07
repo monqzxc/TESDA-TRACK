@@ -485,6 +485,8 @@ export const tl: Record<string, string> = {
   Filters: 'Mga filter',
   'Clear all': 'Alisin lahat',
   'Hide filters': 'Itago ang mga filter',
+  'Tap a type to show or hide its centers on the map and list.':
+    'Pindutin ang uri para ipakita o itago ang mga sentro nito sa mapa at listahan.',
   'Show filters': 'Ipakita ang mga filter',
   Type: 'Uri',
   Location: 'Lokasyon',

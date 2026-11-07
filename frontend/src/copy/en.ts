@@ -855,6 +855,7 @@ export const en = {
       hide: 'Hide filters',
       show: 'Show filters',
       type: 'Type',
+      typeHelp: 'Tap a type to show or hide its centers on the map and list.',
       location: 'Location',
       region: 'Region',
       province: 'Province',
