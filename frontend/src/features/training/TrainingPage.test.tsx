@@ -284,7 +284,7 @@ describe('Training & Assessment', () => {
     )
     expect(screen.queryByRole('heading', { name: /^All results/ })).not.toBeInTheDocument()
     expect(screen.queryByRole('heading', { name: 'Cebu Skills Center' })).not.toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Region$/ })).toHaveTextContent('NCR')
+    expect(screen.getByRole('button', { name: /Regions$/ })).toHaveTextContent('NCR')
     expect(new URLSearchParams(router.state.location.search).get('region')).toBe('NCR')
     await user.type(screen.getByRole('searchbox', { name: 'Search centers' }), 'manila')
     await user.type(screen.getByRole('searchbox', { name: 'Search location' }), 'Cebu City')
@@ -295,7 +295,7 @@ describe('Training & Assessment', () => {
     expect(
       await screen.findByRole('heading', { name: 'Manila Welding Institute' }),
     ).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Region$/ })).toHaveTextContent(
+    expect(screen.getByRole('button', { name: /Regions$/ })).toHaveTextContent(
       'National Capital Region',
     )
     expect(screen.getByRole('searchbox', { name: 'Search centers' })).toHaveValue('manila')
@@ -358,9 +358,7 @@ describe('Training & Assessment', () => {
     expect(within(screen.getByTestId('map')).queryByText('Cebu Skills Center')).toBeNull()
     expect(within(screen.getByTestId('map')).queryByText('Mobile Training Unit')).toBeNull()
     expect(screen.getByText('Within 10 km of your location')).toBeVisible()
-    expect(screen.getByRole('button', { name: /Radius near me$/ })).toHaveTextContent(
-      'Within 10 km',
-    )
+    expect(screen.getByRole('button', { name: /Radius$/ })).toHaveTextContent('10 KM')
     // The default isn't written into the address; the location never is.
     expect(router.state.location.search).toBe('')
     // Every list was asked for the learner's area only, a little wider than the page's own radius.
@@ -378,8 +376,8 @@ describe('Training & Assessment', () => {
       ])
     }
 
-    await user.click(screen.getByRole('button', { name: /Radius near me$/ }))
-    await user.click(screen.getByRole('option', { name: 'All distances' }))
+    await user.click(screen.getByRole('button', { name: /Radius$/ }))
+    await user.click(screen.getByRole('option', { name: 'All Distances' }))
 
     expect(await screen.findByRole('heading', { level: 2, name: 'All results (4)' })).toBeVisible()
     expect(within(screen.getByTestId('map')).getAllByRole('listitem')).toHaveLength(4)
@@ -443,7 +441,7 @@ describe('Training & Assessment', () => {
     const user = userEvent.setup()
     const { router } = await openTraining('/training?radius=10')
 
-    expect(screen.getByRole('button', { name: /Radius near me$/ })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /Radius$/ })).toBeDisabled()
     expect(
       screen.getByText('Share your location or search a place to apply the selected radius.'),
     ).toBeVisible()
@@ -453,7 +451,7 @@ describe('Training & Assessment', () => {
     await waitFor(() =>
       expect(screen.getByRole('heading', { level: 2, name: 'All results (1)' })).toBeVisible(),
     )
-    expect(screen.getByRole('button', { name: /Radius near me$/ })).toBeEnabled()
+    expect(screen.getByRole('button', { name: /Radius$/ })).toBeEnabled()
     expect(within(screen.getByTestId('map')).getAllByRole('listitem')).toHaveLength(1)
     expect(within(screen.getByTestId('map')).getByText('Cebu Skills Center')).toBeVisible()
     expect(router.state.location.search).toBe('?radius=10')
@@ -463,7 +461,7 @@ describe('Training & Assessment', () => {
     await waitFor(() =>
       expect(screen.getByRole('heading', { level: 2, name: 'All results (4)' })).toBeVisible(),
     )
-    expect(screen.getByRole('button', { name: /Radius near me$/ })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /Radius$/ })).toBeDisabled()
 
     await user.click(screen.getByRole('button', { name: 'Show all distances' }))
     expect(router.state.location.search).toBe('')
@@ -497,7 +495,7 @@ describe('Training & Assessment', () => {
     const { router } = await openTraining('/training?radius=10&type=assessment')
 
     expect(screen.getByRole('heading', { level: 2, name: 'All results (1)' })).toBeVisible()
-    expect(screen.getByRole('button', { name: /Radius near me$/ })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /Radius$/ })).toBeDisabled()
     await user.click(screen.getByRole('button', { name: 'Show all distances' }))
 
     expect(router.state.location.search).toBe('?type=assessment')
@@ -564,7 +562,7 @@ describe('Training & Assessment', () => {
     expect(await screen.findByText(declined)).toBeInTheDocument()
     expect(screen.getByRole('switch', { name: /Use my location/ })).not.toBeChecked()
     expect(screen.getByRole('heading', { level: 2, name: 'All results (4)' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Radius near me$/ })).toBeDisabled()
+    expect(screen.getByRole('button', { name: /Radius$/ })).toBeDisabled()
   })
 
   it('ranks programs by fit with the finder’s goal, never with the learner’s own location', async () => {

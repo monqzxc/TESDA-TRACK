@@ -284,11 +284,22 @@ export const icons = {
     {
       tag: 'path',
       d: 'm12 3.5 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8L12 3.5Z',
+      filled: true,
     },
   ],
   calendar: [
     { tag: 'rect', x: 4, y: 5.5, width: 16, height: 15, rx: 2 },
     { tag: 'path', d: 'M4 10h16M8.5 3.5v4m7-4v4' },
+    // Its days, as dots.
+    { tag: 'path', d: 'M8.5 13.5h.01M12 13.5h.01M15.5 13.5h.01M8.5 17h.01M12 17h.01' },
+  ],
+  // A filled pin, for the filter panel's province row.
+  pinFilled: [
+    {
+      tag: 'path',
+      d: 'M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11Zm0-8.7a2.3 2.3 0 1 0 0-4.6 2.3 2.3 0 0 0 0 4.6Z',
+      filled: true,
+    },
   ],
 } as const satisfies Record<string, readonly IconShape[]>
 

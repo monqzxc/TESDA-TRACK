@@ -46,16 +46,23 @@ const groupTitle =
   'm-0 flex items-center gap-2.5 font-text text-16 font-bold tracking-normal text-navy'
 
 /**
- * Center types as tick-box buttons, so they read as choices rather than a legend: a chosen one fills blue with its
+ * Center types as tick-box buttons, so they read as choices rather than a legend: a chosen one fills indigo with its
  * box ticked white, the other stays white with an empty box.
  */
 const kindClass = cx(
-  'group inline-flex min-h-12 flex-[1_1_auto] cursor-pointer items-center gap-2.5 rounded-12 border px-3.5 py-2 text-left text-15 leading-[1.25] font-semibold',
+  'group inline-flex min-h-12 flex-none cursor-pointer items-center gap-2.5 rounded-14 border px-4 py-2 text-left text-15 leading-[1.25] font-semibold',
   'shadow-[0_1px_2px_rgb(16_24_40/0.06)] transition-[background,border-color,color,transform] duration-150 ease-[ease] data-pressed:scale-[0.98]',
-  'border-hover-border bg-surface text-navy data-hovered:border-blue data-hovered:bg-soft',
+  'border-border bg-surface text-navy data-hovered:border-blue data-hovered:bg-soft',
   'data-selected:border-fill data-selected:bg-fill data-selected:text-white data-selected:data-hovered:border-fill-hover data-selected:data-hovered:bg-fill-hover',
   ring,
 )!
+
+/**
+ * The panel's own indigo accent, in place of the app's blue: its fills, switches, links and focus borders take it.
+ * Lists that open from it sit outside, so they keep the app's blue.
+ */
+const indigo =
+  '[--color-fill:#4f46e5] [--color-fill-hover:#4338ca] [--color-blue:#4f46e5] dark:[--color-fill:#6366f1] dark:[--color-fill-hover:#4f46e5] dark:[--color-blue:#a5b4fc]'
 
 /** Whether the panel is folded away, kept for this browser. */
 const FOLDED_KEY = 'tesda-track.training-filters'
@@ -82,6 +89,8 @@ export function FilterPanel({ results }: { results: CenterResults }) {
   )
   const headingId = useId()
   const qualificationsId = useId()
+  const locationHelpId = useId()
+  const scholarshipHelpId = useId()
   // The radius in use, or the one chosen and waiting for a place to measure from.
   const radiusKm = results.radiusKm ?? (typeof filters.radius === 'number' ? filters.radius : null)
   const counts = filterCounts(filters, store.useLocation, store.placeText, radiusKm)
@@ -110,14 +119,17 @@ export function FilterPanel({ results }: { results: CenterResults }) {
     <section
       data-tour="training-filters"
       aria-labelledby={headingId}
-      className="flex min-h-0 flex-col rounded-18 border border-border bg-surface px-[1.1rem] shadow-[0_8px_24px_rgb(16_24_40/0.08)]"
+      className={cx(
+        'flex min-h-0 flex-col rounded-[1.5rem] border border-border/70 bg-surface px-5 shadow-[0_12px_32px_rgb(16_24_40/0.12)]',
+        indigo,
+      )}
     >
-      <div className={cx('flex items-center gap-2 py-[0.8rem]', !folded && 'border-b border-rule')}>
+      <div className={cx('flex items-center gap-2 py-4', !folded && 'border-b border-rule')}>
         <h2
           id={headingId}
-          className="m-0 flex flex-1 items-center gap-2.5 font-text text-18 font-bold tracking-normal text-navy"
+          className="m-0 flex flex-1 items-center gap-3 font-text text-[1.35rem] font-bold tracking-normal text-navy"
         >
-          <Icon name="sliders" size="1.35rem" />
+          <Icon name="sliders" size="1.5rem" />
           {copy.heading}
           {total > 0 && (
             <span className={badge}>
@@ -127,14 +139,14 @@ export function FilterPanel({ results }: { results: CenterResults }) {
           )}
         </h2>
         <Button
-          className={button({ variant: 'tertiary', height: 36, text: 14 })}
+          className={button({ variant: 'tertiary', height: 36, medium: true })}
           onPress={clearAll}
         >
           {copy.clear}
         </Button>
         {/* Fold the panel away, or open it again: an icon button with its name for screen readers. */}
         <Button
-          className="grid size-9.5 cursor-pointer place-items-center rounded-10 border border-border bg-surface text-navy data-hovered:bg-panel"
+          className="grid size-10 cursor-pointer place-items-center rounded-12 border border-border bg-surface text-navy data-hovered:bg-panel"
           aria-label={folded ? copy.show : copy.hide}
           aria-expanded={!folded}
           onPress={() => fold(!folded)}
@@ -173,11 +185,18 @@ export function FilterPanel({ results }: { results: CenterResults }) {
             <div className={group}>
               <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
                 <GroupTitle icon="pin">{copy.location}</GroupTitle>
-                <Toggle isSelected={store.useLocation} onChange={store.setUseLocation}>
+                <Toggle
+                  isSelected={store.useLocation}
+                  onChange={store.setUseLocation}
+                  describedBy={locationHelpId}
+                >
                   {copy.useCurrent}
                 </Toggle>
               </div>
-              <p className="m-0 text-12 leading-[1.5] text-muted">{copy.locationHelp}</p>
+              {/* What sharing a location means, read with the switch. */}
+              <p id={locationHelpId} className="sr-only">
+                {copy.locationHelp}
+              </p>
               <LocationStatus />
               <TextField
                 className="flex flex-col gap-[0.35rem]"
@@ -197,8 +216,6 @@ export function FilterPanel({ results }: { results: CenterResults }) {
                     placeholder={copy.placePlaceholder}
                   />
                 </div>
-                {/* Only matters while the learner's own location is on too. */}
-                {store.useLocation && placeText && <p className={help}>{copy.placeHelp}</p>}
               </TextField>
               {placeText && !results.place && !results.loading && (
                 <p className={notice} role="status">
@@ -210,7 +227,7 @@ export function FilterPanel({ results }: { results: CenterResults }) {
                 label={copy.radius}
                 options={[
                   { id: ALL, label: copy.allDistances },
-                  ...RADIUS_KM.map((km) => ({ id: String(km), label: copy.withinRadius(km) })),
+                  ...RADIUS_KM.map((km) => ({ id: String(km), label: copy.radiusOption(km) })),
                 ]}
                 value={radiusKm ? String(radiusKm) : ALL}
                 active={radiusKm !== null}
@@ -226,13 +243,7 @@ export function FilterPanel({ results }: { results: CenterResults }) {
                   })
                 }
                 isDisabled={!results.reference}
-                description={
-                  !results.reference
-                    ? copy.radiusNeedsLocation
-                    : radiusKm
-                      ? copy.radiusHelp
-                      : undefined
-                }
+                description={results.reference ? undefined : copy.radiusNeedsLocation}
               />
             </div>
 
@@ -253,7 +264,7 @@ export function FilterPanel({ results }: { results: CenterResults }) {
                 onChange={(code) => set({ region: code === ALL ? null : code, province: null })}
               />
               <SelectField
-                icon="pin"
+                icon="pinFilled"
                 label={copy.province}
                 options={[
                   { id: ALL, label: copy.allProvinces },
@@ -287,13 +298,11 @@ export function FilterPanel({ results }: { results: CenterResults }) {
                   onPress={() => setQualificationsOpen(!qualificationsOpen)}
                 >
                   <Icon name="star" size="1.25rem" className="flex-none" />
-                  <span className="mr-auto min-w-0 leading-tight font-medium">
-                    {copy.qualification}
-                  </span>
+                  <span className="mr-auto min-w-0 leading-tight">{copy.qualification}</span>
                   <span
                     className={cx(
                       'max-w-[45%] min-w-0 truncate text-right',
-                      qualificationNames ? 'font-semibold text-blue' : 'text-muted',
+                      qualificationNames ? 'font-medium text-navy' : 'text-muted',
                     )}
                   >
                     {qualificationNames || copy.anyQualification}
@@ -331,7 +340,6 @@ export function FilterPanel({ results }: { results: CenterResults }) {
                 value={filters.mode ?? ALL}
                 active={Boolean(filters.mode)}
                 onChange={(mode) => set({ mode: mode === ALL ? null : mode })}
-                description={filters.mode ? copy.modeHelp : undefined}
               />
               <SelectField
                 icon="calendar"
@@ -348,7 +356,6 @@ export function FilterPanel({ results }: { results: CenterResults }) {
                 onChange={(days) =>
                   set({ within: days === ALL ? null : (Number(days) as (typeof WINDOWS)[number]) })
                 }
-                description={filters.within ? copy.availabilityHelp : undefined}
               />
             </div>
 
@@ -357,27 +364,29 @@ export function FilterPanel({ results }: { results: CenterResults }) {
                 className="w-full flex-row-reverse justify-between"
                 isSelected={filters.scholarship}
                 onChange={(scholarship) => set({ scholarship })}
+                describedBy={scholarshipHelpId}
               >
-                <span className="flex min-w-0 items-start gap-2.5">
-                  <Icon name="learn" size="1.35rem" className="mt-px flex-none" />
-                  <span className="flex min-w-0 flex-col gap-[0.15rem]">
-                    <span className="text-16 font-bold">{copy.scholarship}</span>
-                    <span className="text-12 leading-[1.45] font-normal text-muted">
-                      {copy.scholarshipHelp}
-                    </span>
-                  </span>
+                <span className="flex min-w-0 items-center gap-3 text-16 font-bold">
+                  <Icon name="learn" size="1.5rem" className="flex-none" />
+                  {copy.scholarship}
                 </span>
               </Toggle>
+              <p id={scholarshipHelpId} className="sr-only">
+                {copy.scholarshipHelp}
+              </p>
             </div>
           </div>
 
           {/* The filters are already applied: this folds the panel to show what they found. */}
-          <div className="border-t border-rule py-[0.85rem]">
+          <div className="pt-2 pb-5">
             <Button
-              className={button({ variant: 'primary', height: 48, wide: true })}
+              className={cx(
+                button({ variant: 'primary', height: 48, wide: true }),
+                'min-h-14 rounded-14 text-16 shadow-[0_6px_16px_rgb(79_70_229/0.3)]',
+              )}
               onPress={() => fold(true)}
             >
-              {copy.showResults}
+              {copy.apply}
             </Button>
           </div>
         </>
@@ -424,27 +433,28 @@ function Toggle({
   isSelected,
   onChange,
   className,
+  describedBy,
   children,
 }: {
   isSelected: boolean
   onChange: (selected: boolean) => void
   className?: string
+  /** The id of a note read after the switch's label. */
+  describedBy?: string
   children: ReactNode
 }) {
   return (
     <Switch
-      className={cx(
-        'group flex cursor-pointer items-center gap-2.5 text-14 font-medium text-navy',
-        className,
-      )}
+      className={cx('group flex cursor-pointer items-center gap-2.5 text-14 text-navy', className)}
       isSelected={isSelected}
       onChange={onChange}
+      aria-describedby={describedBy}
     >
       <span
-        className="relative h-6 w-[42px] flex-none rounded-full bg-dash transition-[background] duration-200 ease-[ease] group-data-focus-visible:outline-3 group-data-focus-visible:outline-offset-2 group-data-focus-visible:outline-focus group-data-selected:bg-fill"
+        className="relative h-7 w-12 flex-none rounded-full border border-hover-border bg-chip transition-[background,border-color] duration-200 ease-[ease] group-data-focus-visible:outline-3 group-data-focus-visible:outline-offset-2 group-data-focus-visible:outline-focus group-data-selected:border-fill group-data-selected:bg-fill"
         aria-hidden="true"
       >
-        <span className="absolute top-[3px] left-[3px] size-4.5 rounded-full bg-white shadow-[0_1px_3px_rgb(0_0_0/0.25)] transition-transform duration-200 ease-[ease] group-data-selected:translate-x-[18px]" />
+        <span className="absolute top-[2px] left-[2px] size-[1.375rem] rounded-full bg-white shadow-[0_1px_3px_rgb(0_0_0/0.25)] transition-transform duration-200 ease-[ease] group-data-selected:translate-x-5" />
       </span>
       {children}
     </Switch>

@@ -31,7 +31,7 @@ interface SelectFieldProps<K extends string> {
   labelHidden?: boolean
   /** Drawn as one row instead: this icon and the label on the left, the choice on the right (the training filters). */
   icon?: IconName
-  /** In a row, the choice shows in blue: it narrows something, rather than being the default. */
+  /** In a row, the choice shows in ink rather than grey: it narrows something, rather than being the default. */
   active?: boolean
 }
 
@@ -82,7 +82,7 @@ export function SelectField<K extends string>({
           <>
             <Icon name={icon} size="1.25rem" className="flex-none" />
             {/* The label drawn in the row; screen readers have it from the Label. */}
-            <span className="mr-auto min-w-0 leading-tight font-medium" aria-hidden="true">
+            <span className="mr-auto min-w-0 leading-tight" aria-hidden="true">
               {label}
             </span>
           </>
@@ -91,7 +91,7 @@ export function SelectField<K extends string>({
           className={cx(
             'min-w-0 truncate data-placeholder:text-muted',
             icon && 'max-w-[55%] text-right',
-            icon && (active ? 'font-semibold text-blue' : 'text-muted'),
+            icon && (active ? 'font-medium text-navy' : 'text-muted'),
           )}
         />
         <Icon name="chevron" size="1.1rem" className="flex-none text-muted" />

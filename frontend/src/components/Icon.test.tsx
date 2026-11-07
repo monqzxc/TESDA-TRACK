@@ -24,7 +24,7 @@ describe('Icon', () => {
   })
 
   it('draws every icon in currentColor', () => {
-    expect(iconNames).toHaveLength(68)
+    expect(iconNames).toHaveLength(69)
     for (const name of iconNames) {
       const { container, unmount } = render(<Icon name={name} />)
       const svg = container.querySelector('svg')!
