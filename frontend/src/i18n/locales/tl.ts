@@ -1513,4 +1513,40 @@ export const tl: Record<string, string> = {
   '{0} self-reported strengths · {1} skills remaining in this preview':
     '{0} kalakasan ayon sa sariling ulat · {1} kakayahan ang natitira sa paunang tinging ito',
   'Sample linked skills: {0}': 'Mga halimbawa ng kaugnay na kakayahan: {0}',
+  // Find my pathway: search by skills or jobs.
+  'How would you like to search?': 'Paano mo gustong maghanap?',
+  'My goal': 'Ang aking layunin',
+  'A skill or job': 'Isang kasanayan o trabaho',
+  'List the skills you have or the jobs you want. We match each one to TESDA qualifications.':
+    'Ilista ang mga kasanayan mo o ang mga trabahong gusto mo. Itutugma namin ang bawat isa sa mga kwalipikasyon ng TESDA.',
+  'Your skills or the jobs you want': 'Ang iyong mga kasanayan o ang mga trabahong gusto mo',
+  'Separate them with commas, for example: welding, blueprint reading.':
+    'Paghiwalayin ang mga ito gamit ang kuwit, halimbawa: welding, blueprint reading.',
+  'Example: welding, electrician, customer service':
+    'Halimbawa: welding, electrician, customer service',
+  'Try one:': 'Subukan ang isa:',
+  'Type at least one skill or job to get started.':
+    'Mag-type ng kahit isang kasanayan o trabaho para magsimula.',
+  'Your last skills search': 'Ang huli mong paghahanap ng kasanayan',
+  'Your skills or jobs': 'Ang iyong mga kasanayan o trabaho',
+  'These match the skills and jobs you listed. Find training centers, or check your readiness.':
+    'Tugma ang mga ito sa mga kasanayan at trabahong inilista mo. Maghanap ng training center, o suriin ang iyong kahandaan.',
+  'We couldn’t match these skills or jobs. Try a job title such as “electrician”, or describe your goal instead.':
+    'Hindi namin naitugma ang mga kasanayan o trabahong ito. Subukan ang pangalan ng trabaho gaya ng “electrician”, o ilarawan na lang ang iyong layunin.',
+  'Matched with: {0}': 'Itinugma gamit ang: {0}',
+  'Not used: {0}. These don’t name a skill or job TESDA trains for.':
+    'Hindi nagamit: {0}. Hindi ito kasanayan o trabahong may pagsasanay sa TESDA.',
+  'Skill match': 'Pagkakatugma sa kasanayan',
+  'Skill match: {0}%': 'Pagkakatugma sa kasanayan: {0}%',
+  'Find training centers': 'Maghanap ng training center',
+  'Change skill or job': 'Palitan ang kasanayan o trabaho',
+  'Related occupations': 'Mga kaugnay na trabaho',
+  'Jobs these qualifications lead to, from TESDA’s Training Regulations. Choose one to see its skills and qualifications.':
+    'Mga trabahong maaaring pasukin gamit ang mga kwalipikasyong ito, mula sa Training Regulations ng TESDA. Pumili ng isa para makita ang mga kasanayan at kwalipikasyon nito.',
+  'One TESDA qualification leads to this job.':
+    'Isang kwalipikasyon ng TESDA ang patungo sa trabahong ito.',
+  '{0} TESDA qualifications lead to this job.':
+    '{0} kwalipikasyon ng TESDA ang patungo sa trabahong ito.',
+  'No core skills are listed for this qualification yet.':
+    'Wala pang nakalistang pangunahing kasanayan para sa kwalipikasyong ito.',
 }

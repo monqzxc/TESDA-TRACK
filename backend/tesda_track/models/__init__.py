@@ -17,6 +17,8 @@ from tesda_track.rbac import ROLES
 from tesda_track.models.pathways import (ENROLLMENT_STATUSES, ROUTES, STEP_KINDS, STEP_STATUSES, Pathway,
                                          PathwayEnrollment, PathwayStep, StepProgress)
 from tesda_track.models.stats import MatchDailyStat
+from tesda_track.models.labor_market import (CareerGoalSelection, LaborMarketDataset, LaborMarketEvidence,
+                                            LaborMarketMapping, LaborMarketReview)
 from tesda_track.models.write_receipt import WriteReceipt
 from tesda_track.models.partners import NO_CLIENT, OUTCOMES, ApiClient, McpCallDaily, McpCallLog, McpDemandSnapshot
 from tesda_track.models.registry import RegistryBatch, RegistryLink, RegistryRecord
@@ -27,6 +29,7 @@ __all__ = [
     "OfficialQualificationCode", "RELATIONS",
     "ApiClient", "McpCallDaily", "McpCallLog", "McpDemandSnapshot", "NO_CLIENT", "OUTCOMES",
     "WriteReceipt",
+    "LaborMarketDataset", "LaborMarketEvidence", "LaborMarketMapping", "LaborMarketReview", "CareerGoalSelection",
     "AUDIT_EVENTS", "TSP_PROVIDER", "LearnerIdentity", "TspPendingSignIn", "TspSignInAudit",
     "RegistryBatch", "RegistryLink", "RegistryRecord",
     "LearnerAssessment",

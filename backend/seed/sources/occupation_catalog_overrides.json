@@ -1,0 +1,15 @@
+{
+  "source": {
+    "title": "TESDA Skills Map with Training Regulations (2020)",
+    "url": "https://www.tesda.gov.ph/Uploads/File/LMIR%202020/20.08.16_Updated-Skills-Map.pdf",
+    "reference": "Printed page 7; PDF page 11, ICT: Web Developer and Programmer rows",
+    "year": 2020,
+    "purpose": "Occupation-to-qualification identity only; not current labor demand evidence"
+  },
+  "qualifications": {
+    "PROGRAMMING-NC-III": {"replace_jobs": ["Programmer"]},
+    "JAVA-NC-III": {"replace_jobs": ["Programmer"]},
+    "PROGRAMMING-NC-III-2": {"replace_jobs": ["Programmer"]},
+    "WEB-DEVELOPMENT-NC-III": {"prepend_jobs": ["Web Developer"]}
+  }
+}

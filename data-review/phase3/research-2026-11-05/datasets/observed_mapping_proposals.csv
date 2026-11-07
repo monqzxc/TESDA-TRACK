@@ -1,0 +1,5 @@
+﻿record_id,occupation_title_as_printed,qualification_code,qualification_name,method,reason,source_url,mapping_status,approved_for_integration
+PASAY-2026-004,Field Customer Expert,CUSTOMER-SERVICES-NC-II,Customer Services NC II,manual_candidate,Retail customer role; title alone insufficient,https://pasay.gov.ph/peso-jobs/field-customer-expert/,pending_review,false
+PASAY-2026-005,Counter Bagger,CUSTOMER-SERVICES-NC-II,Customer Services NC II,manual_candidate,Counter-checker/bagger relation; title and duties require review,https://pasay.gov.ph/peso-jobs/counter-bagger/,pending_review,false
+PASAY-2026-014,Administrative Aide III (Driver I),DRIVING-NC-II,Driving NC II,manual_candidate,Light-vehicle duties must be confirmed; professional license is separate,https://pasay.gov.ph/peso-jobs/administrative-aide-iii-driver-i/,pending_review,false
+PASAY-2026-020,Administrative Aide V (Photographer I),PHOTOGRAPHY-NC-II,Photography NC II,manual_candidate,Photographer specialization; civil-service requirements remain separate,https://pasay.gov.ph/peso-jobs/administrative-aide-v-photographer-i/,pending_review,false

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
 import { Button } from 'react-aria-components'
-import { Link, useSearchParams } from 'react-router'
+import { Link, Navigate, useSearchParams } from 'react-router'
 import { useAuth } from '../../auth/useAuth.ts'
 import { Icon, type IconName } from '../../components/Icon.tsx'
 import { PageHeading } from '../../components/PageHeading.tsx'
@@ -66,7 +66,9 @@ export default function ProfilePage() {
     setVisited((current) => (current.has(next) ? current : new Set([...current, next])))
     selectSection(next)
   }
-  const { learner } = useAuth()
+  const { learner, isChecking, offersAccounts } = useAuth()
+  // Guest-only: there's no profile without an account, which learners can't make, so the page sends them Home.
+  if (!learner && !isChecking && !offersAccounts) return <Navigate to={paths.home} replace />
   if (!learner) {
     return (
       <AccountGate

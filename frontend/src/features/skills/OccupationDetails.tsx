@@ -1,9 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useId, useRef, useState } from 'react'
+import { Button } from 'react-aria-components'
 import type { Qualification } from '../../api/queries.ts'
 import { CheckboxRow } from '../../components/CheckboxRow.tsx'
+import { Icon } from '../../components/Icon.tsx'
 import { useCopy, getCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
+import { button } from '../../styles/buttons.ts'
 import { occupationQuery } from './api.ts'
 import { BridgeQualification } from './BridgeQualification.tsx'
 import { ui } from './styles.ts'
@@ -47,9 +50,17 @@ export function OccupationDetails({
   }
   if (details.isError) {
     return (
-      <p role="alert" className={ui.note}>
-        {details.error.message}
-      </p>
+      <div role="alert" className={cx(ui.note, 'flex flex-col items-start gap-3')}>
+        <p className="m-0">{details.error.message}</p>
+        <Button
+          className={button({ variant: 'secondary' })}
+          isPending={details.isFetching}
+          onPress={() => void details.refetch()}
+        >
+          <Icon name="refresh" />
+          {en.unavailable.retry}
+        </Button>
+      </div>
     )
   }
   const { data } = details.data

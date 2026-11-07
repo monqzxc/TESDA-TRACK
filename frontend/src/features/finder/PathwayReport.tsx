@@ -19,9 +19,15 @@ import {
 } from '../training/address.ts'
 import { friendlyDay, philippineDay } from '../training/centers.ts'
 import { peso } from '../training/format.ts'
-import { reportQuery, type PathwayReport as Report, type ReportRequest } from './api.ts'
+import {
+  modeOf,
+  reportQuery,
+  type Asked,
+  type PathwayReport as Report,
+  type ReportRequest,
+} from './api.ts'
 import { RequestFailed } from './RequestFailed.tsx'
-import { useFinderStore, type Profile, type SubmittedCheck } from './store.ts'
+import { useFinderStore, type SubmittedCheck } from './store.ts'
 import { card, muted, status } from './styles.ts'
 
 type Advice = Report['skills_to_improve'][number]
@@ -48,7 +54,7 @@ const notes = 'm-0 grid gap-1.5 pl-[1.2rem] text-14 leading-[1.55] text-ink'
 export function usePathwayReport(
   qualification: Qualification,
   check: SubmittedCheck,
-  asked: { query: string; profile: Profile },
+  asked: Asked,
 ): ReportResult {
   const place = useFinderStore((state) => state.place)
   const { learner } = useAuth()
@@ -60,6 +66,7 @@ export function usePathwayReport(
     region_code: place.region,
     preferred_delivery_mode: place.mode,
     needs_scholarship: place.scholarship,
+    mode: modeOf(asked.mode),
   }
   // While another place is worked out, the last report stays on screen rather than flashing away.
   return useQuery({

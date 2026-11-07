@@ -137,7 +137,8 @@ interface Requests {
 function serveSkillsBridge({
   exploration = EXPLORATION,
   status = 200,
-}: { exploration?: Exploration; status?: 200 | 503 } = {}) {
+  occupationFailures = 0,
+}: { exploration?: Exploration; status?: 200 | 503; occupationFailures?: number } = {}) {
   const requests: Requests = { explore: [], occupations: [] }
   serveTrainingApi()
   server.use(
@@ -154,6 +155,12 @@ function serveSkillsBridge({
     }),
     http.get('*/api/v1/skills-bridge/occupations/:id', ({ params }) => {
       requests.occupations.push(String(params.id))
+      if (requests.occupations.length <= occupationFailures) {
+        return HttpResponse.json(
+          { detail: 'Skills Bridge is busy right now. Please try again in a minute.' },
+          { status: 503 },
+        )
+      }
       return HttpResponse.json(WELDER)
     }),
   )
@@ -429,7 +436,7 @@ describe('Skills Explorer', () => {
   })
 
   it('keeps the rest of TESDA Track in view when Skills Bridge can’t answer', async () => {
-    serveSkillsBridge({ status: 503 })
+    const requests = serveSkillsBridge({ status: 503 })
     const user = userEvent.setup()
     const { box } = await openExplorer()
 
@@ -446,5 +453,29 @@ describe('Skills Explorer', () => {
     expect(
       screen.getByRole('heading', { level: 2, name: 'Start with what you know' }),
     ).toBeVisible()
+
+    // Try again sends the same words without retyping them (US-20).
+    await user.click(within(alert).getByRole('button', { name: 'Try again' }))
+    await waitFor(() => expect(requests.explore).toEqual([{ text: 'welder' }, { text: 'welder' }]))
+  })
+
+  it('offers to load an occupation again when Skills Bridge can’t answer', async () => {
+    const requests = serveSkillsBridge({ occupationFailures: 1 })
+    const user = userEvent.setup()
+    const { box } = await openExplorer()
+    await search(user, box, 'welder')
+    await screen.findByRole('article', { name: 'Welder' })
+    await user.click(
+      screen.getByRole('button', { name: 'Explore skills & qualifications: Welder' }),
+    )
+
+    const alert = await screen.findByRole('alert')
+    expect(alert).toHaveTextContent(
+      'Skills Bridge is busy right now. Please try again in a minute.',
+    )
+    await user.click(within(alert).getByRole('button', { name: 'Try again' }))
+
+    expect(await screen.findByRole('heading', { level: 2, name: 'Welder' })).toBeVisible()
+    expect(requests.occupations).toEqual(['101', '101'])
   })
 })

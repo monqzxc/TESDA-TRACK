@@ -7,6 +7,7 @@ import { useFinderStore, type Journey } from '../finder/store.ts'
 import { useJourney } from '../finder/useJourney.ts'
 import { trainingAddress } from '../training/address.ts'
 import { TspReadiness } from './TspReadiness.tsx'
+import { DemandLocation } from '../finder/DemandLocation.tsx'
 
 /** The matching journey remains in TSP's compact shell. */
 export default function TspJourneyPage() {
@@ -58,6 +59,7 @@ function JourneyContent({ journey, catalog }: { journey: Journey; catalog: Quali
 
       {stage === 'matches' && (
         <>
+          <DemandLocation query={journey.query} />
           <div className="tsp-section-heading">
             <h1>{context.matches.data?.matches.length ?? 0} matches for you</h1>
             <p>Pick one to see centers or check your skills.</p>
@@ -84,7 +86,11 @@ function JourneyContent({ journey, catalog }: { journey: Journey; catalog: Quali
                 >
                   <div className="tsp-match-meta">
                     <span>{qualification.sector}</span>
-                    {index === 0 && <strong>Best match</strong>}
+                    {match.basis === 'demand_evidence' ? (
+                      <strong>Demand-linked pathway</strong>
+                    ) : (
+                      index === 0 && <strong>Best match</strong>
+                    )}
                   </div>
                   <h2>{qualification.name}</h2>
                   <p className="tsp-match-reason">✓ {match.reason}</p>
@@ -149,8 +155,10 @@ function JourneyContent({ journey, catalog }: { journey: Journey; catalog: Quali
             <h1 className="sr-only">Your recommendation</h1>
             <PathwayStep
               qualification={chosen}
+              catalog={catalog}
+              matches={context.matches.data?.matches ?? []}
               profile={context.matchedProfile ?? context.profile}
-              asked={{ query: journey.query, profile: context.profile }}
+              asked={{ query: journey.query, profile: context.profile, mode: journey.mode }}
             />
           </>
         ) : (

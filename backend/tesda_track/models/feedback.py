@@ -25,6 +25,7 @@ class RecommendationFeedback(SQLModel, table=True):
         CheckConstraint("reason IS NULL OR NOT satisfied", name="reason_only_when_unsatisfied"),
         CheckConstraint("wanted_qualification_id IS NULL OR reason = 'wrong_qualification'",
                         name="wanted_only_when_wrong"),
+        CheckConstraint("search_mode IS NULL OR search_mode IN ('goal', 'skills')", name="search_mode_valid"),
     )
 
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
@@ -53,6 +54,8 @@ class RecommendationFeedback(SQLModel, table=True):
     z_score: float | None = None
     model: str | None = Field(default=None, sa_type=String(100))
     params: dict | None = Field(default=None, sa_type=JSONB)
+    # How the learner searched: "goal" (a sentence) or "skills" (a list of skills or job titles). None before 0023.
+    search_mode: str | None = Field(default=None, sa_type=String(10))
     readiness_score: float
     readiness_level: str = Field(sa_type=String(30))
     created_at: datetime = timestamp_field()

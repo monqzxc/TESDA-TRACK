@@ -30,6 +30,11 @@ export interface Auth {
   /** The signed-in learner, or null. Their name and email are learner text: render them as text. */
   learner: Learner | null
   isSignedIn: boolean
+  /**
+   * Whether to offer what needs an account: Sign in, saving, following a pathway, applying, My progress. Learners
+   * can't make accounts (see learnerAccounts), so only someone already signed in (staff) is offered them.
+   */
+  offersAccounts: boolean
   /** Administrator identity; authorization is enforced by the API. */
   isAdmin: boolean
   /**

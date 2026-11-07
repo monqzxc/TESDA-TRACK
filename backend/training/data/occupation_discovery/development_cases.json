@@ -1,0 +1,134 @@
+[
+  {
+    "query": "web developer",
+    "acceptable_qualifications": [
+      "WEB-DEVELOPMENT-NC-III"
+    ],
+    "split": "development",
+    "review_status": "engineering_draft",
+    "note": "Diagnostic regression case; used during development, not a held-out quality claim."
+  },
+  {
+    "query": "I want to become a web developer",
+    "acceptable_qualifications": [
+      "WEB-DEVELOPMENT-NC-III"
+    ],
+    "split": "development",
+    "review_status": "engineering_draft",
+    "note": "Diagnostic regression case; used during development, not a held-out quality claim."
+  },
+  {
+    "query": "web designer",
+    "acceptable_qualifications": [
+      "WEB-DEVELOPMENT-NC-III"
+    ],
+    "split": "development",
+    "review_status": "engineering_draft",
+    "note": "Diagnostic regression case; used during development, not a held-out quality claim."
+  },
+  {
+    "query": "front-end web developer",
+    "acceptable_qualifications": [
+      "WEB-DEVELOPMENT-NC-III"
+    ],
+    "split": "development",
+    "review_status": "engineering_draft",
+    "note": "Diagnostic regression case; used during development, not a held-out quality claim."
+  },
+  {
+    "query": "backend web developer",
+    "acceptable_qualifications": [
+      "WEB-DEVELOPMENT-NC-III"
+    ],
+    "split": "development",
+    "review_status": "engineering_draft",
+    "note": "Diagnostic regression case; used during development, not a held-out quality claim."
+  },
+  {
+    "query": "full-stack web developer",
+    "acceptable_qualifications": [
+      "WEB-DEVELOPMENT-NC-III"
+    ],
+    "split": "development",
+    "review_status": "engineering_draft",
+    "note": "Diagnostic regression case; used during development, not a held-out quality claim."
+  },
+  {
+    "query": "java programmer",
+    "acceptable_qualifications": [
+      "JAVA-NC-III"
+    ],
+    "split": "development",
+    "review_status": "engineering_draft",
+    "note": "Diagnostic regression case; used during development, not a held-out quality claim."
+  },
+  {
+    "query": "programmer",
+    "acceptable_qualifications": [
+      "PROGRAMMING-NC-III",
+      "JAVA-NC-III",
+      "PROGRAMMING-NC-III-2",
+      "GAME-PROGRAMMING-NC-III"
+    ],
+    "split": "development",
+    "review_status": "engineering_draft",
+    "note": "Diagnostic regression case; used during development, not a held-out quality claim."
+  },
+  {
+    "query": "I want to become an electrician",
+    "acceptable_qualifications": [
+      "EIM-NC-II"
+    ],
+    "split": "development",
+    "review_status": "engineering_draft",
+    "note": "Diagnostic regression case; used during development, not a held-out quality claim."
+  },
+  {
+    "query": "Welder",
+    "acceptable_qualifications": [
+      "MMAW-NC-II",
+      "SMAW-NC-II"
+    ],
+    "split": "development",
+    "review_status": "engineering_draft",
+    "note": "Diagnostic regression case; used during development, not a held-out quality claim."
+  },
+  {
+    "query": "Welding, blueprint reading",
+    "acceptable_qualifications": [
+      "MMAW-NC-II",
+      "SMAW-NC-II",
+      "GMAW-NC-II"
+    ],
+    "split": "development",
+    "review_status": "engineering_draft",
+    "note": "Diagnostic regression case; used during development, not a held-out quality claim."
+  },
+  {
+    "query": "Customer service",
+    "acceptable_qualifications": [
+      "CUSTOMER-SERVICES-NC-II",
+      "CONTACT-CENTER-SERVICES-NC-II"
+    ],
+    "split": "development",
+    "review_status": "engineering_draft",
+    "note": "Diagnostic regression case; used during development, not a held-out quality claim."
+  },
+  {
+    "query": "Basketball",
+    "acceptable_qualifications": [],
+    "split": "development",
+    "review_status": "engineering_draft",
+    "note": "Diagnostic regression case; used during development, not a held-out quality claim."
+  },
+  {
+    "query": "I do not want to be an electrician. I want to be a welder.",
+    "acceptable_qualifications": [
+      "MMAW-NC-II",
+      "SMAW-NC-II"
+    ],
+    "split": "development",
+    "review_status": "engineering_draft",
+    "note": "Diagnostic regression case; used during development, not a held-out quality claim."
+  }
+]

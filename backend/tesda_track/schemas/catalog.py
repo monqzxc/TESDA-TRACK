@@ -20,6 +20,16 @@ class QualificationSummary(BaseModel):
     provenance: ProvenancePublic = Field(default_factory=ProvenancePublic)
 
 
+class OccupationSource(BaseModel):
+    title: str
+    url: str
+    reference: str
+    year: int
+    purpose: str
+    occupations: list[str]
+
+
 class QualificationPublic(QualificationSummary):
     possible_jobs: list[str]
     competencies: list[CompetencyPublic]
+    occupation_source: OccupationSource | None = None

@@ -15,6 +15,9 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
+    // The app ships guest-only (src/auth/accounts.ts). The account tests need learner accounts on; guest-only tests
+    // turn them off with vi.stubEnv.
+    env: { VITE_LEARNER_ACCOUNTS: 'on' },
     // Room for a page's code to be transformed the first time a test opens it (see src/test/setup.ts).
     testTimeout: 20_000,
     // Workers share one transform pipeline: on a 12-core machine, 11 workers took 46–50 seconds and 6 took 27–35.

@@ -198,6 +198,8 @@ export function reportFor(body: ReportBody): Report {
 
 interface FinderApiOptions {
   matches?: Match[]
+  /** What a skills search says it read; by default, the list as one term. */
+  search?: { terms: string[]; unmatched: string[] }
   /** Fail the matches request this many times first. */
   failMatches?: number
   /** Fail the feedback answer this many times first. */
@@ -209,6 +211,7 @@ interface FinderApiOptions {
 /** The finder's routes, with every request recorded in `requests` (bodies parsed). */
 export function serveFinderApi({
   matches = [weldingMatch],
+  search,
   failMatches = 0,
   failFeedback = 0,
   failReport = 0,
@@ -280,8 +283,15 @@ export function serveFinderApi({
         state.matchFailures--
         return HttpResponse.error()
       }
-      const { profile } = (await request.json()) as { profile: Profile }
-      return HttpResponse.json({ profile, matches })
+      const body = (await request.json()) as { query: string; profile: Profile; mode?: string }
+      if (body.mode === 'skills') {
+        return HttpResponse.json({
+          profile: body.profile,
+          matches,
+          search: search ?? { terms: [body.query], unmatched: [] },
+        })
+      }
+      return HttpResponse.json({ profile: body.profile, matches })
     }),
     http.post('*/api/v1/analysis/pathway', async ({ request }) => {
       await record(request)

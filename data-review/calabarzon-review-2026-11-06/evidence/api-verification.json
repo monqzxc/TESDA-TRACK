@@ -1,0 +1,14 @@
+{
+  "IV-A": {
+    "status": 200,
+    "reviewed_regional_records": 1
+  },
+  "NCR": {
+    "status": 200,
+    "reviewed_regional_records": 0
+  },
+  "not_selected": {
+    "status": 200,
+    "reviewed_regional_records": 0
+  }
+}

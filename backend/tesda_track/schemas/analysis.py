@@ -12,6 +12,9 @@ Intent = Literal["training_recommendation", "training_and_assessment", "assessme
                  "career_exploration", "unknown"]
 Route = Literal["ADDITIONAL_QUESTIONS", "TRAINING_AND_ASSESSMENT", "ASSESSMENT_READINESS", "SKILL_GAP_CHECK"]
 AnswerCode = Literal["confident", "some_experience", "not_familiar"]
+# goal: one sentence about what the learner wants (the finder's first way in). skills: a list of skills or job
+# titles, each matched on its own (services/skill_search.py). A request without a mode is a goal request.
+SearchMode = Literal["goal", "skills"]
 
 
 class Profile(BaseModel):
@@ -25,16 +28,27 @@ class Profile(BaseModel):
 
 class GoalRequest(BaseModel):
     query: GoalText
+    interpret_input: bool = Field(default=False, description="Resolve a unified input into an existing matching strategy")
 
 
 class GoalAnalysis(BaseModel):
     profile: Profile
     source: Literal["rules", "ai"]
+    matching_mode: SearchMode | None = None
+
+    @model_serializer(mode="wrap")
+    def preserve_legacy_shape(self, handler):
+        result = handler(self)
+        if self.matching_mode is None:
+            result.pop("matching_mode", None)
+        return result
 
 
 class MatchRequest(AssessmentReference):
     query: GoalText
     profile: Profile
+    mode: SearchMode = "goal"
+    region_code: str | None = Field(default=None, max_length=20)
 
 
 class MatchComponents(BaseModel):
@@ -49,18 +63,38 @@ class Match(BaseModel):
     score: int
     reason: str
     components: MatchComponents | None = None
+    basis: Literal['demand_evidence'] | None = None
 
     @model_serializer(mode="wrap")
     def preserve_legacy_shape(self, handler):
         result = handler(self)
         if self.personalization is None:
             result.pop("personalization", None)
+        if self.basis is None:
+            result.pop('basis', None)
         return result
+
+
+class SkillTerms(BaseModel):
+    """How a skills search read the learner's list: the terms it matched with, and those it couldn't use."""
+    terms: list[str]
+    unmatched: list[str] = Field(description="Terms that name no trade or career TESDA trains for")
 
 
 class MatchResult(BaseModel):
     profile: Profile
     matches: list[Match]
+    search: SkillTerms | None = Field(default=None, description="Skills searches only")
+    eligible_qualification_codes: list[str] | None = None
+
+    @model_serializer(mode="wrap")
+    def preserve_goal_shape(self, handler):
+        result = handler(self)
+        if self.search is None:
+            result.pop("search", None)
+        if self.eligible_qualification_codes is None:
+            result.pop('eligible_qualification_codes', None)
+        return result
 
 
 class PathwayRequest(BaseModel):

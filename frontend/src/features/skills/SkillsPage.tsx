@@ -149,6 +149,14 @@ function Explorer({ catalog }: { catalog: Qualification[] }) {
           >
             <p className="m-0 font-[650]">{failureMessage(search.error)}</p>
             <p className="m-0">{copy.search.stillAvailable}</p>
+            {/* Tries the same words again, without retyping them. */}
+            <Button
+              className={cx(button({ variant: 'secondary' }), 'mt-3')}
+              onPress={() => search.mutate(search.variables)}
+            >
+              <Icon name="refresh" />
+              {en.unavailable.retry}
+            </Button>
           </div>
         )}
       </section>

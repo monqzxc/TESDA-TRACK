@@ -2,3 +2,6 @@
 *.sh text eol=lf
 Caddyfile text eol=lf
 Dockerfile text eol=lf
+# Versioned import fingerprints require exact bytes on Windows and Linux.
+backend/seed/sources/labor_market/** -text
+backend/seed/sources/labor_demand/** -text

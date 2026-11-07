@@ -406,6 +406,47 @@ export const en = {
   },
   // Find my pathway (classic/app.py show_finder and its steps).
   finder: {
+    unified: {
+      eyebrow: 'YOUR NEXT CHAPTER',
+      heading: 'Where would you like to go?',
+      lead: 'Start with a career you want, something you can do, or a skill you’d like to learn. We’ll help you find a TESDA pathway.',
+      label: 'Your career interests or skills',
+      placeholder: 'For example: I want to become an electrician, Welding, or Cooking and baking',
+      help: 'Use your own words. Separate multiple skills with commas.',
+      empty: 'Enter a career goal, occupation, or skill to continue.',
+      ideas: 'Try a starting point',
+      examples: [
+        'I want to become an electrician.',
+        'Welder',
+        'Welding, blueprint reading',
+        'I enjoy caring for older people.',
+      ],
+      submit: 'Find my pathways',
+      last: 'Your previous search',
+      summary: 'Your interests and skills',
+      change: 'Edit your input',
+      saved: 'Your goal is saved to your account.',
+      selected: 'Your selected qualification',
+      setCareerGoal: 'Set as My Goal',
+      careerGoalSelected: 'Goal Selected',
+      careerGoalLabel: 'Your career goal',
+      careerGoalHelp:
+        'Saved for this journey in this tab. Selecting a goal keeps your matching and readiness results.',
+      careerGoalEmpty:
+        'Choose an occupation as your career goal. You can change it at any time during this journey.',
+      noCatalogJobs: 'No occupations are listed for this qualification in the catalog yet.',
+      noDemandJobs:
+        'No approved forecast occupation matches this request for this qualification yet.',
+      demandLoading: 'Checking labor-market information…',
+      qualificationLead:
+        'Your readiness result applies to the selected qualification. Explore an alternative to check its own competencies.',
+      selectedBadge: 'Selected qualification',
+      alternativeBadge: 'Recommended alternative',
+      associatedBadge: 'Also associated with this occupation',
+      associatedHelp:
+        'Readiness results apply to the selected qualification. Other catalog associations are additional options, not necessarily scored recommendations.',
+      jobsLead: 'Explore jobs linked to your selected qualification.',
+    },
     banner: {
       eyebrow: 'Your journey, simplified',
       title: 'A little direction.',
@@ -487,11 +528,35 @@ export const en = {
       signInToSave: 'Sign in to save your progress',
       last: 'Your last submitted goal',
       useAgain: 'Use again',
+      // Two ways to search: a goal in a sentence, or a list of skills or jobs (each matched on its own).
+      modes: {
+        label: 'How would you like to search?',
+        goal: 'My goal',
+        skills: 'A skill or job',
+      },
+      skills: {
+        lead: 'List the skills you have or the jobs you want. We match each one to TESDA qualifications.',
+        label: 'Your skills or the jobs you want',
+        help: 'Separate them with commas, for example: welding, blueprint reading.',
+        placeholder: 'Example: welding, electrician, customer service',
+        examplesLabel: 'Try one:',
+        examples: [
+          'Welding',
+          'Electrician',
+          'Cooking, baking',
+          'Customer service',
+          'Computer repair',
+        ],
+        empty: 'Type at least one skill or job to get started.',
+        last: 'Your last skills search',
+      },
     },
     // The submitted goal, above steps 2 to 4.
     summary: {
       label: 'Your goal',
+      skillsLabel: 'Your skills or jobs',
       change: 'Change goal',
+      changeSkills: 'Change skill or job',
       saved: 'Saved to My Progress',
       save: 'Save to profile',
       saving: 'Saving…',
@@ -565,8 +630,30 @@ export const en = {
       relevant: 'Relevant skills',
       develop: 'Skills to develop',
       check: 'Check my readiness',
+      // A skills search: what it matched with, what it couldn't use, and the way to centers for each result.
+      skillsLead:
+        'These match the skills and jobs you listed. Find training centers, or check your readiness.',
+      skillsNone:
+        'We couldn’t match these skills or jobs. Try a job title such as “electrician”, or describe your goal instead.',
+      searched: (terms: readonly string[]) => `Matched with: ${terms.join(', ')}`,
+      unmatched: (terms: readonly string[]) =>
+        `Not used: ${terms.join(', ')}. These don’t name a skill or job TESDA trains for.`,
+      skillMatch: 'Skill match',
+      skillMatchScore: (score: number) => `Skill match: ${score}%`,
+      centers: 'Find training centers',
       other: 'Or choose any qualification to explore',
       careers: (careers: readonly string[]) => `Sample career options: ${careers.join(', ')}`,
+    },
+    // A skills search's related occupations (US-20): the jobs the matches lead to, from the catalog's possible jobs.
+    occupations: {
+      heading: 'Related occupations',
+      lead: 'Jobs these qualifications lead to, from TESDA’s Training Regulations. Choose one to see its skills and qualifications.',
+      leadsTo: (count: number) =>
+        count === 1
+          ? 'One TESDA qualification leads to this job.'
+          : `${figure(count)} TESDA qualifications lead to this job.`,
+      skills: 'Core skills',
+      noSkills: 'No core skills are listed for this qualification yet.',
     },
     // Steps 3 and 4 need a qualification, and a goal with no match has none until the learner picks one.
     choose: {

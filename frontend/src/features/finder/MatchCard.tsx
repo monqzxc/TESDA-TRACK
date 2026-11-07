@@ -1,5 +1,6 @@
 import { useId } from 'react'
 import { Button } from 'react-aria-components'
+import { Link } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { DataProvenance } from '../../components/DataProvenance.tsx'
@@ -11,7 +12,7 @@ import { qualificationBlurb, qualificationTags } from '../../lib/qualifications.
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
 import type { Match } from './api.ts'
-import type { SubmittedCheck } from './store.ts'
+import type { SearchMode, SubmittedCheck } from './store.ts'
 
 interface MatchCardProps {
   qualification: Qualification
@@ -24,6 +25,10 @@ interface MatchCardProps {
   /** Its last readiness check, once the learner has done one. */
   check?: SubmittedCheck
   onCheck: () => void
+  /** How the learner searched: a skills search scores a skill match, not a goal match. */
+  mode?: SearchMode
+  /** Training & Assessment for this qualification, offered beside the readiness check (skills searches). */
+  centersHref?: string
 }
 
 /**
@@ -40,6 +45,8 @@ export function MatchCard({
   chosen,
   check,
   onCheck,
+  mode = 'goal',
+  centersHref,
 }: MatchCardProps) {
   const en = useCopy()
   const copy = en.finder.matches
@@ -76,7 +83,11 @@ export function MatchCard({
                     badge === 'choice' ? 'bg-chip text-ink' : 'bg-good-bg text-good-ink',
                   )}
                 >
-                  {badge === 'top' ? copy.topMatch : copy.yourChoice}
+                  {match?.basis === 'demand_evidence'
+                    ? 'Demand-linked pathway'
+                    : badge === 'top'
+                      ? copy.topMatch
+                      : copy.yourChoice}
                 </span>
               )}
             </div>
@@ -95,14 +106,29 @@ export function MatchCard({
       <div className="min-w-0">
         <div className="flex h-full min-w-0 flex-col gap-3 rounded-12 bg-panel px-5 py-4">
           <p className="m-0 flex items-center gap-[0.35rem] text-14 text-muted">
-            {match ? copy.goalMatch : qualification.name}
-            {match && (
+            {match?.basis === 'demand_evidence'
+              ? 'Demand-linked pathway'
+              : match
+                ? mode === 'skills'
+                  ? copy.skillMatch
+                  : copy.goalMatch
+                : qualification.name}
+            {match && match.basis !== 'demand_evidence' && (
               <span className="inline-grid cursor-help" title={copy.hint}>
                 <Icon name="info" size={15} label={copy.hint} />
               </span>
             )}
           </p>
-          {match && <MatchScore score={match.score} label={copy.goalMatchScore(match.score)} />}
+          {match && match.basis !== 'demand_evidence' && (
+            <MatchScore
+              score={match.score}
+              label={
+                mode === 'skills'
+                  ? copy.skillMatchScore(match.score)
+                  : copy.goalMatchScore(match.score)
+              }
+            />
+          )}
           <div className="flex min-w-0 flex-1 flex-col gap-2">
             {/* Once the learner has rated its skills, the card shows how many they already have. */}
             {check && total ? (
@@ -140,6 +166,12 @@ export function MatchCard({
               {copy.check}
               <Icon name="arrowRight" />
             </Button>
+            {centersHref && (
+              <Link to={centersHref} className={button({ variant: 'tertiary', wide: true })}>
+                <Icon name="pin" />
+                {copy.centers}
+              </Link>
+            )}
           </div>
         </div>
       </div>
