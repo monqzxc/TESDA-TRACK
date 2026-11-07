@@ -2608,6 +2608,37 @@ export interface components {
              * @default false
              */
             tsp_suggestions: boolean;
+            /**
+             * Map Engine
+             * @description The center map's renderer. maplibre draws vector tiles when maptiler_key or map_tiles_url is set and the browser has WebGL 2; leaflet keeps the raster map.
+             * @default maplibre
+             * @enum {string}
+             */
+            map_engine: "maplibre" | "leaflet";
+            /**
+             * Maptiler Key
+             * @description Public MapTiler key for the center map's vector tiles, restricted to the deployment's domains. Empty: no MapTiler.
+             * @default
+             */
+            maptiler_key: string;
+            /**
+             * Map Tiles Url
+             * @description TileJSON address of an OpenMapTiles-schema vector source, used instead of MapTiler. Empty: none.
+             * @default
+             */
+            map_tiles_url: string;
+            /**
+             * Map Glyphs Url
+             * @description Label fonts for map_tiles_url: an address with {fontstack} and {range}. Empty: none.
+             * @default
+             */
+            map_glyphs_url: string;
+            /**
+             * Map 3D
+             * @description Whether the center map offers 3D buildings where the tiles record building heights.
+             * @default true
+             */
+            map_3d: boolean;
         };
         /** ClientUsage */
         ClientUsage: {

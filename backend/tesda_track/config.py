@@ -110,6 +110,18 @@ class Settings(BaseSettings):
     # secret: browsers send it with every tile request, so restrict it to the deployment's domain in CARTO.
     carto_api: str = ""
 
+    # The center map's renderer (docs/center-map.md). MapLibre draws vector tiles, with optional 3D buildings, from
+    # MapTiler (maptiler_key) or from another OpenMapTiles-schema source (map_tiles_url, a TileJSON address, with
+    # map_glyphs_url for its label fonts). Without either, or with map_engine "leaflet", the map stays on Leaflet and
+    # the raster tiles above. Like the CARTO key these reach browsers, which send them with every tile request: use a
+    # public MapTiler key restricted to the deployment's domains, never a private credential.
+    map_engine: Literal["maplibre", "leaflet"] = "maplibre"
+    maptiler_key: str = ""
+    map_tiles_url: str = ""
+    map_glyphs_url: str = ""
+    # 3D buildings, where the tiles record building heights and the device can draw them.
+    map_3d_enabled: bool = True
+
     # Partner MCP server (TESDA Skill Passport, BSRS). public_base_url is the address partners reach this API at
     # (the Caddy domain in production); it is the token issuer and the host the MCP endpoint accepts.
     public_base_url: str = "http://localhost:8000"
@@ -146,6 +158,27 @@ class Settings(BaseSettings):
     @classmethod
     def no_trailing_slash(cls, value: str) -> str:
         return value.rstrip("/")
+
+    @field_validator("map_engine", "maptiler_key", "map_tiles_url", "map_glyphs_url", mode="before")
+    @classmethod
+    def map_setting_trimmed(cls, value, info):
+        # MAP_ENGINE=MapLibre and a key pasted with a trailing space both mean what they say.
+        if not isinstance(value, str):
+            return value
+        return value.strip().lower() if info.field_name == "map_engine" else value.strip()
+
+    @model_validator(mode="after")
+    def map_tiles_complete(self):
+        if bool(self.map_tiles_url) != bool(self.map_glyphs_url):
+            raise ValueError("Set MAP_TILES_URL and MAP_GLYPHS_URL together, or neither.")
+        if self.map_glyphs_url and not ("{fontstack}" in self.map_glyphs_url and "{range}" in self.map_glyphs_url):
+            raise ValueError("MAP_GLYPHS_URL must contain {fontstack} and {range}.")
+        for name, url in (("MAP_TILES_URL", self.map_tiles_url), ("MAP_GLYPHS_URL", self.map_glyphs_url)):
+            # Browsers fetch these from an https page, which can't load http:// tiles; local development may.
+            local = self.environment != "production" and url.startswith("http://")
+            if url and not (url.startswith("https://") or local):
+                raise ValueError(f"{name} must be an https:// address.")
+        return self
 
     @model_validator(mode="after")
     def semantic_band_ordered(self):

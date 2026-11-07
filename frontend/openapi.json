@@ -9111,6 +9111,40 @@
             "title": "Tsp Suggestions",
             "description": "Whether /tsp/webview shows qualifications suggested from the TSP profile (POST /api/v1/analysis/suggestions). False: the goal box only.",
             "default": false
+          },
+          "map_engine": {
+            "type": "string",
+            "enum": [
+              "maplibre",
+              "leaflet"
+            ],
+            "title": "Map Engine",
+            "description": "The center map's renderer. maplibre draws vector tiles when maptiler_key or map_tiles_url is set and the browser has WebGL 2; leaflet keeps the raster map.",
+            "default": "maplibre"
+          },
+          "maptiler_key": {
+            "type": "string",
+            "title": "Maptiler Key",
+            "description": "Public MapTiler key for the center map's vector tiles, restricted to the deployment's domains. Empty: no MapTiler.",
+            "default": ""
+          },
+          "map_tiles_url": {
+            "type": "string",
+            "title": "Map Tiles Url",
+            "description": "TileJSON address of an OpenMapTiles-schema vector source, used instead of MapTiler. Empty: none.",
+            "default": ""
+          },
+          "map_glyphs_url": {
+            "type": "string",
+            "title": "Map Glyphs Url",
+            "description": "Label fonts for map_tiles_url: an address with {fontstack} and {range}. Empty: none.",
+            "default": ""
+          },
+          "map_3d": {
+            "type": "boolean",
+            "title": "Map 3D",
+            "description": "Whether the center map offers 3D buildings where the tiles record building heights.",
+            "default": true
           }
         },
         "type": "object",
