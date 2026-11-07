@@ -28,7 +28,7 @@ def test_reports_the_map_key_and_the_optional_services():
     assert response.json() == {"carto_key": "carto-public-key", "routing_enabled": True,
                                "skills_bridge_enabled": True, "tsp_sign_in": False, "tsp_suggestions": False,
                                "map_engine": "maplibre", "maptiler_key": "", "map_tiles_url": "",
-                               "map_glyphs_url": "", "map_3d": True}
+                               "map_3d": True}
 
 
 def test_reports_services_that_are_turned_off():
@@ -36,7 +36,7 @@ def test_reports_services_that_are_turned_off():
     assert response.json() == {"carto_key": "", "routing_enabled": False, "skills_bridge_enabled": False,
                                "tsp_sign_in": False, "tsp_suggestions": False,
                                "map_engine": "maplibre", "maptiler_key": "", "map_tiles_url": "",
-                               "map_glyphs_url": "", "map_3d": True}
+                               "map_3d": True}
 
 
 def test_reports_tsp_sign_in():
@@ -53,24 +53,18 @@ def test_reports_tsp_suggestions_only_when_turned_on():
 def test_reports_the_map_renderer_and_its_vector_tiles():
     response = client_config(settings(maptiler_key=" maptiler-public-key ", map_3d_enabled=False))
     assert {key: value for key, value in response.json().items() if key.startswith("map")} == {
-        "map_engine": "maplibre", "maptiler_key": "maptiler-public-key", "map_tiles_url": "", "map_glyphs_url": "",
-        "map_3d": False}
+        "map_engine": "maplibre", "maptiler_key": "maptiler-public-key", "map_tiles_url": "", "map_3d": False}
 
-    tiles = client_config(settings(map_engine="LEAFLET", map_tiles_url="https://tiles.example.test/planet",
-                                   map_glyphs_url="https://tiles.example.test/fonts/{fontstack}/{range}.pbf"))
+    tiles = client_config(settings(map_engine="LEAFLET", map_tiles_url=" https://tiles.example.test/planet "))
     assert {key: value for key, value in tiles.json().items() if key.startswith("map")} == {
         "map_engine": "leaflet", "maptiler_key": "", "map_tiles_url": "https://tiles.example.test/planet",
-        "map_glyphs_url": "https://tiles.example.test/fonts/{fontstack}/{range}.pbf", "map_3d": True}
+        "map_3d": True}
 
 
 @pytest.mark.parametrize("values, message", [
     ({"map_engine": "openlayers"}, "map_engine"),
-    ({"map_tiles_url": "https://tiles.example.test/planet"}, "together"),
-    ({"map_glyphs_url": "https://tiles.example.test/fonts/{fontstack}/{range}.pbf"}, "together"),
-    ({"map_tiles_url": "https://tiles.example.test/planet", "map_glyphs_url": "https://tiles.example.test/fonts.pbf"},
-     "{fontstack}"),
-    ({"environment": "production", "map_tiles_url": "http://tiles.example.test/planet",
-      "map_glyphs_url": "https://tiles.example.test/fonts/{fontstack}/{range}.pbf"}, "https://"),
+    ({"map_tiles_url": "tiles.example.test/planet"}, "https://"),
+    ({"environment": "production", "map_tiles_url": "http://tiles.example.test/planet"}, "https://"),
 ])
 def test_refuses_map_settings_the_browser_could_not_use(values, message):
     with pytest.raises(ValueError, match=re.escape(message)):
@@ -104,4 +98,4 @@ def test_the_app_serves_it_from_the_environment_without_sign_in_or_a_database(en
     assert response.json() == {"carto_key": "carto-from-the-environment", "routing_enabled": False,
                                "skills_bridge_enabled": True, "tsp_sign_in": False, "tsp_suggestions": False,
                                "map_engine": "leaflet", "maptiler_key": "maptiler-from-the-environment",
-                               "map_tiles_url": "", "map_glyphs_url": "", "map_3d": False}
+                               "map_tiles_url": "", "map_3d": False}

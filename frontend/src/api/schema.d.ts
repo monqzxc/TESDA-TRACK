@@ -2628,12 +2628,6 @@ export interface components {
              */
             map_tiles_url: string;
             /**
-             * Map Glyphs Url
-             * @description Label fonts for map_tiles_url: an address with {fontstack} and {range}. Empty: none.
-             * @default
-             */
-            map_glyphs_url: string;
-            /**
              * Map 3D
              * @description Whether the center map offers 3D buildings where the tiles record building heights.
              * @default true

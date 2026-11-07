@@ -26,5 +26,4 @@ def client_config(response: Response, settings: SettingsDep):
                         map_engine=settings.map_engine,
                         maptiler_key=settings.maptiler_key,
                         map_tiles_url=settings.map_tiles_url,
-                        map_glyphs_url=settings.map_glyphs_url,
                         map_3d=settings.map_3d_enabled)

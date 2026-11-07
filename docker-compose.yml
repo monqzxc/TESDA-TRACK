@@ -44,7 +44,6 @@ x-backend-environment: &backend-environment
   MAP_ENGINE: ${MAP_ENGINE:-maplibre}
   MAPTILER_KEY: ${MAPTILER_KEY-}
   MAP_TILES_URL: ${MAP_TILES_URL-}
-  MAP_GLYPHS_URL: ${MAP_GLYPHS_URL-}
   MAP_3D_ENABLED: ${MAP_3D_ENABLED:-true}
   # Partner MCP server; PUBLIC_BASE_URL must be the address Caddy serves, or the API refuses the requests (421).
   PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-https://${DOMAIN:-localhost}}

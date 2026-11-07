@@ -22,7 +22,5 @@ class ClientConfig(BaseModel):
                                                       "restricted to the deployment's domains. Empty: no MapTiler.")
     map_tiles_url: str = Field(default="", description="TileJSON address of an OpenMapTiles-schema vector source, "
                                                        "used instead of MapTiler. Empty: none.")
-    map_glyphs_url: str = Field(default="", description="Label fonts for map_tiles_url: an address with {fontstack} and "
-                                                        "{range}. Empty: none.")
     map_3d: bool = Field(default=True, description="Whether the center map offers 3D buildings where the tiles record "
                                                    "building heights.")
