@@ -58,7 +58,7 @@ class RecommendationFeedback(SQLModel, table=True):
     z_score: float | None = None
     model: str | None = Field(default=None, sa_type=String(100))
     params: dict | None = Field(default=None, sa_type=JSONB)
-    # How the learner searched: "goal" (a sentence) or "skills" (a list of skills or job titles). None before 0023.
+    # How the learner searched: "goal" (a sentence) or "skills" (a list of skills or job titles). None before 0027.
     search_mode: str | None = Field(default=None, sa_type=String(10))
     readiness_score: float
     readiness_level: str = Field(sa_type=String(30))

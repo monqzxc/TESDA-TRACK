@@ -7,8 +7,8 @@ so they are unknown rather than typed.
 import sqlalchemy as sa
 from alembic import op
 
-revision = "0024"
-down_revision = "0023"
+revision = "0028"
+down_revision = "0027"
 branch_labels = None
 depends_on = None
 
