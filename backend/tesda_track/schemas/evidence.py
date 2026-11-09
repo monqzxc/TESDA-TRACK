@@ -46,6 +46,18 @@ class PostingEvidence(BaseModel):
     fingerprint: str
 
 
+class SupplyEvidence(BaseModel):
+    registered_training_sites: Measure
+    registered_training_programs: Measure
+    confirmed_training_offerings: Measure
+    published_training_slots: Measure
+    remaining_training_seats: Measure
+    confirmed_assessment_schedules: Measure
+    confirmed_assessment_sites: Measure
+    remaining_assessment_seats: Measure
+    completeness: dict[str, float | None]
+
+
 def measure_sum(
     name: str,
     unit: str,
