@@ -90,3 +90,37 @@ def test_window_limits_assessment_schedules(session, make_schedule, make_center)
     before = date.today() + timedelta(days=20)
     s = supply.supply_evidence(session, CODE, scheduled_before=before)
     assert s.confirmed_assessment_schedules.value == 1
+
+
+def test_unknown_availability_leaves_confirmed_denominator_unknown(session, make_program):
+    make_program(verified=False)
+    s = supply.supply_evidence(session, CODE)
+    m = s.confirmed_training_offerings
+    assert (m.value, m.eligible_record_count, m.known_record_count, m.unknown_count, m.coverage) == (0, 1, 0, 1, 0.0)
+    assert s.completeness["confirmed_training_offerings"] == 0.0
+    assert m.statement == "0 confirmed offerings of 1 registered; 0 of 1 have a current availability check."
+
+
+def test_current_availability_with_unverified_authority_is_known_not_confirmed(session, make_program):
+    make_program(verified=False, **available_fixture())
+    m = supply.supply_evidence(session, CODE).confirmed_training_offerings
+    assert (m.value, m.eligible_record_count, m.known_record_count) == (0, 1, 1)
+
+
+def test_assessment_candidates_are_the_denominator(session, make_schedule, make_center):
+    center = make_center()
+    make_schedule(center)
+    make_schedule(center, verified=False, availability_status="unknown", availability_source=None,
+                  availability_checked_at=None, availability_valid_until=None)
+    m = supply.supply_evidence(session, CODE).confirmed_assessment_schedules
+    assert (m.value, m.eligible_record_count, m.known_record_count, m.coverage) == (1, 2, 1, 0.5)
+
+
+def test_regional_label_is_the_region_name_and_unknown_region_is_rejected(session):
+    import pytest
+    from tesda_track.errors import InvalidRequestError
+
+    region = session.get(Region, "NCR")
+    assert supply.supply_evidence(session, CODE, "NCR").registered_training_sites.geography.label == region.name
+    with pytest.raises(InvalidRequestError, match="Unknown region."):
+        supply.supply_evidence(session, CODE, "NOPE")

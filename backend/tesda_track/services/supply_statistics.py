@@ -3,8 +3,9 @@ from datetime import date, datetime
 
 from sqlmodel import Session, select
 
-from tesda_track.models import (AssessmentCenter, AssessmentSchedule, Qualification, TrainingProgram, TrainingProvider,
-                                utcnow)
+from tesda_track.errors import InvalidRequestError
+from tesda_track.models import (AssessmentCenter, AssessmentSchedule, Qualification, Region, TrainingProgram,
+                                TrainingProvider, utcnow)
 from tesda_track.schemas.evidence import Geography, Measure, SupplyEvidence, measure_sum
 from tesda_track.services import verification
 from tesda_track.services.assessments import seats_taken_subquery
@@ -12,6 +13,17 @@ from tesda_track.services.assessments import seats_taken_subquery
 METHOD_VERSION = "supply-statistics-v1"
 NO_TRAINING_SEATS = "Remaining training seats are not recorded; published slots are a separate measure."
 NO_MARKET_COVERAGE = "Registry-wide market coverage is unknown."
+
+
+def _confirmed(name: str, unit: str, confirmed: int, candidates: list, now, **context) -> Measure:
+    """The confirmed count, with the registered candidates as denominator and current availability checks as known."""
+    eligible = len(candidates)
+    known = sum(1 for c in candidates if verification.availability(c, now).status != "unknown")
+    statement = (f"{confirmed} confirmed {unit} of {eligible} registered; "
+                 f"{known} of {eligible} have a current availability check.")
+    return Measure(name=name, value=confirmed, unit=unit, known_record_count=known, eligible_record_count=eligible,
+                   unknown_count=eligible - known, coverage=known / eligible if eligible else None,
+                   statement=statement, **context)
 
 
 def _count(name: str, unit: str, n: int, **context) -> Measure:
@@ -25,7 +37,12 @@ def supply_evidence(session: Session, qualification_code: str, region_code: str 
                     scheduled_before: date | None = None) -> SupplyEvidence:
     now = now or utcnow()
     today = now.astimezone(verification.PHILIPPINE_TIME).date()
-    geography = (Geography(scope="regional", region_code=region_code, label=f"Region {region_code}") if region_code
+    region = None
+    if region_code:
+        region = session.get(Region, region_code)
+        if region is None:
+            raise InvalidRequestError("Unknown region.")
+    geography = (Geography(scope="regional", region_code=region_code, label=region.name) if region_code
                  else Geography(scope="national", label="All registered sites in this dataset"))
     limitations = [] if region_code else [NO_MARKET_COVERAGE]
 
@@ -44,11 +61,11 @@ def supply_evidence(session: Session, qualification_code: str, region_code: str 
         query = query.where(TrainingProvider.region_code == region_code)
     programs = list(session.exec(query))
     verification.preload(session, "training", {(p.provider_id, p.qualification_id) for p in programs})
+    unfinished = [p for p in programs if p.end_date is None or p.end_date >= today]
     offerings = [
-        p for p in programs
+        p for p in unfinished
         if verification.effective_status(verification.get(session, "training", p.provider_id, p.qualification_id), now) == "verified"
-        and verification.availability(p, now).status == "available"
-        and (p.end_date is None or p.end_date >= today)]
+        and verification.availability(p, now).status == "available"]
 
     # Assessment: open, future schedules at active centers, inside the optional window.
     query = (select(AssessmentSchedule, seats_taken_subquery().label("taken")).join(AssessmentCenter)
@@ -60,13 +77,15 @@ def supply_evidence(session: Session, qualification_code: str, region_code: str 
         query = query.where(AssessmentCenter.region_code == region_code)
     rows = list(session.exec(query))
     verification.preload(session, "assessment", {(s.center_id, s.qualification_id) for s, _ in rows})
-    schedules = []
+    schedules, candidates = [], []
     for schedule, seats in rows:
         record = verification.get(session, "assessment", schedule.center_id, schedule.qualification_id)
         local_date = schedule.scheduled_at.astimezone(verification.PHILIPPINE_TIME).date()
-        if ((scheduled_after is None or local_date >= scheduled_after)
-                and (scheduled_before is None or local_date <= scheduled_before)
-                and verification.effective_status(record, now) == "verified"
+        if not ((scheduled_after is None or local_date >= scheduled_after)
+                and (scheduled_before is None or local_date <= scheduled_before)):
+            continue
+        candidates.append(schedule)
+        if (verification.effective_status(record, now) == "verified"
                 and verification.authorization_covers(record, schedule.scheduled_at)
                 and verification.availability(schedule, now).status == "available"):
             schedules.append((schedule, seats))
@@ -76,16 +95,16 @@ def supply_evidence(session: Session, qualification_code: str, region_code: str 
                                          **context(registry)),
         registered_training_programs=_count("registered_training_programs", "program records", len(programs),
                                             **context(registry)),
-        confirmed_training_offerings=_count("confirmed_training_offerings", "offerings", len(offerings),
-                                            **context(confirmed)),
+        confirmed_training_offerings=_confirmed("confirmed_training_offerings", "offerings", len(offerings),
+                                                unfinished, now, **context(confirmed)),
         published_training_slots=measure_sum(
             "published_training_slots", "slots", [p.slots for p in offerings], label="published slots",
             record_noun="offerings", total_noun="capacity", **context(confirmed)),
         remaining_training_seats=measure_sum(
             "remaining_training_seats", "seats", [None for _ in offerings], label="remaining seats",
             record_noun="offerings", total_noun="capacity", **context(confirmed, (NO_TRAINING_SEATS,))),
-        confirmed_assessment_schedules=_count("confirmed_assessment_schedules", "schedules", len(schedules),
-                                              **context(confirmed)),
+        confirmed_assessment_schedules=_confirmed("confirmed_assessment_schedules", "schedules", len(schedules),
+                                                  candidates, now, **context(confirmed)),
         confirmed_assessment_sites=_count("confirmed_assessment_sites", "sites", len({s.center_id for s, _ in schedules}),
                                           **context(confirmed)),
         remaining_assessment_seats=measure_sum(
