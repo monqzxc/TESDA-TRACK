@@ -364,6 +364,37 @@ test('narrow and phone screens keep the results below the map in the page flow',
   }
 })
 
+test('the open filters leave the map a usable size at every desktop width', async ({ page }) => {
+  await serveTraining(page)
+  await page.goto('/training')
+  await expect(page.locator('.center-map')).toBeVisible()
+
+  // 1440 wide, beside the sidebar, the map's column is too narrow for the filters to float over it, so they sit
+  // above the map: the map must still get its own height. From 1500 they float over the map's left edge.
+  for (const viewport of [
+    { width: 1440, height: 900 },
+    { width: 1500, height: 900 },
+    { width: 1920, height: 1080 },
+  ]) {
+    await page.setViewportSize(viewport)
+    await expect
+      .poll(() =>
+        page.evaluate(() => {
+          const map = document.querySelector<HTMLElement>('.center-map')!.getBoundingClientRect()
+          const filters = document
+            .querySelector<HTMLElement>('[data-tour="training-filters"]')!
+            .getBoundingClientRect()
+          return {
+            usableMapHeight: map.height > 300,
+            // Above the map, or over its left edge with room for the map beside them.
+            filtersClearOfMap: filters.bottom <= map.top + 1 || filters.right <= map.right - 250,
+          }
+        }),
+      )
+      .toEqual({ usableMapHeight: true, filtersClearOfMap: true })
+  }
+})
+
 for (const colorScheme of ['light', 'dark'] as const) {
   for (const [size, viewport] of Object.entries(SIZES)) {
     test(`${colorScheme} theme, ${size}: the map and the list, passing axe`, async ({ page }) => {

@@ -77,7 +77,8 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
       className={cx(
         'flex min-w-0 flex-col rounded-18 border border-border bg-surface p-4 max-xs:rounded-14 max-xs:p-[0.85rem]',
         hasMap &&
-          '@min-[1032px]/workspace:h-full @min-[1032px]/workspace:min-h-0 @min-[1032px]/workspace:overflow-y-auto @min-[1032px]/workspace:overscroll-contain',
+          // Only beside the map (TrainingPage.tsx), where the workspace has a fixed height.
+          '@min-[1112px]/workspace:h-full @min-[1112px]/workspace:min-h-0 @min-[1112px]/workspace:overflow-y-auto @min-[1112px]/workspace:overscroll-contain',
       )}
     >
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">

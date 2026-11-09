@@ -178,17 +178,20 @@ function Workspace({ catalog }: { catalog: Qualification[] }) {
         </Button>
       </div>
       {/* Map beside the results; when that is too tight for both, the results go below the map. Without the map,
-          the filters sit beside the results. */}
+          the filters sit beside the results.
+          Beside the results, the map's column is a fixed height, so it must be wide enough for the filters to float
+          over it (720px, below): stacked above it, the open filters would take all that height and leave the map
+          none. 720px + the results' 380px + the 12px gap is 1112px. */}
       <ResponsiveWorkspace>
         <div
           className={cx(
-            'grid items-start gap-3 @max-[1032px]/workspace:grid-cols-1',
+            'grid items-start gap-3',
             mapShown &&
               results.hasData &&
-              '@min-[1032px]/workspace:h-[var(--training-workspace-height,680px)] @min-[1032px]/workspace:items-stretch',
+              '@min-[1112px]/workspace:h-[var(--training-workspace-height,680px)] @min-[1112px]/workspace:items-stretch',
             mapShown
-              ? 'grid-cols-[minmax(0,3fr)_minmax(380px,1fr)]'
-              : 'grid-cols-[minmax(300px,420px)_minmax(0,1fr)]',
+              ? 'grid-cols-[minmax(0,3fr)_minmax(380px,1fr)] @max-[1112px]/workspace:grid-cols-1'
+              : 'grid-cols-[minmax(300px,420px)_minmax(0,1fr)] @max-[1032px]/workspace:grid-cols-1',
           )}
         >
           {/* The filters float over the map's left edge. Where the map is too narrow for that, they sit above
@@ -205,7 +208,7 @@ function Workspace({ catalog }: { catalog: Qualification[] }) {
             </div>
             {mapShown && results.hasData && (
               // Read by the map, so its pins, routes and popups keep clear of the panel: 14px + 420px + 14px.
-              <div className="@min-[720px]/stage:[--map-overlay-inset:448px] @min-[1032px]/workspace:min-h-0 @min-[1032px]/workspace:flex-1 @min-[1032px]/workspace:[--center-map-height:100%]">
+              <div className="@min-[720px]/stage:[--map-overlay-inset:448px] @min-[1112px]/workspace:min-h-0 @min-[1112px]/workspace:flex-1 @min-[1112px]/workspace:[--center-map-height:100%]">
                 <LoadBoundary fallback={<p className={mapStandIn}>{copy.map.failed}</p>}>
                   <Suspense
                     fallback={
