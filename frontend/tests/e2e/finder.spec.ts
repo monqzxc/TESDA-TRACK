@@ -11,6 +11,10 @@ const SIZES = {
 }
 
 const GOAL = 'I want to be a welder.'
+// Your goal's one box, for a goal, skills or jobs, and its button (main's unified search).
+const GOAL_STEP = 'Where would you like to go?'
+const FIELD = 'Your career interests or skills'
+const SUBMIT = 'Find my pathways'
 
 const welding = {
   code: 'SMAW-NCII',
@@ -205,18 +209,31 @@ async function serveFinder(page: Page) {
     }
   })
   await page.route('**/api/v1/qualifications', (route) => route.fulfill({ json: [welding] }))
-  await page.route('**/api/v1/analysis/goal', (route) =>
-    route.fulfill({ json: { profile, source: 'rules' } }),
-  )
+  await page.route('**/api/v1/analysis/goal', async (route) => {
+    const { query } = route.request().postDataJSON() as { query: string }
+    // As the API's pathway_input.matching_mode reads it: a sentence is a goal, a short list is skills.
+    const mode = /[.!?]|\b(i|want|my)\b/i.test(query) ? 'goal' : 'skills'
+    await route.fulfill({ json: { profile, source: 'rules', matching_mode: mode } })
+  })
   await page.route('**/api/v1/analysis/matches', async (route) => {
-    const body = route.request().postDataJSON() as { profile: typeof profile }
+    const body = route.request().postDataJSON() as {
+      query: string
+      profile: typeof profile
+      mode?: string
+    }
     await route.fulfill({
       json: {
         profile: body.profile,
         matches: [{ qualification: summary, score: 76, reason: 'Matched your words: welder' }],
+        // A skills search says what it read.
+        ...(body.mode === 'skills' && { search: { terms: [body.query], unmatched: [] } }),
       },
     })
   })
+  // Your pathway's labor-market information: none published here.
+  await page.route('**/api/v1/labor-market/indicators*', (route) =>
+    route.fulfill({ json: { items: [], postings: [] } }),
+  )
   await page.route('**/api/v1/analysis/pathway', (route) =>
     route.fulfill({
       json: {
@@ -293,8 +310,9 @@ async function serveFinder(page: Page) {
 }
 
 async function expectSettledAndAccessible(page: Page) {
-  // No step is still sliding in, nor any request still showing its loading line.
-  await expect(page.getByRole('status')).toHaveCount(0)
+  // No step is still sliding in, nor any request still showing its loading line. Your pathway's career-goal line
+  // is a status that stays, to announce the goal chosen.
+  await expect(page.getByRole('status').filter({ hasNotText: /career goal/i })).toHaveCount(0)
   await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished)))
   // Nothing runs off the side of the screen. If something does, it's named: the first element past the edge that
   // no clipping box (overflow other than visible) holds in.
@@ -336,12 +354,10 @@ for (const colorScheme of ['light', 'dark'] as const) {
       const seen = await serveFinder(page)
       await page.goto('/find')
 
-      await expect(
-        page.getByRole('heading', { level: 2, name: 'What would you like to achieve?' }),
-      ).toBeVisible()
+      await expect(page.getByRole('heading', { level: 2, name: GOAL_STEP })).toBeVisible()
       await expectSettledAndAccessible(page)
-      await page.getByRole('button', { name: 'Become a welder' }).click()
-      await page.getByRole('button', { name: 'Get recommendation' }).click()
+      await page.getByRole('textbox', { name: FIELD }).fill(GOAL)
+      await page.getByRole('button', { name: SUBMIT }).click()
 
       await expect(page).toHaveURL('/find/matches')
       await expect(page.getByRole('article', { name: welding.name })).toBeVisible()
@@ -416,8 +432,8 @@ for (const colorScheme of ['light', 'dark'] as const) {
   }
 }
 
-// A skill or job search (US-20): related occupations on the matches step, one opened to its qualification and
-// core skills, then that qualification's training centers.
+// A skill or job search (US-20): the skills read as skills, then on Your pathway the qualification's occupations,
+// one chosen as the career goal, then that qualification's training and assessment.
 for (const colorScheme of ['light', 'dark'] as const) {
   for (const [size, viewport] of Object.entries(SIZES)) {
     test(`${colorScheme} theme, ${size}: skill search to an occupation's centers, passing axe`, async ({
@@ -428,23 +444,43 @@ for (const colorScheme of ['light', 'dark'] as const) {
       await serveFinder(page)
       await page.goto('/find')
 
-      await page.locator('label').filter({ hasText: 'A skill or job' }).click()
-      await page.getByRole('textbox', { name: 'Your skills or the jobs you want' }).fill('welding')
+      // A short list, not a sentence: the API reads it as skills.
+      await page.getByRole('textbox', { name: FIELD }).fill('welding')
       await expectSettledAndAccessible(page)
-      await page.getByRole('button', { name: 'Get recommendation' }).click()
+      await page.getByRole('button', { name: SUBMIT }).click()
 
+      await expect(page).toHaveURL('/find/matches')
+      await expect(page.getByRole('article', { name: welding.name })).toBeVisible()
+      await expectSettledAndAccessible(page)
+      await page.getByRole('button', { name: 'Check my readiness' }).click()
+      await expect(page).toHaveURL('/find/readiness')
+      // One skill in each of the three parts.
+      for (const [number, next] of [
+        ['1', 'Next: Common skills'],
+        ['2', 'Next: Core skills'],
+        ['3', 'Analyze my skills'],
+      ]) {
+        await page
+          .getByRole('radiogroup', { name: new RegExp(`^${number}\\. `) })
+          .getByText('I can do this confidently')
+          .click()
+        await page.getByRole('button', { name: next }).click()
+      }
+
+      await expect(page).toHaveURL('/find/pathway')
       const occupations = page.getByRole('region', { name: 'Related occupations' })
-      await expect(occupations.getByRole('button', { name: 'Welder' })).toBeVisible()
+      const welder = occupations.getByRole('button', { name: 'Set as My Goal: Welder' })
+      await expect(welder).toBeVisible()
       await expectSettledAndAccessible(page)
-      await occupations.getByRole('button', { name: 'Welder' }).click()
-      await expect(occupations.getByRole('heading', { level: 4, name: 'Welder' })).toBeFocused()
-      await expect(occupations.getByText('Weld carbon steel plates')).toBeVisible()
+      await welder.click()
+      await expect(
+        occupations.getByRole('button', { name: 'Goal Selected: Welder' }),
+      ).toHaveAttribute('aria-pressed', 'true')
+      await expect(occupations.getByRole('status')).toHaveText(/Your career goal: Welder/)
       await expectSettledAndAccessible(page)
 
-      await occupations
-        .getByRole('link', { name: `Find training centers: ${welding.name}` })
-        .click()
-      await expect(page).toHaveURL(/\/training\?qualification=SMAW-NCII$/)
+      await page.getByRole('link', { name: 'See all options in Training & Assessment' }).click()
+      await expect(page).toHaveURL(/\/training\?qualification=SMAW-NCII(&|$)/)
     })
   }
 }
@@ -457,12 +493,12 @@ test.describe('on a desktop', () => {
   }) => {
     await serveFinder(page)
     await page.goto('/find')
-    const box = page.getByRole('textbox', { name: 'Or tell us in your own words' })
+    const box = page.getByRole('textbox', { name: FIELD })
     await box.focus()
     await page.keyboard.type(GOAL)
 
     // Tab on to the button, past the sample goals.
-    const submit = page.getByRole('button', { name: 'Get recommendation' })
+    const submit = page.getByRole('button', { name: SUBMIT })
     for (
       let i = 0;
       i < 12 && !(await submit.evaluate((el) => el === document.activeElement));
@@ -504,12 +540,12 @@ test.describe('on a desktop', () => {
     await serveFinder(page)
     await page.goto('/find')
 
-    await page.getByRole('button', { name: 'Get recommendation' }).click()
+    await page.getByRole('button', { name: SUBMIT }).click()
 
     await expect(
-      page.getByText('Describe your career goal or skills to get started.'),
+      page.getByText('Enter a career goal, occupation, or skill to continue.'),
     ).toBeVisible()
-    await expect(page.getByRole('textbox', { name: 'Or tell us in your own words' })).toBeFocused()
+    await expect(page.getByRole('textbox', { name: FIELD })).toBeFocused()
     await expect(page).toHaveURL('/find')
   })
 })
