@@ -2,7 +2,7 @@
 from datetime import datetime
 from typing import Annotated
 
-from pydantic import BaseModel, ConfigDict, Field, StringConstraints
+from pydantic import AfterValidator, BaseModel, ConfigDict, Field, StringConstraints
 
 RoleKey = Annotated[str, StringConstraints(strip_whitespace=True, to_lower=True, min_length=2, max_length=50)]
 RoleLabel = Annotated[str, StringConstraints(strip_whitespace=True, min_length=1, max_length=100)]
@@ -20,7 +20,8 @@ class RolePublic(BaseModel):
     key: str
     label: str
     description: str | None
-    permissions: list[str]
+    # Listed in order, however the row holds them: a migration that adds a permission (0025) appends it.
+    permissions: Annotated[list[str], AfterValidator(sorted)]
     is_system: bool = Field(description="Built-in: it cannot be deleted or renamed, and `admin` cannot be edited.")
     created_at: datetime
 
