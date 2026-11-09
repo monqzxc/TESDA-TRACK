@@ -539,6 +539,8 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     })
     for (const layer of LAYERS.routeLines) {
       map.on('click', layer, (event: MapLayerMouseEvent) => {
+        // A route's label sits on the map, often over another route's line: its own button chose its mode.
+        if (overlay.contains(event.originalEvent.target as Node | null)) return
         const mode = event.features?.[0]?.properties?.mode
         if (typeof mode === 'string') latest.current.props.onTravelMode(mode as TravelMode)
       })
