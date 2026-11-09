@@ -382,7 +382,8 @@ describe('Find my pathway, signed in', () => {
     const user = userEvent.setup()
     await openFinder()
     await screen.findByRole('button', { name: 'Your account: Maria Santos' })
-    const box = screen.getByRole('textbox', { name: FIELD })
+    // The goal box can render a moment after the account button: wait for it.
+    const box = await screen.findByRole('textbox', { name: FIELD })
     await user.type(box, GOAL)
     const send = () => user.click(screen.getByRole('button', { name: 'Find my pathways' }))
 

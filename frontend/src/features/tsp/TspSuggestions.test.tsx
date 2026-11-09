@@ -117,6 +117,7 @@ describe('Suggested for you', () => {
     // Counted as a tapped suggestion, apart from typed goals, so uptake can be compared in the pilot.
     expect(api.requests.find((r) => r.path === '/api/v1/analysis/goal')?.body).toEqual({
       query: 'Shielded Metal Arc Welding (SMAW) NC II',
+      interpret_input: true,
       origin: 'suggestion',
     })
   })
