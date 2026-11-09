@@ -126,7 +126,11 @@ export function FilterPanel({ results }: { results: CenterResults }) {
         indigo,
       )}
     >
-      <div className={cx('flex items-center gap-2 py-4', !folded && 'border-b border-rule')}>
+      {/* Wraps: with enlarged text on a phone, Clear all and the fold button go under the heading rather than off
+          the side of the screen. */}
+      <div
+        className={cx('flex flex-wrap items-center gap-2 py-4', !folded && 'border-b border-rule')}
+      >
         <h2
           id={headingId}
           className="m-0 flex flex-1 items-center gap-3 font-text text-[1.35rem] font-bold tracking-normal text-navy"
