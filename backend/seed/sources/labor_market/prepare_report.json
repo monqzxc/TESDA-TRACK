@@ -1,0 +1,43 @@
+{
+  "dole-ble-national-jlmf-2025-2026-v1": {
+    "evidence": 442,
+    "mappings": 271,
+    "classifications": {
+      "in_demand": 354,
+      "hard_to_fill": 88
+    },
+    "proposals": {
+      "high_confidence": 80,
+      "rejected": 6,
+      "needs_review": 185
+    }
+  },
+  "pasay-official-job-portal-2026-10": {
+    "evidence": 20,
+    "mappings": 4,
+    "classifications": {
+      "observed_posting": 20
+    },
+    "proposals": {
+      "needs_review": 2,
+      "high_confidence": 2
+    }
+  },
+  "dole-ble-jlmf-2023-2024-v1": {
+    "evidence": 155,
+    "mappings": 0,
+    "classifications": {
+      "in_demand": 79,
+      "hard_to_fill": 76
+    },
+    "proposals": {}
+  },
+  "dole-ble-jobsfit-2022-regional-v1": {
+    "evidence": 7,
+    "mappings": 0,
+    "classifications": {
+      "in_demand": 7
+    },
+    "proposals": {}
+  }
+}

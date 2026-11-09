@@ -1,0 +1,21 @@
+{
+  "source_id": "pasay-official-job-portal",
+  "version": 202610,
+  "publisher": "Pasay City PESO",
+  "title": "Pasay City official job openings",
+  "publication_label": "Postings dated 14 and 22 October 2026",
+  "publication_date": null,
+  "evidence_class": "observed_posting",
+  "geographic_scope": "local",
+  "region_code": "NCR",
+  "period_label": "October 2026",
+  "period_start_year": 2026,
+  "period_end_year": 2026,
+  "source_url": "https://pasay.gov.ph/job-openings/",
+  "source_url_kind": "official_listing_page",
+  "file_sha256": null,
+  "notes": "Dated postings only: no vacancy counts are published, and they are not an in-demand list.",
+  "research": {
+    "evidence": "data-review/phase3/research-2026-11-05/datasets/observed_2026_vacancies.csv"
+  }
+}

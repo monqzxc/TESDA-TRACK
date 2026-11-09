@@ -10,8 +10,8 @@ import { focusIsLost } from '../../lib/focus.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
 import { QualificationField } from '../reports/QualificationField.tsx'
-import { explainFeedback, sendFeedback, shareGoal, type FeedbackReason } from './api.ts'
-import { useFinderStore, type GivenFeedback, type Profile, type SubmittedCheck } from './store.ts'
+import { explainFeedback, sendFeedback, shareGoal, type Asked, type FeedbackReason } from './api.ts'
+import { useFinderStore, type GivenFeedback, type SubmittedCheck } from './store.ts'
 import { notice } from './styles.ts'
 
 /** In the corner of the screen, above the page and below the account notice (z-90) and dialogs (z-100). */
@@ -46,7 +46,7 @@ interface FeedbackPromptProps {
   code: string
   check: SubmittedCheck
   /** What the matches were asked with, so the API can work the recommendation out again. */
-  asked: { query: string; profile: Profile }
+  asked: Asked
 }
 
 /**

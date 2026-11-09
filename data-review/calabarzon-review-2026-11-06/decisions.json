@@ -1,0 +1,181 @@
+{
+  "batch": "calabarzon-scope-review-2026-11-06",
+  "dataset_key": "dole-iva-jlmf-2026-2027@2",
+  "rows": [
+    {
+      "mapping_key": "IVA-004-in_demand-CUSTOMER-SERVICES-NC-II",
+      "occurrence_key": "IVA-004-in_demand",
+      "qualification_code": "CUSTOMER-SERVICES-NC-II",
+      "decision": "approved",
+      "reason": "The forecast accepts HS graduates for retail bagging. TESDA's Customer Services NC II TR explicitly names Counter-Checker/Bagger; customer handling, retail equipment and merchandise presentation support this training pathway."
+    },
+    {
+      "mapping_key": "IVA-005-in_demand-CUSTOMER-SERVICES-NC-II",
+      "occurrence_key": "IVA-005-in_demand",
+      "qualification_code": "CUSTOMER-SERVICES-NC-II",
+      "decision": "pending",
+      "reason": "Cashier is a strong retail competency match, but this specific wholesale/retail forecast row requires BS Accountancy. NC II does not replace that degree; retain as a possible supplementary training relationship pending an education-aware presentation."
+    },
+    {
+      "mapping_key": "IVA-006-in_demand-CONTACT-CENTER-SERVICES-NC-II",
+      "occurrence_key": "IVA-006-in_demand",
+      "qualification_code": "CONTACT-CENTER-SERVICES-NC-II",
+      "decision": "rejected",
+      "reason": "The source sector/deployment is wholesale-retail (and accommodation/food services for the agency row), not an established contact-center role. Contact Center Services NC II is scoped to inbound/outbound contact-center agents. A shared Customer Service Representative title and mention of online/BPO growth do not establish the required channel or tasks. Review Customer Services NC II or hospitality-specific training separately."
+    },
+    {
+      "mapping_key": "IVA-006-hard_to_fill-CONTACT-CENTER-SERVICES-NC-II",
+      "occurrence_key": "IVA-006-hard_to_fill",
+      "qualification_code": "CONTACT-CENTER-SERVICES-NC-II",
+      "decision": "rejected",
+      "reason": "The source sector/deployment is wholesale-retail (and accommodation/food services for the agency row), not an established contact-center role. Contact Center Services NC II is scoped to inbound/outbound contact-center agents. A shared Customer Service Representative title and mention of online/BPO growth do not establish the required channel or tasks. Review Customer Services NC II or hospitality-specific training separately."
+    },
+    {
+      "mapping_key": "IVA-010-in_demand-CUSTOMER-SERVICES-NC-II",
+      "occurrence_key": "IVA-010-in_demand",
+      "qualification_code": "CUSTOMER-SERVICES-NC-II",
+      "decision": "pending",
+      "reason": "Retail display and stock rotation align with the TR's merchandiser role, but this forecast occurrence specifies a four-year course. The NC II connection alone would conceal an education requirement; supplementary-training scope needs explicit review."
+    },
+    {
+      "mapping_key": "IVA-018-in_demand-AUTOMOTIVE-SERVICING-NC-II-2",
+      "occurrence_key": "IVA-018-in_demand",
+      "qualification_code": "AUTOMOTIVE-SERVICING-NC-II-2",
+      "decision": "pending",
+      "reason": "The automotive electrical-repair NC II TR covers ignition, starting, charging, body electrical systems and manual air-conditioning. The forecast highlights modern electronics and advanced diagnostics. Obtain the actual task scope before claiming this NC II covers advanced systems; Automotive Diagnosis (Electrical) NC III may be needed."
+    },
+    {
+      "mapping_key": "IVA-018-hard_to_fill-AUTOMOTIVE-SERVICING-NC-II-2",
+      "occurrence_key": "IVA-018-hard_to_fill",
+      "qualification_code": "AUTOMOTIVE-SERVICING-NC-II-2",
+      "decision": "pending",
+      "reason": "The automotive electrical-repair NC II TR covers ignition, starting, charging, body electrical systems and manual air-conditioning. The forecast highlights modern electronics and advanced diagnostics. Obtain the actual task scope before claiming this NC II covers advanced systems; Automotive Diagnosis (Electrical) NC III may be needed."
+    },
+    {
+      "mapping_key": "IVA-047-in_demand-WAREHOUSING-SERVICES-NC-II",
+      "occurrence_key": "IVA-047-in_demand",
+      "qualification_code": "WAREHOUSING-SERVICES-NC-II",
+      "decision": "approved",
+      "reason": "JHS-level warehouse personnel in transportation/storage align with receiving, storing, picking, dispatching and packing goods in Warehousing Services NC II. Its TR explicitly includes Warehouseperson."
+    },
+    {
+      "mapping_key": "IVA-048-in_demand-WAREHOUSING-SERVICES-NC-IV",
+      "occurrence_key": "IVA-048-in_demand",
+      "qualification_code": "WAREHOUSING-SERVICES-NC-IV",
+      "decision": "pending",
+      "reason": "Warehousing Services NC IV explicitly prepares Warehouse Supervisors, but the forecast additionally specifies BS Logistics or a business-related course. The training relevance is strong, but NC IV must not be presented as a substitute for that degree; confirm education/experience-aware guidance first."
+    },
+    {
+      "mapping_key": "IVA-052-in_demand-EIM-NC-II",
+      "occurrence_key": "IVA-052-in_demand",
+      "qualification_code": "EIM-NC-II",
+      "decision": "approved",
+      "reason": "The construction forecast explicitly requires Electrical NC II for wiring and onsite work. EIM NC II's building/residential wiring scope and installation/protection competencies directly match, without implying electrical-engineer licensing eligibility."
+    },
+    {
+      "mapping_key": "IVA-061-in_demand-PLUMBING-NC-I",
+      "occurrence_key": "IVA-061-in_demand",
+      "qualification_code": "PLUMBING-NC-I",
+      "decision": "rejected",
+      "reason": "The original forecast explicitly requires Plumbing NC II, whereas this candidate links NC I's single-unit/entry-level scope. Reject this candidate for the stated requirement; use the reviewed NC II link for the same original occupation."
+    },
+    {
+      "mapping_key": "IVA-061-in_demand-PLUMBING-NC-II",
+      "occurrence_key": "IVA-061-in_demand",
+      "qualification_code": "PLUMBING-NC-II",
+      "decision": "approved",
+      "reason": "The construction row explicitly specifies Plumbing NC II. The amended Plumbing NC II TR names Plumber II and covers multi-unit plumbing installation, leak testing, repair and maintenance. NC I must not substitute for this requirement."
+    },
+    {
+      "mapping_key": "IVA-061-hard_to_fill-PLUMBING-NC-I",
+      "occurrence_key": "IVA-061-hard_to_fill",
+      "qualification_code": "PLUMBING-NC-I",
+      "decision": "rejected",
+      "reason": "The original forecast explicitly requires Plumbing NC II, whereas this candidate links NC I's single-unit/entry-level scope. Reject this candidate for the stated requirement; use the reviewed NC II link for the same original occupation."
+    },
+    {
+      "mapping_key": "IVA-061-hard_to_fill-PLUMBING-NC-II",
+      "occurrence_key": "IVA-061-hard_to_fill",
+      "qualification_code": "PLUMBING-NC-II",
+      "decision": "pending",
+      "reason": "The construction row explicitly specifies Plumbing NC II. The amended Plumbing NC II TR names Plumber II and covers multi-unit plumbing installation, leak testing, repair and maintenance. NC I must not substitute for this requirement."
+    },
+    {
+      "mapping_key": "IVA-088-in_demand-CONTACT-CENTER-SERVICES-NC-II",
+      "occurrence_key": "IVA-088-in_demand",
+      "qualification_code": "CONTACT-CENTER-SERVICES-NC-II",
+      "decision": "pending",
+      "reason": "The IT-BPM sector and outsourcing reason align with contact-center customer support, but the report specifies a business-related course and six months' experience. Retain only as a potential entry-level skills relationship until education/experience constraints can be communicated."
+    },
+    {
+      "mapping_key": "IVA-096-in_demand-CONTACT-CENTER-SERVICES-NC-II",
+      "occurrence_key": "IVA-096-in_demand",
+      "qualification_code": "CONTACT-CENTER-SERVICES-NC-II",
+      "decision": "pending",
+      "reason": "The contact-center TR explicitly includes entry-level Technical Support and IT Helpdesk; however, the forecast requires a business-related course and six months' experience. NC II is not evidence of those credentials or all specialist troubleshooting duties; keep the contextual link for manual review."
+    },
+    {
+      "mapping_key": "IVA-097-in_demand-WEB-DEVELOPMENT-NC-III",
+      "occurrence_key": "IVA-097-in_demand",
+      "qualification_code": "WEB-DEVELOPMENT-NC-III",
+      "decision": "pending",
+      "reason": "The existing Web Development NC III covers website design, scripting and back-end work, but the forecast requires BS IT and programming knowledge. TESDA Board Resolution 2024-14 also amends the legacy qualification into Web Design, Front-End and Back-End qualifications. Review catalog currency and degree-aware guidance before activating this regional link."
+    },
+    {
+      "mapping_key": "IVA-097-hard_to_fill-WEB-DEVELOPMENT-NC-III",
+      "occurrence_key": "IVA-097-hard_to_fill",
+      "qualification_code": "WEB-DEVELOPMENT-NC-III",
+      "decision": "pending",
+      "reason": "The existing Web Development NC III covers website design, scripting and back-end work, but the forecast requires BS IT and programming knowledge. TESDA Board Resolution 2024-14 also amends the legacy qualification into Web Design, Front-End and Back-End qualifications. Review catalog currency and degree-aware guidance before activating this regional link."
+    },
+    {
+      "mapping_key": "IVA-115-in_demand-CUSTOMER-SERVICES-NC-II",
+      "occurrence_key": "IVA-115-in_demand",
+      "qualification_code": "CUSTOMER-SERVICES-NC-II",
+      "decision": "approved",
+      "reason": "The manpower-agency deployment is wholesale/retail and requires HS graduation plus POS skills. Customer Services NC II explicitly includes Cashier, retail-equipment operation and register balancing; the unrelated degree requirement from the other Cashier occurrence is not inherited."
+    },
+    {
+      "mapping_key": "IVA-116-in_demand-COOKERY-NC-II",
+      "occurrence_key": "IVA-116-in_demand",
+      "qualification_code": "COOKERY-NC-II",
+      "decision": "approved",
+      "reason": "The forecast places cooks in accommodation/food services and requests vocational training with NC II. Cookery NC II explicitly includes Cook/Commis and Assistant Cook and teaches kitchen hygiene and meal preparation; this is relevant training, not guaranteed employment or experience."
+    },
+    {
+      "mapping_key": "IVA-116-hard_to_fill-COOKERY-NC-II",
+      "occurrence_key": "IVA-116-hard_to_fill",
+      "qualification_code": "COOKERY-NC-II",
+      "decision": "pending",
+      "reason": "The forecast places cooks in accommodation/food services and requests vocational training with NC II. Cookery NC II explicitly includes Cook/Commis and Assistant Cook and teaches kitchen hygiene and meal preparation; this is relevant training, not guaranteed employment or experience."
+    },
+    {
+      "mapping_key": "IVA-117-in_demand-CONTACT-CENTER-SERVICES-NC-II",
+      "occurrence_key": "IVA-117-in_demand",
+      "qualification_code": "CONTACT-CENTER-SERVICES-NC-II",
+      "decision": "rejected",
+      "reason": "The source sector/deployment is wholesale-retail (and accommodation/food services for the agency row), not an established contact-center role. Contact Center Services NC II is scoped to inbound/outbound contact-center agents. A shared Customer Service Representative title and mention of online/BPO growth do not establish the required channel or tasks. Review Customer Services NC II or hospitality-specific training separately."
+    },
+    {
+      "mapping_key": "IVA-119-in_demand-EIM-NC-II",
+      "occurrence_key": "IVA-119-in_demand",
+      "qualification_code": "EIM-NC-II",
+      "decision": "pending",
+      "reason": "The original PDF explicitly deploys these electricians to manufacturing and requires at least an associate degree. EIM NC II is scoped to building/residential-commercial wiring; factory machinery or industrial controls are not established by the report. Require employer task evidence and education-aware guidance."
+    },
+    {
+      "mapping_key": "IVA-126-in_demand-CUSTOMER-SERVICES-NC-II",
+      "occurrence_key": "IVA-126-in_demand",
+      "qualification_code": "CUSTOMER-SERVICES-NC-II",
+      "decision": "approved",
+      "reason": "The manpower-agency deployment is wholesale/retail and requires SHS plus sales skills. Customer Services NC II covers selling, stock control and elective merchandise presentation and explicitly includes Promo Merchandiser. Merchandise electives may be needed."
+    },
+    {
+      "mapping_key": "IVA-141-in_demand-WAREHOUSING-SERVICES-NC-II",
+      "occurrence_key": "IVA-141-in_demand",
+      "qualification_code": "WAREHOUSING-SERVICES-NC-II",
+      "decision": "approved",
+      "reason": "The manpower-agency deployment is transportation/storage, requires HS graduation and cites e-commerce logistics. Warehousing Services NC II's Warehouseperson role and goods-handling competencies directly align."
+    }
+  ]
+}

@@ -1,8 +1,11 @@
 import { AxeBuilder } from '@axe-core/playwright'
 import { expect, test, type BrowserContext, type Locator, type Page } from '@playwright/test'
+import { learnerAccounts, NO_LEARNER_ACCOUNTS } from './accounts.ts'
 
 // Account journeys against a mocked API: sign in from the sidebar and out again, create an account, and delete it
 // after confirming. Each runs in both themes, on a phone (390 px) and a desktop, with axe at every dialog.
+
+test.skip(!learnerAccounts, NO_LEARNER_ACCOUNTS)
 
 const LEARNER = {
   id: '6f1c2a52-8b7e-4d3a-9c51-2f0e7a1b3c4d',

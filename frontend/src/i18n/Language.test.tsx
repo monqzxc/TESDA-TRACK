@@ -25,7 +25,10 @@ describe('language selection', () => {
     const user = userEvent.setup()
     renderApp('/find', undefined, { firstVisit: true })
     const notice = await screen.findByRole('dialog', { name: 'Your privacy on TESDA Track' })
-    await user.selectOptions(within(notice).getByRole('combobox', { name: 'Language / Wika' }), 'tl')
+    await user.selectOptions(
+      within(notice).getByRole('combobox', { name: 'Language / Wika' }),
+      'tl',
+    )
     expect(notice).not.toHaveAccessibleName('Your privacy on TESDA Track')
     expect(within(notice).getByRole('combobox')).toHaveValue('tl')
   })
@@ -33,7 +36,7 @@ describe('language selection', () => {
   it('updates the actual learner page, navigation and title without clearing a typed goal', async () => {
     const user = userEvent.setup()
     renderApp('/find')
-    const goal = await screen.findByRole('textbox', { name: 'Or tell us in your own words' })
+    const goal = await screen.findByRole('textbox', { name: 'Your career interests or skills' })
     await user.click(goal)
     await user.paste('I want to repair computers {1}')
     const selector = screen.getByRole('combobox', { name: 'Language / Wika' })

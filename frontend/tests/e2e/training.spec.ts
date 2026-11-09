@@ -1,6 +1,7 @@
 import { AxeBuilder } from '@axe-core/playwright'
 import { devices, expect, test, type Page } from '@playwright/test'
 import type { Map as MapLibreMap } from 'maplibre-gl'
+import { learnerAccounts, NO_LEARNER_ACCOUNTS } from './accounts.ts'
 import { MAPTILER_KEY, serveVectorTiles, type VectorTileOptions } from './mapTiles.ts'
 
 // Training & Assessment (US-07, US-08, US-09): the map and the list, in both themes, on a phone and a desktop, with
@@ -546,12 +547,22 @@ test.describe('on a desktop', () => {
   })
 
   test('applying asks a guest to sign in first', async ({ page }) => {
+    test.skip(!learnerAccounts, NO_LEARNER_ACCOUNTS)
     await serveTraining(page)
     await page.goto('/training?type=assessment')
 
     await page.getByRole('button', { name: 'Apply' }).click()
 
     await expect(page.getByRole('dialog', { name: 'Sign in' })).toBeVisible()
+  })
+
+  test('offers a guest no Apply: the app is guest-only', async ({ page }) => {
+    test.skip(learnerAccounts, 'Learner accounts are on')
+    await serveTraining(page)
+    await page.goto('/training?type=assessment')
+
+    await expect(page.getByRole('heading', { name: /Upcoming assessments/ }).first()).toBeVisible()
+    await expect(page.getByRole('button', { name: 'Apply' })).toHaveCount(0)
   })
 })
 

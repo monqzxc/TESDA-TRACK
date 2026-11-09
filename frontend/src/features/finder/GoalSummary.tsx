@@ -28,13 +28,16 @@ export function GoalSummary({ journey, code, sync, compact = false }: GoalSummar
   const en = useCopy()
   const copy = en.finder.summary
 
-  const { learner } = useAuth()
+  const { learner, offersAccounts } = useAuth()
   const requireAccount = useRequireAccount()
   const { save, pending } = useSaveJourney()
   const owned = ownsSession(learner, journey.sessionOwner) && journey.sessionId !== null
 
   let status
-  if (owned && sync.failed) {
+  if (journey.mode === 'skills') {
+    // A list of skills or jobs isn't saved as a session.
+    status = null
+  } else if (owned && sync.failed) {
     status = (
       <>
         <span className="text-14 font-semibold text-warn-ink">{en.finder.save.syncFailed}</span>
@@ -51,7 +54,7 @@ export function GoalSummary({ journey, code, sync, compact = false }: GoalSummar
         {copy.saved}
       </span>
     )
-  } else {
+  } else if (offersAccounts) {
     status = (
       <Button
         className={button({ variant: 'tertiary' })}
@@ -72,7 +75,7 @@ export function GoalSummary({ journey, code, sync, compact = false }: GoalSummar
       )}
     >
       <div className="min-w-0 flex-[1_1_22rem]">
-        <p className="m-0 text-13 leading-[1.5] text-muted">{copy.label}</p>
+        <p className="m-0 text-13 leading-[1.5] text-muted">{en.finder.unified.summary}</p>
         <p className="mt-[0.1rem] mb-0 text-17 leading-[1.4] font-semibold wrap-anywhere text-navy max-xs:text-16">
           {journey.query}
         </p>
@@ -80,7 +83,7 @@ export function GoalSummary({ journey, code, sync, compact = false }: GoalSummar
       <div className="flex flex-wrap items-center gap-x-[0.6rem] gap-y-1">
         <Link to={paths.finder} className={button({ variant: 'tertiary' })}>
           <Icon name="edit" />
-          {copy.change}
+          {en.finder.unified.change}
         </Link>
         <div
           className="flex flex-wrap items-center gap-x-2 gap-y-1 border-l border-border pl-[0.6rem] max-xs:border-l-0 max-xs:pl-0"

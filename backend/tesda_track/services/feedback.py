@@ -22,7 +22,7 @@ def record(session: Session, request: FeedbackCreate, embedder: Embedder | None,
     answer, so every row says what this server's matching gave and with which model."""
     qualification = catalog.get_active_qualification(session, request.qualification_code)
     readiness = analysis.score_readiness(qualification, request.answers)
-    evidence = analysis.match_evidence(session, request.query, request.profile, embedder)
+    evidence = analysis.match_evidence(session, request.query, request.profile, embedder, mode=request.mode)
     codes = [match.qualification.code for match in evidence.matches]
     rank = codes.index(qualification.code) + 1 if qualification.code in codes else None
     z_score = evidence.z_scores.get(qualification.id)
@@ -41,6 +41,7 @@ def record(session: Session, request: FeedbackCreate, embedder: Embedder | None,
         keyword=evidence.keyword.get(qualification.code, 0.0),
         z_score=round(z_score, 3) if z_score is not None else None,
         model=evidence.model,
+        search_mode=request.mode,
         params=asdict(evidence.params) if evidence.params else None,
         readiness_score=readiness.score,
         readiness_level=readiness.level)

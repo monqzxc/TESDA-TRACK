@@ -209,11 +209,19 @@ def refresh_program(session: Session, embedder: Embedder | None, program: Traini
 # Similarity
 
 def qualification_similarities(session: Session, embedder: Embedder, text: str) -> dict[int, float]:
-    vector = embedder.embed_queries([text])[0]
-    similarity = 1 - QualificationEmbedding.embedding.cosine_distance(vector)
-    rows = session.exec(select(QualificationEmbedding.qualification_id, similarity)
-                        .where(QualificationEmbedding.model == embedder.model_name))
-    return {qualification_id: float(value) for qualification_id, value in rows}
+    return qualification_similarities_many(session, embedder, [text])[0]
+
+
+def qualification_similarities_many(session: Session, embedder: Embedder,
+                                    texts: list[str]) -> list[dict[int, float]]:
+    """Each text's similarity to every qualification, in the texts' order; the model embeds them in one call."""
+    results = []
+    for vector in embedder.embed_queries(texts):
+        similarity = 1 - QualificationEmbedding.embedding.cosine_distance(vector)
+        rows = session.exec(select(QualificationEmbedding.qualification_id, similarity)
+                            .where(QualificationEmbedding.model == embedder.model_name))
+        results.append({qualification_id: float(value) for qualification_id, value in rows})
+    return results
 
 
 def program_similarities(session: Session, embedder: Embedder, text: str, program_ids: list[int]) -> dict[int, float]:

@@ -1,0 +1,23 @@
+{
+  "source_id": "dole-iva-jlmf-2026-2027",
+  "version": 2,
+  "publisher": "DOLE Region IV-A",
+  "title": "CALABARZON Jobs and Labor Market Forecast 2026–2027",
+  "evidence_class": "regional_forecast",
+  "geographic_scope": "regional",
+  "region_code": "IV-A",
+  "period_label": "2026–2027",
+  "period_start_year": 2026,
+  "period_end_year": 2027,
+  "source_url": "https://drive.google.com/file/d/1X1zTC5KfxGpJ3W4FXgvrd6EX2c6h5SKu/view",
+  "file_sha256": "793365290995c681af4fd7665bb9197096a5aece5472ab1b129c9ef2ea3a4767",
+  "notes": "Evidence-reviewed replacement for v1. All 142 CSV rows reproduce identically from the official 70-page PDF. Only supported in-demand links activate; degree/context gaps stay pending and unsupported candidates are rejected.",
+  "metadata": {
+    "git_commit": "884a3897d38287e8331ae99645bfe683cebd5fdc",
+    "source_file": "jlmf_calabarzon_2026_2027_priority_occupations.csv",
+    "source_csv_sha256": "475dd827562e62bc05554a7cd8b4c6329b990fba2e6bffe9bf91cdfcf41c4993",
+    "review_batch": "calabarzon-scope-review-2026-11-06",
+    "supersedes": "dole-iva-jlmf-2026-2027@1"
+  },
+  "source_url_kind": "public_official_PDF_from_DOLE_IV_A_compendium"
+}

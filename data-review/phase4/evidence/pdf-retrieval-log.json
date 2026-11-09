@@ -1,0 +1,162 @@
+[
+  {
+    "qualification_code": "RIGGING-NC-I",
+    "requested_url": "https://www.tesda.gov.ph/Downloadables/TRs/TR%20-%20Rigging%20NC%20I.pdf",
+    "retrieved_utc": "2026-11-05T15:35:52.438921+00:00",
+    "final_url": "https://www.tesda.gov.ph/Downloadables/TRs/TR%20-%20Rigging%20NC%20I.pdf",
+    "status": 200,
+    "sha256": "566e86cea66edb94d1f4c4fd5a72033dd42a70d062f080adb338d479236d9283",
+    "bytes": 363224,
+    "pages": 63
+  },
+  {
+    "qualification_code": "3D-GAME-ART-DEVELOPMENT-NC-III",
+    "requested_url": "https://www.tesda.gov.ph/Downloadables/TRs/TR%20-%203D%20Game%20Art%20Development%20NC%20III.pdf",
+    "retrieved_utc": "2026-11-05T15:35:55.245668+00:00",
+    "final_url": "https://www.tesda.gov.ph/Downloadables/TRs/TR%20-%203D%20Game%20Art%20Development%20NC%20III.pdf",
+    "status": 200,
+    "sha256": "0c344c7efed7687a38613fe0d40e1cfabd0343697b8e36a13993d0ad024a144b",
+    "bytes": 486057,
+    "pages": 73
+  },
+  {
+    "qualification_code": "CAD-CAM-OPERATION-NC-III",
+    "requested_url": "https://www.tesda.gov.ph/Downloadables/CAD%20CAM%20Operation%20%20NC%20III.pdf",
+    "retrieved_utc": "2026-11-05T15:35:57.319731+00:00",
+    "final_url": "https://www.tesda.gov.ph/Downloadables/CAD%20CAM%20Operation%20%20NC%20III.pdf",
+    "status": 200,
+    "sha256": "4ee6c8a912f084ee8bee0e72e7d7f98d18d296c3131207a0a2e136c4d73be865",
+    "bytes": 505975,
+    "pages": 69
+  },
+  {
+    "qualification_code": "CUSTOMER-SERVICES-NC-II",
+    "requested_url": "https://tesda.gov.ph/Downloadables/TR%20CUSTOMER%20SERVICES%20NC%20II.pdf",
+    "retrieved_utc": "2026-11-05T15:35:59.892854+00:00",
+    "final_url": "https://tesda.gov.ph/Downloadables/TR%20CUSTOMER%20SERVICES%20NC%20II.pdf",
+    "status": 200,
+    "sha256": "bd6196dc0e78542ef59001f3b1c188c4db863306c9029e6d215f689fcfeb3f05",
+    "bytes": 482590,
+    "pages": 95
+  },
+  {
+    "qualification_code": "AUTOMOTIVE-SERVICING-NC-I",
+    "requested_url": "https://www.tesda.gov.ph/Downloadables/TRs/TR-Automotive%20Servicing%20NC%20I-revisedCODING-2020-07-16-V03.pdf",
+    "retrieved_utc": "2026-11-05T15:36:02.767439+00:00",
+    "final_url": "https://www.tesda.gov.ph/Downloadables/TRs/TR-Automotive%20Servicing%20NC%20I-revisedCODING-2020-07-16-V03.pdf",
+    "status": 200,
+    "sha256": "8907863981a009af09adc01b896114643532537e29511f3ebbfeefc06d420ca1",
+    "bytes": 1047759,
+    "pages": 116
+  },
+  {
+    "qualification_code": "MOLD-MAKING-NC-III",
+    "requested_url": "https://tesda.gov.ph/Downloadables/TRs/TR%20Mold%20Making%20NC%20III.pdf",
+    "retrieved_utc": "2026-11-05T15:36:44.269800+00:00",
+    "final_url": "https://tesda.gov.ph/Downloadables/TRs/TR%20Mold%20Making%20NC%20III.pdf",
+    "status": 200,
+    "sha256": "d705ec5fa4504b4bed588183de7444cea01bc904443268804608cc6e13689747",
+    "bytes": 1581401,
+    "pages": 148
+  },
+  {
+    "qualification_code": "CONTACT-CENTER-SERVICES-NC-II",
+    "requested_url": "https://tesda.gov.ph/Downloadables/TR%20Contact%20Center%20Services%20NC%20II.pdf",
+    "retrieved_utc": "2026-11-05T15:36:47.517114+00:00",
+    "final_url": "https://tesda.gov.ph/Downloadables/TR%20Contact%20Center%20Services%20NC%20II.pdf",
+    "status": 200,
+    "sha256": "9206633efe3cce09739a0f57d8011269823e33a17ea51b071655a7b885cbafaf",
+    "bytes": 405618,
+    "pages": 55
+  },
+  {
+    "qualification_code": "SECURITY-SERVICES-NC-I",
+    "requested_url": "https://tesda.gov.ph/Downloadables/TRs/TR%20Security%20Services%20NC%20I.pdf",
+    "retrieved_utc": "2026-11-05T15:36:49.219943+00:00",
+    "final_url": "https://tesda.gov.ph/Downloadables/TRs/TR%20Security%20Services%20NC%20I.pdf",
+    "status": 200,
+    "sha256": "8b45027a4dbf802ae0913cfc6dfa0fdf9012d51e844b4ef73531fe31ac4ffe3f",
+    "bytes": 676554,
+    "pages": 60
+  },
+  {
+    "qualification_code": "EIM-NC-II",
+    "requested_url": "https://tesda.gov.ph/Downloadables/TRs/TR-Electrical%20Installation%20and%20Maintenance%20NC%20II.pdf",
+    "retrieved_utc": "2026-11-05T15:36:51.627350+00:00",
+    "final_url": "https://tesda.gov.ph/Downloadables/TRs/TR-Electrical%20Installation%20and%20Maintenance%20NC%20II.pdf",
+    "status": 200,
+    "sha256": "934257799b7a0bb59ad3d5b0beb7cb2c91c795c8b4ac045bad51705c7d08d411",
+    "bytes": 560282,
+    "pages": 79
+  },
+  {
+    "qualification_code": "FOOD-PRODUCTION-NC-III",
+    "requested_url": "https://tesda.gov.ph/Downloadables/TRs/Food%20Production%20%28Professional%20Cookery%29%20NC%20III%20v.02.pdf",
+    "retrieved_utc": "2026-11-05T15:36:53.193513+00:00",
+    "final_url": "https://tesda.gov.ph/Downloadables/TRs/Food%20Production%20%28Professional%20Cookery%29%20NC%20III%20v.02.pdf",
+    "status": 200,
+    "sha256": "f546571e3b3a37cf430458b22976536c7123eee78190b7ed4174734f249ecd4d",
+    "bytes": 1441002,
+    "pages": 253
+  },
+  {
+    "qualification_code": "HOUSEKEEPING-NC-IV",
+    "requested_url": "https://tesda.gov.ph/Downloadables/TRs/TR_HOUSEKEEPING%20NC%20IV.pdf",
+    "retrieved_utc": "2026-11-05T15:38:57.016844+00:00",
+    "final_url": "https://tesda.gov.ph/Downloadables/TRs/TR_HOUSEKEEPING%20NC%20IV.pdf",
+    "status": 200,
+    "sha256": "7561fddf12907e1f56840fda62507d6545b213bce30a7567045735e6855d616b",
+    "bytes": 955450,
+    "pages": 156
+  },
+  {
+    "qualification_code": "TOUR-GUIDING-SERVICES-NC-III",
+    "requested_url": "https://tesda.gov.ph/Downloadables/TRs/TR-Tour%20Guiding%20Services%20NC%20III.pdf",
+    "retrieved_utc": "2026-11-05T15:39:00.362120+00:00",
+    "final_url": "https://tesda.gov.ph/Downloadables/TRs/TR-Tour%20Guiding%20Services%20NC%20III.pdf",
+    "status": 200,
+    "sha256": "dff9d9c7d45853c548911c60adb53cf02c4bfdd3062bfa539702c4b739649c22",
+    "bytes": 1439201,
+    "pages": 135
+  },
+  {
+    "qualification_code": "BARTENDING-NC-II",
+    "requested_url": "https://tesda.gov.ph/Downloadables/TR%20Bartending%20NC%20II.pdf",
+    "retrieved_utc": "2026-11-05T15:39:02.708590+00:00",
+    "final_url": "https://tesda.gov.ph/Downloadables/TR%20Bartending%20NC%20II.pdf",
+    "status": 200,
+    "sha256": "e721be8d5c58d2caec8d01609f834c1831b4294f545327a87ab8751904de837c",
+    "bytes": 1147346,
+    "pages": 77
+  },
+  {
+    "qualification_code": "WAREHOUSING-SERVICES-NC-II",
+    "requested_url": "https://tesda.gov.ph/Downloadables/TR-Wearhousing%20Services%20NC%20II.pdf",
+    "retrieved_utc": "2026-11-05T15:39:05.008070+00:00",
+    "final_url": "https://tesda.gov.ph/Downloadables/TR-Wearhousing%20Services%20NC%20II.pdf",
+    "status": 200,
+    "sha256": "e647e22e6061d00eadb0bd61e85e6e66cf3d77157f68d47396095139244d31f0",
+    "bytes": 1035232,
+    "pages": 156
+  },
+  {
+    "qualification_code": "VISUAL-GRAPHIC-DESIGN-NC-III",
+    "requested_url": "https://www.tesda.gov.ph/Downloadables/TRs/TR%20-%20Visual%20Graphic%20Design%20NC%20III.pdf",
+    "retrieved_utc": "2026-11-05T15:39:06.148149+00:00",
+    "final_url": "https://www.tesda.gov.ph/Downloadables/TRs/TR%20-%20Visual%20Graphic%20Design%20NC%20III.pdf",
+    "status": 200,
+    "sha256": "8203027b927b7f570fa52fce28966f47379741cd9ec8d125d693a8175296813e",
+    "bytes": 698579,
+    "pages": 118
+  },
+  {
+    "qualification_code": "PHOTOGRAPHY-NC-II",
+    "requested_url": "https://tesda.gov.ph/Downloadables/TRs/TR%20Photography%20NC%20II.pdf",
+    "retrieved_utc": "2026-11-05T15:39:34.615082+00:00",
+    "final_url": "https://tesda.gov.ph/Downloadables/TRs/TR%20Photography%20NC%20II.pdf",
+    "status": 200,
+    "sha256": "2292d15af7e1fc0b0ab7615dbb438749448264e26f512d319a1ac234831a4f6d",
+    "bytes": 480462,
+    "pages": 69
+  }
+]

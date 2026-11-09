@@ -1,0 +1,54 @@
+{
+  "original_candidates": 236,
+  "original_decisions": {
+    "High-confidence proposal": 52,
+    "Rejected proposal": 6,
+    "Needs manual review": 178
+  },
+  "original_forecast_decisions": {
+    "High-confidence proposal": 50,
+    "Rejected proposal": 6,
+    "Needs manual review": 176
+  },
+  "original_observed_decisions": {
+    "Needs manual review": 2,
+    "High-confidence proposal": 2
+  },
+  "additional_candidates": 39,
+  "additional_decisions": {
+    "High-confidence proposal": 30,
+    "Needs manual review": 9
+  },
+  "all_reviewed_pairs": 275,
+  "all_decisions": {
+    "High-confidence proposal": 82,
+    "Rejected proposal": 6,
+    "Needs manual review": 187
+  },
+  "forecast_occurrences": 442,
+  "forecast_unique_titles_case_insensitive": 396,
+  "forecast_coverage_occurrences": {
+    "has_high_confidence_proposal": 78,
+    "no_mapping_candidate_identified": 317,
+    "manual_review_only": 45,
+    "rejected_candidates_only": 2
+  },
+  "forecast_titles_with_any_high_proposal": 67,
+  "unmatched_occurrences": 319,
+  "original_record_id_unique_count": 344,
+  "original_record_ids_with_collisions": 57,
+  "retrieved_official_pdfs": 16,
+  "extracted_tr_scopes": 16,
+  "original_pair_evidence_tiers": {
+    "official_TR_PDF_and_catalog": 29,
+    "catalog_derived_scope_only": 206,
+    "official_hosted_draft_marked_PDF_and_catalog": 1
+  },
+  "high_proposal_evidence_tiers": {
+    "official_TR_PDF_and_catalog": 24,
+    "catalog_derived_scope_only": 58
+  },
+  "approved_pairs": 0,
+  "fully_unmatched_distinct_titles_all_sectors": 296,
+  "unmatched_distinct_titles_in_unmatched_occurrences": 297
+}

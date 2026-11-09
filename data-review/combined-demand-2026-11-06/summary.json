@@ -1,0 +1,199 @@
+{
+  "applied": true,
+  "database": "tesda_track_phase5_preview",
+  "main_commit": "884a3897d38287e8331ae99645bfe683cebd5fdc",
+  "posting_source_rows": 4237,
+  "domestic_postings_importable": 3884,
+  "skipped_postings": {
+    "OVERSEAS/OTHER": 338,
+    "PH-UNSPECIFIED": 15
+  },
+  "exact_mapping_proposals": 367,
+  "matched_occurrences": 339,
+  "unmatched_occurrences": 3763,
+  "by_dataset": {
+    "dole-iva-jlmf-2026-2027-v1": {
+      "evidence": 218,
+      "mappings": 25
+    },
+    "philjobnet-postings-2026-11-04-car-v1": {
+      "evidence": 142,
+      "mappings": 12
+    },
+    "philjobnet-postings-2026-11-04-i-v1": {
+      "evidence": 19,
+      "mappings": 2
+    },
+    "philjobnet-postings-2026-11-04-ii-v1": {
+      "evidence": 21,
+      "mappings": 3
+    },
+    "philjobnet-postings-2026-11-04-iii-v1": {
+      "evidence": 338,
+      "mappings": 30
+    },
+    "philjobnet-postings-2026-11-04-iv-a-v1": {
+      "evidence": 351,
+      "mappings": 45
+    },
+    "philjobnet-postings-2026-11-04-ix-v1": {
+      "evidence": 27,
+      "mappings": 0
+    },
+    "philjobnet-postings-2026-11-04-mimaropa-v1": {
+      "evidence": 84,
+      "mappings": 8
+    },
+    "philjobnet-postings-2026-11-04-ncr-v1": {
+      "evidence": 1954,
+      "mappings": 152
+    },
+    "philjobnet-postings-2026-11-04-nir-v1": {
+      "evidence": 97,
+      "mappings": 16
+    },
+    "philjobnet-postings-2026-11-04-v-v1": {
+      "evidence": 27,
+      "mappings": 1
+    },
+    "philjobnet-postings-2026-11-04-vi-v1": {
+      "evidence": 173,
+      "mappings": 19
+    },
+    "philjobnet-postings-2026-11-04-vii-v1": {
+      "evidence": 444,
+      "mappings": 45
+    },
+    "philjobnet-postings-2026-11-04-viii-v1": {
+      "evidence": 55,
+      "mappings": 1
+    },
+    "philjobnet-postings-2026-11-04-x-v1": {
+      "evidence": 34,
+      "mappings": 0
+    },
+    "philjobnet-postings-2026-11-04-xi-v1": {
+      "evidence": 74,
+      "mappings": 2
+    },
+    "philjobnet-postings-2026-11-04-xii-v1": {
+      "evidence": 6,
+      "mappings": 2
+    },
+    "philjobnet-postings-2026-11-04-xiii-v1": {
+      "evidence": 38,
+      "mappings": 4
+    }
+  },
+  "imports": [
+    {
+      "dataset_id": 8,
+      "key": "dole-iva-jlmf-2026-2027@1",
+      "unchanged": true,
+      "evidence": 218
+    },
+    {
+      "dataset_id": 9,
+      "key": "philjobnet-postings-2026-11-04-car@1",
+      "unchanged": true,
+      "evidence": 142
+    },
+    {
+      "dataset_id": 10,
+      "key": "philjobnet-postings-2026-11-04-i@1",
+      "unchanged": true,
+      "evidence": 19
+    },
+    {
+      "dataset_id": 11,
+      "key": "philjobnet-postings-2026-11-04-ii@1",
+      "unchanged": true,
+      "evidence": 21
+    },
+    {
+      "dataset_id": 12,
+      "key": "philjobnet-postings-2026-11-04-iii@1",
+      "unchanged": true,
+      "evidence": 338
+    },
+    {
+      "dataset_id": 13,
+      "key": "philjobnet-postings-2026-11-04-iv-a@1",
+      "unchanged": true,
+      "evidence": 351
+    },
+    {
+      "dataset_id": 14,
+      "key": "philjobnet-postings-2026-11-04-ix@1",
+      "unchanged": true,
+      "evidence": 27
+    },
+    {
+      "dataset_id": 15,
+      "key": "philjobnet-postings-2026-11-04-mimaropa@1",
+      "unchanged": true,
+      "evidence": 84
+    },
+    {
+      "dataset_id": 16,
+      "key": "philjobnet-postings-2026-11-04-ncr@1",
+      "unchanged": true,
+      "evidence": 1954
+    },
+    {
+      "dataset_id": 17,
+      "key": "philjobnet-postings-2026-11-04-nir@1",
+      "unchanged": true,
+      "evidence": 97
+    },
+    {
+      "dataset_id": 18,
+      "key": "philjobnet-postings-2026-11-04-v@1",
+      "unchanged": true,
+      "evidence": 27
+    },
+    {
+      "dataset_id": 19,
+      "key": "philjobnet-postings-2026-11-04-vi@1",
+      "unchanged": true,
+      "evidence": 173
+    },
+    {
+      "dataset_id": 20,
+      "key": "philjobnet-postings-2026-11-04-vii@1",
+      "unchanged": true,
+      "evidence": 444
+    },
+    {
+      "dataset_id": 21,
+      "key": "philjobnet-postings-2026-11-04-viii@1",
+      "unchanged": true,
+      "evidence": 55
+    },
+    {
+      "dataset_id": 22,
+      "key": "philjobnet-postings-2026-11-04-x@1",
+      "unchanged": true,
+      "evidence": 34
+    },
+    {
+      "dataset_id": 23,
+      "key": "philjobnet-postings-2026-11-04-xi@1",
+      "unchanged": true,
+      "evidence": 74
+    },
+    {
+      "dataset_id": 24,
+      "key": "philjobnet-postings-2026-11-04-xii@1",
+      "unchanged": true,
+      "evidence": 6
+    },
+    {
+      "dataset_id": 25,
+      "key": "philjobnet-postings-2026-11-04-xiii@1",
+      "unchanged": true,
+      "evidence": 38
+    }
+  ],
+  "career_profiles": "124 undated profiles preserved as context only; not activated as 2026 demand"
+}

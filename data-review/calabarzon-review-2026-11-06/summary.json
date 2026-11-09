@@ -1,0 +1,17 @@
+{
+  "reviewed": 25,
+  "statuses": {
+    "high_confidence": 10,
+    "needs_review": 10,
+    "rejected": 5
+  },
+  "decisions": {
+    "approved": 8,
+    "pending": 12,
+    "rejected": 5
+  },
+  "applied_to_preview": true,
+  "source_rows_reextracted": 142,
+  "evidence_occurrences": 218,
+  "original_files_unchanged": true
+}

@@ -1,0 +1,27 @@
+{
+  "PLUMBING-NC-II": {
+    "url": "https://www.tesda.gov.ph/Downloadables/TRs/TR%20Plumbing%20NC%20II.pdf",
+    "sha256": "8d13c8bbe5af365b2f4ba83f8ae63233c6231a0e1de42861597ac284a29e2dd3",
+    "path": "data-review\\calabarzon-review-2026-11-06\\raw\\PLUMBING-NC-II.pdf"
+  },
+  "COOKERY-NC-II": {
+    "url": "https://www.tesda.gov.ph/Downloadables/TRs/TR%20Cookery%20NC%20II.pdf",
+    "sha256": "eed9e7d5cd794ed48b11a9f2cc157a51a6a20308f37032e4bb14e78f1627d2f6",
+    "path": "data-review\\calabarzon-review-2026-11-06\\raw\\COOKERY-NC-II.pdf"
+  },
+  "WAREHOUSING-SERVICES-NC-IV": {
+    "url": "https://www.tesda.gov.ph/Downloadables/Warehousing%20Services%20NC%20IV.pdf",
+    "sha256": "47c3d34d5160a21a5693e5f8171fe20ba0b0974c28bfc1bd246e31d9bcdeccb6",
+    "path": "data-review\\calabarzon-review-2026-11-06\\raw\\WAREHOUSING-SERVICES-NC-IV.pdf"
+  },
+  "WEB-DEVELOPMENT-NC-III": {
+    "url": "https://www.tesda.gov.ph/Downloadables/TR%20-%20Web%20Development%20NC%20III.pdf",
+    "sha256": "32a740e78b4d52a290c6af693a755ffbabc692224a023ceb9f3337bdc36551f5",
+    "path": "data-review\\calabarzon-review-2026-11-06\\raw\\WEB-DEVELOPMENT-NC-III.pdf"
+  },
+  "AUTOMOTIVE-SERVICING-NC-II-2": {
+    "url": "https://www.tesda.gov.ph/Downloadables/TR%20-%20Automotive%20Servicing%20%28Electrical%20Repair%29%20NC%20II.pdf",
+    "sha256": "c1d1730360db233fcbde0cdea5c7774c703174affe09fb2b0b8d57abffbfa705",
+    "path": "data-review\\calabarzon-review-2026-11-06\\raw\\AUTOMOTIVE-SERVICING-NC-II-2.pdf"
+  }
+}

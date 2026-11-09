@@ -1,0 +1,156 @@
+﻿source_id,region_code,classification,list_no,occupation_title,sector,skills_as_printed,page_pdf,page_printed,extracted_by,checked_by,exact_catalog_job_codes,notes,period_label,period_type,source_verification,mapping_status,approved_for_integration
+dole-ble-jlmf-2023-2024,PH,in_demand,1,Accountant,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,2,Customer Service Representative,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,3,Driver,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,4,Cashier,,,25,23,Claude (from PDF text),,CUSTOMER-SERVICES-NC-II,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,5,Electrician,,,25,23,Claude (from PDF text),,EIM-NC-II,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,6,Heavy Equipment Operator,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,7,Mason,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,8,Safety Officer,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,9,Sales Representative,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,10,Welder,,,25,23,Claude (from PDF text),,MMAW-NC-II,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,11,Delivery Driver,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,12,Mechanical Engineer,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,13,Web Developer,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,14,Carpenter,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,15,Laborer,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,16,Office Staff,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,17,Bookepeer,,,25,23,Claude (from PDF text),,,"Spelled as printed (""Bookepeer"")",2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,18,Engineer,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,19,Forklift Operator,,,25,23,Claude (from PDF text),,HEAVY-EQUIPMENT-OPERATION-NC-II-6,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,20,IT Specialist,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,21,Merchandiser,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,22,Nurse,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,23,Service Crew,,,25,23,Claude (from PDF text),,CUSTOMER-SERVICES-NC-II,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,24,Teacher,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,25,Automotive Mechanic,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,26,Bagger,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,27,Call Center Agent,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,28,Chef,,,25,23,Claude (from PDF text),,COOKERY-NC-II,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,29,Content Writer,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,30,Cook,,,25,23,Claude (from PDF text),,COOKERY-NC-II,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,31,Digital Marketer,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,32,Digital Marketing Specialist,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,33,Domestic Helper,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,34,Electrical Engineer,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,35,Farmer,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,36,Housekeeping Staff,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,37,Librarian,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,38,Pipefitter,,,25,23,Claude (from PDF text),,PIPEFITTING-NC-II,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,39,Production Crew,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,40,Production Worker,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,41,Sales Clerk,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,42,Salesman,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,43,Software Developer,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,44,Supervisor,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,45,Tour guide,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,46,Truck Driver,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,47,Virtual Assistant,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,48,Accounting Staff,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,49,Architect,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,50,Automotive Servicing,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,51,Bartender,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,52,Chemical Engineer,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,53,Computer Programmer,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,54,Elementary Occupation,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,55,Equipment Operator,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,56,Foreign Language Specialist,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,57,Front Office Staff,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,58,Guidance Counselor,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,59,Kitchen Staff,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,60,Layout Artist,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,61,Lineman,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,62,Machinist,,,25,23,Claude (from PDF text),,AUTO-ENGINE-REBUILDING-NC-II;MACHINING-NC-I;MACHINING-NC-II;MACHINING-NC-III,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,63,Marketing Personnel,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,64,Mechanic,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,65,Online Tutor,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,66,Operator,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,67,Pharmacist,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,68,Pollution Control Officer,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,69,Production Engineer,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,70,Receptionist,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,71,Researcher,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,72,Security Guard,,,25,23,Claude (from PDF text),,SECURITY-SERVICES-NC-I;SECURITY-SERVICES-NC-II,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,73,Social Media Manager,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,74,Social Media Marketing Specialists,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,75,Stockman,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,76,Technician,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,77,Telemarketer,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,78,Bank Teller,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,in_demand,79,Utility Worker,,,25,23,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,1,Accountant,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,2,Mechanical Engineer,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,3,Heavy Equipment Operator,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,4,Nurse,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,5,Forklift Operator,,,26,24,Claude (from PDF text),,HEAVY-EQUIPMENT-OPERATION-NC-II-6,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,6,Driver,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,7,Electrician,,,26,24,Claude (from PDF text),,EIM-NC-II,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,8,Manager,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,9,Medical Technologist,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,10,Supervisor,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,11,Accounting Staff,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,12,Civil Engineer,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,13,Customer Service Representative,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,14,Electrical Engineer,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,15,Finance Manager,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,16,Industrial Engineer,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,17,Managerial Position,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,18,Mason,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,19,Safety Officer,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,20,Surveyor,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,21,Call Center Agent,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,22,Chef,,,26,24,Claude (from PDF text),,COOKERY-NC-II,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,23,Chemical Engineer,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,24,Chemist,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,25,Data Analyst,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,26,Geologist,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,27,Guidance Counselor,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,28,Internal Auditor,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,29,Laboratory Analyst,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,30,Machine Operator,,,26,24,Claude (from PDF text),,RUBBER-PROCESSING-NC-II,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,31,Mechanic,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,32,Pollution Control Officer,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,33,Production Engineer,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,34,Radiologic Technologist,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,35,Software Developer,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,36,Technician,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,37,Welder,,,27,25,Claude (from PDF text),,MMAW-NC-II,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,38,Agriculturist,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,39,Aircon Technician,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,40,Animator,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,41,Architect,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,42,Audit Staff,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,43,Auditor,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,44,AutoCAD Operator,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,45,Automation Engineer,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,46,Bagger,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,47,Bank Teller,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,48,Bartender,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,49,Business Analyst,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,50,Carpenter,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,51,Cashier,,,27,25,Claude (from PDF text),,CUSTOMER-SERVICES-NC-II,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,52,Company Nurse,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,53,Cook,,,27,25,Claude (from PDF text),,COOKERY-NC-II,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,54,Doctor,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,55,Engineer,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,56,Environment Community Relations Assistant,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,57,Equipment Operator,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,58,Graphic Designer,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,59,Housekeeper,,,26,24,Claude (from PDF text),,DOMESTIC-WORK-NC-II,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,60,Human Resource Officer,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,61,Medical Specialist,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,62,Merchandiser,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,63,Mining Engineer,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,64,Payroll Clerk,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,65,Pharmacist,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,66,Pipe Fitter,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,67,Plumber,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,68,Production Worker,,,26,24,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,69,Quality Assurance Officer,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,70,Quality Control Officer,,,27,25,Claude (from PDF text),,HANDLOOM-WEAVING-NC-II,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,71,Refrigeration Technician,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,72,Utility Worker,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,73,Accounting Clerk,,,27,25,Claude (from PDF text),,BOOKKEEPING-NC-III,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,74,Accounting Supervisor,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,75,Accounts Management Associates,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false
+dole-ble-jlmf-2023-2024,PH,hard_to_fill,76,Actuarian,,,27,25,Claude (from PDF text),,,,2023-2025,historical_forecast,pdf_checked_title_classification_and_page,pending_review,false

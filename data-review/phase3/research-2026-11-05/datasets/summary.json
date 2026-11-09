@@ -1,0 +1,16 @@
+{
+  "national_forecast_rows": 442,
+  "national_distinct_titles": 397,
+  "national_distinct_titles_case_insensitive": 396,
+  "national_in_demand_rows": 354,
+  "national_hard_to_fill_rows": 88,
+  "verified_ncr_forecast_rows": 0,
+  "observed_posting_rows": 20,
+  "observed_distinct_titles": 19,
+  "confirmed_ncr_workplace_posting_rows": 10,
+  "confirmed_ncr_distinct_titles": 9,
+  "psa_historical_table_metadata": 19,
+  "tesda_publication_leads": 6,
+  "new_mapping_pairs": 4,
+  "approved_mapping_pairs": 0
+}

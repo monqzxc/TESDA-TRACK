@@ -3,7 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
-from tesda_track.schemas.analysis import ORIGIN_DESCRIPTION, AnswerCode, GoalOrigin, GoalText, Profile
+from tesda_track.schemas.analysis import ORIGIN_DESCRIPTION, AnswerCode, GoalOrigin, GoalText, Profile, SearchMode
 
 FeedbackReason = Literal["wrong_qualification", "readiness_off", "pathway_not_helpful"]
 
@@ -16,6 +16,7 @@ class FeedbackCreate(BaseModel):
     answers: dict[int, AnswerCode] = Field(max_length=100, description="The readiness answers the result came from")
     satisfied: bool
     origin: GoalOrigin | None = Field(default=None, description=ORIGIN_DESCRIPTION)
+    mode: SearchMode = "goal"
 
 
 class FeedbackReasonUpdate(BaseModel):

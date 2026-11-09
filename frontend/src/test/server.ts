@@ -14,6 +14,9 @@ const referenceData = [
   http.get('*/api/v1/assessment-centers', () => HttpResponse.json([])),
   http.get('*/api/v1/training-programs', () => HttpResponse.json([])),
   http.get('*/api/v1/assessment-schedules', () => HttpResponse.json([])),
+  http.get('*/api/v1/labor-market/indicators', () =>
+    HttpResponse.json({ items: [], postings: [] }),
+  ),
   http.get('*/api/v1/admin/reports/overview', () =>
     HttpResponse.json({
       learners: 0,

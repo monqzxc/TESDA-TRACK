@@ -11,7 +11,7 @@ from tesda_track.schemas.analysis import (GoalAnalysis, GoalRequest, MatchReques
                                           PathwayRequest, ReadinessRequest, ReadinessResult, SuggestionRequest,
                                           SuggestionResult)
 from tesda_track.services import analysis, match_stats
-from tesda_track.services import learner_assessments
+from tesda_track.services import learner_assessments, pathway_input
 from tesda_track.services.embeddings import EmbedderDep
 
 router = APIRouter(prefix="/analysis", tags=["analysis"])
@@ -28,13 +28,23 @@ def analyze_goal(request: GoalRequest, session: SessionDep, embedder: EmbedderDe
     result = analysis.analyze_goal(session, request.query, embedder)
     if request.origin:
         background.add_task(match_stats.count, "goal_started", request.origin)
-    return GoalAnalysis(profile=result.profile, source=result.source)
+    return GoalAnalysis(profile=result.profile, source=result.source,
+                        matching_mode=pathway_input.matching_mode(request.query) if request.interpret_input else None)
 
 
 @router.post("/matches", response_model=MatchResult)
 def match_qualifications(request: MatchRequest, session: SessionDep, embedder: EmbedderDep,
                          background: BackgroundTasks, learner: OptionalLearner):
+    if request.mode == "skills":
+        # A list of skills or job titles: saved assessment answers describe a goal, so they don't apply.
+        evidence = analysis.match_evidence(session, request.query, request.profile, embedder, mode="skills", region_code=request.region_code)
+        background.add_task(match_stats.record, no_match=not evidence.matches)
+        return MatchResult(profile=evidence.profile, matches=evidence.matches, search=evidence.search,eligible_qualification_codes=evidence.eligible_codes)
     answers, _ = learner_assessments.resolve(session, learner, request)
+    if answers is None and pathway_input.demand_preference(request.query):
+        evidence=analysis.match_evidence(session,request.query,request.profile,embedder,region_code=request.region_code)
+        background.add_task(match_stats.record,no_match=not evidence.matches)
+        return MatchResult(profile=evidence.profile,matches=evidence.matches,eligible_qualification_codes=evidence.eligible_codes)
     profile, matches = analysis.match(session, request.query, request.profile, embedder, answers)
     background.add_task(match_stats.record, no_match=not matches)
     return MatchResult(profile=profile, matches=matches)

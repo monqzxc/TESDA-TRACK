@@ -4,7 +4,15 @@ import type { ApiError } from '../../api/errors.ts'
 import { unwrap } from '../../api/errors.ts'
 import type { components } from '../../api/schema.d.ts'
 import type { PathwayRoute } from './rules.ts'
-import type { Answers, GoalOrigin, Profile, ReadinessResult, SessionState } from './store.ts'
+import type {
+  Answers,
+  GoalOrigin,
+  Profile,
+  ReadinessResult,
+  SearchMode,
+  SessionState,
+} from './store.ts'
+import { demandPreference } from './demandIntent.ts'
 
 // The finder's requests. The goal goes in request bodies only, never in an address (the plan's privacy rules).
 // Query keys hold it in memory for the cache; they're never sent anywhere.
@@ -22,34 +30,72 @@ export type ReportRequest = components['schemas']['PathwayReportRequest']
 
 const MINUTE = 60_000
 
+/** What the recommendation was asked with, so the report and feedback work out the same matches again. */
+export interface Asked {
+  query: string
+  profile: Profile
+  mode?: SearchMode
+}
+
+/** The mode a request carries: a journey from before skills search was a goal. */
+export const modeOf = (mode: SearchMode | undefined): SearchMode => mode ?? 'goal'
+
 /**
  * A goal's analysis: the API's reading of it. Signed in, it starts a saved recommendation session. The TSP webview
- * says where the goal came from (origin); elsewhere it's left out and not counted.
+ * says where the goal came from (origin), counted once with the analysis; elsewhere it's left out and not counted.
  */
 export async function analyzeGoal(
   query: string,
   requestId: string | null,
-  origin?: GoalOrigin,
-): Promise<{ profile: Profile; sessionId: string | null }> {
-  if (requestId) {
-    const session = await startSession(query, requestId, origin)
-    return { profile: session.profile, sessionId: session.id }
-  }
+  { beforeSave, origin }: { beforeSave?: () => void; origin?: GoalOrigin } = {},
+): Promise<{ profile: Profile; sessionId: string | null; mode: SearchMode }> {
   const analysis = await unwrap(
-    api.POST('/api/v1/analysis/goal', { body: origin ? { query, origin } : { query } }),
+    api.POST('/api/v1/analysis/goal', {
+      body: origin ? { query, interpret_input: true, origin } : { query, interpret_input: true },
+    }),
   )
-  return { profile: analysis.profile, sessionId: null }
+  const mode = analysis.matching_mode ?? 'goal'
+  // Preserve the existing policy: a skills list does not create a saved goal session.
+  if (requestId && mode === 'goal') {
+    beforeSave?.()
+    // The analysis has counted the origin already, so the session isn't given it to count again.
+    const session = await startSession(query, requestId)
+    return { profile: session.profile, sessionId: session.id, mode }
+  }
+  return { profile: analysis.profile, sessionId: null, mode }
 }
 
 /**
  * The qualifications that match a goal, given the profile with the learner's answers. The API re-reads the intent
  * from the answers. The same goal and answers get the same matches, so they're kept for the visit.
  */
-export const matchesQuery = (query: string, profile: Profile) =>
+export const matchesQuery = (
+  query: string,
+  profile: Profile,
+  mode?: SearchMode,
+  region?: string | null,
+) =>
   queryOptions<MatchResult, ApiError>({
-    queryKey: ['finder', 'matches', query, profile],
+    queryKey: [
+      'finder',
+      'matches',
+      query,
+      profile,
+      modeOf(mode),
+      ...(demandPreference(query) ? [region ?? null] : []),
+    ],
     queryFn: ({ signal }) =>
-      unwrap(api.POST('/api/v1/analysis/matches', { body: { query, profile }, signal })),
+      unwrap(
+        api.POST('/api/v1/analysis/matches', {
+          body: {
+            query,
+            profile,
+            mode: modeOf(mode),
+            ...(demandPreference(query) && region ? { region_code: region } : {}),
+          },
+          signal,
+        }),
+      ),
     staleTime: Infinity,
     gcTime: 30 * MINUTE,
   })
@@ -159,15 +205,18 @@ export async function followPathway(pathwayId: number): Promise<Enrollment> {
  * The learner's answer to "Are you satisfied with this recommendation?", with what the recommendation was worked out
  * from. The API works it out again and keeps the numbers with the answer, not the goal.
  */
-export async function sendFeedback(body: {
-  query: string
-  profile: Profile
+export async function sendFeedback({
+  mode,
+  ...body
+}: Asked & {
   qualification_code: string
   answers: Answers
   satisfied: boolean
   origin?: GoalOrigin
 }): Promise<Feedback> {
-  return unwrap(api.POST('/api/v1/feedback/recommendations', { body }))
+  return unwrap(
+    api.POST('/api/v1/feedback/recommendations', { body: { ...body, mode: modeOf(mode) } }),
+  )
 }
 
 /** Why the learner answered No and, after the wrong qualification, optionally the one they wanted instead. */

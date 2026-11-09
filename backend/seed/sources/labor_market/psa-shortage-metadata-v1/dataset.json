@@ -1,0 +1,210 @@
+{
+  "source_id": "psa-openstat-shortage-metadata",
+  "version": 1,
+  "publisher": "PSA OpenSTAT",
+  "title": "Historical occupational-shortage table metadata (19 tables)",
+  "evidence_class": "historical_statistics",
+  "geographic_scope": "national",
+  "region_code": null,
+  "period_label": "Historical observations through 2022",
+  "period_start_year": 2013,
+  "period_end_year": 2022,
+  "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/",
+  "metadata": {
+    "tables": [
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0011B3ES010.px",
+        "title": "Total Number of Establishments with and without Vacancies by Major Industry Group, Philippines: January 2013 - June 2014 to September 2021 - August 2022",
+        "period_years": "2014;2016;2018;2020;2022",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2022",
+        "source_reference": "raw/api-capture/shortage_0011B3ES010.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0021B3ES020.px",
+        "title": "Total Number of Establishments with Vacancies by Major Industry Group and Category, Philippines: January 2013 - June 2014 to September 2021 to August 2022",
+        "period_years": "2014;2016;2018;2020;2022",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2022",
+        "source_reference": "raw/api-capture/shortage_0021B3ES020.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0031B3ES02a.px",
+        "title": "Total Number of Vacancies in Establishments with 20 or more Workers by Industry and Category, Philippines: January 2013 - June 2014 to September 2021 - August 2022",
+        "period_years": "2014;2016;2018;2020;2022",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2022",
+        "source_reference": "raw/api-capture/shortage_0031B3ES02a.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0041B3ES030.px",
+        "title": "Total Number of Vacancies and Applicants by Major Occupation Group in Establishments with 20 or More Workers, Philippines: January 2013 - June 2014 to January 2015 - June 2016",
+        "period_years": "2014;2016",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2016",
+        "source_reference": "raw/api-capture/shortage_0041B3ES030.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0051B3ES032.px",
+        "title": "Total Number of Establishments Employing 20 or More Workers with Vacancies by Methods Used in Promoting Vacancies to Obtain Applicants by Major Industry Group, Philippines: September 2021 to August 2022",
+        "period_years": "2022",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2022",
+        "source_reference": "raw/api-capture/shortage_0051B3ES032.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0061B3ES033.px",
+        "title": "Number of Establishments Employing 20 or More Workers Posted Vacancies in Job Portals by Job Portals Used and Major Industry Group, Philippines: September 2021 to August 2022",
+        "period_years": "2022",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2022",
+        "source_reference": "raw/api-capture/shortage_0061B3ES033.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0071B3ES031.px",
+        "title": "Total Number of Vacancies and Applicants by Major Occupation Group in Establishments with 20 or More Workers, Philippines: July 2017 - June 2018 to September 2021 - August 2022",
+        "period_years": "2018;2020;2022",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2022",
+        "source_reference": "raw/api-capture/shortage_0071B3ES031.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0081B3ES040.px",
+        "title": "Hard-to-Fill Occupations by Number of Vacancies and Applicants in Establishments with 20 or More Workers, Philippines: January 2013 - June 2014 to January 2015 - July 2016",
+        "period_years": "2014;2016",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2016",
+        "source_reference": "raw/api-capture/shortage_0081B3ES040.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0091B3ES041.px",
+        "title": "Hard-to-fill Occupations by Number of Vacancies and Applicants in Establishments with 20 or More Workers, Philippines: July 2017 - June 2018 to September 2021 - August 2022",
+        "period_years": "2018;2020;2022",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2022",
+        "source_reference": "raw/api-capture/shortage_0091B3ES041.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0101B3ES050.px",
+        "title": "Easy-to-Fill Occupations by Number of Vacancies and Applicants in Establishments with 20 or More Workers, Philippines: January 2013 - June 2014 to January 2015 - June 2016",
+        "period_years": "2014;2016",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2016",
+        "source_reference": "raw/api-capture/shortage_0101B3ES050.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0111B3ES051.px",
+        "title": "Easy-to-Fill Occupations by Number of Vacancies and Applicants in Establishments with 20 or More Workers, Philippines: July 2017 - June 2018 to September 2021 - August 2022",
+        "period_years": "2018;2020;2022",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2022",
+        "source_reference": "raw/api-capture/shortage_0111B3ES051.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0121B3ES060.px",
+        "title": "Number of Vacancies in Establishments with 20 or More Workers by Occupation and Status of Employment, Philippines: January 2013 - June 2014 to January 2015 - June 2016",
+        "period_years": "2014;2016",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2016",
+        "source_reference": "raw/api-capture/shortage_0121B3ES060.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0131B3ES061.px",
+        "title": "Number of Vacancies in Establishments with 20 or More Workers by Occupation and Status of Employment with 20 or more Workers, Philippines: July 2017 - June 2018 to September 2021 - August 2022",
+        "period_years": "2018;2020;2022",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2022",
+        "source_reference": "raw/api-capture/shortage_0131B3ES061.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0141B3ES085.px",
+        "title": "Number of Job Vacancies and Applicants in Establishments Employing 20 or More Workers  Type of Position and by Major Industry Group, Philippines: September 2021 to August 2022",
+        "period_years": "2022",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2022",
+        "source_reference": "raw/api-capture/shortage_0141B3ES085.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0151B3ES090.px",
+        "title": "Number of Job Vacancies and Applicants in Establishments Employing 20 or More Workers by Type of Position and by Major Occupation Group, Philippines: September 2021 to August 2022",
+        "period_years": "2022",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2022",
+        "source_reference": "raw/api-capture/shortage_0151B3ES090.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0161B3ES095.px",
+        "title": "Number of Vacancies in Establishments Employing 20 or More Workers by Type of Position and Occupation Title,  Philippines: September 2021 to August 2022",
+        "period_years": "2022",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2022",
+        "source_reference": "raw/api-capture/shortage_0161B3ES095.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0171B3ES070.px",
+        "title": "Reasons Why Vacancies in Establishments with 20 or More Workers Were Hard to Fill, Philippines: January 2013 - June 2014 to September 2021 - August 2022",
+        "period_years": "2014;2016;2018;2020;2022",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2022",
+        "source_reference": "raw/api-capture/shortage_0171B3ES070.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0181B3ES080.px",
+        "title": "Length of Recruitment Period in Filling-Up Vacancies in Establishments with 20 or More Workers by Major Occupation Group, Philippines: January 2013 - June 2014 to January 2015 - June 2016",
+        "period_years": "2014;2016",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2016",
+        "source_reference": "raw/api-capture/shortage_0181B3ES080.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      },
+      {
+        "source_url": "https://openstat.psa.gov.ph/PXWeb/api/v1/en/DB/1B/ISLE/OSS/0191B3ES081.px",
+        "title": "Length of Recruitment Period in Filling-Up Vacancies in Establishments with 20 or More Workers by Major Occupation Group, Philippines: July 2017 - June 2018 to September 2021 - August 2022",
+        "period_years": "2018;2020;2022",
+        "geography": "Philippines; no regional variable in inspected metadata",
+        "evidence_class": "historical_statistical_metadata",
+        "latest_observation_year": "2022",
+        "source_reference": "raw/api-capture/shortage_0191B3ES081.px.txt",
+        "use_limit": "Historical survey context, not current 2026 vacancies"
+      }
+    ],
+    "table_count": 19,
+    "numeric_statistics_imported": false
+  },
+  "notes": "Table metadata only. No numerical observations or current demand statistics inferred."
+}

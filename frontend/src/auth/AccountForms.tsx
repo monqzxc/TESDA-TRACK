@@ -1,6 +1,7 @@
 import { useState, type ComponentType, type ReactNode } from 'react'
 import { Button } from 'react-aria-components'
 import { useCopy } from '../i18n/copy.ts'
+import { learnerAccounts } from './accounts.ts'
 import { RegisterForm } from './RegisterForm.tsx'
 import { SignInForm } from './SignInForm.tsx'
 import type { SignInView } from './useAuth.ts'
@@ -34,7 +35,7 @@ export function AccountForms({
 
   // Once the learner switches forms, the new form's first field takes focus. On opening, the dialog has it.
   const [switched, setSwitched] = useState(false)
-  const isSignIn = view === 'signIn'
+  const isSignIn = view === 'signIn' || !learnerAccounts()
 
   const switchTo = (next: SignInView, start?: { email?: string; message?: string }) => {
     setSwitched(true)
@@ -65,8 +66,8 @@ export function AccountForms({
           }
         />
       )}
-      {/* Sign in offers no way to create an account; the registration form keeps its way back for callers that
-          open it directly (openSignIn({ view: 'register' })). */}
+      {/* Sign in offers no way to create an account (learners are guest-only); the registration form keeps its way
+          back for callers that open it directly (openSignIn({ view: 'register' })). */}
       {!isSignIn && (
         <div className={formStyle.switch}>
           <Button className={formStyle.textButton} onPress={() => switchTo('signIn')}>

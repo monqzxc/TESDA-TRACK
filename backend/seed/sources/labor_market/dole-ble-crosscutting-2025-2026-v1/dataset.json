@@ -1,0 +1,14 @@
+{
+  "source_id": "dole-ble-crosscutting-2025-2026",
+  "version": 1,
+  "publisher": "DOLE-BLE",
+  "title": "National forecast cross-cutting groups — joint classification",
+  "evidence_class": "national_forecast",
+  "geographic_scope": "national",
+  "region_code": null,
+  "period_label": "2025-2026",
+  "period_start_year": 2025,
+  "period_end_year": 2026,
+  "source_url": "https://ble.dole.gov.ph/jobs-and-labor-market-forecast/",
+  "notes": "In-demand versus hard-to-fill is not disaggregated. Never converted into either individual badge."
+}

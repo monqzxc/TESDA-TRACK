@@ -1,5 +1,6 @@
 import { AxeBuilder } from '@axe-core/playwright'
 import { expect, test, type Page } from '@playwright/test'
+import { learnerAccounts, NO_LEARNER_ACCOUNTS } from './accounts.ts'
 
 const CATALOG = [
   {
@@ -75,6 +76,7 @@ test('help starts on demand, supports Back and Escape, restores focus, and repla
 test('the signed-out progress tour finishes and can be replayed without signing in', async ({
   page,
 }) => {
+  test.skip(!learnerAccounts, NO_LEARNER_ACCOUNTS)
   await page.goto('/progress')
   await expect(page.locator('[data-tour="account-gate"]')).toBeVisible()
   await startTour(page)
@@ -90,7 +92,7 @@ test('the signed-out progress tour finishes and can be replayed without signing 
 
 test('browser Back closes the tour when the page changes', async ({ page }) => {
   await serveCatalog(page)
-  await page.goto('/progress')
+  await page.goto('/qualifications')
   await page
     .getByRole('navigation', { name: 'Main' })
     .getByRole('link', { name: 'Find my pathway' })
@@ -100,10 +102,12 @@ test('browser Back closes the tour when the page changes', async ({ page }) => {
 
   await page.goBack()
 
-  await expect(page).toHaveURL('/progress')
+  await expect(page).toHaveURL('/qualifications')
   await expect(popover(page)).toHaveCount(0)
   await expect(page.locator('.driver-overlay')).toHaveCount(0)
-  await expect(page.getByRole('heading', { level: 1, name: 'My Progress' })).toBeVisible()
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Qualifications Library' }),
+  ).toBeVisible()
 })
 
 test('a delayed first-visit notice closes the tour and keeps its dialog usable', async ({

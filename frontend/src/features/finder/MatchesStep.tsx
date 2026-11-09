@@ -1,5 +1,5 @@
 import { useId, useMemo } from 'react'
-import { Link } from 'react-router'
+import { Link, useLocation } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { SelectField } from '../../components/SelectField.tsx'
@@ -8,6 +8,7 @@ import { catalogNames } from '../../lib/qualifications.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
+import { trainingAddress } from '../training/address.ts'
 import { CardHeading } from './CardHeading.tsx'
 import { MatchCard } from './MatchCard.tsx'
 import { RequestFailed } from './RequestFailed.tsx'
@@ -21,6 +22,7 @@ import {
 } from './store.ts'
 import { card, cardHeading, notice, status } from './styles.ts'
 import type { JourneyContext } from './useJourney.ts'
+import { DemandLocation } from './DemandLocation.tsx'
 
 interface MatchesStepProps {
   journey: Journey
@@ -46,11 +48,22 @@ export function MatchesStep({ journey, context, catalog, onCheck }: MatchesStepP
     () => new Map(catalog.map((qualification) => [qualification.code, qualification])),
     [catalog],
   )
-  const found = matches.data?.matches ?? []
+  const found = useMemo(() => matches.data?.matches ?? [], [matches.data])
+  const skills = journey.mode === 'skills'
+  const search = matches.data?.search
+  const inTsp = useLocation().pathname.startsWith(paths.tspWebview)
+  // A skills search can go straight to the centers for a result; a goal goes on to readiness first, as before.
+  const centersHref = (code: string) =>
+    trainingAddress({ qualifications: [code] }).replace(
+      paths.training,
+      inTsp ? paths.tspTraining : paths.training,
+    )
+  const centersFor = (code: string) => (skills ? centersHref(code) : undefined)
 
   return (
     <>
       <StartingPoint journey={journey} profile={context.matchedProfile ?? context.profile} />
+      <DemandLocation query={journey.query} />
 
       {/* Qualifications for you: the heading with its link, then one wide card per match. */}
       <section data-tour="matches" aria-labelledby={headingId} className="mt-3 flex flex-col gap-4">
@@ -60,8 +73,22 @@ export function MatchesStep({ journey, context, catalog, onCheck }: MatchesStepP
               {copy.matches.heading}
             </h3>
             <p className="mt-1 mb-0 text-15 leading-[1.5] text-muted">
-              {found.length ? copy.matches.lead : copy.matches.leadNone}
+              {found.length
+                ? skills
+                  ? copy.matches.skillsLead
+                  : copy.matches.lead
+                : copy.matches.leadNone}
             </p>
+            {skills && search && search.terms.length > 0 && (
+              <p className="mt-1 mb-0 text-14 leading-[1.5] wrap-anywhere text-ink">
+                {copy.matches.searched(search.terms)}
+              </p>
+            )}
+            {skills && search && search.unmatched.length > 0 && (
+              <p className="mt-1 mb-0 text-14 leading-[1.5] wrap-anywhere text-muted">
+                {copy.matches.unmatched(search.unmatched)}
+              </p>
+            )}
           </div>
           <Link to={paths.qualifications} className={button({ variant: 'tertiary' })}>
             {copy.matches.viewAll}
@@ -77,7 +104,9 @@ export function MatchesStep({ journey, context, catalog, onCheck }: MatchesStepP
           <RequestFailed error={matches.error} onRetry={() => void matches.refetch()} />
         ) : (
           <>
-            {found.length === 0 && <p className={notice()}>{copy.matches.none}</p>}
+            {found.length === 0 && (
+              <p className={notice()}>{skills ? copy.matches.skillsNone : copy.matches.none}</p>
+            )}
             <ul
               className="m-0 flex list-none flex-col gap-4 p-0 aria-busy:opacity-60 aria-busy:transition-opacity aria-busy:duration-200 aria-busy:ease-[ease]"
               aria-busy={matches.isFetching || undefined}
@@ -100,6 +129,8 @@ export function MatchesStep({ journey, context, catalog, onCheck }: MatchesStepP
                       chosen={chosen?.code === code}
                       check={results[code]}
                       onCheck={() => onCheck(code)}
+                      mode={journey.mode}
+                      centersHref={centersFor(code)}
                     />
                   </li>
                 )

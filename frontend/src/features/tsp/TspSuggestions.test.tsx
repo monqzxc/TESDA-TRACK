@@ -134,7 +134,7 @@ describe('Suggested for you', () => {
     expect(screen.queryByRole('button', { name: 'See my pathway' })).not.toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'Find centers' })).not.toBeInTheDocument()
     // The goal box follows the row, ready to type in.
-    const goal = screen.getByRole('textbox', { name: 'Career goal' })
+    const goal = screen.getByRole('textbox', { name: 'Your career interests or skills' })
     expect(goal).toBeVisible()
     expect(toggle.compareDocumentPosition(goal) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
 
@@ -210,7 +210,10 @@ describe('Suggested for you', () => {
     renderApp(WITH_SKILLS)
 
     expect(await screen.findByRole('heading', { name: 'Suggested for you' })).toBeInTheDocument()
-    await user.type(screen.getByRole('textbox', { name: 'Career goal' }), 'Barista')
+    await user.type(
+      screen.getByRole('textbox', { name: 'Your career interests or skills' }),
+      'Barista',
+    )
     await waitFor(() =>
       expect(screen.queryByRole('heading', { name: 'Suggested for you' })).not.toBeInTheDocument(),
     )

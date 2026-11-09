@@ -10,7 +10,7 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from tesda_track.schemas.analysis import AnswerCode, GoalText, Profile, Route
+from tesda_track.schemas.analysis import AnswerCode, GoalText, Profile, Route, SearchMode
 from tesda_track.schemas.catalog import QualificationSummary
 from tesda_track.schemas.delivery import PreferredDeliveryMode, RegionCode
 
@@ -31,6 +31,7 @@ class PathwayReportRequest(BaseModel):
                                                                      "center; never stored with the learner")
     preferred_delivery_mode: PreferredDeliveryMode | None = None
     needs_scholarship: bool = False
+    mode: SearchMode = "goal"
 
 
 class ReportQualification(QualificationSummary):

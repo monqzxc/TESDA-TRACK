@@ -11,6 +11,8 @@ import { FINDER_KEY, GOAL_MAX_LENGTH } from './key.ts'
 export { FINDER_KEY, GOAL_MAX_LENGTH }
 
 export type Profile = components['schemas']['Profile']
+/** goal: a sentence about what the learner wants. skills: a list of skills or job titles, each matched on its own. */
+export type SearchMode = components['schemas']['MatchRequest']['mode'] & string
 export type ReadinessResult = components['schemas']['ReadinessResult']
 /** The learner's answer about a recommendation, as the API recorded it. */
 export type GivenFeedback = components['schemas']['FeedbackPublic']
@@ -60,6 +62,8 @@ export interface Journey {
   sessionOwner: string | null
   /** What the session last saved, so only changes are sent. */
   synced: SessionState | null
+  /** How the learner searched; a journey from before skills search has none, and was a goal. */
+  mode?: SearchMode
 }
 
 /** A readiness check's result, with the answers it was worked out from. */
@@ -73,7 +77,14 @@ export interface SubmittedCheck {
 export interface FinderState {
   /** The goal box's text: a draft until it's submitted. */
   goal: string
+  /** The skills box's text, kept apart from the goal's so switching tabs loses neither. */
+  skills: string
+  /** The Goal step's tab. */
+  searchMode: SearchMode
   journey: Journey | null
+  /** One occupation chosen in final recommendations; independent of matching and readiness. */
+  careerGoal: { key: string; title: string } | null
+  careerGoalJourneyKey: string | null
   experience: ExperienceAnswer | null
   certification: CertificationAnswer | null
   /** The qualification the learner chose. Until they do, the finder goes with the top match. */
@@ -93,12 +104,17 @@ export interface FinderState {
   startWithGoal: (goal: string) => void
   /** The learner typing in the goal box. */
   setGoal: (goal: string) => void
+  /** The learner typing in the skills box. */
+  setSkills: (skills: string) => void
+  setSearchMode: (mode: SearchMode) => void
   /** A new goal was analysed: it starts a new journey, and the old goal's answers and results go (US-01). */
   begin: (
-    journey: Pick<Journey, 'query' | 'origin' | 'profile' | 'sessionId' | 'sessionOwner'>,
+    journey: Pick<Journey, 'query' | 'origin' | 'profile' | 'sessionId' | 'sessionOwner' | 'mode'>,
   ) => void
   setExperience: (answer: ExperienceAnswer) => void
   setCertification: (answer: CertificationAnswer) => void
+  setCareerGoalJourneyKey: (key: string) => void
+  setCareerGoal: (goal: { key: string; title: string }) => void
   choose: (code: string) => void
   answer: (code: string, competencyId: number, answer: Answer) => void
   setPart: (code: string, part: number) => void
@@ -118,7 +134,11 @@ export interface FinderState {
 
 const EMPTY = {
   goal: '',
+  skills: '',
+  searchMode: 'goal' as SearchMode,
   journey: null,
+  careerGoal: null,
+  careerGoalJourneyKey: null,
   experience: null,
   certification: null,
   selected: null,
@@ -160,11 +180,16 @@ export const useFinderStore = create<FinderState>()(
   persist(
     (set) => ({
       ...EMPTY,
-      startWithGoal: (goal) => set({ goal: clean(goal.trim()) }),
+      // A goal from another page opens the goal tab, where it was put.
+      startWithGoal: (goal) => set({ goal: clean(goal.trim()), searchMode: 'goal' }),
       setGoal: (goal) => set({ goal: clean(goal) }),
+      setSkills: (skills) => set({ skills: clean(skills) }),
+      setSearchMode: (searchMode) => set({ searchMode }),
       begin: (journey) =>
         set({
           journey: { ...journey, synced: null },
+          careerGoal: null,
+          careerGoalJourneyKey: crypto.randomUUID(),
           experience: null,
           certification: null,
           selected: null,
@@ -175,6 +200,8 @@ export const useFinderStore = create<FinderState>()(
         }),
       setExperience: (experience) => set({ experience }),
       setCertification: (certification) => set({ certification }),
+      setCareerGoalJourneyKey: (careerGoalJourneyKey) => set({ careerGoalJourneyKey }),
+      setCareerGoal: (careerGoal) => set((state) => (state.journey ? { careerGoal } : {})),
       choose: (selected) => set({ selected }),
       answer: (code, competencyId, answer) =>
         set((state) => ({

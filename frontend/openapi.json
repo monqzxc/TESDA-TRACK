@@ -6133,6 +6133,428 @@
           }
         ]
       }
+    },
+    "/api/v1/labor-market/indicators": {
+      "get": {
+        "tags": [
+          "labor market"
+        ],
+        "summary": "Public Indicators",
+        "operationId": "public_indicators_api_v1_labor_market_indicators_get",
+        "parameters": [
+          {
+            "name": "qualification_code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 40,
+              "title": "Qualification Code"
+            }
+          },
+          {
+            "name": "region_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Region Code"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Public Indicators Api V1 Labor Market Indicators Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/labor-market/mappings": {
+      "get": {
+        "tags": [
+          "admin: labor market"
+        ],
+        "summary": "Mappings",
+        "operationId": "mappings_api_v1_admin_labor_market_mappings_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "pending",
+                    "approved",
+                    "rejected"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Status"
+            }
+          },
+          {
+            "name": "confidence",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "high_confidence",
+                    "needs_review",
+                    "rejected"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Confidence"
+            }
+          },
+          {
+            "name": "classification",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "enum": [
+                    "in_demand",
+                    "hard_to_fill",
+                    "observed_posting",
+                    "cross_cutting"
+                  ],
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Classification"
+            }
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 200,
+              "default": "",
+              "title": "Search"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 25,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Mappings Api V1 Admin Labor Market Mappings Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/labor-market/mappings/{mapping_id}/review": {
+      "post": {
+        "tags": [
+          "admin: labor market"
+        ],
+        "summary": "Review Mapping",
+        "operationId": "review_mapping_api_v1_admin_labor_market_mappings__mapping_id__review_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "mapping_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Mapping Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Review Mapping Api V1 Admin Labor Market Mappings  Mapping Id  Review Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/labor-market/datasets": {
+      "get": {
+        "tags": [
+          "admin: labor market"
+        ],
+        "summary": "Datasets",
+        "operationId": "datasets_api_v1_admin_labor_market_datasets_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "additionalProperties": true,
+                    "type": "object"
+                  },
+                  "type": "array",
+                  "title": "Response Datasets Api V1 Admin Labor Market Datasets Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/admin/labor-market/datasets/{dataset_id}/status": {
+      "post": {
+        "tags": [
+          "admin: labor market"
+        ],
+        "summary": "Dataset Status",
+        "operationId": "dataset_status_api_v1_admin_labor_market_datasets__dataset_id__status_post",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "dataset_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Dataset Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DatasetStatusInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "additionalProperties": true,
+                  "title": "Response Dataset Status Api V1 Admin Labor Market Datasets  Dataset Id  Status Post"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/me/goals/career-selection/{journey_key}": {
+      "put": {
+        "tags": [
+          "goals"
+        ],
+        "summary": "Career Selection",
+        "operationId": "career_selection_api_v1_me_goals_career_selection__journey_key__put",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "journey_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "title": "Journey Key"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GoalCreate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GoalPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -9508,6 +9930,30 @@
         ],
         "title": "Consideration"
       },
+      "DatasetStatusInput": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "retired"
+            ],
+            "title": "Status"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 5,
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "note"
+        ],
+        "title": "DatasetStatusInput"
+      },
       "DayUsage": {
         "properties": {
           "date": {
@@ -9967,6 +10413,15 @@
             ],
             "title": "Origin",
             "description": "Sent by the TSP webview only: whether the learner typed the goal there or tapped a suggestion from their TSP profile. Counted per day, never with the goal; omitted elsewhere, and then not counted."
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "goal",
+              "skills"
+            ],
+            "title": "Mode",
+            "default": "goal"
           }
         },
         "type": "object",
@@ -10300,6 +10755,21 @@
               "ai"
             ],
             "title": "Source"
+          },
+          "matching_mode": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "goal",
+                  "skills"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Matching Mode"
           }
         },
         "type": "object",
@@ -10437,6 +10907,12 @@
             ],
             "title": "Origin",
             "description": "Sent by the TSP webview only: whether the learner typed the goal there or tapped a suggestion from their TSP profile. Counted per day, never with the goal; omitted elsewhere, and then not counted."
+          },
+          "interpret_input": {
+            "type": "boolean",
+            "title": "Interpret Input",
+            "description": "Resolve a unified input into an existing matching strategy",
+            "default": false
           }
         },
         "type": "object",
@@ -10740,6 +11216,18 @@
                 "type": "null"
               }
             ]
+          },
+          "basis": {
+            "anyOf": [
+              {
+                "type": "string",
+                "const": "demand_evidence"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Basis"
           }
         },
         "type": "object",
@@ -10801,6 +11289,27 @@
           },
           "profile": {
             "$ref": "#/components/schemas/Profile"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "goal",
+              "skills"
+            ],
+            "title": "Mode",
+            "default": "goal"
+          },
+          "region_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 20
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Code"
           }
         },
         "type": "object",
@@ -10821,6 +11330,31 @@
             },
             "type": "array",
             "title": "Matches"
+          },
+          "search": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SkillTerms"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Skills searches only"
+          },
+          "eligible_qualification_codes": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Eligible Qualification Codes"
           }
         },
         "type": "object",
@@ -11272,6 +11806,47 @@
           "detail"
         ],
         "title": "NextStep"
+      },
+      "OccupationSource": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "reference": {
+            "type": "string",
+            "title": "Reference"
+          },
+          "year": {
+            "type": "integer",
+            "title": "Year"
+          },
+          "purpose": {
+            "type": "string",
+            "title": "Purpose"
+          },
+          "occupations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Occupations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "url",
+          "reference",
+          "year",
+          "purpose",
+          "occupations"
+        ],
+        "title": "OccupationSource"
       },
       "OriginSignals": {
         "properties": {
@@ -11876,6 +12451,15 @@
             "type": "boolean",
             "title": "Needs Scholarship",
             "default": false
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "goal",
+              "skills"
+            ],
+            "title": "Mode",
+            "default": "goal"
           }
         },
         "additionalProperties": false,
@@ -12707,6 +13291,16 @@
             },
             "type": "array",
             "title": "Competencies"
+          },
+          "occupation_source": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/OccupationSource"
+              },
+              {
+                "type": "null"
+              }
+            ]
           }
         },
         "type": "object",
@@ -14056,6 +14650,41 @@
         ],
         "title": "ReportQualification"
       },
+      "ReviewInput": {
+        "properties": {
+          "decision": {
+            "type": "string",
+            "enum": [
+              "approved",
+              "rejected",
+              "pending"
+            ],
+            "title": "Decision"
+          },
+          "expected_decision": {
+            "type": "string",
+            "enum": [
+              "approved",
+              "rejected",
+              "pending"
+            ],
+            "title": "Expected Decision"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 5,
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "decision",
+          "expected_decision",
+          "note"
+        ],
+        "title": "ReviewInput"
+      },
       "RoadRoute": {
         "properties": {
           "mode": {
@@ -14434,6 +15063,32 @@
           "longitude"
         ],
         "title": "SiteSummary"
+      },
+      "SkillTerms": {
+        "properties": {
+          "terms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Terms"
+          },
+          "unmatched": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Unmatched",
+            "description": "Terms that name no trade or career TESDA trains for"
+          }
+        },
+        "type": "object",
+        "required": [
+          "terms",
+          "unmatched"
+        ],
+        "title": "SkillTerms",
+        "description": "How a skills search read the learner's list: the terms it matched with, and those it couldn't use."
       },
       "SkillsBridgeBenchmark": {
         "properties": {

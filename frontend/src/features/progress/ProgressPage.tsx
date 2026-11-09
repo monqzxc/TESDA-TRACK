@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useMemo, useRef } from 'react'
 import { Button } from 'react-aria-components'
-import { useNavigate, useSearchParams } from 'react-router'
+import { Navigate, useNavigate, useSearchParams } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
 import { useAuth } from '../../auth/useAuth.ts'
 import { PageTitle } from '../../components/PageTitle.tsx'
@@ -43,7 +43,9 @@ const SECTIONS: readonly { id: ProgressSection }[] = [
 export default function ProgressPage() {
   const en = useCopy()
 
-  const { isSignedIn } = useAuth()
+  const { isSignedIn, isChecking, offersAccounts } = useAuth()
+  // Guest-only: progress needs an account, which learners can't make, so the page sends them Home.
+  if (!isSignedIn && !isChecking && !offersAccounts) return <Navigate to={paths.home} replace />
   if (!isSignedIn) {
     const gate = en.account.progress
     return (

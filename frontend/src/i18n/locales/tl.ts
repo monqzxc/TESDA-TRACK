@@ -485,12 +485,15 @@ export const tl: Record<string, string> = {
   Filters: 'Mga filter',
   'Clear all': 'Alisin lahat',
   'Hide filters': 'Itago ang mga filter',
+  'Apply Filters': 'Ilapat ang mga filter',
   'Show filters': 'Ipakita ang mga filter',
   Type: 'Uri',
   Location: 'Lokasyon',
   Region: 'Rehiyon',
+  Regions: 'Mga rehiyon',
   Province: 'Lalawigan',
   'Qualification / skills / job': 'Kwalipikasyon / kakayahan / trabaho',
+  'Qualification / Skills': 'Kwalipikasyon / kakayahan',
   'More filters': 'Iba pang mga filter',
   'Use my current location': 'Gamitin ang aking kasalukuyang lokasyon',
   'Your browser asks first. We round your location to about 1 km and never save it. We use it to measure distances and, when you ask for directions, share it with an OpenStreetMap routing service to plan the route.':
@@ -509,19 +512,26 @@ export const tl: Record<string, string> = {
   'Your location': 'Ang iyong lokasyon',
   Anywhere: 'Kahit saan',
   'All regions': 'Lahat ng rehiyon',
+  'All Regions': 'Lahat ng rehiyon',
   'All provinces': 'Lahat ng lalawigan',
+  'All Provinces': 'Lahat ng lalawigan',
   'No provinces listed yet': 'Wala pang nakalistang lalawigan',
   'No provinces listed for this region': 'Walang nakalistang lalawigan para sa rehiyong ito',
   'Any qualification': 'Anumang kwalipikasyon',
+  'All Qualifications': 'Lahat ng kwalipikasyon',
   'Add a qualification': 'Magdagdag ng kwalipikasyon',
   'Mode of delivery': 'Paraan ng pag-aaral',
+  'Mode of Delivery': 'Paraan ng pag-aaral',
   'Any mode': 'Anumang paraan',
+  'All Modes': 'Lahat ng paraan',
   'Applies to training centers.': 'Para sa mga sentro ng pagsasanay.',
   Availability: 'Pagiging available',
   'Any time': 'Anumang oras',
+  Anytime: 'Anumang oras',
   'Programs with a flexible start count as available.':
     'Itinuturing na available ang mga programang may nababagong petsa ng simula.',
   'Scholarship available': 'May scholarship',
+  Scholarships: 'Mga scholarship',
   'Applies to training centers. A scholarship listed isn’t a guaranteed award.':
     'Para sa mga sentro ng pagsasanay. Hindi garantiya ng pagkakaloob ang nakalistang scholarship.',
   'In a training center': 'Sa isang sentro ng pagsasanay',
@@ -1534,4 +1544,40 @@ export const tl: Record<string, string> = {
   '{0} self-reported strengths · {1} skills remaining in this preview':
     '{0} kalakasan ayon sa sariling ulat · {1} kakayahan ang natitira sa paunang tinging ito',
   'Sample linked skills: {0}': 'Mga halimbawa ng kaugnay na kakayahan: {0}',
+  // Find my pathway: search by skills or jobs.
+  'How would you like to search?': 'Paano mo gustong maghanap?',
+  'My goal': 'Ang aking layunin',
+  'A skill or job': 'Isang kasanayan o trabaho',
+  'List the skills you have or the jobs you want. We match each one to TESDA qualifications.':
+    'Ilista ang mga kasanayan mo o ang mga trabahong gusto mo. Itutugma namin ang bawat isa sa mga kwalipikasyon ng TESDA.',
+  'Your skills or the jobs you want': 'Ang iyong mga kasanayan o ang mga trabahong gusto mo',
+  'Separate them with commas, for example: welding, blueprint reading.':
+    'Paghiwalayin ang mga ito gamit ang kuwit, halimbawa: welding, blueprint reading.',
+  'Example: welding, electrician, customer service':
+    'Halimbawa: welding, electrician, customer service',
+  'Try one:': 'Subukan ang isa:',
+  'Type at least one skill or job to get started.':
+    'Mag-type ng kahit isang kasanayan o trabaho para magsimula.',
+  'Your last skills search': 'Ang huli mong paghahanap ng kasanayan',
+  'Your skills or jobs': 'Ang iyong mga kasanayan o trabaho',
+  'These match the skills and jobs you listed. Find training centers, or check your readiness.':
+    'Tugma ang mga ito sa mga kasanayan at trabahong inilista mo. Maghanap ng training center, o suriin ang iyong kahandaan.',
+  'We couldn’t match these skills or jobs. Try a job title such as “electrician”, or describe your goal instead.':
+    'Hindi namin naitugma ang mga kasanayan o trabahong ito. Subukan ang pangalan ng trabaho gaya ng “electrician”, o ilarawan na lang ang iyong layunin.',
+  'Matched with: {0}': 'Itinugma gamit ang: {0}',
+  'Not used: {0}. These don’t name a skill or job TESDA trains for.':
+    'Hindi nagamit: {0}. Hindi ito kasanayan o trabahong may pagsasanay sa TESDA.',
+  'Skill match': 'Pagkakatugma sa kasanayan',
+  'Skill match: {0}%': 'Pagkakatugma sa kasanayan: {0}%',
+  'Find training centers': 'Maghanap ng training center',
+  'Change skill or job': 'Palitan ang kasanayan o trabaho',
+  'Related occupations': 'Mga kaugnay na trabaho',
+  'Jobs these qualifications lead to, from TESDA’s Training Regulations. Choose one to see its skills and qualifications.':
+    'Mga trabahong maaaring pasukin gamit ang mga kwalipikasyong ito, mula sa Training Regulations ng TESDA. Pumili ng isa para makita ang mga kasanayan at kwalipikasyon nito.',
+  'One TESDA qualification leads to this job.':
+    'Isang kwalipikasyon ng TESDA ang patungo sa trabahong ito.',
+  '{0} TESDA qualifications lead to this job.':
+    '{0} kwalipikasyon ng TESDA ang patungo sa trabahong ito.',
+  'No core skills are listed for this qualification yet.':
+    'Wala pang nakalistang pangunahing kasanayan para sa kwalipikasyong ito.',
 }

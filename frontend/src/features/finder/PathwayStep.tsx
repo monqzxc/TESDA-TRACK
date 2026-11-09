@@ -14,7 +14,9 @@ import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { pathwaysQuery, progressKeys, setPathwayStatus, type Enrollment } from '../progress/api.ts'
 import { shortName, trainingAddress } from '../training/address.ts'
-import { curatedPathwaysQuery, followPathway, type CuratedPathway } from './api.ts'
+import { curatedPathwaysQuery, followPathway, type Asked, type CuratedPathway } from './api.ts'
+import { FinalCareerOptions } from './FinalCareerOptions.tsx'
+import type { Match } from './api.ts'
 import { FeedbackPrompt } from './FeedbackPrompt.tsx'
 import { PathwayDetails, usePathwayReport } from './PathwayReport.tsx'
 import { VERDICTS, verdictFor } from './rules.ts'
@@ -23,10 +25,12 @@ import { card, cardHeading, muted, notice } from './styles.ts'
 
 interface PathwayStepProps {
   qualification: Qualification
+  catalog?: readonly Qualification[]
+  matches?: readonly Match[]
   /** For administrators' diagnostics. */
   profile: Profile
   /** What the matches were asked with, for the learner's feedback. */
-  asked: { query: string; profile: Profile }
+  asked: Asked
 }
 
 /**
@@ -34,7 +38,13 @@ interface PathwayStepProps {
  * assessment, with its score, the next action and the button to the centers that fit; under it, in tabs, the
  * personalized report with the curated pathway for that route; and whether the learner is satisfied with it all.
  */
-export function PathwayStep({ qualification, profile, asked }: PathwayStepProps) {
+export function PathwayStep({
+  qualification,
+  profile,
+  asked,
+  catalog = [],
+  matches = [],
+}: PathwayStepProps) {
   const inTsp = useLocation().pathname.startsWith(paths.tspWebview)
   const en = useCopy()
   const copy = en.finder.pathway
@@ -70,6 +80,8 @@ export function PathwayStep({ qualification, profile, asked }: PathwayStepProps)
       answers={answers}
       profile={profile}
       asked={asked}
+      catalog={catalog}
+      matches={matches}
     />
   )
 }
@@ -81,6 +93,8 @@ function Result({
   answers,
   profile,
   asked,
+  catalog = [],
+  matches = [],
 }: PathwayStepProps & { check: SubmittedCheck; answers: Answers | undefined }) {
   const report = usePathwayReport(qualification, check, asked)
   return (
@@ -91,6 +105,7 @@ function Result({
         changed={!sameAnswers(answers, check.answers)}
         nextAction={report.data?.final.next_action}
       />
+      <FinalCareerOptions qualification={qualification} catalog={catalog} matches={matches} />
       <PathwayDetails
         qualification={qualification}
         check={check}
@@ -257,7 +272,7 @@ export function PathwayCard({
   const copy = en.finder.pathway
 
   const requireAccount = useRequireAccount()
-  const { isSignedIn } = useAuth()
+  const { isSignedIn, offersAccounts } = useAuth()
   const queryClient = useQueryClient()
   const enrollments = useQuery({ ...pathwaysQuery, enabled: isSignedIn })
   const existing = enrollments.data?.find((item) => item.pathway.id === pathway.id)
@@ -362,7 +377,8 @@ export function PathwayCard({
             ))}
           </ol>
         </div>
-        {save}
+        {/* Saving a pathway needs an account: a guest sees the steps only. */}
+        {offersAccounts && save}
         {said}
       </section>
     )
@@ -387,10 +403,13 @@ export function PathwayCard({
           </li>
         ))}
       </ol>
-      <div className="mt-2 flex flex-col items-start gap-3 border-t border-border pt-4">
-        <p className={muted}>{copy.cart.hint}</p>
-        {save}
-      </div>
+      {/* Saving a pathway needs an account: a guest sees the steps only. */}
+      {offersAccounts && (
+        <div className="mt-2 flex flex-col items-start gap-3 border-t border-border pt-4">
+          <p className={muted}>{copy.cart.hint}</p>
+          {save}
+        </div>
+      )}
       {said}
     </section>
   )

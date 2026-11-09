@@ -1,0 +1,156 @@
+﻿record_id,source_occurrence_key,occupation_title_as_printed,sector_as_printed,classification,page_pdf,source_order_in_cell
+PH-2526-P43-in_demand-001,OCC-8ef194a098508c8f,Architect,Construction,in_demand,43,1
+PH-2526-P43-in_demand-002,OCC-26194d4efad460c8,CAD/CAM Operator,Construction,in_demand,43,2
+PH-2526-P43-in_demand-003,OCC-a70a6685f099c3bc,Carpenter,Construction,in_demand,43,3
+PH-2526-P43-in_demand-004,OCC-5be77f2bb23c4071,Civil Engineer,Construction,in_demand,43,4
+PH-2526-P43-in_demand-005,OCC-b1b42927ea7d17c1,Construction Laborer,Construction,in_demand,43,5
+PH-2526-P43-in_demand-006,OCC-d71c942d48669bb8,Construction Line Worker,Construction,in_demand,43,6
+PH-2526-P43-in_demand-007,OCC-ba0c9a24a8bc466c,Construction Manager,Construction,in_demand,43,7
+PH-2526-P43-in_demand-008,OCC-1a6d0100662c1965,Electrician,Construction,in_demand,43,8
+PH-2526-P43-in_demand-009,OCC-6049d173c19ac73f,Electronic Equipment Assembler,Construction,in_demand,43,9
+PH-2526-P43-in_demand-010,OCC-fd017ef6e50043df,Forklift Helper,Construction,in_demand,43,10
+PH-2526-P43-in_demand-011,OCC-7913c274613871cf,General Foreman,Construction,in_demand,43,11
+PH-2526-P43-in_demand-012,OCC-f617b8f49c51e8ca,Heavy Equipment Operator,Construction,in_demand,43,12
+PH-2526-P43-in_demand-013,OCC-61e5534a7ebce4c9,Mason,Construction,in_demand,43,13
+PH-2526-P43-in_demand-014,OCC-6636053e1e634c69,Mechanic,Construction,in_demand,43,14
+PH-2526-P43-in_demand-015,OCC-f422dcc7fbe84d55,Nurse,Construction,in_demand,43,15
+PH-2526-P43-in_demand-016,OCC-b5ddad8a136f6709,Pipefitter,Construction,in_demand,43,16
+PH-2526-P43-in_demand-017,OCC-f4851f2d022bbc2e,Plumber,Construction,in_demand,43,17
+PH-2526-P43-in_demand-018,OCC-19f94529a5f885c4,PV Systems Installations,Construction,in_demand,43,18
+PH-2526-P43-in_demand-019,OCC-46f27f5979ce9778,Rebar Worker,Construction,in_demand,43,19
+PH-2526-P43-in_demand-020,OCC-47661f453e170f8e,Rigger,Construction,in_demand,43,20
+PH-2526-P43-in_demand-021,OCC-8316de14e952d480,Safety Officer,Construction,in_demand,43,21
+PH-2526-P43-in_demand-022,OCC-8148a989bf187e33,Scaffolder,Construction,in_demand,43,22
+PH-2526-P43-in_demand-023,OCC-2eab56dd9ce101c8,Structural Steel Erector,Construction,in_demand,43,23
+PH-2526-P43-in_demand-024,OCC-8482c396c0ea2c59,Tile Setter,Construction,in_demand,43,24
+PH-2526-P43-in_demand-025,OCC-a912a83a5b08f768,Transmission Lineman,Construction,in_demand,43,25
+PH-2526-P43-in_demand-026,OCC-28e51a7b4f04caf0,Welder,Construction,in_demand,43,26
+PH-2526-P43-in_demand-027,OCC-d1be7cac87d8c787,Wood Treater,Construction,in_demand,43,27
+PH-2526-P43-in_demand-001,OCC-7d8b03c2bc9e8fb4,Administration Associate (Property Management),Real Estate Activities,in_demand,43,1
+PH-2526-P43-in_demand-002,OCC-8085563337391d83,Assistant Property Manager,Real Estate Activities,in_demand,43,2
+PH-2526-P43-in_demand-003,OCC-066c6d62fe0a3eca,Associate Mall Operations Manager,Real Estate Activities,in_demand,43,3
+PH-2526-P43-in_demand-004,OCC-debe293483fe75ff,Building Administration (Mall),Real Estate Activities,in_demand,43,4
+PH-2526-P43-in_demand-005,OCC-0b1fa1b0ac391ada,Building Engineer,Real Estate Activities,in_demand,43,5
+PH-2526-P43-in_demand-006,OCC-de5e3409400e4dc5,Business Development Associate,Real Estate Activities,in_demand,43,6
+PH-2526-P43-in_demand-007,OCC-8db06aca2e66cca5,Business Development Officer,Real Estate Activities,in_demand,43,7
+PH-2526-P43-in_demand-008,OCC-d9512d30009f93d6,Concierge,Real Estate Activities,in_demand,43,8
+PH-2526-P43-in_demand-009,OCC-87de5d92d96311e2,Customs Relations Associate,Real Estate Activities,in_demand,43,9
+PH-2526-P43-in_demand-010,OCC-76b4aa1b518dd205,Data Scientist,Real Estate Activities,in_demand,43,10
+PH-2526-P43-in_demand-011,OCC-75945f7c8e8a96b0,Finance Officer,Real Estate Activities,in_demand,43,11
+PH-2526-P43-in_demand-012,OCC-f0eebf0d39fa3ceb,Finance Officer (Property Management),Real Estate Activities,in_demand,43,12
+PH-2526-P43-in_demand-013,OCC-ae83d1d517cf2486,Handover Architect,Real Estate Activities,in_demand,43,13
+PH-2526-P43-in_demand-014,OCC-00a44b1fdc49bf2f,Head Concierge,Real Estate Activities,in_demand,43,14
+PH-2526-P43-in_demand-015,OCC-ffc6da9943870b5c,Human Resources Associate (Recruitment),Real Estate Activities,in_demand,43,15
+PH-2526-P43-in_demand-016,OCC-26c42a8b7e0867b7,Human Resources Officer (Compensation and Benefit),Real Estate Activities,in_demand,43,16
+PH-2526-P43-in_demand-017,OCC-f8e7efea1b1773d8,Infrastructure Engineer/Architect,Real Estate Activities,in_demand,43,17
+PH-2526-P43-in_demand-018,OCC-92203f299ca1a1ac,Junior Architect,Real Estate Activities,in_demand,43,18
+PH-2526-P43-in_demand-019,OCC-f7e77e72b49b2223,Lawyer,Real Estate Activities,in_demand,43,19
+PH-2526-P43-in_demand-020,OCC-a88ba73c182dcc93,Lead Concierge,Real Estate Activities,in_demand,43,20
+PH-2526-P43-in_demand-021,OCC-b4563c7a1d09751e,Lease Documentation Officer,Real Estate Activities,in_demand,43,21
+PH-2526-P43-in_demand-022,OCC-7d08f27f22b5862c,"Mall Leasing Officer, Marketing Associate, Leasing Associate, Leasing Manager",Real Estate Activities,in_demand,43,22
+PH-2526-P43-in_demand-023,OCC-51b358699183b47f,Project Development Associate,Real Estate Activities,in_demand,43,23
+PH-2526-P43-in_demand-024,OCC-1019f255772a1ceb,Project Officer,Real Estate Activities,in_demand,43,24
+PH-2526-P43-in_demand-025,OCC-a5e2e9f476779e81,Property Consultant,Real Estate Activities,in_demand,43,25
+PH-2526-P43-in_demand-026,OCC-6bdbbefb03391af9,Property Manager,Real Estate Activities,in_demand,43,26
+PH-2526-P43-in_demand-027,OCC-acd430126cd574cb,Sales Acceptance Associate,Real Estate Activities,in_demand,43,27
+PH-2526-P44-in_demand-001,OCC-6f29aef5d4fa51ac,Bookkeeper,Wholesale and Retail Trade,in_demand,44,1
+PH-2526-P44-in_demand-002,OCC-63b5c17dc25b8687,Cashier,Wholesale and Retail Trade,in_demand,44,2
+PH-2526-P44-in_demand-003,OCC-c38657fe2eb02267,E-Commerce Development Executive,Wholesale and Retail Trade,in_demand,44,3
+PH-2526-P44-in_demand-004,OCC-3de21d20adcf4ed0,Foreign Language Specialist,Wholesale and Retail Trade,in_demand,44,4
+PH-2526-P44-in_demand-005,OCC-4c15d7507f8ef99c,Product Ambassador/Agent,Wholesale and Retail Trade,in_demand,44,5
+PH-2526-P44-in_demand-006,OCC-6d9807786d711c4e,Sales Representative,Wholesale and Retail Trade,in_demand,44,6
+PH-2526-P44-in_demand-007,OCC-32cd14ffdb3efd6d,Social Media Expert/Influencer,Wholesale and Retail Trade,in_demand,44,7
+PH-2526-P44-in_demand-008,OCC-da1b01116d72121c,Web Developer,Wholesale and Retail Trade,in_demand,44,8
+PH-2526-P44-in_demand-009,OCC-dbe7ae3b57579605,Administrative Staff,Wholesale and Retail Trade,in_demand,44,9
+PH-2526-P44-in_demand-010,OCC-622f4d043289a4c7,Security Guard,Wholesale and Retail Trade,in_demand,44,10
+PH-2526-P44-in_demand-011,OCC-c86c3733850051da,Human Resource Officer,Wholesale and Retail Trade,in_demand,44,11
+PH-2526-P44-hard_to_fill-001,OCC-61156756717ea79c,HR Delivery Manager,Wholesale and Retail Trade,hard_to_fill,44,1
+PH-2526-P44-hard_to_fill-002,OCC-75020f5b07e745a1,Internal Auditor,Wholesale and Retail Trade,hard_to_fill,44,2
+PH-2526-P44-in_demand-001,OCC-940deacddb6a9124,Licensed Teacher,Education,in_demand,44,1
+PH-2526-P44-in_demand-002,OCC-8e57dc4d34bac820,School Guard,Education,in_demand,44,2
+PH-2526-P44-in_demand-003,OCC-1cb247d5d02ef1d9,School Nurse,Education,in_demand,44,3
+PH-2526-P44-in_demand-004,OCC-4fa97a453e796912,Psychiatric Instructor,Education,in_demand,44,4
+PH-2526-P44-in_demand-005,OCC-e0e62c348775711f,Geriatric Instructor,Education,in_demand,44,5
+PH-2526-P44-in_demand-006,OCC-a4837cff207088b2,Clinical Instructor,Education,in_demand,44,6
+PH-2526-P44-in_demand-007,OCC-f3e272c67bb0494c,Special Assistance Resource Teacher,Education,in_demand,44,7
+PH-2526-P44-in_demand-008,OCC-bd1603c34a763858,Elementary Teacher,Education,in_demand,44,8
+PH-2526-P44-in_demand-009,OCC-af460508c8100958,ESL Teacher,Education,in_demand,44,9
+PH-2526-P44-in_demand-010,OCC-dad3b951d67634bb,TESDA Cookery Trainer,Education,in_demand,44,10
+PH-2526-P44-in_demand-011,OCC-536a9bdbd86a5a62,TESDA Housekeeping Trainer,Education,in_demand,44,11
+PH-2526-P44-hard_to_fill-001,OCC-1f5f74032afa51bc,Chemistry Teacher,Education,hard_to_fill,44,1
+PH-2526-P44-hard_to_fill-002,OCC-7cfa96ad4606310a,Computer Science Instructor,Education,hard_to_fill,44,2
+PH-2526-P44-hard_to_fill-003,OCC-1be872fcd75a04e5,CPA Instructor,Education,hard_to_fill,44,3
+PH-2526-P44-hard_to_fill-004,OCC-95b52e015aba94d1,Hospitality Management Instructor,Education,hard_to_fill,44,4
+PH-2526-P44-hard_to_fill-005,OCC-cfd3498213036863,Licensed Librarian,Education,hard_to_fill,44,5
+PH-2526-P44-hard_to_fill-006,OCC-414e4707bfa9f3be,Physics Teacher,Education,hard_to_fill,44,6
+PH-2526-P44-hard_to_fill-007,OCC-5418251ae0192ab6,TESDA Trainer,Education,hard_to_fill,44,7
+PH-2526-P44-hard_to_fill-008,OCC-59fc7e03e3bc1e10,Tourism Management Instructor,Education,hard_to_fill,44,8
+PH-2526-P44-in_demand-001,OCC-1af7ac2e0042fdfe,Assembler,Public Administration and Defense; Compulsory Social Security,in_demand,44,1
+PH-2526-P44-in_demand-002,OCC-0dc43b61099fe821,Customer Service Representative,Public Administration and Defense; Compulsory Social Security,in_demand,44,2
+PH-2526-P44-in_demand-003,OCC-eb4ede9516609b1a,Electrician,Public Administration and Defense; Compulsory Social Security,in_demand,44,3
+PH-2526-P44-in_demand-004,OCC-937ef7c8693078bc,Fabricator,Public Administration and Defense; Compulsory Social Security,in_demand,44,4
+PH-2526-P44-in_demand-005,OCC-5544f55c0cac07a7,Office Staff,Public Administration and Defense; Compulsory Social Security,in_demand,44,5
+PH-2526-P44-in_demand-006,OCC-b5e4a3e5edb1a0a1,Production Helper,Public Administration and Defense; Compulsory Social Security,in_demand,44,6
+PH-2526-P44-in_demand-007,OCC-cddb56aabae72c36,QA/QC Inspector,Public Administration and Defense; Compulsory Social Security,in_demand,44,7
+PH-2526-P44-in_demand-008,OCC-df33c240eba38021,Welder,Public Administration and Defense; Compulsory Social Security,in_demand,44,8
+PH-2526-P44-in_demand-009,OCC-bf8f24159aab5816,Clerical Aide,Public Administration and Defense; Compulsory Social Security,in_demand,44,9
+PH-2526-P44-hard_to_fill-001,OCC-93191ef2dfd770e4,Inventory Checker,Public Administration and Defense; Compulsory Social Security,hard_to_fill,44,1
+PH-2526-P44-hard_to_fill-002,OCC-861aac818d322fd2,Legal Officer,Public Administration and Defense; Compulsory Social Security,hard_to_fill,44,2
+PH-2526-P44-hard_to_fill-003,OCC-d0ad6301dac7802e,Messenger,Public Administration and Defense; Compulsory Social Security,hard_to_fill,44,3
+PH-2526-P44-hard_to_fill-004,OCC-45f10508a285ab73,Recruitment Development Officer,Public Administration and Defense; Compulsory Social Security,hard_to_fill,44,4
+PH-2526-P44-in_demand-001,OCC-f996d2b755b686a4,Teller,Finance and Insurance Activities,in_demand,44,1
+PH-2526-P44-in_demand-002,OCC-7a8ca23debf73d81,Field Marketer,Finance and Insurance Activities,in_demand,44,2
+PH-2526-P44-in_demand-003,OCC-ad1b5233d2aac7fc,Microfinance Officer,Finance and Insurance Activities,in_demand,44,3
+PH-2526-P44-in_demand-004,OCC-5efe327ffe6e9d7f,Bookkeeper,Finance and Insurance Activities,in_demand,44,4
+PH-2526-P44-in_demand-005,OCC-baa55ed6ca8ccccf,Loan Officer,Finance and Insurance Activities,in_demand,44,5
+PH-2526-P44-in_demand-006,OCC-c17f183884a6cd0b,Sales Officer,Finance and Insurance Activities,in_demand,44,6
+PH-2526-P44-in_demand-007,OCC-578988bffba75d74,Bank Officer,Finance and Insurance Activities,in_demand,44,7
+PH-2526-P44-in_demand-008,OCC-90b888568596d6e4,Account Executive,Finance and Insurance Activities,in_demand,44,8
+PH-2526-P44-hard_to_fill-001,OCC-b77f6e80f12c2633,Corporate Accountant,Finance and Insurance Activities,hard_to_fill,44,1
+PH-2526-P44-hard_to_fill-002,OCC-2efc03d42b8ab435,Loan Consultant,Finance and Insurance Activities,hard_to_fill,44,2
+PH-2526-P44-in_demand-001,OCC-711be052c794e8b7,Flockman,"Agriculture, Forestry and Fishing",in_demand,44,1
+PH-2526-P44-in_demand-002,OCC-dbc7aa3ff7c76b37,Farm Technician,"Agriculture, Forestry and Fishing",in_demand,44,2
+PH-2526-P44-in_demand-003,OCC-6cd90ec2e6432b4b,Farm Labourer,"Agriculture, Forestry and Fishing",in_demand,44,3
+PH-2526-P44-in_demand-004,OCC-665f643d95e7fb85,Farm Supervisor,"Agriculture, Forestry and Fishing",in_demand,44,4
+PH-2526-P44-in_demand-005,OCC-39316c0b755bd468,Farm Technician,"Agriculture, Forestry and Fishing",in_demand,44,5
+PH-2526-P44-in_demand-006,OCC-3de3fcb4c8a898ff,Veterinary Assistant,"Agriculture, Forestry and Fishing",in_demand,44,6
+PH-2526-P44-in_demand-007,OCC-7b231f2af33478c4,Agriculture Technician,"Agriculture, Forestry and Fishing",in_demand,44,7
+PH-2526-P44-hard_to_fill-001,OCC-7d35cc6452f13707,Agricultural Economist,"Agriculture, Forestry and Fishing",hard_to_fill,44,1
+PH-2526-P44-hard_to_fill-002,OCC-2757778d8d051c24,Agricultural Scientist,"Agriculture, Forestry and Fishing",hard_to_fill,44,2
+PH-2526-P44-hard_to_fill-003,OCC-622ac50e60beca81,Agriculturist,"Agriculture, Forestry and Fishing",hard_to_fill,44,3
+PH-2526-P44-hard_to_fill-004,OCC-7de0051bb0a5bf54,Feed Formulator,"Agriculture, Forestry and Fishing",hard_to_fill,44,4
+PH-2526-P44-hard_to_fill-005,OCC-3b6c0fbf91dc28c1,Forester,"Agriculture, Forestry and Fishing",hard_to_fill,44,5
+PH-2526-P44-hard_to_fill-006,OCC-2e74db9a109277bd,Forestry Specialist,"Agriculture, Forestry and Fishing",hard_to_fill,44,6
+PH-2526-P44-hard_to_fill-007,OCC-7f153c6099d666c5,Hatchery Technician,"Agriculture, Forestry and Fishing",hard_to_fill,44,7
+PH-2526-P44-hard_to_fill-008,OCC-3fe39bc5bc1eaa69,Veterinary Doctors Hatchery Supervisor,"Agriculture, Forestry and Fishing",hard_to_fill,44,8
+PH-2526-P45-in_demand-001,OCC-1a9adc06bdd2a547,Electrical Engineer,"Electricity, Gas, Steam and Air Conditioning Supply",in_demand,45,1
+PH-2526-P45-in_demand-002,OCC-5f7c24de6741b331,Pump Attendant,"Electricity, Gas, Steam and Air Conditioning Supply",in_demand,45,2
+PH-2526-P45-in_demand-003,OCC-98f8f42173a43a0d,Mechanical Engineer,"Electricity, Gas, Steam and Air Conditioning Supply",in_demand,45,3
+PH-2526-P45-in_demand-004,OCC-db2cc4a77ceda5e4,Environment Management Engineer,"Electricity, Gas, Steam and Air Conditioning Supply",in_demand,45,4
+PH-2526-P45-in_demand-005,OCC-6f066cee847ecb4f,Electronics and Communication Engineer,"Electricity, Gas, Steam and Air Conditioning Supply",in_demand,45,5
+PH-2526-P45-hard_to_fill-001,OCC-9523a99531dbde43,Cadet Chemist,"Electricity, Gas, Steam and Air Conditioning Supply",hard_to_fill,45,1
+PH-2526-P45-hard_to_fill-002,OCC-54a7e207ac0d2e08,Chemical Analyst,"Electricity, Gas, Steam and Air Conditioning Supply",hard_to_fill,45,2
+PH-2526-P45-hard_to_fill-003,OCC-f0da3a3fbe8ebb65,Chemical Engineer,"Electricity, Gas, Steam and Air Conditioning Supply",hard_to_fill,45,3
+PH-2526-P45-hard_to_fill-004,OCC-9ad5cbdccaa88d31,Chemical Engineering Technician,"Electricity, Gas, Steam and Air Conditioning Supply",hard_to_fill,45,4
+PH-2526-P45-hard_to_fill-005,OCC-0761d5e04bfd7068,Electrical and Instrumentation Technician,"Electricity, Gas, Steam and Air Conditioning Supply",hard_to_fill,45,5
+PH-2526-P45-hard_to_fill-006,OCC-c7f3503533e3f1f0,Plant Maintenance Specialist,"Electricity, Gas, Steam and Air Conditioning Supply",hard_to_fill,45,6
+PH-2526-P45-in_demand-001,OCC-b19a56195fecdaf3,Accountant,Renewable Energy,in_demand,45,1
+PH-2526-P45-in_demand-002,OCC-ff72ca1d4f2d4c03,Company Nurse,Renewable Energy,in_demand,45,2
+PH-2526-P45-in_demand-003,OCC-a6fe86bc8f8d7621,Electrical Engineer,Renewable Energy,in_demand,45,3
+PH-2526-P45-in_demand-004,OCC-704b5d0b4b2854fd,Maintenance Technician,Renewable Energy,in_demand,45,4
+PH-2526-P45-in_demand-005,OCC-8d88618326990207,Mechanical Engineer,Renewable Energy,in_demand,45,5
+PH-2526-P45-hard_to_fill-001,OCC-c2859a2352f442d5,Environment Community Relations Assistant,Renewable Energy,hard_to_fill,45,1
+PH-2526-P45-hard_to_fill-002,OCC-87b8c8c5e1e4957f,Environment Management Engineer,Renewable Energy,hard_to_fill,45,2
+PH-2526-P45-hard_to_fill-003,OCC-54f9f6a84acd5787,Pollution Control Officer,Renewable Energy,hard_to_fill,45,3
+PH-2526-P45-hard_to_fill-004,OCC-6ed8a6f94374c91e,Power Plant Maintenance Engineer,Renewable Energy,hard_to_fill,45,4
+PH-2526-P45-hard_to_fill-005,OCC-c7a631064a5e8a19,Sanitary Officer,Renewable Energy,hard_to_fill,45,5
+PH-2526-P45-hard_to_fill-006,OCC-93c201549564aa7c,Sewage Treatment Plant (STP) Operator,Renewable Energy,hard_to_fill,45,6
+PH-2526-P45-in_demand-001,OCC-a33c3eba5f14ff14,Heavy Equipment Mechanic,Mining and Quarrying,in_demand,45,1
+PH-2526-P45-in_demand-002,OCC-f1fa0aa574e37ae5,Heavy Equipment Operator,Mining and Quarrying,in_demand,45,2
+PH-2526-P45-in_demand-003,OCC-e14dd1bbe10311da,Mining Engineer,Mining and Quarrying,in_demand,45,3
+PH-2526-P45-in_demand-004,OCC-dc23e9dc621be83d,Safety Officer,Mining and Quarrying,in_demand,45,4
+PH-2526-P45-in_demand-001,OCC-7aead812dd77b8ba,Tour Guide,Creative Industries,in_demand,45,1
+PH-2526-P45-in_demand-002,OCC-c9ce111a97d6b029,Virtual Promotions,Creative Industries,in_demand,45,2
+PH-2526-P45-in_demand-003,OCC-c2e861cb775305a2,Virtual Guiding,Creative Industries,in_demand,45,3
+PH-2526-P45-in_demand-004,OCC-17b963e69a60f059,"Artificial Intelligence, AI and Machine Learning Specialists",Creative Industries,in_demand,45,4
+PH-2526-P45-in_demand-005,OCC-1f7668eb4db3402a,Augmented and Virtual Reality,Creative Industries,in_demand,45,5
