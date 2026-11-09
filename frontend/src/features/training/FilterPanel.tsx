@@ -60,10 +60,11 @@ const kindClass = cx(
 /**
  * The panel's own indigo accent, in place of the app's blue: its fills, switches, links and focus borders take it.
  * The theme inlines its colors as var(--track-*), so those are what change here. Lists that open from the panel sit
- * outside it, so they keep the app's blue.
+ * outside it, so they keep the app's blue. Fills sit under white text, so each keeps a 4.5:1 contrast with white:
+ * dark #5f5bf0 is 4.95:1 (#6366f1 was 4.47:1, under WCAG AA).
  */
 const indigo =
-  '[--track-fill:#4f46e5] [--track-fill-hover:#4338ca] [--track-blue:#4f46e5] dark:[--track-fill:#6366f1] dark:[--track-fill-hover:#4f46e5] dark:[--track-blue:#a5b4fc]'
+  '[--track-fill:#4f46e5] [--track-fill-hover:#4338ca] [--track-blue:#4f46e5] dark:[--track-fill:#5f5bf0] dark:[--track-fill-hover:#4f46e5] dark:[--track-blue:#a5b4fc]'
 
 /** Whether the panel is folded away, kept for this browser. */
 const FOLDED_KEY = 'tesda-track.training-filters'
