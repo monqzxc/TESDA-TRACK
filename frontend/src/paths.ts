@@ -22,5 +22,7 @@ export const paths = {
   admin: '/admin',
   profile: '/profile',
   signIn: '/sign-in',
+  /** The staff login, at its own address: the same page as /sign-in. */
+  login: '/buroute',
   privacy: '/privacy',
 } as const

@@ -38,6 +38,8 @@ describe('safeNextPath', () => {
     undefined,
     '/sign-in',
     '/sign-in?next=/progress',
+    '/buroute',
+    '/buroute?next=/reports',
   ])('sends %j home', (next) => {
     expect(safeNextPath(next)).toBe('/')
   })

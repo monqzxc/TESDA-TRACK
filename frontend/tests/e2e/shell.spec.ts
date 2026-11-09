@@ -24,6 +24,7 @@ const PAGES = [
   { path: '/skills', heading: 'Skills Explorer' },
   { path: '/reports', heading: 'Reports' },
   { path: '/sign-in', heading: 'Sign in' },
+  { path: '/buroute', heading: 'Sign in' },
   { path: '/privacy', heading: 'Privacy policy' },
   { path: '/no-such-page', heading: 'Page not found' },
 ]

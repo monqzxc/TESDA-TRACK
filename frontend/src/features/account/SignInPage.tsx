@@ -13,8 +13,8 @@ interface Start {
 }
 
 /**
- * Sign in, at /sign-in: the address to fall back on for the sign-in dialog, with the same forms. Once signed in, the
- * learner goes on to ?next= when it's one of the app's own addresses, or home.
+ * Sign in, at /sign-in and at /buroute (the staff login): the address to fall back on for the sign-in dialog, with
+ * the same forms. Once signed in, the learner goes on to ?next= when it's one of the app's own addresses, or home.
  */
 export default function SignInPage() {
   const en = useCopy()

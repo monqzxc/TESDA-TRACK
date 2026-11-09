@@ -414,6 +414,17 @@ describe('the /sign-in page', () => {
     await waitFor(() => expect(router.state.location.pathname).toBe('/'))
   })
 
+  it('signs in at the staff login, /buroute, the same way', async () => {
+    const user = userEvent.setup()
+    serveAccountApi()
+    const { router } = await openApp('/buroute?next=%2Fprogress')
+
+    expect(screen.getByRole('heading', { level: 1, name: 'Sign in' })).toBeInTheDocument()
+    await signInOnPage(user)
+
+    await waitFor(() => expect(router.state.location.pathname).toBe('/progress'))
+  })
+
   it('goes straight on when already signed in', async () => {
     rememberSignIn()
     serveAccountApi({ signedIn: true })

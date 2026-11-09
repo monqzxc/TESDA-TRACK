@@ -1,7 +1,8 @@
 import { paths } from '../paths.ts'
 
-// Where /sign-in sends the learner afterwards: ?next=, when it's one of the app's own addresses. Anything else goes
-// home, so a link can't use the sign-in page to send a learner to another site (an open redirect).
+// Where /sign-in (and /buroute, the staff login) sends the learner afterwards: ?next=, when it's one of the app's
+// own addresses. Anything else goes home, so a link can't use the sign-in page to send a learner to another site (an
+// open redirect).
 
 // Any origin: only used to see whether `next` stays on it.
 const PROBE_ORIGIN = 'https://app.invalid'
@@ -32,7 +33,7 @@ export function safeNextPath(next: string | null | undefined): string {
   }
   // Dot segments can still make a "//" path ("/.//evil.com"), which reads as another site.
   if (url.origin !== PROBE_ORIGIN || url.pathname.startsWith('//')) return paths.home
-  // Back to the sign-in page would go round in a circle.
-  if (url.pathname === paths.signIn) return paths.home
+  // Back to a sign-in page (/sign-in or the staff login, /buroute) would go round in a circle.
+  if (url.pathname === paths.signIn || url.pathname === paths.login) return paths.home
   return `${url.pathname}${url.search}${url.hash}`
 }

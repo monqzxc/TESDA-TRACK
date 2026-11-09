@@ -43,12 +43,15 @@ describe('guest-only', () => {
     await waitFor(() => expect(router.state.location.pathname).toBe('/'))
   })
 
-  it('signs staff in at /sign-in, with no way to create an account', async () => {
-    serveAccountApi()
-    await openApp('/sign-in')
-    expect(screen.getByRole('button', { name: 'Sign in' })).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: /create an account/i })).not.toBeInTheDocument()
-  })
+  it.each(['/buroute', '/sign-in'])(
+    'signs staff in at %s, with no way to create an account',
+    async (path) => {
+      serveAccountApi()
+      await openApp(path)
+      expect(screen.getByRole('button', { name: 'Sign in' })).toBeInTheDocument()
+      expect(screen.queryByRole('button', { name: /create an account/i })).not.toBeInTheDocument()
+    },
+  )
 
   it('still gives staff who are signed in their account menu', async () => {
     rememberSignIn()

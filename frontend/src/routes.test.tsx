@@ -12,7 +12,13 @@ const GOAL_TITLE = 'Your goal · Find my pathway · TESDA-TRACK'
 // Every address, its h1, the step it shows (the finder's h2), its document title, and whether it loads the catalog.
 const PAGES = [
   ['/', 'Every career has a track. Find yours.', null, 'TESDA-TRACK · Your next step', false],
-  ['/tsp/webview', 'Find your TESDA qualification', null, 'Find a TESDA pathway · TESDA-TRACK', false],
+  [
+    '/tsp/webview',
+    'Find your TESDA qualification',
+    null,
+    'Find a TESDA pathway · TESDA-TRACK',
+    false,
+  ],
   ['/find', 'Find my pathway', GOAL_STEP, GOAL_TITLE, true],
   // Without a goal, the finder's later steps go back to Your goal.
   ['/find/matches', 'Find my pathway', GOAL_STEP, GOAL_TITLE, true],
@@ -27,6 +33,7 @@ const PAGES = [
   ['/reports', 'Reports', null, 'Reports · TESDA-TRACK', false],
   ['/profile', 'My Profile', null, 'My Profile · TESDA-TRACK', false],
   ['/sign-in', 'Sign in', null, 'Sign in · TESDA-TRACK', false],
+  ['/buroute', 'Sign in', null, 'Sign in · TESDA-TRACK', false],
   ['/privacy', 'Privacy policy', null, 'Privacy policy · TESDA-TRACK', false],
   ['/no-such-page', 'Page not found', null, 'Page not found · TESDA-TRACK', false],
 ] as const
