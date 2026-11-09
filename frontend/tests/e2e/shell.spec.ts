@@ -5,10 +5,12 @@ import { learnerAccounts } from './accounts.ts'
 // The app shell: every address in both themes, on a phone and on a desktop, with axe; the keyboard; Back; and
 // the states for an unreachable API and a page that fails to download.
 
-const GOAL_STEP = 'What would you like to achieve?'
+// Find my pathway's goal step: the one box for a goal, skills or jobs.
+const GOAL_STEP = 'Where would you like to go?'
+const HOME = 'Every career has a track. Find yours.'
 
 const PAGES = [
-  { path: '/', heading: 'Every career has a track. Find yours.' },
+  { path: '/', heading: HOME },
   { path: '/find', heading: 'Find my pathway', step: GOAL_STEP },
   // Without a goal, the finder's later steps go back to Your goal (finder.spec.ts covers each step with one).
   { path: '/find/matches', heading: 'Find my pathway', step: GOAL_STEP },
@@ -19,7 +21,7 @@ const PAGES = [
   // Guest-only, My Progress sends a guest Home.
   {
     path: '/progress',
-    heading: learnerAccounts ? 'My Progress' : 'Every career has a track. Find yours.',
+    heading: learnerAccounts ? 'My Progress' : HOME,
   },
   { path: '/skills', heading: 'Skills Explorer' },
   { path: '/reports', heading: 'Reports' },
@@ -101,10 +103,12 @@ for (const colorScheme of ['light', 'dark'] as const) {
 
       for (const { path, heading, step } of PAGES) {
         test(`${path} shows its page and passes axe`, async ({ page }) => {
+          // Home, or a page that sends a guest there: Home's checks below are for the page it lands on.
+          const home = heading === HOME
           await serveCatalog(page)
           // Home's parts fade in as they arrive, and its hero example keeps changing: still, so axe sees them at
           // their final colors, as home.spec.ts does.
-          if (path === '/') await page.emulateMedia({ reducedMotion: 'reduce' })
+          if (home) await page.emulateMedia({ reducedMotion: 'reduce' })
           await page.goto(path)
 
           await expect(page.getByRole('heading', { level: 1, name: heading })).toBeVisible()
@@ -114,13 +118,13 @@ for (const colorScheme of ['light', 'dark'] as const) {
           // (Home needs no catalog, and its readiness example announces its score in a status of its own.) Only a
           // status with words counts: Skills Explorer keeps an empty live region for its search, which says
           // nothing until a search has something to announce.
-          if (path !== '/') {
+          if (!home) {
             await expect(page.getByRole('status').filter({ hasText: /\S/ })).toHaveCount(0)
           }
 
           // Home has the landing page's top bar; every other page has the sidebar, behind Menu on a phone.
           const phone = size === 'phone'
-          if (path === '/') {
+          if (home) {
             await expect(
               page.getByRole('banner').getByRole('link', { name: 'Find my path' }),
             ).toBeVisible()

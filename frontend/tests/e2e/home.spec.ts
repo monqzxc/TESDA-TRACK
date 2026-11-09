@@ -16,7 +16,8 @@ const SECTIONS = [
   'Four stops between a goal and a certificate.',
   'Training and assessment near you.',
   '319 qualifications',
-  'Save your path. Tick off each step.',
+  // Only where learners can make accounts (HomePage.tsx, offersAccounts).
+  ...(learnerAccounts ? ['Save your path. Tick off each step.'] : []),
   'What would you like to achieve?',
 ]
 
@@ -100,7 +101,9 @@ for (const colorScheme of ['light', 'dark'] as const) {
         await expectAccessible(page)
 
         // Further down, the bar is solid over the sections.
-        await page.getByRole('heading', { level: 2, name: SECTIONS[3] }).scrollIntoViewIfNeeded()
+        await page
+          .getByRole('heading', { level: 2, name: '319 qualifications' })
+          .scrollIntoViewIfNeeded()
         await expect(page.getByRole('banner')).toHaveAttribute('data-scrolled')
         await expectNoSidewaysScroll(page)
         await expectAccessible(page)
