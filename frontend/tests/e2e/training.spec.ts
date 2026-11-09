@@ -440,12 +440,12 @@ for (const [size, viewport] of Object.entries(SIZES)) {
     ).toHaveCount(0)
     await expect(page).not.toHaveURL(/radius=/)
     if (size === 'phone') await page.getByRole('button', { name: 'Show filters' }).click()
-    const radius = page.getByRole('button', { name: /Radius near me/ })
-    await expect(radius).toContainText('Within 10 km')
+    const radius = page.getByRole('button', { name: /Radius/ })
+    await expect(radius).toContainText('10 KM')
     await expectSettledAndAccessible(page)
 
     await radius.click()
-    await page.getByRole('option', { name: 'Within 5 km', exact: true }).click()
+    await page.getByRole('option', { name: '5 KM', exact: true }).click()
     await expect(page.getByRole('heading', { name: 'All results (0)' })).toBeVisible()
     await expect(page).toHaveURL(/radius=5/)
     await expectRadius(page, 5)
@@ -453,7 +453,7 @@ for (const [size, viewport] of Object.entries(SIZES)) {
     await expect(page.getByRole('heading', { name: 'All results (3)' })).toBeVisible()
     await expectRadius(page, null)
     await expect(page).toHaveURL(/radius=any/)
-    await expect(radius).toContainText('All distances')
+    await expect(radius).toContainText('All Distances')
   })
 
   test(`${size}: a failed region lookup retains filters and recovers locally`, async ({ page }) => {
@@ -582,7 +582,7 @@ test.describe('on a desktop', () => {
     await serveTraining(page)
     await page.goto('/training?type=assessment')
 
-    await page.getByRole('button', { name: 'Apply' }).click()
+    await page.getByRole('button', { name: 'Apply', exact: true }).click()
 
     await expect(page.getByRole('dialog', { name: 'Sign in' })).toBeVisible()
   })
@@ -593,7 +593,7 @@ test.describe('on a desktop', () => {
     await page.goto('/training?type=assessment')
 
     await expect(page.getByRole('heading', { name: /Upcoming assessments/ }).first()).toBeVisible()
-    await expect(page.getByRole('button', { name: 'Apply' })).toHaveCount(0)
+    await expect(page.getByRole('button', { name: 'Apply', exact: true })).toHaveCount(0)
   })
 })
 
