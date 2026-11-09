@@ -42,7 +42,7 @@
     {"id": "nofit-medicine", "kind": "no_fit", "language": "en", "skills": ["medical diagnosis", "surgery"], "expect_empty": true, "judgments": {}},
     {"id": "nofit-piano", "kind": "no_fit", "language": "en", "skills": ["piano", "music theory"], "expect_empty": true, "judgments": {}},
     {"id": "nofit-finance", "kind": "no_fit", "language": "en", "skills": ["investment banking", "financial modelling"], "expect_empty": true, "judgments": {}},
-    {"id": "nofit-sports", "kind": "no_fit", "language": "en", "skills": ["volleyball", "basketball"], "expect_empty": true, "judgments": {}},
+    {"id": "nofit-sports", "kind": "no_fit", "language": "en", "skills": ["volleyball", "badminton"], "expect_empty": true, "judgments": {}},
     {"id": "nofit-politics", "kind": "no_fit", "language": "taglish", "skills": ["pangangampanya sa eleksyon"], "expect_empty": true, "judgments": {}},
 
     {"id": "multi-welding", "kind": "multi_skill", "language": "en", "skills": ["welding", "blueprint reading", "grinding"], "judgments": {"MMAW-NC-II": 3, "MMAW-NC-I": 2, "MMAW-NC-III": 2}},
