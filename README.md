@@ -285,6 +285,8 @@ from `backend/`. Replace `NEXT_NUMBER` with the next unused number after checkin
 `backend/migrations/versions/`, and review the generated file before applying it.
 
 For real training and assessment registries, see the [registry import and review workflow](docs/registry-import.md).
+For goal-based qualification matching, area-demand evidence and road-access comparison in the existing map,
+see [qualification evidence and center access](docs/qualification-center-recommendations.md).
 For test database behavior and optional real-model checks, see [Tests](#tests).
 
 ### Frontend languages

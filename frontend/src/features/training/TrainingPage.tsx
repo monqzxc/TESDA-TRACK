@@ -1,4 +1,13 @@
-import { lazy, Suspense, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react'
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react'
 import { Button, Input, Label, SearchField, Switch } from 'react-aria-components'
 import type { Qualification } from '../../api/queries.ts'
 import { Icon } from '../../components/Icon.tsx'
@@ -13,6 +22,8 @@ import { FilterPanel } from './FilterPanel.tsx'
 import { Results, type ShowRequest } from './Results.tsx'
 import { useTrainingFilters, useTrainingStore } from './state.ts'
 import { useCenters } from './useCenters.ts'
+import { PathwayRecommendations } from './PathwayRecommendations.tsx'
+import { ServiceAccessComparison } from './ServiceAccessComparison.tsx'
 
 // Leaflet comes down with the map, the first time it's shown, and not at all while it's hidden.
 const CenterMap = lazy(() => import('./CenterMap.tsx'))
@@ -30,17 +41,39 @@ const mapStandIn =
  * header with its toolbar, then the map beside the results.
  */
 export default function TrainingPage() {
+  const [recommendationsOpen, setRecommendationsOpen] = useState(false)
+  const recommendationsId = useId()
   // The learner's area first: asked for alongside the catalog, so the centers near them load as soon as it's known.
   useEffect(() => useTrainingStore.getState().locateOnOpen(), [])
   return (
     <div className="max-w-full">
-      <Header />
-      <WithCatalog emptyState>{(catalog) => <Workspace catalog={catalog} />}</WithCatalog>
+      <Header
+        recommendationsOpen={recommendationsOpen}
+        recommendationsId={recommendationsId}
+        onToggleRecommendations={() => setRecommendationsOpen((open) => !open)}
+      />
+      <WithCatalog emptyState>
+        {(catalog) => (
+          <Workspace
+            catalog={catalog}
+            recommendationsOpen={recommendationsOpen}
+            recommendationsId={recommendationsId}
+          />
+        )}
+      </WithCatalog>
     </div>
   )
 }
 
-function Header() {
+function Header({
+  recommendationsOpen,
+  recommendationsId,
+  onToggleRecommendations,
+}: {
+  recommendationsOpen: boolean
+  recommendationsId: string
+  onToggleRecommendations: () => void
+}) {
   const en = useCopy()
   const copy = en.training
 
@@ -51,6 +84,14 @@ function Header() {
     <PageTitle heading={en.pages.training.heading} lead={copy.hero.lead}>
       {/* The location switch and the search, one control height, on the title's row. */}
       <div className="flex flex-[1_1_30rem] flex-wrap items-center justify-end gap-3 max-sm:justify-start">
+        <Button
+          className={button({ variant: 'secondary' })}
+          aria-expanded={recommendationsOpen}
+          aria-controls={recommendationsId}
+          onPress={onToggleRecommendations}
+        >
+          {en.centerRecommendations.open}
+        </Button>
         <Switch
           data-tour="training-location"
           className={cx(
@@ -89,12 +130,32 @@ function Header() {
   )
 }
 
-function Workspace({ catalog }: { catalog: Qualification[] }) {
+function Workspace({
+  catalog,
+  recommendationsOpen,
+  recommendationsId,
+}: {
+  catalog: Qualification[]
+  recommendationsOpen: boolean
+  recommendationsId: string
+}) {
   const en = useCopy()
   const copy = en.training
 
-  const results = useCenters(catalog)
-  const { update } = useTrainingFilters()
+  const [recommendationContext, setRecommendationContext] = useState<{
+    code: string
+    goal: string | null
+  } | null>(null)
+  const [evidenceChoice, setEvidenceChoice] = useState<{ region: string | null } | null>(null)
+  const { filters, update } = useTrainingFilters()
+  const goalOverride =
+    recommendationContext === null
+      ? undefined
+      : filters.qualifications.length === 1 &&
+          filters.qualifications[0] === recommendationContext.code
+        ? recommendationContext.goal
+        : null
+  const results = useCenters(catalog, goalOverride)
   const location = useTrainingStore((state) => (state.useLocation ? state.location : null))
   const locating = useTrainingStore((state) => state.locating)
   const routeTo = useTrainingStore((state) => state.routeTo)
@@ -155,6 +216,33 @@ function Workspace({ catalog }: { catalog: Qualification[] }) {
 
   return (
     <>
+      <div id={recommendationsId} hidden={!recommendationsOpen}>
+        <PathwayRecommendations
+          catalog={catalog}
+          regions={results.regions}
+          regionCode={evidenceChoice ? evidenceChoice.region : results.region}
+          selectedCode={results.codes.length === 1 ? results.codes[0] : null}
+          onArea={(region) => setEvidenceChoice({ region })}
+          onGoalEdit={() =>
+            setRecommendationContext({ code: filters.qualifications[0] ?? '', goal: null })
+          }
+          onChoose={(code, goal) => {
+            setRecommendationContext({ code, goal })
+            update({ qualifications: [code], search: '', center: null })
+          }}
+        />
+        <ServiceAccessComparison
+          qualificationCode={results.codes.length === 1 ? results.codes[0] : null}
+          centers={results.refreshing ? [] : results.centers}
+          selectedId={results.featured?.id ?? null}
+          routingEnabled={results.config?.routing_enabled ?? false}
+          onChoose={(id) => {
+            select(id)
+            store().showRoute(id)
+            setShow({ id, focus: true })
+          }}
+        />
+      </div>
       {results.failed && (
         <div className="my-4 rounded-12 border border-border bg-warn-bg p-4 text-warn-ink">
           <p role="alert" className="mt-0">

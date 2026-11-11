@@ -42,7 +42,7 @@ export interface Reference extends Point {
  * With the learner's location, only their area is asked for (DEFAULT_RADIUS_KM until they choose another radius),
  * which is far less to load than every center in the country; while the browser is still finding it, nothing is.
  */
-export function useCenters(catalog: readonly Qualification[]) {
+export function useCenters(catalog: readonly Qualification[], goalOverride?: string | null) {
   const { learner } = useAuth()
   const { filters } = useTrainingFilters()
   const location = useTrainingStore((state) => (state.useLocation ? state.location : null))
@@ -50,7 +50,9 @@ export function useCenters(catalog: readonly Qualification[]) {
     (state) => state.useLocation && state.locating && !state.location,
   )
   const placeText = useTrainingStore((state) => state.placeText)
-  const goal = useFinderStore((state) => state.journey?.query ?? null)
+  const finderGoal = useFinderStore((state) => state.journey?.query ?? null)
+  // undefined inherits the Finder journey; explicit null means area exploration without a personal goal.
+  const goal = goalOverride === undefined ? finderGoal : goalOverride
 
   // The radius around the learner's own location, or null for every distance. A searched place has no default.
   const ownRadius = filters.radius === ANY_DISTANCE ? null : (filters.radius ?? DEFAULT_RADIUS_KM)

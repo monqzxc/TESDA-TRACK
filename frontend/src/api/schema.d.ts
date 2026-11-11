@@ -1797,6 +1797,67 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/labor-market/evidence": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Qualification Evidence */
+        get: operations["qualification_evidence_api_v1_labor_market_evidence_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/labor-market/qualifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Area Qualification Evidence
+         * @description Reviewed qualification links for an area; observations and forecasts stay separate.
+         */
+        get: operations["area_qualification_evidence_api_v1_labor_market_qualifications_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/recommendations/service-access": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Compare Service Access
+         * @description Compare up to eight known qualification sites using the chosen road mode.
+         *
+         *     The departure point stays in the POST body, is rounded to two decimal places before cache/network use,
+         *     and is not persisted in a ranking audit. Site coordinates are resolved from the catalog, not the body.
+         *     Route evidence does not establish authority, availability or learner eligibility.
+         */
+        post: operations["compare_service_access_api_v1_recommendations_service_access_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/admin/labor-market/mappings": {
         parameters: {
             query?: never;
@@ -2006,6 +2067,77 @@ export interface components {
             result?: ("competent" | "not_yet_competent") | null;
             /** Reviewer Note */
             reviewer_note?: string | null;
+        };
+        /** AreaQualification */
+        AreaQualification: {
+            /** Qualification Code */
+            qualification_code: string;
+            /** Qualification Name */
+            qualification_name: string;
+            /** Observed Posting Count */
+            observed_posting_count?: number | null;
+            /**
+             * Posting Unit
+             * @default distinct posting records
+             * @constant
+             */
+            posting_unit: "distinct posting records";
+            /** Observation Dates */
+            observation_dates?: string[];
+            observation_geography: components["schemas"]["Geography"];
+            /** Forecast Support */
+            forecast_support?: components["schemas"]["ForecastSupport"][];
+            /**
+             * Has Selected Area Evidence
+             * @default false
+             */
+            has_selected_area_evidence: boolean;
+            /** Dataset Keys */
+            dataset_keys?: string[];
+            /** Limitations */
+            limitations?: string[];
+        };
+        /** AreaQualifications */
+        AreaQualifications: {
+            /** Items */
+            items: components["schemas"]["AreaQualification"][];
+            /** Total */
+            total: number;
+            /** Limit */
+            limit: number;
+            /** Offset */
+            offset: number;
+            /** Region Code */
+            region_code?: string | null;
+            /**
+             * Evaluated At
+             * Format: date-time
+             */
+            evaluated_at: string;
+            /**
+             * Observed Since
+             * Format: date
+             */
+            observed_since: string;
+            /**
+             * Observed Through
+             * Format: date
+             */
+            observed_through: string;
+            /**
+             * Ordering
+             * @default qualification_name
+             * @constant
+             */
+            ordering: "qualification_name";
+            /**
+             * Method Version
+             * @default area-qualifications-v1
+             * @constant
+             */
+            method_version: "area-qualifications-v1";
+            /** Limitations */
+            limitations?: string[];
         };
         /** AssessmentAnswers */
         "AssessmentAnswers-Input": {
@@ -3018,6 +3150,22 @@ export interface components {
              */
             status: "active" | "withdrawn";
         };
+        /** EvidenceContext */
+        EvidenceContext: {
+            /** Qualification Code */
+            qualification_code: string;
+            /** Region Code */
+            region_code: string | null;
+            /**
+             * Evaluated At
+             * Format: date-time
+             */
+            evaluated_at: string;
+            /** Method Versions */
+            method_versions: {
+                [key: string]: string;
+            };
+        };
         /** Explanation */
         Explanation: {
             /**
@@ -3203,6 +3351,44 @@ export interface components {
              */
             from_arrival_km: number;
         };
+        /** ForecastSupport */
+        ForecastSupport: {
+            /** Occupation Title */
+            occupation_title: string;
+            /**
+             * Classification
+             * @enum {string}
+             */
+            classification: "in_demand" | "hard_to_fill";
+            /**
+             * Evidence Kind
+             * @default forecast
+             * @constant
+             */
+            evidence_kind: "forecast";
+            /** Value */
+            value?: null;
+            geography: components["schemas"]["Geography"];
+            /**
+             * Geography Match
+             * @enum {string}
+             */
+            geography_match: "selected_area" | "broader_scope" | "no_area_selected";
+            /** Period Label */
+            period_label: string;
+            /** Publisher */
+            publisher: string;
+            /** Source Title */
+            source_title: string;
+            /** Source Url */
+            source_url?: string | null;
+            /** Source Reference */
+            source_reference: string;
+            /** Dataset Key */
+            dataset_key: string;
+            /** Mapping Id */
+            mapping_id: number;
+        };
         /** Funnel */
         Funnel: {
             /** Registered */
@@ -3215,6 +3401,18 @@ export interface components {
             applied_for_assessment: number;
             /** Certified */
             certified: number;
+        };
+        /** Geography */
+        Geography: {
+            /**
+             * Scope
+             * @enum {string}
+             */
+            scope: "national" | "regional" | "local" | "multi_regional";
+            /** Region Code */
+            region_code?: string | null;
+            /** Label */
+            label: string;
         };
         /** GoalAnalysis */
         GoalAnalysis: {
@@ -3518,6 +3716,41 @@ export interface components {
             has_more: boolean;
             /** Retention Days */
             retention_days: number;
+        };
+        /** Measure */
+        Measure: {
+            /** Name */
+            name: string;
+            /** Value */
+            value: number | null;
+            /** Unit */
+            unit: string;
+            /**
+             * Evidence Kind
+             * @enum {string}
+             */
+            evidence_kind: "observed" | "estimated" | "forecast";
+            geography: components["schemas"]["Geography"];
+            /** Reference Period */
+            reference_period?: string | null;
+            /** Observed On */
+            observed_on?: string | null;
+            /** Sources */
+            sources?: string[];
+            /** Method Version */
+            method_version: string;
+            /** Known Record Count */
+            known_record_count: number;
+            /** Eligible Record Count */
+            eligible_record_count: number;
+            /** Unknown Count */
+            unknown_count: number;
+            /** Coverage */
+            coverage: number | null;
+            /** Statement */
+            statement: string;
+            /** Limitations */
+            limitations?: string[];
         };
         /** MigrationStatus */
         MigrationStatus: {
@@ -3933,6 +4166,31 @@ export interface components {
             /** Limitations */
             limitations?: string[];
         };
+        /** PostingEvidence */
+        PostingEvidence: {
+            postings: components["schemas"]["Measure"];
+            employers: components["schemas"]["Measure"];
+            /** By Qualification */
+            by_qualification: {
+                [key: string]: number;
+            };
+            /** Overlap Count */
+            overlap_count: number;
+            /** Repeated Captures */
+            repeated_captures: number;
+            /** Suspected Duplicate Groups */
+            suspected_duplicate_groups: number;
+            /** Unallocated Count */
+            unallocated_count: number;
+            /** Snapshot Dates */
+            snapshot_dates: string[];
+            /** Posted Between */
+            posted_between: string[] | null;
+            /** Dataset Keys */
+            dataset_keys: string[];
+            /** Fingerprint */
+            fingerprint: string;
+        };
         /** Prerequisite */
         Prerequisite: {
             /**
@@ -4078,6 +4336,16 @@ export interface components {
             competent: number;
             /** Certified */
             certified: number;
+        };
+        /** QualificationEvidencePanel */
+        QualificationEvidencePanel: {
+            context: components["schemas"]["EvidenceContext"];
+            /** Forecast Support */
+            forecast_support: components["schemas"]["ForecastSupport"][];
+            observed_postings: components["schemas"]["PostingEvidence"];
+            supply: components["schemas"]["SupplyEvidence"];
+            /** Limitations */
+            limitations: string[];
         };
         /** QualificationFeedback */
         QualificationFeedback: {
@@ -4732,6 +5000,101 @@ export interface components {
             /** Reason */
             reason: string;
         };
+        /** ServiceAccessCandidate */
+        ServiceAccessCandidate: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "training" | "assessment";
+            /** Site Id */
+            site_id: number;
+        };
+        /** ServiceAccessComparison */
+        ServiceAccessComparison: {
+            /** Qualification Code */
+            qualification_code: string;
+            /**
+             * Mode
+             * @enum {string}
+             */
+            mode: "car" | "bike" | "foot";
+            /** Maximum Minutes */
+            maximum_minutes: number | null;
+            /**
+             * Checked At
+             * Format: date-time
+             */
+            checked_at: string;
+            /** Routing Enabled */
+            routing_enabled: boolean;
+            /**
+             * Origin Precision Decimals
+             * @default 2
+             * @constant
+             */
+            origin_precision_decimals: 2;
+            /**
+             * Method
+             * @default OSRM road network
+             * @constant
+             */
+            method: "OSRM road network";
+            /** Network Version */
+            network_version?: string | null;
+            /** Results */
+            results: components["schemas"]["ServiceAccessResult"][];
+            /** Limitations */
+            limitations?: string[];
+        };
+        /** ServiceAccessRequest */
+        ServiceAccessRequest: {
+            /** Qualification Code */
+            qualification_code: string;
+            origin: components["schemas"]["TravelOrigin"];
+            /**
+             * Mode
+             * @default car
+             * @enum {string}
+             */
+            mode: "car" | "bike" | "foot";
+            /** Maximum Minutes */
+            maximum_minutes?: number | null;
+            /** Candidates */
+            candidates: components["schemas"]["ServiceAccessCandidate"][];
+        };
+        /** ServiceAccessResult */
+        ServiceAccessResult: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "training" | "assessment";
+            /** Site Id */
+            site_id: number;
+            /** Name */
+            name: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "modeled_route" | "no_route_in_network" | "unsupported_mode" | "routing_unavailable" | "location_unknown" | "routing_busy";
+            /** Duration Min */
+            duration_min?: number | null;
+            /** Distance Km */
+            distance_km?: number | null;
+            /**
+             * Within Budget
+             * @description Whether modeled road time meets the requested budget; null for unknown or no budget. Excludes traffic and unmodeled access from snapped road endpoints.
+             */
+            within_budget?: boolean | null;
+            /** Origin Snap Distance Km */
+            origin_snap_distance_km?: number | null;
+            /** Destination Snap Distance Km */
+            destination_snap_distance_km?: number | null;
+            /** Explanation */
+            explanation: string;
+        };
         /**
          * SessionResponse
          * @description Cookie sign-in. The token itself goes only into the HttpOnly cookie, never into the body.
@@ -5115,6 +5478,21 @@ export interface components {
              */
             take_rate: number | null;
         };
+        /** SupplyEvidence */
+        SupplyEvidence: {
+            registered_training_sites: components["schemas"]["Measure"];
+            registered_training_programs: components["schemas"]["Measure"];
+            confirmed_training_offerings: components["schemas"]["Measure"];
+            published_training_slots: components["schemas"]["Measure"];
+            remaining_training_seats: components["schemas"]["Measure"];
+            confirmed_assessment_schedules: components["schemas"]["Measure"];
+            confirmed_assessment_sites: components["schemas"]["Measure"];
+            remaining_assessment_seats: components["schemas"]["Measure"];
+            /** Completeness */
+            completeness: {
+                [key: string]: number | null;
+            };
+        };
         /** TokenResponse */
         TokenResponse: {
             /** Access Token */
@@ -5448,6 +5826,13 @@ export interface components {
              * @default 10
              */
             limit: number;
+        };
+        /** TravelOrigin */
+        TravelOrigin: {
+            /** Latitude */
+            latitude: number;
+            /** Longitude */
+            longitude: number;
         };
         /** TspConsentRequest */
         TspConsentRequest: {
@@ -9285,6 +9670,111 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
                 };
+            };
+        };
+    };
+    qualification_evidence_api_v1_labor_market_evidence_get: {
+        parameters: {
+            query: {
+                qualification_code: string;
+                region_code?: string | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QualificationEvidencePanel"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    area_qualification_evidence_api_v1_labor_market_qualifications_get: {
+        parameters: {
+            query?: {
+                region_code?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AreaQualifications"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    compare_service_access_api_v1_recommendations_service_access_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ServiceAccessRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ServiceAccessComparison"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Too many comparison requests from this client */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

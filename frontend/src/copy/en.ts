@@ -2052,6 +2052,79 @@ export const en = {
     // Shown when the profile has skills but nothing in the catalog is close to them.
     none: 'Nothing close to your skills yet. Type the job you want below.',
   },
+  centerRecommendations: {
+    open: 'Qualification recommendations',
+    heading: 'Find a qualification for your goal',
+    intro:
+      'Describe your goal or skills, review the evidence, then compare training and assessment centers.',
+    goal: 'Your goal or skills',
+    placeholder: 'For example: I repair computers and want related work',
+    match: 'Find qualifications',
+    matching: 'Matching your goal…',
+    area: 'Evidence area',
+    allAreas: 'National and observed areas',
+    areaHelp:
+      'Evidence retains its published geography; selecting a region does not establish municipal demand. Center filters below separately control which sites are shown.',
+    emptyGoal: 'Describe your goal or skills first.',
+    noMatch:
+      'No relevant qualification was found. Try a specific job or skill, or explore the area evidence below.',
+    matched: 'Qualifications for your goal',
+    choose: 'Compare centers',
+    selected: 'Selected qualification',
+    semantic: 'Semantic matching and catalog rules',
+    rules: 'Catalog matching',
+    demandLinked: 'Demand-linked pathway',
+    matchLimit:
+      'These matches explain alignment with your input; they do not establish eligibility or guarantee employment.',
+    areaHeading: 'Explore other qualifications by area',
+    areaIntro:
+      'Reviewed occupation links, listed by qualification name. Posting observations and forecasts describe different evidence.',
+    areaLoading: 'Loading area evidence…',
+    areaEmpty:
+      'No reviewed evidence is available for this area. This does not establish that demand is absent.',
+    noPosting: 'Posting count unknown',
+    postingCount: (count: number) => `${count} observed posting${count === 1 ? '' : 's'}`,
+    snapshots: (dates: string) => `Observed: ${dates}`,
+    nationalContext: 'National forecast context',
+    areaContext: 'Evidence for the selected area',
+    countsNote:
+      'Postings count records, not workers. Counts for different qualifications can overlap.',
+    previous: 'Previous qualifications',
+    next: 'More qualifications',
+    evidence: 'Demand and supply evidence',
+    retry: 'Try again',
+    accessHeading: 'Compare road access',
+    accessIntro:
+      'Compare modeled travel times from your shared approximate location. Service verification and eligibility are checked separately.',
+    accessQualification: 'Select one qualification to compare road access.',
+    accessOrigin:
+      'Share your approximate location to compare road access. Searched areas are browsing references.',
+    shareLocation: 'Use my approximate location',
+    accessMode: 'Road travel mode',
+    accessBudget: 'Preferred one-way time',
+    minutes: (minutes: number) => `${minutes} minutes`,
+    compareAccess: 'Compare travel times',
+    comparingAccess: 'Comparing road access…',
+    accessExpired: 'This travel comparison expired. Compare again to refresh the results.',
+    checked: (when: string) => `Travel comparison checked: ${when}`,
+    accessDisabled:
+      'Road routing is unavailable. You can still browse centers and check directions with the provider.',
+    accessNoCenters: 'No matching sites are available to compare with these filters.',
+    accessScope: (count: number, total: number) =>
+      `Compares ${count} of ${total} matching sites, including the selected site. Other sites remain in the map and listings.`,
+    accessLimit:
+      'Modeled road times exclude traffic, public transport schedules and confirmation of the final entrance connection.',
+    withinBudget: 'Within your preferred time',
+    outsideBudget: 'Over your preferred time',
+    showCenter: 'Show center',
+    missingCoordinates: 'Center location needs confirmation',
+    unsupportedMode: 'This routing service does not support the selected mode',
+    noRoute: 'No route found in the road network',
+    routerUnavailable: 'Routing is temporarily unavailable',
+    routeBusy: 'The routing service is busy; try again shortly',
+    routingDisabled: 'Road routing is disabled',
+    invalidSite: 'This site could not be compared for the selected qualification',
+  },
   theme: {
     // The accessible name of the System / Light / Dark switch.
     label: 'Theme',

@@ -6196,6 +6196,184 @@
         }
       }
     },
+    "/api/v1/labor-market/evidence": {
+      "get": {
+        "tags": [
+          "labor market"
+        ],
+        "summary": "Qualification Evidence",
+        "operationId": "qualification_evidence_api_v1_labor_market_evidence_get",
+        "parameters": [
+          {
+            "name": "qualification_code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 40,
+              "title": "Qualification Code"
+            }
+          },
+          {
+            "name": "region_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Region Code"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualificationEvidencePanel"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labor-market/qualifications": {
+      "get": {
+        "tags": [
+          "labor market"
+        ],
+        "summary": "Area Qualification Evidence",
+        "description": "Reviewed qualification links for an area; observations and forecasts stay separate.",
+        "operationId": "area_qualification_evidence_api_v1_labor_market_qualifications_get",
+        "parameters": [
+          {
+            "name": "region_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Region Code"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 50,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AreaQualifications"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/recommendations/service-access": {
+      "post": {
+        "tags": [
+          "recommendations"
+        ],
+        "summary": "Compare Service Access",
+        "description": "Compare up to eight known qualification sites using the chosen road mode.\n\nThe departure point stays in the POST body, is rounded to two decimal places before cache/network use,\nand is not persisted in a ranking audit. Site coordinates are resolved from the catalog, not the body.\nRoute evidence does not establish authority, availability or learner eligibility.",
+        "operationId": "compare_service_access_api_v1_recommendations_service_access_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceAccessRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServiceAccessComparison"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many comparison requests from this client"
+          }
+        }
+      }
+    },
     "/api/v1/admin/labor-market/mappings": {
       "get": {
         "tags": [
@@ -6941,6 +7119,163 @@
         },
         "type": "object",
         "title": "ApplicationReview"
+      },
+      "AreaQualification": {
+        "properties": {
+          "qualification_code": {
+            "type": "string",
+            "title": "Qualification Code"
+          },
+          "qualification_name": {
+            "type": "string",
+            "title": "Qualification Name"
+          },
+          "observed_posting_count": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Observed Posting Count"
+          },
+          "posting_unit": {
+            "type": "string",
+            "const": "distinct posting records",
+            "title": "Posting Unit",
+            "default": "distinct posting records"
+          },
+          "observation_dates": {
+            "items": {
+              "type": "string",
+              "format": "date"
+            },
+            "type": "array",
+            "title": "Observation Dates"
+          },
+          "observation_geography": {
+            "$ref": "#/components/schemas/Geography"
+          },
+          "forecast_support": {
+            "items": {
+              "$ref": "#/components/schemas/ForecastSupport"
+            },
+            "type": "array",
+            "title": "Forecast Support"
+          },
+          "has_selected_area_evidence": {
+            "type": "boolean",
+            "title": "Has Selected Area Evidence",
+            "default": false
+          },
+          "dataset_keys": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Dataset Keys"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "qualification_code",
+          "qualification_name",
+          "observation_geography"
+        ],
+        "title": "AreaQualification"
+      },
+      "AreaQualifications": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AreaQualification"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Total"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 1,
+            "title": "Limit"
+          },
+          "offset": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Offset"
+          },
+          "region_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Code"
+          },
+          "evaluated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Evaluated At"
+          },
+          "observed_since": {
+            "type": "string",
+            "format": "date",
+            "title": "Observed Since"
+          },
+          "observed_through": {
+            "type": "string",
+            "format": "date",
+            "title": "Observed Through"
+          },
+          "ordering": {
+            "type": "string",
+            "const": "qualification_name",
+            "title": "Ordering",
+            "default": "qualification_name"
+          },
+          "method_version": {
+            "type": "string",
+            "const": "area-qualifications-v1",
+            "title": "Method Version",
+            "default": "area-qualifications-v1"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "limit",
+          "offset",
+          "evaluated_at",
+          "observed_since",
+          "observed_through"
+        ],
+        "title": "AreaQualifications"
       },
       "AssessmentAnswers-Input": {
         "properties": {
@@ -10290,6 +10625,45 @@
         ],
         "title": "EnrollmentUpdate"
       },
+      "EvidenceContext": {
+        "properties": {
+          "qualification_code": {
+            "type": "string",
+            "title": "Qualification Code"
+          },
+          "region_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Code"
+          },
+          "evaluated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Evaluated At"
+          },
+          "method_versions": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Method Versions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "qualification_code",
+          "region_code",
+          "evaluated_at",
+          "method_versions"
+        ],
+        "title": "EvidenceContext"
+      },
       "Explanation": {
         "properties": {
           "topic": {
@@ -10710,6 +11084,93 @@
         "title": "FlightEstimate",
         "description": "An estimate from the distance between the airports nearest each end, not an airline schedule."
       },
+      "ForecastSupport": {
+        "properties": {
+          "occupation_title": {
+            "type": "string",
+            "title": "Occupation Title"
+          },
+          "classification": {
+            "type": "string",
+            "enum": [
+              "in_demand",
+              "hard_to_fill"
+            ],
+            "title": "Classification"
+          },
+          "evidence_kind": {
+            "type": "string",
+            "const": "forecast",
+            "title": "Evidence Kind",
+            "default": "forecast"
+          },
+          "value": {
+            "type": "null",
+            "title": "Value"
+          },
+          "geography": {
+            "$ref": "#/components/schemas/Geography"
+          },
+          "geography_match": {
+            "type": "string",
+            "enum": [
+              "selected_area",
+              "broader_scope",
+              "no_area_selected"
+            ],
+            "title": "Geography Match"
+          },
+          "period_label": {
+            "type": "string",
+            "title": "Period Label"
+          },
+          "publisher": {
+            "type": "string",
+            "title": "Publisher"
+          },
+          "source_title": {
+            "type": "string",
+            "title": "Source Title"
+          },
+          "source_url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Url"
+          },
+          "source_reference": {
+            "type": "string",
+            "title": "Source Reference"
+          },
+          "dataset_key": {
+            "type": "string",
+            "title": "Dataset Key"
+          },
+          "mapping_id": {
+            "type": "integer",
+            "title": "Mapping Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "occupation_title",
+          "classification",
+          "geography",
+          "geography_match",
+          "period_label",
+          "publisher",
+          "source_title",
+          "source_reference",
+          "dataset_key",
+          "mapping_id"
+        ],
+        "title": "ForecastSupport"
+      },
       "Funnel": {
         "properties": {
           "registered": {
@@ -10742,6 +11203,41 @@
           "certified"
         ],
         "title": "Funnel"
+      },
+      "Geography": {
+        "properties": {
+          "scope": {
+            "type": "string",
+            "enum": [
+              "national",
+              "regional",
+              "local",
+              "multi_regional"
+            ],
+            "title": "Scope"
+          },
+          "region_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Code"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scope",
+          "label"
+        ],
+        "title": "Geography"
       },
       "GoalAnalysis": {
         "properties": {
@@ -11683,6 +12179,124 @@
           "retention_days"
         ],
         "title": "McpActivityPage"
+      },
+      "Measure": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "value": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value"
+          },
+          "unit": {
+            "type": "string",
+            "title": "Unit"
+          },
+          "evidence_kind": {
+            "type": "string",
+            "enum": [
+              "observed",
+              "estimated",
+              "forecast"
+            ],
+            "title": "Evidence Kind"
+          },
+          "geography": {
+            "$ref": "#/components/schemas/Geography"
+          },
+          "reference_period": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reference Period"
+          },
+          "observed_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Observed On"
+          },
+          "sources": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Sources"
+          },
+          "method_version": {
+            "type": "string",
+            "title": "Method Version"
+          },
+          "known_record_count": {
+            "type": "integer",
+            "title": "Known Record Count"
+          },
+          "eligible_record_count": {
+            "type": "integer",
+            "title": "Eligible Record Count"
+          },
+          "unknown_count": {
+            "type": "integer",
+            "title": "Unknown Count"
+          },
+          "coverage": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coverage"
+          },
+          "statement": {
+            "type": "string",
+            "title": "Statement"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "value",
+          "unit",
+          "evidence_kind",
+          "geography",
+          "method_version",
+          "known_record_count",
+          "eligible_record_count",
+          "unknown_count",
+          "coverage",
+          "statement"
+        ],
+        "title": "Measure"
       },
       "MigrationStatus": {
         "properties": {
@@ -12759,6 +13373,88 @@
         ],
         "title": "PersonalizedScore"
       },
+      "PostingEvidence": {
+        "properties": {
+          "postings": {
+            "$ref": "#/components/schemas/Measure"
+          },
+          "employers": {
+            "$ref": "#/components/schemas/Measure"
+          },
+          "by_qualification": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "By Qualification"
+          },
+          "overlap_count": {
+            "type": "integer",
+            "title": "Overlap Count"
+          },
+          "repeated_captures": {
+            "type": "integer",
+            "title": "Repeated Captures"
+          },
+          "suspected_duplicate_groups": {
+            "type": "integer",
+            "title": "Suspected Duplicate Groups"
+          },
+          "unallocated_count": {
+            "type": "integer",
+            "title": "Unallocated Count"
+          },
+          "snapshot_dates": {
+            "items": {
+              "type": "string",
+              "format": "date"
+            },
+            "type": "array",
+            "title": "Snapshot Dates"
+          },
+          "posted_between": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string",
+                  "format": "date"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Posted Between"
+          },
+          "dataset_keys": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Dataset Keys"
+          },
+          "fingerprint": {
+            "type": "string",
+            "title": "Fingerprint"
+          }
+        },
+        "type": "object",
+        "required": [
+          "postings",
+          "employers",
+          "by_qualification",
+          "overlap_count",
+          "repeated_captures",
+          "suspected_duplicate_groups",
+          "unallocated_count",
+          "snapshot_dates",
+          "posted_between",
+          "dataset_keys",
+          "fingerprint"
+        ],
+        "title": "PostingEvidence"
+      },
       "Prerequisite": {
         "properties": {
           "kind": {
@@ -13238,6 +13934,42 @@
           "certified"
         ],
         "title": "QualificationDemand"
+      },
+      "QualificationEvidencePanel": {
+        "properties": {
+          "context": {
+            "$ref": "#/components/schemas/EvidenceContext"
+          },
+          "forecast_support": {
+            "items": {
+              "$ref": "#/components/schemas/ForecastSupport"
+            },
+            "type": "array",
+            "title": "Forecast Support"
+          },
+          "observed_postings": {
+            "$ref": "#/components/schemas/PostingEvidence"
+          },
+          "supply": {
+            "$ref": "#/components/schemas/SupplyEvidence"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "context",
+          "forecast_support",
+          "observed_postings",
+          "supply",
+          "limitations"
+        ],
+        "title": "QualificationEvidencePanel"
       },
       "QualificationFeedback": {
         "properties": {
@@ -14961,6 +15693,272 @@
         ],
         "title": "ScoreFactor"
       },
+      "ServiceAccessCandidate": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "training",
+              "assessment"
+            ],
+            "title": "Kind"
+          },
+          "site_id": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "title": "Site Id"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "site_id"
+        ],
+        "title": "ServiceAccessCandidate"
+      },
+      "ServiceAccessComparison": {
+        "properties": {
+          "qualification_code": {
+            "type": "string",
+            "title": "Qualification Code"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "car",
+              "bike",
+              "foot"
+            ],
+            "title": "Mode"
+          },
+          "maximum_minutes": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum Minutes"
+          },
+          "checked_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Checked At"
+          },
+          "routing_enabled": {
+            "type": "boolean",
+            "title": "Routing Enabled"
+          },
+          "origin_precision_decimals": {
+            "type": "integer",
+            "const": 2,
+            "title": "Origin Precision Decimals",
+            "default": 2
+          },
+          "method": {
+            "type": "string",
+            "const": "OSRM road network",
+            "title": "Method",
+            "default": "OSRM road network"
+          },
+          "network_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Network Version"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/ServiceAccessResult"
+            },
+            "type": "array",
+            "title": "Results"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "qualification_code",
+          "mode",
+          "maximum_minutes",
+          "checked_at",
+          "routing_enabled",
+          "results"
+        ],
+        "title": "ServiceAccessComparison"
+      },
+      "ServiceAccessRequest": {
+        "properties": {
+          "qualification_code": {
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 1,
+            "title": "Qualification Code"
+          },
+          "origin": {
+            "$ref": "#/components/schemas/TravelOrigin"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "car",
+              "bike",
+              "foot"
+            ],
+            "title": "Mode",
+            "default": "car"
+          },
+          "maximum_minutes": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1440,
+                "exclusiveMinimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum Minutes"
+          },
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/ServiceAccessCandidate"
+            },
+            "type": "array",
+            "maxItems": 8,
+            "minItems": 1,
+            "title": "Candidates"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "qualification_code",
+          "origin",
+          "candidates"
+        ],
+        "title": "ServiceAccessRequest"
+      },
+      "ServiceAccessResult": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "training",
+              "assessment"
+            ],
+            "title": "Kind"
+          },
+          "site_id": {
+            "type": "integer",
+            "title": "Site Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "modeled_route",
+              "no_route_in_network",
+              "unsupported_mode",
+              "routing_unavailable",
+              "location_unknown",
+              "routing_busy"
+            ],
+            "title": "Status"
+          },
+          "duration_min": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Min"
+          },
+          "distance_km": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distance Km"
+          },
+          "within_budget": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Within Budget",
+            "description": "Whether modeled road time meets the requested budget; null for unknown or no budget. Excludes traffic and unmodeled access from snapped road endpoints."
+          },
+          "origin_snap_distance_km": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin Snap Distance Km"
+          },
+          "destination_snap_distance_km": {
+            "anyOf": [
+              {
+                "type": "number",
+                "minimum": 0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Destination Snap Distance Km"
+          },
+          "explanation": {
+            "type": "string",
+            "title": "Explanation"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "site_id",
+          "name",
+          "status",
+          "explanation"
+        ],
+        "title": "ServiceAccessResult"
+      },
       "SessionResponse": {
         "properties": {
           "learner": {
@@ -15943,6 +16941,61 @@
         ],
         "title": "SuggestionSignals",
         "description": "The TSP webview's profile suggestions: how often a list had something, and how often one was taken."
+      },
+      "SupplyEvidence": {
+        "properties": {
+          "registered_training_sites": {
+            "$ref": "#/components/schemas/Measure"
+          },
+          "registered_training_programs": {
+            "$ref": "#/components/schemas/Measure"
+          },
+          "confirmed_training_offerings": {
+            "$ref": "#/components/schemas/Measure"
+          },
+          "published_training_slots": {
+            "$ref": "#/components/schemas/Measure"
+          },
+          "remaining_training_seats": {
+            "$ref": "#/components/schemas/Measure"
+          },
+          "confirmed_assessment_schedules": {
+            "$ref": "#/components/schemas/Measure"
+          },
+          "confirmed_assessment_sites": {
+            "$ref": "#/components/schemas/Measure"
+          },
+          "remaining_assessment_seats": {
+            "$ref": "#/components/schemas/Measure"
+          },
+          "completeness": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Completeness"
+          }
+        },
+        "type": "object",
+        "required": [
+          "registered_training_sites",
+          "registered_training_programs",
+          "confirmed_training_offerings",
+          "published_training_slots",
+          "remaining_training_seats",
+          "confirmed_assessment_schedules",
+          "confirmed_assessment_sites",
+          "remaining_assessment_seats",
+          "completeness"
+        ],
+        "title": "SupplyEvidence"
       },
       "TokenResponse": {
         "properties": {
@@ -17392,6 +18445,29 @@
         ],
         "title": "TrainingRankingRequest",
         "description": "Sent as a POST body so the learner's goal never appears in URLs or access logs."
+      },
+      "TravelOrigin": {
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "maximum": 22,
+            "minimum": 4,
+            "title": "Latitude"
+          },
+          "longitude": {
+            "type": "number",
+            "maximum": 127.5,
+            "minimum": 116,
+            "title": "Longitude"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "latitude",
+          "longitude"
+        ],
+        "title": "TravelOrigin"
       },
       "TspConsentRequest": {
         "properties": {

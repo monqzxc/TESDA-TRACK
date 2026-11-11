@@ -1,4 +1,8 @@
-"""Registered versus confirmed supply: counts are observed for the dataset's extent, unknown quantities stay unknown."""
+"""Recorded versus confirmed supply: exclude examples and preserve unknown quantities.
+
+The legacy registered_training_* response keys count recorded non-example
+provision, not independently verified current registration.
+"""
 from datetime import date, datetime
 
 from sqlmodel import Session, select
@@ -10,26 +14,31 @@ from tesda_track.schemas.evidence import Geography, Measure, SupplyEvidence, mea
 from tesda_track.services import verification
 from tesda_track.services.assessments import seats_taken_subquery
 
-METHOD_VERSION = "supply-statistics-v1"
+METHOD_VERSION = "supply-statistics-v2"
 NO_TRAINING_SEATS = "Remaining training seats are not recorded; published slots are a separate measure."
 NO_MARKET_COVERAGE = "Registry-wide market coverage is unknown."
+RECORDED_PROVISION_LIMITATION = (
+    "Counts describe active non-example records in this dataset; recorded listings do not independently verify "
+    "current registration or availability."
+)
 
 
 def _confirmed(name: str, unit: str, confirmed: int, candidates: list, now, **context) -> Measure:
-    """The confirmed count, with the registered candidates as denominator and current availability checks as known."""
+    """Confirmed count, with recorded candidates as denominator and availability checks as known."""
     eligible = len(candidates)
     known = sum(1 for c in candidates if verification.availability(c, now).status != "unknown")
-    statement = (f"{confirmed} confirmed {unit} of {eligible} registered; "
+    noun = "candidate" if eligible == 1 else "candidates"
+    statement = (f"{confirmed} confirmed {unit} of {eligible} recorded {noun}; "
                  f"{known} of {eligible} have a current availability check.")
     return Measure(name=name, value=confirmed, unit=unit, known_record_count=known, eligible_record_count=eligible,
                    unknown_count=eligible - known, coverage=known / eligible if eligible else None,
                    statement=statement, **context)
 
 
-def _count(name: str, unit: str, n: int, **context) -> Measure:
+def _count(name: str, unit: str, n: int, *, statement: str | None = None, **context) -> Measure:
     """An observed count for the stated extent; zero is an observed zero."""
     return Measure(name=name, value=n, unit=unit, known_record_count=n, eligible_record_count=n, unknown_count=0,
-                   coverage=1.0, statement=f"{n} {unit} in this extent.", **context)
+                   coverage=1.0, statement=statement or f"{n} {unit} in this extent.", **context)
 
 
 def supply_evidence(session: Session, qualification_code: str, region_code: str | None = None, *,
@@ -43,19 +52,20 @@ def supply_evidence(session: Session, qualification_code: str, region_code: str 
         if region is None:
             raise InvalidRequestError("Unknown region.")
     geography = (Geography(scope="regional", region_code=region_code, label=region.name) if region_code
-                 else Geography(scope="national", label="All registered sites in this dataset"))
-    limitations = [] if region_code else [NO_MARKET_COVERAGE]
+                 else Geography(scope="national", label="Active non-example sites in this dataset"))
+    limitations = [RECORDED_PROVISION_LIMITATION, NO_MARKET_COVERAGE]
 
     def context(sources: list[str], extra: tuple[str, ...] = ()) -> dict:
         return dict(evidence_kind="observed", geography=geography, observed_on=today, sources=sources,
                     method_version=METHOD_VERSION, limitations=[*limitations, *extra])
 
-    registry, confirmed = ["registry"], ["registry", "verification"]
+    recorded, confirmed = ["recorded-listings"], ["recorded-listings", "verification"]
 
     # Training: one query, then the verification and availability checks.
     query = (select(TrainingProgram).join(TrainingProvider)
              .join(Qualification, TrainingProgram.qualification_id == Qualification.id)
              .where(TrainingProgram.is_active, TrainingProvider.is_active, Qualification.is_active,
+                    TrainingProgram.data_status != "example", TrainingProvider.data_status != "example",
                     Qualification.code == qualification_code).order_by(TrainingProgram.id))
     if region_code:
         query = query.where(TrainingProvider.region_code == region_code)
@@ -71,6 +81,7 @@ def supply_evidence(session: Session, qualification_code: str, region_code: str 
     query = (select(AssessmentSchedule, seats_taken_subquery().label("taken")).join(AssessmentCenter)
              .join(Qualification, AssessmentSchedule.qualification_id == Qualification.id)
              .where(AssessmentSchedule.status == "open", AssessmentSchedule.scheduled_at > now,
+                    AssessmentSchedule.data_status != "example", AssessmentCenter.data_status != "example",
                     AssessmentCenter.is_active, Qualification.is_active, Qualification.code == qualification_code)
              .order_by(AssessmentSchedule.id))
     if region_code:
@@ -90,11 +101,16 @@ def supply_evidence(session: Session, qualification_code: str, region_code: str 
                 and verification.availability(schedule, now).status == "available"):
             schedules.append((schedule, seats))
 
+    recorded_sites = len({p.provider_id for p in programs})
+    site_noun = "site" if recorded_sites == 1 else "sites"
+    program_noun = "listing" if len(programs) == 1 else "listings"
     result = dict(
-        registered_training_sites=_count("registered_training_sites", "sites", len({p.provider_id for p in programs}),
-                                         **context(registry)),
+        registered_training_sites=_count("registered_training_sites", "sites", recorded_sites,
+                                         statement=f"{recorded_sites} recorded training {site_noun} in this dataset extent.",
+                                         **context(recorded)),
         registered_training_programs=_count("registered_training_programs", "program records", len(programs),
-                                            **context(registry)),
+                                            statement=f"{len(programs)} recorded training program {program_noun} in this dataset extent.",
+                                            **context(recorded)),
         confirmed_training_offerings=_confirmed("confirmed_training_offerings", "offerings", len(offerings),
                                                 unfinished, now, **context(confirmed)),
         published_training_slots=measure_sum(

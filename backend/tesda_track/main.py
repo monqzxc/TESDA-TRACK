@@ -8,7 +8,7 @@ from fastapi.responses import JSONResponse
 from sqlalchemy.exc import OperationalError
 from sqlmodel import Session
 
-from tesda_track.routers import labor_market
+from tesda_track.routers import labor_market, service_access
 from tesda_track.config import get_settings
 from tesda_track.db import get_engine
 from tesda_track.errors import AuthenticationError, DomainError, SessionCookieError
@@ -95,6 +95,7 @@ def create_app() -> FastAPI:
                    learner_assessments.router, routes.router, meta.router, oauth.router, mcp_admin.router, users.router, roles.router, tsp_auth.router):
         api.include_router(router)
     api.include_router(labor_market.router)
+    api.include_router(service_access.router)
     api.include_router(labor_market.admin_router)
     api.include_router(labor_market.goal_router)
     app.include_router(api)

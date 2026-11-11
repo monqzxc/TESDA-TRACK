@@ -12,7 +12,10 @@ from tesda_track.models.labor_market import (
     LaborMarketMapping as Mapping,
     CareerGoalSelection,
 )
-from tesda_track.services import labor_market as service, goals, catalog
+from tesda_track.services import labor_market as service, goals, catalog, evidence_panel
+from tesda_track.schemas.evidence import QualificationEvidencePanel
+from tesda_track.schemas.area_qualifications import AreaQualifications
+from tesda_track.services import area_qualifications
 from tesda_track.schemas.labor_market import ReviewInput, DatasetStatusInput
 from tesda_track.schemas.records import GoalCreate, GoalUpdate, GoalPublic
 from tesda_track.errors import InvalidRequestError
@@ -38,6 +41,26 @@ def public_indicators(
         region_code=region_code,
         note="Only explicitly approved mappings from active forecast periods are shown. National evidence is not regional evidence.",
     )
+
+
+@router.get("/evidence", response_model=QualificationEvidencePanel)
+def qualification_evidence(
+    session: SessionDep,
+    qualification_code: str = Query(min_length=1, max_length=40),
+    region_code: str | None = None,
+) -> QualificationEvidencePanel:
+    return evidence_panel.build(session, qualification_code, region_code)
+
+
+@router.get("/qualifications", response_model=AreaQualifications)
+def area_qualification_evidence(
+    session: SessionDep,
+    region_code: str | None = None,
+    limit: int = Query(default=50, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
+) -> AreaQualifications:
+    """Reviewed qualification links for an area; observations and forecasts stay separate."""
+    return area_qualifications.discover(session, region_code, limit=limit, offset=offset)
 
 
 @admin_router.get("/mappings")

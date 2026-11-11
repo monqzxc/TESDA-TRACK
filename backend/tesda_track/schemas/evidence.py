@@ -1,6 +1,6 @@
 """Typed, traceable evidence: every number says what it counts, where it came from and how much of it is known."""
 
-from datetime import date
+from datetime import date, datetime
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -56,6 +56,37 @@ class SupplyEvidence(BaseModel):
     confirmed_assessment_sites: Measure
     remaining_assessment_seats: Measure
     completeness: dict[str, float | None]
+
+
+class ForecastSupport(BaseModel):
+    occupation_title: str
+    classification: Literal["in_demand", "hard_to_fill"]
+    evidence_kind: Literal["forecast"] = "forecast"
+    value: None = None
+    geography: Geography
+    geography_match: Literal["selected_area", "broader_scope", "no_area_selected"]
+    period_label: str
+    publisher: str
+    source_title: str
+    source_url: str | None = None
+    source_reference: str
+    dataset_key: str
+    mapping_id: int
+
+
+class EvidenceContext(BaseModel):
+    qualification_code: str
+    region_code: str | None
+    evaluated_at: datetime
+    method_versions: dict[str, str]
+
+
+class QualificationEvidencePanel(BaseModel):
+    context: EvidenceContext
+    forecast_support: list[ForecastSupport]
+    observed_postings: PostingEvidence
+    supply: SupplyEvidence
+    limitations: list[str]
 
 
 def measure_sum(
