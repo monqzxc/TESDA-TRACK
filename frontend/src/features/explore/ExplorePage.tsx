@@ -12,10 +12,9 @@ import { Button, Input, Label, SearchField, ToggleButton } from 'react-aria-comp
 import { useSearchParams } from 'react-router'
 import { useQualifications } from '../../api/queries.ts'
 import { failureMessage } from '../../auth/fields.tsx'
-import { useAuth } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { LoadBoundary } from '../../components/LoadBoundary.tsx'
-import MenuDrawer from '../../components/MenuDrawer.tsx'
+import { useSidebarStore } from '../../components/sidebarState.ts'
 import { PageHeading } from '../../components/PageHeading.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
@@ -131,10 +130,9 @@ export default function ExplorePage() {
     // Show less goes inert with the panel's body, so focus goes back to the box it opened from.
     input.current?.focus()
   }
-  // The burger's drawer, in place of the app's sidebar.
-  const [menuOpen, setMenuOpen] = useState(false)
+  // The search bar's burger opens the app's sidebar over the map: this page has no top bar for it.
+  const menuOpen = useSidebarStore((state) => state.open)
   const menuButton = useRef<HTMLButtonElement>(null)
-  const { canViewReports, canOpenAdmin } = useAuth()
   // The panel explains a refused location (Locate on the map, or the switch), so a folded one opens to show it.
   const locationError = useTrainingStore((state) => state.locationError)
   const [seenError, setSeenError] = useState(locationError)
@@ -234,15 +232,6 @@ export default function ExplorePage() {
       </div>
 
       <Chips view={view} onView={setView} />
-      {/* The app's sidebar, over the map: this page has none beside it. */}
-      <MenuDrawer
-        isOpen={menuOpen}
-        onOpenChange={setMenuOpen}
-        isAdmin={canViewReports}
-        canManage={canOpenAdmin}
-        onNavigate={() => setMenuOpen(false)}
-        returnFocus={() => menuButton.current}
-      />
 
       <section
         aria-label={copy.search.label}
@@ -260,7 +249,7 @@ export default function ExplorePage() {
           inputRef={input}
           menuOpen={menuOpen}
           menuRef={menuButton}
-          onMenu={() => setMenuOpen(true)}
+          onMenu={() => useSidebarStore.getState().openMenu(menuButton.current)}
           onOpen={() => setCollapsed(false)}
           onSearched={() => {
             setSelectedId(null)
@@ -410,6 +399,7 @@ function SearchBox({
       <div className="flex h-11 items-center gap-0.5 px-1">
         <Button
           ref={menuRef}
+          data-tour="mobile-menu"
           aria-label={en.nav.menu}
           aria-haspopup="dialog"
           aria-expanded={menuOpen}

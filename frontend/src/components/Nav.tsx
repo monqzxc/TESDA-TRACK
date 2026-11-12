@@ -1,4 +1,4 @@
-import type { CSSProperties, Ref } from 'react'
+import { useId, type CSSProperties, type Ref } from 'react'
 import { Button } from 'react-aria-components'
 import { Link, NavLink } from 'react-router'
 import { learnerAccounts } from '../auth/accounts.ts'
@@ -14,7 +14,7 @@ import { TspBadge } from './TspBadge.tsx'
 type NavItem = { to: string; label: string; icon: IconName }
 
 // The sidebar: the burger and the name at the top, the pages, and at the foot the account (Sign in with TSP) and the
-// language. The same in the sidebar beside every page, the phone menu and the Career Map's drawer.
+// language. One sidebar, over the page from its burger on every page (Sidebar.tsx).
 
 export type NavProps = {
   /** Adds Reports, which only administrators see. */
@@ -66,34 +66,30 @@ export function Nav({ isAdmin = false, canManage = false, onNavigate }: NavProps
   )
 }
 
-/**
- * The burger. It spins as it's pressed: `turned` gives it a half turn, which it turns through. In a drawer, `slot`
- * makes it the dialog's close button, and `iconClassName` lets the drawer spin it in and out with itself.
- */
+/** The burger. It spins as it's pressed: `turned` gives it a half turn, which it turns through. */
 export function MenuButton({
   label,
   onPress,
-  slot,
   turned = false,
   expanded,
   hasPopup = false,
-  iconClassName,
+  tour,
   ref,
 }: {
   label: string
   onPress?: () => void
-  slot?: string
   turned?: boolean
   expanded?: boolean
   hasPopup?: boolean
-  iconClassName?: string
+  /** The Help tour's name for it (data-tour). */
+  tour?: string
   ref?: Ref<HTMLButtonElement>
 }) {
   const turn: CSSProperties = { rotate: turned ? '180deg' : '0deg' }
   return (
     <Button
       ref={ref}
-      slot={slot}
+      data-tour={tour}
       aria-label={label}
       aria-expanded={expanded}
       aria-haspopup={hasPopup ? 'dialog' : undefined}
@@ -101,10 +97,7 @@ export function MenuButton({
       className="grid size-10 flex-none cursor-pointer place-items-center rounded-8 border-0 bg-transparent text-navy data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:bg-soft data-pressed:bg-chip"
     >
       <span
-        className={cx(
-          'grid place-items-center transition-[rotate] duration-500 ease-in-out motion-reduce:transition-none',
-          iconClassName,
-        )}
+        className="grid place-items-center transition-[rotate] duration-500 ease-in-out motion-reduce:transition-none"
         style={turn}
       >
         <Icon name="menu" size="1.25rem" />
@@ -127,49 +120,35 @@ export function SidebarTitle({ onNavigate }: { onNavigate?: () => void }) {
   )
 }
 
-type SidebarContentProps = NavProps & {
-  /** Where focus goes after the sign-in dialog when this sidebar has closed by then (the phone menu's button). */
-  returnFocus?: () => HTMLElement | null
-}
-
 /**
  * The sidebar under the burger: the page links, then at the foot the account and the language. Signed in, the
  * account is the learner's account menu. Signed out, it's "Sign in with TSP": learners have no TESDA-TRACK accounts
  * of their own (src/auth/accounts.ts), so until TSP sign-in is connected a TESDA-TRACK account stands in for TSP's.
- * With learner accounts turned back on, it's their own Sign in.
+ * With learner accounts turned back on, it's their own Sign in. Signing in leaves the sidebar open: the dialog opens
+ * over it, and focus comes back to it.
  */
-export function SidebarContent({
-  isAdmin = false,
-  canManage = false,
-  onNavigate,
-  returnFocus,
-}: SidebarContentProps) {
+export function SidebarContent({ isAdmin = false, canManage = false, onNavigate }: NavProps) {
   const en = useCopy()
   const { learner, openSignIn } = useAuth()
+  const accountId = useId()
   return (
     <div className="flex flex-1 flex-col">
       <Nav isAdmin={isAdmin} canManage={canManage} onNavigate={onNavigate} />
       <div className="mt-auto flex shrink-0 flex-col gap-4 border-t border-rule pt-3">
-        <div>
-          <h2 className={sectionTitle}>{en.nav.account}</h2>
+        {/* A labelled group, not a heading: the sidebar's labels stay out of each page's outline. */}
+        <div role="group" aria-labelledby={accountId}>
+          <p id={accountId} className={sectionTitle}>
+            {en.nav.account}
+          </p>
           {learner || learnerAccounts() ? (
             // The account control draws its own rule above it: here the section's rule does.
             <div className="[&>div]:border-t-0 [&>div]:pt-0">
-              <AccountControl
-                variant="sidebar"
-                onOpenSignIn={onNavigate}
-                onNavigate={onNavigate}
-                returnFocus={returnFocus}
-              />
+              <AccountControl variant="sidebar" onNavigate={onNavigate} />
             </div>
           ) : (
-            // In the phone menu, Sign in closes the menu first: the dialog opens over the page, not over the menu.
             <Button
               className={cx(navRow, otherLink, 'font-semibold text-navy')}
-              onPress={() => {
-                onNavigate?.()
-                openSignIn({ tsp: true, returnFocus })
-              }}
+              onPress={() => openSignIn({ tsp: true })}
             >
               <TspBadge small />
               {en.account.tsp.signIn}

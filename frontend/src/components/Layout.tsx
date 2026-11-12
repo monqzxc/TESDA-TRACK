@@ -10,13 +10,12 @@ import { useTspSignIn } from '../features/tsp/useTspSignIn.ts'
 import { FirstVisitNotice } from '../features/privacy/FirstVisitNotice.tsx'
 import { GuidedHelp } from '../features/help/GuidedHelp.tsx'
 import { useCurrentPage, useFocusOnNavigation, usePageTitle } from '../lib/navigation.ts'
-import { cx } from '../lib/style.ts'
 import { HomeFooter } from './HomeFooter.tsx'
 import { HomeHeader } from './HomeHeader.tsx'
-import { MobileMenu } from './MobileMenu.tsx'
-import { MenuButton, SidebarContent, SidebarTitle } from './Nav.tsx'
+import { MenuButton, SidebarTitle } from './Nav.tsx'
 import { PageFooter } from './PageFooter.tsx'
-import { useSidebarStore } from './sidebar.ts'
+import { Sidebar } from './Sidebar.tsx'
+import { useSidebarStore } from './sidebarState.ts'
 import { paths } from '../paths.ts'
 
 /**
@@ -123,92 +122,45 @@ export function WebviewLayout() {
 }
 
 /**
- * Every other page: the sidebar beside the page, a white column with a border that stays put while the page scrolls.
- * Its burger folds it away, sliding shut, and a slim bar with the same burger above the page brings it back. On
- * phones the sidebar becomes a bar across the top with the burger and the name, and the burger opens the same
- * sidebar over the page (MobileMenu). Reports and Admin show for staff.
+ * Every other page: a slim bar across the top with the burger and the name, and the page under it. The burger opens
+ * the sidebar over the page (Sidebar), the same on every page and at every width. Reports and Admin show in it for
+ * staff.
  *
- * The Career Map (/explore) has no sidebar: the map takes the window, and its search bar's burger opens the sidebar
- * over it.
+ * The Career Map (/explore) has no top bar: the map takes the window, and its search bar's burger opens the sidebar.
  */
 export function AppLayout() {
   const en = useCopy()
   const { canViewReports, canOpenAdmin } = useAuth()
   const ownMenu = useCurrentPage() === 'explore'
-  const folded = useSidebarStore((state) => state.folded)
-  const hideButton = useRef<HTMLButtonElement>(null)
-  const showButton = useRef<HTMLButtonElement>(null)
-  // The burger pressed goes away with what it folds or opens, so focus moves to the other one.
-  const fold = (next: boolean) => {
-    useSidebarStore.getState().setFolded(next)
-    requestAnimationFrame(() => (next ? showButton : hideButton).current?.focus())
-  }
+  const open = useSidebarStore((state) => state.open)
+  const menuButton = useRef<HTMLButtonElement>(null)
   return (
     <>
       <SkipLink />
-      <div
-        className={cx(
-          'min-h-screen',
-          !ownMenu &&
-            'grid transition-[grid-template-columns] duration-300 ease-out motion-reduce:transition-none max-md:block',
-          !ownMenu &&
-            (folded ? 'grid-cols-[0rem_minmax(0,1fr)]' : 'grid-cols-[16.5rem_minmax(0,1fr)]'),
-        )}
-      >
+      <Sidebar isAdmin={canViewReports} canManage={canOpenAdmin} />
+      <div className="flex min-h-screen min-w-0 flex-col">
         {!ownMenu && (
-          // Folded, it slides shut: the column narrows to nothing while the content keeps its width and is clipped,
-          // so nothing rewraps on the way. Hidden once shut (visibility waits for the slide), so nothing in it is
-          // reachable. Phones have no folding: there it's the top bar.
-          <header
-            className={cx(
-              'sticky top-0 h-dvh overflow-hidden border-border bg-surface',
-              'max-md:z-20 max-md:h-auto max-md:overflow-visible max-md:border-b',
-              // Hidden only once the slide ends; shown at once on the way back, so its burger can take focus.
-              folded ? 'md:invisible md:transition-[visibility] md:duration-300' : 'md:border-r',
-            )}
-          >
-            <div className="flex h-full w-[16.5rem] flex-col overflow-y-auto px-3 pt-3 pb-4 max-md:h-auto max-md:w-auto max-md:overflow-visible max-md:py-1.5">
-              <div className="flex shrink-0 items-center gap-1 md:mb-3">
-                <MobileMenu isAdmin={canViewReports} canManage={canOpenAdmin} />
-                <div className="max-md:hidden">
-                  <MenuButton
-                    ref={hideButton}
-                    label={en.nav.hideMenu}
-                    expanded={!folded}
-                    turned={folded}
-                    onPress={() => fold(true)}
-                  />
-                </div>
-                <SidebarTitle />
-              </div>
-              <div className="flex flex-1 flex-col max-md:hidden">
-                <SidebarContent isAdmin={canViewReports} canManage={canOpenAdmin} />
-              </div>
-            </div>
+          <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-1 border-b border-border bg-surface px-3">
+            <MenuButton
+              ref={menuButton}
+              tour="mobile-menu"
+              label={en.nav.menu}
+              hasPopup
+              expanded={open}
+              turned={open}
+              onPress={() => useSidebarStore.getState().openMenu(menuButton.current)}
+            />
+            <SidebarTitle />
           </header>
         )}
-        <div className="flex min-h-screen min-w-0 flex-col">
-          {!ownMenu && folded && (
-            <div className="flex items-center gap-1 px-3 pt-3 max-md:hidden">
-              <MenuButton
-                ref={showButton}
-                label={en.nav.showMenu}
-                expanded={false}
-                iconClassName="animate-menu-spin-in"
-                onPress={() => fold(false)}
-              />
-              <SidebarTitle />
-            </div>
-          )}
-          <main
-            id="main"
-            tabIndex={-1}
-            className="w-full max-w-full flex-1 px-10 pt-9 pb-8 focus:outline-none max-[1101px]:px-6 max-md:px-4 max-md:pt-6 max-md:pb-8"
-          >
-            <Outlet />
-          </main>
-          <PageFooter />
-        </div>
+        <main
+          id="main"
+          tabIndex={-1}
+          className="w-full max-w-full flex-1 px-10 pt-9 pb-8 focus:outline-none max-[1101px]:px-6 max-md:px-4 max-md:pt-6 max-md:pb-8"
+        >
+          <Outlet />
+        </main>
+        <PageFooter />
       </div>
     </>
   )

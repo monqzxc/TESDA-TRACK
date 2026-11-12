@@ -45,13 +45,9 @@ export const en = {
     signIn: 'Sign in',
     menu: 'Menu',
     closeMenu: 'Close menu',
-    hideMenu: 'Hide the menu',
-    showMenu: 'Show the menu',
     // The name beside the burger, which returns Home.
     title: 'TESDA TRACK',
     account: 'Account',
-    // The phone menu's code couldn't be downloaded.
-    menuUnavailable: "We can't open the menu right now. Check your connection, then try again.",
   },
   // The landing page's own top bar, on Home.
   landing: {

@@ -42,18 +42,19 @@ describe('language selection', () => {
     const selector = screen.getByRole('combobox', { name: 'Language / Wika' })
     await user.selectOptions(selector, 'tl')
     expect(
-      await screen.findByRole('link', { name: 'Hanapin ang aking landas' }),
+      await screen.findByRole('link', { name: 'Aklatan ng mga Kwalipikasyon' }),
     ).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Aklatan ng mga Kwalipikasyon' })).toBeInTheDocument()
     expect(goal).toHaveValue('I want to repair computers {1}')
     expect(localStorage.getItem(LANGUAGE_KEY)).toBe('tl')
     await waitFor(() => expect(document.title).not.toContain('Your goal'))
 
     await user.selectOptions(selector, 'pam')
-    expect(await screen.findByRole('link', { name: 'Alapan ing dalan ku' })).toBeInTheDocument()
+    expect(
+      await screen.findByRole('link', { name: 'Aklatan da reng kwalipikasyun' }),
+    ).toBeInTheDocument()
     expect(goal).toHaveValue('I want to repair computers {1}')
     await user.selectOptions(selector, 'en')
-    expect(screen.getByRole('link', { name: 'Find my pathway' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Qualifications Library' })).toBeInTheDocument()
     expect(goal).toHaveValue('I want to repair computers {1}')
   })
 

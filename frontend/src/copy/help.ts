@@ -49,7 +49,7 @@ export const helpCopy = {
     navigation: {
       title: 'Choose where to go',
       description:
-        'Use these links to find your pathway, browse qualifications, find centers, or review your progress. Your current page is highlighted.',
+        'Use these links to open the Career Map or browse qualifications. Your current page is highlighted.',
     },
     mobileMenu: {
       title: 'Your pages are in the menu',

@@ -83,7 +83,8 @@ export function QualificationCard({
   return (
     <article
       data-tour="qualification-card"
-      className="flex h-full flex-col gap-4 rounded-16 border border-border bg-surface p-5 max-xs:p-4"
+      // Raised off the page, and a little more under the pointer: it grows slightly and its shadow deepens.
+      className="flex h-full flex-col gap-4 rounded-16 border border-border bg-surface p-5 shadow-[0_6px_20px_rgb(var(--track-shadow-rgb)/0.10)] transition-[scale,box-shadow] duration-200 ease-out hover:scale-[1.02] hover:shadow-[0_14px_34px_rgb(var(--track-shadow-rgb)/0.16)] motion-reduce:transition-none motion-reduce:hover:scale-100 max-xs:p-4"
       aria-labelledby={headingId}
     >
       <div>
