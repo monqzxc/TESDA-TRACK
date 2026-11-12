@@ -1,0 +1,19 @@
+{
+  "source_url": "https://raw.githubusercontent.com/faeldon/philippines-json-maps/680e32e62baeccbcd8845d3b1387bc67c1baf78a/latest/geojson/country/lowres/country.0.001.json",
+  "commit": "680e32e62baeccbcd8845d3b1387bc67c1baf78a",
+  "upstream_manifest": {
+    "version": "1.1.1",
+    "psgc": "2026-3q",
+    "source": {
+      "repo": "faeldon/philippines-psgc-shapefiles",
+      "tag": "v1.0.1"
+    },
+    "built": "2026-11-07"
+  },
+  "source_sha256": "cc730ac941825ba8003ba0a3bdf7f15112c591f82419f38f0d3913a9e294356c",
+  "output_sha256": "929d076b2e968be99d9246da57802ffea72f0fdb21504dac8b81a1be0a9fd1f8",
+  "changes": "Properties reduced to app region codes, names and PSGC; coordinates rounded to 5 decimals.",
+  "attribution": "PSA / NAMRIA via OCHA HDX COD-AB (CC BY-IGO); PSGC alignment and simplification by James Faeldon (MIT).",
+  "original_source": "https://data.humdata.org/dataset/cod-ab-phl",
+  "boundary_license": "https://creativecommons.org/licenses/by/3.0/igo/"
+}

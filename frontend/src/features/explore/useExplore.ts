@@ -13,7 +13,31 @@ import {
 } from '../training/centers.ts'
 import { useTrainingStore } from '../training/state.ts'
 import type { Reference } from '../training/useCenters.ts'
-import { MAX_QUALIFICATIONS } from './explore.ts'
+import { MAX_QUALIFICATIONS, nearestRegion } from './explore.ts'
+import { areaJobsQuery } from './demandApi.ts'
+
+export const useDemandStore = create<{
+  region: string | null | undefined
+  locality: string | null
+  scope: string | null | undefined
+  code: string | null | undefined
+  offset: number
+  setRegion: (region: string | null | undefined) => void
+  setLocality: (locality: string | null, scope: string | null) => void
+  setCode: (code: string | null | undefined) => void
+  setOffset: (offset: number, scope: string | null) => void
+}>()((set) => ({
+  region: undefined,
+  locality: null,
+  scope: undefined,
+  code: undefined,
+  offset: 0,
+  setRegion: (region) => set({ region, locality: null, offset: 0, scope: undefined }),
+  setLocality: (locality, scope) => set({ locality, scope, offset: 0 }),
+  setCode: (code) => set({ code, locality: null, offset: 0, scope: undefined }),
+  setOffset: (offset, scope) =>
+    set((state) => ({ offset, scope, locality: state.scope === scope ? state.locality : null })),
+}))
 
 // The page's state and data. What the learner typed and what came back stay in memory only: never in the address,
 // never in storage, so a reload starts again. The location switch and a typed place are Training & Assessment's own
@@ -39,7 +63,10 @@ export const useExploreStore = create<ExploreState>()((set) => ({
   draft: '',
   search: null,
   setDraft: (draft) => set({ draft }),
-  setSearch: (search) => set({ search }),
+  setSearch: (search) => {
+    set({ search })
+    useDemandStore.getState().setCode(undefined)
+  },
 }))
 
 /**
@@ -47,7 +74,7 @@ export const useExploreStore = create<ExploreState>()((set) => ({
  * first: with a search, the matched qualifications' programs and schedules; without one, every listing (so the
  * nearest centers can say how many qualifications they offer).
  */
-export function useExplore() {
+export function useExplore(demandActive = false) {
   const search = useExploreStore((state) => state.search)
   const location = useTrainingStore((state) => (state.useLocation ? state.location : null))
   const locating = useTrainingStore(
@@ -104,6 +131,23 @@ export function useExplore() {
   )
 
   const today = philippineDay(new Date())
+  const demandFilters = useDemandStore()
+  const automaticRegion = nearestRegion(reference, regions.data ?? [])?.code ?? null
+  const demandRegion = demandFilters.region === undefined ? automaticRegion : demandFilters.region
+  const demandCode =
+    demandFilters.code === undefined ? (matches[0]?.qualification.code ?? null) : demandFilters.code
+  const demandLocality = demandFilters.scope === demandRegion ? demandFilters.locality : null
+  const demandOffset = demandFilters.scope === demandRegion ? demandFilters.offset : 0
+  const jobs = useQuery({
+    ...areaJobsQuery(demandRegion, demandLocality, demandCode, demandOffset),
+    enabled: demandActive,
+  })
+  // The intensity scale compares all regions for this qualification. Locality and list pagination do not
+  // replace the map's dataset, or briefly remove its selection targets while the list is refreshed.
+  const demandMap = useQuery({
+    ...areaJobsQuery(null, null, demandCode),
+    enabled: demandActive,
+  })
   const centers = useMemo(
     () =>
       everything
@@ -124,6 +168,12 @@ export function useExplore() {
     regions: regions.data ?? [],
     config: config.data,
     today,
+    jobs,
+    demandMap,
+    demandRegion,
+    demandCode,
+    demandLocality,
+    demandOffset,
     loading: !everything && !(sites.isError || regions.isError),
     /** The matched qualifications' listings are still coming. */
     listingsLoading: listings.isFetching && (listings.isPlaceholderData || !listings.data),

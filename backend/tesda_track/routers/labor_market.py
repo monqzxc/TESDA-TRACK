@@ -16,6 +16,8 @@ from tesda_track.services import labor_market as service, goals, catalog, eviden
 from tesda_track.schemas.evidence import QualificationEvidencePanel
 from tesda_track.schemas.area_qualifications import AreaQualifications
 from tesda_track.services import area_qualifications
+from tesda_track.services import area_jobs
+from tesda_track.schemas.area_jobs import AreaJobs
 from tesda_track.schemas.labor_market import ReviewInput, DatasetStatusInput
 from tesda_track.schemas.records import GoalCreate, GoalUpdate, GoalPublic
 from tesda_track.errors import InvalidRequestError
@@ -61,6 +63,18 @@ def area_qualification_evidence(
 ) -> AreaQualifications:
     """Reviewed qualification links for an area; observations and forecasts stay separate."""
     return area_qualifications.discover(session, region_code, limit=limit, offset=offset)
+
+
+@router.get("/jobs", response_model=AreaJobs)
+def area_job_evidence(
+    session: SessionDep,
+    region_code: str | None = None,
+    locality: str | None = Query(default=None, max_length=120),
+    qualification_code: str | None = Query(default=None, max_length=40),
+    limit: int = Query(default=30, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
+) -> AreaJobs:
+    return area_jobs.discover(session, region_code, locality, qualification_code, limit=limit, offset=offset)
 
 
 @admin_router.get("/mappings")

@@ -24,7 +24,7 @@ import { matchPathway } from '../training/recommendationApi.ts'
 import { useTrainingStore } from '../training/state.ts'
 import { nearestRegion } from './explore.ts'
 import { CenterCard, LocationRow, NearbyPanel, ResultsPanel } from './Panels.tsx'
-import { useExplore, useExploreStore } from './useExplore.ts'
+import { useDemandStore, useExplore, useExploreStore } from './useExplore.ts'
 
 // The map comes down with its renderer the first time it's shown, as on Training & Assessment.
 const CenterMap = lazy(() => import('../training/CenterMap.tsx'))
@@ -53,15 +53,15 @@ function prefersReducedMotion() {
  * Find my pathway and Training & Assessment in one page: the learner types what they can do, sees the
  * qualifications that fit (the finder's own matching), and for each the nearest assessment and training centers on
  * a map, with an estimated travel time. A qualification opens the finder's readiness check and pathway. It uses the
- * API as it is today; the plan's new endpoints (skills word list, job demand by city) come later.
+ * existing matching and registry APIs, plus imported labor-market evidence for jobs and qualifications by area.
  */
 export default function ExplorePage() {
   const en = useCopy()
   const copy = en.explore
-  const explore = useExplore()
   const [params, setParams] = useSearchParams()
   const typed = params.get('type') as View | null
   const view: View = typed && VIEWS.includes(typed) ? typed : 'all'
+  const explore = useExplore(view === 'demand')
   const setView = (next: View) =>
     setParams(
       (current) => {
@@ -125,7 +125,9 @@ export default function ExplorePage() {
   // The panel opens folded down to its search row, so the map has the room; pressing in the box (or typing) opens
   // the rest, and Show less folds it again. With results to show (a search kept from earlier in the visit, or one
   // linked from a qualification's page), it starts open.
-  const [collapsed, setCollapsed] = useState(() => !linked && !useExploreStore.getState().search)
+  const [collapsed, setCollapsed] = useState(
+    () => view !== 'demand' && !linked && !useExploreStore.getState().search,
+  )
   // The body scrolls only once it has finished opening: during the slide, a scrollbar would flash.
   const [opened, setOpened] = useState(!collapsed)
   const scrollable = !collapsed && (opened || prefersReducedMotion())
@@ -170,9 +172,11 @@ export default function ExplorePage() {
       )
     : centers
   const pins =
-    view === 'training' || view === 'assessment'
-      ? listed.filter((center) => center.kind === view)
-      : listed
+    view === 'demand'
+      ? []
+      : view === 'training' || view === 'assessment'
+        ? listed.filter((center) => center.kind === view)
+        : listed
   const selected = centers.find((center) => center.id === selectedId) ?? null
 
   const canRoute = Boolean(config?.routing_enabled && location)
@@ -240,6 +244,10 @@ export default function ExplorePage() {
           >
             <CenterMap
               centers={pins}
+              demandAreas={view === 'demand' ? (explore.demandMap.data?.areas ?? []) : undefined}
+              demandRegion={explore.demandRegion}
+              demandSnapshotDates={explore.demandMap.data?.snapshot_dates}
+              onDemandArea={(code) => useDemandStore.getState().setRegion(code)}
               selectedId={selectedId}
               focus={focus}
               reference={reference}
@@ -267,7 +275,14 @@ export default function ExplorePage() {
         </LoadBoundary>
       </div>
 
-      <Chips view={view} onView={setView} />
+      <Chips
+        view={view}
+        onView={(next) => {
+          setView(next)
+          setSelectedId(null)
+          setCollapsed(false)
+        }}
+      />
 
       <section
         aria-label={copy.search.label}
@@ -278,6 +293,7 @@ export default function ExplorePage() {
           // height can't move to or from auto).
           'motion-reduce:transition-none md:transition-[min-height] md:duration-300 md:ease-out',
           collapsed ? 'md:min-h-0' : 'md:min-h-[calc(100%-1.5rem)]',
+          view === 'demand' && 'max-md:max-h-[75dvh]',
         )}
       >
         <SearchBox
@@ -302,20 +318,23 @@ export default function ExplorePage() {
             if (event.target === event.currentTarget && !collapsed) setOpened(true)
           }}
           className={cx(
-            'grid transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none md:min-h-0 md:flex-1',
+            'grid min-h-0 transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none md:flex-1',
             collapsed ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100',
           )}
         >
           {/* No padding on the clipped row itself: it would stay showing when the row is 0 tall. */}
           <div
             ref={scroller}
-            className={cx('min-h-0 overflow-hidden', scrollable && 'md:overflow-y-auto')}
+            className={cx(
+              'min-h-0 overflow-hidden',
+              scrollable && (view === 'demand' ? 'overflow-y-auto' : 'md:overflow-y-auto'),
+            )}
           >
             <div className="flex min-h-full flex-col gap-3 border-t border-rule p-4">
-              {!search && (
+              {!search && view !== 'demand' && (
                 <p className="m-0 text-13 leading-[1.5] text-muted">{copy.search.hint}</p>
               )}
-              <LocationRow explore={explore} />
+              {view !== 'demand' && <LocationRow explore={explore} />}
               {explore.failed && (
                 <div className="rounded-12 bg-warn-bg p-3 text-14 text-warn-ink">
                   <p role="alert" className="mt-0">

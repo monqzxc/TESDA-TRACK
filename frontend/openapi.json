@@ -6329,6 +6329,112 @@
         }
       }
     },
+    "/api/v1/labor-market/jobs": {
+      "get": {
+        "tags": [
+          "labor market"
+        ],
+        "summary": "Area Job Evidence",
+        "operationId": "area_job_evidence_api_v1_labor_market_jobs_get",
+        "parameters": [
+          {
+            "name": "region_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Region Code"
+            }
+          },
+          {
+            "name": "locality",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 120
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Locality"
+            }
+          },
+          {
+            "name": "qualification_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 40
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Qualification Code"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 100,
+              "minimum": 1,
+              "default": 30,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AreaJobs"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/recommendations/service-access": {
       "post": {
         "tags": [
@@ -7119,6 +7225,158 @@
         },
         "type": "object",
         "title": "ApplicationReview"
+      },
+      "AreaJob": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "posting_count": {
+            "type": "integer",
+            "minimum": 1,
+            "title": "Posting Count"
+          },
+          "employer_count": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Employer Count"
+          },
+          "localities": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Localities"
+          },
+          "region_codes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Region Codes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "posting_count",
+          "employer_count",
+          "localities",
+          "region_codes"
+        ],
+        "title": "AreaJob"
+      },
+      "AreaJobs": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/AreaJob"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          },
+          "posting_count": {
+            "type": "integer",
+            "title": "Posting Count"
+          },
+          "employer_count": {
+            "type": "integer",
+            "title": "Employer Count"
+          },
+          "limit": {
+            "type": "integer",
+            "title": "Limit"
+          },
+          "offset": {
+            "type": "integer",
+            "title": "Offset"
+          },
+          "region_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Code"
+          },
+          "locality": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Locality"
+          },
+          "localities": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Localities"
+          },
+          "areas": {
+            "items": {
+              "$ref": "#/components/schemas/JobArea"
+            },
+            "type": "array",
+            "title": "Areas"
+          },
+          "snapshot_dates": {
+            "items": {
+              "type": "string",
+              "format": "date"
+            },
+            "type": "array",
+            "title": "Snapshot Dates"
+          },
+          "posted_between": {
+            "items": {
+              "type": "string",
+              "format": "date"
+            },
+            "type": "array",
+            "title": "Posted Between"
+          },
+          "source_url": {
+            "type": "string",
+            "title": "Source Url",
+            "default": "https://philjobnet.gov.ph/job-vacancies/"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total",
+          "posting_count",
+          "employer_count",
+          "limit",
+          "offset",
+          "region_code",
+          "locality",
+          "localities",
+          "areas",
+          "snapshot_dates",
+          "posted_between"
+        ],
+        "title": "AreaJobs"
       },
       "AreaQualification": {
         "properties": {
@@ -11579,6 +11837,48 @@
           "recommendation"
         ],
         "title": "ImprovementPriority"
+      },
+      "JobArea": {
+        "properties": {
+          "region_code": {
+            "type": "string",
+            "title": "Region Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "latitude": {
+            "type": "number",
+            "title": "Latitude"
+          },
+          "longitude": {
+            "type": "number",
+            "title": "Longitude"
+          },
+          "posting_count": {
+            "type": "integer",
+            "minimum": 1,
+            "title": "Posting Count"
+          },
+          "titles": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Titles"
+          }
+        },
+        "type": "object",
+        "required": [
+          "region_code",
+          "name",
+          "latitude",
+          "longitude",
+          "posting_count",
+          "titles"
+        ],
+        "title": "JobArea"
       },
       "LearnerPublic": {
         "properties": {

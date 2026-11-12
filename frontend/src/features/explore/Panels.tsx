@@ -7,7 +7,7 @@ import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { useFinderStore } from '../finder/store.ts'
-import { QualificationEvidence } from '../labor-market/QualificationEvidence.tsx'
+import { DemandPanel } from './DemandPanel.tsx'
 import type { ClientConfig } from '../training/api.ts'
 import type { CenterKind } from '../training/address.ts'
 import { googleMapsDirections, RoutePanel } from '../training/CenterDetail.tsx'
@@ -20,7 +20,6 @@ import {
   firstKind,
   hasScholarship,
   NEAR_KM,
-  nearestRegion,
   roundKm,
   type QualificationCard,
 } from './explore.ts'
@@ -263,6 +262,7 @@ export function NearbyPanel({
 }) {
   const en = useCopy()
   const copy = en.explore.nearby
+  if (view === 'demand') return <DemandPanel explore={explore} />
   if (explore.loading) {
     return (
       <p role="status" className={note}>
@@ -475,14 +475,14 @@ export function ResultsPanel({
   const copy = en.explore.results
   const { search, matches, centers, reference } = explore
   if (!search) return null
-  if (!matches.length) {
+  if (!matches.length && view !== 'demand') {
     return (
       <p role="status" className="m-0 rounded-12 bg-panel p-3 text-14 leading-[1.5] text-ink">
         {copy.noMatch}
       </p>
     )
   }
-  if (explore.listingsLoading) {
+  if (explore.listingsLoading && view !== 'demand') {
     return (
       <p role="status" className={note}>
         {en.training.results.loading}
@@ -555,46 +555,12 @@ export function ResultsPanel({
           onSelect={onSelect}
         />
       ))}
-      {view === 'demand' && <DemandView explore={explore} />}
+      {view === 'demand' && <DemandPanel explore={explore} />}
       <div className="flex flex-col gap-1">
         {reference && <p className={note}>{en.explore.notes.times}</p>}
         <p className={note}>{en.explore.notes.automatic}</p>
       </div>
     </div>
-  )
-}
-
-/** Demand: the labor-market evidence the API already has for one matched qualification, in the learner's region. */
-function DemandView({ explore }: { explore: Explore }) {
-  const copy = useCopy().explore.demand
-  const [code, setCode] = useState(explore.matches[0]?.qualification.code ?? '')
-  const region = nearestRegion(explore.reference, explore.regions)
-  return (
-    <section className="flex flex-col gap-3">
-      <div className="flex items-start gap-2.5">
-        <span className="grid size-8 flex-none place-items-center rounded-full bg-tint text-blue">
-          <Icon name="briefcase" />
-        </span>
-        <div>
-          <h3 className={heading}>{copy.heading}</h3>
-          <p className={note}>{copy.body}</p>
-        </div>
-      </div>
-      <div role="group" aria-label={copy.choose} className="flex flex-wrap gap-1.5">
-        {explore.matches.map((match) => (
-          <ToggleButton
-            key={match.qualification.code}
-            isSelected={code === match.qualification.code}
-            onChange={() => setCode(match.qualification.code)}
-            className="min-h-8 cursor-pointer rounded-full border border-border bg-surface px-3 text-12 font-semibold text-navy data-focus-visible:outline-3 data-focus-visible:outline-focus data-selected:border-fill data-selected:bg-fill data-selected:text-white"
-          >
-            {match.qualification.name}
-          </ToggleButton>
-        ))}
-      </div>
-      <p className={note}>{region ? copy.region(region.name) : copy.national}</p>
-      {code && <QualificationEvidence qualificationCode={code} regionCode={region?.code ?? null} />}
-    </section>
   )
 }
 

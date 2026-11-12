@@ -1,0 +1,38 @@
+.center-map[data-demand] .leaflet-tile-pane {
+  filter: grayscale(1) var(--track-map-tiles);
+}
+
+.center-map .demand-region-hit {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+.center-map .demand-region-hit span {
+  visibility: hidden;
+  border-radius: 6px;
+  background: var(--track-surface);
+  color: var(--track-navy);
+  padding: 6px 8px;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.center-map .demand-region-hit:is(:hover, :focus-visible, [aria-pressed='true']) span {
+  visibility: visible;
+}
+
+.center-map .demand-region-hit:focus-visible,
+.center-map .demand-region-polygon:focus-visible {
+  outline: 3px solid var(--track-focus);
+  outline-offset: 2px;
+}

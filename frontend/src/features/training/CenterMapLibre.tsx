@@ -1,10 +1,12 @@
 import 'maplibre-gl/dist/maplibre-gl.css'
 // After maplibre-gl.css, which it styles over.
 import './center-map-maplibre.css'
+import './demand-map.css'
 import { useQuery } from '@tanstack/react-query'
 import {
   AttributionControl,
   Map as MapLibreMap,
+  Marker as MapLibreMarker,
   Popup,
   setWorkerUrl,
   type GeoJSONSource,
@@ -42,6 +44,8 @@ import type { Center, Point } from './centers.ts'
 import { KIND_DOTS, MODE_ICONS } from './CenterDetail.tsx'
 import { BASEMAP_KEY, LOCATE_ZOOM, type CenterMapProps } from './CenterMapTypes.ts'
 import { CenterPopup } from './CenterPopup.tsx'
+import { DemandLegend } from './DemandLegend.tsx'
+import { demandBounds, demandRegions, demandSymbol, useRegionBoundaries } from './demandMap.ts'
 import { routeLabel } from './format.ts'
 import type { GeoJSON } from 'geojson'
 import type { MapSettings, VectorTiles } from './mapSettings.ts'
@@ -231,6 +235,14 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   const points = useMemo(
     () => centers.filter((center) => center.latitude !== null && center.longitude !== null),
     [centers],
+  )
+  const demandAreas = props.demandAreas
+  const demandRegion = props.demandRegion
+  const demandCopy = en.explore.demand
+  const demandBoundaries = useRegionBoundaries(demandAreas !== undefined)
+  const heatmapData = useMemo(
+    () => demandRegions(demandBoundaries.data, demandAreas, demandRegion),
+    [demandBoundaries.data, demandAreas, demandRegion],
   )
   const byId = useMemo(() => new Map(points.map((center) => [center.id, center])), [points])
   const radius = reference && radiusKm && radiusKm > 0 ? radiusKm : null
@@ -621,6 +633,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
       reference: referenceData,
       radius: radiusData,
       routes: routesData,
+      demand: heatmapData,
     }
     const map = mapRef.current
     if (!ready || !map) return
@@ -630,12 +643,13 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     update(SOURCES.reference, referenceData)
     update(SOURCES.radius, radiusData)
     update(SOURCES.routes, routesData)
+    update(SOURCES.demand, heatmapData)
     // The route layers, and with them the router's credit, show only while there's a route.
     const visibility = routesData.features.length ? 'visible' : 'none'
     for (const layer of ROUTE_LAYERS) {
       if (map.getLayer(layer)) map.setLayoutProperty(layer, 'visibility', visibility)
     }
-  }, [ready, centersData, selectedData, referenceData, radiusData, routesData])
+  }, [ready, centersData, selectedData, referenceData, radiusData, routesData, heatmapData])
 
   // The base map's look: the theme, the layer chosen, and 3D. Diffed, so only what changed is redrawn.
   useEffect(() => {
@@ -708,7 +722,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   const framed = useRef<{ key: string; inset: number } | null>(null)
   useEffect(() => {
     const map = mapRef.current
-    if (!ready || !map || hasRoute) return
+    if (!ready || !map || hasRoute || props.demandAreas) return
     const previous = framed.current
     const changed = previous?.key !== frameKey
     if (!changed && (previous?.inset === inset || movedByUser.current)) return
@@ -717,7 +731,73 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     const frame: Frame = frameResults({ points, reference, radiusKm: radius })
     // The first frame is drawn at once; later ones ease there.
     applyFrame(map, frame, inset, previous ? motion(reducedMotion) : motion(true))
-  }, [ready, frameKey, inset, hasRoute, points, reference, radius, reducedMotion])
+  }, [
+    ready,
+    frameKey,
+    inset,
+    hasRoute,
+    points,
+    reference,
+    radius,
+    reducedMotion,
+    props.demandAreas,
+  ])
+
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map || !demandAreas) return
+    const markers = demandAreas.map((area) => {
+      const element = demandSymbol(
+        area,
+        demandRegion === area.region_code,
+        demandCopy.mapMarker(area.name, area.posting_count),
+      )
+      element.addEventListener('click', () => latest.current.props.onDemandArea?.(area.region_code))
+      return new MapLibreMarker({ element }).setLngLat([area.longitude, area.latitude]).addTo(map)
+    })
+    const bounds = demandBounds(heatmapData, demandRegion)
+    if (bounds) {
+      map.fitBounds(bounds, {
+        padding: { top: 75, bottom: 60, left: inset + 40, right: 60 },
+        maxZoom: demandRegion ? 11 : 8,
+        duration: 0,
+      })
+    }
+    return () => markers.forEach((marker) => marker.remove())
+  }, [ready, demandAreas, demandRegion, inset, demandCopy, heatmapData])
+
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map) return
+    const tip = new Popup({ closeButton: false, closeOnClick: false })
+    const selectRegion = (event: MapLayerMouseEvent) => {
+      const code = event.features?.[0]?.properties.region_code
+      if (typeof code === 'string') latest.current.props.onDemandArea?.(code)
+    }
+    const hover = (event: MapLayerMouseEvent) => {
+      const region = event.features?.[0]?.properties
+      if (!region) return
+      map.getCanvas().style.cursor = 'pointer'
+      const label =
+        region.posting_count == null
+          ? demandCopy.mapRegionEmpty(region.name)
+          : demandCopy.mapMarker(region.name, region.posting_count)
+      tip.setLngLat(event.lngLat).setText(label).addTo(map)
+    }
+    const leave = () => {
+      map.getCanvas().style.cursor = ''
+      tip.remove()
+    }
+    map.on('click', LAYERS.demandFill, selectRegion)
+    map.on('mousemove', LAYERS.demandFill, hover)
+    map.on('mouseleave', LAYERS.demandFill, leave)
+    return () => {
+      map.off('click', LAYERS.demandFill, selectRegion)
+      map.off('mousemove', LAYERS.demandFill, hover)
+      map.off('mouseleave', LAYERS.demandFill, leave)
+      tip.remove()
+    }
+  }, [ready, demandCopy])
 
   // Locate: each press brings the learner's own location to the middle of the map's clear part, close in, at once
   // when it's already known, or as soon as the browser answers. After the framing above, so a location that has just
@@ -898,7 +978,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   const shownStatus =
     locating && props.locatingNotice !== false
       ? en.training.filters.locating
-      : !points.length
+      : !points.length && !demandAreas
         ? copy.none
         : (statusText ?? coverageText)
 
@@ -915,12 +995,21 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
       ref={shell}
       className="center-map relative isolate h-[var(--center-map-height,680px)] overflow-hidden rounded-18 border border-border bg-map-water shadow-[0_6px_24px_rgb(var(--track-shadow-rgb)/0.05)] max-sm:h-[min(var(--center-map-height,460px),460px)]"
       data-engine="maplibre"
+      data-demand={demandAreas ? true : undefined}
       data-radius-km={radius ?? undefined}
       data-three-d={threeD || undefined}
       role="region"
-      aria-label={copy.label}
+      aria-label={demandAreas ? demandCopy.mapLabel : copy.label}
     >
       <div ref={container} className="absolute inset-0" />
+      {demandAreas && (demandBoundaries.isPending || demandBoundaries.isError) && (
+        <p
+          role="status"
+          className="absolute top-20 right-16 z-800 m-0 max-w-64 rounded-8 bg-surface p-3 text-13 text-navy"
+        >
+          {demandBoundaries.isError ? demandCopy.mapBoundaryFailed : demandCopy.mapBoundaryLoading}
+        </p>
+      )}
 
       {overlayNode &&
         createPortal(
@@ -1160,14 +1249,18 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
         )}
         <div
           className="flex flex-wrap gap-[22px] rounded-14 bg-surface px-[18px] py-[11px] text-[12.5px] text-navy shadow-[0_4px_14px_rgb(var(--track-shadow-rgb)/0.1)] max-sm:gap-3 max-sm:px-3 max-sm:py-[9px] max-sm:text-[11.5px]"
-          aria-hidden="true"
+          aria-hidden={demandAreas ? undefined : true}
         >
-          {(['training', 'assessment'] as const).map((kind) => (
-            <span key={kind} className="inline-flex items-center gap-2">
-              <i className={cx('size-3 rounded-full', KIND_DOTS[kind])} data-kind={kind} />
-              {copy.legend[kind]}
-            </span>
-          ))}
+          {demandAreas ? (
+            <DemandLegend areas={demandAreas} dates={props.demandSnapshotDates} />
+          ) : (
+            (['training', 'assessment'] as const).map((kind) => (
+              <span key={kind} className="inline-flex items-center gap-2">
+                <i className={cx('size-3 rounded-full', KIND_DOTS[kind])} data-kind={kind} />
+                {copy.legend[kind]}
+              </span>
+            ))
+          )}
         </div>
       </div>
     </div>

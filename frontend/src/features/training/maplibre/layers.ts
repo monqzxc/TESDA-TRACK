@@ -8,6 +8,7 @@ import type { Feature, FeatureCollection, LineString, Point, Polygon, Position }
 import type { CenterKind } from '../address.ts'
 import type { Center } from '../centers.ts'
 import type { Reference } from '../useCenters.ts'
+import type { DemandRegions } from '../demandMap.ts'
 import { PIN_TIP_BELOW, SELECTED_TIP_BELOW } from './markers.ts'
 import type { RouteProperties } from './routing.ts'
 import { FIRST_LABEL_LAYER, type Theme } from './styles.ts'
@@ -22,6 +23,7 @@ export const SOURCES = {
   reference: 'center-reference',
   radius: 'center-radius',
   routes: 'center-routes',
+  demand: 'regional-demand',
 } as const
 
 export const LAYERS = {
@@ -30,6 +32,8 @@ export const LAYERS = {
   selected: 'center-selected-pins',
   referenceDot: 'center-reference-dot',
   radiusFill: 'center-radius-fill',
+  demandFill: 'regional-demand-fill',
+  demandLine: 'regional-demand-line',
   /** The routes' lines, which pick their travel mode when clicked. */
   routeLines: [
     'center-route-other-line',
@@ -71,6 +75,7 @@ export interface OverlayData {
   reference: FeatureCollection<Point, { mine: boolean }>
   radius: FeatureCollection<Polygon>
   routes: FeatureCollection<LineString, RouteProperties>
+  demand?: DemandRegions
 }
 
 const collection = <G extends Point | Polygon | LineString, P>(
@@ -163,6 +168,11 @@ export function radiusArea(reference: Reference | null, km: number | null): Over
 
 export function overlaySources(data: OverlayData): Record<string, SourceSpecification> {
   return {
+    [SOURCES.demand]: {
+      type: 'geojson',
+      data: data.demand ?? { type: 'FeatureCollection', features: [] },
+      attribution: 'Boundaries: PSA / NAMRIA via OCHA · James Faeldon (CC BY-IGO / MIT)',
+    },
     [SOURCES.radius]: { type: 'geojson', data: data.radius },
     // The routing service asks to be credited, with a way to report mistakes in the map it routes on. The credit
     // shows while the route layers do.
@@ -255,6 +265,25 @@ export function overlayLayers(
   const placeDot = theme === 'dark' ? '#2f6fe0' : '#102a56'
   return {
     under: [
+      {
+        id: LAYERS.demandFill,
+        type: 'fill',
+        source: SOURCES.demand,
+        paint: {
+          'fill-color': ['get', 'color'],
+          'fill-opacity': ['case', ['get', 'selected'], 0.76, 0.56],
+        },
+      },
+      {
+        id: LAYERS.demandLine,
+        type: 'line',
+        source: SOURCES.demand,
+        paint: {
+          'line-color': ['case', ['get', 'selected'], '#175cd3', '#6f6475'],
+          'line-width': ['case', ['get', 'selected'], 3, 1],
+          'line-opacity': 0.9,
+        },
+      },
       {
         id: LAYERS.radiusFill,
         type: 'fill',

@@ -1834,6 +1834,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/labor-market/jobs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Area Job Evidence */
+        get: operations["area_job_evidence_api_v1_labor_market_jobs_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/recommendations/service-access": {
         parameters: {
             query?: never;
@@ -2067,6 +2084,53 @@ export interface components {
             result?: ("competent" | "not_yet_competent") | null;
             /** Reviewer Note */
             reviewer_note?: string | null;
+        };
+        /** AreaJob */
+        AreaJob: {
+            /** Title */
+            title: string;
+            /** Posting Count */
+            posting_count: number;
+            /** Employer Count */
+            employer_count: number;
+            /** Localities */
+            localities: string[];
+            /** Region Codes */
+            region_codes: string[];
+        };
+        /** AreaJobs */
+        AreaJobs: {
+            /** Items */
+            items: components["schemas"]["AreaJob"][];
+            /** Total */
+            total: number;
+            /** Posting Count */
+            posting_count: number;
+            /** Employer Count */
+            employer_count: number;
+            /** Limit */
+            limit: number;
+            /** Offset */
+            offset: number;
+            /** Region Code */
+            region_code: string | null;
+            /** Locality */
+            locality: string | null;
+            /** Localities */
+            localities: string[];
+            /** Areas */
+            areas: components["schemas"]["JobArea"][];
+            /** Snapshot Dates */
+            snapshot_dates: string[];
+            /** Posted Between */
+            posted_between: string[];
+            /**
+             * Source Url
+             * @default https://philjobnet.gov.ph/job-vacancies/
+             */
+            source_url: string;
+            /** Limitations */
+            limitations?: string[];
         };
         /** AreaQualification */
         AreaQualification: {
@@ -3529,6 +3593,21 @@ export interface components {
             priority: "high" | "medium" | "collect_feedback";
             /** Recommendation */
             recommendation: string;
+        };
+        /** JobArea */
+        JobArea: {
+            /** Region Code */
+            region_code: string;
+            /** Name */
+            name: string;
+            /** Latitude */
+            latitude: number;
+            /** Longitude */
+            longitude: number;
+            /** Posting Count */
+            posting_count: number;
+            /** Titles */
+            titles: string[];
         };
         /** LearnerPublic */
         LearnerPublic: {
@@ -9725,6 +9804,41 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AreaQualifications"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    area_job_evidence_api_v1_labor_market_jobs_get: {
+        parameters: {
+            query?: {
+                region_code?: string | null;
+                locality?: string | null;
+                qualification_code?: string | null;
+                limit?: number;
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AreaJobs"];
                 };
             };
             /** @description Validation Error */

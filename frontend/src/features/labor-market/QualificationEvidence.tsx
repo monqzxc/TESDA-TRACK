@@ -57,7 +57,13 @@ function MeasureDetail({ label, measure }: { label: string; measure: EvidenceMea
   )
 }
 
-function EvidenceContent({ data }: { data: QualificationEvidenceResponse }) {
+function EvidenceContent({
+  data,
+  compact,
+}: {
+  data: QualificationEvidenceResponse
+  compact?: boolean
+}) {
   const postings = data.observed_postings
   const measures = [
     postings.postings,
@@ -72,7 +78,25 @@ function EvidenceContent({ data }: { data: QualificationEvidenceResponse }) {
         {postings.postings.geography.label} · Checked{' '}
         <time dateTime={data.context.evaluated_at}>{data.context.evaluated_at.slice(0, 10)}</time>
       </p>
-      <div className="grid gap-4 sm:grid-cols-2">
+      {compact && (
+        <dl className="m-0 grid gap-2 border-b border-rule pb-3">
+          {(
+            [
+              'registered_training_sites',
+              'registered_training_programs',
+              'confirmed_assessment_sites',
+            ] as const
+          ).map((key) => (
+            <div key={key} className="flex items-start justify-between gap-3 text-13">
+              <dt className="text-muted">{supplyLabels[key]}</dt>
+              <dd className="m-0 shrink-0 font-bold text-navy tabular-nums">
+                {data.supply[key].value ?? 'Unknown'}
+              </dd>
+            </div>
+          ))}
+        </dl>
+      )}
+      <div className={compact ? 'grid gap-4' : 'grid gap-4 sm:grid-cols-2'}>
         <div className="grid content-start gap-2">
           <h4 className={heading}>Observed job postings</h4>
           <p className="m-0 text-17 text-ink">
@@ -202,9 +226,11 @@ function EvidenceContent({ data }: { data: QualificationEvidenceResponse }) {
 export function QualificationEvidence({
   qualificationCode,
   regionCode,
+  compact = false,
 }: {
   qualificationCode: string
   regionCode: string | null
+  compact?: boolean
 }) {
   const headingId = useId()
   const query = useQuery(qualificationEvidenceQuery(qualificationCode, regionCode))
@@ -237,7 +263,7 @@ export function QualificationEvidence({
           </Button>
         </div>
       ) : (
-        <EvidenceContent data={query.data} />
+        <EvidenceContent data={query.data} compact={compact} />
       )}
     </section>
   )

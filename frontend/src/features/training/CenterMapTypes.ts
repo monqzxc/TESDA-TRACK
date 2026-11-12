@@ -14,6 +14,11 @@ export interface MapRoute {
 
 export interface CenterMapProps {
   centers: readonly Center[]
+  /** Regional posting totals joined to boundary polygons by region code. */
+  demandAreas?: readonly DemandMapArea[]
+  demandRegion?: string | null
+  demandSnapshotDates?: readonly string[]
+  onDemandArea?: (regionCode: string) => void
   selectedId: string | null
   /** Bumped by View on map, so asking again reopens a center that's already selected. */
   focus: number
@@ -37,6 +42,13 @@ export interface CenterMapProps {
   onRoute: (centerId: string) => void
   onToggleSaved: (centerId: string) => void
   onLocate: () => void
+}
+
+export interface DemandMapArea extends Point {
+  region_code: string
+  name: string
+  posting_count: number
+  titles: string[]
 }
 
 /** How close the Locate button goes in on the learner's own location: their neighbourhood's streets. */

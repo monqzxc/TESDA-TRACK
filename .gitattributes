@@ -5,3 +5,4 @@ Dockerfile text eol=lf
 # Versioned import fingerprints require exact bytes on Windows and Linux.
 backend/seed/sources/labor_market/** -text
 backend/seed/sources/labor_demand/** -text
+frontend/src/features/training/data/philippines-regions.json -text

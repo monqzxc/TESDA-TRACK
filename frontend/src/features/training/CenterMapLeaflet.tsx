@@ -1,6 +1,7 @@
 import 'leaflet/dist/leaflet.css'
 // After leaflet.css, which it styles over.
 import './center-map.css'
+import './demand-map.css'
 import L from 'leaflet'
 // After Leaflet, which sets the global L the plugin extends.
 import 'leaflet.markercluster'
@@ -16,6 +17,7 @@ import { Button, Menu, MenuItem, MenuTrigger, Popover, type Selection } from 're
 import {
   Circle,
   CircleMarker,
+  GeoJSON,
   MapContainer,
   Marker,
   Polyline,
@@ -33,8 +35,16 @@ import type { CenterKind } from './address.ts'
 import { directionsQuery, type TravelMode } from './api.ts'
 import type { Center } from './centers.ts'
 import { KIND_DOTS, MODE_ICONS } from './CenterDetail.tsx'
-import { BASEMAP_KEY, LOCATE_ZOOM, type CenterMapProps, type MapRoute } from './CenterMapTypes.ts'
+import {
+  BASEMAP_KEY,
+  LOCATE_ZOOM,
+  type CenterMapProps,
+  type MapRoute,
+  type DemandMapArea,
+} from './CenterMapTypes.ts'
 import { CenterPopup } from './CenterPopup.tsx'
+import { DemandLegend } from './DemandLegend.tsx'
+import { demandRegions, useRegionBoundaries } from './demandMap.ts'
 import { routeLabel } from './format.ts'
 import { partialPath, useRouteDraw } from './routeDraw.ts'
 import type { Reference } from './useCenters.ts'
@@ -195,7 +205,7 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
   const shownStatus =
     locating && props.locatingNotice !== false
       ? en.training.filters.locating
-      : !points.length
+      : !points.length && !props.demandAreas
         ? copy.none
         : statusText
 
@@ -205,9 +215,10 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
       ref={shell}
       className="center-map relative isolate h-[var(--center-map-height,680px)] overflow-hidden rounded-18 border border-border bg-map-water shadow-[0_6px_24px_rgb(var(--track-shadow-rgb)/0.05)] max-sm:h-[min(var(--center-map-height,460px),460px)]"
       data-engine="leaflet"
+      data-demand={props.demandAreas ? true : undefined}
       data-soft={basemap.soft || undefined}
       role="region"
-      aria-label={copy.label}
+      aria-label={props.demandAreas ? en.explore.demand.mapLabel : copy.label}
     >
       <MapContainer
         className="absolute inset-0 bg-map-water"
@@ -238,6 +249,14 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
           onCopied={(message) => setStatus({ message })}
         />
         <ReferenceDot reference={props.reference} />
+        {props.demandAreas && (
+          <DemandAreas
+            areas={props.demandAreas}
+            selected={props.demandRegion}
+            onPick={props.onDemandArea}
+            inset={inset}
+          />
+        )}
         {props.route && (
           <RouteLayer
             route={props.route}
@@ -246,13 +265,15 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
             inset={inset}
           />
         )}
-        <Framing
-          points={points}
-          reference={props.reference}
-          radiusKm={props.radiusKm}
-          hasRoute={props.route !== null}
-          inset={inset}
-        />
+        {!props.demandAreas && (
+          <Framing
+            points={points}
+            reference={props.reference}
+            radiusKm={props.radiusKm}
+            hasRoute={props.route !== null}
+            inset={inset}
+          />
+        )}
         {/* After Framing, so a location that has just arrived ends up centred, not framed with the centers. */}
         <GoToMine ask={locateAsk} reference={props.reference} locating={locating} inset={inset} />
       </MapContainer>
@@ -325,16 +346,116 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
       </MenuTrigger>
       <div
         className="absolute bottom-3.5 left-[calc(var(--map-overlay-inset,0px)_+_4px)] z-800 flex flex-wrap gap-[22px] rounded-14 bg-surface px-[18px] py-[11px] text-[12.5px] text-navy shadow-[0_4px_14px_rgb(var(--track-shadow-rgb)/0.1)] max-sm:gap-3 max-sm:px-3 max-sm:py-[9px] max-sm:text-[11.5px]"
-        aria-hidden="true"
+        aria-hidden={props.demandAreas ? undefined : true}
       >
-        {(['training', 'assessment'] as const).map((kind) => (
-          <span key={kind} className="inline-flex items-center gap-2">
-            <i className={cx('size-3 rounded-full', KIND_DOTS[kind])} data-kind={kind} />
-            {copy.legend[kind]}
-          </span>
-        ))}
+        {props.demandAreas ? (
+          <DemandLegend areas={props.demandAreas} dates={props.demandSnapshotDates} />
+        ) : (
+          (['training', 'assessment'] as const).map((kind) => (
+            <span key={kind} className="inline-flex items-center gap-2">
+              <i className={cx('size-3 rounded-full', KIND_DOTS[kind])} data-kind={kind} />
+              {copy.legend[kind]}
+            </span>
+          ))
+        )}
       </div>
     </div>
+  )
+}
+
+function DemandAreas({
+  areas,
+  selected,
+  onPick,
+  inset,
+}: {
+  areas: readonly DemandMapArea[]
+  selected?: string | null
+  onPick?: (code: string) => void
+  inset: number
+}) {
+  const map = useMap()
+  const copy = useCopy().explore.demand
+  const boundaries = useRegionBoundaries()
+  const data = useMemo(
+    () => demandRegions(boundaries.data, areas, selected),
+    [boundaries.data, areas, selected],
+  )
+  useEffect(() => {
+    const shown = selected
+      ? data.features.filter((feature) => feature.properties.region_code === selected)
+      : data.features
+    if (!shown.length) return
+    const bounds = L.geoJSON(shown).getBounds()
+    map.fitBounds(bounds, {
+      paddingTopLeft: [inset + 40, 75],
+      paddingBottomRight: [60, 60],
+      maxZoom: selected ? 11 : 8,
+    })
+  }, [map, data, selected, inset])
+  if (boundaries.isPending || boundaries.isError)
+    return (
+      <p
+        role="status"
+        className="absolute top-20 right-16 z-800 m-0 max-w-64 rounded-8 bg-surface p-3 text-13 text-navy"
+      >
+        {boundaries.isError ? copy.mapBoundaryFailed : copy.mapBoundaryLoading}
+      </p>
+    )
+  return (
+    <>
+      {data.features.map((feature) => {
+        const {
+          region_code: code,
+          name,
+          posting_count: count,
+          color,
+          selected: active,
+        } = feature.properties
+        const label = count === null ? copy.mapRegionEmpty(name) : copy.mapMarker(name, count)
+        const area = areas.find((item) => item.region_code === code)
+        return (
+          <GeoJSON
+            key={`${code}:${count}:${active}`}
+            data={feature}
+            style={{
+              className: 'demand-region-polygon',
+              fillColor: color,
+              fillOpacity: active ? 0.76 : 0.56,
+              color: active ? '#175cd3' : '#6f6475',
+              weight: active ? 3 : 1,
+              opacity: 0.9,
+              dashArray: count === null ? '3 3' : undefined,
+            }}
+            onEachFeature={(_item, layer) => {
+              const path = layer as L.Path
+              const choose = () => onPick?.(code)
+              path.on('click', choose)
+              path.on('add', () => {
+                const element = path.getElement()
+                element?.setAttribute('tabindex', '0')
+                element?.setAttribute('role', 'button')
+                element?.setAttribute('aria-label', label)
+                element?.setAttribute('aria-pressed', String(active))
+                element?.addEventListener('keydown', (event) => {
+                  const key = (event as KeyboardEvent).key
+                  if (key === 'Enter' || key === ' ') {
+                    event.preventDefault()
+                    choose()
+                  }
+                })
+              })
+            }}
+          >
+            <Tooltip>
+              {label}
+              <br />
+              {area?.titles.join(' · ')}
+            </Tooltip>
+          </GeoJSON>
+        )
+      })}
+    </>
   )
 }
 
