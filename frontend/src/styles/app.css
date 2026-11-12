@@ -83,6 +83,8 @@
   --color-chip-hover-border: var(--track-chip-hover-border);
   --color-good-bg: var(--track-good-bg);
   --color-good-ink: var(--track-good-ink);
+  --color-good-fill: var(--track-good-fill);
+  --color-scholarship-fill: var(--track-scholarship-fill);
   --color-warn-bg: var(--track-warn-bg);
   --color-warn-ink: var(--track-warn-ink);
   --color-empty: var(--track-empty);
@@ -200,6 +202,8 @@
   --animate-enter-back: enter-back 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
   --animate-tab-in: tab-in 0.3s ease-out backwards;
   --animate-tick: tick 0.45s ease-out backwards;
+  /* Center finder: the spinner in its location status while the browser finds the learner. */
+  --animate-spin: spin 0.8s linear infinite;
   /* Home: the console's caret, the drifting qualification names, and each region's ring on the map. */
   --animate-blink: blink 1s steps(1) infinite;
   --animate-drift: drift 70s linear infinite;
@@ -275,6 +279,11 @@
     from {
       transform: scale(0.94);
       opacity: 0.55;
+    }
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
     }
   }
   @keyframes tick {

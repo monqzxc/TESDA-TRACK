@@ -51,6 +51,8 @@
   --track-chip-hover-border: #cfd9e8;
   --track-good-bg: #e3f5ee;
   --track-good-ink: #11664c;
+  --track-good-fill: #12805c; /* solid tags under white text: Strong match */
+  --track-scholarship-fill: #6248b3; /* solid tags under white text: Scholarship */
   --track-warn-bg: #fff5df;
   --track-warn-ink: #92601a;
   --track-empty: #f9fbfe;
@@ -123,6 +125,8 @@
   --track-chip-hover-border: #34507f;
   --track-good-bg: #0f3a35;
   --track-good-ink: #7be0c8;
+  --track-good-fill: #17845f;
+  --track-scholarship-fill: #7258d0;
   --track-warn-bg: #3a2c10;
   --track-warn-ink: #f5cf7a;
   --track-empty: #0e1b3b;

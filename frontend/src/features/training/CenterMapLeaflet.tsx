@@ -190,11 +190,12 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
 
   const points = centers.filter((center) => center.latitude !== null && center.longitude !== null)
   const statusText = typeof status === 'string' ? copy[status] : status?.message
-  const shownStatus = locating
-    ? en.training.filters.locating
-    : !points.length
-      ? copy.none
-      : statusText
+  const shownStatus =
+    locating && props.locatingNotice !== false
+      ? en.training.filters.locating
+      : !points.length
+        ? copy.none
+        : statusText
 
   return (
     // A page holding the map elsewhere, as Skills Explorer does, can set its height (--center-map-height).
@@ -256,7 +257,7 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
 
       {shownStatus && (
         <p
-          className="pointer-events-none absolute top-3.5 right-[70px] left-[calc(var(--map-overlay-inset,0px)_+_14px)] z-800 m-0 rounded-12 bg-glass px-3.5 py-2.5 text-13 text-muted shadow-[0_2px_10px_rgb(var(--track-shadow-rgb)/0.08)]"
+          className="pointer-events-none absolute top-[var(--map-status-top,0.875rem)] right-[70px] left-[calc(var(--map-overlay-inset,0px)_+_14px)] z-800 m-0 rounded-12 bg-glass px-3.5 py-2.5 text-13 text-muted shadow-[0_2px_10px_rgb(var(--track-shadow-rgb)/0.08)]"
           role="status"
         >
           {shownStatus}

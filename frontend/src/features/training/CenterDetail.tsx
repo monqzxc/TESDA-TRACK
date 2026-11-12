@@ -241,7 +241,7 @@ export function KindBadges({
  * The routes from the learner's approximate location, one per travel mode, with the chosen one's distance and time.
  * The map draws the same routes (it reads the same request).
  */
-function RoutePanel({ from, to }: { from: Point; to: Point }) {
+export function RoutePanel({ from, to }: { from: Point; to: Point }) {
   const en = useCopy()
   const copy = en.training
 

@@ -30,6 +30,8 @@ export interface CenterMapProps {
   cartoKey: string
   today: string
   locating: boolean
+  /** Say "Finding your location" over the map while locating. Off where the page says it itself. Default on. */
+  locatingNotice?: boolean
   onPick: (centerId: string) => void
   onDetails: (centerId: string) => void
   onRoute: (centerId: string) => void

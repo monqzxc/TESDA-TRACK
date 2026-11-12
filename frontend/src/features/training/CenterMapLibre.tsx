@@ -883,11 +883,12 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   const together = popup?.type === 'together' ? popup.ids.flatMap((id) => byId.get(id) ?? []) : []
   const statusText = typeof status === 'string' ? copy[status] : status?.message
   const coverageText = threeD && coverage ? copy.threeDNotes[coverage] : null
-  const shownStatus = locating
-    ? en.training.filters.locating
-    : !points.length
-      ? copy.none
-      : (statusText ?? coverageText)
+  const shownStatus =
+    locating && props.locatingNotice !== false
+      ? en.training.filters.locating
+      : !points.length
+        ? copy.none
+        : (statusText ?? coverageText)
 
   const zoomBy = (delta: number) => {
     const map = mapRef.current
@@ -1029,7 +1030,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
 
       {shownStatus && (
         <p
-          className="pointer-events-none absolute top-3.5 right-[70px] left-[calc(var(--map-overlay-inset,0px)_+_14px)] z-860 m-0 rounded-12 bg-glass px-3.5 py-2.5 text-13 text-muted shadow-[0_2px_10px_rgb(var(--track-shadow-rgb)/0.08)]"
+          className="pointer-events-none absolute top-[var(--map-status-top,0.875rem)] right-[70px] left-[calc(var(--map-overlay-inset,0px)_+_14px)] z-860 m-0 rounded-12 bg-glass px-3.5 py-2.5 text-13 text-muted shadow-[0_2px_10px_rgb(var(--track-shadow-rgb)/0.08)]"
           role="status"
         >
           {shownStatus}

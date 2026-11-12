@@ -3,6 +3,7 @@ import {
   Suspense,
   useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
   type FormEvent,
@@ -114,6 +115,12 @@ export default function ExplorePage() {
   }, [linked, catalog.data, params, setParams, en, copy])
 
   const [selectedId, setSelectedId] = useState<string | null>(null)
+  // The qualification whose card a center was opened from: its readiness check is the one the center card offers.
+  const [selectedCode, setSelectedCode] = useState<string | null>(null)
+  // Which way the panel last moved: a center slides in from the right, and the list comes back from the left.
+  const [motion, setMotion] = useState<'forward' | 'back' | null>(null)
+  const scroller = useRef<HTMLDivElement>(null)
+  const listScroll = useRef(0)
   const [focus, setFocus] = useState(0)
   // The panel opens folded down to its search row, so the map has the room; pressing in the box (or typing) opens
   // the rest, and Show less folds it again. With results to show (a search kept from earlier in the visit, or one
@@ -176,12 +183,30 @@ export default function ExplorePage() {
         }
       : null
 
-  const select = (id: string, { onMap = false }: { onMap?: boolean } = {}) => {
+  const select = (
+    id: string,
+    { onMap = false, code = null }: { onMap?: boolean; code?: string | null } = {},
+  ) => {
+    // Leaving the list, keep its place to come back to.
+    if (!selectedId) listScroll.current = scroller.current?.scrollTop ?? 0
     setSelectedId(id)
+    setSelectedCode(code)
+    setMotion('forward')
     // A center picked on the map opens its card, so a folded panel opens with it.
     setCollapsed(false)
     if (onMap) setFocus((n) => n + 1)
   }
+  const back = () => {
+    setSelectedId(null)
+    setMotion('back')
+  }
+  // A center's card starts at its top; the list comes back where the learner left it.
+  useLayoutEffect(() => {
+    const body = scroller.current
+    if (!body) return
+    if (selectedId) body.scrollTop = 0
+    else if (motion === 'back') body.scrollTop = listScroll.current
+  }, [selectedId, motion])
 
   return (
     // Its own stacking context: the panel's and chips' z-index lift them over the map, not over the page's dialogs.
@@ -192,6 +217,8 @@ export default function ExplorePage() {
       <div
         className={cx(
           'h-[45dvh] min-h-[300px] [--center-map-height:100%] md:absolute md:inset-0 md:h-auto',
+          // The map's status line sits under the search bar and the chips, not behind them: 12px + 46px + 12px.
+          'md:[--map-status-top:70px]',
           // Pins and the camera keep clear of the open panel: 12px + 360px + 16px.
           !collapsed && 'md:[--map-overlay-inset:388px]',
         )}
@@ -218,6 +245,8 @@ export default function ExplorePage() {
               cartoKey={config?.carto_key ?? ''}
               today={explore.today}
               locating={locatingAny}
+              // The location row in the panel says it, under its switch.
+              locatingNotice={false}
               onPick={(id) => select(id)}
               onDetails={(id) => select(id)}
               onRoute={(id) => {
@@ -253,6 +282,7 @@ export default function ExplorePage() {
           onOpen={() => setCollapsed(false)}
           onSearched={() => {
             setSelectedId(null)
+            setMotion(null)
             setView('all')
             setCollapsed(false)
           }}
@@ -270,7 +300,10 @@ export default function ExplorePage() {
           )}
         >
           {/* No padding on the clipped row itself: it would stay showing when the row is 0 tall. */}
-          <div className={cx('min-h-0 overflow-hidden', scrollable && 'md:overflow-y-auto')}>
+          <div
+            ref={scroller}
+            className={cx('min-h-0 overflow-hidden', scrollable && 'md:overflow-y-auto')}
+          >
             <div className="flex min-h-full flex-col gap-3 border-t border-rule p-4">
               {!search && (
                 <p className="m-0 text-13 leading-[1.5] text-muted">{copy.search.hint}</p>
@@ -290,29 +323,40 @@ export default function ExplorePage() {
                   </Button>
                 </div>
               )}
-              {selected ? (
-                <CenterCard
-                  center={selected}
-                  codes={codes}
-                  canRoute={canRoute}
-                  config={config}
-                  onBack={() => setSelectedId(null)}
-                  onRoute={() => store().showRoute(selected.id)}
-                />
-              ) : search ? (
-                <ResultsPanel
-                  explore={explore}
-                  view={view}
-                  onView={setView}
-                  onSelect={(id) => select(id, { onMap: true })}
-                />
-              ) : (
-                <NearbyPanel
-                  explore={explore}
-                  view={view}
-                  onSelect={(id) => select(id, { onMap: true })}
-                />
-              )}
+              {/* Keyed, so each move between the list and a center plays its slide again. */}
+              <div
+                key={selected ? `center-${selected.id}` : 'list'}
+                className={cx(
+                  selected && motion === 'forward' && 'motion-safe:animate-enter-forward',
+                  !selected && motion === 'back' && 'motion-safe:animate-enter-back',
+                )}
+              >
+                {selected ? (
+                  <CenterCard
+                    center={selected}
+                    code={selectedCode}
+                    codes={codes}
+                    canRoute={canRoute}
+                    routeFrom={canRoute ? location : null}
+                    config={config}
+                    onBack={back}
+                    onRoute={() => store().showRoute(selected.id)}
+                  />
+                ) : search ? (
+                  <ResultsPanel
+                    explore={explore}
+                    view={view}
+                    onView={setView}
+                    onSelect={(id, code) => select(id, { onMap: true, code })}
+                  />
+                ) : (
+                  <NearbyPanel
+                    explore={explore}
+                    view={view}
+                    onSelect={(id) => select(id, { onMap: true })}
+                  />
+                )}
+              </div>
               <p className="mt-auto mb-0 border-0 border-t border-rule pt-3 text-12 leading-[1.5] text-muted">
                 <span className="mr-1.5 rounded-full bg-chip px-2 py-0.5 font-semibold text-navy">
                   {copy.demoTag}
@@ -474,7 +518,8 @@ function Chips({ view, onView }: { view: View; onView: (view: View) => void }) {
     <div
       role="group"
       aria-label={copy.label}
-      className="z-[1000] flex gap-2 overflow-x-auto max-md:pb-1 md:absolute md:top-4 md:left-[388px] md:flex-wrap"
+      // The padding is room for the shadows and the hover lift: overflow clips them at the row's edges otherwise.
+      className="z-[1000] -m-2 flex gap-3 overflow-x-auto p-2 md:absolute md:top-3 md:left-[384px] md:flex-wrap md:overflow-visible"
     >
       {chips.map((chip) => (
         <ToggleButton
@@ -482,7 +527,10 @@ function Chips({ view, onView }: { view: View; onView: (view: View) => void }) {
           isSelected={view === chip.view}
           onChange={(on) => onView(on ? chip.view : 'all')}
           className={cx(
-            'inline-flex min-h-10 shrink-0 cursor-pointer items-center gap-2 rounded-full border px-4 text-14 font-semibold whitespace-nowrap shadow-[0_2px_8px_rgb(var(--track-shadow-rgb)/0.12)]',
+            'inline-flex min-h-10 shrink-0 cursor-pointer items-center gap-2 rounded-full border px-4 text-14 font-semibold whitespace-nowrap md:h-[46px]',
+            'shadow-[0_1px_2px_rgb(var(--track-shadow-rgb)/0.08),0_6px_16px_-4px_rgb(var(--track-shadow-rgb)/0.24)]',
+            'transition-[transform,box-shadow,background-color,border-color] duration-200 ease-out',
+            'data-hovered:shadow-[0_2px_4px_rgb(var(--track-shadow-rgb)/0.10),0_12px_24px_-6px_rgb(var(--track-shadow-rgb)/0.32)] motion-safe:data-hovered:-translate-y-0.5 motion-safe:data-hovered:scale-105 motion-safe:data-pressed:scale-100',
             'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus',
             'border-border bg-surface text-navy data-hovered:border-hover-border',
             'data-selected:border-fill data-selected:bg-fill data-selected:text-white',

@@ -2224,34 +2224,28 @@ export const en = {
       tabs: {
         label: 'Show',
         all: 'All',
-        assess: (n: number) => `Assess · ${n}`,
-        train: (n: number) => `Train · ${n}`,
+        assess: 'Assess',
+        train: 'Train',
         demand: 'Demand',
+        // The accessible name of a tab with its count shown as a badge.
+        counted: (label: string, n: number) => `${label}, ${n}`,
       },
-      certifyFirst: {
-        heading: 'Get certified: you already have the skill',
-        body: 'Apply at an assessment center to test your skill and earn a National Certificate (NC).',
-      },
-      trainSecond: {
-        heading: 'Want to learn first? Training centers',
-        body: 'New to this, or want to improve? Train at a center. Scholarships may cover the fee.',
-      },
-      trainFirst: {
-        heading: 'Train: build the skill',
-        body: 'Train at a center. Scholarships may cover the fee.',
-      },
-      certifySecond: {
-        heading: 'Already have the skill? Get certified',
-        body: 'An assessment center tests your skill for a National Certificate (NC).',
-      },
+      certifyFirst: { heading: 'Get certified' },
+      trainSecond: { heading: 'Or train first' },
+      trainFirst: { heading: 'Train' },
+      certifySecond: { heading: 'Or get certified' },
       strength: { strong: 'Strong match', good: 'Good match' },
       noCenter: 'No center lists this qualification yet.',
-      moreCenters: (n: number) => `${n} more center${n === 1 ? '' : 's'}`,
+      moreCenters: (n: number) => `${n} more`,
       fewerCenters: 'Show fewer',
       noneNear: (km: number, closest: number) =>
         `No center within ${km} km. The closest is ${closest} km away.`,
-      scholarship: 'Scholarship available',
-      pathway: 'Check my readiness and pathway',
+      scholarship: 'Scholarship',
+      // Under a center's name in the results: the matched qualification it lists.
+      offers: {
+        training: (name: string) => `Training for ${name}`,
+        assessment: (name: string) => `Assessment for ${name}`,
+      },
       chosen: 'You chose this qualification in the Qualifications Library.',
       needPlace: 'Share your location or type a city to see what is nearest.',
       noMatch:
@@ -2263,6 +2257,8 @@ export const en = {
     trip: {
       km: (km: number) => `${km} km`,
       minutes: (minutes: number) => `about ${minutes} min by car`,
+      minutesShort: (minutes: number) => `${minutes} min`,
+      byCar: 'By car',
     },
     demand: {
       heading: 'Work: where your skills are in demand',
@@ -2275,7 +2271,7 @@ export const en = {
       back: 'Back to results',
       assessment: 'Assessment center · Get certified',
       training: 'Training center · Train',
-      leadsToNc: 'Leads to a National Certificate (NC)',
+      leadsToNc: 'Leads to an NC',
       listedFor: 'Listed for',
       directions: 'Directions',
       route: 'Show route on the map',
@@ -2283,6 +2279,10 @@ export const en = {
       email: 'Email',
       website: 'Website',
       details: 'Open in Training & Assessment',
+      readiness: 'Check my readiness',
+      readinessFor: (name: string) => `For ${name}`,
+      contact: 'Contact',
+      travel: 'Travel time',
       address: 'Address',
     },
     notes: {
