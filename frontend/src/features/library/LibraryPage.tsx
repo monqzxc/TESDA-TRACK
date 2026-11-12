@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useRef } from 'react'
 import { Button, Input, Label, SearchField } from 'react-aria-components'
-import { useLocation, useNavigate, useSearchParams } from 'react-router'
+import { useLocation, useSearchParams } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
 import { ProvenanceNotice } from '../../components/DataProvenance.tsx'
 import { EmptyState } from '../../components/EmptyState.tsx'
@@ -14,9 +14,7 @@ import { pageOf } from '../../lib/paging.ts'
 import { catalogNames, filterQualifications, sectorsOf } from '../../lib/qualifications.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
-import { useFinderStore } from '../finder/store.ts'
-import { QualificationCard } from './QualificationCard.tsx'
-import { useLibraryCollection } from './useLibraryCollection.ts'
+import { QualificationCard, qualificationHref } from './QualificationCard.tsx'
 
 /** Cards a page: the whole catalog at once (hundreds of cards) is slow on a phone. */
 export const LIBRARY_PAGE_SIZE = 12
@@ -47,14 +45,12 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
   const copy = en.library
 
   const [params, setParams] = useSearchParams()
-  const navigate = useNavigate()
-  const inTsp = useLocation().pathname.startsWith(paths.tspWebview)
-  const startWithGoal = useFinderStore((state) => state.startWithGoal)
+  const { pathname, search } = useLocation()
+  const inTsp = pathname.startsWith(paths.tspWebview)
   const summary = useRef<HTMLParagraphElement>(null)
   // Set by the pager, so only a move to another page (not a search, nor the first showing) moves focus.
   const pageChanged = useRef(false)
   const filtersId = useId()
-  const collection = useLibraryCollection()
 
   const sectors = useMemo(() => sectorsOf(qualifications), [qualifications])
   const names = useMemo(() => catalogNames(qualifications), [qualifications])
@@ -122,12 +118,6 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
     summary.current?.scrollIntoView({ block: 'start' })
     summary.current?.focus({ preventScroll: true })
   }, [shown.page])
-
-  const explore = (qualification: Qualification) => {
-    const goal = copy.exploreGoal(qualification.name)
-    startWithGoal(goal)
-    void navigate(inTsp ? paths.tspWebview : paths.finder, inTsp ? { state: { goal } } : undefined)
-  }
 
   const sectorOptions = [
     { id: ALL, label: copy.allSectors },
@@ -226,24 +216,8 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
               <QualificationCard
                 qualification={qualification}
                 catalogNames={names}
-                onExplore={() => explore(qualification)}
-                collection={
-                  collection.isSignedIn
-                    ? {
-                        added: collection.saved.has(qualification.code),
-                        pending:
-                          collection.add.isPending &&
-                          collection.add.variables?.code === qualification.code,
-                        disabled: collection.loading || collection.add.isPending,
-                        error:
-                          collection.add.isError &&
-                          collection.add.variables?.code === qualification.code
-                            ? collection.add.error
-                            : null,
-                        onAdd: () => collection.add.mutate(qualification),
-                      }
-                    : undefined
-                }
+                href={qualificationHref(qualification.code, inTsp)}
+                from={search}
               />
             </li>
           ))}

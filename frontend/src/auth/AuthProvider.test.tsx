@@ -638,7 +638,8 @@ describe('another tab', () => {
 
     await findAccountButton(admin.full_name)
     expect(screen.queryByRole('button', { name: /Maria Santos/ })).not.toBeInTheDocument()
-    expect(client.getQueryData(['me', 'goals'])).toEqual([])
+    // Nothing on the library's list reads goals, so the last account's are dropped rather than read again.
+    expect(client.getQueryData(['me', 'goals'])).toBeUndefined()
     expect(client.getQueryData(fitKey)).toBeUndefined()
   })
 

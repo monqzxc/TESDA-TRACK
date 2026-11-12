@@ -25,8 +25,9 @@ export const helpCopy = {
     finderReadiness: 'Rate your experience with each skill to see which next step could suit you.',
     finderPathway:
       'Review your readiness result, skills to develop, and suggested training or assessment.',
-    qualifications:
-      'Browse qualifications, possible careers, and the skills each qualification covers.',
+    qualificationDetail:
+      'See the competencies a qualification covers, then find training or assessment centers that offer it.',
+    qualifications: 'Browse qualifications and the competencies each one covers.',
     training:
       'Find training and assessment centers, compare their offerings, and explore nearby options.',
     explore:
@@ -165,12 +166,12 @@ export const helpCopy = {
     qualificationCard: {
       title: 'Understand a qualification',
       description:
-        'Each card lists possible careers and key details. Open its competencies to see the skills covered by the qualification.',
+        'Each card shows a qualification’s level, how many competencies it covers, and where its record comes from.',
     },
     qualificationExplore: {
-      title: 'Explore this pathway',
+      title: 'See competencies',
       description:
-        'Use this button to start the finder with a goal based on this qualification. You can edit the goal before requesting a recommendation.',
+        'Open a qualification to see its competencies, then find training or assessment centers that offer it.',
     },
     trainingSearch: {
       title: 'Search for a center',

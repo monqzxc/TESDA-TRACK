@@ -53,9 +53,10 @@ function serve(signedIn = true, goals: Goal[] = [], pathways: Enrollment[] = [])
   return account
 }
 
+// Saving is on the qualification's own page.
 async function open() {
-  const view = renderApp('/qualifications')
-  await screen.findByRole('article', { name: qualification.name })
+  const view = renderApp(`/qualifications/${qualification.code}`)
+  await screen.findByRole('heading', { level: 1, name: qualification.name })
   return view
 }
 
@@ -64,7 +65,7 @@ beforeEach(() => {
   window.sessionStorage.clear()
 })
 
-describe('Save from the Qualifications Library', () => {
+describe('Save from a qualification’s page', () => {
   it('keeps guest browsing available without private requests or save controls', async () => {
     const account = serve(false)
     let reads = 0
@@ -79,7 +80,7 @@ describe('Save from the Qualifications Library', () => {
       }),
     )
     await open()
-    expect(screen.getByRole('button', { name: 'Explore this pathway' })).toBeVisible()
+    expect(screen.getByRole('link', { name: 'Find training centers' })).toBeVisible()
     expect(screen.queryByRole('button', { name: 'Add to My Progress' })).not.toBeInTheDocument()
     expect(reads).toBe(0)
     expect(account.requests).toEqual([])

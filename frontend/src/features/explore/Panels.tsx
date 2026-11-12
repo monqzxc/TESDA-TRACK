@@ -251,15 +251,18 @@ function QualificationCardView({
         <h4 className="m-0 text-15 leading-[1.35] font-bold wrap-anywhere text-navy">
           {card.match.qualification.name}
         </h4>
-        <span
-          className={cx(
-            tag,
-            'flex-none',
-            card.strength === 'strong' ? 'bg-good-bg text-good-ink' : 'bg-chip text-navy',
-          )}
-        >
-          {copy.strength[card.strength]}
-        </span>
+        {/* A qualification opened from the library wasn't matched, so it has no strength. */}
+        {!search?.chosen && (
+          <span
+            className={cx(
+              tag,
+              'flex-none',
+              card.strength === 'strong' ? 'bg-good-bg text-good-ink' : 'bg-chip text-navy',
+            )}
+          >
+            {copy.strength[card.strength]}
+          </span>
+        )}
       </div>
       <p className="m-0 text-13 leading-[1.45] text-ink">{card.match.reason}</p>
       {hasReference && card.near === 0 && first?.distanceKm != null && (

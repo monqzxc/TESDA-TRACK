@@ -22,6 +22,8 @@ import { MAX_QUALIFICATIONS } from './explore.ts'
 export interface Search {
   query: string
   result: MatchResult
+  /** Opened from the library for one qualification, not read from words: there's no match strength to show. */
+  chosen?: boolean
 }
 
 interface ExploreState {

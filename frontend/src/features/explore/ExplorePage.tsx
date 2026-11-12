@@ -1,6 +1,7 @@
-import { lazy, Suspense, useId, useRef, useState, type FormEvent } from 'react'
+import { lazy, Suspense, useEffect, useId, useRef, useState, type FormEvent } from 'react'
 import { Button, Input, Label, SearchField, ToggleButton } from 'react-aria-components'
 import { useSearchParams } from 'react-router'
+import { useQualifications } from '../../api/queries.ts'
 import { failureMessage } from '../../auth/fields.tsx'
 import { Icon } from '../../components/Icon.tsx'
 import { LoadBoundary } from '../../components/LoadBoundary.tsx'
@@ -48,6 +49,47 @@ export default function ExplorePage() {
       },
       { replace: true, preventScrollReset: true },
     )
+
+  // Arriving from a qualification's page (?qualification=CODE&type=training): that qualification's centers, as a
+  // search the learner didn't have to type. The code leaves the address once read; the view stays.
+  const catalog = useQualifications()
+  const linked = params.get('qualification')
+  useEffect(() => {
+    if (!linked || !catalog.data) return
+    const qualification = catalog.data.find((item) => item.code === linked)
+    if (qualification) {
+      const { setDraft, setSearch } = useExploreStore.getState()
+      const { code, name, sector, provenance } = qualification
+      setDraft(name)
+      setSearch({
+        query: en.library.exploreGoal(name),
+        chosen: true,
+        result: {
+          profile: {
+            intent:
+              params.get('type') === 'assessment'
+                ? 'assessment_recommendation'
+                : 'training_recommendation',
+          },
+          matches: [
+            {
+              qualification: { code, name, sector, provenance },
+              score: 100,
+              reason: copy.results.chosen,
+            },
+          ],
+        },
+      })
+    }
+    setParams(
+      (current) => {
+        const updated = new URLSearchParams(current)
+        updated.delete('qualification')
+        return updated
+      },
+      { replace: true, preventScrollReset: true },
+    )
+  }, [linked, catalog.data, params, setParams, en, copy])
 
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [focus, setFocus] = useState(0)

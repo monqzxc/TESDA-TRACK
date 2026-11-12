@@ -89,6 +89,8 @@ export function WebviewLayout() {
   const isEntry = location.pathname === paths.tspWebview
   const isTool =
     location.pathname === paths.tspQualifications ||
+    // A qualification's own page, opened from the library.
+    location.pathname.startsWith(`${paths.tspQualifications}/`) ||
     location.pathname === paths.tspTraining ||
     location.pathname === paths.tspSkills
   return (

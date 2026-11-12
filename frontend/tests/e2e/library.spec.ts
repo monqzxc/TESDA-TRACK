@@ -1,8 +1,8 @@
 import { AxeBuilder } from '@axe-core/playwright'
 import { expect, test, type Page } from '@playwright/test'
 
-// Qualifications Library (US-04): search and sector in the address, twelve cards a page, a card's competencies,
-// and "Explore this pathway" opening the finder with the goal kept out of the address.
+// Qualifications Library (US-04): search and sector in the address, twelve cards a page, and a qualification's own
+// page with its competencies and the way to the centers that offer it.
 
 const SIZES = {
   phone: { width: 390, height: 844 },
@@ -77,10 +77,12 @@ for (const colorScheme of ['light', 'dark'] as const) {
         name: 'Shielded Metal Arc Welding (SMAW) NC I',
         exact: true,
       })
-      await page.getByRole('searchbox', { name: 'Search qualifications or careers' }).fill('SMAW')
+      await page.getByRole('searchbox', { name: 'Search qualifications' }).fill('SMAW')
       await expect(cards(page)).toHaveCount(2)
-      await card.getByText('View 3 sample competencies').click()
-      await expect(card.getByRole('heading', { level: 3, name: 'Core skills' })).toBeVisible()
+      await card.getByRole('link', { name: 'See competencies' }).click()
+      await expect(
+        page.getByRole('heading', { level: 2, name: /^Core competencies/ }),
+      ).toBeVisible()
 
       const overflow = await page.evaluate(
         () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
@@ -153,17 +155,24 @@ test.describe('on a desktop', () => {
     expect(new URL(page.url()).searchParams.has('view')).toBe(false)
   })
 
-  test('Explore this pathway opens Find my pathway with the goal, not in the address', async ({
+  test('a qualification’s page links to its centers, and its breadcrumb returns to the search', async ({
     page,
   }) => {
     await serveCatalog(page)
     await page.goto('/qualifications?q=SMAW-NCII')
 
-    await page.getByRole('button', { name: 'Explore this pathway' }).click()
+    await page.getByRole('link', { name: 'See competencies' }).click()
 
-    await expect(page).toHaveURL('/find')
-    const saved = await page.evaluate(() => window.sessionStorage.getItem('tesda-track.finder'))
-    expect(saved).toContain('I want to pursue Shielded Metal Arc Welding (SMAW) NC II.')
+    await expect(page).toHaveURL('/qualifications/SMAW-NCII')
+    await expect(page.getByRole('link', { name: 'Find assessment centers' })).toHaveAttribute(
+      'href',
+      '/explore?qualification=SMAW-NCII&type=assessment',
+    )
+    await page
+      .getByRole('navigation', { name: 'Breadcrumb' })
+      .getByRole('link', { name: 'Qualifications Library' })
+      .click()
+    await expect(page).toHaveURL('/qualifications?q=SMAW-NCII')
   })
 })
 
@@ -210,11 +219,9 @@ for (const [size, viewport] of Object.entries(SIZES)) {
       curatedRequests++
       return route.fulfill({ json: [] })
     })
-    await page.goto('/qualifications')
-    await expect(cards(page)).toHaveCount(12)
-    await page.getByRole('button', { name: 'Show all qualifications', exact: true }).click()
-    await expect(cards(page)).toHaveCount(CATALOG.length)
-    const card = page.getByRole('article', { name: selected.name, exact: true })
+    // Saving is on the qualification's own page.
+    await page.goto(`/qualifications/${selected.code}`)
+    const card = page.locator('#main header')
     await card.getByRole('button', { name: /^Add to My Progress/ }).click()
     await expect(card.getByRole('button', { name: /^Added to My Progress/ })).toBeDisabled()
     expect(writes).toEqual([{ title: selected.name, target_qualification_code: selected.code }])

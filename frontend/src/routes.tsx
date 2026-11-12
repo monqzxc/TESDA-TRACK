@@ -83,6 +83,13 @@ export const routes: RouteObject[] = [
             ...page('qualifications', () => import('./features/library/LibraryPage.tsx')),
           },
           {
+            path: paths.tspQualification,
+            ...page(
+              'qualificationDetail',
+              () => import('./features/library/QualificationPage.tsx'),
+            ),
+          },
+          {
             path: paths.tspTraining,
             ...page('training', () => import('./features/training/TrainingPage.tsx')),
           },
@@ -120,6 +127,13 @@ export const routes: RouteObject[] = [
               {
                 path: paths.qualifications,
                 ...page('qualifications', () => import('./features/library/LibraryPage.tsx')),
+              },
+              {
+                path: paths.qualification,
+                ...page(
+                  'qualificationDetail',
+                  () => import('./features/library/QualificationPage.tsx'),
+                ),
               },
               {
                 path: paths.training,

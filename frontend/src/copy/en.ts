@@ -287,10 +287,14 @@ export const en = {
       heading: 'Find my pathway',
       lead: FINDER_LEAD,
     },
+    qualificationDetail: {
+      title: 'Qualification · Qualifications Library · TESDA-TRACK',
+      heading: 'Qualification',
+    },
     qualifications: {
       title: 'Qualifications Library · TESDA-TRACK',
       heading: 'Qualifications Library',
-      lead: "Explore qualifications, possible careers, and the skills you'll build along the way.",
+      lead: 'Browse all qualifications and the competencies each one covers.',
     },
     training: {
       title: 'Training & Assessment · TESDA-TRACK',
@@ -388,7 +392,7 @@ export const en = {
       saved: 'Qualification added to My Progress.',
     },
     filters: 'Filter qualifications',
-    search: 'Search qualifications or careers',
+    search: 'Search qualifications',
     searchPlaceholder: 'Try welding, cookery, or computers',
     clearSearch: 'Clear search',
     sector: 'Sector',
@@ -408,6 +412,30 @@ export const en = {
     explore: 'Explore this pathway',
     // The goal "Explore this pathway" puts in Find my pathway's goal box, for the learner to review.
     exploreGoal: (name: string) => `I want to pursue ${name}.`,
+    seeCompetencies: 'See competencies',
+    alsoAvailable: (numeral: string) => `NC ${numeral} also available`,
+    // A qualification's own page, at /qualifications/:code.
+    detail: {
+      breadcrumb: 'Breadcrumb',
+      findTraining: 'Find training centers',
+      findAssessment: 'Find assessment centers',
+      breakdown: (parts: readonly string[]) => `(${parts.join(', ')})`,
+      part: (n: number, category: string) => `${figure(n)} ${category.toLowerCase()}`,
+      sample:
+        'TESDA-TRACK lists a sample of this qualification’s competencies. The full list and unit codes are in its Training Regulations.',
+      onThisPage: 'On this page',
+      group: (category: string, n: number) => `${category} competencies (${figure(n)})`,
+      groupLink: (category: string, n: number) => `${category} competencies · ${figure(n)}`,
+      groupHelp: {
+        Basic: 'General workplace skills included in qualifications at this level.',
+        Common: 'Skills shared by qualifications in the same sector.',
+        Core: 'Skills specific to this qualification.',
+      } as Record<string, string>,
+      notFound: {
+        heading: 'Qualification not found',
+        body: 'It may have been renamed or removed from the catalog. Browse the library to find it.',
+      },
+    },
   },
   // Find my pathway (classic/app.py show_finder and its steps).
   finder: {
@@ -2214,6 +2242,7 @@ export const en = {
         `No center within ${km} km. The closest is ${closest} km away.`,
       scholarship: 'Scholarship available',
       pathway: 'Check my readiness and pathway',
+      chosen: 'You chose this qualification in the Qualifications Library.',
       needPlace: 'Share your location or type a city to see what is nearest.',
       noMatch:
         'We couldn’t find a clear match. Try describing something you can do, like “marunong ako magluto” or “I repair computers”.',

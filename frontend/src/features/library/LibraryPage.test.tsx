@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import type { Qualification } from '../../api/queries.ts'
 import { renderApp } from '../../test/app.tsx'
 import { server } from '../../test/server.ts'
-import { FINDER_KEY, useFinderStore } from '../finder/store.ts'
+import { useFinderStore } from '../finder/store.ts'
 
 // 14 cookery-like qualifications in Tourism, then two in other sectors: 16 in all, two pages of 12.
 const tourism: Qualification[] = Array.from({ length: 14 }, (_, i) => ({
@@ -40,7 +40,7 @@ function serve(qualifications: Qualification[] = catalog) {
 async function openLibrary(path = '/qualifications') {
   const view = renderApp(path)
   await screen.findByRole('heading', { level: 1, name: 'Qualifications Library' })
-  await screen.findByRole('searchbox', { name: 'Search qualifications or careers' })
+  await screen.findByRole('searchbox', { name: 'Search qualifications' })
   return view
 }
 
@@ -139,33 +139,83 @@ describe('Qualifications Library', () => {
     expect(cards()).toHaveLength(0)
   })
 
-  it('shows a card’s facts and its competencies by group', async () => {
+  it('shows a card’s level, competencies and the level after it', async () => {
     serve()
-    const user = userEvent.setup()
     await openLibrary('/qualifications?q=SMAW-NCI')
 
     const card = screen.getByRole('article', { name: welding.name })
-    expect(within(card).getByText('Welder, Fabricator')).toBeInTheDocument()
     expect(within(card).getByText('NC I')).toBeInTheDocument()
-    expect(within(card).getByText('Pathway to NC II')).toBeInTheDocument()
-
-    await user.click(within(card).getByText('View 2 sample competencies'))
-    const groups = within(card).getAllByRole('heading', { level: 3 })
-    expect(groups.map((heading) => heading.textContent)).toEqual(['Basic skills', 'Core skills'])
+    expect(within(card).getByText('2 competencies')).toBeInTheDocument()
+    expect(within(card).getByText('NC II also available')).toBeInTheDocument()
+    expect(within(card).getByRole('link', { name: 'See competencies' })).toHaveAttribute(
+      'href',
+      '/qualifications/SMAW-NCI',
+    )
   })
 
-  it('opens Find my pathway with the qualification as the goal, kept out of the address', async () => {
+  it('opens a qualification’s page, whose breadcrumb returns to the search', async () => {
     serve()
     const user = userEvent.setup()
-    const { router } = await openLibrary('/qualifications?q=SMAW-NCII')
+    const { router } = await openLibrary('/qualifications?q=SMAW-NCI')
 
-    await user.click(screen.getByRole('button', { name: 'Explore this pathway' }))
+    const card = screen.getByRole('article', { name: welding.name })
+    await user.click(within(card).getByRole('link', { name: 'See competencies' }))
 
-    await waitFor(() => expect(router.state.location.pathname).toBe('/find'))
-    expect(router.state.location.search).toBe('')
-    const goal = 'I want to pursue Shielded Metal Arc Welding (SMAW) NC II.'
-    expect(useFinderStore.getState().goal).toBe(goal)
-    expect(window.sessionStorage.getItem(FINDER_KEY)).toContain(goal)
+    expect(await screen.findByRole('heading', { level: 1, name: welding.name })).toBeInTheDocument()
+    expect(router.state.location.pathname).toBe('/qualifications/SMAW-NCI')
+    expect(screen.getByText('2 competencies (1 basic, 1 core)')).toBeInTheDocument()
+    const breadcrumb = screen.getByRole('navigation', { name: 'Breadcrumb' })
+    expect(
+      within(breadcrumb).getByRole('link', { name: 'Qualifications Library' }),
+    ).toHaveAttribute('href', '/qualifications?q=SMAW-NCI')
+  })
+
+  it('lists a qualification’s competencies by group, numbered on from one group to the next', async () => {
+    serve()
+    renderApp('/qualifications/SMAW-NCI')
+
+    await screen.findByRole('heading', { level: 1, name: welding.name })
+    const groups = screen.getAllByRole('heading', { level: 2 })
+    expect(groups.map((heading) => heading.textContent)).toEqual([
+      'Basic competencies (1)',
+      'Core competencies (1)',
+    ])
+    const core = screen.getByRole('region', { name: 'Core competencies (1)' })
+    expect(within(core).getByRole('list')).toHaveAttribute('start', '2')
+    expect(within(core).getByText('Weld carbon steel plates')).toBeInTheDocument()
+    const onThisPage = screen.getByRole('navigation', { name: 'On this page' })
+    expect(
+      within(onThisPage)
+        .getAllByRole('link')
+        .map((link) => link.textContent),
+    ).toEqual(['Basic competencies · 1', 'Core competencies · 1'])
+  })
+
+  it('opens the map page with the qualification’s training or assessment centers', async () => {
+    serve()
+    renderApp('/qualifications/SMAW-NCI')
+
+    await screen.findByRole('heading', { level: 1, name: welding.name })
+    expect(screen.getByRole('link', { name: 'Find training centers' })).toHaveAttribute(
+      'href',
+      '/explore?qualification=SMAW-NCI&type=training',
+    )
+    expect(screen.getByRole('link', { name: 'Find assessment centers' })).toHaveAttribute(
+      'href',
+      '/explore?qualification=SMAW-NCI&type=assessment',
+    )
+  })
+
+  it('says when a qualification isn’t in the catalog', async () => {
+    serve()
+    renderApp('/qualifications/NOT-A-CODE')
+
+    expect(
+      await screen.findByRole('heading', { level: 1, name: 'Qualification not found' }),
+    ).toBeInTheDocument()
+    expect(
+      within(screen.getByRole('main')).getByRole('link', { name: 'Qualifications Library' }),
+    ).toHaveAttribute('href', '/qualifications')
   })
 
   it('says when the catalog has no qualifications yet', async () => {
