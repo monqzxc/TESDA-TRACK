@@ -45,6 +45,11 @@ export const en = {
     signIn: 'Sign in',
     menu: 'Menu',
     closeMenu: 'Close menu',
+    hideMenu: 'Hide the menu',
+    showMenu: 'Show the menu',
+    // The name beside the burger, which returns Home.
+    title: 'TESDA TRACK',
+    account: 'Account',
     // The phone menu's code couldn't be downloaded.
     menuUnavailable: "We can't open the menu right now. Check your connection, then try again.",
   },
@@ -2172,14 +2177,6 @@ export const en = {
   // Wording follows the plan's Task 12; it is for the Product Owner to approve.
   explore: {
     demoTag: 'Demo',
-    // The burger's drawer, in place of the app's sidebar (ExploreMenu.tsx).
-    menu: {
-      open: 'Open the menu',
-      close: 'Close the menu',
-      label: 'Menu',
-      home: 'TESDA TRACK',
-      account: 'Account',
-    },
     panel: {
       collapse: 'Show less',
     },

@@ -12,8 +12,10 @@ import { Button, Input, Label, SearchField, ToggleButton } from 'react-aria-comp
 import { useSearchParams } from 'react-router'
 import { useQualifications } from '../../api/queries.ts'
 import { failureMessage } from '../../auth/fields.tsx'
+import { useAuth } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { LoadBoundary } from '../../components/LoadBoundary.tsx'
+import MenuDrawer from '../../components/MenuDrawer.tsx'
 import { PageHeading } from '../../components/PageHeading.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
@@ -21,7 +23,6 @@ import { button } from '../../styles/buttons.ts'
 import { matchPathway } from '../training/recommendationApi.ts'
 import { useTrainingStore } from '../training/state.ts'
 import { nearestRegion } from './explore.ts'
-import { ExploreMenu } from './ExploreMenu.tsx'
 import { CenterCard, LocationRow, NearbyPanel, ResultsPanel } from './Panels.tsx'
 import { useExplore, useExploreStore } from './useExplore.ts'
 
@@ -133,6 +134,7 @@ export default function ExplorePage() {
   // The burger's drawer, in place of the app's sidebar.
   const [menuOpen, setMenuOpen] = useState(false)
   const menuButton = useRef<HTMLButtonElement>(null)
+  const { canViewReports, canOpenAdmin } = useAuth()
   // The panel explains a refused location (Locate on the map, or the switch), so a folded one opens to show it.
   const locationError = useTrainingStore((state) => state.locationError)
   const [seenError, setSeenError] = useState(locationError)
@@ -232,9 +234,13 @@ export default function ExplorePage() {
       </div>
 
       <Chips view={view} onView={setView} />
-      <ExploreMenu
+      {/* The app's sidebar, over the map: this page has none beside it. */}
+      <MenuDrawer
         isOpen={menuOpen}
         onOpenChange={setMenuOpen}
+        isAdmin={canViewReports}
+        canManage={canOpenAdmin}
+        onNavigate={() => setMenuOpen(false)}
         returnFocus={() => menuButton.current}
       />
 
@@ -361,7 +367,8 @@ function SearchBox({
   onOpen: () => void
   onSearched: () => void
 }) {
-  const copy = useCopy().explore
+  const en = useCopy()
+  const copy = en.explore
   const draft = useExploreStore((state) => state.draft)
   const { setDraft, setSearch } = useExploreStore.getState()
   const [pending, setPending] = useState(false)
@@ -403,7 +410,7 @@ function SearchBox({
       <div className="flex h-11 items-center gap-0.5 px-1">
         <Button
           ref={menuRef}
-          aria-label={copy.menu.open}
+          aria-label={en.nav.menu}
           aria-haspopup="dialog"
           aria-expanded={menuOpen}
           onPress={onMenu}

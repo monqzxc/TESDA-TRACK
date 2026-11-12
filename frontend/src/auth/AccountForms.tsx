@@ -1,7 +1,7 @@
 import { useState, type ComponentType, type ReactNode } from 'react'
 import { Button } from 'react-aria-components'
 import { useCopy } from '../i18n/copy.ts'
-import { cx } from '../lib/style.ts'
+import { TspBadge } from '../components/TspBadge.tsx'
 import { learnerAccounts } from './accounts.ts'
 import { RegisterForm } from './RegisterForm.tsx'
 import { SignInForm } from './SignInForm.tsx'
@@ -21,21 +21,6 @@ export interface AccountFormsProps {
   tsp?: boolean
   /** Draws the form's heading: the dialog's title, or the page's h1 on /sign-in. */
   Heading: ComponentType<{ children: ReactNode }>
-}
-
-/** TSP's mark, as on the map-first finder's screens: its letters on a navy disc. */
-export function TspBadge({ small = false }: { small?: boolean }) {
-  return (
-    <span
-      aria-hidden="true"
-      className={cx(
-        'grid flex-none place-items-center rounded-full bg-[#0b2a5b] font-bold tracking-[0.02em] text-white',
-        small ? 'size-6 text-[0.5625rem]' : 'size-9 text-12',
-      )}
-    >
-      TSP
-    </span>
-  )
 }
 
 /** Sign in or create an account, for the sign-in dialog and the /sign-in page alike. */

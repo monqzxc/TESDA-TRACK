@@ -1,4 +1,4 @@
-import type { MouseEvent } from 'react'
+import { useRef, type MouseEvent } from 'react'
 import { Outlet, ScrollRestoration, useLocation } from 'react-router'
 import { useAuth } from '../auth/useAuth.ts'
 import { useCopy } from '../i18n/copy.ts'
@@ -10,12 +10,13 @@ import { useTspSignIn } from '../features/tsp/useTspSignIn.ts'
 import { FirstVisitNotice } from '../features/privacy/FirstVisitNotice.tsx'
 import { GuidedHelp } from '../features/help/GuidedHelp.tsx'
 import { useCurrentPage, useFocusOnNavigation, usePageTitle } from '../lib/navigation.ts'
-import { Brand } from './Brand.tsx'
+import { cx } from '../lib/style.ts'
 import { HomeFooter } from './HomeFooter.tsx'
 import { HomeHeader } from './HomeHeader.tsx'
 import { MobileMenu } from './MobileMenu.tsx'
-import { SidebarContent } from './Nav.tsx'
+import { MenuButton, SidebarContent, SidebarTitle } from './Nav.tsx'
 import { PageFooter } from './PageFooter.tsx'
+import { useSidebarStore } from './sidebar.ts'
 import { paths } from '../paths.ts'
 
 /**
@@ -122,55 +123,83 @@ export function WebviewLayout() {
 }
 
 /**
- * Every other page: the Streamlit app's sidebar beside the page, a white column with a border that stays put while
- * the page scrolls. On phones the sidebar becomes a bar across the top with the brand and a Menu button, which
- * opens the same sidebar over the page (MobileMenu). Reports shows for administrators.
+ * Every other page: the sidebar beside the page, a white column with a border that stays put while the page scrolls.
+ * Its burger folds it away, sliding shut, and a slim bar with the same burger above the page brings it back. On
+ * phones the sidebar becomes a bar across the top with the burger and the name, and the burger opens the same
+ * sidebar over the page (MobileMenu). Reports and Admin show for staff.
  *
- * The map-first finder (/explore) has no sidebar: the map takes the window, and its burger opens its own menu.
+ * The Career Map (/explore) has no sidebar: the map takes the window, and its search bar's burger opens the sidebar
+ * over it.
  */
 export function AppLayout() {
-  const { canViewReports, canOpenAdmin, isSignedIn } = useAuth()
+  const en = useCopy()
+  const { canViewReports, canOpenAdmin } = useAuth()
   const ownMenu = useCurrentPage() === 'explore'
+  const folded = useSidebarStore((state) => state.folded)
+  const hideButton = useRef<HTMLButtonElement>(null)
+  const showButton = useRef<HTMLButtonElement>(null)
+  // The burger pressed goes away with what it folds or opens, so focus moves to the other one.
+  const fold = (next: boolean) => {
+    useSidebarStore.getState().setFolded(next)
+    requestAnimationFrame(() => (next ? showButton : hideButton).current?.focus())
+  }
   return (
     <>
       <SkipLink />
       <div
-        className={
-          ownMenu
-            ? 'min-h-screen'
-            : 'grid min-h-screen grid-cols-[16.5rem_minmax(0,1fr)] max-md:block'
-        }
+        className={cx(
+          'min-h-screen',
+          !ownMenu &&
+            'grid transition-[grid-template-columns] duration-300 ease-out motion-reduce:transition-none max-md:block',
+          !ownMenu &&
+            (folded ? 'grid-cols-[0rem_minmax(0,1fr)]' : 'grid-cols-[16.5rem_minmax(0,1fr)]'),
+        )}
       >
         {!ownMenu && (
+          // Folded, it slides shut: the column narrows to nothing while the content keeps its width and is clipped,
+          // so nothing rewraps on the way. Hidden once shut (visibility waits for the slide), so nothing in it is
+          // reachable. Phones have no folding: there it's the top bar.
           <header
-            className={
-              'sticky top-0 flex h-dvh flex-col overflow-y-auto border-r border-border bg-surface px-4 pt-5 pb-4 ' +
-              'max-md:z-20 max-md:h-auto max-md:overflow-visible max-md:border-r-0 max-md:border-b max-md:px-4 max-md:py-[0.6rem]'
-            }
+            className={cx(
+              'sticky top-0 h-dvh overflow-hidden border-border bg-surface',
+              'max-md:z-20 max-md:h-auto max-md:overflow-visible max-md:border-b',
+              // Hidden only once the slide ends; shown at once on the way back, so its burger can take focus.
+              folded ? 'md:invisible md:transition-[visibility] md:duration-300' : 'md:border-r',
+            )}
           >
-            <div className="shrink-0 max-md:flex max-md:flex-wrap max-md:items-center max-md:gap-3">
-              <MobileMenu
-                isAdmin={canViewReports}
-                canManage={canOpenAdmin}
-                isSignedIn={isSignedIn}
-              />
-              <div className="max-md:hidden">
-                <Brand />
+            <div className="flex h-full w-[16.5rem] flex-col overflow-y-auto px-3 pt-3 pb-4 max-md:h-auto max-md:w-auto max-md:overflow-visible max-md:py-1.5">
+              <div className="flex shrink-0 items-center gap-1 md:mb-3">
+                <MobileMenu isAdmin={canViewReports} canManage={canOpenAdmin} />
+                <div className="max-md:hidden">
+                  <MenuButton
+                    ref={hideButton}
+                    label={en.nav.hideMenu}
+                    expanded={!folded}
+                    turned={folded}
+                    onPress={() => fold(true)}
+                  />
+                </div>
+                <SidebarTitle />
               </div>
-              <div className="hidden max-md:block">
-                <Brand compact />
+              <div className="flex flex-1 flex-col max-md:hidden">
+                <SidebarContent isAdmin={canViewReports} canManage={canOpenAdmin} />
               </div>
-            </div>
-            <div className="flex flex-1 flex-col max-md:hidden">
-              <SidebarContent
-                isAdmin={canViewReports}
-                canManage={canOpenAdmin}
-                isSignedIn={isSignedIn}
-              />
             </div>
           </header>
         )}
         <div className="flex min-h-screen min-w-0 flex-col">
+          {!ownMenu && folded && (
+            <div className="flex items-center gap-1 px-3 pt-3 max-md:hidden">
+              <MenuButton
+                ref={showButton}
+                label={en.nav.showMenu}
+                expanded={false}
+                iconClassName="animate-menu-spin-in"
+                onPress={() => fold(false)}
+              />
+              <SidebarTitle />
+            </div>
+          )}
           <main
             id="main"
             tabIndex={-1}

@@ -21,28 +21,17 @@ describe('Nav', () => {
   it('lists the sidebar pages without Home, in order', () => {
     const nav = renderNav('/qualifications')
 
-    expect(linkNames(nav)).toEqual([
-      'Career Map',
-      'Find my pathway',
-      'Qualifications Library',
-      'Training & Assessment',
-      'My Progress',
-      'Skills Explorer',
-    ])
-    expect(within(nav).getByRole('link', { name: 'Training & Assessment' })).toHaveAttribute(
+    expect(linkNames(nav)).toEqual(['Career Map', 'Qualifications Library'])
+    expect(within(nav).getByRole('link', { name: 'Career Map' })).toHaveAttribute(
       'href',
-      '/training',
+      '/explore',
     )
   })
 
   it.each([
     ['/explore', 'Career Map'],
-    ['/find', 'Find my pathway'],
-    ['/find/readiness', 'Find my pathway'],
     ['/qualifications', 'Qualifications Library'],
-    ['/training', 'Training & Assessment'],
-    ['/progress', 'My Progress'],
-    ['/skills', 'Skills Explorer'],
+    ['/qualifications/CODE', 'Qualifications Library'],
   ])('marks %s as the current page', (path, current) => {
     const nav = renderNav(path)
 

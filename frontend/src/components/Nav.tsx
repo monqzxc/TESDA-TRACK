@@ -1,19 +1,22 @@
-import { NavLink } from 'react-router'
+import type { CSSProperties, Ref } from 'react'
+import { Button } from 'react-aria-components'
+import { Link, NavLink } from 'react-router'
+import { learnerAccounts } from '../auth/accounts.ts'
+import { useAuth } from '../auth/useAuth.ts'
 import { useCopy } from '../i18n/copy.ts'
 import { LanguageSelector } from '../i18n/LanguageSelector.tsx'
 import { AccountControl } from '../features/account/AccountMenu.tsx'
 import { cx } from '../lib/style.ts'
 import { paths } from '../paths.ts'
-import { ThemeSwitch } from '../theme/ThemeSwitch.tsx'
 import { Icon, type IconName } from './Icon.tsx'
+import { TspBadge } from './TspBadge.tsx'
 
 type NavItem = { to: string; label: string; icon: IconName }
 
-// The sidebar's pages, in order. The brand above these links returns to Home.
+// The sidebar: the burger and the name at the top, the pages, and at the foot the account (Sign in with TSP) and the
+// language. The same in the sidebar beside every page, the phone menu and the Career Map's drawer.
 
 export type NavProps = {
-  /** My Progress contains account records, so it is only linked for a signed-in learner. */
-  isSignedIn?: boolean
   /** Adds Reports, which only administrators see. */
   isAdmin?: boolean
   /** Adds the management workspace, which only full administrators see. */
@@ -25,20 +28,19 @@ export type NavProps = {
 // Plain rows with a grey icon before the label, on the sidebar's own white. The open page sits on a neutral pill with
 // its label in ink; colour stays on the pages' data. Rows are 40px, and 44px in the phone menu, for a thumb.
 const navRow =
-  'flex min-h-10 items-center gap-3 rounded-8 px-3 py-2 text-15 leading-[1.3] no-underline max-md:min-h-11 [&_svg]:shrink-0'
+  'flex min-h-10 w-full cursor-pointer items-center gap-3 rounded-8 border-0 px-3 py-2 text-left text-14 leading-[1.3] no-underline max-md:min-h-11 [&_svg]:shrink-0 ' +
+  'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus'
 const openLink = 'bg-chip font-semibold text-navy [&_svg]:text-navy'
-const otherLink = 'font-medium text-ink [&_svg]:text-muted hovered:bg-panel hovered:text-navy'
+const otherLink =
+  'bg-transparent font-medium text-ink [&_svg]:text-muted hovered:bg-panel hovered:text-navy data-hovered:bg-panel data-hovered:text-navy data-pressed:bg-chip'
+const sectionTitle = 'm-0 px-3 pb-1 text-11 font-semibold tracking-[0.06em] text-muted uppercase'
 
 /** The page links. The current page is marked with aria-current="page" (NavLink's own), and drawn on a grey pill. */
-export function Nav({ isSignedIn = true, isAdmin = false, canManage = false, onNavigate }: NavProps) {
+export function Nav({ isAdmin = false, canManage = false, onNavigate }: NavProps) {
   const en = useCopy()
   const PAGES: readonly NavItem[] = [
     { to: paths.explore, label: en.nav.explore, icon: 'map' },
-    { to: paths.finder, label: en.nav.finder, icon: 'route' },
     { to: paths.qualifications, label: en.nav.qualifications, icon: 'book' },
-    { to: paths.training, label: en.nav.training, icon: 'clipboard' },
-    ...(isSignedIn ? [{ to: paths.progress, label: en.nav.progress, icon: 'bars' as const }] : []),
-    { to: paths.skills, label: en.nav.skills, icon: 'compass' },
   ]
   const REPORTS: NavItem = { to: paths.reports, label: en.nav.reports, icon: 'growth' }
   const ADMIN: NavItem = { to: paths.admin, label: en.nav.admin, icon: 'network' }
@@ -64,35 +66,119 @@ export function Nav({ isSignedIn = true, isAdmin = false, canManage = false, onN
   )
 }
 
+/**
+ * The burger. It spins as it's pressed: `turned` gives it a half turn, which it turns through. In a drawer, `slot`
+ * makes it the dialog's close button, and `iconClassName` lets the drawer spin it in and out with itself.
+ */
+export function MenuButton({
+  label,
+  onPress,
+  slot,
+  turned = false,
+  expanded,
+  hasPopup = false,
+  iconClassName,
+  ref,
+}: {
+  label: string
+  onPress?: () => void
+  slot?: string
+  turned?: boolean
+  expanded?: boolean
+  hasPopup?: boolean
+  iconClassName?: string
+  ref?: Ref<HTMLButtonElement>
+}) {
+  const turn: CSSProperties = { rotate: turned ? '180deg' : '0deg' }
+  return (
+    <Button
+      ref={ref}
+      slot={slot}
+      aria-label={label}
+      aria-expanded={expanded}
+      aria-haspopup={hasPopup ? 'dialog' : undefined}
+      onPress={onPress}
+      className="grid size-10 flex-none cursor-pointer place-items-center rounded-8 border-0 bg-transparent text-navy data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:bg-soft data-pressed:bg-chip"
+    >
+      <span
+        className={cx(
+          'grid place-items-center transition-[rotate] duration-500 ease-in-out motion-reduce:transition-none',
+          iconClassName,
+        )}
+        style={turn}
+      >
+        <Icon name="menu" size="1.25rem" />
+      </span>
+    </Button>
+  )
+}
+
+/** The name beside the burger, which returns Home. */
+export function SidebarTitle({ onNavigate }: { onNavigate?: () => void }) {
+  const en = useCopy()
+  return (
+    <Link
+      to={paths.home}
+      onClick={onNavigate}
+      className="rounded-8 px-1.5 py-1 text-16 font-bold tracking-[0.01em] whitespace-nowrap text-navy no-underline hover:bg-soft focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus"
+    >
+      {en.nav.title}
+    </Link>
+  )
+}
+
 type SidebarContentProps = NavProps & {
   /** Where focus goes after the sign-in dialog when this sidebar has closed by then (the phone menu's button). */
   returnFocus?: () => HTMLElement | null
 }
 
 /**
- * The sidebar under the brand: page links, display preferences and the account control. Account settings live in
- * the profile popover, while legal information lives in each page's footer.
+ * The sidebar under the burger: the page links, then at the foot the account and the language. Signed in, the
+ * account is the learner's account menu. Signed out, it's "Sign in with TSP": learners have no TESDA-TRACK accounts
+ * of their own (src/auth/accounts.ts), so until TSP sign-in is connected a TESDA-TRACK account stands in for TSP's.
+ * With learner accounts turned back on, it's their own Sign in.
  */
 export function SidebarContent({
   isAdmin = false,
-  isSignedIn = true,
   canManage = false,
   onNavigate,
   returnFocus,
 }: SidebarContentProps) {
+  const en = useCopy()
+  const { learner, openSignIn } = useAuth()
   return (
     <div className="flex flex-1 flex-col">
-      <Nav isAdmin={isAdmin} isSignedIn={isSignedIn} canManage={canManage} onNavigate={onNavigate} />
-      {/* In the phone menu, Sign in closes the menu first: the dialog opens over the page, not over the menu. */}
-      <div className="mt-auto flex shrink-0 flex-col gap-4 pt-6">
-        <ThemeSwitch compact />
-        <LanguageSelector />
-        <AccountControl
-          variant="sidebar"
-          onOpenSignIn={onNavigate}
-          onNavigate={onNavigate}
-          returnFocus={returnFocus}
-        />
+      <Nav isAdmin={isAdmin} canManage={canManage} onNavigate={onNavigate} />
+      <div className="mt-auto flex shrink-0 flex-col gap-4 border-t border-rule pt-3">
+        <div>
+          <h2 className={sectionTitle}>{en.nav.account}</h2>
+          {learner || learnerAccounts() ? (
+            // The account control draws its own rule above it: here the section's rule does.
+            <div className="[&>div]:border-t-0 [&>div]:pt-0">
+              <AccountControl
+                variant="sidebar"
+                onOpenSignIn={onNavigate}
+                onNavigate={onNavigate}
+                returnFocus={returnFocus}
+              />
+            </div>
+          ) : (
+            // In the phone menu, Sign in closes the menu first: the dialog opens over the page, not over the menu.
+            <Button
+              className={cx(navRow, otherLink, 'font-semibold text-navy')}
+              onPress={() => {
+                onNavigate?.()
+                openSignIn({ tsp: true, returnFocus })
+              }}
+            >
+              <TspBadge small />
+              {en.account.tsp.signIn}
+            </Button>
+          )}
+        </div>
+        <div className="px-1">
+          <LanguageSelector />
+        </div>
       </div>
     </div>
   )

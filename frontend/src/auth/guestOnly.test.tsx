@@ -31,9 +31,12 @@ describe('guest-only', () => {
     expect(container.querySelector('#progress')).toBeNull()
   })
 
-  it('offers no Sign in, Save to profile or My progress in the app', async () => {
+  it('offers only Sign in with TSP in the app, and no Save to profile or My progress', async () => {
     await openApp('/find')
-    expect(screen.queryByRole('button', { name: /sign in/i })).not.toBeInTheDocument()
+    // The sidebar's demo stand-in for TSP sign-in; no other Sign in.
+    expect(screen.getByRole('button', { name: /sign in/i })).toHaveAccessibleName(
+      'Sign in with TSP',
+    )
     expect(screen.queryByRole('button', { name: /save/i })).not.toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /my progress/i })).not.toBeInTheDocument()
   })

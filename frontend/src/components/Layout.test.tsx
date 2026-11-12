@@ -38,7 +38,7 @@ describe('the phone menu', () => {
       'page',
     )
     expect(within(dialog).getByRole('button', { name: 'Sign in' })).toBeInTheDocument()
-    expect(within(dialog).getByRole('radiogroup', { name: 'Theme' })).toBeInTheDocument()
+    expect(within(dialog).getByRole('combobox', { name: 'Language / Wika' })).toBeInTheDocument()
     expect(within(dialog).queryByRole('link', { name: 'Privacy policy' })).not.toBeInTheDocument()
 
     await user.keyboard('{Escape}')
@@ -72,12 +72,12 @@ describe('the phone menu', () => {
 
   it('closes when a page is chosen, and focus goes to that page', async () => {
     const user = userEvent.setup()
-    await openPage('/qualifications', 'Qualifications Library')
+    await openPage('/training', 'Training & Assessment')
     const { dialog } = await openMenu(user)
 
-    await user.click(within(dialog).getByRole('link', { name: 'Training & Assessment' }))
+    await user.click(within(dialog).getByRole('link', { name: 'Qualifications Library' }))
 
-    const h1 = await screen.findByRole('heading', { level: 1, name: 'Training & Assessment' })
+    const h1 = await screen.findByRole('heading', { level: 1, name: 'Qualifications Library' })
     await waitFor(() => expect(screen.queryByRole('dialog')).not.toBeInTheDocument())
     await waitFor(() => expect(h1).toHaveFocus())
   })
@@ -122,18 +122,18 @@ describe('focus on navigation', () => {
 
   it("moves to the new page's heading, and back on Back", async () => {
     const user = userEvent.setup()
-    const { router } = await openPage('/qualifications', 'Qualifications Library')
+    const { router } = await openPage('/training', 'Training & Assessment')
     const sidebar = screen.getByRole('navigation', { name: 'Main' })
 
-    await user.click(within(sidebar).getByRole('link', { name: 'Training & Assessment' }))
-
-    const training = await screen.findByRole('heading', { level: 1, name: 'Training & Assessment' })
-    await waitFor(() => expect(training).toHaveFocus())
-
-    await router.navigate(-1)
+    await user.click(within(sidebar).getByRole('link', { name: 'Qualifications Library' }))
 
     const library = await screen.findByRole('heading', { level: 1, name: 'Qualifications Library' })
     await waitFor(() => expect(library).toHaveFocus())
+
+    await router.navigate(-1)
+
+    const training = await screen.findByRole('heading', { level: 1, name: 'Training & Assessment' })
+    await waitFor(() => expect(training).toHaveFocus())
   })
 
   it('moves between the finder steps', async () => {
@@ -158,7 +158,7 @@ describe('focus on navigation', () => {
     const user = userEvent.setup()
     const { router } = await openPage('/qualifications', 'Qualifications Library')
     const sidebar = screen.getByRole('navigation', { name: 'Main' })
-    const link = within(sidebar).getByRole('link', { name: 'Skills Explorer' })
+    const link = within(sidebar).getByRole('link', { name: 'Career Map' })
     // Focus something on the page, then change only the query, as a filter will.
     link.focus()
 

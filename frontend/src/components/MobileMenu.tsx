@@ -11,21 +11,19 @@ import { LoadBoundary } from './LoadBoundary.tsx'
 /** Phone width, where the sidebar folds away behind the Menu button. The classes use the same one (max-md:). */
 const PHONE = '(max-width: 768px)'
 
-const loadDrawer = () => import('./MobileMenuDrawer.tsx')
-const MobileMenuDrawer = lazy(loadDrawer)
+const loadDrawer = () => import('./MenuDrawer.tsx')
+const MenuDrawer = lazy(loadDrawer)
 
 /**
- * On phones, the sidebar opens over the page from the Menu button, as Streamlit's does (MobileMenuDrawer). The
- * drawer's code comes down once the page is idle on a phone, or at the first press.
+ * On phones, the sidebar opens over the page from the burger (MenuDrawer), which spins as it does. The drawer's code
+ * comes down once the page is idle on a phone, or at the first press.
  */
 export function MobileMenu({
   isAdmin = false,
   canManage = false,
-  isSignedIn = false,
 }: {
   isAdmin?: boolean
   canManage?: boolean
-  isSignedIn?: boolean
 }) {
   const en = useCopy()
 
@@ -73,9 +71,10 @@ export function MobileMenu({
       <Button
         ref={menuButton}
         data-tour="mobile-menu"
+        aria-label={en.nav.menu}
         className={
-          'inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-12 border border-border bg-surface py-[0.4rem] pr-[0.9rem] pl-[0.7rem] font-semibold text-navy ' +
-          'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:border-hover-border data-hovered:bg-soft ' +
+          'grid size-11 cursor-pointer place-items-center rounded-8 border-0 bg-transparent text-navy ' +
+          'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:bg-soft data-pressed:bg-chip ' +
           // The sidebar shows in the page above phone width.
           'md:hidden'
         }
@@ -88,8 +87,12 @@ export function MobileMenu({
           setOpenOn(pathname)
         }}
       >
-        <Icon name="menu" size="1.4rem" />
-        {en.nav.menu}
+        <span
+          className="grid place-items-center transition-[rotate] duration-500 ease-in-out motion-reduce:transition-none"
+          style={{ rotate: isOpen ? '180deg' : '0deg' }}
+        >
+          <Icon name="menu" size="1.25rem" />
+        </span>
       </Button>
       {wanted && (
         <LoadBoundary
@@ -101,12 +104,11 @@ export function MobileMenu({
           }}
         >
           <Suspense fallback={null}>
-            <MobileMenuDrawer
+            <MenuDrawer
               isOpen={isOpen}
               onOpenChange={(open) => setOpenOn(open ? pathname : null)}
               isAdmin={isAdmin}
               canManage={canManage}
-              isSignedIn={isSignedIn}
               onNavigate={close}
               returnFocus={() => menuButton.current}
             />
