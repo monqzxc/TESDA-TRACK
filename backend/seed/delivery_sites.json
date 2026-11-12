@@ -192,6 +192,309 @@
         {"qualification_code": "CSS-NC-II", "title": "Computer Systems Servicing NC II · Seed cohort", "duration_hours": 436, "cost": 8500, "start_days": 23, "duration_days": 160, "slots": 25, "assessment_days": 70, "assessment_slots": 15, "assessment_fee": 600},
         {"qualification_code": "CAREGIVING-NC-II-5", "title": "Caregiving NC II · Seed cohort", "duration_hours": 786, "cost": 16000, "start_days": 30, "duration_days": 210, "slots": 25, "assessment_days": 112, "assessment_slots": 15, "assessment_fee": 1000}
       ]
+    },
+    {
+      "provider": {
+        "name": "[Seed] Quezon City Skills Training Center",
+        "region_code": "NCR",
+        "province": "Metro Manila",
+        "city": "Quezon City",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 14.676,
+        "longitude": 121.0437,
+        "contact_email": "seed-quezon-city@tesda-track.invalid",
+        "contact_phone": "+63 2 0000 0101",
+        "website": "https://www.tesda.gov.ph/"
+      },
+      "assessment_center": {
+        "name": "[Seed] Quezon City Assessment Center",
+        "region_code": "NCR",
+        "province": "Metro Manila",
+        "city": "Quezon City",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 14.6488,
+        "longitude": 121.0509,
+        "contact_email": "seed-quezon-city-assessment@tesda-track.invalid",
+        "contact_phone": "+63 2 0000 0102"
+      },
+      "offerings": [
+        {"qualification_code": "HOUSEKEEPING-NC-II", "title": "Housekeeping NC II · Seed cohort", "duration_hours": 436, "cost": 7500, "scholarship_available": true, "start_days": 10, "duration_days": 120, "slots": 25, "assessment_days": 20, "assessment_slots": 15, "assessment_fee": 750},
+        {"qualification_code": "FBS-NC-II", "title": "Food and Beverage Services NC II · Seed cohort", "duration_hours": 356, "cost": 6500, "start_days": 14, "duration_days": 120, "slots": 25, "assessment_days": 25, "assessment_slots": 15, "assessment_fee": 650},
+        {"qualification_code": "COOKERY-NC-II", "title": "Cookery NC II · Seed cohort", "duration_hours": 316, "cost": 9000, "start_days": 18, "duration_days": 120, "slots": 25, "assessment_days": 30, "assessment_slots": 15, "assessment_fee": 700},
+        {"qualification_code": "CSS-NC-II", "title": "Computer Systems Servicing NC II · Seed cohort", "duration_hours": 436, "cost": 8500, "start_days": 22, "duration_days": 120, "slots": 25, "assessment_days": 35, "assessment_slots": 15, "assessment_fee": 600}
+      ]
+    },
+    {
+      "provider": {
+        "name": "[Seed] San Juan Hospitality Institute",
+        "region_code": "NCR",
+        "province": "Metro Manila",
+        "city": "San Juan",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 14.6019,
+        "longitude": 121.0355,
+        "contact_email": "seed-san-juan@tesda-track.invalid",
+        "contact_phone": "+63 2 0000 0111",
+        "website": "https://www.tesda.gov.ph/"
+      },
+      "assessment_center": {
+        "name": "[Seed] San Juan Assessment Center",
+        "region_code": "NCR",
+        "province": "Metro Manila",
+        "city": "San Juan",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 14.604,
+        "longitude": 121.03,
+        "contact_email": "seed-san-juan-assessment@tesda-track.invalid",
+        "contact_phone": "+63 2 0000 0112"
+      },
+      "offerings": [
+        {"qualification_code": "HOUSEKEEPING-NC-II", "title": "Housekeeping NC II · Seed cohort", "duration_hours": 436, "cost": 7500, "start_days": 13, "duration_days": 120, "slots": 25, "assessment_days": 22, "assessment_slots": 15, "assessment_fee": 750},
+        {"qualification_code": "FBS-NC-II", "title": "Food and Beverage Services NC II · Seed cohort", "duration_hours": 356, "cost": 6500, "scholarship_available": true, "start_days": 17, "duration_days": 120, "slots": 25, "assessment_days": 27, "assessment_slots": 15, "assessment_fee": 650},
+        {"qualification_code": "COOKERY-NC-II", "title": "Cookery NC II · Seed cohort", "duration_hours": 316, "cost": 9000, "start_days": 21, "duration_days": 120, "slots": 25, "assessment_days": 32, "assessment_slots": 15, "assessment_fee": 700}
+      ]
+    },
+    {
+      "provider": {
+        "name": "[Seed] Marikina Technical Institute",
+        "region_code": "NCR",
+        "province": "Metro Manila",
+        "city": "Marikina",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 14.6507,
+        "longitude": 121.1029,
+        "contact_email": "seed-marikina@tesda-track.invalid",
+        "contact_phone": "+63 2 0000 0121",
+        "website": "https://www.tesda.gov.ph/"
+      },
+      "assessment_center": {
+        "name": "[Seed] Marikina Assessment Center",
+        "region_code": "NCR",
+        "province": "Metro Manila",
+        "city": "Marikina",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 14.633,
+        "longitude": 121.099,
+        "contact_email": "seed-marikina-assessment@tesda-track.invalid",
+        "contact_phone": "+63 2 0000 0122"
+      },
+      "offerings": [
+        {"qualification_code": "HOUSEKEEPING-NC-II", "title": "Housekeeping NC II · Seed cohort", "duration_hours": 436, "cost": 7500, "start_days": 16, "duration_days": 120, "slots": 25, "assessment_days": 24, "assessment_slots": 15, "assessment_fee": 750},
+        {"qualification_code": "EIM-NC-II", "title": "Electrical Installation and Maintenance NC II · Seed cohort", "duration_hours": 268, "cost": 6500, "scholarship_available": true, "start_days": 20, "duration_days": 120, "slots": 25, "assessment_days": 29, "assessment_slots": 15, "assessment_fee": 600},
+        {"qualification_code": "MMAW-NC-II", "title": "Manual Metal Arc Welding (MMAW) NC II · Seed cohort", "duration_hours": 436, "cost": 0, "start_days": 24, "duration_days": 120, "slots": 25, "assessment_days": 34, "assessment_slots": 15, "assessment_fee": 750}
+      ]
+    },
+    {
+      "provider": {
+        "name": "[Seed] Pasig Tourism Training Center",
+        "region_code": "NCR",
+        "province": "Metro Manila",
+        "city": "Pasig",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 14.5764,
+        "longitude": 121.0851,
+        "contact_email": "seed-pasig@tesda-track.invalid",
+        "contact_phone": "+63 2 0000 0131",
+        "website": "https://www.tesda.gov.ph/"
+      },
+      "assessment_center": {
+        "name": "[Seed] Pasig Assessment Center",
+        "region_code": "NCR",
+        "province": "Metro Manila",
+        "city": "Pasig",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 14.57,
+        "longitude": 121.078,
+        "contact_email": "seed-pasig-assessment@tesda-track.invalid",
+        "contact_phone": "+63 2 0000 0132"
+      },
+      "offerings": [
+        {"qualification_code": "HOUSEKEEPING-NC-II", "title": "Housekeeping NC II · Seed cohort", "duration_hours": 436, "cost": 7500, "scholarship_available": true, "start_days": 19, "duration_days": 120, "slots": 25, "assessment_days": 26, "assessment_slots": 15, "assessment_fee": 750},
+        {"qualification_code": "FBS-NC-II", "title": "Food and Beverage Services NC II · Seed cohort", "duration_hours": 356, "cost": 6500, "start_days": 23, "duration_days": 120, "slots": 25, "assessment_days": 31, "assessment_slots": 15, "assessment_fee": 650},
+        {"qualification_code": "COOKERY-NC-II", "title": "Cookery NC II · Seed cohort", "duration_hours": 316, "cost": 9000, "scholarship_available": true, "start_days": 27, "duration_days": 120, "slots": 25, "assessment_days": 36, "assessment_slots": 15, "assessment_fee": 700}
+      ]
+    },
+    {
+      "provider": {
+        "name": "[Seed] Manila Culinary and Hotel School",
+        "region_code": "NCR",
+        "province": "Metro Manila",
+        "city": "Manila",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 14.6042,
+        "longitude": 120.9822,
+        "contact_email": "seed-manila@tesda-track.invalid",
+        "contact_phone": "+63 2 0000 0141",
+        "website": "https://www.tesda.gov.ph/"
+      },
+      "assessment_center": {
+        "name": "[Seed] Manila Assessment Center",
+        "region_code": "NCR",
+        "province": "Metro Manila",
+        "city": "Manila",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 14.588,
+        "longitude": 120.99,
+        "contact_email": "seed-manila-assessment@tesda-track.invalid",
+        "contact_phone": "+63 2 0000 0142"
+      },
+      "offerings": [
+        {"qualification_code": "HOUSEKEEPING-NC-II", "title": "Housekeeping NC II · Seed cohort", "duration_hours": 436, "cost": 7500, "start_days": 22, "duration_days": 120, "slots": 25, "assessment_days": 28, "assessment_slots": 15, "assessment_fee": 750},
+        {"qualification_code": "FBS-NC-II", "title": "Food and Beverage Services NC II · Seed cohort", "duration_hours": 356, "cost": 6500, "start_days": 26, "duration_days": 120, "slots": 25, "assessment_days": 33, "assessment_slots": 15, "assessment_fee": 650},
+        {"qualification_code": "CAREGIVING-NC-II-5", "title": "Caregiving NC II · Seed cohort", "duration_hours": 786, "cost": 16000, "start_days": 30, "duration_days": 120, "slots": 25, "assessment_days": 38, "assessment_slots": 15, "assessment_fee": 1000}
+      ]
+    },
+    {
+      "provider": {
+        "name": "[Seed] Makati Hospitality Training Center",
+        "region_code": "NCR",
+        "province": "Metro Manila",
+        "city": "Makati",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 14.5547,
+        "longitude": 121.0244,
+        "contact_email": "seed-makati@tesda-track.invalid",
+        "contact_phone": "+63 2 0000 0151",
+        "website": "https://www.tesda.gov.ph/"
+      },
+      "assessment_center": {
+        "name": "[Seed] Makati Assessment Center",
+        "region_code": "NCR",
+        "province": "Metro Manila",
+        "city": "Makati",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 14.562,
+        "longitude": 121.017,
+        "contact_email": "seed-makati-assessment@tesda-track.invalid",
+        "contact_phone": "+63 2 0000 0152"
+      },
+      "offerings": [
+        {"qualification_code": "HOUSEKEEPING-NC-II", "title": "Housekeeping NC II · Seed cohort", "duration_hours": 436, "cost": 7500, "start_days": 25, "duration_days": 120, "slots": 25, "assessment_days": 30, "assessment_slots": 15, "assessment_fee": 750},
+        {"qualification_code": "FBS-NC-II", "title": "Food and Beverage Services NC II · Seed cohort", "duration_hours": 356, "cost": 6500, "start_days": 29, "duration_days": 120, "slots": 25, "assessment_days": 35, "assessment_slots": 15, "assessment_fee": 650},
+        {"qualification_code": "COOKERY-NC-II", "title": "Cookery NC II · Seed cohort", "duration_hours": 316, "cost": 9000, "start_days": 33, "duration_days": 120, "slots": 25, "assessment_days": 40, "assessment_slots": 15, "assessment_fee": 700}
+      ]
+    },
+    {
+      "provider": {
+        "name": "[Seed] Malolos Skills and Driving Academy",
+        "region_code": "III",
+        "province": "Bulacan",
+        "city": "Malolos",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 14.8433,
+        "longitude": 120.8114,
+        "contact_email": "seed-malolos@tesda-track.invalid",
+        "contact_phone": "+63 44 000 0101",
+        "website": "https://www.tesda.gov.ph/"
+      },
+      "assessment_center": {
+        "name": "[Seed] Malolos Assessment Center",
+        "region_code": "III",
+        "province": "Bulacan",
+        "city": "Malolos",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 14.85,
+        "longitude": 120.816,
+        "contact_email": "seed-malolos-assessment@tesda-track.invalid",
+        "contact_phone": "+63 44 000 0102"
+      },
+      "offerings": [
+        {"qualification_code": "HOUSEKEEPING-NC-II", "title": "Housekeeping NC II · Seed cohort", "duration_hours": 436, "cost": 7500, "start_days": 28, "duration_days": 120, "slots": 25, "assessment_days": 32, "assessment_slots": 15, "assessment_fee": 750},
+        {"qualification_code": "COOKERY-NC-II", "title": "Cookery NC II · Seed cohort", "duration_hours": 316, "cost": 9000, "start_days": 32, "duration_days": 120, "slots": 25, "assessment_days": 37, "assessment_slots": 15, "assessment_fee": 700},
+        {"qualification_code": "DRIVING-NC-II", "title": "Driving NC II · Seed cohort", "duration_hours": 118, "cost": 5000, "start_days": 36, "duration_days": 120, "slots": 25, "assessment_days": 42, "assessment_slots": 15, "assessment_fee": 800},
+        {"qualification_code": "DRIVING-NC-III", "title": "Driving (Articulated Vehicle) NC III · Seed cohort", "duration_hours": 160, "cost": 9500, "start_days": 40, "duration_days": 120, "slots": 25, "assessment_days": 47, "assessment_slots": 15, "assessment_fee": 1200}
+      ]
+    },
+    {
+      "provider": {
+        "name": "[Seed] Calamba Hospitality and Transport School",
+        "region_code": "IV-A",
+        "province": "Laguna",
+        "city": "Calamba",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 14.2,
+        "longitude": 121.156,
+        "contact_email": "seed-calamba@tesda-track.invalid",
+        "contact_phone": "+63 49 000 0101",
+        "website": "https://www.tesda.gov.ph/"
+      },
+      "assessment_center": {
+        "name": "[Seed] Calamba Assessment Center",
+        "region_code": "IV-A",
+        "province": "Laguna",
+        "city": "Calamba",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 14.195,
+        "longitude": 121.15,
+        "contact_email": "seed-calamba-assessment@tesda-track.invalid",
+        "contact_phone": "+63 49 000 0102"
+      },
+      "offerings": [
+        {"qualification_code": "HOUSEKEEPING-NC-II", "title": "Housekeeping NC II · Seed cohort", "duration_hours": 436, "cost": 7500, "scholarship_available": true, "start_days": 31, "duration_days": 120, "slots": 25, "assessment_days": 34, "assessment_slots": 15, "assessment_fee": 750},
+        {"qualification_code": "FBS-NC-II", "title": "Food and Beverage Services NC II · Seed cohort", "duration_hours": 356, "cost": 6500, "start_days": 35, "duration_days": 120, "slots": 25, "assessment_days": 39, "assessment_slots": 15, "assessment_fee": 650},
+        {"qualification_code": "DRIVING-NC-III", "title": "Driving (Articulated Vehicle) NC III · Seed cohort", "duration_hours": 160, "cost": 9500, "start_days": 39, "duration_days": 120, "slots": 25, "assessment_days": 44, "assessment_slots": 15, "assessment_fee": 1200}
+      ]
+    },
+    {
+      "provider": {
+        "name": "[Seed] Cebu Hotel and Transport Institute",
+        "region_code": "VII",
+        "province": "Cebu",
+        "city": "Cebu City",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 10.311,
+        "longitude": 123.893,
+        "contact_email": "seed-cebu-city@tesda-track.invalid",
+        "contact_phone": "+63 32 000 0101",
+        "website": "https://www.tesda.gov.ph/"
+      },
+      "assessment_center": {
+        "name": "[Seed] Cebu City Assessment Center",
+        "region_code": "VII",
+        "province": "Cebu",
+        "city": "Cebu City",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 10.3,
+        "longitude": 123.9,
+        "contact_email": "seed-cebu-city-assessment@tesda-track.invalid",
+        "contact_phone": "+63 32 000 0102"
+      },
+      "offerings": [
+        {"qualification_code": "HOUSEKEEPING-NC-II", "title": "Housekeeping NC II · Seed cohort", "duration_hours": 436, "cost": 7500, "start_days": 34, "duration_days": 120, "slots": 25, "assessment_days": 36, "assessment_slots": 15, "assessment_fee": 750},
+        {"qualification_code": "FBS-NC-II", "title": "Food and Beverage Services NC II · Seed cohort", "duration_hours": 356, "cost": 6500, "start_days": 38, "duration_days": 120, "slots": 25, "assessment_days": 41, "assessment_slots": 15, "assessment_fee": 650},
+        {"qualification_code": "COOKERY-NC-II", "title": "Cookery NC II · Seed cohort", "duration_hours": 316, "cost": 9000, "start_days": 42, "duration_days": 120, "slots": 25, "assessment_days": 46, "assessment_slots": 15, "assessment_fee": 700},
+        {"qualification_code": "DRIVING-NC-III", "title": "Driving (Articulated Vehicle) NC III · Seed cohort", "duration_hours": 160, "cost": 9500, "start_days": 46, "duration_days": 120, "slots": 25, "assessment_days": 51, "assessment_slots": 15, "assessment_fee": 1200}
+      ]
+    },
+    {
+      "provider": {
+        "name": "[Seed] Davao Skills and Driving Center",
+        "region_code": "XI",
+        "province": "Davao del Sur",
+        "city": "Davao City",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 7.0731,
+        "longitude": 125.6128,
+        "contact_email": "seed-davao-city@tesda-track.invalid",
+        "contact_phone": "+63 82 000 0101",
+        "website": "https://www.tesda.gov.ph/"
+      },
+      "assessment_center": {
+        "name": "[Seed] Davao City Assessment Center",
+        "region_code": "XI",
+        "province": "Davao del Sur",
+        "city": "Davao City",
+        "address": "Example site for the map-first demo · not a TESDA record",
+        "latitude": 7.07,
+        "longitude": 125.605,
+        "contact_email": "seed-davao-city-assessment@tesda-track.invalid",
+        "contact_phone": "+63 82 000 0102"
+      },
+      "offerings": [
+        {"qualification_code": "HOUSEKEEPING-NC-II", "title": "Housekeeping NC II · Seed cohort", "duration_hours": 436, "cost": 7500, "start_days": 37, "duration_days": 120, "slots": 25, "assessment_days": 38, "assessment_slots": 15, "assessment_fee": 750},
+        {"qualification_code": "COOKERY-NC-II", "title": "Cookery NC II · Seed cohort", "duration_hours": 316, "cost": 9000, "start_days": 41, "duration_days": 120, "slots": 25, "assessment_days": 43, "assessment_slots": 15, "assessment_fee": 700},
+        {"qualification_code": "DRIVING-NC-III", "title": "Driving (Articulated Vehicle) NC III · Seed cohort", "duration_hours": 160, "cost": 9500, "start_days": 45, "duration_days": 120, "slots": 25, "assessment_days": 48, "assessment_slots": 15, "assessment_fee": 1200}
+      ]
     }
   ]
 }
