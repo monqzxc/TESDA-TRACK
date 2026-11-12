@@ -22,6 +22,7 @@ describe('Nav', () => {
     const nav = renderNav('/qualifications')
 
     expect(linkNames(nav)).toEqual([
+      'Find centers (demo)',
       'Find my pathway',
       'Qualifications Library',
       'Training & Assessment',
@@ -35,6 +36,7 @@ describe('Nav', () => {
   })
 
   it.each([
+    ['/explore', 'Find centers (demo)'],
     ['/find', 'Find my pathway'],
     ['/find/readiness', 'Find my pathway'],
     ['/qualifications', 'Qualifications Library'],

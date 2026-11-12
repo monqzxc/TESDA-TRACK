@@ -29,6 +29,8 @@ export const helpCopy = {
       'Browse qualifications, possible careers, and the skills each qualification covers.',
     training:
       'Find training and assessment centers, compare their offerings, and explore nearby options.',
+    explore:
+      'Type what you can do to see the qualifications that fit, the nearest assessment and training centers on the map, and where your skills are in demand.',
     progress:
       'Track qualifications, pathways, readiness, milestones, and recommendations. Review activity, goals, certificates, and assessment applications in My Profile.',
     skills:

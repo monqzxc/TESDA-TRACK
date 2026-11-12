@@ -33,6 +33,7 @@ const otherLink = 'font-medium text-ink [&_svg]:text-muted hovered:bg-panel hove
 export function Nav({ isSignedIn = true, isAdmin = false, canManage = false, onNavigate }: NavProps) {
   const en = useCopy()
   const PAGES: readonly NavItem[] = [
+    { to: paths.explore, label: en.nav.explore, icon: 'map' },
     { to: paths.finder, label: en.nav.finder, icon: 'route' },
     { to: paths.qualifications, label: en.nav.qualifications, icon: 'book' },
     { to: paths.training, label: en.nav.training, icon: 'clipboard' },

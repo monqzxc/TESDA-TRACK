@@ -16,6 +16,7 @@ export const paths = {
   tspSkills: '/tsp/webview/skills',
   qualifications: '/qualifications',
   training: '/training',
+  explore: '/explore',
   progress: '/progress',
   skills: '/skills',
   reports: '/reports',

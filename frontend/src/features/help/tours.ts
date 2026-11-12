@@ -86,6 +86,7 @@ function pageTargets(): Record<PageKey, readonly Target[]> {
       { selector: '#main section[aria-labelledby="privacy-summary"]', copy: copy.privacySummary },
       { selector: '#main nav[aria-labelledby="privacy-contents"]', copy: copy.privacyContents },
     ],
+    explore: [],
     notFound: [],
   }
 }

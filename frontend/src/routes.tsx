@@ -126,6 +126,10 @@ export const routes: RouteObject[] = [
                 ...page('training', () => import('./features/training/TrainingPage.tsx')),
               },
               {
+                path: paths.explore,
+                ...page('explore', () => import('./features/explore/ExplorePage.tsx')),
+              },
+              {
                 path: paths.progress,
                 ...page('progress', () => import('./features/progress/ProgressPage.tsx')),
               },

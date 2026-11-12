@@ -34,6 +34,7 @@ export const en = {
     // The accessible name of the page links.
     label: 'Main',
     home: 'Home',
+    explore: 'Find centers (demo)',
     finder: 'Find my pathway',
     qualifications: 'Qualifications Library',
     training: 'Training & Assessment',
@@ -294,6 +295,10 @@ export const en = {
     training: {
       title: 'Training & Assessment · TESDA-TRACK',
       heading: 'Training & Assessment',
+    },
+    explore: {
+      title: 'Find training and assessment centers · TESDA-TRACK',
+      heading: 'Find training and assessment centers',
     },
     progress: {
       title: 'My Progress · TESDA-TRACK',
@@ -2124,6 +2129,125 @@ export const en = {
     routeBusy: 'The routing service is busy; try again shortly',
     routingDisabled: 'Road routing is disabled',
     invalidSite: 'This site could not be compared for the selected qualification',
+  },
+  // The map-first center finder demo at /explore (markdowns/TESDA-TRACK-Location-First-Implementation-Plan.md).
+  // Wording follows the plan's Task 12; it is for the Product Owner to approve.
+  explore: {
+    demoTag: 'Demo',
+    search: {
+      label: 'What can you do?',
+      placeholder: 'Type what you can do',
+      submit: 'Search',
+      clear: 'Clear search',
+      hint: 'Type in Filipino or English, for example “Marunong ako magluto” or “I can weld”.',
+      searching: 'Finding qualifications that fit…',
+    },
+    chips: {
+      label: 'Show on the map',
+      training: 'Training centers',
+      assessment: 'Assessment centers',
+      demand: 'In demand jobs',
+    },
+    location: {
+      share: 'Share my location',
+      locating: 'Finding your approximate location…',
+      on: 'On · approximate, rounded to about 1 km and not saved.',
+      off: 'Off. Nothing is shared until you turn this on.',
+      place: 'Or type a city or province',
+      placePlaceholder: 'For example: Manila, Cebu, Laguna',
+      fromPlace: (place: string) => `Near ${place}`,
+      notFound: 'We don’t know that place yet. Try a city, province or region.',
+      errors: {
+        denied:
+          'Location is blocked in your browser. Type a city instead, or allow location and try again.',
+        unavailable: 'We couldn’t get your location. Type a city instead, or try again.',
+        unsupported: 'This browser can’t share a location. Type a city instead.',
+      },
+    },
+    nearby: {
+      emptyHeading: 'See what is near you',
+      emptyBody:
+        'Turn on location sharing, or type a city, to see the nearest training and assessment centers.',
+      eyebrow: (place: string) => `Near ${place}`,
+      you: 'you',
+      training: 'Nearest training centers',
+      assessment: 'Nearest assessment centers',
+      none: 'No center on the map yet.',
+      offers: (count: number) => `${count} qualification${count === 1 ? '' : 's'}`,
+      allCenters: (count: number) =>
+        `${count} centers on the map. Search to see the ones that fit you.`,
+    },
+    results: {
+      heading: 'Qualifications that fit what you wrote',
+      tabs: {
+        label: 'Show',
+        all: 'All',
+        assess: (n: number) => `Assess · ${n}`,
+        train: (n: number) => `Train · ${n}`,
+        demand: 'Demand',
+      },
+      certifyFirst: {
+        heading: 'Get certified: you already have the skill',
+        body: 'Apply at an assessment center to test your skill and earn a National Certificate (NC).',
+      },
+      trainSecond: {
+        heading: 'Want to learn first? Training centers',
+        body: 'New to this, or want to improve? Train at a center. Scholarships may cover the fee.',
+      },
+      trainFirst: {
+        heading: 'Train: build the skill',
+        body: 'Train at a center. Scholarships may cover the fee.',
+      },
+      certifySecond: {
+        heading: 'Already have the skill? Get certified',
+        body: 'An assessment center tests your skill for a National Certificate (NC).',
+      },
+      strength: { strong: 'Strong match', good: 'Good match' },
+      noCenter: 'No center lists this qualification yet.',
+      moreCenters: (n: number) => `${n} more center${n === 1 ? '' : 's'}`,
+      fewerCenters: 'Show fewer',
+      noneNear: (km: number, closest: number) =>
+        `No center within ${km} km. The closest is ${closest} km away.`,
+      scholarship: 'Scholarship available',
+      pathway: 'Check my readiness and pathway',
+      needPlace: 'Share your location or type a city to see what is nearest.',
+      noMatch:
+        'We couldn’t find a clear match. Try describing something you can do, like “marunong ako magluto” or “I repair computers”.',
+      failed: 'We couldn’t search right now. Check your connection, then try again.',
+      retry: 'Try again',
+      newSearch: 'New search',
+    },
+    trip: {
+      km: (km: number) => `${km} km`,
+      minutes: (minutes: number) => `about ${minutes} min by car`,
+    },
+    demand: {
+      heading: 'Work: where your skills are in demand',
+      choose: 'Demand for',
+      body: 'Job postings and supply recorded for this qualification. Demand shows how much a skill is needed in an area. It is not a list of job openings.',
+      region: (region: string) => `Area: ${region}`,
+      national: 'Area: the whole country',
+    },
+    card: {
+      back: 'Back to results',
+      assessment: 'Assessment center · Get certified',
+      training: 'Training center · Train',
+      leadsToNc: 'Leads to a National Certificate (NC)',
+      listedFor: 'Listed for',
+      directions: 'Directions',
+      route: 'Show route on the map',
+      call: 'Call',
+      email: 'Email',
+      website: 'Website',
+      details: 'Open in Training & Assessment',
+      address: 'Address',
+    },
+    notes: {
+      times: 'Travel times are estimated from straight-line distance, by car, without traffic.',
+      automatic:
+        'These results come from automatic matching. This is a suggestion: confirm with the center or your TESDA office.',
+      demo: 'Demo of the map-first finder. Centers and listings come from TESDA-TRACK’s current data.',
+    },
   },
   theme: {
     // The accessible name of the System / Light / Dark switch.
