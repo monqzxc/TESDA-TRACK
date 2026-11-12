@@ -193,7 +193,9 @@ export const fitQuery = ({ learnerId, code, goal, place, mode, scholarship }: Fi
     gcTime: 30 * MINUTE,
   })
 
-const point = ({ latitude, longitude }: Point) => `${latitude},${longitude}`
+// Six decimal places (about 11 cm), all the router uses: the registry's coordinates carry up to 15.
+const point = ({ latitude, longitude }: Point) =>
+  `${Number(latitude.toFixed(6))},${Number(longitude.toFixed(6))}`
 
 /**
  * Routes from the learner's approximate location to a center, for each travel mode the router has, then a flight

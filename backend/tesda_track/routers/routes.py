@@ -22,7 +22,8 @@ UPSTREAM_BUSY = "Directions are busy right now. Please try again in a moment, or
 # The map's view of the Philippines, with a margin. Points elsewhere aren't routed: the public router is shared,
 # and the airports are Philippine ones.
 LATITUDES, LONGITUDES = (4.0, 22.0), (116.0, 127.5)
-POINT_PATTERN = r"^\s*-?\d{1,3}(\.\d{1,10})?\s*,\s*-?\d{1,3}(\.\d{1,10})?\s*$"
+# Decimal places aren't capped: the centers' own coordinates carry up to 15. The query's max_length bounds them.
+POINT_PATTERN = r"^\s*-?\d{1,3}(\.\d+)?\s*,\s*-?\d{1,3}(\.\d+)?\s*$"
 NOT_A_POINT = "Give a place in the Philippines as latitude,longitude, e.g. 14.5995,120.9842."
 
 

@@ -3,7 +3,32 @@ import { http, HttpResponse } from 'msw'
 import { describe, expect, it, vi } from 'vitest'
 import { server } from '../../test/server.ts'
 import { weldingProgram } from '../../test/training.ts'
-import { fitQuery } from './api.ts'
+import { directionsQuery, fitQuery } from './api.ts'
+
+describe('directions', () => {
+  it('asks for a center to six decimal places, however many the registry keeps', async () => {
+    let asked = new URLSearchParams()
+    server.use(
+      http.get('*/api/v1/routes', ({ request }) => {
+        asked = new URL(request.url).searchParams
+        return HttpResponse.json({ routing_enabled: true, routes: [], missing_modes: [] })
+      }),
+    )
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+    try {
+      await client.fetchQuery(
+        directionsQuery(
+          { latitude: 14.55, longitude: 121.02 },
+          { latitude: 6.518136300000001, longitude: 124.682102560647 },
+        ),
+      )
+      expect(asked.get('origin')).toBe('14.55,121.02')
+      expect(asked.get('destination')).toBe('6.518136,124.682103')
+    } finally {
+      client.clear()
+    }
+  })
+})
 
 describe('program fit evidence', () => {
   it('refreshes after a minute and never reuses another learner’s eligibility', async () => {

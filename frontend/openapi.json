@@ -5056,7 +5056,7 @@
             "schema": {
               "type": "string",
               "maxLength": 60,
-              "pattern": "^\\s*-?\\d{1,3}(\\.\\d{1,10})?\\s*,\\s*-?\\d{1,3}(\\.\\d{1,10})?\\s*$",
+              "pattern": "^\\s*-?\\d{1,3}(\\.\\d+)?\\s*,\\s*-?\\d{1,3}(\\.\\d+)?\\s*$",
               "description": "latitude,longitude",
               "examples": [
                 "14.5995,120.9842"
@@ -5072,7 +5072,7 @@
             "schema": {
               "type": "string",
               "maxLength": 60,
-              "pattern": "^\\s*-?\\d{1,3}(\\.\\d{1,10})?\\s*,\\s*-?\\d{1,3}(\\.\\d{1,10})?\\s*$",
+              "pattern": "^\\s*-?\\d{1,3}(\\.\\d+)?\\s*,\\s*-?\\d{1,3}(\\.\\d+)?\\s*$",
               "description": "latitude,longitude",
               "examples": [
                 "14.5995,120.9842"

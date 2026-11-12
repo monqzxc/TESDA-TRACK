@@ -151,6 +151,12 @@ def test_points_may_have_spaces_after_the_comma(api):
     assert directions(client, origin="15.47, 120.59").status_code == 200
 
 
+def test_a_center_may_have_as_many_decimal_places_as_the_registry_keeps(api):
+    # Registry and geocoded coordinates are doubles: up to 15 decimal places.
+    client, _ = api
+    assert directions(client, destination="15.475512300000001,120.596289948848").status_code == 200
+
+
 def test_the_router_gets_the_origin_rounded_to_about_a_kilometre(api):
     client, fake = api
     directions(client, origin="15.471234,120.586789")
