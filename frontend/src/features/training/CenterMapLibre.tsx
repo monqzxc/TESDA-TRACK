@@ -40,7 +40,7 @@ import { cx } from '../../lib/style.ts'
 import { directionsQuery, type TravelMode } from './api.ts'
 import type { Center, Point } from './centers.ts'
 import { KIND_DOTS, MODE_ICONS } from './CenterDetail.tsx'
-import { BASEMAP_KEY, type CenterMapProps } from './CenterMapTypes.ts'
+import { BASEMAP_KEY, LOCATE_ZOOM, type CenterMapProps } from './CenterMapTypes.ts'
 import { CenterPopup } from './CenterPopup.tsx'
 import { routeLabel } from './format.ts'
 import type { GeoJSON } from 'geojson'
@@ -199,6 +199,9 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   const [overlayNode, setOverlayNode] = useState<HTMLElement | null>(null)
   const [popupNode] = useState(() => document.createElement('div'))
   const [ready, setReady] = useState(false)
+  // Bumped by each press of Locate, so the map goes to the learner's location even when it hasn't changed.
+  const [locateAsk, setLocateAsk] = useState(0)
+  const answeredLocate = useRef(0)
   const [status, setStatus] = useState<Status>('loading')
   const [coverage, setCoverage] = useState<CoverageNote>(null)
   const [targets, setTargets] = useState<HitTarget[]>([])
@@ -704,6 +707,27 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     applyFrame(map, frame, inset, previous ? motion(reducedMotion) : motion(true))
   }, [ready, frameKey, inset, hasRoute, points, reference, radius, reducedMotion])
 
+  // Locate: each press brings the learner's own location to the middle of the map's clear part, close in, at once
+  // when it's already known, or as soon as the browser answers. After the framing above, so a location that has just
+  // arrived ends up centred, not framed with the centers. A refusal ends the request.
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map || !locateAsk || answeredLocate.current === locateAsk) return
+    if (reference?.mine) {
+      answeredLocate.current = locateAsk
+      const element = map.getContainer()
+      const size = { width: element.clientWidth, height: element.clientHeight }
+      map.easeTo({
+        center: [reference.longitude, reference.latitude],
+        zoom: LOCATE_ZOOM,
+        offset: paddedOffset(overlayPadding(size, latest.current.inset, 40)),
+        ...motion(reducedMotion, 800),
+      })
+      return
+    }
+    if (!locating) answeredLocate.current = locateAsk
+  }, [ready, locateAsk, reference, locating, reducedMotion])
+
   // The selected center, chosen from the list or with View on map (which bumps `focus` to ask again): the camera goes
   // to it, closer in from far out, leaving room above it for its popup. Picked on the map itself, it's already in
   // view and the camera stays (the popup makes room for itself, below). A route has the view to itself.
@@ -1016,7 +1040,10 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
         <Button
           className={cx(controlButton, 'rounded-12')}
           aria-label={copy.locate}
-          onPress={props.onLocate}
+          onPress={() => {
+            setLocateAsk((n) => n + 1)
+            props.onLocate()
+          }}
         >
           <Icon name="locate" size={20} />
         </Button>

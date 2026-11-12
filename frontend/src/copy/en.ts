@@ -2134,6 +2134,10 @@ export const en = {
   // Wording follows the plan's Task 12; it is for the Product Owner to approve.
   explore: {
     demoTag: 'Demo',
+    panel: {
+      collapse: 'Hide the panel',
+      expand: 'Show the panel',
+    },
     search: {
       label: 'What can you do?',
       placeholder: 'Type what you can do',

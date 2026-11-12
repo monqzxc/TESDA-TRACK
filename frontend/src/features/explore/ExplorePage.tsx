@@ -1,4 +1,4 @@
-import { lazy, Suspense, useRef, useState, type FormEvent } from 'react'
+import { lazy, Suspense, useId, useRef, useState, type FormEvent } from 'react'
 import { Button, Input, Label, SearchField, ToggleButton } from 'react-aria-components'
 import { useSearchParams } from 'react-router'
 import { failureMessage } from '../../auth/fields.tsx'
@@ -51,6 +51,16 @@ export default function ExplorePage() {
 
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [focus, setFocus] = useState(0)
+  // The burger folds the panel down to its search row, so the map has the room.
+  const [collapsed, setCollapsed] = useState(false)
+  const bodyId = useId()
+  // The panel explains a refused location (Locate on the map, or the switch), so a folded one opens to show it.
+  const locationError = useTrainingStore((state) => state.locationError)
+  const [seenError, setSeenError] = useState(locationError)
+  if (seenError !== locationError) {
+    setSeenError(locationError)
+    if (locationError) setCollapsed(false)
+  }
   const travelMode = useTrainingStore((state) => state.travelMode)
   const routeTo = useTrainingStore((state) => state.routeTo)
   const locatingAny = useTrainingStore((state) => state.locating)
@@ -89,6 +99,8 @@ export default function ExplorePage() {
 
   const select = (id: string, { onMap = false }: { onMap?: boolean } = {}) => {
     setSelectedId(id)
+    // A center picked on the map opens its card, so a folded panel opens with it.
+    setCollapsed(false)
     if (onMap) setFocus((n) => n + 1)
   }
 
@@ -98,7 +110,13 @@ export default function ExplorePage() {
       <PageHeading className="sr-only">{en.pages.explore.heading}</PageHeading>
 
       {/* The map fills the page; the panel and the chips float over it. On a phone they stack. */}
-      <div className="h-[45dvh] min-h-[300px] [--center-map-height:100%] md:absolute md:inset-0 md:h-auto md:[--map-overlay-inset:428px]">
+      <div
+        className={cx(
+          'h-[45dvh] min-h-[300px] [--center-map-height:100%] md:absolute md:inset-0 md:h-auto',
+          // Pins and the camera keep clear of the open panel: 12px + 400px + 16px.
+          !collapsed && 'md:[--map-overlay-inset:428px]',
+        )}
+      >
         <LoadBoundary fallback={<p className={mapStandIn}>{en.training.map.failed}</p>}>
           <Suspense
             fallback={
@@ -138,59 +156,74 @@ export default function ExplorePage() {
 
       <section
         aria-label={copy.search.label}
-        className="z-[1000] flex flex-col gap-3 rounded-16 border border-border bg-surface p-4 shadow-[0_6px_24px_rgb(var(--track-shadow-rgb)/0.14)] max-md:order-first md:absolute md:top-3 md:bottom-3 md:left-3 md:w-[400px] md:overflow-y-auto"
+        className={cx(
+          'z-[1000] flex flex-col gap-3 rounded-16 border border-border bg-surface p-4 shadow-[0_6px_24px_rgb(var(--track-shadow-rgb)/0.14)] max-md:order-first md:absolute md:top-3 md:left-3 md:w-[400px] md:overflow-y-auto',
+          // Open, it runs the map's height; folded, it's only as tall as the search row.
+          !collapsed && 'md:bottom-3',
+        )}
       >
         <SearchBox
           regionCode={nearestRegion(reference, explore.regions)?.code ?? null}
+          collapsed={collapsed}
+          bodyId={bodyId}
+          onToggle={() => setCollapsed(!collapsed)}
           onSearched={() => {
             setSelectedId(null)
             setView('all')
+            setCollapsed(false)
           }}
         />
-        <LocationRow explore={explore} />
-        {explore.failed && (
-          <div className="rounded-12 bg-warn-bg p-3 text-14 text-warn-ink">
-            <p role="alert" className="mt-0">
-              {en.training.loadFailed}
-            </p>
-            <Button
-              className={button({ variant: 'secondary', height: 36 })}
-              onPress={explore.retry}
-            >
-              <Icon name="refresh" />
-              {en.training.retryLoad}
-            </Button>
-          </div>
-        )}
-        {selected ? (
-          <CenterCard
-            center={selected}
-            codes={codes}
-            canRoute={canRoute}
-            config={config}
-            onBack={() => setSelectedId(null)}
-            onRoute={() => store().showRoute(selected.id)}
-          />
-        ) : search ? (
-          <ResultsPanel
-            explore={explore}
-            view={view}
-            onView={setView}
-            onSelect={(id) => select(id, { onMap: true })}
-          />
-        ) : (
-          <NearbyPanel
-            explore={explore}
-            view={view}
-            onSelect={(id) => select(id, { onMap: true })}
-          />
-        )}
-        <p className="mt-auto mb-0 border-0 border-t border-rule pt-3 text-12 leading-[1.5] text-muted">
-          <span className="mr-1.5 rounded-full bg-chip px-2 py-0.5 font-semibold text-navy">
-            {copy.demoTag}
-          </span>
-          {copy.notes.demo}
-        </p>
+        {/* A class, not the hidden attribute alone: `flex` would override it and keep the body showing. */}
+        <div
+          id={bodyId}
+          hidden={collapsed}
+          className={collapsed ? 'hidden' : 'flex flex-col gap-3 md:flex-1'}
+        >
+          <LocationRow explore={explore} />
+          {explore.failed && (
+            <div className="rounded-12 bg-warn-bg p-3 text-14 text-warn-ink">
+              <p role="alert" className="mt-0">
+                {en.training.loadFailed}
+              </p>
+              <Button
+                className={button({ variant: 'secondary', height: 36 })}
+                onPress={explore.retry}
+              >
+                <Icon name="refresh" />
+                {en.training.retryLoad}
+              </Button>
+            </div>
+          )}
+          {selected ? (
+            <CenterCard
+              center={selected}
+              codes={codes}
+              canRoute={canRoute}
+              config={config}
+              onBack={() => setSelectedId(null)}
+              onRoute={() => store().showRoute(selected.id)}
+            />
+          ) : search ? (
+            <ResultsPanel
+              explore={explore}
+              view={view}
+              onView={setView}
+              onSelect={(id) => select(id, { onMap: true })}
+            />
+          ) : (
+            <NearbyPanel
+              explore={explore}
+              view={view}
+              onSelect={(id) => select(id, { onMap: true })}
+            />
+          )}
+          <p className="mt-auto mb-0 border-0 border-t border-rule pt-3 text-12 leading-[1.5] text-muted">
+            <span className="mr-1.5 rounded-full bg-chip px-2 py-0.5 font-semibold text-navy">
+              {copy.demoTag}
+            </span>
+            {copy.notes.demo}
+          </p>
+        </div>
       </section>
     </div>
   )
@@ -199,9 +232,17 @@ export default function ExplorePage() {
 /** "Type what you can do": the finder's own goal reading and matching, kept in memory only. */
 function SearchBox({
   regionCode,
+  collapsed,
+  bodyId,
+  onToggle,
   onSearched,
 }: {
   regionCode: string | null
+  /** The panel is folded down to this row. */
+  collapsed: boolean
+  /** The part of the panel the burger shows and hides. */
+  bodyId: string
+  onToggle: () => void
   onSearched: () => void
 }) {
   const copy = useCopy().explore
@@ -244,6 +285,15 @@ function SearchBox({
   return (
     <form onSubmit={(event) => void run(event)} className="flex flex-col gap-2">
       <div className="flex items-center gap-2">
+        <Button
+          aria-label={collapsed ? copy.panel.expand : copy.panel.collapse}
+          aria-expanded={!collapsed}
+          aria-controls={bodyId}
+          onPress={onToggle}
+          className="grid size-11 flex-none cursor-pointer place-items-center rounded-full text-navy data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:bg-soft data-pressed:bg-chip"
+        >
+          <Icon name="menu" size="1.4rem" />
+        </Button>
         <SearchField
           value={draft}
           onChange={setDraft}
@@ -284,7 +334,8 @@ function SearchBox({
           {error}
         </p>
       ) : (
-        !search && <p className="m-0 text-13 leading-[1.5] text-muted">{copy.search.hint}</p>
+        !search &&
+        !collapsed && <p className="m-0 text-13 leading-[1.5] text-muted">{copy.search.hint}</p>
       )}
     </form>
   )

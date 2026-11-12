@@ -37,5 +37,8 @@ export interface CenterMapProps {
   onLocate: () => void
 }
 
+/** How close the Locate button goes in on the learner's own location: their neighbourhood's streets. */
+export const LOCATE_ZOOM = 14
+
 /** The map layer chosen, kept for this browser (the plan's small preferences). Both renderers read it. */
 export const BASEMAP_KEY = 'tesda-track.basemap'

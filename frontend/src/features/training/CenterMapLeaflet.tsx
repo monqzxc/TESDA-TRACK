@@ -32,7 +32,7 @@ import type { CenterKind } from './address.ts'
 import { directionsQuery, type TravelMode } from './api.ts'
 import type { Center } from './centers.ts'
 import { KIND_DOTS, MODE_ICONS } from './CenterDetail.tsx'
-import { BASEMAP_KEY, type CenterMapProps, type MapRoute } from './CenterMapTypes.ts'
+import { BASEMAP_KEY, LOCATE_ZOOM, type CenterMapProps, type MapRoute } from './CenterMapTypes.ts'
 import { CenterPopup } from './CenterPopup.tsx'
 import { routeLabel } from './format.ts'
 import type { Reference } from './useCenters.ts'
@@ -173,6 +173,8 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
   )
   // How far the filter panel reaches over the map's left edge (0 when it doesn't): framing and popups keep clear.
   const [inset, setInset] = useState(0)
+  // Bumped by each press of Locate, so the map goes to the learner's location even when it hasn't changed.
+  const [locateAsk, setLocateAsk] = useState(0)
 
   useEffect(() => {
     const element = shell.current
@@ -248,6 +250,8 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
           hasRoute={props.route !== null}
           inset={inset}
         />
+        {/* After Framing, so a location that has just arrived ends up centred, not framed with the centers. */}
+        <GoToMine ask={locateAsk} reference={props.reference} locating={locating} inset={inset} />
       </MapContainer>
 
       {shownStatus && (
@@ -264,7 +268,10 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
           floating,
         )}
         aria-label={copy.locate}
-        onPress={props.onLocate}
+        onPress={() => {
+          setLocateAsk((n) => n + 1)
+          props.onLocate()
+        }}
       >
         <Icon name="locate" size={20} />
       </Button>
@@ -451,6 +458,39 @@ function ReferenceDot({ reference }: { reference: Reference | null }) {
       </Tooltip>
     </Marker>
   )
+}
+
+/**
+ * Locate: each press brings the learner's own location to the middle of the map's clear part, close in, at once
+ * when it's already known, or as soon as the browser answers. (Framing moves the map only when the location
+ * changes, so pressing again after panning away would otherwise do nothing.) A refusal ends the request.
+ */
+function GoToMine({
+  ask,
+  reference,
+  locating,
+  inset,
+}: {
+  ask: number
+  reference: Reference | null
+  locating: boolean
+  inset: number
+}) {
+  const map = useMap()
+  const answered = useRef(0)
+  useEffect(() => {
+    if (!ask || answered.current === ask) return
+    if (reference?.mine) {
+      answered.current = ask
+      const target = L.latLng(reference.latitude, reference.longitude)
+      // Left of the target by half the panel's reach, so the target sits in the middle of what the panel leaves.
+      const middle = map.project(target, LOCATE_ZOOM).subtract([inset / 2, 0])
+      map.setView(map.unproject(middle, LOCATE_ZOOM), LOCATE_ZOOM)
+      return
+    }
+    if (!locating) answered.current = ask
+  }, [ask, reference, locating, inset, map])
+  return null
 }
 
 /**
