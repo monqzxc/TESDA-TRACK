@@ -12,7 +12,13 @@ const GOAL_TITLE = 'Your goal · Find my pathway · TESDA-TRACK'
 // Every address, its h1, the step it shows (the finder's h2), its document title, and whether it loads the catalog.
 const PAGES = [
   ['/', 'Every career has a track. Find yours.', null, 'TESDA-TRACK · Your next step', false],
-  ['/tsp/webview', 'Find your TESDA qualification', null, 'Find a TESDA pathway · TESDA-TRACK', false],
+  [
+    '/tsp/webview',
+    'Find your TESDA qualification',
+    null,
+    'Find a TESDA pathway · TESDA-TRACK',
+    false,
+  ],
   ['/find', 'Find my pathway', GOAL_STEP, GOAL_TITLE, true],
   // Without a goal, the finder's later steps go back to Your goal.
   ['/find/matches', 'Find my pathway', GOAL_STEP, GOAL_TITLE, true],
@@ -88,7 +94,7 @@ describe('routes', () => {
     )
     expect(
       within(screen.getByRole('banner')).getByRole('link', { name: 'Find my path' }),
-    ).toHaveAttribute('href', '/find')
+    ).toHaveAttribute('href', '/explore')
     expect(screen.queryByRole('navigation', { name: 'Main' })).not.toBeInTheDocument()
 
     await router.navigate('/qualifications')

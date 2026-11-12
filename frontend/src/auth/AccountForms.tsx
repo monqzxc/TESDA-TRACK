@@ -61,9 +61,7 @@ export function AccountForms({
           </p>
         )}
         <SignInForm defaultEmail={defaultEmail} focusFirstField={false} onSignedIn={onSignedIn} />
-        <p className={formStyle.note}>
-          <strong>{copy.tsp.demoHeading}</strong> {copy.tsp.demo}
-        </p>
+        <p className={formStyle.note}>{copy.tsp.notConnected}</p>
       </>
     )
   }

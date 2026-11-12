@@ -93,7 +93,8 @@ export function HomeHeader() {
           variant="header"
           buttonClassName="px-[0.2rem] py-2 text-[0.95rem] font-bold whitespace-nowrap text-white no-underline hovered:text-(--band-accent)"
         />
-        <Link to={paths.finder} className={cta}>
+        {/* Find my path opens the center finder with its search box ready to type in. */}
+        <Link to={paths.explore} state={{ focusSearch: true }} className={cta}>
           {copy.findMyPath}
           <svg
             viewBox="0 0 24 24"

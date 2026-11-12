@@ -106,7 +106,7 @@ describe('Home', () => {
     expect(screen.getByRole('link', { name })).toHaveAttribute('href', path)
   })
 
-  it('opens the finder from the hero, without a goal', async () => {
+  it('opens the center finder from the hero, its search box ready to type in', async () => {
     serveCatalog()
     const user = userEvent.setup()
     const { router } = await openHome()
@@ -114,7 +114,8 @@ describe('Home', () => {
 
     await user.click(within(hero).getByRole('link', { name: 'Find my path' }))
 
-    await waitFor(() => expect(router.state.location.pathname).toBe('/find'))
+    await waitFor(() => expect(router.state.location.pathname).toBe('/explore'))
+    expect(router.state.location.state).toEqual({ focusSearch: true })
     expect(useFinderStore.getState().goal).toBe('')
   })
 

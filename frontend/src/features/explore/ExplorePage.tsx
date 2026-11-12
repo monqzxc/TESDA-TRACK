@@ -10,7 +10,7 @@ import {
   type RefObject,
 } from 'react'
 import { Button, Input, Label, SearchField, ToggleButton } from 'react-aria-components'
-import { useSearchParams } from 'react-router'
+import { useLocation, useSearchParams } from 'react-router'
 import { useQualifications } from '../../api/queries.ts'
 import { failureMessage } from '../../auth/fields.tsx'
 import { Icon } from '../../components/Icon.tsx'
@@ -131,6 +131,13 @@ export default function ExplorePage() {
   const scrollable = !collapsed && (opened || prefersReducedMotion())
   const bodyId = useId()
   const input = useRef<HTMLInputElement>(null)
+  // Arriving from the home page's Find my path, the search box takes focus, ready to type in.
+  const focusSearch = Boolean(
+    (useLocation().state as { focusSearch?: boolean } | null)?.focusSearch,
+  )
+  useEffect(() => {
+    if (focusSearch) input.current?.focus()
+  }, [focusSearch])
   const fold = () => {
     setCollapsed(true)
     setOpened(false)
@@ -357,17 +364,14 @@ export default function ExplorePage() {
                   />
                 )}
               </div>
-              <p className="mt-auto mb-0 border-0 border-t border-rule pt-3 text-12 leading-[1.5] text-muted">
-                <span className="mr-1.5 rounded-full bg-chip px-2 py-0.5 font-semibold text-navy">
-                  {copy.demoTag}
-                </span>
-                {copy.notes.demo}
-              </p>
               <Button
                 aria-controls={bodyId}
                 aria-expanded={!collapsed}
                 onPress={fold}
-                className={cx(button({ variant: 'tertiary', height: 38, text: 14 }), 'mx-auto')}
+                className={cx(
+                  button({ variant: 'tertiary', height: 38, text: 14 }),
+                  'mx-auto mt-auto',
+                )}
               >
                 <Icon name="chevron" className="rotate-180" />
                 {copy.panel.collapse}

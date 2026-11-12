@@ -104,7 +104,8 @@ export function Hero() {
             {copy.lead}
           </Reveal>
           <Reveal order={3} className="mt-9 flex flex-wrap gap-3">
-            <Link to={paths.finder} className={homeButton('signal')}>
+            {/* Find my path opens the center finder with its search box ready to type in. */}
+            <Link to={paths.explore} state={{ focusSearch: true }} className={homeButton('signal')}>
               {copy.findMyPath}
               <Glyph name="arrow" />
             </Link>

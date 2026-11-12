@@ -72,6 +72,7 @@ import {
 } from './maplibre/layers.ts'
 import { ROUTE_END, addMarkerImage, renderedTargets, type HitTarget } from './maplibre/markers.ts'
 import { chosenMode, routeCorners, routeFeatures, routeLabels } from './maplibre/routing.ts'
+import { partialPath, useRouteDraw } from './routeDraw.ts'
 import {
   BASEMAP_SOURCE,
   BUILDING_3D,
@@ -278,13 +279,24 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     [hasRoute, directions.data],
   )
   const chosen = chosenMode(options, travelMode)
-  const routesData = useMemo(
-    () => (route && options.length ? routeFeatures(route, options, chosen) : EMPTY_OVERLAYS.routes),
+  // The chosen route draws itself out to the center, once per route and mode; the others and the labels follow.
+  const drawn = useRouteDraw(
+    route && chosen
+      ? `${route.from.latitude},${route.from.longitude}>${route.to.latitude},${route.to.longitude}:${chosen}`
+      : null,
+  )
+  const routesData = useMemo(() => {
+    if (!route || !options.length) return EMPTY_OVERLAYS.routes
+    if (drawn >= 1) return routeFeatures(route, options, chosen)
+    // While it draws: the chosen line only, up to where it has reached, with its dotted start from the learner.
+    const drawing = options.filter((option) => option.mode === chosen)
+    const partial = drawing.map((option) => ({ ...option, path: partialPath(option.path, drawn) }))
+    const data = routeFeatures(route, partial, chosen)
+    return { ...data, features: data.features.slice(0, 2) }
     // The route's ends are in its directions; the route object itself is new on every render of the page.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [options, chosen],
-  )
-  const labels = useMemo(() => routeLabels(options), [options])
+  }, [options, chosen, drawn])
+  const labels = useMemo(() => (drawn >= 1 ? routeLabels(options) : []), [options, drawn])
 
   // The popup. The selected center shows in it, as on the Leaflet map, until it's closed; a pin or cluster opened on
   // the map shows instead, until the selection, View on map (`focus`) or the route changes.

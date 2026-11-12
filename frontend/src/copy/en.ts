@@ -1639,8 +1639,8 @@ export const en = {
       name: 'TESDA Skills Passport',
       heading: 'Sign in with TSP',
       lead: 'Use your TSP account to save centers and pick up where you left off.',
-      demoHeading: 'Demo.',
-      demo: 'TSP sign-in isn’t connected yet. A TESDA-TRACK account stands in for your TSP account.',
+      notConnected:
+        'TSP sign-in isn’t connected yet. A TESDA-TRACK account stands in for your TSP account.',
       signIn: 'Sign in with TSP',
     },
     signInForm: {
@@ -2172,7 +2172,6 @@ export const en = {
   // The map-first center finder demo at /explore (markdowns/TESDA-TRACK-Location-First-Implementation-Plan.md).
   // Wording follows the plan's Task 12; it is for the Product Owner to approve.
   explore: {
-    demoTag: 'Demo',
     panel: {
       collapse: 'Show less',
     },
@@ -2288,7 +2287,6 @@ export const en = {
       times: 'Travel times are estimated from straight-line distance, by car, without traffic.',
       automatic:
         'These results come from automatic matching. This is a suggestion: confirm with the center or your TESDA office.',
-      demo: 'Demo of the map-first finder. Centers and listings come from TESDA-TRACK’s current data.',
     },
   },
   theme: {

@@ -15,6 +15,7 @@ import { Fragment, useEffect, useMemo, useRef, useState, type ReactNode } from '
 import { Button, Menu, MenuItem, MenuTrigger, Popover, type Selection } from 'react-aria-components'
 import {
   Circle,
+  CircleMarker,
   MapContainer,
   Marker,
   Polyline,
@@ -35,6 +36,7 @@ import { KIND_DOTS, MODE_ICONS } from './CenterDetail.tsx'
 import { BASEMAP_KEY, LOCATE_ZOOM, type CenterMapProps, type MapRoute } from './CenterMapTypes.ts'
 import { CenterPopup } from './CenterPopup.tsx'
 import { routeLabel } from './format.ts'
+import { partialPath, useRouteDraw } from './routeDraw.ts'
 import type { Reference } from './useCenters.ts'
 
 // The center map drawn by Leaflet (classic/training_view.py _CENTER_MAP, ported from its Leaflet code): clustered pins
@@ -596,6 +598,12 @@ function RouteLayer({
   const selected = options.some((option) => option.mode === travelMode)
     ? travelMode
     : options[0]?.mode
+  // The chosen route draws itself out to the center, once per route and mode; the others and the labels follow.
+  const drawn = useRouteDraw(
+    selected
+      ? `${route.from.latitude},${route.from.longitude}>${route.to.latitude},${route.to.longitude}:${selected}`
+      : null,
+  )
 
   const hasRoutes = options.length > 0
   // The routing service asks to be credited, with a way to report mistakes in the map it routes on.
@@ -633,6 +641,48 @@ function RouteLayer({
   )
   const origin: L.LatLngTuple = [route.from.latitude, route.from.longitude]
   const destination: L.LatLngTuple = [route.to.latitude, route.to.longitude]
+  const drawing = options.find((option) => option.mode === selected)
+  if (drawing && drawn < 1) {
+    // While it draws: the chosen line only, from the learner's dotted start, with a dot at its leading end.
+    const path = partialPath(drawing.path, drawn) as L.LatLngTuple[]
+    return (
+      <>
+        <Polyline
+          positions={[origin, drawing.start as L.LatLngTuple]}
+          interactive={false}
+          pathOptions={{
+            color: COLORS.training,
+            weight: 3,
+            dashArray: '1 7',
+            lineCap: 'round',
+            opacity: 0.8,
+          }}
+        />
+        <Polyline
+          positions={path}
+          interactive={false}
+          pathOptions={{ color: '#fff', lineJoin: 'round', weight: 10, opacity: 0.95 }}
+        />
+        <Polyline
+          positions={path}
+          interactive={false}
+          pathOptions={{
+            color: COLORS.training,
+            lineJoin: 'round',
+            weight: 6,
+            opacity: 0.95,
+            dashArray: drawing.mode === 'plane' ? '10 9' : undefined,
+          }}
+        />
+        <CircleMarker
+          center={path[path.length - 1]}
+          radius={7}
+          interactive={false}
+          pathOptions={{ color: '#fff', weight: 3, fillColor: COLORS.training, fillOpacity: 1 }}
+        />
+      </>
+    )
+  }
   return (
     <>
       {ordered.map((option) => {
