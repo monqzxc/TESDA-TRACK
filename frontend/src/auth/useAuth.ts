@@ -24,6 +24,11 @@ export interface OpenSignInOptions {
    * a better place, e.g. the phone menu's button when the "Sign in" that opened the dialog was in that menu.
    */
   returnFocus?: () => HTMLElement | null | undefined
+  /**
+   * Drawn as "Sign in with TSP" (TESDA Skills Passport), for the map-first finder's demo. TSP sign-in isn't
+   * connected yet, so the form signs in to a TESDA-TRACK account and says so.
+   */
+  tsp?: boolean
 }
 
 export interface Auth {

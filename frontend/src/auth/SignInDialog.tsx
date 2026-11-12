@@ -9,7 +9,10 @@ import { dialogStyle } from './styles.ts'
 import type { OpenSignInOptions, SignInView } from './useAuth.ts'
 
 /** An open sign-in dialog: which form, its message, and what happens after it closes. */
-export interface SignInRequest extends Pick<OpenSignInOptions, 'onSignedIn' | 'returnFocus'> {
+export interface SignInRequest extends Pick<
+  OpenSignInOptions,
+  'onSignedIn' | 'returnFocus' | 'tsp'
+> {
   /** Which opening of the dialog this is. It stays the same when the learner switches forms. */
   id: number
   view: SignInView
@@ -76,6 +79,7 @@ export function SignInDialog({
               message={request.message}
               messageId={messageId}
               defaultEmail={request.defaultEmail}
+              tsp={request.tsp}
               onViewChange={(view, start) =>
                 onChange({ ...request, view, message: start?.message, defaultEmail: start?.email })
               }

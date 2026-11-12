@@ -34,7 +34,7 @@ export const en = {
     // The accessible name of the page links.
     label: 'Main',
     home: 'Home',
-    explore: 'Find centers (demo)',
+    explore: 'Career Map',
     finder: 'Find my pathway',
     qualifications: 'Qualifications Library',
     training: 'Training & Assessment',
@@ -301,7 +301,7 @@ export const en = {
       heading: 'Training & Assessment',
     },
     explore: {
-      title: 'Find training and assessment centers · TESDA-TRACK',
+      title: 'Career Map · TESDA-TRACK',
       heading: 'Find training and assessment centers',
     },
     progress: {
@@ -1632,6 +1632,16 @@ export const en = {
       heading: 'Just exploring?',
       body: 'You can find a pathway and browse qualifications without an account.',
     },
+    // "Sign in with TSP" on the map-first finder (AccountForms). TSP sign-in isn't connected yet: the form signs in to
+    // a TESDA-TRACK account, and says so.
+    tsp: {
+      name: 'TESDA Skills Passport',
+      heading: 'Sign in with TSP',
+      lead: 'Use your TSP account to save centers and pick up where you left off.',
+      demoHeading: 'Demo.',
+      demo: 'TSP sign-in isn’t connected yet. A TESDA-TRACK account stands in for your TSP account.',
+      signIn: 'Sign in with TSP',
+    },
     signInForm: {
       heading: 'Sign in',
       lead: 'Sign in to save your progress and pick up where you left off.',
@@ -2162,9 +2172,16 @@ export const en = {
   // Wording follows the plan's Task 12; it is for the Product Owner to approve.
   explore: {
     demoTag: 'Demo',
+    // The burger's drawer, in place of the app's sidebar (ExploreMenu.tsx).
+    menu: {
+      open: 'Open the menu',
+      close: 'Close the menu',
+      label: 'Menu',
+      home: 'TESDA TRACK',
+      account: 'Account',
+    },
     panel: {
-      collapse: 'Hide the panel',
-      expand: 'Show the panel',
+      collapse: 'Show less',
     },
     search: {
       label: 'What can you do?',

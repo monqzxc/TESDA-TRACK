@@ -186,6 +186,10 @@
   --animate-fade-in: fade-in 0.2s ease-out; /* dimmed overlays */
   --animate-rise: rise 0.22s cubic-bezier(0.2, 0.75, 0.2, 1); /* dialogs */
   --animate-slide-in: slide-in 0.24s cubic-bezier(0.2, 0.75, 0.2, 1); /* the phone menu's drawer */
+  /* Exits, for the map-first finder's menu: React Aria keeps it in the page until these end. */
+  --animate-fade-out: fade-out 0.2s ease-in forwards;
+  --animate-slide-out: slide-out 0.2s ease-in forwards;
+  --animate-menu-spin-in: menu-spin-in 0.5s ease-out; /* its burger, as the drawer comes in */
   --animate-notice: notice 0.2s ease-out; /* the account notice at the foot of the screen */
   --animate-pop: pop 0.16s ease-out; /* the account menu */
   /* The finder's feedback question: it rises once the step has slid in, then rings twice to be noticed. */
@@ -215,6 +219,21 @@
   @keyframes slide-in {
     from {
       transform: translateX(-100%);
+    }
+  }
+  @keyframes fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+  @keyframes slide-out {
+    to {
+      transform: translateX(-100%);
+    }
+  }
+  @keyframes menu-spin-in {
+    from {
+      rotate: -180deg;
     }
   }
   @keyframes notice {

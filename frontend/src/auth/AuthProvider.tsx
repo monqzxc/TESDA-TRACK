@@ -162,6 +162,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         view: options.view ?? 'signIn',
         message: options.message,
         onSignedIn: options.onSignedIn,
+        tsp: options.tsp,
         // Signing in can take the opener away (a "Sign in or create an account" button): then the page's heading.
         returnFocus:
           options.returnFocus ?? (() => (opener?.isConnected ? opener : navigationTarget())),
@@ -302,7 +303,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       openSignIn,
       notify: setNotice,
     }
-  }, [learner, session.isLoading, signIn, register, adoptSession, signOut, deleteAccount, openSignIn])
+  }, [
+    learner,
+    session.isLoading,
+    signIn,
+    register,
+    adoptSession,
+    signOut,
+    deleteAccount,
+    openSignIn,
+  ])
 
   return (
     <AuthContext.Provider value={auth}>

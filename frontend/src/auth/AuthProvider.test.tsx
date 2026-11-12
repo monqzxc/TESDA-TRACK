@@ -373,7 +373,10 @@ describe('creating an account', () => {
     const dialog = await openRegister(user)
 
     expect(within(dialog).getByLabelText('Email')).toHaveAttribute('autocomplete', 'username')
-    expect(within(dialog).getByLabelText('Password')).toHaveAttribute('autocomplete', 'new-password')
+    expect(within(dialog).getByLabelText('Password')).toHaveAttribute(
+      'autocomplete',
+      'new-password',
+    )
   })
 
   async function fillIn(user: User, dialog: HTMLElement) {
@@ -399,10 +402,9 @@ describe('creating an account', () => {
     await user.click(within(dialog).getByRole('button', { name: 'Create account' }))
 
     await waitFor(() => expect(screen.getByTestId('auth')).toHaveTextContent('Maria Santos'))
-    expect(account.requests.filter((r) => r.method === 'POST').map((r) => `${r.method} ${r.path}`)).toEqual([
-      'POST /api/v1/auth/register',
-      'POST /api/v1/auth/session',
-    ])
+    expect(
+      account.requests.filter((r) => r.method === 'POST').map((r) => `${r.method} ${r.path}`),
+    ).toEqual(['POST /api/v1/auth/register', 'POST /api/v1/auth/session'])
     expect(JSON.parse(account.requests[0].body)).toEqual({
       full_name: 'Maria Santos',
       email: maria.email,

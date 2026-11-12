@@ -125,36 +125,51 @@ export function WebviewLayout() {
  * Every other page: the Streamlit app's sidebar beside the page, a white column with a border that stays put while
  * the page scrolls. On phones the sidebar becomes a bar across the top with the brand and a Menu button, which
  * opens the same sidebar over the page (MobileMenu). Reports shows for administrators.
+ *
+ * The map-first finder (/explore) has no sidebar: the map takes the window, and its burger opens its own menu.
  */
 export function AppLayout() {
   const { canViewReports, canOpenAdmin, isSignedIn } = useAuth()
+  const ownMenu = useCurrentPage() === 'explore'
   return (
     <>
       <SkipLink />
-      <div className="grid min-h-screen grid-cols-[16.5rem_minmax(0,1fr)] max-md:block">
-        <header
-          className={
-            'sticky top-0 flex h-dvh flex-col overflow-y-auto border-r border-border bg-surface px-4 pt-5 pb-4 ' +
-            'max-md:z-20 max-md:h-auto max-md:overflow-visible max-md:border-r-0 max-md:border-b max-md:px-4 max-md:py-[0.6rem]'
-          }
-        >
-          <div className="shrink-0 max-md:flex max-md:flex-wrap max-md:items-center max-md:gap-3">
-            <MobileMenu isAdmin={canViewReports} canManage={canOpenAdmin} isSignedIn={isSignedIn} />
-            <div className="max-md:hidden">
-              <Brand />
+      <div
+        className={
+          ownMenu
+            ? 'min-h-screen'
+            : 'grid min-h-screen grid-cols-[16.5rem_minmax(0,1fr)] max-md:block'
+        }
+      >
+        {!ownMenu && (
+          <header
+            className={
+              'sticky top-0 flex h-dvh flex-col overflow-y-auto border-r border-border bg-surface px-4 pt-5 pb-4 ' +
+              'max-md:z-20 max-md:h-auto max-md:overflow-visible max-md:border-r-0 max-md:border-b max-md:px-4 max-md:py-[0.6rem]'
+            }
+          >
+            <div className="shrink-0 max-md:flex max-md:flex-wrap max-md:items-center max-md:gap-3">
+              <MobileMenu
+                isAdmin={canViewReports}
+                canManage={canOpenAdmin}
+                isSignedIn={isSignedIn}
+              />
+              <div className="max-md:hidden">
+                <Brand />
+              </div>
+              <div className="hidden max-md:block">
+                <Brand compact />
+              </div>
             </div>
-            <div className="hidden max-md:block">
-              <Brand compact />
+            <div className="flex flex-1 flex-col max-md:hidden">
+              <SidebarContent
+                isAdmin={canViewReports}
+                canManage={canOpenAdmin}
+                isSignedIn={isSignedIn}
+              />
             </div>
-          </div>
-          <div className="flex flex-1 flex-col max-md:hidden">
-            <SidebarContent
-              isAdmin={canViewReports}
-              canManage={canOpenAdmin}
-              isSignedIn={isSignedIn}
-            />
-          </div>
-        </header>
+          </header>
+        )}
         <div className="flex min-h-screen min-w-0 flex-col">
           <main
             id="main"

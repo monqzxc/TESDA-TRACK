@@ -1,4 +1,13 @@
-import { lazy, Suspense, useEffect, useId, useRef, useState, type FormEvent } from 'react'
+import {
+  lazy,
+  Suspense,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  type FormEvent,
+  type RefObject,
+} from 'react'
 import { Button, Input, Label, SearchField, ToggleButton } from 'react-aria-components'
 import { useSearchParams } from 'react-router'
 import { useQualifications } from '../../api/queries.ts'
@@ -12,6 +21,7 @@ import { button } from '../../styles/buttons.ts'
 import { matchPathway } from '../training/recommendationApi.ts'
 import { useTrainingStore } from '../training/state.ts'
 import { nearestRegion } from './explore.ts'
+import { ExploreMenu } from './ExploreMenu.tsx'
 import { CenterCard, LocationRow, NearbyPanel, ResultsPanel } from './Panels.tsx'
 import { useExplore, useExploreStore } from './useExplore.ts'
 
@@ -24,6 +34,18 @@ const VIEWS: readonly View[] = ['all', 'assessment', 'training', 'demand']
 
 const mapStandIn =
   'm-0 grid h-full min-h-[320px] place-items-center rounded-18 border border-border bg-map-water text-15 text-muted'
+
+// The search bar's own buttons: the burger, clear and search.
+const iconButton =
+  'grid size-9 flex-none cursor-pointer place-items-center rounded-8 border-0 bg-transparent text-muted data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:bg-soft data-hovered:text-navy data-pressed:bg-chip'
+
+/** With reduced motion nothing slides, so there's no transition's end to wait for. */
+function prefersReducedMotion() {
+  return (
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  )
+}
 
 /**
  * The map-first center finder, a demo at /explore (markdowns/TESDA-TRACK-Location-First-Implementation-Plan.md).
@@ -93,9 +115,24 @@ export default function ExplorePage() {
 
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [focus, setFocus] = useState(0)
-  // The burger folds the panel down to its search row, so the map has the room.
-  const [collapsed, setCollapsed] = useState(false)
+  // The panel opens folded down to its search row, so the map has the room; pressing in the box (or typing) opens
+  // the rest, and Show less folds it again. With results to show (a search kept from earlier in the visit, or one
+  // linked from a qualification's page), it starts open.
+  const [collapsed, setCollapsed] = useState(() => !linked && !useExploreStore.getState().search)
+  // The body scrolls only once it has finished opening: during the slide, a scrollbar would flash.
+  const [opened, setOpened] = useState(!collapsed)
+  const scrollable = !collapsed && (opened || prefersReducedMotion())
   const bodyId = useId()
+  const input = useRef<HTMLInputElement>(null)
+  const fold = () => {
+    setCollapsed(true)
+    setOpened(false)
+    // Show less goes inert with the panel's body, so focus goes back to the box it opened from.
+    input.current?.focus()
+  }
+  // The burger's drawer, in place of the app's sidebar.
+  const [menuOpen, setMenuOpen] = useState(false)
+  const menuButton = useRef<HTMLButtonElement>(null)
   // The panel explains a refused location (Locate on the map, or the switch), so a folded one opens to show it.
   const locationError = useTrainingStore((state) => state.locationError)
   const [seenError, setSeenError] = useState(locationError)
@@ -155,8 +192,8 @@ export default function ExplorePage() {
       <div
         className={cx(
           'h-[45dvh] min-h-[300px] [--center-map-height:100%] md:absolute md:inset-0 md:h-auto',
-          // Pins and the camera keep clear of the open panel: 12px + 400px + 16px.
-          !collapsed && 'md:[--map-overlay-inset:428px]',
+          // Pins and the camera keep clear of the open panel: 12px + 360px + 16px.
+          !collapsed && 'md:[--map-overlay-inset:388px]',
         )}
       >
         <LoadBoundary fallback={<p className={mapStandIn}>{en.training.map.failed}</p>}>
@@ -195,76 +232,109 @@ export default function ExplorePage() {
       </div>
 
       <Chips view={view} onView={setView} />
+      <ExploreMenu
+        isOpen={menuOpen}
+        onOpenChange={setMenuOpen}
+        returnFocus={() => menuButton.current}
+      />
 
       <section
         aria-label={copy.search.label}
         className={cx(
-          'z-[1000] flex flex-col gap-3 rounded-16 border border-border bg-surface p-4 shadow-[0_6px_24px_rgb(var(--track-shadow-rgb)/0.14)] max-md:order-first md:absolute md:top-3 md:left-3 md:w-[400px] md:overflow-y-auto',
-          // Open, it runs the map's height; folded, it's only as tall as the search row.
-          !collapsed && 'md:bottom-3',
+          // Folded, a slim search bar; open, a card with the search row at its top. Only the body below it scrolls.
+          'z-[1000] flex flex-col overflow-hidden rounded-12 border border-border bg-surface shadow-[0_4px_16px_rgb(var(--track-shadow-rgb)/0.14)] has-[[data-query]:focus]:border-blue max-md:order-first md:absolute md:top-3 md:left-3 md:max-h-[calc(100%-1.5rem)] md:w-[360px]',
+          // Open, it runs the map's height. The height grows and shrinks with the body below (a min-height, since a
+          // height can't move to or from auto).
+          'motion-reduce:transition-none md:transition-[min-height] md:duration-300 md:ease-out',
+          collapsed ? 'md:min-h-0' : 'md:min-h-[calc(100%-1.5rem)]',
         )}
       >
         <SearchBox
           regionCode={nearestRegion(reference, explore.regions)?.code ?? null}
-          collapsed={collapsed}
-          bodyId={bodyId}
-          onToggle={() => setCollapsed(!collapsed)}
+          inputRef={input}
+          menuOpen={menuOpen}
+          menuRef={menuButton}
+          onMenu={() => setMenuOpen(true)}
+          onOpen={() => setCollapsed(false)}
           onSearched={() => {
             setSelectedId(null)
             setView('all')
             setCollapsed(false)
           }}
         />
-        {/* A class, not the hidden attribute alone: `flex` would override it and keep the body showing. */}
+        {/* The body slides open and shut: its one row grows from 0fr to 1fr, so it animates to its own height. */}
         <div
           id={bodyId}
-          hidden={collapsed}
-          className={collapsed ? 'hidden' : 'flex flex-col gap-3 md:flex-1'}
+          inert={collapsed}
+          onTransitionEnd={(event) => {
+            if (event.target === event.currentTarget && !collapsed) setOpened(true)
+          }}
+          className={cx(
+            'grid transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none md:min-h-0 md:flex-1',
+            collapsed ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100',
+          )}
         >
-          <LocationRow explore={explore} />
-          {explore.failed && (
-            <div className="rounded-12 bg-warn-bg p-3 text-14 text-warn-ink">
-              <p role="alert" className="mt-0">
-                {en.training.loadFailed}
+          {/* No padding on the clipped row itself: it would stay showing when the row is 0 tall. */}
+          <div className={cx('min-h-0 overflow-hidden', scrollable && 'md:overflow-y-auto')}>
+            <div className="flex min-h-full flex-col gap-3 border-t border-rule p-4">
+              {!search && (
+                <p className="m-0 text-13 leading-[1.5] text-muted">{copy.search.hint}</p>
+              )}
+              <LocationRow explore={explore} />
+              {explore.failed && (
+                <div className="rounded-12 bg-warn-bg p-3 text-14 text-warn-ink">
+                  <p role="alert" className="mt-0">
+                    {en.training.loadFailed}
+                  </p>
+                  <Button
+                    className={button({ variant: 'secondary', height: 36 })}
+                    onPress={explore.retry}
+                  >
+                    <Icon name="refresh" />
+                    {en.training.retryLoad}
+                  </Button>
+                </div>
+              )}
+              {selected ? (
+                <CenterCard
+                  center={selected}
+                  codes={codes}
+                  canRoute={canRoute}
+                  config={config}
+                  onBack={() => setSelectedId(null)}
+                  onRoute={() => store().showRoute(selected.id)}
+                />
+              ) : search ? (
+                <ResultsPanel
+                  explore={explore}
+                  view={view}
+                  onView={setView}
+                  onSelect={(id) => select(id, { onMap: true })}
+                />
+              ) : (
+                <NearbyPanel
+                  explore={explore}
+                  view={view}
+                  onSelect={(id) => select(id, { onMap: true })}
+                />
+              )}
+              <p className="mt-auto mb-0 border-0 border-t border-rule pt-3 text-12 leading-[1.5] text-muted">
+                <span className="mr-1.5 rounded-full bg-chip px-2 py-0.5 font-semibold text-navy">
+                  {copy.demoTag}
+                </span>
+                {copy.notes.demo}
               </p>
               <Button
-                className={button({ variant: 'secondary', height: 36 })}
-                onPress={explore.retry}
+                aria-controls={bodyId}
+                aria-expanded={!collapsed}
+                onPress={fold}
+                className={cx(button({ variant: 'tertiary', height: 38, text: 14 }), 'mx-auto')}
               >
-                <Icon name="refresh" />
-                {en.training.retryLoad}
+                <Icon name="chevron" className="rotate-180" />
+                {copy.panel.collapse}
               </Button>
             </div>
-          )}
-          {selected ? (
-            <CenterCard
-              center={selected}
-              codes={codes}
-              canRoute={canRoute}
-              config={config}
-              onBack={() => setSelectedId(null)}
-              onRoute={() => store().showRoute(selected.id)}
-            />
-          ) : search ? (
-            <ResultsPanel
-              explore={explore}
-              view={view}
-              onView={setView}
-              onSelect={(id) => select(id, { onMap: true })}
-            />
-          ) : (
-            <NearbyPanel
-              explore={explore}
-              view={view}
-              onSelect={(id) => select(id, { onMap: true })}
-            />
-          )}
-          <p className="mt-auto mb-0 border-0 border-t border-rule pt-3 text-12 leading-[1.5] text-muted">
-            <span className="mr-1.5 rounded-full bg-chip px-2 py-0.5 font-semibold text-navy">
-              {copy.demoTag}
-            </span>
-            {copy.notes.demo}
-          </p>
+          </div>
         </div>
       </section>
     </div>
@@ -274,22 +344,25 @@ export default function ExplorePage() {
 /** "Type what you can do": the finder's own goal reading and matching, kept in memory only. */
 function SearchBox({
   regionCode,
-  collapsed,
-  bodyId,
-  onToggle,
+  inputRef,
+  menuOpen,
+  menuRef,
+  onMenu,
+  onOpen,
   onSearched,
 }: {
   regionCode: string | null
-  /** The panel is folded down to this row. */
-  collapsed: boolean
-  /** The part of the panel the burger shows and hides. */
-  bodyId: string
-  onToggle: () => void
+  inputRef: RefObject<HTMLInputElement | null>
+  /** The burger's drawer is open: the burger spins a half turn as it opens, and back as it closes. */
+  menuOpen: boolean
+  menuRef: RefObject<HTMLButtonElement | null>
+  onMenu: () => void
+  /** Pressing in the box, or typing, opens the rest of the panel. Focus alone doesn't: Show less hands it back. */
+  onOpen: () => void
   onSearched: () => void
 }) {
   const copy = useCopy().explore
   const draft = useExploreStore((state) => state.draft)
-  const search = useExploreStore((state) => state.search)
   const { setDraft, setSearch } = useExploreStore.getState()
   const [pending, setPending] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -325,59 +398,68 @@ function SearchBox({
   }
 
   return (
-    <form onSubmit={(event) => void run(event)} className="flex flex-col gap-2">
-      <div className="flex items-center gap-2">
+    <form onSubmit={(event) => void run(event)} className="flex flex-col">
+      {/* One slim bar: the burger, the box, and a search button at its end. */}
+      <div className="flex h-11 items-center gap-0.5 px-1">
         <Button
-          aria-label={collapsed ? copy.panel.expand : copy.panel.collapse}
-          aria-expanded={!collapsed}
-          aria-controls={bodyId}
-          onPress={onToggle}
-          className="grid size-11 flex-none cursor-pointer place-items-center rounded-full text-navy data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:bg-soft data-pressed:bg-chip"
+          ref={menuRef}
+          aria-label={copy.menu.open}
+          aria-haspopup="dialog"
+          aria-expanded={menuOpen}
+          onPress={onMenu}
+          className={iconButton}
         >
-          <Icon name="menu" size="1.4rem" />
+          <span
+            className="grid place-items-center transition-[rotate] duration-500 ease-in-out motion-reduce:transition-none"
+            style={{ rotate: menuOpen ? '180deg' : '0deg' }}
+          >
+            <Icon name="menu" size="1.15rem" />
+          </span>
         </Button>
         <SearchField
           value={draft}
-          onChange={setDraft}
+          onChange={(text) => {
+            setDraft(text)
+            onOpen()
+          }}
           onClear={clear}
           maxLength={1000}
-          className="relative flex min-w-0 flex-1 items-center"
+          className="flex min-w-0 flex-1 items-center"
         >
           <Label className="sr-only">{copy.search.label}</Label>
-          <Icon name="search" className="pointer-events-none absolute left-3.5 text-muted" />
+          {/* The panel's border shows focus (has-[[data-query]:focus]), so the box draws no ring of its own. */}
           <Input
-            className="h-12 w-full rounded-full border border-hover-border bg-surface py-0 pr-10 pl-10 text-16 text-navy placeholder:text-muted placeholder:opacity-100 data-focused:border-blue data-hovered:border-blue [&::-webkit-search-cancel-button]:hidden"
+            ref={inputRef}
+            data-query
+            onClick={onOpen}
+            className="h-9 w-full min-w-0 border-0 bg-transparent px-1.5 text-15 text-navy placeholder:text-muted placeholder:opacity-100 focus-visible:outline-none [&::-webkit-search-cancel-button]:hidden"
             placeholder={copy.search.placeholder}
           />
           {draft && (
-            <Button
-              aria-label={copy.search.clear}
-              className="absolute right-2 grid size-8 cursor-pointer place-items-center rounded-full text-muted data-hovered:bg-soft"
-              onPress={clear}
-            >
+            <Button aria-label={copy.search.clear} className={iconButton} onPress={clear}>
               <Icon name="close" />
             </Button>
           )}
         </SearchField>
         <Button
           type="submit"
-          className={button({ variant: 'primary', height: 48, snug: true })}
+          aria-label={copy.search.submit}
           isPending={pending}
+          className={cx(iconButton, 'data-pending:cursor-progress data-pending:opacity-60')}
         >
-          {copy.search.submit}
+          <Icon name="search" size="1.1rem" />
         </Button>
       </div>
       {pending ? (
-        <p role="status" className="m-0 text-13 text-muted">
+        <p role="status" className="m-0 px-4 pb-2.5 text-13 text-muted">
           {copy.search.searching}
         </p>
-      ) : error ? (
-        <p role="alert" className="m-0 text-13 text-warn-ink">
-          {error}
-        </p>
       ) : (
-        !search &&
-        !collapsed && <p className="m-0 text-13 leading-[1.5] text-muted">{copy.search.hint}</p>
+        error && (
+          <p role="alert" className="m-0 px-4 pb-2.5 text-13 text-warn-ink">
+            {error}
+          </p>
+        )
       )}
     </form>
   )
@@ -395,7 +477,7 @@ function Chips({ view, onView }: { view: View; onView: (view: View) => void }) {
     <div
       role="group"
       aria-label={copy.label}
-      className="z-[1000] flex gap-2 overflow-x-auto max-md:pb-1 md:absolute md:top-4 md:left-[428px] md:flex-wrap"
+      className="z-[1000] flex gap-2 overflow-x-auto max-md:pb-1 md:absolute md:top-4 md:left-[388px] md:flex-wrap"
     >
       {chips.map((chip) => (
         <ToggleButton

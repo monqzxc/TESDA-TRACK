@@ -1,6 +1,7 @@
 import { useState, type ComponentType, type ReactNode } from 'react'
 import { Button } from 'react-aria-components'
 import { useCopy } from '../i18n/copy.ts'
+import { cx } from '../lib/style.ts'
 import { learnerAccounts } from './accounts.ts'
 import { RegisterForm } from './RegisterForm.tsx'
 import { SignInForm } from './SignInForm.tsx'
@@ -16,8 +17,25 @@ export interface AccountFormsProps {
   message?: string
   messageId?: string
   defaultEmail?: string
+  /** "Sign in with TSP" (OpenSignInOptions.tsp): TSP's badge and wording, and a note on what it really signs in to. */
+  tsp?: boolean
   /** Draws the form's heading: the dialog's title, or the page's h1 on /sign-in. */
   Heading: ComponentType<{ children: ReactNode }>
+}
+
+/** TSP's mark, as on the map-first finder's screens: its letters on a navy disc. */
+export function TspBadge({ small = false }: { small?: boolean }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={cx(
+        'grid flex-none place-items-center rounded-full bg-[#0b2a5b] font-bold tracking-[0.02em] text-white',
+        small ? 'size-6 text-[0.5625rem]' : 'size-9 text-12',
+      )}
+    >
+      TSP
+    </span>
+  )
 }
 
 /** Sign in or create an account, for the sign-in dialog and the /sign-in page alike. */
@@ -28,6 +46,7 @@ export function AccountForms({
   message,
   messageId,
   defaultEmail,
+  tsp = false,
   Heading,
 }: AccountFormsProps) {
   const en = useCopy()
@@ -40,6 +59,28 @@ export function AccountForms({
   const switchTo = (next: SignInView, start?: { email?: string; message?: string }) => {
     setSwitched(true)
     onViewChange(next, start)
+  }
+
+  if (tsp) {
+    return (
+      <>
+        <div className="mb-3 flex items-center gap-2.5">
+          <TspBadge />
+          <span className="text-14 font-semibold text-muted">{copy.tsp.name}</span>
+        </div>
+        <Heading>{copy.tsp.heading}</Heading>
+        <p className={formStyle.lead}>{copy.tsp.lead}</p>
+        {message && (
+          <p id={messageId} role="status" className={formStyle.message}>
+            {message}
+          </p>
+        )}
+        <SignInForm defaultEmail={defaultEmail} focusFirstField={false} onSignedIn={onSignedIn} />
+        <p className={formStyle.note}>
+          <strong>{copy.tsp.demoHeading}</strong> {copy.tsp.demo}
+        </p>
+      </>
+    )
   }
 
   return (
