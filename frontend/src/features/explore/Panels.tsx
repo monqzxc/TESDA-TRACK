@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Button, Input, Label, Switch, TextField, ToggleButton } from 'react-aria-components'
-import { Link, useNavigate } from 'react-router'
+import { useNavigate } from 'react-router'
 import { Icon, type IconName } from '../../components/Icon.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
@@ -643,10 +643,6 @@ export function CenterCard({
     (program) =>
       program.scholarship_available && (!codes.size || codes.has(program.qualification.code)),
   )
-  const details = `${paths.training}?${new URLSearchParams({
-    center: center.id,
-    ...(listedFor.length === 1 ? { qualification: listedFor[0].code } : {}),
-  })}`
   // Each way to get in touch shows its number or address, as the map's popup does.
   const contacts: {
     key: string
@@ -857,17 +853,6 @@ export function CenterCard({
         </section>
       )}
 
-      <Link
-        className="group inline-flex items-center gap-1.5 self-start text-14 font-semibold text-blue"
-        to={details}
-      >
-        <Icon name="map" />
-        {copy.details}
-        <Icon
-          name="arrowRight"
-          className="transition-transform duration-200 group-hover:translate-x-0.5"
-        />
-      </Link>
       {!routed && center.distanceKm !== null && <p className={note}>{en.explore.notes.times}</p>}
     </article>
   )

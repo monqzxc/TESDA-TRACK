@@ -2278,7 +2278,6 @@ export const en = {
       call: 'Call',
       email: 'Email',
       website: 'Website',
-      details: 'Open in Training & Assessment',
       readiness: 'Check my readiness',
       readinessFor: (name: string) => `For ${name}`,
       contact: 'Contact',
