@@ -106,6 +106,23 @@ class Settings(BaseSettings):
     # learners behind one address (a training center's network) share the limit.
     feedback_rate_limit_per_minute: int = Field(default=30, ge=1, description="Feedback answers per client address")
 
+    # The Explore map's supply-and-demand analysis can be rewritten as a short paragraph by Claude
+    # (GET /api/v1/labor-market/outlook/summary). Off by default: turning it on sends the qualification's name, region
+    # names and the public counts to Anthropic's API, never a learner's words, account or coordinates. Each selection
+    # is written once and kept for outlook_summary_cache_ttl_seconds; without a key, or when Claude can't be
+    # reached, the analysis written by fixed rules is shown instead.
+    # A demo deployment whose only centers are the seed's example sites can count them as supply, so the map has
+    # something to compare; the analysis then says the counts include examples. Leave off wherever real records exist.
+    outlook_include_example_sites: bool = False
+    outlook_ai_summary_enabled: bool = False
+    anthropic_api_key: SecretStr | None = None
+    outlook_summary_model: str = Field(default="claude-opus-5-5", min_length=1, max_length=100)
+    outlook_summary_timeout_seconds: float = Field(default=30, gt=0)
+    outlook_summary_cache_ttl_seconds: int = Field(default=7 * 24 * 3600, ge=0)
+    outlook_summary_rate_limit_per_minute: int = Field(default=6, ge=1, description="New summaries per client address")
+    outlook_summary_upstream_per_minute: int = Field(default=30, ge=1,
+                                                     description="New summaries asked of Claude, all clients")
+
     # CARTO basemaps key for the center map's default style; empty keeps the map on OpenStreetMap tiles. Not a
     # secret: browsers send it with every tile request, so restrict it to the deployment's domain in CARTO.
     carto_api: str = ""
@@ -148,7 +165,7 @@ class Settings(BaseSettings):
     tsp_suggestions_enabled: bool = False
 
     @field_validator("mcp_token_secret", "hercules_base_url", "tracker_client_id", "tracker_client_secret",
-                     mode="before")
+                     "anthropic_api_key", mode="before")
     @classmethod
     def empty_secret_is_unset(cls, value):
         return value or None
@@ -173,6 +190,12 @@ class Settings(BaseSettings):
         local = self.environment != "production" and url.startswith("http://")
         if url and not (url.startswith("https://") or local):
             raise ValueError("MAP_TILES_URL must be an https:// address.")
+        return self
+
+    @model_validator(mode="after")
+    def outlook_summary_has_a_key(self):
+        if self.outlook_ai_summary_enabled and not self.anthropic_api_key:
+            raise ValueError("Set ANTHROPIC_API_KEY before OUTLOOK_AI_SUMMARY_ENABLED.")
         return self
 
     @model_validator(mode="after")

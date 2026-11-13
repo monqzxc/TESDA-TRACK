@@ -53,6 +53,7 @@ def create_app() -> FastAPI:
     app.state.skills_bridge_limits = skills_bridge.BridgeLimits()
     app.state.route_limits = routes.RouteLimits()
     app.state.feedback_limits = RateLimiter()
+    app.state.outlook_summary_limits = RateLimiter()
     app.state.oauth_limits = oauth.new_limits()
     app.state.tsp_sign_in_limits = RateLimiter()
     routes.hide_coordinates_in_access_log()

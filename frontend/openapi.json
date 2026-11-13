@@ -6435,6 +6435,184 @@
         }
       }
     },
+    "/api/v1/labor-market/outlook": {
+      "get": {
+        "tags": [
+          "labor market"
+        ],
+        "summary": "Qualification Outlook View",
+        "description": "One qualification across the regions: posting records beside the recorded training and assessment centers,\neach region's balance of the two, and the analysis of `region_code` in plain words. `home_region_code` is the\nlearner's own region and `relocate` whether they would move; both only change the wording. No sign-in needed,\nand no learner input or coordinates are read.",
+        "operationId": "qualification_outlook_view_api_v1_labor_market_outlook_get",
+        "parameters": [
+          {
+            "name": "qualification_code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 40,
+              "title": "Qualification Code"
+            }
+          },
+          {
+            "name": "region_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 20
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Region Code"
+            }
+          },
+          {
+            "name": "home_region_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 20
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Home Region Code"
+            }
+          },
+          {
+            "name": "relocate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Relocate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualificationOutlook"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labor-market/outlook/summary": {
+      "get": {
+        "tags": [
+          "labor market"
+        ],
+        "summary": "Qualification Outlook Summary",
+        "description": "The outlook's analysis as one short paragraph. `source` is \"ai\" when Claude wrote it from the counts\n(OUTLOOK_AI_SUMMARY_ENABLED), and \"rules\" when AI summaries are off, busy or unavailable: the same analysis in\nthe rules' own words.",
+        "operationId": "qualification_outlook_summary_api_v1_labor_market_outlook_summary_get",
+        "parameters": [
+          {
+            "name": "qualification_code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 40,
+              "title": "Qualification Code"
+            }
+          },
+          {
+            "name": "region_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 20
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Region Code"
+            }
+          },
+          {
+            "name": "home_region_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 20
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Home Region Code"
+            }
+          },
+          {
+            "name": "relocate",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false,
+              "title": "Relocate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OutlookSummary"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/recommendations/service-access": {
       "post": {
         "tags": [
@@ -7377,6 +7555,116 @@
           "posted_between"
         ],
         "title": "AreaJobs"
+      },
+      "AreaOutlook": {
+        "properties": {
+          "region_code": {
+            "type": "string",
+            "title": "Region Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "latitude": {
+            "type": "number",
+            "title": "Latitude"
+          },
+          "longitude": {
+            "type": "number",
+            "title": "Longitude"
+          },
+          "posting_count": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Posting Count",
+            "description": "Distinct dated posting records with a reviewed link to the qualification"
+          },
+          "titles": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Titles",
+            "description": "The most-posted job titles here, at most three"
+          },
+          "training_sites": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Training Sites",
+            "description": "Recorded centers with an active program for it"
+          },
+          "assessment_sites": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Assessment Sites",
+            "description": "Recorded centers with an open schedule or a registry accreditation for it"
+          },
+          "example_sites": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Example Sites",
+            "description": "Example placeholders listing it: on the map, never counted as supply"
+          },
+          "demand_share": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Demand Share",
+            "description": "This region's share of the posting records, 0 to 1"
+          },
+          "supply_share": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Supply Share",
+            "description": "This region's share of the recorded centers, 0 to 1"
+          },
+          "balance": {
+            "type": "string",
+            "enum": [
+              "more_demand",
+              "balanced",
+              "more_supply",
+              "demand_only",
+              "supply_only",
+              "no_records"
+            ],
+            "title": "Balance"
+          },
+          "limited": {
+            "type": "boolean",
+            "title": "Limited",
+            "description": "Too few records for more than a rough signal"
+          }
+        },
+        "type": "object",
+        "required": [
+          "region_code",
+          "name",
+          "latitude",
+          "longitude",
+          "posting_count",
+          "titles",
+          "training_sites",
+          "assessment_sites",
+          "example_sites",
+          "demand_share",
+          "supply_share",
+          "balance",
+          "limited"
+        ],
+        "title": "AreaOutlook"
       },
       "AreaQualification": {
         "properties": {
@@ -12836,6 +13124,149 @@
         "title": "OriginSignals",
         "description": "How far TSP webview goals get by where they came from. Counts are of requests and answers, not learners."
       },
+      "OutlookInsight": {
+        "properties": {
+          "headline": {
+            "type": "string",
+            "title": "Headline"
+          },
+          "points": {
+            "items": {
+              "$ref": "#/components/schemas/OutlookPoint"
+            },
+            "type": "array",
+            "title": "Points"
+          }
+        },
+        "type": "object",
+        "required": [
+          "headline",
+          "points"
+        ],
+        "title": "OutlookInsight",
+        "description": "The analysis in plain words, written by fixed rules from the counts above."
+      },
+      "OutlookPoint": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "location",
+              "demand",
+              "supply",
+              "balance",
+              "relocation"
+            ],
+            "title": "Kind"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "text"
+        ],
+        "title": "OutlookPoint"
+      },
+      "OutlookQualification": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "name"
+        ],
+        "title": "OutlookQualification"
+      },
+      "OutlookSummary": {
+        "properties": {
+          "source": {
+            "type": "string",
+            "enum": [
+              "ai",
+              "rules"
+            ],
+            "title": "Source"
+          },
+          "model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "source",
+          "text"
+        ],
+        "title": "OutlookSummary",
+        "description": "The same analysis as a short paragraph: AI-written from the counts, or the rules' own words when AI is off."
+      },
+      "OutlookTotals": {
+        "properties": {
+          "posting_count": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Posting Count"
+          },
+          "employer_count": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Employer Count"
+          },
+          "training_sites": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Training Sites"
+          },
+          "assessment_sites": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Assessment Sites"
+          },
+          "regions_with_postings": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Regions With Postings"
+          },
+          "regions_with_sites": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Regions With Sites"
+          }
+        },
+        "type": "object",
+        "required": [
+          "posting_count",
+          "employer_count",
+          "training_sites",
+          "assessment_sites",
+          "regions_with_postings",
+          "regions_with_sites"
+        ],
+        "title": "OutlookTotals"
+      },
       "Overview": {
         "properties": {
           "learners": {
@@ -14292,6 +14723,128 @@
           "qualification"
         ],
         "title": "QualificationFeedback"
+      },
+      "QualificationOutlook": {
+        "properties": {
+          "qualification": {
+            "$ref": "#/components/schemas/OutlookQualification"
+          },
+          "region_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Code",
+            "description": "The region the analysis is about, or null for the whole country"
+          },
+          "home_region_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Home Region Code",
+            "description": "The learner's own region, when they gave one"
+          },
+          "relocate": {
+            "type": "boolean",
+            "title": "Relocate"
+          },
+          "areas": {
+            "items": {
+              "$ref": "#/components/schemas/AreaOutlook"
+            },
+            "type": "array",
+            "title": "Areas",
+            "description": "Every region, in the regions' usual order"
+          },
+          "totals": {
+            "$ref": "#/components/schemas/OutlookTotals"
+          },
+          "alternatives": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Alternatives",
+            "description": "Other regions where recorded demand is strongest against supply, best first, at most three"
+          },
+          "training_site_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Training Site Ids",
+            "description": "The training providers counted as supply"
+          },
+          "assessment_site_ids": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array",
+            "title": "Assessment Site Ids",
+            "description": "The assessment centers counted as supply"
+          },
+          "snapshot_dates": {
+            "items": {
+              "type": "string",
+              "format": "date"
+            },
+            "type": "array",
+            "title": "Snapshot Dates"
+          },
+          "insight": {
+            "$ref": "#/components/schemas/OutlookInsight"
+          },
+          "includes_example_sites": {
+            "type": "boolean",
+            "title": "Includes Example Sites",
+            "description": "A demo deployment counted its example placeholders as supply",
+            "default": false
+          },
+          "ai_summary_available": {
+            "type": "boolean",
+            "title": "Ai Summary Available",
+            "description": "Whether /labor-market/outlook/summary can return an AI-written summary"
+          },
+          "method_version": {
+            "type": "string",
+            "const": "qualification-outlook-v1",
+            "title": "Method Version",
+            "default": "qualification-outlook-v1"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "qualification",
+          "region_code",
+          "home_region_code",
+          "relocate",
+          "areas",
+          "totals",
+          "alternatives",
+          "training_site_ids",
+          "assessment_site_ids",
+          "snapshot_dates",
+          "insight",
+          "ai_summary_available",
+          "limitations"
+        ],
+        "title": "QualificationOutlook"
       },
       "QualificationPublic": {
         "properties": {

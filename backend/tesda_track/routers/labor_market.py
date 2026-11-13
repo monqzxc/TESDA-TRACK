@@ -1,6 +1,7 @@
 import uuid
-from typing import Literal
-from fastapi import APIRouter, Depends, Query
+from functools import lru_cache
+from typing import Annotated, Literal
+from fastapi import APIRouter, Depends, Query, Request
 from sqlalchemy import func
 from sqlmodel import select
 from tesda_track.db import SessionDep
@@ -18,6 +19,10 @@ from tesda_track.schemas.area_qualifications import AreaQualifications
 from tesda_track.services import area_qualifications
 from tesda_track.services import area_jobs
 from tesda_track.schemas.area_jobs import AreaJobs
+from tesda_track.config import Settings, get_settings
+from tesda_track.schemas.outlook import OutlookSummary, QualificationOutlook
+from tesda_track.services import outlook_summary, qualification_outlook
+from tesda_track.services.rate_limit import client_address_key
 from tesda_track.schemas.labor_market import ReviewInput, DatasetStatusInput
 from tesda_track.schemas.records import GoalCreate, GoalUpdate, GoalPublic
 from tesda_track.errors import InvalidRequestError
@@ -29,6 +34,23 @@ admin_router = APIRouter(
     dependencies=[Depends(require_permission("labor-market:review"))],
 )
 goal_router = APIRouter(prefix="/me/goals", tags=["goals"])
+SettingsDep = Annotated[Settings, Depends(get_settings)]
+QualificationCode = Annotated[str, Query(min_length=1, max_length=40)]
+RegionCode = Annotated[str | None, Query(max_length=20)]
+
+
+@lru_cache
+def _writer_for(api_key: str, model: str, timeout_seconds: float) -> outlook_summary.ClaudeWriter:
+    # One client for every request, so its connections are reused.
+    return outlook_summary.ClaudeWriter(api_key, model, timeout_seconds)
+
+
+def summary_writer(settings: SettingsDep) -> outlook_summary.SummaryWriter | None:
+    """Claude, or None when the deployment hasn't turned AI-written summaries on."""
+    if not (settings.outlook_ai_summary_enabled and settings.anthropic_api_key):
+        return None
+    return _writer_for(settings.anthropic_api_key.get_secret_value(), settings.outlook_summary_model,
+                       settings.outlook_summary_timeout_seconds)
 
 
 @router.get("/indicators")
@@ -75,6 +97,53 @@ def area_job_evidence(
     offset: int = Query(default=0, ge=0),
 ) -> AreaJobs:
     return area_jobs.discover(session, region_code, locality, qualification_code, limit=limit, offset=offset)
+
+
+@router.get("/outlook", response_model=QualificationOutlook)
+def qualification_outlook_view(
+    session: SessionDep,
+    settings: SettingsDep,
+    writer: Annotated[outlook_summary.SummaryWriter | None, Depends(summary_writer)],
+    qualification_code: QualificationCode,
+    region_code: RegionCode = None,
+    home_region_code: RegionCode = None,
+    relocate: bool = False,
+) -> QualificationOutlook:
+    """One qualification across the regions: posting records beside the recorded training and assessment centers,
+    each region's balance of the two, and the analysis of `region_code` in plain words. `home_region_code` is the
+    learner's own region and `relocate` whether they would move; both only change the wording. No sign-in needed,
+    and no learner input or coordinates are read."""
+    return qualification_outlook.build(session, qualification_code, region_code, home_region_code, relocate,
+                                       ai_summary_available=writer is not None,
+                                       include_examples=settings.outlook_include_example_sites)
+
+
+@router.get("/outlook/summary", response_model=OutlookSummary)
+def qualification_outlook_summary(
+    request: Request,
+    session: SessionDep,
+    settings: SettingsDep,
+    writer: Annotated[outlook_summary.SummaryWriter | None, Depends(summary_writer)],
+    qualification_code: QualificationCode,
+    region_code: RegionCode = None,
+    home_region_code: RegionCode = None,
+    relocate: bool = False,
+) -> OutlookSummary:
+    """The outlook's analysis as one short paragraph. `source` is "ai" when Claude wrote it from the counts
+    (OUTLOOK_AI_SUMMARY_ENABLED), and "rules" when AI summaries are off, busy or unavailable: the same analysis in
+    the rules' own words."""
+    outlook = qualification_outlook.build(session, qualification_code, region_code, home_region_code, relocate,
+                                          ai_summary_available=writer is not None,
+                                          include_examples=settings.outlook_include_example_sites)
+    limits = request.app.state.outlook_summary_limits
+
+    def allow_request() -> bool:
+        # A learner behind a busy address, or a burst from everyone, reads the rules' words rather than waiting.
+        return not (limits.hit(client_address_key(request), settings.outlook_summary_rate_limit_per_minute)
+                    or limits.hit("*", settings.outlook_summary_upstream_per_minute))
+
+    return outlook_summary.summarize(session, outlook, writer, allow_request=allow_request,
+                                     ttl_seconds=settings.outlook_summary_cache_ttl_seconds)
 
 
 @admin_router.get("/mappings")

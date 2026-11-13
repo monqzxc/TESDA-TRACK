@@ -45,6 +45,11 @@ x-backend-environment: &backend-environment
   MAPTILER_KEY: ${MAPTILER_KEY-}
   MAP_TILES_URL: ${MAP_TILES_URL-}
   MAP_3D_ENABLED: ${MAP_3D_ENABLED:-true}
+  # The Career Map's supply-and-demand analysis (docs/explore-demand.md): AI-written summaries are off without both.
+  OUTLOOK_AI_SUMMARY_ENABLED: ${OUTLOOK_AI_SUMMARY_ENABLED:-false}
+  ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY:-}
+  OUTLOOK_SUMMARY_MODEL: ${OUTLOOK_SUMMARY_MODEL:-claude-opus-5-5}
+  OUTLOOK_INCLUDE_EXAMPLE_SITES: ${OUTLOOK_INCLUDE_EXAMPLE_SITES:-false}
   # Partner MCP server; PUBLIC_BASE_URL must be the address Caddy serves, or the API refuses the requests (421).
   PUBLIC_BASE_URL: ${PUBLIC_BASE_URL:-https://${DOMAIN:-localhost}}
   MCP_ENABLED: ${MCP_ENABLED:-true}

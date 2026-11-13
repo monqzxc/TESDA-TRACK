@@ -1851,6 +1851,51 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/labor-market/outlook": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Qualification Outlook View
+         * @description One qualification across the regions: posting records beside the recorded training and assessment centers,
+         *     each region's balance of the two, and the analysis of `region_code` in plain words. `home_region_code` is the
+         *     learner's own region and `relocate` whether they would move; both only change the wording. No sign-in needed,
+         *     and no learner input or coordinates are read.
+         */
+        get: operations["qualification_outlook_view_api_v1_labor_market_outlook_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/labor-market/outlook/summary": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Qualification Outlook Summary
+         * @description The outlook's analysis as one short paragraph. `source` is "ai" when Claude wrote it from the counts
+         *     (OUTLOOK_AI_SUMMARY_ENABLED), and "rules" when AI summaries are off, busy or unavailable: the same analysis in
+         *     the rules' own words.
+         */
+        get: operations["qualification_outlook_summary_api_v1_labor_market_outlook_summary_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/recommendations/service-access": {
         parameters: {
             query?: never;
@@ -2131,6 +2176,62 @@ export interface components {
             source_url: string;
             /** Limitations */
             limitations?: string[];
+        };
+        /** AreaOutlook */
+        AreaOutlook: {
+            /** Region Code */
+            region_code: string;
+            /** Name */
+            name: string;
+            /** Latitude */
+            latitude: number;
+            /** Longitude */
+            longitude: number;
+            /**
+             * Posting Count
+             * @description Distinct dated posting records with a reviewed link to the qualification
+             */
+            posting_count: number;
+            /**
+             * Titles
+             * @description The most-posted job titles here, at most three
+             */
+            titles: string[];
+            /**
+             * Training Sites
+             * @description Recorded centers with an active program for it
+             */
+            training_sites: number;
+            /**
+             * Assessment Sites
+             * @description Recorded centers with an open schedule or a registry accreditation for it
+             */
+            assessment_sites: number;
+            /**
+             * Example Sites
+             * @description Example placeholders listing it: on the map, never counted as supply
+             */
+            example_sites: number;
+            /**
+             * Demand Share
+             * @description This region's share of the posting records, 0 to 1
+             */
+            demand_share: number | null;
+            /**
+             * Supply Share
+             * @description This region's share of the recorded centers, 0 to 1
+             */
+            supply_share: number | null;
+            /**
+             * Balance
+             * @enum {string}
+             */
+            balance: "more_demand" | "balanced" | "more_supply" | "demand_only" | "supply_only" | "no_records";
+            /**
+             * Limited
+             * @description Too few records for more than a rough signal
+             */
+            limited: boolean;
         };
         /** AreaQualification */
         AreaQualification: {
@@ -3929,6 +4030,63 @@ export interface components {
             /** Acceptance Rate */
             acceptance_rate: number | null;
         };
+        /**
+         * OutlookInsight
+         * @description The analysis in plain words, written by fixed rules from the counts above.
+         */
+        OutlookInsight: {
+            /** Headline */
+            headline: string;
+            /** Points */
+            points: components["schemas"]["OutlookPoint"][];
+        };
+        /** OutlookPoint */
+        OutlookPoint: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "location" | "demand" | "supply" | "balance" | "relocation";
+            /** Text */
+            text: string;
+        };
+        /** OutlookQualification */
+        OutlookQualification: {
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
+        };
+        /**
+         * OutlookSummary
+         * @description The same analysis as a short paragraph: AI-written from the counts, or the rules' own words when AI is off.
+         */
+        OutlookSummary: {
+            /**
+             * Source
+             * @enum {string}
+             */
+            source: "ai" | "rules";
+            /** Model */
+            model?: string | null;
+            /** Text */
+            text: string;
+        };
+        /** OutlookTotals */
+        OutlookTotals: {
+            /** Posting Count */
+            posting_count: number;
+            /** Employer Count */
+            employer_count: number;
+            /** Training Sites */
+            training_sites: number;
+            /** Assessment Sites */
+            assessment_sites: number;
+            /** Regions With Postings */
+            regions_with_postings: number;
+            /** Regions With Sites */
+            regions_with_sites: number;
+        };
         /** Overview */
         Overview: {
             /** Learners */
@@ -4433,6 +4591,65 @@ export interface components {
             /** Satisfied */
             satisfied: number;
             qualification: components["schemas"]["QualificationSummary"];
+        };
+        /** QualificationOutlook */
+        QualificationOutlook: {
+            qualification: components["schemas"]["OutlookQualification"];
+            /**
+             * Region Code
+             * @description The region the analysis is about, or null for the whole country
+             */
+            region_code: string | null;
+            /**
+             * Home Region Code
+             * @description The learner's own region, when they gave one
+             */
+            home_region_code: string | null;
+            /** Relocate */
+            relocate: boolean;
+            /**
+             * Areas
+             * @description Every region, in the regions' usual order
+             */
+            areas: components["schemas"]["AreaOutlook"][];
+            totals: components["schemas"]["OutlookTotals"];
+            /**
+             * Alternatives
+             * @description Other regions where recorded demand is strongest against supply, best first, at most three
+             */
+            alternatives: string[];
+            /**
+             * Training Site Ids
+             * @description The training providers counted as supply
+             */
+            training_site_ids: number[];
+            /**
+             * Assessment Site Ids
+             * @description The assessment centers counted as supply
+             */
+            assessment_site_ids: number[];
+            /** Snapshot Dates */
+            snapshot_dates: string[];
+            insight: components["schemas"]["OutlookInsight"];
+            /**
+             * Includes Example Sites
+             * @description A demo deployment counted its example placeholders as supply
+             * @default false
+             */
+            includes_example_sites: boolean;
+            /**
+             * Ai Summary Available
+             * @description Whether /labor-market/outlook/summary can return an AI-written summary
+             */
+            ai_summary_available: boolean;
+            /**
+             * Method Version
+             * @default qualification-outlook-v1
+             * @constant
+             */
+            method_version: "qualification-outlook-v1";
+            /** Limitations */
+            limitations: string[];
         };
         /** QualificationPublic */
         QualificationPublic: {
@@ -9839,6 +10056,74 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AreaJobs"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    qualification_outlook_view_api_v1_labor_market_outlook_get: {
+        parameters: {
+            query: {
+                qualification_code: string;
+                region_code?: string | null;
+                home_region_code?: string | null;
+                relocate?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QualificationOutlook"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    qualification_outlook_summary_api_v1_labor_market_outlook_summary_get: {
+        parameters: {
+            query: {
+                qualification_code: string;
+                region_code?: string | null;
+                home_region_code?: string | null;
+                relocate?: boolean;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OutlookSummary"];
                 };
             };
             /** @description Validation Error */
