@@ -4,13 +4,16 @@ import {
   useEffect,
   useId,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
+  useSyncExternalStore,
+  type CSSProperties,
   type FormEvent,
   type RefObject,
 } from 'react'
 import { Button, Input, Label, SearchField, ToggleButton } from 'react-aria-components'
-import { useLocation, useSearchParams } from 'react-router'
+import { NavLink, useLocation, useSearchParams } from 'react-router'
 import { useQualifications } from '../../api/queries.ts'
 import { failureMessage } from '../../auth/fields.tsx'
 import { Icon } from '../../components/Icon.tsx'
@@ -19,10 +22,13 @@ import { useSidebarStore } from '../../components/sidebarState.ts'
 import { PageHeading } from '../../components/PageHeading.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
+import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { matchPathway } from '../training/recommendationApi.ts'
 import { useTrainingStore } from '../training/state.ts'
+import type { DemandMapArea } from '../training/CenterMapTypes.ts'
 import { nearestRegion } from './explore.ts'
+import { OutlookBrief } from './OutlookBrief.tsx'
 import { CenterCard, LocationRow, NearbyPanel, ResultsPanel } from './Panels.tsx'
 import { useDemandStore, useExplore, useExploreStore } from './useExplore.ts'
 
@@ -33,12 +39,39 @@ const CenterMap = lazy(() => import('../training/CenterMap.tsx'))
 export type View = 'all' | 'assessment' | 'training' | 'demand'
 const VIEWS: readonly View[] = ['all', 'assessment', 'training', 'demand']
 
-const mapStandIn =
-  'm-0 grid h-full min-h-[320px] place-items-center rounded-18 border border-border bg-map-water text-15 text-muted'
+const mapStandIn = 'm-0 grid h-full place-items-center bg-map-water text-15 text-muted'
 
 // The search bar's own buttons: the burger, clear and search.
 const iconButton =
   'grid size-9 flex-none cursor-pointer place-items-center rounded-8 border-0 bg-transparent text-muted data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:bg-soft data-hovered:text-navy data-pressed:bg-chip'
+
+/** An element's height as it changes, for the room it takes over the map: 0 until it's on the page. */
+function useHeight(): [(node: HTMLElement | null) => void, number] {
+  const [node, setNode] = useState<HTMLElement | null>(null)
+  const [height, setHeight] = useState(0)
+  useEffect(() => {
+    if (!node || typeof ResizeObserver === 'undefined') return
+    const observer = new ResizeObserver(() => setHeight(node.offsetHeight))
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [node])
+  return [setNode, node ? height : 0]
+}
+
+const TABLET_UP = '(min-width: 768px)'
+
+/** Whether the window is a tablet's width or more, where the results are a panel beside the map, not a sheet. */
+function useTabletUp() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const list = typeof window.matchMedia === 'function' ? window.matchMedia(TABLET_UP) : null
+      list?.addEventListener('change', onChange)
+      return () => list?.removeEventListener('change', onChange)
+    },
+    () => (typeof window.matchMedia === 'function' ? window.matchMedia(TABLET_UP).matches : true),
+    () => true,
+  )
+}
 
 /** With reduced motion nothing slides, so there's no transition's end to wait for. */
 function prefersReducedMotion() {
@@ -49,11 +82,20 @@ function prefersReducedMotion() {
 }
 
 /**
- * The map-first center finder, a demo at /explore (markdowns/TESDA-TRACK-Location-First-Implementation-Plan.md).
+ * The map-first center finder at /explore (markdowns/TESDA-TRACK-Location-First-Implementation-Plan.md). The map
+ * covers the window at every size, as a maps app does, and stays on the Philippines; everything else floats over it:
+ * the search bar and the chips at the top, the results beside it (a sheet rising from the bottom edge on a phone),
+ * and the brief along the bottom.
+ *
  * Find my pathway and Training & Assessment in one page: the learner types what they can do, sees the
  * qualifications that fit (the finder's own matching), and for each the nearest assessment and training centers on
  * a map, with an estimated travel time. A qualification opens the finder's readiness check and pathway. It uses the
  * existing matching and registry APIs, plus imported labor-market evidence for jobs and qualifications by area.
+ *
+ * With a qualification in focus (the first match, or one chosen in the demand panel) the page shows its supply and
+ * demand: a brief under the map with the analysis of the learner's area and the centers recommended from where they
+ * are, starred on the map; and, in the demand view, the regions shaded by its posting records with their balance
+ * marks and its training and assessment centers pinned over them.
  */
 export default function ExplorePage() {
   const en = useCopy()
@@ -160,8 +202,23 @@ export default function ExplorePage() {
   const routeTo = useTrainingStore((state) => state.routeTo)
   const locatingAny = useTrainingStore((state) => state.locating)
   const store = useTrainingStore.getState
+  // How far the brief and, on a phone, the results sheet reach up over the map: its buttons, legend and credits
+  // ride above them, and its camera keeps the country clear of them.
+  const [briefRef, briefHeight] = useHeight()
+  const [sheetRef, sheetHeight] = useHeight()
+  const tabletUp = useTabletUp()
+  // The brief sits 12px off the bottom edge. A phone's open results sheet covers it and reaches up in its place.
+  const bottomReach = tabletUp || collapsed ? (briefHeight ? briefHeight + 12 : 0) : sheetHeight
+  // The app's floating Help button rides above whichever it is (GuidedHelp reads --help-lift).
+  useEffect(() => {
+    document.documentElement.style.setProperty('--help-lift', `${bottomReach}px`)
+    return () => {
+      document.documentElement.style.removeProperty('--help-lift')
+    }
+  }, [bottomReach])
 
   const { centers, search, matches, reference, location, config } = explore
+  const focusCode = explore.demandCode
   const codes = new Set(matches.map((match) => match.qualification.code))
   // With a search, the pins are the centers listing a matched qualification; without one, every center.
   const listed = search
@@ -171,12 +228,31 @@ export default function ExplorePage() {
         ),
       )
     : centers
+  // The demand view pins where the qualification in focus is offered, over the regions where it is in demand;
+  // without one it shades all recorded jobs, and has no centers to show.
   const pins =
     view === 'demand'
-      ? []
+      ? explore.supply
       : view === 'training' || view === 'assessment'
         ? listed.filter((center) => center.kind === view)
         : listed
+  const outlookAreas = explore.outlook.data?.areas
+  const jobAreas = explore.demandMap.data?.areas
+  const demandAreas = useMemo((): DemandMapArea[] | undefined => {
+    if (view !== 'demand') return undefined
+    if (!focusCode) return jobAreas ?? []
+    return (outlookAreas ?? []).flatMap((area) => {
+      const sites = area.training_sites + area.assessment_sites
+      if (!area.posting_count && !sites) return []
+      const { region_code, name, latitude, longitude, posting_count, titles, balance } = area
+      return [
+        { region_code, name, latitude, longitude, posting_count, titles, balance, centers: sites },
+      ]
+    })
+  }, [view, focusCode, outlookAreas, jobAreas])
+  const demandDates = focusCode
+    ? explore.outlook.data?.snapshot_dates
+    : explore.demandMap.data?.snapshot_dates
   const selected = centers.find((center) => center.id === selectedId) ?? null
 
   const canRoute = Boolean(config?.routing_enabled && location)
@@ -220,19 +296,30 @@ export default function ExplorePage() {
   }, [selectedId, motion])
 
   return (
-    // Its own stacking context: the panel's and chips' z-index lift them over the map, not over the page's dialogs.
-    <div className="isolate flex flex-col gap-3 md:relative md:block md:h-[max(560px,calc(100dvh-4.25rem))]">
+    // The window, edge to edge. Its own stacking context: what floats here is lifted over the map, not over the
+    // page's dialogs.
+    <div className="relative isolate h-dvh w-full overflow-hidden bg-map-water">
       <PageHeading className="sr-only">{en.pages.explore.heading}</PageHeading>
 
-      {/* The map fills the page; the panel and the chips float over it. On a phone they stack. */}
       <div
         className={cx(
-          'h-[45dvh] min-h-[300px] [--center-map-height:100%] md:absolute md:inset-0 md:h-auto',
-          // The map's status line sits under the search bar and the chips, not behind them: 12px + 46px + 12px.
-          'md:[--map-status-top:70px]',
-          // Pins and the camera keep clear of the open panel: 12px + 360px + 16px.
-          !collapsed && 'md:[--map-overlay-inset:388px]',
+          'absolute inset-0 [--center-map-height:100%]',
+          // The map is the page here, not a card on it: no rounded corners, no border, no cap on a phone's height.
+          '[&_.center-map]:h-full! [&_.center-map]:rounded-none [&_.center-map]:border-0',
+          // On a phone the search bar and the chips run across the top (12 + 46 + 8 + 40px): the map's buttons and
+          // status line start under them. From a tablet up they sit left of the buttons, so only the status moves.
+          '[--map-overlay-top:106px] [--map-status-top:120px] md:[--map-overlay-top:0px] md:[--map-status-top:70px]',
+          // The Help button floats in the window's bottom right corner: a button of the map's there sits above it.
+          '[--map-corner-clear:52px]',
         )}
+        // Along the bottom: the brief, or on a phone the open results sheet.
+        // And from the left, the open panel: 12px + 360px + 16px. Pins and the camera keep clear of all three.
+        style={
+          {
+            '--map-overlay-bottom': `${bottomReach}px`,
+            '--map-overlay-inset': tabletUp && !collapsed ? '388px' : '0px',
+          } as CSSProperties
+        }
       >
         <LoadBoundary fallback={<p className={mapStandIn}>{en.training.map.failed}</p>}>
           <Suspense
@@ -244,10 +331,12 @@ export default function ExplorePage() {
           >
             <CenterMap
               centers={pins}
-              demandAreas={view === 'demand' ? (explore.demandMap.data?.areas ?? []) : undefined}
+              demandAreas={demandAreas}
               demandRegion={explore.demandRegion}
-              demandSnapshotDates={explore.demandMap.data?.snapshot_dates}
+              demandOverview={explore.relocate}
+              demandSnapshotDates={demandDates}
               onDemandArea={(code) => useDemandStore.getState().setRegion(code)}
+              recommended={explore.recommendedIds}
               selectedId={selectedId}
               focus={focus}
               reference={reference}
@@ -275,6 +364,23 @@ export default function ExplorePage() {
         </LoadBoundary>
       </div>
 
+      {/* Along the bottom, beside the open panel: the qualification in focus, analysed for the learner's area. On a
+          phone the results sheet takes its place while it's open. */}
+      <OutlookBrief
+        ref={briefRef}
+        explore={explore}
+        view={view}
+        onView={(next) => {
+          setView(next)
+          setSelectedId(null)
+        }}
+        onSelect={(id, code) => select(id, { onMap: true, code })}
+        className={cx(
+          'absolute right-3 bottom-3 left-3',
+          !collapsed && 'max-md:hidden md:left-[388px]',
+        )}
+      />
+
       <Chips
         view={view}
         onView={(next) => {
@@ -287,13 +393,16 @@ export default function ExplorePage() {
       <section
         aria-label={copy.search.label}
         className={cx(
-          // Folded, a slim search bar; open, a card with the search row at its top. Only the body below it scrolls.
-          'z-[1000] flex flex-col overflow-hidden rounded-12 border border-border bg-surface shadow-[0_4px_16px_rgb(var(--track-shadow-rgb)/0.14)] has-[[data-query]:focus]:border-blue max-md:order-first md:absolute md:top-3 md:left-3 md:max-h-[calc(100%-1.5rem)] md:w-[360px]',
+          // On a phone, a frame over the whole map that takes no presses itself: the search bar at its top, and the
+          // results in a sheet at its bottom.
+          'pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-[1000] flex flex-col',
+          // From a tablet up, one card at the top left. Folded, a slim search bar; open, the search row with the
+          // results under it. Only the body below the row scrolls.
+          'md:pointer-events-auto md:top-3 md:right-auto md:bottom-auto md:left-3 md:max-h-[calc(100%-1.5rem)] md:w-[360px] md:overflow-hidden md:rounded-12 md:border md:border-border md:bg-surface md:shadow-[0_4px_16px_rgb(var(--track-shadow-rgb)/0.14)] md:has-[[data-query]:focus]:border-blue',
           // Open, it runs the map's height. The height grows and shrinks with the body below (a min-height, since a
           // height can't move to or from auto).
           'motion-reduce:transition-none md:transition-[min-height] md:duration-300 md:ease-out',
           collapsed ? 'md:min-h-0' : 'md:min-h-[calc(100%-1.5rem)]',
-          view === 'demand' && 'max-md:max-h-[75dvh]',
         )}
       >
         <SearchBox
@@ -310,27 +419,35 @@ export default function ExplorePage() {
             setCollapsed(false)
           }}
         />
-        {/* The body slides open and shut: its one row grows from 0fr to 1fr, so it animates to its own height. */}
+        {/* The body slides open and shut: its one row grows from 0fr to 1fr, so it animates to its own height. On a
+            phone it is the sheet at the bottom of the screen. */}
         <div
           id={bodyId}
+          ref={sheetRef}
           inert={collapsed}
           onTransitionEnd={(event) => {
             if (event.target === event.currentTarget && !collapsed) setOpened(true)
           }}
           className={cx(
-            'grid min-h-0 transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none md:flex-1',
+            'pointer-events-auto mt-auto grid min-h-0 transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none md:mt-0 md:flex-1',
+            'max-md:rounded-t-16 max-md:bg-surface max-md:shadow-[0_-6px_20px_rgb(var(--track-shadow-rgb)/0.18)]',
             collapsed ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100',
           )}
         >
-          {/* No padding on the clipped row itself: it would stay showing when the row is 0 tall. */}
+          {/* No padding on the clipped row itself: it would stay showing when the row is 0 tall. A phone's sheet
+              stops at about half the screen, so the map stays in sight above it. */}
           <div
             ref={scroller}
             className={cx(
-              'min-h-0 overflow-hidden',
-              scrollable && (view === 'demand' ? 'overflow-y-auto' : 'md:overflow-y-auto'),
+              'min-h-0 overflow-hidden max-md:max-h-[52dvh]',
+              scrollable && 'overflow-y-auto',
             )}
           >
-            <div className="flex min-h-full flex-col gap-3 border-t border-rule p-4">
+            <div className="flex min-h-full flex-col gap-3 border-rule p-4 max-md:pt-2 md:border-t">
+              <span
+                aria-hidden="true"
+                className="mx-auto h-1 w-9 flex-none rounded-full bg-dash md:hidden"
+              />
               {!search && view !== 'demand' && (
                 <p className="m-0 text-13 leading-[1.5] text-muted">{copy.search.hint}</p>
               )}
@@ -395,6 +512,13 @@ export default function ExplorePage() {
                 <Icon name="chevron" className="rotate-180" />
                 {copy.panel.collapse}
               </Button>
+              {/* The page has no footer under the map, so its two lines are here. */}
+              <p className="m-0 text-center text-12 leading-[1.5] text-muted">
+                {en.footer.copyright}{' '}
+                <NavLink to={paths.privacy} className="font-semibold text-blue underline-offset-4">
+                  {en.privacy.link}
+                </NavLink>
+              </p>
             </div>
           </div>
         </div>
@@ -461,7 +585,14 @@ function SearchBox({
   }
 
   return (
-    <form onSubmit={(event) => void run(event)} className="flex flex-col">
+    <form
+      onSubmit={(event) => void run(event)}
+      className={cx(
+        'pointer-events-auto flex flex-none flex-col',
+        // On a phone the bar is a card of its own across the top; from a tablet up it is the panel's first row.
+        'max-md:mx-3 max-md:mt-3 max-md:rounded-12 max-md:border max-md:border-border max-md:bg-surface max-md:shadow-[0_4px_16px_rgb(var(--track-shadow-rgb)/0.14)] max-md:has-[[data-query]:focus]:border-blue',
+      )}
+    >
       {/* One slim bar: the burger, the box, and a search button at its end. */}
       <div className="flex h-11 items-center gap-0.5 px-1">
         <Button
@@ -541,8 +672,10 @@ function Chips({ view, onView }: { view: View; onView: (view: View) => void }) {
     <div
       role="group"
       aria-label={copy.label}
-      // The padding is room for the shadows and the hover lift: overflow clips them at the row's edges otherwise.
-      className="z-[1000] -m-2 flex gap-3 overflow-x-auto p-2 md:absolute md:top-3 md:left-[384px] md:flex-wrap md:overflow-visible"
+      // Under the search bar on a phone, where the row scrolls sideways; beside the panel from a tablet up, clear of
+      // the map's buttons on the right. The padding is room for the shadows and the hover lift: overflow clips them
+      // at the row's edges otherwise. The row itself takes no presses, so the map between the chips still moves.
+      className="pointer-events-none absolute top-[66px] right-0 left-3 z-[1000] -m-2 flex gap-2 overflow-x-auto p-2 md:top-3 md:right-[70px] md:left-[384px] md:flex-wrap md:gap-3 md:overflow-visible"
     >
       {chips.map((chip) => (
         <ToggleButton
@@ -550,7 +683,7 @@ function Chips({ view, onView }: { view: View; onView: (view: View) => void }) {
           isSelected={view === chip.view}
           onChange={(on) => onView(on ? chip.view : 'all')}
           className={cx(
-            'inline-flex min-h-10 shrink-0 cursor-pointer items-center gap-2 rounded-full border px-4 text-14 font-semibold whitespace-nowrap md:h-[46px]',
+            'pointer-events-auto inline-flex min-h-10 shrink-0 cursor-pointer items-center gap-2 rounded-full border px-4 text-14 font-semibold whitespace-nowrap md:h-[46px]',
             'shadow-[0_1px_2px_rgb(var(--track-shadow-rgb)/0.08),0_6px_16px_-4px_rgb(var(--track-shadow-rgb)/0.24)]',
             'transition-[transform,box-shadow,background-color,border-color] duration-200 ease-out',
             'data-hovered:shadow-[0_2px_4px_rgb(var(--track-shadow-rgb)/0.10),0_12px_24px_-6px_rgb(var(--track-shadow-rgb)/0.32)] motion-safe:data-hovered:-translate-y-0.5 motion-safe:data-hovered:scale-105 motion-safe:data-pressed:scale-100',

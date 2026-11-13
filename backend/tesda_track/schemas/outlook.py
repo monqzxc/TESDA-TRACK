@@ -48,7 +48,8 @@ class OutlookPoint(BaseModel):
 class OutlookInsight(BaseModel):
     """The analysis in plain words, written by fixed rules from the counts above."""
     headline: str
-    points: list[OutlookPoint]
+    summary: str = Field(description="The brief: where the learner is, the demand and supply there, and the verdict")
+    points: list[OutlookPoint] = Field(description="The same analysis point by point, with the numbers behind it")
 
 
 class QualificationOutlook(BaseModel):

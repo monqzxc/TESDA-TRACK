@@ -19,13 +19,18 @@ const GLYPHS: Record<CenterKind, string> = {
     'M15.7 9.6a3.7 3.7 0 1 1-7.4 0 3.7 3.7 0 1 1 7.4 0Z m-6.2 3 -1.3 4.9 3.8-1.8 3.8 1.8-1.3-4.9',
 }
 const SELECTED_SCALE = 1.3
-/** Room around a pin for its shadow, and around a selected pin for its glow. */
+/** Room around a pin for its shadow, and around a selected or recommended pin for its glow (and its star). */
 const PAD = 6
 const SELECTED_PAD = 10
+const RECOMMENDED_PAD = 10
 const PIXEL_RATIO = 2
+/** The gold of a recommended center's star (DemandLegend's RECOMMENDED_COLOR), and the star on a 24-unit grid. */
+const GOLD = '#f5a524'
+const STAR_PATH = 'm12 3.5 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8L12 3.5Z'
 /** How far a pin's tip is above its image's bottom edge: the layers move the image down by it (icon-offset). */
 export const PIN_TIP_BELOW = PAD + PIN.height - PIN.tip
 export const SELECTED_TIP_BELOW = SELECTED_PAD + (PIN.height - PIN.tip) * SELECTED_SCALE
+export const RECOMMENDED_TIP_BELOW = RECOMMENDED_PAD + PIN.height - PIN.tip
 /** The pins' and clusters' sizes on screen, for the buttons laid over them. */
 export const PIN_BOX = { width: PIN.width, height: PIN.height, tip: PIN.tip }
 export const SELECTED_BOX = {
@@ -61,19 +66,30 @@ function pixels(drawn: NonNullable<ReturnType<typeof canvas>>): DrawnImage {
   return { width: image.width, height: image.height, data: image.data }
 }
 
-/** A center's pin: its type's color with a white edge and glyph, shadowed, or glowing in its color when selected. */
-export function drawPin(kind: CenterKind, selected: boolean): DrawnImage | null {
+/**
+ * A center's pin: its type's color with a white edge and glyph, shadowed, or glowing in its color when selected. A
+ * recommended center's glows gold and carries a gold star on its shoulder: a shape as well as a color.
+ */
+export function drawPin(
+  kind: CenterKind,
+  selected: boolean,
+  recommended = false,
+): DrawnImage | null {
   const scale = selected ? SELECTED_SCALE : 1
-  const pad = selected ? SELECTED_PAD : PAD
+  const pad = selected ? SELECTED_PAD : recommended ? RECOMMENDED_PAD : PAD
   const drawn = canvas(PIN.width * scale + pad * 2, PIN.height * scale + pad * 2)
   if (!drawn) return null
   const { context } = drawn
   context.translate(pad, pad)
   context.scale(scale, scale)
   // Shadows aren't scaled with the drawing, so they're given in device pixels.
-  context.shadowColor = selected ? `${COLORS[kind]}aa` : 'rgba(16, 42, 86, 0.27)'
-  context.shadowBlur = (selected ? 7 : 3) * PIXEL_RATIO
-  context.shadowOffsetY = selected ? 0 : 3 * PIXEL_RATIO
+  context.shadowColor = selected
+    ? `${COLORS[kind]}aa`
+    : recommended
+      ? GOLD
+      : 'rgba(16, 42, 86, 0.27)'
+  context.shadowBlur = (selected || recommended ? 7 : 3) * PIXEL_RATIO
+  context.shadowOffsetY = selected || recommended ? 0 : 3 * PIXEL_RATIO
   const pin = new Path2D(PIN_PATH)
   context.fillStyle = COLORS[kind]
   context.fill(pin)
@@ -86,6 +102,22 @@ export function drawPin(kind: CenterKind, selected: boolean): DrawnImage | null 
   context.lineCap = 'round'
   context.lineJoin = 'round'
   context.stroke(new Path2D(GLYPHS[kind]))
+  if (recommended && !selected) {
+    // Back on the pin's own grid: a white disc at its top right, and the star on it (18px across).
+    context.translate(-5, -4.5)
+    context.translate(PIN.width - 12, -7)
+    context.beginPath()
+    context.arc(9, 9, 9, 0, Math.PI * 2)
+    context.fillStyle = '#ffffff'
+    context.fill()
+    context.scale(0.75, 0.75)
+    const star = new Path2D(STAR_PATH)
+    context.fillStyle = GOLD
+    context.fill(star)
+    context.strokeStyle = '#b45309'
+    context.lineWidth = 1.2
+    context.stroke(star)
+  }
   return pixels(drawn)
 }
 
@@ -113,12 +145,12 @@ export function drawCluster(count: string): DrawnImage | null {
   return pixels(drawn)
 }
 
-/** Adds an image the map asked for: "pin-training", "pin-assessment-selected", "cluster-12". */
+/** Adds an image the map asked for: "pin-training", "pin-assessment-selected", "pin-training-recommended", "cluster-12". */
 export async function addMarkerImage(map: MapLibreMap, id: string): Promise<void> {
   let image: DrawnImage | null = null
-  const pin = /^pin-(training|assessment)(-selected)?$/.exec(id)
+  const pin = /^pin-(training|assessment)(-selected|-recommended)?$/.exec(id)
   if (pin) {
-    image = drawPin(pin[1] as CenterKind, Boolean(pin[2]))
+    image = drawPin(pin[1] as CenterKind, pin[2] === '-selected', pin[2] === '-recommended')
   } else if (id.startsWith('cluster-')) {
     // The count in the app's own font, once it's ready (the font may still be loading on a first visit).
     await document.fonts?.load(COUNT_FONT).catch(() => undefined)
@@ -133,6 +165,8 @@ export interface HitTarget {
   type: 'pin' | 'cluster'
   lngLat: [number, number]
   selected: boolean
+  /** A starred pin, recommended to the learner. */
+  recommended?: boolean
   centerId?: string
   clusterId?: number
   count?: number
@@ -144,11 +178,13 @@ export interface HitTarget {
  */
 export function renderedTargets(
   map: MapLibreMap,
-  layers: { pins: string; selected: string; clusters: string },
+  layers: { pins: string; selected: string; clusters: string; recommended?: string },
   limit = 120,
 ): HitTarget[] {
   // While a new style is swapped in, its layers can be missing for a moment: nothing to query yet.
-  const present = [layers.selected, layers.pins, layers.clusters].filter((id) => map.getLayer(id))
+  const present = [layers.selected, layers.recommended, layers.pins, layers.clusters].filter(
+    (id): id is string => Boolean(id && map.getLayer(id)),
+  )
   if (!present.length) return []
   const features: MapGeoJSONFeature[] = map.queryRenderedFeatures({ layers: present })
   const seen = new Set<string>()
@@ -170,6 +206,7 @@ export function renderedTargets(
       type: cluster === null ? 'pin' : 'cluster',
       lngLat: [lng, lat],
       selected: feature.layer.id === layers.selected,
+      ...(feature.layer.id === layers.recommended ? { recommended: true } : {}),
       ...(cluster === null
         ? { centerId: centerId as string }
         : { clusterId: cluster, count: Number(properties.point_count) }),

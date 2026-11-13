@@ -36,6 +36,44 @@ including NIR. `scripts/prepare_demand_boundaries.py` reproduces the bundled
 GeoJSON; its source URL, hashes, rounding changes and upstream release are stored
 beside the asset in `frontend/src/features/training/data/boundaries-source.json`.
 
+## Supply and demand for one qualification
+
+With a qualification in focus (the first match of a search, or one chosen in the demand panel), the page shows
+where it is in demand, where it is offered, and what that means for the learner's own area.
+
+- `GET /api/v1/labor-market/outlook?qualification_code=&region_code=&home_region_code=&relocate=` returns, for every
+  region, the reviewed posting records, the recorded training and assessment centers, each share of the national
+  total, and a **balance**: demand ahead (the region's share of postings is at least 1.5 times its share of centers),
+  saturated (the reverse), balanced, or one side missing. Fewer than three records on either side is marked a rough
+  signal. Supply is active programs, open assessment schedules and the registry's latest accreditations. It also
+  returns the analysis in words, written by fixed rules from those counts: a short summary and the points behind it.
+- **The brief** along the bottom of the map shows the headline, the balance, that summary, and the centers
+  **recommended** from where the learner is: the nearest training center and the nearest assessment center listing
+  the qualification. The recommendation is worked out in the browser; only region codes and the relocation choice
+  are sent, never coordinates or search text.
+- **Open to relocating** changes the wording, adds a center in up to two regions where demand is strongest against
+  supply, and frames the whole country in the demand view. Off, the analysis stays on the learner's own region.
+- **On the map** recommended centers carry a gold star and are never folded into a cluster. The demand view shades
+  regions by that qualification's postings, pins its centers over them, and gives each region a badge with its
+  balance mark (▲ demand ahead, ● balanced, ▼ saturated; outlined when one side has no records).
+
+Example sites are reported beside supply and never counted, so a database with only seed sites shows no supply. A
+demo can set `OUTLOOK_INCLUDE_EXAMPLE_SITES=true`; the analysis then says the counts include examples.
+
+The summary can be rewritten by Claude (`GET /labor-market/outlook/summary`): set `OUTLOOK_AI_SUMMARY_ENABLED=true`
+and `ANTHROPIC_API_KEY`. Off by default. Only the qualification's name, region names and the public counts are sent.
+The paragraph is rejected if it holds a figure the counts don't, cached for a week, rate limited, and replaced by
+the rules' summary on any failure. The balance is a rough signal for choosing where to train, not a shortage or
+surplus estimate, and both versions say so.
+
+## The map covers the window and stays on the Philippines
+
+`/explore` has no top bar, padding or footer: the map fills the window at every size. The search bar and chips float
+at the top, the results in a panel beside it (a sheet rising from the bottom on a phone), and the brief along the
+bottom; the map's buttons, legend, credits and the Help button move clear of them. Both renderers limit the camera to
+the view that fits the whole country in the clear part of the map (`mapLimits.ts`): it cannot be zoomed out past
+that view or moved outside it, and the limit is worked out again when the window or the panels change.
+
 ## Data setup
 
 CSV files alone do not populate the database. Import the prepared versioned bundles
@@ -54,5 +92,6 @@ does not populate another deployment's database.
 
 Backend regressions: `test_area_jobs.py`, `test_area_qualifications.py`, and
 `test_demand_evidence.py`. Frontend regressions: Explore demand integration,
-Explore rules, qualification evidence, and map renderer selection. The UI includes
+Explore rules, qualification evidence, and map renderer selection. For the outlook: `test_qualification_outlook.py`,
+`OutlookBrief.test.tsx`, `recommend.test.ts` and `mapLimits.test.ts`. The UI includes
 loading, retry, empty, filtered, pagination and no-location states.

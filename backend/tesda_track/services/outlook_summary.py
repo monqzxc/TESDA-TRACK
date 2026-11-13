@@ -118,7 +118,7 @@ def facts_for(outlook: QualificationOutlook) -> dict[str, Any]:
         "regions_with_stronger_demand_against_supply": [counts(areas[code]) for code in outlook.alternatives],
         "posting_snapshot_dates": [day.isoformat() for day in outlook.snapshot_dates],
         "center_counts_include_example_sites": outlook.includes_example_sites,
-        "analysis_by_rules": {"headline": outlook.insight.headline,
+        "analysis_by_rules": {"headline": outlook.insight.headline, "summary": outlook.insight.summary,
                               "points": [point.text for point in outlook.insight.points]},
         "limitations": outlook.limitations,
     }
@@ -134,7 +134,7 @@ def grounded(text: str, facts: dict[str, Any]) -> bool:
 
 
 def rules_summary(outlook: QualificationOutlook) -> OutlookSummary:
-    return OutlookSummary(source="rules", text=" ".join(point.text for point in outlook.insight.points))
+    return OutlookSummary(source="rules", text=outlook.insight.summary)
 
 
 def summarize(session: Session, outlook: QualificationOutlook, writer: SummaryWriter | None, *, ttl_seconds: int,

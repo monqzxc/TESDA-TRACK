@@ -9,7 +9,7 @@ import type { CenterKind } from '../address.ts'
 import type { Center } from '../centers.ts'
 import type { Reference } from '../useCenters.ts'
 import type { DemandRegions } from '../demandMap.ts'
-import { PIN_TIP_BELOW, SELECTED_TIP_BELOW } from './markers.ts'
+import { PIN_TIP_BELOW, RECOMMENDED_TIP_BELOW, SELECTED_TIP_BELOW } from './markers.ts'
 import type { RouteProperties } from './routing.ts'
 import { FIRST_LABEL_LAYER, type Theme } from './styles.ts'
 
@@ -20,6 +20,7 @@ import { FIRST_LABEL_LAYER, type Theme } from './styles.ts'
 export const SOURCES = {
   centers: 'centers',
   selected: 'center-selected',
+  recommended: 'center-recommended',
   reference: 'center-reference',
   radius: 'center-radius',
   routes: 'center-routes',
@@ -30,6 +31,7 @@ export const LAYERS = {
   clusters: 'center-clusters',
   pins: 'center-pins',
   selected: 'center-selected-pins',
+  recommended: 'center-recommended-pins',
   referenceDot: 'center-reference-dot',
   radiusFill: 'center-radius-fill',
   demandFill: 'regional-demand-fill',
@@ -72,6 +74,8 @@ export interface CenterProperties {
 export interface OverlayData {
   centers: FeatureCollection<Point, CenterProperties>
   selected: FeatureCollection<Point, CenterProperties>
+  /** Centers recommended to the learner: starred, in a source of their own so no cluster folds them in. */
+  recommended?: FeatureCollection<Point, CenterProperties>
   reference: FeatureCollection<Point, { mine: boolean }>
   radius: FeatureCollection<Polygon>
   routes: FeatureCollection<LineString, RouteProperties>
@@ -184,6 +188,11 @@ export function overlaySources(data: OverlayData): Record<string, SourceSpecific
       cluster: true,
       clusterRadius: CLUSTER_RADIUS,
       clusterMaxZoom: MAX_ZOOM,
+      maxzoom: MAX_ZOOM + 1,
+    },
+    [SOURCES.recommended]: {
+      type: 'geojson',
+      data: data.recommended ?? collection(),
       maxzoom: MAX_ZOOM + 1,
     },
     [SOURCES.selected]: { type: 'geojson', data: data.selected, maxzoom: MAX_ZOOM + 1 },
@@ -341,6 +350,17 @@ export function overlayLayers(
           'icon-image': ['concat', 'pin-', ['get', 'kind']],
           'icon-anchor': 'bottom',
           'icon-offset': [0, PIN_TIP_BELOW],
+        },
+      },
+      {
+        id: LAYERS.recommended,
+        type: 'symbol',
+        source: SOURCES.recommended,
+        layout: {
+          ...UPRIGHT,
+          'icon-image': ['concat', 'pin-', ['get', 'kind'], '-recommended'],
+          'icon-anchor': 'bottom',
+          'icon-offset': [0, RECOMMENDED_TIP_BELOW],
         },
       },
       {

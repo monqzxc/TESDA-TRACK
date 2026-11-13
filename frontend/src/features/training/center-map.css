@@ -32,9 +32,15 @@
   font-size: 11px;
 }
 
-/* Zoom sits under the locate button, top right, away from the filter panel. */
+/* Zoom sits under the locate button, top right, away from the filter panel, and under any bar the page floats over
+   the map's top edge (--map-overlay-top). */
 .center-map .leaflet-top.leaflet-right {
-  top: 60px;
+  top: calc(var(--map-overlay-top, 0px) + 60px);
+}
+
+/* The credits ride above a card the page floats over the map's bottom edge (--map-overlay-bottom). */
+.center-map .leaflet-bottom {
+  bottom: var(--map-overlay-bottom, 0px);
 }
 
 .center-map .leaflet-top.leaflet-right .leaflet-control {

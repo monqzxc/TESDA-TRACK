@@ -42,13 +42,20 @@ import { cx } from '../../lib/style.ts'
 import { directionsQuery, type TravelMode } from './api.ts'
 import type { Center, Point } from './centers.ts'
 import { KIND_DOTS, MODE_ICONS } from './CenterDetail.tsx'
-import { BASEMAP_KEY, LOCATE_ZOOM, type CenterMapProps } from './CenterMapTypes.ts'
+import {
+  BASEMAP_KEY,
+  LOCATE_ZOOM,
+  type CenterMapProps,
+  type DemandMapArea,
+} from './CenterMapTypes.ts'
 import { CenterPopup } from './CenterPopup.tsx'
 import { DemandLegend } from './DemandLegend.tsx'
 import { demandBounds, demandRegions, demandSymbol, useRegionBoundaries } from './demandMap.ts'
 import { routeLabel } from './format.ts'
 import type { GeoJSON } from 'geojson'
+import { homeView, homeWorldSize, zoomFor } from './mapLimits.ts'
 import type { MapSettings, VectorTiles } from './mapSettings.ts'
+import { useOverlayEdges } from './overlayEdges.ts'
 import {
   PHILIPPINES,
   REGION,
@@ -170,6 +177,7 @@ function sameTargets(a: readonly HitTarget[], b: readonly HitTarget[]) {
       (target, i) =>
         target.key === b[i].key &&
         target.selected === b[i].selected &&
+        target.recommended === b[i].recommended &&
         target.lngLat[0] === b[i].lngLat[0] &&
         target.lngLat[1] === b[i].lngLat[1],
     )
@@ -210,8 +218,10 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   const [status, setStatus] = useState<Status>('loading')
   const [coverage, setCoverage] = useState<CoverageNote>(null)
   const [targets, setTargets] = useState<HitTarget[]>([])
-  // How far the filter panel reaches over the map's left edge (0 when it doesn't): framing and popups keep clear.
-  const [inset, setInset] = useState(0)
+  // How far the page's panels, bars and cards reach over the map's edges.
+  const edges = useOverlayEdges(shell)
+  // From the left it is the filter panel (0 when it doesn't reach over the map): framing and popups keep clear.
+  const inset = edges.left
 
   const basemaps = useMemo(() => basemapsFor(settings.tiles), [settings.tiles])
   const [basemapId, setBasemapId] = useState<BasemapId>(() => {
@@ -239,6 +249,10 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   const demandAreas = props.demandAreas
   const demandRegion = props.demandRegion
   const demandCopy = en.explore.demand
+  const outlookCopy = en.explore.outlook
+  // One qualification's supply and demand: the regions carry their balance, and its centers are pinned over them.
+  const outlook = Boolean(demandAreas?.some((area) => area.balance))
+  const recommendedIds = props.recommended
   const demandBoundaries = useRegionBoundaries(demandAreas !== undefined)
   const heatmapData = useMemo(
     () => demandRegions(demandBoundaries.data, demandAreas, demandRegion),
@@ -250,10 +264,22 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   const [toLat, toLng, routeKind] = route
     ? [route.to.latitude, route.to.longitude, route.kind]
     : [null, null, null]
+  // Selected and recommended centers are drawn from sources of their own, so no cluster folds them in.
   const centersData = useMemo(
-    () => centerPoints(points, new Set(selectedId ? [selectedId] : [])),
-    [points, selectedId],
+    () =>
+      centerPoints(
+        points,
+        new Set([...(selectedId ? [selectedId] : []), ...(recommendedIds ?? [])]),
+      ),
+    [points, selectedId, recommendedIds],
   )
+  const recommendedData = useMemo(() => {
+    const starred = new Set(recommendedIds)
+    return centerPoints(
+      points.filter((center) => starred.has(center.id)),
+      new Set(selectedId ? [selectedId] : []),
+    )
+  }, [points, selectedId, recommendedIds])
   const selectedData = useMemo((): OverlayData['selected'] => {
     const features: OverlayData['selected']['features'] = []
     const add = (properties: CenterProperties, lng: number, lat: number) =>
@@ -327,9 +353,9 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   const raised = popup?.type === 'center' && popup.id === selectedId
 
   // What the map's event handlers need, current at each render without re-subscribing them.
-  const latest = useRef({ props, byId, inset, reducedMotion, threeD, copy, stamp })
+  const latest = useRef({ props, byId, inset, edges, reducedMotion, threeD, copy, stamp })
   useEffect(() => {
-    latest.current = { props, byId, inset, reducedMotion, threeD, copy, stamp }
+    latest.current = { props, byId, inset, edges, reducedMotion, threeD, copy, stamp }
   })
   const overlays = useRef<OverlayData>(EMPTY_OVERLAYS)
   const styleInputs = useRef({ theme, basemapId, threeD, hillshade })
@@ -546,8 +572,8 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     // the map itself, which closes the popup.
     map.on('click', (event: MapMouseEvent) => {
       if (overlay.contains(event.originalEvent.target as Node | null)) return
-      const layers = [LAYERS.selected, LAYERS.pins, LAYERS.clusters].filter((id) =>
-        map.getLayer(id),
+      const layers = [LAYERS.selected, LAYERS.recommended, LAYERS.pins, LAYERS.clusters].filter(
+        (id) => map.getLayer(id),
       )
       const [hit] = layers.length ? map.queryRenderedFeatures(event.point, { layers }) : []
       const properties = hit?.properties as Record<string, unknown> | undefined
@@ -576,7 +602,13 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     const pointer = (cursor: string) => () => {
       map.getCanvas().style.cursor = cursor
     }
-    for (const layer of [LAYERS.pins, LAYERS.clusters, LAYERS.selected, ...LAYERS.routeLines]) {
+    for (const layer of [
+      LAYERS.pins,
+      LAYERS.clusters,
+      LAYERS.selected,
+      LAYERS.recommended,
+      ...LAYERS.routeLines,
+    ]) {
       map.on('mouseenter', layer, pointer('pointer'))
       map.on('mouseleave', layer, pointer(''))
     }
@@ -612,24 +644,12 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // How far the filter panel reaches over the map: TrainingPage sets it on the map's wrapper (--map-overlay-inset).
-  useEffect(() => {
-    const element = shell.current
-    if (!element) return
-    const read = () =>
-      setInset(parseFloat(getComputedStyle(element).getPropertyValue('--map-overlay-inset')) || 0)
-    read()
-    if (typeof ResizeObserver === 'undefined') return
-    const observer = new ResizeObserver(read)
-    observer.observe(element)
-    return () => observer.disconnect()
-  }, [])
-
   // The overlays' data, handed to the map as it changes.
   useEffect(() => {
     overlays.current = {
       centers: centersData,
       selected: selectedData,
+      recommended: recommendedData,
       reference: referenceData,
       radius: radiusData,
       routes: routesData,
@@ -640,6 +660,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     const update = (id: string, data: GeoJSON) => map.getSource<GeoJSONSource>(id)?.setData(data)
     update(SOURCES.centers, centersData)
     update(SOURCES.selected, selectedData)
+    update(SOURCES.recommended, recommendedData)
     update(SOURCES.reference, referenceData)
     update(SOURCES.radius, radiusData)
     update(SOURCES.routes, routesData)
@@ -649,7 +670,40 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     for (const layer of ROUTE_LAYERS) {
       if (map.getLayer(layer)) map.setLayoutProperty(layer, 'visibility', visibility)
     }
-  }, [ready, centersData, selectedData, referenceData, radiusData, routesData, heatmapData])
+  }, [
+    ready,
+    centersData,
+    selectedData,
+    recommendedData,
+    referenceData,
+    radiusData,
+    routesData,
+    heatmapData,
+  ])
+
+  // The map stays on the Philippines: it can't be zoomed out past the view that shows the whole country in the part
+  // of the map clear of its controls and the page's panels, nor moved outside that view. Worked out again when the
+  // map's box or those panels change.
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map) return
+    const apply = () => {
+      const element = map.getContainer()
+      const size = { width: element.clientWidth, height: element.clientHeight }
+      if (!size.width || !size.height) return
+      const base = overlayPadding(size, inset, 0)
+      const padding = { ...base, top: base.top + edges.top, bottom: base.bottom + edges.bottom }
+      const worldSize = homeWorldSize(size, padding)
+      // A hair of slack either way, so rounding never leaves the camera fighting its own limit.
+      map.setMaxBounds(homeView(size, padding, worldSize * 0.995))
+      map.setMinZoom(Math.max(0, zoomFor(worldSize, 512) - 0.01))
+    }
+    apply()
+    map.on('resize', apply)
+    return () => {
+      map.off('resize', apply)
+    }
+  }, [ready, inset, edges])
 
   // The base map's look: the theme, the layer chosen, and 3D. Diffed, so only what changed is redrawn.
   useEffect(() => {
@@ -743,34 +797,72 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     props.demandAreas,
   ])
 
+  /** A region in words: with a qualification in focus, its postings, its centers and how the two compare. */
+  const regionLabel = useCallback(
+    (area: DemandMapArea) =>
+      area.balance
+        ? outlookCopy.mapMarker(
+            area.name,
+            area.posting_count,
+            area.centers ?? 0,
+            outlookCopy.balance[area.balance],
+          )
+        : demandCopy.mapMarker(area.name, area.posting_count),
+    [demandCopy, outlookCopy],
+  )
+
+  // Each region with records has a button over it; with a qualification in focus it shows as the region's badge.
   useEffect(() => {
     const map = mapRef.current
     if (!ready || !map || !demandAreas) return
     const markers = demandAreas.map((area) => {
-      const element = demandSymbol(
-        area,
-        demandRegion === area.region_code,
-        demandCopy.mapMarker(area.name, area.posting_count),
-      )
-      element.addEventListener('click', () => latest.current.props.onDemandArea?.(area.region_code))
+      const element = demandSymbol(area, demandRegion === area.region_code, regionLabel(area))
+      element.addEventListener('click', (event) => {
+        // The region's fill under the button would pick it a second time.
+        event.stopPropagation()
+        latest.current.props.onDemandArea?.(area.region_code)
+      })
       return new MapLibreMarker({ element }).setLngLat([area.longitude, area.latitude]).addTo(map)
     })
-    const bounds = demandBounds(heatmapData, demandRegion)
+    return () => markers.forEach((marker) => marker.remove())
+  }, [ready, demandAreas, demandRegion, regionLabel])
+
+  // The camera follows the regions' shapes and the selection, not each refresh of their counts, nor a card of the
+  // page's growing by a line: the edges are read as they stand when it moves.
+  const demandShapes = demandBoundaries.data
+  const demandShown = demandAreas !== undefined
+  // A learner open to relocating compares every region; otherwise the selected one fills the view.
+  const demandFramed = props.demandOverview ? null : demandRegion
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map || !demandShown || !demandShapes) return
+    const bounds = demandBounds(demandRegions(demandShapes, [], demandFramed), demandFramed)
     if (bounds) {
       map.fitBounds(bounds, {
-        padding: { top: 75, bottom: 60, left: inset + 40, right: 60 },
-        maxZoom: demandRegion ? 11 : 8,
+        padding: {
+          top: latest.current.edges.top + 75,
+          bottom: latest.current.edges.bottom + 60,
+          left: inset + 40,
+          right: 60,
+        },
+        maxZoom: demandFramed ? 11 : 8,
         duration: 0,
       })
     }
-    return () => markers.forEach((marker) => marker.remove())
-  }, [ready, demandAreas, demandRegion, inset, demandCopy, heatmapData])
+  }, [ready, demandShown, demandShapes, demandFramed, inset])
 
   useEffect(() => {
     const map = mapRef.current
     if (!ready || !map) return
     const tip = new Popup({ closeButton: false, closeOnClick: false })
+    const pinLayers = () =>
+      [LAYERS.selected, LAYERS.recommended, LAYERS.pins, LAYERS.clusters].filter((id) =>
+        map.getLayer(id),
+      )
     const selectRegion = (event: MapLayerMouseEvent) => {
+      // A pin, a cluster or a button over the region was pressed, not the region itself.
+      if (overlayNode?.contains(event.originalEvent.target as Node | null)) return
+      if (map.queryRenderedFeatures(event.point, { layers: pinLayers() }).length) return
       const code = event.features?.[0]?.properties.region_code
       if (typeof code === 'string') latest.current.props.onDemandArea?.(code)
     }
@@ -778,8 +870,12 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
       const region = event.features?.[0]?.properties
       if (!region) return
       map.getCanvas().style.cursor = 'pointer'
-      const label =
-        region.posting_count == null
+      const area = latest.current.props.demandAreas?.find(
+        (item) => item.region_code === region.region_code,
+      )
+      const label = area
+        ? regionLabel(area)
+        : region.posting_count == null
           ? demandCopy.mapRegionEmpty(region.name)
           : demandCopy.mapMarker(region.name, region.posting_count)
       tip.setLngLat(event.lngLat).setText(label).addTo(map)
@@ -797,7 +893,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
       map.off('mouseleave', LAYERS.demandFill, leave)
       tip.remove()
     }
-  }, [ready, demandCopy])
+  }, [ready, demandCopy, regionLabel, overlayNode])
 
   // Locate: each press brings the learner's own location to the middle of the map's clear part, close in, at once
   // when it's already known, or as soon as the browser answers. After the framing above, so a location that has just
@@ -999,7 +1095,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
       data-radius-km={radius ?? undefined}
       data-three-d={threeD || undefined}
       role="region"
-      aria-label={demandAreas ? demandCopy.mapLabel : copy.label}
+      aria-label={outlook ? outlookCopy.mapLabel : demandAreas ? demandCopy.mapLabel : copy.label}
     >
       <div ref={container} className="absolute inset-0" />
       {demandAreas && (demandBoundaries.isPending || demandBoundaries.isError) && (
@@ -1017,10 +1113,11 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
             {targets.map((target) => {
               const center = target.centerId ? byId.get(target.centerId) : undefined
               if (target.type === 'pin' && !center) return null
-              const label =
+              const named =
                 target.type === 'pin' && center
                   ? copy.pin(center.name, en.training.kinds[center.kind])
                   : copy.cluster(target.count ?? 0)
+              const label = target.recommended ? outlookCopy.pin(named) : named
               return (
                 <button
                   key={target.key}
@@ -1028,6 +1125,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
                   type="button"
                   className={target.type === 'pin' ? 'center-map-pin' : 'center-map-cluster'}
                   data-selected={target.selected || undefined}
+                  data-recommended={target.recommended || undefined}
                   aria-label={label}
                   title={label}
                   onPointerDown={pressed}
@@ -1138,7 +1236,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
         </p>
       )}
 
-      <div className="absolute top-3.5 right-3.5 z-800 flex flex-col items-end gap-2">
+      <div className="absolute top-[calc(var(--map-overlay-top,0px)_+_0.875rem)] right-3.5 z-800 flex flex-col items-end gap-2">
         <Button
           className={cx(controlButton, 'rounded-12')}
           aria-label={copy.locate}
@@ -1229,7 +1327,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
         {threeD && <NorthButton mapRef={mapRef} ready={ready} reducedMotion={reducedMotion} />}
       </div>
 
-      <div className="absolute bottom-3.5 left-[calc(var(--map-overlay-inset,0px)_+_4px)] z-800 flex flex-col items-start gap-2">
+      <div className="absolute bottom-[calc(var(--map-overlay-bottom,0px)_+_0.875rem)] left-[calc(var(--map-overlay-inset,0px)_+_4px)] z-800 flex flex-col items-start gap-2">
         {logo && (
           // MapTiler's free plan asks maps that use it to show its logo.
           <a
@@ -1252,7 +1350,12 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
           aria-hidden={demandAreas ? undefined : true}
         >
           {demandAreas ? (
-            <DemandLegend areas={demandAreas} dates={props.demandSnapshotDates} />
+            <DemandLegend
+              areas={demandAreas}
+              dates={props.demandSnapshotDates}
+              outlook={outlook}
+              recommended={Boolean(recommendedIds?.length)}
+            />
           ) : (
             (['training', 'assessment'] as const).map((kind) => (
               <span key={kind} className="inline-flex items-center gap-2">

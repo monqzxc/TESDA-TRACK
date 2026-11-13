@@ -170,11 +170,20 @@ def test_the_analysis_speaks_to_where_the_learner_is_and_whether_they_would_relo
     assert "looks saturated" in said["balance"] and "80% of the recorded centers but 20%" in said["balance"]
     # Staying put in a crowded area, the learner is told once where else demand is stronger.
     assert said["relocation"].startswith("If your plans change, Region III (Central Luzon) (12 postings, 1 center)")
+    # The brief says the same in a few short sentences.
+    assert staying.insight.summary == (
+        "You are in National Capital Region and prefer not to relocate. 3 of the 15 posting records for Shielded Metal "
+        "Arc Welding (SMAW) NC II nationwide are here (20%), and 4 of its 5 recorded centers (80%). That makes National "
+        "Capital Region look saturated: expect more competition for local openings. If your plans change, Region III "
+        "(Central Luzon) shows more demand against its supply.")
 
-    moving = points(qualification_outlook.build(session, CODE, "NCR", "NCR", relocate=True))
+    relocating = qualification_outlook.build(session, CODE, "NCR", "NCR", relocate=True)
+    moving = points(relocating)
     assert "open to relocating" in moving["location"]
     assert moving["relocation"].startswith("If you relocate, recorded demand is strongest against training supply in "
                                            "Region III (Central Luzon)")
+    assert relocating.insight.summary.startswith("You are in National Capital Region and are open to relocating.")
+    assert relocating.insight.summary.endswith("If you relocate, look first at Region III (Central Luzon).")
 
     elsewhere = points(qualification_outlook.build(session, CODE, "III", "NCR"))
     assert elsewhere["location"] == ("You are looking at Region III (Central Luzon); your own region is National "
@@ -185,6 +194,10 @@ def test_the_analysis_speaks_to_where_the_learner_is_and_whether_they_would_relo
     national = qualification_outlook.build(session, CODE)
     said = points(national)
     assert national.insight.headline.endswith("where it is in demand and where it is offered")
+    assert national.insight.summary == (
+        "This is the national picture. 15 posting records for Shielded Metal Arc Welding (SMAW) NC II are recorded "
+        "across 2 regions, and 5 centers across 2 regions. Demand is ahead of supply in Region III (Central Luzon). "
+        "Supply is ahead of demand in National Capital Region.")
     assert "most in Region III (Central Luzon) (12) and National Capital Region (3)" in said["demand"]
     assert said["balance"] == ("Recorded demand is ahead of training supply in Region III (Central Luzon); training "
                                "supply is ahead of recorded demand in National Capital Region.")
@@ -193,10 +206,32 @@ def test_the_analysis_speaks_to_where_the_learner_is_and_whether_they_would_relo
 def test_missing_evidence_is_never_read_as_low_demand(session):
     training(session, "NCR", 3)
 
-    said = points(qualification_outlook.build(session, CODE, "NCR", "NCR"))
+    outlook = qualification_outlook.build(session, CODE, "NCR", "NCR")
+    said = points(outlook)
 
     assert "missing evidence, not proof of low demand" in said["demand"]
     assert "no local postings" in said["balance"]
+    assert "No posting records are linked to Shielded Metal Arc Welding (SMAW) NC II in this snapshot; 3 of its 3 " \
+           "recorded centers are here (100%)." in outlook.insight.summary
+
+
+def test_the_brief_covers_every_mix_of_records(session):
+    def brief(**kwargs):
+        return qualification_outlook.build(session, CODE, "NCR", **kwargs).insight.summary
+
+    assert brief() == ("This looks at National Capital Region. Nothing is recorded for Shielded Metal Arc Welding "
+                       "(SMAW) NC II yet: no posting records and no centers. There is nothing to compare here yet.")
+    postings(session, "VII", 4)
+    assert "None of the 4 posting records for Shielded Metal Arc Welding (SMAW) NC II nationwide are here; no center " \
+           "is recorded for it yet." in brief()
+    postings(session, "NCR", 1)
+    assert "1 of the 5 posting records for Shielded Metal Arc Welding (SMAW) NC II nationwide is here (20%); no " \
+           "center is recorded for it yet. Employers posted for it here" in brief()
+    training(session, "VII", 2, **EXAMPLE)
+    counted = brief(include_examples=True, relocate=True)
+    assert "is here (20%), but none of its 2 recorded centers." in counted
+    assert counted.endswith("If you relocate, look first at Region VII (Central Visayas). Center counts include "
+                            "example sites, shown for demonstration.")
 
 
 def test_outlook_is_public_and_refuses_unknown_codes(client, session):
@@ -249,7 +284,7 @@ def test_summary_is_the_rules_own_words_when_ai_is_off(client, session):
     body = summary(client)
 
     assert body["source"] == "rules" and body["model"] is None
-    assert body["text"].startswith("This looks at Shielded Metal Arc Welding (SMAW) NC II in National Capital Region.")
+    assert body["text"].startswith("This looks at National Capital Region. 2 of the 2 posting records")
 
 
 def test_ai_summary_is_written_from_public_counts_once_and_then_served_from_the_cache(client, session, written):
@@ -265,6 +300,7 @@ def test_ai_summary_is_written_from_public_counts_once_and_then_served_from_the_
     assert facts["qualification"] == "Shielded Metal Arc Welding (SMAW) NC II"
     assert facts["selected_region"]["posting_records"] == 2 and facts["selected_region_is_home"] is True
     assert facts["open_to_relocating"] is False and facts["analysis_by_rules"]["points"]
+    assert facts["analysis_by_rules"]["summary"].startswith("You are in National Capital Region")
     # Another selection is another paragraph.
     summary(client, home_region_code="NCR", relocate="true")
     assert len(writer.asked) == 2

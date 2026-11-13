@@ -13130,17 +13130,24 @@
             "type": "string",
             "title": "Headline"
           },
+          "summary": {
+            "type": "string",
+            "title": "Summary",
+            "description": "The brief: where the learner is, the demand and supply there, and the verdict"
+          },
           "points": {
             "items": {
               "$ref": "#/components/schemas/OutlookPoint"
             },
             "type": "array",
-            "title": "Points"
+            "title": "Points",
+            "description": "The same analysis point by point, with the numbers behind it"
           }
         },
         "type": "object",
         "required": [
           "headline",
+          "summary",
           "points"
         ],
         "title": "OutlookInsight",

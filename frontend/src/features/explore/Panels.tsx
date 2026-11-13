@@ -199,6 +199,7 @@ function CenterRow({
   code,
   qualification,
   strong = false,
+  recommended = false,
   onSelect,
 }: {
   center: Center
@@ -206,6 +207,8 @@ function CenterRow({
   /** The matched qualification this center was listed for, named under the center's name. */
   qualification?: string
   strong?: boolean
+  /** Recommended to the learner for the qualification in focus: starred, as its pin is. */
+  recommended?: boolean
   onSelect: (id: string, code?: string) => void
 }) {
   const copy = useCopy().explore
@@ -235,6 +238,12 @@ function CenterRow({
           </span>
         )}
         <TripMeta center={center} />
+        {recommended && (
+          <span className={cx(tag, 'mt-1.5 mr-1.5 bg-[#fdecc8] py-1 font-bold text-[#7a4a05]')}>
+            <Icon name="star" />
+            {copy.outlook.tag}
+          </span>
+        )}
         {code && center.kind === 'training' && hasScholarship(center, code) && (
           <span className={cx(solidTag, 'mt-1.5 bg-scholarship-fill')}>
             <Icon name="star" />
@@ -284,6 +293,7 @@ export function NearbyPanel({
   const offered = (center: Center) =>
     new Set([...center.programs, ...center.schedules].map((listing) => listing.qualification.code))
       .size
+  const recommended = new Set(explore.recommendedIds)
   return (
     <div className="flex flex-col gap-4">
       <p className="m-0 text-12 font-bold tracking-[0.06em] text-eyebrow uppercase">
@@ -297,7 +307,11 @@ export function NearbyPanel({
             {nearest.length ? (
               nearest.map((center) => (
                 <div key={center.id}>
-                  <CenterRow center={center} onSelect={onSelect} />
+                  <CenterRow
+                    center={center}
+                    recommended={recommended.has(center.id)}
+                    onSelect={onSelect}
+                  />
                   {offered(center) > 0 && (
                     <p className="mt-1 mb-0 pl-3 text-12 text-muted">
                       {copy.offers(offered(center))}
@@ -319,10 +333,13 @@ export function NearbyPanel({
 function QualificationCardView({
   card,
   hasReference,
+  recommended,
   onSelect,
 }: {
   card: QualificationCard
   hasReference: boolean
+  /** The centers recommended for this card's qualification, when it is the one in focus. */
+  recommended: ReadonlySet<string>
   onSelect: (id: string, code?: string) => void
 }) {
   const en = useCopy()
@@ -379,6 +396,7 @@ function QualificationCardView({
           code={code}
           qualification={card.match.qualification.name}
           strong={strong}
+          recommended={recommended.has(first.id)}
           onSelect={onSelect}
         />
       )}
@@ -390,6 +408,7 @@ function QualificationCardView({
             code={code}
             qualification={card.match.qualification.name}
             strong={strong}
+            recommended={recommended.has(center.id)}
             onSelect={onSelect}
           />
         ))}
@@ -407,18 +426,23 @@ function QualificationCardView({
   )
 }
 
+const NONE: ReadonlySet<string> = new Set()
+
 /** A group of cards, Get certified or Train, under its heading. */
 function Group({
   kind,
   first,
   cards,
   hasReference,
+  focus,
   onSelect,
 }: {
   kind: CenterKind
   first: boolean
   cards: QualificationCard[]
   hasReference: boolean
+  /** The qualification in focus and the centers recommended for it. */
+  focus: { code: string | null; recommended: ReadonlySet<string> }
   onSelect: (id: string, code?: string) => void
 }) {
   const copy = useCopy().explore.results
@@ -449,6 +473,7 @@ function Group({
             key={card.match.qualification.code}
             card={card}
             hasReference={hasReference}
+            recommended={card.match.qualification.code === focus.code ? focus.recommended : NONE}
             onSelect={onSelect}
           />
         ))
@@ -492,6 +517,7 @@ export function ResultsPanel({
 
   const assess = cardsFor('assessment', matches, centers)
   const train = cardsFor('training', matches, centers)
+  const focus = { code: explore.demandCode, recommended: new Set(explore.recommendedIds) }
   const order: CenterKind[] =
     firstKind(search.query) === 'training' ? ['training', 'assessment'] : ['assessment', 'training']
   const shown = view === 'all' ? order : view === 'demand' ? [] : [view]
@@ -552,6 +578,7 @@ export function ResultsPanel({
           first={view !== 'all' || index === 0}
           cards={kind === 'assessment' ? assess : train}
           hasReference={reference !== null}
+          focus={focus}
           onSelect={onSelect}
         />
       ))}

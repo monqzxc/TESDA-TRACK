@@ -4037,7 +4037,15 @@ export interface components {
         OutlookInsight: {
             /** Headline */
             headline: string;
-            /** Points */
+            /**
+             * Summary
+             * @description The brief: where the learner is, the demand and supply there, and the verdict
+             */
+            summary: string;
+            /**
+             * Points
+             * @description The same analysis point by point, with the numbers behind it
+             */
             points: components["schemas"]["OutlookPoint"][];
         };
         /** OutlookPoint */

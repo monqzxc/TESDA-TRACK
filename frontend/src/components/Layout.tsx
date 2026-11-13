@@ -10,6 +10,7 @@ import { useTspSignIn } from '../features/tsp/useTspSignIn.ts'
 import { FirstVisitNotice } from '../features/privacy/FirstVisitNotice.tsx'
 import { GuidedHelp } from '../features/help/GuidedHelp.tsx'
 import { useCurrentPage, useFocusOnNavigation, usePageTitle } from '../lib/navigation.ts'
+import { cx } from '../lib/style.ts'
 import { HomeFooter } from './HomeFooter.tsx'
 import { HomeHeader } from './HomeHeader.tsx'
 import { MenuButton, SidebarTitle } from './Nav.tsx'
@@ -126,7 +127,8 @@ export function WebviewLayout() {
  * the sidebar over the page (Sidebar), the same on every page and at every width. Reports and Admin show in it for
  * staff.
  *
- * The Career Map (/explore) has no top bar: the map takes the window, and its search bar's burger opens the sidebar.
+ * The Career Map (/explore) has no top bar, padding or footer: the map covers the window edge to edge, its search
+ * bar's burger opens the sidebar, and the page itself links to the privacy policy.
  */
 export function AppLayout() {
   const en = useCopy()
@@ -138,7 +140,9 @@ export function AppLayout() {
     <>
       <SkipLink />
       <Sidebar isAdmin={canViewReports} canManage={canOpenAdmin} />
-      <div className="flex min-h-screen min-w-0 flex-col">
+      <div
+        className={cx('flex min-w-0 flex-col', ownMenu ? 'h-dvh overflow-hidden' : 'min-h-screen')}
+      >
         {!ownMenu && (
           <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-1 border-b border-border bg-surface px-3">
             <MenuButton
@@ -156,11 +160,16 @@ export function AppLayout() {
         <main
           id="main"
           tabIndex={-1}
-          className="w-full max-w-full flex-1 px-10 pt-9 pb-8 focus:outline-none max-[1101px]:px-6 max-md:px-4 max-md:pt-6 max-md:pb-8"
+          className={cx(
+            'w-full max-w-full flex-1 focus:outline-none',
+            ownMenu
+              ? 'min-h-0'
+              : 'px-10 pt-9 pb-8 max-[1101px]:px-6 max-md:px-4 max-md:pt-6 max-md:pb-8',
+          )}
         >
           <Outlet />
         </main>
-        <PageFooter />
+        {!ownMenu && <PageFooter />}
       </div>
     </>
   )

@@ -17,8 +17,12 @@ export interface CenterMapProps {
   /** Regional posting totals joined to boundary polygons by region code. */
   demandAreas?: readonly DemandMapArea[]
   demandRegion?: string | null
+  /** Frame every region rather than the selected one: a learner open to relocating compares them all. */
+  demandOverview?: boolean
   demandSnapshotDates?: readonly string[]
   onDemandArea?: (regionCode: string) => void
+  /** Centers recommended to the learner: starred, and never folded into a cluster. */
+  recommended?: readonly string[]
   selectedId: string | null
   /** Bumped by View on map, so asking again reopens a center that's already selected. */
   focus: number
@@ -44,11 +48,19 @@ export interface CenterMapProps {
   onLocate: () => void
 }
 
+/** How a region's share of a qualification's posting records compares with its share of the centers listing it. */
+export type DemandBalance =
+  'more_demand' | 'balanced' | 'more_supply' | 'demand_only' | 'supply_only' | 'no_records'
+
 export interface DemandMapArea extends Point {
   region_code: string
   name: string
+  /** Zero is drawn as a region without records. */
   posting_count: number
   titles: string[]
+  /** With one qualification in focus: the recorded centers listing it here, and how that compares with demand. */
+  centers?: number
+  balance?: DemandBalance
 }
 
 /** How close the Locate button goes in on the learner's own location: their neighbourhood's streets. */

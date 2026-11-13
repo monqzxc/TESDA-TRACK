@@ -43,9 +43,11 @@ import {
   type DemandMapArea,
 } from './CenterMapTypes.ts'
 import { CenterPopup } from './CenterPopup.tsx'
-import { DemandLegend } from './DemandLegend.tsx'
-import { demandRegions, useRegionBoundaries } from './demandMap.ts'
+import { DemandLegend, RECOMMENDED_COLOR } from './DemandLegend.tsx'
+import { BALANCE_MARKS, demandRegions, demandSymbol, useRegionBoundaries } from './demandMap.ts'
 import { routeLabel } from './format.ts'
+import { homeView, homeWorldSize, zoomFor } from './mapLimits.ts'
+import { useOverlayEdges, type OverlayEdges } from './overlayEdges.ts'
 import { partialPath, useRouteDraw } from './routeDraw.ts'
 import type { Reference } from './useCenters.ts'
 
@@ -119,29 +121,36 @@ function basemaps(key: string): Basemap[] {
 }
 
 const pinIcons = new Map<string, L.DivIcon>()
+const STAR_PATH = 'm12 3.5 2.6 5.3 5.8.8-4.2 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8-4.2-4.1 5.8-.8L12 3.5Z'
 
-/** A center's pin in its type's color, larger when selected. Made once each and reused. */
-function pinIcon(kind: CenterKind, selected: boolean): L.DivIcon {
-  const key = `${kind}-${selected}`
+/** A center's pin in its type's color, larger when selected, starred when recommended. Made once each and reused. */
+function pinIcon(kind: CenterKind, selected: boolean, recommended = false): L.DivIcon {
+  const key = `${kind}-${selected}-${recommended}`
   let icon = pinIcons.get(key)
   if (!icon) {
-    icon = makePinIcon(kind, selected)
+    icon = makePinIcon(kind, selected, recommended)
     pinIcons.set(key, icon)
   }
   return icon
 }
 
 /** Pins, clusters and the reference dot are Leaflet div icons: markup given to Leaflet, classes and all. */
-function makePinIcon(kind: CenterKind, selected: boolean): L.DivIcon {
+function makePinIcon(kind: CenterKind, selected: boolean, recommended: boolean): L.DivIcon {
   const pin = cx(
-    'h-11 w-[34px] origin-bottom transition-transform duration-150 ease-[ease]',
+    'relative h-11 w-[34px] origin-bottom transition-transform duration-150 ease-[ease]',
     selected
       ? cx('scale-130', SELECTED_GLOWS[kind])
-      : 'drop-shadow-[0_3px_3px_rgb(var(--track-shadow-rgb)/0.27)]',
+      : recommended
+        ? 'scale-115 drop-shadow-[0_0_6px_#f5a524]'
+        : 'drop-shadow-[0_3px_3px_rgb(var(--track-shadow-rgb)/0.27)]',
   )
+  // A gold star on the pin's shoulder: a shape as well as a color, so it reads without color.
+  const star = recommended
+    ? `<svg class="absolute -top-1.5 -right-2 size-[18px]" viewBox="0 0 24 24" aria-hidden="true" data-recommended><circle cx="12" cy="12" r="11" fill="#fff"/><path d="${STAR_PATH}" fill="${RECOMMENDED_COLOR}" stroke="#b45309" stroke-width="1.2" stroke-linejoin="round"/></svg>`
+    : ''
   return L.divIcon({
     className: '',
-    html: `<div class="${pin}" data-kind="${kind}"><svg class="block size-full" viewBox="0 0 34 44" aria-hidden="true"><path d="M17 1.5C8.4 1.5 1.5 8.3 1.5 16.9 1.5 28.4 17 42.5 17 42.5s15.5-14.1 15.5-25.6C32.5 8.3 25.6 1.5 17 1.5Z" fill="${COLORS[kind]}" stroke="#fff" stroke-width="2"/><g transform="translate(5 4.5)" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${GLYPHS[kind]}</g></svg></div>`,
+    html: `<div class="${pin}" data-kind="${kind}"><svg class="block size-full" viewBox="0 0 34 44" aria-hidden="true"><path d="M17 1.5C8.4 1.5 1.5 8.3 1.5 16.9 1.5 28.4 17 42.5 17 42.5s15.5-14.1 15.5-25.6C32.5 8.3 25.6 1.5 17 1.5Z" fill="${COLORS[kind]}" stroke="#fff" stroke-width="2"/><g transform="translate(5 4.5)" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${GLYPHS[kind]}</g></svg>${star}</div>`,
     iconSize: [34, 44],
     iconAnchor: [17, 43],
     popupAnchor: [0, -40],
@@ -183,24 +192,20 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
   const [status, setStatus] = useState<'loading' | 'tilesFailed' | { message: string } | null>(
     'loading',
   )
-  // How far the filter panel reaches over the map's left edge (0 when it doesn't): framing and popups keep clear.
-  const [inset, setInset] = useState(0)
   // Bumped by each press of Locate, so the map goes to the learner's location even when it hasn't changed.
   const [locateAsk, setLocateAsk] = useState(0)
-
-  useEffect(() => {
-    const element = shell.current
-    if (!element) return
-    const read = () =>
-      setInset(parseFloat(getComputedStyle(element).getPropertyValue('--map-overlay-inset')) || 0)
-    read()
-    if (typeof ResizeObserver === 'undefined') return
-    const observer = new ResizeObserver(read)
-    observer.observe(element)
-    return () => observer.disconnect()
-  }, [])
+  // How far the page's panels, bars and cards reach over the map's edges. From the left it is the filter panel
+  // (0 when it doesn't reach over the map): framing and popups keep clear.
+  const edges = useOverlayEdges(shell)
+  const inset = edges.left
+  // How far out the map may go, once StayOnPhilippines has worked it out. Leaflet.markercluster builds the pins'
+  // clusters for the whole-number zooms from the map's lowest up, and can't follow that lowest zoom down afterwards:
+  // the pins wait for the limit, and are built again when its whole number changes.
+  const [limits, setLimits] = useState<MapLimits | null>(null)
 
   const points = centers.filter((center) => center.latitude !== null && center.longitude !== null)
+  // One qualification's supply and demand: the regions carry their balance, and its centers are pinned over them.
+  const outlook = Boolean(props.demandAreas?.some((area) => area.balance))
   const statusText = typeof status === 'string' ? copy[status] : status?.message
   const shownStatus =
     locating && props.locatingNotice !== false
@@ -218,7 +223,13 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
       data-demand={props.demandAreas ? true : undefined}
       data-soft={basemap.soft || undefined}
       role="region"
-      aria-label={props.demandAreas ? en.explore.demand.mapLabel : copy.label}
+      aria-label={
+        outlook
+          ? en.explore.outlook.mapLabel
+          : props.demandAreas
+            ? en.explore.demand.mapLabel
+            : copy.label
+      }
     >
       <MapContainer
         className="absolute inset-0 bg-map-water"
@@ -227,6 +238,8 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
         scrollWheelZoom={false}
         zoomControl={false}
         attributionControl
+        // The map stays on the Philippines (StayOnPhilippines): pushed against its limit, it doesn't give.
+        maxBoundsViscosity={1}
       >
         <TileLayer
           key={basemap.id}
@@ -241,20 +254,26 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
         />
         <ZoomControl position="topright" />
         <FollowSize />
+        <StayOnPhilippines inset={inset} edges={edges} limits={limits} onLimits={setLimits} />
         <WheelZoomOnFocus />
-        <Pins
-          {...props}
-          points={points}
-          inset={inset}
-          onCopied={(message) => setStatus({ message })}
-        />
+        {limits && (
+          <Pins
+            key={Math.floor(limits.minZoom)}
+            {...props}
+            points={points}
+            inset={inset}
+            onCopied={(message) => setStatus({ message })}
+          />
+        )}
         <ReferenceDot reference={props.reference} />
         {props.demandAreas && (
           <DemandAreas
             areas={props.demandAreas}
             selected={props.demandRegion}
+            overview={props.demandOverview}
             onPick={props.onDemandArea}
             inset={inset}
+            edges={edges}
           />
         )}
         {props.route && (
@@ -288,7 +307,7 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
       )}
       <Button
         className={cx(
-          'absolute top-3.5 right-3.5 z-800 grid size-10.5 cursor-pointer place-items-center rounded-12 border-0 bg-surface text-navy data-hovered:bg-soft',
+          'absolute top-[calc(var(--map-overlay-top,0px)_+_0.875rem)] right-3.5 z-800 grid size-10.5 cursor-pointer place-items-center rounded-12 border-0 bg-surface text-navy data-hovered:bg-soft',
           floating,
         )}
         aria-label={copy.locate}
@@ -302,7 +321,7 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
       <MenuTrigger>
         <Button
           className={cx(
-            'absolute right-3.5 bottom-7 z-800 inline-flex h-11 cursor-pointer items-center gap-[9px] rounded-12 border-0 bg-surface px-[18px] text-[13.5px] font-semibold text-navy data-hovered:bg-row-hover max-sm:px-3',
+            'absolute right-3.5 bottom-[calc(var(--map-overlay-bottom,0px)_+_var(--map-corner-clear,0px)_+_1.75rem)] z-800 inline-flex h-11 cursor-pointer items-center gap-[9px] rounded-12 border-0 bg-surface px-[18px] text-[13.5px] font-semibold text-navy data-hovered:bg-row-hover max-sm:px-3',
             floating,
           )}
           aria-label={copy.layers}
@@ -345,11 +364,16 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
         </Popover>
       </MenuTrigger>
       <div
-        className="absolute bottom-3.5 left-[calc(var(--map-overlay-inset,0px)_+_4px)] z-800 flex flex-wrap gap-[22px] rounded-14 bg-surface px-[18px] py-[11px] text-[12.5px] text-navy shadow-[0_4px_14px_rgb(var(--track-shadow-rgb)/0.1)] max-sm:gap-3 max-sm:px-3 max-sm:py-[9px] max-sm:text-[11.5px]"
+        className="absolute bottom-[calc(var(--map-overlay-bottom,0px)_+_0.875rem)] left-[calc(var(--map-overlay-inset,0px)_+_4px)] z-800 flex flex-wrap gap-[22px] rounded-14 bg-surface px-[18px] py-[11px] text-[12.5px] text-navy shadow-[0_4px_14px_rgb(var(--track-shadow-rgb)/0.1)] max-sm:gap-3 max-sm:px-3 max-sm:py-[9px] max-sm:text-[11.5px]"
         aria-hidden={props.demandAreas ? undefined : true}
       >
         {props.demandAreas ? (
-          <DemandLegend areas={props.demandAreas} dates={props.demandSnapshotDates} />
+          <DemandLegend
+            areas={props.demandAreas}
+            dates={props.demandSnapshotDates}
+            outlook={outlook}
+            recommended={Boolean(props.recommended?.length)}
+          />
         ) : (
           (['training', 'assessment'] as const).map((kind) => (
             <span key={kind} className="inline-flex items-center gap-2">
@@ -366,33 +390,58 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
 function DemandAreas({
   areas,
   selected,
+  overview = false,
   onPick,
   inset,
+  edges,
 }: {
   areas: readonly DemandMapArea[]
   selected?: string | null
+  /** Frame every region, whichever is selected. */
+  overview?: boolean
   onPick?: (code: string) => void
   inset: number
+  edges: OverlayEdges
 }) {
   const map = useMap()
-  const copy = useCopy().explore.demand
+  const en = useCopy()
+  const copy = en.explore.demand
   const boundaries = useRegionBoundaries()
   const data = useMemo(
     () => demandRegions(boundaries.data, areas, selected),
     [boundaries.data, areas, selected],
   )
+  // The camera follows the regions' shapes and the selection, not each refresh of their counts, nor a card of the
+  // page's growing by a line: the edges are read as they stand when it moves.
+  const shapes = boundaries.data
+  const reach = useRef(edges)
   useEffect(() => {
-    const shown = selected
-      ? data.features.filter((feature) => feature.properties.region_code === selected)
-      : data.features
+    reach.current = edges
+  })
+  const framed = overview ? null : selected
+  useEffect(() => {
+    const shown = framed
+      ? (shapes?.features ?? []).filter((feature) => feature.properties.region_code === framed)
+      : (shapes?.features ?? [])
     if (!shown.length) return
     const bounds = L.geoJSON(shown).getBounds()
     map.fitBounds(bounds, {
-      paddingTopLeft: [inset + 40, 75],
-      paddingBottomRight: [60, 60],
-      maxZoom: selected ? 11 : 8,
+      paddingTopLeft: [inset + 40, reach.current.top + 75],
+      paddingBottomRight: [60, reach.current.bottom + 60],
+      maxZoom: framed ? 11 : 8,
     })
-  }, [map, data, selected, inset])
+  }, [map, shapes, framed, inset])
+  const labelOf = (area: DemandMapArea | undefined, name: string, count: number | null) =>
+    area?.balance
+      ? en.explore.outlook.mapMarker(
+          name,
+          area.posting_count,
+          area.centers ?? 0,
+          en.explore.outlook.balance[area.balance],
+        )
+      : count === null
+        ? copy.mapRegionEmpty(name)
+        : copy.mapMarker(name, count)
   if (boundaries.isPending || boundaries.isError)
     return (
       <p
@@ -412,11 +461,11 @@ function DemandAreas({
           color,
           selected: active,
         } = feature.properties
-        const label = count === null ? copy.mapRegionEmpty(name) : copy.mapMarker(name, count)
         const area = areas.find((item) => item.region_code === code)
+        const label = labelOf(area, name, count)
         return (
           <GeoJSON
-            key={`${code}:${count}:${active}`}
+            key={`${code}:${count}:${active}:${area?.balance ?? ''}:${area?.centers ?? ''}`}
             data={feature}
             style={{
               className: 'demand-region-polygon',
@@ -455,8 +504,91 @@ function DemandAreas({
           </GeoJSON>
         )
       })}
+      {/* With a qualification in focus, each region with records wears its badge: balance mark, code, postings. */}
+      {areas
+        .filter((area) => area.balance && BALANCE_MARKS[area.balance])
+        .map((area) => {
+          const active = area.region_code === selected
+          const badge = demandSymbol(area, active, labelOf(area, area.name, area.posting_count))
+          badge.addEventListener('click', (event) => {
+            // The polygon under the badge would pick the region a second time.
+            event.stopPropagation()
+            onPick?.(area.region_code)
+          })
+          return (
+            <Marker
+              key={`badge:${area.region_code}:${area.posting_count}:${area.balance}:${active}`}
+              position={[area.latitude, area.longitude]}
+              icon={L.divIcon({ className: 'demand-region-badge', html: badge, iconSize: [0, 0] })}
+              // The badge is its own button; the marker around it takes no focus, and sits under the pins.
+              keyboard={false}
+              zIndexOffset={active ? -700 : -800}
+            />
+          )
+        })}
     </>
   )
+}
+
+/**
+ * The map stays on the Philippines: it can't be zoomed out past the view that shows the whole country in the part of
+ * the map clear of the page's panels, nor moved outside that view. Worked out again when the map's box or those
+ * panels change.
+ */
+interface MapLimits {
+  minZoom: number
+  /** South-west and north-east corners, or none for a map with no box to fit the country into. */
+  bounds: [L.LatLngTuple, L.LatLngTuple] | null
+}
+
+function StayOnPhilippines({
+  inset,
+  edges,
+  limits,
+  onLimits,
+}: {
+  inset: number
+  edges: OverlayEdges
+  limits: MapLimits | null
+  onLimits: (limits: MapLimits) => void
+}) {
+  const map = useMap()
+  // Worked out here, and put on the map below once the page has drawn with it: by then pins built for the old
+  // limit have been taken off the map, and those built for the new one aren't on it yet.
+  useEffect(() => {
+    const measure = () => {
+      const { x: width, y: height } = map.getSize()
+      // A map with no box yet has nothing to fit; it's asked again when it gets one.
+      if (!width || !height) return onLimits({ minZoom: map.getMinZoom(), bounds: null })
+      const size = { width, height }
+      const padding = { top: edges.top, right: 0, bottom: edges.bottom, left: inset }
+      // Down to a zoom Leaflet stops on, so the whole country always fits.
+      const snap = map.options.zoomSnap || 1
+      const minZoom = Math.max(
+        0,
+        Math.floor(zoomFor(homeWorldSize(size, padding), 256) / snap) * snap,
+      )
+      const [[west, south], [east, north]] = homeView(size, padding, 256 * 2 ** minZoom)
+      onLimits({
+        minZoom,
+        bounds: [
+          [south, west],
+          [north, east],
+        ],
+      })
+    }
+    measure()
+    map.on('resize', measure)
+    return () => {
+      map.off('resize', measure)
+    }
+  }, [map, inset, edges, onLimits])
+  useEffect(() => {
+    if (!limits?.bounds) return
+    map.setMinZoom(limits.minZoom)
+    map.setMaxBounds(limits.bounds)
+  }, [map, limits])
+  return null
 }
 
 /** Leaflet measures its box once: it's told when the box changes size (the layout, or the map shown again). */
@@ -497,6 +629,7 @@ function Pins({
   focus,
   inset,
   route,
+  recommended,
   onPick,
   onCopied,
   ...popup
@@ -507,6 +640,7 @@ function Pins({
   const group = useRef<L.MarkerClusterGroup>(null)
   const markers = useRef(new Map<string, L.Marker>())
   const map = useMap()
+  const starred = useMemo(() => new Set(recommended), [recommended])
 
   // Open the selected center's popup, zooming in far enough to show its pin, unless a route has the view.
   useEffect(() => {
@@ -517,40 +651,49 @@ function Pins({
     const marker = markers.current.get(selectedId)
     if (!marker || route) return
     const open = () => marker.openPopup()
-    if (group.current) group.current.zoomToShowLayer(marker, open)
+    // A recommended pin stands outside the clusters, so there's no cluster to open first.
+    if (group.current?.hasLayer(marker)) group.current.zoomToShowLayer(marker, open)
     else open()
   }, [selectedId, focus, route, map])
 
+  const pin = (center: Center) => {
+    const selected = center.id === selectedId
+    const isRecommended = starred.has(center.id)
+    const label = copy.pin(center.name, en.training.kinds[center.kind])
+    return (
+      <Marker
+        key={center.id}
+        position={[center.latitude as number, center.longitude as number]}
+        icon={pinIcon(center.kind, selected, isRecommended)}
+        // A div pin is named by its title (Leaflet gives alt text to image icons only).
+        title={isRecommended ? en.explore.outlook.pin(label) : label}
+        zIndexOffset={selected ? 1000 : isRecommended ? 500 : 0}
+        ref={(marker) => {
+          if (marker) markers.current.set(center.id, marker)
+          else markers.current.delete(center.id)
+        }}
+        eventHandlers={{ click: () => onPick(center.id) }}
+      >
+        <Popup
+          maxWidth={380}
+          minWidth={250}
+          autoPanPadding={[24, 24]}
+          autoPanPaddingTopLeft={[inset + 24, 24]}
+        >
+          <CenterPopup center={center} {...popup} onCopied={onCopied} />
+        </Popup>
+      </Marker>
+    )
+  }
+
   return (
-    <ClusterGroup ref={group}>
-      {points.map((center) => {
-        const selected = center.id === selectedId
-        return (
-          <Marker
-            key={center.id}
-            position={[center.latitude as number, center.longitude as number]}
-            icon={pinIcon(center.kind, selected)}
-            // A div pin is named by its title (Leaflet gives alt text to image icons only).
-            title={copy.pin(center.name, en.training.kinds[center.kind])}
-            zIndexOffset={selected ? 1000 : 0}
-            ref={(marker) => {
-              if (marker) markers.current.set(center.id, marker)
-              else markers.current.delete(center.id)
-            }}
-            eventHandlers={{ click: () => onPick(center.id) }}
-          >
-            <Popup
-              maxWidth={380}
-              minWidth={250}
-              autoPanPadding={[24, 24]}
-              autoPanPaddingTopLeft={[inset + 24, 24]}
-            >
-              <CenterPopup center={center} {...popup} onCopied={onCopied} />
-            </Popup>
-          </Marker>
-        )
-      })}
-    </ClusterGroup>
+    <>
+      <ClusterGroup ref={group}>
+        {points.filter((center) => !starred.has(center.id)).map(pin)}
+      </ClusterGroup>
+      {/* Recommended centers are never folded into a cluster: their stars show at every zoom. */}
+      {points.filter((center) => starred.has(center.id)).map(pin)}
+    </>
   )
 }
 
@@ -638,17 +781,36 @@ function Framing({
   const map = useMap()
   const circle = useRef<L.Circle>(null)
   const radius = reference && radiusKm && radiusKm > 0 ? radiusKm : null
-  // The panel's reach counts too: the map is framed again once it's known, or when the layout changes it.
   const key = JSON.stringify([
     points.map((center) => center.id),
     reference && [reference.latitude, reference.longitude],
     radius,
-    inset,
   ])
-  const last = useRef<string | null>(null)
+  const last = useRef<{ key: string; inset: number } | null>(null)
+  // The learner moved the map themselves: it won't reframe itself over their view, unless the results change.
+  const moved = useRef(false)
   useEffect(() => {
-    if (last.current === key || hasRoute) return
-    last.current = key
+    const element = map.getContainer()
+    const mark = () => {
+      moved.current = true
+    }
+    element.addEventListener('pointerdown', mark)
+    element.addEventListener('wheel', mark, { passive: true })
+    element.addEventListener('keydown', mark)
+    return () => {
+      element.removeEventListener('pointerdown', mark)
+      element.removeEventListener('wheel', mark)
+      element.removeEventListener('keydown', mark)
+    }
+  }, [map])
+  useEffect(() => {
+    if (hasRoute) return
+    // The panel's reach counts too: the map is framed again once it's known, or when the layout changes it.
+    const previous = last.current
+    const changed = previous?.key !== key
+    if (!changed && (previous?.inset === inset || moved.current)) return
+    last.current = { key, inset }
+    if (changed) moved.current = false
     const padding = (size: number) => ({
       paddingTopLeft: [inset + size, size] as L.PointTuple,
       paddingBottomRight: [size, size] as L.PointTuple,

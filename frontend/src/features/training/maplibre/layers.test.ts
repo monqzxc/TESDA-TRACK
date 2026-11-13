@@ -74,7 +74,12 @@ describe('the overlays over the base map', () => {
     const ids = style.layers.map((layer) => layer.id)
     expect(ids.indexOf(LAYERS.radiusFill)).toBeLessThan(ids.indexOf(FIRST_LABEL_LAYER))
     expect(ids.indexOf('center-route-chosen-line')).toBeLessThan(ids.indexOf(FIRST_LABEL_LAYER))
-    expect(ids.slice(-3)).toEqual([LAYERS.clusters, LAYERS.pins, LAYERS.selected])
+    expect(ids.slice(-4)).toEqual([
+      LAYERS.clusters,
+      LAYERS.pins,
+      LAYERS.recommended,
+      LAYERS.selected,
+    ])
   })
 
   it('cluster centers closer than Leaflet’s 46 pixels, even at the deepest zoom', () => {

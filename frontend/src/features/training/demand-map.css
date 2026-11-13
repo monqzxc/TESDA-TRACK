@@ -36,3 +36,45 @@
   outline: 3px solid var(--track-focus);
   outline-offset: 2px;
 }
+
+/* With a qualification in focus each region's badge stays on show: its balance mark, its code and its postings. */
+.center-map .demand-region-hit[data-balance] span {
+  visibility: visible;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 1px 6px rgb(var(--track-shadow-rgb) / 0.22);
+  padding: 4px 8px;
+  font-size: 11.5px;
+}
+
+.center-map .demand-region-hit[aria-pressed='true'][data-balance] span {
+  outline: 2px solid var(--track-blue);
+}
+
+.center-map .demand-region-hit i,
+.center-map .demand-balance-key i {
+  font-style: normal;
+  font-size: 10px;
+  line-height: 1;
+}
+
+.center-map :is(.demand-region-hit, .demand-balance-key) i[data-tone='good'] {
+  color: var(--track-good-fill);
+}
+
+.center-map :is(.demand-region-hit, .demand-balance-key) i[data-tone='even'] {
+  color: var(--track-muted);
+}
+
+.center-map :is(.demand-region-hit, .demand-balance-key) i[data-tone='warn'] {
+  color: var(--track-warn-ink);
+}
+
+/* The Leaflet map holds each badge in a marker of no size, centred on the region's main city. */
+.center-map .demand-region-badge {
+  display: grid;
+  place-items: center;
+  width: 0;
+  height: 0;
+}

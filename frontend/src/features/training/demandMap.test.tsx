@@ -72,3 +72,46 @@ describe('regional demand heatmap', () => {
     expect(screen.getByText('Snapshot: 2026-11-04.')).toBeVisible()
   })
 })
+
+describe('one qualification’s supply and demand on the map', () => {
+  it('draws a region listed for its centers alone like one with no posting records', () => {
+    const data = demandRegions(geometry as RegionBoundaries, [area(4), area(0, 'VII')])
+    const cebu = data.features.find((f) => f.properties.region_code === 'VII')?.properties
+    expect(cebu).toMatchObject({ posting_count: null, color: NO_DEMAND_COLOR })
+  })
+
+  it('keeps each region’s badge on show: its balance mark, its code and its postings', () => {
+    const saturated = demandSymbol({ ...area(2), balance: 'more_supply', centers: 12 }, true, 'NCR')
+    expect(saturated.dataset.balance).toBe('more_supply')
+    expect(saturated.textContent).toBe('▼NCR · 2')
+    expect(saturated.querySelector('i')?.dataset.tone).toBe('warn')
+    expect(saturated).toHaveAttribute('aria-pressed', 'true')
+    // Without a qualification in focus the button stays a hidden label, as before.
+    expect(demandSymbol(area(2), false, 'NCR').dataset.balance).toBeUndefined()
+  })
+
+  it('names the balance marks, the pins and the star in a legend that folds its small print away', () => {
+    render(
+      <DemandLegend
+        areas={[
+          { ...area(4), balance: 'more_demand', centers: 1 },
+          { ...area(0, 'VII'), balance: 'supply_only', centers: 2 },
+        ]}
+        dates={['2026-11-04']}
+        outlook
+        recommended
+      />,
+    )
+    // The range counts regions with postings only.
+    expect(screen.getByText('4–4')).toBeInTheDocument()
+    for (const label of [
+      'Demand ahead',
+      'Balanced',
+      'Saturated',
+      'Recommended',
+      'About this map',
+    ]) {
+      expect(screen.getByText(label)).toBeInTheDocument()
+    }
+  })
+})

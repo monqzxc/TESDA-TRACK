@@ -1,10 +1,26 @@
 import { queryOptions, useQuery } from '@tanstack/react-query'
 import type { FeatureCollection, MultiPolygon, Polygon } from 'geojson'
 import boundaryUrl from './data/philippines-regions.json?url'
-import type { DemandMapArea } from './CenterMapTypes.ts'
+import type { DemandBalance, DemandMapArea } from './CenterMapTypes.ts'
 
 export const DEMAND_COLORS = ['#fff3c4', '#f5cf8a', '#ec91b8', '#c54b8c'] as const
 export const NO_DEMAND_COLOR = '#b8bec8'
+/**
+ * A region's balance as a mark beside its name: a shape as well as a color, so it reads without color. Demand ahead
+ * of supply points up, supply ahead of demand (a saturated area) points down, and a ring says one side has no
+ * records. A region with nothing recorded has no mark.
+ */
+export const BALANCE_MARKS: Record<
+  DemandBalance,
+  { glyph: string; tone: 'good' | 'even' | 'warn' } | null
+> = {
+  more_demand: { glyph: '▲', tone: 'good' },
+  demand_only: { glyph: '△', tone: 'good' },
+  balanced: { glyph: '●', tone: 'even' },
+  more_supply: { glyph: '▼', tone: 'warn' },
+  supply_only: { glyph: '▽', tone: 'warn' },
+  no_records: null,
+}
 export interface RegionProperties {
   region_code: string
   name: string
@@ -48,7 +64,8 @@ export function demandRegions(
   return {
     type: 'FeatureCollection',
     features: boundaries.features.map((feature) => {
-      const count = counts.get(feature.properties.region_code) ?? null
+      // A region listed with no postings (it has centers only) is drawn like one that isn't listed.
+      const count = counts.get(feature.properties.region_code) || null
       return {
         ...feature,
         properties: {
@@ -91,17 +108,28 @@ export function demandBounds(
     : null
 }
 
-/** Canvas maps keep a keyboard target over each filled region; its label appears on focus. */
+/**
+ * A keyboard target over each filled region; its label appears on focus. With a qualification in focus the label
+ * stays on show as a badge: the region's balance mark, its code and its posting records.
+ */
 export function demandSymbol(area: DemandMapArea, selected: boolean, label: string) {
   const element = document.createElement('button')
   element.type = 'button'
   element.className = 'demand-region-hit'
   element.setAttribute('aria-label', label)
   element.setAttribute('aria-pressed', String(selected))
-  element.title = `${label}\n${area.titles.join(' · ')}`
+  element.title = area.titles.length ? `${label}\n${area.titles.join(' · ')}` : label
   const text = document.createElement('span')
-  text.textContent = `${area.region_code} · ${area.posting_count.toLocaleString()}`
   text.setAttribute('aria-hidden', 'true')
+  const mark = area.balance ? BALANCE_MARKS[area.balance] : null
+  if (mark) {
+    element.dataset.balance = area.balance
+    const glyph = document.createElement('i')
+    glyph.dataset.tone = mark.tone
+    glyph.textContent = mark.glyph
+    text.append(glyph)
+  }
+  text.append(`${area.region_code} · ${area.posting_count.toLocaleString()}`)
   element.append(text)
   return element
 }

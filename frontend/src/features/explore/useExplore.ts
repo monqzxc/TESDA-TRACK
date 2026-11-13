@@ -15,6 +15,13 @@ import { useTrainingStore } from '../training/state.ts'
 import type { Reference } from '../training/useCenters.ts'
 import { MAX_QUALIFICATIONS, nearestRegion } from './explore.ts'
 import { areaJobsQuery } from './demandApi.ts'
+import { outlookQuery, outlookSummaryQuery } from './outlookApi.ts'
+import {
+  NO_RECOMMENDATIONS,
+  recommend,
+  recommendedIds as idsOf,
+  supplyCenters,
+} from './recommend.ts'
 
 export const useDemandStore = create<{
   region: string | null | undefined
@@ -55,14 +62,19 @@ interface ExploreState {
   draft: string
   /** The search on screen. */
   search: Search | null
+  /** The learner would move for work or training: the analysis and the recommended centers look further. */
+  relocate: boolean
   setDraft: (draft: string) => void
   setSearch: (search: Search | null) => void
+  setRelocate: (relocate: boolean) => void
 }
 
 export const useExploreStore = create<ExploreState>()((set) => ({
   draft: '',
   search: null,
+  relocate: false,
   setDraft: (draft) => set({ draft }),
+  setRelocate: (relocate) => set({ relocate }),
   setSearch: (search) => {
     set({ search })
     useDemandStore.getState().setCode(undefined)
@@ -72,10 +84,12 @@ export const useExploreStore = create<ExploreState>()((set) => ({
 /**
  * Every site with the listings the page needs, measured from the learner's location or a typed place, nearest
  * first: with a search, the matched qualifications' programs and schedules; without one, every listing (so the
- * nearest centers can say how many qualifications they offer).
+ * nearest centers can say how many qualifications they offer). With a qualification in focus (the first match, or
+ * one chosen in the demand panel), its supply and demand across the regions and the centers recommended for it.
  */
 export function useExplore(demandActive = false) {
   const search = useExploreStore((state) => state.search)
+  const relocate = useExploreStore((state) => state.relocate)
   const location = useTrainingStore((state) => (state.useLocation ? state.location : null))
   const locating = useTrainingStore(
     (state) => state.useLocation && state.locating && !state.location,
@@ -86,7 +100,19 @@ export function useExplore(demandActive = false) {
     () => (search?.result.matches ?? []).slice(0, MAX_QUALIFICATIONS),
     [search],
   )
-  const codes = useMemo(() => matches.map((match) => match.qualification.code), [matches])
+  const demandFilters = useDemandStore()
+  const demandCode =
+    demandFilters.code === undefined ? (matches[0]?.qualification.code ?? null) : demandFilters.code
+  // The qualification in focus may be one the search didn't match: its listings are read with the matches'.
+  const codes = useMemo(
+    () => [
+      ...new Set([
+        ...matches.map((match) => match.qualification.code),
+        ...(search && demandCode ? [demandCode] : []),
+      ]),
+    ],
+    [matches, search, demandCode],
+  )
 
   const regions = useQuery(regionsQuery)
   const config = useQuery(clientConfigQuery)
@@ -131,22 +157,33 @@ export function useExplore(demandActive = false) {
   )
 
   const today = philippineDay(new Date())
-  const demandFilters = useDemandStore()
   const automaticRegion = nearestRegion(reference, regions.data ?? [])?.code ?? null
   const demandRegion = demandFilters.region === undefined ? automaticRegion : demandFilters.region
-  const demandCode =
-    demandFilters.code === undefined ? (matches[0]?.qualification.code ?? null) : demandFilters.code
   const demandLocality = demandFilters.scope === demandRegion ? demandFilters.locality : null
   const demandOffset = demandFilters.scope === demandRegion ? demandFilters.offset : 0
   const jobs = useQuery({
     ...areaJobsQuery(demandRegion, demandLocality, demandCode, demandOffset),
     enabled: demandActive,
   })
-  // The intensity scale compares all regions for this qualification. Locality and list pagination do not
-  // replace the map's dataset, or briefly remove its selection targets while the list is refreshed.
+  // The intensity scale compares all regions. Locality and list pagination do not replace the map's dataset, or
+  // briefly remove its selection targets while the list is refreshed. With a qualification in focus the outlook
+  // below has its regions' postings, so this is asked only for all recorded jobs.
   const demandMap = useQuery({
-    ...areaJobsQuery(null, null, demandCode),
-    enabled: demandActive,
+    ...areaJobsQuery(null, null, null),
+    enabled: demandActive && !demandCode,
+  })
+  // One qualification's supply and demand. The area analysed is the demand panel's region; the learner's own region
+  // and whether they would relocate only change its wording. A change of area keeps the last answer on screen
+  // until the new one arrives; a change of qualification doesn't, so one's numbers never sit under another's name.
+  const outlook = useQuery({
+    ...outlookQuery(demandCode ?? '', demandRegion, automaticRegion, relocate),
+    enabled: Boolean(demandCode),
+    placeholderData: (previous) =>
+      previous?.qualification.code === demandCode ? previous : undefined,
+  })
+  const summary = useQuery({
+    ...outlookSummaryQuery(demandCode ?? '', demandRegion, automaticRegion, relocate),
+    enabled: Boolean(demandCode) && outlook.data?.ai_summary_available === true,
   })
   const centers = useMemo(
     () =>
@@ -155,6 +192,25 @@ export function useExplore(demandActive = false) {
         : [],
     [everything, reference, today],
   )
+  /** The centers listing the qualification in focus: where its supply is. */
+  const supply = useMemo(
+    () => (demandCode ? supplyCenters(centers, demandCode, outlook.data) : []),
+    [centers, demandCode, outlook.data],
+  )
+  const alternatives = outlook.data?.alternatives
+  const recommendations = useMemo(
+    () =>
+      demandCode
+        ? recommend({
+            supply,
+            homeRegion: automaticRegion,
+            relocate,
+            alternatives: alternatives ?? [],
+          })
+        : NO_RECOMMENDATIONS,
+    [demandCode, supply, automaticRegion, relocate, alternatives],
+  )
+  const recommendedIds = useMemo(() => idsOf(recommendations), [recommendations])
 
   return {
     search,
@@ -172,6 +228,14 @@ export function useExplore(demandActive = false) {
     demandMap,
     demandRegion,
     demandCode,
+    /** The learner's own region, from their location or typed place. */
+    homeRegion: automaticRegion,
+    relocate,
+    outlook,
+    summary,
+    supply,
+    recommendations,
+    recommendedIds,
     demandLocality,
     demandOffset,
     loading: !everything && !(sites.isError || regions.isError),

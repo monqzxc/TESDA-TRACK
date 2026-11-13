@@ -98,7 +98,8 @@ function PageHelp({ page }: { page: PageKey | undefined }) {
   return (
     <aside
       aria-label={en.help.regionLabel}
-      className="fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-40"
+      // A page with a card along the bottom of the window (the Career Map's brief) lifts the button clear of it.
+      className="fixed right-4 bottom-[calc(max(1rem,env(safe-area-inset-bottom))_+_var(--help-lift,0px))] z-40 transition-[bottom] duration-200 motion-reduce:transition-none"
     >
       <button
         ref={trigger}

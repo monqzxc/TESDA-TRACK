@@ -285,4 +285,86 @@ def write_insight(name: str, area: AreaOutlook | None, home: AreaOutlook | None,
 
     headline = (HEADLINES[area.balance].format(area=area.name, name=name) if area
                 else f"{name}: where it is in demand and where it is offered")
-    return OutlookInsight(headline=headline, points=points)
+    summary = write_summary(name, area, home, relocate, areas, totals, alternatives, examples_counted)
+    return OutlookInsight(headline=headline, summary=summary, points=points)
+
+
+VERDICTS = {
+    "more_supply": "That makes {area} look saturated: expect more competition for local openings.",
+    "more_demand": "Demand is ahead of supply here, a good sign for finding work nearby once you qualify.",
+    "balanced": "Demand and training supply look balanced here.",
+    "demand_only": "Employers posted for it here, but you would need to train or get assessed in another region.",
+    "supply_only": "You can train or get assessed here, but this snapshot shows no local postings for it.",
+    "no_records": "There is nothing to compare here yet.",
+}
+
+
+def write_summary(name: str, area: AreaOutlook | None, home: AreaOutlook | None, relocate: bool,
+                  areas: list[AreaOutlook], totals: OutlookTotals, alternatives: list[AreaOutlook],
+                  examples_counted: bool = False) -> str:
+    """The brief under the map, in a few short sentences: where the learner is and whether they would relocate, the
+    demand and the supply there, what that makes of the area, and where else to look."""
+    said: list[str] = []
+    postings, sites = totals.posting_count, totals.training_sites + totals.assessment_sites
+    stance = "are open to relocating" if relocate else "prefer not to relocate"
+    if area is None:
+        said.append("This is the national picture.")
+        recorded = (f"{_count(postings, 'posting record')} for {name} {'is' if postings == 1 else 'are'} recorded "
+                    f"across {_count(totals.regions_with_postings, 'region')}" if postings
+                    else f"No posting records are linked to {name} in this snapshot")
+        offered = (f"{_count(sites, 'center')} across {_count(totals.regions_with_sites, 'region')}" if sites
+                   else "no center is recorded for it yet")
+        said.append(f"{recorded}, and {offered}." if postings or sites
+                    else f"Nothing is recorded for {name} yet: no posting records and no centers.")
+        ahead = [a.name for a in areas if a.balance in ("more_demand", "demand_only")][:3]
+        crowded = [a.name for a in areas if a.balance == "more_supply"][:3]
+        if ahead:
+            said.append(f"Demand is ahead of supply in {_listed(ahead)}.")
+        if crowded:
+            said.append(f"Supply is ahead of demand in {_listed(crowded)}.")
+    else:
+        if home is None:
+            said.append(f"This looks at {area.name}.")
+        elif home.region_code == area.region_code:
+            said.append(f"You are in {area.name} and {stance}.")
+        else:
+            said.append(f"You are looking at {area.name}, not your own region ({home.name}), and you {stance}.")
+        here, centers = area.posting_count, _centers(area)
+        demand, supply = _percent(area.demand_share), _percent(area.supply_share)
+        if not postings and not sites:
+            said.append(f"Nothing is recorded for {name} yet: no posting records and no centers.")
+        elif not postings:
+            said.append(f"No posting records are linked to {name} in this snapshot; "
+                        + (f"{centers:,} of its {_count(sites, 'recorded center')} "
+                           f"{'is' if centers == 1 else 'are'} here ({supply})." if centers
+                           else f"none of its {_count(sites, 'recorded center')} "
+                                f"{'is' if sites == 1 else 'are'} here."))
+        else:
+            records = f"the {_count(postings, 'posting record')} for {name} nationwide"
+            if not sites:
+                said.append((f"{here:,} of {records} {'is' if here == 1 else 'are'} here ({demand})" if here
+                             else f"None of {records} are here") + "; no center is recorded for it yet.")
+            elif here and centers:
+                said.append(f"{here:,} of {records} {'is' if here == 1 else 'are'} here ({demand}), and "
+                            f"{centers:,} of its {_count(sites, 'recorded center')} ({supply}).")
+            elif here:
+                said.append(f"{here:,} of {records} {'is' if here == 1 else 'are'} here ({demand}), but none of its "
+                            f"{_count(sites, 'recorded center')}.")
+            elif centers:
+                said.append(f"None of {records} are here, but {centers:,} of its "
+                            f"{_count(sites, 'recorded center')} {'is' if centers == 1 else 'are'} ({supply}).")
+            else:
+                said.append(f"None of {records} or its {_count(sites, 'recorded center')} are here.")
+        said.append(VERDICTS[area.balance].format(area=area.name)
+                    + (" The counts are small, so treat this as a rough signal." if area.limited else ""))
+    if alternatives:
+        names = [a.name for a in alternatives]
+        if relocate:
+            said.append(f"If you relocate, look first at {_listed(names)}.")
+        elif area is not None and area.balance in ("more_supply", "supply_only", "no_records"):
+            said.append(f"If your plans change, {names[0]} shows more demand against its supply.")
+    elif relocate:
+        said.append("No other region shows stronger recorded demand for it.")
+    if examples_counted and sites:
+        said.append("Center counts include example sites, shown for demonstration.")
+    return " ".join(said)

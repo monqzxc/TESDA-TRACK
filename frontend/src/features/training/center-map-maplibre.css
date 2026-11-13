@@ -25,6 +25,11 @@
   outline-offset: -3px;
 }
 
+/* The credits ride above a card the page floats over the map's bottom edge (--map-overlay-bottom). */
+.center-map .maplibregl-ctrl-bottom-right {
+  bottom: var(--map-overlay-bottom, 0px);
+}
+
 .center-map .maplibregl-ctrl.maplibregl-ctrl-attrib {
   background: var(--track-glass-soft);
   color: var(--track-muted);

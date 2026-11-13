@@ -1,0 +1,297 @@
+import { fireEvent, screen, waitFor, within } from '@testing-library/react'
+import { http, HttpResponse } from 'msw'
+import { MemoryRouter } from 'react-router'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { renderWithQuery } from '../../test/query.tsx'
+import { server } from '../../test/server.ts'
+import type { CenterMapProps } from '../training/CenterMapTypes.ts'
+import { useTrainingStore } from '../training/state.ts'
+import ExplorePage from './ExplorePage.tsx'
+import { useDemandStore, useExploreStore } from './useExplore.ts'
+
+// The map says what it was given: which centers are starred, which regions carry a balance, and how it is framed.
+vi.mock('../training/CenterMap.tsx', () => ({
+  default: (props: CenterMapProps) => (
+    <div
+      data-testid="map"
+      data-pins={props.centers.map((center) => center.id).join(' ')}
+      data-recommended={(props.recommended ?? []).join(' ')}
+      data-overview={String(Boolean(props.demandOverview))}
+    >
+      {props.demandAreas?.map((area) => (
+        <span key={area.region_code}>
+          {area.region_code}:{area.posting_count}:{area.centers}:{area.balance}
+        </span>
+      ))}
+    </div>
+  ),
+}))
+
+const CODE = 'HOUSEKEEPING-NC-II'
+const NAME = 'Housekeeping NC II'
+const regions = [
+  { code: 'NCR', name: 'Metro Manila', latitude: 14.6, longitude: 121, center_city: 'Manila' },
+  { code: 'VII', name: 'Central Visayas', latitude: 10.3, longitude: 123.9, center_city: 'Cebu' },
+]
+const site = (id: number, name: string, region: string, latitude: number, longitude: number) => ({
+  id,
+  name,
+  region_code: region,
+  city: null,
+  latitude,
+  longitude,
+})
+const providers = [
+  site(1, 'Manila Hotel School', 'NCR', 14.61, 121.0),
+  site(2, 'Cebu Hotel School', 'VII', 10.31, 123.9),
+]
+const centers = [site(7, 'Manila Assessment Center', 'NCR', 14.62, 121.01)]
+const qualification = { code: CODE, name: NAME, sector: 'Tourism' }
+const area = (region: (typeof regions)[number], extra: object) => ({
+  region_code: region.code,
+  name: region.name,
+  latitude: region.latitude,
+  longitude: region.longitude,
+  titles: [],
+  example_sites: 0,
+  limited: false,
+  ...extra,
+})
+const asked: URL[] = []
+let aiSummary = false
+
+const outlook = (url: URL) => {
+  const relocate = url.searchParams.get('relocate') === 'true'
+  return {
+    qualification: { code: CODE, name: NAME },
+    region_code: url.searchParams.get('region_code'),
+    home_region_code: url.searchParams.get('home_region_code'),
+    relocate,
+    areas: [
+      area(regions[0], {
+        posting_count: 2,
+        training_sites: 1,
+        assessment_sites: 1,
+        demand_share: 0.2,
+        supply_share: 0.67,
+        balance: 'more_supply',
+        limited: true,
+      }),
+      area(regions[1], {
+        posting_count: 8,
+        training_sites: 1,
+        assessment_sites: 0,
+        demand_share: 0.8,
+        supply_share: 0.33,
+        balance: 'more_demand',
+      }),
+    ],
+    totals: {
+      posting_count: 10,
+      employer_count: 9,
+      training_sites: 2,
+      assessment_sites: 1,
+      regions_with_postings: 2,
+      regions_with_sites: 2,
+    },
+    alternatives: ['VII'],
+    training_site_ids: [1, 2],
+    // The registry accredits it: the page's own listings don't know.
+    assessment_site_ids: [7],
+    snapshot_dates: ['2026-11-04'],
+    insight: {
+      headline: 'Metro Manila: training supply for Housekeeping NC II is ahead of recorded demand',
+      summary: relocate
+        ? 'You are in Metro Manila and are open to relocating. If you relocate, look first at Central Visayas.'
+        : 'You are in Metro Manila and prefer not to relocate. That makes Metro Manila look saturated.',
+      points: [{ kind: 'demand', text: '2 posting records in Metro Manila are linked to it.' }],
+    },
+    includes_example_sites: false,
+    ai_summary_available: aiSummary,
+    method_version: 'qualification-outlook-v1',
+    limitations: [],
+  }
+}
+
+beforeEach(() => {
+  asked.length = 0
+  aiSummary = false
+  useDemandStore.setState({
+    region: undefined,
+    scope: undefined,
+    locality: null,
+    code: undefined,
+    offset: 0,
+  })
+  useExploreStore.setState({
+    draft: 'housekeeping',
+    relocate: false,
+    search: {
+      query: 'housekeeping',
+      result: {
+        profile: { intent: 'training_recommendation' },
+        matches: [{ qualification, score: 90, reason: 'Matched housekeeping' }],
+      },
+    } as never,
+  })
+  // The learner shared a location in Manila.
+  useTrainingStore.setState({
+    useLocation: true,
+    location: { latitude: 14.6, longitude: 121 },
+    locating: false,
+    placeText: '',
+    locationError: null,
+    routeTo: null,
+  })
+  server.use(
+    http.get('*/api/v1/regions', () => HttpResponse.json(regions)),
+    http.get('*/api/v1/qualifications', () =>
+      HttpResponse.json([{ ...qualification, possible_jobs: [], competencies: [] }]),
+    ),
+    http.get('*/api/v1/client-config', () =>
+      HttpResponse.json({ routing_enabled: false, carto_key: '' }),
+    ),
+    http.get('*/api/v1/training-providers', () => HttpResponse.json(providers)),
+    http.get('*/api/v1/assessment-centers', () => HttpResponse.json(centers)),
+    http.get('*/api/v1/training-programs', () =>
+      HttpResponse.json(
+        providers.map((provider, index) => ({
+          id: index + 1,
+          qualification,
+          provider,
+          title: NAME,
+          delivery_mode: 'unknown',
+          scholarship_available: false,
+        })),
+      ),
+    ),
+    http.get('*/api/v1/assessment-schedules', () => HttpResponse.json([])),
+    http.get('*/api/v1/labor-market/jobs', () =>
+      HttpResponse.json({
+        items: [],
+        total: 0,
+        posting_count: 0,
+        employer_count: 0,
+        limit: 20,
+        offset: 0,
+        region_code: null,
+        locality: null,
+        localities: [],
+        areas: [],
+        snapshot_dates: [],
+        posted_between: [],
+        source_url: '',
+        limitations: [],
+      }),
+    ),
+    http.get('*/api/v1/labor-market/outlook', ({ request }) => {
+      const url = new URL(request.url)
+      asked.push(url)
+      return HttpResponse.json(outlook(url))
+    }),
+    http.get('*/api/v1/labor-market/outlook/summary', () =>
+      HttpResponse.json({
+        source: 'ai',
+        model: 'test',
+        text: 'An AI-written note about Metro Manila.',
+      }),
+    ),
+  )
+})
+
+const open = (path = '/explore') =>
+  renderWithQuery(
+    <MemoryRouter initialEntries={[path]}>
+      <ExplorePage />
+    </MemoryRouter>,
+  )
+const brief = () => screen.findByRole('region', { name: 'Supply and demand analysis' })
+
+describe('the supply and demand brief', () => {
+  it('analyses the first matched qualification for the learner’s own region and recommends the nearest centers', async () => {
+    open()
+    const card = within(await brief())
+    expect(await card.findByRole('heading', { level: 2 })).toHaveTextContent(
+      'training supply for Housekeeping NC II is ahead',
+    )
+    expect(await card.findByText('Saturated')).toBeVisible()
+    expect(card.getByText('Rough signal')).toBeVisible()
+    expect(card.getByText(/prefer not to relocate/)).toBeVisible()
+    // Only codes and the relocation choice are sent: the region nearest the learner, never their coordinates.
+    const url = asked.at(-1) as URL
+    expect(Object.fromEntries(url.searchParams)).toEqual({
+      qualification_code: CODE,
+      region_code: 'NCR',
+      home_region_code: 'NCR',
+      relocate: 'false',
+    })
+    // The nearest training center, and the assessment center only the registry links to the qualification.
+    expect(await card.findByRole('button', { name: /Manila Hotel School/ })).toHaveTextContent(
+      'Nearest to you',
+    )
+    expect(card.getByRole('button', { name: /Manila Assessment Center/ })).toBeVisible()
+    expect(card.queryByRole('button', { name: /Cebu Hotel School/ })).toBeNull()
+    await waitFor(() =>
+      expect(screen.getByTestId('map')).toHaveAttribute(
+        'data-recommended',
+        'training-1 assessment-7',
+      ),
+    )
+  })
+
+  it('looks further for a learner open to relocating', async () => {
+    open()
+    const card = within(await brief())
+    fireEvent.click(await card.findByRole('switch', { name: 'Open to relocating' }))
+    expect(await card.findByText(/look first at Central Visayas/)).toBeVisible()
+    expect(asked.at(-1)?.searchParams.get('relocate')).toBe('true')
+    expect(await card.findByRole('button', { name: /Cebu Hotel School/ })).toHaveTextContent(
+      'If you relocate: Central Visayas',
+    )
+    await waitFor(() =>
+      expect(screen.getByTestId('map')).toHaveAttribute(
+        'data-recommended',
+        'training-1 assessment-7 training-2',
+      ),
+    )
+  })
+
+  it('shows the demand view as the qualification’s regions with its centers pinned over them', async () => {
+    open()
+    const card = within(await brief())
+    fireEvent.click(await card.findByRole('button', { name: 'Show demand on the map' }))
+    const map = screen.getByTestId('map')
+    expect(await within(map).findByText('NCR:2:2:more_supply')).toBeInTheDocument()
+    expect(within(map).getByText('VII:8:1:more_demand')).toBeInTheDocument()
+    expect(map).toHaveAttribute('data-pins', 'training-1 assessment-7 training-2')
+    expect(map).toHaveAttribute('data-overview', 'false')
+    fireEvent.click(card.getByRole('switch', { name: 'Open to relocating' }))
+    await waitFor(() => expect(map).toHaveAttribute('data-overview', 'true'))
+    expect(card.getByRole('button', { name: 'Back to all results' })).toBeVisible()
+  })
+
+  it('shows the AI-written summary where the deployment has it, with the numbers behind it', async () => {
+    aiSummary = true
+    open()
+    const card = within(await brief())
+    expect(await card.findByText('An AI-written note about Metro Manila.')).toBeVisible()
+    expect(card.getByText('AI summary')).toBeVisible()
+    expect(
+      card.getByText('2 posting records in Metro Manila are linked to it.'),
+    ).toBeInTheDocument()
+  })
+
+  it('folds to its headline, and is absent without a qualification in focus', async () => {
+    const view = open()
+    const card = within(await brief())
+    await card.findByText(/prefer not to relocate/)
+    fireEvent.click(card.getByRole('button', { name: 'Hide analysis' }))
+    expect(card.getByRole('heading', { level: 2 })).toBeVisible()
+    expect(card.queryByText(/prefer not to relocate/)).not.toBeVisible()
+    view.unmount()
+    useExploreStore.setState({ search: null })
+    open()
+    await screen.findByTestId('map')
+    expect(screen.queryByRole('region', { name: 'Supply and demand analysis' })).toBeNull()
+  })
+})

@@ -37,6 +37,11 @@ os.environ.update({
     "SKILLS_BRIDGE_CLIENT_ID": "",
     "SKILLS_BRIDGE_CLIENT_SECRET": "",
     "PUBLIC_BASE_URL": "http://testserver",
+    # The Career Map's outlook as a real deployment has it: examples aren't supply, and no summary is asked of
+    # Claude, whatever a developer's own .env turns on. Tests that want either say so themselves.
+    "OUTLOOK_INCLUDE_EXAMPLE_SITES": "false",
+    "OUTLOOK_AI_SUMMARY_ENABLED": "false",
+    "ANTHROPIC_API_KEY": "",
 })
 
 
