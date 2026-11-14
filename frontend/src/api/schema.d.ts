@@ -1894,6 +1894,28 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/labor-market/suggestions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Nearby Suggestions View
+         * @description A few other qualifications in demand in the learner's region, ranked by demand and how well they fit the
+         *     learner's skills, each with its reasons (Card 4). An empty list means none is in demand there. The skills are in
+         *     the body and are neither stored nor logged; no sign-in needed.
+         */
+        post: operations["nearby_suggestions_view_api_v1_labor_market_suggestions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/labor-market/outlook/summary": {
         parameters: {
             query?: never;
@@ -4071,6 +4093,75 @@ export interface components {
              * @description The embedding model; null for keyword matching only
              */
             model: string | null;
+        };
+        /** NearbySuggestion */
+        NearbySuggestion: {
+            qualification: components["schemas"]["QualificationSummary"];
+            /**
+             * Posting Count
+             * @description Distinct posting records in the learner's region
+             */
+            posting_count: number;
+            /**
+             * Level
+             * @enum {string}
+             */
+            level: "high" | "moderate" | "low" | "none";
+            /**
+             * Limited
+             * @description Too few records for more than a rough signal
+             */
+            limited: boolean;
+            /**
+             * Fit
+             * @description How well it fits the learner's skills and qualifications
+             */
+            fit: number;
+            /**
+             * Reasons
+             * @description Why it is suggested, a short line each: demand first, then fit
+             */
+            reasons: string[];
+        };
+        /**
+         * NearbySuggestionRequest
+         * @description In the body, never the address: skills are the learner's own words. Neither stored nor logged.
+         */
+        NearbySuggestionRequest: {
+            /**
+             * Region Code
+             * @description The learner's region, as Card 3 works it out
+             */
+            region_code: string;
+            /** Skills */
+            skills?: string[];
+            /**
+             * Held
+             * @description Qualifications the learner chose or already holds, as codes or names: never suggested, and their sectors count toward fit
+             */
+            held?: string[];
+            /**
+             * Limit
+             * @default 3
+             */
+            limit: number;
+        };
+        /** NearbySuggestions */
+        NearbySuggestions: {
+            /** Region Code */
+            region_code: string;
+            /** Region Name */
+            region_name: string;
+            /** Suggestions */
+            suggestions: components["schemas"]["NearbySuggestion"][];
+            /**
+             * Method Version
+             * @default nearby-suggestions-v1
+             * @constant
+             */
+            method_version: "nearby-suggestions-v1";
+            /** Limitations */
+            limitations: string[];
         };
         /** NextStep */
         NextStep: {
@@ -10271,6 +10362,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["QualificationOutlook"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    nearby_suggestions_view_api_v1_labor_market_suggestions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NearbySuggestionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NearbySuggestions"];
                 };
             };
             /** @description Validation Error */

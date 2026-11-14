@@ -113,3 +113,17 @@ With a qualification in focus, the brief opens with **Demand where you are**:
 
 These come from `home_demand`, `higher_demand` and `demand_available` on `GET /api/v1/labor-market/outlook`
 (with `home_region_code`).
+
+## Other qualifications in demand near the learner
+
+Below it, **Other qualifications in demand near you** suggests up to three others, from
+`POST /api/v1/labor-market/suggestions` with the learner's region, skills and held qualifications in the body
+(neither stored nor logged):
+
+- **Candidates** are qualifications at moderate demand or more in the learner's region, by the level rule above,
+  leaving out the one in focus and any the learner holds on their Skill Passport.
+- **Fit** is the profile matcher's score for the learner's skills (the search's skills and their Skill Passport's),
+  plus credit for sharing a sector with the qualification in focus or one they hold.
+- **Ranking** weighs demand (against the busiest candidate) and fit equally. Each suggestion lists its reasons:
+  the records behind the demand first, then what fits.
+- With none in demand in the region, the brief says so. Choosing a suggestion puts it in focus.

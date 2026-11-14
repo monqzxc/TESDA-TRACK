@@ -57,3 +57,27 @@ export const outlookSummaryQuery = (
     staleTime: Infinity,
     retry: false,
   })
+
+export type NearbySuggestions = components['schemas']['NearbySuggestions']
+export type NearbySuggestion = components['schemas']['NearbySuggestion']
+
+/**
+ * A few other qualifications in demand in the learner's region that fit their skills (Card 4). Skills go in the
+ * body, never the address, and the API neither stores nor logs them.
+ */
+export const nearbySuggestionsQuery = (
+  region: string,
+  skills: readonly string[],
+  held: readonly string[],
+) =>
+  queryOptions<NearbySuggestions, ApiError>({
+    queryKey: ['labor-market', 'suggestions', region, [...skills].sort(), [...held].sort()],
+    queryFn: ({ signal }) =>
+      unwrap(
+        api.POST('/api/v1/labor-market/suggestions', {
+          body: { region_code: region, skills: [...skills], held: [...held], limit: 3 },
+          signal,
+        }),
+      ),
+    staleTime: 60_000,
+  })

@@ -203,6 +203,7 @@ export function OutlookBrief({
             )}
           >
             <LocalDemand explore={explore} onView={onView} />
+            <NearbyQualifications explore={explore} />
 
             {/* The analysis in a few sentences: AI-written where the deployment has it, else the rules' own. */}
             <div className="flex min-w-0 flex-col gap-1" aria-live="polite">
@@ -398,6 +399,65 @@ function LocalDemand({ explore, onView }: { explore: Explore; onView: (view: Vie
         </div>
       ) : (
         <p className={note}>{copy.top}</p>
+      )}
+    </div>
+  )
+}
+
+/**
+ * A few other qualifications in demand where the learner is, ranked by demand and how well they fit the learner's
+ * skills, each with why (Card 4). Choosing one puts it in focus, so the brief and the map follow it.
+ */
+function NearbyQualifications({ explore }: { explore: Explore }) {
+  const copy = useCopy().explore.outlook.nearby
+  const levels = useCopy().explore.outlook.local.levels
+  const { nearby, homeRegion } = explore
+  if (!homeRegion || !explore.outlook.data?.home_demand) return null
+  const data = nearby.data
+  return (
+    <div role="group" aria-label={copy.heading} className="flex min-w-0 flex-col gap-1.5">
+      <h3 className="m-0 flex items-center gap-1.5 text-12 font-bold tracking-[0.04em] text-muted uppercase">
+        <Icon name="lightbulb" />
+        {copy.heading}
+      </h3>
+      {nearby.isError ? (
+        <p className={note} role="alert">
+          {copy.failed}
+        </p>
+      ) : !data ? (
+        <p className={note} role="status">
+          {copy.loading}
+        </p>
+      ) : data.suggestions.length ? (
+        <ul className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-1.5 p-0">
+          {data.suggestions.map((item) => (
+            <li key={item.qualification.code}>
+              <Button
+                onPress={() => useDemandStore.getState().setCode(item.qualification.code)}
+                aria-label={copy.focus(item.qualification.name)}
+                className="flex w-full cursor-pointer flex-col items-start gap-0.5 rounded-10 border border-transparent bg-soft px-2.5 py-2 text-left data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:border-hover-border data-hovered:bg-surface"
+              >
+                <span className="flex w-full flex-wrap items-center gap-1.5">
+                  <span className="min-w-0 flex-1 text-13 font-semibold wrap-anywhere text-navy">
+                    {item.qualification.name}
+                  </span>
+                  <span className={cx(tag, levelTone[item.level])}>{levels[item.level]}</span>
+                </span>
+                <ul className="m-0 list-none p-0">
+                  {item.reasons.map((reason) => (
+                    <li key={reason} className="text-12 leading-[1.45] text-ink">
+                      {reason}
+                    </li>
+                  ))}
+                </ul>
+              </Button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className={note} role="status">
+          {copy.none(data.region_name)}
+        </p>
       )}
     </div>
   )

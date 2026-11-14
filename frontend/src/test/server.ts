@@ -10,6 +10,16 @@ const referenceData = [
   http.get('*/api/v1/client-config', () =>
     HttpResponse.json({ carto_key: '', routing_enabled: false, skills_bridge_enabled: false }),
   ),
+  // Nothing else in demand nearby unless a test says so.
+  http.post('*/api/v1/labor-market/suggestions', () =>
+    HttpResponse.json({
+      region_code: 'NCR',
+      region_name: 'National Capital Region',
+      suggestions: [],
+      method_version: 'nearby-suggestions-v1',
+      limitations: [],
+    }),
+  ),
   // No Skill Passport is linked unless a test says so.
   http.get('*/api/v1/auth/tsp/profile', () =>
     HttpResponse.json(

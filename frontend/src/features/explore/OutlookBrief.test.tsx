@@ -415,3 +415,95 @@ describe('Demand where you are (Card 3)', () => {
     expect(within(local).queryByText(/ demand$/)).not.toBeInTheDocument()
   })
 })
+
+describe('Other qualifications in demand near you (Card 4)', () => {
+  const sent: { region_code: string; skills: string[]; held: string[] }[] = []
+  const food = {
+    qualification: {
+      code: 'FBS-NC-II',
+      name: 'Food and Beverage Services NC II',
+      sector: 'Tourism',
+    },
+    posting_count: 12,
+    level: 'high',
+    limited: false,
+    fit: 60,
+    reasons: [
+      '12 posting records in Metro Manila: high demand here.',
+      'Same sector as Housekeeping NC II: Tourism.',
+    ],
+  }
+  const serve = (suggestions: object[]) =>
+    server.use(
+      http.post('*/api/v1/labor-market/suggestions', async ({ request }) => {
+        sent.push((await request.json()) as (typeof sent)[number])
+        return HttpResponse.json({
+          region_code: 'NCR',
+          region_name: 'Metro Manila',
+          suggestions,
+          method_version: 'nearby-suggestions-v1',
+          limitations: [],
+        })
+      }),
+    )
+  const open = () =>
+    renderWithQuery(
+      <MemoryRouter initialEntries={['/explore']}>
+        <ExplorePage />
+      </MemoryRouter>,
+    )
+
+  beforeEach(() => {
+    sent.length = 0
+    useExploreStore.setState({
+      search: {
+        query: 'I clean rooms',
+        result: {
+          profile: { intent: 'training_recommendation', existing_skills: ['cleaning'] },
+          matches: [{ qualification, score: 90, reason: 'Matched housekeeping' }],
+        },
+      } as never,
+    })
+  })
+
+  it('suggests a few with why, from the learner’s region, skills and chosen qualification', async () => {
+    serve([food])
+    open()
+    const choice = await screen.findByRole('button', {
+      name: 'Look at Food and Beverage Services NC II',
+    })
+    expect(choice).toHaveTextContent('High demand')
+    expect(choice).toHaveTextContent('12 posting records in Metro Manila: high demand here.')
+    expect(choice).toHaveTextContent('Same sector as Housekeeping NC II: Tourism.')
+    expect(sent.at(-1)).toEqual({
+      region_code: 'NCR',
+      skills: ['cleaning'],
+      held: [CODE],
+      limit: 3,
+    })
+
+    // Chosen, it becomes the qualification the brief and the map analyse.
+    fireEvent.click(choice)
+    await waitFor(() =>
+      expect(asked.at(-1)?.searchParams.get('qualification_code')).toBe('FBS-NC-II'),
+    )
+  })
+
+  it('follows the learner’s region', async () => {
+    serve([food])
+    useTrainingStore.setState({ location: { latitude: 10.3, longitude: 123.9 } })
+    open()
+    await waitFor(() => expect(sent.at(-1)?.region_code).toBe('VII'))
+  })
+
+  it('says so when nothing else is in demand nearby', async () => {
+    serve([])
+    open()
+    const group = await screen.findByRole('group', {
+      name: 'Other qualifications in demand near you',
+    })
+    expect(
+      await within(group).findByText(/No other qualification shows enough recorded demand/),
+    ).toBeInTheDocument()
+  })
+})

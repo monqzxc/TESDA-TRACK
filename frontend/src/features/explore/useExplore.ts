@@ -17,7 +17,7 @@ import { useTrainingStore } from '../training/state.ts'
 import type { Reference } from '../training/useCenters.ts'
 import { MAX_QUALIFICATIONS, nearestRegion } from './explore.ts'
 import { areaJobsQuery } from './demandApi.ts'
-import { outlookQuery, outlookSummaryQuery } from './outlookApi.ts'
+import { nearbySuggestionsQuery, outlookQuery, outlookSummaryQuery } from './outlookApi.ts'
 import {
   NO_RECOMMENDATIONS,
   recommend,
@@ -210,6 +210,31 @@ export function useExplore(demandActive = false) {
     () => (demandCode ? supplyCenters(centers, demandCode, outlook.data) : []),
     [centers, demandCode, outlook.data],
   )
+  // Card 4: what the learner can do already (the search's skills and their Skill Passport) and what they chose or
+  // hold, for the other qualifications in demand where they are.
+  const fitSkills = useMemo(
+    () =>
+      [
+        ...new Set(
+          [...(search?.result.profile.existing_skills ?? []), ...(passport.data?.skills ?? [])]
+            .map((skill) => skill.trim())
+            .filter(Boolean),
+        ),
+      ].slice(0, 20),
+    [search, passport.data],
+  )
+  const held = useMemo(
+    () =>
+      [
+        ...new Set([...(demandCode ? [demandCode] : []), ...(passport.data?.qualifications ?? [])]),
+      ].slice(0, 20),
+    [demandCode, passport.data],
+  )
+  const nearby = useQuery({
+    ...nearbySuggestionsQuery(automaticRegion ?? '', fitSkills, held),
+    enabled: Boolean(demandCode && automaticRegion),
+    placeholderData: keepPreviousData,
+  })
   const alternatives = outlook.data?.alternatives
   const recommendations = useMemo(
     () =>
@@ -247,6 +272,7 @@ export function useExplore(demandActive = false) {
     relocate,
     outlook,
     summary,
+    nearby,
     supply,
     recommendations,
     recommendedIds,

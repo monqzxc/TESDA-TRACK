@@ -2379,6 +2379,15 @@ export const en = {
           'No posting records link to this qualification yet, so we can’t say where it’s needed. That’s missing evidence, not proof of low demand.',
         noArea: 'Share your location or type a city to see demand where you are.',
       },
+      // Card 4: other qualifications in demand where the learner is.
+      nearby: {
+        heading: 'Other qualifications in demand near you',
+        loading: 'Looking for other qualifications in demand here…',
+        failed: 'Other qualifications in demand could not be loaded.',
+        none: (region: string) =>
+          `No other qualification shows enough recorded demand in ${region} to suggest right now.`,
+        focus: (name: string) => `Look at ${name}`,
+      },
       ai: 'AI summary',
       aiNote: 'Written by AI from the counts on this map.',
       numbers: 'See the numbers behind it',

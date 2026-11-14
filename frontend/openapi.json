@@ -6587,6 +6587,48 @@
         }
       }
     },
+    "/api/v1/labor-market/suggestions": {
+      "post": {
+        "tags": [
+          "labor market"
+        ],
+        "summary": "Nearby Suggestions View",
+        "description": "A few other qualifications in demand in the learner's region, ranked by demand and how well they fit the\nlearner's skills, each with its reasons (Card 4). An empty list means none is in demand there. The skills are in\nthe body and are neither stored nor logged; no sign-in needed.",
+        "operationId": "nearby_suggestions_view_api_v1_labor_market_suggestions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NearbySuggestionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NearbySuggestions"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/labor-market/outlook/summary": {
       "get": {
         "tags": [
@@ -13222,6 +13264,143 @@
           "model"
         ],
         "title": "ModelFeedback"
+      },
+      "NearbySuggestion": {
+        "properties": {
+          "qualification": {
+            "$ref": "#/components/schemas/QualificationSummary"
+          },
+          "posting_count": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Posting Count",
+            "description": "Distinct posting records in the learner's region"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "high",
+              "moderate",
+              "low",
+              "none"
+            ],
+            "title": "Level"
+          },
+          "limited": {
+            "type": "boolean",
+            "title": "Limited",
+            "description": "Too few records for more than a rough signal"
+          },
+          "fit": {
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 0,
+            "title": "Fit",
+            "description": "How well it fits the learner's skills and qualifications"
+          },
+          "reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Reasons",
+            "description": "Why it is suggested, a short line each: demand first, then fit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "qualification",
+          "posting_count",
+          "level",
+          "limited",
+          "fit",
+          "reasons"
+        ],
+        "title": "NearbySuggestion"
+      },
+      "NearbySuggestionRequest": {
+        "properties": {
+          "region_code": {
+            "type": "string",
+            "maxLength": 20,
+            "title": "Region Code",
+            "description": "The learner's region, as Card 3 works it out"
+          },
+          "skills": {
+            "items": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Skills"
+          },
+          "held": {
+            "items": {
+              "type": "string",
+              "maxLength": 200,
+              "minLength": 1
+            },
+            "type": "array",
+            "maxItems": 20,
+            "title": "Held",
+            "description": "Qualifications the learner chose or already holds, as codes or names: never suggested, and their sectors count toward fit"
+          },
+          "limit": {
+            "type": "integer",
+            "maximum": 5,
+            "minimum": 1,
+            "title": "Limit",
+            "default": 3
+          }
+        },
+        "type": "object",
+        "required": [
+          "region_code"
+        ],
+        "title": "NearbySuggestionRequest",
+        "description": "In the body, never the address: skills are the learner's own words. Neither stored nor logged."
+      },
+      "NearbySuggestions": {
+        "properties": {
+          "region_code": {
+            "type": "string",
+            "title": "Region Code"
+          },
+          "region_name": {
+            "type": "string",
+            "title": "Region Name"
+          },
+          "suggestions": {
+            "items": {
+              "$ref": "#/components/schemas/NearbySuggestion"
+            },
+            "type": "array",
+            "title": "Suggestions"
+          },
+          "method_version": {
+            "type": "string",
+            "const": "nearby-suggestions-v1",
+            "title": "Method Version",
+            "default": "nearby-suggestions-v1"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "region_code",
+          "region_name",
+          "suggestions",
+          "limitations"
+        ],
+        "title": "NearbySuggestions"
       },
       "NextStep": {
         "properties": {
