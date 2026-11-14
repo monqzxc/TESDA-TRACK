@@ -7,6 +7,7 @@ profile. Accounts are linked by sso_id only, and TSP's email is never kept; a kn
 (or none, once one is stored) is refused, so two people are never mixed up. Every step is recorded in tsp_sign_in_audit.
 """
 import logging
+import re
 import secrets
 from dataclasses import dataclass
 from datetime import timedelta
@@ -15,7 +16,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session, delete, select
 
 from tesda_track.errors import TspSignInError
-from tesda_track.models import Learner, utcnow
+from tesda_track.models import Learner, Region, utcnow
 from tesda_track.models.identity import TSP_PROVIDER, LearnerIdentity, TspPendingSignIn, TspSignInAudit
 from tesda_track.schemas.hercules import TrackerProfile
 from tesda_track.services.hercules import (CLIENT_REJECTED, SIGN_IN_EXPIRED, UNAVAILABLE, HerculesClient,
@@ -62,6 +63,28 @@ def profile_labels(profile: dict) -> dict[str, list[str]]:
     sections = {section: profile.get(section, []) for section in SECTIONS}
     sections["credentials"] = [entry for kind in CREDENTIAL_KINDS for entry in credentials.get(kind, [])]
     return {section: list(dict.fromkeys(filter(None, map(_label, entries)))) for section, entries in sections.items()}
+
+
+def _folded(text: str) -> str:
+    return re.sub(r"[^a-z0-9]+", " ", text.casefold()).strip()
+
+
+def region_code(session: Session, profile: dict) -> str | None:
+    """The app's region code for where the learner's Skill Passport says they live, or None when it doesn't say
+    or the value matches no region. TSP may send a code ("VII"), "Region VII", or a name ("Central Visayas")."""
+    value = (profile.get("personal_information") or {}).get("region")
+    if not isinstance(value, str) or not value.strip():
+        return None
+    wanted = _folded(value).removeprefix("region ").strip()
+    for region in session.exec(select(Region)):
+        # "Region VII (Central Visayas)": the code, the full name, and the part in brackets all count.
+        inner = re.search(r"\(([^)]*)\)", region.name)
+        names = {_folded(region.code), _folded(region.name), _folded(region.name).removeprefix("region ")}
+        if inner:
+            names.add(_folded(inner.group(1)))
+        if wanted in names or _folded(value) in names:
+            return region.code
+    return None
 
 
 def linked_profile(session: Session, learner: Learner) -> dict | None:

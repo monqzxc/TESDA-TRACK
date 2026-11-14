@@ -1639,9 +1639,18 @@ export const en = {
       name: 'TESDA Skills Passport',
       heading: 'Sign in with TSP',
       lead: 'Use your TSP account to save centers and pick up where you left off.',
-      notConnected:
-        'TSP sign-in isn’t connected yet. A TESDA-TRACK account stands in for your TSP account.',
+      // notConnected:
+      //   'TSP sign-in isn’t connected yet. A TESDA-TRACK account stands in for your TSP account.',
       signIn: 'Sign in with TSP',
+      // The mock TSP (docs/tsp-mock.md): synthetic accounts sign in through the real TSP sign-in path.
+      username: 'TSP email',
+      usernamePlaceholder: 'you@example.com',
+      missingUsername: 'Enter your TSP email.',
+      testAccounts:
+        'This site uses TSP test accounts. Sign in with one of the accounts given to your team.',
+      expired: 'That sign-in ran out of time. Please sign in again.',
+      unavailable: 'TSP sign-in is unavailable right now. Please try again shortly.',
+      declined: 'Nothing was saved. You can keep using TESDA-TRACK without signing in.',
     },
     signInForm: {
       heading: 'Sign in',
@@ -2064,6 +2073,7 @@ export const en = {
     },
     // The line on the entry page while TSP signs the learner in (features/tsp/TspPassportStatus.tsx).
     passport: {
+      heading: 'From your Skill Passport',
       connecting: 'Connecting to your Skill Passport…',
       loading: 'Getting your Skill Passport details…',
       connected: 'Skill Passport connected',
@@ -2343,6 +2353,49 @@ export const en = {
         balance: 'Balance',
         relocation: 'Elsewhere',
       },
+      // Card 3: how much the qualification is needed where the learner is, and where it's needed more.
+      local: {
+        heading: 'Demand where you are',
+        from: { location: 'From your location', profile: 'From your Skill Passport' },
+        levels: {
+          high: 'High demand',
+          moderate: 'Moderate demand',
+          low: 'Low demand',
+          none: 'No recorded demand',
+        },
+        here: (region: string, postings: number) =>
+          `${postings.toLocaleString()} posting record${postings === 1 ? '' : 's'} in ${region}.`,
+        rank: (rank: number, of: number) =>
+          `${rank === 1 ? 'The most' : `Number ${rank}`} of ${of} region${of === 1 ? '' : 's'} with records.`,
+        higher: 'Where it’s needed more',
+        nearby: 'Nearby',
+        elsewhere: 'Elsewhere',
+        records: (postings: number) =>
+          `${postings.toLocaleString()} record${postings === 1 ? '' : 's'}`,
+        away: (km: number) => `about ${Math.round(km).toLocaleString()} km away`,
+        show: (region: string) => `Show ${region} on the map`,
+        top: 'No region has more recorded demand for it than yours.',
+        noData:
+          'No posting records link to this qualification yet, so we can’t say where it’s needed. That’s missing evidence, not proof of low demand.',
+        noArea: 'Share your location or type a city to see demand where you are.',
+      },
+      // Card 5: the way out to TSP's job search, for the skill and area on screen.
+      findJobs: {
+        label: 'Find Jobs on TSP',
+        // Read by screen readers: what it searches for, and that it opens TSP in a new tab.
+        for: (skill: string | null, area: string | null) =>
+          `Find Jobs on TSP${skill ? ` for ${skill}` : ''}${area ? ` in ${area}` : ''} (opens TESDA Skill Passport in a new tab)`,
+        notReady: 'The TSP Find Jobs link isn’t set up yet.',
+      },
+      // Card 4: other qualifications in demand where the learner is.
+      nearby: {
+        heading: 'Other qualifications in demand near you',
+        loading: 'Looking for other qualifications in demand here…',
+        failed: 'Other qualifications in demand could not be loaded.',
+        none: (region: string) =>
+          `No other qualification shows enough recorded demand in ${region} to suggest right now.`,
+        focus: (name: string) => `Look at ${name}`,
+      },
       ai: 'AI summary',
       aiNote: 'Written by AI from the counts on this map.',
       numbers: 'See the numbers behind it',
@@ -2383,7 +2436,8 @@ export const en = {
       assessment: 'Assessment center · Get certified',
       training: 'Training center · Train',
       leadsToNc: 'Leads to an NC',
-      listedFor: 'Listed for',
+      listedFor: 'Qualifications offered',
+      matchesSearch: 'Matches your search',
       directions: 'Directions',
       route: 'Show route on the map',
       call: 'Call',

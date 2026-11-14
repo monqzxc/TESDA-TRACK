@@ -293,6 +293,10 @@ class NearbySearch(BaseModel):
         return self
 
 
+class ScheduleSearch(NearbySearch):
+    center_id: int | None = Field(default=None, description="Only this assessment center's schedules.")
+
+
 class ProgramSearch(NearbySearch):
     provider_id: int | None = None
     delivery_mode: DeliveryMode | None = None

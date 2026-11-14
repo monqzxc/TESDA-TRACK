@@ -110,7 +110,7 @@ def test_profile_gives_the_signed_in_learner_their_passport(client, tsp):
     response = client.get("/api/v1/auth/tsp/profile")
     assert response.status_code == 200
     assert response.json() == {"skills": ["Welding"], "experience": [], "education": [], "qualifications": [],
-                               "credentials": []}
+                               "credentials": [], "region_code": "VII"}
 
 
 def test_profile_needs_a_session(client, tsp):

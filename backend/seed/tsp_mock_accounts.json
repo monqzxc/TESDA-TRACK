@@ -1,0 +1,200 @@
+[
+  {
+    "username": "ana.reyes@example.com",
+    "password": "TspDemo-Ana-2026",
+    "learner_type": "Career starter, no qualification yet",
+    "profile": {
+      "sso_id": "mock-sso-0001",
+      "uli": "MOCK-ULI-0001",
+      "personal_information": {
+        "first_name": "Ana", "middle_name": "Lopez", "last_name": "Reyes", "sex": "female",
+        "date_of_birth": "2006-03-14", "mobile_number": "+639000000001", "email_address": "ana.reyes@example.com",
+        "address": "1 Sample Street", "baranggay": "Sample Barangay", "municipality": "Quezon City",
+        "province": "Metro Manila", "region": "NCR", "country": "Philippines", "zip_code": "0000",
+        "profile_photo": null
+      },
+      "skills": [{"name": "Cooking"}, {"name": "Baking"}, {"name": "Customer service"}],
+      "experience": [],
+      "education": [{"degree": "Senior High School, TVL track", "school": "Sample National High School"}],
+      "qualifications": [],
+      "credentials": {"certificates": [], "trainings": [], "assessments": [], "external_certificates": []}
+    }
+  },
+  {
+    "username": "ben.cruz@example.com",
+    "password": "TspDemo-Ben-2026",
+    "learner_type": "Experienced worker upskilling (NC I)",
+    "profile": {
+      "sso_id": "mock-sso-0002",
+      "uli": "MOCK-ULI-0002",
+      "personal_information": {
+        "first_name": "Ben", "middle_name": "Tan", "last_name": "Cruz", "sex": "male",
+        "date_of_birth": "1992-08-02", "mobile_number": "+639000000002", "email_address": "ben.cruz@example.com",
+        "address": "2 Sample Street", "baranggay": "Sample Barangay", "municipality": "Cebu City",
+        "province": "Cebu", "region": "VII", "country": "Philippines", "zip_code": "0000", "profile_photo": null
+      },
+      "skills": [{"name": "Welding"}, {"name": "Metal fabrication"}, {"name": "Blueprint reading"}],
+      "experience": [{"job_title": "Welder", "company": "Sample Fabrication Shop", "years": 6}],
+      "education": [{"degree": "High School", "school": "Sample High School"}],
+      "qualifications": [{"qualification_title": "Shielded Metal Arc Welding (SMAW) NC I", "level": "NC I"}],
+      "credentials": {
+        "certificates": [{"certificate_name": "Shielded Metal Arc Welding (SMAW) NC I"}],
+        "trainings": [], "assessments": [], "external_certificates": []
+      }
+    }
+  },
+  {
+    "username": "carla.dizon@example.com",
+    "password": "TspDemo-Carla-2026",
+    "learner_type": "Career shifter (NC II)",
+    "profile": {
+      "sso_id": "mock-sso-0003",
+      "uli": "MOCK-ULI-0003",
+      "personal_information": {
+        "first_name": "Carla", "middle_name": "Santos", "last_name": "Dizon", "sex": "female",
+        "date_of_birth": "1995-11-20", "mobile_number": "+639000000003", "email_address": "carla.dizon@example.com",
+        "address": "3 Sample Street", "baranggay": "Sample Barangay", "municipality": "Calamba",
+        "province": "Laguna", "region": "IV-A", "country": "Philippines", "zip_code": "0000", "profile_photo": null
+      },
+      "skills": [{"name": "Patient care"}, {"name": "First aid"}, {"name": "Communication"}],
+      "experience": [{"job_title": "Customer Service Representative", "company": "Sample Contact Center", "years": 4}],
+      "education": [{"degree": "BS Psychology (undergraduate)", "school": "Sample College"}],
+      "qualifications": [{"qualification_title": "Caregiving (Elderly) NC II", "level": "NC II"}],
+      "credentials": {
+        "certificates": [{"certificate_name": "Caregiving (Elderly) NC II"}],
+        "trainings": [{"training": "Caregiving (Elderly) NC II"}], "assessments": [], "external_certificates": []
+      }
+    }
+  },
+  {
+    "username": "dan.lim@example.com",
+    "password": "TspDemo-Dan-2026",
+    "learner_type": "Returning overseas worker (NC III)",
+    "profile": {
+      "sso_id": "mock-sso-0004",
+      "uli": "MOCK-ULI-0004",
+      "personal_information": {
+        "first_name": "Dan", "middle_name": "Go", "last_name": "Lim", "sex": "male",
+        "date_of_birth": "1984-01-09", "mobile_number": "+639000000004", "email_address": "dan.lim@example.com",
+        "address": "4 Sample Street", "baranggay": "Sample Barangay", "municipality": "Davao City",
+        "province": "Davao del Sur", "region": "XI", "country": "Philippines", "zip_code": "0000",
+        "profile_photo": null
+      },
+      "skills": [{"name": "Electrical wiring"}, {"name": "Troubleshooting"}, {"name": "Team supervision"}],
+      "experience": [{"job_title": "Electrician", "company": "Sample Construction Abroad", "years": 10}],
+      "education": [{"degree": "Electrical Technology (2-year course)", "school": "Sample Technical Institute"}],
+      "qualifications": [
+        {"qualification_title": "Electrical Installation and Maintenance NC II", "level": "NC II"},
+        {"qualification_title": "Electrical Installation and Maintenance NC III", "level": "NC III"}
+      ],
+      "credentials": {
+        "certificates": [{"certificate_name": "Electrical Installation and Maintenance NC III"}],
+        "trainings": [], "assessments": [],
+        "external_certificates": [{"certificate_name": "Site Safety Orientation"}]
+      }
+    }
+  },
+  {
+    "username": "ella.ramos@example.com",
+    "password": "TspDemo-Ella-2026",
+    "learner_type": "Office worker (NC III)",
+    "profile": {
+      "sso_id": "mock-sso-0005",
+      "uli": "MOCK-ULI-0005",
+      "personal_information": {
+        "first_name": "Ella", "middle_name": "Cruz", "last_name": "Ramos", "sex": "female",
+        "date_of_birth": "1990-06-30", "mobile_number": "+639000000005", "email_address": "ella.ramos@example.com",
+        "address": "5 Sample Street", "baranggay": "Sample Barangay", "municipality": "San Fernando",
+        "province": "Pampanga", "region": "III", "country": "Philippines", "zip_code": "0000", "profile_photo": null
+      },
+      "skills": [{"name": "Bookkeeping"}, {"name": "Spreadsheets"}, {"name": "Payroll"}],
+      "experience": [{"job_title": "Accounting Clerk", "company": "Sample Trading", "years": 7}],
+      "education": [{"degree": "BS Accountancy (undergraduate)", "school": "Sample University"}],
+      "qualifications": [{"qualification_title": "Bookkeeping NC III", "level": "NC III"}],
+      "credentials": {
+        "certificates": [{"certificate_name": "Bookkeeping NC III"}],
+        "trainings": [], "assessments": [], "external_certificates": []
+      }
+    }
+  },
+  {
+    "username": "faisal.usman@example.com",
+    "password": "TspDemo-Faisal-2026",
+    "learner_type": "Out-of-school youth, nearly empty profile",
+    "profile": {
+      "sso_id": "mock-sso-0006",
+      "uli": null,
+      "personal_information": {
+        "first_name": "Faisal", "middle_name": null, "last_name": "Usman", "sex": "male",
+        "date_of_birth": "2007-09-05", "mobile_number": null, "email_address": "faisal.usman@example.com",
+        "address": null, "baranggay": null, "municipality": "Cotabato City",
+        "province": "Maguindanao del Norte", "region": "BARMM", "country": "Philippines", "zip_code": null,
+        "profile_photo": null
+      },
+      "skills": [{"name": "Motorcycle repair"}],
+      "experience": [],
+      "education": [],
+      "qualifications": [],
+      "credentials": {"certificates": [], "trainings": [], "assessments": [], "external_certificates": []}
+    }
+  },
+  {
+    "username": "gina.bautista@example.com",
+    "password": "TspDemo-Gina-2026",
+    "learner_type": "Trainer with several qualifications (NC II, TM I)",
+    "profile": {
+      "sso_id": "mock-sso-0007",
+      "uli": "MOCK-ULI-0007",
+      "personal_information": {
+        "first_name": "Gina", "middle_name": "Aquino", "last_name": "Bautista", "sex": "female",
+        "date_of_birth": "1980-12-12", "mobile_number": "+639000000007",
+        "email_address": "gina.bautista@example.com", "address": "7 Sample Street",
+        "baranggay": "Sample Barangay", "municipality": "Baguio City", "province": "Benguet", "region": "CAR",
+        "country": "Philippines", "zip_code": "0000", "profile_photo": null
+      },
+      "skills": [{"name": "Cooking"}, {"name": "Baking"}, {"name": "Menu planning"}, {"name": "Teaching"}],
+      "experience": [
+        {"job_title": "Line Cook", "company": "Sample Hotel", "years": 8},
+        {"job_title": "Cookery Trainer", "company": "Sample Training Center", "years": 5}
+      ],
+      "education": [{"degree": "BS Hotel and Restaurant Management", "school": "Sample University"}],
+      "qualifications": [
+        {"qualification_title": "Cookery NC II", "level": "NC II"},
+        {"qualification_title": "Bread and Pastry Production NC II", "level": "NC II"},
+        {"qualification_title": "Trainers Methodology Level I", "level": "TM I"}
+      ],
+      "credentials": {
+        "certificates": [
+          {"certificate_name": "Cookery NC II"},
+          {"certificate_name": "Bread and Pastry Production NC II"},
+          {"certificate_name": "Trainers Methodology Level I"}
+        ],
+        "trainings": [], "assessments": [], "external_certificates": []
+      }
+    }
+  },
+  {
+    "username": "hector.villanueva@example.com",
+    "password": "TspDemo-Hector-2026",
+    "learner_type": "Job seeker (NC II)",
+    "profile": {
+      "sso_id": "mock-sso-0008",
+      "uli": "MOCK-ULI-0008",
+      "personal_information": {
+        "first_name": "Hector", "middle_name": "Sy", "last_name": "Villanueva", "sex": "male",
+        "date_of_birth": "2001-04-18", "mobile_number": "+639000000008",
+        "email_address": "hector.villanueva@example.com", "address": "8 Sample Street",
+        "baranggay": "Sample Barangay", "municipality": "Iloilo City", "province": "Iloilo", "region": "VI",
+        "country": "Philippines", "zip_code": "0000", "profile_photo": null
+      },
+      "skills": [{"name": "Computer repair"}, {"name": "Network cabling"}],
+      "experience": [{"job_title": "Computer Shop Attendant", "company": "Sample Internet Cafe", "years": 1}],
+      "education": [{"degree": "Senior High School, TVL-ICT", "school": "Sample National High School"}],
+      "qualifications": [{"qualification_title": "Computer Systems Servicing NC II", "level": "NC II"}],
+      "credentials": {
+        "certificates": [{"certificate_name": "Computer Systems Servicing NC II"}],
+        "trainings": [], "assessments": [], "external_certificates": []
+      }
+    }
+  }
+]

@@ -6,7 +6,7 @@ import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
 import type { View } from './ExplorePage.tsx'
-import { estimateMinutes, roundKm } from './explore.ts'
+import { estimateMinutes, findJobsUrl, roundKm } from './explore.ts'
 import type { Balance } from './outlookApi.ts'
 import type { Recommendation } from './recommend.ts'
 import { useDemandStore, useExploreStore, type Explore } from './useExplore.ts'
@@ -202,6 +202,10 @@ export function OutlookBrief({
               outlook.isPlaceholderData && 'opacity-60',
             )}
           >
+            <LocalDemand explore={explore} onView={onView} />
+            <FindJobsButton explore={explore} skill={name} />
+            <NearbyQualifications explore={explore} />
+
             {/* The analysis in a few sentences: AI-written where the deployment has it, else the rules' own. */}
             <div className="flex min-w-0 flex-col gap-1" aria-live="polite">
               <p className="m-0 max-w-[110ch] text-13 leading-[1.55] text-ink">
@@ -300,5 +304,199 @@ function RecommendedRow({ item, onSelect }: { item: Recommendation; onSelect: ()
         className="mt-1 flex-none -rotate-90 text-muted transition-transform duration-200 group-data-hovered:translate-x-0.5 group-data-hovered:text-blue"
       />
     </Button>
+  )
+}
+
+const levelTone = {
+  high: 'bg-good-fill text-white',
+  moderate: 'bg-good-bg text-good-ink',
+  low: 'bg-chip text-navy',
+  none: 'bg-chip text-muted',
+} as const
+
+/**
+ * How much the qualification is needed in the learner's area, and the regions where it's needed more, nearby ones
+ * first (Card 3). Choosing one shows it on the demand map. Says so plainly when there's no data, or no area.
+ */
+function LocalDemand({ explore, onView }: { explore: Explore; onView: (view: View) => void }) {
+  const copy = useCopy().explore.outlook.local
+  const data = explore.outlook.data
+  if (!data) return null
+  const higher = data.higher_demand ?? []
+  const home = data.home_demand
+  const heading = (
+    <h3 className="m-0 flex flex-wrap items-center gap-x-2 gap-y-1 text-12 font-bold tracking-[0.04em] text-muted uppercase">
+      <Icon name="target" />
+      {copy.heading}
+      {home && explore.homeSource && (
+        <span className="font-semibold tracking-normal normal-case">
+          · {copy.from[explore.homeSource]}
+        </span>
+      )}
+    </h3>
+  )
+  if (!data.demand_available || !home) {
+    return (
+      <div role="group" aria-label={copy.heading} className="flex min-w-0 flex-col gap-1">
+        {heading}
+        <p className={note} role="status">
+          {data.demand_available ? copy.noArea : copy.noData}
+        </p>
+      </div>
+    )
+  }
+  const show = (code: string) => {
+    useDemandStore.getState().setRegion(code)
+    onView('demand')
+  }
+  const groups = [
+    { key: 'nearby', label: copy.nearby, areas: higher.filter((area) => area.nearby) },
+    {
+      key: 'elsewhere',
+      label: copy.elsewhere,
+      areas: higher.filter((area) => !area.nearby),
+    },
+  ].filter((group) => group.areas.length)
+  return (
+    <div role="group" aria-label={copy.heading} className="flex min-w-0 flex-col gap-1.5">
+      {heading}
+      <p className="m-0 flex flex-wrap items-center gap-x-2 gap-y-1 text-13 leading-[1.5] text-ink">
+        <span className={cx(tag, levelTone[home.level])}>{copy.levels[home.level]}</span>
+        <span>
+          {copy.here(home.name, home.posting_count)}
+          {home.rank ? ` ${copy.rank(home.rank, home.ranked_of)}` : ''}
+        </span>
+      </p>
+      {groups.length ? (
+        <div className="flex flex-col gap-1">
+          <p className="m-0 text-13 font-bold text-navy">{copy.higher}</p>
+          {groups.map((group) => (
+            <div key={group.key} className="flex flex-col gap-1">
+              <p className="m-0 text-12 font-semibold text-muted">{group.label}</p>
+              <ul className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(13rem,1fr))] gap-1.5 p-0">
+                {group.areas.map((area) => (
+                  <li key={area.region_code}>
+                    <Button
+                      aria-label={copy.show(area.name)}
+                      onPress={() => show(area.region_code)}
+                      className="flex w-full cursor-pointer flex-col items-start rounded-10 border border-transparent bg-soft px-2.5 py-1.5 text-left data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:border-hover-border data-hovered:bg-surface"
+                    >
+                      <span className="text-13 font-semibold wrap-anywhere text-navy">
+                        {area.name}
+                      </span>
+                      <span className="flex flex-wrap gap-x-2 text-12 text-muted">
+                        <span className="font-semibold text-ink">
+                          {copy.records(area.posting_count)}
+                        </span>
+                        <span>{copy.levels[area.level]}</span>
+                        <span>{copy.away(area.distance_km)}</span>
+                      </span>
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className={note}>{copy.top}</p>
+      )}
+    </div>
+  )
+}
+
+/**
+ * A few other qualifications in demand where the learner is, ranked by demand and how well they fit the learner's
+ * skills, each with why (Card 4). Choosing one puts it in focus, so the brief and the map follow it.
+ */
+function NearbyQualifications({ explore }: { explore: Explore }) {
+  const copy = useCopy().explore.outlook.nearby
+  const levels = useCopy().explore.outlook.local.levels
+  const { nearby, homeRegion } = explore
+  if (!homeRegion || !explore.outlook.data?.home_demand) return null
+  const data = nearby.data
+  return (
+    <div role="group" aria-label={copy.heading} className="flex min-w-0 flex-col gap-1.5">
+      <h3 className="m-0 flex items-center gap-1.5 text-12 font-bold tracking-[0.04em] text-muted uppercase">
+        <Icon name="lightbulb" />
+        {copy.heading}
+      </h3>
+      {nearby.isError ? (
+        <p className={note} role="alert">
+          {copy.failed}
+        </p>
+      ) : !data ? (
+        <p className={note} role="status">
+          {copy.loading}
+        </p>
+      ) : data.suggestions.length ? (
+        <ul className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-1.5 p-0">
+          {data.suggestions.map((item) => (
+            <li key={item.qualification.code}>
+              <Button
+                onPress={() => useDemandStore.getState().setCode(item.qualification.code)}
+                aria-label={copy.focus(item.qualification.name)}
+                className="flex w-full cursor-pointer flex-col items-start gap-0.5 rounded-10 border border-transparent bg-soft px-2.5 py-2 text-left data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:border-hover-border data-hovered:bg-surface"
+              >
+                <span className="flex w-full flex-wrap items-center gap-1.5">
+                  <span className="min-w-0 flex-1 text-13 font-semibold wrap-anywhere text-navy">
+                    {item.qualification.name}
+                  </span>
+                  <span className={cx(tag, levelTone[item.level])}>{levels[item.level]}</span>
+                </span>
+                <ul className="m-0 list-none p-0">
+                  {item.reasons.map((reason) => (
+                    <li key={reason} className="text-12 leading-[1.45] text-ink">
+                      {reason}
+                    </li>
+                  ))}
+                </ul>
+              </Button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className={note} role="status">
+          {copy.none(data.region_name)}
+        </p>
+      )}
+    </div>
+  )
+}
+
+/**
+ * Opens TSP Find Jobs for the qualification in focus and the area being looked at (Card 5), in a new tab, so the
+ * learner keeps their place here. Only the button: TESDA-TRACK has no job search of its own.
+ */
+function FindJobsButton({ explore, skill }: { explore: Explore; skill: string }) {
+  const copy = useCopy().explore.outlook.findJobs
+  const code = explore.demandRegion ?? explore.homeRegion
+  const area = code ? (explore.regions.find((region) => region.code === code)?.name ?? null) : null
+  const href = findJobsUrl(explore.config, skill || null, area)
+  const look = cx(button({ variant: 'secondary', height: 44 }), 'self-start')
+  if (!href) {
+    return (
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <Button isDisabled className={cx(look, 'opacity-60')}>
+          <Icon name="briefcase" />
+          {copy.label}
+          <Icon name="external" />
+        </Button>
+        <p className={note}>{copy.notReady}</p>
+      </div>
+    )
+  }
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer external"
+      aria-label={copy.for(skill || null, area)}
+      className={cx(look, 'no-underline')}
+    >
+      <Icon name="briefcase" />
+      {copy.label}
+      <Icon name="external" />
+    </a>
   )
 }

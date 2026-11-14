@@ -1,5 +1,5 @@
-// Every page's address, for routes.tsx and the links that open them. Each is relative to the app's base (/beta/
-// during the parallel run): the router adds it. The TSP launch route accepts learner hints in its query, then
+// Every page's address, for routes.tsx and the links that open them. Each is relative to the app's base (the
+// site's root): the router adds it. The TSP launch route accepts learner hints in its query, then
 // removes them from the address before continuing through the finder.
 export const paths = {
   home: '/',

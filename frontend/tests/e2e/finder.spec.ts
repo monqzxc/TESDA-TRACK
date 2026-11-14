@@ -313,7 +313,10 @@ async function expectSettledAndAccessible(page: Page) {
   // No step is still sliding in, nor any request still showing its loading line. Your pathway's career-goal line
   // is a status that stays, to announce the goal chosen.
   await expect(page.getByRole('status').filter({ hasNotText: /career goal/i })).toHaveCount(0)
-  await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished)))
+  // A cancelled animation (one a newer one replaced) rejects its finished: it isn't running either.
+  await page.evaluate(() =>
+    Promise.all(document.getAnimations().map((a) => a.finished.catch(() => undefined))),
+  )
   // Nothing runs off the side of the screen. If something does, it's named: the first element past the edge that
   // no clipping box (overflow other than visible) holds in.
   const overflow = await page.evaluate(() => {

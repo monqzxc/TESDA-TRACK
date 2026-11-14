@@ -366,7 +366,7 @@ test.describe('on a desktop', () => {
   }) => {
     await serveCatalog(page)
     await page.goto('/qualifications')
-    await page.getByRole('link', { name: 'TESDA Track home' }).click()
+    await page.getByRole('banner').getByRole('link', { name: 'TESDA TRACK', exact: true }).click()
     await expect(page.getByRole('heading', { level: 1, name: HEADING })).toBeVisible()
     await page.getByRole('link', { name: 'Open the qualifications library' }).click()
     await page.goBack()

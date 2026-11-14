@@ -70,8 +70,9 @@ function centerFor(kind: CenterKind, site: Site, regions: ReadonlyMap<string, Re
   let longitude = coordinate(site.longitude, 180)
   if (latitude === null || longitude === null) latitude = longitude = null
   const regionCode = site.region_code ?? null
+  // Missing, blank and (for the website) unsafe values are null, so no empty field is ever drawn.
   const full = (key: 'province' | 'address' | 'contact_email' | 'contact_phone' | 'website') =>
-    key in site ? ((site as Record<string, unknown>)[key] as string | null) : null
+    key in site ? present((site as Record<string, unknown>)[key]) : null
   return {
     id: `${kind}-${site.id}`,
     kind,
@@ -86,10 +87,43 @@ function centerFor(kind: CenterKind, site: Site, regions: ReadonlyMap<string, Re
     longitude,
     email: full('contact_email'),
     phone: full('contact_phone'),
-    website: full('website'),
+    website: safeWebsite(full('website')),
     programs: [],
     schedules: [],
     distanceKm: null,
+  }
+}
+
+// Verification outcomes that say a service can't be relied on: the source said no, or its review lapsed.
+const REFUSED = new Set(['unavailable', 'expired'])
+
+/**
+ * Whether a learner may see a listing: not withdrawn, not marked unavailable, not refused or lapsed in verification,
+ * and not over (Card 2). A listing nobody has reviewed yet stays, labelled by its evidence (Listings.tsx).
+ */
+export function isShowable(listing: Program | Schedule, today: string): boolean {
+  if (listing.availability?.status === 'unavailable') return false
+  if (REFUSED.has(listing.verification?.status ?? 'unknown')) return false
+  if ('center' in listing) {
+    return listing.status === 'open' && philippineDay(listing.scheduled_at) >= today
+  }
+  return listing.is_active && (!listing.end_date || listing.end_date >= today)
+}
+
+/** A contact value worth showing: trimmed, and null when nothing is left. */
+function present(value: unknown): string | null {
+  return typeof value === 'string' && value.trim() ? value.trim() : null
+}
+
+/** An http(s) address safe to open from a link, or null (a javascript: or malformed value is never linked). */
+export function safeWebsite(value: unknown): string | null {
+  const text = present(value)
+  if (!text) return null
+  try {
+    const url = new URL(/^[a-z][a-z\d+.-]*:/i.test(text) ? text : `https://${text}`)
+    return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : null
+  } catch {
+    return null
   }
 }
 

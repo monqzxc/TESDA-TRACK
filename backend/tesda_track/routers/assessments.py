@@ -11,7 +11,7 @@ from tesda_track.models import APPLICATION_STATUSES
 from tesda_track.schemas.delivery import (ApplicationCreate, ApplicationReview, AssessmentApplicationAdmin,
                                           AssessmentApplicationPublic, AssessmentCenterCreate, AssessmentCenterPublic,
                                           AssessmentCenterUpdate, AssessmentScheduleCreate, AssessmentSchedulePublic,
-                                          AssessmentScheduleUpdate, NearbySearch, SiteSearch)
+                                          AssessmentScheduleUpdate, ScheduleSearch, SiteSearch)
 from tesda_track.services import assessments, sites
 
 router = APIRouter(tags=["assessment"])
@@ -29,7 +29,7 @@ def list_centers(session: SessionDep, search: Annotated[SiteSearch, Query()]):
 
 
 @router.get("/assessment-schedules", response_model=list[AssessmentSchedulePublic])
-def search_schedules(session: SessionDep, search: Annotated[NearbySearch, Query()]):
+def search_schedules(session: SessionDep, search: Annotated[ScheduleSearch, Query()]):
     """Upcoming open schedules with seats left; give near_lat/near_lon to sort by distance."""
     rows = assessments.search_schedules(session, search)
     return [assessments.schedule_public(schedule, taken, distance) for schedule, taken, distance in rows]

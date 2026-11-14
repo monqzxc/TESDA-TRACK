@@ -41,3 +41,53 @@ docs/aws-ec2-runbook.md
 31-TRACKER_IFRAME_INTEGRATION.md
 /data
 classic/data/aws-ec2-runbook*.md
+/markdowns/
+
+# --- Secrets and credentials: never public ---
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+service-account*.json
+
+# --- OS / editor files ---
+.DS_Store
+Thumbs.db
+.idea/
+*.swp
+
+# --- Dependencies and build output ---
+node_modules/
+.venv*/
+frontend/dist/
+dist/
+build/
+coverage/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+*.tsbuildinfo
+
+# --- Test and tooling output ---
+frontend/test-results/
+frontend/playwright-report/
+playwright-report/
+test-results/
+*.log
+
+# --- Local tooling and scratch ---
+.claude/
+.taste-skill/
+/output/
+/tmp*/
+*.zip
+
+# --- Local databases and dumps ---
+*.sqlite
+*.sqlite3
+*.db
+*.dump

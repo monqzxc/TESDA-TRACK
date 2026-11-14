@@ -5,6 +5,9 @@ from fastapi import APIRouter, Depends, Query, Request
 from sqlalchemy import func
 from sqlmodel import select
 from tesda_track.db import SessionDep
+from tesda_track.schemas.nearby_suggestions import NearbySuggestionRequest, NearbySuggestions
+from tesda_track.services import nearby_suggestions
+from tesda_track.services.embeddings import EmbedderDep
 from tesda_track.deps import CurrentLearner, require_permission
 from tesda_track.models import Qualification, Region
 from tesda_track.models.labor_market import (
@@ -116,6 +119,15 @@ def qualification_outlook_view(
     return qualification_outlook.build(session, qualification_code, region_code, home_region_code, relocate,
                                        ai_summary_available=writer is not None,
                                        include_examples=settings.outlook_include_example_sites)
+
+
+@router.post("/suggestions", response_model=NearbySuggestions)
+def nearby_suggestions_view(request: NearbySuggestionRequest, session: SessionDep,
+                            embedder: EmbedderDep) -> NearbySuggestions:
+    """A few other qualifications in demand in the learner's region, ranked by demand and how well they fit the
+    learner's skills, each with its reasons (Card 4). An empty list means none is in demand there. The skills are in
+    the body and are neither stored nor logged; no sign-in needed."""
+    return nearby_suggestions.suggest(session, request, embedder)
 
 
 @router.get("/outlook/summary", response_model=OutlookSummary)

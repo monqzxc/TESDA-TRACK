@@ -199,3 +199,11 @@ def test_profile_labels_read_strings_and_objects():
 def test_linked_profile_is_the_kept_profile(session):
     learner = linked_learner(session)
     assert tsp_sign_in.linked_profile(session, learner)["skills"] == [{"name": "Welding"}]
+
+
+@pytest.mark.parametrize("value, code", [("VII", "VII"), ("Region VII", "VII"), ("Central Visayas", "VII"),
+                                         ("region iv-a", "IV-A"), ("CALABARZON", "IV-A"),
+                                         ("National Capital Region", "NCR"), ("Atlantis", None), ("", None),
+                                         (None, None)])
+def test_region_code_reads_the_ways_tsp_may_write_a_region(session, value, code):
+    assert tsp_sign_in.region_code(session, {"personal_information": {"region": value}}) == code

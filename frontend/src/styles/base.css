@@ -1,7 +1,7 @@
 /* Fonts, page colors and a small reset. The colors come from tokens.css. */
 
 /* Both faces are variable fonts (Latin subset), served from public/fonts with their SIL Open Font Licenses.
-   Vite adds its base to these public-file URLs (e.g. /beta/fonts/...). */
+   Vite adds its base to these public-file URLs (e.g. /fonts/...). */
 @font-face {
   font-family: 'Bricolage Grotesque';
   src: url('/fonts/BricolageGrotesque-latin.woff2') format('woff2');

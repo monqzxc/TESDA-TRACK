@@ -10,7 +10,7 @@ from tesda_track.models import (AssessmentApplication, AssessmentCenter, Assessm
                                 Qualification, utcnow)
 from tesda_track.schemas.delivery import (ApplicationReview, AssessmentApplicationAdmin, AssessmentApplicationPublic,
                                           AssessmentCenterCreate, AssessmentScheduleCreate, AssessmentSchedulePublic,
-                                          AssessmentScheduleUpdate, LearnerSummary, NearbySearch, SiteSearch,
+                                          AssessmentScheduleUpdate, LearnerSummary, ScheduleSearch, SiteSearch,
                                           SiteSummary)
 from tesda_track.services import catalog, geo, sites, verification
 from tesda_track.services.ownership import get_owned
@@ -110,7 +110,7 @@ def update_schedule(session: Session, schedule: AssessmentSchedule, request: Ass
     return schedule
 
 
-def search_schedules(session: Session, search: NearbySearch) -> list[tuple[AssessmentSchedule, int, float | None]]:
+def search_schedules(session: Session, search: ScheduleSearch) -> list[tuple[AssessmentSchedule, int, float | None]]:
     """Open schedules that haven't happened yet, at active centers."""
     distance = geo.distance_km(AssessmentCenter, search) if search.near_lat is not None else null()
     query = (select(AssessmentSchedule, seats_taken_subquery().label("taken"), distance.label("distance_km"))
@@ -123,6 +123,8 @@ def search_schedules(session: Session, search: NearbySearch) -> list[tuple[Asses
         query = query.where(Qualification.code == search.qualification_code)
     if search.region_code:
         query = query.where(AssessmentCenter.region_code == search.region_code)
+    if search.center_id is not None:
+        query = query.where(AssessmentSchedule.center_id == search.center_id)
     if search.radius_km is not None:
         query = query.where(geo.within_radius(AssessmentCenter, search))
     order = ((distance.asc().nulls_last(),) if search.near_lat is not None else ()) + (AssessmentSchedule.scheduled_at, AssessmentSchedule.id)

@@ -3,7 +3,8 @@ import { api } from '../../api/client.ts'
 import type { ApiError } from '../../api/errors.ts'
 import { unwrap } from '../../api/errors.ts'
 import type { components } from '../../api/schema.d.ts'
-import type { AssessmentSite, Point, Program, Provider, Schedule } from './centers.ts'
+import { isShowable, philippineDay } from './centers.ts'
+import type { AssessmentSite, Center, Point, Program, Provider, Schedule } from './centers.ts'
 import type { DeliveryMode } from './address.ts'
 
 // Training & Assessment's requests (classic/training_view.py _sites, _listings, _fit and _routes). Cache times
@@ -58,6 +59,7 @@ export const trainingKeys = {
     ['training', 'sites', nearbyKey(sitesWithin(near))] as const,
   listings: (codes: readonly string[], near: Nearby | null = null) =>
     ['training', 'listings', [...codes].sort(), nearbyKey(near)] as const,
+  offerings: (centerId: string) => ['training', 'offerings', centerId] as const,
 }
 
 /**
@@ -107,6 +109,8 @@ export const listingsQuery = (codes: readonly string[], near: Nearby | null = nu
     queryKey: trainingKeys.listings(codes, near),
     queryFn: async ({ signal }) => {
       const result: Listings = { programs: [], schedules: [], truncated: false }
+      // Filtered here, once, so the map, the lists and a center's details always agree.
+      const today = philippineDay(new Date())
       for (const code of codes.length ? codes : [undefined]) {
         const query = { ...(code ? { qualification_code: code } : {}), ...nearbyQuery(near) }
         const [programs, schedules] = await Promise.all([
@@ -127,11 +131,44 @@ export const listingsQuery = (codes: readonly string[], near: Nearby | null = nu
             ),
           ),
         ])
-        result.programs.push(...programs.rows)
-        result.schedules.push(...schedules.rows)
+        result.programs.push(...programs.rows.filter((program) => isShowable(program, today)))
+        result.schedules.push(...schedules.rows.filter((schedule) => isShowable(schedule, today)))
         result.truncated ||= programs.more || schedules.more
       }
       return result
+    },
+    staleTime: 2 * MINUTE,
+  })
+
+/**
+ * Everything one center offers that a learner may see, whatever the search: a training center's programs or an
+ * assessment center's schedules. Its details list all of them, matched or not (Card 2).
+ */
+export const offeringsQuery = (center: Pick<Center, 'id' | 'kind'>) =>
+  queryOptions<Array<Program | Schedule>, ApiError>({
+    queryKey: trainingKeys.offerings(center.id),
+    queryFn: async ({ signal }) => {
+      const siteId = Number(center.id.slice(center.id.indexOf('-') + 1))
+      const today = philippineDay(new Date())
+      const { rows } =
+        center.kind === 'training'
+          ? await allPages<Program | Schedule>((offset) =>
+              unwrap(
+                api.GET('/api/v1/training-programs', {
+                  params: { query: { provider_id: siteId, limit: PAGE_SIZE, offset } },
+                  signal,
+                }),
+              ),
+            )
+          : await allPages<Program | Schedule>((offset) =>
+              unwrap(
+                api.GET('/api/v1/assessment-schedules', {
+                  params: { query: { center_id: siteId, limit: PAGE_SIZE, offset } },
+                  signal,
+                }),
+              ),
+            )
+      return rows.filter((listing) => isShowable(listing, today))
     },
     staleTime: 2 * MINUTE,
   })

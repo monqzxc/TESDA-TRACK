@@ -2,6 +2,7 @@ import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { AuthContext, type Auth } from '../../auth/useAuth.ts'
 import { renderWithQuery } from '../../test/query.tsx'
 import { server } from '../../test/server.ts'
 import type { CenterMapProps } from '../training/CenterMapTypes.ts'
@@ -59,6 +60,7 @@ const area = (region: (typeof regions)[number], extra: object) => ({
 })
 const asked: URL[] = []
 let aiSummary = false
+let demandAvailable = true
 
 const outlook = (url: URL) => {
   const relocate = url.searchParams.get('relocate') === 'true'
@@ -106,6 +108,44 @@ const outlook = (url: URL) => {
         : 'You are in Metro Manila and prefer not to relocate. That makes Metro Manila look saturated.',
       points: [{ kind: 'demand', text: '2 posting records in Metro Manila are linked to it.' }],
     },
+    // Card 3, as the API ranks it: Manila has 2 of the 10 records, Cebu 8.
+    demand_available: demandAvailable,
+    home_demand: !demandAvailable
+      ? null
+      : url.searchParams.get('home_region_code') === 'NCR'
+        ? {
+            region_code: 'NCR',
+            name: 'Metro Manila',
+            posting_count: 2,
+            level: 'low',
+            rank: 2,
+            ranked_of: 2,
+            limited: true,
+          }
+        : url.searchParams.get('home_region_code') === 'VII'
+          ? {
+              region_code: 'VII',
+              name: 'Central Visayas',
+              posting_count: 8,
+              level: 'high',
+              rank: 1,
+              ranked_of: 2,
+              limited: false,
+            }
+          : null,
+    higher_demand:
+      demandAvailable && url.searchParams.get('home_region_code') === 'NCR'
+        ? [
+            {
+              region_code: 'VII',
+              name: 'Central Visayas',
+              posting_count: 8,
+              level: 'high',
+              distance_km: 571.2,
+              nearby: false,
+            },
+          ]
+        : [],
     includes_example_sites: false,
     ai_summary_available: aiSummary,
     method_version: 'qualification-outlook-v1',
@@ -116,6 +156,7 @@ const outlook = (url: URL) => {
 beforeEach(() => {
   asked.length = 0
   aiSummary = false
+  demandAvailable = true
   useDemandStore.setState({
     region: undefined,
     scope: undefined,
@@ -293,5 +334,230 @@ describe('the supply and demand brief', () => {
     open()
     await screen.findByTestId('map')
     expect(screen.queryByRole('region', { name: 'Supply and demand analysis' })).toBeNull()
+  })
+})
+
+describe('Demand where you are (Card 3)', () => {
+  // The first answer can come before the regions, without an area: wait for the one about the learner's area.
+  const brief = async (settled: string | RegExp) => {
+    renderWithQuery(
+      <MemoryRouter initialEntries={['/explore']}>
+        <ExplorePage />
+      </MemoryRouter>,
+    )
+    await screen.findByText(settled)
+    return screen.getByRole('group', { name: 'Demand where you are' })
+  }
+
+  it('gives the level where the learner is and where the qualification is needed more', async () => {
+    const local = await brief('Low demand')
+    expect(within(local).getByText(/From your location/)).toBeInTheDocument()
+    expect(
+      within(local).getByText(/2 posting records in Metro Manila\. Number 2 of 2 regions/),
+    ).toBeInTheDocument()
+    expect(within(local).getByText('Elsewhere')).toBeInTheDocument()
+    const cebu = within(local).getByRole('button', { name: 'Show Central Visayas on the map' })
+    expect(cebu).toHaveTextContent('8 records')
+    expect(cebu).toHaveTextContent('about 571 km away')
+    expect(asked.at(-1)?.searchParams.get('home_region_code')).toBe('NCR')
+
+    // Chosen, the area is analysed and shaded on the demand map; the learner's own area stays theirs.
+    fireEvent.click(cebu)
+    await waitFor(() => expect(asked.at(-1)?.searchParams.get('region_code')).toBe('VII'))
+    expect(asked.at(-1)?.searchParams.get('home_region_code')).toBe('NCR')
+    expect(await screen.findByText('VII:8:1:more_demand')).toBeInTheDocument()
+  })
+
+  it('says the learner is already where it is needed most', async () => {
+    useTrainingStore.setState({ location: { latitude: 10.3, longitude: 123.9 } })
+    const local = await brief('High demand')
+    expect(within(local).getByText(/The most of 2 regions/)).toBeInTheDocument()
+    expect(within(local).getByText(/No region has more recorded demand/)).toBeInTheDocument()
+  })
+
+  it('takes the area from the Skill Passport when no location is shared', async () => {
+    useTrainingStore.setState({ useLocation: false, location: null })
+    server.use(
+      http.get('*/api/v1/auth/tsp/profile', () =>
+        HttpResponse.json({
+          skills: [],
+          experience: [],
+          education: [],
+          qualifications: [],
+          credentials: [],
+          region_code: 'VII',
+        }),
+      ),
+    )
+    renderWithQuery(
+      <AuthContext.Provider value={{ learner: { id: 'ana' } } as Auth}>
+        <MemoryRouter initialEntries={['/explore']}>
+          <ExplorePage />
+        </MemoryRouter>
+      </AuthContext.Provider>,
+    )
+    await screen.findByText('High demand')
+    const local = screen.getByRole('group', { name: 'Demand where you are' })
+    expect(within(local).getByText(/From your Skill Passport/)).toBeInTheDocument()
+    expect(asked.at(-1)?.searchParams.get('home_region_code')).toBe('VII')
+  })
+
+  it('asks for an area when it has none', async () => {
+    useTrainingStore.setState({ useLocation: false, location: null })
+    const local = await brief(/type a city to see demand where you are/)
+    expect(within(local).getByRole('status')).toHaveTextContent(/to see demand where you are/)
+  })
+
+  it('says plainly when there is no demand data for the qualification', async () => {
+    demandAvailable = false
+    const local = await brief(/No posting records link to this qualification yet/)
+    expect(within(local).getByRole('status')).toHaveTextContent(/not proof of low demand/)
+    expect(within(local).queryByText(/ demand$/)).not.toBeInTheDocument()
+  })
+})
+
+describe('Other qualifications in demand near you (Card 4)', () => {
+  const sent: { region_code: string; skills: string[]; held: string[] }[] = []
+  const food = {
+    qualification: {
+      code: 'FBS-NC-II',
+      name: 'Food and Beverage Services NC II',
+      sector: 'Tourism',
+    },
+    posting_count: 12,
+    level: 'high',
+    limited: false,
+    fit: 60,
+    reasons: [
+      '12 posting records in Metro Manila: high demand here.',
+      'Same sector as Housekeeping NC II: Tourism.',
+    ],
+  }
+  const serve = (suggestions: object[]) =>
+    server.use(
+      http.post('*/api/v1/labor-market/suggestions', async ({ request }) => {
+        sent.push((await request.json()) as (typeof sent)[number])
+        return HttpResponse.json({
+          region_code: 'NCR',
+          region_name: 'Metro Manila',
+          suggestions,
+          method_version: 'nearby-suggestions-v1',
+          limitations: [],
+        })
+      }),
+    )
+  const open = () =>
+    renderWithQuery(
+      <MemoryRouter initialEntries={['/explore']}>
+        <ExplorePage />
+      </MemoryRouter>,
+    )
+
+  beforeEach(() => {
+    sent.length = 0
+    useExploreStore.setState({
+      search: {
+        query: 'I clean rooms',
+        result: {
+          profile: { intent: 'training_recommendation', existing_skills: ['cleaning'] },
+          matches: [{ qualification, score: 90, reason: 'Matched housekeeping' }],
+        },
+      } as never,
+    })
+  })
+
+  it('suggests a few with why, from the learner’s region, skills and chosen qualification', async () => {
+    serve([food])
+    open()
+    const choice = await screen.findByRole('button', {
+      name: 'Look at Food and Beverage Services NC II',
+    })
+    expect(choice).toHaveTextContent('High demand')
+    expect(choice).toHaveTextContent('12 posting records in Metro Manila: high demand here.')
+    expect(choice).toHaveTextContent('Same sector as Housekeeping NC II: Tourism.')
+    expect(sent.at(-1)).toEqual({
+      region_code: 'NCR',
+      skills: ['cleaning'],
+      held: [CODE],
+      limit: 3,
+    })
+
+    // Chosen, it becomes the qualification the brief and the map analyse.
+    fireEvent.click(choice)
+    await waitFor(() =>
+      expect(asked.at(-1)?.searchParams.get('qualification_code')).toBe('FBS-NC-II'),
+    )
+  })
+
+  it('follows the learner’s region', async () => {
+    serve([food])
+    useTrainingStore.setState({ location: { latitude: 10.3, longitude: 123.9 } })
+    open()
+    await waitFor(() => expect(sent.at(-1)?.region_code).toBe('VII'))
+  })
+
+  it('says so when nothing else is in demand nearby', async () => {
+    serve([])
+    open()
+    const group = await screen.findByRole('group', {
+      name: 'Other qualifications in demand near you',
+    })
+    expect(
+      await within(group).findByText(/No other qualification shows enough recorded demand/),
+    ).toBeInTheDocument()
+  })
+})
+
+describe('Find Jobs on TSP (Card 5)', () => {
+  const open = () =>
+    renderWithQuery(
+      <MemoryRouter initialEntries={['/explore']}>
+        <ExplorePage />
+      </MemoryRouter>,
+    )
+
+  it('opens TSP Find Jobs for the qualification and area, in a new tab', async () => {
+    server.use(
+      http.get('*/api/v1/client-config', () =>
+        HttpResponse.json({
+          routing_enabled: false,
+          carto_key: '',
+          tsp_find_jobs_url: 'https://tsp.example.ph/find-jobs',
+          tsp_find_jobs_skill_param: 'skill',
+          tsp_find_jobs_area_param: 'area',
+        }),
+      ),
+    )
+    open()
+    const link = await screen.findByRole('link', {
+      name: 'Find Jobs on TSP for Housekeeping NC II in Metro Manila (opens TESDA Skill Passport in a new tab)',
+    })
+    expect(link).toHaveAttribute(
+      'href',
+      'https://tsp.example.ph/find-jobs?skill=Housekeeping+NC+II&area=Metro+Manila',
+    )
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link.getAttribute('rel')).toContain('noopener')
+    expect(link.getAttribute('rel')).toContain('noreferrer')
+  })
+
+  it('follows the area being looked at', async () => {
+    server.use(
+      http.get('*/api/v1/client-config', () =>
+        HttpResponse.json({ tsp_find_jobs_url: 'https://tsp.example.ph/find-jobs' }),
+      ),
+    )
+    useDemandStore.setState({ region: 'VII' })
+    open()
+    const link = await screen.findByRole('link', { name: /in Central Visayas/ })
+    expect(link.getAttribute('href')).toContain('area=Central+Visayas')
+  })
+
+  it('stays turned off until the deployment sets the TSP link', async () => {
+    open()
+    const button = await screen.findByRole('button', { name: /Find Jobs on TSP/ })
+    expect(button).toBeDisabled()
+    expect(screen.getByText('The TSP Find Jobs link isn’t set up yet.')).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: /Find Jobs on TSP/ })).not.toBeInTheDocument()
   })
 })

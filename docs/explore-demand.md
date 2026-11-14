@@ -95,3 +95,53 @@ Backend regressions: `test_area_jobs.py`, `test_area_qualifications.py`, and
 Explore rules, qualification evidence, and map renderer selection. For the outlook: `test_qualification_outlook.py`,
 `OutlookBrief.test.tsx`, `recommend.test.ts` and `mapLimits.test.ts`. The UI includes
 loading, retry, empty, filtered, pagination and no-location states.
+
+## Demand where the learner is
+
+With a qualification in focus, the brief opens with **Demand where you are**:
+
+- **The learner's area** is the region nearest their shared location or typed place. Without either, it is the
+  region on their Skill Passport (`region_code` on `GET /api/v1/auth/tsp/profile`) when they signed in with TSP.
+  Without any of these, the brief asks for a location.
+- **The level** compares the region's share of the qualification's posting records with an even share across the
+  regions: **high** at 1.5 times an even share or more, **moderate** at half or more, **low** below that, and **no
+  recorded demand** without a record. Fewer than three records is a rough signal, as elsewhere on the map.
+- **Where it's needed more** lists up to five regions with more records than the learner's: regions whose centers
+  are within 400 km first, then the rest, each by record count. Choosing one shows it on the demand map.
+- With no posting records for the qualification anywhere, the brief says so instead of giving a level: missing
+  evidence is not low demand.
+
+These come from `home_demand`, `higher_demand` and `demand_available` on `GET /api/v1/labor-market/outlook`
+(with `home_region_code`).
+
+## Other qualifications in demand near the learner
+
+Below it, **Other qualifications in demand near you** suggests up to three others, from
+`POST /api/v1/labor-market/suggestions` with the learner's region, skills and held qualifications in the body
+(neither stored nor logged):
+
+- **Candidates** are qualifications at moderate demand or more in the learner's region, by the level rule above,
+  leaving out the one in focus and any the learner holds on their Skill Passport.
+- **Fit** is the profile matcher's score for the learner's skills (the search's skills and their Skill Passport's),
+  plus credit for sharing a sector with the qualification in focus or one they hold.
+- **Ranking** weighs demand (against the busiest candidate) and fit equally. Each suggestion lists its reasons:
+  the records behind the demand first, then what fits.
+- With none in demand in the region, the brief says so. Choosing a suggestion puts it in focus.
+
+## Find Jobs on TSP
+
+The brief has a **Find Jobs on TSP** button. It opens TSP's Find Jobs page in a new tab for the qualification in
+focus and the area being looked at (the selected region, else the learner's own), so the learner keeps their place.
+TESDA-TRACK has no job search of its own.
+
+TSP hasn't confirmed the page's address or parameters yet, so all of it is configuration:
+
+```text
+TSP_FIND_JOBS_URL=https://<tsp-host>/<find-jobs-page>
+TSP_FIND_JOBS_SKILL_PARAM=skill   # the query parameter for the qualification's name
+TSP_FIND_JOBS_AREA_PARAM=area     # the query parameter for the region's name
+```
+
+Values are URL-encoded, a skill or area not chosen is left out (with neither, it is the general Find Jobs page), and
+anything already in the address is kept. Until `TSP_FIND_JOBS_URL` is set, the button shows but is turned off, with
+a note that the link isn't set up yet. The address must be `https://` in production.

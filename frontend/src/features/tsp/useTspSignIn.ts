@@ -32,7 +32,7 @@ export interface TspSignIn {
 }
 
 type ContractError = Exclude<ErrorCode, 'timeout'>
-type Outcome =
+export type Outcome =
   | { signedIn: Learner }
   | { consent: { pendingId: string; summary: TspConsentSummary } }
   | { declined: true }
@@ -48,7 +48,7 @@ function errorCode(body: unknown): ContractError {
     : 'unavailable'
 }
 
-async function postSession(code: string): Promise<Outcome> {
+export async function postSession(code: string): Promise<Outcome> {
   try {
     const { data, error } = await api.POST('/api/v1/auth/tsp/session', { body: { code } })
     if (data && 'consent_required' in data) {
@@ -61,7 +61,7 @@ async function postSession(code: string): Promise<Outcome> {
   }
 }
 
-async function postConsent(pendingId: string, accept: boolean): Promise<Outcome> {
+export async function postConsent(pendingId: string, accept: boolean): Promise<Outcome> {
   try {
     const { data, error, response } = await api.POST('/api/v1/auth/tsp/consent', {
       body: { pending_id: pendingId, accept },

@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
 COPY . .
-# Where the site serves the app: /beta/ while it runs beside Streamlit, / after the switch.
+# Where the site serves the app: its root.
 ARG BASE_PATH=/
 RUN npm run build -- --base "$BASE_PATH"
 

@@ -117,6 +117,6 @@ describe('routes', () => {
 describe('basename', () => {
   it("is the app's base without its trailing slash", () => {
     expect(basename('/')).toBe('/')
-    expect(basename('/beta/')).toBe('/beta')
+    expect(basename('/app/')).toBe('/app')
   })
 })

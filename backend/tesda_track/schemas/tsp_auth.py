@@ -36,3 +36,5 @@ class TspProfile(BaseModel):
     education: Labels
     qualifications: Labels
     credentials: Labels = Field(description="Certificates, trainings, assessments and external certificates.")
+    region_code: str | None = Field(default=None, description="The region the Skill Passport gives as home, as one "
+                                    "of the app's region codes; null when it gives none or an unknown one.")

@@ -19,6 +19,7 @@ const signInRequiredListeners = new Set<Listener>()
 // session ending.
 const SIGN_IN_PATHS: ReadonlySet<string> = new Set([
   '/api/v1/auth/session',
+  '/api/v1/tsp-mock/handoff',
   '/api/v1/auth/token',
   '/api/v1/auth/tsp/session',
   '/api/v1/auth/tsp/consent',

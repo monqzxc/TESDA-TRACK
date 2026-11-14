@@ -1,5 +1,5 @@
 # Serves the built app (frontend/Dockerfile) on port 8080. The site's Caddy (deploy/Caddyfile) is in front: it handles
-# HTTPS and the API, and strips the address the app lives at (/beta/ during the parallel run).
+# HTTPS and the API, and strips the address the app lives at (the site's root).
 {
 	admin off
 	auto_https off

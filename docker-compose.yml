@@ -34,6 +34,12 @@ x-backend-environment: &backend-environment
   TRACKER_CLIENT_ID: ${TRACKER_CLIENT_ID:-}
   TRACKER_CLIENT_SECRET: ${TRACKER_CLIENT_SECRET:-}
   TSP_SIGN_IN_ENABLED: ${TSP_SIGN_IN_ENABLED:-false}
+  # Demos and tests only: the synthetic TSP accounts instead of the real TSP (docs/tsp-mock.md).
+  TSP_MOCK_ENABLED: ${TSP_MOCK_ENABLED:-false}
+  # The "Find Jobs on TSP" button's page and parameter names; empty turns the button off.
+  TSP_FIND_JOBS_URL: ${TSP_FIND_JOBS_URL:-}
+  TSP_FIND_JOBS_SKILL_PARAM: ${TSP_FIND_JOBS_SKILL_PARAM:-skill}
+  TSP_FIND_JOBS_AREA_PARAM: ${TSP_FIND_JOBS_AREA_PARAM:-area}
   # "Suggested for you" in the TSP webview. Leave off until docs/evaluation-and-release-checks.md's suggestion gates pass.
   TSP_SUGGESTIONS_ENABLED: ${TSP_SUGGESTIONS_ENABLED:-false}
   # Road routes for Directions (GET /api/v1/routes); empty turns them off.
@@ -104,10 +110,11 @@ services:
       retries: 10
 
   web:
-    # The Streamlit app (classic/), at / until the switch.
+    # The Streamlit app (classic/), at /classic/ beside the React app.
     build: ./classic
     restart: unless-stopped
     environment:
+      STREAMLIT_SERVER_BASE_URL_PATH: classic
       API_BASE_URL: http://api:8000
       # Only Caddy reaches this container; trust its X-Forwarded-For so the app sees each learner's address.
       FORWARDED_ALLOW_IPS: "*"
@@ -120,12 +127,11 @@ services:
         condition: service_healthy
 
   app:
-    # The React app, served by its own Caddy on port 8080 (frontend/Dockerfile). Until the switch it lives at
-    # /beta/, beside Streamlit at /.
+    # The React app, served by its own Caddy on port 8080 (frontend/Dockerfile), at the site's root.
     build:
       context: ./frontend
       args:
-        BASE_PATH: /beta/
+        BASE_PATH: /
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/"]

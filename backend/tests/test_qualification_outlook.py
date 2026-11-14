@@ -348,3 +348,75 @@ def test_ai_summaries_need_a_key():
     with pytest.raises(ValidationError):
         Settings(**base, outlook_ai_summary_enabled=True, anthropic_api_key="")
     assert router.summary_writer(Settings(**base, anthropic_api_key="sk-test")) is None
+
+
+# Card 3: how much the qualification is needed where the learner is, and where it is needed more.
+
+def test_the_learners_region_gets_a_demand_level_and_rank(session):
+    # 18 regions: an even share is 1/18 of the records. NCR holds 12 of 20 (high), Central Luzon 6 (high), Cebu 2.
+    postings(session, "NCR", 12)
+    postings(session, "III", 6)
+    postings(session, "VII", 2)
+
+    home = qualification_outlook.build(session, CODE, "VII", "VII").home_demand
+
+    assert (home.region_code, home.posting_count, home.rank, home.ranked_of) == ("VII", 2, 3, 3)
+    assert (home.level, home.limited) == ("high", True)  # 2/20 is 1.8 even shares, but only two records
+    assert qualification_outlook.build(session, CODE, "IV-A", "IV-A").home_demand.level == "none"
+
+
+@pytest.mark.parametrize("count, level", [(30, "high"), (6, "moderate"), (2, "low"), (0, "none")])
+def test_demand_levels_compare_a_region_with_an_even_share(count, level):
+    # 100 records over 18 regions: an even share is about 5.6.
+    assert qualification_outlook.demand_level(count, 100, 18) == level
+
+
+def test_higher_demand_areas_rank_nearby_regions_first(session):
+    # From Central Luzon: NCR and CALABARZON are near; Davao is far but has the most records.
+    postings(session, "III", 2)
+    postings(session, "NCR", 5)
+    postings(session, "IV-A", 8)
+    postings(session, "XI", 20)
+    postings(session, "I", 1)  # fewer than home: never listed
+
+    higher = qualification_outlook.build(session, CODE, "III", "III").higher_demand
+
+    assert [(a.region_code, a.nearby) for a in higher] == [("IV-A", True), ("NCR", True), ("XI", False)]
+    assert higher[0].posting_count == 8 and higher[2].level == "high" and higher[2].distance_km > 400
+
+
+def test_the_busiest_region_has_no_higher_demand_area(session):
+    postings(session, "NCR", 9)
+    postings(session, "III", 3)
+    outlook = qualification_outlook.build(session, CODE, "NCR", "NCR")
+    assert outlook.higher_demand == [] and outlook.home_demand.rank == 1
+
+
+def test_no_demand_data_says_so_rather_than_ranking(session):
+    training(session, "NCR", 2)
+    outlook = qualification_outlook.build(session, CODE, "NCR", "NCR")
+    assert outlook.demand_available is False
+    assert outlook.home_demand.level == "none" and outlook.home_demand.rank is None
+    assert outlook.higher_demand == []
+
+
+def test_without_a_home_region_there_is_no_local_demand(session):
+    postings(session, "NCR", 3)
+    outlook = qualification_outlook.build(session, CODE, "NCR")
+    assert outlook.home_demand is None and outlook.higher_demand == [] and outlook.demand_available
+
+
+@pytest.mark.parametrize("qualification_code, home, expected", [
+    # Different qualifications and learner regions, each against its own records.
+    ("SMAW-NC-II", "VII", ("high", ["NCR"])),
+    ("SMAW-NC-II", "NCR", ("high", [])),
+    ("SMAW-NC-II", "XI", ("none", ["VII", "NCR"])),  # Cebu is 388 km away: nearby, so first
+])
+def test_demand_results_for_several_learner_locations(client, session, qualification_code, home, expected):
+    postings(session, "NCR", 10)
+    postings(session, "VII", 4)
+    response = client.get(URL, params={"qualification_code": qualification_code, "region_code": home,
+                                       "home_region_code": home})
+    assert response.status_code == 200
+    body = response.json()
+    assert (body["home_demand"]["level"], [a["region_code"] for a in body["higher_demand"]]) == expected

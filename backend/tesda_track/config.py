@@ -163,6 +163,16 @@ class Settings(BaseSettings):
     # Shows the TSP webview's "Suggested for you" (POST /api/v1/analysis/suggestions). Off until its release gates pass
     # (docs/evaluation-and-release-checks.md#profile-only-suggestions): a wrong nudge costs a learner more than none.
     tsp_suggestions_enabled: bool = False
+    # Swaps the real TSP for the synthetic accounts in seed/tsp_mock_accounts.json (docs/tsp-mock.md): Hercules is
+    # never called, even when its client is set, and "Sign in with TSP" asks for a synthetic account's password.
+    # Needs TSP_SIGN_IN_ENABLED as well. Anyone who knows a test password can sign in: demos and tests only.
+    tsp_mock_enabled: bool = False
+    # TSP Find Jobs (Card 5): the "Find Jobs on TSP" button opens this page with the learner's chosen skill and area
+    # as query parameters, named below. Empty: the button shows but is turned off. TSP hasn't confirmed the address
+    # or its parameter names yet; set them here once it does.
+    tsp_find_jobs_url: str = ""
+    tsp_find_jobs_skill_param: str = Field(default="skill", pattern=r"^[A-Za-z0-9_.-]{1,40}$")
+    tsp_find_jobs_area_param: str = Field(default="area", pattern=r"^[A-Za-z0-9_.-]{1,40}$")
 
     @field_validator("mcp_token_secret", "hercules_base_url", "tracker_client_id", "tracker_client_secret",
                      "anthropic_api_key", mode="before")
@@ -193,6 +203,15 @@ class Settings(BaseSettings):
         return self
 
     @model_validator(mode="after")
+    def find_jobs_url_usable(self):
+        # Opened from learners' browsers: only an https page (http only for local development), never a script.
+        url = self.tsp_find_jobs_url = self.tsp_find_jobs_url.strip()
+        local = self.environment != "production" and url.startswith("http://")
+        if url and not (url.startswith("https://") or local):
+            raise ValueError("TSP_FIND_JOBS_URL must be an https:// address.")
+        return self
+
+    @model_validator(mode="after")
     def outlook_summary_has_a_key(self):
         if self.outlook_ai_summary_enabled and not self.anthropic_api_key:
             raise ValueError("Set ANTHROPIC_API_KEY before OUTLOOK_AI_SUMMARY_ENABLED.")
@@ -217,9 +236,9 @@ class Settings(BaseSettings):
             raise ValueError("Set HERCULES_BASE_URL, TRACKER_CLIENT_ID and TRACKER_CLIENT_SECRET together, or none of them.")
         if self.environment == "production" and self.hercules_base_url and self.hercules_base_url.scheme != "https":
             raise ValueError("HERCULES_BASE_URL must use https in production.")
-        if self.tsp_sign_in_enabled and not all(values):
+        if self.tsp_sign_in_enabled and not all(values) and not self.tsp_mock_enabled:
             raise ValueError("Set HERCULES_BASE_URL, TRACKER_CLIENT_ID and TRACKER_CLIENT_SECRET before "
-                             "TSP_SIGN_IN_ENABLED.")
+                             "TSP_SIGN_IN_ENABLED, or turn on TSP_MOCK_ENABLED.")
         return self
 
     @property

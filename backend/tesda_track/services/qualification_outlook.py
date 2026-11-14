@@ -5,6 +5,7 @@ recorded training and assessment centers that list it; example placeholders are 
 The balance compares a region's share of each. It is a rough signal for a learner choosing where to train, not a
 workforce shortage estimate, and the words written from it say so.
 """
+import math
 from collections import Counter
 from datetime import datetime
 
@@ -15,8 +16,8 @@ from tesda_track.errors import InvalidRequestError
 from tesda_track.models import (AssessmentCenter, AssessmentSchedule, Region, TrainingProgram, TrainingProvider,
                                 utcnow)
 from tesda_track.models.registry import RegistryBatch, RegistryLink, RegistryRecord
-from tesda_track.schemas.outlook import (AreaOutlook, OutlookInsight, OutlookPoint, OutlookQualification,
-                                         OutlookTotals, QualificationOutlook)
+from tesda_track.schemas.outlook import (AreaOutlook, DemandLevel, HigherDemandArea, HomeDemand, OutlookInsight,
+                                         OutlookPoint, OutlookQualification, OutlookTotals, QualificationOutlook)
 from tesda_track.services import area_jobs, catalog
 
 LIMITATIONS = [
@@ -85,6 +86,46 @@ def _sites(session: Session, qualification_id: int, now: datetime, include_examp
     return training, assessment, examples
 
 
+# Card 3's demand level: a region's share of the posting records against an even share across the regions.
+HIGH_RATIO, LOW_RATIO = 1.5, 0.5
+# Regions whose centers are this close count as nearby; the rest of the country is "elsewhere".
+NEARBY_KM = 400
+MAX_HIGHER = 5
+
+
+def demand_level(postings: int, total_postings: int, region_count: int) -> DemandLevel:
+    if not postings or not total_postings or not region_count:
+        return "none"
+    ratio = (postings / total_postings) * region_count
+    return "high" if ratio >= HIGH_RATIO else "moderate" if ratio >= LOW_RATIO else "low"
+
+
+def _km(a: AreaOutlook, b: AreaOutlook) -> float:
+    lat1, lon1, lat2, lon2 = map(math.radians, (a.latitude, a.longitude, b.latitude, b.longitude))
+    h = math.sin((lat2 - lat1) / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin((lon2 - lon1) / 2) ** 2
+    return 2 * 6371.0088 * math.asin(math.sqrt(h))
+
+
+def home_and_higher(home: AreaOutlook | None, areas: list[AreaOutlook],
+                    total_postings: int) -> tuple[HomeDemand | None, list[HigherDemandArea]]:
+    """The learner's region's demand level, and the regions with more records: nearby first, then the rest."""
+    if home is None:
+        return None, []
+    def level(area: AreaOutlook) -> DemandLevel:
+        return demand_level(area.posting_count, total_postings, len(areas))
+
+    posted = sorted((area.posting_count for area in areas if area.posting_count), reverse=True)
+    summary = HomeDemand(region_code=home.region_code, name=home.name, posting_count=home.posting_count,
+                         level=level(home), rank=posted.index(home.posting_count) + 1 if home.posting_count else None,
+                         ranked_of=len(posted), limited=home.posting_count < MIN_RECORDS)
+    higher = [HigherDemandArea(region_code=area.region_code, name=area.name, posting_count=area.posting_count,
+                               level=level(area), distance_km=round(_km(home, area), 1),
+                               nearby=_km(home, area) <= NEARBY_KM)
+              for area in areas if area.posting_count > home.posting_count]
+    higher.sort(key=lambda area: (not area.nearby, -area.posting_count, area.distance_km))
+    return summary, higher[:MAX_HIGHER]
+
+
 def classify(postings: int, sites: int, total_postings: int, total_sites: int) -> tuple[str, bool]:
     """A region's balance, and whether its counts are too small for more than a rough signal."""
     if not postings and not sites:
@@ -134,11 +175,13 @@ def build(session: Session, qualification_code: str, region_code: str | None = N
     candidates.sort(key=lambda area: (_ALTERNATIVE_ORDER[area.balance], -area.posting_count, area.name))
     alternatives = candidates[:MAX_ALTERNATIVES]
     by_code = {area.region_code: area for area in areas}
+    home_demand, higher_demand = home_and_higher(by_code.get(home_region_code), areas, total_postings)
     return QualificationOutlook(
         qualification=OutlookQualification(code=qualification.code, name=qualification.name),
         region_code=region_code, home_region_code=home_region_code, relocate=relocate, areas=areas, totals=totals,
         alternatives=[area.region_code for area in alternatives], training_site_ids=sorted(training),
         assessment_site_ids=sorted(assessment), snapshot_dates=demand.snapshot_dates,
+        demand_available=total_postings > 0, home_demand=home_demand, higher_demand=higher_demand,
         insight=write_insight(qualification.name, by_code.get(region_code), by_code.get(home_region_code), relocate,
                               areas, totals, alternatives, include_examples),
         includes_example_sites=include_examples, ai_summary_available=ai_summary_available,

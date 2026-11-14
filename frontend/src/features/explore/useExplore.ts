@@ -1,8 +1,10 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 import { create } from 'zustand'
 import { regionsQuery } from '../../api/queries.ts'
+import { AuthContext } from '../../auth/useAuth.ts'
 import type { MatchResult } from '../finder/api.ts'
+import { passportQuery } from '../tsp/passport.ts'
 import { clientConfigQuery, listingsQuery, sitesQuery } from '../training/api.ts'
 import {
   buildCenters,
@@ -15,7 +17,7 @@ import { useTrainingStore } from '../training/state.ts'
 import type { Reference } from '../training/useCenters.ts'
 import { MAX_QUALIFICATIONS, nearestRegion } from './explore.ts'
 import { areaJobsQuery } from './demandApi.ts'
-import { outlookQuery, outlookSummaryQuery } from './outlookApi.ts'
+import { nearbySuggestionsQuery, outlookQuery, outlookSummaryQuery } from './outlookApi.ts'
 import {
   NO_RECOMMENDATIONS,
   recommend,
@@ -157,7 +159,18 @@ export function useExplore(demandActive = false) {
   )
 
   const today = philippineDay(new Date())
-  const automaticRegion = nearestRegion(reference, regions.data ?? [])?.code ?? null
+  // The learner's area (Card 3): from their location or typed place, else where their Skill Passport says they live.
+  // Optional: the page also renders without an account provider (its tests), and then nobody is signed in.
+  const learner = useContext(AuthContext)?.learner ?? null
+  const passport = useQuery({ ...passportQuery(learner?.id ?? ''), enabled: learner !== null })
+  const locatedRegion = nearestRegion(reference, regions.data ?? [])?.code ?? null
+  const profileRegion = passport.data?.region_code ?? null
+  const automaticRegion = locatedRegion ?? profileRegion
+  const homeSource: 'location' | 'profile' | null = locatedRegion
+    ? 'location'
+    : profileRegion
+      ? 'profile'
+      : null
   const demandRegion = demandFilters.region === undefined ? automaticRegion : demandFilters.region
   const demandLocality = demandFilters.scope === demandRegion ? demandFilters.locality : null
   const demandOffset = demandFilters.scope === demandRegion ? demandFilters.offset : 0
@@ -197,6 +210,31 @@ export function useExplore(demandActive = false) {
     () => (demandCode ? supplyCenters(centers, demandCode, outlook.data) : []),
     [centers, demandCode, outlook.data],
   )
+  // Card 4: what the learner can do already (the search's skills and their Skill Passport) and what they chose or
+  // hold, for the other qualifications in demand where they are.
+  const fitSkills = useMemo(
+    () =>
+      [
+        ...new Set(
+          [...(search?.result.profile.existing_skills ?? []), ...(passport.data?.skills ?? [])]
+            .map((skill) => skill.trim())
+            .filter(Boolean),
+        ),
+      ].slice(0, 20),
+    [search, passport.data],
+  )
+  const held = useMemo(
+    () =>
+      [
+        ...new Set([...(demandCode ? [demandCode] : []), ...(passport.data?.qualifications ?? [])]),
+      ].slice(0, 20),
+    [demandCode, passport.data],
+  )
+  const nearby = useQuery({
+    ...nearbySuggestionsQuery(automaticRegion ?? '', fitSkills, held),
+    enabled: Boolean(demandCode && automaticRegion),
+    placeholderData: keepPreviousData,
+  })
   const alternatives = outlook.data?.alternatives
   const recommendations = useMemo(
     () =>
@@ -228,11 +266,13 @@ export function useExplore(demandActive = false) {
     demandMap,
     demandRegion,
     demandCode,
-    /** The learner's own region, from their location or typed place. */
+    /** The learner's own region, from their location or typed place, else their Skill Passport. */
     homeRegion: automaticRegion,
+    homeSource,
     relocate,
     outlook,
     summary,
+    nearby,
     supply,
     recommendations,
     recommendedIds,

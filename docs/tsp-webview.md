@@ -1,6 +1,6 @@
 # TSP WebView entry
 
-Open the TESDA-TRACK frontend at `/tsp/webview` in TSP's mobile WebView. The route is relative to the frontend base path, including `/beta` where that deployment is used.
+Open the TESDA-TRACK frontend at `/tsp/webview` in TSP's mobile WebView. The route is relative to the frontend base path, the site's root.
 
 The webview opens on **Find my path**. The learner enters a goal, answers optional matching questions,
 then continues through `/tsp/webview/matches`, `/tsp/webview/readiness`, and

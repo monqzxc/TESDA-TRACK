@@ -158,7 +158,8 @@ h1, h2, h3 { letter-spacing: -0.02em; }
 /* Home: the landing page (landing.css) runs edge to edge under its own top bar. Streamlit's header steps aside but
    keeps its menu, with System, Light and Dark, at the top right over the landing page's navy. */
 .stApp:has(.st-key-page_home) [data-testid="stHeader"] { background: transparent; pointer-events: none; }
-.stApp:has(.st-key-page_home) [data-testid="stToolbar"] { pointer-events: auto; }
+.stApp:has(.st-key-page_home) [data-testid="stToolbar"] { pointer-events: none; }
+.stApp:has(.st-key-page_home) [data-testid="stMainMenu"] { pointer-events: auto; }
 .stApp:has(.st-key-page_home) [data-testid="stToolbar"] button { color: #fff; }
 .stApp:has(.st-key-page_home) :is([data-testid="stAppDeployButton"], [data-testid="stDecoration"]) { display: none; }
 .stApp:has(.st-key-page_home) .block-container { max-width: none; padding: 0; }

@@ -1780,6 +1780,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/tsp-mock/handoff": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Mock Handoff
+         * @description Sign in to the mock TSP with a synthetic account and get the handoff code TSP would hand the page.
+         */
+        post: operations["mock_handoff_api_v1_tsp_mock_handoff_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/labor-market/indicators": {
         parameters: {
             query?: never;
@@ -1868,6 +1888,28 @@ export interface paths {
         get: operations["qualification_outlook_view_api_v1_labor_market_outlook_get"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/labor-market/suggestions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Nearby Suggestions View
+         * @description A few other qualifications in demand in the learner's region, ranked by demand and how well they fit the
+         *     learner's skills, each with its reasons (Card 4). An empty list means none is in demand there. The skills are in
+         *     the body and are neither stored nor logged; no sign-in needed.
+         */
+        post: operations["nearby_suggestions_view_api_v1_labor_market_suggestions_post"];
         delete?: never;
         options?: never;
         head?: never;
@@ -3002,6 +3044,12 @@ export interface components {
              */
             tsp_sign_in: boolean;
             /**
+             * Tsp Mock
+             * @description Whether "Sign in with TSP" signs in to the mock TSP's synthetic accounts (POST /api/v1/tsp-mock/handoff) instead of the real TSP.
+             * @default false
+             */
+            tsp_mock: boolean;
+            /**
              * Tsp Suggestions
              * @description Whether /tsp/webview shows qualifications suggested from the TSP profile (POST /api/v1/analysis/suggestions). False: the goal box only.
              * @default false
@@ -3026,6 +3074,24 @@ export interface components {
              * @default
              */
             map_tiles_url: string;
+            /**
+             * Tsp Find Jobs Url
+             * @description TSP Find Jobs page the "Find Jobs on TSP" button opens. Empty: the button is turned off.
+             * @default
+             */
+            tsp_find_jobs_url: string;
+            /**
+             * Tsp Find Jobs Skill Param
+             * @description Query parameter for the chosen skill
+             * @default skill
+             */
+            tsp_find_jobs_skill_param: string;
+            /**
+             * Tsp Find Jobs Area Param
+             * @description Query parameter for the chosen area
+             * @default area
+             */
+            tsp_find_jobs_area_param: string;
             /**
              * Map 3D
              * @description Whether the center map offers 3D buildings where the tiles record building heights.
@@ -3659,6 +3725,63 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** HigherDemandArea */
+        HigherDemandArea: {
+            /** Region Code */
+            region_code: string;
+            /** Name */
+            name: string;
+            /** Posting Count */
+            posting_count: number;
+            /**
+             * Level
+             * @enum {string}
+             */
+            level: "high" | "moderate" | "low" | "none";
+            /**
+             * Distance Km
+             * @description Between the two regions' centers, as the crow flies
+             */
+            distance_km: number;
+            /**
+             * Nearby
+             * @description Within NEARBY_KM of the learner's region
+             */
+            nearby: boolean;
+        };
+        /**
+         * HomeDemand
+         * @description How much the qualification is needed in the learner's own region (Card 3).
+         */
+        HomeDemand: {
+            /** Region Code */
+            region_code: string;
+            /** Name */
+            name: string;
+            /** Posting Count */
+            posting_count: number;
+            /**
+             * Level
+             * @description The region's share of the posting records against an even share across the regions: high at 1.5 times or more, moderate at half or more, low below that, none without a record
+             * @enum {string}
+             */
+            level: "high" | "moderate" | "low" | "none";
+            /**
+             * Rank
+             * @description Its place among the regions with records, most first; null with none
+             */
+            rank: number | null;
+            /**
+             * Ranked Of
+             * @description How many regions have records
+             */
+            ranked_of: number;
+            /**
+             * Limited
+             * @description Too few records for more than a rough signal
+             */
+            limited: boolean;
+        };
         /** ImprovementPriority */
         ImprovementPriority: {
             qualification: components["schemas"]["QualificationSummary"];
@@ -3946,6 +4069,37 @@ export interface components {
             /** Expected */
             expected?: string[];
         };
+        /** MockHandoff */
+        MockHandoff: {
+            /** Code */
+            code: string;
+            /** State */
+            state: string | null;
+            /** Expires In */
+            expires_in: number;
+        };
+        /** MockHandoffRequest */
+        MockHandoffRequest: {
+            /** Username */
+            username: string;
+            /** Password */
+            password: string;
+            /**
+             * State
+             * @description Returned unchanged, as Hercules does.
+             */
+            state?: string | null;
+        };
+        /** MockHandoffResponse */
+        MockHandoffResponse: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["MockHandoff"];
+        };
         /** ModelFeedback */
         ModelFeedback: {
             /** Answers */
@@ -3957,6 +4111,75 @@ export interface components {
              * @description The embedding model; null for keyword matching only
              */
             model: string | null;
+        };
+        /** NearbySuggestion */
+        NearbySuggestion: {
+            qualification: components["schemas"]["QualificationSummary"];
+            /**
+             * Posting Count
+             * @description Distinct posting records in the learner's region
+             */
+            posting_count: number;
+            /**
+             * Level
+             * @enum {string}
+             */
+            level: "high" | "moderate" | "low" | "none";
+            /**
+             * Limited
+             * @description Too few records for more than a rough signal
+             */
+            limited: boolean;
+            /**
+             * Fit
+             * @description How well it fits the learner's skills and qualifications
+             */
+            fit: number;
+            /**
+             * Reasons
+             * @description Why it is suggested, a short line each: demand first, then fit
+             */
+            reasons: string[];
+        };
+        /**
+         * NearbySuggestionRequest
+         * @description In the body, never the address: skills are the learner's own words. Neither stored nor logged.
+         */
+        NearbySuggestionRequest: {
+            /**
+             * Region Code
+             * @description The learner's region, as Card 3 works it out
+             */
+            region_code: string;
+            /** Skills */
+            skills?: string[];
+            /**
+             * Held
+             * @description Qualifications the learner chose or already holds, as codes or names: never suggested, and their sectors count toward fit
+             */
+            held?: string[];
+            /**
+             * Limit
+             * @default 3
+             */
+            limit: number;
+        };
+        /** NearbySuggestions */
+        NearbySuggestions: {
+            /** Region Code */
+            region_code: string;
+            /** Region Name */
+            region_name: string;
+            /** Suggestions */
+            suggestions: components["schemas"]["NearbySuggestion"][];
+            /**
+             * Method Version
+             * @default nearby-suggestions-v1
+             * @constant
+             */
+            method_version: "nearby-suggestions-v1";
+            /** Limitations */
+            limitations: string[];
         };
         /** NextStep */
         NextStep: {
@@ -4638,6 +4861,18 @@ export interface components {
             assessment_site_ids: number[];
             /** Snapshot Dates */
             snapshot_dates: string[];
+            /**
+             * Demand Available
+             * @description Whether any posting record links to this qualification at all
+             */
+            demand_available: boolean;
+            /** @description The learner's region, when they gave one */
+            home_demand?: components["schemas"]["HomeDemand"] | null;
+            /**
+             * Higher Demand
+             * @description Regions with more posting records than the learner's: nearby ones first, then the rest, each by records, at most five
+             */
+            higher_demand?: components["schemas"]["HigherDemandArea"][];
             insight: components["schemas"]["OutlookInsight"];
             /**
              * Includes Example Sites
@@ -6198,6 +6433,11 @@ export interface components {
              * @description Certificates, trainings, assessments and external certificates.
              */
             credentials: string[];
+            /**
+             * Region Code
+             * @description The region the Skill Passport gives as home, as one of the app's region codes; null when it gives none or an unknown one.
+             */
+            region_code?: string | null;
         };
         /** TspSessionRequest */
         TspSessionRequest: {
@@ -7933,6 +8173,8 @@ export interface operations {
                 near_lat?: number | null;
                 near_lon?: number | null;
                 radius_km?: number | null;
+                /** @description Only this assessment center's schedules. */
+                center_id?: number | null;
             };
             header?: never;
             path?: never;
@@ -9943,6 +10185,46 @@ export interface operations {
             };
         };
     };
+    mock_handoff_api_v1_tsp_mock_handoff_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MockHandoffRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MockHandoffResponse"];
+                };
+            };
+            /** @description Wrong username or password. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
     public_indicators_api_v1_labor_market_indicators_get: {
         parameters: {
             query: {
@@ -10098,6 +10380,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["QualificationOutlook"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    nearby_suggestions_view_api_v1_labor_market_suggestions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["NearbySuggestionRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NearbySuggestions"];
                 };
             };
             /** @description Validation Error */

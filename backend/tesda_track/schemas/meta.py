@@ -12,6 +12,8 @@ class ClientConfig(BaseModel):
                                                     "turned on.")
     tsp_sign_in: bool = Field(description="Whether /tsp/webview signs learners in through TSP's WebView bridge "
                                           "(POST /api/v1/auth/tsp/session). False: it stays guest-only.")
+    tsp_mock: bool = Field(default=False, description="Whether \"Sign in with TSP\" signs in to the mock TSP's "
+                           "synthetic accounts (POST /api/v1/tsp-mock/handoff) instead of the real TSP.")
     tsp_suggestions: bool = Field(default=False, description="Whether /tsp/webview shows qualifications suggested from "
                                   "the TSP profile (POST /api/v1/analysis/suggestions). False: the goal box only.")
     # Defaults, so an app newer than its API reads a missing field as "no vector tiles" and keeps the Leaflet map.
@@ -22,5 +24,9 @@ class ClientConfig(BaseModel):
                                                       "restricted to the deployment's domains. Empty: no MapTiler.")
     map_tiles_url: str = Field(default="", description="TileJSON address of an OpenMapTiles-schema vector source, "
                                                        "used instead of MapTiler. Empty: none.")
+    tsp_find_jobs_url: str = Field(default="", description="TSP Find Jobs page the \"Find Jobs on TSP\" button opens. "
+                                                           "Empty: the button is turned off.")
+    tsp_find_jobs_skill_param: str = Field(default="skill", description="Query parameter for the chosen skill")
+    tsp_find_jobs_area_param: str = Field(default="area", description="Query parameter for the chosen area")
     map_3d: bool = Field(default=True, description="Whether the center map offers 3D buildings where the tiles record "
                                                    "building heights.")

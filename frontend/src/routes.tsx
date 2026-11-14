@@ -184,7 +184,7 @@ export const routes: RouteObject[] = [
   },
 ]
 
-/** The router's basename: the app's base without its trailing slash ("/" in development, "/beta" in Task 18). */
+/** The router's basename: the app's base without its trailing slash ("/" unless the build sets another). */
 export function basename(base: string = import.meta.env.BASE_URL): string {
   return base.replace(/\/+$/, '') || '/'
 }

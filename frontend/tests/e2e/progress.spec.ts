@@ -132,7 +132,10 @@ async function serveLearner(page: Page) {
 
 async function expectSettledAndAccessible(page: Page) {
   await expect(page.getByRole('status')).toHaveCount(0)
-  await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished)))
+  // A cancelled animation (one a newer one replaced) rejects its finished: it isn't running either.
+  await page.evaluate(() =>
+    Promise.all(document.getAnimations().map((a) => a.finished.catch(() => undefined))),
+  )
   const overflow = await page.evaluate(
     () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
   )
@@ -207,7 +210,10 @@ test.describe('on a desktop', () => {
     await expect(
       sections.getByRole('button', { name: 'Goals & certificates', exact: true }),
     ).toHaveAttribute('aria-pressed', 'true')
-    await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: 'My Progress' }).focus()
+    // My Progress isn't in the sidebar: the profile's overview links to it.
+    await sections.getByRole('button', { name: 'Overview', exact: true }).focus()
+    await page.keyboard.press('Enter')
+    await page.getByRole('link', { name: 'View my progress', exact: true }).focus()
     await page.keyboard.press('Enter')
     await expect(page.getByRole('region', { name: 'My qualification goals' })).toBeVisible()
     await expect(page.getByRole('region', { name: 'My goals' })).toHaveCount(0)

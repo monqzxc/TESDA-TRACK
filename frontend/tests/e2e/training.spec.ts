@@ -343,7 +343,9 @@ test('narrow and phone screens keep the results below the map in the page flow',
   for (const viewport of [
     { width: 375, height: 812 },
     { width: 812, height: 375 },
-    { width: 1366, height: 768 },
+    // A tablet on its side: the page's workspace is narrower than the 1112px that puts the results beside the map.
+    // (Wider windows put them side by side; the next test covers those.)
+    { width: 1024, height: 768 },
   ]) {
     await page.setViewportSize(viewport)
     await expect
@@ -741,10 +743,9 @@ test.describe('the MapLibre map', () => {
     expect(await land()).toBe('#13213e')
     const canvas = await page.locator('.maplibregl-canvas').elementHandle()
 
-    // The app's own theme switch, from System to Light.
-    await page.getByRole('radio', { name: 'System' }).focus()
-    await page.keyboard.press('ArrowRight')
-    await expect(page.getByRole('radio', { name: 'Light' })).toBeChecked()
+    // The app follows the system's theme (it has no switch of its own): the system turns light.
+    await page.emulateMedia({ colorScheme: 'light' })
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light')
     await expect.poll(land).toBe('#f2f4f7')
     // The same map, restyled: its canvas wasn't replaced.
     expect(await canvas!.evaluate((element) => element.isConnected)).toBe(true)
