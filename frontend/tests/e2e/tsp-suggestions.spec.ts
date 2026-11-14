@@ -93,6 +93,14 @@ test('suggestions fold into one row above the goal box, and open into rows to ch
   expect(await background(page.getByRole('button', { name: 'See my pathway' }).first())).toBe(
     await background(findMyMatch),
   )
+  // Settled: while the section opens its rows fade in, and axe would measure their half-faded colors.
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        document.getAnimations().every((animation) => animation.playState !== 'running'),
+      ),
+    )
+    .toBe(true)
   expect((await new AxeBuilder({ page }).include('.tsp-suggested').analyze()).violations).toEqual(
     [],
   )

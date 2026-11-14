@@ -28,12 +28,10 @@ async function serveAccount(page: Page, signedIn = true) {
   }
 }
 
-async function openAccountMenu(page: Page, phone: boolean): Promise<Locator> {
-  let area = page.getByRole('banner')
-  if (phone) {
-    await page.getByRole('button', { name: 'Menu', exact: true }).click()
-    area = page.getByRole('dialog', { name: 'Menu', exact: true })
-  }
+/** The account menu, at the foot of the sidebar: the burger opens the sidebar first, at every width. */
+async function openAccountMenu(page: Page): Promise<Locator> {
+  await page.getByRole('button', { name: 'Menu', exact: true }).click()
+  const area = page.getByRole('dialog', { name: 'Menu', exact: true })
   await area.getByRole('button', { name: `Your account: ${LEARNER.full_name}` }).click()
   return page.getByRole('menu')
 }
@@ -67,8 +65,6 @@ async function expectProfile(page: Page) {
 
 for (const colorScheme of ['light', 'dark'] as const) {
   for (const [size, viewport] of Object.entries(SIZES)) {
-    const phone = size === 'phone'
-
     test.describe(`profile, ${colorScheme} theme, ${size}`, () => {
       test.use({ colorScheme, viewport })
 
@@ -78,7 +74,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
         await expect(
           page.getByRole('heading', { name: 'Qualifications Library', level: 1 }),
         ).toBeVisible()
-        const menu = await openAccountMenu(page, phone)
+        const menu = await openAccountMenu(page)
         await menu.getByRole('menuitem', { name: 'My Profile', exact: true }).click()
 
         await expectProfile(page)
@@ -93,7 +89,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
         await expect(
           page.getByRole('heading', { name: 'Qualifications Library', level: 1 }),
         ).toBeVisible()
-        const menu = await openAccountMenu(page, phone)
+        const menu = await openAccountMenu(page)
         await menu.getByRole('menuitem', { name: 'Settings', exact: true }).click()
         const settings = page.getByRole('dialog', { name: 'Settings', exact: true })
         await expect(settings.getByRole('heading', { name: 'Profile', exact: true })).toBeVisible()

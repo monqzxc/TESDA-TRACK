@@ -92,22 +92,25 @@ test('the signed-out progress tour finishes and can be replayed without signing 
 
 test('browser Back closes the tour when the page changes', async ({ page }) => {
   await serveCatalog(page)
-  await page.goto('/qualifications')
-  await page
-    .getByRole('navigation', { name: 'Main' })
-    .getByRole('link', { name: 'Find my pathway' })
-    .click()
+  await page.goto('/find')
   await expect(page.locator('[data-tour="goal-input"]')).toBeVisible()
+  // In the app, through the sidebar, so Back is the router's own.
+  await page.getByRole('button', { name: 'Menu', exact: true }).click()
+  await page
+    .getByRole('dialog', { name: 'Menu' })
+    .getByRole('link', { name: 'Qualifications Library' })
+    .click()
+  await expect(
+    page.getByRole('heading', { level: 1, name: 'Qualifications Library' }),
+  ).toBeVisible()
   await startTour(page)
 
   await page.goBack()
 
-  await expect(page).toHaveURL('/qualifications')
+  await expect(page).toHaveURL('/find')
   await expect(popover(page)).toHaveCount(0)
   await expect(page.locator('.driver-overlay')).toHaveCount(0)
-  await expect(
-    page.getByRole('heading', { level: 1, name: 'Qualifications Library' }),
-  ).toBeVisible()
+  await expect(page.locator('[data-tour="goal-input"]')).toBeVisible()
 })
 
 test('a delayed first-visit notice closes the tour and keeps its dialog usable', async ({

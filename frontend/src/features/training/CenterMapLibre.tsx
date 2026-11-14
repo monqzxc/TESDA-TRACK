@@ -568,10 +568,18 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
       }
     })
 
+    // A click that began on one of the buttons over the map. That button may already be gone by the time MapLibre
+    // hears of the click: a route label's own click picks its mode, which hides the labels while the new route draws.
+    // The map's canvas is never taken out, so a target that's out of the page was one of the buttons.
+    const onOverlay = (event: MouseEvent) => {
+      const target = event.target as Node | null
+      return !!target && (!target.isConnected || overlay.contains(target))
+    }
+
     // A click on the map, not on one of the buttons over it: pins beyond those with buttons, clusters, routes, or
     // the map itself, which closes the popup.
     map.on('click', (event: MapMouseEvent) => {
-      if (overlay.contains(event.originalEvent.target as Node | null)) return
+      if (onOverlay(event.originalEvent)) return
       const layers = [LAYERS.selected, LAYERS.recommended, LAYERS.pins, LAYERS.clusters].filter(
         (id) => map.getLayer(id),
       )
@@ -593,7 +601,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     for (const layer of LAYERS.routeLines) {
       map.on('click', layer, (event: MapLayerMouseEvent) => {
         // A route's label sits on the map, often over another route's line: its own button chose its mode.
-        if (overlay.contains(event.originalEvent.target as Node | null)) return
+        if (onOverlay(event.originalEvent)) return
         const mode = event.features?.[0]?.properties?.mode
         if (typeof mode === 'string') latest.current.props.onTravelMode(mode as TravelMode)
       })

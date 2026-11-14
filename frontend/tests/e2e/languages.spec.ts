@@ -22,22 +22,18 @@ for (const width of [1440, 768, 390]) {
     await expect(page.locator('[data-entering]')).toHaveCount(0)
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
 
-    // The header action is translated too. Navigate via the visible control.
-    await page.locator('header a[href$="/find"]').click()
-    await expect(page).toHaveURL(/\/find$/)
+    // Another page keeps it, and the sidebar's selector changes it there, at every width.
+    await page.goto('/find')
     await expect(
       page.getByRole('heading', { level: 1, name: 'Hanapin ang aking landas' }),
     ).toBeVisible()
-    if (width <= 768) {
-      await page.getByRole('button', { name: 'Menu' }).click()
-      const menu = page.getByRole('dialog', { name: 'Menu' })
-      await menu.getByRole('combobox', { name: 'Language / Wika' }).selectOption('pam')
-      await expect(menu.getByRole('link', { name: 'Alapan ing dalan ku' })).toBeVisible()
-      await page.keyboard.press('Escape')
-    } else {
-      await selector.selectOption('pam')
-      await expect(page.getByRole('link', { name: 'Alapan ing dalan ku' })).toBeVisible()
-    }
+    await page.getByRole('button', { name: 'Menu', exact: true }).click()
+    const menu = page.getByRole('dialog', { name: 'Menu' })
+    await menu.getByRole('combobox', { name: 'Language / Wika' }).selectOption('pam')
+    // Its close button, in the new language: Escape on the open selector closes the selector, not the menu.
+    await menu.getByRole('button', { name: 'Isara ing menu', exact: true }).click()
+    await expect(menu).toBeHidden()
+    await expect(page.getByRole('heading', { level: 1, name: 'Alapan ing dalan ku' })).toBeVisible()
     await expect(page.locator('html')).toHaveAttribute('lang', 'pam')
     await page.screenshot({ path: test.info().outputPath(`kapampangan-finder-${width}.png`) })
     await page.reload()
