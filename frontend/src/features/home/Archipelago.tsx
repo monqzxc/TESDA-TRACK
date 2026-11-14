@@ -1,7 +1,7 @@
 import { useCopy } from '../../i18n/copy.ts'
 import { Reveal } from './Reveal.tsx'
 
-// With the app's base, so the picture loads wherever the app is served (at / on its own, or under /beta/).
+// With the app's base, so the picture loads wherever the app is served.
 const MAP_SRC = `${import.meta.env.BASE_URL}img/near-you-map.svg`
 
 /**

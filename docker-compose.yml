@@ -104,10 +104,11 @@ services:
       retries: 10
 
   web:
-    # The Streamlit app (classic/), at / until the switch.
+    # The Streamlit app (classic/), at /classic/ beside the React app.
     build: ./classic
     restart: unless-stopped
     environment:
+      STREAMLIT_SERVER_BASE_URL_PATH: classic
       API_BASE_URL: http://api:8000
       # Only Caddy reaches this container; trust its X-Forwarded-For so the app sees each learner's address.
       FORWARDED_ALLOW_IPS: "*"
@@ -120,12 +121,11 @@ services:
         condition: service_healthy
 
   app:
-    # The React app, served by its own Caddy on port 8080 (frontend/Dockerfile). Until the switch it lives at
-    # /beta/, beside Streamlit at /.
+    # The React app, served by its own Caddy on port 8080 (frontend/Dockerfile), at the site's root.
     build:
       context: ./frontend
       args:
-        BASE_PATH: /beta/
+        BASE_PATH: /
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/"]

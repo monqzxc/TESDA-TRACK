@@ -3,7 +3,7 @@ import { useCopy } from '../i18n/copy.ts'
 import { cx } from '../lib/style.ts'
 import { paths } from '../paths.ts'
 
-/** The logo, from public/img. Public files sit under the app's base (/beta/ during the parallel run). */
+/** The logo, from public/img. Public files sit under the app's base (the site's root). */
 export const logoSrc = `${import.meta.env.BASE_URL}img/logo.png`
 
 // The sidebar's brand, as classic/presentation.py's brand(sidebar=True) draws it: the logo, the wordmark ("TESDA"

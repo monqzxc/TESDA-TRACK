@@ -1,15 +1,15 @@
-# Parity checklist: the new TESDA Track at /beta/
+# Parity checklist: the new TESDA Track at /
 
-The new TESDA Track runs at `/beta/` next to the current app at `/`. Before it replaces the current app, check
-that it does everything the current app does, on a computer and on a phone. This checklist follows the current
+The new TESDA Track runs at `/`, with the Streamlit app kept at `/classic/`. Check that it does everything the
+Streamlit app does, on a computer and on a phone. This checklist follows the current
 app's pages and the [learner user stories](user-stories.md) (US-01 to US-15).
 
-Tick an item when it works at `/beta/` as described. Where an item says **same as current**, open the current app
-at `/` and compare the two. If something doesn't work, report it (see [Reporting a problem](#reporting-a-problem)).
+Tick an item when it works at `/` as described. Where an item says **same as current**, open the Streamlit app
+at `/classic/` and compare the two. If something doesn't work, report it (see [Reporting a problem](#reporting-a-problem)).
 
 ## Before you start
 
-- **Addresses.** The current app is at `https://<your site>/` and the new one at `https://<your site>/beta/`.
+- **Addresses.** The new app is at `https://<your site>/` and the Streamlit app at `https://<your site>/classic/`.
 - **Sign in to each app separately.** The two apps keep sign-in separately, so signing in to one doesn't sign you
   in to the other.
 - **Use test accounts, not real learners' accounts.** Create a learner account in the new app for testing. For
@@ -44,11 +44,11 @@ Don't include real learners' names, email addresses or goals.
 - [ ] With the keyboard alone (Tab, Shift+Tab, Enter, Space, Escape), you can reach and use every link, button,
       field and dialog. You can always see where you are, and you never get stuck in a dialog. (US-13)
 - [ ] Errors and states are shown in words or icons, not by color alone. (US-13)
-- [ ] An address that doesn't exist (for example `/beta/nothing-here`) shows **Page not found** with a way back.
+- [ ] An address that doesn't exist (for example `/nothing-here`) shows **Page not found** with a way back.
 - [ ] With the internet turned off, a page says it can't reach TESDA Track and offers **Try again**. Once you're
       back online, Try again loads the page. (US-14)
 
-## 2. Home (`/beta/`)
+## 2. Home (`/`)
 
 - [ ] The top bar's **How it works**, **Near you**, **Qualifications** and **My progress** scroll to their sections.
 - [ ] Typing a goal in the box at the top and pressing the button opens **Find my pathway** with the goal filled in.
@@ -61,7 +61,7 @@ Don't include real learners' names, email addresses or goals.
 - [ ] After opening another page and pressing Back, Home returns to where you were.
 - [ ] **Same as current:** the sections and figures match the current Home.
 
-## 3. Find my pathway (`/beta/find`)
+## 3. Find my pathway (`/find`)
 
 ### Your goal (US-01)
 
@@ -114,7 +114,7 @@ Don't include real learners' names, email addresses or goals.
 - [ ] Signed in, the page says your results are saved to My Progress.
 - [ ] Signing out clears your goal and results from the page. (US-02)
 
-## 4. Qualifications Library (`/beta/qualifications`) (US-04)
+## 4. Qualifications Library (`/qualifications`) (US-04)
 
 - [ ] It shows 12 qualifications a page, the number found, **Previous** and **Next**, and "Page 1 of …". (US-04)
 - [ ] Search finds qualifications by name, code, sector and career. **Same as current:** the same words find the
@@ -131,7 +131,7 @@ Don't include real learners' names, email addresses or goals.
 - [ ] **Explore this pathway** opens Find my pathway with "I want to pursue …" in the goal box, not yet submitted.
       **Same as current.**
 
-## 5. Training & Assessment (`/beta/training`)
+## 5. Training & Assessment (`/training`)
 
 ### Filters (US-07)
 
@@ -194,7 +194,7 @@ Don't include real learners' names, email addresses or goals.
 - [ ] **Send application** shows a receipt with a reference and status, and a link to My Progress. (US-09)
 - [ ] Applying again for the same schedule says you've already applied, and doesn't show a false success. (US-09)
 
-## 6. My Progress (`/beta/progress`)
+## 6. My Progress (`/progress`)
 
 - [ ] Signed out, the page invites you to sign in.
 - [ ] **Continue your journey** names your saved goal and qualification and offers one next step. With no records,
@@ -229,9 +229,9 @@ Don't include real learners' names, email addresses or goals.
 - [ ] Signing in or out in one tab shows in your other tabs.
 - [ ] When a session expires, the page says to sign in again, and nothing it couldn't save is shown as saved.
       (US-14)
-- [ ] `/beta/sign-in` signs you in on a page of its own, then returns you where you were going.
+- [ ] `/sign-in` signs you in on a page of its own, then returns you where you were going.
 
-## 8. Skills Explorer (`/beta/skills`) (US-12)
+## 8. Skills Explorer (`/skills`) (US-12)
 
 - [ ] Opening the page doesn't send anything to Skills Bridge. (US-12)
 - [ ] The page explains that only skill and role words are sent, never your sentence, name, email or records.
@@ -251,7 +251,7 @@ Don't include real learners' names, email addresses or goals.
 - [ ] When Skills Bridge can't answer, the page says so and reminds you the rest of TESDA Track still works.
 - [ ] **Same as current:** the same sentence gives the same occupations and qualifications.
 
-## 9. Reports (`/beta/reports`, administrators)
+## 9. Reports (`/reports`, administrators)
 
 - [ ] Only administrators see Reports in the sidebar. Anyone else who opens the address is told it isn't
       available.

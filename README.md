@@ -482,10 +482,10 @@ Browser ──HTTPS──▶ Caddy ──▶ Streamlit (classic/) ──HTTP─�
 
 - **backend/**: FastAPI + SQLModel (SQLAlchemy 2.0) + PostgreSQL, with migrations in Alembic. It is the
   only component that touches the database.
-- **frontend/**: the React app (React, Vite, TypeScript) that will replace the Streamlit app. Until the switch,
-  Caddy serves it at `/beta/`. It calls the API at `/api/v1/` on the same domain.
-- **classic/**: the Streamlit app, still serving `/` until the switch. It has no database credentials and calls
-  the API through `api_client.py`.
+- **frontend/**: the React app (React, Vite, TypeScript), served at the site's root `/`. It calls the API at
+  `/api/v1/` on the same domain.
+- **classic/**: the Streamlit app, kept at `/classic/` beside it. It has no database credentials and calls the API
+  through `api_client.py`.
 - **deploy/**: the PostgreSQL image (`deploy/postgres/`, PostgreSQL 17 with pgvector and PostGIS) and the
   Caddy configuration.
 - **docker-compose.dev.yml**: the local development database.
@@ -954,18 +954,17 @@ docker compose up -d --build
 
 Compose starts PostgreSQL, runs the migrations, the seed and the embedding sync, then starts the API, the
 Streamlit app, the React app and Caddy. The embedding model is built into the API image, so the server never needs to
-download it. If the sync fails, the deploy still goes ahead and matching falls back to keywords. Only ports 80 and 443 are published. Caddy serves the Streamlit app at `/`, the React app at `/beta/`
+download it. If the sync fails, the deploy still goes ahead and matching falls back to keywords. Only ports 80 and 443 are published. Caddy serves the React app at `/`, the Streamlit app at `/classic/`
 and the API at `/api/` (interactive docs at `/api/docs`). Point the domain's DNS at the server before starting, so
 Caddy can obtain a certificate.
 
 ### The React app's container
 
 `frontend/Dockerfile` builds the React app with Node 24, then serves `dist/` with Caddy on port 8080 (`frontend/Caddyfile`).
-The build argument `BASE_PATH` sets where the site serves it: Compose builds it for `/beta/` while it runs beside
-Streamlit, and the site's Caddy (`deploy/Caddyfile`) passes `/beta/…` to it without the prefix. To serve it at `/`
-after the switch, build it with `BASE_PATH: /` and point the site's catch-all `handle` at `app:8080`.
+The build argument `BASE_PATH` sets where the site serves it: Compose builds it for `/`, and the site's Caddy
+(`deploy/Caddyfile`) sends everything that isn't the API, MCP or `/classic/` to it.
 
-- App addresses (`/beta/find`, `/beta/training?…`) get `index.html`. A missing file under `assets/`, `fonts/` or
+- App addresses (`/find`, `/training?…`) get `index.html`. A missing file under `assets/`, `fonts/` or
   `img/` stays a 404.
 - Files under `assets/` have hashed names and are cached for a year. Fonts and pictures are cached for a week, and
   `index.html`, `theme-init.js` and the icon are checked on every visit, so a release shows at once.
