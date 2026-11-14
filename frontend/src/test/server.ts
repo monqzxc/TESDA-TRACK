@@ -10,6 +10,13 @@ const referenceData = [
   http.get('*/api/v1/client-config', () =>
     HttpResponse.json({ carto_key: '', routing_enabled: false, skills_bridge_enabled: false }),
   ),
+  // No Skill Passport is linked unless a test says so.
+  http.get('*/api/v1/auth/tsp/profile', () =>
+    HttpResponse.json(
+      { detail: "This account isn't linked to a Skill Passport." },
+      { status: 404 },
+    ),
+  ),
   http.get('*/api/v1/training-providers', () => HttpResponse.json([])),
   http.get('*/api/v1/assessment-centers', () => HttpResponse.json([])),
   http.get('*/api/v1/training-programs', () => HttpResponse.json([])),

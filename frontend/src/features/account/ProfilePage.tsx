@@ -11,6 +11,7 @@ import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { AccountGate } from './AccountGate.tsx'
+import { ProfilePassport } from './ProfilePassport.tsx'
 import {
   ProfileActivity,
   ProfileApplications,
@@ -115,6 +116,8 @@ export default function ProfilePage() {
           </span>
         </div>
       </section>
+
+      <ProfilePassport learnerId={learner.id} />
 
       <div className="flex flex-col gap-4">
         <nav

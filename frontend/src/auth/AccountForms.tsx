@@ -1,10 +1,13 @@
+import { useQuery } from '@tanstack/react-query'
 import { useState, type ComponentType, type ReactNode } from 'react'
 import { Button } from 'react-aria-components'
 import { useCopy } from '../i18n/copy.ts'
 import { TspBadge } from '../components/TspBadge.tsx'
+import { clientConfigQuery } from '../features/training/api.ts'
 import { learnerAccounts } from './accounts.ts'
 import { RegisterForm } from './RegisterForm.tsx'
 import { SignInForm } from './SignInForm.tsx'
+import { TspSignInForm } from './TspSignInForm.tsx'
 import type { SignInView } from './useAuth.ts'
 import { formStyle } from './styles.ts'
 
@@ -40,6 +43,8 @@ export function AccountForms({
   // Once the learner switches forms, the new form's first field takes focus. On opening, the dialog has it.
   const [switched, setSwitched] = useState(false)
   const isSignIn = view === 'signIn' || !learnerAccounts()
+  // With the mock TSP on, "Sign in with TSP" really signs in through TSP's path; otherwise it stays the stand-in.
+  const mockTsp = useQuery({ ...clientConfigQuery, enabled: tsp }).data?.tsp_mock === true
 
   const switchTo = (next: SignInView, start?: { email?: string; message?: string }) => {
     setSwitched(true)
@@ -60,8 +65,12 @@ export function AccountForms({
             {message}
           </p>
         )}
-        <SignInForm defaultEmail={defaultEmail} focusFirstField={false} onSignedIn={onSignedIn} />
-        <p className={formStyle.note}>{copy.tsp.notConnected}</p>
+        {mockTsp ? (
+          <TspSignInForm onSignedIn={onSignedIn} />
+        ) : (
+          <SignInForm defaultEmail={defaultEmail} focusFirstField={false} onSignedIn={onSignedIn} />
+        )}
+        <p className={formStyle.note}>{mockTsp ? copy.tsp.testAccounts : copy.tsp.notConnected}</p>
       </>
     )
   }

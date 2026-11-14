@@ -12,6 +12,8 @@ class ClientConfig(BaseModel):
                                                     "turned on.")
     tsp_sign_in: bool = Field(description="Whether /tsp/webview signs learners in through TSP's WebView bridge "
                                           "(POST /api/v1/auth/tsp/session). False: it stays guest-only.")
+    tsp_mock: bool = Field(default=False, description="Whether \"Sign in with TSP\" signs in to the mock TSP's "
+                           "synthetic accounts (POST /api/v1/tsp-mock/handoff) instead of the real TSP.")
     tsp_suggestions: bool = Field(default=False, description="Whether /tsp/webview shows qualifications suggested from "
                                   "the TSP profile (POST /api/v1/analysis/suggestions). False: the goal box only.")
     # Defaults, so an app newer than its API reads a missing field as "no vector tiles" and keeps the Leaflet map.

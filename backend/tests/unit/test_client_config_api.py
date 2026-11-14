@@ -26,7 +26,7 @@ def test_reports_the_map_key_and_the_optional_services():
                                       skills_bridge_mcp_enabled=True))
     assert response.status_code == 200
     assert response.json() == {"carto_key": "carto-public-key", "routing_enabled": True,
-                               "skills_bridge_enabled": True, "tsp_sign_in": False, "tsp_suggestions": False,
+                               "skills_bridge_enabled": True, "tsp_sign_in": False, "tsp_mock": False, "tsp_suggestions": False,
                                "map_engine": "maplibre", "maptiler_key": "", "map_tiles_url": "",
                                "map_3d": True}
 
@@ -34,7 +34,7 @@ def test_reports_the_map_key_and_the_optional_services():
 def test_reports_services_that_are_turned_off():
     response = client_config(settings(routing_url=" ", skills_bridge_mcp_enabled=False))
     assert response.json() == {"carto_key": "", "routing_enabled": False, "skills_bridge_enabled": False,
-                               "tsp_sign_in": False, "tsp_suggestions": False,
+                               "tsp_sign_in": False, "tsp_mock": False, "tsp_suggestions": False,
                                "map_engine": "maplibre", "maptiler_key": "", "map_tiles_url": "",
                                "map_3d": True}
 
@@ -96,6 +96,6 @@ def test_the_app_serves_it_from_the_environment_without_sign_in_or_a_database(en
     response = TestClient(create_app()).get("/api/v1/client-config")
     assert response.status_code == 200
     assert response.json() == {"carto_key": "carto-from-the-environment", "routing_enabled": False,
-                               "skills_bridge_enabled": True, "tsp_sign_in": False, "tsp_suggestions": False,
+                               "skills_bridge_enabled": True, "tsp_sign_in": False, "tsp_mock": False, "tsp_suggestions": False,
                                "map_engine": "leaflet", "maptiler_key": "maptiler-from-the-environment",
                                "map_tiles_url": "", "map_3d": False}

@@ -20,7 +20,7 @@ from tesda_track.schemas.accounts import LearnerPublic, SessionResponse
 from tesda_track.schemas.tsp_auth import (TspConsentRequest, TspConsentRequired, TspConsentSummary, TspProfile,
                                           TspSessionRequest)
 from tesda_track.security import create_access_token, set_session_cookie
-from tesda_track.services import tsp_sign_in
+from tesda_track.services import tsp_mock, tsp_sign_in
 from tesda_track.services.hercules import HerculesClient
 from tesda_track.services.rate_limit import client_address_key
 
@@ -40,7 +40,8 @@ EnabledSettings = Annotated[Settings, Depends(enabled_settings)]
 
 
 def hercules_client(settings: EnabledSettings) -> HerculesClient:
-    return HerculesClient(settings)
+    # The config toggle between the mock and the real TSP (docs/tsp-mock.md).
+    return tsp_mock.client(settings) if settings.tsp_mock_enabled else HerculesClient(settings)
 
 
 def limit_attempts(request: Request) -> None:

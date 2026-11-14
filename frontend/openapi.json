@@ -6134,6 +6134,51 @@
         ]
       }
     },
+    "/api/v1/tsp-mock/handoff": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Mock Handoff",
+        "description": "Sign in to the mock TSP with a synthetic account and get the handoff code TSP would hand the page.",
+        "operationId": "mock_handoff_api_v1_tsp_mock_handoff_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MockHandoffRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MockHandoffResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Wrong username or password."
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/labor-market/indicators": {
       "get": {
         "tags": [
@@ -10409,6 +10454,12 @@
             "title": "Tsp Sign In",
             "description": "Whether /tsp/webview signs learners in through TSP's WebView bridge (POST /api/v1/auth/tsp/session). False: it stays guest-only."
           },
+          "tsp_mock": {
+            "type": "boolean",
+            "title": "Tsp Mock",
+            "description": "Whether \"Sign in with TSP\" signs in to the mock TSP's synthetic accounts (POST /api/v1/tsp-mock/handoff) instead of the real TSP.",
+            "default": false
+          },
           "tsp_suggestions": {
             "type": "boolean",
             "title": "Tsp Suggestions",
@@ -12928,6 +12979,89 @@
           "status"
         ],
         "title": "MigrationStatus"
+      },
+      "MockHandoff": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "State"
+          },
+          "expires_in": {
+            "type": "integer",
+            "title": "Expires In"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "state",
+          "expires_in"
+        ],
+        "title": "MockHandoff"
+      },
+      "MockHandoffRequest": {
+        "properties": {
+          "username": {
+            "type": "string",
+            "maxLength": 254,
+            "minLength": 1,
+            "title": "Username"
+          },
+          "password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "title": "Password"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "State",
+            "description": "Returned unchanged, as Hercules does."
+          }
+        },
+        "type": "object",
+        "required": [
+          "username",
+          "password"
+        ],
+        "title": "MockHandoffRequest"
+      },
+      "MockHandoffResponse": {
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "const": true,
+            "title": "Success",
+            "default": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/MockHandoff"
+          }
+        },
+        "type": "object",
+        "required": [
+          "data"
+        ],
+        "title": "MockHandoffResponse"
       },
       "ModelFeedback": {
         "properties": {

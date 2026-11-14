@@ -1642,6 +1642,15 @@ export const en = {
       notConnected:
         'TSP sign-in isn’t connected yet. A TESDA-TRACK account stands in for your TSP account.',
       signIn: 'Sign in with TSP',
+      // The mock TSP (docs/tsp-mock.md): synthetic accounts sign in through the real TSP sign-in path.
+      username: 'TSP email',
+      usernamePlaceholder: 'you@example.com',
+      missingUsername: 'Enter your TSP email.',
+      testAccounts:
+        'This site uses TSP test accounts. Sign in with one of the accounts given to your team.',
+      expired: 'That sign-in ran out of time. Please sign in again.',
+      unavailable: 'TSP sign-in is unavailable right now. Please try again shortly.',
+      declined: 'Nothing was saved. You can keep using TESDA-TRACK without signing in.',
     },
     signInForm: {
       heading: 'Sign in',
@@ -2064,6 +2073,7 @@ export const en = {
     },
     // The line on the entry page while TSP signs the learner in (features/tsp/TspPassportStatus.tsx).
     passport: {
+      heading: 'From your Skill Passport',
       connecting: 'Connecting to your Skill Passport…',
       loading: 'Getting your Skill Passport details…',
       connected: 'Skill Passport connected',

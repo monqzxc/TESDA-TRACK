@@ -163,6 +163,10 @@ class Settings(BaseSettings):
     # Shows the TSP webview's "Suggested for you" (POST /api/v1/analysis/suggestions). Off until its release gates pass
     # (docs/evaluation-and-release-checks.md#profile-only-suggestions): a wrong nudge costs a learner more than none.
     tsp_suggestions_enabled: bool = False
+    # Swaps the real TSP for the synthetic accounts in seed/tsp_mock_accounts.json (docs/tsp-mock.md): Hercules is
+    # never called, even when its client is set, and "Sign in with TSP" asks for a synthetic account's password.
+    # Needs TSP_SIGN_IN_ENABLED as well. Anyone who knows a test password can sign in: demos and tests only.
+    tsp_mock_enabled: bool = False
 
     @field_validator("mcp_token_secret", "hercules_base_url", "tracker_client_id", "tracker_client_secret",
                      "anthropic_api_key", mode="before")
@@ -217,9 +221,9 @@ class Settings(BaseSettings):
             raise ValueError("Set HERCULES_BASE_URL, TRACKER_CLIENT_ID and TRACKER_CLIENT_SECRET together, or none of them.")
         if self.environment == "production" and self.hercules_base_url and self.hercules_base_url.scheme != "https":
             raise ValueError("HERCULES_BASE_URL must use https in production.")
-        if self.tsp_sign_in_enabled and not all(values):
+        if self.tsp_sign_in_enabled and not all(values) and not self.tsp_mock_enabled:
             raise ValueError("Set HERCULES_BASE_URL, TRACKER_CLIENT_ID and TRACKER_CLIENT_SECRET before "
-                             "TSP_SIGN_IN_ENABLED.")
+                             "TSP_SIGN_IN_ENABLED, or turn on TSP_MOCK_ENABLED.")
         return self
 
     @property

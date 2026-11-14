@@ -1780,6 +1780,26 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/tsp-mock/handoff": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Mock Handoff
+         * @description Sign in to the mock TSP with a synthetic account and get the handoff code TSP would hand the page.
+         */
+        post: operations["mock_handoff_api_v1_tsp_mock_handoff_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/labor-market/indicators": {
         parameters: {
             query?: never;
@@ -3002,6 +3022,12 @@ export interface components {
              */
             tsp_sign_in: boolean;
             /**
+             * Tsp Mock
+             * @description Whether "Sign in with TSP" signs in to the mock TSP's synthetic accounts (POST /api/v1/tsp-mock/handoff) instead of the real TSP.
+             * @default false
+             */
+            tsp_mock: boolean;
+            /**
              * Tsp Suggestions
              * @description Whether /tsp/webview shows qualifications suggested from the TSP profile (POST /api/v1/analysis/suggestions). False: the goal box only.
              * @default false
@@ -3945,6 +3971,37 @@ export interface components {
             current?: string[];
             /** Expected */
             expected?: string[];
+        };
+        /** MockHandoff */
+        MockHandoff: {
+            /** Code */
+            code: string;
+            /** State */
+            state: string | null;
+            /** Expires In */
+            expires_in: number;
+        };
+        /** MockHandoffRequest */
+        MockHandoffRequest: {
+            /** Username */
+            username: string;
+            /** Password */
+            password: string;
+            /**
+             * State
+             * @description Returned unchanged, as Hercules does.
+             */
+            state?: string | null;
+        };
+        /** MockHandoffResponse */
+        MockHandoffResponse: {
+            /**
+             * Success
+             * @default true
+             * @constant
+             */
+            success: true;
+            data: components["schemas"]["MockHandoff"];
         };
         /** ModelFeedback */
         ModelFeedback: {
@@ -9940,6 +9997,46 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    mock_handoff_api_v1_tsp_mock_handoff_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["MockHandoffRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MockHandoffResponse"];
+                };
+            };
+            /** @description Wrong username or password. */
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
             };
         };
     };
