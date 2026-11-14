@@ -18,22 +18,28 @@ decisions into mappings is a new versioned labor-market bundle and the usual aud
 
 ## Read the suggestions with care
 
-They were produced on a machine **without the embedding model**, so only the keyword matcher ran. It shows:
+They come from the app's matcher with the production embedding model, `tesda-e5-small-v6-colab`, calibrated on the
+dev goals (z_floor 2.0, z_ceiling 5.0, keyword weight 0.3, minimum score 20).
 
-- Titles holding 719 postings got a strong first suggestion. Several are right (electrician, forklift operator,
-  kitchen crew, airconditioning technician).
-- Some are wrong: "MOTORCYCLE DRIVER/RIDER" is matched to Motorcycle/Small Engine Servicing, which is repair, not
-  driving. A suggestion is a starting point, never a decision.
-- Many obvious ones got nothing: delivery driver, company driver, truck driver, automotive mechanic, customer
-  service assistant, call center agent.
+- Titles holding 1,049 postings have a strong first suggestion (score 60 or more), and most of the commonest are
+  right: call center agent to Contact Center Services NC II, electrician to Electrical Installation and
+  Maintenance NC II, truck driver to Driving (Articulated Vehicle) NC III, forklift operator, barista, kitchen crew.
+- A high score is not a decision. "MOTORCYCLE DRIVER/RIDER" scores 76 for Motorcycle/Small Engine Servicing, which
+  is repair, not driving. "STORE SUPERVISOR" is offered Warehousing Services NC IV.
+- Low scores are mostly titles with no TESDA qualification, offered the nearest thing anyway: business development
+  officer, sales executive, production worker. Expect to mark many of these **no TESDA qualification**.
+- 10 titles (107 postings) got no suggestion at all, correctly for most: civil engineer, data analyst, language
+  teacher.
 
-Run it again where the production model is loaded for better suggestions:
+An earlier run without the model, on the keyword matcher alone, found a strong suggestion for 719 postings and
+nothing for delivery driver, company driver, truck driver, automotive mechanic or call center agent. That is what a
+learner typing those titles gets wherever the model is off.
+
+To regenerate:
 
 ```
 python scripts/suggest_unlinked_titles.py --out data-review/unlinked-titles-YYYY-MM-DD --top 200
 ```
 
-It needs the configured database and a running API (`API_BASE_URL`, default `http://127.0.0.1:8000`).
-
-The titles the keyword matcher misses are also what a learner typing them into the Career Map would get without
-the model: nothing. They are good candidates for the matcher's keyword lists and for the model's next training round.
+It needs the configured database and a running API (`API_BASE_URL`, default `http://127.0.0.1:8000`) serving the
+model.

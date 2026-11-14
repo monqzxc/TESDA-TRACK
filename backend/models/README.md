@@ -17,6 +17,31 @@ Then serve it as described below, with `EMBEDDING_MODEL=tesda-track/tesda-e5-sma
 `EMBEDDING_MODEL_PATH=backend/models/tesda-e5-small-v3`. This is the accepted pilot model as of
 21 October 2026 (TASK-085); see [the decision and acceptance gates](../../docs/ml/rounds.md#pilot-decision-21-october-2026).
 
+### v6 (in production)
+
+Production serves `tesda-e5-small-v6-colab`, published at
+[huggingface.co/Nyanta19/tesda-e5-small-v6-colab](https://huggingface.co/Nyanta19/tesda-e5-small-v6-colab)
+(public). It continues v4 with the v6 objective ([training/V6.md](../training/V6.md)).
+
+```bash
+hf download Nyanta19/tesda-e5-small-v6-colab --local-dir backend/models/tesda-e5-small-v6-colab
+```
+
+**It is published without a `calibration.json`**, and without one the app scores it with the base model's
+defaults (`SEMANTIC_Z_FLOOR=3.0`, `MATCH_WEIGHT_KEYWORD=0.5`), which were not chosen for it. Calibrate it once,
+from `backend/`, before serving:
+
+```bash
+python -m training.evaluate --model-path models/tesda-e5-small-v6-colab --set dev --calibrate --min-rejection 0.9 --save-calibration --json training/runs/v6-colab-dev.json
+```
+
+On 14 November 2026 that gave z_floor 2.0, z_ceiling 5.0, keyword weight 0.3, minimum score 20 (the same as
+`v6-r2`), and on the 1,482 dev goals: top-1 0.851, top-3 0.929, MRR 0.887, rejection 0.970, all related shown
+0.896. Only the dev step was run then; the `test_v1`, probe, round and sealed checks in
+[training/V6.md](../training/V6.md#after-training-calibrate-evaluate-gate) were not. Serve it with
+`EMBEDDING_MODEL=tesda-track/tesda-e5-small-v6-colab` and
+`EMBEDDING_MODEL_PATH=backend/models/tesda-e5-small-v6-colab`, then run `embeddings sync`.
+
 The previous model stays published at
 [huggingface.co/Nyanta19/tesda-e5-small-v2](https://huggingface.co/Nyanta19/tesda-e5-small-v2) for rollback.
 
