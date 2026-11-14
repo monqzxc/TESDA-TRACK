@@ -1,0 +1,1289 @@
+{
+ "writer": "phi-3.5-mini-instruct-q4_k_m",
+ "gguf": "phi35.gguf",
+ "language": "en",
+ "prompt_version": "1",
+ "seed": 20261113,
+ "threads": 2,
+ "checks": [
+  "figures",
+  "slots",
+  "verdict",
+  "stance",
+  "caution",
+  "length",
+  "reading"
+ ],
+ "situations": 86,
+ "situations_passing": 7,
+ "cases": 886,
+ "passed": 51,
+ "pass_rate": 0.0576,
+ "failures_by_check": {
+  "slots": 793,
+  "figures": 696,
+  "caution": 84,
+  "verdict": 23,
+  "stance": 12,
+  "length": 3
+ },
+ "failed_cases": [
+  {
+   "id": "AUTOMOTIVE-SERVICING-NC-II|PH|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['1']",
+    "slots": "left out ['demand']"
+   },
+   "text": "For Automotive Servicing (Chassis Repair) NC II, there are no posting records in any region. However, there are 2 recorded centers across 1 region centers across 1 region, including example sites for demonstration. This suggests a more centralized approach to training, which might be suitable if you prefer not to relocate."
+  },
+  {
+   "id": "AUTOMOTIVE-SERVICING-NC-II|PH|move",
+   "failed": {
+    "figures": "typed a figure itself: ['1']",
+    "slots": "left out ['demand']"
+   },
+   "text": "For Automotive Servicing (Chassis Repair) NC II, there are no posting records in any region. However, there are 2 recorded centers across 1 region centers across 1 region, including example sites for demonstration. This suggests a more centralized approach to training, which might be suitable if you prefer not to relocate."
+  },
+  {
+   "id": "AUTOMOTIVE-SERVICING-NC-II|III|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['100', '2']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   },
+   "text": "You are in Region III (Central Luzon) and prefer not to relocate. For Automotive Servicing (Chassis Repair) NC II, there are no local postings in any region. Demand is none, supply is 2 of its 2 recorded centers (100%). The center counts include example sites, shown for demonstration."
+  },
+  {
+   "id": "AUTOMOTIVE-SERVICING-NC-II|III|move",
+   "failed": {
+    "slots": "left out ['demand']"
+   },
+   "text": "You are in Region III (Central Luzon), and you're open to relocating for Automotive Servicing (Chassis Repair) NC II. Currently, there are no local postings in any region. However, there are 2 of its 2 recorded centers (100%) centers here, including example sites for demonstration. The counts are a small signal."
+  },
+  {
+   "id": "AUTOMOTIVE-SERVICING-NC-II-2|PH|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['5', '6']"
+   },
+   "text": "For Automotive Servicing (Electrical Repair) NC II, 6 posting records across 5 regions are at 6 posting records across 5 regions, while no recorded center anywhere is none. Demand is ahead in all regions. No alternatives are needed."
+  },
+  {
+   "id": "AUTOMOTIVE-SERVICING-NC-II-2|PH|move",
+   "failed": {
+    "figures": "typed a figure itself: ['5', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "For Automotive Servicing (Electrical Repair) NC II, there are 6 posting records across 5 regions, with demand ahead. Supply is currently at zero recorded centers nationwide. If considering relocation, you should look first at National Capital Region, Region IV-A (CALABARZON) and Region VI (Western Visayas)."
+  },
+  {
+   "id": "AUTOMOTIVE-SERVICING-NC-II-2|NCR|move",
+   "failed": {
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in National Capital Region and are open to relocating for Automotive Servicing (Electrical Repair) NC II. Employers posted for it here, but no center offers it here, indicating you might need to train or get assessed in another region. The counts are a rough signal, so if you relocate, consider looking first at Region IV-A (CALABARZON), Region VI (Western Visayas) and Region VII (Central Visayas)."
+  },
+  {
+   "id": "AUTOMOTIVE-SERVICING-NC-II-2|IV-A|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region IV-A (CALABARZON) and prefer not to relocate. For Automotive Servicing (Electrical Repair) NC II, there's 1 of the 6 posting records nationwide (17%), but no recorded center here. You might need to train or get assessed in another region. This is a rough signal."
+  },
+  {
+   "id": "AUTOMOTIVE-SERVICING-NC-II-2|IV-A|move",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region IV-A (CALABARZON) and are open to relocating for Automotive Servicing (Electrical Repair) NC II. Employers posted for it here, but no center offers it here, indicating you might need to train or get assessed in another region. The demand is a rough signal at 1 of the 6 posting records nationwide (17%). If you relocate, consider looking first at National Capital Region, Region VI (Western Visayas) and Region VII (Central Visayas)."
+  },
+  {
+   "id": "AUTOMOTIVE-SERVICING-NC-II-2|VI|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region VI (Western Visayas) and prefer not to relocate. For Automotive Servicing (Electrical Repair) NC II, there's 1 of the 6 posting records nationwide (17%), but no recorded center here. You might need to train or get assessed in another region. This is a rough signal."
+  },
+  {
+   "id": "AUTOMOTIVE-SERVICING-NC-II-2|VI|move",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region VI (Western Visayas) and are open to relocating for Automotive Servicing (Electrical Repair) NC II. Employers posted for it here, but no center offers it here, indicating you might need to train or get assessed in another region. The demand is a rough signal at 1 of the 6 posting records nationwide (17%). If you relocate, consider looking first at National Capital Region, Region IV-A (CALABARZON) and Region VII (Central Visayas)."
+  },
+  {
+   "id": "AUTOMOTIVE-SERVICING-NC-II-2|VII|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region VII (Central Visayas) and prefer not to relocate. For Automotive Servicing (Electrical Repair) NC II, there's 1 of the 6 posting records nationwide (17%), but no recorded center here. You might need to train or get assessed in another region. This is a rough signal."
+  },
+  {
+   "id": "AUTOMOTIVE-SERVICING-NC-II-2|VII|move",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region VII (Central Visayas) and are open to relocating for Automotive Servicing (Electrical Repair) NC II. Employers posted for it here, but no center offers it here, indicating you might need to train or get assessed in another region. The demand is a rough signal at 1 of the 6 posting records nationwide (17%). If you relocate, consider looking first at National Capital Region, Region IV-A (CALABARZON) and Region VI (Western Visayas)."
+  },
+  {
+   "id": "AUTOMOTIVE-SERVICING-NC-II-2|XIII|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region XIII (Caraga) and prefer not to relocate. For Automotive Servicing (Electrical Repair) NC II, there's 1 of the 6 posting records nationwide (17%), but no recorded center here. You might need to train or get assessed in another region. This is a rough signal."
+  },
+  {
+   "id": "AUTOMOTIVE-SERVICING-NC-II-2|XIII|move",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region XIII (Caraga) and are open to relocating for Automotive Servicing (Electrical Repair) NC II. Employers posted for it here, but no center offers it here, indicating you might need to train or get assessed in another region. The demand is a rough signal at 1 of the 6 posting records nationwide (17%). If you relocate, consider looking first at National Capital Region, Region IV-A (CALABARZON) and Region VI (Western Visayas)."
+  },
+  {
+   "id": "BARTENDING-NC-II|PH|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '2']"
+   },
+   "text": "For Bartending NC II, 2 posting records across 1 region are at 2 posting records across 1 region, ahead of 2 recorded centers across 1 region which is 2 recorded centers across 1 region. Note that these counts include example sites for demonstration. While no other region is selected, you might consider alternatives. Demand is ahead nationally."
+  },
+  {
+   "id": "BARTENDING-NC-II|PH|move",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '2']"
+   },
+   "text": "For Bartending NC II, 2 posting records across 1 region are at 2 posting records across 1 region, ahead of 2 recorded centers across 1 region which are 2 recorded centers in the same region. If considering relocation, look first at MIMAROPA Region. Note that center counts include example sites for demonstration."
+  },
+  {
+   "id": "BARTENDING-NC-II|MIMAROPA|move",
+   "failed": {
+    "figures": "typed a figure itself: ['2']",
+    "caution": "small counts aren't called a rough signal"
+   },
+   "text": "You are in MIMAROPA Region, and you are open to relocating. For Bartending NC II, 2 of the 2 posting records nationwide (100%) are here, but none of its 2 recorded centers are none of its 2 recorded centers. This suggests you might need to train or get assessed in another region. The center counts include example sites, shown for demonstration."
+  },
+  {
+   "id": "BARTENDING-NC-II|VII|stay",
+   "failed": {
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region VII (Central Visayas) and prefer not to relocate. For Bartending NC II, there are no local postings in this snapshot. Demand and training supply are a rough signal here. If your plans change, MIMAROPA Region shows more demand against its supply. Note that the center counts include example sites, shown for demonstration."
+  },
+  {
+   "id": "BARTENDING-NC-II|VII|move",
+   "failed": {
+    "figures": "typed a figure itself: ['100', '2']",
+    "slots": "left out ['demand']"
+   },
+   "text": "You are in Region VII (Central Visayas), and you're open to relocating for Bartending NC II. Currently, there are no local postings, as indicated by \"none of the 2 posting records nationwide\". However, 2 of its 2 recorded centers (100%) centers are here, with \"2 of its 2 recorded centers (100%)\". These counts serve as a rough signal. If you decide to relocate, consider looking first at MIMAROPA Region. Note that the center counts include example sites, shown for demonstration purposes."
+  },
+  {
+   "id": "BEAUTY-CARE-SERVICES-NC-II|PH|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['1']",
+    "slots": "left out ['demand', 'supply']",
+    "stance": "names other regions when it shouldn't"
+   },
+   "text": "For Beauty Care (Nail Care) Services NC II, there's 1 posting record across 1 region, with demand ahead. Supply is at zero recorded centers. Consider other regions like National Capital Region for more options. Demand is ahead here."
+  },
+  {
+   "id": "BEAUTY-CARE-SERVICES-NC-II|PH|move",
+   "failed": {
+    "figures": "typed a figure itself: ['1']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "For Beauty Care (Nail Care) Services NC II, there's 1 posting record across 1 region, where demand is ahead. Supply is none, as there are no recorded centers. If considering relocation, look first at National Capital Region."
+  },
+  {
+   "id": "BEAUTY-CARE-SERVICES-NC-II|NCR|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '100']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in National Capital Region and prefer not to relocate. For Beauty Care (Nail Care) Services NC II, there's 1 of the 1 posting record nationwide (100%), indicating a rough signal. However, no center offers it here, so you'd need to train or get assessed in another region."
+  },
+  {
+   "id": "BEAUTY-CARE-SERVICES-NC-II|NCR|move",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '100']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in National Capital Region, and you are open to relocating. For Beauty Care (Nail Care) Services NC II, there's 1 of the 1 posting record nationwide (100%), but no recorded center here. You would need to train or get assessed in another region. The counts are a rough signal."
+  },
+  {
+   "id": "BOOKKEEPING-NC-III|PH|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['5', '6']"
+   },
+   "text": "For Bookkeeping NC III, 6 posting records across 5 regions are at 6 posting records across 5 regions, while no recorded center anywhere is none. Demand is ahead in all regions. No alternatives are needed."
+  },
+  {
+   "id": "BOOKKEEPING-NC-III|PH|move",
+   "failed": {
+    "figures": "typed a figure itself: ['5', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "For Bookkeeping NC III, there are 6 posting records across 5 regions, with demand ahead. Supply is currently at zero recorded centers nationwide. If considering relocation, you should look first at National Capital Region, Region III (Central Luzon) and Region V (Bicol Region)."
+  },
+  {
+   "id": "BOOKKEEPING-NC-III|NCR|move",
+   "failed": {
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in National Capital Region and are open to relocating for Bookkeeping NC III. Employers posted for it here, but no center offers it here, indicating you might need to train or get assessed in another region. The counts are a rough signal, so if you relocate, consider looking first at Region III (Central Luzon), Region V (Bicol Region) and Region VI (Western Visayas)."
+  },
+  {
+   "id": "BOOKKEEPING-NC-III|III|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region III (Central Luzon) and prefer not to relocate. For Bookkeeping NC III, there's 1 of the 6 posting records nationwide (17%), but no recorded center here. You might need to train or get assessed in another region. This is a rough signal."
+  },
+  {
+   "id": "BOOKKEEPING-NC-III|III|move",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region III (Central Luzon) and are open to relocating for Bookkeeping NC III. Employers posted for it here, but no center offers it here, indicating you might need to train or get assessed in another region. The demand is a rough signal at 1 of the 6 posting records nationwide (17%). If you relocate, consider looking first at National Capital Region, Region V (Bicol Region) and Region VI (Western Visayas)."
+  },
+  {
+   "id": "BOOKKEEPING-NC-III|V|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region V (Bicol Region) and prefer not to relocate. For Bookkeeping NC III, there's 1 of the 6 posting records nationwide (17%), but no recorded center here. You might need to train or get assessed in another region. This is a rough signal."
+  },
+  {
+   "id": "BOOKKEEPING-NC-III|V|move",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region V (Bicol Region) and are open to relocating for Bookkeeping NC III. Employers posted for it here, but no center offers it here, indicating you might need to train or get assessed in another region. The demand is a rough signal at 1 of the 6 posting records nationwide (17%). If you relocate, consider looking first at National Capital Region, Region III (Central Luzon) and Region VI (Western Visayas)."
+  },
+  {
+   "id": "BOOKKEEPING-NC-III|VI|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region VI (Western Visayas) and prefer not to relocate. For Bookkeeping NC III, there's 1 of the 6 posting records nationwide (17%), but no recorded center here. You might need to train or get assessed in another region. This is a rough signal."
+  },
+  {
+   "id": "BOOKKEEPING-NC-III|VI|move",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region VI (Western Visayas) and are open to relocating for Bookkeeping NC III. Employers posted for it here, but no center offers it here, indicating you might need to train or get assessed in another region. The demand is a rough signal at 1 of the 6 posting records nationwide (17%). If you relocate, consider looking first at National Capital Region, Region III (Central Luzon) and Region V (Bicol Region)."
+  },
+  {
+   "id": "BOOKKEEPING-NC-III|XI|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region XI (Davao Region) and prefer not to relocate. For Bookkeeping NC III, there's 1 of the 6 posting records nationwide (17%), but no recorded center here. You might need to train or get assessed in another region. This is a rough signal."
+  },
+  {
+   "id": "BOOKKEEPING-NC-III|XI|move",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   },
+   "text": "You are in Region XI (Davao Region) and are open to relocating for Bookkeeping NC III. Employers posted for it here, but no center offers it here, indicating you might need to train or get assessed in another region. The demand is a rough signal at 1 of the 6 posting records nationwide (17%). If you relocate, consider looking first at National Capital Region, Region III (Central Luzon) and Region V (Bicol Region)."
+  },
+  {
+   "id": "CAREGIVING-NC-II-5|PH|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['1']",
+    "slots": "left out ['demand']"
+   },
+   "text": "For Caregiving NC II, there are no posting records in any region. However, there are 8 recorded centers across 3 regions centers across 1 region, including example sites for demonstration. This suggests a more centralized approach to training, which might be suitable if you prefer not to relocate."
+  },
+  {
+   "id": "CAREGIVING-NC-II-5|PH|move",
+   "failed": {
+    "figures": "typed a figure itself: ['1']",
+    "slots": "left out ['demand']"
+   },
+   "text": "For Caregiving NC II, there are no posting records in any region. However, there are 8 recorded centers across 3 regions centers across 1 region, including example sites for demonstration. This suggests a more centralized approach to training, which might be suitable if you prefer not to relocate."
+  },
+  {
+   "id": "CAREGIVING-NC-II-5|NCR|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['4', '8']",
+    "slots": "left out ['demand']"
+   },
+   "text": "You are in National Capital Region and prefer not to relocate. For Caregiving NC II, there are no local postings. However, 4 of its 8 recorded centers (50%) includes 4 of its 8 recorded centers, which count include example sites for demonstration."
+  },
+  {
+   "id": "CAREGIVING-NC-II-5|NCR|move",
+   "failed": {
+    "figures": "typed a figure itself: ['4', '50', '8']",
+    "slots": "left out ['demand']"
+   },
+   "text": "You are in National Capital Region, and you are open to relocating. For Caregiving NC II, there are no local postings in any region. However, 4 of its 8 recorded centers (50%) includes 4 of its 8 recorded centers (50%), which count as example sites for training or assessment."
+  },
+  {
+   "id": "CAREGIVING-NC-II-5|VII|stay",
+   "failed": {
+    "figures": "typed a figure itself: ['100', '2']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   },
+   "text": "You are in Region VII (Central Visayas) and prefer not to relocate. For Caregiving NC II, there are no local postings in any region. Demand is none, supply is 2 of its 2 recorded centers (100%). The center counts include example sites, shown for demonstration."
+  }
+ ],
+ "speed": {
+  "seconds_per_summary": 20.2,
+  "tokens_per_second_overall": 32.0,
+  "generated_tokens_per_summary": 70,
+  "prompt_tokens_per_summary": 579,
+  "cpu_seconds_per_summary": 40.1,
+  "cpu_credits_per_summary_if_same_core_speed": 0.67,
+  "peak_memory_gb": 5.37
+ },
+ "by_situation": [
+  {
+   "cases": 11,
+   "example_case": "AUTOMOTIVE-SERVICING-NC-II|PH|stay",
+   "prompt": "Situation: No region is selected: this is the national picture. Do not name any other region. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {demand} = how many posting records there are, this time \"no posting records in any region\"; {supply} = how many centers there are, this time \"2 recorded centers across 1 region\"",
+   "template": "For {qualification}, there are no posting records in any region. However, there are {supply} centers across 1 region, including example sites for demonstration. This suggests a more centralized approach to training, which might be suitable if you prefer not to relocate.",
+   "example_text": "For Automotive Servicing (Chassis Repair) NC II, there are no posting records in any region. However, there are 2 recorded centers across 1 region centers across 1 region, including example sites for demonstration. This suggests a more centralized approach to training, which might be suitable if you prefer not to relocate.",
+   "failed": {
+    "figures": "typed a figure itself: ['1']",
+    "slots": "left out ['demand']"
+   }
+  },
+  {
+   "cases": 11,
+   "example_case": "AUTOMOTIVE-SERVICING-NC-II|PH|move",
+   "prompt": "Situation: No region is selected: this is the national picture. Do not name any other region. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {demand} = how many posting records there are, this time \"no posting records in any region\"; {supply} = how many centers there are, this time \"2 recorded centers across 1 region\"",
+   "template": "For {qualification}, there are no posting records in any region. However, there are {supply} centers across 1 region, including example sites for demonstration. This suggests a more centralized approach to training, which might be suitable if you prefer not to relocate.",
+   "example_text": "For Automotive Servicing (Chassis Repair) NC II, there are no posting records in any region. However, there are 2 recorded centers across 1 region centers across 1 region, including example sites for demonstration. This suggests a more centralized approach to training, which might be suitable if you prefer not to relocate.",
+   "failed": {
+    "figures": "typed a figure itself: ['1']",
+    "slots": "left out ['demand']"
+   }
+  },
+  {
+   "cases": 28,
+   "example_case": "AUTOMOTIVE-SERVICING-NC-II|III|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". The learner can train or get assessed here, but there are no local postings for it in this snapshot. Say \"no local postings\". The counts are small: say they are a rough signal. Do not name any other region. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"no posting records in any region\"; {supply} = how many centers are here, this time \"2 of its 2 recorded centers (100%)\"",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, there are no local postings in any region. Demand is none, supply is 2 of its 2 recorded centers (100%). The center counts include example sites, shown for demonstration.",
+   "example_text": "You are in Region III (Central Luzon) and prefer not to relocate. For Automotive Servicing (Chassis Repair) NC II, there are no local postings in any region. Demand is none, supply is 2 of its 2 recorded centers (100%). The center counts include example sites, shown for demonstration.",
+   "failed": {
+    "figures": "typed a figure itself: ['100', '2']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 28,
+   "example_case": "AUTOMOTIVE-SERVICING-NC-II|III|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". The learner can train or get assessed here, but there are no local postings for it in this snapshot. Say \"no local postings\". The counts are small: say they are a rough signal. Do not name any other region. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"no posting records in any region\"; {supply} = how many centers are here, this time \"2 of its 2 recorded centers (100%)\"",
+   "template": "You are in {area}, and you're open to relocating for {qualification}. Currently, there are no local postings in any region. However, there are {supply} centers here, including example sites for demonstration. The counts are a small signal.",
+   "example_text": "You are in Region III (Central Luzon), and you're open to relocating for Automotive Servicing (Chassis Repair) NC II. Currently, there are no local postings in any region. However, there are 2 of its 2 recorded centers (100%) centers here, including example sites for demonstration. The counts are a small signal.",
+   "failed": {
+    "slots": "left out ['demand']"
+   }
+  },
+  {
+   "cases": 14,
+   "example_case": "AUTOMOTIVE-SERVICING-NC-II-2|PH|stay",
+   "prompt": "Situation: No region is selected: this is the national picture. Demand is ahead of supply in {ahead}: say so. Do not name any other region.\nSlots: {qualification} = the qualification's name; {demand} = how many posting records there are, this time \"6 posting records across 5 regions\"; {supply} = how many centers there are, this time \"no recorded center anywhere\"; {alternatives} = the other region or regions to look at; {ahead} = regions where demand is ahead",
+   "template": "For {qualification}, {demand} are at 6 posting records across 5 regions, while {supply} is none. Demand is ahead in all regions. No alternatives are needed.",
+   "example_text": "For Automotive Servicing (Electrical Repair) NC II, 6 posting records across 5 regions are at 6 posting records across 5 regions, while no recorded center anywhere is none. Demand is ahead in all regions. No alternatives are needed.",
+   "failed": {
+    "figures": "typed a figure itself: ['5', '6']"
+   }
+  },
+  {
+   "cases": 14,
+   "example_case": "AUTOMOTIVE-SERVICING-NC-II-2|PH|move",
+   "prompt": "Situation: No region is selected: this is the national picture. Demand is ahead of supply in {ahead}: say so. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {demand} = how many posting records there are, this time \"6 posting records across 5 regions\"; {supply} = how many centers there are, this time \"no recorded center anywhere\"; {alternatives} = the other region or regions to look at; {ahead} = regions where demand is ahead",
+   "template": "For {qualification}, there are 6 posting records across 5 regions, with demand ahead. Supply is currently at zero recorded centers nationwide. If considering relocation, you should look first at {alternatives}.",
+   "example_text": "For Automotive Servicing (Electrical Repair) NC II, there are 6 posting records across 5 regions, with demand ahead. Supply is currently at zero recorded centers nationwide. If considering relocation, you should look first at National Capital Region, Region IV-A (CALABARZON) and Region VI (Western Visayas).",
+   "failed": {
+    "figures": "typed a figure itself: ['5', '6']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 20,
+   "example_case": "AUTOMOTIVE-SERVICING-NC-II-2|NCR|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 6 posting records nationwide (33%)\"; {supply} = how many centers are here, this time \"no recorded center anywhere\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, {demand} are here, but {supply} is none, indicating you might need to train or get assessed in another region. The counts are a rough signal. Consider looking at other regions.",
+   "example_text": "You are in National Capital Region and prefer not to relocate. For Automotive Servicing (Electrical Repair) NC II, 2 of the 6 posting records nationwide (33%) are here, but no recorded center anywhere is none, indicating you might need to train or get assessed in another region. The counts are a rough signal. Consider looking at other regions.",
+   "failed": {}
+  },
+  {
+   "cases": 20,
+   "example_case": "AUTOMOTIVE-SERVICING-NC-II-2|NCR|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 6 posting records nationwide (33%)\"; {supply} = how many centers are here, this time \"no recorded center anywhere\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and are open to relocating for {qualification}. Employers posted for it here, but no center offers it here, indicating you might need to train or get assessed in another region. The counts are a rough signal, so if you relocate, consider looking first at {alternatives}.",
+   "example_text": "You are in National Capital Region and are open to relocating for Automotive Servicing (Electrical Repair) NC II. Employers posted for it here, but no center offers it here, indicating you might need to train or get assessed in another region. The counts are a rough signal, so if you relocate, consider looking first at Region IV-A (CALABARZON), Region VI (Western Visayas) and Region VII (Central Visayas).",
+   "failed": {
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 36,
+   "example_case": "AUTOMOTIVE-SERVICING-NC-II-2|IV-A|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 6 posting records nationwide (17%)\"; {supply} = how many centers are here, this time \"no recorded center anywhere\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, there's 1 of the 6 posting records nationwide (17%), but no recorded center here. You might need to train or get assessed in another region. This is a rough signal.",
+   "example_text": "You are in Region IV-A (CALABARZON) and prefer not to relocate. For Automotive Servicing (Electrical Repair) NC II, there's 1 of the 6 posting records nationwide (17%), but no recorded center here. You might need to train or get assessed in another region. This is a rough signal.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 36,
+   "example_case": "AUTOMOTIVE-SERVICING-NC-II-2|IV-A|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 6 posting records nationwide (17%)\"; {supply} = how many centers are here, this time \"no recorded center anywhere\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and are open to relocating for {qualification}. Employers posted for it here, but no center offers it here, indicating you might need to train or get assessed in another region. The demand is a rough signal at 1 of the 6 posting records nationwide (17%). If you relocate, consider looking first at {alternatives}.",
+   "example_text": "You are in Region IV-A (CALABARZON) and are open to relocating for Automotive Servicing (Electrical Repair) NC II. Employers posted for it here, but no center offers it here, indicating you might need to train or get assessed in another region. The demand is a rough signal at 1 of the 6 posting records nationwide (17%). If you relocate, consider looking first at National Capital Region, Region VI (Western Visayas) and Region VII (Central Visayas).",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '6']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "BARTENDING-NC-II|PH|stay",
+   "prompt": "Situation: No region is selected: this is the national picture. Demand is ahead of supply in {ahead}: say so. Do not name any other region. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {demand} = how many posting records there are, this time \"2 posting records across 1 region\"; {supply} = how many centers there are, this time \"2 recorded centers across 1 region\"; {alternatives} = the other region or regions to look at; {ahead} = regions where demand is ahead",
+   "template": "For {qualification}, {demand} are at 2 posting records across 1 region, ahead of {supply} which is 2 recorded centers across 1 region. Note that these counts include example sites for demonstration. While no other region is selected, you might consider alternatives. Demand is ahead nationally.",
+   "example_text": "For Bartending NC II, 2 posting records across 1 region are at 2 posting records across 1 region, ahead of 2 recorded centers across 1 region which is 2 recorded centers across 1 region. Note that these counts include example sites for demonstration. While no other region is selected, you might consider alternatives. Demand is ahead nationally.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '2']"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "BARTENDING-NC-II|PH|move",
+   "prompt": "Situation: No region is selected: this is the national picture. Demand is ahead of supply in {ahead}: say so. End by saying that, if they relocate, they should look first at {alternatives}. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {demand} = how many posting records there are, this time \"2 posting records across 1 region\"; {supply} = how many centers there are, this time \"2 recorded centers across 1 region\"; {alternatives} = the other region or regions to look at; {ahead} = regions where demand is ahead",
+   "template": "For {qualification}, {demand} are at 2 posting records across 1 region, ahead of {supply} which are 2 recorded centers in the same region. If considering relocation, look first at {alternatives}. Note that center counts include example sites for demonstration.",
+   "example_text": "For Bartending NC II, 2 posting records across 1 region are at 2 posting records across 1 region, ahead of 2 recorded centers across 1 region which are 2 recorded centers in the same region. If considering relocation, look first at MIMAROPA Region. Note that center counts include example sites for demonstration.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '2']"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "BARTENDING-NC-II|MIMAROPA|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". The counts are small: say they are a rough signal. Do not name any other region. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 2 posting records nationwide (100%)\"; {supply} = how many centers are here, this time \"none of its 2 recorded centers\"",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, {demand} are here, but {supply} are none of its recorded centers. This suggests you might need to train or get assessed in another region. The center counts, including example sites, are a rough signal.",
+   "example_text": "You are in MIMAROPA Region and prefer not to relocate. For Bartending NC II, 2 of the 2 posting records nationwide (100%) are here, but none of its 2 recorded centers are none of its recorded centers. This suggests you might need to train or get assessed in another region. The center counts, including example sites, are a rough signal.",
+   "failed": {}
+  },
+  {
+   "cases": 1,
+   "example_case": "BARTENDING-NC-II|MIMAROPA|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". The counts are small: say they are a rough signal. Do not name any other region. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 2 posting records nationwide (100%)\"; {supply} = how many centers are here, this time \"none of its 2 recorded centers\"",
+   "template": "You are in {area}, and you are open to relocating. For {qualification}, {demand} are here, but {supply} are none of its 2 recorded centers. This suggests you might need to train or get assessed in another region. The center counts include example sites, shown for demonstration.",
+   "example_text": "You are in MIMAROPA Region, and you are open to relocating. For Bartending NC II, 2 of the 2 posting records nationwide (100%) are here, but none of its 2 recorded centers are none of its 2 recorded centers. This suggests you might need to train or get assessed in another region. The center counts include example sites, shown for demonstration.",
+   "failed": {
+    "figures": "typed a figure itself: ['2']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 4,
+   "example_case": "BARTENDING-NC-II|VII|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". The learner can train or get assessed here, but there are no local postings for it in this snapshot. Say \"no local postings\". The counts are small: say they are a rough signal. End by saying that, if their plans change, {alternatives} shows more demand against its supply. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"none of the 2 posting records nationwide\"; {supply} = how many centers are here, this time \"2 of its 2 recorded centers (100%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, there are no local postings in this snapshot. Demand and training supply are a rough signal here. If your plans change, {alternatives} shows more demand against its supply. Note that the center counts include example sites, shown for demonstration.",
+   "example_text": "You are in Region VII (Central Visayas) and prefer not to relocate. For Bartending NC II, there are no local postings in this snapshot. Demand and training supply are a rough signal here. If your plans change, MIMAROPA Region shows more demand against its supply. Note that the center counts include example sites, shown for demonstration.",
+   "failed": {
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 4,
+   "example_case": "BARTENDING-NC-II|VII|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". The learner can train or get assessed here, but there are no local postings for it in this snapshot. Say \"no local postings\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"none of the 2 posting records nationwide\"; {supply} = how many centers are here, this time \"2 of its 2 recorded centers (100%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area}, and you're open to relocating for {qualification}. Currently, there are no local postings, as indicated by \"none of the 2 posting records nationwide\". However, {supply} centers are here, with \"2 of its 2 recorded centers (100%)\". These counts serve as a rough signal. If you decide to relocate, consider looking first at {alternatives}. Note that the center counts include example sites, shown for demonstration purposes.",
+   "example_text": "You are in Region VII (Central Visayas), and you're open to relocating for Bartending NC II. Currently, there are no local postings, as indicated by \"none of the 2 posting records nationwide\". However, 2 of its 2 recorded centers (100%) centers are here, with \"2 of its 2 recorded centers (100%)\". These counts serve as a rough signal. If you decide to relocate, consider looking first at MIMAROPA Region. Note that the center counts include example sites, shown for demonstration purposes.",
+   "failed": {
+    "figures": "typed a figure itself: ['100', '2']",
+    "slots": "left out ['demand']"
+   }
+  },
+  {
+   "cases": 3,
+   "example_case": "BEAUTY-CARE-SERVICES-NC-II|PH|stay",
+   "prompt": "Situation: No region is selected: this is the national picture. Demand is ahead of supply in {ahead}: say so. Do not name any other region.\nSlots: {qualification} = the qualification's name; {demand} = how many posting records there are, this time \"1 posting record across 1 region\"; {supply} = how many centers there are, this time \"no recorded center anywhere\"; {alternatives} = the other region or regions to look at; {ahead} = regions where demand is ahead",
+   "template": "For {qualification}, there's 1 posting record across 1 region, with demand ahead. Supply is at zero recorded centers. Consider other regions like {alternatives} for more options. Demand is ahead here.",
+   "example_text": "For Beauty Care (Nail Care) Services NC II, there's 1 posting record across 1 region, with demand ahead. Supply is at zero recorded centers. Consider other regions like National Capital Region for more options. Demand is ahead here.",
+   "failed": {
+    "figures": "typed a figure itself: ['1']",
+    "slots": "left out ['demand', 'supply']",
+    "stance": "names other regions when it shouldn't"
+   }
+  },
+  {
+   "cases": 3,
+   "example_case": "BEAUTY-CARE-SERVICES-NC-II|PH|move",
+   "prompt": "Situation: No region is selected: this is the national picture. Demand is ahead of supply in {ahead}: say so. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {demand} = how many posting records there are, this time \"1 posting record across 1 region\"; {supply} = how many centers there are, this time \"no recorded center anywhere\"; {alternatives} = the other region or regions to look at; {ahead} = regions where demand is ahead",
+   "template": "For {qualification}, there's 1 posting record across 1 region, where demand is ahead. Supply is none, as there are no recorded centers. If considering relocation, look first at {alternatives}.",
+   "example_text": "For Beauty Care (Nail Care) Services NC II, there's 1 posting record across 1 region, where demand is ahead. Supply is none, as there are no recorded centers. If considering relocation, look first at National Capital Region.",
+   "failed": {
+    "figures": "typed a figure itself: ['1']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 4,
+   "example_case": "BEAUTY-CARE-SERVICES-NC-II|NCR|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 1 posting record nationwide (100%)\"; {supply} = how many centers are here, this time \"no recorded center anywhere\"",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, there's 1 of the 1 posting record nationwide (100%), indicating a rough signal. However, no center offers it here, so you'd need to train or get assessed in another region.",
+   "example_text": "You are in National Capital Region and prefer not to relocate. For Beauty Care (Nail Care) Services NC II, there's 1 of the 1 posting record nationwide (100%), indicating a rough signal. However, no center offers it here, so you'd need to train or get assessed in another region.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '100']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 4,
+   "example_case": "BEAUTY-CARE-SERVICES-NC-II|NCR|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 1 posting record nationwide (100%)\"; {supply} = how many centers are here, this time \"no recorded center anywhere\"",
+   "template": "You are in {area}, and you are open to relocating. For {qualification}, there's 1 of the 1 posting record nationwide (100%), but no recorded center here. You would need to train or get assessed in another region. The counts are a rough signal.",
+   "example_text": "You are in National Capital Region, and you are open to relocating. For Beauty Care (Nail Care) Services NC II, there's 1 of the 1 posting record nationwide (100%), but no recorded center here. You would need to train or get assessed in another region. The counts are a rough signal.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '100']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 8,
+   "example_case": "CAREGIVING-NC-II-5|NCR|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". The learner can train or get assessed here, but there are no local postings for it in this snapshot. Say \"no local postings\". Do not name any other region. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"no posting records in any region\"; {supply} = how many centers are here, this time \"4 of its 8 recorded centers (50%)\"",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, there are no local postings. However, {supply} includes 4 of its 8 recorded centers, which count include example sites for demonstration.",
+   "example_text": "You are in National Capital Region and prefer not to relocate. For Caregiving NC II, there are no local postings. However, 4 of its 8 recorded centers (50%) includes 4 of its 8 recorded centers, which count include example sites for demonstration.",
+   "failed": {
+    "figures": "typed a figure itself: ['4', '8']",
+    "slots": "left out ['demand']"
+   }
+  },
+  {
+   "cases": 8,
+   "example_case": "CAREGIVING-NC-II-5|NCR|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". The learner can train or get assessed here, but there are no local postings for it in this snapshot. Say \"no local postings\". Do not name any other region. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"no posting records in any region\"; {supply} = how many centers are here, this time \"4 of its 8 recorded centers (50%)\"",
+   "template": "You are in {area}, and you are open to relocating. For {qualification}, there are no local postings in any region. However, {supply} includes 4 of its 8 recorded centers (50%), which count as example sites for training or assessment.",
+   "example_text": "You are in National Capital Region, and you are open to relocating. For Caregiving NC II, there are no local postings in any region. However, 4 of its 8 recorded centers (50%) includes 4 of its 8 recorded centers (50%), which count as example sites for training or assessment.",
+   "failed": {
+    "figures": "typed a figure itself: ['4', '50', '8']",
+    "slots": "left out ['demand']"
+   }
+  },
+  {
+   "cases": 22,
+   "example_case": "CUSTOMER-SERVICES-NC-II|NCR|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"107 of the 211 posting records nationwide (51%)\"; {supply} = how many centers are here, this time \"no recorded center anywhere\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, {demand} are here, but {supply} is none, meaning you would need to train or get assessed in another region. Consider looking at alternatives.",
+   "example_text": "You are in National Capital Region and prefer not to relocate. For Customer Services NC II, 107 of the 211 posting records nationwide (51%) are here, but no recorded center anywhere is none, meaning you would need to train or get assessed in another region. Consider looking at alternatives.",
+   "failed": {}
+  },
+  {
+   "cases": 22,
+   "example_case": "CUSTOMER-SERVICES-NC-II|NCR|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"107 of the 211 posting records nationwide (51%)\"; {supply} = how many centers are here, this time \"no recorded center anywhere\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area}, but you are open to relocating. Employers posted for {qualification}, but there are no recorded centers here. If you decide to relocate, you should look first at {alternatives}.",
+   "example_text": "You are in National Capital Region, but you are open to relocating. Employers posted for Customer Services NC II, but there are no recorded centers here. If you decide to relocate, you should look first at Region VII (Central Visayas), Region IV-A (CALABARZON) and Region III (Central Luzon).",
+   "failed": {
+    "slots": "left out ['demand', 'supply']",
+    "verdict": "doesn't say the area is demand_only"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "HOUSEKEEPING-NC-II|PH|stay",
+   "prompt": "Situation: No region is selected: this is the national picture. Demand is ahead of supply in {ahead}: say so. Supply is ahead of demand in {crowded}: say so. Do not name any other region. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {demand} = how many posting records there are, this time \"10 posting records across 5 regions\"; {supply} = how many centers there are, this time \"20 recorded centers across 5 regions\"; {alternatives} = the other region or regions to look at; {ahead} = regions where demand is ahead; {crowded} = regions where supply is ahead",
+   "template": "For {qualification}, there are 10 posting records across 5 regions, with demand ahead in {ahead}. Supply is ahead in {crowded}. The center counts include example sites for demonstration. Consider other regions like {alternatives} for a broader perspective.",
+   "example_text": "For Housekeeping NC II, there are 10 posting records across 5 regions, with demand ahead in Cordillera Administrative Region and MIMAROPA Region. Supply is ahead in National Capital Region. The center counts include example sites for demonstration. Consider other regions like MIMAROPA Region for a broader perspective.",
+   "failed": {
+    "figures": "typed a figure itself: ['10', '5']",
+    "slots": "left out ['demand', 'supply']",
+    "stance": "names other regions when it shouldn't"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "HOUSEKEEPING-NC-II|PH|move",
+   "prompt": "Situation: No region is selected: this is the national picture. Demand is ahead of supply in {ahead}: say so. Supply is ahead of demand in {crowded}: say so. End by saying that, if they relocate, they should look first at {alternatives}. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {demand} = how many posting records there are, this time \"10 posting records across 5 regions\"; {supply} = how many centers there are, this time \"20 recorded centers across 5 regions\"; {alternatives} = the other region or regions to look at; {ahead} = regions where demand is ahead; {crowded} = regions where supply is ahead",
+   "template": "For {qualification}, there are 10 posting records across 5 regions, with demand ahead in {ahead}. However, supply is ahead in {crowded} regions. If you consider relocating, first look at {alternatives}. Note that the center counts include example sites for demonstration.",
+   "example_text": "For Housekeeping NC II, there are 10 posting records across 5 regions, with demand ahead in Cordillera Administrative Region and MIMAROPA Region. However, supply is ahead in National Capital Region regions. If you consider relocating, first look at MIMAROPA Region, Cordillera Administrative Region and Region III (Central Luzon). Note that the center counts include example sites for demonstration.",
+   "failed": {
+    "figures": "typed a figure itself: ['10', '5']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "HOUSEKEEPING-NC-II|NCR|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". The area looks saturated: there is more training supply than recorded demand, so expect more competition for local work. Use the word \"saturated\". The counts are small: say they are a rough signal. End by saying that, if their plans change, {alternatives} shows more demand against its supply. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 10 posting records nationwide (20%)\"; {supply} = how many centers are here, this time \"12 of its 20 recorded centers (60%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. The area is saturated with {qualification}, as there are more centers than posting records, indicating more competition locally. The counts are small, serving as a rough signal. If your plans change, {alternatives} shows more demand against its supply. Note that the center counts include example sites for demonstration.",
+   "example_text": "You are in National Capital Region and prefer not to relocate. The area is saturated with Housekeeping NC II, as there are more centers than posting records, indicating more competition locally. The counts are small, serving as a rough signal. If your plans change, MIMAROPA Region shows more demand against its supply. Note that the center counts include example sites for demonstration.",
+   "failed": {
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "HOUSEKEEPING-NC-II|NCR|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". The area looks saturated: there is more training supply than recorded demand, so expect more competition for local work. Use the word \"saturated\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 10 posting records nationwide (20%)\"; {supply} = how many centers are here, this time \"12 of its 20 recorded centers (60%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area}, and while you're open to relocating, the area is saturated with {qualification} training. Here, {demand} are just 2 of the 10 nationwide (20%), while {supply} are 12 of its 20 recorded centers (60%). This means you can expect more competition for local work. The center counts include example sites for demonstration. If you decide to relocate, consider looking first at other regions.",
+   "example_text": "You are in National Capital Region, and while you're open to relocating, the area is saturated with Housekeeping NC II training. Here, 2 of the 10 posting records nationwide (20%) are just 2 of the 10 nationwide (20%), while 12 of its 20 recorded centers (60%) are 12 of its 20 recorded centers (60%). This means you can expect more competition for local work. The center counts include example sites for demonstration. If you decide to relocate, consider looking first at other regions.",
+   "failed": {
+    "figures": "typed a figure itself: ['10', '12', '2', '20', '60']",
+    "stance": "doesn't say where else to look",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "HOUSEKEEPING-NC-II|CAR|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". The counts are small: say they are a rough signal. Do not name any other region. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 10 posting records nationwide (20%)\"; {supply} = how many centers are here, this time \"none of its 20 recorded centers\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, there are 2 of the 10 posting records nationwide (20%), but no center offers it here. You would need to train or get assessed in another region. The center counts include example sites, shown for demonstration. Consider looking at alternatives.",
+   "example_text": "You are in Cordillera Administrative Region and prefer not to relocate. For Housekeeping NC II, there are 2 of the 10 posting records nationwide (20%), but no center offers it here. You would need to train or get assessed in another region. The center counts include example sites, shown for demonstration. Consider looking at alternatives.",
+   "failed": {
+    "figures": "typed a figure itself: ['10', '2', '20']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "HOUSEKEEPING-NC-II|CAR|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 10 posting records nationwide (20%)\"; {supply} = how many centers are here, this time \"none of its 20 recorded centers\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area}, but you're open to relocating for {qualification}. Employers posted for it here, but no center offers it in your region, indicating you might need to train or get assessed in another region. The demand is a rough signal, with only 2 of the 10 posting records nationwide (20%). There are no centers here, so consider looking at {alternatives}. The center counts include example sites for demonstration.",
+   "example_text": "You are in Cordillera Administrative Region, but you're open to relocating for Housekeeping NC II. Employers posted for it here, but no center offers it in your region, indicating you might need to train or get assessed in another region. The demand is a rough signal, with only 2 of the 10 posting records nationwide (20%). There are no centers here, so consider looking at MIMAROPA Region, Region III (Central Luzon) and Region IV-A (CALABARZON). The center counts include example sites for demonstration.",
+   "failed": {
+    "figures": "typed a figure itself: ['10', '2', '20']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "HOUSEKEEPING-NC-II|III|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Demand and training supply look balanced here. Use the word \"balanced\". The counts are small: say they are a rough signal. Do not name any other region. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 10 posting records nationwide (10%)\"; {supply} = how many centers are here, this time \"2 of its 20 recorded centers (10%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, there's a balanced demand with just 1 of the 10 nationwide posting records (10%). The supply includes 2 of its 20 recorded centers (10%), with example sites shown for demonstration. While considering alternatives, keep in mind the balanced nature of demand and supply here.",
+   "example_text": "You are in Region III (Central Luzon) and prefer not to relocate. For Housekeeping NC II, there's a balanced demand with just 1 of the 10 nationwide posting records (10%). The supply includes 2 of its 20 recorded centers (10%), with example sites shown for demonstration. While considering alternatives, keep in mind the balanced nature of demand and supply here.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '10', '2', '20']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "HOUSEKEEPING-NC-II|III|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Demand and training supply look balanced here. Use the word \"balanced\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 10 posting records nationwide (10%)\"; {supply} = how many centers are here, this time \"2 of its 20 recorded centers (10%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and open to relocating for {qualification}. Here, demand and training supply are balanced, with only 1 of the 10 nationwide posting records (10%) and 2 of its 20 recorded centers (10%). These counts are a rough signal. If you consider relocating, first look at {alternatives}. Note that the center counts include example sites for demonstration.",
+   "example_text": "You are in Region III (Central Luzon) and open to relocating for Housekeeping NC II. Here, demand and training supply are balanced, with only 1 of the 10 nationwide posting records (10%) and 2 of its 20 recorded centers (10%). These counts are a rough signal. If you consider relocating, first look at MIMAROPA Region, Cordillera Administrative Region and Region IV-A (CALABARZON). Note that the center counts include example sites for demonstration.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '10', '2', '20']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "HOUSEKEEPING-NC-II|MIMAROPA|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". Do not name any other region. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"4 of the 10 posting records nationwide (40%)\"; {supply} = how many centers are here, this time \"none of its 20 recorded centers\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, {demand} are here, but {supply} are none of its 20 recorded centers. You would need to train or get assessed in another region. Consider looking at alternative regions for training. The center counts include example sites, shown for demonstration.",
+   "example_text": "You are in MIMAROPA Region and prefer not to relocate. For Housekeeping NC II, 4 of the 10 posting records nationwide (40%) are here, but none of its 20 recorded centers are none of its 20 recorded centers. You would need to train or get assessed in another region. Consider looking at alternative regions for training. The center counts include example sites, shown for demonstration.",
+   "failed": {
+    "figures": "typed a figure itself: ['20']"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "HOUSEKEEPING-NC-II|MIMAROPA|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". End by saying that, if they relocate, they should look first at {alternatives}. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"4 of the 10 posting records nationwide (40%)\"; {supply} = how many centers are here, this time \"none of its 20 recorded centers\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area}, but you're open to relocating for {qualification}. Employers posted for it here, but no center offers it here, so you'd need to train or get assessed in another region. If you relocate, consider looking first at {alternatives}. Note that the center counts include example sites, shown for demonstration.",
+   "example_text": "You are in MIMAROPA Region, but you're open to relocating for Housekeeping NC II. Employers posted for it here, but no center offers it here, so you'd need to train or get assessed in another region. If you relocate, consider looking first at Cordillera Administrative Region, Region III (Central Luzon) and Region IV-A (CALABARZON). Note that the center counts include example sites, shown for demonstration.",
+   "failed": {
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 3,
+   "example_case": "SECURITY-SERVICES-NC-I|III|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 2 posting records nationwide (100%)\"; {supply} = how many centers are here, this time \"no recorded center anywhere\"",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, {demand} are here, but {supply} is none, indicating you'd need to train or get assessed in another region. The counts are a rough signal.",
+   "example_text": "You are in Region III (Central Luzon) and prefer not to relocate. For Security Services NC I, 2 of the 2 posting records nationwide (100%) are here, but no recorded center anywhere is none, indicating you'd need to train or get assessed in another region. The counts are a rough signal.",
+   "failed": {}
+  },
+  {
+   "cases": 3,
+   "example_case": "SECURITY-SERVICES-NC-I|III|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 2 posting records nationwide (100%)\"; {supply} = how many centers are here, this time \"no recorded center anywhere\"",
+   "template": "You are in {area}, and you are open to relocating. For {qualification}, {demand} are here, but {supply} is none, indicating you'd need to train or get assessed in another region. The counts are a rough signal.",
+   "example_text": "You are in Region III (Central Luzon), and you are open to relocating. For Security Services NC I, 2 of the 2 posting records nationwide (100%) are here, but no recorded center anywhere is none, indicating you'd need to train or get assessed in another region. The counts are a rough signal.",
+   "failed": {}
+  },
+  {
+   "cases": 1,
+   "example_case": "TILE-SETTING-NC-II|NCR|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"3 of the 3 posting records nationwide (100%)\"; {supply} = how many centers are here, this time \"no recorded center anywhere\"",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, {demand} are here, but {supply} is none, meaning you would need to train or get assessed in another region.",
+   "example_text": "You are in National Capital Region and prefer not to relocate. For Tile Setting NC II, 3 of the 3 posting records nationwide (100%) are here, but no recorded center anywhere is none, meaning you would need to train or get assessed in another region.",
+   "failed": {}
+  },
+  {
+   "cases": 1,
+   "example_case": "TILE-SETTING-NC-II|NCR|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"3 of the 3 posting records nationwide (100%)\"; {supply} = how many centers are here, this time \"no recorded center anywhere\"",
+   "template": "You are in {area}, and you are open to relocating. For {qualification}, {demand} are here, but {supply} is none, meaning you would need to train or get assessed in another region.",
+   "example_text": "You are in National Capital Region, and you are open to relocating. For Tile Setting NC II, 3 of the 3 posting records nationwide (100%) are here, but no recorded center anywhere is none, meaning you would need to train or get assessed in another region.",
+   "failed": {}
+  },
+  {
+   "cases": 1,
+   "example_case": "WEB-DEVELOPMENT-NC-III|NCR|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Demand and training supply look balanced here. Use the word \"balanced\". The counts are small: say they are a rough signal. Do not name any other region. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"3 of the 7 posting records nationwide (43%)\"; {supply} = how many centers are here, this time \"2 of its 4 recorded centers (50%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, there are 3 of the 7 nationwide posting records, a rough signal. Supply is 2 of its 4 recorded centers, also a rough signal. The balance is evident here. Note that these counts include example sites for demonstration. While considering alternatives, keep in mind other regions, but your preference is to stay local.",
+   "example_text": "You are in National Capital Region and prefer not to relocate. For Web Development NC III, there are 3 of the 7 nationwide posting records, a rough signal. Supply is 2 of its 4 recorded centers, also a rough signal. The balance is evident here. Note that these counts include example sites for demonstration. While considering alternatives, keep in mind other regions, but your preference is to stay local.",
+   "failed": {
+    "figures": "typed a figure itself: ['2', '3', '4', '7']",
+    "slots": "left out ['demand', 'supply']",
+    "verdict": "doesn't say the area is balanced"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "WEB-DEVELOPMENT-NC-III|NCR|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Demand and training supply look balanced here. Use the word \"balanced\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"3 of the 7 posting records nationwide (43%)\"; {supply} = how many centers are here, this time \"2 of its 4 recorded centers (50%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and open to relocating for {qualification}. Here, demand and training supply are balanced, with about 43% of nationwide posting records. There are 50% of recorded centers, including example sites for demonstration. If considering relocation, look first at {alternatives}.",
+   "example_text": "You are in National Capital Region and open to relocating for Web Development NC III. Here, demand and training supply are balanced, with about 43% of nationwide posting records. There are 50% of recorded centers, including example sites for demonstration. If considering relocation, look first at Region VI (Western Visayas), Negros Island Region and Region III (Central Luzon).",
+   "failed": {
+    "figures": "typed a figure itself: ['43', '50']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "WEB-DEVELOPMENT-NC-III|III|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". The counts are small: say they are a rough signal. Do not name any other region. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 7 posting records nationwide (14%)\"; {supply} = how many centers are here, this time \"none of its 4 recorded centers\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, there's 1 of the 7 posting records nationwide (14%), but no center here. You'd need to train or get assessed in another region. The center counts include example sites, shown for demonstration. Consider looking at other regions.",
+   "example_text": "You are in Region III (Central Luzon) and prefer not to relocate. For Web Development NC III, there's 1 of the 7 posting records nationwide (14%), but no center here. You'd need to train or get assessed in another region. The center counts include example sites, shown for demonstration. Consider looking at other regions.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '14', '7']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "WEB-DEVELOPMENT-NC-III|III|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Employers posted for it here, but no center offers it here, so the learner would need to train or get assessed in another region. Say \"another region\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}. Add that the center counts include example sites, shown for demonstration.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 7 posting records nationwide (14%)\"; {supply} = how many centers are here, this time \"none of its 4 recorded centers\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and open to relocating for {qualification}. Employers posted for it here, but no center offers it in your region, indicating you might need to train or get assessed in another region. The demand is a rough signal, with only 1 of the 7 posting records nationwide (14%). There are no centers here, as none of its 4 recorded centers offer {qualification}. If you decide to relocate, consider looking first at {alternatives}. The center counts include example sites, shown for demonstration purposes.",
+   "example_text": "You are in Region III (Central Luzon) and open to relocating for Web Development NC III. Employers posted for it here, but no center offers it in your region, indicating you might need to train or get assessed in another region. The demand is a rough signal, with only 1 of the 7 posting records nationwide (14%). There are no centers here, as none of its 4 recorded centers offer Web Development NC III. If you decide to relocate, consider looking first at Region VI (Western Visayas), Negros Island Region and National Capital Region. The center counts include example sites, shown for demonstration purposes.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '14', '4', '7']",
+    "slots": "left out ['demand', 'supply']",
+    "length": "104 words"
+   }
+  },
+  {
+   "cases": 15,
+   "example_case": "~AUTOMOTIVE-SERVICING-NC-II-2|PH|stay",
+   "prompt": "Situation: No region is selected: this is the national picture. Demand is ahead of supply in {ahead}: say so. Do not name any other region.\nSlots: {qualification} = the qualification's name; {demand} = how many posting records there are, this time \"6 posting records across 5 regions\"; {supply} = how many centers there are, this time \"22 recorded centers across 12 regions\"; {alternatives} = the other region or regions to look at; {ahead} = regions where demand is ahead",
+   "template": "For {qualification}, {demand} are 6 posting records across 5 regions, while {supply} are 22 recorded centers across 12 regions. Here, {ahead} indicates regions where demand is ahead. No specific alternatives are mentioned.",
+   "example_text": "For Automotive Servicing (Electrical Repair) NC II, 6 posting records across 5 regions are 6 posting records across 5 regions, while 22 recorded centers across 12 regions are 22 recorded centers across 12 regions. Here, National Capital Region, Region IV-A (CALABARZON) and Region VI (Western Visayas) indicates regions where demand is ahead. No specific alternatives are mentioned.",
+   "failed": {
+    "figures": "typed a figure itself: ['12', '22', '5', '6']"
+   }
+  },
+  {
+   "cases": 15,
+   "example_case": "~AUTOMOTIVE-SERVICING-NC-II-2|PH|move",
+   "prompt": "Situation: No region is selected: this is the national picture. Demand is ahead of supply in {ahead}: say so. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {demand} = how many posting records there are, this time \"6 posting records across 5 regions\"; {supply} = how many centers there are, this time \"22 recorded centers across 12 regions\"; {alternatives} = the other region or regions to look at; {ahead} = regions where demand is ahead",
+   "template": "For {qualification}, there are 6 posting records across 5 regions, where demand is ahead. Supply stands at 22 recorded centers across 12 regions. If considering relocation, first look at {alternatives}.",
+   "example_text": "For Automotive Servicing (Electrical Repair) NC II, there are 6 posting records across 5 regions, where demand is ahead. Supply stands at 22 recorded centers across 12 regions. If considering relocation, first look at National Capital Region, Region IV-A (CALABARZON) and Region VI (Western Visayas).",
+   "failed": {
+    "figures": "typed a figure itself: ['12', '22', '5', '6']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 8,
+   "example_case": "~AUTOMOTIVE-SERVICING-NC-II-2|NCR|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 6 posting records nationwide (33%)\"; {supply} = how many centers are here, this time \"1 of its 22 recorded centers (5%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, demand is ahead of supply here, which is a good signal for finding work nearby after qualifying. Demand is 2 of the 6 posting records nationwide (33%), while supply is 1 of its 22 recorded centers (5%). Consider other regions as alternatives.",
+   "example_text": "You are in National Capital Region and prefer not to relocate. For Automotive Servicing (Electrical Repair) NC II, demand is ahead of supply here, which is a good signal for finding work nearby after qualifying. Demand is 2 of the 6 posting records nationwide (33%), while supply is 1 of its 22 recorded centers (5%). Consider other regions as alternatives.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '2', '22', '33', '5', '6']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 8,
+   "example_case": "~AUTOMOTIVE-SERVICING-NC-II-2|NCR|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 6 posting records nationwide (33%)\"; {supply} = how many centers are here, this time \"1 of its 22 recorded centers (5%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and open to relocating. For {qualification}, demand is ahead of supply at 2 of the 6 posting records nationwide (33%), signaling potential work nearby after qualifying. Supply is limited at 1 of its 22 recorded centers (5%). If considering relocation, look first at {alternatives}.",
+   "example_text": "You are in National Capital Region and open to relocating. For Automotive Servicing (Electrical Repair) NC II, demand is ahead of supply at 2 of the 6 posting records nationwide (33%), signaling potential work nearby after qualifying. Supply is limited at 1 of its 22 recorded centers (5%). If considering relocation, look first at Region IV-A (CALABARZON), Region VI (Western Visayas) and Region XIII (Caraga).",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '2', '22', '33', '5', '6']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 45,
+   "example_case": "~AUTOMOTIVE-SERVICING-NC-II-2|II|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". The learner can train or get assessed here, but there are no local postings for it in this snapshot. Say \"no local postings\". End by saying that, if their plans change, {alternatives} shows more demand against its supply.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"none of the 6 posting records nationwide\"; {supply} = how many centers are here, this time \"3 of its 22 recorded centers (14%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, there are no local postings here. However, if your plans change, {alternatives} shows more demand against its supply.",
+   "example_text": "You are in Region II (Cagayan Valley) and prefer not to relocate. For Automotive Servicing (Electrical Repair) NC II, there are no local postings here. However, if your plans change, National Capital Region shows more demand against its supply.",
+   "failed": {
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 45,
+   "example_case": "~AUTOMOTIVE-SERVICING-NC-II-2|II|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". The learner can train or get assessed here, but there are no local postings for it in this snapshot. Say \"no local postings\". End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"none of the 6 posting records nationwide\"; {supply} = how many centers are here, this time \"3 of its 22 recorded centers (14%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and open to relocating for {qualification}. Currently, there are no local postings here, as none of the 6 nationwide are in {area}. However, there are {supply} centers here. If you decide to relocate, consider looking first at {alternatives}.",
+   "example_text": "You are in Region II (Cagayan Valley) and open to relocating for Automotive Servicing (Electrical Repair) NC II. Currently, there are no local postings here, as none of the 6 nationwide are in Region II (Cagayan Valley). However, there are 3 of its 22 recorded centers (14%) centers here. If you decide to relocate, consider looking first at National Capital Region, Region IV-A (CALABARZON) and Region VI (Western Visayas).",
+   "failed": {
+    "figures": "typed a figure itself: ['6']",
+    "slots": "left out ['demand']"
+   }
+  },
+  {
+   "cases": 79,
+   "example_case": "~AUTOMOTIVE-SERVICING-NC-II-2|III|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". The learner can train or get assessed here, but there are no local postings for it in this snapshot. Say \"no local postings\". The counts are small: say they are a rough signal. End by saying that, if their plans change, {alternatives} shows more demand against its supply.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"none of the 6 posting records nationwide\"; {supply} = how many centers are here, this time \"2 of its 22 recorded centers (9%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, there are none of the 6 posting records nationwide, indicating no local postings. The counts are a rough signal. However, if your plans change, {alternatives} shows more demand against its supply.",
+   "example_text": "You are in Region III (Central Luzon) and prefer not to relocate. For Automotive Servicing (Electrical Repair) NC II, there are none of the 6 posting records nationwide, indicating no local postings. The counts are a rough signal. However, if your plans change, National Capital Region shows more demand against its supply.",
+   "failed": {
+    "figures": "typed a figure itself: ['6']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 79,
+   "example_case": "~AUTOMOTIVE-SERVICING-NC-II-2|III|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". The learner can train or get assessed here, but there are no local postings for it in this snapshot. Say \"no local postings\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"none of the 6 posting records nationwide\"; {supply} = how many centers are here, this time \"2 of its 22 recorded centers (9%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and open to relocating for {qualification}. Currently, there are no local postings here, as indicated by \"none of the 6 posting records nationwide\". The supply is limited too, with only \"2 of its 22 recorded centers (9%)\". If you consider relocating, it's advisable to first look at {alternatives}.",
+   "example_text": "You are in Region III (Central Luzon) and open to relocating for Automotive Servicing (Electrical Repair) NC II. Currently, there are no local postings here, as indicated by \"none of the 6 posting records nationwide\". The supply is limited too, with only \"2 of its 22 recorded centers (9%)\". If you consider relocating, it's advisable to first look at National Capital Region, Region IV-A (CALABARZON) and Region VI (Western Visayas).",
+   "failed": {
+    "figures": "typed a figure itself: ['2', '22', '6', '9']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 10,
+   "example_case": "~AUTOMOTIVE-SERVICING-NC-II-2|IV-A|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 6 posting records nationwide (17%)\"; {supply} = how many centers are here, this time \"2 of its 22 recorded centers (9%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, demand is ahead of supply here, which is a good signal for finding work nearby after qualifying. Demand is \"1 of the 6 posting records nationwide (17%)\" and supply is \"2 of its 22 recorded centers (9%)\". While these counts are small, they suggest potential opportunities. Consider also exploring alternatives.",
+   "example_text": "You are in Region IV-A (CALABARZON) and prefer not to relocate. For Automotive Servicing (Electrical Repair) NC II, demand is ahead of supply here, which is a good signal for finding work nearby after qualifying. Demand is \"1 of the 6 posting records nationwide (17%)\" and supply is \"2 of its 22 recorded centers (9%)\". While these counts are small, they suggest potential opportunities. Consider also exploring alternatives.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '2', '22', '6', '9']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 10,
+   "example_case": "~AUTOMOTIVE-SERVICING-NC-II-2|IV-A|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 6 posting records nationwide (17%)\"; {supply} = how many centers are here, this time \"2 of its 22 recorded centers (9%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and open to relocating. For {qualification}, demand is ahead of supply, which is a good signal for finding work nearby after qualifying. Demand is 1 of the 6 posting records nationwide (17%), while supply is 2 of its 22 recorded centers (9%). If you consider relocating, look first at {alternatives}.",
+   "example_text": "You are in Region IV-A (CALABARZON) and open to relocating. For Automotive Servicing (Electrical Repair) NC II, demand is ahead of supply, which is a good signal for finding work nearby after qualifying. Demand is 1 of the 6 posting records nationwide (17%), while supply is 2 of its 22 recorded centers (9%). If you consider relocating, look first at National Capital Region, Region VI (Western Visayas) and Region XIII (Caraga).",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '17', '2', '22', '6', '9']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 80,
+   "example_case": "~AUTOMOTIVE-SERVICING-NC-II-2|MIMAROPA|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". The learner can train or get assessed here, but there are no local postings for it in this snapshot. Say \"no local postings\". The counts are small: say they are a rough signal. End by saying that, if their plans change, {alternatives} shows more demand against its supply.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"none of the 6 posting records nationwide\"; {supply} = how many centers are here, this time \"1 of its 22 recorded centers (5%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, there are none of the 6 posting records nationwide, indicating no local postings. The counts are a rough signal. However, if your plans change, {alternatives} shows more demand against its supply.",
+   "example_text": "You are in MIMAROPA Region and prefer not to relocate. For Automotive Servicing (Electrical Repair) NC II, there are none of the 6 posting records nationwide, indicating no local postings. The counts are a rough signal. However, if your plans change, National Capital Region shows more demand against its supply.",
+   "failed": {
+    "figures": "typed a figure itself: ['6']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 80,
+   "example_case": "~AUTOMOTIVE-SERVICING-NC-II-2|MIMAROPA|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". The learner can train or get assessed here, but there are no local postings for it in this snapshot. Say \"no local postings\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"none of the 6 posting records nationwide\"; {supply} = how many centers are here, this time \"1 of its 22 recorded centers (5%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and open to relocating for {qualification}. Currently, there are no local postings here, as indicated by \"none of the 6 posting records nationwide\". The supply is limited too, with \"1 of its 22 recorded centers (5%)\". If you consider relocating, it's advisable to first look at {alternatives}.",
+   "example_text": "You are in MIMAROPA Region and open to relocating for Automotive Servicing (Electrical Repair) NC II. Currently, there are no local postings here, as indicated by \"none of the 6 posting records nationwide\". The supply is limited too, with \"1 of its 22 recorded centers (5%)\". If you consider relocating, it's advisable to first look at National Capital Region, Region IV-A (CALABARZON) and Region VI (Western Visayas).",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '22', '5', '6']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "~AUTOMOTIVE-SERVICING-NC-II-2|VII|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Demand and training supply look balanced here. Use the word \"balanced\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 6 posting records nationwide (17%)\"; {supply} = how many centers are here, this time \"3 of its 22 recorded centers (14%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, there's a balanced demand and supply here, with only 1 of the 6 nationwide posting records (17%) and 3 of its 22 recorded centers (14%). While these numbers are small, they still indicate a balanced training supply in your region. No need to consider other regions at this moment.",
+   "example_text": "You are in Region VII (Central Visayas) and prefer not to relocate. For Automotive Servicing (Electrical Repair) NC II, there's a balanced demand and supply here, with only 1 of the 6 nationwide posting records (17%) and 3 of its 22 recorded centers (14%). While these numbers are small, they still indicate a balanced training supply in your region. No need to consider other regions at this moment.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '14', '17', '22', '3', '6']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "~AUTOMOTIVE-SERVICING-NC-II-2|VII|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Demand and training supply look balanced here. Use the word \"balanced\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 6 posting records nationwide (17%)\"; {supply} = how many centers are here, this time \"3 of its 22 recorded centers (14%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and are open to relocating. For {qualification}, there's only 1 of the 6 posting records nationwide (17%) and 3 of its 22 recorded centers (14%), indicating a balanced demand and supply. If considering relocation, you should look first at {alternatives}.",
+   "example_text": "You are in Region VII (Central Visayas) and are open to relocating. For Automotive Servicing (Electrical Repair) NC II, there's only 1 of the 6 posting records nationwide (17%) and 3 of its 22 recorded centers (14%), indicating a balanced demand and supply. If considering relocation, you should look first at National Capital Region, Region IV-A (CALABARZON) and Region VI (Western Visayas).",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '14', '17', '22', '3', '6']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "~BARTENDING-NC-II|MIMAROPA|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 2 posting records nationwide (100%)\"; {supply} = how many centers are here, this time \"1 of its 23 recorded centers (4%)\"",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, demand is ahead of supply here, which is a good signal for finding work nearby after qualifying. Demand is 2 of the 2 posting records nationwide (100%), while supply is 1 of its 23 recorded centers (4%). This rough signal indicates potential opportunities in your region.",
+   "example_text": "You are in MIMAROPA Region and prefer not to relocate. For Bartending NC II, demand is ahead of supply here, which is a good signal for finding work nearby after qualifying. Demand is 2 of the 2 posting records nationwide (100%), while supply is 1 of its 23 recorded centers (4%). This rough signal indicates potential opportunities in your region.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '100', '2', '23', '4']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "~BARTENDING-NC-II|MIMAROPA|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 2 posting records nationwide (100%)\"; {supply} = how many centers are here, this time \"1 of its 23 recorded centers (4%)\"",
+   "template": "You are in {area}, and you are open to relocating. For {qualification}, demand is ahead of supply, which is a good signal for finding work nearby after qualifying. Demand is 2 of the 2 posting records nationwide (100%), while supply is 1 of its 23 recorded centers (4%).",
+   "example_text": "You are in MIMAROPA Region, and you are open to relocating. For Bartending NC II, demand is ahead of supply, which is a good signal for finding work nearby after qualifying. Demand is 2 of the 2 posting records nationwide (100%), while supply is 1 of its 23 recorded centers (4%).",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '100', '2', '23', '4']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 3,
+   "example_case": "~BEAUTY-CARE-SERVICES-NC-II|PH|stay",
+   "prompt": "Situation: No region is selected: this is the national picture. Demand is ahead of supply in {ahead}: say so. Do not name any other region.\nSlots: {qualification} = the qualification's name; {demand} = how many posting records there are, this time \"1 posting record across 1 region\"; {supply} = how many centers there are, this time \"22 recorded centers across 13 regions\"; {alternatives} = the other region or regions to look at; {ahead} = regions where demand is ahead",
+   "template": "For {qualification}, {demand} is 1 posting record across 1 region, while {supply} is 22 recorded centers across 13 regions. Here, {ahead} indicates regions where demand is ahead. No specific alternatives are mentioned.",
+   "example_text": "For Beauty Care (Nail Care) Services NC II, 1 posting record across 1 region is 1 posting record across 1 region, while 22 recorded centers across 13 regions is 22 recorded centers across 13 regions. Here, National Capital Region indicates regions where demand is ahead. No specific alternatives are mentioned.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '13', '22']"
+   }
+  },
+  {
+   "cases": 3,
+   "example_case": "~BEAUTY-CARE-SERVICES-NC-II|PH|move",
+   "prompt": "Situation: No region is selected: this is the national picture. Demand is ahead of supply in {ahead}: say so. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {demand} = how many posting records there are, this time \"1 posting record across 1 region\"; {supply} = how many centers there are, this time \"22 recorded centers across 13 regions\"; {alternatives} = the other region or regions to look at; {ahead} = regions where demand is ahead",
+   "template": "For {qualification}, there's 1 posting record across 1 region, with demand ahead. Supply stands at 22 recorded centers across 13 regions. If considering relocation, look first at {alternatives}.",
+   "example_text": "For Beauty Care (Nail Care) Services NC II, there's 1 posting record across 1 region, with demand ahead. Supply stands at 22 recorded centers across 13 regions. If considering relocation, look first at National Capital Region.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '13', '22']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "~BEAUTY-CARE-SERVICES-NC-II|NCR|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 1 posting record nationwide (100%)\"; {supply} = how many centers are here, this time \"2 of its 22 recorded centers (9%)\"",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, demand is ahead of supply here, which is a good signal for finding work nearby after qualifying. Demand is 1 of the 1 posting record nationwide (100%), while supply is 2 of its 22 recorded centers (9%). These counts are a rough signal.",
+   "example_text": "You are in National Capital Region and prefer not to relocate. For Beauty Care (Nail Care) Services NC II, demand is ahead of supply here, which is a good signal for finding work nearby after qualifying. Demand is 1 of the 1 posting record nationwide (100%), while supply is 2 of its 22 recorded centers (9%). These counts are a rough signal.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '100', '2', '22', '9']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "~BEAUTY-CARE-SERVICES-NC-II|NCR|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 1 posting record nationwide (100%)\"; {supply} = how many centers are here, this time \"2 of its 22 recorded centers (9%)\"",
+   "template": "You are in {area}, and you are open to relocating. For {qualification}, demand is ahead of supply, which is a good signal for finding work nearby after qualifying. Demand is 1 of the 1 posting record nationwide (100%), while supply is 2 of its 22 recorded centers (9%).",
+   "example_text": "You are in National Capital Region, and you are open to relocating. For Beauty Care (Nail Care) Services NC II, demand is ahead of supply, which is a good signal for finding work nearby after qualifying. Demand is 1 of the 1 posting record nationwide (100%), while supply is 2 of its 22 recorded centers (9%).",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '100', '2', '22', '9']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 5,
+   "example_case": "~BOOKKEEPING-NC-III|NCR|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 6 posting records nationwide (33%)\"; {supply} = how many centers are here, this time \"2 of its 24 recorded centers (8%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, demand is ahead of supply here, which is a good signal for finding work nearby after qualifying. Demand is 2 of the 6 posting records nationwide (33%), while supply is 2 of its 24 recorded centers (8%). Consider other regions carefully.",
+   "example_text": "You are in National Capital Region and prefer not to relocate. For Bookkeeping NC III, demand is ahead of supply here, which is a good signal for finding work nearby after qualifying. Demand is 2 of the 6 posting records nationwide (33%), while supply is 2 of its 24 recorded centers (8%). Consider other regions carefully.",
+   "failed": {
+    "figures": "typed a figure itself: ['2', '24', '33', '6', '8']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 5,
+   "example_case": "~BOOKKEEPING-NC-III|NCR|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 6 posting records nationwide (33%)\"; {supply} = how many centers are here, this time \"2 of its 24 recorded centers (8%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and open to relocating. For {qualification}, demand is ahead of supply at 2 of the 6 posting records nationwide (33%), signaling potential work nearby after qualifying. Supply is lower at 2 of its 24 recorded centers (8%). If considering relocation, look first at {alternatives}.",
+   "example_text": "You are in National Capital Region and open to relocating. For Bookkeeping NC III, demand is ahead of supply at 2 of the 6 posting records nationwide (33%), signaling potential work nearby after qualifying. Supply is lower at 2 of its 24 recorded centers (8%). If considering relocation, look first at Region V (Bicol Region), Region VI (Western Visayas) and Region XI (Davao Region).",
+   "failed": {
+    "figures": "typed a figure itself: ['2', '24', '33', '6', '8']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "~CUSTOMER-SERVICES-NC-II|PH|stay",
+   "prompt": "Situation: No region is selected: this is the national picture. Demand is ahead of supply in {ahead}: say so. Supply is ahead of demand in {crowded}: say so. Do not name any other region.\nSlots: {qualification} = the qualification's name; {demand} = how many posting records there are, this time \"211 posting records across 13 regions\"; {supply} = how many centers there are, this time \"23 recorded centers across 12 regions\"; {alternatives} = the other region or regions to look at; {ahead} = regions where demand is ahead; {crowded} = regions where supply is ahead",
+   "template": "For {qualification}, there are 211 posting records across 13 regions, with demand ahead in {ahead}. However, supply is ahead in {crowded}. Consider these national trends when choosing where to train.",
+   "example_text": "For Customer Services NC II, there are 211 posting records across 13 regions, with demand ahead in National Capital Region, Cordillera Administrative Region and Region IV-A (CALABARZON). However, supply is ahead in Region I (Ilocos Region), Region II (Cagayan Valley) and MIMAROPA Region. Consider these national trends when choosing where to train.",
+   "failed": {
+    "figures": "typed a figure itself: ['13', '211']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "~CUSTOMER-SERVICES-NC-II|PH|move",
+   "prompt": "Situation: No region is selected: this is the national picture. Demand is ahead of supply in {ahead}: say so. Supply is ahead of demand in {crowded}: say so. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {demand} = how many posting records there are, this time \"211 posting records across 13 regions\"; {supply} = how many centers there are, this time \"23 recorded centers across 12 regions\"; {alternatives} = the other region or regions to look at; {ahead} = regions where demand is ahead; {crowded} = regions where supply is ahead",
+   "template": "For {qualification}, there are 211 posting records across 13 regions, with demand ahead in {ahead}. However, supply is ahead in {crowded} regions. If you consider relocating, first look at {alternatives}.",
+   "example_text": "For Customer Services NC II, there are 211 posting records across 13 regions, with demand ahead in National Capital Region, Cordillera Administrative Region and Region IV-A (CALABARZON). However, supply is ahead in Region I (Ilocos Region), Region II (Cagayan Valley) and MIMAROPA Region regions. If you consider relocating, first look at Region VII (Central Visayas), Region IV-A (CALABARZON) and National Capital Region.",
+   "failed": {
+    "figures": "typed a figure itself: ['13', '211']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "~CUSTOMER-SERVICES-NC-II|I|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". The area looks saturated: there is more training supply than recorded demand, so expect more competition for local work. Use the word \"saturated\". The counts are small: say they are a rough signal. End by saying that, if their plans change, {alternatives} shows more demand against its supply.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 211 posting records nationwide (1%)\"; {supply} = how many centers are here, this time \"3 of its 23 recorded centers (13%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. The area is saturated with {qualification}, as there are more training centers than posting records, indicating more competition for local work. The counts are small, serving as a rough signal. If your plans change, {alternatives} shows more demand against its supply.",
+   "example_text": "You are in Region I (Ilocos Region) and prefer not to relocate. The area is saturated with Customer Services NC II, as there are more training centers than posting records, indicating more competition for local work. The counts are small, serving as a rough signal. If your plans change, Region VII (Central Visayas) shows more demand against its supply.",
+   "failed": {
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "~CUSTOMER-SERVICES-NC-II|I|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". The area looks saturated: there is more training supply than recorded demand, so expect more competition for local work. Use the word \"saturated\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 211 posting records nationwide (1%)\"; {supply} = how many centers are here, this time \"3 of its 23 recorded centers (13%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area}, and you're open to relocating. The area is saturated with {qualification}, as there are more centers than posting records, indicating more competition locally. The counts are small, serving as a rough signal. If considering relocation, you should first look at {alternatives}.",
+   "example_text": "You are in Region I (Ilocos Region), and you're open to relocating. The area is saturated with Customer Services NC II, as there are more centers than posting records, indicating more competition locally. The counts are small, serving as a rough signal. If considering relocation, you should first look at Region VII (Central Visayas), Region IV-A (CALABARZON) and National Capital Region.",
+   "failed": {
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 3,
+   "example_case": "~CUSTOMER-SERVICES-NC-II|II|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". The area looks saturated: there is more training supply than recorded demand, so expect more competition for local work. Use the word \"saturated\". The counts are small: say they are a rough signal. End by saying that, if their plans change, {alternatives} shows more demand against its supply.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 211 posting records nationwide (less than 1%)\"; {supply} = how many centers are here, this time \"2 of its 23 recorded centers (9%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. The area is saturated with more training supply than recorded demand, indicating more competition for local work. The counts are small, serving as a rough signal. If your plans change, {alternatives} shows more demand against its supply.",
+   "example_text": "You are in Region II (Cagayan Valley) and prefer not to relocate. The area is saturated with more training supply than recorded demand, indicating more competition for local work. The counts are small, serving as a rough signal. If your plans change, Region VII (Central Visayas) shows more demand against its supply.",
+   "failed": {
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 3,
+   "example_case": "~CUSTOMER-SERVICES-NC-II|II|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". The area looks saturated: there is more training supply than recorded demand, so expect more competition for local work. Use the word \"saturated\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 211 posting records nationwide (less than 1%)\"; {supply} = how many centers are here, this time \"2 of its 23 recorded centers (9%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area}, and you're open to relocating. The area is saturated with {qualification}, as demand is only \"1 of the 211 posting records nationwide (less than 1%)\", while supply is \"2 of its 23 recorded centers (9%)\". This indicates more competition locally. If considering relocation, it's wise to first look at {alternatives}.",
+   "example_text": "You are in Region II (Cagayan Valley), and you're open to relocating. The area is saturated with Customer Services NC II, as demand is only \"1 of the 211 posting records nationwide (less than 1%)\", while supply is \"2 of its 23 recorded centers (9%)\". This indicates more competition locally. If considering relocation, it's wise to first look at Region VII (Central Visayas), Region IV-A (CALABARZON) and National Capital Region.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '2', '211', '23', '9']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 4,
+   "example_case": "~CUSTOMER-SERVICES-NC-II|III|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Demand and training supply look balanced here. Use the word \"balanced\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"17 of the 211 posting records nationwide (8%)\"; {supply} = how many centers are here, this time \"2 of its 23 recorded centers (9%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, there are 17 of the 211 nationwide posting records, a rough signal, and {supply} are here, indicating a balanced demand and supply. While {alternatives} exist, your preference is to stay local.",
+   "example_text": "You are in Region III (Central Luzon) and prefer not to relocate. For Customer Services NC II, there are 17 of the 211 nationwide posting records, a rough signal, and 2 of its 23 recorded centers (9%) are here, indicating a balanced demand and supply. While Region VII (Central Visayas) exist, your preference is to stay local.",
+   "failed": {
+    "figures": "typed a figure itself: ['17', '211']",
+    "slots": "left out ['demand']",
+    "stance": "names other regions when it shouldn't"
+   }
+  },
+  {
+   "cases": 4,
+   "example_case": "~CUSTOMER-SERVICES-NC-II|III|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Demand and training supply look balanced here. Use the word \"balanced\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"17 of the 211 posting records nationwide (8%)\"; {supply} = how many centers are here, this time \"2 of its 23 recorded centers (9%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and are open to relocating. For {qualification}, there are 17 of the 211 posting records nationwide (8%), and {supply} are 2 of its 23 recorded centers (9%). Demand and training supply look balanced here. If you consider relocating, you should look first at {alternatives}.",
+   "example_text": "You are in Region III (Central Luzon) and are open to relocating. For Customer Services NC II, there are 17 of the 211 posting records nationwide (8%), and 2 of its 23 recorded centers (9%) are 2 of its 23 recorded centers (9%). Demand and training supply look balanced here. If you consider relocating, you should look first at Region VII (Central Visayas), Region IV-A (CALABARZON) and National Capital Region.",
+   "failed": {
+    "figures": "typed a figure itself: ['17', '2', '211', '23', '8', '9']",
+    "slots": "left out ['demand']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "~CUSTOMER-SERVICES-NC-II|MIMAROPA|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". The area looks saturated: there is more training supply than recorded demand, so expect more competition for local work. Use the word \"saturated\". The counts are small: say they are a rough signal. End by saying that, if their plans change, {alternatives} shows more demand against its supply.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 211 posting records nationwide (1%)\"; {supply} = how many centers are here, this time \"1 of its 23 recorded centers (4%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. The area is saturated with more training supply than recorded demand, indicating more competition for local work. The counts are small, serving as a rough signal. However, if your plans change, {alternatives} shows more demand against its supply.",
+   "example_text": "You are in MIMAROPA Region and prefer not to relocate. The area is saturated with more training supply than recorded demand, indicating more competition for local work. The counts are small, serving as a rough signal. However, if your plans change, Region VII (Central Visayas) shows more demand against its supply.",
+   "failed": {
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "~CUSTOMER-SERVICES-NC-II|MIMAROPA|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". The area looks saturated: there is more training supply than recorded demand, so expect more competition for local work. Use the word \"saturated\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 211 posting records nationwide (1%)\"; {supply} = how many centers are here, this time \"1 of its 23 recorded centers (4%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area}, but you're open to relocating due to the saturated market. Here, {demand} are just 2 of the 211 nationwide (1%), while {supply} is 1 of its 23 recorded centers (4%). This indicates a higher competition locally. If considering relocation, you should first look at {alternatives}.",
+   "example_text": "You are in MIMAROPA Region, but you're open to relocating due to the saturated market. Here, 2 of the 211 posting records nationwide (1%) are just 2 of the 211 nationwide (1%), while 1 of its 23 recorded centers (4%) is 1 of its 23 recorded centers (4%). This indicates a higher competition locally. If considering relocation, you should first look at Region VII (Central Visayas), Region IV-A (CALABARZON) and National Capital Region.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '2', '211', '23', '4']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "~CUSTOMER-SERVICES-NC-II|NIR|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". The area looks saturated: there is more training supply than recorded demand, so expect more competition for local work. Use the word \"saturated\". End by saying that, if their plans change, {alternatives} shows more demand against its supply.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"10 of the 211 posting records nationwide (5%)\"; {supply} = how many centers are here, this time \"3 of its 23 recorded centers (13%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. The area is saturated with {qualification}, with more training supply than recorded demand, indicating more competition for local work. However, if your plans change, {alternatives} shows a more favorable demand against its supply.",
+   "example_text": "You are in Negros Island Region and prefer not to relocate. The area is saturated with Customer Services NC II, with more training supply than recorded demand, indicating more competition for local work. However, if your plans change, Region VII (Central Visayas) shows a more favorable demand against its supply.",
+   "failed": {
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "~CUSTOMER-SERVICES-NC-II|NIR|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". The area looks saturated: there is more training supply than recorded demand, so expect more competition for local work. Use the word \"saturated\". End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"10 of the 211 posting records nationwide (5%)\"; {supply} = how many centers are here, this time \"3 of its 23 recorded centers (13%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area}, but you are open to relocating due to the saturated market. Here, {qualification} has only {demand} posting records nationwide, which is just 5%. However, {supply} is higher with {alternatives} centers recorded. Given the competition, if you consider relocating, {alternatives} might offer better opportunities.",
+   "example_text": "You are in Negros Island Region, but you are open to relocating due to the saturated market. Here, Customer Services NC II has only 10 of the 211 posting records nationwide (5%) posting records nationwide, which is just 5%. However, 3 of its 23 recorded centers (13%) is higher with Region VII (Central Visayas), Region IV-A (CALABARZON) and National Capital Region centers recorded. Given the competition, if you consider relocating, Region VII (Central Visayas), Region IV-A (CALABARZON) and National Capital Region might offer better opportunities.",
+   "failed": {
+    "figures": "typed a figure itself: ['5']"
+   }
+  },
+  {
+   "cases": 7,
+   "example_case": "~DRIVING-NC-III-2|III|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 2 posting records nationwide (50%)\"; {supply} = how many centers are here, this time \"1 of its 25 recorded centers (4%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, demand is ahead of supply here, which is a good signal for finding work nearby after qualifying. Demand is 1 of the 2 posting records nationwide (50%), while supply is 1 of its 25 recorded centers (4%). Consider other regions as alternatives.",
+   "example_text": "You are in Region III (Central Luzon) and prefer not to relocate. For Driving (Passenger Bus/Straight Truck) NC III, demand is ahead of supply here, which is a good signal for finding work nearby after qualifying. Demand is 1 of the 2 posting records nationwide (50%), while supply is 1 of its 25 recorded centers (4%). Consider other regions as alternatives.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '2', '25', '4', '50']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 7,
+   "example_case": "~DRIVING-NC-III-2|III|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 2 posting records nationwide (50%)\"; {supply} = how many centers are here, this time \"1 of its 25 recorded centers (4%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and open to relocating. For {qualification}, demand is ahead of supply, which is a good signal for finding work nearby after qualifying. The counts are small, so they're a rough signal. If you relocate, consider looking first at {alternatives}.",
+   "example_text": "You are in Region III (Central Luzon) and open to relocating. For Driving (Passenger Bus/Straight Truck) NC III, demand is ahead of supply, which is a good signal for finding work nearby after qualifying. The counts are small, so they're a rough signal. If you relocate, consider looking first at National Capital Region.",
+   "failed": {
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "~HAIRDRESSING-NC-II|XI|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 1 posting record nationwide (100%)\"; {supply} = how many centers are here, this time \"1 of its 22 recorded centers (5%)\"",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, demand is ahead of supply here, which is a good signal for finding work nearby after qualifying. Demand is 1 of the 1 posting record nationwide (100%), while supply is 1 of its 22 recorded centers (5%). These counts are small but indicate potential opportunities in your region.",
+   "example_text": "You are in Region XI (Davao Region) and prefer not to relocate. For Hairdressing NC II, demand is ahead of supply here, which is a good signal for finding work nearby after qualifying. Demand is 1 of the 1 posting record nationwide (100%), while supply is 1 of its 22 recorded centers (5%). These counts are small but indicate potential opportunities in your region.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '100', '22', '5']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "~HAIRDRESSING-NC-II|XI|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 1 posting record nationwide (100%)\"; {supply} = how many centers are here, this time \"1 of its 22 recorded centers (5%)\"",
+   "template": "You are in {area}, and you are open to relocating. For {qualification}, demand is ahead of supply, which is a good signal for finding work nearby after qualifying. Demand is 1 of the 1 posting record nationwide (100%), while supply is 1 of its 22 recorded centers (5%).",
+   "example_text": "You are in Region XI (Davao Region), and you are open to relocating. For Hairdressing NC II, demand is ahead of supply, which is a good signal for finding work nearby after qualifying. Demand is 1 of the 1 posting record nationwide (100%), while supply is 1 of its 22 recorded centers (5%).",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '100', '22', '5']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "~PLUMBING-NC-I|II|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Demand and training supply look balanced here. Use the word \"balanced\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 24 posting records nationwide (4%)\"; {supply} = how many centers are here, this time \"1 of its 24 recorded centers (4%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, there's a balanced demand and supply here, with only 1 of the 24 posting records nationwide (4%) and 1 of its 24 recorded centers (4%). While this is a rough signal, it suggests stability in your region. Consider other regions cautiously.",
+   "example_text": "You are in Region II (Cagayan Valley) and prefer not to relocate. For Plumbing NC I, there's a balanced demand and supply here, with only 1 of the 24 posting records nationwide (4%) and 1 of its 24 recorded centers (4%). While this is a rough signal, it suggests stability in your region. Consider other regions cautiously.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '24', '4']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "~PLUMBING-NC-I|II|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Demand and training supply look balanced here. Use the word \"balanced\". The counts are small: say they are a rough signal. End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"1 of the 24 posting records nationwide (4%)\"; {supply} = how many centers are here, this time \"1 of its 24 recorded centers (4%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area}, and you're open to relocating for {qualification}. Here, demand and training supply are balanced, with only 1 of the 24 posting records nationwide (4%) and 1 of its 24 recorded centers (4%). If you decide to relocate, consider looking first at other regions.",
+   "example_text": "You are in Region II (Cagayan Valley), and you're open to relocating for Plumbing NC I. Here, demand and training supply are balanced, with only 1 of the 24 posting records nationwide (4%) and 1 of its 24 recorded centers (4%). If you decide to relocate, consider looking first at other regions.",
+   "failed": {
+    "figures": "typed a figure itself: ['1', '24', '4']",
+    "slots": "left out ['demand', 'supply']",
+    "stance": "doesn't say where else to look",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "~SECURITY-SERVICES-NC-I|III|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 2 posting records nationwide (100%)\"; {supply} = how many centers are here, this time \"2 of its 23 recorded centers (9%)\"",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, demand is ahead of supply here, which is a good signal for finding work nearby after qualifying. Demand is 2 of the 2 posting records nationwide (100%), while supply is 2 of its 23 recorded centers (9%). These counts are small but indicate potential opportunities in your region.",
+   "example_text": "You are in Region III (Central Luzon) and prefer not to relocate. For Security Services NC I, demand is ahead of supply here, which is a good signal for finding work nearby after qualifying. Demand is 2 of the 2 posting records nationwide (100%), while supply is 2 of its 23 recorded centers (9%). These counts are small but indicate potential opportunities in your region.",
+   "failed": {
+    "figures": "typed a figure itself: ['100', '2', '23', '9']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  },
+  {
+   "cases": 2,
+   "example_case": "~SECURITY-SERVICES-NC-I|III|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". The counts are small: say they are a rough signal. Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"2 of the 2 posting records nationwide (100%)\"; {supply} = how many centers are here, this time \"2 of its 23 recorded centers (9%)\"",
+   "template": "You are in {area}, and you are open to relocating. For {qualification}, demand is ahead of supply, which is a good signal for finding work nearby after qualifying. Demand is 2 of the 2 posting records nationwide (100%), while supply is 2 of its 23 recorded centers (9%).",
+   "example_text": "You are in Region III (Central Luzon), and you are open to relocating. For Security Services NC I, demand is ahead of supply, which is a good signal for finding work nearby after qualifying. Demand is 2 of the 2 posting records nationwide (100%), while supply is 2 of its 23 recorded centers (9%).",
+   "failed": {
+    "figures": "typed a figure itself: ['100', '2', '23', '9']",
+    "slots": "left out ['demand', 'supply']",
+    "caution": "small counts aren't called a rough signal"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "~WAREHOUSING-SERVICES-NC-IV|NCR|stay",
+   "prompt": "Situation: The learner is in {area}, their own region, and prefers not to relocate. Say so: \"prefer not to relocate\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". Do not name any other region.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"3 of the 8 posting records nationwide (38%)\"; {supply} = how many centers are here, this time \"3 of its 26 recorded centers (12%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and prefer not to relocate. For {qualification}, demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. While considering alternatives, keep in mind {alternatives}.",
+   "example_text": "You are in National Capital Region and prefer not to relocate. For Warehousing Services NC IV, demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. While considering alternatives, keep in mind Region VI (Western Visayas).",
+   "failed": {
+    "slots": "left out ['demand', 'supply']",
+    "stance": "names other regions when it shouldn't"
+   }
+  },
+  {
+   "cases": 1,
+   "example_case": "~WAREHOUSING-SERVICES-NC-IV|NCR|move",
+   "prompt": "Situation: The learner is in {area}, their own region, and is open to relocating. Say so: \"open to relocating\". Demand is ahead of supply here, which is a good sign for finding work nearby after qualifying. Say \"demand is ahead of supply\". End by saying that, if they relocate, they should look first at {alternatives}.\nSlots: {qualification} = the qualification's name; {area} = the region's name; {demand} = how many posting records are here, this time \"3 of the 8 posting records nationwide (38%)\"; {supply} = how many centers are here, this time \"3 of its 26 recorded centers (12%)\"; {alternatives} = the other region or regions to look at",
+   "template": "You are in {area} and open to relocating. For {qualification}, demand is ahead of supply at 38%, a good sign for finding work nearby after qualifying. If you consider relocating, look first at {alternatives}.",
+   "example_text": "You are in National Capital Region and open to relocating. For Warehousing Services NC IV, demand is ahead of supply at 38%, a good sign for finding work nearby after qualifying. If you consider relocating, look first at Region VI (Western Visayas), Negros Island Region and Region III (Central Luzon).",
+   "failed": {
+    "figures": "typed a figure itself: ['38']",
+    "slots": "left out ['demand', 'supply']"
+   }
+  }
+ ],
+ "failed_cases_kept": "the first 40; every failure is in by_situation"
+}
