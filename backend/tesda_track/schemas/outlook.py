@@ -52,6 +52,31 @@ class OutlookInsight(BaseModel):
     points: list[OutlookPoint] = Field(description="The same analysis point by point, with the numbers behind it")
 
 
+DemandLevel = Literal["high", "moderate", "low", "none"]
+
+
+class HomeDemand(BaseModel):
+    """How much the qualification is needed in the learner's own region (Card 3)."""
+    region_code: str
+    name: str
+    posting_count: int = Field(ge=0)
+    level: DemandLevel = Field(description="The region's share of the posting records against an even share across "
+                                           "the regions: high at 1.5 times or more, moderate at half or more, low "
+                                           "below that, none without a record")
+    rank: int | None = Field(description="Its place among the regions with records, most first; null with none")
+    ranked_of: int = Field(ge=0, description="How many regions have records")
+    limited: bool = Field(description="Too few records for more than a rough signal")
+
+
+class HigherDemandArea(BaseModel):
+    region_code: str
+    name: str
+    posting_count: int = Field(ge=0)
+    level: DemandLevel
+    distance_km: float = Field(ge=0, description="Between the two regions' centers, as the crow flies")
+    nearby: bool = Field(description="Within NEARBY_KM of the learner's region")
+
+
 class QualificationOutlook(BaseModel):
     qualification: OutlookQualification
     region_code: str | None = Field(description="The region the analysis is about, or null for the whole country")
@@ -64,6 +89,11 @@ class QualificationOutlook(BaseModel):
     training_site_ids: list[int] = Field(description="The training providers counted as supply")
     assessment_site_ids: list[int] = Field(description="The assessment centers counted as supply")
     snapshot_dates: list[date]
+    demand_available: bool = Field(description="Whether any posting record links to this qualification at all")
+    home_demand: HomeDemand | None = Field(default=None, description="The learner's region, when they gave one")
+    higher_demand: list[HigherDemandArea] = Field(
+        default_factory=list, description="Regions with more posting records than the learner's: nearby ones first, "
+                                          "then the rest, each by records, at most five")
     insight: OutlookInsight
     includes_example_sites: bool = Field(
         default=False, description="A demo deployment counted its example placeholders as supply")

@@ -3685,6 +3685,63 @@ export interface components {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
         };
+        /** HigherDemandArea */
+        HigherDemandArea: {
+            /** Region Code */
+            region_code: string;
+            /** Name */
+            name: string;
+            /** Posting Count */
+            posting_count: number;
+            /**
+             * Level
+             * @enum {string}
+             */
+            level: "high" | "moderate" | "low" | "none";
+            /**
+             * Distance Km
+             * @description Between the two regions' centers, as the crow flies
+             */
+            distance_km: number;
+            /**
+             * Nearby
+             * @description Within NEARBY_KM of the learner's region
+             */
+            nearby: boolean;
+        };
+        /**
+         * HomeDemand
+         * @description How much the qualification is needed in the learner's own region (Card 3).
+         */
+        HomeDemand: {
+            /** Region Code */
+            region_code: string;
+            /** Name */
+            name: string;
+            /** Posting Count */
+            posting_count: number;
+            /**
+             * Level
+             * @description The region's share of the posting records against an even share across the regions: high at 1.5 times or more, moderate at half or more, low below that, none without a record
+             * @enum {string}
+             */
+            level: "high" | "moderate" | "low" | "none";
+            /**
+             * Rank
+             * @description Its place among the regions with records, most first; null with none
+             */
+            rank: number | null;
+            /**
+             * Ranked Of
+             * @description How many regions have records
+             */
+            ranked_of: number;
+            /**
+             * Limited
+             * @description Too few records for more than a rough signal
+             */
+            limited: boolean;
+        };
         /** ImprovementPriority */
         ImprovementPriority: {
             qualification: components["schemas"]["QualificationSummary"];
@@ -4695,6 +4752,18 @@ export interface components {
             assessment_site_ids: number[];
             /** Snapshot Dates */
             snapshot_dates: string[];
+            /**
+             * Demand Available
+             * @description Whether any posting record links to this qualification at all
+             */
+            demand_available: boolean;
+            /** @description The learner's region, when they gave one */
+            home_demand?: components["schemas"]["HomeDemand"] | null;
+            /**
+             * Higher Demand
+             * @description Regions with more posting records than the learner's: nearby ones first, then the rest, each by records, at most five
+             */
+            higher_demand?: components["schemas"]["HigherDemandArea"][];
             insight: components["schemas"]["OutlookInsight"];
             /**
              * Includes Example Sites
@@ -6255,6 +6324,11 @@ export interface components {
              * @description Certificates, trainings, assessments and external certificates.
              */
             credentials: string[];
+            /**
+             * Region Code
+             * @description The region the Skill Passport gives as home, as one of the app's region codes; null when it gives none or an unknown one.
+             */
+            region_code?: string | null;
         };
         /** TspSessionRequest */
         TspSessionRequest: {

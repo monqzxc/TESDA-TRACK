@@ -84,7 +84,7 @@ def read_tsp_profile(learner: CurrentLearner, session: SessionDep):
     profile = tsp_sign_in.linked_profile(session, learner)
     if profile is None:
         raise NotFoundError("This account isn't linked to a Skill Passport.")
-    return TspProfile(**tsp_sign_in.profile_labels(profile))
+    return TspProfile(**tsp_sign_in.profile_labels(profile), region_code=tsp_sign_in.region_code(session, profile))
 
 
 def _start_session(learner: Learner, response: Response, settings: Settings) -> SessionResponse:

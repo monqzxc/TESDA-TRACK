@@ -1,8 +1,10 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 import { create } from 'zustand'
 import { regionsQuery } from '../../api/queries.ts'
+import { AuthContext } from '../../auth/useAuth.ts'
 import type { MatchResult } from '../finder/api.ts'
+import { passportQuery } from '../tsp/passport.ts'
 import { clientConfigQuery, listingsQuery, sitesQuery } from '../training/api.ts'
 import {
   buildCenters,
@@ -157,7 +159,18 @@ export function useExplore(demandActive = false) {
   )
 
   const today = philippineDay(new Date())
-  const automaticRegion = nearestRegion(reference, regions.data ?? [])?.code ?? null
+  // The learner's area (Card 3): from their location or typed place, else where their Skill Passport says they live.
+  // Optional: the page also renders without an account provider (its tests), and then nobody is signed in.
+  const learner = useContext(AuthContext)?.learner ?? null
+  const passport = useQuery({ ...passportQuery(learner?.id ?? ''), enabled: learner !== null })
+  const locatedRegion = nearestRegion(reference, regions.data ?? [])?.code ?? null
+  const profileRegion = passport.data?.region_code ?? null
+  const automaticRegion = locatedRegion ?? profileRegion
+  const homeSource: 'location' | 'profile' | null = locatedRegion
+    ? 'location'
+    : profileRegion
+      ? 'profile'
+      : null
   const demandRegion = demandFilters.region === undefined ? automaticRegion : demandFilters.region
   const demandLocality = demandFilters.scope === demandRegion ? demandFilters.locality : null
   const demandOffset = demandFilters.scope === demandRegion ? demandFilters.offset : 0
@@ -228,8 +241,9 @@ export function useExplore(demandActive = false) {
     demandMap,
     demandRegion,
     demandCode,
-    /** The learner's own region, from their location or typed place. */
+    /** The learner's own region, from their location or typed place, else their Skill Passport. */
     homeRegion: automaticRegion,
+    homeSource,
     relocate,
     outlook,
     summary,

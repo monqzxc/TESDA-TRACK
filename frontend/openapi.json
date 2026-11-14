@@ -12105,6 +12105,117 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "HigherDemandArea": {
+        "properties": {
+          "region_code": {
+            "type": "string",
+            "title": "Region Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "posting_count": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Posting Count"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "high",
+              "moderate",
+              "low",
+              "none"
+            ],
+            "title": "Level"
+          },
+          "distance_km": {
+            "type": "number",
+            "minimum": 0,
+            "title": "Distance Km",
+            "description": "Between the two regions' centers, as the crow flies"
+          },
+          "nearby": {
+            "type": "boolean",
+            "title": "Nearby",
+            "description": "Within NEARBY_KM of the learner's region"
+          }
+        },
+        "type": "object",
+        "required": [
+          "region_code",
+          "name",
+          "posting_count",
+          "level",
+          "distance_km",
+          "nearby"
+        ],
+        "title": "HigherDemandArea"
+      },
+      "HomeDemand": {
+        "properties": {
+          "region_code": {
+            "type": "string",
+            "title": "Region Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "posting_count": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Posting Count"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "high",
+              "moderate",
+              "low",
+              "none"
+            ],
+            "title": "Level",
+            "description": "The region's share of the posting records against an even share across the regions: high at 1.5 times or more, moderate at half or more, low below that, none without a record"
+          },
+          "rank": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rank",
+            "description": "Its place among the regions with records, most first; null with none"
+          },
+          "ranked_of": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Ranked Of",
+            "description": "How many regions have records"
+          },
+          "limited": {
+            "type": "boolean",
+            "title": "Limited",
+            "description": "Too few records for more than a rough signal"
+          }
+        },
+        "type": "object",
+        "required": [
+          "region_code",
+          "name",
+          "posting_count",
+          "level",
+          "rank",
+          "ranked_of",
+          "limited"
+        ],
+        "title": "HomeDemand",
+        "description": "How much the qualification is needed in the learner's own region (Card 3)."
+      },
       "ImprovementPriority": {
         "properties": {
           "qualification": {
@@ -14959,6 +15070,30 @@
             "type": "array",
             "title": "Snapshot Dates"
           },
+          "demand_available": {
+            "type": "boolean",
+            "title": "Demand Available",
+            "description": "Whether any posting record links to this qualification at all"
+          },
+          "home_demand": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/HomeDemand"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "The learner's region, when they gave one"
+          },
+          "higher_demand": {
+            "items": {
+              "$ref": "#/components/schemas/HigherDemandArea"
+            },
+            "type": "array",
+            "title": "Higher Demand",
+            "description": "Regions with more posting records than the learner's: nearby ones first, then the rest, each by records, at most five"
+          },
           "insight": {
             "$ref": "#/components/schemas/OutlookInsight"
           },
@@ -14999,6 +15134,7 @@
           "training_site_ids",
           "assessment_site_ids",
           "snapshot_dates",
+          "demand_available",
           "insight",
           "ai_summary_available",
           "limitations"
@@ -19595,6 +19731,18 @@
             "type": "array",
             "title": "Credentials",
             "description": "Certificates, trainings, assessments and external certificates."
+          },
+          "region_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Code",
+            "description": "The region the Skill Passport gives as home, as one of the app's region codes; null when it gives none or an unknown one."
           }
         },
         "type": "object",

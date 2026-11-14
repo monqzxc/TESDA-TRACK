@@ -2353,6 +2353,32 @@ export const en = {
         balance: 'Balance',
         relocation: 'Elsewhere',
       },
+      // Card 3: how much the qualification is needed where the learner is, and where it's needed more.
+      local: {
+        heading: 'Demand where you are',
+        from: { location: 'From your location', profile: 'From your Skill Passport' },
+        levels: {
+          high: 'High demand',
+          moderate: 'Moderate demand',
+          low: 'Low demand',
+          none: 'No recorded demand',
+        },
+        here: (region: string, postings: number) =>
+          `${postings.toLocaleString()} posting record${postings === 1 ? '' : 's'} in ${region}.`,
+        rank: (rank: number, of: number) =>
+          `${rank === 1 ? 'The most' : `Number ${rank}`} of ${of} region${of === 1 ? '' : 's'} with records.`,
+        higher: 'Where it’s needed more',
+        nearby: 'Nearby',
+        elsewhere: 'Elsewhere',
+        records: (postings: number) =>
+          `${postings.toLocaleString()} record${postings === 1 ? '' : 's'}`,
+        away: (km: number) => `about ${Math.round(km).toLocaleString()} km away`,
+        show: (region: string) => `Show ${region} on the map`,
+        top: 'No region has more recorded demand for it than yours.',
+        noData:
+          'No posting records link to this qualification yet, so we can’t say where it’s needed. That’s missing evidence, not proof of low demand.',
+        noArea: 'Share your location or type a city to see demand where you are.',
+      },
       ai: 'AI summary',
       aiNote: 'Written by AI from the counts on this map.',
       numbers: 'See the numbers behind it',

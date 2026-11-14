@@ -95,3 +95,21 @@ Backend regressions: `test_area_jobs.py`, `test_area_qualifications.py`, and
 Explore rules, qualification evidence, and map renderer selection. For the outlook: `test_qualification_outlook.py`,
 `OutlookBrief.test.tsx`, `recommend.test.ts` and `mapLimits.test.ts`. The UI includes
 loading, retry, empty, filtered, pagination and no-location states.
+
+## Demand where the learner is
+
+With a qualification in focus, the brief opens with **Demand where you are**:
+
+- **The learner's area** is the region nearest their shared location or typed place. Without either, it is the
+  region on their Skill Passport (`region_code` on `GET /api/v1/auth/tsp/profile`) when they signed in with TSP.
+  Without any of these, the brief asks for a location.
+- **The level** compares the region's share of the qualification's posting records with an even share across the
+  regions: **high** at 1.5 times an even share or more, **moderate** at half or more, **low** below that, and **no
+  recorded demand** without a record. Fewer than three records is a rough signal, as elsewhere on the map.
+- **Where it's needed more** lists up to five regions with more records than the learner's: regions whose centers
+  are within 400 km first, then the rest, each by record count. Choosing one shows it on the demand map.
+- With no posting records for the qualification anywhere, the brief says so instead of giving a level: missing
+  evidence is not low demand.
+
+These come from `home_demand`, `higher_demand` and `demand_available` on `GET /api/v1/labor-market/outlook`
+(with `home_region_code`).
