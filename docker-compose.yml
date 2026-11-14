@@ -20,8 +20,8 @@ x-backend-environment: &backend-environment
   RANKING_WEIGHTS__SCHEDULE: ${RANKING_WEIGHTS__SCHEDULE:-0.1}
   RANKING_WEIGHTS__PREFERENCE: ${RANKING_WEIGHTS__PREFERENCE:-0.05}
   # Accepted pilot model (TASK-085). Keep the host model path separate from this container path.
-  EMBEDDING_MODEL: ${EMBEDDING_MODEL:-tesda-track/tesda-e5-small-v3}
-  EMBEDDING_MODEL_PATH: ${DOCKER_EMBEDDING_MODEL_PATH:-/app/finetuned/tesda-e5-small-v3}
+  EMBEDDING_MODEL: ${EMBEDDING_MODEL:-tesda-track/tesda-e5-small-v6-colab}
+  EMBEDDING_MODEL_PATH: ${DOCKER_EMBEDDING_MODEL_PATH:-/app/finetuned/tesda-e5-small-v6-colab}
   SKILLS_BRIDGE_MCP_ENABLED: ${SKILLS_BRIDGE_MCP_ENABLED:-true}
   SKILLS_BRIDGE_MCP_URL: ${SKILLS_BRIDGE_MCP_URL:-https://mcp.skills-bridge.ph/mcp}
   SKILLS_BRIDGE_MCP_TOKEN: ${SKILLS_BRIDGE_MCP_TOKEN:-}
@@ -88,8 +88,8 @@ services:
     build:
       context: ./backend
       args:
-        EMBEDDING_MODEL: ${EMBEDDING_MODEL:-tesda-track/tesda-e5-small-v3}
-        EMBEDDING_MODEL_PATH: ${DOCKER_EMBEDDING_MODEL_PATH:-/app/finetuned/tesda-e5-small-v3}
+        EMBEDDING_MODEL: ${EMBEDDING_MODEL:-tesda-track/tesda-e5-small-v6-colab}
+        EMBEDDING_MODEL_PATH: ${DOCKER_EMBEDDING_MODEL_PATH:-/app/finetuned/tesda-e5-small-v6-colab}
         SEMANTIC_SEARCH_ENABLED: ${SEMANTIC_SEARCH_ENABLED:-true}
     image: tesda-track-backend:latest
     restart: unless-stopped

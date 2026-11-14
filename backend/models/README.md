@@ -5,7 +5,7 @@ run from `backend/` (see `backend/training/`). Folders are git-ignored; only thi
 
 ## Get the shared model
 
-The recommended model, `tesda-e5-small-v3`, is published with its `calibration.json` at
+The pilot model, `tesda-e5-small-v3`, is published with its `calibration.json` at
 [huggingface.co/Nyanta19/tesda-e5-small-v3](https://huggingface.co/Nyanta19/tesda-e5-small-v3) (public; its
 model card has the training details and the sealed-set evaluation against v2). From the repository root:
 
@@ -14,8 +14,8 @@ hf download Nyanta19/tesda-e5-small-v3 --local-dir backend/models/tesda-e5-small
 ```
 
 Then serve it as described below, with `EMBEDDING_MODEL=tesda-track/tesda-e5-small-v3` and
-`EMBEDDING_MODEL_PATH=backend/models/tesda-e5-small-v3`. This is the accepted pilot model as of
-21 October 2026 (TASK-085); see [the decision and acceptance gates](../../docs/ml/rounds.md#pilot-decision-21-october-2026).
+`EMBEDDING_MODEL_PATH=backend/models/tesda-e5-small-v3`. This was the accepted pilot model as of
+21 October 2026 (TASK-085), and is the rollback now that production serves v6-colab (below); see [the decision and acceptance gates](../../docs/ml/rounds.md#pilot-decision-21-october-2026).
 
 ### v6 (in production)
 
@@ -67,8 +67,11 @@ Serve one locally by setting `EMBEDDING_MODEL=tesda-track/<name>` and `EMBEDDING
 in `.env`, then run `python -m tesda_track.embeddings sync` (embeddings are kept per model name).
 
 Docker: the build copies this folder to `/app/finetuned/` without `model.safetensors`, `checkpoints/` or run logs
-(`backend/.dockerignore`). Keep `EMBEDDING_MODEL_PATH=backend/models/tesda-e5-small-v3` for local commands and
-set `DOCKER_EMBEDDING_MODEL_PATH=/app/finetuned/tesda-e5-small-v3` in `.env` before `docker compose up -d --build`.
-Compose uses v3 for both build and runtime by default. Download the folder **before** building; a missing model
-fails the image warmup, while a runtime load failure leaves the API on keyword matching and readiness degraded.
-Its accepted calibration is `3.5 / 5.5 / 0.3 / 20` (floor / ceiling / keyword weight / minimum score).
+(`backend/.dockerignore`). Keep `EMBEDDING_MODEL_PATH=backend/models/tesda-e5-small-v6-colab` for local commands
+and set `DOCKER_EMBEDDING_MODEL_PATH=/app/finetuned/tesda-e5-small-v6-colab` in `.env` before
+`docker compose up -d --build`. Compose uses v6-colab for both build and runtime by default (it used v3 until
+14 November 2026). Download **and calibrate** the folder before building, so its `calibration.json` is copied into
+the image; a missing model fails the image warmup, while a runtime load failure leaves the API on keyword matching
+and readiness degraded. v6-colab's calibration is `2.0 / 5.0 / 0.3 / 20` (floor / ceiling / keyword weight /
+minimum score); v3's accepted one is `3.5 / 5.5 / 0.3 / 20`. To build with v3 instead, set `EMBEDDING_MODEL` and
+`DOCKER_EMBEDDING_MODEL_PATH` to its name in `.env`.
