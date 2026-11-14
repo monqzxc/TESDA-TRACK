@@ -2379,6 +2379,14 @@ export const en = {
           'No posting records link to this qualification yet, so we can’t say where it’s needed. That’s missing evidence, not proof of low demand.',
         noArea: 'Share your location or type a city to see demand where you are.',
       },
+      // Card 5: the way out to TSP's job search, for the skill and area on screen.
+      findJobs: {
+        label: 'Find Jobs on TSP',
+        // Read by screen readers: what it searches for, and that it opens TSP in a new tab.
+        for: (skill: string | null, area: string | null) =>
+          `Find Jobs on TSP${skill ? ` for ${skill}` : ''}${area ? ` in ${area}` : ''} (opens TESDA Skill Passport in a new tab)`,
+        notReady: 'The TSP Find Jobs link isn’t set up yet.',
+      },
       // Card 4: other qualifications in demand where the learner is.
       nearby: {
         heading: 'Other qualifications in demand near you',

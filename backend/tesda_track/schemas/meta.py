@@ -24,5 +24,9 @@ class ClientConfig(BaseModel):
                                                       "restricted to the deployment's domains. Empty: no MapTiler.")
     map_tiles_url: str = Field(default="", description="TileJSON address of an OpenMapTiles-schema vector source, "
                                                        "used instead of MapTiler. Empty: none.")
+    tsp_find_jobs_url: str = Field(default="", description="TSP Find Jobs page the \"Find Jobs on TSP\" button opens. "
+                                                           "Empty: the button is turned off.")
+    tsp_find_jobs_skill_param: str = Field(default="skill", description="Query parameter for the chosen skill")
+    tsp_find_jobs_area_param: str = Field(default="area", description="Query parameter for the chosen area")
     map_3d: bool = Field(default=True, description="Whether the center map offers 3D buildings where the tiles record "
                                                    "building heights.")

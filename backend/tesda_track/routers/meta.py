@@ -27,4 +27,7 @@ def client_config(response: Response, settings: SettingsDep):
                         map_engine=settings.map_engine,
                         maptiler_key=settings.maptiler_key,
                         map_tiles_url=settings.map_tiles_url,
+                        tsp_find_jobs_url=settings.tsp_find_jobs_url,
+                        tsp_find_jobs_skill_param=settings.tsp_find_jobs_skill_param,
+                        tsp_find_jobs_area_param=settings.tsp_find_jobs_area_param,
                         map_3d=settings.map_3d_enabled)

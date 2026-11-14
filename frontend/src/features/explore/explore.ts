@@ -89,3 +89,38 @@ export function nearestRegion(point: Point | null, regions: readonly Region[]): 
     distanceKm(point, region) < distanceKm(point, best) ? region : best,
   )
 }
+
+export interface FindJobsConfig {
+  tsp_find_jobs_url?: string
+  tsp_find_jobs_skill_param?: string
+  tsp_find_jobs_area_param?: string
+}
+
+/**
+ * TSP Find Jobs for the chosen skill and area (Card 5), or null when the deployment hasn't set the page. A skill or
+ * area not chosen is left out, so with neither it is TSP's general Find Jobs page. Values are URL-encoded, and
+ * anything already on the configured address is kept.
+ */
+export function findJobsUrl(
+  config: FindJobsConfig | undefined,
+  skill: string | null,
+  area: string | null,
+): string | null {
+  const base = config?.tsp_find_jobs_url?.trim()
+  if (!base) return null
+  let url: URL
+  try {
+    url = new URL(base)
+  } catch {
+    return null
+  }
+  if (url.protocol !== 'https:' && url.protocol !== 'http:') return null
+  const params: [string | undefined, string | null][] = [
+    [config?.tsp_find_jobs_skill_param || 'skill', skill],
+    [config?.tsp_find_jobs_area_param || 'area', area],
+  ]
+  for (const [name, value] of params) {
+    if (name && value?.trim()) url.searchParams.set(name, value.trim())
+  }
+  return url.href
+}

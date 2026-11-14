@@ -28,7 +28,8 @@ def test_reports_the_map_key_and_the_optional_services():
     assert response.json() == {"carto_key": "carto-public-key", "routing_enabled": True,
                                "skills_bridge_enabled": True, "tsp_sign_in": False, "tsp_mock": False, "tsp_suggestions": False,
                                "map_engine": "maplibre", "maptiler_key": "", "map_tiles_url": "",
-                               "map_3d": True}
+                               "map_3d": True, "tsp_find_jobs_url": "", "tsp_find_jobs_skill_param": "skill",
+                               "tsp_find_jobs_area_param": "area"}
 
 
 def test_reports_services_that_are_turned_off():
@@ -36,7 +37,8 @@ def test_reports_services_that_are_turned_off():
     assert response.json() == {"carto_key": "", "routing_enabled": False, "skills_bridge_enabled": False,
                                "tsp_sign_in": False, "tsp_mock": False, "tsp_suggestions": False,
                                "map_engine": "maplibre", "maptiler_key": "", "map_tiles_url": "",
-                               "map_3d": True}
+                               "map_3d": True, "tsp_find_jobs_url": "", "tsp_find_jobs_skill_param": "skill",
+                               "tsp_find_jobs_area_param": "area"}
 
 
 def test_reports_tsp_sign_in():
@@ -98,4 +100,30 @@ def test_the_app_serves_it_from_the_environment_without_sign_in_or_a_database(en
     assert response.json() == {"carto_key": "carto-from-the-environment", "routing_enabled": False,
                                "skills_bridge_enabled": True, "tsp_sign_in": False, "tsp_mock": False, "tsp_suggestions": False,
                                "map_engine": "leaflet", "maptiler_key": "maptiler-from-the-environment",
-                               "map_tiles_url": "", "map_3d": False}
+                               "map_tiles_url": "", "map_3d": False, "tsp_find_jobs_url": "",
+                               "tsp_find_jobs_skill_param": "skill", "tsp_find_jobs_area_param": "area"}
+
+
+def test_reports_the_tsp_find_jobs_link():
+    body = client_config(settings(tsp_find_jobs_url=" https://tsp.example.ph/jobs ", tsp_find_jobs_skill_param="q",
+                                  tsp_find_jobs_area_param="location")).json()
+    assert (body["tsp_find_jobs_url"], body["tsp_find_jobs_skill_param"], body["tsp_find_jobs_area_param"]) == (
+        "https://tsp.example.ph/jobs", "q", "location")
+
+
+@pytest.mark.parametrize("value", ["javascript:alert(1)", "ftp://tsp.example.ph", "tsp.example.ph/jobs"])
+def test_a_find_jobs_url_must_be_a_web_address(value):
+    with pytest.raises(ValueError):
+        settings(tsp_find_jobs_url=value)
+
+
+def test_production_needs_https_for_find_jobs():
+    assert settings(tsp_find_jobs_url="http://localhost:9000/jobs").tsp_find_jobs_url
+    with pytest.raises(ValueError):
+        settings(tsp_find_jobs_url="http://tsp.example.ph/jobs", environment="production")
+
+
+@pytest.mark.parametrize("name", ["", "a b", "x&y=1", "a" * 41])
+def test_find_jobs_parameter_names_are_plain(name):
+    with pytest.raises(ValueError):
+        settings(tsp_find_jobs_skill_param=name)

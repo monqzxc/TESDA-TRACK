@@ -6,7 +6,7 @@ import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
 import type { View } from './ExplorePage.tsx'
-import { estimateMinutes, roundKm } from './explore.ts'
+import { estimateMinutes, findJobsUrl, roundKm } from './explore.ts'
 import type { Balance } from './outlookApi.ts'
 import type { Recommendation } from './recommend.ts'
 import { useDemandStore, useExploreStore, type Explore } from './useExplore.ts'
@@ -203,6 +203,7 @@ export function OutlookBrief({
             )}
           >
             <LocalDemand explore={explore} onView={onView} />
+            <FindJobsButton explore={explore} skill={name} />
             <NearbyQualifications explore={explore} />
 
             {/* The analysis in a few sentences: AI-written where the deployment has it, else the rules' own. */}
@@ -460,5 +461,42 @@ function NearbyQualifications({ explore }: { explore: Explore }) {
         </p>
       )}
     </div>
+  )
+}
+
+/**
+ * Opens TSP Find Jobs for the qualification in focus and the area being looked at (Card 5), in a new tab, so the
+ * learner keeps their place here. Only the button: TESDA-TRACK has no job search of its own.
+ */
+function FindJobsButton({ explore, skill }: { explore: Explore; skill: string }) {
+  const copy = useCopy().explore.outlook.findJobs
+  const code = explore.demandRegion ?? explore.homeRegion
+  const area = code ? (explore.regions.find((region) => region.code === code)?.name ?? null) : null
+  const href = findJobsUrl(explore.config, skill || null, area)
+  const look = cx(button({ variant: 'secondary', height: 44 }), 'self-start')
+  if (!href) {
+    return (
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+        <Button isDisabled className={cx(look, 'opacity-60')}>
+          <Icon name="briefcase" />
+          {copy.label}
+          <Icon name="external" />
+        </Button>
+        <p className={note}>{copy.notReady}</p>
+      </div>
+    )
+  }
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer external"
+      aria-label={copy.for(skill || null, area)}
+      className={cx(look, 'no-underline')}
+    >
+      <Icon name="briefcase" />
+      {copy.label}
+      <Icon name="external" />
+    </a>
   )
 }

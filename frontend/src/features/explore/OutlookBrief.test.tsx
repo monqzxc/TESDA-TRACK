@@ -507,3 +507,57 @@ describe('Other qualifications in demand near you (Card 4)', () => {
     ).toBeInTheDocument()
   })
 })
+
+describe('Find Jobs on TSP (Card 5)', () => {
+  const open = () =>
+    renderWithQuery(
+      <MemoryRouter initialEntries={['/explore']}>
+        <ExplorePage />
+      </MemoryRouter>,
+    )
+
+  it('opens TSP Find Jobs for the qualification and area, in a new tab', async () => {
+    server.use(
+      http.get('*/api/v1/client-config', () =>
+        HttpResponse.json({
+          routing_enabled: false,
+          carto_key: '',
+          tsp_find_jobs_url: 'https://tsp.example.ph/find-jobs',
+          tsp_find_jobs_skill_param: 'skill',
+          tsp_find_jobs_area_param: 'area',
+        }),
+      ),
+    )
+    open()
+    const link = await screen.findByRole('link', {
+      name: 'Find Jobs on TSP for Housekeeping NC II in Metro Manila (opens TESDA Skill Passport in a new tab)',
+    })
+    expect(link).toHaveAttribute(
+      'href',
+      'https://tsp.example.ph/find-jobs?skill=Housekeeping+NC+II&area=Metro+Manila',
+    )
+    expect(link).toHaveAttribute('target', '_blank')
+    expect(link.getAttribute('rel')).toContain('noopener')
+    expect(link.getAttribute('rel')).toContain('noreferrer')
+  })
+
+  it('follows the area being looked at', async () => {
+    server.use(
+      http.get('*/api/v1/client-config', () =>
+        HttpResponse.json({ tsp_find_jobs_url: 'https://tsp.example.ph/find-jobs' }),
+      ),
+    )
+    useDemandStore.setState({ region: 'VII' })
+    open()
+    const link = await screen.findByRole('link', { name: /in Central Visayas/ })
+    expect(link.getAttribute('href')).toContain('area=Central+Visayas')
+  })
+
+  it('stays turned off until the deployment sets the TSP link', async () => {
+    open()
+    const button = await screen.findByRole('button', { name: /Find Jobs on TSP/ })
+    expect(button).toBeDisabled()
+    expect(screen.getByText('The TSP Find Jobs link isn’t set up yet.')).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: /Find Jobs on TSP/ })).not.toBeInTheDocument()
+  })
+})

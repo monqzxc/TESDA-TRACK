@@ -10548,6 +10548,24 @@
             "description": "TileJSON address of an OpenMapTiles-schema vector source, used instead of MapTiler. Empty: none.",
             "default": ""
           },
+          "tsp_find_jobs_url": {
+            "type": "string",
+            "title": "Tsp Find Jobs Url",
+            "description": "TSP Find Jobs page the \"Find Jobs on TSP\" button opens. Empty: the button is turned off.",
+            "default": ""
+          },
+          "tsp_find_jobs_skill_param": {
+            "type": "string",
+            "title": "Tsp Find Jobs Skill Param",
+            "description": "Query parameter for the chosen skill",
+            "default": "skill"
+          },
+          "tsp_find_jobs_area_param": {
+            "type": "string",
+            "title": "Tsp Find Jobs Area Param",
+            "description": "Query parameter for the chosen area",
+            "default": "area"
+          },
           "map_3d": {
             "type": "boolean",
             "title": "Map 3D",

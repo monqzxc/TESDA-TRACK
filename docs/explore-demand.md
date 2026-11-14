@@ -127,3 +127,21 @@ Below it, **Other qualifications in demand near you** suggests up to three other
 - **Ranking** weighs demand (against the busiest candidate) and fit equally. Each suggestion lists its reasons:
   the records behind the demand first, then what fits.
 - With none in demand in the region, the brief says so. Choosing a suggestion puts it in focus.
+
+## Find Jobs on TSP
+
+The brief has a **Find Jobs on TSP** button. It opens TSP's Find Jobs page in a new tab for the qualification in
+focus and the area being looked at (the selected region, else the learner's own), so the learner keeps their place.
+TESDA-TRACK has no job search of its own.
+
+TSP hasn't confirmed the page's address or parameters yet, so all of it is configuration:
+
+```text
+TSP_FIND_JOBS_URL=https://<tsp-host>/<find-jobs-page>
+TSP_FIND_JOBS_SKILL_PARAM=skill   # the query parameter for the qualification's name
+TSP_FIND_JOBS_AREA_PARAM=area     # the query parameter for the region's name
+```
+
+Values are URL-encoded, a skill or area not chosen is left out (with neither, it is the general Find Jobs page), and
+anything already in the address is kept. Until `TSP_FIND_JOBS_URL` is set, the button shows but is turned off, with
+a note that the link isn't set up yet. The address must be `https://` in production.

@@ -14,5 +14,6 @@ def test_client_config_is_public_and_follows_the_settings(client, monkeypatch):
                                "skills_bridge_enabled": False, "tsp_sign_in": False, "tsp_mock": False,
                                "tsp_suggestions": get_settings().tsp_suggestions_enabled,
                                "map_engine": get_settings().map_engine, "maptiler_key": get_settings().maptiler_key,
-                               "map_tiles_url": get_settings().map_tiles_url, "map_3d": get_settings().map_3d_enabled}
+                               "map_tiles_url": get_settings().map_tiles_url, "map_3d": get_settings().map_3d_enabled, "tsp_find_jobs_url": "",
+                               "tsp_find_jobs_skill_param": "skill", "tsp_find_jobs_area_param": "area"}
     assert response.headers["cache-control"] == "public, max-age=300"

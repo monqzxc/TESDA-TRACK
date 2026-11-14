@@ -3075,6 +3075,24 @@ export interface components {
              */
             map_tiles_url: string;
             /**
+             * Tsp Find Jobs Url
+             * @description TSP Find Jobs page the "Find Jobs on TSP" button opens. Empty: the button is turned off.
+             * @default
+             */
+            tsp_find_jobs_url: string;
+            /**
+             * Tsp Find Jobs Skill Param
+             * @description Query parameter for the chosen skill
+             * @default skill
+             */
+            tsp_find_jobs_skill_param: string;
+            /**
+             * Tsp Find Jobs Area Param
+             * @description Query parameter for the chosen area
+             * @default area
+             */
+            tsp_find_jobs_area_param: string;
+            /**
              * Map 3D
              * @description Whether the center map offers 3D buildings where the tiles record building heights.
              * @default true
