@@ -70,7 +70,7 @@ export function AccountForms({
         ) : (
           <SignInForm defaultEmail={defaultEmail} focusFirstField={false} onSignedIn={onSignedIn} />
         )}
-        <p className={formStyle.note}>{mockTsp ? copy.tsp.testAccounts : copy.tsp.notConnected}</p>
+        {mockTsp && <p className={formStyle.note}>{copy.tsp.testAccounts}</p>}
       </>
     )
   }

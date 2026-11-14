@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { Button, Input, Label, Switch, TextField, ToggleButton } from 'react-aria-components'
 import { useNavigate } from 'react-router'
@@ -8,7 +9,7 @@ import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { useFinderStore } from '../finder/store.ts'
 import { DemandPanel } from './DemandPanel.tsx'
-import type { ClientConfig } from '../training/api.ts'
+import { offeringsQuery, type ClientConfig } from '../training/api.ts'
 import type { CenterKind } from '../training/address.ts'
 import { googleMapsDirections, RoutePanel } from '../training/CenterDetail.tsx'
 import { placeLabel, type Center, type Point } from '../training/centers.ts'
@@ -616,17 +617,22 @@ export function CenterCard({
   const en = useCopy()
   const copy = en.explore.card
   const openPathway = useOpenPathway()
-  const listings = [...center.programs, ...center.schedules]
-  const listedFor = [
+  // The center's whole offering once it's loaded; until then (or if it fails) what the search already found.
+  const offerings = useQuery(offeringsQuery(center)).data
+  const listings = [...center.programs, ...center.schedules, ...(offerings ?? [])]
+  // Every qualification the center offers, those matching the learner's search first (Card 2).
+  const offered = [
     ...new Map(
-      listings
-        .filter((listing) => !codes.size || codes.has(listing.qualification.code))
-        .map((listing) => [listing.qualification.code, listing.qualification]),
+      listings.map((listing) => [listing.qualification.code, listing.qualification]),
     ).values(),
   ]
+  const matches = (qualification: { code: string }) => codes.has(qualification.code)
+  const listedFor = [...offered.filter(matches), ...offered.filter((q) => !matches(q))]
   // The readiness check is for the qualification the card was opened from, or else the first one listed here.
   const readiness = openPathway
-    ? (listedFor.find((qualification) => qualification.code === code) ?? listedFor[0])
+    ? (listedFor.find((qualification) => qualification.code === code) ??
+      listedFor.find(matches) ??
+      listedFor[0])
     : undefined
   const point =
     center.latitude !== null && center.longitude !== null
@@ -735,11 +741,14 @@ export function CenterCard({
                     className={cx(
                       tag,
                       'py-1',
-                      qualification.code === readiness?.code
+                      matches(qualification) || qualification.code === readiness?.code
                         ? 'bg-tint text-blue ring-1 ring-pill-border'
                         : 'bg-chip text-navy',
                     )}
                   >
+                    {matches(qualification) && (
+                      <Icon name="check" label={copy.matchesSearch} className="flex-none" />
+                    )}
                     {qualification.name}
                   </span>
                 ))}

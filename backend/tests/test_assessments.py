@@ -41,6 +41,15 @@ def test_schedules_can_be_searched_near_a_point(client, make_center, make_schedu
     assert [s["id"] for s in by_region] == [cebu_schedule["id"]]
 
 
+def test_schedules_can_be_listed_for_one_center(client, make_center, make_schedule):
+    # A center's details list everything it offers, whatever the learner searched for.
+    cebu = make_center(name="Cebu Assessment Center", region_code="VII", location=CEBU_CITY)
+    manila_schedule = make_schedule()
+    cebu_schedule = make_schedule(center=cebu)
+    assert [s["id"] for s in upcoming(client, center_id=cebu["id"])] == [cebu_schedule["id"]]
+    assert [s["id"] for s in upcoming(client, center_id=manila_schedule["center"]["id"])] == [manila_schedule["id"]]
+
+
 def test_centers_can_be_listed_within_a_radius(client, make_center):
     manila = make_center()
     cebu = make_center(name="Cebu Assessment Center", region_code="VII", location=CEBU_CITY)

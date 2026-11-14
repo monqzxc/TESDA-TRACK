@@ -7990,6 +7990,8 @@ export interface operations {
                 near_lat?: number | null;
                 near_lon?: number | null;
                 radius_km?: number | null;
+                /** @description Only this assessment center's schedules. */
+                center_id?: number | null;
             };
             header?: never;
             path?: never;

@@ -11,7 +11,7 @@ from tesda_track.config import get_settings
 from tesda_track.errors import InvalidRequestError
 from tesda_track.models import AssessmentApplication, Learner, RankingAudit, Region, utcnow
 from tesda_track.schemas.assessment_ranking import AssessmentRanking, AssessmentRankingRequest, RankedAssessment, UnconfirmedAssessment
-from tesda_track.schemas.delivery import NearbySearch
+from tesda_track.schemas.delivery import ScheduleSearch
 from tesda_track.schemas.learner_assessments import AssessmentAnswers, ScoreFactor
 from tesda_track.services import assessments, catalog, learner_assessments, personalization, verification
 from tesda_track.services.ranking import goal_fingerprint
@@ -67,7 +67,7 @@ def rank(session: Session, request: AssessmentRankingRequest, learner: Learner |
     ranked, pending = [], []
     offset = 0
     while True:
-        batch = assessments.search_schedules(session, NearbySearch(qualification_code=qualification.code,
+        batch = assessments.search_schedules(session, ScheduleSearch(qualification_code=qualification.code,
             region_code=request.region_code, near_lat=near_lat, near_lon=near_lon, limit=100, offset=offset))
         for schedule, taken, distance in batch:
             if schedule.slots <= taken:

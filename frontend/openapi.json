@@ -2641,6 +2641,24 @@
               ],
               "title": "Radius Km"
             }
+          },
+          {
+            "name": "center_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only this assessment center's schedules.",
+              "title": "Center Id"
+            },
+            "description": "Only this assessment center's schedules."
           }
         ],
         "responses": {

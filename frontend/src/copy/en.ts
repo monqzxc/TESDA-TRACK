@@ -1639,8 +1639,8 @@ export const en = {
       name: 'TESDA Skills Passport',
       heading: 'Sign in with TSP',
       lead: 'Use your TSP account to save centers and pick up where you left off.',
-      notConnected:
-        'TSP sign-in isn’t connected yet. A TESDA-TRACK account stands in for your TSP account.',
+      // notConnected:
+      //   'TSP sign-in isn’t connected yet. A TESDA-TRACK account stands in for your TSP account.',
       signIn: 'Sign in with TSP',
       // The mock TSP (docs/tsp-mock.md): synthetic accounts sign in through the real TSP sign-in path.
       username: 'TSP email',
@@ -2393,7 +2393,8 @@ export const en = {
       assessment: 'Assessment center · Get certified',
       training: 'Training center · Train',
       leadsToNc: 'Leads to an NC',
-      listedFor: 'Listed for',
+      listedFor: 'Qualifications offered',
+      matchesSearch: 'Matches your search',
       directions: 'Directions',
       route: 'Show route on the map',
       call: 'Call',
