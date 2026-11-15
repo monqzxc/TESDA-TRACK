@@ -93,6 +93,10 @@ class TrainingProgram(AvailabilityFields, table=True):
     duration_hours: int | None = None
     cost: Decimal | None = Field(default=None, sa_type=Numeric(10, 2))
     scholarship_available: bool = False
+    # The last day applications are open; none means no close date is known. A scholarship past it is closed.
+    scholarship_closes_on: date | None = None
+    # Synthetic scholarship data for the December 2 demo, always labelled as sample data where it is shown.
+    scholarship_is_sample: bool = False
     start_date: date | None = None
     end_date: date | None = None
     slots: int | None = None

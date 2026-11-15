@@ -1,4 +1,6 @@
-from sqlalchemy import null
+from datetime import date, datetime, timedelta, timezone
+
+from sqlalchemy import null, or_
 from sqlalchemy.orm import object_session, selectinload
 from sqlmodel import Session, select
 
@@ -9,7 +11,18 @@ from tesda_track.schemas.delivery import (ProgramSearch, SiteSearch, SiteSummary
 from tesda_track.services import catalog, geo, sites, verification
 from tesda_track.services.provenance import validate_update
 
-PROGRAM_REQUIRED_FIELDS = {"title", "delivery_mode", "scholarship_available", "is_active"}
+PROGRAM_REQUIRED_FIELDS = {"title", "delivery_mode", "scholarship_available", "scholarship_is_sample", "is_active"}
+PHILIPPINE_TIME = timezone(timedelta(hours=8))
+
+
+def philippine_today() -> date:
+    return datetime.now(PHILIPPINE_TIME).date()
+
+
+def scholarship_open(program, today: date | None = None) -> bool:
+    """A scholarship is open while one is listed and its close date, if any, hasn't passed (US-0019)."""
+    closes_on = program.scholarship_closes_on
+    return bool(program.scholarship_available) and (closes_on is None or closes_on >= (today or philippine_today()))
 
 
 def program_public(program: TrainingProgram, distance_km: float | None = None) -> TrainingProgramPublic:
@@ -21,7 +34,9 @@ def program_public(program: TrainingProgram, distance_km: float | None = None) -
         id=program.id, title=program.title, description=program.description,
         qualification=catalog.summary(program.qualification), provider=SiteSummary.model_validate(program.provider),
         delivery_mode=program.delivery_mode, duration_hours=program.duration_hours, cost=program.cost,
-        scholarship_available=program.scholarship_available, start_date=program.start_date,
+        scholarship_available=program.scholarship_available, scholarship_open=scholarship_open(program),
+        scholarship_closes_on=program.scholarship_closes_on, scholarship_is_sample=program.scholarship_is_sample,
+        start_date=program.start_date,
         end_date=program.end_date, slots=program.slots, is_active=program.is_active,
         distance_km=round(distance_km, 1) if distance_km is not None else None)
 
@@ -105,7 +120,9 @@ def search_programs(session: Session, search: ProgramSearch) -> list[tuple[Train
     if search.delivery_mode:
         query = query.where(TrainingProgram.delivery_mode == search.delivery_mode)
     if search.scholarship_only:
-        query = query.where(TrainingProgram.scholarship_available)
+        closes_on = TrainingProgram.scholarship_closes_on
+        query = query.where(TrainingProgram.scholarship_available,
+                            or_(closes_on.is_(None), closes_on >= philippine_today()))
     if search.radius_km is not None:
         query = query.where(geo.within_radius(TrainingProvider, search))
     order = (distance.asc().nulls_last(), TrainingProgram.id) if search.near_lat is not None else (TrainingProgram.id,)

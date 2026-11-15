@@ -121,6 +121,8 @@ export const weldingProgram: Program = {
   duration_hours: 268,
   cost: null,
   scholarship_available: true,
+  scholarship_open: true,
+  scholarship_is_sample: false,
   start_date: '2099-11-02',
   end_date: '2100-01-30',
   slots: 25,
@@ -136,6 +138,8 @@ export const cookeryProgram: Program = {
   provider: summaryOf(cebuCenter),
   cost: '0.00',
   scholarship_available: false,
+  scholarship_open: false,
+  scholarship_is_sample: false,
   start_date: null,
   end_date: null,
 }

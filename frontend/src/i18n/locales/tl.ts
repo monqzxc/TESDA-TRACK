@@ -1580,4 +1580,8 @@ export const tl: Record<string, string> = {
     '{0} kwalipikasyon ng TESDA ang patungo sa trabahong ito.',
   'No core skills are listed for this qualification yet.':
     'Wala pang nakalistang pangunahing kasanayan para sa kwalipikasyong ito.',
+  'Scholarship open': 'Bukas ang scholarship',
+  'Sample data for the December 2 demo': 'Sample data para sa demo sa Disyembre 2',
+  'Scholarship open (sample data for the December 2 demo)':
+    'Bukas ang scholarship (sample data para sa demo sa Disyembre 2)',
 }

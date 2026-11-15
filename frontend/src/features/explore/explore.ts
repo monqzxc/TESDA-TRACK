@@ -48,10 +48,20 @@ export function offers(center: Center, code: string): boolean {
     : center.schedules.some((schedule) => schedule.qualification.code === code)
 }
 
-/** Whether one of the center's programs for the qualification says a scholarship is available. */
+/** Whether one of the center's programs for the qualification has a scholarship open today (US-0019). */
 export function hasScholarship(center: Center, code: string): boolean {
   return center.programs.some(
-    (program) => program.qualification.code === code && program.scholarship_available,
+    (program) => program.qualification.code === code && program.scholarship_open,
+  )
+}
+
+/** Whether an open scholarship it shows for the qualification is the December 2 demo's sample data. */
+export function hasSampleScholarship(center: Center, code: string): boolean {
+  return center.programs.some(
+    (program) =>
+      program.qualification.code === code &&
+      program.scholarship_open &&
+      program.scholarship_is_sample,
   )
 }
 

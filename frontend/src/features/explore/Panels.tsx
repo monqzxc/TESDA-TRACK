@@ -16,11 +16,13 @@ import type { CenterKind } from '../training/address.ts'
 import { googleMapsDirections, RoutePanel } from '../training/CenterDetail.tsx'
 import { placeLabel, type Center, type Point } from '../training/centers.ts'
 import { useTrainingStore } from '../training/state.ts'
+import { SampleScholarshipNote } from '../training/scholarship.tsx'
 import type { View } from './ExplorePage.tsx'
 import {
   cardsFor,
   estimateMinutes,
   firstKind,
+  hasSampleScholarship,
   hasScholarship,
   NEAR_KM,
   roundKm,
@@ -250,10 +252,15 @@ function CenterRow({
             </span>
           )}
           {code && center.kind === 'training' && hasScholarship(center, code) && (
-            <span className={cx(solidTag, 'mt-1.5 bg-scholarship-fill')}>
-              <Icon name="star" />
-              {copy.results.scholarship}
-            </span>
+            <>
+              <span className={cx(solidTag, 'mt-1.5 bg-scholarship-fill')}>
+                <Icon name="star" />
+                {copy.results.scholarship}
+              </span>
+              {hasSampleScholarship(center, code) && (
+                <SampleScholarshipNote className="mt-1 block" />
+              )}
+            </>
           )}
         </span>
         <Icon
@@ -659,10 +666,10 @@ export function CenterCard({
     center.latitude !== null && center.longitude !== null
       ? { latitude: center.latitude, longitude: center.longitude }
       : null
-  const scholarship = center.programs.some(
-    (program) =>
-      program.scholarship_available && (!codes.size || codes.has(program.qualification.code)),
+  const scholarships = center.programs.filter(
+    (program) => program.scholarship_open && (!codes.size || codes.has(program.qualification.code)),
   )
+  const scholarship = scholarships.length > 0
   // Each way to get in touch shows its number or address, as the map's popup does.
   const contacts: {
     key: string
@@ -748,10 +755,15 @@ export function CenterCard({
                   {copy.leadsToNc}
                 </span>
               ) : (
-                <span className={cx(solidTag, 'bg-scholarship-fill')}>
-                  <Icon name="star" />
-                  {en.explore.results.scholarship}
-                </span>
+                <>
+                  <span className={cx(solidTag, 'bg-scholarship-fill')}>
+                    <Icon name="star" />
+                    {en.explore.results.scholarship}
+                  </span>
+                  {scholarships.some((program) => program.scholarship_is_sample) && (
+                    <SampleScholarshipNote className="self-center" />
+                  )}
+                </>
               )}
             </div>
           )}

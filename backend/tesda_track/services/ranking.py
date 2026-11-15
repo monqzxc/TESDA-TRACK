@@ -58,7 +58,7 @@ def preference_component(program: TrainingProgram, request: TrainingRankingReque
     if request.preferred_delivery_mode:
         checks.append(program.delivery_mode == request.preferred_delivery_mode)
     if request.needs_scholarship:
-        checks.append(program.scholarship_available)
+        checks.append(training.scholarship_open(program))
     return sum(checks) / len(checks) if checks else 0.0
 
 

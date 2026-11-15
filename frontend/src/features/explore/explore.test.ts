@@ -1,7 +1,15 @@
 import { describe, expect, it } from 'vitest'
 import type { Match } from '../finder/api.ts'
 import type { Center, Program, Schedule } from '../training/centers.ts'
-import { cardsFor, estimateMinutes, firstKind, nearestRegion, strength } from './explore.ts'
+import {
+  cardsFor,
+  estimateMinutes,
+  firstKind,
+  hasSampleScholarship,
+  hasScholarship,
+  nearestRegion,
+  strength,
+} from './explore.ts'
 
 const match = (code: string, score: number) =>
   ({ qualification: { code, name: code }, score, reason: 'Matched your words' }) as unknown as Match
@@ -20,7 +28,12 @@ const center = (
     programs:
       kind === 'training'
         ? codes.map(
-            (code) => ({ qualification: { code }, scholarship_available: false }) as Program,
+            (code) =>
+              ({
+                qualification: { code },
+                scholarship_available: false,
+                scholarship_open: false,
+              }) as Program,
           )
         : [],
     schedules:
@@ -90,5 +103,28 @@ describe('nearestRegion', () => {
   it('is the region whose center is nearest, or none without a point', () => {
     expect(nearestRegion({ latitude: 10.5, longitude: 124 }, regions)?.code).toBe('VII')
     expect(nearestRegion(null, regions)).toBeNull()
+  })
+})
+
+describe('hasScholarship', () => {
+  const withPrograms = (programs: Partial<Program>[]) =>
+    ({ kind: 'training', programs, schedules: [] }) as unknown as Center
+  const program = (code: string, open: boolean, sample: boolean) => ({
+    qualification: { code } as Program['qualification'],
+    scholarship_available: true,
+    scholarship_open: open,
+    scholarship_is_sample: sample,
+  })
+
+  it('counts only a scholarship still open for the qualification (US-0019)', () => {
+    expect(hasScholarship(withPrograms([program('A', true, false)]), 'A')).toBe(true)
+    expect(hasScholarship(withPrograms([program('A', false, false)]), 'A')).toBe(false)
+    expect(hasScholarship(withPrograms([program('B', true, false)]), 'A')).toBe(false)
+  })
+
+  it('says when the open scholarship is sample data', () => {
+    expect(hasSampleScholarship(withPrograms([program('A', true, true)]), 'A')).toBe(true)
+    expect(hasSampleScholarship(withPrograms([program('A', false, true)]), 'A')).toBe(false)
+    expect(hasSampleScholarship(withPrograms([program('A', true, false)]), 'A')).toBe(false)
   })
 })

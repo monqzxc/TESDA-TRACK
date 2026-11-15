@@ -853,7 +853,8 @@ export const en = {
         fee: (amount: string) => `Assessment fee ${amount}`,
         hours: (n: number) => `${figure(n)} hours`,
         seats: (n: number) => `${figure(n)} ${n === 1 ? 'seat' : 'seats'} left`,
-        scholarship: 'Scholarship listed',
+        scholarship: 'Scholarship open',
+        scholarshipSample: 'Scholarship open (sample data for the December 2 demo)',
         allOptions: 'See all options in Training & Assessment',
         steps: 'Your next steps',
         nextAction: 'Your next action',
@@ -1042,7 +1043,9 @@ export const en = {
       fewer: 'Show fewer',
       details: 'Program details',
       fit: (score: number) => `${score}% fit`,
-      scholarship: 'Scholarship available',
+      scholarship: 'Scholarship open',
+      // US-0019: until real scholarship data arrives after December 2, every scholarship shown is sample data.
+      scholarshipSample: 'Sample data for the December 2 demo',
       why: 'Why this program?',
       whyNote: 'Fit considers your goal, location, start date and preferences.',
       hours: (n: number) => `${figure(n)} hours`,
@@ -2286,7 +2289,7 @@ export const en = {
       fewerCenters: 'Show fewer',
       noneNear: (km: number, closest: number) =>
         `No center within ${km} km. The closest is ${closest} km away.`,
-      scholarship: 'Scholarship',
+      scholarship: 'Scholarship open',
       // Under a center's name in the results: the matched qualification it lists.
       offers: {
         training: (name: string) => `Training for ${name}`,

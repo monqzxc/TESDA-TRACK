@@ -172,6 +172,35 @@ describe('Training & Assessment', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 
+  it('tags an open scholarship and labels sample data, and shows no tag once it closed (US-0019)', async () => {
+    serveTrainingApi()
+    const open = {
+      ...weldingProgram,
+      scholarship_is_sample: true,
+      scholarship_closes_on: '2099-12-31',
+    }
+    const closed = {
+      ...weldingProgram,
+      id: 21,
+      title: 'Shielded Metal Arc Welding (SMAW) NC II · Weekend batch',
+      scholarship_open: false,
+      scholarship_is_sample: true,
+      scholarship_closes_on: '2026-11-01',
+    }
+    server.use(http.get('*/api/v1/training-programs', () => HttpResponse.json([open, closed])))
+    const user = userEvent.setup()
+    await openTraining('/training?qualification=SMAW-NCII&type=training')
+
+    expect(await screen.findByText('Scholarship open')).toBeInTheDocument()
+    expect(screen.getAllByText('Scholarship open')).toHaveLength(1)
+    expect(screen.getByText('Sample data for the December 2 demo')).toBeInTheDocument()
+
+    await user.click(screen.getAllByRole('button', { name: 'Program details' })[0])
+    const dialog = await screen.findByRole('dialog', { name: open.title })
+    expect(within(dialog).getByText('Scholarship open')).toBeInTheDocument()
+    expect(within(dialog).getByText('Sample data for the December 2 demo')).toBeInTheDocument()
+  })
+
   it('features a center chosen from the list, with focus on its name, at an address of its own', async () => {
     serveTrainingApi()
     const user = userEvent.setup()

@@ -203,6 +203,8 @@ beforeEach(() => {
           title: NAME,
           delivery_mode: 'unknown',
           scholarship_available: false,
+          scholarship_open: false,
+          scholarship_is_sample: false,
         })),
       ),
     ),

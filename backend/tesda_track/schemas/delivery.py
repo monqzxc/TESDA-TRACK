@@ -116,6 +116,8 @@ class TrainingProgramCreate(AvailabilityWrite, ProvenanceWrite):
     duration_hours: Annotated[int, Field(gt=0)] | None = None
     cost: Money | None = None
     scholarship_available: bool = False
+    scholarship_closes_on: date | None = None
+    scholarship_is_sample: bool = False
     start_date: date | None = None
     end_date: date | None = None
     slots: Annotated[int, Field(gt=0)] | None = None
@@ -134,6 +136,8 @@ class TrainingProgramUpdate(AvailabilityPatch, ProvenancePatch):
     duration_hours: Annotated[int, Field(gt=0)] | None = None
     cost: Money | None = None
     scholarship_available: bool | None = None
+    scholarship_closes_on: date | None = None
+    scholarship_is_sample: bool | None = None
     start_date: date | None = None
     end_date: date | None = None
     slots: Annotated[int, Field(gt=0)] | None = None
@@ -153,6 +157,10 @@ class TrainingProgramPublic(BaseModel):
     duration_hours: int | None
     cost: Decimal | None
     scholarship_available: bool
+    scholarship_open: bool = Field(
+        description="A scholarship is listed and today (Philippine time) is not past its close date")
+    scholarship_closes_on: date | None = None
+    scholarship_is_sample: bool = Field(default=False, description="The scholarship is sample data for the demo")
     start_date: date | None
     end_date: date | None
     slots: int | None

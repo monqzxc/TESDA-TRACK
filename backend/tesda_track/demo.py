@@ -84,7 +84,7 @@ def load(session: Session, learners: int = 40, seed: int = 7) -> DemoReport:
                     description=f"Demo program for {qualification.name}. Not a real offering.",
                     delivery_mode=rng.choice(DELIVERY_MODES), duration_hours=hours,
                     cost=Decimal(0) if scholarship else Decimal(rng.randrange(3000, 25001, 500)),
-                    scholarship_available=scholarship, start_date=start,
+                    scholarship_available=scholarship, scholarship_is_sample=scholarship, start_date=start,
                     end_date=start + timedelta(days=round(hours / 8 * 7 / 5)), slots=rng.choice([20, 25, 30])))
                 report.programs += 1
         latitude, longitude = _near(rng, region.latitude, region.longitude)

@@ -4812,6 +4812,11 @@ export interface components {
             delivery_mode?: string | null;
             /** Scholarship Available */
             scholarship_available?: boolean | null;
+            /**
+             * Scholarship Is Sample
+             * @default false
+             */
+            scholarship_is_sample: boolean;
             /** Seats Left */
             seats_left?: number | null;
             /**
@@ -6241,6 +6246,13 @@ export interface components {
              * @default false
              */
             scholarship_available: boolean;
+            /** Scholarship Closes On */
+            scholarship_closes_on?: string | null;
+            /**
+             * Scholarship Is Sample
+             * @default false
+             */
+            scholarship_is_sample: boolean;
             /** Start Date */
             start_date?: string | null;
             /** End Date */
@@ -6272,6 +6284,19 @@ export interface components {
             cost: string | null;
             /** Scholarship Available */
             scholarship_available: boolean;
+            /**
+             * Scholarship Open
+             * @description A scholarship is listed and today (Philippine time) is not past its close date
+             */
+            scholarship_open: boolean;
+            /** Scholarship Closes On */
+            scholarship_closes_on?: string | null;
+            /**
+             * Scholarship Is Sample
+             * @description The scholarship is sample data for the demo
+             * @default false
+             */
+            scholarship_is_sample: boolean;
             /** Start Date */
             start_date: string | null;
             /** End Date */
@@ -6317,6 +6342,10 @@ export interface components {
             cost?: number | string | null;
             /** Scholarship Available */
             scholarship_available?: boolean | null;
+            /** Scholarship Closes On */
+            scholarship_closes_on?: string | null;
+            /** Scholarship Is Sample */
+            scholarship_is_sample?: boolean | null;
             /** Start Date */
             start_date?: string | null;
             /** End Date */

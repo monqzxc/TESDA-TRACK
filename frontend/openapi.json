@@ -15134,6 +15134,11 @@
             ],
             "title": "Scholarship Available"
           },
+          "scholarship_is_sample": {
+            "type": "boolean",
+            "title": "Scholarship Is Sample",
+            "default": false
+          },
           "seats_left": {
             "anyOf": [
               {
@@ -18945,6 +18950,23 @@
             "title": "Scholarship Available",
             "default": false
           },
+          "scholarship_closes_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scholarship Closes On"
+          },
+          "scholarship_is_sample": {
+            "type": "boolean",
+            "title": "Scholarship Is Sample",
+            "default": false
+          },
           "start_date": {
             "anyOf": [
               {
@@ -19065,6 +19087,29 @@
             "type": "boolean",
             "title": "Scholarship Available"
           },
+          "scholarship_open": {
+            "type": "boolean",
+            "title": "Scholarship Open",
+            "description": "A scholarship is listed and today (Philippine time) is not past its close date"
+          },
+          "scholarship_closes_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scholarship Closes On"
+          },
+          "scholarship_is_sample": {
+            "type": "boolean",
+            "title": "Scholarship Is Sample",
+            "description": "The scholarship is sample data for the demo",
+            "default": false
+          },
           "start_date": {
             "anyOf": [
               {
@@ -19127,6 +19172,7 @@
           "duration_hours",
           "cost",
           "scholarship_available",
+          "scholarship_open",
           "start_date",
           "end_date",
           "slots",
@@ -19349,6 +19395,29 @@
               }
             ],
             "title": "Scholarship Available"
+          },
+          "scholarship_closes_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scholarship Closes On"
+          },
+          "scholarship_is_sample": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scholarship Is Sample"
           },
           "start_date": {
             "anyOf": [

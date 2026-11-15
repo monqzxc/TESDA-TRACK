@@ -99,7 +99,9 @@ class ProviderOption(BaseModel):
     cost: Decimal | None = Field(description="Program cost or assessment fee, when the listing gives one")
     duration_hours: int | None = None
     delivery_mode: str | None = None
+    # Whether a scholarship is open today (US-0019), and whether that is the demo's sample data.
     scholarship_available: bool | None = None
+    scholarship_is_sample: bool = False
     seats_left: int | None = None
     status: Literal["confirmed", "needs_verification", "demonstration"]
     score: int | None = Field(description="The ranking's score; only confirmed options are scored")

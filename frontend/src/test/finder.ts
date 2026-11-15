@@ -106,6 +106,7 @@ export function reportFor(body: ReportBody): Report {
           duration_hours: 268,
           delivery_mode: 'institution_based',
           scholarship_available: false,
+          scholarship_is_sample: false,
           seats_left: null,
           status: 'confirmed',
           score: 95,
