@@ -10,6 +10,7 @@ import type { MatchResult } from '../finder/api.ts'
 import { useFinderStore } from '../finder/store.ts'
 import { QualificationEvidence } from '../labor-market/QualificationEvidence.tsx'
 import { areaQualificationsQuery, matchPathway } from './recommendationApi.ts'
+import { SuggestionFeedback } from '../suggestion-feedback/SuggestionFeedback.tsx'
 
 interface Props {
   catalog: readonly Qualification[]
@@ -36,6 +37,7 @@ export function PathwayRecommendations({
   const [goal, setGoal] = useState(finderGoal)
   const [result, setResult] = useState<MatchResult | null>(null)
   const [submittedGoal, setSubmittedGoal] = useState<string | null>(null)
+  const [feedbackScope, setFeedbackScope] = useState<string>()
   const [pending, setPending] = useState(false)
   const [requestRegion, setRequestRegion] = useState(regionCode)
   const [error, setError] = useState<string | null>(null)
@@ -95,6 +97,7 @@ export function PathwayRecommendations({
       if (!controller.signal.aborted) {
         setResult(matches)
         setSubmittedGoal(query)
+        setFeedbackScope(crypto.randomUUID())
       }
     } catch (failure) {
       if (!controller.signal.aborted) setError(failureMessage(failure))
@@ -192,6 +195,15 @@ export function PathwayRecommendations({
                   >
                     {selectedCode === match.qualification.code ? copy.selected : copy.choose}
                   </Button>
+                  <div className="w-full">
+                    <SuggestionFeedback
+                      kind="qualification"
+                      resultKey={match.qualification.code}
+                      resultName={match.qualification.name}
+                      goal={submittedGoal}
+                      scope={feedbackScope}
+                    />
+                  </div>
                 </li>
               ))}
             </ul>
@@ -271,6 +283,14 @@ export function PathwayRecommendations({
                       >
                         {copy.choose}
                       </Button>
+                      <div className="w-full">
+                        <SuggestionFeedback
+                          kind="qualification"
+                          resultKey={item.qualification_code}
+                          resultName={item.qualification_name}
+                          scope={`area-${regionCode ?? 'national'}`}
+                        />
+                      </div>
                     </li>
                   ))}
                 </ul>

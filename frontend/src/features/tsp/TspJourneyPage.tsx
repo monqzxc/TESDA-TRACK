@@ -8,6 +8,7 @@ import { useJourney } from '../finder/useJourney.ts'
 import { trainingAddress } from '../training/address.ts'
 import { TspReadiness } from './TspReadiness.tsx'
 import { DemandLocation } from '../finder/DemandLocation.tsx'
+import { SuggestionFeedback } from '../suggestion-feedback/SuggestionFeedback.tsx'
 
 /** The matching journey remains in TSP's compact shell. */
 export default function TspJourneyPage() {
@@ -119,6 +120,13 @@ function JourneyContent({ journey, catalog }: { journey: Journey; catalog: Quali
                       Am I ready?
                     </button>
                   </div>
+                  <SuggestionFeedback
+                    kind="qualification"
+                    resultKey={qualification.code}
+                    resultName={qualification.name}
+                    goal={journey.query}
+                    scope={journey.feedbackScope}
+                  />
                 </article>
               )
             })}

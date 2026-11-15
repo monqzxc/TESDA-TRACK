@@ -7,7 +7,7 @@ chooses to share their goal's words gives a SharedGoal, kept apart from the answ
 import uuid
 from datetime import date, datetime
 
-from sqlalchemy import CheckConstraint, Column, ForeignKey, Integer, String
+from sqlalchemy import CheckConstraint, Column, ForeignKey, Integer, String, Text
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import Field, SQLModel
 
@@ -17,6 +17,31 @@ from tesda_track.models.stats import GOAL_ORIGINS
 FEEDBACK_REASONS = ("wrong_qualification", "readiness_off", "pathway_not_helpful")
 # The privacy policy's version (frontend features/privacy/notice.ts) that tells learners what sharing a goal means.
 SHARED_GOAL_CONSENT = "2026-10-21"
+SUGGESTION_REASONS = ("wrong_qualification", "wrong_center", "outdated_information", "not_relevant", "other")
+
+
+class SuggestionFeedback(SQLModel, table=True):
+    """Feedback for a single result, keyed by an anonymous, per-result receipt."""
+    __tablename__ = "suggestion_feedback"
+    __table_args__ = (
+        CheckConstraint(one_of("result_kind", ("qualification", "training", "assessment")), name="kind_valid"),
+        CheckConstraint(
+            f"(action = 'rating' AND helpful IS NOT NULL AND reason IS NULL AND shared_goal IS NULL) OR "
+            f"(action = 'report' AND helpful IS NULL AND reason IS NOT NULL AND {one_of('reason', SUGGESTION_REASONS)})",
+            name="action_valid",
+        ),
+    )
+
+    receipt: uuid.UUID = Field(primary_key=True)
+    action: str = Field(primary_key=True, sa_type=String(6))
+    result_kind: str = Field(sa_type=String(13))
+    result_key: str = Field(sa_type=String(40))
+    result_name: str = Field(sa_type=Text)
+    qualification_code: str | None = Field(default=None, sa_type=String(40))
+    helpful: bool | None = None
+    reason: str | None = Field(default=None, sa_type=String(24))
+    shared_goal: str | None = Field(default=None, sa_type=String(1000))
+    created_at: datetime = timestamp_field()
 
 
 class RecommendationFeedback(SQLModel, table=True):

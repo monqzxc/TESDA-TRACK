@@ -55,6 +55,7 @@ export const useDemandStore = create<{
 export interface Search {
   query: string
   result: MatchResult
+  feedbackScope?: string
   /** Opened from the library for one qualification, not read from words: there's no match strength to show. */
   chosen?: boolean
 }

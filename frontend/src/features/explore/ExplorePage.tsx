@@ -567,7 +567,7 @@ function SearchBox({
     try {
       const result = await matchPathway(query, regionCode, controller.signal)
       if (controller.signal.aborted) return
-      setSearch({ query, result })
+      setSearch({ query, result, feedbackScope: crypto.randomUUID() })
       onSearched()
     } catch (failure) {
       if (!controller.signal.aborted) setError(failureMessage(failure))

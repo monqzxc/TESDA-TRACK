@@ -52,6 +52,7 @@ export type GoalOrigin = 'typed' | 'suggestion'
 /** A submitted goal. */
 export interface Journey {
   query: string
+  feedbackScope?: string
   /** Set only in the TSP webview (see GoalOrigin). */
   origin?: GoalOrigin
   /** The API's reading of the goal alone. Its blanks are what the follow-up questions ask about. */
@@ -187,7 +188,7 @@ export const useFinderStore = create<FinderState>()(
       setSearchMode: (searchMode) => set({ searchMode }),
       begin: (journey) =>
         set({
-          journey: { ...journey, synced: null },
+          journey: { ...journey, synced: null, feedbackScope: crypto.randomUUID() },
           careerGoal: null,
           careerGoalJourneyKey: crypto.randomUUID(),
           experience: null,

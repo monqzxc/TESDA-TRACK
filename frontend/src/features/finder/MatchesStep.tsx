@@ -9,6 +9,7 @@ import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { trainingAddress } from '../training/address.ts'
+import { SuggestionFeedback } from '../suggestion-feedback/SuggestionFeedback.tsx'
 import { CardHeading } from './CardHeading.tsx'
 import { MatchCard } from './MatchCard.tsx'
 import { RequestFailed } from './RequestFailed.tsx'
@@ -131,6 +132,15 @@ export function MatchesStep({ journey, context, catalog, onCheck }: MatchesStepP
                       onCheck={() => onCheck(code)}
                       mode={journey.mode}
                       centersHref={centersFor(code)}
+                      feedback={
+                        <SuggestionFeedback
+                          kind="qualification"
+                          resultKey={code}
+                          resultName={match.qualification.name}
+                          goal={journey.query}
+                          scope={journey.feedbackScope}
+                        />
+                      }
                     />
                   </li>
                 )

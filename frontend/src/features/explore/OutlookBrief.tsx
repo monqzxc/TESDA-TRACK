@@ -5,6 +5,7 @@ import { Icon } from '../../components/Icon.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
+import { CenterSuggestionFeedback } from '../suggestion-feedback/CenterSuggestionFeedback.tsx'
 import type { View } from './ExplorePage.tsx'
 import { estimateMinutes, findJobsUrl, roundKm } from './explore.ts'
 import type { Balance } from './outlookApi.ts'
@@ -59,7 +60,7 @@ export function OutlookBrief({
   )
   const bodyId = useId()
   const catalog = useQualifications()
-  const { outlook, summary, demandCode: code, matches, recommendations, relocate } = explore
+  const { outlook, summary, demandCode: code, matches, recommendations, relocate, search } = explore
   if (!code) return null
 
   const data = outlook.data
@@ -239,6 +240,12 @@ export function OutlookBrief({
                   {picks.map(({ key, item }) => (
                     <li key={key}>
                       <RecommendedRow item={item} onSelect={() => onSelect(item.center.id, code)} />
+                      <CenterSuggestionFeedback
+                        center={item.center}
+                        qualificationCode={code}
+                        goal={search?.chosen ? undefined : search?.query}
+                        scope={search?.feedbackScope}
+                      />
                     </li>
                   ))}
                 </ul>

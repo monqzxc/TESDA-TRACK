@@ -8,6 +8,7 @@ import { SelectField } from '../../components/SelectField.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { button } from '../../styles/buttons.ts'
 import type { Center } from './centers.ts'
+import { SuggestionFeedback } from '../suggestion-feedback/SuggestionFeedback.tsx'
 import { travelTime } from './format.ts'
 import { useTrainingStore } from './state.ts'
 
@@ -248,6 +249,14 @@ export function ServiceAccessComparison({
                   >
                     {copy.showCenter}
                   </Button>
+                  <div className="w-full">
+                    <SuggestionFeedback
+                      kind={site.kind}
+                      resultKey={String(site.site_id)}
+                      resultName={site.name}
+                      qualificationCode={qualificationCode ?? undefined}
+                    />
+                  </div>
                 </li>
               ))}
             </ul>

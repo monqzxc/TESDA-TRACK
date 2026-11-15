@@ -8,6 +8,8 @@ import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { useFinderStore } from '../finder/store.ts'
+import { CenterSuggestionFeedback } from '../suggestion-feedback/CenterSuggestionFeedback.tsx'
+import { SuggestionFeedback } from '../suggestion-feedback/SuggestionFeedback.tsx'
 import { DemandPanel } from './DemandPanel.tsx'
 import { offeringsQuery, type ClientConfig } from '../training/api.ts'
 import type { CenterKind } from '../training/address.ts'
@@ -213,50 +215,59 @@ function CenterRow({
   onSelect: (id: string, code?: string) => void
 }) {
   const copy = useCopy().explore
+  const search = useExploreStore((state) => state.search)
   return (
-    <Button
-      onPress={() => onSelect(center.id, code)}
-      className={cx(
-        'group flex w-full cursor-pointer items-start gap-3 rounded-10 border border-transparent px-3 py-2.5 text-left data-focus-visible:outline-3 data-focus-visible:outline-focus',
-        strong ? 'bg-good-bg' : 'bg-soft',
-        lift,
-        'data-hovered:border-hover-border data-hovered:bg-surface data-hovered:shadow-[0_6px_14px_-6px_rgb(var(--track-shadow-rgb)/0.3)] data-pressed:scale-[0.99]',
-      )}
-    >
-      <Icon
-        name={kindIcon[center.kind]}
-        size="1.1rem"
-        className={cx('mt-0.5 flex-none', kindColor[center.kind])}
-      />
-      <span className="min-w-0 flex-1">
-        <span className="block text-14 leading-[1.35] font-semibold wrap-anywhere text-navy">
-          {center.name}
+    <div className="flex min-w-0 flex-col gap-2">
+      <Button
+        onPress={() => onSelect(center.id, code)}
+        className={cx(
+          'group flex w-full cursor-pointer items-start gap-3 rounded-10 border border-transparent px-3 py-2.5 text-left data-focus-visible:outline-3 data-focus-visible:outline-focus',
+          strong ? 'bg-good-bg' : 'bg-soft',
+          lift,
+          'data-hovered:border-hover-border data-hovered:bg-surface data-hovered:shadow-[0_6px_14px_-6px_rgb(var(--track-shadow-rgb)/0.3)] data-pressed:scale-[0.99]',
+        )}
+      >
+        <Icon
+          name={kindIcon[center.kind]}
+          size="1.1rem"
+          className={cx('mt-0.5 flex-none', kindColor[center.kind])}
+        />
+        <span className="min-w-0 flex-1">
+          <span className="block text-14 leading-[1.35] font-semibold wrap-anywhere text-navy">
+            {center.name}
+          </span>
+          {qualification && (
+            <span className="mt-0.5 flex items-start gap-1 text-13 leading-[1.4] font-semibold text-ink">
+              <Icon name="book" className="mt-0.5 flex-none text-muted" />
+              {copy.results.offers[center.kind](qualification)}
+            </span>
+          )}
+          <TripMeta center={center} />
+          {recommended && (
+            <span className={cx(tag, 'mt-1.5 mr-1.5 bg-[#fdecc8] py-1 font-bold text-[#7a4a05]')}>
+              <Icon name="star" />
+              {copy.outlook.tag}
+            </span>
+          )}
+          {code && center.kind === 'training' && hasScholarship(center, code) && (
+            <span className={cx(solidTag, 'mt-1.5 bg-scholarship-fill')}>
+              <Icon name="star" />
+              {copy.results.scholarship}
+            </span>
+          )}
         </span>
-        {qualification && (
-          <span className="mt-0.5 flex items-start gap-1 text-13 leading-[1.4] font-semibold text-ink">
-            <Icon name="book" className="mt-0.5 flex-none text-muted" />
-            {copy.results.offers[center.kind](qualification)}
-          </span>
-        )}
-        <TripMeta center={center} />
-        {recommended && (
-          <span className={cx(tag, 'mt-1.5 mr-1.5 bg-[#fdecc8] py-1 font-bold text-[#7a4a05]')}>
-            <Icon name="star" />
-            {copy.outlook.tag}
-          </span>
-        )}
-        {code && center.kind === 'training' && hasScholarship(center, code) && (
-          <span className={cx(solidTag, 'mt-1.5 bg-scholarship-fill')}>
-            <Icon name="star" />
-            {copy.results.scholarship}
-          </span>
-        )}
-      </span>
-      <Icon
-        name="chevron"
-        className="mt-1 flex-none -rotate-90 text-muted transition-transform duration-200 group-data-hovered:translate-x-0.5 group-data-hovered:text-blue"
+        <Icon
+          name="chevron"
+          className="mt-1 flex-none -rotate-90 text-muted transition-transform duration-200 group-data-hovered:translate-x-0.5 group-data-hovered:text-blue"
+        />
+      </Button>
+      <CenterSuggestionFeedback
+        center={center}
+        qualificationCode={code}
+        goal={search?.chosen ? undefined : search?.query}
+        scope={search?.feedbackScope}
       />
-    </Button>
+    </div>
   )
 }
 
@@ -422,6 +433,15 @@ function QualificationCardView({
           {open ? copy.fewerCenters : copy.moreCenters(more.length)}
           <Icon name="chevron" className={cx('transition-transform', open && 'rotate-180')} />
         </Button>
+      )}
+      {search && !search.chosen && (
+        <SuggestionFeedback
+          kind="qualification"
+          resultKey={code}
+          resultName={card.match.qualification.name}
+          goal={search.query}
+          scope={search.feedbackScope}
+        />
       )}
     </article>
   )
@@ -616,6 +636,7 @@ export function CenterCard({
 }) {
   const en = useCopy()
   const copy = en.explore.card
+  const search = useExploreStore((state) => state.search)
   const openPathway = useOpenPathway()
   // The center's whole offering once it's loaded; until then (or if it fails) what the search already found.
   const offerings = useQuery(offeringsQuery(center)).data
@@ -713,6 +734,12 @@ export function CenterCard({
         </div>
 
         <div className="flex flex-col gap-3 p-4">
+          <CenterSuggestionFeedback
+            center={center}
+            qualificationCode={code ?? undefined}
+            goal={search?.chosen ? undefined : search?.query}
+            scope={search?.feedbackScope}
+          />
           {(center.kind === 'assessment' || scholarship) && (
             <div className="flex flex-wrap gap-1.5">
               {center.kind === 'assessment' ? (

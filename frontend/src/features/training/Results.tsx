@@ -7,6 +7,7 @@ import { SelectField } from '../../components/SelectField.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
+import { CenterSuggestionFeedback } from '../suggestion-feedback/CenterSuggestionFeedback.tsx'
 import { ANY_DISTANCE, NO_FILTERS, SORTS, shortName, type SortOrder } from './address.ts'
 import { placeLabel, summary, type Center } from './centers.ts'
 import { CenterDetail, KindBadges } from './CenterDetail.tsx'
@@ -142,6 +143,7 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
             today={results.today}
             headingRef={featuredHeading}
           />
+          {!results.refreshing && <CenterFeedback center={featured} results={results} />}
           {others.length > 0 && (
             <>
               <h3 className="mt-5 mb-1 text-16 text-navy tabular-nums">
@@ -155,6 +157,9 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
                     saved={saved.includes(center.id)}
                     today={results.today}
                     onChoose={() => onChoose(center.id)}
+                    feedback={
+                      !results.refreshing && <CenterFeedback center={center} results={results} />
+                    }
                   />
                 ))}
               </ul>
@@ -175,17 +180,29 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
   )
 }
 
+function CenterFeedback({ center, results }: { center: Center; results: CenterResults }) {
+  return (
+    <CenterSuggestionFeedback
+      center={center}
+      qualificationCode={results.codes.length === 1 ? results.codes[0] : undefined}
+      goal={results.goal}
+    />
+  )
+}
+
 /** A center in the list: its name, place, type, distance, and what it offers next. */
 function CenterRow({
   center,
   saved,
   today,
   onChoose,
+  feedback,
 }: {
   center: Center
   saved: boolean
   today: string
   onChoose: () => void
+  feedback: React.ReactNode
 }) {
   const en = useCopy()
   const copy = en.training.results
@@ -209,6 +226,7 @@ function CenterRow({
         {copy.viewDetails}
         <Icon name="arrowRight" />
       </Button>
+      {feedback && <div className="w-full">{feedback}</div>}
     </li>
   )
 }

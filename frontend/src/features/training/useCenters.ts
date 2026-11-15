@@ -240,6 +240,7 @@ export function useCenters(catalog: readonly Qualification[], goalOverride?: str
     selected,
     nearestId,
     fits,
+    goal,
     today,
     config: config.data,
   }

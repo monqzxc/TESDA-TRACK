@@ -22,6 +22,7 @@ export const paths = {
   progress: '/progress',
   skills: '/skills',
   reports: '/reports',
+  suggestionReports: '/feedback/reports',
   admin: '/admin',
   profile: '/profile',
   signIn: '/sign-in',

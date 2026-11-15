@@ -15,6 +15,31 @@ const list = (items: readonly string[]) =>
     : (items[0] ?? '')
 
 export const en = {
+  suggestionFeedback: {
+    question: 'Was this helpful?',
+    yes: 'Yes',
+    no: 'No',
+    report: 'Report a wrong suggestion',
+    reason: 'Reason',
+    chooseReason: 'Choose a reason',
+    reasons: {
+      wrong_qualification: 'Wrong qualification',
+      wrong_center: 'Wrong center',
+      outdated_information: 'Outdated or incorrect information',
+      not_relevant: 'Not relevant to what I need',
+      other: 'Other',
+    },
+    share: 'Include my goal text with this report',
+    shareHint:
+      'Only the assigned reviewer will see it. Leave this unchecked if your goal contains personal information.',
+    submit: 'Send report',
+    cancel: 'Cancel',
+    rated: 'Thanks for your feedback.',
+    reported: 'Report sent for review.',
+    unavailable:
+      'This version of the app can’t accept feedback. Open an updated version and try again.',
+    note: 'This is a suggestion. Confirm with the center or your TESDA office.',
+  },
   help: helpCopy,
   app: {
     name: 'TESDA-TRACK',
@@ -324,6 +349,11 @@ export const en = {
       title: 'Admin · TESDA-TRACK',
       heading: 'Admin',
       lead: 'Manage learner access, MCP partners, recommendations, feedback, and pilot operations.',
+    },
+    suggestionReports: {
+      title: 'Wrong-suggestion reports · TESDA-TRACK',
+      heading: 'Wrong-suggestion reports',
+      lead: 'Review learner reports about qualification and center suggestions.',
     },
     profile: {
       title: 'My Profile · TESDA-TRACK',
@@ -1831,7 +1861,12 @@ export const en = {
           {
             term: 'Your goal’s words, only if you share them',
             detail:
-              'Signed in or not, after you rate a recommendation you can tick a box to share the words of your goal, with the qualification you say fits it. They’re kept apart from your answer, without your name, account or the time of day, so they can’t be found later to delete. The pilot team reads them, takes out anything personal (or deletes them), and uses them to test and train the matching model. Don’t put your name or contact details in a goal you share.',
+              'Signed in or not, after you rate the final pathway you can tick a box to share the words of your goal, with the qualification you say fits it. They’re kept apart from your answer, without your name, account or the time of day, so they can’t be found later to delete. The pilot team reads them, takes out anything personal (or deletes them), and uses them to test and train the matching model. Don’t put your name or contact details in a goal you share.',
+          },
+          {
+            term: 'Feedback on individual suggestions',
+            detail:
+              'We keep the qualification or center shown, your rating or report reason, and an anonymous receipt to prevent repeats in this tab. The assigned AI reviewer sees your report. It includes your goal only if you choose to share it. Leave this unchecked if your goal includes personal information.',
           },
           {
             term: 'Your location, only if you allow it',

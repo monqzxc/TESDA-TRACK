@@ -227,6 +227,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/feedback/suggestions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Give Suggestion Feedback
+         * @description Save a rating or report for one result, with no account link or location.
+         */
+        post: operations["give_suggestion_feedback_api_v1_feedback_suggestions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/feedback/suggestions/reports": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Suggestion Reports
+         * @description The named AI owner's inbox, including goal text only when explicitly shared.
+         */
+        get: operations["suggestion_reports_api_v1_feedback_suggestions_reports_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/register": {
         parameters: {
             query?: never;
@@ -5968,6 +6008,89 @@ export interface components {
              */
             status: "not_started" | "in_progress" | "completed";
         };
+        /** SuggestionRating */
+        SuggestionRating: {
+            /**
+             * Receipt
+             * Format: uuid4
+             */
+            receipt: string;
+            /**
+             * Result Kind
+             * @enum {string}
+             */
+            result_kind: "qualification" | "training" | "assessment";
+            /** Result Key */
+            result_key: string;
+            /** Qualification Code */
+            qualification_code?: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "rating";
+            /** Helpful */
+            helpful: boolean;
+        };
+        /** SuggestionReport */
+        SuggestionReport: {
+            /**
+             * Receipt
+             * Format: uuid4
+             */
+            receipt: string;
+            /**
+             * Result Kind
+             * @enum {string}
+             */
+            result_kind: "qualification" | "training" | "assessment";
+            /** Result Key */
+            result_key: string;
+            /** Qualification Code */
+            qualification_code?: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "report";
+            /**
+             * Reason
+             * @enum {string}
+             */
+            reason: "wrong_qualification" | "wrong_center" | "outdated_information" | "not_relevant" | "other";
+            shared_goal?: components["schemas"]["SharedGoalCreate"] | null;
+        };
+        /** SuggestionReportPublic */
+        SuggestionReportPublic: {
+            /**
+             * Receipt
+             * Format: uuid
+             */
+            receipt: string;
+            /**
+             * Result Kind
+             * @enum {string}
+             */
+            result_kind: "qualification" | "training" | "assessment";
+            /** Result Key */
+            result_key: string;
+            /** Result Name */
+            result_name: string;
+            /** Qualification Code */
+            qualification_code: string | null;
+            /**
+             * Reason
+             * @enum {string}
+             */
+            reason: "wrong_qualification" | "wrong_center" | "outdated_information" | "not_relevant" | "other";
+            /** Shared Goal */
+            shared_goal: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
         /**
          * SuggestionRequest
          * @description A suggestion is worked out from the learner's profile alone: there is no goal to send.
@@ -7004,6 +7127,82 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    give_suggestion_feedback_api_v1_feedback_suggestions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SuggestionRating"] | components["schemas"]["SuggestionReport"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description A submission of this kind already exists for this receipt */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Too many answers from this client; see Retry-After */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    suggestion_reports_api_v1_feedback_suggestions_reports_get: {
+        parameters: {
+            query?: {
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SuggestionReportPublic"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
             };
         };
     };

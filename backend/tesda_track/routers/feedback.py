@@ -2,12 +2,17 @@ import math
 import uuid
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Request, Response, status
+from fastapi import APIRouter, Body, Depends, HTTPException, Query, Request, Response, status
+from sqlalchemy.dialects.postgresql import insert
+from sqlmodel import select
 
 from tesda_track.config import Settings, get_settings
 from tesda_track.db import SessionDep
-from tesda_track.deps import OptionalLearner
-from tesda_track.schemas.feedback import FeedbackCreate, FeedbackPublic, FeedbackReasonUpdate, SharedGoalCreate
+from tesda_track.deps import CurrentLearner, OptionalLearner, RequestedWith
+from tesda_track.errors import NotFoundError, PermissionDeniedError
+from tesda_track.models import AssessmentCenter, Qualification, SuggestionFeedback, TrainingProvider
+from tesda_track.schemas.feedback import (FeedbackCreate, FeedbackPublic, FeedbackReasonUpdate, SharedGoalCreate,
+                                          SuggestionRating, SuggestionReport, SuggestionReportPublic)
 from tesda_track.services import feedback
 from tesda_track.services.embeddings import EmbedderDep
 from tesda_track.services.rate_limit import client_address_key
@@ -66,3 +71,56 @@ def share_goal(feedback_id: uuid.UUID, body: SharedGoalCreate, request: Request,
     feedback.share_goal(session, feedback_id, body.goal)
     session.commit()
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+def _suggestion_name(session: SessionDep, body: SuggestionRating | SuggestionReport) -> str:
+    code = body.result_key if body.result_kind == "qualification" else body.qualification_code
+    qualification = session.exec(select(Qualification).where(Qualification.code == code)).first() if code else None
+    if code and qualification is None:
+        raise NotFoundError("Qualification not found.")
+    if body.result_kind == "qualification" and qualification is not None:
+        return qualification.name
+
+    model = TrainingProvider if body.result_kind == "training" else AssessmentCenter
+    key = body.result_key
+    center = session.get(model, int(key)) if key.isascii() and key.isdecimal() and len(key) <= 9 else None
+    if center is None:
+        raise NotFoundError("Center not found.")
+    return center.name
+
+
+@router.post("/suggestions", status_code=status.HTTP_204_NO_CONTENT, dependencies=[RequestedWith],
+             responses={409: {"description": "A submission of this kind already exists for this receipt"}, **LIMITED})
+def give_suggestion_feedback(body: Annotated[SuggestionRating | SuggestionReport, Body(discriminator="action")],
+                             request: Request, session: SessionDep, settings: SettingsDep):
+    """Save a rating or report for one result, with no account link or location."""
+    _within_limit(request, settings)
+    result_name = _suggestion_name(session, body)
+    report = body if isinstance(body, SuggestionReport) else None
+    statement = insert(SuggestionFeedback).values(
+        receipt=body.receipt,
+        action=body.action,
+        result_kind=body.result_kind,
+        result_key=body.result_key,
+        result_name=result_name,
+        qualification_code=body.result_key if body.result_kind == "qualification" else body.qualification_code,
+        helpful=body.helpful if isinstance(body, SuggestionRating) else None,
+        reason=report.reason if report else None,
+        shared_goal=report.shared_goal.goal if report and report.shared_goal else None,
+    ).on_conflict_do_nothing(index_elements=["receipt", "action"]).returning(SuggestionFeedback.receipt)
+    if session.execute(statement).scalar_one_or_none() is None:
+        raise HTTPException(status_code=409, detail="Feedback already submitted for this suggestion.")
+    session.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+@router.get("/suggestions/reports", response_model=list[SuggestionReportPublic])
+def suggestion_reports(response: Response, session: SessionDep, settings: SettingsDep, reviewer: CurrentLearner,
+                       offset: Annotated[int, Query(ge=0)] = 0):
+    """The named AI owner's inbox, including goal text only when explicitly shared."""
+    if reviewer.id != settings.suggestion_feedback_owner_id:
+        raise PermissionDeniedError("This inbox is assigned to the named AI owner.")
+    response.headers["Cache-Control"] = "no-store"
+    return session.exec(select(SuggestionFeedback).where(SuggestionFeedback.action == "report")
+                        .order_by(SuggestionFeedback.created_at.desc(), SuggestionFeedback.receipt.desc())
+                        .offset(offset).limit(25)).all()
