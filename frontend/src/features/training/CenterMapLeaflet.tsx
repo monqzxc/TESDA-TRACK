@@ -626,6 +626,7 @@ function WheelZoomOnFocus() {
 function Pins({
   points,
   selectedId,
+  hideCenterPopups,
   focus,
   inset,
   route,
@@ -644,17 +645,20 @@ function Pins({
 
   // Open the selected center's popup, zooming in far enough to show its pin, unless a route has the view.
   useEffect(() => {
+    if (hideCenterPopups) map.closePopup()
     if (!selectedId) {
       map.closePopup()
       return
     }
     const marker = markers.current.get(selectedId)
     if (!marker || route) return
-    const open = () => marker.openPopup()
+    const open = () => {
+      if (!hideCenterPopups) marker.openPopup()
+    }
     // A recommended pin stands outside the clusters, so there's no cluster to open first.
     if (group.current?.hasLayer(marker)) group.current.zoomToShowLayer(marker, open)
     else open()
-  }, [selectedId, focus, route, map])
+  }, [selectedId, focus, route, map, hideCenterPopups])
 
   const pin = (center: Center) => {
     const selected = center.id === selectedId
@@ -674,14 +678,16 @@ function Pins({
         }}
         eventHandlers={{ click: () => onPick(center.id) }}
       >
-        <Popup
-          maxWidth={380}
-          minWidth={250}
-          autoPanPadding={[24, 24]}
-          autoPanPaddingTopLeft={[inset + 24, 24]}
-        >
-          <CenterPopup center={center} {...popup} onCopied={onCopied} />
-        </Popup>
+        {!hideCenterPopups && (
+          <Popup
+            maxWidth={380}
+            minWidth={250}
+            autoPanPadding={[24, 24]}
+            autoPanPaddingTopLeft={[inset + 24, 24]}
+          >
+            <CenterPopup center={center} {...popup} onCopied={onCopied} />
+          </Popup>
+        )}
       </Marker>
     )
   }

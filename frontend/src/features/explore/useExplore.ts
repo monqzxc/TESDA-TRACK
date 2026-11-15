@@ -282,7 +282,12 @@ export function useExplore(demandActive = false) {
     loading: !everything && !(sites.isError || regions.isError),
     /** The matched qualifications' listings are still coming. */
     listingsLoading: listings.isFetching && (listings.isPlaceholderData || !listings.data),
+    centerResultsUnavailable:
+      (sites.isError && !sites.data) ||
+      (regions.isError && !regions.data) ||
+      (listings.isError && !listings.data),
     failed: sites.isError || regions.isError || listings.isError,
+    retrying: sites.isFetching || regions.isFetching || listings.isFetching,
     retry: () => {
       if (sites.isError) void sites.refetch()
       if (regions.isError) void regions.refetch()

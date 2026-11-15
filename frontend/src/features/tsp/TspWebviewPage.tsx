@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { useEffect, useState, type FormEvent } from 'react'
 import { Link, useLocation, useNavigate, useOutletContext } from 'react-router'
 import { failureMessage } from '../../auth/fields.tsx'
+import { useCopy } from '../../i18n/copy.ts'
 import { paths } from '../../paths.ts'
 import { analyzeGoal } from '../finder/api.ts'
 import { GOAL_MAX_LENGTH, useFinderStore, type GoalOrigin } from '../finder/store.ts'
@@ -22,6 +23,7 @@ type Submission = Pick<
 
 /** TSP's first step: a goal, then a few optional details before matching. */
 export default function TspWebviewPage() {
+  const retry = useCopy().unavailable.retry
   const location = useLocation()
   const navigate = useNavigate()
   const [learner, setLearner] = useTspState()
@@ -89,6 +91,7 @@ export default function TspWebviewPage() {
    * same analysis as a typed one, so the matches and recommendation steps work from a goal the learner chose.
    */
   const chooseSuggestion = (qualificationName: string) => {
+    if (analyze.isPending) return
     const query = qualificationName.slice(0, GOAL_MAX_LENGTH)
     setError(null)
     setLearner((current) => ({ ...current, goal: query }))
@@ -115,6 +118,7 @@ export default function TspWebviewPage() {
 
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (analyze.isPending) return
     const query = learner.goal.trim()
     if (!query) {
       setError('Enter a job or career goal to find a match.')
@@ -205,6 +209,18 @@ export default function TspWebviewPage() {
                 {error}
               </p>
             )}
+            {error &&
+              analyze.isError &&
+              analyze.variables?.origin === 'suggestion' &&
+              analyze.variables.query === learner.goal && (
+                <button
+                  type="button"
+                  className="tsp-secondary"
+                  onClick={() => chooseSuggestion(learner.goal)}
+                >
+                  {retry}
+                </button>
+              )}
             <button className="tsp-primary" type="submit">
               Find my match
             </button>
@@ -292,7 +308,11 @@ export default function TspWebviewPage() {
                 Back
               </button>
               <button className="tsp-primary" type="submit" disabled={analyze.isPending}>
-                {analyze.isPending ? 'Finding matches…' : 'Show my matches'}
+                {analyze.isPending
+                  ? 'Finding matches…'
+                  : analyze.isError && error
+                    ? retry
+                    : 'Show my matches'}
               </button>
             </div>
           </form>

@@ -284,6 +284,19 @@ test.describe('on a desktop', () => {
     expect(requests).toEqual([])
   })
 
+  test('US-0025: the opening page offers Retry when the app bundle fails', async ({ page }) => {
+    const entry = '**/src/main.tsx*'
+    await page.route(entry, (route) => route.abort('connectionreset'))
+    await page.goto('/?check=startup')
+    await expect(page.getByRole('heading', { name: 'Opening TESDA-TRACK' })).toBeVisible()
+    await page.unroute(entry)
+    await page.getByRole('link', { name: 'Try again' }).click()
+    await expect(
+      page.getByRole('heading', { name: 'Every career has a track. Find yours.' }),
+    ).toBeVisible()
+    await expect(page).toHaveURL('/?check=startup')
+  })
+
   test("shows the service state when the API can't be reached, and Try again recovers", async ({
     page,
   }) => {

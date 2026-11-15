@@ -1639,6 +1639,7 @@ export const en = {
     page: (page: number, pages: number) => `Page ${figure(page)} of ${figure(pages)}`,
   },
   service: {
+    offline: 'You’re offline. Check your connection, then try again.',
     unreachable: "We can't reach the TESDA-TRACK service right now. Please try again shortly.",
     // Shown when the API refuses a request without saying why.
     requestFailed: 'The request could not be completed.',
@@ -1647,6 +1648,7 @@ export const en = {
   },
   // A page that can't load: the API is unreachable, or part of the app failed to download or show.
   unavailable: {
+    loading: 'Loading TESDA Track…',
     heading: "We can't load TESDA Track right now",
     body: 'Your saved progress is safe. Try again in a moment.',
     retry: 'Try again',

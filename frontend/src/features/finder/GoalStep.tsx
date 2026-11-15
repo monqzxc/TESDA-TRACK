@@ -68,6 +68,7 @@ export function GoalStep() {
   })
   const submit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (analyze.isPending) return
     const query = draft.trim()
     if (!query) {
       setError(copy.empty)
@@ -152,7 +153,11 @@ export function GoalStep() {
           )}
           isPending={analyze.isPending}
         >
-          {analyze.isPending ? en.finder.goal.pending : copy.submit}
+          {analyze.isPending
+            ? en.finder.goal.pending
+            : analyze.isError && error
+              ? en.unavailable.retry
+              : copy.submit}
           <Icon name="arrowRight" />
         </Button>
       </form>

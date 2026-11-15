@@ -2,6 +2,7 @@ import type { ComponentType } from 'react'
 import type { RouteObject } from 'react-router'
 import { AppLayout, HomeLayout, Root, WebviewLayout } from './components/Layout.tsx'
 import { RootError, RouteError } from './components/RouteError.tsx'
+import { useCopy } from './i18n/copy.ts'
 import type { PageKey, RouteHandle } from './lib/navigation.ts'
 import { paths } from './paths.ts'
 
@@ -10,9 +11,13 @@ import { paths } from './paths.ts'
 
 type PageModule = { default: ComponentType }
 
-// While the first page's chunk downloads, the layout shows with nothing in it yet.
 function PageFallback() {
-  return null
+  const copy = useCopy().unavailable
+  return (
+    <p role="status" className="px-4 py-6 text-16 text-muted">
+      {copy.loading}
+    </p>
+  )
 }
 
 function page(key: PageKey, load: () => Promise<PageModule>) {

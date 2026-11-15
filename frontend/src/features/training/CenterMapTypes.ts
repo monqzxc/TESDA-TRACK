@@ -24,6 +24,8 @@ export interface CenterMapProps {
   /** Centers recommended to the learner: starred, and never folded into a cluster. */
   recommended?: readonly string[]
   selectedId: string | null
+  /** Center details are already shown in the surrounding panel. Cluster popups remain available. */
+  hideCenterPopups?: boolean
   /** Bumped by View on map, so asking again reopens a center that's already selected. */
   focus: number
   reference: Reference | null

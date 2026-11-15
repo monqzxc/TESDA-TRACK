@@ -78,13 +78,13 @@ export function PathwayRecommendations({
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (request.current && !request.current.signal.aborted) return
     setRequestRegion(regionCode)
     const query = goal.trim()
     if (!query) {
       setError(copy.emptyGoal)
       return
     }
-    request.current?.abort()
     const controller = new AbortController()
     request.current = controller
     controller.signal.addEventListener('abort', () => setPending(false), { once: true })
@@ -102,7 +102,10 @@ export function PathwayRecommendations({
     } catch (failure) {
       if (!controller.signal.aborted) setError(failureMessage(failure))
     } finally {
-      if (!controller.signal.aborted) setPending(false)
+      if (request.current === controller) {
+        request.current = null
+        if (!controller.signal.aborted) setPending(false)
+      }
     }
   }
 
@@ -151,7 +154,11 @@ export function PathwayRecommendations({
           className="min-w-0 flex-[1_1_220px]"
         />
         <Button type="submit" className={button({ variant: 'primary' })} isPending={pendingCurrent}>
-          {pendingCurrent ? copy.matching : copy.match}
+          {pendingCurrent
+            ? copy.matching
+            : error && currentRequest && goal.trim()
+              ? copy.retry
+              : copy.match}
         </Button>
       </form>
       {error && currentRequest && (

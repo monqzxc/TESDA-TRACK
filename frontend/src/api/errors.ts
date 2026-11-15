@@ -83,7 +83,9 @@ export function errorFromResponse(
 export function networkError(cause: unknown): ApiError {
   const en = getCopy()
 
-  return new ApiError({ message: en.service.unreachable, unavailable: true, cause })
+  const message =
+    globalThis.navigator?.onLine === false ? en.service.offline : en.service.unreachable
+  return new ApiError({ message, unavailable: true, cause })
 }
 
 // DOMException isn't an Error subclass in every environment, so this goes by name.

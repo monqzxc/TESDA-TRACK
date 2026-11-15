@@ -149,6 +149,7 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
   }
 
   const analyze = () => {
+    if (submit.isPending) return
     const unratedPart = groups.findIndex((group) =>
       group.competencies.some((competency) => !answers[competency.id]),
     )
@@ -254,7 +255,11 @@ function ReadinessCheck({ journey, qualification, onResult }: Omit<ReadinessStep
             onPress={analyze}
             isPending={submit.isPending}
           >
-            {submit.isPending ? copy.analyzing : copy.analyze}
+            {submit.isPending
+              ? copy.analyzing
+              : submit.isError && message
+                ? en.unavailable.retry
+                : copy.analyze}
           </Button>
         ) : (
           <Button className={button({ variant: 'primary' })} onPress={() => goTo(part + 1)}>

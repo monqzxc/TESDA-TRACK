@@ -208,7 +208,7 @@ function evidence(region: string | null): QualificationEvidenceResponse {
   }
 }
 
-async function serveRecommendations(page: Page) {
+async function serveRecommendations(page: Page, mapEngine: 'leaflet' | 'maplibre' = 'maplibre') {
   const seen = {
     goal: [] as Record<string, unknown>[],
     matches: [] as Record<string, unknown>[],
@@ -233,7 +233,7 @@ async function serveRecommendations(page: Page) {
         skills_bridge_enabled: false,
         tsp_sign_in: false,
         tsp_suggestions: false,
-        map_engine: 'maplibre',
+        map_engine: mapEngine,
         maptiler_key: MAPTILER_KEY,
         map_tiles_url: '',
         map_3d: true,
@@ -363,6 +363,75 @@ async function serveRecommendations(page: Page) {
     return json({ detail: 'Not signed in' }, 401)
   })
   return seen
+}
+
+test('US-0025: the Career Map keeps the search during a retry on a narrow phone', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 700 })
+  const seen = await serveRecommendations(page)
+  const requests: string[] = []
+  let letRetryFinish!: () => void
+  const waiting = new Promise<void>((resolve) => {
+    letRetryFinish = resolve
+  })
+  await page.route('**/api/v1/analysis/matches', async (route) => {
+    requests.push(route.request().postDataJSON().query)
+    if (requests.length === 1) return route.abort('connectionreset')
+    await waiting
+    return route.fallback()
+  })
+  await page.goto('/explore')
+  const box = page.getByRole('searchbox', { name: 'What can you do?' })
+  const search = page.getByRole('button', { name: 'Search', exact: true })
+  await box.fill(GOAL)
+  expect((await search.boundingBox())?.height).toBeGreaterThanOrEqual(44)
+  await search.click()
+  const retry = page.getByRole('button', { name: 'Try again', exact: true })
+  await expect(retry).toBeVisible()
+  await expect(box).toHaveValue(GOAL)
+  await retry.click()
+  try {
+    await expect(search).toHaveAttribute('aria-disabled', 'true')
+    await expect.poll(() => requests.length).toBe(2)
+    await box.press('Enter')
+  } finally {
+    letRetryFinish()
+  }
+  await expect(page.getByRole('heading', { name: CSS.name, exact: true }).first()).toBeVisible()
+  expect(requests).toEqual([GOAL, GOAL])
+  expect(seen.matches).toHaveLength(1)
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320)
+})
+
+for (const engine of ['leaflet', 'maplibre'] as const) {
+  test(`phone: ${engine} keeps all Career Map filters visible and opens one center card`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 375, height: 667 })
+    await serveRecommendations(page, engine)
+    await page.goto('/explore')
+    await expect(page.locator(`.center-map[data-engine="${engine}"]`)).toBeVisible()
+    const filters = page.getByRole('group', { name: 'Show on the map' })
+    for (const filter of ['Training centers', 'Assessment centers', 'In demand jobs']) {
+      const box = await filters.getByRole('button', { name: filter, exact: true }).boundingBox()
+      expect(box).not.toBeNull()
+      expect(box!.x).toBeGreaterThanOrEqual(0)
+      expect(box!.x + box!.width).toBeLessThanOrEqual(375)
+    }
+    await page.getByRole('searchbox', { name: 'What can you do?' }).fill(GOAL)
+    await page.getByRole('button', { name: 'Search', exact: true }).click()
+    const center = page.getByRole('button', {
+      name: /Example Computer Assessment Center Assessment for/,
+    })
+    await center.click()
+    await expect(
+      page.getByRole('heading', { name: ASSESSMENT_SITE.name, exact: true }),
+    ).toBeInViewport()
+    await expect(page.locator('.leaflet-popup, .maplibregl-popup')).toHaveCount(0)
+    await page.getByRole('button', { name: 'Back to results' }).click()
+    await expect(center).toBeVisible()
+  })
 }
 
 async function select(page: Page, label: string, option: string) {
