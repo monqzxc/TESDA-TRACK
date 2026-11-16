@@ -1014,7 +1014,8 @@ export const en = {
       saved: 'Saved',
       save: 'Save this center',
       unsave: 'Remove from saved centers',
-      noLocation: 'No map location on file',
+      // US-0014: a center without coordinates is listed but has no pin, distance or directions.
+      noLocation: 'Location not confirmed',
       directions: 'Get directions',
       hideRoute: 'Hide route',
       viewOnMap: 'View on map',
@@ -2317,6 +2318,7 @@ export const en = {
       minutes: (minutes: number) => `about ${minutes} min by car`,
       minutesShort: (minutes: number) => `${minutes} min`,
       byCar: 'By car',
+      noLocation: 'Location not confirmed',
     },
     demand: {
       heading: 'Jobs and qualification demand',

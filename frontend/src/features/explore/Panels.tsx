@@ -92,6 +92,12 @@ function TripMeta({
           {copy.km(roundKm(center.distanceKm))}
         </span>
       )}
+      {(center.latitude === null || center.longitude === null) && (
+        <span className={cx(item, 'font-semibold')}>
+          <Icon name="pin" />
+          {copy.noLocation}
+        </span>
+      )}
       {minutes !== null && (
         <span className={item}>
           <Icon name="car" label={copy.byCar} />

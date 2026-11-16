@@ -100,6 +100,14 @@ describe('recommend', () => {
     ])
   })
 
+  it('leaves a center without coordinates out of the recommendations (US-0014)', () => {
+    const unlocated = { ...center('training-cebu', 'VII', null), latitude: null, longitude: null }
+    const located = center('assessment-cebu', 'VII', 572)
+    const home = [center('training-home', 'NCR', 3), center('assessment-home', 'NCR', 4)]
+    const moving = pick([...home, unlocated, located], true, ['VII'])
+    expect(moving.relocation.map((item) => item.center.id)).toEqual(['assessment-cebu'])
+  })
+
   it('does not repeat a center it already recommends, or the learner’s own region', () => {
     const supply = [center('training-cebu', 'VII', 570), center('training-home', 'NCR', 900)]
     const moving = pick(supply, true, ['NCR', 'VII'])

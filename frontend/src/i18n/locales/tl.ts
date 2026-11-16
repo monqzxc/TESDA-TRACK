@@ -1584,4 +1584,5 @@ export const tl: Record<string, string> = {
   'Sample data for the December 2 demo': 'Sample data para sa demo sa Disyembre 2',
   'Scholarship open (sample data for the December 2 demo)':
     'Bukas ang scholarship (sample data para sa demo sa Disyembre 2)',
+  'Location not confirmed': 'Hindi pa kumpirmado ang lokasyon',
 }

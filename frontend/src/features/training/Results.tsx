@@ -213,6 +213,13 @@ function CenterRow({
       <div className="flex min-w-0 flex-[1_1_12rem] flex-col gap-[0.2rem]">
         <p className="m-0 text-15 font-semibold wrap-anywhere text-navy">{center.name}</p>
         <p className="m-0 text-13 text-ink">{placeLabel(center)}</p>
+        {/* No coordinates: listed, but with no pin or distance (US-0014). */}
+        {(center.latitude === null || center.longitude === null) && (
+          <p className="m-0 inline-flex items-center gap-1 text-13 font-semibold text-muted">
+            <Icon name="pin" />
+            {en.training.center.noLocation}
+          </p>
+        )}
         <KindBadges center={center} saved={saved} />
         <DataProvenance value={center.provenance} compact />
         <p className="m-0 text-13 text-muted">{summary(center, today)}</p>

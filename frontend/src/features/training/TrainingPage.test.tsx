@@ -354,6 +354,9 @@ describe('Training & Assessment', () => {
     ])
     expect(rows[0]).toHaveTextContent(/About .* km away/)
     expect(rows[1]).not.toHaveTextContent(/km away/)
+    // Listed, but labelled: no pin and no distance until its location is fixed (US-0014).
+    expect(rows[1]).toHaveTextContent('Location not confirmed')
+    expect(rows[0]).not.toHaveTextContent('Location not confirmed')
   })
 
   it('says which filters are on when nothing matches, and Clear all broadens them (US-07)', async () => {
