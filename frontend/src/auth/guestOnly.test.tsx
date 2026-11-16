@@ -24,19 +24,22 @@ async function openApp(path: string) {
 }
 
 describe('guest-only', () => {
-  it('offers no Sign in on Home, nor its section about what an account keeps', async () => {
+  it('offers only Sign in with TSP on Home, and not its section about what an account keeps', async () => {
     const { container } = await openApp('/')
-    expect(screen.queryByRole('button', { name: /sign in/i })).not.toBeInTheDocument()
+    // The top bar's and the hero's Sign in with TSP; no Sign in of TESDA-TRACK's own.
+    const signIns = screen.getAllByRole('button', { name: /sign in/i })
+    expect(signIns).toHaveLength(2)
+    for (const button of signIns) expect(button).toHaveAccessibleName('Sign in with TSP')
     expect(container.querySelector('a[href="/#progress"]')).toBeNull()
     expect(container.querySelector('#progress')).toBeNull()
   })
 
   it('offers only Sign in with TSP in the app, and no Save to profile or My progress', async () => {
     await openApp('/find')
-    // The sidebar's demo stand-in for TSP sign-in; no other Sign in.
-    expect(screen.getByRole('button', { name: /sign in/i })).toHaveAccessibleName(
-      'Sign in with TSP',
-    )
+    // The top bar's and the sidebar's Sign in with TSP; no other Sign in.
+    const signIns = screen.getAllByRole('button', { name: /sign in/i })
+    expect(signIns).toHaveLength(2)
+    for (const button of signIns) expect(button).toHaveAccessibleName('Sign in with TSP')
     expect(screen.queryByRole('button', { name: /save/i })).not.toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /my progress/i })).not.toBeInTheDocument()
   })

@@ -1,5 +1,7 @@
 import { useRef, type MouseEvent } from 'react'
+import { Button } from 'react-aria-components'
 import { Outlet, ScrollRestoration, useLocation } from 'react-router'
+import { learnerAccounts } from '../auth/accounts.ts'
 import { useAuth } from '../auth/useAuth.ts'
 import { useCopy } from '../i18n/copy.ts'
 import { TspNav } from '../features/tsp/TspNav.tsx'
@@ -15,6 +17,7 @@ import { HomeFooter } from './HomeFooter.tsx'
 import { HomeHeader } from './HomeHeader.tsx'
 import { MenuButton, SidebarTitle } from './Nav.tsx'
 import { PageFooter } from './PageFooter.tsx'
+import { TspBadge } from './TspBadge.tsx'
 import { Sidebar } from './Sidebar.tsx'
 import { useSidebarStore } from './sidebarState.ts'
 import { paths } from '../paths.ts'
@@ -132,7 +135,9 @@ export function WebviewLayout() {
  */
 export function AppLayout() {
   const en = useCopy()
-  const { canViewReports, canOpenAdmin } = useAuth()
+  const { canViewReports, canOpenAdmin, learner, openSignIn } = useAuth()
+  // Signed out and guest-only: Sign in with TSP at the bar's right end, as on Home's bar and at the sidebar's foot.
+  const offersTsp = !learner && !learnerAccounts()
   const ownMenu = useCurrentPage() === 'explore'
   const open = useSidebarStore((state) => state.open)
   const menuButton = useRef<HTMLButtonElement>(null)
@@ -155,6 +160,15 @@ export function AppLayout() {
               onPress={() => useSidebarStore.getState().openMenu(menuButton.current)}
             />
             <SidebarTitle />
+            {offersTsp && (
+              <Button
+                onPress={() => openSignIn({ tsp: true })}
+                className="ml-auto inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-full border-0 bg-transparent px-2 py-1 text-15 font-semibold whitespace-nowrap text-navy data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:bg-soft data-pressed:bg-chip"
+              >
+                <TspBadge small />
+                <span className="max-[431px]:sr-only">{en.account.tsp.signIn}</span>
+              </Button>
+            )}
           </header>
         )}
         <main

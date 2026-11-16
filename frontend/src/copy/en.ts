@@ -450,6 +450,8 @@ export const en = {
       breadcrumb: 'Breadcrumb',
       findTraining: 'Find training centers',
       findAssessment: 'Find assessment centers',
+      exploreJobs: 'Explore jobs',
+      possibleJobs: 'Possible jobs',
       breakdown: (parts: readonly string[]) => `(${parts.join(', ')})`,
       part: (n: number, category: string) => `${figure(n)} ${category.toLowerCase()}`,
       sample:
@@ -2238,6 +2240,13 @@ export const en = {
       training: 'Training centers',
       assessment: 'Assessment centers',
       demand: 'In demand jobs',
+    },
+    locationPrompt: {
+      title: 'Open Location?',
+      body: 'Allow your approximate location to see the nearest centers first. It is rounded to about 1 km and never saved. You can change this any time.',
+      yes: 'Yes, open it',
+      no: 'Not now',
+      close: 'Close',
     },
     location: {
       share: 'Share my location',

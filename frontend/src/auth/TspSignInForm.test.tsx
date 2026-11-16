@@ -75,7 +75,8 @@ async function openTspSignIn() {
   renderApp('/find')
   await screen.findByRole('heading', { level: 1 })
   const user = userEvent.setup()
-  await user.click(screen.getByRole('button', { name: 'Sign in with TSP' }))
+  // The top bar's and the sidebar's: either opens the dialog.
+  await user.click(screen.getAllByRole('button', { name: 'Sign in with TSP' })[0])
   await screen.findByLabelText('TSP email')
   return user
 }
