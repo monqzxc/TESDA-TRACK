@@ -420,6 +420,8 @@ export const en = {
       breadcrumb: 'Breadcrumb',
       findTraining: 'Find training centers',
       findAssessment: 'Find assessment centers',
+      exploreJobs: 'Explore jobs',
+      possibleJobs: 'Possible jobs',
       breakdown: (parts: readonly string[]) => `(${parts.join(', ')})`,
       part: (n: number, category: string) => `${figure(n)} ${category.toLowerCase()}`,
       sample:

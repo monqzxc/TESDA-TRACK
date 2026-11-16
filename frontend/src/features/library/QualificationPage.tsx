@@ -61,6 +61,9 @@ function Details({ qualifications, code }: { qualifications: Qualification[]; co
   // The map page in the app; the TSP webview keeps its own Training & Assessment.
   const centers = (type: 'training' | 'assessment') =>
     `${inTsp ? paths.tspTraining : paths.explore}?${new URLSearchParams({ qualification: qualification.code, type })}`
+  // The map's demand view with this qualification in focus: where its jobs are posted, against where it is offered.
+  const jobs = `${paths.explore}?${new URLSearchParams({ qualification: qualification.code, type: 'demand' })}`
+  const possibleJobs = qualification.possible_jobs ?? []
 
   return (
     <div className="flex flex-col gap-6">
@@ -87,6 +90,22 @@ function Details({ qualifications, code }: { qualifications: Qualification[]; co
           <QualificationFacts qualification={qualification} catalogNames={names} breakdown />
         </div>
         <DataProvenance value={qualification.provenance} />
+        {possibleJobs.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-13 font-semibold text-muted">{copy.possibleJobs}:</span>
+            <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+              {possibleJobs.map((job) => (
+                <li
+                  key={job}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border bg-panel px-3 py-1 text-13 font-medium text-navy [&_svg]:size-[1.1em]"
+                >
+                  <Icon name="briefcase" />
+                  {job}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         <div className="flex flex-wrap items-center gap-3">
           <Link className={button({ variant: 'primary' })} to={centers('training')}>
             {copy.findTraining}
@@ -96,6 +115,13 @@ function Details({ qualifications, code }: { qualifications: Qualification[]; co
             {copy.findAssessment}
             <Icon name="arrowRight" />
           </Link>
+          {!inTsp && (
+            <Link className={button({ variant: 'secondary' })} to={jobs}>
+              <Icon name="briefcase" />
+              {copy.exploreJobs}
+              <Icon name="arrowRight" />
+            </Link>
+          )}
           {!inTsp && <SaveToProgress qualification={qualification} />}
         </div>
       </header>
