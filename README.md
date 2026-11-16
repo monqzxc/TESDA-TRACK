@@ -229,17 +229,18 @@ With `EMBEDDING_MODEL` and `EMBEDDING_MODEL_PATH` unset, this downloads the defa
 (about 470 MB). Expect an `Embeddings: ... created, ... updated.` message. Restart the API afterwards.
 If you want to finish setup without the download, set `SEMANTIC_SEARCH_ENABLED=false` and restart the API.
 
-The accepted pilot model is **v3**, `tesda-track/tesda-e5-small-v3`, with calibration
-`3.5 / 5.5 / 0.3 / 20` (floor / ceiling / keyword weight / minimum score). Follow
-[the model setup guide](backend/models/README.md) to download it, then set:
+The served model is **v6-colab**, `tesda-track/tesda-e5-small-v6-colab`. It is published without a
+`calibration.json`: follow [the model setup guide](backend/models/README.md) to download **and calibrate** it
+(`2.0 / 5.0 / 0.3 / 20`: floor / ceiling / keyword weight / minimum score, on 14 November 2026), then set:
 
 ```dotenv
-EMBEDDING_MODEL=tesda-track/tesda-e5-small-v3
-EMBEDDING_MODEL_PATH=backend/models/tesda-e5-small-v3
-DOCKER_EMBEDDING_MODEL_PATH=/app/finetuned/tesda-e5-small-v3
+EMBEDDING_MODEL=tesda-track/tesda-e5-small-v6-colab
+EMBEDDING_MODEL_PATH=backend/models/tesda-e5-small-v6-colab
+DOCKER_EMBEDDING_MODEL_PATH=/app/finetuned/tesda-e5-small-v6-colab
 ```
 
-Compose uses the same v3 name and container path during build and runtime. V4 remains an evaluation candidate;
+Compose uses the same v6-colab name and container path during build and runtime. v3, the 21 October 2026 pilot
+decision (calibration `3.5 / 5.5 / 0.3 / 20`), stays published for rollback: set the three values to its name. V4 remains an evaluation candidate;
 [the decision record](docs/ml/rounds.md#pilot-decision-21-october-2026) explains the evidence and fixed acceptance gates.
 Model folders are not included in Git. Set both its model name and local folder path, then sync again;
 stored vectors belong to a particular model.
@@ -540,7 +541,8 @@ It checks fixed metric thresholds on the 120 reusable v1 test goals and an expli
 Thresholds and goal ownership are committed in `backend/training/model_acceptance.json`; they are not calibrated
 during a test run. These engineering regression gates do not replace expert review or the sealed evaluation.
 
-The pilot serves the accepted TESDA fine-tune, `tesda-track/tesda-e5-small-v3`,
+Production serves the TESDA fine-tune `tesda-track/tesda-e5-small-v6-colab`, which needs calibrating after
+download (`backend/models/README.md`); the earlier pilot model, v3, came
 with its own band in `calibration.json` ([comparison](docs/ml/2026-10-20-matching-model-v1-v4-comparison.md)). The model folder is not in git;
 `backend/models/README.md` explains how to serve it. With `EMBEDDING_MODEL` and `EMBEDDING_MODEL_PATH` unset,
 the API uses the base model above.
