@@ -2199,6 +2199,13 @@ export const en = {
       assessment: 'Assessment centers',
       demand: 'In demand jobs',
     },
+    locationPrompt: {
+      title: 'Open Location?',
+      body: 'Allow your approximate location to see the nearest centers first. It is rounded to about 1 km and never saved. You can change this any time.',
+      yes: 'Yes, open it',
+      no: 'Not now',
+      close: 'Close',
+    },
     location: {
       share: 'Share my location',
       locating: 'Finding your approximate location…',

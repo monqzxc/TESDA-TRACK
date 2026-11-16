@@ -28,6 +28,7 @@ import { matchPathway } from '../training/recommendationApi.ts'
 import { useTrainingStore } from '../training/state.ts'
 import type { DemandMapArea } from '../training/CenterMapTypes.ts'
 import { nearestRegion } from './explore.ts'
+import { LocationPrompt } from './LocationPrompt.tsx'
 import { OutlookBrief } from './OutlookBrief.tsx'
 import { CenterCard, LocationRow, NearbyPanel, ResultsPanel } from './Panels.tsx'
 import { useDemandStore, useExplore, useExploreStore } from './useExplore.ts'
@@ -300,6 +301,7 @@ export default function ExplorePage() {
     // page's dialogs.
     <div className="relative isolate h-dvh w-full overflow-hidden bg-map-water">
       <PageHeading className="sr-only">{en.pages.explore.heading}</PageHeading>
+      <LocationPrompt />
 
       <div
         className={cx(
