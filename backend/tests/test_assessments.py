@@ -33,10 +33,16 @@ def test_upcoming_open_schedules_are_listed_with_seats_left(client, admin, make_
 
 def test_schedules_can_be_searched_near_a_point(client, make_center, make_schedule):
     cebu = make_center(name="Cebu Assessment Center", region_code="VII", location=CEBU_CITY)
+    unmapped = make_center(name="Unmapped Assessment Center", location=None)
     manila_schedule = make_schedule()
     cebu_schedule = make_schedule(center=cebu)
+    unmapped_schedule = make_schedule(center=unmapped)
     near = upcoming(client, near_lat=QUEZON_CITY[0], near_lon=QUEZON_CITY[1], radius_km=100)
     assert [s["id"] for s in near] == [manila_schedule["id"]]
+    with_unmapped = upcoming(client, near_lat=QUEZON_CITY[0], near_lon=QUEZON_CITY[1], radius_km=100,
+                             include_unlocated=True)
+    assert [s["id"] for s in with_unmapped] == [manila_schedule["id"], unmapped_schedule["id"]]
+    assert with_unmapped[1]["distance_km"] is None
     by_region = upcoming(client, region_code="VII")
     assert [s["id"] for s in by_region] == [cebu_schedule["id"]]
 
@@ -63,6 +69,8 @@ def test_centers_can_be_listed_within_a_radius(client, make_center):
     assert names() == ["Cebu Assessment Center", "Manila Assessment Center", "Unmapped Assessment Center"]
     # Quezon City to Manila is roughly 11 km; to Cebu City roughly 570 km. Unmapped centers can't be inside it.
     assert names(near_lat=QUEZON_CITY[0], near_lon=QUEZON_CITY[1], radius_km=20) == [manila["name"]]
+    assert names(near_lat=QUEZON_CITY[0], near_lon=QUEZON_CITY[1], radius_km=20,
+                 include_unlocated=True) == [manila["name"], "Unmapped Assessment Center"]
     assert names(near_lat=CEBU_CITY[0], near_lon=CEBU_CITY[1], radius_km=20, region_code="VII") == [cebu["name"]]
     # A point alone narrows nothing.
     assert len(names(near_lat=QUEZON_CITY[0], near_lon=QUEZON_CITY[1])) == 3

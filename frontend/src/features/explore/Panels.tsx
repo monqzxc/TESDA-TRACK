@@ -15,6 +15,7 @@ import { offeringsQuery, type ClientConfig } from '../training/api.ts'
 import type { CenterKind } from '../training/address.ts'
 import { googleMapsDirections, RoutePanel } from '../training/CenterDetail.tsx'
 import { placeLabel, type Center, type Point } from '../training/centers.ts'
+import { NoLocationTag, unlocated } from '../training/NoLocationTag.tsx'
 import { useTrainingStore } from '../training/state.ts'
 import { SampleScholarshipNote } from '../training/scholarship.tsx'
 import type { View } from './ExplorePage.tsx'
@@ -92,12 +93,7 @@ function TripMeta({
           {copy.km(roundKm(center.distanceKm))}
         </span>
       )}
-      {(center.latitude === null || center.longitude === null) && (
-        <span className={cx(item, 'font-semibold')}>
-          <Icon name="pin" />
-          {copy.noLocation}
-        </span>
-      )}
+      {unlocated(center) && <NoLocationTag />}
       {minutes !== null && (
         <span className={item}>
           <Icon name="car" label={copy.byCar} />

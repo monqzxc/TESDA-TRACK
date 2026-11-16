@@ -982,6 +982,10 @@ export const en = {
       distancesFrom: (label: string) => `Approximate distances from ${label}`,
       fromYou: 'your location',
       withinRadius: (km: number, label: string) => `Within ${figure(km)} km of ${label}`,
+      unconfirmedHeading: 'Centers with unconfirmed locations',
+      unconfirmedDistance: 'Check with these centers to find out how far away they are.',
+      noneWithinRadius: (km: number) =>
+        `No centers with a confirmed location within ${figure(km)} km`,
       radiusPending: 'Share your location or search a place to apply the selected radius.',
       showAllDistances: 'Show all distances',
       sortHint: 'Turn on your location or search a place to sort by distance.',
@@ -2318,7 +2322,6 @@ export const en = {
       minutes: (minutes: number) => `about ${minutes} min by car`,
       minutesShort: (minutes: number) => `${minutes} min`,
       byCar: 'By car',
-      noLocation: 'Location not confirmed',
     },
     demand: {
       heading: 'Jobs and qualification demand',

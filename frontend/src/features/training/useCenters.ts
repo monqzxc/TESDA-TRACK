@@ -20,10 +20,10 @@ import {
   provinces,
   sortCenters,
   withDistances,
-  type Center,
   type FoundPlace,
   type Point,
 } from './centers.ts'
+import { unlocated } from './NoLocationTag.tsx'
 import { useTrainingFilters, useTrainingStore } from './state.ts'
 
 /** Where distances are measured from: the learner's own location, or a place they typed. */
@@ -133,8 +133,8 @@ export function useCenters(catalog: readonly Qualification[], goalOverride?: str
       ? filters.radius
       : null
 
-  const centers: Center[] = useMemo(() => {
-    if (!everything) return []
+  const { centers, unconfirmedCenters } = useMemo(() => {
+    if (!everything) return { centers: [], unconfirmedCenters: [] }
     const matching = filterCenters(
       everything,
       {
@@ -157,7 +157,11 @@ export function useCenters(catalog: readonly Qualification[], goalOverride?: str
       radius === null
         ? measured
         : measured.filter((center) => center.distanceKm !== null && center.distanceKm <= radius)
-    return sortCenters(nearby, order, today)
+    return {
+      centers: sortCenters(nearby, order, today),
+      unconfirmedCenters:
+        radius === null ? [] : sortCenters(measured.filter(unlocated), order, today),
+    }
   }, [
     everything,
     filters.kinds,
@@ -175,6 +179,8 @@ export function useCenters(catalog: readonly Qualification[], goalOverride?: str
   ])
 
   const selected = centers.find((center) => center.id === filters.center) ?? null
+  const selectedUnconfirmed =
+    unconfirmedCenters.find((center) => center.id === filters.center) ?? null
   // Until a center is selected, the first result is the one shown in full.
   const featured = selected ?? centers[0] ?? null
   const measured = centers.filter((center) => center.distanceKm !== null)
@@ -185,7 +191,7 @@ export function useCenters(catalog: readonly Qualification[], goalOverride?: str
   // How well the featured center's programs fit, for the qualifications chosen. The learner's own location is never
   // sent: the API keeps an audit of every ranking, and the page promises their location isn't saved.
   const fitCodes =
-    featured?.kind === 'training'
+    featured?.kind === 'training' && !unlocated(featured)
       ? [...new Set(featured.programs.map((program) => program.qualification.code))]
           .filter((code) => codes.includes(code))
           .sort()
@@ -235,6 +241,8 @@ export function useCenters(catalog: readonly Qualification[], goalOverride?: str
     place,
     reference,
     centers,
+    unconfirmedCenters,
+    selectedUnconfirmed,
     radiusKm: radius,
     featured,
     selected,

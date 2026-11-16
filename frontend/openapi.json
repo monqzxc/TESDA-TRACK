@@ -2219,6 +2219,18 @@
               ],
               "title": "Radius Km"
             }
+          },
+          {
+            "name": "include_unlocated",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Also return sites without coordinates when a radius is set.",
+              "default": false,
+              "title": "Include Unlocated"
+            },
+            "description": "Also return sites without coordinates when a radius is set."
           }
         ],
         "responses": {
@@ -2408,6 +2420,18 @@
               ],
               "title": "Radius Km"
             }
+          },
+          {
+            "name": "include_unlocated",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Also return listings at sites without coordinates when a radius is set.",
+              "default": false,
+              "title": "Include Unlocated"
+            },
+            "description": "Also return listings at sites without coordinates when a radius is set."
           },
           {
             "name": "provider_id",
@@ -2607,6 +2631,18 @@
               ],
               "title": "Radius Km"
             }
+          },
+          {
+            "name": "include_unlocated",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Also return sites without coordinates when a radius is set.",
+              "default": false,
+              "title": "Include Unlocated"
+            },
+            "description": "Also return sites without coordinates when a radius is set."
           }
         ],
         "responses": {
@@ -2754,6 +2790,18 @@
               ],
               "title": "Radius Km"
             }
+          },
+          {
+            "name": "include_unlocated",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Also return listings at sites without coordinates when a radius is set.",
+              "default": false,
+              "title": "Include Unlocated"
+            },
+            "description": "Also return listings at sites without coordinates when a radius is set."
           },
           {
             "name": "center_id",

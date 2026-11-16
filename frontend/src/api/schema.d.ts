@@ -8228,6 +8228,8 @@ export interface operations {
                 near_lat?: number | null;
                 near_lon?: number | null;
                 radius_km?: number | null;
+                /** @description Also return sites without coordinates when a radius is set. */
+                include_unlocated?: boolean;
             };
             header?: never;
             path?: never;
@@ -8296,6 +8298,8 @@ export interface operations {
                 near_lat?: number | null;
                 near_lon?: number | null;
                 radius_km?: number | null;
+                /** @description Also return listings at sites without coordinates when a radius is set. */
+                include_unlocated?: boolean;
                 provider_id?: number | null;
                 delivery_mode?: ("institution_based" | "enterprise_based" | "community_based" | "online" | "unknown") | null;
                 scholarship_only?: boolean;
@@ -8364,6 +8368,8 @@ export interface operations {
                 near_lat?: number | null;
                 near_lon?: number | null;
                 radius_km?: number | null;
+                /** @description Also return sites without coordinates when a radius is set. */
+                include_unlocated?: boolean;
             };
             header?: never;
             path?: never;
@@ -8401,6 +8407,8 @@ export interface operations {
                 near_lat?: number | null;
                 near_lon?: number | null;
                 radius_km?: number | null;
+                /** @description Also return listings at sites without coordinates when a radius is set. */
+                include_unlocated?: boolean;
                 /** @description Only this assessment center's schedules. */
                 center_id?: number | null;
             };

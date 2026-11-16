@@ -10,6 +10,7 @@ import { button } from '../../styles/buttons.ts'
 import { CenterSuggestionFeedback } from '../suggestion-feedback/CenterSuggestionFeedback.tsx'
 import { ANY_DISTANCE, NO_FILTERS, SORTS, shortName, type SortOrder } from './address.ts'
 import { placeLabel, summary, type Center } from './centers.ts'
+import { NoLocationTag, unlocated } from './NoLocationTag.tsx'
 import { CenterDetail, KindBadges } from './CenterDetail.tsx'
 import { useTrainingFilters, useTrainingStore } from './state.ts'
 import type { CenterResults } from './useCenters.ts'
@@ -53,15 +54,20 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
   const location = useTrainingStore((state) => (state.useLocation ? state.location : null))
   const routing = results.config?.routing_enabled ?? false
   const [limit, setLimit] = useState(LIST_STEP)
+  const [unconfirmedLimit, setUnconfirmedLimit] = useState(LIST_STEP)
   const headingId = useId()
   const featuredHeading = useRef<HTMLHeadingElement>(null)
 
-  const { centers, featured, reference } = results
+  const { centers, featured, reference, unconfirmedCenters, selectedUnconfirmed } = results
   const others = featured ? centers.filter((center) => center.id !== featured.id) : []
-  const featuredId = featured?.id
+  const detailId = selectedUnconfirmed?.id ?? featured?.id
+  const visibleUnconfirmed = unconfirmedCenters.slice(0, unconfirmedLimit)
+  if (selectedUnconfirmed && !visibleUnconfirmed.includes(selectedUnconfirmed)) {
+    visibleUnconfirmed.push(selectedUnconfirmed)
+  }
 
   useEffect(() => {
-    if (!show || show.id !== featuredId) return
+    if (!show || show.id !== detailId) return
     const heading = featuredHeading.current
     if (show.focus) {
       heading?.scrollIntoView({ block: 'start' })
@@ -69,7 +75,7 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
     } else {
       heading?.scrollIntoView({ block: 'nearest' })
     }
-  }, [show, featuredId])
+  }, [show, detailId])
 
   return (
     <section
@@ -141,7 +147,7 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
             onViewOnMap={() => onViewOnMap(featured.id)}
             fits={results.fits}
             today={results.today}
-            headingRef={featuredHeading}
+            headingRef={selectedUnconfirmed ? undefined : featuredHeading}
           />
           {!results.refreshing && <CenterFeedback center={featured} results={results} />}
           {others.length > 0 && (
@@ -173,6 +179,53 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
                 </Button>
               )}
             </>
+          )}
+        </div>
+      )}
+      {unconfirmedCenters.length > 0 && (
+        <div className="mt-5 flex flex-col gap-2">
+          <h3 className="m-0 text-16 text-navy tabular-nums">
+            {copy.unconfirmedHeading} ({unconfirmedCenters.length.toLocaleString()})
+          </h3>
+          <p className={note}>{copy.unconfirmedDistance}</p>
+          <ul className="m-0 flex list-none flex-col p-0">
+            {visibleUnconfirmed.map((center) =>
+              center.id === selectedUnconfirmed?.id ? (
+                <li key={center.id}>
+                  <CenterDetail
+                    center={center}
+                    isNearest={false}
+                    routeFrom={null}
+                    hasMap={false}
+                    onViewOnMap={() => onViewOnMap(center.id)}
+                    fits={results.fits}
+                    today={results.today}
+                    headingRef={featuredHeading}
+                  />
+                  {!results.refreshing && <CenterFeedback center={center} results={results} />}
+                </li>
+              ) : (
+                <CenterRow
+                  key={center.id}
+                  center={center}
+                  saved={saved.includes(center.id)}
+                  today={results.today}
+                  onChoose={() => onChoose(center.id)}
+                  feedback={
+                    !results.refreshing && <CenterFeedback center={center} results={results} />
+                  }
+                />
+              ),
+            )}
+          </ul>
+          {unconfirmedCenters.length > visibleUnconfirmed.length && (
+            <Button
+              className={button({ variant: 'tertiary', wide: true })}
+              onPress={() => setUnconfirmedLimit((current) => current + LIST_STEP)}
+            >
+              <Icon name="chevron" />
+              {copy.showMore(unconfirmedCenters.length - visibleUnconfirmed.length)}
+            </Button>
           )}
         </div>
       )}
@@ -214,12 +267,7 @@ function CenterRow({
         <p className="m-0 text-15 font-semibold wrap-anywhere text-navy">{center.name}</p>
         <p className="m-0 text-13 text-ink">{placeLabel(center)}</p>
         {/* No coordinates: listed, but with no pin or distance (US-0014). */}
-        {(center.latitude === null || center.longitude === null) && (
-          <p className="m-0 inline-flex items-center gap-1 text-13 font-semibold text-muted">
-            <Icon name="pin" />
-            {en.training.center.noLocation}
-          </p>
-        )}
+        {unlocated(center) && <NoLocationTag />}
         <KindBadges center={center} saved={saved} />
         <DataProvenance value={center.provenance} compact />
         <p className="m-0 text-13 text-muted">{summary(center, today)}</p>
@@ -261,7 +309,11 @@ function NoMatch({ results }: { results: CenterResults }) {
   ]
   return (
     <EmptyState
-      heading={copy.none.heading}
+      heading={
+        results.radiusKm !== null && results.unconfirmedCenters.length > 0
+          ? copy.noneWithinRadius(results.radiusKm)
+          : copy.none.heading
+      }
       body={results.radiusKm !== null ? copy.none.radiusBody : copy.none.body}
       headingLevel={3}
     >

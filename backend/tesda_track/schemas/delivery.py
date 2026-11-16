@@ -272,6 +272,7 @@ class SiteSearch(BaseModel):
     near_lat: Latitude | None = None
     near_lon: Longitude | None = None
     radius_km: Annotated[float, Field(gt=0, le=2000)] | None = None
+    include_unlocated: bool = Field(default=False, description="Also return sites without coordinates when a radius is set.")
 
     @model_validator(mode="after")
     def complete(self):
@@ -292,6 +293,7 @@ class NearbySearch(BaseModel):
     near_lat: Latitude | None = None
     near_lon: Longitude | None = None
     radius_km: Annotated[float, Field(gt=0, le=2000)] | None = None
+    include_unlocated: bool = Field(default=False, description="Also return listings at sites without coordinates when a radius is set.")
 
     @model_validator(mode="after")
     def complete(self):
