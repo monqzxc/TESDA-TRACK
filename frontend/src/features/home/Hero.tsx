@@ -1,5 +1,9 @@
 import type { ReactNode } from 'react'
+import { Button } from 'react-aria-components'
 import { Link } from 'react-router'
+import { learnerAccounts } from '../../auth/accounts.ts'
+import { useAuth } from '../../auth/useAuth.ts'
+import { TspBadge } from '../../components/TspBadge.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cssVars, cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
@@ -40,6 +44,9 @@ export function Hero() {
   const copy = en.home.hero
 
   const { ref, isIn } = useReveal<HTMLElement>()
+  // Signed out (and guest-only), "Sign in with TSP" sits beside Find my path, as at the sidebar's foot.
+  const { learner, openSignIn } = useAuth()
+  const offersTsp = !learner && !learnerAccounts()
   const [first, second, last] = copy.title
   return (
     <section
@@ -109,6 +116,12 @@ export function Hero() {
               {copy.findMyPath}
               <Glyph name="arrow" />
             </Link>
+            {offersTsp && (
+              <Button onPress={() => openSignIn({ tsp: true })} className={homeButton('ghost')}>
+                <TspBadge small />
+                {en.account.tsp.signIn}
+              </Button>
+            )}
             <Link to={paths.qualifications} className={homeButton('ghost')}>
               {copy.browse(CATALOG.qualifications)}
             </Link>

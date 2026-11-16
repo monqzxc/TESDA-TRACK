@@ -1,11 +1,15 @@
+import { Button } from 'react-aria-components'
 import { Link } from 'react-router'
+import { learnerAccounts } from '../auth/accounts.ts'
 import { useAuth } from '../auth/useAuth.ts'
 import { useCopy, useLanguage } from '../i18n/copy.ts'
 import { LanguageSelector } from '../i18n/LanguageSelector.tsx'
 import { AccountControl } from '../features/account/AccountMenu.tsx'
+import { accountButton } from '../features/account/styles.ts'
 import { cx } from '../lib/style.ts'
 import { paths } from '../paths.ts'
 import { logoSrc } from './Brand.tsx'
+import { TspBadge } from './TspBadge.tsx'
 import { useHomeBar } from './useHomeBar.ts'
 
 // The landing page's sections (classic/landing.html): links to Home's sections, by their ids. They're router links,
@@ -32,11 +36,12 @@ const cta = cx(
 )
 
 /**
- * Home's own top bar, from the landing page: the brand, its section links, Sign in and Find my path.
+ * Home's own top bar, from the landing page: the brand, its section links, Sign in (or, signed out and guest-only,
+ * Sign in with TSP) and Find my path.
  * It's see-through over Home's hero and turns solid once the page scrolls (useHomeBar).
  *
  * The brand pushes the rest to the right. On small phones the logo stands for the name, so Sign in and Find my path
- * keep to one line.
+ * keep to one line, and Sign in with TSP shows only its badge (its name stays for screen readers).
  */
 export function HomeHeader() {
   const language = useLanguage()
@@ -50,13 +55,14 @@ export function HomeHeader() {
     { hash: '#progress', label: copy.progress },
   ] as const
   // Guest-only, Home has no "My progress" section (it's about what an account keeps).
-  const { offersAccounts } = useAuth()
+  const { offersAccounts, learner, openSignIn } = useAuth()
+  const offersTsp = !learner && !learnerAccounts()
   const sections = SECTIONS.filter(({ hash }) => offersAccounts || hash !== '#progress')
 
   const { ref, scrolled } = useHomeBar<HTMLElement>()
   return (
     <header ref={ref} className={topbar} data-scrolled={scrolled || undefined}>
-      <div className="mx-auto flex min-h-17 w-full max-w-home flex-wrap items-center justify-end gap-x-5 gap-y-2 px-home-gutter py-[0.6rem] max-[761px]:gap-x-4">
+      <div className="mx-auto flex min-h-17 w-full max-w-home flex-wrap items-center justify-end gap-x-5 gap-y-2 px-home-gutter py-[0.6rem] max-[761px]:gap-x-4 max-[431px]:gap-x-2">
         <Link
           to={paths.home}
           className="mr-auto inline-flex items-center gap-[0.6rem] font-display text-[1.15rem] leading-none font-extrabold tracking-[0.01em] text-white no-underline"
@@ -89,10 +95,24 @@ export function HomeHeader() {
           ))}
         </nav>
         <LanguageSelector header />
-        <AccountControl
-          variant="header"
-          buttonClassName="px-[0.2rem] py-2 text-[0.95rem] font-bold whitespace-nowrap text-white no-underline hovered:text-(--band-accent)"
-        />
+        {/* Signed out and guest-only, the account control would be empty: Sign in with TSP takes its place. */}
+        {offersTsp ? (
+          <Button
+            onPress={() => openSignIn({ tsp: true })}
+            className={cx(
+              accountButton.header,
+              'max-w-none px-[0.2rem] py-2 text-[0.95rem] font-bold whitespace-nowrap text-white hovered:text-(--band-accent)',
+            )}
+          >
+            <TspBadge small />
+            <span className="max-[481px]:sr-only">{en.account.tsp.signIn}</span>
+          </Button>
+        ) : (
+          <AccountControl
+            variant="header"
+            buttonClassName="px-[0.2rem] py-2 text-[0.95rem] font-bold whitespace-nowrap text-white no-underline hovered:text-(--band-accent)"
+          />
+        )}
         {/* Find my path opens the center finder with its search box ready to type in. */}
         <Link to={paths.explore} state={{ focusSearch: true }} className={cta}>
           {copy.findMyPath}
