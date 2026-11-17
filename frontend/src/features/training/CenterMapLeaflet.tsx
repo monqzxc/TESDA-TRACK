@@ -211,7 +211,9 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
     locating && props.locatingNotice !== false
       ? en.training.filters.locating
       : !points.length && !props.demandAreas
-        ? copy.none
+        ? props.centersUnavailable
+          ? copy.unavailable
+          : copy.none
         : statusText
 
   return (

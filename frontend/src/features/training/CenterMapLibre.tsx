@@ -1087,7 +1087,9 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     locating && props.locatingNotice !== false
       ? en.training.filters.locating
       : !points.length && !demandAreas
-        ? copy.none
+        ? props.centersUnavailable
+          ? copy.unavailable
+          : copy.none
         : (statusText ?? coverageText)
 
   const zoomBy = (delta: number) => {

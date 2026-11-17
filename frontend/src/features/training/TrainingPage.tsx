@@ -307,6 +307,7 @@ function Workspace({
                   >
                     <CenterMap
                       centers={results.centers}
+                      centersUnavailable={results.failed}
                       selectedId={selected?.id ?? null}
                       focus={focusOnMap}
                       reference={results.reference}

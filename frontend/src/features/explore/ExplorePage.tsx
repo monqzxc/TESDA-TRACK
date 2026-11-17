@@ -343,6 +343,7 @@ export default function ExplorePage() {
           >
             <CenterMap
               centers={pins}
+              centersUnavailable={explore.failed}
               demandAreas={demandAreas}
               demandRegion={explore.demandRegion}
               demandOverview={explore.relocate}

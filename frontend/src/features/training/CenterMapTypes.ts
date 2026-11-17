@@ -14,6 +14,11 @@ export interface MapRoute {
 
 export interface CenterMapProps {
   centers: readonly Center[]
+  /**
+   * The center list failed to load (US-0025): the map says so instead of "No centers match", which is kept for a
+   * list that loaded and has none. The page shows the error and its retry button.
+   */
+  centersUnavailable?: boolean
   /** Regional posting totals joined to boundary polygons by region code. */
   demandAreas?: readonly DemandMapArea[]
   demandRegion?: string | null

@@ -1606,4 +1606,6 @@ export const tl: Record<string, string> = {
     'Malapit sa {0}, ang tinitirhan mo ayon sa iyong TSP profile',
   'Typing a place changes it for this visit only. Your TSP profile is not changed.':
     'Ang lugar na ita-type mo ay para sa pagbisitang ito lamang. Hindi nababago ang iyong TSP profile.',
+  'Centers couldn’t be loaded. Try again from the list.':
+    'Hindi makuha ang mga sentro. Subukang muli mula sa listahan.',
 }

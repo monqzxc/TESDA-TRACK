@@ -1116,6 +1116,8 @@ export const en = {
       label: 'Map of training and assessment centers',
       loading: 'Loading the map…',
       none: 'No centers match this search yet.',
+      // US-0025: the list failed, which is not the same as no centers.
+      unavailable: 'Centers couldn’t be loaded. Try again from the list.',
       tilesFailed: 'Some map tiles could not load. The list of centers still works.',
       failed: 'The map could not load. The list of centers still works.',
       vectorFailed: 'The detailed map could not load, so the OpenStreetMap map is shown instead.',

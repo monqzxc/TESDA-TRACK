@@ -622,6 +622,8 @@ test('US-0004: Kuya Manuel sees his TSP profile, his home area and a hint to go 
   await serveRecommendations(page)
   // Registered after the fixture, so these answer first: a signed-in TSP learner and a driving match.
   await page.addInitScript(() => localStorage.setItem('tesda-track.signed-in', 'e2e-session-hint'))
+  // The test setup marks Open Location? as answered; this learner has never been asked.
+  await page.addInitScript(() => localStorage.removeItem('track.explore.locationAsked'))
   await page.route('**/api/v1/me', (route) => route.fulfill({ json: MANUEL }))
   await page.route('**/api/v1/auth/tsp/profile', (route) =>
     route.fulfill({ json: MANUEL_PASSPORT }),
@@ -673,4 +675,27 @@ test('US-0004: Kuya Manuel sees his TSP profile, his home area and a hint to go 
   )
   await expect(page.getByRole('heading', { level: 3 }).first()).toHaveText('Get certified')
   expect((await new AxeBuilder({ page }).include('section').analyze()).violations).toEqual([])
+})
+
+test('US-0025: when the center list fails, the map does not say no centers match', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 667 })
+  await serveRecommendations(page)
+  let fail = true
+  await page.route('**/api/v1/training-providers*', (route) =>
+    fail ? route.abort('internetdisconnected') : route.fallback(),
+  )
+  await page.goto('/explore')
+  await page.getByRole('searchbox', { name: 'What can you do?' }).click()
+  const retry = page.getByRole('button', { name: 'Try loading the list again' })
+  await expect(retry).toBeVisible({ timeout: 15_000 })
+  await expect(page.getByText('Centers couldn’t be loaded. Try again from the list.')).toBeVisible()
+  await expect(page.getByText('No centers match this search yet.')).toHaveCount(0)
+  fail = false
+  await retry.click()
+  await expect(page.getByText('Centers couldn’t be loaded. Try again from the list.')).toHaveCount(
+    0,
+  )
+  await expect(retry).toHaveCount(0)
 })
