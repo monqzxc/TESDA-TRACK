@@ -2233,6 +2233,7 @@ export const en = {
   explore: {
     panel: {
       collapse: 'Show less',
+      closeSheet: 'Close map panel',
     },
     search: {
       label: 'What can you do?',

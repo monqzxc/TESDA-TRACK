@@ -60,6 +60,8 @@ function useHeight(): [(node: HTMLElement | null) => void, number] {
 }
 
 const TABLET_UP = '(min-width: 768px)'
+const SHEET_DISMISS_DISTANCE = 48
+const SHEET_TAP_TOLERANCE = 10
 
 /** Whether the window is a tablet's width or more, where the results are a panel beside the map, not a sheet. */
 function useTabletUp() {
@@ -173,6 +175,7 @@ export default function ExplorePage() {
   )
   // The body scrolls only once it has finished opening: during the slide, a scrollbar would flash.
   const [opened, setOpened] = useState(!collapsed)
+  const sheetDrag = useRef<{ id: number; x: number; y: number } | null>(null)
   const scrollable = !collapsed && (opened || prefersReducedMotion())
   const bodyId = useId()
   const input = useRef<HTMLInputElement>(null)
@@ -183,11 +186,11 @@ export default function ExplorePage() {
   useEffect(() => {
     if (focusSearch) input.current?.focus()
   }, [focusSearch])
-  const fold = () => {
+  const fold = (restoreFocus = true) => {
     setCollapsed(true)
     setOpened(false)
     // Show less goes inert with the panel's body, so focus goes back to the box it opened from.
-    input.current?.focus()
+    if (restoreFocus) input.current?.focus()
   }
   // The search bar's burger opens the app's sidebar over the map: this page has no top bar for it.
   const menuOpen = useSidebarStore((state) => state.open)
@@ -462,10 +465,37 @@ export default function ExplorePage() {
             )}
           >
             <div className="flex min-h-full flex-col gap-3 border-rule p-4 max-md:pt-2 md:border-t">
-              <span
-                aria-hidden="true"
-                className="mx-auto h-1 w-9 flex-none rounded-full bg-dash md:hidden"
-              />
+              <button
+                type="button"
+                aria-label={copy.panel.closeSheet}
+                aria-controls={bodyId}
+                aria-expanded={!collapsed}
+                className="sticky top-0 z-10 -mx-4 -mt-2 -mb-2 grid h-11 flex-none cursor-grab touch-none place-items-center rounded-t-16 border-0 bg-surface focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-blue active:cursor-grabbing md:hidden"
+                onPointerDown={(event) => {
+                  if (!event.isPrimary || event.button !== 0) return
+                  sheetDrag.current = { id: event.pointerId, x: event.clientX, y: event.clientY }
+                  event.currentTarget.setPointerCapture(event.pointerId)
+                }}
+                onPointerUp={(event) => {
+                  const start = sheetDrag.current
+                  if (!start || start.id !== event.pointerId) return
+                  sheetDrag.current = null
+                  const dx = Math.abs(event.clientX - start.x)
+                  const dy = event.clientY - start.y
+                  const tap = dx <= SHEET_TAP_TOLERANCE && Math.abs(dy) <= SHEET_TAP_TOLERANCE
+                  if (tap || (dy >= SHEET_DISMISS_DISTANCE && dy > dx)) {
+                    fold(event.pointerType !== 'touch')
+                  }
+                }}
+                onLostPointerCapture={() => {
+                  sheetDrag.current = null
+                }}
+                onClick={(event) => {
+                  if (event.detail === 0) fold()
+                }}
+              >
+                <span aria-hidden="true" className="h-1 w-9 rounded-full bg-dash" />
+              </button>
               {!search && view !== 'demand' && !selected && (
                 <p className="m-0 text-13 leading-[1.5] text-muted">{copy.search.hint}</p>
               )}
@@ -527,7 +557,7 @@ export default function ExplorePage() {
               <Button
                 aria-controls={bodyId}
                 aria-expanded={!collapsed}
-                onPress={fold}
+                onPress={() => fold()}
                 className={cx(
                   button({ variant: 'tertiary', height: 38, text: 14 }),
                   'mx-auto mt-auto',

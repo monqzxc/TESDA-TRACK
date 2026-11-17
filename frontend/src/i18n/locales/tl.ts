@@ -1585,6 +1585,7 @@ export const tl: Record<string, string> = {
   'Scholarship open (sample data for the December 2 demo)':
     'Bukas ang scholarship (sample data para sa demo sa Disyembre 2)',
   'Location not confirmed': 'Hindi pa kumpirmado ang lokasyon',
+  'Close map panel': 'Isara ang panel ng mapa',
   'Centers with unconfirmed locations': 'Mga sentrong hindi pa kumpirmado ang lokasyon',
   'Check with these centers to find out how far away they are.':
     'Magtanong sa mga sentrong ito para malaman kung gaano sila kalayo.',

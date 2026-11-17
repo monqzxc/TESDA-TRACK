@@ -434,6 +434,52 @@ for (const engine of ['leaflet', 'maplibre'] as const) {
   })
 }
 
+test.describe('the mobile Career Map sheet', () => {
+  test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true })
+
+  test('closes a center card on a downward swipe and keeps the search', async ({ page }) => {
+    await serveRecommendations(page, 'leaflet')
+    await page.goto('/explore')
+    // Open Location? is already answered by the Playwright setup (playwright.config.ts).
+    const search = page.getByRole('searchbox', { name: 'What can you do?' })
+    await search.fill(GOAL)
+    await page.getByRole('button', { name: 'Search', exact: true }).click()
+    await page
+      .getByRole('button', { name: /Example Computer Assessment Center Assessment for/ })
+      .click()
+    const handle = page.getByRole('button', { name: 'Close map panel' })
+    const sheet = page.locator(`[id="${await handle.getAttribute('aria-controls')}"]`)
+    await expect(sheet.locator('> div')).toHaveCSS('overflow-y', 'auto')
+    await expect(handle).toBeInViewport()
+    const rect = (await handle.boundingBox())!
+    const x = Math.round(rect.x + rect.width / 2)
+    const y = Math.round(rect.y + rect.height / 2)
+    const touch = await page.context().newCDPSession(page)
+    const swipe = async (endY: number) => {
+      await touch.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] })
+      await touch.send('Input.dispatchTouchEvent', {
+        type: 'touchMove',
+        touchPoints: [{ x, y: endY }],
+      })
+      await touch.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
+    }
+
+    await swipe(y - 70)
+    await expect(handle).toBeVisible()
+    await expect(handle).toBeInViewport()
+    await swipe(y + 70)
+    await expect(sheet).toHaveJSProperty('inert', true)
+    await expect(handle).not.toBeInViewport()
+    await expect(search).toHaveValue(GOAL)
+    await search.tap()
+    await expect(
+      page.getByRole('heading', { name: ASSESSMENT_SITE.name, exact: true }),
+    ).toBeVisible()
+    await handle.press('Enter')
+    await expect(sheet).toHaveJSProperty('inert', true)
+  })
+})
+
 async function select(page: Page, label: string, option: string) {
   await page.getByRole('button', { name: new RegExp(label) }).click()
   await page.getByRole('option', { name: option, exact: true }).click()
