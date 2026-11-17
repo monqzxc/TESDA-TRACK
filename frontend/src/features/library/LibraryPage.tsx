@@ -11,7 +11,12 @@ import { SelectField } from '../../components/SelectField.tsx'
 import { WithCatalog } from '../../components/WithCatalog.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { pageOf } from '../../lib/paging.ts'
-import { catalogNames, filterQualifications, sectorsOf } from '../../lib/qualifications.ts'
+import {
+  catalogNames,
+  filterQualifications,
+  NC_LEVELS,
+  sectorsOf,
+} from '../../lib/qualifications.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { QualificationCard, qualificationHref } from './QualificationCard.tsx'
@@ -19,12 +24,11 @@ import { QualificationCard, qualificationHref } from './QualificationCard.tsx'
 /** Cards a page: the whole catalog at once (hundreds of cards) is slow on a phone. */
 export const LIBRARY_PAGE_SIZE = 12
 
-/** The sector picker's choice for every sector. Sector names have capitals, so it can't clash with one. */
+/** The default choice for both pickers. */
 const ALL = 'all'
 
 /**
- * Qualifications Library, at /qualifications (classic/app.py show_library; US-04). The search, the sector and the
- * page are in the address (?q=&sector=&page=), so a search can be shared and Back returns to it.
+ * Qualifications Library, at /qualifications. The filters and page are in the address so searches can be shared.
  */
 export default function LibraryPage() {
   const en = useCopy()
@@ -58,9 +62,11 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
   const sectorParam = params.get('sector')
   // An address with a sector the catalog doesn't have shows every sector.
   const sector = sectorParam !== null && sectors.includes(sectorParam) ? sectorParam : undefined
+  const levelParam = params.get('level')
+  const level = NC_LEVELS.find((option) => option === levelParam)
   const filtered = useMemo(
-    () => filterQualifications(qualifications, { query, sector }),
-    [qualifications, query, sector],
+    () => filterQualifications(qualifications, { query, sector, level }),
+    [qualifications, query, sector, level],
   )
   const showAll = params.get('view') === 'all'
   const shown = pageOf(
@@ -68,10 +74,10 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
     showAll ? 1 : Number(params.get('page') ?? '1'),
     showAll ? Math.max(1, filtered.length) : LIBRARY_PAGE_SIZE,
   )
-  const isFiltered = query.trim() !== '' || sector !== undefined
+  const isFiltered = query.trim() !== '' || sector !== undefined || level !== undefined
 
-  /** A new search or sector starts again at the first page. Typing replaces the address rather than adding to it. */
-  const setFilter = (name: 'q' | 'sector', value: string | undefined) => {
+  /** A filter change starts again at the first page. */
+  const setFilter = (name: 'q' | 'sector' | 'level', value: string | undefined) => {
     setParams(
       (current) => {
         const next = new URLSearchParams(current)
@@ -80,7 +86,8 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
         next.delete('page')
         return next
       },
-      { replace: true, preventScrollReset: true },
+      // Apply this update before the next control reads the address, even during rapid filter changes.
+      { replace: true, preventScrollReset: true, flushSync: true },
     )
   }
 
@@ -123,21 +130,24 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
     { id: ALL, label: copy.allSectors },
     ...sectors.map((name) => ({ id: name, label: name })),
   ]
+  const levelOptions = [
+    { id: ALL, label: copy.allLevels },
+    ...NC_LEVELS.map((id) => ({ id, label: en.qualification.tags.level(id) })),
+  ]
 
   return (
     <>
-      {/* The search beside the sector, in one row on the page. */}
       <section
         data-tour="library-filters"
         aria-labelledby={filtersId}
-        className="grid grid-cols-[minmax(0,2fr)_minmax(0,1fr)] gap-4 max-[801px]:grid-cols-1"
+        className="grid grid-cols-2 gap-4 min-[802px]:grid-cols-[minmax(0,2fr)_minmax(0,1fr)_minmax(0,1fr)]"
       >
         <h2 id={filtersId} className="sr-only">
           {copy.filters}
         </h2>
         <SearchField
           data-tour="library-search"
-          className="flex min-w-0 flex-col gap-[0.35rem]"
+          className="flex min-w-0 flex-col gap-[0.35rem] max-[801px]:col-span-2"
           value={query}
           onChange={(value) => setFilter('q', value)}
         >
@@ -167,6 +177,12 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
           options={sectorOptions}
           value={sector ?? ALL}
           onChange={(value) => setFilter('sector', value === ALL ? undefined : value)}
+        />
+        <SelectField
+          label={copy.level}
+          options={levelOptions}
+          value={level ?? ALL}
+          onChange={(value) => setFilter('level', value === ALL ? undefined : value)}
         />
       </section>
 

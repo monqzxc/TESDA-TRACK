@@ -233,6 +233,7 @@ export const tl: Record<string, string> = {
   'Clear search': 'Burahin ang paghahanap',
   Sector: 'Sektor',
   'All sectors': 'Lahat ng sektor',
+  'All levels': 'Lahat ng antas',
   'Filtered results': 'Mga sinalang resulta',
   'Find your next possibility': 'Hanapin ang susunod mong pagkakataon',
   'Clear filters': 'Alisin ang mga filter',

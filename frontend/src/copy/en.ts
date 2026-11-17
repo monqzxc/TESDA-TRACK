@@ -428,6 +428,8 @@ export const en = {
     clearSearch: 'Clear search',
     sector: 'Sector',
     allSectors: 'All sectors',
+    level: 'Level',
+    allLevels: 'All levels',
     // "12 of 319 qualifications · Showing 1–12"
     count: (found: number, total: number) => `${figure(found)} of ${figure(total)} qualifications`,
     showing: (first: number, last: number) => `Showing ${figure(first)}–${figure(last)}`,
