@@ -1073,7 +1073,8 @@ def considerations(f: Facts) -> list[Consideration]:
             Consideration(
                 topic="providers",
                 text=(
-                    f"TESDA-TRACK doesn't list any training programs or assessment schedules for {name} yet."
+                    f"No training programs or assessment schedules for {name} at centers with confirmed "
+                    "locations are shown in this report."
                 ),
                 items=[
                     f"Ask the TESDA provincial or district office near you which providers offer {name}."
@@ -1083,9 +1084,9 @@ def considerations(f: Facts) -> list[Consideration]:
     else:
         items = []
         if not training:
-            items.append(f"No training programs for {name} are listed yet.")
+            items.append(f"No training programs for {name} at centers with confirmed locations are shown.")
         if not assessment:
-            items.append(f"No upcoming assessment schedules for {name} are listed yet.")
+            items.append(f"No upcoming assessment schedules for {name} at centers with confirmed locations are shown.")
         sorted_by = (
             f", sorted by distance from {region.center_city}, your region's center"
             if region
@@ -1468,7 +1469,7 @@ def final(
         )
     else:
         sentences.append(
-            f"No providers for {name} are listed in TESDA-TRACK yet, so ask the TESDA office near you "
+            f"No providers with confirmed locations are shown for {name}. Ask the TESDA office near you "
             "which providers offer it."
         )
     if f.records.target_date:
@@ -1513,7 +1514,7 @@ def build(
     )
     route = analysis.pathway(session, evidence.profile, qualification.code)
 
-    # The existing rankings, unchanged: they audit what they return, so the report's options can be traced.
+    # Limit report options to centers with coordinates before scoring and auditing them (US-0014).
     training = ranking.rank_programs(
         session,
         TrainingRankingRequest(
@@ -1527,6 +1528,7 @@ def build(
         ),
         embedder,
         learner,
+        require_coordinates=True,
     )
     # Its region_code would be a hard filter; the region's center sorts by distance, as for training, instead.
     assessment = assessment_ranking.rank(
@@ -1539,6 +1541,7 @@ def build(
             limit=PROVIDER_LIMIT,
         ),
         learner,
+        require_coordinates=True,
     )
 
     item = catalog.catalog_item(qualification)
