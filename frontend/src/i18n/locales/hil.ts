@@ -30,7 +30,7 @@ export const hil: Record<string, string> = {
   'Taglish welcome': 'Puwede ang Taglish',
   'Your goal': 'Imo lalab-uton',
   Example: 'Halimbawa',
-  'Top match': 'Pinakaangay',
+  'Best match': 'Pinakaangay',
   'Goal match': 'Pagkaangay sa lalab-uton',
   Goal: 'Lalab-uton',
   Match: 'Kaangay',

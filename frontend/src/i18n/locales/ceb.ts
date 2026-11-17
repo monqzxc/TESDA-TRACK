@@ -30,7 +30,7 @@ export const ceb: Record<string, string> = {
   'Taglish welcome': 'Mahimo ang Taglish',
   'Your goal': 'Imong tumong',
   Example: 'Pananglitan',
-  'Top match': 'Labing angay',
+  'Best match': 'Labing angay',
   'Goal match': 'Pagkaangay sa tumong',
   Goal: 'Tumong',
   Match: 'Kaangay',

@@ -30,7 +30,7 @@ export const bcl: Record<string, string> = {
   'Taglish welcome': 'Puwede an Taglish',
   'Your goal': 'Saimong pasuhan',
   Example: 'Halimbawa',
-  'Top match': 'Pinakabagay',
+  'Best match': 'Pinakabagay',
   'Goal match': 'Pagkabagay sa pasuhan',
   Goal: 'Pasuhan',
   Match: 'Kabagay',

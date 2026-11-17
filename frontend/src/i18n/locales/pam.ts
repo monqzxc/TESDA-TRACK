@@ -36,7 +36,7 @@ export const pam: Record<string, string> = {
   'Example: a goal matched to a qualification': 'Alimbawa: layuning mitugma king kwalipikasyun',
   'Your goal': 'Ing kekang layunin',
   Example: 'Alimbawa',
-  'Top match': 'Pekamitugma',
+  'Best match': 'Pekamitugma',
   'Goal match': 'Pamagkatugma king layunin',
   Goal: 'Layunin',
   Match: 'Katugma',
@@ -713,7 +713,7 @@ export const pam: Record<string, string> = {
   'Recommendation feedback': 'Pakibat king mungkahi',
   Satisfied: 'Masaya',
   'Recommended qualification': 'Mungkahing kwalipikasyun',
-  'The top match': 'Ing pekamitugma',
+  'The best match': 'Ing pekamitugma',
   'Another match': 'Aliwang katugma',
   'Picked from the library': 'Pinili king aklatan',
   Reason: 'Dahilan',
@@ -818,8 +818,8 @@ export const pam: Record<string, string> = {
   'Your privacy on TESDA Track': 'Ing pribadung impormasyon mu king TESDA Track',
   'TESDA Track is a pilot, and it collects some data to work. In short:':
     'Ing TESDA Track metung yang pilot, at mangalap yang ditak a datos para magobra. King maikling sabi:',
-  'With an account, we keep your name, email and progress (goals, readiness checks, certifications and applications) until you delete it.':
-    'Nung atin kang account, itatabi mi ing lagyu mu, email, ampong pamag-abante (layunin, pamagsuri king pamagsadya, sertipikasyun ampong aplikasyun) anggang buraan mu ya.',
+  'You don’t need an account to use TESDA Track. To sign in, you use your TSP (TESDA Skill Passport) account, and we keep your name, email and progress (goals, readiness checks, certifications and applications) until you delete it.':
+    'Ali me kailangan ing account ban gamitan me ing TESDA Track. Ban mag-sign in, gamitan me ing TSP (TESDA Skill Passport) account mu, at itatabi mi ing lagyu mu, email, ampong pamag-abante (layunin, pamagsuri king pamagsadya, sertipikasyun ampong aplikasyun) anggang buraan mu ya.',
   'Your location is used only if you allow it, rounded to about 1 km, to find centers near you.':
     'Gamitan mi mu ing lokasyun mu nung paliub mu, tinantiyang angga king mga 1 km, para manintun sentrung malapit keka.',
   'We never sell your data or use it for advertising. You can download it or delete your account at any time.':

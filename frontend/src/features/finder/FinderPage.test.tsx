@@ -116,7 +116,7 @@ describe('Find my pathway', () => {
     expect(window.localStorage.getItem(FINDER_KEY)).toBeNull()
 
     const card = screen.getByRole('article', { name: welding.name })
-    expect(within(card).getByText('Top match')).toBeInTheDocument()
+    expect(within(card).getByText('Best match')).toBeInTheDocument()
     expect(within(card).getByRole('img', { name: 'Goal match: 76%' })).toBeInTheDocument()
     expect(within(card).getByText('Matched your words: welder')).toBeInTheDocument()
   })

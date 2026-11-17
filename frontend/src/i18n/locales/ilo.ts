@@ -30,7 +30,7 @@ export const ilo: Record<string, string> = {
   'Taglish welcome': 'Mabalin ti Taglish',
   'Your goal': 'Ti kalatmo',
   Example: 'Pagarigan',
-  'Top match': 'Kangrunaan a katunos',
+  'Best match': 'Kangrunaan a katunos',
   'Goal match': 'Pannakatunos iti kalat',
   Goal: 'Kalat',
   Match: 'Katunos',

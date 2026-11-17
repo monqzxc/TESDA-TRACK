@@ -37,7 +37,7 @@ export const tl: Record<string, string> = {
     'Halimbawa: layuning itinugma sa isang kwalipikasyon',
   'Your goal': 'Ang iyong layunin',
   Example: 'Halimbawa',
-  'Top match': 'Pinakamalapit na tugma',
+  'Best match': 'Pinakamalapit na tugma',
   'Goal match': 'Pagkakatugma sa layunin',
   Goal: 'Layunin',
   Match: 'Tugma',
@@ -941,8 +941,8 @@ export const tl: Record<string, string> = {
     'Pilot na proyekto ang TESDA Track at nangongolekta ito ng ilang datos upang gumana. Sa madaling sabi:',
   'Find my pathway sends your goal and answers to our server to find your matches. Without an account they stay in this browser tab, and our server keeps only a coded fingerprint of your goal and daily counts. Your goal’s words are kept only if you tick a box to share them.':
     'Ipinapadala ng Hanapin ang aking landas ang iyong layunin at mga sagot sa aming server upang mahanap ang mga tugma. Kung walang account, nananatili ang mga ito sa tab na ito ng browser at nagtatago lamang ang server ng naka-code na fingerprint ng layunin at pang-araw-araw na bilang. Itinatago lamang ang mga salita ng iyong layunin kung minarkahan mo ang kahon para ibahagi ang mga ito.',
-  'With an account, we keep your name, email and progress (goals, readiness checks, certifications and applications) until you delete it.':
-    'Kung may account, itinatago namin ang iyong pangalan, email, at progreso (mga layunin, pagsusuri ng kahandaan, sertipikasyon, at aplikasyon) hanggang burahin mo ito.',
+  'You don’t need an account to use TESDA Track. To sign in, you use your TSP (TESDA Skill Passport) account, and we keep your name, email and progress (goals, readiness checks, certifications and applications) until you delete it.':
+    'Hindi mo kailangan ng account para gamitin ang TESDA Track. Para mag-sign in, gamitin ang iyong TSP (TESDA Skill Passport) account, at itatago namin ang iyong pangalan, email, at progreso (mga layunin, pagsusuri ng kahandaan, sertipikasyon, at aplikasyon) hanggang burahin mo ito.',
   'Your location is used only if you allow it, rounded to about 1 km, to find centers near you.':
     'Ginagamit lamang ang iyong lokasyon kapag pinahintulutan mo ito, na tinatantiya sa humigit-kumulang 1 km, upang mahanap ang mga sentrong malapit sa iyo.',
   'We never sell your data or use it for advertising. You can download it or delete your account at any time.':
@@ -950,7 +950,7 @@ export const tl: Record<string, string> = {
   'Read the privacy policy': 'Basahin ang patakaran sa pagkapribado',
   'I understand': 'Nauunawaan ko',
   'Close the privacy notice': 'Isara ang abiso sa pagkapribado',
-  'Last updated 21 October 2026': 'Huling na-update noong 21 Oktubre 2026',
+  'Last updated 17 November 2026': 'Huling na-update noong 17 Nobyembre 2026',
   'In short': 'Sa madaling sabi',
   'On this page': 'Sa pahinang ito',
   'Who we are': 'Sino kami',
@@ -1350,7 +1350,7 @@ export const tl: Record<string, string> = {
   'Satisfaction by where the recommended qualification stood among the matches':
     'Kasiyahan ayon sa puwesto ng inirerekomendang kwalipikasyon sa mga tugma',
   'Recommended qualification': 'Inirerekomendang kwalipikasyon',
-  'The top match': 'Ang pinakamalapit na tugma',
+  'The best match': 'Ang pinakamalapit na tugma',
   'Another match': 'Ibang tugma',
   'Picked from the library': 'Pinili mula sa aklatan',
   'Reasons given for No': 'Mga ibinigay na dahilan sa Hindi',

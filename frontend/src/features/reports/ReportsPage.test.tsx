@@ -340,7 +340,7 @@ describe('Reports', () => {
     expect(
       table('Satisfaction by where the recommended qualification stood among the matches'),
     ).toEqual([
-      ['The top match', '5', '100%'],
+      ['The best match', '5', '100%'],
       ['Another match', '1', '0%'],
       ['Picked from the library', '2', '50%'],
     ])

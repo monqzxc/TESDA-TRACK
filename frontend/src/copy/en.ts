@@ -81,7 +81,7 @@ export const en = {
       label: 'Example: a goal matched to a qualification',
       goal: 'Your goal',
       example: 'Example',
-      topMatch: 'Top match',
+      topMatch: 'Best match',
       goalMatch: 'Goal match',
       steps: ['Goal', 'Match', 'Readiness', 'Pathway'],
       // Typed in turn, each with its match in data.ts (CONSOLE_MATCHES).
@@ -655,7 +655,7 @@ export const en = {
       viewAll: 'View all qualifications',
       loading: 'Finding qualifications for you…',
       none: 'We couldn’t find a clear match. Choose a qualification from the full list below, or describe a more specific career goal.',
-      topMatch: 'Top match',
+      topMatch: 'Best match',
       // A qualification the learner picked from the full list (US-03).
       yourChoice: 'Your choice',
       goalMatch: 'Goal match',
@@ -1528,7 +1528,7 @@ export const en = {
       lead: 'Qualifications learners matched, chose, checked or applied for in the selected period, busiest first.',
       caption: 'Qualification demand and outcomes',
       qualification: 'Qualification',
-      topMatch: 'Top match',
+      topMatch: 'Best match',
       chosen: 'Chosen',
       checks: 'Readiness checks',
       average: 'Average readiness',
@@ -1576,7 +1576,7 @@ export const en = {
         caption: 'Satisfaction by where the recommended qualification stood among the matches',
         heading: 'Recommended qualification',
         rows: {
-          top_match: 'The top match',
+          top_match: 'The best match',
           other_match: 'Another match',
           own_choice: 'Picked from the library',
         },
@@ -1793,7 +1793,7 @@ export const en = {
       // Also the policy's summary.
       points: [
         'Find my pathway sends your goal and answers to our server to find your matches. Without an account they stay in this browser tab, and our server keeps only a coded fingerprint of your goal and daily counts. Your goal’s words are kept only if you tick a box to share them.',
-        'With an account, we keep your name, email and progress (goals, readiness checks, certifications and applications) until you delete it.',
+        'You don’t need an account to use TESDA Track. To sign in, you use your TSP (TESDA Skill Passport) account, and we keep your name, email and progress (goals, readiness checks, certifications and applications) until you delete it.',
         'Your location is used only if you allow it, rounded to about 1 km, to find centers near you.',
         'We never sell your data or use it for advertising. You can download it or delete your account at any time.',
       ],
@@ -1801,7 +1801,7 @@ export const en = {
       accept: 'I understand',
       close: 'Close the privacy notice',
     },
-    updated: 'Last updated 21 October 2026',
+    updated: 'Last updated 17 November 2026',
     summary: 'In short',
     contents: 'On this page',
     sections: [
