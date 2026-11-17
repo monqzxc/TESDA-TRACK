@@ -34,15 +34,12 @@ beforeEach(() => {
 })
 
 describe('source provenance on learner screens', () => {
-  it('shows qualification source links, dates and example labels in library cards', async () => {
+  it('leaves data-status labels out of the qualifications library', async () => {
     renderApp('/qualifications')
-    expect(await screen.findByRole('link', { name: 'Pilot source register' })).toHaveAttribute(
-      'href',
-      provenance.source_url,
-    )
-    expect(screen.getByText('2026-10-01')).toBeVisible()
-    expect(screen.getByText('Example data')).toBeVisible()
-    expect(screen.getByText(/Reviewed: Not recorded/)).toBeVisible()
+    expect(await screen.findByRole('heading', { name: 'Welding NC II' })).toBeVisible()
+    expect(screen.queryByText('Example data')).not.toBeInTheDocument()
+    expect(screen.queryByText(/For demonstration/)).not.toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'Pilot source register' })).not.toBeInTheDocument()
   })
 
   it('shows center and listing provenance alongside service evidence', async () => {

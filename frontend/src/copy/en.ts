@@ -378,7 +378,7 @@ export const en = {
       Basic: 'Workplace skills every qualification shares, like teamwork and safety.',
       Common: 'Skills shared by the trades in this sector.',
       Core: 'The technical skills of this qualification.',
-      other: 'What can you already do? Rate each sample competency.',
+      other: 'What can you already do? Rate each competency.',
     } as Record<string, string>,
   },
   // Qualifications Library (classic/app.py show_library).
@@ -409,7 +409,7 @@ export const en = {
     careers: 'Possible careers',
     noCareers: 'Not listed yet',
     competencies: (n: number) =>
-      `View ${figure(n)} sample ${n === 1 ? 'competency' : 'competencies'}`,
+      `View ${figure(n)} ${n === 1 ? 'competency' : 'competencies'}`,
     explore: 'Explore this pathway',
     // The goal "Explore this pathway" puts in Find my pathway's goal box, for the learner to review.
     exploreGoal: (name: string) => `I want to pursue ${name}.`,
@@ -424,8 +424,6 @@ export const en = {
       possibleJobs: 'Possible jobs',
       breakdown: (parts: readonly string[]) => `(${parts.join(', ')})`,
       part: (n: number, category: string) => `${figure(n)} ${category.toLowerCase()}`,
-      sample:
-        'TESDA-TRACK lists a sample of this qualification’s competencies. The full list and unit codes are in its Training Regulations.',
       onThisPage: 'On this page',
       group: (category: string, n: number) => `${category} competencies (${figure(n)})`,
       groupLink: (category: string, n: number) => `${category} competencies · ${figure(n)}`,
@@ -705,7 +703,7 @@ export const en = {
       kicker: 'Know your starting point',
       heading: 'Assessment readiness',
       lead: (name: string) => `${name}: recognize your strengths and discover what to build on.`,
-      none: 'No sample competencies are listed for this qualification yet.',
+      none: 'No competencies are listed for this qualification yet.',
       progress: (rated: number, total: number) =>
         `${figure(rated)} of ${figure(total)} skills rated`,
       part: (part: number, parts: number, category: string) =>

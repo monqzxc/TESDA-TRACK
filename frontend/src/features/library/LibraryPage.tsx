@@ -2,7 +2,6 @@ import { useEffect, useId, useMemo, useRef } from 'react'
 import { Button, Input, Label, SearchField } from 'react-aria-components'
 import { useLocation, useSearchParams } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
-import { ProvenanceNotice } from '../../components/DataProvenance.tsx'
 import { EmptyState } from '../../components/EmptyState.tsx'
 import { Icon } from '../../components/Icon.tsx'
 import { PageTitle } from '../../components/PageTitle.tsx'
@@ -204,9 +203,6 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
         </div>
       </div>
 
-      {filtered.length > 0 && (
-        <ProvenanceNotice values={shown.items.map((qualification) => qualification.provenance)} />
-      )}
       {filtered.length === 0 ? (
         <EmptyState heading={copy.empty.heading} body={copy.empty.body} />
       ) : (

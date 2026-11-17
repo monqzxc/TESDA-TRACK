@@ -168,8 +168,8 @@ export const pam: Record<string, string> = {
     'Deng kabyasnang pare-parehu kareng trabaho king sektor a iti.',
   'The technical skills of this qualification.':
     'Deng teknikal a kabyasnan ning kwalipikasyun a iti.',
-  'What can you already do? Rate each sample competency.':
-    'Nanu ing agyu mu nang gawan? Tasahan ing bawat alimbawa ning kabyasnan.',
+  'What can you already do? Rate each competency.':
+    'Nanu ing agyu mu nang gawan? Tasahan ing bawat kabyasnan.',
   'Find what sparks': 'Alapan ing makapukaw',
   'your interest.': 'king interes mu.',
   'Filter qualifications': 'Salain deng kwalipikasyun',
@@ -291,8 +291,8 @@ export const pam: Record<string, string> = {
     'Ing karanasan mu kailangan yang kaugnay ning piniling kwalipikasyun.',
   'Know your starting point': 'Abaluan ing umpisan mu',
   'Assessment readiness': 'Pamagsadya king pamagmasusi',
-  'No sample competencies are listed for this qualification yet.':
-    'Ala pang makalistang alimbawa ning kabyasnan para king kwalipikasyun a iti.',
+  'No competencies are listed for this qualification yet.':
+    'Ala pang makalistang kabyasnan para king kwalipikasyun a iti.',
   '{0} of {1} skills rated': '{0} kareng {1} kabyasnan ing metasa',
   'Part {0} of {1} · {2} skills': 'Dake {0} kareng {1} · {2} a kabyasnan',
   'I can do this confidently': 'Agyu kung gawan iti nang alang alangan',

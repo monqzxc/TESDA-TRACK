@@ -390,8 +390,8 @@ export const ilo: Record<string, string> = {
   'Tell us about a career, a skill, or an experience you’d like to turn into a qualification.':
     'Ibagam kadakami ti karera, kabaelan, wenno padas a kayatmo a pagbalinen a kwalipikasion.',
   'Need an idea? Start with an example': 'Kasapulan ti ideya? Mangrugi iti pagarigan',
-  'No sample competencies are listed for this qualification yet.':
-    'Awan pay a pagarigan dagiti kabaelan a nailista para iti daytoy a kwalipikasion.',
+  'No competencies are listed for this qualification yet.':
+    'Awan pay dagiti kabaelan a nailista para iti daytoy a kwalipikasion.',
   'Just exploring?': 'Agsuksukimat laeng?',
   'You can find a pathway and browse qualifications without an account.':
     'Mabalinmo ti agbirok iti dalan ken agkita kadagiti kwalipikasion uray awan account.',

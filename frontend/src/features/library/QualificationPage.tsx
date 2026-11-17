@@ -3,7 +3,6 @@ import { Button } from 'react-aria-components'
 import { Link, useLocation, useParams } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
 import { failureMessage } from '../../auth/fields.tsx'
-import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { EmptyState } from '../../components/EmptyState.tsx'
 import { Icon } from '../../components/Icon.tsx'
 import { PageHeading } from '../../components/PageHeading.tsx'
@@ -89,7 +88,6 @@ function Details({ qualifications, code }: { qualifications: Qualification[]; co
           </PageHeading>
           <QualificationFacts qualification={qualification} catalogNames={names} breakdown />
         </div>
-        <DataProvenance value={qualification.provenance} />
         {possibleJobs.length > 0 && (
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-13 font-semibold text-muted">{copy.possibleJobs}:</span>
@@ -127,16 +125,7 @@ function Details({ qualifications, code }: { qualifications: Qualification[]; co
       </header>
 
       {groups.length > 0 && (
-        <>
-          <p className="m-0 flex items-start gap-2 text-13 leading-[1.5] text-muted">
-            <span
-              className="mt-[0.45em] size-2 flex-none rounded-full bg-legend-assessment"
-              aria-hidden="true"
-            />
-            {copy.sample}
-          </p>
-          <Competencies groups={groups} />
-        </>
+        <Competencies groups={groups} />
       )}
     </div>
   )

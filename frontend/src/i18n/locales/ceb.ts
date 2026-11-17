@@ -391,8 +391,8 @@ export const ceb: Record<string, string> = {
   'Tell us about a career, a skill, or an experience you’d like to turn into a qualification.':
     'Isulti kanamo ang bahin sa karera, kahanas, o kasinatian nga gusto nimong himuong kwalipikasyon.',
   'Need an idea? Start with an example': 'Nagkinahanglan og ideya? Sugdi sa pananglitan',
-  'No sample competencies are listed for this qualification yet.':
-    'Wala pay pananglitan sa katakus nga nalista alang niini nga kwalipikasyon.',
+  'No competencies are listed for this qualification yet.':
+    'Wala pay katakus nga nalista alang niini nga kwalipikasyon.',
   'Just exploring?': 'Nagsuhid lang?',
   'You can find a pathway and browse qualifications without an account.':
     'Makahimo ka sa pagpangita og agianan ug pagtan-aw sa mga kwalipikasyon bisan walay account.',

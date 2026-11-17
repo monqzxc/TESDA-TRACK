@@ -1,7 +1,6 @@
 import { Fragment, useId, type ReactNode } from 'react'
 import { Link } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
-import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { Icon } from '../../components/Icon.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { competencyGroups, higherLevel, ncLevel } from '../../lib/qualifications.ts'
@@ -94,8 +93,6 @@ export function QualificationCard({
         </h2>
         <QualificationFacts qualification={qualification} catalogNames={catalogNames} />
       </div>
-      {/* What an unverified record asks of the learner is said once, above the cards. */}
-      <DataProvenance value={qualification.provenance} advice={false} />
       {/* At the foot of the card, so cards side by side line up. */}
       <div className="mt-auto">
         <Link

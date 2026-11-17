@@ -389,8 +389,8 @@ export const pag: Record<string, string> = {
   'Tell us about a career, a skill, or an experience you’d like to turn into a qualification.':
     'Ibagam ed sikami so karera, pakayari, odino eksperyensya ya labay mon gawaen a kwalipikasyon.',
   'Need an idea? Start with an example': 'Kaukolan na ideya? Onggapo ed alimbawa',
-  'No sample competencies are listed for this qualification yet.':
-    'Anggapo ni so alimbawan pakayari ya nailista para ed sayan kwalipikasyon.',
+  'No competencies are listed for this qualification yet.':
+    'Anggapo ni so pakayari ya nailista para ed sayan kwalipikasyon.',
   'Just exploring?': 'Manuusisa labat?',
   'You can find a pathway and browse qualifications without an account.':
     'Nayarian mon mananap na dalan tan manengneng na kwalipikasyon anggan anggapoy account.',

@@ -223,8 +223,8 @@ export const tl: Record<string, string> = {
     'Mga kakayahang kailangan sa mga hanapbuhay sa sektor na ito.',
   'The technical skills of this qualification.':
     'Ang mga teknikal na kakayahan ng kwalipikasyong ito.',
-  'What can you already do? Rate each sample competency.':
-    'Ano ang kaya mo nang gawin? Tayahin ang bawat halimbawang kakayahan.',
+  'What can you already do? Rate each competency.':
+    'Ano ang kaya mo nang gawin? Tayahin ang bawat kakayahan.',
   'Find what sparks': 'Tuklasin ang pumupukaw sa',
   'your interest.': 'iyong interes.',
   'Filter qualifications': 'Salain ang mga kwalipikasyon',
@@ -357,8 +357,8 @@ export const tl: Record<string, string> = {
     'Dapat kaugnay ang iyong karanasan sa napiling kwalipikasyon.',
   'Know your starting point': 'Alamin ang iyong panimula',
   'Assessment readiness': 'Kahandaan sa pagtatasa',
-  'No sample competencies are listed for this qualification yet.':
-    'Wala pang nakalistang halimbawang kakayahan para sa kwalipikasyong ito.',
+  'No competencies are listed for this qualification yet.':
+    'Wala pang nakalistang kakayahan para sa kwalipikasyong ito.',
   'I can do this confidently': 'Kaya ko itong gawin nang may tiwala',
   'I have some experience': 'May kaunti akong karanasan',
   'I am not familiar with this': 'Hindi ako pamilyar dito',
@@ -1397,8 +1397,8 @@ export const tl: Record<string, string> = {
   'Core skills': 'Mga pangunahing kakayahan',
   '{0} of {1} qualifications': '{0} sa {1} kwalipikasyon',
   'Showing {0}–{1}': 'Ipinapakita ang {0}–{1}',
-  'View {0} sample competency': 'Tingnan ang {0} halimbawang kakayahan',
-  'View {0} sample competencies': 'Tingnan ang {0} halimbawang kakayahan',
+  'View {0} competency': 'Tingnan ang {0} kakayahan',
+  'View {0} competencies': 'Tingnan ang {0} kakayahan',
   'I want to pursue {0}.': 'Gusto kong tahakin ang {0}.',
   'Step {0} of {1}': 'Hakbang {0} sa {1}',
   'Next: {0}': 'Susunod: {0}',

@@ -391,8 +391,8 @@ export const hil: Record<string, string> = {
   'Tell us about a career, a skill, or an experience you’d like to turn into a qualification.':
     'Isugid sa amon ang karera, ikasarang, ukon eksperyensya nga gusto mo himuon nga kwalipikasyon.',
   'Need an idea? Start with an example': 'Kinahanglan sang ideya? Magsugod sa halimbawa',
-  'No sample competencies are listed for this qualification yet.':
-    'Wala pa sang halimbawa nga ikasarang nga nalista para sa sini nga kwalipikasyon.',
+  'No competencies are listed for this qualification yet.':
+    'Wala pa sang ikasarang nga nalista para sa sini nga kwalipikasyon.',
   'Just exploring?': 'Nagasuhid lang?',
   'You can find a pathway and browse qualifications without an account.':
     'Makahimo ka mangita sang dalan kag magtan-aw sang mga kwalipikasyon bisan wala sang account.',

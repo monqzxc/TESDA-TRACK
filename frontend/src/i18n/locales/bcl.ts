@@ -391,8 +391,8 @@ export const bcl: Record<string, string> = {
   'Tell us about a career, a skill, or an experience you’d like to turn into a qualification.':
     'Isabi sa samo an karera, kakayahan, o eksperyensya na gusto mong gibuhon na kwalipikasyon.',
   'Need an idea? Start with an example': 'Kaipuhan nin ideya? Magpoon sa halimbawa',
-  'No sample competencies are listed for this qualification yet.':
-    'Mayo pang halimbawang kakayahan na nakalista para sa kwalipikasyon na ini.',
+  'No competencies are listed for this qualification yet.':
+    'Mayo pang kakayahan na nakalista para sa kwalipikasyon na ini.',
   'Just exploring?': 'Nagsisiyasat sana?',
   'You can find a pathway and browse qualifications without an account.':
     'Puwede kang maghanap nin dalan asin maghiling nin mga kwalipikasyon maski mayong account.',

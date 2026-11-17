@@ -390,8 +390,8 @@ export const war: Record<string, string> = {
   'Tell us about a career, a skill, or an experience you’d like to turn into a qualification.':
     'Isumat ha amon an karera, abilidad, o eksperyensya nga karuyag mo himuon nga kwalipikasyon.',
   'Need an idea? Start with an example': 'Kinahanglan hin ideya? Pagtikang ha pananglitan',
-  'No sample competencies are listed for this qualification yet.':
-    'Waray pa pananglitan han abilidad nga nakalista para hini nga kwalipikasyon.',
+  'No competencies are listed for this qualification yet.':
+    'Waray pa abilidad nga nakalista para hini nga kwalipikasyon.',
   'Just exploring?': 'Nag-uusisa la?',
   'You can find a pathway and browse qualifications without an account.':
     'Puydi ka magbiling hin dalan ngan magkita hin mga kwalipikasyon bisan waray account.',
