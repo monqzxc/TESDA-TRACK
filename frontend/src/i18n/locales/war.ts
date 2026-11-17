@@ -30,7 +30,7 @@ export const war: Record<string, string> = {
   'Taglish welcome': 'Puydi an Taglish',
   'Your goal': 'Imo tumong',
   Example: 'Pananglitan',
-  'Top match': 'Pinakaangay',
+  'Best match': 'Pinakaangay',
   'Goal match': 'Pagkaangay ha tumong',
   Goal: 'Tumong',
   Match: 'Kaangay',

@@ -1,0 +1,95 @@
+/* The message index.html shows when the app can't start: its code didn't download, the browser can't run it, or
+   JavaScript is off. It is a file rather than a <style> so that the Content Security Policy needn't allow inline
+   styles, and it has its own colors because the app's stylesheets may be the very thing that failed to load
+   (they match src/styles/tokens.css). AppCrash (src/components/AppCrash.tsx) draws its message with it too.
+
+   The message sits in #root and is hidden at first: React replaces it when the app starts, which is almost always
+   before it would show. Only a page still empty after a few seconds shows it. */
+
+.app-fallback {
+  --fallback-page: #f5f7fb;
+  --fallback-surface: #ffffff;
+  --fallback-border: #dfe7f2;
+  --fallback-navy: #102a56;
+  --fallback-muted: #52647e;
+  --fallback-fill: #175cd3;
+  --fallback-fill-hover: #124fb8;
+
+  box-sizing: border-box;
+  min-height: 100vh;
+  margin: 0;
+  padding: 3rem 1rem;
+  background: var(--fallback-page);
+  color: var(--fallback-navy);
+  font: 400 1rem/1.6 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+:root[data-theme='dark'] .app-fallback {
+  --fallback-page: #0b1630;
+  --fallback-surface: #111f42;
+  --fallback-border: #22365c;
+  --fallback-navy: #e4ebf7;
+  --fallback-muted: #9fb1ce;
+  --fallback-fill: #2f6fe0;
+  --fallback-fill-hover: #2866d3;
+}
+
+/* Waits before it shows, so a normal start never flashes it. */
+.app-fallback-delayed {
+  visibility: hidden;
+  animation: app-fallback-show 0s 6s forwards;
+}
+
+@keyframes app-fallback-show {
+  to {
+    visibility: visible;
+  }
+}
+
+.app-fallback-card {
+  box-sizing: border-box;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  border: 1px solid var(--fallback-border);
+  border-radius: 18px;
+  background: var(--fallback-surface);
+  text-align: center;
+}
+
+.app-fallback h1 {
+  margin: 0 0 0.65rem;
+  font-size: 1.4rem;
+  line-height: 1.3;
+  color: var(--fallback-navy);
+}
+
+.app-fallback p {
+  margin: 0 0 1rem;
+  color: var(--fallback-muted);
+}
+
+.app-fallback-action {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  padding: 0.5rem 1.2rem;
+  border: 1px solid var(--fallback-fill);
+  border-radius: 12px;
+  background: var(--fallback-fill);
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.app-fallback-action:hover {
+  border-color: var(--fallback-fill-hover);
+  background: var(--fallback-fill-hover);
+}
+
+.app-fallback-action:focus-visible {
+  outline: 3px solid var(--fallback-fill);
+  outline-offset: 3px;
+}

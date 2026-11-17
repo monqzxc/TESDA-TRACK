@@ -288,9 +288,11 @@ test.describe('on a desktop', () => {
     const entry = '**/src/main.tsx*'
     await page.route(entry, (route) => route.abort('connectionreset'))
     await page.goto('/?check=startup')
-    await expect(page.getByRole('heading', { name: 'Opening TESDA-TRACK' })).toBeVisible()
+    await expect(
+      page.getByRole('heading', { name: 'TESDA Track is taking a while to load' }),
+    ).toBeVisible({ timeout: 10_000 })
     await page.unroute(entry)
-    await page.getByRole('link', { name: 'Try again' }).click()
+    await page.getByRole('link', { name: 'Reload the page' }).click()
     await expect(
       page.getByRole('heading', { name: 'Every career has a track. Find yours.' }),
     ).toBeVisible()

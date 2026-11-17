@@ -1406,7 +1406,7 @@ function RecommendationManagement() {
               <thead>
                 <tr>
                   <th className={th}>Qualification</th>
-                  <th className={th}>Top matches</th>
+                  <th className={th}>Best matches</th>
                   <th className={th}>Chosen</th>
                   <th className={th}>Readiness checks</th>
                 </tr>

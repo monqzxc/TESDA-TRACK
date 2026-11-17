@@ -5,16 +5,22 @@
     <!-- Sets data-theme on <html> before the first paint. It must stay a blocking script, ahead of the app.
          Vite adds its base to this public-file path in dev and build (e.g. /theme-init.js). -->
     <script src="/theme-init.js"></script>
+    <!-- The styles of the message below, for when the app can't start. -->
+    <link rel="stylesheet" href="/app-fallback.css" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TESDA-TRACK</title>
   </head>
   <body>
     <div id="root">
-      <main class="mx-auto max-w-xl px-4 py-8">
-        <h1>Opening TESDA-TRACK</h1>
-        <p>If the app doesn’t open, check your connection and try again.</p>
-        <p><a href="">Try again</a></p>
+      <!-- React replaces this when the app starts. Only a page still empty after a few seconds shows it: the app's
+           code didn't download, this browser can't run it, or JavaScript is off (public/app-fallback.css). -->
+      <main class="app-fallback app-fallback-delayed">
+        <div class="app-fallback-card">
+          <h1>TESDA Track is taking a while to load</h1>
+          <p>Check your internet connection, and that JavaScript is turned on in your browser. Then reload the page. Your saved progress is safe.</p>
+          <a class="app-fallback-action" href="">Reload the page</a>
+        </div>
       </main>
     </div>
     <script type="module" src="/src/main.tsx"></script>

@@ -30,7 +30,7 @@ export const pag: Record<string, string> = {
   'Taglish welcome': 'Nayarian so Taglish',
   'Your goal': 'Gala mon naabot',
   Example: 'Alimbawa',
-  'Top match': 'Sankabagay',
+  'Best match': 'Sankabagay',
   'Goal match': 'Pibagay ed gala mon naabot',
   Goal: 'Gala',
   Match: 'Kabagay',
