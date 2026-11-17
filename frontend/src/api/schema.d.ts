@@ -6582,9 +6582,31 @@ export interface components {
             qualifications: string[];
             /**
              * Credentials
-             * @description Certificates, trainings, assessments and external certificates.
+             * @description Certificates, trainings, assessments and external certificates, except licenses.
              */
             credentials: string[];
+            /**
+             * Licenses
+             * @description Credentials whose name says they are a license or licence, such as an LTO driver's license.
+             * @default []
+             */
+            licenses: string[];
+            /**
+             * Municipality
+             * @description The city or municipality the Skill Passport gives as home; null when it gives none.
+             */
+            municipality?: string | null;
+            /**
+             * Province
+             * @description The province the Skill Passport gives as home.
+             */
+            province?: string | null;
+            /**
+             * Sample
+             * @description True when the profile comes from the synthetic mock TSP accounts (TSP_MOCK_ENABLED), which the page labels as sample data.
+             * @default false
+             */
+            sample: boolean;
             /**
              * Region Code
              * @description The region the Skill Passport gives as home, as one of the app's region codes; null when it gives none or an unknown one.

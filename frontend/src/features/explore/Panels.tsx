@@ -26,6 +26,7 @@ import {
   hasSampleScholarship,
   hasScholarship,
   NEAR_KM,
+  readinessEvidence,
   roundKm,
   type QualificationCard,
 } from './explore.ts'
@@ -110,6 +111,64 @@ function TripMeta({
   )
 }
 
+/**
+ * US-0004: what the signed-in learner's Skill Passport says, under "From your TSP profile": skills, licenses and
+ * home area, with a Sample data label for the synthetic demo accounts. Nothing for a guest or an account without a
+ * passport. If the profile can't be loaded, it says so; the place box below (LocationRow) lets the learner go on.
+ */
+export function TspProfilePanel({ explore }: { explore: Explore }) {
+  const copy = useCopy().explore.tspProfile
+  const { passport, passportStatus } = explore
+  if (passportStatus === 'none') return null
+  if (passportStatus === 'loading') {
+    return (
+      <p role="status" className={note}>
+        {copy.loading}
+      </p>
+    )
+  }
+  if (passportStatus === 'failed' || !passport) {
+    return (
+      <p
+        role="alert"
+        className="m-0 rounded-10 bg-warn-bg px-3 py-2 text-13 leading-[1.5] text-warn-ink"
+      >
+        {copy.failed}
+      </p>
+    )
+  }
+  const home = [passport.municipality, passport.province].filter(Boolean).join(', ')
+  const rows: [string, string][] = [
+    [copy.skills, passport.skills.join(', ') || copy.none],
+    [copy.licenses, (passport.licenses ?? []).join(', ') || copy.none],
+    [copy.homeArea, home || copy.none],
+  ]
+  return (
+    <section
+      aria-labelledby="tsp-profile-heading"
+      className="flex flex-col gap-2 rounded-12 bg-panel p-3"
+    >
+      <div className="flex flex-wrap items-center gap-2">
+        <Icon name="award" className="text-teal" />
+        <h2 id="tsp-profile-heading" className={heading}>
+          {copy.heading}
+        </h2>
+        {passport.sample && (
+          <span className={cx(tag, 'bg-warn-bg text-warn-ink')}>{copy.sample}</span>
+        )}
+      </div>
+      <dl className="m-0 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-13 leading-[1.45]">
+        {rows.map(([label, value]) => (
+          <div key={label} className="contents">
+            <dt className="font-semibold text-ink">{label}</dt>
+            <dd className="m-0 text-navy">{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  )
+}
+
 /** Share my location, or type a place: where distances are measured from. Never saved, never in the address. */
 export function LocationRow({ explore }: { explore: Explore }) {
   const copy = useCopy().explore.location
@@ -128,9 +187,11 @@ export function LocationRow({ explore }: { explore: Explore }) {
       ? copy.locating
       : state === 'on'
         ? copy.on
-        : explore.reference
-          ? copy.fromPlace(explore.reference.label)
-          : copy.off
+        : explore.reference?.fromProfile
+          ? copy.fromProfile(explore.reference.label)
+          : explore.reference
+            ? copy.fromPlace(explore.reference.label)
+            : copy.off
   const tone = {
     locating: 'bg-tint text-blue',
     on: 'bg-good-bg text-good-ink',
@@ -192,6 +253,9 @@ export function LocationRow({ explore }: { explore: Explore }) {
       )}
       {!explore.location && explore.placeNotFound && (
         <p className="m-0 text-13 text-warn-ink">{copy.notFound}</p>
+      )}
+      {!explore.location && explore.homeArea && (
+        <p className="m-0 text-12 leading-[1.45] text-muted">{copy.changeForVisit}</p>
       )}
     </div>
   )
@@ -548,8 +612,14 @@ export function ResultsPanel({
   const assess = cardsFor('assessment', matches, centers)
   const train = cardsFor('training', matches, centers)
   const focus = { code: explore.demandCode, recommended: new Set(explore.recommendedIds) }
+  // US-0004: skills or licenses in the Skill Passport that name the first match's trade put assessment first.
+  const evidence = matches[0]
+    ? readinessEvidence(explore.passport, matches[0].qualification.name)
+    : []
   const order: CenterKind[] =
-    firstKind(search.query) === 'training' ? ['training', 'assessment'] : ['assessment', 'training']
+    evidence.length || firstKind(search.query) !== 'training'
+      ? ['assessment', 'training']
+      : ['training', 'assessment']
   const shown = view === 'all' ? order : view === 'demand' ? [] : [view]
   const tabs: { view: View; label: string; icon: IconName; count?: number }[] = [
     { view: 'all', label: copy.tabs.all, icon: 'grid' },
@@ -600,6 +670,15 @@ export function ResultsPanel({
       <h2 className="sr-only">{copy.heading}</h2>
       {!reference && view !== 'demand' && (
         <p className="m-0 rounded-10 bg-tint px-3 py-2 text-13 text-navy">{copy.needPlace}</p>
+      )}
+      {evidence.length > 0 && view !== 'demand' && view !== 'training' && (
+        <p
+          data-testid="may-be-ready"
+          className="m-0 flex items-start gap-2 rounded-10 bg-good-bg px-3 py-2 text-13 leading-[1.5] text-good-ink"
+        >
+          <Icon name="award" className="mt-0.5 flex-none" />
+          {en.explore.tspProfile.mayBeReady(evidence.join(', '))}
+        </p>
       )}
       {shown.map((kind, index) => (
         <Group

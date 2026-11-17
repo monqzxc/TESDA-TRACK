@@ -1590,4 +1590,20 @@ export const tl: Record<string, string> = {
     'Magtanong sa mga sentrong ito para malaman kung gaano sila kalayo.',
   'No centers with a confirmed location within {0} km':
     'Walang sentrong may kumpirmadong lokasyon sa loob ng {0} km',
+  // US-0004: the TSP profile on the Career Map.
+  'From your TSP profile': 'Mula sa iyong TSP profile',
+  'Sample data': 'Halimbawang datos',
+  Skills: 'Mga kasanayan',
+  Licenses: 'Mga lisensya',
+  'Home area': 'Tinitirhang lugar',
+  'None listed': 'Walang nakalista',
+  'Loading your TSP profile…': 'Kinukuha ang iyong TSP profile…',
+  'We couldn’t load your TSP profile. Type a city or province below to continue.':
+    'Hindi namin makuha ang iyong TSP profile. Mag-type ng lungsod o probinsya sa ibaba para magpatuloy.',
+  'You may be ready for assessment: your TSP profile lists {0}. The assessment center confirms what you need to bring.':
+    'Maaaring handa ka na para sa assessment: nakalista sa iyong TSP profile ang {0}. Ang assessment center ang magsasabi kung ano ang kailangan mong dalhin.',
+  'Near {0}, your home area in your TSP profile':
+    'Malapit sa {0}, ang tinitirhan mo ayon sa iyong TSP profile',
+  'Typing a place changes it for this visit only. Your TSP profile is not changed.':
+    'Ang lugar na ita-type mo ay para sa pagbisitang ito lamang. Hindi nababago ang iyong TSP profile.',
 }

@@ -66,6 +66,19 @@ def test_synthetic_account_signs_in_and_sees_its_profile(client, mock_tsp):
     assert profile["experience"] == ["Line Cook", "Cookery Trainer"]
 
 
+def test_kuya_manuel_profile_has_skills_license_and_home_area(client, mock_tsp):
+    # US-0004: the December 2 demo account. A license is listed apart from the other credentials, the home area is
+    # the city and province (never the street address), and mock profiles are flagged as sample data.
+    sign_in(client, "manuel.garcia@example.com", "TspDemo-Manuel-2026")
+    profile = client.get("/api/v1/auth/tsp/profile").json()
+    assert profile["skills"] == ["Driving", "Cooking"]
+    assert profile["licenses"] == ["LTO Professional Driver's License"] and profile["credentials"] == []
+    assert (profile["municipality"], profile["province"], profile["region_code"]) == (
+        "Caloocan City", "Metro Manila", "NCR")
+    assert profile["sample"] is True
+    assert "9 Sample Street" not in str(profile) and "Sample Barangay" not in str(profile)
+
+
 def test_second_sign_in_needs_no_consent(client, mock_tsp):
     sign_in(client)
     client.cookies.clear()

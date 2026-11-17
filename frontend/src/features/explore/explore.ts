@@ -134,3 +134,56 @@ export function findJobsUrl(
   }
   return url.href
 }
+
+// --- US-0004: the Skill Passport's skills and licenses as evidence for going straight to assessment ---------------
+
+/** Words that name a kind of credential or a level, not a trade: they never count as evidence on their own. */
+const NOT_A_TRADE = new Set([
+  'license',
+  'licence',
+  'professional',
+  'certificate',
+  'certified',
+  'services',
+  'service',
+  'operation',
+  'operations',
+  'level',
+  'national',
+  'with',
+  'and',
+  'the',
+])
+
+/** A word's stem, so Driving, Driver and Driver's meet, and Cooking meets Cookery. */
+function stem(word: string): string {
+  return word.replace(/['’]s$/, '').replace(/(ing|ers|er|ery|ry|s)$/, '')
+}
+
+function trades(text: string): Set<string> {
+  return new Set(
+    text
+      .toLocaleLowerCase()
+      .split(/[^\p{L}'’]+/u)
+      .filter((word) => word.length >= 4 && !NOT_A_TRADE.has(word))
+      .map(stem)
+      .filter((word) => word.length >= 3),
+  )
+}
+
+/**
+ * The skills and licenses in the learner's Skill Passport that name the qualification's trade ("Driving" and "LTO
+ * Professional Driver's License" for Driving NC II), in the passport's order. Any at all mean the learner may be
+ * ready for assessment, so assessment centers come first. Self-declared skills suggest a route; they never establish
+ * formal assessment eligibility, which the assessment center decides.
+ */
+export function readinessEvidence(
+  passport: { skills: string[]; licenses?: string[] } | null | undefined,
+  qualificationName: string,
+): string[] {
+  if (!passport) return []
+  const wanted = trades(qualificationName.replace(/\bNC\s+[IV]+\b/gi, ''))
+  return [...passport.skills, ...(passport.licenses ?? [])].filter((label) =>
+    [...trades(label)].some((word) => wanted.has(word)),
+  )
+}

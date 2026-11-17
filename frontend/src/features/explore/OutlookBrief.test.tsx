@@ -387,6 +387,8 @@ describe('Demand where you are (Card 3)', () => {
           education: [],
           qualifications: [],
           credentials: [],
+          licenses: [],
+          sample: false,
           region_code: 'VII',
         }),
       ),

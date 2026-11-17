@@ -47,6 +47,8 @@ describe('suggestionProfile', () => {
         education: [],
         qualifications: [],
         credentials: [],
+        licenses: [],
+        sample: false,
       },
     )
     expect(profile.existing_skills).toEqual(['welding', 'Blueprint reading'])

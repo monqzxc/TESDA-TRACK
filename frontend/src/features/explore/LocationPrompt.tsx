@@ -25,11 +25,21 @@ function markAsked(answer: 'yes' | 'no') {
 }
 
 /**
+ * `waiting`: a signed-in learner's TSP profile is still loading, so it isn't known yet whether to ask. `skip`: the
+ * profile gives a home area, which is used as the search location without asking (US-0004); nothing is remembered,
+ * so a guest on the same browser is still asked.
+ *
  * On a first visit to /explore with no location set, asks "Open Location?" once. Yes turns the location switch on;
  * No leaves it off. Either way the answer is remembered, so the learner isn't asked again and never has to flip the
  * switch just to use the search box.
  */
-export function LocationPrompt() {
+export function LocationPrompt({
+  waiting = false,
+  skip = false,
+}: {
+  waiting?: boolean
+  skip?: boolean
+}) {
   const copy = useCopy().explore.locationPrompt
   const [isOpen, setOpen] = useState(() => {
     const { useLocation, location } = useTrainingStore.getState()
@@ -42,7 +52,7 @@ export function LocationPrompt() {
   }
   return (
     <ModalDialog
-      isOpen={isOpen}
+      isOpen={isOpen && !waiting && !skip}
       onOpenChange={(open) => {
         if (!open) answer(false)
       }}

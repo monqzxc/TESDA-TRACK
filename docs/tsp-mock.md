@@ -1,6 +1,6 @@
 # Mock TSP: synthetic accounts for demos and tests
 
-With the mock on, **Sign in with TSP** works without the real TESDA Skill Passport. Eight synthetic learners stand
+With the mock on, **Sign in with TSP** works without the real TESDA Skill Passport. Nine synthetic learners stand
 in for TSP's accounts. Nothing is sent to TSP or Hercules, and no account holds a real person's information.
 
 ## Turn it on
@@ -37,6 +37,25 @@ Anyone who knows a test password below can sign in while the mock is on, so use 
 | `faisal.usman@example.com` | `TspDemo-Faisal-2026` | Out-of-school youth, nearly empty profile | BARMM (Cotabato City) | None |
 | `gina.bautista@example.com` | `TspDemo-Gina-2026` | Trainer | CAR (Baguio City) | Cookery NC II, Bread and Pastry Production NC II, Trainers Methodology Level I |
 | `hector.villanueva@example.com` | `TspDemo-Hector-2026` | Job seeker | VI (Iloilo City) | Computer Systems Servicing NC II |
+| `manuel.garcia@example.com` | `TspDemo-Manuel-2026` | Kuya Manuel: driver and cook with an LTO license (US-0004) | NCR (Caloocan City) | None |
+
+## What the Career Map does with the profile (US-0004)
+
+After **Sign in with TSP**, the Career Map shows **From your TSP profile**: the skills, licenses and home area
+(city or municipality and province). While the mock is on, the panel is labelled **Sample data**.
+
+- A credential whose name says license or licence (an LTO driver's license) is listed under **Licenses**, not with
+  the other certificates. TSP has no licence section of its own.
+- The home area is the search location without asking, so the **Open Location?** question is skipped. The city is
+  used when the center list knows it, else the province, else the region. Locally the seed data has no center in
+  Caloocan, so Kuya Manuel's searches start from the National Capital Region.
+- Sharing a location or typing a place replaces the home area for this visit only. The profile is never changed.
+- When skills or licenses name the trade of the first matched qualification, assessment centers come first and the
+  results say **You may be ready for assessment**, naming what was found (for Kuya Manuel and Driving NC II: Driving
+  and the LTO license). This is a suggestion from self-declared skills; the assessment center confirms eligibility.
+- If the profile can't be loaded, the panel says so and the place box below lets the learner carry on.
+
+Try it: sign in as `manuel.garcia@example.com`, open **Career Map**, and search for "professional driver".
 
 The accounts live in `backend/seed/tsp_mock_accounts.json`. Each `profile` is written exactly as Hercules answers
 `GET /v1/tracker/profile` (`31-TRACKER_IFRAME_INTEGRATION.md`), so it goes through the same parsing as a real one.

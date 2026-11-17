@@ -149,26 +149,46 @@ export function useExplore(demandActive = false) {
     () => (everything && placeText.trim() ? findPlace(placeText, everything, regionMap) : null),
     [everything, placeText, regionMap],
   )
-  const reference: Reference | null = useMemo(
+  // The signed-in learner's Skill Passport (US-0004). Optional: the page also renders without an account provider
+  // (its tests), and then nobody is signed in.
+  const learner = useContext(AuthContext)?.learner ?? null
+  const passport = useQuery({ ...passportQuery(learner?.id ?? ''), enabled: learner !== null })
+  // Where the Skill Passport says the learner lives: the search location when they haven't shared one or typed a
+  // place, without asking. A place typed here replaces it for this visit only; the profile isn't changed.
+  const passportData = passport.data
+  const homeArea = useMemo(() => {
+    if (!passportData || !everything) return null
+    // The city first, then the province, then the region: the most precise the catalog's places know. The label
+    // says which one is used, so a region's middle is never shown as the learner's city.
+    const tries = [
+      passportData.municipality,
+      passportData.province,
+      passportData.region_code,
+    ].filter((text): text is string => Boolean(text))
+    return tries.map((text) => findPlace(text, everything, regionMap)).find(Boolean) ?? null
+  }, [passportData, everything, regionMap])
+  const reference: (Reference & { fromProfile?: boolean }) | null = useMemo(
     () =>
       location
         ? { ...location, label: 'you', mine: true }
         : place
           ? { ...place, mine: false }
-          : null,
-    [location, place],
+          : homeArea && !placeText.trim()
+            ? { ...homeArea, mine: false, fromProfile: true }
+            : null,
+    [location, place, homeArea, placeText],
   )
 
   const today = philippineDay(new Date())
   // The learner's area (Card 3): from their location or typed place, else where their Skill Passport says they live.
-  // Optional: the page also renders without an account provider (its tests), and then nobody is signed in.
-  const learner = useContext(AuthContext)?.learner ?? null
-  const passport = useQuery({ ...passportQuery(learner?.id ?? ''), enabled: learner !== null })
   const locatedRegion = nearestRegion(reference, regions.data ?? [])?.code ?? null
   const profileRegion = passport.data?.region_code ?? null
   const automaticRegion = locatedRegion ?? profileRegion
+  // Measured from the Skill Passport's home area (US-0004), the area still comes from the profile.
   const homeSource: 'location' | 'profile' | null = locatedRegion
-    ? 'location'
+    ? reference?.fromProfile
+      ? 'profile'
+      : 'location'
     : profileRegion
       ? 'profile'
       : null
@@ -260,6 +280,19 @@ export function useExplore(demandActive = false) {
     locating,
     placeText,
     placeNotFound: Boolean(everything && placeText.trim() && !place),
+    /** The signed-in learner's Skill Passport: null without one, undefined while it loads or when it failed. */
+    passport: passport.data,
+    passportStatus: (learner === null
+      ? 'none'
+      : passport.isPending
+        ? 'loading'
+        : passport.isError
+          ? 'failed'
+          : passport.data
+            ? 'loaded'
+            : 'none') as 'none' | 'loading' | 'failed' | 'loaded',
+    /** The Skill Passport's home area, when the catalog knows the place: the default search location. */
+    homeArea,
     regions: regions.data ?? [],
     config: config.data,
     today,

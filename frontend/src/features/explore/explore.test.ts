@@ -8,6 +8,7 @@ import {
   hasSampleScholarship,
   hasScholarship,
   nearestRegion,
+  readinessEvidence,
   strength,
 } from './explore.ts'
 
@@ -126,5 +127,28 @@ describe('hasScholarship', () => {
     expect(hasSampleScholarship(withPrograms([program('A', true, true)]), 'A')).toBe(true)
     expect(hasSampleScholarship(withPrograms([program('A', false, true)]), 'A')).toBe(false)
     expect(hasSampleScholarship(withPrograms([program('A', true, false)]), 'A')).toBe(false)
+  })
+})
+
+describe('readinessEvidence (US-0004)', () => {
+  const manuel = {
+    skills: ['Driving', 'Cooking'],
+    licenses: ["LTO Professional Driver's License"],
+  }
+
+  it('finds the skills and licenses that name the trade', () => {
+    expect(readinessEvidence(manuel, 'Driving NC II')).toEqual([
+      'Driving',
+      "LTO Professional Driver's License",
+    ])
+    expect(readinessEvidence(manuel, 'Cookery NC II')).toEqual(['Cooking'])
+  })
+
+  it('finds nothing for an unrelated trade, a bare license word or no passport', () => {
+    expect(readinessEvidence(manuel, 'Shielded Metal Arc Welding (SMAW) NC I')).toEqual([])
+    expect(
+      readinessEvidence({ skills: [], licenses: ['PRC License'] }, 'Pharmacy Services NC III'),
+    ).toEqual([])
+    expect(readinessEvidence(null, 'Driving NC II')).toEqual([])
   })
 })

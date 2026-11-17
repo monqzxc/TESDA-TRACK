@@ -79,12 +79,13 @@ def answer_tsp_consent(body: TspConsentRequest, response: Response, session: Ses
 
 @router.get("/profile", response_model=TspProfile, dependencies=[Depends(enabled_settings)],
             responses={404: {"description": "The learner isn't linked to a Skill Passport."}})
-def read_tsp_profile(learner: CurrentLearner, session: SessionDep):
+def read_tsp_profile(learner: CurrentLearner, session: SessionDep, settings: EnabledSettings):
     """What the learner's Skill Passport held at their last sign-in. Refreshed each time they sign in from TSP."""
     profile = tsp_sign_in.linked_profile(session, learner)
     if profile is None:
         raise NotFoundError("This account isn't linked to a Skill Passport.")
-    return TspProfile(**tsp_sign_in.profile_labels(profile), region_code=tsp_sign_in.region_code(session, profile))
+    return TspProfile(**tsp_sign_in.profile_labels(profile), **tsp_sign_in.home_area(profile),
+                      region_code=tsp_sign_in.region_code(session, profile), sample=settings.tsp_mock_enabled)
 
 
 def _start_session(learner: Learner, response: Response, settings: Settings) -> SessionResponse:

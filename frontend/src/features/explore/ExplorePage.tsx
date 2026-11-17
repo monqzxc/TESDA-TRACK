@@ -30,7 +30,7 @@ import type { DemandMapArea } from '../training/CenterMapTypes.ts'
 import { nearestRegion } from './explore.ts'
 import { LocationPrompt } from './LocationPrompt.tsx'
 import { OutlookBrief } from './OutlookBrief.tsx'
-import { CenterCard, LocationRow, NearbyPanel, ResultsPanel } from './Panels.tsx'
+import { CenterCard, LocationRow, NearbyPanel, ResultsPanel, TspProfilePanel } from './Panels.tsx'
 import { useDemandStore, useExplore, useExploreStore } from './useExplore.ts'
 
 // The map comes down with its renderer the first time it's shown, as on Training & Assessment.
@@ -308,7 +308,11 @@ export default function ExplorePage() {
     // page's dialogs.
     <div className="relative isolate h-dvh w-full overflow-hidden bg-map-water">
       <PageHeading className="sr-only">{en.pages.explore.heading}</PageHeading>
-      <LocationPrompt />
+      {/* A learner whose TSP profile gives a home area isn't asked: it is the search location (US-0004). */}
+      <LocationPrompt
+        waiting={explore.passportStatus === 'loading'}
+        skip={explore.homeArea !== null}
+      />
 
       <div
         className={cx(
@@ -464,6 +468,7 @@ export default function ExplorePage() {
               {!search && view !== 'demand' && !selected && (
                 <p className="m-0 text-13 leading-[1.5] text-muted">{copy.search.hint}</p>
               )}
+              {!selected && <TspProfilePanel explore={explore} />}
               {view !== 'demand' && (
                 <div className={selected && !locationError ? 'max-md:hidden' : undefined}>
                   <LocationRow explore={explore} />

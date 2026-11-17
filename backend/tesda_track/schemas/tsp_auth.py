@@ -35,6 +35,14 @@ class TspProfile(BaseModel):
     experience: Labels
     education: Labels
     qualifications: Labels
-    credentials: Labels = Field(description="Certificates, trainings, assessments and external certificates.")
+    credentials: Labels = Field(description="Certificates, trainings, assessments and external certificates, except "
+                                "licenses.")
+    licenses: Labels = Field(default=[], description="Credentials whose name says they are a license or licence, such "
+                             "as an LTO driver's license.")
+    municipality: str | None = Field(default=None, description="The city or municipality the Skill Passport gives as "
+                                     "home; null when it gives none.")
+    province: str | None = Field(default=None, description="The province the Skill Passport gives as home.")
+    sample: bool = Field(default=False, description="True when the profile comes from the synthetic mock TSP "
+                         "accounts (TSP_MOCK_ENABLED), which the page labels as sample data.")
     region_code: str | None = Field(default=None, description="The region the Skill Passport gives as home, as one "
                                     "of the app's region codes; null when it gives none or an unknown one.")

@@ -2253,6 +2253,19 @@ export const en = {
       no: 'Not now',
       close: 'Close',
     },
+    // US-0004: what the signed-in learner's Skill Passport says, at the top of the panel.
+    tspProfile: {
+      heading: 'From your TSP profile',
+      sample: 'Sample data',
+      skills: 'Skills',
+      licenses: 'Licenses',
+      homeArea: 'Home area',
+      none: 'None listed',
+      loading: 'Loading your TSP profile…',
+      failed: 'We couldn’t load your TSP profile. Type a city or province below to continue.',
+      mayBeReady: (evidence: string) =>
+        `You may be ready for assessment: your TSP profile lists ${evidence}. The assessment center confirms what you need to bring.`,
+    },
     location: {
       share: 'Share my location',
       locating: 'Finding your approximate location…',
@@ -2261,6 +2274,10 @@ export const en = {
       place: 'Or type a city or province',
       placePlaceholder: 'For example: Manila, Cebu, Laguna',
       fromPlace: (place: string) => `Near ${place}`,
+      // US-0004: the Skill Passport's home area, used without asking.
+      fromProfile: (place: string) => `Near ${place}, your home area in your TSP profile`,
+      changeForVisit:
+        'Typing a place changes it for this visit only. Your TSP profile is not changed.',
       notFound: 'We don’t know that place yet. Try a city, province or region.',
       errors: {
         denied:

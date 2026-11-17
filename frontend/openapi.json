@@ -20362,7 +20362,46 @@
             },
             "type": "array",
             "title": "Credentials",
-            "description": "Certificates, trainings, assessments and external certificates."
+            "description": "Certificates, trainings, assessments and external certificates, except licenses."
+          },
+          "licenses": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Licenses",
+            "description": "Credentials whose name says they are a license or licence, such as an LTO driver's license.",
+            "default": []
+          },
+          "municipality": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Municipality",
+            "description": "The city or municipality the Skill Passport gives as home; null when it gives none."
+          },
+          "province": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Province",
+            "description": "The province the Skill Passport gives as home."
+          },
+          "sample": {
+            "type": "boolean",
+            "title": "Sample",
+            "description": "True when the profile comes from the synthetic mock TSP accounts (TSP_MOCK_ENABLED), which the page labels as sample data.",
+            "default": false
           },
           "region_code": {
             "anyOf": [
