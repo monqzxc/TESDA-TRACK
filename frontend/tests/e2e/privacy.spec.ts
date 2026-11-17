@@ -68,3 +68,50 @@ test("Home's footer links to the policy, and its contents to each section", asyn
   await expect(page).toHaveURL('/privacy#your-rights')
   await expect(page.getByRole('heading', { level: 2, name: 'Your rights' })).toBeInViewport()
 })
+
+// [Bug][Web] Privacy link (QA BUG-08): the footer link sat under the floating Help button, and the Career Map's only
+// link was inside its folded results panel; it now sits under the search box.
+test.describe('the privacy link on every screen', () => {
+  test.use({
+    viewport: { width: 1280, height: 600 },
+    storageState: {
+      cookies: [],
+      origins: [
+        {
+          origin: `http://localhost:${process.env.E2E_PORT ?? 5173}`,
+          localStorage: [
+            { name: 'tesda-track.privacy-notice', value: '2026-11-17' },
+            { name: 'track.explore.locationAsked', value: 'no' },
+          ],
+        },
+      ],
+    },
+  })
+
+  for (const path of ['/find', '/qualifications']) {
+    test(`the footer link on ${path} is not under the Help button`, async ({ page }) => {
+      await page.goto(path)
+      const link = page.getByRole('contentinfo').getByRole('link', { name: 'Privacy policy' })
+      await link.scrollIntoViewIfNeeded()
+      await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight))
+      await expect(page.getByRole('button', { name: 'Help: tour this page' })).toBeVisible()
+      // A click lands on whatever is on top: before the fix, the Help button took it.
+      await link.click({ timeout: 3000 })
+      await expect(page).toHaveURL(/\/privacy$/)
+    })
+  }
+
+  for (const viewport of [
+    { width: 1280, height: 600 },
+    { width: 390, height: 844 },
+  ]) {
+    test(`the Career Map links to the policy with its panel folded (${viewport.width}px)`, async ({
+      page,
+    }) => {
+      await page.setViewportSize(viewport)
+      await page.goto('/explore')
+      await page.getByRole('link', { name: 'Privacy policy' }).click({ timeout: 3000 })
+      await expect(page).toHaveURL(/\/privacy$/)
+    })
+  }
+})
