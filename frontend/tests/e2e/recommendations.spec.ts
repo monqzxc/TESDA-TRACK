@@ -584,3 +584,93 @@ for (const [size, viewport] of Object.entries({
     })
   })
 }
+
+// US-0004: signed in with TSP as the synthetic Kuya Manuel, the Career Map uses his Skill Passport. The API answers
+// are isolated fixtures; the profile is what GET /api/v1/auth/tsp/profile returns for the mock account.
+const MANUEL = {
+  id: '9a0c1b2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d',
+  full_name: 'Manuel Cruz Garcia',
+  email: null,
+  role: 'learner',
+  permissions: [],
+  created_at: '2026-11-17T00:00:00Z',
+}
+const MANUEL_PASSPORT = {
+  skills: ['Driving', 'Cooking'],
+  experience: ['Jeepney driver'],
+  education: ['High School graduate'],
+  qualifications: [],
+  credentials: [],
+  licenses: ["LTO Professional Driver's License"],
+  municipality: 'Caloocan City',
+  province: 'Metro Manila',
+  region_code: 'NCR',
+  sample: true,
+}
+const DRIVING = {
+  code: 'DRIVING-NC-II',
+  name: 'Driving NC II',
+  sector: 'Automotive and Land Transportation',
+  possible_jobs: ['Professional driver'],
+  competencies: [],
+}
+
+test('US-0004: Kuya Manuel sees his TSP profile, his home area and a hint to go straight to assessment', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await serveRecommendations(page)
+  // Registered after the fixture, so these answer first: a signed-in TSP learner and a driving match.
+  await page.addInitScript(() => localStorage.setItem('tesda-track.signed-in', 'e2e-session-hint'))
+  await page.route('**/api/v1/me', (route) => route.fulfill({ json: MANUEL }))
+  await page.route('**/api/v1/auth/tsp/profile', (route) =>
+    route.fulfill({ json: MANUEL_PASSPORT }),
+  )
+  // The fixture answers unknown reads with 401, which would end the session: the outlook isn't under test here.
+  await page.route('**/api/v1/labor-market/outlook?*', (route) =>
+    route.fulfill({ status: 503, json: { detail: 'Not part of this test' } }),
+  )
+  await page.route('**/api/v1/analysis/matches', (route) =>
+    route.fulfill({
+      json: {
+        profile: { ...PROFILE, career_goal: 'Professional driver', existing_skills: ['driving'] },
+        matches: [{ qualification: DRIVING, score: 88, reason: 'Matched your words: driver' }],
+      },
+    }),
+  )
+
+  await page.goto('/explore')
+  const panel = page.getByRole('region', { name: 'From your TSP profile' })
+  await expect(panel).toBeVisible()
+  await expect(panel).toContainText('Driving, Cooking')
+  await expect(panel).toContainText("LTO Professional Driver's License")
+  await expect(panel).toContainText('Caloocan City, Metro Manila')
+  await expect(panel).toContainText('Sample data')
+  // The home area is the search location without asking: no "Open Location?" question.
+  await expect(
+    page.getByText('Near National Capital Region, your home area in your TSP profile'),
+  ).toBeVisible()
+  await expect(page.getByRole('dialog', { name: 'Open Location?' })).toHaveCount(0)
+
+  // A typed place replaces it for this visit only; the profile stays as it was.
+  // The panel opens from the search box (folded, its body is inert).
+  await page.getByRole('searchbox', { name: 'What can you do?' }).click()
+  const place = page.getByRole('textbox', { name: 'Or type a city or province' })
+  await place.click()
+  await place.pressSequentially('Cebu')
+  const status = page.getByRole('region', { name: 'What can you do?' }).getByRole('status')
+  await expect(status).toHaveText('Near Cebu City')
+  await expect(panel).toContainText('Caloocan City, Metro Manila')
+  await place.fill('')
+  await expect(status).toHaveText(
+    'Near National Capital Region, your home area in your TSP profile',
+  )
+
+  await page.getByRole('searchbox', { name: 'What can you do?' }).fill('professional driver')
+  await page.getByRole('button', { name: 'Search', exact: true }).click()
+  await expect(page.getByTestId('may-be-ready')).toContainText(
+    "You may be ready for assessment: your TSP profile lists Driving, LTO Professional Driver's License.",
+  )
+  await expect(page.getByRole('heading', { level: 3 }).first()).toHaveText('Get certified')
+  expect((await new AxeBuilder({ page }).include('section').analyze()).violations).toEqual([])
+})
