@@ -70,7 +70,7 @@ test("Home's footer links to the policy, and its contents to each section", asyn
 })
 
 // [Bug][Web] Privacy link (QA BUG-08): the footer link sat under the floating Help button, and the Career Map's only
-// link was inside its folded results panel; it now sits under the search box.
+// link was inside its folded results panel; the sidebar menu now links to the policy on every screen.
 test.describe('the privacy link on every screen', () => {
   test.use({
     viewport: { width: 1280, height: 600 },
@@ -105,13 +105,18 @@ test.describe('the privacy link on every screen', () => {
     { width: 1280, height: 600 },
     { width: 390, height: 844 },
   ]) {
-    test(`the Career Map links to the policy with its panel folded (${viewport.width}px)`, async ({
+    test(`the menu links to the policy, from the Career Map with its panel folded (${viewport.width}px)`, async ({
       page,
     }) => {
       await page.setViewportSize(viewport)
       await page.goto('/explore')
-      await page.getByRole('link', { name: 'Privacy policy' }).click({ timeout: 3000 })
+      await page.getByRole('button', { name: 'Menu' }).first().click()
+      await page
+        .getByRole('dialog')
+        .getByRole('link', { name: 'Privacy policy' })
+        .click({ timeout: 3000 })
       await expect(page).toHaveURL(/\/privacy$/)
+      await expect(page.getByRole('dialog')).toHaveCount(0)
     })
   }
 })

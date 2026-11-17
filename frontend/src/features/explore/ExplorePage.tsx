@@ -566,6 +566,14 @@ export default function ExplorePage() {
                 <Icon name="chevron" className="rotate-180" />
                 {copy.panel.collapse}
               </Button>
+              {/* The page has no footer under the map, so its two lines are here; the sidebar links to the policy
+                  too, in reach while this panel is folded. */}
+              <p className="m-0 text-center text-12 leading-[1.5] text-muted">
+                {en.footer.copyright}{' '}
+                <NavLink to={paths.privacy} className="font-semibold text-blue underline-offset-4">
+                  {en.privacy.link}
+                </NavLink>
+              </p>
             </div>
           </div>
         </div>
@@ -719,17 +727,6 @@ function SearchBox({
           </div>
         )
       )}
-      {/* The page has no footer under the map, so its two lines are here, under the box: in reach whether the
-          results panel is folded or open (QA BUG-08: inside the folded panel, the privacy link couldn't be used). */}
-      <p className="m-0 flex flex-wrap items-center gap-x-1 px-4 pb-1.5 text-12 leading-[1.5] text-muted">
-        {en.footer.copyright}
-        <NavLink
-          to={paths.privacy}
-          className="inline-flex min-h-6 items-center font-semibold text-blue underline-offset-4 hover:underline"
-        >
-          {en.privacy.link}
-        </NavLink>
-      </p>
     </form>
   )
 }
