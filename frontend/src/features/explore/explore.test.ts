@@ -1,10 +1,22 @@
 import { describe, expect, it } from 'vitest'
 import type { Match } from '../finder/api.ts'
 import type { Center, Program, Schedule } from '../training/centers.ts'
-import { cardsFor, estimateMinutes, firstKind, nearestRegion, strength } from './explore.ts'
+import {
+  anyOutOfRange,
+  cardsFor,
+  estimateMinutes,
+  firstKind,
+  nearestRegion,
+  relatedWithin,
+  strength,
+} from './explore.ts'
 
-const match = (code: string, score: number) =>
-  ({ qualification: { code, name: code }, score, reason: 'Matched your words' }) as unknown as Match
+const match = (code: string, score: number, sector = 'Tourism') =>
+  ({
+    qualification: { code, name: code, sector },
+    score,
+    reason: 'Matched your words',
+  }) as unknown as Match
 
 const center = (
   id: string,
@@ -12,6 +24,7 @@ const center = (
   codes: string[],
   distanceKm: number | null,
   accredited: string[] = [],
+  sector = 'Tourism',
 ): Center =>
   ({
     id,
@@ -22,11 +35,17 @@ const center = (
     programs:
       kind === 'training'
         ? codes.map(
-            (code) => ({ qualification: { code }, scholarship_available: false }) as Program,
+            (code) =>
+              ({
+                qualification: { code, name: code, sector },
+                scholarship_available: false,
+              }) as Program,
           )
         : [],
     schedules:
-      kind === 'assessment' ? codes.map((code) => ({ qualification: { code } }) as Schedule) : [],
+      kind === 'assessment'
+        ? codes.map((code) => ({ qualification: { code, name: code, sector } }) as Schedule)
+        : [],
   }) as unknown as Center
 
 describe('estimateMinutes', () => {
@@ -35,9 +54,14 @@ describe('estimateMinutes', () => {
     expect(estimateMinutes(0.1)).toBe(1)
   })
 
-  it('gives no time beyond 100 km or without a distance', () => {
-    expect(estimateMinutes(100)).not.toBeNull()
-    expect(estimateMinutes(100.1)).toBeNull()
+  it('drives the rest of a long trip on highways', () => {
+    // Makati to Baguio: 295 km of road, 35 km of it in town.
+    expect(estimateMinutes(210.9)).toBe(330)
+  })
+
+  it('gives no time beyond 400 km, where a ferry or flight is likely, or without a distance', () => {
+    expect(estimateMinutes(400)).not.toBeNull()
+    expect(estimateMinutes(400.1)).toBeNull()
     expect(estimateMinutes(null)).toBeNull()
   })
 })
@@ -103,6 +127,90 @@ describe('cardsFor', () => {
       ['FBS', ['assessment-2'], 1],
     ])
     expect(cardsFor('training', [match('FBS', 40)], [accredited[3]])).toEqual([])
+  })
+})
+
+describe('cardsFor with a range', () => {
+  it("counts the centers within the learner's range", () => {
+    const centers = [center('t', 'training', ['COOKERY'], 40)]
+    expect(cardsFor('training', [match('COOKERY', 90)], centers)[0].near).toBe(0)
+    expect(cardsFor('training', [match('COOKERY', 90)], centers, 50)[0].near).toBe(1)
+  })
+})
+
+describe('anyOutOfRange', () => {
+  it('is true when a kind lists the qualification only beyond range, though the other kind is near', () => {
+    const centers = [
+      center('far-training', 'training', ['MMAW'], 210.9),
+      center('near-assessment', 'assessment', ['MMAW'], 3),
+    ]
+    expect(anyOutOfRange([match('MMAW', 50)], centers, 25)).toBe(true)
+    expect(anyOutOfRange([match('MMAW', 50)], centers, 250)).toBe(false)
+  })
+
+  it('is false without distances', () => {
+    expect(anyOutOfRange([match('MMAW', 50)], [center('t', 'training', ['MMAW'], null)], 25)).toBe(
+      false,
+    )
+  })
+})
+
+describe('relatedWithin', () => {
+  const welding = match('MMAW', 50, 'Metals and Engineering')
+  const nearby = [
+    center('cookery', 'training', ['COOKERY'], 2),
+    center('gtaw', 'training', ['GTAW'], 8, [], 'Metals and Engineering'),
+    center('gmaw', 'training', ['GMAW'], 4, [], 'Metals and Engineering'),
+    center('assessor', 'assessment', [], 1, ['FCAW']),
+  ]
+  const catalog = [
+    { code: 'FCAW', name: 'Flux-Cored Arc Welding', sector: 'Metals and Engineering' },
+  ]
+
+  it('suggests the nearest center listing a qualification in the same sector', () => {
+    const related = relatedWithin({
+      kind: 'training',
+      match: welding,
+      matches: [welding],
+      nearby,
+      catalog,
+      rangeKm: 25,
+    })
+    expect([related?.qualification.code, related?.center.id]).toEqual(['GMAW', 'gmaw'])
+  })
+
+  it('prefers another qualification the search matched', () => {
+    const related = relatedWithin({
+      kind: 'training',
+      match: welding,
+      matches: [welding, match('GTAW', 40, 'Metals and Engineering')],
+      nearby,
+      catalog,
+      rangeKm: 25,
+    })
+    expect(related?.center.id).toBe('gtaw')
+  })
+
+  it('names an accreditation from the catalog, and stays within range and kind', () => {
+    const related = relatedWithin({
+      kind: 'assessment',
+      match: welding,
+      matches: [welding],
+      nearby,
+      catalog,
+      rangeKm: 25,
+    })
+    expect(related?.qualification).toEqual({ code: 'FCAW', name: 'Flux-Cored Arc Welding' })
+    expect(
+      relatedWithin({
+        kind: 'training',
+        match: welding,
+        matches: [welding],
+        nearby,
+        catalog,
+        rangeKm: 3,
+      }),
+    ).toBeNull()
   })
 })
 

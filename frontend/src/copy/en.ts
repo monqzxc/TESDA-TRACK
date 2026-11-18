@@ -408,8 +408,7 @@ export const en = {
     },
     careers: 'Possible careers',
     noCareers: 'Not listed yet',
-    competencies: (n: number) =>
-      `View ${figure(n)} ${n === 1 ? 'competency' : 'competencies'}`,
+    competencies: (n: number) => `View ${figure(n)} ${n === 1 ? 'competency' : 'competencies'}`,
     explore: 'Explore this pathway',
     // The goal "Explore this pathway" puts in Find my pathway's goal box, for the learner to review.
     exploreGoal: (name: string) => `I want to pursue ${name}.`,
@@ -2266,6 +2265,19 @@ export const en = {
       fewerCenters: 'Show fewer',
       noneNear: (km: number, closest: number) =>
         `No center within ${km} km. The closest is ${closest} km away.`,
+      // Beside "No center within …": back to "How far can you go?".
+      changeRange: 'Change',
+      changeRangeLabel: (km: number) => `Change how far you can go (now ${km} km)`,
+      range: {
+        heading: 'How far can you go?',
+        body: 'Centers within this distance count as near you.',
+        option: (km: number) => `${km} km`,
+        keep: 'Keep as it is',
+      },
+      // Under a qualification with no center in range: a related one that has a center in range.
+      related: {
+        heading: (km: number) => `A related qualification within ${km} km`,
+      },
       scholarship: 'Scholarship',
       // Under a center's name in the results: the matched qualification it lists.
       offers: {
@@ -2282,8 +2294,8 @@ export const en = {
     },
     trip: {
       km: (km: number) => `${km} km`,
-      minutes: (minutes: number) => `about ${minutes} min by car`,
-      minutesShort: (minutes: number) => `${minutes} min`,
+      // The time is written as travelTime writes it: "25 min", "5 hr 30 min".
+      minutes: (time: string) => `about ${time} by car`,
       byCar: 'By car',
     },
     demand: {

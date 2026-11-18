@@ -6,11 +6,20 @@ import type { Match } from '../finder/api.ts'
 // The map-first finder's rules, as plain functions: the plan's nearest-first policy (Task 6) worked out in the
 // browser from the data the API already serves. The values are provisional until the Product Owner signs off.
 
-/** Within this distance a center counts as near. */
+/** Within this distance a center counts as near, until the learner says how far they can go. */
 export const NEAR_KM = 25
-/** Beyond this distance no travel time is shown. */
-export const FAR_KM = 100
+/** The choices for "How far can you go?". */
+export const RANGES_KM = [5, 10, 25, 50, 100] as const
+/**
+ * Beyond this distance no travel time is shown: a trip that long is likely to need a ferry or a flight, which a
+ * straight-line estimate by car can't say. (Makati to Baguio, 211 km, is a drive; to Cebu, 570 km, is not.)
+ */
+export const FAR_KM = 400
+/** Speed by car for the first part of a trip, in town. */
 const SPEED_KMH = 30
+/** Road distance that is in town, at SPEED_KMH; the rest is on highways. */
+const TOWN_ROAD_KM = 35
+const HIGHWAY_SPEED_KMH = 60
 const DETOUR_FACTOR = 1.4
 /** A match scoring this or more is a strong match. */
 const STRONG_SCORE = 60
@@ -21,10 +30,16 @@ export const MAX_QUALIFICATIONS = 5
 
 export type Strength = 'strong' | 'good' | 'weak'
 
-/** Minutes by car estimated from straight-line distance, or null when the center is too far to say. */
+/**
+ * Minutes by car estimated from straight-line distance, or null when the center is too far to say. The first
+ * TOWN_ROAD_KM of road are driven in town, the rest on highways.
+ */
 export function estimateMinutes(km: number | null): number | null {
   if (km === null || km > FAR_KM) return null
-  return Math.max(1, Math.round(((km * DETOUR_FACTOR) / SPEED_KMH) * 60))
+  const road = km * DETOUR_FACTOR
+  const town = Math.min(road, TOWN_ROAD_KM)
+  const hours = town / SPEED_KMH + (road - town) / HIGHWAY_SPEED_KMH
+  return Math.max(1, Math.round(hours * 60))
 }
 
 export function strength(match: Pick<Match, 'score'>): Strength {
@@ -67,12 +82,20 @@ export interface QualificationCard {
   strength: Strength
   /** Nearest first, unmapped last; by name without a starting point. */
   centers: Center[]
-  /** Centers within NEAR_KM. */
+  /** Centers within the learner's range. */
   near: number
 }
 
+const within = (center: Center, rangeKm: number) =>
+  center.distanceKm !== null && center.distanceKm <= rangeKm
+
 /** For one kind, a card per matched qualification that some center of that kind lists. */
-export function cardsFor(kind: CenterKind, matches: readonly Match[], centers: readonly Center[]) {
+export function cardsFor(
+  kind: CenterKind,
+  matches: readonly Match[],
+  centers: readonly Center[],
+  rangeKm: number = NEAR_KM,
+) {
   const cards: QualificationCard[] = []
   for (const match of matches) {
     const code = match.qualification.code
@@ -82,11 +105,87 @@ export function cardsFor(kind: CenterKind, matches: readonly Match[], centers: r
       match,
       strength: strength(match),
       centers: listed,
-      near: listed.filter((center) => center.distanceKm !== null && center.distanceKm <= NEAR_KM)
-        .length,
+      near: listed.filter((center) => within(center, rangeKm)).length,
     })
   }
   return cards
+}
+
+/** Whether a center of some kind lists a matched qualification, but none of that kind within range. */
+export function anyOutOfRange(
+  matches: readonly Match[],
+  centers: readonly Center[],
+  rangeKm: number,
+): boolean {
+  return (['training', 'assessment'] as const).some((kind) =>
+    cardsFor(kind, matches, centers, rangeKm).some(
+      (card) => card.near === 0 && card.centers.some((center) => center.distanceKm !== null),
+    ),
+  )
+}
+
+export interface Related {
+  qualification: { code: string; name: string }
+  /** Its nearest center of the card's kind, within range. */
+  center: Center
+}
+
+/** Every qualification a center lists, by code: its programs, its schedules, and the registry's accreditations. */
+function listedAt(center: Center, names: ReadonlyMap<string, { name: string; sector: string }>) {
+  const listed = new Map<string, { name: string; sector: string }>()
+  for (const listing of [...center.programs, ...center.schedules]) {
+    listed.set(listing.qualification.code, listing.qualification)
+  }
+  for (const code of center.accredited) {
+    const known = names.get(code)
+    if (known && !listed.has(code)) listed.set(code, known)
+  }
+  return listed
+}
+
+/**
+ * For a qualification with no center of `kind` within range: a related one that has, with its nearest such
+ * center. Related means another qualification the search matched, best match first, or else one in the same
+ * sector. `nearby` are the centers within range with everything they list; `catalog` names and sectors the
+ * registry's accreditations, which are codes only.
+ */
+export function relatedWithin({
+  kind,
+  match,
+  matches,
+  nearby,
+  catalog,
+  rangeKm,
+}: {
+  kind: CenterKind
+  match: Match
+  matches: readonly Match[]
+  nearby: readonly Center[]
+  catalog: readonly { code: string; name: string; sector: string }[]
+  rangeKm: number
+}): Related | null {
+  const own = match.qualification.code
+  const names = new Map(catalog.map((item) => [item.code, item]))
+  const candidates = nearby
+    .filter((center) => center.kind === kind && within(center, rangeKm))
+    .sort((a, b) => (a.distanceKm as number) - (b.distanceKm as number))
+    .map((center) => ({ center, listed: listedAt(center, names) }))
+  for (const other of matches) {
+    const code = other.qualification.code
+    if (code === own) continue
+    const found = candidates.find((candidate) => candidate.listed.has(code))
+    if (found) return { qualification: other.qualification, center: found.center }
+  }
+  const sector = match.qualification.sector
+  if (!sector) return null
+  for (const { center, listed } of candidates) {
+    for (const [code, qualification] of listed) {
+      if (code !== own && qualification.sector === sector) {
+        return { qualification: { code, name: qualification.name }, center }
+      }
+    }
+  }
+  return null
 }
 
 /** The region whose center is nearest the point: where demand evidence is looked up. */

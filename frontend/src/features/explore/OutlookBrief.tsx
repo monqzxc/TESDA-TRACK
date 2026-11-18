@@ -6,6 +6,7 @@ import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
 import type { View } from './ExplorePage.tsx'
+import { travelTime } from '../training/format.ts'
 import { estimateMinutes, findJobsUrl, roundKm } from './explore.ts'
 import type { Balance } from './outlookApi.ts'
 import type { Recommendation } from './recommend.ts'
@@ -296,7 +297,7 @@ function RecommendedRow({ item, onSelect }: { item: Recommendation; onSelect: ()
           {center.distanceKm !== null && (
             <span>{en.explore.trip.km(roundKm(center.distanceKm))}</span>
           )}
-          {minutes !== null && <span>{en.explore.trip.minutes(minutes)}</span>}
+          {minutes !== null && <span>{en.explore.trip.minutes(travelTime(minutes))}</span>}
         </span>
       </span>
       <Icon

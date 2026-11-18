@@ -1,7 +1,7 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useContext, useMemo } from 'react'
 import { create } from 'zustand'
-import { regionsQuery } from '../../api/queries.ts'
+import { qualificationsQuery, regionsQuery } from '../../api/queries.ts'
 import { AuthContext } from '../../auth/useAuth.ts'
 import type { MatchResult } from '../finder/api.ts'
 import { passportQuery } from '../tsp/passport.ts'
@@ -15,7 +15,7 @@ import {
 } from '../training/centers.ts'
 import { useTrainingStore } from '../training/state.ts'
 import type { Reference } from '../training/useCenters.ts'
-import { MAX_QUALIFICATIONS, nearestRegion } from './explore.ts'
+import { anyOutOfRange, MAX_QUALIFICATIONS, NEAR_KM, nearestRegion } from './explore.ts'
 import { areaJobsQuery } from './demandApi.ts'
 import { nearbySuggestionsQuery, outlookQuery, outlookSummaryQuery } from './outlookApi.ts'
 import {
@@ -66,17 +66,30 @@ interface ExploreState {
   search: Search | null
   /** The learner would move for work or training: the analysis and the recommended centers look further. */
   relocate: boolean
+  /** How far the learner can go, in km: a center within it counts as near. */
+  rangeKm: number
+  /** "How far can you go?" is on screen. */
+  askingRange: boolean
   setDraft: (draft: string) => void
   setSearch: (search: Search | null) => void
   setRelocate: (relocate: boolean) => void
+  /** Back to "How far can you go?". */
+  changeRange: () => void
+  setRange: (rangeKm: number) => void
+  closeRange: () => void
 }
 
 export const useExploreStore = create<ExploreState>()((set) => ({
   draft: '',
   search: null,
   relocate: false,
+  rangeKm: NEAR_KM,
+  askingRange: false,
   setDraft: (draft) => set({ draft }),
   setRelocate: (relocate) => set({ relocate }),
+  changeRange: () => set({ askingRange: true }),
+  setRange: (rangeKm) => set({ rangeKm, askingRange: false }),
+  closeRange: () => set({ askingRange: false }),
   setSearch: (search) => {
     set({ search })
     useDemandStore.getState().setCode(undefined)
@@ -92,6 +105,7 @@ export const useExploreStore = create<ExploreState>()((set) => ({
 export function useExplore(demandActive = false) {
   const search = useExploreStore((state) => state.search)
   const relocate = useExploreStore((state) => state.relocate)
+  const rangeKm = useExploreStore((state) => state.rangeKm)
   const location = useTrainingStore((state) => (state.useLocation ? state.location : null))
   const locating = useTrainingStore(
     (state) => state.useLocation && state.locating && !state.location,
@@ -206,6 +220,37 @@ export function useExplore(demandActive = false) {
     [everything, reference, today],
   )
   /** The centers listing the qualification in focus: where its supply is. */
+  // A matched qualification with no center in range: everything listed within range, to suggest a related one.
+  const outOfRange = useMemo(
+    () => Boolean(search && reference && anyOutOfRange(matches, centers, rangeKm)),
+    [search, reference, matches, centers, rangeKm],
+  )
+  const inRange = useQuery({
+    ...listingsQuery(
+      [],
+      reference
+        ? { latitude: reference.latitude, longitude: reference.longitude, radiusKm: rangeKm }
+        : null,
+    ),
+    enabled: outOfRange,
+  })
+  const catalog = useQuery({ ...qualificationsQuery, enabled: outOfRange })
+  const nearbyCenters = useMemo(
+    () =>
+      outOfRange && inRange.data && sites.data && regions.data
+        ? withDistances(
+            buildCenters(
+              sites.data.providers,
+              sites.data.assessmentSites,
+              inRange.data.programs,
+              inRange.data.schedules,
+              regionMap,
+            ),
+            reference,
+          ).filter((center) => center.distanceKm !== null && center.distanceKm <= rangeKm)
+        : [],
+    [outOfRange, inRange.data, sites.data, regions.data, regionMap, reference, rangeKm],
+  )
   const supply = useMemo(
     () => (demandCode ? supplyCenters(centers, demandCode, outlook.data) : []),
     [centers, demandCode, outlook.data],
@@ -244,9 +289,10 @@ export function useExplore(demandActive = false) {
             homeRegion: automaticRegion,
             relocate,
             alternatives: alternatives ?? [],
+            nearKm: rangeKm,
           })
         : NO_RECOMMENDATIONS,
-    [demandCode, supply, automaticRegion, relocate, alternatives],
+    [demandCode, supply, automaticRegion, relocate, alternatives, rangeKm],
   )
   const recommendedIds = useMemo(() => idsOf(recommendations), [recommendations])
 
@@ -255,6 +301,10 @@ export function useExplore(demandActive = false) {
     matches,
     centers,
     reference,
+    rangeKm,
+    /** Centers within range with everything they list, when a matched qualification has none there. */
+    nearbyCenters,
+    catalog: catalog.data ?? [],
     location,
     locating,
     placeText,

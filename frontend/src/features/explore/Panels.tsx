@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { qualificationsQuery } from '../../api/queries.ts'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Button, Input, Label, Switch, TextField, ToggleButton } from 'react-aria-components'
 import { useNavigate } from 'react-router'
 import { Icon, type IconName } from '../../components/Icon.tsx'
@@ -14,6 +14,7 @@ import { offeringsQuery, type ClientConfig } from '../training/api.ts'
 import type { CenterKind } from '../training/address.ts'
 import { googleMapsDirections, RoutePanel } from '../training/CenterDetail.tsx'
 import { placeLabel, type Center, type Point } from '../training/centers.ts'
+import { travelTime } from '../training/format.ts'
 import { useTrainingStore } from '../training/state.ts'
 import type { View } from './ExplorePage.tsx'
 import {
@@ -21,9 +22,11 @@ import {
   estimateMinutes,
   firstKind,
   hasScholarship,
-  NEAR_KM,
+  RANGES_KM,
+  relatedWithin,
   roundKm,
   type QualificationCard,
+  type Related,
 } from './explore.ts'
 import { useExploreStore, type Explore } from './useExplore.ts'
 
@@ -65,7 +68,7 @@ function useOpenPathway() {
   }
 }
 
-/** 10.1 km · 28 min · Manila, each behind its icon; without the city where the place is shown already. */
+/** 10.1 km · 28 min · Manila (or 5 hr 30 min, farther away), each behind its icon; without the city where the place is shown already. */
 function TripMeta({
   center,
   className = 'text-muted',
@@ -92,7 +95,7 @@ function TripMeta({
       {minutes !== null && (
         <span className={item}>
           <Icon name="car" label={copy.byCar} />
-          {copy.minutesShort(minutes)}
+          {travelTime(minutes)}
         </span>
       )}
       {place && (
@@ -337,15 +340,22 @@ export function NearbyPanel({
 function QualificationCardView({
   card,
   hasReference,
+  rangeKm,
+  related,
   recommended,
   onSelect,
 }: {
   card: QualificationCard
   hasReference: boolean
+  /** How far the learner can go. */
+  rangeKm: number
+  /** With no center in range: a related qualification that has one, and its nearest center. */
+  related: Related | null
   /** The centers recommended for this card's qualification, when it is the one in focus. */
   recommended: ReadonlySet<string>
   onSelect: (id: string, code?: string) => void
 }) {
+  const changeRange = useExploreStore((state) => state.changeRange)
   const en = useCopy()
   const copy = en.explore.results
   const [open, setOpen] = useState(false)
@@ -401,7 +411,16 @@ function QualificationCardView({
       {hasReference && card.near === 0 && first?.distanceKm != null && (
         <p className="m-0 flex items-start gap-1.5 text-13 text-warn-ink">
           <Icon name="info" className="mt-0.5 flex-none" />
-          {copy.noneNear(NEAR_KM, roundKm(first.distanceKm))}
+          <span>
+            {copy.noneNear(rangeKm, roundKm(first.distanceKm))}{' '}
+            <Button
+              onPress={changeRange}
+              aria-label={copy.changeRangeLabel(rangeKm)}
+              className="cursor-pointer border-0 bg-transparent p-0 text-13 font-semibold text-blue underline underline-offset-2 data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:text-navy"
+            >
+              {copy.changeRange}
+            </Button>
+          </span>
         </p>
       )}
       {first && (
@@ -436,6 +455,20 @@ function QualificationCardView({
           <Icon name="chevron" className={cx('transition-transform', open && 'rotate-180')} />
         </Button>
       )}
+      {related && (
+        <div className="flex flex-col gap-1.5 border-t border-rule pt-2">
+          <p className="m-0 flex items-center gap-1.5 text-12 font-bold tracking-[0.04em] text-muted uppercase">
+            <Icon name="sparkle" />
+            {copy.related.heading(rangeKm)}
+          </p>
+          <CenterRow
+            center={related.center}
+            code={related.qualification.code}
+            qualification={related.qualification.name}
+            onSelect={onSelect}
+          />
+        </div>
+      )}
     </article>
   )
 }
@@ -448,6 +481,8 @@ function Group({
   first,
   cards,
   hasReference,
+  rangeKm,
+  relatedFor,
   focus,
   onSelect,
 }: {
@@ -455,6 +490,8 @@ function Group({
   first: boolean
   cards: QualificationCard[]
   hasReference: boolean
+  rangeKm: number
+  relatedFor: (kind: CenterKind, card: QualificationCard) => Related | null
   /** The qualification in focus and the centers recommended for it. */
   focus: { code: string | null; recommended: ReadonlySet<string> }
   onSelect: (id: string, code?: string) => void
@@ -487,6 +524,8 @@ function Group({
             key={card.match.qualification.code}
             card={card}
             hasReference={hasReference}
+            rangeKm={rangeKm}
+            related={hasReference && card.near === 0 ? relatedFor(kind, card) : null}
             recommended={card.match.qualification.code === focus.code ? focus.recommended : NONE}
             onSelect={onSelect}
           />
@@ -494,6 +533,65 @@ function Group({
       ) : (
         <p className={note}>{copy.noCenter}</p>
       )}
+    </section>
+  )
+}
+
+/**
+ * "How far can you go?": the distance within which a center counts as near. Asked again when the learner presses
+ * "Change" on a qualification with no center in range; until then, nothing is shown.
+ */
+function RangeStep({ rangeKm }: { rangeKm: number }) {
+  const copy = useCopy().explore.results.range
+  const asking = useExploreStore((state) => state.askingRange)
+  const { setRange, closeRange } = useExploreStore.getState()
+  const headingRef = useRef<HTMLHeadingElement>(null)
+  // Brought into view and focused, so a keyboard or screen-reader user lands on the question.
+  useEffect(() => {
+    if (!asking) return
+    headingRef.current?.focus()
+    headingRef.current?.scrollIntoView?.({ block: 'nearest' })
+  }, [asking])
+  if (!asking) return null
+  return (
+    <section
+      aria-labelledby="explore-range-heading"
+      className="flex flex-col gap-2 rounded-12 border border-pill-border bg-tint p-3"
+    >
+      <h3
+        id="explore-range-heading"
+        ref={headingRef}
+        tabIndex={-1}
+        className={cx(heading, 'flex items-center gap-1.5 outline-none')}
+      >
+        <Icon name="distance" />
+        {copy.heading}
+      </h3>
+      <p className={note}>{copy.body}</p>
+      <div role="group" aria-label={copy.heading} className="flex flex-wrap gap-1.5">
+        {RANGES_KM.map((km) => (
+          <ToggleButton
+            key={km}
+            isSelected={km === rangeKm}
+            onChange={() => setRange(km)}
+            className={cx(
+              'min-h-9 cursor-pointer rounded-full border border-hover-border bg-surface px-3.5 text-14 font-semibold text-navy',
+              lift,
+              'data-focus-visible:outline-3 data-focus-visible:outline-offset-1 data-focus-visible:outline-focus',
+              'data-hovered:border-blue',
+              'data-selected:border-fill data-selected:bg-fill data-selected:text-white',
+            )}
+          >
+            {copy.option(km)}
+          </ToggleButton>
+        ))}
+      </div>
+      <Button
+        className={cx(button({ variant: 'tertiary', height: 36, snug: true }), 'self-start')}
+        onPress={closeRange}
+      >
+        {copy.keep}
+      </Button>
     </section>
   )
 }
@@ -529,8 +627,18 @@ export function ResultsPanel({
     )
   }
 
-  const assess = cardsFor('assessment', matches, centers)
-  const train = cardsFor('training', matches, centers)
+  const { rangeKm } = explore
+  const assess = cardsFor('assessment', matches, centers, rangeKm)
+  const train = cardsFor('training', matches, centers, rangeKm)
+  const relatedFor = (kind: CenterKind, card: QualificationCard) =>
+    relatedWithin({
+      kind,
+      match: card.match,
+      matches,
+      nearby: explore.nearbyCenters,
+      catalog: explore.catalog,
+      rangeKm,
+    })
   const focus = { code: explore.demandCode, recommended: new Set(explore.recommendedIds) }
   const order: CenterKind[] =
     firstKind(search.query) === 'training' ? ['training', 'assessment'] : ['assessment', 'training']
@@ -585,6 +693,7 @@ export function ResultsPanel({
       {!reference && view !== 'demand' && (
         <p className="m-0 rounded-10 bg-tint px-3 py-2 text-13 text-navy">{copy.needPlace}</p>
       )}
+      {reference && view !== 'demand' && <RangeStep rangeKm={rangeKm} />}
       {shown.map((kind, index) => (
         <Group
           key={kind}
@@ -592,6 +701,8 @@ export function ResultsPanel({
           first={view !== 'all' || index === 0}
           cards={kind === 'assessment' ? assess : train}
           hasReference={reference !== null}
+          rangeKm={rangeKm}
+          relatedFor={relatedFor}
           focus={focus}
           onSelect={onSelect}
         />

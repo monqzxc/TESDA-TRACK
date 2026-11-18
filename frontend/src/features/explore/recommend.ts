@@ -8,7 +8,7 @@ import type { Outlook } from './outlookApi.ts'
 
 /** Why a center is recommended. */
 export type Reason =
-  /** Within NEAR_KM of the learner. */
+  /** Within the learner's range (NEAR_KM until they choose). */
   | 'near'
   /** The nearest, farther than that but in the learner's own region. */
   | 'region'
@@ -65,18 +65,21 @@ export function recommend({
   homeRegion,
   relocate,
   alternatives,
+  nearKm = NEAR_KM,
 }: {
   supply: readonly Center[]
   homeRegion: string | null
   relocate: boolean
   alternatives: readonly string[]
+  /** How far the learner can go. */
+  nearKm?: number
 }): Recommendations {
   const measured = supply.filter((center) => center.distanceKm !== null).sort(byDistance)
   const nearest = (kind: Center['kind']): Recommendation | null => {
     const center = measured.find((candidate) => candidate.kind === kind)
     if (!center) return null
     const reason: Reason =
-      (center.distanceKm as number) <= NEAR_KM
+      (center.distanceKm as number) <= nearKm
         ? 'near'
         : homeRegion && center.regionCode === homeRegion
           ? 'region'
