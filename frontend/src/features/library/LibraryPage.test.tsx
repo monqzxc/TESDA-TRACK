@@ -122,6 +122,21 @@ describe('Qualifications Library', () => {
     expect(new URLSearchParams(router.state.location.search).get('sector')).toBe('Tourism')
   })
 
+  it('shows only the qualifications named in ?codes=, in that order, until asked for the whole library', async () => {
+    serve()
+    const user = userEvent.setup()
+    const { router } = await openLibrary('/qualifications?codes=SMAW-NCII,TOUR-3,UNKNOWN,SMAW-NCI')
+    expect(cardNames()).toEqual([welding2.name, tourism[2]!.name, welding.name])
+    expect(screen.getByText('3 of 16 qualifications')).toBeInTheDocument()
+    expect(
+      screen.getByText('Showing the 3 qualifications that matched your goal.'),
+    ).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Show all qualifications' }))
+    expect(cards()).toHaveLength(12)
+    expect(new URLSearchParams(router.state.location.search).has('codes')).toBe(false)
+  })
+
   it('opens a shared search as it was', async () => {
     serve()
     await openLibrary('/qualifications?q=qualification%201&sector=Tourism')

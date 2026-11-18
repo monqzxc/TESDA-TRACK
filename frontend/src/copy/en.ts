@@ -401,6 +401,9 @@ export const en = {
     // "12 of 319 qualifications · Showing 1–12"
     count: (found: number, total: number) => `${figure(found)} of ${figure(total)} qualifications`,
     showing: (first: number, last: number) => `Showing ${figure(first)}–${figure(last)}`,
+    // Above the results when Find my pathway sent its matches here (?codes=).
+    comparing: (n: number) =>
+      `Showing the ${figure(n)} ${n === 1 ? 'qualification' : 'qualifications'} that matched your goal.`,
     clear: 'Clear filters',
     empty: {
       heading: 'No qualifications found',
@@ -650,6 +653,8 @@ export const en = {
       lead: 'These match your goal and experience. Choose one to check your readiness for it.',
       leadNone: 'Pick one from the full list, or describe your goal another way.',
       viewAll: 'View all qualifications',
+      // The link when there are matches: opens the library with just them, to compare.
+      compare: 'Compare them in the Qualifications Library',
       loading: 'Finding qualifications for you…',
       none: 'We couldn’t find a clear match. Choose a qualification from the full list below, or describe a more specific career goal.',
       topMatch: 'Best match',

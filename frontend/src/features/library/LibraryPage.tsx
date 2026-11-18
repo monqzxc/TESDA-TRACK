@@ -23,7 +23,8 @@ const ALL = 'all'
 
 /**
  * Qualifications Library, at /qualifications (classic/app.py show_library; US-04). The search, the sector and the
- * page are in the address (?q=&sector=&page=), so a search can be shared and Back returns to it.
+ * page are in the address (?q=&sector=&page=), so a search can be shared and Back returns to it. ?codes=A,B,C narrows
+ * the library to those qualifications, in that order: Find my pathway links its matches here to compare them.
  */
 export default function LibraryPage() {
   const en = useCopy()
@@ -57,9 +58,20 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
   const sectorParam = params.get('sector')
   // An address with a sector the catalog doesn't have shows every sector.
   const sector = sectorParam !== null && sectors.includes(sectorParam) ? sectorParam : undefined
+  const codesParam = params.get('codes') ?? ''
+  // The qualifications named in ?codes=, in the order given. Codes the catalog doesn't have are left out, and an
+  // address with none it has shows the whole library.
+  const picked = useMemo(() => {
+    const byCode = new Map(
+      qualifications.map((qualification) => [qualification.code, qualification]),
+    )
+    const codes = [...new Set(codesParam.split(',').map((code) => code.trim()))]
+    return codes.flatMap((code) => byCode.get(code) ?? [])
+  }, [qualifications, codesParam])
+  const comparing = picked.length > 0
   const filtered = useMemo(
-    () => filterQualifications(qualifications, { query, sector }),
-    [qualifications, query, sector],
+    () => filterQualifications(comparing ? picked : qualifications, { query, sector }),
+    [comparing, picked, qualifications, query, sector],
   )
   const showAll = params.get('view') === 'all'
   const shown = pageOf(
@@ -67,7 +79,7 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
     showAll ? 1 : Number(params.get('page') ?? '1'),
     showAll ? Math.max(1, filtered.length) : LIBRARY_PAGE_SIZE,
   )
-  const isFiltered = query.trim() !== '' || sector !== undefined
+  const isFiltered = query.trim() !== '' || sector !== undefined || comparing
 
   /** A new search or sector starts again at the first page. Typing replaces the address rather than adding to it. */
   const setFilter = (name: 'q' | 'sector', value: string | undefined) => {
@@ -87,6 +99,19 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
     setParams(showAll ? new URLSearchParams({ view: 'all' }) : new URLSearchParams(), {
       preventScrollReset: true,
     })
+  }
+
+  /** Leaves the compared qualifications for the whole library, keeping the search and sector. */
+  const showWholeLibrary = () => {
+    setParams(
+      (current) => {
+        const next = new URLSearchParams(current)
+        next.delete('codes')
+        next.delete('page')
+        return next
+      },
+      { preventScrollReset: true },
+    )
   }
 
   const toggleView = () => {
@@ -169,6 +194,18 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
         />
       </section>
 
+      {comparing && (
+        <div
+          role="status"
+          className="mt-5 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 rounded-12 border border-border bg-soft px-4 py-3"
+        >
+          <p className="m-0 text-15 text-navy">{copy.comparing(picked.length)}</p>
+          <Button className={button({ variant: 'tertiary' })} onPress={showWholeLibrary}>
+            {copy.collection.showAll}
+          </Button>
+        </div>
+      )}
+
       <div className="mt-5 mb-3 flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <p
           ref={summary}
@@ -185,7 +222,8 @@ function Library({ qualifications }: { qualifications: Qualification[] }) {
             .join(' · ')}
         </p>
         <div className="flex flex-wrap items-center gap-2">
-          {qualifications.length > LIBRARY_PAGE_SIZE && (
+          {/* Only worth offering when the results run to more than one page. */}
+          {(showAll || filtered.length > LIBRARY_PAGE_SIZE) && (
             <Button
               className={button({ variant: 'tertiary' })}
               onPress={toggleView}

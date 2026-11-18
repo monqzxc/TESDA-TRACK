@@ -90,8 +90,17 @@ export function MatchesStep({ journey, context, catalog, onCheck }: MatchesStepP
               </p>
             )}
           </div>
-          <Link to={paths.qualifications} className={button({ variant: 'tertiary' })}>
-            {copy.matches.viewAll}
+          <Link
+            to={
+              found.length
+                ? `${paths.qualifications}?${new URLSearchParams({
+                    codes: found.map((match) => match.qualification.code).join(','),
+                  })}`
+                : paths.qualifications
+            }
+            className={button({ variant: 'tertiary' })}
+          >
+            {found.length ? copy.matches.compare : copy.matches.viewAll}
             <Icon name="arrowRight" />
           </Link>
         </div>
