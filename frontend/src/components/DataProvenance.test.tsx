@@ -36,6 +36,23 @@ describe('record provenance', () => {
     expect(screen.queryByRole('link')).not.toBeInTheDocument()
   })
 
+  it('shows a readable registry label for the imported assessment workbook', () => {
+    const source = {
+      source_name: 'Accredited Compentency Assessment Center based on Oct 7, 2026 Database.xlsx',
+      source_reference: 'Assessment centers · row 25',
+      source_updated_on: '2026-10-07',
+    }
+    const view = render(<DataProvenance value={source} />)
+    const label = 'Accredited Competency Assessment Center registry (Oct 7, 2026)'
+    expect(screen.getByText(`Source: ${label} (public source link not recorded)`)).toBeVisible()
+    expect(screen.getByText('Reference: Assessment centers · row 25')).toBeVisible()
+    expect(screen.getByText('2026-10-07')).toHaveAttribute('datetime', '2026-10-07')
+
+    const sourceUrl = 'https://example.invalid/assessment-registry'
+    view.rerender(<DataProvenance value={{ ...source, source_url: sourceUrl }} />)
+    expect(screen.getByRole('link', { name: label })).toHaveAttribute('href', sourceUrl)
+  })
+
   it('labels examples in compact listing cards and explains them in details', () => {
     const view = render(<DataProvenance value={{ status: 'example' }} compact />)
     expect(screen.getByText('Example data')).toBeVisible()

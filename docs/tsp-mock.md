@@ -50,9 +50,9 @@ After **Sign in with TSP**, the Career Map shows **From your TSP profile**: the 
   used when the center list knows it, else the province, else the region. Locally the seed data has no center in
   Caloocan, so Kuya Manuel's searches start from the National Capital Region.
 - Sharing a location or typing a place replaces the home area for this visit only. The profile is never changed.
-- When skills or licenses name the trade of the first matched qualification, assessment centers come first and the
-  results say **You may be ready for assessment**, naming what was found (for Kuya Manuel and Driving NC II: Driving
-  and the LTO license). This is a suggestion from self-declared skills; the assessment center confirms eligibility.
+- When skills or licenses match a qualification, the assessment group appears first and shows **You may be ready for
+  assessment**. It names the highest-ranked qualification supported by the profile and the matching evidence
+  (for Kuya Manuel and Driving NC II: Driving and the LTO license). The assessment center confirms eligibility.
 - If the profile can't be loaded, the panel says so and the place box below lets the learner carry on.
 
 Try it: sign in as `manuel.garcia@example.com`, open **Career Map**, and search for "professional driver".

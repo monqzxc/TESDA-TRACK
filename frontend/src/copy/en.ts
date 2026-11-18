@@ -2268,8 +2268,9 @@ export const en = {
       none: 'None listed',
       loading: 'Loading your TSP profile…',
       failed: 'We couldn’t load your TSP profile. Type a city or province below to continue.',
-      mayBeReady: (evidence: string) =>
-        `You may be ready for assessment: your TSP profile lists ${evidence}. The assessment center confirms what you need to bring.`,
+      mayBeReady: 'You may be ready for assessment',
+      readinessEvidence: (qualification: string, evidence: string) =>
+        `For ${qualification}, your TSP profile lists ${evidence}. The assessment center confirms what you need to bring.`,
     },
     location: {
       share: 'Share my location',

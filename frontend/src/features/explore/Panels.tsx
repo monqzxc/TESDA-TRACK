@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useId, useState } from 'react'
 import { Button, Input, Label, Switch, TextField, ToggleButton } from 'react-aria-components'
 import { useNavigate } from 'react-router'
+import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { Icon, type IconName } from '../../components/Icon.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
@@ -417,11 +418,13 @@ export function NearbyPanel({
 /** A qualification that fits, with its nearest center of one kind and, opened, the next ones. */
 function QualificationCardView({
   card,
+  groupLabel,
   hasReference,
   recommended,
   onSelect,
 }: {
   card: QualificationCard
+  groupLabel: string
   hasReference: boolean
   /** The centers recommended for this card's qualification, when it is the one in focus. */
   recommended: ReadonlySet<string>
@@ -511,7 +514,7 @@ function QualificationCardView({
         <SuggestionFeedback
           kind="qualification"
           resultKey={code}
-          resultName={card.match.qualification.name}
+          resultName={`${card.match.qualification.name} · ${groupLabel}`}
           goal={search.query}
           scope={search.feedbackScope}
         />
@@ -529,6 +532,7 @@ function Group({
   cards,
   hasReference,
   focus,
+  readiness,
   onSelect,
 }: {
   kind: CenterKind
@@ -537,9 +541,11 @@ function Group({
   hasReference: boolean
   /** The qualification in focus and the centers recommended for it. */
   focus: { code: string | null; recommended: ReadonlySet<string> }
+  readiness?: { qualification: string; evidence: string[] }
   onSelect: (id: string, code?: string) => void
 }) {
-  const copy = useCopy().explore.results
+  const { results: copy, tspProfile } = useCopy().explore
+  const headingId = useId()
   const text =
     kind === 'assessment'
       ? first
@@ -549,7 +555,7 @@ function Group({
         ? copy.trainFirst
         : copy.trainSecond
   return (
-    <section className="flex flex-col gap-2">
+    <section aria-labelledby={headingId} className="flex flex-col gap-2">
       <div className="flex items-center gap-2.5">
         <span
           className={cx(
@@ -559,13 +565,28 @@ function Group({
         >
           <Icon name={kindIcon[kind]} />
         </span>
-        <h3 className={heading}>{text.heading}</h3>
+        <h3 id={headingId} className={heading}>
+          {text.heading}
+        </h3>
       </div>
+      {readiness && (
+        <div
+          data-testid="may-be-ready"
+          className="flex items-start gap-2 rounded-10 bg-good-bg px-3 py-2 text-13 leading-[1.5] text-good-ink"
+        >
+          <Icon name="award" className="mt-0.5 flex-none" />
+          <p className="m-0">
+            <strong className="block">{tspProfile.mayBeReady}</strong>
+            {tspProfile.readinessEvidence(readiness.qualification, readiness.evidence.join(', '))}
+          </p>
+        </div>
+      )}
       {cards.length ? (
         cards.map((card) => (
           <QualificationCardView
             key={card.match.qualification.code}
             card={card}
+            groupLabel={text.heading}
             hasReference={hasReference}
             recommended={card.match.qualification.code === focus.code ? focus.recommended : NONE}
             onSelect={onSelect}
@@ -612,12 +633,17 @@ export function ResultsPanel({
   const assess = cardsFor('assessment', matches, centers)
   const train = cardsFor('training', matches, centers)
   const focus = { code: explore.demandCode, recommended: new Set(explore.recommendedIds) }
-  // US-0004: skills or licenses in the Skill Passport that name the first match's trade put assessment first.
-  const evidence = matches[0]
-    ? readinessEvidence(explore.passport, matches[0].qualification.name)
-    : []
+  // Use the highest-ranked match with evidence, even when the profile does not cover the first match.
+  const readiness = explore.passport
+    ? matches
+        .map(({ qualification }) => ({
+          qualification: qualification.name,
+          evidence: readinessEvidence(explore.passport, qualification.name),
+        }))
+        .find(({ evidence }) => evidence.length > 0)
+    : undefined
   const order: CenterKind[] =
-    evidence.length || firstKind(search.query) !== 'training'
+    readiness || firstKind(search.query) !== 'training'
       ? ['assessment', 'training']
       : ['training', 'assessment']
   const shown = view === 'all' ? order : view === 'demand' ? [] : [view]
@@ -671,15 +697,6 @@ export function ResultsPanel({
       {!reference && view !== 'demand' && (
         <p className="m-0 rounded-10 bg-tint px-3 py-2 text-13 text-navy">{copy.needPlace}</p>
       )}
-      {evidence.length > 0 && view !== 'demand' && view !== 'training' && (
-        <p
-          data-testid="may-be-ready"
-          className="m-0 flex items-start gap-2 rounded-10 bg-good-bg px-3 py-2 text-13 leading-[1.5] text-good-ink"
-        >
-          <Icon name="award" className="mt-0.5 flex-none" />
-          {en.explore.tspProfile.mayBeReady(evidence.join(', '))}
-        </p>
-      )}
       {shown.map((kind, index) => (
         <Group
           key={kind}
@@ -688,6 +705,7 @@ export function ResultsPanel({
           cards={kind === 'assessment' ? assess : train}
           hasReference={reference !== null}
           focus={focus}
+          readiness={kind === 'assessment' ? readiness : undefined}
           onSelect={onSelect}
         />
       ))}
@@ -822,6 +840,7 @@ export function CenterCard({
         </div>
 
         <div className="flex flex-col gap-3 p-4">
+          <DataProvenance value={center.provenance} />
           <CenterSuggestionFeedback
             center={center}
             qualificationCode={code ?? undefined}

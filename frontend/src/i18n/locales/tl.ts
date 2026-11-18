@@ -1602,8 +1602,9 @@ export const tl: Record<string, string> = {
   'Loading your TSP profile…': 'Kinukuha ang iyong TSP profile…',
   'We couldn’t load your TSP profile. Type a city or province below to continue.':
     'Hindi namin makuha ang iyong TSP profile. Mag-type ng lungsod o probinsya sa ibaba para magpatuloy.',
-  'You may be ready for assessment: your TSP profile lists {0}. The assessment center confirms what you need to bring.':
-    'Maaaring handa ka na para sa assessment: nakalista sa iyong TSP profile ang {0}. Ang assessment center ang magsasabi kung ano ang kailangan mong dalhin.',
+  'You may be ready for assessment': 'Maaaring handa ka na para sa assessment',
+  'For {0}, your TSP profile lists {1}. The assessment center confirms what you need to bring.':
+    'Para sa {0}, nakalista sa iyong TSP profile ang {1}. Ang assessment center ang magsasabi kung ano ang kailangan mong dalhin.',
   'Near {0}, your home area in your TSP profile':
     'Malapit sa {0}, ang tinitirhan mo ayon sa iyong TSP profile',
   'Typing a place changes it for this visit only. Your TSP profile is not changed.':

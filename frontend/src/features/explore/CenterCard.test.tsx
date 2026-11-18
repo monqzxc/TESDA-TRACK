@@ -118,6 +118,7 @@ beforeEach(() => {
 
 describe('Explore center details', () => {
   it('lists only verified-or-unreviewed current offerings, and the card agrees with the results', async () => {
+    localStorage.setItem('track.explore.locationAsked', 'no')
     renderWithQuery(
       <MemoryRouter initialEntries={['/explore']}>
         <ExplorePage />

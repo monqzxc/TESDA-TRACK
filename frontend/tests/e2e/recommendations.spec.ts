@@ -434,6 +434,56 @@ for (const engine of ['leaflet', 'maplibre'] as const) {
   })
 }
 
+test('BUG-18: Career Map center details show the recorded source and source date', async ({
+  page,
+}) => {
+  await serveRecommendations(page, 'leaflet')
+  const source = 'https://example.invalid/tesda-assessment-registry'
+  await page.route('**/api/v1/assessment-centers*', (route) =>
+    route.fulfill({
+      json: [
+        {
+          ...ASSESSMENT_SITE,
+          provenance: {
+            status: 'example',
+            source_name: 'Sample TESDA assessment registry',
+            source_reference: 'DEMO-ASSESS-31',
+            source_url: source,
+            source_updated_on: '2026-10-21',
+            reviewed_at: '2026-11-17T02:00:00Z',
+            record_updated_at: '2026-11-18T02:00:00Z',
+          },
+        },
+      ],
+    }),
+  )
+  await page.goto('/explore')
+  await page.getByRole('searchbox', { name: 'What can you do?' }).fill(GOAL)
+  await page.getByRole('textbox', { name: 'Or type a city or province' }).fill('Manila')
+  await page.getByRole('button', { name: 'Search', exact: true }).click()
+  await page
+    .getByRole('button', { name: /Example Computer Assessment Center Assessment for/ })
+    .click()
+  const details = page.getByRole('article').filter({
+    has: page.getByRole('heading', { name: ASSESSMENT_SITE.name, exact: true }),
+  })
+  await expect(
+    details.getByRole('link', { name: 'Sample TESDA assessment registry' }),
+  ).toHaveAttribute('href', source)
+  await expect(details.getByText('Reference: DEMO-ASSESS-31')).toBeVisible()
+  await expect(details.getByText(/^Source updated:/)).toHaveText('Source updated: 2026-10-21')
+  await expect(details.getByText(/^Record updated:/)).toHaveText('Record updated: 2026-11-18')
+  await expect(details.getByText('Example data', { exact: true })).toBeVisible()
+  await page.getByRole('button', { name: 'Back to results' }).click()
+
+  await page.getByRole('button', { name: /Example Computer Training Center Training for/ }).click()
+  const training = page.getByRole('article').filter({
+    has: page.getByRole('heading', { name: COMPUTER_SITE.name, exact: true }),
+  })
+  await expect(training.getByText(/^Source:/)).toContainText('Not recorded')
+  await expect(training.getByText(/^Source updated:/)).toHaveText('Source updated: Not recorded')
+})
+
 test.describe('the mobile Career Map sheet', () => {
   test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true })
 
@@ -661,7 +711,7 @@ const DRIVING = {
   competencies: [],
 }
 
-test('US-0004: Kuya Manuel sees his TSP profile, his home area and a hint to go straight to assessment', async ({
+test('BUG-15: Kuya Manuel sees matching profile evidence in the assessment group', async ({
   page,
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
@@ -674,6 +724,31 @@ test('US-0004: Kuya Manuel sees his TSP profile, his home area and a hint to go 
   await page.route('**/api/v1/auth/tsp/profile', (route) =>
     route.fulfill({ json: MANUEL_PASSPORT }),
   )
+  const drivingProvider = { ...COMPUTER_SITE, name: 'Example Driving Training Center' }
+  const drivingCenter = { ...ASSESSMENT_SITE, name: 'Example Driving Assessment Center' }
+  await page.route('**/api/v1/qualifications', (route) =>
+    route.fulfill({ json: [CSS, DRIVING, WELDING] }),
+  )
+  await page.route('**/api/v1/training-providers*', (route) =>
+    route.fulfill({ json: [drivingProvider, CEBU_SITE, WELDING_SITE] }),
+  )
+  await page.route('**/api/v1/assessment-centers*', (route) =>
+    route.fulfill({ json: [drivingCenter] }),
+  )
+  await page.route('**/api/v1/training-programs*', (route) => {
+    const code = new URL(route.request().url()).searchParams.get('qualification_code')
+    const programs = [program(101, drivingProvider, DRIVING), PROGRAMS[2]]
+    return route.fulfill({ json: programs.filter((p) => !code || p.qualification.code === code) })
+  })
+  await page.route('**/api/v1/assessment-schedules*', (route) => {
+    const code = new URL(route.request().url()).searchParams.get('qualification_code')
+    return route.fulfill({
+      json:
+        !code || code === DRIVING.code
+          ? [{ ...SCHEDULE, qualification: DRIVING, center: drivingCenter }]
+          : [],
+    })
+  })
   // The fixture answers unknown reads with 401, which would end the session: the outlook isn't under test here.
   await page.route('**/api/v1/labor-market/outlook?*', (route) =>
     route.fulfill({ status: 503, json: { detail: 'Not part of this test' } }),
@@ -682,7 +757,12 @@ test('US-0004: Kuya Manuel sees his TSP profile, his home area and a hint to go 
     route.fulfill({
       json: {
         profile: { ...PROFILE, career_goal: 'Professional driver', existing_skills: ['driving'] },
-        matches: [{ qualification: DRIVING, score: 88, reason: 'Matched your words: driver' }],
+        matches: route.request().postDataJSON().query.includes('weld')
+          ? [{ qualification: WELDING, score: 90, reason: 'Matched your words: weld' }]
+          : [
+              { qualification: CSS, score: 89, reason: 'First fixture match' },
+              { qualification: DRIVING, score: 88, reason: 'Matched your words: driving' },
+            ],
       },
     }),
   )
@@ -714,13 +794,25 @@ test('US-0004: Kuya Manuel sees his TSP profile, his home area and a hint to go 
     'Near National Capital Region, your home area in your TSP profile',
   )
 
-  await page.getByRole('searchbox', { name: 'What can you do?' }).fill('professional driver')
+  await place.fill('Manila')
+  await page.getByRole('searchbox', { name: 'What can you do?' }).fill('I can drive a car')
   await page.getByRole('button', { name: 'Search', exact: true }).click()
-  await expect(page.getByTestId('may-be-ready')).toContainText(
-    "You may be ready for assessment: your TSP profile lists Driving, LTO Professional Driver's License.",
+  const guidance = page
+    .getByRole('region', { name: 'Get certified', exact: true })
+    .getByTestId('may-be-ready')
+  await expect(guidance.getByText('You may be ready for assessment', { exact: true })).toBeVisible()
+  await expect(guidance).toContainText(
+    "Driving NC II, your TSP profile lists Driving, LTO Professional Driver's License.",
+  )
+  await expect(page.getByRole('region', { name: 'Or train first', exact: true })).toContainText(
+    drivingProvider.name,
   )
   await expect(page.getByRole('heading', { level: 3 }).first()).toHaveText('Get certified')
   expect((await new AxeBuilder({ page }).include('section').analyze()).violations).toEqual([])
+  await page.getByRole('searchbox', { name: 'What can you do?' }).fill('I can weld')
+  await page.getByRole('button', { name: 'Search', exact: true }).click()
+  await expect(page.getByText(WELDING_SITE.name, { exact: true }).first()).toBeVisible()
+  await expect(page.getByTestId('may-be-ready')).toHaveCount(0)
 })
 
 test('US-0025: when the center list fails, the map does not say no centers match', async ({
