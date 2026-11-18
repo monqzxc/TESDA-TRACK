@@ -27,7 +27,7 @@ import { button } from '../../styles/buttons.ts'
 import { matchPathway } from '../training/recommendationApi.ts'
 import { useTrainingStore } from '../training/state.ts'
 import type { DemandMapArea } from '../training/CenterMapTypes.ts'
-import { nearestRegion } from './explore.ts'
+import { nearestRegion, offers } from './explore.ts'
 import { LocationPrompt } from './LocationPrompt.tsx'
 import { OutlookBrief } from './OutlookBrief.tsx'
 import { CenterCard, LocationRow, NearbyPanel, ResultsPanel } from './Panels.tsx'
@@ -223,13 +223,11 @@ export default function ExplorePage() {
   const { centers, search, matches, reference, location, config } = explore
   const focusCode = explore.demandCode
   const codes = new Set(matches.map((match) => match.qualification.code))
-  // With a search, the pins are the centers listing a matched qualification; without one, every center.
+  // With a search, the pins are the centers listing a matched qualification; without one, every center. "Listing"
+  // is the results panel's own test (offers), so a center accredited to assess a qualification without a dated
+  // schedule is pinned as well as listed.
   const listed = search
-    ? centers.filter((center) =>
-        [...center.programs, ...center.schedules].some((listing) =>
-          codes.has(listing.qualification.code),
-        ),
-      )
+    ? centers.filter((center) => [...codes].some((code) => offers(center, code)))
     : centers
   // The demand view pins where the qualification in focus is offered, over the regions where it is in demand;
   // without one it shades all recorded jobs, and has no centers to show.
