@@ -257,6 +257,9 @@ describe('the supply and demand brief', () => {
     )
     expect(await card.findByText('Saturated')).toBeVisible()
     expect(card.getByText('Rough signal')).toBeVisible()
+    // The analysis in words sits folded under Why: the headline and counts carry it.
+    expect(card.getByText(/prefer not to relocate/)).not.toBeVisible()
+    fireEvent.click(card.getByText('Why'))
     expect(card.getByText(/prefer not to relocate/)).toBeVisible()
     // Only codes and the relocation choice are sent: the region nearest the learner, never their coordinates.
     const url = asked.at(-1) as URL
@@ -283,8 +286,10 @@ describe('the supply and demand brief', () => {
   it('looks further for a learner open to relocating', async () => {
     open()
     const card = within(await brief())
-    fireEvent.click(await card.findByRole('switch', { name: 'Open to relocating' }))
-    expect(await card.findByText(/look first at Central Visayas/)).toBeVisible()
+    fireEvent.click(await card.findByRole('switch', { name: 'Relocate' }))
+    await card.findByText(/look first at Central Visayas/)
+    fireEvent.click(card.getByText('Why'))
+    expect(card.getByText(/look first at Central Visayas/)).toBeVisible()
     expect(asked.at(-1)?.searchParams.get('relocate')).toBe('true')
     expect(await card.findByRole('button', { name: /Cebu Hotel School/ })).toHaveTextContent(
       'If you relocate: Central Visayas',
@@ -300,26 +305,55 @@ describe('the supply and demand brief', () => {
   it('shows the demand view as the qualification’s regions with its centers pinned over them', async () => {
     open()
     const card = within(await brief())
-    fireEvent.click(await card.findByRole('button', { name: 'Show demand on the map' }))
+    fireEvent.click(await card.findByRole('button', { name: 'Demand map' }))
     const map = screen.getByTestId('map')
     expect(await within(map).findByText('NCR:2:2:more_supply')).toBeInTheDocument()
     expect(within(map).getByText('VII:8:1:more_demand')).toBeInTheDocument()
     expect(map).toHaveAttribute('data-pins', 'training-1 assessment-7 training-2')
     expect(map).toHaveAttribute('data-overview', 'false')
-    fireEvent.click(card.getByRole('switch', { name: 'Open to relocating' }))
+    fireEvent.click(card.getByRole('switch', { name: 'Relocate' }))
     await waitFor(() => expect(map).toHaveAttribute('data-overview', 'true'))
-    expect(card.getByRole('button', { name: 'Back to all results' })).toBeVisible()
+    expect(card.getByRole('button', { name: 'All results' })).toBeVisible()
   })
 
   it('shows the AI-written summary where the deployment has it, with the numbers behind it', async () => {
     aiSummary = true
     open()
     const card = within(await brief())
-    expect(await card.findByText('An AI-written note about Metro Manila.')).toBeVisible()
+    await card.findByText('An AI-written note about Metro Manila.')
+    fireEvent.click(card.getByText('Why'))
+    expect(card.getByText('An AI-written note about Metro Manila.')).toBeVisible()
     expect(card.getByText('AI summary')).toBeVisible()
     expect(
       card.getByText('2 posting records in Metro Manila are linked to it.'),
     ).toBeInTheDocument()
+  })
+
+  it('resizes from the bar along its top, and folds when dragged all the way down', async () => {
+    open()
+    const card = within(await brief())
+    await card.findByText('Saturated')
+    const sash = card.getByRole('separator', { name: 'Resize the analysis' })
+    const body = document.getElementById(sash.getAttribute('aria-controls') ?? '') as HTMLElement
+    expect(body).toBeVisible()
+    fireEvent.keyDown(sash, { key: 'Home' })
+    expect(body).not.toBeVisible()
+    expect(sash).toHaveAttribute('aria-valuenow', '0')
+    fireEvent.keyDown(sash, { key: 'ArrowUp' })
+    expect(body).toBeVisible()
+    expect(body.style.maxHeight).toBe('96px')
+    fireEvent.keyDown(sash, { key: 'ArrowUp' })
+    expect(body.style.maxHeight).toBe('144px')
+    expect(window.localStorage.getItem('tesda-track.brief-height')).toBe('144')
+    window.localStorage.removeItem('tesda-track.brief-height')
+  })
+
+  it('shows the area’s counts with an icon each', async () => {
+    open()
+    const card = within(await brief())
+    await card.findByText('Saturated')
+    expect(card.getByText('training').closest('li')).toHaveTextContent(/^\d+training$/)
+    expect(card.getByText('assessment').closest('li')).toHaveTextContent(/^\d+assessment$/)
   })
 
   it('folds to its headline, and is absent without a qualification in focus', async () => {
@@ -346,19 +380,17 @@ describe('Demand where you are (Card 3)', () => {
       </MemoryRouter>,
     )
     await screen.findByText(settled)
-    return screen.getByRole('group', { name: 'Demand where you are' })
+    return screen.getByRole('group', { name: 'Demand here' })
   }
 
   it('gives the level where the learner is and where the qualification is needed more', async () => {
     const local = await brief('Low demand')
-    expect(within(local).getByText(/From your location/)).toBeInTheDocument()
-    expect(
-      within(local).getByText(/2 posting records in Metro Manila\. Number 2 of 2 regions/),
-    ).toBeInTheDocument()
+    expect(within(local).getByText(/Your location/)).toBeInTheDocument()
+    expect(local).toHaveTextContent(/2 records in Metro Manila · #2 of 2 regions/)
     expect(within(local).getByText('Elsewhere')).toBeInTheDocument()
     const cebu = within(local).getByRole('button', { name: 'Show Central Visayas on the map' })
     expect(cebu).toHaveTextContent('8 records')
-    expect(cebu).toHaveTextContent('about 571 km away')
+    expect(cebu).toHaveTextContent('571 km')
     expect(asked.at(-1)?.searchParams.get('home_region_code')).toBe('NCR')
 
     // Chosen, the area is analysed and shaded on the demand map; the learner's own area stays theirs.
@@ -371,8 +403,8 @@ describe('Demand where you are (Card 3)', () => {
   it('says the learner is already where it is needed most', async () => {
     useTrainingStore.setState({ location: { latitude: 10.3, longitude: 123.9 } })
     const local = await brief('High demand')
-    expect(within(local).getByText(/The most of 2 regions/)).toBeInTheDocument()
-    expect(within(local).getByText(/No region has more recorded demand/)).toBeInTheDocument()
+    expect(within(local).getByText(/Top of 2 regions/)).toBeInTheDocument()
+    expect(within(local).getByText(/Your region leads/)).toBeInTheDocument()
   })
 
   it('takes the area from the Skill Passport when no location is shared', async () => {
@@ -397,21 +429,21 @@ describe('Demand where you are (Card 3)', () => {
       </AuthContext.Provider>,
     )
     await screen.findByText('High demand')
-    const local = screen.getByRole('group', { name: 'Demand where you are' })
-    expect(within(local).getByText(/From your Skill Passport/)).toBeInTheDocument()
+    const local = screen.getByRole('group', { name: 'Demand here' })
+    expect(within(local).getByText(/Skill Passport/)).toBeInTheDocument()
     expect(asked.at(-1)?.searchParams.get('home_region_code')).toBe('VII')
   })
 
   it('asks for an area when it has none', async () => {
     useTrainingStore.setState({ useLocation: false, location: null })
-    const local = await brief(/type a city to see demand where you are/)
-    expect(within(local).getByRole('status')).toHaveTextContent(/to see demand where you are/)
+    const local = await brief(/type a city to see local demand/)
+    expect(within(local).getByRole('status')).toHaveTextContent(/to see local demand/)
   })
 
   it('says plainly when there is no demand data for the qualification', async () => {
     demandAvailable = false
-    const local = await brief(/No posting records link to this qualification yet/)
-    expect(within(local).getByRole('status')).toHaveTextContent(/not proof of low demand/)
+    const local = await brief(/No posting records yet/)
+    expect(within(local).getByRole('status')).toHaveTextContent(/not low demand/)
     expect(within(local).queryByText(/ demand$/)).not.toBeInTheDocument()
   })
 })
@@ -500,11 +532,9 @@ describe('Other qualifications in demand near you (Card 4)', () => {
     serve([])
     open()
     const group = await screen.findByRole('group', {
-      name: 'Other qualifications in demand near you',
+      name: 'Also in demand here',
     })
-    expect(
-      await within(group).findByText(/No other qualification shows enough recorded demand/),
-    ).toBeInTheDocument()
+    expect(await within(group).findByText(/Nothing else stands out/)).toBeInTheDocument()
   })
 })
 
@@ -557,7 +587,7 @@ describe('Find Jobs on TSP (Card 5)', () => {
     open()
     const button = await screen.findByRole('button', { name: /Find Jobs on TSP/ })
     expect(button).toBeDisabled()
-    expect(screen.getByText('The TSP Find Jobs link isn’t set up yet.')).toBeInTheDocument()
+    expect(screen.getByText('Link not set up yet')).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /Find Jobs on TSP/ })).not.toBeInTheDocument()
   })
 })

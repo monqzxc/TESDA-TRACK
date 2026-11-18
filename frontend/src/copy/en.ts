@@ -2372,7 +2372,15 @@ export const en = {
       loading: 'Reading the records for this qualification…',
       failed: 'The supply and demand analysis could not be loaded.',
       retry: 'Try again',
-      relocate: 'Open to relocating',
+      relocate: 'Relocate',
+      // The bar along the top edge: drag it up or down, like an editor's panel.
+      resize: 'Resize the analysis',
+      // The counts for the area, one icon each.
+      stats: {
+        postings: (n: number) => `posting${n === 1 ? '' : 's'}`,
+        training: 'training',
+        assessment: 'assessment',
+      },
       balance: {
         more_demand: 'Demand ahead of supply',
         balanced: 'Balanced',
@@ -2392,8 +2400,8 @@ export const en = {
       },
       // Card 3: how much the qualification is needed where the learner is, and where it's needed more.
       local: {
-        heading: 'Demand where you are',
-        from: { location: 'From your location', profile: 'From your Skill Passport' },
+        heading: 'Demand here',
+        from: { location: 'Your location', profile: 'Skill Passport' },
         levels: {
           high: 'High demand',
           moderate: 'Moderate demand',
@@ -2401,20 +2409,19 @@ export const en = {
           none: 'No recorded demand',
         },
         here: (region: string, postings: number) =>
-          `${postings.toLocaleString()} posting record${postings === 1 ? '' : 's'} in ${region}.`,
+          `${postings.toLocaleString()} record${postings === 1 ? '' : 's'} in ${region}`,
         rank: (rank: number, of: number) =>
-          `${rank === 1 ? 'The most' : `Number ${rank}`} of ${of} region${of === 1 ? '' : 's'} with records.`,
-        higher: 'Where it’s needed more',
+          rank === 1 ? `Top of ${of} region${of === 1 ? '' : 's'}` : `#${rank} of ${of} regions`,
+        higher: 'Needed more in',
         nearby: 'Nearby',
         elsewhere: 'Elsewhere',
         records: (postings: number) =>
           `${postings.toLocaleString()} record${postings === 1 ? '' : 's'}`,
-        away: (km: number) => `about ${Math.round(km).toLocaleString()} km away`,
+        away: (km: number) => `${Math.round(km).toLocaleString()} km`,
         show: (region: string) => `Show ${region} on the map`,
-        top: 'No region has more recorded demand for it than yours.',
-        noData:
-          'No posting records link to this qualification yet, so we can’t say where it’s needed. That’s missing evidence, not proof of low demand.',
-        noArea: 'Share your location or type a city to see demand where you are.',
+        top: 'Your region leads for this one.',
+        noData: 'No posting records yet: missing data, not low demand.',
+        noArea: 'Share your location or type a city to see local demand.',
       },
       // Card 5: the way out to TSP's job search, for the skill and area on screen.
       findJobs: {
@@ -2422,21 +2429,20 @@ export const en = {
         // Read by screen readers: what it searches for, and that it opens TSP in a new tab.
         for: (skill: string | null, area: string | null) =>
           `Find Jobs on TSP${skill ? ` for ${skill}` : ''}${area ? ` in ${area}` : ''} (opens TESDA Skill Passport in a new tab)`,
-        notReady: 'The TSP Find Jobs link isn’t set up yet.',
+        notReady: 'Link not set up yet',
       },
       // Card 4: other qualifications in demand where the learner is.
       nearby: {
-        heading: 'Other qualifications in demand near you',
+        heading: 'Also in demand here',
         loading: 'Looking for other qualifications in demand here…',
         failed: 'Other qualifications in demand could not be loaded.',
-        none: (region: string) =>
-          `No other qualification shows enough recorded demand in ${region} to suggest right now.`,
+        none: (region: string) => `Nothing else stands out in ${region} yet.`,
         focus: (name: string) => `Look at ${name}`,
       },
       ai: 'AI summary',
       aiNote: 'Written by AI from the counts on this map.',
-      numbers: 'See the numbers behind it',
-      recommended: 'Recommended for you',
+      numbers: 'Why',
+      recommended: 'Recommended',
       tag: 'Recommended',
       none: 'No center lists this qualification yet.',
       needPlace: 'Share your location or type a city to get a recommended center.',
@@ -2447,10 +2453,10 @@ export const en = {
         elsewhere: (region: string) => `Nearest, in ${region}`,
         relocation: (region: string) => `If you relocate: ${region}`,
       },
-      showDemand: 'Show demand on the map',
-      showCenters: 'Back to all results',
+      showDemand: 'Demand map',
+      showCenters: 'All results',
       footnote:
-        'From dated posting records and recorded centers: a rough signal, not a forecast. Confirm with the center or your TESDA office.',
+        'A rough signal from dated records, not a forecast. Confirm with the center or TESDA.',
       // On the map.
       pin: (label: string) => `Recommended: ${label}`,
       mapLabel: 'Supply and demand map',

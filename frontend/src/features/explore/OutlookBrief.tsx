@@ -1,8 +1,17 @@
-import { useId, useState, type Ref } from 'react'
+import {
+  useId,
+  useRef,
+  useState,
+  type KeyboardEvent,
+  type PointerEvent,
+  type ReactNode,
+  type Ref,
+} from 'react'
 import { Button, Switch } from 'react-aria-components'
 import { useQualifications } from '../../api/queries.ts'
-import { Icon } from '../../components/Icon.tsx'
+import { Icon, type IconName } from '../../components/Icon.tsx'
 import { useCopy } from '../../i18n/copy.ts'
+import { readItem, writeItem } from '../../lib/storage.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
 import type { View } from './ExplorePage.tsx'
@@ -13,6 +22,12 @@ import type { Recommendation } from './recommend.ts'
 import { useDemandStore, useExploreStore, type Explore } from './useExplore.ts'
 
 const note = 'm-0 text-13 leading-[1.5] text-muted'
+const heading =
+  'm-0 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-12 font-bold tracking-[0.04em] text-muted uppercase'
+// The brief's body height as the learner dragged it, the smallest it opens at, and a keyboard step.
+const SIZE_KEY = 'tesda-track.brief-height'
+const MIN_BODY = 96
+const STEP = 48
 const tag =
   'inline-flex flex-none items-center gap-1 rounded-full px-2.5 py-0.5 text-12 font-bold whitespace-nowrap'
 // Demand ahead reads as good news, a saturated area as a caution; a side with no records is the paler of each.
@@ -58,6 +73,12 @@ export function OutlookBrief({
     () =>
       typeof window.matchMedia !== 'function' || window.matchMedia('(min-width: 768px)').matches,
   )
+  // The body's height as the learner last dragged it, kept between visits; null leaves it to the default.
+  const [size, setSize] = useState<number | null>(() => {
+    const saved = Number(readItem(SIZE_KEY))
+    return saved >= MIN_BODY ? saved : null
+  })
+  const bodyRef = useRef<HTMLDivElement>(null)
   const bodyId = useId()
   const catalog = useQualifications()
   const { outlook, summary, demandCode: code, matches, recommendations, relocate } = explore
@@ -81,6 +102,71 @@ export function OutlookBrief({
     ...recommendations.relocation.map((item) => ({ key: item.center.id, item })),
   ]
 
+  // The tallest the body may grow: the brief keeps to the lower three quarters of the window, below the map's top bar.
+  const limit = () => Math.max(MIN_BODY * 2, Math.round(window.innerHeight * 0.75) - 140)
+  // Content shorter than the drag stops the body there, so the bar never runs ahead of the pointer.
+  const fit = (height: number) => {
+    const body = bodyRef.current
+    const content = body && !body.hidden ? body.scrollHeight : 0
+    return Math.round(Math.min(Math.max(height, MIN_BODY), limit(), content || Infinity))
+  }
+  // Below the smallest height the body folds away, as an editor's panel does; dragged back up, it opens again.
+  const resize = (height: number) => {
+    if (height < MIN_BODY / 2) {
+      setOpen(false)
+      return
+    }
+    setOpen(true)
+    setSize(fit(height))
+  }
+  const remember = (height: number | null) => {
+    if (height) writeItem(SIZE_KEY, String(height))
+  }
+  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    if (event.button !== 0 || !data) return
+    event.preventDefault()
+    const handle = event.currentTarget
+    handle.setPointerCapture(event.pointerId)
+    const startY = event.clientY
+    const startHeight = open ? (bodyRef.current?.clientHeight ?? 0) : 0
+    let last = size
+    const move = (next: globalThis.PointerEvent) => {
+      const height = startHeight + (startY - next.clientY)
+      resize(height)
+      last = height >= MIN_BODY / 2 ? fit(height) : last
+    }
+    const up = () => {
+      handle.removeEventListener('pointermove', move)
+      handle.removeEventListener('pointerup', up)
+      handle.removeEventListener('pointercancel', up)
+      remember(last)
+    }
+    handle.addEventListener('pointermove', move)
+    handle.addEventListener('pointerup', up)
+    handle.addEventListener('pointercancel', up)
+  }
+  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    const current = open ? (size ?? bodyRef.current?.clientHeight ?? 0) : 0
+    const step = event.shiftKey ? STEP * 3 : STEP
+    const next =
+      event.key === 'ArrowUp'
+        ? Math.max(current, MIN_BODY - step) + step
+        : event.key === 'ArrowDown'
+          ? current - step
+          : event.key === 'End'
+            ? limit()
+            : event.key === 'Home'
+              ? 0
+              : null
+    if (next === null) {
+      if (event.key === 'Enter') setOpen(!open)
+      return
+    }
+    event.preventDefault()
+    resize(next)
+    if (next >= MIN_BODY / 2) remember(fit(next))
+  }
+
   const points = data && (
     <ul className="m-0 grid list-none gap-1 p-0">
       {data.insight.points.map((point) => (
@@ -101,12 +187,48 @@ export function OutlookBrief({
         className,
       )}
     >
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 px-3 pt-2">
-        <p className="m-0 flex flex-none items-center gap-1.5 text-12 font-bold tracking-[0.06em] text-eyebrow uppercase">
+      {/* The sash along the top edge: drag it up to grow the brief, down to shrink or fold it, as in an editor. */}
+      {data && (
+        // A focusable separator is a widget in WAI-ARIA (the window splitter pattern); the lint rules predate it.
+        // eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions
+        <div
+          role="separator"
+          aria-orientation="horizontal"
+          aria-controls={bodyId}
+          aria-label={copy.resize}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-valuenow={
+            open
+              ? Math.min(
+                  100,
+                  Math.round(((size ?? Math.max(window.innerHeight * 0.3, 176)) / limit()) * 100),
+                )
+              : 0
+          }
+          // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+          tabIndex={0}
+          onPointerDown={onPointerDown}
+          onKeyDown={onKeyDown}
+          onDoubleClick={() => setOpen(!open)}
+          className="group/sash relative -mb-1 flex h-4 flex-none cursor-row-resize touch-none items-start justify-center rounded-t-14 outline-none select-none focus-visible:outline-3 focus-visible:outline-focus"
+        >
+          <span
+            aria-hidden="true"
+            className="mt-1.5 h-1 w-10 rounded-full bg-dash transition-[width,background-color] duration-150 group-hover/sash:w-14 group-hover/sash:bg-blue group-focus-visible/sash:w-14 group-focus-visible/sash:bg-blue group-active/sash:w-16 group-active/sash:bg-blue"
+          />
+        </div>
+      )}
+
+      <div className={cx('flex flex-wrap items-center gap-x-3 gap-y-1.5 px-3', !data && 'pt-2')}>
+        <p
+          className="m-0 flex flex-none items-center gap-1.5 text-12 font-bold tracking-[0.06em] text-eyebrow uppercase"
+          title={copy.eyebrow}
+        >
           <span className="grid size-7 place-items-center rounded-full bg-tint text-blue">
             <Icon name="growth" size="1rem" />
           </span>
-          {copy.eyebrow}
+          <span className="max-lg:sr-only">{copy.eyebrow}</span>
         </p>
         {choices.length > 1 ? (
           <label className="min-w-0 flex-1 basis-40">
@@ -127,13 +249,14 @@ export function OutlookBrief({
           <p className="m-0 min-w-0 flex-1 basis-40 truncate text-14 font-bold text-navy">{name}</p>
         )}
         <Switch
-          className="group flex flex-none cursor-pointer items-center gap-2 text-13 font-semibold text-navy data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus"
+          className="group flex flex-none cursor-pointer items-center gap-1.5 rounded-8 px-1 text-13 font-semibold text-navy data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus"
           isSelected={relocate}
           onChange={(on) => useExploreStore.getState().setRelocate(on)}
         >
+          <Icon name="plane" className="text-muted group-data-selected:text-blue" />
           {copy.relocate}
           <span
-            className="relative h-5 w-9 flex-none rounded-full bg-dash transition-[background] duration-200 group-data-selected:bg-fill"
+            className="relative ml-0.5 h-5 w-9 flex-none rounded-full bg-dash transition-[background] duration-200 group-data-selected:bg-fill"
             aria-hidden="true"
           >
             <span className="absolute top-[3px] left-[3px] size-3.5 rounded-full bg-white shadow-[0_1px_3px_rgb(0_0_0/0.25)] transition-transform duration-200 group-data-selected:translate-x-4" />
@@ -150,29 +273,46 @@ export function OutlookBrief({
         </Button>
       </div>
 
-      {/* The verdict in one line, on show whether the brief is open or folded. */}
+      {/* The verdict in one line and the area's counts, on show whether the brief is open or folded. */}
       <div
         aria-live="polite"
         aria-busy={outlook.isPlaceholderData || undefined}
         className={cx(
-          'flex flex-wrap items-start gap-x-2 gap-y-1 px-3 pt-1.5 pb-2.5 transition-opacity duration-200',
+          'flex flex-col gap-1.5 px-3 pt-1.5 pb-2.5 transition-opacity duration-200',
           outlook.isPlaceholderData && 'opacity-60',
         )}
       >
         {data ? (
           <>
-            <h2 className="m-0 min-w-0 flex-1 basis-56 text-15 leading-[1.35] font-bold wrap-anywhere text-navy">
-              {data.insight.headline}
-            </h2>
+            <div className="flex flex-wrap items-start gap-x-2 gap-y-1">
+              <h2 className="m-0 min-w-0 flex-1 basis-56 text-15 leading-[1.35] font-bold wrap-anywhere text-navy">
+                {data.insight.headline}
+              </h2>
+              {area && (
+                <span className={cx(tag, balanceTone[area.balance])}>
+                  {copy.balance[area.balance]}
+                </span>
+              )}
+              {area?.limited && (
+                <span className={cx(tag, 'bg-chip text-muted')}>{copy.limited}</span>
+              )}
+            </div>
             {area && (
-              <span className={cx(tag, balanceTone[area.balance])}>
-                {copy.balance[area.balance]}
-              </span>
+              <ul className="m-0 flex list-none flex-wrap gap-1.5 p-0">
+                <Stat icon="briefcase" tone="text-navy" value={area.posting_count}>
+                  {copy.stats.postings(area.posting_count)}
+                </Stat>
+                <Stat icon="learn" tone="text-blue" value={area.training_sites}>
+                  {copy.stats.training}
+                </Stat>
+                <Stat icon="award" tone="text-teal" value={area.assessment_sites}>
+                  {copy.stats.assessment}
+                </Stat>
+              </ul>
             )}
-            {area?.limited && <span className={cx(tag, 'bg-chip text-muted')}>{copy.limited}</span>}
           </>
         ) : outlook.isError ? (
-          <>
+          <div className="flex flex-wrap items-center gap-2">
             <p role="alert" className={note}>
               {copy.failed}
             </p>
@@ -182,7 +322,7 @@ export function OutlookBrief({
             >
               {copy.retry}
             </Button>
-          </>
+          </div>
         ) : (
           <p role="status" className={note}>
             {copy.loading}
@@ -190,47 +330,30 @@ export function OutlookBrief({
         )}
       </div>
 
-      {/* The open brief stops well short of the window's height, and scrolls: the map keeps most of it. */}
+      {/* The open brief stops well short of the window's height, and scrolls: the map keeps most of it. Dragged, it
+          takes the height the learner gave it. */}
       <div
+        ref={bodyRef}
         id={bodyId}
         hidden={!open || !data}
-        className="max-h-[max(30dvh,11rem)] overflow-y-auto border-t border-rule px-3 pt-2.5 pb-2.5"
+        style={size ? { maxHeight: size } : undefined}
+        className={cx(
+          'overflow-y-auto overscroll-contain border-t border-rule px-3 pt-2.5 pb-2.5',
+          !size && 'max-h-[max(30dvh,11rem)]',
+        )}
       >
         {data && (
           <div
             className={cx(
-              'flex flex-col gap-2.5 transition-opacity duration-200',
+              'flex flex-col gap-3 transition-opacity duration-200',
               outlook.isPlaceholderData && 'opacity-60',
             )}
           >
-            <LocalDemand explore={explore} onView={onView} />
-            <FindJobsButton explore={explore} skill={name} />
+            <LocalDemand explore={explore} onView={onView} skill={name} />
             <NearbyQualifications explore={explore} />
 
-            {/* The analysis in a few sentences: AI-written where the deployment has it, else the rules' own. */}
-            <div className="flex min-w-0 flex-col gap-1" aria-live="polite">
-              <p className="m-0 max-w-[110ch] text-13 leading-[1.55] text-ink">
-                {written ? written.text : data.insight.summary}
-              </p>
-              {written && (
-                <p className="m-0 flex flex-wrap items-center gap-1.5 text-12 text-muted">
-                  <span className={cx(tag, 'bg-tint px-2 text-blue')}>
-                    <Icon name="sparkle" />
-                    {copy.ai}
-                  </span>
-                  {copy.aiNote}
-                </p>
-              )}
-              <details className="text-13 text-navy">
-                <summary className="w-fit cursor-pointer rounded-8 py-0.5 font-semibold text-blue">
-                  {copy.numbers}
-                </summary>
-                <div className="pt-1">{points}</div>
-              </details>
-            </div>
-
             <div className="flex min-w-0 flex-col gap-1.5">
-              <h3 className="m-0 flex items-center gap-1.5 text-12 font-bold tracking-[0.04em] text-muted uppercase">
+              <h3 className={heading}>
                 <Icon name="star" />
                 {copy.recommended}
               </h3>
@@ -248,8 +371,36 @@ export function OutlookBrief({
               )}
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
-              <p className="m-0 min-w-0 flex-1 basis-64 text-12 leading-[1.45] text-muted">
+            {/* The analysis in words, folded: the headline and counts above already carry it. */}
+            <details className="group/why text-13 text-navy" aria-live="polite">
+              <summary className="flex w-fit cursor-pointer list-none items-center gap-1.5 rounded-8 py-0.5 font-semibold text-blue [&::-webkit-details-marker]:hidden">
+                <Icon name="info" />
+                {copy.numbers}
+                <Icon
+                  name="chevron"
+                  className="rotate-180 transition-transform group-open/why:rotate-0"
+                />
+              </summary>
+              <div className="flex flex-col gap-1.5 pt-1.5">
+                <p className="m-0 max-w-[110ch] text-13 leading-[1.55] text-ink">
+                  {written ? written.text : data.insight.summary}
+                </p>
+                {written && (
+                  <p className="m-0 flex flex-wrap items-center gap-1.5 text-12 text-muted">
+                    <span className={cx(tag, 'bg-tint px-2 text-blue')}>
+                      <Icon name="sparkle" />
+                      {copy.ai}
+                    </span>
+                    {copy.aiNote}
+                  </p>
+                )}
+                {points}
+              </div>
+            </details>
+
+            <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-t border-rule pt-2">
+              <p className="m-0 flex min-w-0 flex-1 basis-64 items-start gap-1.5 text-12 leading-[1.45] text-muted">
+                <Icon name="info" className="mt-0.5 flex-none" />
                 {copy.footnote}
               </p>
               <Button
@@ -264,6 +415,32 @@ export function OutlookBrief({
         )}
       </div>
     </section>
+  )
+}
+
+/** One of the area's counts: an icon, the number, and a word for what it counts. */
+function Stat({
+  icon,
+  tone,
+  value,
+  children,
+}: {
+  icon: IconName
+  tone: string
+  value: number
+  children: ReactNode
+}) {
+  return (
+    <li
+      className={cx(
+        'inline-flex items-center gap-1.5 rounded-8 bg-soft px-2 py-1 text-12 text-muted',
+        value === 0 && 'opacity-70',
+      )}
+    >
+      <Icon name={icon} size="0.95rem" className={tone} />
+      <strong className="text-13 font-bold text-navy tabular-nums">{value.toLocaleString()}</strong>
+      {children}
+    </li>
   )
 }
 
@@ -317,30 +494,44 @@ const levelTone = {
 
 /**
  * How much the qualification is needed in the learner's area, and the regions where it's needed more, nearby ones
- * first (Card 3). Choosing one shows it on the demand map. Says so plainly when there's no data, or no area.
+ * first (Card 3), with the way out to TSP Find Jobs beside it. Choosing a region shows it on the demand map. Says so
+ * plainly when there's no data, or no area.
  */
-function LocalDemand({ explore, onView }: { explore: Explore; onView: (view: View) => void }) {
+function LocalDemand({
+  explore,
+  onView,
+  skill,
+}: {
+  explore: Explore
+  onView: (view: View) => void
+  skill: string
+}) {
   const copy = useCopy().explore.outlook.local
   const data = explore.outlook.data
   if (!data) return null
   const higher = data.higher_demand ?? []
   const home = data.home_demand
-  const heading = (
-    <h3 className="m-0 flex flex-wrap items-center gap-x-2 gap-y-1 text-12 font-bold tracking-[0.04em] text-muted uppercase">
-      <Icon name="target" />
-      {copy.heading}
-      {home && explore.homeSource && (
-        <span className="font-semibold tracking-normal normal-case">
-          · {copy.from[explore.homeSource]}
-        </span>
-      )}
-    </h3>
+  const header = (
+    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5">
+      <h3 className={heading}>
+        <Icon name="target" />
+        {copy.heading}
+        {home && explore.homeSource && (
+          <span className="inline-flex items-center gap-1 rounded-full bg-soft px-2 py-0.5 text-12 font-semibold tracking-normal normal-case">
+            <Icon name={explore.homeSource === 'location' ? 'locate' : 'document'} />
+            {copy.from[explore.homeSource]}
+          </span>
+        )}
+      </h3>
+      <FindJobsButton explore={explore} skill={skill} />
+    </div>
   )
   if (!data.demand_available || !home) {
     return (
-      <div role="group" aria-label={copy.heading} className="flex min-w-0 flex-col gap-1">
-        {heading}
-        <p className={note} role="status">
+      <div role="group" aria-label={copy.heading} className="flex min-w-0 flex-col gap-1.5">
+        {header}
+        <p className={cx(note, 'flex items-start gap-1.5')} role="status">
+          <Icon name="info" className="mt-[3px] flex-none" />
           {data.demand_available ? copy.noArea : copy.noData}
         </p>
       </div>
@@ -360,17 +551,22 @@ function LocalDemand({ explore, onView }: { explore: Explore; onView: (view: Vie
   ].filter((group) => group.areas.length)
   return (
     <div role="group" aria-label={copy.heading} className="flex min-w-0 flex-col gap-1.5">
-      {heading}
+      {header}
       <p className="m-0 flex flex-wrap items-center gap-x-2 gap-y-1 text-13 leading-[1.5] text-ink">
         <span className={cx(tag, levelTone[home.level])}>{copy.levels[home.level]}</span>
         <span>
           {copy.here(home.name, home.posting_count)}
-          {home.rank ? ` ${copy.rank(home.rank, home.ranked_of)}` : ''}
+          {home.rank ? (
+            <span className="text-muted"> · {copy.rank(home.rank, home.ranked_of)}</span>
+          ) : null}
         </span>
       </p>
       {groups.length ? (
         <div className="flex flex-col gap-1">
-          <p className="m-0 text-13 font-bold text-navy">{copy.higher}</p>
+          <p className="m-0 flex items-center gap-1.5 text-12 font-bold text-navy">
+            <Icon name="arrowRight" className="text-muted" />
+            {copy.higher}
+          </p>
           {groups.map((group) => (
             <div key={group.key} className="flex flex-col gap-1">
               <p className="m-0 text-12 font-semibold text-muted">{group.label}</p>
@@ -380,17 +576,23 @@ function LocalDemand({ explore, onView }: { explore: Explore; onView: (view: Vie
                     <Button
                       aria-label={copy.show(area.name)}
                       onPress={() => show(area.region_code)}
-                      className="flex w-full cursor-pointer flex-col items-start rounded-10 border border-transparent bg-soft px-2.5 py-1.5 text-left data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:border-hover-border data-hovered:bg-surface"
+                      className="flex w-full cursor-pointer flex-col items-start gap-0.5 rounded-10 border border-transparent bg-soft px-2.5 py-1.5 text-left transition-colors duration-150 data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:border-hover-border data-hovered:bg-surface"
                     >
-                      <span className="text-13 font-semibold wrap-anywhere text-navy">
-                        {area.name}
+                      <span className="flex w-full items-center gap-1.5 text-13 font-semibold wrap-anywhere text-navy">
+                        <span className="min-w-0 flex-1">{area.name}</span>
+                        <span className={cx(tag, 'px-2', levelTone[area.level])}>
+                          {copy.levels[area.level]}
+                        </span>
                       </span>
-                      <span className="flex flex-wrap gap-x-2 text-12 text-muted">
-                        <span className="font-semibold text-ink">
+                      <span className="flex flex-wrap items-center gap-x-3 text-12 text-muted">
+                        <span className="inline-flex items-center gap-1 font-semibold text-ink">
+                          <Icon name="briefcase" />
                           {copy.records(area.posting_count)}
                         </span>
-                        <span>{copy.levels[area.level]}</span>
-                        <span>{copy.away(area.distance_km)}</span>
+                        <span className="inline-flex items-center gap-1">
+                          <Icon name="distance" />
+                          {copy.away(area.distance_km)}
+                        </span>
                       </span>
                     </Button>
                   </li>
@@ -400,7 +602,10 @@ function LocalDemand({ explore, onView }: { explore: Explore; onView: (view: Vie
           ))}
         </div>
       ) : (
-        <p className={note}>{copy.top}</p>
+        <p className={cx(note, 'flex items-center gap-1.5')}>
+          <Icon name="check" className="flex-none text-good-ink" />
+          {copy.top}
+        </p>
       )}
     </div>
   )
@@ -418,7 +623,7 @@ function NearbyQualifications({ explore }: { explore: Explore }) {
   const data = nearby.data
   return (
     <div role="group" aria-label={copy.heading} className="flex min-w-0 flex-col gap-1.5">
-      <h3 className="m-0 flex items-center gap-1.5 text-12 font-bold tracking-[0.04em] text-muted uppercase">
+      <h3 className={heading}>
         <Icon name="lightbulb" />
         {copy.heading}
       </h3>
@@ -437,7 +642,7 @@ function NearbyQualifications({ explore }: { explore: Explore }) {
               <Button
                 onPress={() => useDemandStore.getState().setCode(item.qualification.code)}
                 aria-label={copy.focus(item.qualification.name)}
-                className="flex w-full cursor-pointer flex-col items-start gap-0.5 rounded-10 border border-transparent bg-soft px-2.5 py-2 text-left data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:border-hover-border data-hovered:bg-surface"
+                className="flex w-full cursor-pointer flex-col items-start gap-0.5 rounded-10 border border-transparent bg-soft px-2.5 py-2 text-left transition-colors duration-150 data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:border-hover-border data-hovered:bg-surface"
               >
                 <span className="flex w-full flex-wrap items-center gap-1.5">
                   <span className="min-w-0 flex-1 text-13 font-semibold wrap-anywhere text-navy">
@@ -447,7 +652,7 @@ function NearbyQualifications({ explore }: { explore: Explore }) {
                 </span>
                 <ul className="m-0 list-none p-0">
                   {item.reasons.map((reason) => (
-                    <li key={reason} className="text-12 leading-[1.45] text-ink">
+                    <li key={reason} className="text-12 leading-[1.45] text-muted">
                       {reason}
                     </li>
                   ))}
@@ -457,7 +662,8 @@ function NearbyQualifications({ explore }: { explore: Explore }) {
           ))}
         </ul>
       ) : (
-        <p className={note} role="status">
+        <p className={cx(note, 'flex items-center gap-1.5')} role="status">
+          <Icon name="info" className="flex-none" />
           {copy.none(data.region_name)}
         </p>
       )}
@@ -474,17 +680,17 @@ function FindJobsButton({ explore, skill }: { explore: Explore; skill: string })
   const code = explore.demandRegion ?? explore.homeRegion
   const area = code ? (explore.regions.find((region) => region.code === code)?.name ?? null) : null
   const href = findJobsUrl(explore.config, skill || null, area)
-  const look = cx(button({ variant: 'secondary', height: 44 }), 'self-start')
+  const look = cx(button({ variant: 'secondary', height: 36, snug: true }), 'flex-none')
   if (!href) {
     return (
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+      <span className="flex flex-none items-center gap-2">
+        <span className="text-12 text-muted">{copy.notReady}</span>
         <Button isDisabled className={cx(look, 'opacity-60')}>
           <Icon name="briefcase" />
           {copy.label}
           <Icon name="external" />
         </Button>
-        <p className={note}>{copy.notReady}</p>
-      </div>
+      </span>
     )
   }
   return (
