@@ -11,12 +11,14 @@ const center = (
   kind: Center['kind'],
   codes: string[],
   distanceKm: number | null,
+  accredited: string[] = [],
 ): Center =>
   ({
     id,
     kind,
     name: id,
     distanceKm,
+    accredited,
     programs:
       kind === 'training'
         ? codes.map(
@@ -84,6 +86,23 @@ describe('cardsFor', () => {
 
   it('leaves out a qualification no center of that kind lists', () => {
     expect(cardsFor('assessment', [match('FBS', 40)], centers)).toEqual([])
+  })
+
+  it('lists an assessment center the registry accredits for it, though it has no schedule', () => {
+    // The registry has accreditations but no dates: without them the Assess tab was always empty.
+    const accredited = [...centers, center('assessment-2', 'assessment', [], 5, ['FBS', 'COOKERY'])]
+    const cards = cardsFor('assessment', [match('COOKERY', 91), match('FBS', 40)], accredited)
+    expect(
+      cards.map((card) => [
+        card.match.qualification.code,
+        card.centers.map((item) => item.id),
+        card.near,
+      ]),
+    ).toEqual([
+      ['COOKERY', ['assessment-1', 'assessment-2'], 1],
+      ['FBS', ['assessment-2'], 1],
+    ])
+    expect(cardsFor('training', [match('FBS', 40)], [accredited[3]])).toEqual([])
   })
 })
 

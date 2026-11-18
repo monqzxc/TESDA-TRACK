@@ -182,3 +182,67 @@ def test_schedule_times_must_include_a_timezone(client, admin, make_center):
     created = client.post("/api/v1/admin/assessment-schedules", headers=admin, json={
         "center_id": center["id"], "qualification_code": "SMAW-NC-II", "slots": 5, "scheduled_at": aware})
     assert created.status_code == 201
+
+
+def accredit(session, center_id, *codes, outcome="accepted", snapshot=None, key=None):
+    """Registry history saying the center may assess these qualifications, as the registry importer leaves it."""
+    from datetime import date
+    from uuid import uuid4
+
+    from sqlmodel import select
+
+    from tesda_track.models import Qualification, RegistryBatch, RegistryLink, RegistryRecord
+
+    snapshot = snapshot or date(2026, 10, 7)
+    key = key or uuid4().hex * 2
+    batch = RegistryBatch(fingerprint=uuid4().hex * 2, source_name="Assessment registry.xlsx", source_sha256="0" * 64,
+                          kind="assessment", sheet="Centers", snapshot_date=snapshot, inspected_on=snapshot,
+                          policy_sha256="1" * 64)
+    session.add(batch)
+    session.flush()
+    link = session.exec(select(RegistryLink).where(RegistryLink.center_id == center_id)).first()
+    if link is None:
+        session.add(RegistryLink(entity_kind="center", external_key=key, center_id=center_id,
+                                 last_snapshot_date=snapshot))
+    else:
+        key, link.last_snapshot_date = link.external_key, snapshot
+    for row, code in enumerate(codes):
+        qualification = session.exec(select(Qualification).where(Qualification.code == code)).one()
+        session.add(RegistryRecord(batch_id=batch.id, row_number=row, site_key=key, outcome=outcome,
+                                   qualification_id=qualification.id))
+    session.flush()
+
+
+def centers(client, **params):
+    response = client.get("/api/v1/assessment-centers", params=params)
+    assert response.status_code == 200, response.text
+    return {center["name"]: center["qualification_codes"] for center in response.json()}
+
+
+def test_centers_say_which_qualifications_the_registry_accredits_them_for(client, session, make_center, make_schedule):
+    # The registry lists accreditations, never schedules: a learner must still be pointed to these centers.
+    cebu = make_center(name="Cebu Assessment Center", region_code="VII", location=CEBU_CITY)
+    accredit(session, cebu["id"], "COOKERY-NC-II", "FBS-NC-II")
+    lapsed = make_center(name="Lapsed Assessment Center")
+    accredit(session, lapsed["id"], "COOKERY-NC-II", outcome="historical")
+    scheduled = make_schedule(center=make_center(name="Scheduled Assessment Center"), qualification_code="COOKERY-NC-II")
+
+    assert centers(client) == {"Cebu Assessment Center": ["COOKERY-NC-II", "FBS-NC-II"],
+                               "Lapsed Assessment Center": [], "Scheduled Assessment Center": []}
+    # Accredited, or with an open schedule; an expired accreditation or an unknown code finds none.
+    assert set(centers(client, qualification_code="COOKERY-NC-II")) == {"Cebu Assessment Center",
+                                                                        scheduled["center"]["name"]}
+    assert list(centers(client, qualification_code="FBS-NC-II")) == ["Cebu Assessment Center"]
+    assert centers(client, qualification_code="SMAW-NC-II") == {}
+    assert centers(client, qualification_code="NOPE-NC-II") == {}
+    assert centers(client, qualification_code="COOKERY-NC-II", region_code="NCR") == {"Scheduled Assessment Center": []}
+
+
+def test_only_a_centers_latest_snapshot_says_what_it_is_accredited_for(client, session, make_center):
+    from datetime import date
+
+    center = make_center()
+    accredit(session, center["id"], "COOKERY-NC-II", snapshot=date(2026, 1, 5))
+    accredit(session, center["id"], "EIM-NC-II", snapshot=date(2026, 10, 7))
+    assert centers(client) == {"Manila Assessment Center": ["EIM-NC-II"]}
+    assert centers(client, qualification_code="COOKERY-NC-II") == {}

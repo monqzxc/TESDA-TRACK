@@ -17,6 +17,7 @@ const center = (
     name: id,
     regionCode,
     distanceKm,
+    accredited: [],
     programs:
       kind === 'training' ? codes.map((code) => ({ qualification: { code } }) as Program) : [],
     schedules:

@@ -2422,7 +2422,7 @@
           "assessment"
         ],
         "summary": "List Centers",
-        "description": "Active centers by name; give near_lat/near_lon with radius_km for only those within it.",
+        "description": "Active centers by name, with the qualifications each is accredited for; give qualification_code for only the\ncenters that can assess it, and near_lat/near_lon with radius_km for only those within it.",
         "operationId": "list_centers_api_v1_assessment_centers_get",
         "parameters": [
           {
@@ -2494,6 +2494,24 @@
               ],
               "title": "Radius Km"
             }
+          },
+          {
+            "name": "qualification_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Only centers accredited for this qualification or with an open schedule for it.",
+              "title": "Qualification Code"
+            },
+            "description": "Only centers accredited for this qualification or with an open schedule for it."
           }
         ],
         "responses": {
@@ -8706,6 +8724,14 @@
           "is_active": {
             "type": "boolean",
             "title": "Is Active"
+          },
+          "qualification_codes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Qualification Codes",
+            "description": "Qualifications the TESDA registry accredits this center to assess. Accreditation says where a learner can get certified, not that an assessment date is open: see /assessment-schedules."
           }
         },
         "type": "object",

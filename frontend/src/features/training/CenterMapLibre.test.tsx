@@ -41,6 +41,7 @@ const center = (
   website: null,
   programs: [],
   schedules: [],
+  accredited: [],
   distanceKm,
 })
 

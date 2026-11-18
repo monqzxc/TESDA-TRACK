@@ -183,6 +183,10 @@ class AssessmentCenterPublic(BaseModel):
     contact_email: str | None
     contact_phone: str | None
     is_active: bool
+    qualification_codes: list[str] = Field(
+        default_factory=list,
+        description="Qualifications the TESDA registry accredits this center to assess. Accreditation says where a "
+                    "learner can get certified, not that an assessment date is open: see /assessment-schedules.")
 
 
 class AssessmentScheduleCreate(AvailabilityWrite, ProvenanceWrite):
@@ -271,6 +275,11 @@ class SiteSearch(BaseModel):
         if self.radius_km is not None and self.near_lat is None:
             raise ValueError("radius_km needs near_lat and near_lon.")
         return self
+
+
+class CenterSearch(SiteSearch):
+    qualification_code: str | None = Field(
+        default=None, description="Only centers accredited for this qualification or with an open schedule for it.")
 
 
 class NearbySearch(BaseModel):

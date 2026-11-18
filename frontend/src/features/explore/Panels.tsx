@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import { qualificationsQuery } from '../../api/queries.ts'
 import { useState } from 'react'
 import { Button, Input, Label, Switch, TextField, ToggleButton } from 'react-aria-components'
 import { useNavigate } from 'react-router'
@@ -292,8 +293,10 @@ export function NearbyPanel({
   const kinds: CenterKind[] =
     view === 'training' || view === 'assessment' ? [view] : ['training', 'assessment']
   const offered = (center: Center) =>
-    new Set([...center.programs, ...center.schedules].map((listing) => listing.qualification.code))
-      .size
+    new Set([
+      ...[...center.programs, ...center.schedules].map((listing) => listing.qualification.code),
+      ...center.accredited,
+    ]).size
   const recommended = new Set(explore.recommendedIds)
   return (
     <div className="flex flex-col gap-4">
@@ -630,11 +633,18 @@ export function CenterCard({
   // The center's whole offering once it's loaded; until then (or if it fails) what the search already found.
   const offerings = useQuery(offeringsQuery(center)).data
   const listings = [...center.programs, ...center.schedules, ...(offerings ?? [])]
+  // An assessment center's accreditations are codes only: the catalog names them.
+  const catalog = useQuery({ ...qualificationsQuery, enabled: center.accredited.length > 0 }).data
+  const accredited = center.accredited.flatMap((accreditedCode) => {
+    const qualification = catalog?.find((item) => item.code === accreditedCode)
+    return qualification ? [{ code: qualification.code, name: qualification.name }] : []
+  })
   // Every qualification the center offers, those matching the learner's search first (Card 2).
   const offered = [
-    ...new Map(
-      listings.map((listing) => [listing.qualification.code, listing.qualification]),
-    ).values(),
+    ...new Map([
+      ...accredited.map((qualification) => [qualification.code, qualification] as const),
+      ...listings.map((listing) => [listing.qualification.code, listing.qualification] as const),
+    ]).values(),
   ]
   const matches = (qualification: { code: string }) => codes.has(qualification.code)
   const listedFor = [...offered.filter(matches), ...offered.filter((q) => !matches(q))]

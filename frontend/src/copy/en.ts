@@ -978,6 +978,8 @@ export const en = {
       nextBatch: (day: string) => `Next batch ${day}`,
       flexible: 'Flexible start',
       noAssessments: 'No upcoming assessments yet',
+      accredited: (n: number) =>
+        `Accredited for ${figure(n)} ${n === 1 ? 'qualification' : 'qualifications'} · ask for assessment dates`,
       assessments: (n: number) => `${figure(n)} upcoming ${n === 1 ? 'assessment' : 'assessments'}`,
       next: (day: string) => `Next ${day}`,
     },

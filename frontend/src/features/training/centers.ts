@@ -33,6 +33,11 @@ export interface Center {
   website: string | null
   programs: Program[]
   schedules: Schedule[]
+  /**
+   * The qualification codes the registry accredits an assessment center to assess. The registry publishes no dates,
+   * so a center can be accredited for a qualification without any schedule for it.
+   */
+  accredited: string[]
   /** Kilometres from the reference point, or null without one or without coordinates. */
   distanceKm: number | null
 }
@@ -90,6 +95,10 @@ function centerFor(kind: CenterKind, site: Site, regions: ReadonlyMap<string, Re
     website: safeWebsite(full('website')),
     programs: [],
     schedules: [],
+    accredited:
+      kind === 'assessment' && 'qualification_codes' in site
+        ? [...(site.qualification_codes ?? [])]
+        : [],
     distanceKm: null,
   }
 }
@@ -329,6 +338,12 @@ function scheduleMatches(
   )
 }
 
+/** Whether the center is accredited for one of the filter's qualifications, or for any without one. */
+function accreditedMatches(center: Center, filters: Filters) {
+  const codes = filters.qualificationCodes
+  return center.accredited.some((code) => !codes?.length || codes.includes(code))
+}
+
 /** Centers that match, each narrowed to the listings that match. The input is left unchanged. */
 export function filterCenters(
   centers: readonly Center[],
@@ -374,7 +389,9 @@ export function filterCenters(
       const schedules = center.schedules.filter((item) =>
         scheduleMatches(item, filters, today, lastDay),
       )
-      if (schedules.length) kept.push({ ...center, schedules })
+      // An accreditation has no date, so like a program without a start date it counts within any window.
+      if (schedules.length || accreditedMatches(center, filters))
+        kept.push({ ...center, schedules })
     } else {
       kept.push(center)
     }
@@ -437,7 +454,9 @@ export function summary(center: Center, today: string): string {
       ? `${head} · ${copy.flexible}`
       : head
   }
-  if (!center.schedules.length) return copy.noAssessments
+  if (!center.schedules.length) {
+    return center.accredited.length ? copy.accredited(center.accredited.length) : copy.noAssessments
+  }
   const head = copy.assessments(center.schedules.length)
   return upcoming ? `${head} · ${copy.next(friendlyDay(upcoming, today))}` : head
 }

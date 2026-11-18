@@ -1455,6 +1455,10 @@ export const tl: Record<string, string> = {
   '{0} programs': '{0} programa',
   'Next batch {0}': 'Susunod na pangkat: {0}',
   '{0} upcoming assessment': '{0} darating na pagtatasa',
+  'Accredited for {0} qualification · ask for assessment dates':
+    'Accredited para sa {0} kwalipikasyon · magtanong ng petsa ng pagtatasa',
+  'Accredited for {0} qualifications · ask for assessment dates':
+    'Accredited para sa {0} kwalipikasyon · magtanong ng petsa ng pagtatasa',
   '{0} upcoming assessments': '{0} darating na pagtatasa',
   'Next {0}': 'Susunod: {0}',
   'About {0} away': 'Humigit-kumulang {0} ang layo',

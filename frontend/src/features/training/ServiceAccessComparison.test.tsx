@@ -29,6 +29,7 @@ function center(id: string, name: string): Center {
     website: null,
     programs: [],
     schedules: [],
+    accredited: [],
     distanceKm: null,
   }
 }

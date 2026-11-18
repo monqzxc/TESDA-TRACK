@@ -690,7 +690,8 @@ export interface paths {
         };
         /**
          * List Centers
-         * @description Active centers by name; give near_lat/near_lon with radius_km for only those within it.
+         * @description Active centers by name, with the qualifications each is accredited for; give qualification_code for only the
+         *     centers that can assess it, and near_lat/near_lon with radius_km for only those within it.
          */
         get: operations["list_centers_api_v1_assessment_centers_get"];
         put?: never;
@@ -2537,6 +2538,11 @@ export interface components {
             contact_phone: string | null;
             /** Is Active */
             is_active: boolean;
+            /**
+             * Qualification Codes
+             * @description Qualifications the TESDA registry accredits this center to assess. Accreditation says where a learner can get certified, not that an assessment date is open: see /assessment-schedules.
+             */
+            qualification_codes?: string[];
         };
         /** AssessmentCenterUpdate */
         AssessmentCenterUpdate: {
@@ -8136,6 +8142,8 @@ export interface operations {
                 near_lat?: number | null;
                 near_lon?: number | null;
                 radius_km?: number | null;
+                /** @description Only centers accredited for this qualification or with an open schedule for it. */
+                qualification_code?: string | null;
             };
             header?: never;
             path?: never;

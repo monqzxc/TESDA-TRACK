@@ -44,11 +44,15 @@ export function firstKind(query: string): CenterKind {
   return LEARN.test(query) ? 'training' : 'assessment'
 }
 
-/** Whether a center lists the qualification: a program for a training center, a schedule for an assessment center. */
+/**
+ * Whether a center lists the qualification: a program for a training center; for an assessment center, a schedule or
+ * the registry's accreditation to assess it (US-0012: accredited centers are listed even without a date).
+ */
 export function offers(center: Center, code: string): boolean {
   return center.kind === 'training'
     ? center.programs.some((program) => program.qualification.code === code)
-    : center.schedules.some((schedule) => schedule.qualification.code === code)
+    : center.accredited.includes(code) ||
+        center.schedules.some((schedule) => schedule.qualification.code === code)
 }
 
 /** Whether one of the center's programs for the qualification says a scholarship is available. */

@@ -254,6 +254,24 @@ describe('findPlace', () => {
   })
 })
 
+describe('filterCenters with accreditations', () => {
+  const accredited = buildCenters(
+    [],
+    [{ ...MANILA_AC, qualification_codes: ['CSS-NC-II'] } as AssessmentSite],
+    [],
+    [],
+    REGIONS,
+  )
+
+  it('keeps an assessment center accredited for a chosen qualification, at any date', () => {
+    expect(ids(filterCenters(accredited, { qualificationCodes: ['CSS-NC-II'] }, TODAY))).toEqual([
+      'assessment-2',
+    ])
+    expect(ids(filterCenters(accredited, { withinDays: 7 }, TODAY))).toEqual(['assessment-2'])
+    expect(filterCenters(accredited, { qualificationCodes: ['SMAW-NC-II'] }, TODAY)).toEqual([])
+  })
+})
+
 describe('filterCenters', () => {
   it.each<[Filters, string[]]>([
     [{ kinds: ['assessment'] }, ['assessment-1', 'assessment-2']],
@@ -377,6 +395,15 @@ describe('summary', () => {
     expect(
       summary(buildCenters([], [MANILA_AC as AssessmentSite], [], [], REGIONS)[0], TODAY),
     ).toBe('No upcoming assessments yet')
+  })
+
+  it('says what an accredited center can assess when it has no dates', () => {
+    const accredited = { ...MANILA_AC, qualification_codes: ['SMAW-NC-II', 'CSS-NC-II'] }
+    const [center] = buildCenters([], [accredited as AssessmentSite], [], [], REGIONS)
+    expect(center.accredited).toEqual(['SMAW-NC-II', 'CSS-NC-II'])
+    expect(summary(center, TODAY)).toBe(
+      'Accredited for 2 qualifications · ask for assessment dates',
+    )
   })
 
   it('gives the year of a date in another year', () => {

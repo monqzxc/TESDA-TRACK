@@ -11,7 +11,7 @@ from tesda_track.models import APPLICATION_STATUSES
 from tesda_track.schemas.delivery import (ApplicationCreate, ApplicationReview, AssessmentApplicationAdmin,
                                           AssessmentApplicationPublic, AssessmentCenterCreate, AssessmentCenterPublic,
                                           AssessmentCenterUpdate, AssessmentScheduleCreate, AssessmentSchedulePublic,
-                                          AssessmentScheduleUpdate, ScheduleSearch, SiteSearch)
+                                          AssessmentScheduleUpdate, CenterSearch, ScheduleSearch)
 from tesda_track.services import assessments, sites
 
 router = APIRouter(tags=["assessment"])
@@ -23,8 +23,9 @@ Offset = Annotated[int, Query(ge=0)]
 
 
 @router.get("/assessment-centers", response_model=list[AssessmentCenterPublic])
-def list_centers(session: SessionDep, search: Annotated[SiteSearch, Query()]):
-    """Active centers by name; give near_lat/near_lon with radius_km for only those within it."""
+def list_centers(session: SessionDep, search: Annotated[CenterSearch, Query()]):
+    """Active centers by name, with the qualifications each is accredited for; give qualification_code for only the
+    centers that can assess it, and near_lat/near_lon with radius_km for only those within it."""
     return assessments.list_centers(session, search)
 
 
@@ -59,7 +60,7 @@ def withdraw(application_id: uuid.UUID, learner: CurrentLearner, session: Sessio
 def create_center(request: AssessmentCenterCreate, session: SessionDep):
     center = assessments.create_center(session, request)
     session.commit()
-    return center
+    return assessments.center_public(center, [])
 
 
 @admin_router.patch("/assessment-centers/{center_id}", response_model=AssessmentCenterPublic)
@@ -67,7 +68,7 @@ def update_center(center_id: int, request: AssessmentCenterUpdate, session: Sess
     center = assessments.get_center(session, center_id, active_only=False)
     sites.apply_update(session, center, request)
     session.commit()
-    return center
+    return assessments.center_public(center, assessments.accredited_codes(session, [center.id]).get(center.id, []))
 
 
 @admin_router.post("/assessment-schedules", response_model=AssessmentSchedulePublic,

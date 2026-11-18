@@ -15,10 +15,10 @@ from sqlmodel import Session, select
 from tesda_track.errors import InvalidRequestError
 from tesda_track.models import (AssessmentCenter, AssessmentSchedule, Region, TrainingProgram, TrainingProvider,
                                 utcnow)
-from tesda_track.models.registry import RegistryBatch, RegistryLink, RegistryRecord
+from tesda_track.models.registry import RegistryRecord
 from tesda_track.schemas.outlook import (AreaOutlook, DemandLevel, HigherDemandArea, HomeDemand, OutlookInsight,
                                          OutlookPoint, OutlookQualification, OutlookTotals, QualificationOutlook)
-from tesda_track.services import area_jobs, catalog
+from tesda_track.services import area_jobs, assessments, catalog
 
 LIMITATIONS = [
     "Demand counts dated posting records with a reviewed link to the qualification; they are not live openings or "
@@ -70,17 +70,12 @@ def _sites(session: Session, qualification_id: int, now: datetime, include_examp
         .join(AssessmentSchedule, AssessmentSchedule.center_id == AssessmentCenter.id)
         .where(AssessmentSchedule.status == "open", AssessmentSchedule.scheduled_at > now, AssessmentCenter.is_active,
                AssessmentSchedule.qualification_id == qualification_id)).all())
-    # The registry accredits centers per qualification without publishing schedules: the accepted rows of each
-    # center's latest snapshot say what it may assess.
+    # The registry accredits centers per qualification without publishing schedules (services.assessments).
+    accredited = assessments.accreditations().where(RegistryRecord.qualification_id == qualification_id).subquery()
     for site_id, region_code in session.exec(
             select(AssessmentCenter.id, AssessmentCenter.region_code)
-            .join(RegistryLink, RegistryLink.center_id == AssessmentCenter.id)
-            .join(RegistryRecord, RegistryRecord.site_key == RegistryLink.external_key)
-            .join(RegistryBatch, RegistryBatch.id == RegistryRecord.batch_id)
-            .where(RegistryLink.entity_kind == "center", RegistryBatch.kind == "assessment",
-                   RegistryBatch.snapshot_date == RegistryLink.last_snapshot_date,
-                   RegistryRecord.outcome == "accepted", RegistryRecord.qualification_id == qualification_id,
-                   AssessmentCenter.is_active, AssessmentCenter.data_status != "example")).all():
+            .join(accredited, accredited.c.center_id == AssessmentCenter.id)
+            .where(AssessmentCenter.is_active, AssessmentCenter.data_status != "example")).all():
         assessment[site_id] = region_code
         examples.pop(("assessment", site_id), None)
     return training, assessment, examples

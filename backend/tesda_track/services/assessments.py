@@ -1,17 +1,17 @@
 """Assessment centers, schedules with seat counts, and the application workflow."""
 import uuid
 
-from sqlalchemy import func, null
+from sqlalchemy import func, null, or_
 from sqlalchemy.orm import object_session, selectinload
 from sqlmodel import Session, select
 
 from tesda_track.errors import ConflictError, InvalidRequestError, NotFoundError
 from tesda_track.models import (AssessmentApplication, AssessmentCenter, AssessmentSchedule, Certification, Learner,
-                                Qualification, utcnow)
+                                Qualification, RegistryBatch, RegistryLink, RegistryRecord, utcnow)
 from tesda_track.schemas.delivery import (ApplicationReview, AssessmentApplicationAdmin, AssessmentApplicationPublic,
-                                          AssessmentCenterCreate, AssessmentScheduleCreate, AssessmentSchedulePublic,
-                                          AssessmentScheduleUpdate, LearnerSummary, ScheduleSearch, SiteSearch,
-                                          SiteSummary)
+                                          AssessmentCenterCreate, AssessmentCenterPublic, AssessmentScheduleCreate,
+                                          AssessmentSchedulePublic, AssessmentScheduleUpdate, CenterSearch,
+                                          LearnerSummary, ScheduleSearch, SiteSummary)
 from tesda_track.services import catalog, geo, sites, verification
 from tesda_track.services.ownership import get_owned
 
@@ -46,13 +46,57 @@ def schedule_public(schedule: AssessmentSchedule, taken: int, distance_km: float
 
 # Centers
 
-def list_centers(session: Session, search: SiteSearch) -> list[AssessmentCenter]:
+def accreditations():
+    """(center_id, qualification_id) for each qualification the registry accredits a center to assess: the accepted
+    rows of the center's latest assessment snapshot. The registry publishes no dates, seats or fees, so these say
+    where a learner can get certified, not that an assessment is open."""
+    return (select(RegistryLink.center_id, RegistryRecord.qualification_id)
+            .join(RegistryRecord, RegistryRecord.site_key == RegistryLink.external_key)
+            .join(RegistryBatch, RegistryBatch.id == RegistryRecord.batch_id)
+            .where(RegistryLink.entity_kind == "center", RegistryBatch.kind == "assessment",
+                   RegistryBatch.snapshot_date == RegistryLink.last_snapshot_date,
+                   RegistryRecord.outcome == "accepted", RegistryRecord.qualification_id.is_not(None))
+            .distinct())
+
+
+def accredited_codes(session: Session, center_ids: list[int] | None = None) -> dict[int, list[str]]:
+    """The active qualification codes each center is accredited for, alphabetically."""
+    accredited = accreditations().subquery()
+    query = (select(accredited.c.center_id, Qualification.code)
+             .join(Qualification, Qualification.id == accredited.c.qualification_id)
+             .where(Qualification.is_active).order_by(Qualification.code))
+    if center_ids is not None:
+        query = query.where(accredited.c.center_id.in_(center_ids))
+    codes: dict[int, list[str]] = {}
+    for center_id, code in session.exec(query):
+        codes.setdefault(center_id, []).append(code)
+    return codes
+
+
+def center_public(center: AssessmentCenter, codes: list[str]) -> AssessmentCenterPublic:
+    return AssessmentCenterPublic.model_validate(center).model_copy(update={"qualification_codes": codes})
+
+
+def list_centers(session: Session, search: CenterSearch) -> list[AssessmentCenterPublic]:
     query = select(AssessmentCenter).where(AssessmentCenter.is_active)
+    if search.qualification_code:
+        # Accredited for it, or with an open schedule for it (a center added by hand has no registry rows).
+        qualification = select(Qualification.id).where(Qualification.code == search.qualification_code,
+                                                       Qualification.is_active).scalar_subquery()
+        accredited = accreditations().where(RegistryRecord.qualification_id == qualification).subquery()
+        scheduled = select(AssessmentSchedule.center_id).where(
+            AssessmentSchedule.qualification_id == qualification, AssessmentSchedule.status == "open",
+            AssessmentSchedule.scheduled_at > utcnow())
+        query = query.where(or_(AssessmentCenter.id.in_(select(accredited.c.center_id)),
+                                AssessmentCenter.id.in_(scheduled)))
     if search.region_code:
         query = query.where(AssessmentCenter.region_code == search.region_code)
     if search.radius_km is not None:
         query = query.where(geo.within_radius(AssessmentCenter, search))
-    return list(session.exec(query.order_by(AssessmentCenter.name)))
+    centers = list(session.exec(query.order_by(AssessmentCenter.name)))
+    # Every center, or a filtered few: reading every accreditation once is cheaper than a long IN list.
+    codes = accredited_codes(session, [c.id for c in centers] if len(centers) <= 500 else None)
+    return [center_public(center, codes.get(center.id, [])) for center in centers]
 
 
 def get_center(session: Session, center_id: int, active_only: bool = True) -> AssessmentCenter:
