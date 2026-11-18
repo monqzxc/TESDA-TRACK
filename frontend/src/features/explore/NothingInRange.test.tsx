@@ -16,7 +16,11 @@ import { useDemandStore, useExploreStore } from './useExplore.ts'
 // BUG-16 (US-0013): from Makati, "I can weld" has its only welding center in Baguio, 210.9 km away. The closest
 // center shows a travel time, a related qualification within range is suggested, and the range can be changed.
 vi.mock('../training/CenterMap.tsx', () => ({
-  default: (props: CenterMapProps) => <ul data-testid="map">{props.centers.length}</ul>,
+  default: (props: CenterMapProps) => (
+    <ul data-testid="map" data-radius={props.radiusKm ?? ''}>
+      {props.centers.length}
+    </ul>
+  ),
 }))
 
 const MAKATI = { latitude: 14.5547, longitude: 121.0244 }
@@ -51,7 +55,7 @@ const manilaPipefitting: Program = {
 const programs = [baguioWelding, manilaPipefitting]
 
 beforeEach(() => {
-  useExploreStore.setState({ rangeKm: NEAR_KM, askingRange: false })
+  useExploreStore.setState({ rangeKm: NEAR_KM, rangeChosen: false, askingRange: false })
   useExploreStore.getState().setSearch({
     query: 'I can weld',
     result: {
@@ -120,5 +124,23 @@ describe('Explore with nothing in range', () => {
     expect(screen.queryByRole('region', { name: 'How far can you go?' })).not.toBeInTheDocument()
     expect(await screen.findByText(/No center within 100 km\./)).toBeInTheDocument()
     expect(useExploreStore.getState().rangeKm).toBe(100)
+  })
+
+  it('offers 5 to 100 km next to the location, and the map draws the range once picked', async () => {
+    const user = userEvent.setup()
+    renderPage()
+    const picker = await screen.findByRole('group', { name: 'How far can you go?' })
+    expect(
+      within(picker)
+        .getAllByRole('button')
+        .map((b) => b.textContent),
+    ).toEqual(['5 km', '10 km', '25 km', '50 km', '100 km'])
+    expect(within(picker).getByRole('button', { name: '25 km', pressed: true })).toBeVisible()
+    // Until the learner picks, the map frames the nearest centers, not a circle.
+    expect(screen.getByTestId('map')).toHaveAttribute('data-radius', '')
+
+    await user.click(within(picker).getByRole('button', { name: '10 km' }))
+    expect(await screen.findByText(/No center within 10 km\./)).toBeInTheDocument()
+    expect(screen.getByTestId('map')).toHaveAttribute('data-radius', '10')
   })
 })

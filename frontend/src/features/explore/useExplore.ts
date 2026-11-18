@@ -68,6 +68,8 @@ interface ExploreState {
   relocate: boolean
   /** How far the learner can go, in km: a center within it counts as near. */
   rangeKm: number
+  /** The learner picked the range themselves: the map draws it and frames it. */
+  rangeChosen: boolean
   /** "How far can you go?" is on screen. */
   askingRange: boolean
   setDraft: (draft: string) => void
@@ -84,11 +86,12 @@ export const useExploreStore = create<ExploreState>()((set) => ({
   search: null,
   relocate: false,
   rangeKm: NEAR_KM,
+  rangeChosen: false,
   askingRange: false,
   setDraft: (draft) => set({ draft }),
   setRelocate: (relocate) => set({ relocate }),
   changeRange: () => set({ askingRange: true }),
-  setRange: (rangeKm) => set({ rangeKm, askingRange: false }),
+  setRange: (rangeKm) => set({ rangeKm, rangeChosen: true, askingRange: false }),
   closeRange: () => set({ askingRange: false }),
   setSearch: (search) => {
     set({ search })

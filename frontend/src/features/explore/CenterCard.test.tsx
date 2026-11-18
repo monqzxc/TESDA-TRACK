@@ -172,5 +172,9 @@ describe('Explore center details', () => {
     )
     expect(within(card).queryByRole('link', { name: /Email/ })).not.toBeInTheDocument()
     expect(within(card).queryByRole('link', { name: /Website/ })).not.toBeInTheDocument()
+    // No source records how easy a center is to reach: the card says so rather than leaving it out.
+    expect(within(card).getByText('Ease of reach:').parentElement).toHaveTextContent(
+      'Ease of reach: Not provided',
+    )
   })
 })

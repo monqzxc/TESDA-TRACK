@@ -6,6 +6,7 @@ import {
   cardsFor,
   estimateMinutes,
   firstKind,
+  inRangeOr,
   nearestRegion,
   relatedWithin,
   strength,
@@ -135,6 +136,20 @@ describe('cardsFor with a range', () => {
     const centers = [center('t', 'training', ['COOKERY'], 40)]
     expect(cardsFor('training', [match('COOKERY', 90)], centers)[0].near).toBe(0)
     expect(cardsFor('training', [match('COOKERY', 90)], centers, 50)[0].near).toBe(1)
+  })
+})
+
+describe('inRangeOr', () => {
+  it('keeps the centers within range, in order, or all of them when none is', () => {
+    const centers = [
+      center('a', 'training', [], 3),
+      center('b', 'training', [], 8),
+      center('c', 'training', [], 40),
+      center('d', 'training', [], null),
+    ]
+    expect(inRangeOr(centers, 10).map((c) => c.id)).toEqual(['a', 'b'])
+    expect(inRangeOr(centers, 5).map((c) => c.id)).toEqual(['a'])
+    expect(inRangeOr(centers.slice(2), 10).map((c) => c.id)).toEqual(['c', 'd'])
   })
 })
 

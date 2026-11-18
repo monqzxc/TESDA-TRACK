@@ -200,6 +200,8 @@ export default function ExplorePage() {
     if (locationError) setCollapsed(false)
   }
   const travelMode = useTrainingStore((state) => state.travelMode)
+  // The range the learner picked is drawn on the map and framed; until then the map frames the nearest centers.
+  const pickedRange = useExploreStore((state) => (state.rangeChosen ? state.rangeKm : null))
   const routeTo = useTrainingStore((state) => state.routeTo)
   const locatingAny = useTrainingStore((state) => state.locating)
   const store = useTrainingStore.getState
@@ -342,7 +344,7 @@ export default function ExplorePage() {
               selectedId={selectedId}
               focus={focus}
               reference={reference}
-              radiusKm={null}
+              radiusKm={view === 'demand' ? null : pickedRange}
               route={route}
               travelMode={travelMode}
               onTravelMode={(mode) => store().setTravelMode(mode)}

@@ -22,6 +22,7 @@ import {
   estimateMinutes,
   firstKind,
   hasScholarship,
+  inRangeOr,
   RANGES_KM,
   relatedWithin,
   roundKm,
@@ -191,6 +192,18 @@ export function LocationRow({ explore }: { explore: Explore }) {
       {!explore.location && explore.placeNotFound && (
         <p className="m-0 text-13 text-warn-ink">{copy.notFound}</p>
       )}
+      {/* How far the learner can go: the lists keep to it, and the map draws it once picked. */}
+      <div className="flex flex-col gap-1.5 border-t border-rule pt-2">
+        <p
+          id="explore-location-range"
+          className="m-0 flex items-center gap-1.5 text-13 font-semibold text-ink"
+        >
+          <Icon name="distance" className="text-muted" />
+          {copy.range}
+        </p>
+        <RangeChips rangeKm={explore.rangeKm} label={copy.range} compact />
+        {!explore.reference && <p className={note}>{copy.rangeNeedsPlace}</p>}
+      </div>
     </div>
   )
 }
@@ -307,10 +320,19 @@ export function NearbyPanel({
         {copy.eyebrow(explore.reference.mine ? copy.you : explore.reference.label)}
       </p>
       {kinds.map((kind) => {
-        const nearest = explore.centers.filter((center) => center.kind === kind).slice(0, 3)
+        const ofKind = explore.centers.filter((center) => center.kind === kind)
+        const nearest = inRangeOr(ofKind, explore.rangeKm).slice(0, 3)
+        const closest = nearest[0]?.distanceKm
+        const outOfRange = closest != null && closest > explore.rangeKm
         return (
           <section key={kind} className="flex flex-col gap-2">
             <h2 className={heading}>{kind === 'training' ? copy.training : copy.assessment}</h2>
+            {outOfRange && (
+              <p className="m-0 flex items-start gap-1.5 text-13 text-warn-ink">
+                <Icon name="info" className="mt-0.5 flex-none" />
+                {en.explore.results.noneNear(explore.rangeKm, roundKm(closest))}
+              </p>
+            )}
             {nearest.length ? (
               nearest.map((center) => (
                 <div key={center.id}>
@@ -361,7 +383,8 @@ function QualificationCardView({
   const [open, setOpen] = useState(false)
   const search = useExploreStore((state) => state.search)
   const code = card.match.qualification.code
-  const [first, ...rest] = card.centers
+  // Within the learner's range when any is; otherwise the nearest, under a note that it is farther.
+  const [first, ...rest] = hasReference ? inRangeOr(card.centers, rangeKm) : card.centers
   const more = rest.slice(0, 4)
   // A qualification opened from the library wasn't matched, so its rows aren't tinted as a strong match.
   const strong = !search?.chosen && card.strength === 'strong'
@@ -537,6 +560,41 @@ function Group({
   )
 }
 
+/** 5, 10, 25, 50 or 100 km: one pressed, the learner's range. */
+function RangeChips({
+  rangeKm,
+  label,
+  compact = false,
+}: {
+  rangeKm: number
+  label: string
+  compact?: boolean
+}) {
+  const copy = useCopy().explore.results.range
+  const { setRange } = useExploreStore.getState()
+  return (
+    <div role="group" aria-label={label} className="flex flex-wrap gap-1.5">
+      {RANGES_KM.map((km) => (
+        <ToggleButton
+          key={km}
+          isSelected={km === rangeKm}
+          onChange={() => setRange(km)}
+          className={cx(
+            'cursor-pointer rounded-full border border-hover-border bg-surface font-semibold text-navy',
+            compact ? 'min-h-8 px-2.5 text-13' : 'min-h-9 px-3.5 text-14',
+            lift,
+            'data-focus-visible:outline-3 data-focus-visible:outline-offset-1 data-focus-visible:outline-focus',
+            'data-hovered:border-blue',
+            'data-selected:border-fill data-selected:bg-fill data-selected:text-white',
+          )}
+        >
+          {copy.option(km)}
+        </ToggleButton>
+      ))}
+    </div>
+  )
+}
+
 /**
  * "How far can you go?": the distance within which a center counts as near. Asked again when the learner presses
  * "Change" on a qualification with no center in range; until then, nothing is shown.
@@ -544,7 +602,7 @@ function Group({
 function RangeStep({ rangeKm }: { rangeKm: number }) {
   const copy = useCopy().explore.results.range
   const asking = useExploreStore((state) => state.askingRange)
-  const { setRange, closeRange } = useExploreStore.getState()
+  const { closeRange } = useExploreStore.getState()
   const headingRef = useRef<HTMLHeadingElement>(null)
   // Brought into view and focused, so a keyboard or screen-reader user lands on the question.
   useEffect(() => {
@@ -568,24 +626,7 @@ function RangeStep({ rangeKm }: { rangeKm: number }) {
         {copy.heading}
       </h3>
       <p className={note}>{copy.body}</p>
-      <div role="group" aria-label={copy.heading} className="flex flex-wrap gap-1.5">
-        {RANGES_KM.map((km) => (
-          <ToggleButton
-            key={km}
-            isSelected={km === rangeKm}
-            onChange={() => setRange(km)}
-            className={cx(
-              'min-h-9 cursor-pointer rounded-full border border-hover-border bg-surface px-3.5 text-14 font-semibold text-navy',
-              lift,
-              'data-focus-visible:outline-3 data-focus-visible:outline-offset-1 data-focus-visible:outline-focus',
-              'data-hovered:border-blue',
-              'data-selected:border-fill data-selected:bg-fill data-selected:text-white',
-            )}
-          >
-            {copy.option(km)}
-          </ToggleButton>
-        ))}
-      </div>
+      <RangeChips rangeKm={rangeKm} label={copy.heading} />
       <Button
         className={cx(button({ variant: 'tertiary', height: 36, snug: true }), 'self-start')}
         onPress={closeRange}
@@ -892,6 +933,14 @@ export function CenterCard({
               {center.address}
             </p>
           )}
+          {/* No source records how easy a center is to reach (transport, landmarks), so it says so. */}
+          <p className="m-0 flex items-start gap-2 text-13 leading-[1.5] text-ink">
+            <Icon name="route" className="mt-0.5 flex-none text-muted" />
+            <span>
+              <span className="font-semibold">{copy.reach}:</span>{' '}
+              <span className="text-muted">{copy.notProvided}</span>
+            </span>
+          </p>
 
           {/* By car, bike and on foot from the learner's location: the routes the map draws. */}
           {routed && routeFrom && point && (

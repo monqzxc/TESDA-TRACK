@@ -2222,6 +2222,9 @@ export const en = {
       placePlaceholder: 'For example: Manila, Cebu, Laguna',
       fromPlace: (place: string) => `Near ${place}`,
       notFound: 'We don’t know that place yet. Try a city, province or region.',
+      // Under the place: how far the learner can go, 5 to 100 km.
+      range: 'How far can you go?',
+      rangeNeedsPlace: 'Share your location or type a place to measure from.',
       errors: {
         denied:
           'Location is blocked in your browser. Type a city instead, or allow location and try again.',
@@ -2477,6 +2480,9 @@ export const en = {
       contact: 'Contact',
       travel: 'Travel time',
       address: 'Address',
+      // How easy the center is to reach (transport, landmarks). No source records it yet.
+      reach: 'Ease of reach',
+      notProvided: 'Not provided',
     },
     notes: {
       times: 'Travel times are estimated from straight-line distance, by car, without traffic.',

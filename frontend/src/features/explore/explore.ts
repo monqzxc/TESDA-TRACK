@@ -89,6 +89,15 @@ export interface QualificationCard {
 const within = (center: Center, rangeKm: number) =>
   center.distanceKm !== null && center.distanceKm <= rangeKm
 
+/**
+ * The centers to list for the learner's range: those within it, or, when none is, all of them unchanged (the
+ * nearest is then shown with a note that it's out of range). Order is kept.
+ */
+export function inRangeOr<T extends Center>(centers: readonly T[], rangeKm: number): T[] {
+  const near = centers.filter((center) => within(center, rangeKm))
+  return near.length ? near : [...centers]
+}
+
 /** For one kind, a card per matched qualification that some center of that kind lists. */
 export function cardsFor(
   kind: CenterKind,
