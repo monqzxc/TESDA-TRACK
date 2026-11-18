@@ -2250,7 +2250,9 @@ export const en = {
       trainSecond: { heading: 'Or train first' },
       trainFirst: { heading: 'Train' },
       certifySecond: { heading: 'Or get certified' },
-      strength: { strong: 'Strong match', good: 'Good match' },
+      strength: { strong: 'Strong match', good: 'Good match', weak: 'Weaker match' },
+      // Under a weaker match's reason: the words only partly fit this qualification.
+      weakWarning: 'This only partly fits what you wrote. Check the qualification before you go.',
       noCenter: 'No center lists this qualification yet.',
       moreCenters: (n: number) => `${n} more`,
       fewerCenters: 'Show fewer',

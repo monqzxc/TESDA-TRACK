@@ -45,6 +45,12 @@ describe('strength', () => {
     expect(strength({ score: 60 })).toBe('strong')
     expect(strength({ score: 59 })).toBe('good')
   })
+
+  it('is weaker at a score of 35 or less', () => {
+    expect(strength({ score: 36 })).toBe('good')
+    expect(strength({ score: 35 })).toBe('weak')
+    expect(strength({ score: 20 })).toBe('weak')
+  })
 })
 
 describe('firstKind', () => {

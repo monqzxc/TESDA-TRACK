@@ -14,10 +14,12 @@ const SPEED_KMH = 30
 const DETOUR_FACTOR = 1.4
 /** A match scoring this or more is a strong match. */
 const STRONG_SCORE = 60
+/** A match scoring this or less is a weaker match, shown with a warning. */
+const WEAK_SCORE = 35
 /** At most this many qualifications are shown. */
 export const MAX_QUALIFICATIONS = 5
 
-export type Strength = 'strong' | 'good'
+export type Strength = 'strong' | 'good' | 'weak'
 
 /** Minutes by car estimated from straight-line distance, or null when the center is too far to say. */
 export function estimateMinutes(km: number | null): number | null {
@@ -26,7 +28,8 @@ export function estimateMinutes(km: number | null): number | null {
 }
 
 export function strength(match: Pick<Match, 'score'>): Strength {
-  return match.score >= STRONG_SCORE ? 'strong' : 'good'
+  if (match.score >= STRONG_SCORE) return 'strong'
+  return match.score > WEAK_SCORE ? 'good' : 'weak'
 }
 
 /** One decimal place, as the trip line shows it. */

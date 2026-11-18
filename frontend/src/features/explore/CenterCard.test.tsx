@@ -117,6 +117,27 @@ beforeEach(() => {
 })
 
 describe('Explore center details', () => {
+  it('labels a 35% match as weaker and warns about it', async () => {
+    useExploreStore.getState().setSearch({
+      query: 'I want to learn how to cook',
+      result: {
+        profile: { intent: 'training_recommendation' },
+        matches: [
+          { qualification: cookeryProgram.qualification, score: 35, reason: 'Matched cook' },
+        ],
+      },
+    })
+    renderWithQuery(
+      <MemoryRouter initialEntries={['/explore']}>
+        <ExplorePage />
+      </MemoryRouter>,
+    )
+    expect(await screen.findByText('Weaker match')).toBeInTheDocument()
+    expect(screen.getByText(/only partly fits what you wrote/)).toBeInTheDocument()
+    expect(screen.queryByText('Good match')).not.toBeInTheDocument()
+    expect(screen.queryByText('Strong match')).not.toBeInTheDocument()
+  })
+
   it('lists only verified-or-unreviewed current offerings, and the card agrees with the results', async () => {
     renderWithQuery(
       <MemoryRouter initialEntries={['/explore']}>

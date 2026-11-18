@@ -375,9 +375,13 @@ function QualificationCardView({
               <Icon name="tick" />
               {copy.strength.strong}
             </span>
-          ) : (
+          ) : card.strength === 'good' ? (
             <span className={cx(tag, 'flex-none bg-good-bg py-1 text-good-ink')}>
               {copy.strength.good}
+            </span>
+          ) : (
+            <span className={cx(tag, 'flex-none bg-warn-bg py-1 text-warn-ink')}>
+              {copy.strength.weak}
             </span>
           ))}
       </div>
@@ -385,6 +389,12 @@ function QualificationCardView({
         <Icon name="sparkle" className="mt-0.5 flex-none" />
         {card.match.reason}
       </p>
+      {!search?.chosen && card.strength === 'weak' && (
+        <p className="m-0 flex items-start gap-1.5 text-13 text-warn-ink">
+          <Icon name="info" className="mt-0.5 flex-none" />
+          {copy.weakWarning}
+        </p>
+      )}
       {hasReference && card.near === 0 && first?.distanceKm != null && (
         <p className="m-0 flex items-start gap-1.5 text-13 text-warn-ink">
           <Icon name="info" className="mt-0.5 flex-none" />
