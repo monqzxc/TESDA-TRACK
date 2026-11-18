@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Button } from 'react-aria-components'
 import { ModalDialog } from '../../components/ModalDialog.tsx'
 import { useCopy } from '../../i18n/copy.ts'
@@ -8,15 +8,15 @@ import { useTrainingStore } from '../training/state.ts'
 
 const ASKED_KEY = 'track.explore.locationAsked'
 
-function wasAsked(): boolean {
+function lastAnswer(): string | null {
   try {
-    return localStorage.getItem(ASKED_KEY) !== null
+    return localStorage.getItem(ASKED_KEY)
   } catch {
-    return false
+    return null
   }
 }
 
-function markAsked(answer: 'yes' | 'no') {
+function remember(answer: 'yes' | 'no') {
   try {
     localStorage.setItem(ASKED_KEY, answer)
   } catch {
@@ -24,19 +24,46 @@ function markAsked(answer: 'yes' | 'no') {
   }
 }
 
+/** The browser's standing answer for this site, or null where it can't say (older Safari). */
+async function permissionState(): Promise<PermissionState | null> {
+  try {
+    const status = await navigator.permissions?.query({ name: 'geolocation' })
+    return status?.state ?? null
+  } catch {
+    return null
+  }
+}
+
 /**
- * On a first visit to /explore with no location set, asks "Open Location?" once. Yes turns the location switch on;
- * No leaves it off. Either way the answer is remembered, so the learner isn't asked again and never has to flip the
- * switch just to use the search box.
+ * On every visit to /explore, the location switch starts on when the browser already allows it: the location is
+ * looked up straight away, with no question. When it isn't allowed yet, asks "Open Location?"; Yes turns the switch
+ * on (and the browser asks for permission), No leaves it off for this visit. A browser that has blocked the site
+ * isn't asked: the switch explains that when pressed.
  */
 export function LocationPrompt() {
   const copy = useCopy().explore.locationPrompt
-  const [isOpen, setOpen] = useState(() => {
+  const [isOpen, setOpen] = useState(false)
+
+  useEffect(() => {
+    let cancelled = false
     const { useLocation, location } = useTrainingStore.getState()
-    return !wasAsked() && !useLocation && !location
-  })
+    if (useLocation || location || !('geolocation' in navigator)) return
+    void permissionState().then((state) => {
+      if (cancelled || useTrainingStore.getState().useLocation) return
+      // Granted, or a browser that can't report it but was told yes last time: turn it on without asking.
+      if (state === 'granted' || (state === null && lastAnswer() === 'yes')) {
+        useTrainingStore.getState().locate({ quietly: true })
+      } else if (state !== 'denied') {
+        setOpen(true)
+      }
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [])
+
   const answer = (yes: boolean) => {
-    markAsked(yes ? 'yes' : 'no')
+    remember(yes ? 'yes' : 'no')
     setOpen(false)
     if (yes) useTrainingStore.getState().setUseLocation(true)
   }
