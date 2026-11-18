@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from 'react'
 import { Button, Input, Label, SearchField, Switch } from 'react-aria-components'
+import { Link, useMatch } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { LoadBoundary } from '../../components/LoadBoundary.tsx'
@@ -18,6 +19,7 @@ import { useCopy } from '../../i18n/copy.ts'
 import { readItem, writeItem } from '../../lib/storage.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
+import { paths } from '../../paths.ts'
 import { FilterPanel } from './FilterPanel.tsx'
 import { Results, type ShowRequest } from './Results.tsx'
 import { useTrainingFilters, useTrainingStore } from './state.ts'
@@ -47,6 +49,7 @@ export default function TrainingPage() {
   useEffect(() => useTrainingStore.getState().locateOnOpen(), [])
   return (
     <div className="max-w-full">
+      <PreviousVersion />
       <Header
         recommendationsOpen={recommendationsOpen}
         recommendationsId={recommendationsId}
@@ -62,6 +65,30 @@ export default function TrainingPage() {
         )}
       </WithCatalog>
     </div>
+  )
+}
+
+/**
+ * At /training only: a notice that Explore has replaced this page, with a link there. The TSP webview's Centers tab
+ * still uses this page as its own, so it has no notice.
+ */
+function PreviousVersion() {
+  const copy = useCopy().training.previous
+  if (!useMatch(paths.training)) return null
+  return (
+    <p
+      role="note"
+      className="mt-0 mb-5 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-12 bg-warn-bg px-4 py-3 text-15 text-warn-ink"
+    >
+      <span className="inline-flex items-center gap-1.5 font-bold">
+        <Icon name="info" className="flex-none" />
+        {copy.tag}
+      </span>
+      <span className="min-w-0 flex-[1_1_20rem]">{copy.text}</span>
+      <Link to={paths.explore} className="font-semibold text-warn-ink underline">
+        {copy.link}
+      </Link>
+    </p>
   )
 }
 

@@ -107,6 +107,18 @@ afterEach(() => {
 })
 
 describe('Training & Assessment', () => {
+  it('says it is the previous version and links to Explore', async () => {
+    serveTrainingApi()
+    await openTraining()
+
+    const note = screen.getByRole('note')
+    expect(within(note).getByText('Previous version')).toBeInTheDocument()
+    expect(within(note).getByRole('link', { name: 'Go to Explore' })).toHaveAttribute(
+      'href',
+      '/explore',
+    )
+  })
+
   it('features the first center and initially shows two other centers before Show more', async () => {
     serveTrainingApi()
     const user = userEvent.setup()

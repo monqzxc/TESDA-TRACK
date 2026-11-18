@@ -872,6 +872,12 @@ export const en = {
     hero: {
       lead: 'Discover TESDA-accredited training centers and assessment centers near you or in any location.',
     },
+    // Above the page at /training: Explore has replaced it.
+    previous: {
+      tag: 'Previous version',
+      text: 'This is the earlier version of this page. The new Explore map finds centers from what you can do.',
+      link: 'Go to Explore',
+    },
     useLocation: 'Use my location',
     search: 'Search centers',
     searchPlaceholder: 'Search by location, center name, or program…',

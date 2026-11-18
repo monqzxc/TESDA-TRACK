@@ -14,6 +14,8 @@ describe('TSP webview sections', () => {
     renderApp(path)
 
     expect(await screen.findByRole('heading', { level: 1, name: heading })).toBeInTheDocument()
+    // The webview's Centers tab is still in use: it isn't marked as a previous version.
+    expect(screen.queryByText('Previous version')).not.toBeInTheDocument()
     const nav = screen.getByRole('navigation', {
       name: 'TSP webview sections',
     })
