@@ -505,6 +505,119 @@
         }
       }
     },
+    "/api/v1/feedback/suggestions": {
+      "post": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Give Suggestion Feedback",
+        "description": "Save a rating or report for one result, with no account link or location.",
+        "operationId": "give_suggestion_feedback_api_v1_feedback_suggestions_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/SuggestionRating"
+                  },
+                  {
+                    "$ref": "#/components/schemas/SuggestionReport"
+                  }
+                ],
+                "title": "Body",
+                "discriminator": {
+                  "propertyName": "action",
+                  "mapping": {
+                    "rating": "#/components/schemas/SuggestionRating",
+                    "report": "#/components/schemas/SuggestionReport"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "409": {
+            "description": "A submission of this kind already exists for this receipt"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many answers from this client; see Retry-After"
+          }
+        }
+      }
+    },
+    "/api/v1/feedback/suggestions/reports": {
+      "get": {
+        "tags": [
+          "feedback"
+        ],
+        "summary": "Suggestion Reports",
+        "description": "The named AI owner's inbox, including goal text only when explicitly shared.",
+        "operationId": "suggestion_reports_api_v1_feedback_suggestions_reports_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0,
+              "title": "Offset"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SuggestionReportPublic"
+                  },
+                  "title": "Response Suggestion Reports Api V1 Feedback Suggestions Reports Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/auth/register": {
       "post": {
         "tags": [
@@ -2106,6 +2219,18 @@
               ],
               "title": "Radius Km"
             }
+          },
+          {
+            "name": "include_unlocated",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Also return sites without coordinates when a radius is set.",
+              "default": false,
+              "title": "Include Unlocated"
+            },
+            "description": "Also return sites without coordinates when a radius is set."
           }
         ],
         "responses": {
@@ -2295,6 +2420,18 @@
               ],
               "title": "Radius Km"
             }
+          },
+          {
+            "name": "include_unlocated",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Also return listings at sites without coordinates when a radius is set.",
+              "default": false,
+              "title": "Include Unlocated"
+            },
+            "description": "Also return listings at sites without coordinates when a radius is set."
           },
           {
             "name": "provider_id",
@@ -2496,6 +2633,18 @@
             }
           },
           {
+            "name": "include_unlocated",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Also return sites without coordinates when a radius is set.",
+              "default": false,
+              "title": "Include Unlocated"
+            },
+            "description": "Also return sites without coordinates when a radius is set."
+          },
+          {
             "name": "qualification_code",
             "in": "query",
             "required": false,
@@ -2659,6 +2808,18 @@
               ],
               "title": "Radius Km"
             }
+          },
+          {
+            "name": "include_unlocated",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Also return listings at sites without coordinates when a radius is set.",
+              "default": false,
+              "title": "Include Unlocated"
+            },
+            "description": "Also return listings at sites without coordinates when a radius is set."
           },
           {
             "name": "center_id",
@@ -15047,6 +15208,11 @@
             ],
             "title": "Scholarship Available"
           },
+          "scholarship_is_sample": {
+            "type": "boolean",
+            "title": "Scholarship Is Sample",
+            "default": false
+          },
           "seats_left": {
             "anyOf": [
               {
@@ -18225,6 +18391,211 @@
         ],
         "title": "StepWithStatus"
       },
+      "SuggestionRating": {
+        "properties": {
+          "receipt": {
+            "type": "string",
+            "format": "uuid4",
+            "title": "Receipt"
+          },
+          "result_kind": {
+            "type": "string",
+            "enum": [
+              "qualification",
+              "training",
+              "assessment"
+            ],
+            "title": "Result Kind"
+          },
+          "result_key": {
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 1,
+            "title": "Result Key"
+          },
+          "qualification_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 40,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Qualification Code"
+          },
+          "action": {
+            "type": "string",
+            "const": "rating",
+            "title": "Action"
+          },
+          "helpful": {
+            "type": "boolean",
+            "title": "Helpful"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "receipt",
+          "result_kind",
+          "result_key",
+          "action",
+          "helpful"
+        ],
+        "title": "SuggestionRating"
+      },
+      "SuggestionReport": {
+        "properties": {
+          "receipt": {
+            "type": "string",
+            "format": "uuid4",
+            "title": "Receipt"
+          },
+          "result_kind": {
+            "type": "string",
+            "enum": [
+              "qualification",
+              "training",
+              "assessment"
+            ],
+            "title": "Result Kind"
+          },
+          "result_key": {
+            "type": "string",
+            "maxLength": 40,
+            "minLength": 1,
+            "title": "Result Key"
+          },
+          "qualification_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 40,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Qualification Code"
+          },
+          "action": {
+            "type": "string",
+            "const": "report",
+            "title": "Action"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "wrong_qualification",
+              "wrong_center",
+              "outdated_information",
+              "not_relevant",
+              "other"
+            ],
+            "title": "Reason"
+          },
+          "shared_goal": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SharedGoalCreate"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "receipt",
+          "result_kind",
+          "result_key",
+          "action",
+          "reason"
+        ],
+        "title": "SuggestionReport"
+      },
+      "SuggestionReportPublic": {
+        "properties": {
+          "receipt": {
+            "type": "string",
+            "format": "uuid",
+            "title": "Receipt"
+          },
+          "result_kind": {
+            "type": "string",
+            "enum": [
+              "qualification",
+              "training",
+              "assessment"
+            ],
+            "title": "Result Kind"
+          },
+          "result_key": {
+            "type": "string",
+            "title": "Result Key"
+          },
+          "result_name": {
+            "type": "string",
+            "title": "Result Name"
+          },
+          "qualification_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Qualification Code"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "wrong_qualification",
+              "wrong_center",
+              "outdated_information",
+              "not_relevant",
+              "other"
+            ],
+            "title": "Reason"
+          },
+          "shared_goal": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shared Goal"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "receipt",
+          "result_kind",
+          "result_key",
+          "result_name",
+          "qualification_code",
+          "reason",
+          "shared_goal",
+          "created_at"
+        ],
+        "title": "SuggestionReportPublic"
+      },
       "SuggestionRequest": {
         "properties": {
           "profile": {
@@ -18653,6 +19024,23 @@
             "title": "Scholarship Available",
             "default": false
           },
+          "scholarship_closes_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scholarship Closes On"
+          },
+          "scholarship_is_sample": {
+            "type": "boolean",
+            "title": "Scholarship Is Sample",
+            "default": false
+          },
           "start_date": {
             "anyOf": [
               {
@@ -18773,6 +19161,29 @@
             "type": "boolean",
             "title": "Scholarship Available"
           },
+          "scholarship_open": {
+            "type": "boolean",
+            "title": "Scholarship Open",
+            "description": "A scholarship is listed and today (Philippine time) is not past its close date"
+          },
+          "scholarship_closes_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scholarship Closes On"
+          },
+          "scholarship_is_sample": {
+            "type": "boolean",
+            "title": "Scholarship Is Sample",
+            "description": "The scholarship is sample data for the demo",
+            "default": false
+          },
           "start_date": {
             "anyOf": [
               {
@@ -18835,6 +19246,7 @@
           "duration_hours",
           "cost",
           "scholarship_available",
+          "scholarship_open",
           "start_date",
           "end_date",
           "slots",
@@ -19057,6 +19469,29 @@
               }
             ],
             "title": "Scholarship Available"
+          },
+          "scholarship_closes_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scholarship Closes On"
+          },
+          "scholarship_is_sample": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scholarship Is Sample"
           },
           "start_date": {
             "anyOf": [
@@ -19953,7 +20388,46 @@
             },
             "type": "array",
             "title": "Credentials",
-            "description": "Certificates, trainings, assessments and external certificates."
+            "description": "Certificates, trainings, assessments and external certificates, except licenses."
+          },
+          "licenses": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Licenses",
+            "description": "Credentials whose name says they are a license or licence, such as an LTO driver's license.",
+            "default": []
+          },
+          "municipality": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Municipality",
+            "description": "The city or municipality the Skill Passport gives as home; null when it gives none."
+          },
+          "province": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Province",
+            "description": "The province the Skill Passport gives as home."
+          },
+          "sample": {
+            "type": "boolean",
+            "title": "Sample",
+            "description": "True when the profile comes from the synthetic mock TSP accounts (TSP_MOCK_ENABLED), which the page labels as sample data.",
+            "default": false
           },
           "region_code": {
             "anyOf": [

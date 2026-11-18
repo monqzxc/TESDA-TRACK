@@ -43,6 +43,7 @@ export const helpCopy = {
       'Review your account details, recent activity, goals, certificates, and assessment applications.',
     signIn: 'Sign in or create an account to save your progress and return to your pathway later.',
     privacy: 'Read how TESDA-TRACK uses information and how you can exercise your privacy rights.',
+    suggestionReports: 'The assigned reviewer can read reports about qualification and center suggestions here.',
     notFound: 'This address could not be found. Use the page links or navigation to continue.',
   },
   shared: {

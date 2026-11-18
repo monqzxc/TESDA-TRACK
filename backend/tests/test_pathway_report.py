@@ -137,16 +137,38 @@ def test_a_region_sorts_assessment_schedules_without_hiding_other_regions(report
     assert assessment(report(region_code="VII")) == [cebu["id"], manila["id"]]
 
 
-def test_no_providers_is_said_plainly_with_a_way_forward(report):
+@pytest.mark.parametrize("only_unmapped", [False, True])
+def test_no_providers_is_said_plainly_with_a_way_forward(report, make_provider, make_program,
+                                                       make_center, make_schedule, only_unmapped):
+    if only_unmapped:
+        make_program(provider=make_provider(location=None))
+        make_schedule(center=make_center(location=None))
     result = report(region_code="NCR")
 
     assert result["providers"] == []
-    assert "doesn't list any training programs or assessment schedules" in topics(
+    assert "at centers with confirmed locations" in topics(
         result["considerations"])["providers"]["text"]
     assert "eligibility" not in topics(result["considerations"])
     compare = next(s for s in result["next_steps"] if s["kind"] == "compare_providers")
     assert compare["title"] == "Find training providers for Shielded Metal Arc Welding (SMAW) NC II"
     assert "No providers" in result["final"]["summary"] and result["final"]["providers"] == []
+
+
+@pytest.mark.parametrize("region", [None, "NCR"])
+def test_report_only_recommends_centers_with_coordinates(report, make_provider, make_program,
+                                                        make_center, make_schedule, region):
+    unmapped_provider = make_provider(name="Training provider without a location", location=None)
+    unmapped_center = make_center(name="Assessment center without a location", location=None)
+    make_program(provider=unmapped_provider)
+    make_schedule(center=unmapped_center)
+    training = make_program()
+    assessment = make_schedule()
+
+    result = report(region_code=region)
+
+    assert {(p["kind"], p["service_id"]) for p in result["providers"]} == {
+        ("training", training["id"]), ("assessment", assessment["id"]),
+    }
 
 
 def test_employment_is_general_guidance_without_job_data(report):

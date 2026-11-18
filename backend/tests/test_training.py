@@ -96,6 +96,9 @@ def test_nearby_search_orders_by_distance_and_applies_radius(client, make_provid
 
     within = search(client, qualification_code="SMAW-NC-II", radius_km=50, **near)
     assert [p["id"] for p in within] == [manila_program["id"]]
+    with_unmapped = search(client, qualification_code="SMAW-NC-II", radius_km=50, include_unlocated=True, **near)
+    assert [p["id"] for p in with_unmapped] == [manila_program["id"], unmapped_program["id"]]
+    assert with_unmapped[1]["distance_km"] is None
 
 
 @pytest.mark.parametrize("params", [{"near_lat": 14.6}, {"radius_km": 10}, {"near_lat": 95, "near_lon": 120}])
@@ -118,6 +121,8 @@ def test_providers_can_be_listed_within_a_radius(client, make_provider):
     # Quezon City to Manila is roughly 11 km. Unmapped providers can't be inside a radius.
     assert names(near_lat=QUEZON_CITY[0], near_lon=QUEZON_CITY[1], radius_km=20) == [manila["name"]]
     assert names(near_lat=QUEZON_CITY[0], near_lon=QUEZON_CITY[1], radius_km=5) == []
+    assert names(near_lat=QUEZON_CITY[0], near_lon=QUEZON_CITY[1], radius_km=5,
+                 include_unlocated=True) == ["No Address Yet"]
     assert names(region_code="VII") == ["Cebu Skills Center"]
 
 

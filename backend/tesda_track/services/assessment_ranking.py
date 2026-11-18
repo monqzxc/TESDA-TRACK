@@ -31,7 +31,7 @@ def logistics(request, schedule):
 
 
 def rank(session: Session, request: AssessmentRankingRequest, learner: Learner | None,
-         api_client_id: uuid.UUID | None = None) -> AssessmentRanking:
+         api_client_id: uuid.UUID | None = None, *, require_coordinates: bool = False) -> AssessmentRanking:
     settings = get_settings()
     answers, assessment_id = learner_assessments.resolve(session, learner, request)
     answers = answers or AssessmentAnswers(career_goal=request.goal)
@@ -71,6 +71,8 @@ def rank(session: Session, request: AssessmentRankingRequest, learner: Learner |
             region_code=request.region_code, near_lat=near_lat, near_lon=near_lon, limit=100, offset=offset))
         for schedule, taken, distance in batch:
             if schedule.slots <= taken:
+                continue
+            if require_coordinates and (schedule.center.latitude is None or schedule.center.longitude is None):
                 continue
             record = verification.get(session, "assessment", schedule.center_id, qualification.id)
             status = verification.effective_status(record, now)

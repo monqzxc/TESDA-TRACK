@@ -103,6 +103,8 @@ function program(
     duration_hours: 268,
     cost: '0.00',
     scholarship_available: scholarship,
+    scholarship_open: scholarship,
+    scholarship_is_sample: false,
     start_date: start,
     end_date: null,
     slots: 25,

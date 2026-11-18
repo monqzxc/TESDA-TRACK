@@ -56,13 +56,33 @@ def kept_profile(profile: TrackerProfile) -> dict:
             "credentials": profile.credentials.model_dump()}
 
 
+# A credential whose label names a licence (an LTO driver's license, a PRC licence) is listed as a license. TSP has no
+# licence section of its own: a license arrives as one of the credentials, most often an external certificate.
+_LICENSE = re.compile(r"(?<![a-z])licen[cs]e(?![a-z])", re.IGNORECASE)
+
+
 def profile_labels(profile: dict) -> dict[str, list[str]]:
     """A kept profile as readable labels per section, each list without repeats. Entries with no label are left
-    out."""
+    out. Credentials that are licenses go under "licenses" instead of "credentials"."""
     credentials = profile.get("credentials", {})
     sections = {section: profile.get(section, []) for section in SECTIONS}
     sections["credentials"] = [entry for kind in CREDENTIAL_KINDS for entry in credentials.get(kind, [])]
-    return {section: list(dict.fromkeys(filter(None, map(_label, entries)))) for section, entries in sections.items()}
+    labels = {section: list(dict.fromkeys(filter(None, map(_label, entries)))) for section, entries in sections.items()}
+    labels["licenses"] = [label for label in labels["credentials"] if _LICENSE.search(label)]
+    labels["credentials"] = [label for label in labels["credentials"] if not _LICENSE.search(label)]
+    return labels
+
+
+def home_area(profile: dict) -> dict:
+    """Where the Skill Passport says the learner lives, as kept at sign-in: city or municipality and province. Never
+    the street address or barangay, which sign-in doesn't keep."""
+    personal = profile.get("personal_information") or {}
+    municipality, province = (_text(personal.get(key)) for key in ("municipality", "province"))
+    return {"municipality": municipality, "province": province}
+
+
+def _text(value) -> str | None:
+    return " ".join(value.split())[:LABEL_LIMIT] or None if isinstance(value, str) else None
 
 
 def _folded(text: str) -> str:

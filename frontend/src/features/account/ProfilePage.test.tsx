@@ -75,7 +75,7 @@ describe('My Profile', () => {
     )
     renderApp('/profile')
 
-    expect(await screen.findByRole('status')).toHaveTextContent('Checking your account…')
+    expect(await screen.findByText('Checking your account…')).toBeInTheDocument()
     expect(screen.queryByRole('region', { name: 'Account details' })).not.toBeInTheDocument()
     expect(
       screen.queryByRole('button', { name: 'Sign in or create an account' }),

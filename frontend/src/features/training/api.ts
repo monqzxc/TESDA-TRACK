@@ -38,13 +38,15 @@ export interface Nearby extends Point {
  */
 const RADIUS_MARGIN_KM = 1
 
-/** A nearby search's query: nearest first, and only within the radius when there is one. */
+/** A nearby search includes unmapped listings so the finder can show them separately. */
 function nearbyQuery(near: Nearby | null) {
   if (!near) return {}
   return {
     near_lat: near.latitude,
     near_lon: near.longitude,
-    ...(near.radiusKm ? { radius_km: near.radiusKm + RADIUS_MARGIN_KM } : {}),
+    ...(near.radiusKm
+      ? { radius_km: near.radiusKm + RADIUS_MARGIN_KM, include_unlocated: true }
+      : {}),
   }
 }
 

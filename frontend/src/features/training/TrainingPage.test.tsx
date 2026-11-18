@@ -184,6 +184,35 @@ describe('Training & Assessment', () => {
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 
+  it('tags an open scholarship and labels sample data, and shows no tag once it closed (US-0019)', async () => {
+    serveTrainingApi()
+    const open = {
+      ...weldingProgram,
+      scholarship_is_sample: true,
+      scholarship_closes_on: '2099-12-31',
+    }
+    const closed = {
+      ...weldingProgram,
+      id: 21,
+      title: 'Shielded Metal Arc Welding (SMAW) NC II · Weekend batch',
+      scholarship_open: false,
+      scholarship_is_sample: true,
+      scholarship_closes_on: '2026-11-01',
+    }
+    server.use(http.get('*/api/v1/training-programs', () => HttpResponse.json([open, closed])))
+    const user = userEvent.setup()
+    await openTraining('/training?qualification=SMAW-NCII&type=training')
+
+    expect(await screen.findByText('Scholarship open')).toBeInTheDocument()
+    expect(screen.getAllByText('Scholarship open')).toHaveLength(1)
+    expect(screen.getByText('Sample data for the December 2 demo')).toBeInTheDocument()
+
+    await user.click(screen.getAllByRole('button', { name: 'Program details' })[0])
+    const dialog = await screen.findByRole('dialog', { name: open.title })
+    expect(within(dialog).getByText('Scholarship open')).toBeInTheDocument()
+    expect(within(dialog).getByText('Sample data for the December 2 demo')).toBeInTheDocument()
+  })
+
   it('features a center chosen from the list, with focus on its name, at an address of its own', async () => {
     serveTrainingApi()
     const user = userEvent.setup()
@@ -337,6 +366,9 @@ describe('Training & Assessment', () => {
     ])
     expect(rows[0]).toHaveTextContent(/About .* km away/)
     expect(rows[1]).not.toHaveTextContent(/km away/)
+    // Listed, but labelled: no pin and no distance until its location is fixed (US-0014).
+    expect(rows[1]).toHaveTextContent('Location not confirmed')
+    expect(rows[0]).not.toHaveTextContent('Location not confirmed')
   })
 
   it('says which filters are on when nothing matches, and Clear all broadens them (US-07)', async () => {
@@ -354,7 +386,7 @@ describe('Training & Assessment', () => {
     expect(screen.getByRole('heading', { level: 2, name: 'All results (4)' })).toBeInTheDocument()
   })
 
-  it('opens on the learner’s area: only centers within 10 km of their location, asked of the API, until they choose all distances', async () => {
+  it('keeps unconfirmed locations separate from the nearby count and map', async () => {
     shareLocation()
     const api = serveTrainingApi()
     const user = userEvent.setup()
@@ -369,10 +401,17 @@ describe('Training & Assessment', () => {
     ).toEqual(expect.arrayContaining(['Manila Welding Institute', 'Manila Assessment Center']))
     expect(within(screen.getByTestId('map')).queryByText('Cebu Skills Center')).toBeNull()
     expect(within(screen.getByTestId('map')).queryByText('Mobile Training Unit')).toBeNull()
+    expect(
+      screen.getByRole('heading', { name: 'Centers with unconfirmed locations (1)' }),
+    ).toBeVisible()
+    expect(screen.getByText('Location not confirmed')).toBeVisible()
+    await user.click(screen.getByRole('button', { name: 'View details: Mobile Training Unit' }))
+    expect(screen.getByRole('heading', { name: 'Mobile Training Unit' })).toHaveFocus()
+    expect(screen.getByRole('heading', { level: 2, name: 'All results (2)' })).toBeVisible()
     expect(screen.getByText('Within 10 km of your location')).toBeVisible()
     expect(screen.getByRole('button', { name: /Radius$/ })).toHaveTextContent('10 KM')
     // The default isn't written into the address; the location never is.
-    expect(router.state.location.search).toBe('')
+    expect(router.state.location.search).toBe('?center=training-3')
     // Every list was asked for the learner's area only, a little wider than the page's own radius.
     for (const path of [
       '/api/v1/training-providers',
@@ -386,7 +425,15 @@ describe('Training & Assessment', () => {
         '121.02',
         '11',
       ])
+      expect(query.get('include_unlocated')).toBe('true')
     }
+
+    await user.click(screen.getByRole('button', { name: /Radius$/ }))
+    await user.click(screen.getByRole('option', { name: '5 KM' }))
+    expect(
+      await screen.findByText('No centers with a confirmed location within 5 km'),
+    ).toBeVisible()
+    expect(screen.getByRole('button', { name: 'View details: Mobile Training Unit' })).toBeVisible()
 
     await user.click(screen.getByRole('button', { name: /Radius$/ }))
     await user.click(screen.getByRole('option', { name: 'All Distances' }))

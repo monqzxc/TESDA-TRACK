@@ -65,6 +65,10 @@ export function DataProvenance({
 }) {
   const status = value?.status ?? 'incomplete'
   const href = sourceLink(value?.source_url)
+  const sourceName = value?.source_name?.replace(
+    /^Accredited Comp(?:e|en)tency Assessment Center based on (.+) Database\.xlsx$/i,
+    'Accredited Competency Assessment Center registry ($1)',
+  )
   return (
     <div className="grid min-w-0 gap-0.5 text-13 leading-[1.5] wrap-anywhere text-muted">
       <p className="m-0">
@@ -86,10 +90,10 @@ export function DataProvenance({
                 target="_blank"
                 rel="noreferrer"
               >
-                {value?.source_name || 'Source record'}
+                {sourceName || 'Source record'}
               </a>
             ) : (
-              value?.source_name || 'Not recorded'
+              sourceName || 'Not recorded'
             )}
             {!href && ' (public source link not recorded)'}
           </span>

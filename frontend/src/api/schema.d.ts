@@ -227,6 +227,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/feedback/suggestions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Give Suggestion Feedback
+         * @description Save a rating or report for one result, with no account link or location.
+         */
+        post: operations["give_suggestion_feedback_api_v1_feedback_suggestions_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/feedback/suggestions/reports": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Suggestion Reports
+         * @description The named AI owner's inbox, including goal text only when explicitly shared.
+         */
+        get: operations["suggestion_reports_api_v1_feedback_suggestions_reports_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/auth/register": {
         parameters: {
             query?: never;
@@ -4778,6 +4818,11 @@ export interface components {
             delivery_mode?: string | null;
             /** Scholarship Available */
             scholarship_available?: boolean | null;
+            /**
+             * Scholarship Is Sample
+             * @default false
+             */
+            scholarship_is_sample: boolean;
             /** Seats Left */
             seats_left?: number | null;
             /**
@@ -5974,6 +6019,89 @@ export interface components {
              */
             status: "not_started" | "in_progress" | "completed";
         };
+        /** SuggestionRating */
+        SuggestionRating: {
+            /**
+             * Receipt
+             * Format: uuid4
+             */
+            receipt: string;
+            /**
+             * Result Kind
+             * @enum {string}
+             */
+            result_kind: "qualification" | "training" | "assessment";
+            /** Result Key */
+            result_key: string;
+            /** Qualification Code */
+            qualification_code?: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "rating";
+            /** Helpful */
+            helpful: boolean;
+        };
+        /** SuggestionReport */
+        SuggestionReport: {
+            /**
+             * Receipt
+             * Format: uuid4
+             */
+            receipt: string;
+            /**
+             * Result Kind
+             * @enum {string}
+             */
+            result_kind: "qualification" | "training" | "assessment";
+            /** Result Key */
+            result_key: string;
+            /** Qualification Code */
+            qualification_code?: string | null;
+            /**
+             * @description discriminator enum property added by openapi-typescript
+             * @enum {string}
+             */
+            action: "report";
+            /**
+             * Reason
+             * @enum {string}
+             */
+            reason: "wrong_qualification" | "wrong_center" | "outdated_information" | "not_relevant" | "other";
+            shared_goal?: components["schemas"]["SharedGoalCreate"] | null;
+        };
+        /** SuggestionReportPublic */
+        SuggestionReportPublic: {
+            /**
+             * Receipt
+             * Format: uuid
+             */
+            receipt: string;
+            /**
+             * Result Kind
+             * @enum {string}
+             */
+            result_kind: "qualification" | "training" | "assessment";
+            /** Result Key */
+            result_key: string;
+            /** Result Name */
+            result_name: string;
+            /** Qualification Code */
+            qualification_code: string | null;
+            /**
+             * Reason
+             * @enum {string}
+             */
+            reason: "wrong_qualification" | "wrong_center" | "outdated_information" | "not_relevant" | "other";
+            /** Shared Goal */
+            shared_goal: string | null;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+        };
         /**
          * SuggestionRequest
          * @description A suggestion is worked out from the learner's profile alone: there is no goal to send.
@@ -6124,6 +6252,13 @@ export interface components {
              * @default false
              */
             scholarship_available: boolean;
+            /** Scholarship Closes On */
+            scholarship_closes_on?: string | null;
+            /**
+             * Scholarship Is Sample
+             * @default false
+             */
+            scholarship_is_sample: boolean;
             /** Start Date */
             start_date?: string | null;
             /** End Date */
@@ -6155,6 +6290,19 @@ export interface components {
             cost: string | null;
             /** Scholarship Available */
             scholarship_available: boolean;
+            /**
+             * Scholarship Open
+             * @description A scholarship is listed and today (Philippine time) is not past its close date
+             */
+            scholarship_open: boolean;
+            /** Scholarship Closes On */
+            scholarship_closes_on?: string | null;
+            /**
+             * Scholarship Is Sample
+             * @description The scholarship is sample data for the demo
+             * @default false
+             */
+            scholarship_is_sample: boolean;
             /** Start Date */
             start_date: string | null;
             /** End Date */
@@ -6200,6 +6348,10 @@ export interface components {
             cost?: number | string | null;
             /** Scholarship Available */
             scholarship_available?: boolean | null;
+            /** Scholarship Closes On */
+            scholarship_closes_on?: string | null;
+            /** Scholarship Is Sample */
+            scholarship_is_sample?: boolean | null;
             /** Start Date */
             start_date?: string | null;
             /** End Date */
@@ -6436,9 +6588,31 @@ export interface components {
             qualifications: string[];
             /**
              * Credentials
-             * @description Certificates, trainings, assessments and external certificates.
+             * @description Certificates, trainings, assessments and external certificates, except licenses.
              */
             credentials: string[];
+            /**
+             * Licenses
+             * @description Credentials whose name says they are a license or licence, such as an LTO driver's license.
+             * @default []
+             */
+            licenses: string[];
+            /**
+             * Municipality
+             * @description The city or municipality the Skill Passport gives as home; null when it gives none.
+             */
+            municipality?: string | null;
+            /**
+             * Province
+             * @description The province the Skill Passport gives as home.
+             */
+            province?: string | null;
+            /**
+             * Sample
+             * @description True when the profile comes from the synthetic mock TSP accounts (TSP_MOCK_ENABLED), which the page labels as sample data.
+             * @default false
+             */
+            sample: boolean;
             /**
              * Region Code
              * @description The region the Skill Passport gives as home, as one of the app's region codes; null when it gives none or an unknown one.
@@ -7010,6 +7184,82 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    give_suggestion_feedback_api_v1_feedback_suggestions_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SuggestionRating"] | components["schemas"]["SuggestionReport"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description A submission of this kind already exists for this receipt */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description Too many answers from this client; see Retry-After */
+            429: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    suggestion_reports_api_v1_feedback_suggestions_reports_get: {
+        parameters: {
+            query?: {
+                offset?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SuggestionReportPublic"][];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
             };
         };
     };
@@ -8006,6 +8256,8 @@ export interface operations {
                 near_lat?: number | null;
                 near_lon?: number | null;
                 radius_km?: number | null;
+                /** @description Also return sites without coordinates when a radius is set. */
+                include_unlocated?: boolean;
             };
             header?: never;
             path?: never;
@@ -8074,6 +8326,8 @@ export interface operations {
                 near_lat?: number | null;
                 near_lon?: number | null;
                 radius_km?: number | null;
+                /** @description Also return listings at sites without coordinates when a radius is set. */
+                include_unlocated?: boolean;
                 provider_id?: number | null;
                 delivery_mode?: ("institution_based" | "enterprise_based" | "community_based" | "online" | "unknown") | null;
                 scholarship_only?: boolean;
@@ -8142,6 +8396,8 @@ export interface operations {
                 near_lat?: number | null;
                 near_lon?: number | null;
                 radius_km?: number | null;
+                /** @description Also return sites without coordinates when a radius is set. */
+                include_unlocated?: boolean;
                 /** @description Only centers accredited for this qualification or with an open schedule for it. */
                 qualification_code?: string | null;
             };
@@ -8181,6 +8437,8 @@ export interface operations {
                 near_lat?: number | null;
                 near_lon?: number | null;
                 radius_km?: number | null;
+                /** @description Also return listings at sites without coordinates when a radius is set. */
+                include_unlocated?: boolean;
                 /** @description Only this assessment center's schedules. */
                 center_id?: number | null;
             };

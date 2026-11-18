@@ -6,8 +6,11 @@ import {
   cardsFor,
   estimateMinutes,
   firstKind,
+  hasSampleScholarship,
+  hasScholarship,
   inRangeOr,
   nearestRegion,
+  readinessEvidence,
   relatedWithin,
   strength,
 } from './explore.ts'
@@ -40,6 +43,7 @@ const center = (
               ({
                 qualification: { code, name: code, sector },
                 scholarship_available: false,
+                scholarship_open: false,
               }) as Program,
           )
         : [],
@@ -238,5 +242,51 @@ describe('nearestRegion', () => {
   it('is the region whose center is nearest, or none without a point', () => {
     expect(nearestRegion({ latitude: 10.5, longitude: 124 }, regions)?.code).toBe('VII')
     expect(nearestRegion(null, regions)).toBeNull()
+  })
+})
+
+describe('hasScholarship', () => {
+  const withPrograms = (programs: Partial<Program>[]) =>
+    ({ kind: 'training', programs, schedules: [] }) as unknown as Center
+  const program = (code: string, open: boolean, sample: boolean) => ({
+    qualification: { code } as Program['qualification'],
+    scholarship_available: true,
+    scholarship_open: open,
+    scholarship_is_sample: sample,
+  })
+
+  it('counts only a scholarship still open for the qualification (US-0019)', () => {
+    expect(hasScholarship(withPrograms([program('A', true, false)]), 'A')).toBe(true)
+    expect(hasScholarship(withPrograms([program('A', false, false)]), 'A')).toBe(false)
+    expect(hasScholarship(withPrograms([program('B', true, false)]), 'A')).toBe(false)
+  })
+
+  it('says when the open scholarship is sample data', () => {
+    expect(hasSampleScholarship(withPrograms([program('A', true, true)]), 'A')).toBe(true)
+    expect(hasSampleScholarship(withPrograms([program('A', false, true)]), 'A')).toBe(false)
+    expect(hasSampleScholarship(withPrograms([program('A', true, false)]), 'A')).toBe(false)
+  })
+})
+
+describe('readinessEvidence (US-0004)', () => {
+  const manuel = {
+    skills: ['Driving', 'Cooking'],
+    licenses: ["LTO Professional Driver's License"],
+  }
+
+  it('finds the skills and licenses that name the trade', () => {
+    expect(readinessEvidence(manuel, 'Driving NC II')).toEqual([
+      'Driving',
+      "LTO Professional Driver's License",
+    ])
+    expect(readinessEvidence(manuel, 'Cookery NC II')).toEqual(['Cooking'])
+  })
+
+  it('finds nothing for an unrelated trade, a bare license word or no passport', () => {
+    expect(readinessEvidence(manuel, 'Shielded Metal Arc Welding (SMAW) NC I')).toEqual([])
+    expect(
+      readinessEvidence({ skills: [], licenses: ['PRC License'] }, 'Pharmacy Services NC III'),
+    ).toEqual([])
+    expect(readinessEvidence(null, 'Driving NC II')).toEqual([])
   })
 })

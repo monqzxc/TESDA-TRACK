@@ -1,4 +1,4 @@
-import { useId } from 'react'
+import { useId, type ReactNode } from 'react'
 import { Button } from 'react-aria-components'
 import { Link } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
@@ -29,6 +29,7 @@ interface MatchCardProps {
   mode?: SearchMode
   /** Training & Assessment for this qualification, offered beside the readiness check (skills searches). */
   centersHref?: string
+  feedback?: ReactNode
 }
 
 /**
@@ -47,6 +48,7 @@ export function MatchCard({
   onCheck,
   mode = 'goal',
   centersHref,
+  feedback,
 }: MatchCardProps) {
   const en = useCopy()
   const copy = en.finder.matches
@@ -175,6 +177,7 @@ export function MatchCard({
           </div>
         </div>
       </div>
+      {feedback && <div className="col-span-full">{feedback}</div>}
     </article>
   )
 }

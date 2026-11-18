@@ -158,6 +158,15 @@ export function SidebarContent({ isAdmin = false, canManage = false, onNavigate 
         <div className="px-1">
           <LanguageSelector />
         </div>
+        {/* Every screen reaches the privacy policy from here, the Career Map too: it has no footer, and its own
+            link sits in the results panel, out of reach while the panel is folded (QA BUG-08). */}
+        <NavLink
+          to={paths.privacy}
+          onClick={onNavigate}
+          className={cx(navRow, otherLink, 'text-14 font-semibold text-blue')}
+        >
+          {en.privacy.link}
+        </NavLink>
       </div>
     </div>
   )

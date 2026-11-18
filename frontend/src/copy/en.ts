@@ -15,6 +15,31 @@ const list = (items: readonly string[]) =>
     : (items[0] ?? '')
 
 export const en = {
+  suggestionFeedback: {
+    question: 'Was this helpful?',
+    yes: 'Yes',
+    no: 'No',
+    report: 'Report a wrong suggestion',
+    reason: 'Reason',
+    chooseReason: 'Choose a reason',
+    reasons: {
+      wrong_qualification: 'Wrong qualification',
+      wrong_center: 'Wrong center',
+      outdated_information: 'Outdated or incorrect information',
+      not_relevant: 'Not relevant to what I need',
+      other: 'Other',
+    },
+    share: 'Include my goal text with this report',
+    shareHint:
+      'Only the assigned reviewer will see it. Leave this unchecked if your goal contains personal information.',
+    submit: 'Send report',
+    cancel: 'Cancel',
+    rated: 'Thanks for your feedback.',
+    reported: 'Report sent for review.',
+    unavailable:
+      'This version of the app can’t accept feedback. Open an updated version and try again.',
+    note: 'This is a suggestion. Confirm with the center or your TESDA office.',
+  },
   help: helpCopy,
   app: {
     name: 'TESDA-TRACK',
@@ -325,6 +350,11 @@ export const en = {
       heading: 'Admin',
       lead: 'Manage learner access, MCP partners, recommendations, feedback, and pilot operations.',
     },
+    suggestionReports: {
+      title: 'Wrong-suggestion reports · TESDA-TRACK',
+      heading: 'Wrong-suggestion reports',
+      lead: 'Review learner reports about qualification and center suggestions.',
+    },
     profile: {
       title: 'My Profile · TESDA-TRACK',
       heading: 'My Profile',
@@ -398,6 +428,8 @@ export const en = {
     clearSearch: 'Clear search',
     sector: 'Sector',
     allSectors: 'All sectors',
+    level: 'Level',
+    allLevels: 'All levels',
     // "12 of 319 qualifications · Showing 1–12"
     count: (found: number, total: number) => `${figure(found)} of ${figure(total)} qualifications`,
     showing: (first: number, last: number) => `Showing ${figure(first)}–${figure(last)}`,
@@ -827,7 +859,8 @@ export const en = {
         fee: (amount: string) => `Assessment fee ${amount}`,
         hours: (n: number) => `${figure(n)} hours`,
         seats: (n: number) => `${figure(n)} ${n === 1 ? 'seat' : 'seats'} left`,
-        scholarship: 'Scholarship listed',
+        scholarship: 'Scholarship open',
+        scholarshipSample: 'Scholarship open (sample data for the December 2 demo)',
         allOptions: 'See all options in Training & Assessment',
         steps: 'Your next steps',
         nextAction: 'Your next action',
@@ -959,6 +992,10 @@ export const en = {
       distancesFrom: (label: string) => `Approximate distances from ${label}`,
       fromYou: 'your location',
       withinRadius: (km: number, label: string) => `Within ${figure(km)} km of ${label}`,
+      unconfirmedHeading: 'Centers with unconfirmed locations',
+      unconfirmedDistance: 'Check with these centers to find out how far away they are.',
+      noneWithinRadius: (km: number) =>
+        `No centers with a confirmed location within ${figure(km)} km`,
       radiusPending: 'Share your location or search a place to apply the selected radius.',
       showAllDistances: 'Show all distances',
       sortHint: 'Turn on your location or search a place to sort by distance.',
@@ -993,7 +1030,8 @@ export const en = {
       saved: 'Saved',
       save: 'Save this center',
       unsave: 'Remove from saved centers',
-      noLocation: 'No map location on file',
+      // US-0014: a center without coordinates is listed but has no pin, distance or directions.
+      noLocation: 'Location not confirmed',
       directions: 'Get directions',
       hideRoute: 'Hide route',
       viewOnMap: 'View on map',
@@ -1024,7 +1062,9 @@ export const en = {
       fewer: 'Show fewer',
       details: 'Program details',
       fit: (score: number) => `${score}% fit`,
-      scholarship: 'Scholarship available',
+      scholarship: 'Scholarship open',
+      // US-0019: until real scholarship data arrives after December 2, every scholarship shown is sample data.
+      scholarshipSample: 'Sample data for the December 2 demo',
       why: 'Why this program?',
       whyNote: 'Fit considers your goal, location, start date and preferences.',
       hours: (n: number) => `${figure(n)} hours`,
@@ -1088,6 +1128,8 @@ export const en = {
       label: 'Map of training and assessment centers',
       loading: 'Loading the map…',
       none: 'No centers match this search yet.',
+      // US-0025: the list failed, which is not the same as no centers.
+      unavailable: 'Centers couldn’t be loaded. Try again from the list.',
       tilesFailed: 'Some map tiles could not load. The list of centers still works.',
       failed: 'The map could not load. The list of centers still works.',
       vectorFailed: 'The detailed map could not load, so the OpenStreetMap map is shown instead.',
@@ -1621,6 +1663,7 @@ export const en = {
     page: (page: number, pages: number) => `Page ${figure(page)} of ${figure(pages)}`,
   },
   service: {
+    offline: 'You’re offline. Check your connection, then try again.',
     unreachable: "We can't reach the TESDA-TRACK service right now. Please try again shortly.",
     // Shown when the API refuses a request without saying why.
     requestFailed: 'The request could not be completed.',
@@ -1629,6 +1672,7 @@ export const en = {
   },
   // A page that can't load: the API is unreachable, or part of the app failed to download or show.
   unavailable: {
+    loading: 'Loading TESDA Track…',
     heading: "We can't load TESDA Track right now",
     body: 'Your saved progress is safe. Try again in a moment.',
     retry: 'Try again',
@@ -1843,7 +1887,12 @@ export const en = {
           {
             term: 'Your goal’s words, only if you share them',
             detail:
-              'Signed in or not, after you rate a recommendation you can tick a box to share the words of your goal, with the qualification you say fits it. They’re kept apart from your answer, without your name, account or the time of day, so they can’t be found later to delete. The pilot team reads them, takes out anything personal (or deletes them), and uses them to test and train the matching model. Don’t put your name or contact details in a goal you share.',
+              'Signed in or not, after you rate the final pathway you can tick a box to share the words of your goal, with the qualification you say fits it. They’re kept apart from your answer, without your name, account or the time of day, so they can’t be found later to delete. The pilot team reads them, takes out anything personal (or deletes them), and uses them to test and train the matching model. Don’t put your name or contact details in a goal you share.',
+          },
+          {
+            term: 'Feedback on individual suggestions',
+            detail:
+              'We keep the qualification or center shown, your rating or report reason, and an anonymous receipt to prevent repeats in this tab. The assigned AI reviewer sees your report. It includes your goal only if you choose to share it. Leave this unchecked if your goal includes personal information.',
           },
           {
             term: 'Your location, only if you allow it',
@@ -2196,6 +2245,7 @@ export const en = {
   explore: {
     panel: {
       collapse: 'Show less',
+      closeSheet: 'Close map panel',
     },
     search: {
       label: 'What can you do?',
@@ -2218,6 +2268,20 @@ export const en = {
       no: 'Not now',
       close: 'Close',
     },
+    // US-0004: what the signed-in learner's Skill Passport says, at the top of the panel.
+    tspProfile: {
+      heading: 'From your TSP profile',
+      sample: 'Sample data',
+      skills: 'Skills',
+      licenses: 'Licenses',
+      homeArea: 'Home area',
+      none: 'None listed',
+      loading: 'Loading your TSP profile…',
+      failed: 'We couldn’t load your TSP profile. Type a city or province below to continue.',
+      mayBeReady: 'You may be ready for assessment',
+      readinessEvidence: (qualification: string, evidence: string) =>
+        `For ${qualification}, your TSP profile lists ${evidence}. The assessment center confirms what you need to bring.`,
+    },
     location: {
       share: 'Share my location',
       locating: 'Finding your approximate location…',
@@ -2226,6 +2290,10 @@ export const en = {
       place: 'Or type a city or province',
       placePlaceholder: 'For example: Manila, Cebu, Laguna',
       fromPlace: (place: string) => `Near ${place}`,
+      // US-0004: the Skill Passport's home area, used without asking.
+      fromProfile: (place: string) => `Near ${place}, your home area in your TSP profile`,
+      changeForVisit:
+        'Typing a place changes it for this visit only. Your TSP profile is not changed.',
       notFound: 'We don’t know that place yet. Try a city, province or region.',
       // Under the place: how far the learner can go, 5 to 100 km.
       range: 'How far can you go?',
@@ -2286,7 +2354,7 @@ export const en = {
       related: {
         heading: (km: number) => `A related qualification within ${km} km`,
       },
-      scholarship: 'Scholarship',
+      scholarship: 'Scholarship open',
       // Under a center's name in the results: the matched qualification it lists.
       offers: {
         training: (name: string) => `Training for ${name}`,

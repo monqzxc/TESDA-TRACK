@@ -133,7 +133,8 @@ def practical_checks(answers: AssessmentAnswers, program) -> list[tuple[str, boo
     if pref.maximum_budget is not None:
         checks.append(("budget", program.cost <= pref.maximum_budget if program.cost is not None else None, "Program cost is unknown."))
     if pref.needs_scholarship:
-        checks.append(("scholarship", program.scholarship_available,
+        from tesda_track.services.training import scholarship_open  # training imports this module's callers
+        checks.append(("scholarship", scholarship_open(program),
                        "Scholarship availability is unknown."))
     if pref.start_after or pref.start_before:
         checks.append(("schedule", (not pref.start_after or program.start_date >= pref.start_after) and

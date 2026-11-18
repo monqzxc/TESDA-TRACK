@@ -1,3 +1,4 @@
+import uuid
 from functools import lru_cache
 from pathlib import Path
 from typing import Literal
@@ -105,6 +106,8 @@ class Settings(BaseSettings):
     # Answers to "Are you satisfied with this recommendation?". Each works the match out again, so they're limited;
     # learners behind one address (a training center's network) share the limit.
     feedback_rate_limit_per_minute: int = Field(default=30, ge=1, description="Feedback answers per client address")
+    suggestion_feedback_owner_id: uuid.UUID | None = Field(
+        default=None, description="TESDA-TRACK account ID assigned to review suggestion reports")
 
     # The Explore map's supply-and-demand analysis can be rewritten as a short paragraph by Claude
     # (GET /api/v1/labor-market/outlook/summary). Off by default: turning it on sends the qualification's name, region

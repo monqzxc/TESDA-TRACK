@@ -30,7 +30,7 @@ import type { DemandMapArea } from '../training/CenterMapTypes.ts'
 import { nearestRegion, offers } from './explore.ts'
 import { LocationPrompt } from './LocationPrompt.tsx'
 import { OutlookBrief } from './OutlookBrief.tsx'
-import { CenterCard, LocationRow, NearbyPanel, ResultsPanel } from './Panels.tsx'
+import { CenterCard, LocationRow, NearbyPanel, ResultsPanel, TspProfilePanel } from './Panels.tsx'
 import { useDemandStore, useExplore, useExploreStore } from './useExplore.ts'
 
 // The map comes down with its renderer the first time it's shown, as on Training & Assessment.
@@ -44,7 +44,7 @@ const mapStandIn = 'm-0 grid h-full place-items-center bg-map-water text-15 text
 
 // The search bar's own buttons: the burger, clear and search.
 const iconButton =
-  'grid size-9 flex-none cursor-pointer place-items-center rounded-8 border-0 bg-transparent text-muted data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:bg-soft data-hovered:text-navy data-pressed:bg-chip'
+  'grid size-11 flex-none cursor-pointer place-items-center rounded-8 border-0 bg-transparent text-muted data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:bg-soft data-hovered:text-navy data-pressed:bg-chip'
 
 /** An element's height as it changes, for the room it takes over the map: 0 until it's on the page. */
 function useHeight(): [(node: HTMLElement | null) => void, number] {
@@ -60,6 +60,8 @@ function useHeight(): [(node: HTMLElement | null) => void, number] {
 }
 
 const TABLET_UP = '(min-width: 768px)'
+const SHEET_DISMISS_DISTANCE = 48
+const SHEET_TAP_TOLERANCE = 10
 
 /** Whether the window is a tablet's width or more, where the results are a panel beside the map, not a sheet. */
 function useTabletUp() {
@@ -173,6 +175,7 @@ export default function ExplorePage() {
   )
   // The body scrolls only once it has finished opening: during the slide, a scrollbar would flash.
   const [opened, setOpened] = useState(!collapsed)
+  const sheetDrag = useRef<{ id: number; x: number; y: number } | null>(null)
   const scrollable = !collapsed && (opened || prefersReducedMotion())
   const bodyId = useId()
   const input = useRef<HTMLInputElement>(null)
@@ -183,11 +186,11 @@ export default function ExplorePage() {
   useEffect(() => {
     if (focusSearch) input.current?.focus()
   }, [focusSearch])
-  const fold = () => {
+  const fold = (restoreFocus = true) => {
     setCollapsed(true)
     setOpened(false)
     // Show less goes inert with the panel's body, so focus goes back to the box it opened from.
-    input.current?.focus()
+    if (restoreFocus) input.current?.focus()
   }
   // The search bar's burger opens the app's sidebar over the map: this page has no top bar for it.
   const menuOpen = useSidebarStore((state) => state.open)
@@ -209,7 +212,9 @@ export default function ExplorePage() {
   // ride above them, and its camera keeps the country clear of them.
   const [briefRef, briefHeight] = useHeight()
   const [sheetRef, sheetHeight] = useHeight()
+  const [headerRef, headerHeight] = useHeight()
   const tabletUp = useTabletUp()
+  const topReach = tabletUp ? 0 : headerHeight || 118
   // The brief sits 12px off the bottom edge. A phone's open results sheet covers it and reaches up in its place.
   const bottomReach = tabletUp || collapsed ? (briefHeight ? briefHeight + 12 : 0) : sheetHeight
   // The app's floating Help button rides above whichever it is (GuidedHelp reads --help-lift).
@@ -288,6 +293,11 @@ export default function ExplorePage() {
     setSelectedId(null)
     setMotion('back')
   }
+  const changeView = (next: View) => {
+    setView(next)
+    setSelectedId(null)
+    setCollapsed(false)
+  }
   // A center's card starts at its top; the list comes back where the learner left it.
   useLayoutEffect(() => {
     const body = scroller.current
@@ -301,16 +311,17 @@ export default function ExplorePage() {
     // page's dialogs.
     <div className="relative isolate h-dvh w-full overflow-hidden bg-map-water">
       <PageHeading className="sr-only">{en.pages.explore.heading}</PageHeading>
-      <LocationPrompt />
+      {/* A learner whose TSP profile gives a home area isn't asked: it is the search location (US-0004). */}
+      <LocationPrompt
+        waiting={explore.passportStatus === 'loading'}
+        skip={explore.homeArea !== null}
+      />
 
       <div
         className={cx(
           'absolute inset-0 [--center-map-height:100%]',
           // The map is the page here, not a card on it: no rounded corners, no border, no cap on a phone's height.
           '[&_.center-map]:h-full! [&_.center-map]:rounded-none [&_.center-map]:border-0',
-          // On a phone the search bar and the chips run across the top (12 + 46 + 8 + 40px): the map's buttons and
-          // status line start under them. From a tablet up they sit left of the buttons, so only the status moves.
-          '[--map-overlay-top:106px] [--map-status-top:120px] md:[--map-overlay-top:0px] md:[--map-status-top:70px]',
           // The Help button floats in the window's bottom right corner: a button of the map's there sits above it.
           '[--map-corner-clear:52px]',
         )}
@@ -319,6 +330,8 @@ export default function ExplorePage() {
         style={
           {
             '--map-overlay-bottom': `${bottomReach}px`,
+            '--map-overlay-top': `${topReach}px`,
+            '--map-status-top': `${tabletUp ? 70 : topReach + 12}px`,
             '--map-overlay-inset': tabletUp && !collapsed ? '388px' : '0px',
           } as CSSProperties
         }
@@ -333,6 +346,7 @@ export default function ExplorePage() {
           >
             <CenterMap
               centers={pins}
+              centersUnavailable={explore.failed}
               demandAreas={demandAreas}
               demandRegion={explore.demandRegion}
               demandOverview={explore.relocate}
@@ -340,6 +354,7 @@ export default function ExplorePage() {
               onDemandArea={(code) => useDemandStore.getState().setRegion(code)}
               recommended={explore.recommendedIds}
               selectedId={selectedId}
+              hideCenterPopups={!tabletUp}
               focus={focus}
               reference={reference}
               radiusKm={view === 'demand' ? null : pickedRange}
@@ -385,11 +400,8 @@ export default function ExplorePage() {
 
       <Chips
         view={view}
-        onView={(next) => {
-          setView(next)
-          setSelectedId(null)
-          setCollapsed(false)
-        }}
+        onView={changeView}
+        className="absolute top-3 right-[70px] left-[384px] z-[1000] hidden flex-wrap gap-3 md:flex"
       />
 
       <section
@@ -407,20 +419,27 @@ export default function ExplorePage() {
           collapsed ? 'md:min-h-0' : 'md:min-h-[calc(100%-1.5rem)]',
         )}
       >
-        <SearchBox
-          regionCode={nearestRegion(reference, explore.regions)?.code ?? null}
-          inputRef={input}
-          menuOpen={menuOpen}
-          menuRef={menuButton}
-          onMenu={() => useSidebarStore.getState().openMenu(menuButton.current)}
-          onOpen={() => setCollapsed(false)}
-          onSearched={() => {
-            setSelectedId(null)
-            setMotion(null)
-            setView('all')
-            setCollapsed(false)
-          }}
-        />
+        <div ref={headerRef} className="min-w-0 shrink-0">
+          <SearchBox
+            regionCode={nearestRegion(reference, explore.regions)?.code ?? null}
+            inputRef={input}
+            menuOpen={menuOpen}
+            menuRef={menuButton}
+            onMenu={() => useSidebarStore.getState().openMenu(menuButton.current)}
+            onOpen={() => setCollapsed(false)}
+            onSearched={() => {
+              setSelectedId(null)
+              setMotion(null)
+              setView('all')
+              setCollapsed(false)
+            }}
+          />
+          <Chips
+            view={view}
+            onView={changeView}
+            className="mx-3 mt-2 grid grid-cols-3 gap-1.5 md:hidden"
+          />
+        </div>
         {/* The body slides open and shut: its one row grows from 0fr to 1fr, so it animates to its own height. On a
             phone it is the sheet at the bottom of the screen. */}
         <div
@@ -446,14 +465,46 @@ export default function ExplorePage() {
             )}
           >
             <div className="flex min-h-full flex-col gap-3 border-rule p-4 max-md:pt-2 md:border-t">
-              <span
-                aria-hidden="true"
-                className="mx-auto h-1 w-9 flex-none rounded-full bg-dash md:hidden"
-              />
-              {!search && view !== 'demand' && (
+              <button
+                type="button"
+                aria-label={copy.panel.closeSheet}
+                aria-controls={bodyId}
+                aria-expanded={!collapsed}
+                className="sticky top-0 z-10 -mx-4 -mt-2 -mb-2 grid h-11 flex-none cursor-grab touch-none place-items-center rounded-t-16 border-0 bg-surface focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-blue active:cursor-grabbing md:hidden"
+                onPointerDown={(event) => {
+                  if (!event.isPrimary || event.button !== 0) return
+                  sheetDrag.current = { id: event.pointerId, x: event.clientX, y: event.clientY }
+                  event.currentTarget.setPointerCapture(event.pointerId)
+                }}
+                onPointerUp={(event) => {
+                  const start = sheetDrag.current
+                  if (!start || start.id !== event.pointerId) return
+                  sheetDrag.current = null
+                  const dx = Math.abs(event.clientX - start.x)
+                  const dy = event.clientY - start.y
+                  const tap = dx <= SHEET_TAP_TOLERANCE && Math.abs(dy) <= SHEET_TAP_TOLERANCE
+                  if (tap || (dy >= SHEET_DISMISS_DISTANCE && dy > dx)) {
+                    fold(event.pointerType !== 'touch')
+                  }
+                }}
+                onLostPointerCapture={() => {
+                  sheetDrag.current = null
+                }}
+                onClick={(event) => {
+                  if (event.detail === 0) fold()
+                }}
+              >
+                <span aria-hidden="true" className="h-1 w-9 rounded-full bg-dash" />
+              </button>
+              {!search && view !== 'demand' && !selected && (
                 <p className="m-0 text-13 leading-[1.5] text-muted">{copy.search.hint}</p>
               )}
-              {view !== 'demand' && <LocationRow explore={explore} />}
+              {!selected && <TspProfilePanel explore={explore} />}
+              {view !== 'demand' && (
+                <div className={selected && !locationError ? 'max-md:hidden' : undefined}>
+                  <LocationRow explore={explore} />
+                </div>
+              )}
               {explore.failed && (
                 <div className="rounded-12 bg-warn-bg p-3 text-14 text-warn-ink">
                   <p role="alert" className="mt-0">
@@ -462,6 +513,7 @@ export default function ExplorePage() {
                   <Button
                     className={button({ variant: 'secondary', height: 36 })}
                     onPress={explore.retry}
+                    isPending={explore.retrying}
                   >
                     <Icon name="refresh" />
                     {en.training.retryLoad}
@@ -487,7 +539,7 @@ export default function ExplorePage() {
                     onBack={back}
                     onRoute={() => store().showRoute(selected.id)}
                   />
-                ) : search ? (
+                ) : explore.centerResultsUnavailable && view !== 'demand' ? null : search ? (
                   <ResultsPanel
                     explore={explore}
                     view={view}
@@ -505,7 +557,7 @@ export default function ExplorePage() {
               <Button
                 aria-controls={bodyId}
                 aria-expanded={!collapsed}
-                onPress={fold}
+                onPress={() => fold()}
                 className={cx(
                   button({ variant: 'tertiary', height: 38, text: 14 }),
                   'mx-auto mt-auto',
@@ -514,7 +566,8 @@ export default function ExplorePage() {
                 <Icon name="chevron" className="rotate-180" />
                 {copy.panel.collapse}
               </Button>
-              {/* The page has no footer under the map, so its two lines are here. */}
+              {/* The page has no footer under the map, so its two lines are here; the sidebar links to the policy
+                  too, in reach while this panel is folded. */}
               <p className="m-0 text-center text-12 leading-[1.5] text-muted">
                 {en.footer.copyright}{' '}
                 <NavLink to={paths.privacy} className="font-semibold text-blue underline-offset-4">
@@ -557,11 +610,13 @@ function SearchBox({
   const [error, setError] = useState<string | null>(null)
   const request = useRef<AbortController | null>(null)
 
-  const run = async (event?: FormEvent) => {
-    event?.preventDefault()
+  useEffect(() => () => request.current?.abort(), [])
+
+  const run = async (event: FormEvent) => {
+    event.preventDefault()
+    if (request.current) return
     const query = draft.trim()
     if (!query) return
-    request.current?.abort()
     const controller = new AbortController()
     request.current = controller
     setPending(true)
@@ -569,19 +624,27 @@ function SearchBox({
     try {
       const result = await matchPathway(query, regionCode, controller.signal)
       if (controller.signal.aborted) return
-      setSearch({ query, result })
+      setSearch({ query, result, feedbackScope: crypto.randomUUID() })
       onSearched()
     } catch (failure) {
       if (!controller.signal.aborted) setError(failureMessage(failure))
     } finally {
-      if (!controller.signal.aborted) setPending(false)
+      if (request.current === controller) {
+        request.current = null
+        setPending(false)
+      }
     }
   }
 
-  const clear = () => {
+  const cancelSearch = () => {
     request.current?.abort()
+    request.current = null
     setPending(false)
     setError(null)
+  }
+
+  const clear = () => {
+    cancelSearch()
     setDraft('')
     setSearch(null)
   }
@@ -596,7 +659,7 @@ function SearchBox({
       )}
     >
       {/* One slim bar: the burger, the box, and a search button at its end. */}
-      <div className="flex h-11 items-center gap-0.5 px-1">
+      <div className="flex min-h-11 items-center gap-0.5 px-1">
         <Button
           ref={menuRef}
           data-tour="mobile-menu"
@@ -616,6 +679,7 @@ function SearchBox({
         <SearchField
           value={draft}
           onChange={(text) => {
+            cancelSearch()
             setDraft(text)
             onOpen()
           }}
@@ -629,7 +693,7 @@ function SearchBox({
             ref={inputRef}
             data-query
             onClick={onOpen}
-            className="h-9 w-full min-w-0 border-0 bg-transparent px-1.5 text-15 text-navy placeholder:text-muted placeholder:opacity-100 focus-visible:outline-none [&::-webkit-search-cancel-button]:hidden"
+            className="h-11 w-full min-w-0 border-0 bg-transparent px-1.5 text-16 text-navy placeholder:text-muted placeholder:opacity-100 focus-visible:outline-none [&::-webkit-search-cancel-button]:hidden"
             placeholder={copy.search.placeholder}
           />
           {draft && (
@@ -653,9 +717,14 @@ function SearchBox({
         </p>
       ) : (
         error && (
-          <p role="alert" className="m-0 px-4 pb-2.5 text-13 text-warn-ink">
-            {error}
-          </p>
+          <div className="flex flex-wrap items-center gap-x-3 px-4 pb-2.5">
+            <p role="alert" className="m-0 min-w-0 flex-1 text-14 text-warn-ink">
+              {error}
+            </p>
+            <Button type="submit" className={button({ variant: 'tertiary', height: 44 })}>
+              {en.unavailable.retry}
+            </Button>
+          </div>
         )
       )}
     </form>
@@ -663,7 +732,15 @@ function SearchBox({
 }
 
 /** Training centers, Assessment centers, In demand jobs: each shows that kind; pressed again, everything. */
-function Chips({ view, onView }: { view: View; onView: (view: View) => void }) {
+function Chips({
+  view,
+  onView,
+  className,
+}: {
+  view: View
+  onView: (view: View) => void
+  className: string
+}) {
   const copy = useCopy().explore.chips
   const chips: { view: View; label: string; icon: 'learn' | 'award' | 'briefcase' }[] = [
     { view: 'training', label: copy.training, icon: 'learn' },
@@ -671,24 +748,18 @@ function Chips({ view, onView }: { view: View; onView: (view: View) => void }) {
     { view: 'demand', label: copy.demand, icon: 'briefcase' },
   ]
   return (
-    <div
-      role="group"
-      aria-label={copy.label}
-      // Under the search bar on a phone, where the row scrolls sideways; beside the panel from a tablet up, clear of
-      // the map's buttons on the right. The padding is room for the shadows and the hover lift: overflow clips them
-      // at the row's edges otherwise. The row itself takes no presses, so the map between the chips still moves.
-      className="pointer-events-none absolute top-[66px] right-0 left-3 z-[1000] -m-2 flex gap-2 overflow-x-auto p-2 md:top-3 md:right-[70px] md:left-[384px] md:flex-wrap md:gap-3 md:overflow-visible"
-    >
+    <div role="group" aria-label={copy.label} className={cx('pointer-events-none', className)}>
       {chips.map((chip) => (
         <ToggleButton
           key={chip.view}
           isSelected={view === chip.view}
           onChange={(on) => onView(on ? chip.view : 'all')}
           className={cx(
-            'pointer-events-auto inline-flex min-h-10 shrink-0 cursor-pointer items-center gap-2 rounded-full border px-4 text-14 font-semibold whitespace-nowrap md:h-[46px]',
+            'pointer-events-auto inline-flex min-h-11 min-w-0 cursor-pointer items-center justify-center gap-2 rounded-full border px-2 text-center text-13 leading-tight font-semibold wrap-anywhere md:h-[46px] md:shrink-0 md:px-4 md:text-14 md:whitespace-nowrap',
+            '[&_svg]:shrink-0 max-md:[&_svg]:hidden',
             'shadow-[0_1px_2px_rgb(var(--track-shadow-rgb)/0.08),0_6px_16px_-4px_rgb(var(--track-shadow-rgb)/0.24)]',
             'transition-[transform,box-shadow,background-color,border-color] duration-200 ease-out',
-            'data-hovered:shadow-[0_2px_4px_rgb(var(--track-shadow-rgb)/0.10),0_12px_24px_-6px_rgb(var(--track-shadow-rgb)/0.32)] motion-safe:data-hovered:-translate-y-0.5 motion-safe:data-hovered:scale-105 motion-safe:data-pressed:scale-100',
+            'data-hovered:shadow-[0_2px_4px_rgb(var(--track-shadow-rgb)/0.10),0_12px_24px_-6px_rgb(var(--track-shadow-rgb)/0.32)] motion-safe:data-pressed:scale-100 md:motion-safe:data-hovered:-translate-y-0.5 md:motion-safe:data-hovered:scale-105',
             'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus',
             'border-border bg-surface text-navy data-hovered:border-hover-border',
             'data-selected:border-fill data-selected:bg-fill data-selected:text-white',

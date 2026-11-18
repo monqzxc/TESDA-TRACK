@@ -96,7 +96,9 @@ for (const colorScheme of ['light', 'dark'] as const) {
 test.describe('on a desktop', () => {
   test.use({ viewport: SIZES.desktop })
 
-  test('keeps the search and sector in the address, and Back returns to them', async ({ page }) => {
+  test('combines search, sector and NC level and restores them from the address', async ({
+    page,
+  }) => {
     await serveCatalog(page)
     await page.goto('/qualifications')
 
@@ -107,17 +109,37 @@ test.describe('on a desktop', () => {
 
     await page.getByRole('searchbox').fill('fabricator')
     await expect(cards(page)).toHaveCount(1)
-    await expect(page).toHaveURL('/qualifications?sector=Metals+and+Engineering&q=fabricator')
+    const level = page.getByRole('button', { name: /Level/ })
+    await level.click()
+    await expect(page.getByRole('option', { name: /^NC / })).toHaveText([
+      'NC I',
+      'NC II',
+      'NC III',
+      'NC IV',
+    ])
+    await page.getByRole('option', { name: 'NC II', exact: true }).click()
+    await expect(page.getByRole('heading', { name: 'No qualifications found' })).toBeVisible()
+    await level.click()
+    await page.getByRole('option', { name: 'NC I', exact: true }).click()
+    await expect(cards(page)).toHaveCount(1)
+    await expect(cards(page).first()).toHaveAccessibleName('Shielded Metal Arc Welding (SMAW) NC I')
+    await expect(page).toHaveURL(
+      '/qualifications?sector=Metals+and+Engineering&q=fabricator&level=I',
+    )
 
     // A shared address opens the same search.
     await page.reload()
     await expect(page.getByRole('searchbox')).toHaveValue('fabricator')
+    await expect(level).toContainText('NC I')
     await expect(cards(page)).toHaveCount(1)
+    await expectAccessible(page)
 
     await page.getByRole('button', { name: 'Clear filters' }).click()
     await expect(cards(page)).toHaveCount(12)
+    await expect(level).toContainText('All levels')
     await page.goBack()
     await expect(cards(page)).toHaveCount(1)
+    await expect(level).toContainText('NC I')
   })
 
   test('pages with the keyboard, and the next page opens at its results', async ({ page }) => {

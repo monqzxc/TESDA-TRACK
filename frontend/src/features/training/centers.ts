@@ -318,7 +318,7 @@ function programMatches(program: Program, filters: Filters, today: string, lastD
     (!filters.qualificationCodes?.length ||
       filters.qualificationCodes.includes(program.qualification.code)) &&
     (!filters.deliveryMode || program.delivery_mode === filters.deliveryMode) &&
-    (!filters.scholarship || program.scholarship_available) &&
+    (!filters.scholarship || program.scholarship_open) &&
     // A program without a start date takes learners any time.
     (lastDay === null || !start || (today <= start && start <= lastDay))
   )

@@ -568,6 +568,19 @@ See [Evaluation and release checks](docs/evaluation-and-release-checks.md) and t
 
 ### Recommendation feedback
 
+Qualification and center results offer a per-result helpfulness rating and a
+separate wrong-suggestion report. An anonymous receipt held in the browser tab
+prevents repeat submissions for the same rendered result. Reports store a
+selected reason and public catalog identifiers. The goal is included only when
+the learner explicitly opts in. Ratings never contain goal text. Neither
+submission records the learner's account or location.
+
+Apply the normal database migrations for the per-result feedback table. Set
+`SUGGESTION_FEEDBACK_OWNER_ID` to the assigned active TESDA-TRACK account's UUID.
+That account can open the inbox at `/feedback/reports` with its existing role.
+Reports can queue before an owner is configured. The inbox is restricted to
+the assigned account and does not send email notifications.
+
 At the end of Find my pathway (the React app), under the recommendation, learners are asked **"Are you satisfied
 with this recommendation?"** with Yes and No. After No they can pick one optional reason: the wrong qualification, a
 readiness result that seems wrong, or a pathway that isn't helpful. The reason says which part to fix: matching, the

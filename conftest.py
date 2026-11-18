@@ -27,6 +27,8 @@ os.environ.update({
     # Tests use an injected test embedder; the real model is exercised only by opt-in tests.
     "SEMANTIC_SEARCH_ENABLED": "false",
     "TSP_SIGN_IN_ENABLED": "false",
+    # Off, so a developer's .env can't mark every profile as sample data; test_tsp_mock turns it on itself.
+    "TSP_MOCK_ENABLED": "false",
     # On, so the suggestion endpoint's own tests reach it; test_goal_origin checks that off means 404.
     "TSP_SUGGESTIONS_ENABLED": "true",
     "HERCULES_BASE_URL": "",

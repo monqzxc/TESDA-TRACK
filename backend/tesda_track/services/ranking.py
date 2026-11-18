@@ -58,7 +58,7 @@ def preference_component(program: TrainingProgram, request: TrainingRankingReque
     if request.preferred_delivery_mode:
         checks.append(program.delivery_mode == request.preferred_delivery_mode)
     if request.needs_scholarship:
-        checks.append(program.scholarship_available)
+        checks.append(training.scholarship_open(program))
     return sum(checks) / len(checks) if checks else 0.0
 
 
@@ -109,7 +109,8 @@ def _explain(program: TrainingProgram, distance_km: float | None, components: Sc
 
 
 def rank_programs(session: Session, request: TrainingRankingRequest, embedder: Embedder | None,
-                  learner: Learner | None, api_client_id: uuid.UUID | None = None) -> TrainingRanking:
+                  learner: Learner | None, api_client_id: uuid.UUID | None = None, *,
+                  require_coordinates: bool = False) -> TrainingRanking:
     settings = get_settings()
     answers, assessment_id = learner_assessments.resolve(session, learner, request)
     if answers is not None:
@@ -150,6 +151,8 @@ def rank_programs(session: Session, request: TrainingRankingRequest, embedder: E
         batch = training.search_programs(session, ProgramSearch(
             qualification_code=qualification.code, near_lat=near_lat, near_lon=near_lon, limit=100, offset=offset))
         for program, distance in batch:
+            if require_coordinates and (program.provider.latitude is None or program.provider.longitude is None):
+                continue
             record = verification.get(session, "training", program.provider_id, program.qualification_id)
             status = verification.effective_status(record, now)
             eligibility = verification.eligibility(record, evidence, now, program.start_date)

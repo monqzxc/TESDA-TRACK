@@ -35,6 +35,21 @@ it. The map changes neither the address nor Back and keeps no position. It never
 itself: the page asks as it always has (once a visit as it opens, and when the learner turns location on), and the
 map's locate button asks again. Learner suggestions, matching and sign-in are unaffected.
 
+## The Skill Passport on the Career Map (US-0004)
+
+Outside the WebView, a learner who signed in with TSP sees their Skill Passport on the Career Map (`/explore`), under
+**From your TSP profile**: skills, licenses and home area (city or municipality and province, never the street
+address). `GET /api/v1/auth/tsp/profile` returns them as `skills`, `licenses`, `municipality`, `province` and
+`region_code`, with `sample: true` while the mock TSP is on, which the page shows as **Sample data**. A credential
+whose name says license or licence is listed under `licenses` instead of `credentials`; TSP has no licence section.
+
+The home area is the search location without asking, so **Open Location?** is skipped. A shared location or a typed
+place replaces it for this visit only and never changes the profile. When the profile's skills or licenses name the
+first match's trade, assessment centers come first with **You may be ready for assessment**, naming what was found.
+That is a suggestion from self-declared skills, not assessment eligibility. If the profile can't be loaded, the page
+says so and the place box lets the learner carry on. The WebView pages above are unchanged. See
+[docs/tsp-mock.md](tsp-mock.md) for the Kuya Manuel demo account.
+
 ## Suggested for you
 
 While the goal box is still empty, the entry page shows up to three qualifications worked out from what TSP

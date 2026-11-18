@@ -196,5 +196,29 @@
         "trainings": [], "assessments": [], "external_certificates": []
       }
     }
+  },
+  {
+    "username": "manuel.garcia@example.com",
+    "password": "TspDemo-Manuel-2026",
+    "learner_type": "Kuya Manuel: driver and cook with an LTO license, no TESDA qualification yet (US-0004)",
+    "profile": {
+      "sso_id": "mock-sso-0009",
+      "uli": "MOCK-ULI-0009",
+      "personal_information": {
+        "first_name": "Manuel", "middle_name": "Cruz", "last_name": "Garcia", "sex": "male",
+        "date_of_birth": "1985-06-21", "mobile_number": "+639000000009", "email_address": "manuel.garcia@example.com",
+        "address": "9 Sample Street", "baranggay": "Sample Barangay", "municipality": "Caloocan City",
+        "province": "Metro Manila", "region": "NCR", "country": "Philippines", "zip_code": "0000",
+        "profile_photo": null
+      },
+      "skills": [{"name": "Driving"}, {"name": "Cooking"}],
+      "experience": [{"job_title": "Jeepney driver"}],
+      "education": [{"degree": "High School graduate", "school": "Sample High School"}],
+      "qualifications": [],
+      "credentials": {
+        "certificates": [], "trainings": [], "assessments": [],
+        "external_certificates": [{"certificate_name": "LTO Professional Driver's License"}]
+      }
+    }
   }
 ]

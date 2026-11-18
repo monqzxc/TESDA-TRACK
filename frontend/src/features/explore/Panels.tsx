@@ -1,29 +1,36 @@
 import { useQuery } from '@tanstack/react-query'
 import { qualificationsQuery } from '../../api/queries.ts'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { Button, Input, Label, Switch, TextField, ToggleButton } from 'react-aria-components'
 import { useNavigate } from 'react-router'
+import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { Icon, type IconName } from '../../components/Icon.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { useFinderStore } from '../finder/store.ts'
+import { CenterSuggestionFeedback } from '../suggestion-feedback/CenterSuggestionFeedback.tsx'
+import { SuggestionFeedback } from '../suggestion-feedback/SuggestionFeedback.tsx'
 import { DemandPanel } from './DemandPanel.tsx'
 import { offeringsQuery, type ClientConfig } from '../training/api.ts'
 import type { CenterKind } from '../training/address.ts'
 import { googleMapsDirections, RoutePanel } from '../training/CenterDetail.tsx'
 import { placeLabel, type Center, type Point } from '../training/centers.ts'
 import { travelTime } from '../training/format.ts'
+import { NoLocationTag, unlocated } from '../training/NoLocationTag.tsx'
 import { useTrainingStore } from '../training/state.ts'
+import { SampleScholarshipNote } from '../training/scholarship.tsx'
 import type { View } from './ExplorePage.tsx'
 import {
   cardsFor,
   estimateMinutes,
   firstKind,
+  hasSampleScholarship,
   hasScholarship,
   inRangeOr,
   RANGES_KM,
+  readinessEvidence,
   relatedWithin,
   roundKm,
   type QualificationCard,
@@ -93,6 +100,7 @@ function TripMeta({
           {copy.km(roundKm(center.distanceKm))}
         </span>
       )}
+      {unlocated(center) && <NoLocationTag />}
       {minutes !== null && (
         <span className={item}>
           <Icon name="car" label={copy.byCar} />
@@ -106,6 +114,64 @@ function TripMeta({
         </span>
       )}
     </span>
+  )
+}
+
+/**
+ * US-0004: what the signed-in learner's Skill Passport says, under "From your TSP profile": skills, licenses and
+ * home area, with a Sample data label for the synthetic demo accounts. Nothing for a guest or an account without a
+ * passport. If the profile can't be loaded, it says so; the place box below (LocationRow) lets the learner go on.
+ */
+export function TspProfilePanel({ explore }: { explore: Explore }) {
+  const copy = useCopy().explore.tspProfile
+  const { passport, passportStatus } = explore
+  if (passportStatus === 'none') return null
+  if (passportStatus === 'loading') {
+    return (
+      <p role="status" className={note}>
+        {copy.loading}
+      </p>
+    )
+  }
+  if (passportStatus === 'failed' || !passport) {
+    return (
+      <p
+        role="alert"
+        className="m-0 rounded-10 bg-warn-bg px-3 py-2 text-13 leading-[1.5] text-warn-ink"
+      >
+        {copy.failed}
+      </p>
+    )
+  }
+  const home = [passport.municipality, passport.province].filter(Boolean).join(', ')
+  const rows: [string, string][] = [
+    [copy.skills, passport.skills.join(', ') || copy.none],
+    [copy.licenses, (passport.licenses ?? []).join(', ') || copy.none],
+    [copy.homeArea, home || copy.none],
+  ]
+  return (
+    <section
+      aria-labelledby="tsp-profile-heading"
+      className="flex flex-col gap-2 rounded-12 bg-panel p-3"
+    >
+      <div className="flex flex-wrap items-center gap-2">
+        <Icon name="award" className="text-teal" />
+        <h2 id="tsp-profile-heading" className={heading}>
+          {copy.heading}
+        </h2>
+        {passport.sample && (
+          <span className={cx(tag, 'bg-warn-bg text-warn-ink')}>{copy.sample}</span>
+        )}
+      </div>
+      <dl className="m-0 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-13 leading-[1.45]">
+        {rows.map(([label, value]) => (
+          <div key={label} className="contents">
+            <dt className="font-semibold text-ink">{label}</dt>
+            <dd className="m-0 text-navy">{value}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
   )
 }
 
@@ -127,9 +193,11 @@ export function LocationRow({ explore }: { explore: Explore }) {
       ? copy.locating
       : state === 'on'
         ? copy.on
-        : explore.reference
-          ? copy.fromPlace(explore.reference.label)
-          : copy.off
+        : explore.reference?.fromProfile
+          ? copy.fromProfile(explore.reference.label)
+          : explore.reference
+            ? copy.fromPlace(explore.reference.label)
+            : copy.off
   const tone = {
     locating: 'bg-tint text-blue',
     on: 'bg-good-bg text-good-ink',
@@ -192,6 +260,9 @@ export function LocationRow({ explore }: { explore: Explore }) {
       {!explore.location && explore.placeNotFound && (
         <p className="m-0 text-13 text-warn-ink">{copy.notFound}</p>
       )}
+      {!explore.location && explore.homeArea && (
+        <p className="m-0 text-12 leading-[1.45] text-muted">{copy.changeForVisit}</p>
+      )}
       {/* How far the learner can go: the lists keep to it, and the map draws it once picked. */}
       <div className="flex flex-col gap-1.5 border-t border-rule pt-2">
         <p
@@ -230,50 +301,64 @@ function CenterRow({
   onSelect: (id: string, code?: string) => void
 }) {
   const copy = useCopy().explore
+  const search = useExploreStore((state) => state.search)
   return (
-    <Button
-      onPress={() => onSelect(center.id, code)}
-      className={cx(
-        'group flex w-full cursor-pointer items-start gap-3 rounded-10 border border-transparent px-3 py-2.5 text-left data-focus-visible:outline-3 data-focus-visible:outline-focus',
-        strong ? 'bg-good-bg' : 'bg-soft',
-        lift,
-        'data-hovered:border-hover-border data-hovered:bg-surface data-hovered:shadow-[0_6px_14px_-6px_rgb(var(--track-shadow-rgb)/0.3)] data-pressed:scale-[0.99]',
-      )}
-    >
-      <Icon
-        name={kindIcon[center.kind]}
-        size="1.1rem"
-        className={cx('mt-0.5 flex-none', kindColor[center.kind])}
-      />
-      <span className="min-w-0 flex-1">
-        <span className="block text-14 leading-[1.35] font-semibold wrap-anywhere text-navy">
-          {center.name}
+    <div className="flex min-w-0 flex-col gap-2">
+      <Button
+        onPress={() => onSelect(center.id, code)}
+        className={cx(
+          'group flex w-full cursor-pointer items-start gap-3 rounded-10 border border-transparent px-3 py-2.5 text-left data-focus-visible:outline-3 data-focus-visible:outline-focus',
+          strong ? 'bg-good-bg' : 'bg-soft',
+          lift,
+          'data-hovered:border-hover-border data-hovered:bg-surface data-hovered:shadow-[0_6px_14px_-6px_rgb(var(--track-shadow-rgb)/0.3)] data-pressed:scale-[0.99]',
+        )}
+      >
+        <Icon
+          name={kindIcon[center.kind]}
+          size="1.1rem"
+          className={cx('mt-0.5 flex-none', kindColor[center.kind])}
+        />
+        <span className="min-w-0 flex-1">
+          <span className="block text-14 leading-[1.35] font-semibold wrap-anywhere text-navy">
+            {center.name}
+          </span>
+          {qualification && (
+            <span className="mt-0.5 flex items-start gap-1 text-13 leading-[1.4] font-semibold text-ink">
+              <Icon name="book" className="mt-0.5 flex-none text-muted" />
+              {copy.results.offers[center.kind](qualification)}
+            </span>
+          )}
+          <TripMeta center={center} />
+          {recommended && (
+            <span className={cx(tag, 'mt-1.5 mr-1.5 bg-[#fdecc8] py-1 font-bold text-[#7a4a05]')}>
+              <Icon name="star" />
+              {copy.outlook.tag}
+            </span>
+          )}
+          {code && center.kind === 'training' && hasScholarship(center, code) && (
+            <>
+              <span className={cx(solidTag, 'mt-1.5 bg-scholarship-fill')}>
+                <Icon name="star" />
+                {copy.results.scholarship}
+              </span>
+              {hasSampleScholarship(center, code) && (
+                <SampleScholarshipNote className="mt-1 block" />
+              )}
+            </>
+          )}
         </span>
-        {qualification && (
-          <span className="mt-0.5 flex items-start gap-1 text-13 leading-[1.4] font-semibold text-ink">
-            <Icon name="book" className="mt-0.5 flex-none text-muted" />
-            {copy.results.offers[center.kind](qualification)}
-          </span>
-        )}
-        <TripMeta center={center} />
-        {recommended && (
-          <span className={cx(tag, 'mt-1.5 mr-1.5 bg-[#fdecc8] py-1 font-bold text-[#7a4a05]')}>
-            <Icon name="star" />
-            {copy.outlook.tag}
-          </span>
-        )}
-        {code && center.kind === 'training' && hasScholarship(center, code) && (
-          <span className={cx(solidTag, 'mt-1.5 bg-scholarship-fill')}>
-            <Icon name="star" />
-            {copy.results.scholarship}
-          </span>
-        )}
-      </span>
-      <Icon
-        name="chevron"
-        className="mt-1 flex-none -rotate-90 text-muted transition-transform duration-200 group-data-hovered:translate-x-0.5 group-data-hovered:text-blue"
+        <Icon
+          name="chevron"
+          className="mt-1 flex-none -rotate-90 text-muted transition-transform duration-200 group-data-hovered:translate-x-0.5 group-data-hovered:text-blue"
+        />
+      </Button>
+      <CenterSuggestionFeedback
+        center={center}
+        qualificationCode={code}
+        goal={search?.chosen ? undefined : search?.query}
+        scope={search?.feedbackScope}
       />
-    </Button>
+    </div>
   )
 }
 
@@ -361,6 +446,7 @@ export function NearbyPanel({
 /** A qualification that fits, with its nearest center of one kind and, opened, the next ones. */
 function QualificationCardView({
   card,
+  groupLabel,
   hasReference,
   rangeKm,
   related,
@@ -368,6 +454,7 @@ function QualificationCardView({
   onSelect,
 }: {
   card: QualificationCard
+  groupLabel: string
   hasReference: boolean
   /** How far the learner can go. */
   rangeKm: number
@@ -492,6 +579,15 @@ function QualificationCardView({
           />
         </div>
       )}
+      {search && !search.chosen && (
+        <SuggestionFeedback
+          kind="qualification"
+          resultKey={code}
+          resultName={`${card.match.qualification.name} · ${groupLabel}`}
+          goal={search.query}
+          scope={search.feedbackScope}
+        />
+      )}
     </article>
   )
 }
@@ -507,6 +603,7 @@ function Group({
   rangeKm,
   relatedFor,
   focus,
+  readiness,
   onSelect,
 }: {
   kind: CenterKind
@@ -517,9 +614,11 @@ function Group({
   relatedFor: (kind: CenterKind, card: QualificationCard) => Related | null
   /** The qualification in focus and the centers recommended for it. */
   focus: { code: string | null; recommended: ReadonlySet<string> }
+  readiness?: { qualification: string; evidence: string[] }
   onSelect: (id: string, code?: string) => void
 }) {
-  const copy = useCopy().explore.results
+  const { results: copy, tspProfile } = useCopy().explore
+  const headingId = useId()
   const text =
     kind === 'assessment'
       ? first
@@ -529,7 +628,7 @@ function Group({
         ? copy.trainFirst
         : copy.trainSecond
   return (
-    <section className="flex flex-col gap-2">
+    <section aria-labelledby={headingId} className="flex flex-col gap-2">
       <div className="flex items-center gap-2.5">
         <span
           className={cx(
@@ -539,13 +638,28 @@ function Group({
         >
           <Icon name={kindIcon[kind]} />
         </span>
-        <h3 className={heading}>{text.heading}</h3>
+        <h3 id={headingId} className={heading}>
+          {text.heading}
+        </h3>
       </div>
+      {readiness && (
+        <div
+          data-testid="may-be-ready"
+          className="flex items-start gap-2 rounded-10 bg-good-bg px-3 py-2 text-13 leading-[1.5] text-good-ink"
+        >
+          <Icon name="award" className="mt-0.5 flex-none" />
+          <p className="m-0">
+            <strong className="block">{tspProfile.mayBeReady}</strong>
+            {tspProfile.readinessEvidence(readiness.qualification, readiness.evidence.join(', '))}
+          </p>
+        </div>
+      )}
       {cards.length ? (
         cards.map((card) => (
           <QualificationCardView
             key={card.match.qualification.code}
             card={card}
+            groupLabel={text.heading}
             hasReference={hasReference}
             rangeKm={rangeKm}
             related={hasReference && card.near === 0 ? relatedFor(kind, card) : null}
@@ -681,8 +795,19 @@ export function ResultsPanel({
       rangeKm,
     })
   const focus = { code: explore.demandCode, recommended: new Set(explore.recommendedIds) }
+  // Use the highest-ranked match with evidence, even when the profile does not cover the first match.
+  const readiness = explore.passport
+    ? matches
+        .map(({ qualification }) => ({
+          qualification: qualification.name,
+          evidence: readinessEvidence(explore.passport, qualification.name),
+        }))
+        .find(({ evidence }) => evidence.length > 0)
+    : undefined
   const order: CenterKind[] =
-    firstKind(search.query) === 'training' ? ['training', 'assessment'] : ['assessment', 'training']
+    readiness || firstKind(search.query) !== 'training'
+      ? ['assessment', 'training']
+      : ['training', 'assessment']
   const shown = view === 'all' ? order : view === 'demand' ? [] : [view]
   const tabs: { view: View; label: string; icon: IconName; count?: number }[] = [
     { view: 'all', label: copy.tabs.all, icon: 'grid' },
@@ -745,6 +870,7 @@ export function ResultsPanel({
           rangeKm={rangeKm}
           relatedFor={relatedFor}
           focus={focus}
+          readiness={kind === 'assessment' ? readiness : undefined}
           onSelect={onSelect}
         />
       ))}
@@ -781,6 +907,7 @@ export function CenterCard({
 }) {
   const en = useCopy()
   const copy = en.explore.card
+  const search = useExploreStore((state) => state.search)
   const openPathway = useOpenPathway()
   // The center's whole offering once it's loaded; until then (or if it fails) what the search already found.
   const offerings = useQuery(offeringsQuery(center)).data
@@ -810,10 +937,10 @@ export function CenterCard({
     center.latitude !== null && center.longitude !== null
       ? { latitude: center.latitude, longitude: center.longitude }
       : null
-  const scholarship = center.programs.some(
-    (program) =>
-      program.scholarship_available && (!codes.size || codes.has(program.qualification.code)),
+  const scholarships = center.programs.filter(
+    (program) => program.scholarship_open && (!codes.size || codes.has(program.qualification.code)),
   )
+  const scholarship = scholarships.length > 0
   // Each way to get in touch shows its number or address, as the map's popup does.
   const contacts: {
     key: string
@@ -885,6 +1012,13 @@ export function CenterCard({
         </div>
 
         <div className="flex flex-col gap-3 p-4">
+          <DataProvenance value={center.provenance} />
+          <CenterSuggestionFeedback
+            center={center}
+            qualificationCode={code ?? undefined}
+            goal={search?.chosen ? undefined : search?.query}
+            scope={search?.feedbackScope}
+          />
           {(center.kind === 'assessment' || scholarship) && (
             <div className="flex flex-wrap gap-1.5">
               {center.kind === 'assessment' ? (
@@ -893,10 +1027,15 @@ export function CenterCard({
                   {copy.leadsToNc}
                 </span>
               ) : (
-                <span className={cx(solidTag, 'bg-scholarship-fill')}>
-                  <Icon name="star" />
-                  {en.explore.results.scholarship}
-                </span>
+                <>
+                  <span className={cx(solidTag, 'bg-scholarship-fill')}>
+                    <Icon name="star" />
+                    {en.explore.results.scholarship}
+                  </span>
+                  {scholarships.some((program) => program.scholarship_is_sample) && (
+                    <SampleScholarshipNote className="self-center" />
+                  )}
+                </>
               )}
             </div>
           )}

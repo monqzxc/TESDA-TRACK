@@ -193,7 +193,14 @@ def test_profile_labels_read_strings_and_objects():
                                "external_certificates": [{"name": "First aid"}]}}
     assert tsp_sign_in.profile_labels(profile) == {
         "skills": ["Welding", "Brazing work"], "experience": ["Helper"], "education": ["Cebu NHS"],
-        "qualifications": ["SMAW NC II"], "credentials": ["NC II", "Safety 101", "First aid"]}
+        "qualifications": ["SMAW NC II"], "credentials": ["NC II", "Safety 101", "First aid"], "licenses": []}
+
+
+def test_profile_labels_put_licenses_apart_from_credentials():
+    profile = {"credentials": {"external_certificates": [{"name": "Professional Driver's License"}, {"name": "NC II"}]}}
+    labels = tsp_sign_in.profile_labels(profile)
+    assert labels["licenses"] == ["Professional Driver's License"]
+    assert labels["credentials"] == ["NC II"]
 
 
 def test_linked_profile_is_the_kept_profile(session):

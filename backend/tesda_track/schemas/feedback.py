@@ -1,7 +1,8 @@
 import uuid
+from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import UUID4, BaseModel, ConfigDict, Field, model_validator
 
 from tesda_track.schemas.analysis import ORIGIN_DESCRIPTION, AnswerCode, GoalOrigin, GoalText, Profile, SearchMode
 
@@ -46,3 +47,40 @@ class SharedGoalCreate(BaseModel):
     """The goal's words, as they were rated, which the learner agreed to share to improve matching."""
     goal: GoalText
     consent: Literal[True] = Field(description="The learner ticked the box agreeing to share them")
+
+
+SuggestionKind = Literal["qualification", "training", "assessment"]
+SuggestionReason = Literal["wrong_qualification", "wrong_center", "outdated_information", "not_relevant", "other"]
+
+
+class SuggestionTarget(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    receipt: UUID4
+    result_kind: SuggestionKind
+    result_key: str = Field(min_length=1, max_length=40)
+    qualification_code: str | None = Field(default=None, min_length=1, max_length=40)
+
+
+class SuggestionRating(SuggestionTarget):
+    action: Literal["rating"]
+    helpful: bool
+
+
+class SuggestionReport(SuggestionTarget):
+    action: Literal["report"]
+    reason: SuggestionReason
+    shared_goal: SharedGoalCreate | None = None
+
+
+class SuggestionReportPublic(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    receipt: uuid.UUID
+    result_kind: SuggestionKind
+    result_key: str
+    result_name: str
+    qualification_code: str | None
+    reason: SuggestionReason
+    shared_goal: str | None
+    created_at: datetime

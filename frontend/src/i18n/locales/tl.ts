@@ -233,6 +233,7 @@ export const tl: Record<string, string> = {
   'Clear search': 'Burahin ang paghahanap',
   Sector: 'Sektor',
   'All sectors': 'Lahat ng sektor',
+  'All levels': 'Lahat ng antas',
   'Filtered results': 'Mga sinalang resulta',
   'Find your next possibility': 'Hanapin ang susunod mong pagkakataon',
   'Clear filters': 'Alisin ang mga filter',
@@ -1584,4 +1585,34 @@ export const tl: Record<string, string> = {
     '{0} kwalipikasyon ng TESDA ang patungo sa trabahong ito.',
   'No core skills are listed for this qualification yet.':
     'Wala pang nakalistang pangunahing kasanayan para sa kwalipikasyong ito.',
+  'Scholarship open': 'Bukas ang scholarship',
+  'Sample data for the December 2 demo': 'Sample data para sa demo sa Disyembre 2',
+  'Scholarship open (sample data for the December 2 demo)':
+    'Bukas ang scholarship (sample data para sa demo sa Disyembre 2)',
+  'Location not confirmed': 'Hindi pa kumpirmado ang lokasyon',
+  'Close map panel': 'Isara ang panel ng mapa',
+  'Centers with unconfirmed locations': 'Mga sentrong hindi pa kumpirmado ang lokasyon',
+  'Check with these centers to find out how far away they are.':
+    'Magtanong sa mga sentrong ito para malaman kung gaano sila kalayo.',
+  'No centers with a confirmed location within {0} km':
+    'Walang sentrong may kumpirmadong lokasyon sa loob ng {0} km',
+  // US-0004: the TSP profile on the Career Map.
+  'From your TSP profile': 'Mula sa iyong TSP profile',
+  'Sample data': 'Halimbawang datos',
+  Skills: 'Mga kasanayan',
+  Licenses: 'Mga lisensya',
+  'Home area': 'Tinitirhang lugar',
+  'None listed': 'Walang nakalista',
+  'Loading your TSP profile…': 'Kinukuha ang iyong TSP profile…',
+  'We couldn’t load your TSP profile. Type a city or province below to continue.':
+    'Hindi namin makuha ang iyong TSP profile. Mag-type ng lungsod o probinsya sa ibaba para magpatuloy.',
+  'You may be ready for assessment': 'Maaaring handa ka na para sa assessment',
+  'For {0}, your TSP profile lists {1}. The assessment center confirms what you need to bring.':
+    'Para sa {0}, nakalista sa iyong TSP profile ang {1}. Ang assessment center ang magsasabi kung ano ang kailangan mong dalhin.',
+  'Near {0}, your home area in your TSP profile':
+    'Malapit sa {0}, ang tinitirhan mo ayon sa iyong TSP profile',
+  'Typing a place changes it for this visit only. Your TSP profile is not changed.':
+    'Ang lugar na ita-type mo ay para sa pagbisitang ito lamang. Hindi nababago ang iyong TSP profile.',
+  'Centers couldn’t be loaded. Try again from the list.':
+    'Hindi makuha ang mga sentro. Subukang muli mula sa listahan.',
 }

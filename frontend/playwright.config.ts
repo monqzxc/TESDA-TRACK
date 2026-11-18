@@ -7,6 +7,8 @@ const PORT = Number(process.env.E2E_PORT ?? 5173)
 // and version are PRIVACY_NOTICE_KEY and PRIVACY_NOTICE_VERSION in src/features/privacy/notice.ts, which a unit
 // test checks this file against.
 const PRIVACY_NOTICE_SEEN = { name: 'tesda-track.privacy-notice', value: '2026-11-17' }
+// The Career Map's first-visit "Open Location?" question, already answered: tests that need it clear this key.
+const LOCATION_ASKED = { name: 'track.explore.locationAsked', value: 'no' }
 
 export default defineConfig({
   testDir: './tests/e2e',
@@ -21,7 +23,9 @@ export default defineConfig({
     baseURL: `http://localhost:${PORT}`,
     storageState: {
       cookies: [],
-      origins: [{ origin: `http://localhost:${PORT}`, localStorage: [PRIVACY_NOTICE_SEEN] }],
+      origins: [
+        { origin: `http://localhost:${PORT}`, localStorage: [PRIVACY_NOTICE_SEEN, LOCATION_ASKED] },
+      ],
     },
     trace: 'on-first-retry',
   },

@@ -1,5 +1,5 @@
 """PostGIS distance helpers over the plain latitude/longitude columns of providers and centers."""
-from sqlalchemy import func
+from sqlalchemy import func, or_
 
 from tesda_track.schemas.delivery import NearbySearch, SiteSearch
 
@@ -18,7 +18,10 @@ def distance_km(model, search: NearbySearch | SiteSearch):
 
 
 def within_radius(model, search: NearbySearch | SiteSearch):
-    return func.ST_DWithin(point(model), _reference(search), search.radius_km * 1000.0)
+    nearby = func.ST_DWithin(point(model), _reference(search), search.radius_km * 1000.0)
+    if search.include_unlocated:
+        return or_(nearby, model.latitude.is_(None), model.longitude.is_(None))
+    return nearby
 
 
 def point_at(latitude: float, longitude: float):

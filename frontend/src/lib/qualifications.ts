@@ -119,17 +119,19 @@ export interface CatalogFilter {
   query?: string
   /** One sector, or undefined for all. */
   sector?: string
+  level?: NcLevel
 }
 
 /** The qualifications that match a search, in catalog order. */
 export function filterQualifications(
   qualifications: readonly Qualification[],
-  { query = '', sector }: CatalogFilter,
+  { query = '', sector, level }: CatalogFilter,
 ): Qualification[] {
   const needle = fold(query.trim())
   return qualifications.filter(
     (qualification) =>
       (sector === undefined || qualification.sector === sector) &&
+      (level === undefined || ncLevel(qualification.name) === level) &&
       fold(
         [
           qualification.name,

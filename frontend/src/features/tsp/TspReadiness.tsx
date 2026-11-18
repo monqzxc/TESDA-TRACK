@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useState } from 'react'
 import type { Qualification } from '../../api/queries.ts'
 import { failureMessage } from '../../auth/fields.tsx'
+import { useCopy } from '../../i18n/copy.ts'
 import { submitReadiness } from '../finder/api.ts'
 import { useFinderStore, type Answer, type Answers } from '../finder/store.ts'
 
@@ -19,6 +20,7 @@ export function TspReadiness({
   qualification: Qualification
   onResult: () => void
 }) {
+  const retry = useCopy().unavailable.retry
   const [index, setIndex] = useState(0)
   const [message, setMessage] = useState<string | null>(null)
   const answers = useFinderStore((state) => state.answers[qualification.code] ?? EMPTY_ANSWERS)
@@ -45,6 +47,7 @@ export function TspReadiness({
     )
 
   const next = () => {
+    if (submit.isPending) return
     if (!answers[current.id]) {
       setMessage('Choose an answer or tap Skip.')
       return
@@ -110,9 +113,11 @@ export function TspReadiness({
         <button type="button" className="tsp-primary" disabled={submit.isPending} onClick={next}>
           {submit.isPending
             ? 'Checking…'
-            : index === skills.length - 1
-              ? 'See recommendation'
-              : 'Next skill'}
+            : submit.isError && message
+              ? retry
+              : index === skills.length - 1
+                ? 'See recommendation'
+                : 'Next skill'}
         </button>
       </div>
       <p className="tsp-muted">Self-rated. This is a guide, not an official TESDA assessment.</p>

@@ -39,7 +39,11 @@ describe('the phone menu', () => {
     )
     expect(within(dialog).getByRole('button', { name: 'Sign in' })).toBeInTheDocument()
     expect(within(dialog).getByRole('combobox', { name: 'Language / Wika' })).toBeInTheDocument()
-    expect(within(dialog).queryByRole('link', { name: 'Privacy policy' })).not.toBeInTheDocument()
+    // QA BUG-08: the menu links to the policy, so it is in reach on the Career Map, which has no footer.
+    expect(within(dialog).getByRole('link', { name: 'Privacy policy' })).toHaveAttribute(
+      'href',
+      '/privacy',
+    )
 
     await user.keyboard('{Escape}')
 

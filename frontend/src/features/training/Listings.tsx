@@ -15,6 +15,7 @@ import { applyForAssessment, type Application, type ProgramFit } from './api.ts'
 import { friendlyDay, placeLabel, type Center, type Program, type Schedule } from './centers.ts'
 import { canReviewApplication, evidenceMessages } from './evidence.ts'
 import { deliveryLabel, localTime, programCost, programFacts, scheduleFee } from './format.ts'
+import { SampleScholarshipNote, sampleScholarship } from './scholarship.tsx'
 
 /** Listings shown under a center before View all (classic/training_view.py PREVIEW). */
 const PREVIEW = 2
@@ -199,14 +200,15 @@ function ProgramCard({
         )}
         <p className={factLine}>{programFacts(program, today).join(' • ')}</p>
         <ServiceEvidence service={program} />
-        {(fit || program.scholarship_available) && (
+        {(fit || program.scholarship_open) && (
           <p className={cx(badges, 'items-center')}>
             {fit?.score !== undefined && (
               <span className={fitBadge}>{copy.programs.fit(fit.score)}</span>
             )}
-            {program.scholarship_available && (
+            {program.scholarship_open && (
               <span className={scholarshipBadge}>{copy.programs.scholarship}</span>
             )}
+            {sampleScholarship(program) && <SampleScholarshipNote />}
           </p>
         )}
         {fit && fit.explanation.length > 0 && (
@@ -281,9 +283,10 @@ function ProgramDialog({
           {fit?.score !== undefined && (
             <span className={fitBadge}>{copy.programs.fit(fit.score)}</span>
           )}
-          {program.scholarship_available && (
+          {program.scholarship_open && (
             <span className={scholarshipBadge}>{copy.programs.scholarship}</span>
           )}
+          {sampleScholarship(program) && <SampleScholarshipNote />}
         </p>
       </div>
       <dl className={factList}>

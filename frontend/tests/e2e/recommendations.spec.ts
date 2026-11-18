@@ -208,7 +208,7 @@ function evidence(region: string | null): QualificationEvidenceResponse {
   }
 }
 
-async function serveRecommendations(page: Page) {
+async function serveRecommendations(page: Page, mapEngine: 'leaflet' | 'maplibre' = 'maplibre') {
   const seen = {
     goal: [] as Record<string, unknown>[],
     matches: [] as Record<string, unknown>[],
@@ -233,7 +233,7 @@ async function serveRecommendations(page: Page) {
         skills_bridge_enabled: false,
         tsp_sign_in: false,
         tsp_suggestions: false,
-        map_engine: 'maplibre',
+        map_engine: mapEngine,
         maptiler_key: MAPTILER_KEY,
         map_tiles_url: '',
         map_3d: true,
@@ -364,6 +364,171 @@ async function serveRecommendations(page: Page) {
   })
   return seen
 }
+
+test('US-0025: the Career Map keeps the search during a retry on a narrow phone', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 700 })
+  const seen = await serveRecommendations(page)
+  const requests: string[] = []
+  let letRetryFinish!: () => void
+  const waiting = new Promise<void>((resolve) => {
+    letRetryFinish = resolve
+  })
+  await page.route('**/api/v1/analysis/matches', async (route) => {
+    requests.push(route.request().postDataJSON().query)
+    if (requests.length === 1) return route.abort('connectionreset')
+    await waiting
+    return route.fallback()
+  })
+  await page.goto('/explore')
+  const box = page.getByRole('searchbox', { name: 'What can you do?' })
+  const search = page.getByRole('button', { name: 'Search', exact: true })
+  await box.fill(GOAL)
+  expect((await search.boundingBox())?.height).toBeGreaterThanOrEqual(44)
+  await search.click()
+  const retry = page.getByRole('button', { name: 'Try again', exact: true })
+  await expect(retry).toBeVisible()
+  await expect(box).toHaveValue(GOAL)
+  await retry.click()
+  try {
+    await expect(search).toHaveAttribute('aria-disabled', 'true')
+    await expect.poll(() => requests.length).toBe(2)
+    await box.press('Enter')
+  } finally {
+    letRetryFinish()
+  }
+  await expect(page.getByRole('heading', { name: CSS.name, exact: true }).first()).toBeVisible()
+  expect(requests).toEqual([GOAL, GOAL])
+  expect(seen.matches).toHaveLength(1)
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320)
+})
+
+for (const engine of ['leaflet', 'maplibre'] as const) {
+  test(`phone: ${engine} keeps all Career Map filters visible and opens one center card`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 375, height: 667 })
+    await serveRecommendations(page, engine)
+    await page.goto('/explore')
+    await expect(page.locator(`.center-map[data-engine="${engine}"]`)).toBeVisible()
+    const filters = page.getByRole('group', { name: 'Show on the map' })
+    for (const filter of ['Training centers', 'Assessment centers', 'In demand jobs']) {
+      const box = await filters.getByRole('button', { name: filter, exact: true }).boundingBox()
+      expect(box).not.toBeNull()
+      expect(box!.x).toBeGreaterThanOrEqual(0)
+      expect(box!.x + box!.width).toBeLessThanOrEqual(375)
+    }
+    await page.getByRole('searchbox', { name: 'What can you do?' }).fill(GOAL)
+    await page.getByRole('button', { name: 'Search', exact: true }).click()
+    const center = page.getByRole('button', {
+      name: /Example Computer Assessment Center Assessment for/,
+    })
+    await center.click()
+    await expect(
+      page.getByRole('heading', { name: ASSESSMENT_SITE.name, exact: true }),
+    ).toBeInViewport()
+    await expect(page.locator('.leaflet-popup, .maplibregl-popup')).toHaveCount(0)
+    await page.getByRole('button', { name: 'Back to results' }).click()
+    await expect(center).toBeVisible()
+  })
+}
+
+test('BUG-18: Career Map center details show the recorded source and source date', async ({
+  page,
+}) => {
+  await serveRecommendations(page, 'leaflet')
+  const source = 'https://example.invalid/tesda-assessment-registry'
+  await page.route('**/api/v1/assessment-centers*', (route) =>
+    route.fulfill({
+      json: [
+        {
+          ...ASSESSMENT_SITE,
+          provenance: {
+            status: 'example',
+            source_name: 'Sample TESDA assessment registry',
+            source_reference: 'DEMO-ASSESS-31',
+            source_url: source,
+            source_updated_on: '2026-10-21',
+            reviewed_at: '2026-11-17T02:00:00Z',
+            record_updated_at: '2026-11-18T02:00:00Z',
+          },
+        },
+      ],
+    }),
+  )
+  await page.goto('/explore')
+  await page.getByRole('searchbox', { name: 'What can you do?' }).fill(GOAL)
+  await page.getByRole('textbox', { name: 'Or type a city or province' }).fill('Manila')
+  await page.getByRole('button', { name: 'Search', exact: true }).click()
+  await page
+    .getByRole('button', { name: /Example Computer Assessment Center Assessment for/ })
+    .click()
+  const details = page.getByRole('article').filter({
+    has: page.getByRole('heading', { name: ASSESSMENT_SITE.name, exact: true }),
+  })
+  await expect(
+    details.getByRole('link', { name: 'Sample TESDA assessment registry' }),
+  ).toHaveAttribute('href', source)
+  await expect(details.getByText('Reference: DEMO-ASSESS-31')).toBeVisible()
+  await expect(details.getByText(/^Source updated:/)).toHaveText('Source updated: 2026-10-21')
+  await expect(details.getByText(/^Record updated:/)).toHaveText('Record updated: 2026-11-18')
+  await expect(details.getByText('Example data', { exact: true })).toBeVisible()
+  await page.getByRole('button', { name: 'Back to results' }).click()
+
+  await page.getByRole('button', { name: /Example Computer Training Center Training for/ }).click()
+  const training = page.getByRole('article').filter({
+    has: page.getByRole('heading', { name: COMPUTER_SITE.name, exact: true }),
+  })
+  await expect(training.getByText(/^Source:/)).toContainText('Not recorded')
+  await expect(training.getByText(/^Source updated:/)).toHaveText('Source updated: Not recorded')
+})
+
+test.describe('the mobile Career Map sheet', () => {
+  test.use({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true })
+
+  test('closes a center card on a downward swipe and keeps the search', async ({ page }) => {
+    await serveRecommendations(page, 'leaflet')
+    await page.goto('/explore')
+    // Open Location? is already answered by the Playwright setup (playwright.config.ts).
+    const search = page.getByRole('searchbox', { name: 'What can you do?' })
+    await search.fill(GOAL)
+    await page.getByRole('button', { name: 'Search', exact: true }).click()
+    await page
+      .getByRole('button', { name: /Example Computer Assessment Center Assessment for/ })
+      .click()
+    const handle = page.getByRole('button', { name: 'Close map panel' })
+    const sheet = page.locator(`[id="${await handle.getAttribute('aria-controls')}"]`)
+    await expect(sheet.locator('> div')).toHaveCSS('overflow-y', 'auto')
+    await expect(handle).toBeInViewport()
+    const rect = (await handle.boundingBox())!
+    const x = Math.round(rect.x + rect.width / 2)
+    const y = Math.round(rect.y + rect.height / 2)
+    const touch = await page.context().newCDPSession(page)
+    const swipe = async (endY: number) => {
+      await touch.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] })
+      await touch.send('Input.dispatchTouchEvent', {
+        type: 'touchMove',
+        touchPoints: [{ x, y: endY }],
+      })
+      await touch.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] })
+    }
+
+    await swipe(y - 70)
+    await expect(handle).toBeVisible()
+    await expect(handle).toBeInViewport()
+    await swipe(y + 70)
+    await expect(sheet).toHaveJSProperty('inert', true)
+    await expect(handle).not.toBeInViewport()
+    await expect(search).toHaveValue(GOAL)
+    await search.tap()
+    await expect(
+      page.getByRole('heading', { name: ASSESSMENT_SITE.name, exact: true }),
+    ).toBeVisible()
+    await handle.press('Enter')
+    await expect(sheet).toHaveJSProperty('inert', true)
+  })
+})
 
 async function select(page: Page, label: string, option: string) {
   await page.getByRole('button', { name: new RegExp(label) }).click()
@@ -515,3 +680,160 @@ for (const [size, viewport] of Object.entries({
     })
   })
 }
+
+// US-0004: signed in with TSP as the synthetic Kuya Manuel, the Career Map uses his Skill Passport. The API answers
+// are isolated fixtures; the profile is what GET /api/v1/auth/tsp/profile returns for the mock account.
+const MANUEL = {
+  id: '9a0c1b2d-3e4f-4a5b-8c6d-7e8f9a0b1c2d',
+  full_name: 'Manuel Cruz Garcia',
+  email: null,
+  role: 'learner',
+  permissions: [],
+  created_at: '2026-11-17T00:00:00Z',
+}
+const MANUEL_PASSPORT = {
+  skills: ['Driving', 'Cooking'],
+  experience: ['Jeepney driver'],
+  education: ['High School graduate'],
+  qualifications: [],
+  credentials: [],
+  licenses: ["LTO Professional Driver's License"],
+  municipality: 'Caloocan City',
+  province: 'Metro Manila',
+  region_code: 'NCR',
+  sample: true,
+}
+const DRIVING = {
+  code: 'DRIVING-NC-II',
+  name: 'Driving NC II',
+  sector: 'Automotive and Land Transportation',
+  possible_jobs: ['Professional driver'],
+  competencies: [],
+}
+
+test('BUG-15: Kuya Manuel sees matching profile evidence in the assessment group', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await serveRecommendations(page)
+  // Registered after the fixture, so these answer first: a signed-in TSP learner and a driving match.
+  await page.addInitScript(() => localStorage.setItem('tesda-track.signed-in', 'e2e-session-hint'))
+  // The test setup marks Open Location? as answered; this learner has never been asked.
+  await page.addInitScript(() => localStorage.removeItem('track.explore.locationAsked'))
+  await page.route('**/api/v1/me', (route) => route.fulfill({ json: MANUEL }))
+  await page.route('**/api/v1/auth/tsp/profile', (route) =>
+    route.fulfill({ json: MANUEL_PASSPORT }),
+  )
+  const drivingProvider = { ...COMPUTER_SITE, name: 'Example Driving Training Center' }
+  const drivingCenter = { ...ASSESSMENT_SITE, name: 'Example Driving Assessment Center' }
+  await page.route('**/api/v1/qualifications', (route) =>
+    route.fulfill({ json: [CSS, DRIVING, WELDING] }),
+  )
+  await page.route('**/api/v1/training-providers*', (route) =>
+    route.fulfill({ json: [drivingProvider, CEBU_SITE, WELDING_SITE] }),
+  )
+  await page.route('**/api/v1/assessment-centers*', (route) =>
+    route.fulfill({ json: [drivingCenter] }),
+  )
+  await page.route('**/api/v1/training-programs*', (route) => {
+    const code = new URL(route.request().url()).searchParams.get('qualification_code')
+    const programs = [program(101, drivingProvider, DRIVING), PROGRAMS[2]]
+    return route.fulfill({ json: programs.filter((p) => !code || p.qualification.code === code) })
+  })
+  await page.route('**/api/v1/assessment-schedules*', (route) => {
+    const code = new URL(route.request().url()).searchParams.get('qualification_code')
+    return route.fulfill({
+      json:
+        !code || code === DRIVING.code
+          ? [{ ...SCHEDULE, qualification: DRIVING, center: drivingCenter }]
+          : [],
+    })
+  })
+  // The fixture answers unknown reads with 401, which would end the session: the outlook isn't under test here.
+  await page.route('**/api/v1/labor-market/outlook?*', (route) =>
+    route.fulfill({ status: 503, json: { detail: 'Not part of this test' } }),
+  )
+  await page.route('**/api/v1/analysis/matches', (route) =>
+    route.fulfill({
+      json: {
+        profile: { ...PROFILE, career_goal: 'Professional driver', existing_skills: ['driving'] },
+        matches: route.request().postDataJSON().query.includes('weld')
+          ? [{ qualification: WELDING, score: 90, reason: 'Matched your words: weld' }]
+          : [
+              { qualification: CSS, score: 89, reason: 'First fixture match' },
+              { qualification: DRIVING, score: 88, reason: 'Matched your words: driving' },
+            ],
+      },
+    }),
+  )
+
+  await page.goto('/explore')
+  const panel = page.getByRole('region', { name: 'From your TSP profile' })
+  await expect(panel).toBeVisible()
+  await expect(panel).toContainText('Driving, Cooking')
+  await expect(panel).toContainText("LTO Professional Driver's License")
+  await expect(panel).toContainText('Caloocan City, Metro Manila')
+  await expect(panel).toContainText('Sample data')
+  // The home area is the search location without asking: no "Open Location?" question.
+  await expect(
+    page.getByText('Near National Capital Region, your home area in your TSP profile'),
+  ).toBeVisible()
+  await expect(page.getByRole('dialog', { name: 'Open Location?' })).toHaveCount(0)
+
+  // A typed place replaces it for this visit only; the profile stays as it was.
+  // The panel opens from the search box (folded, its body is inert).
+  await page.getByRole('searchbox', { name: 'What can you do?' }).click()
+  const place = page.getByRole('textbox', { name: 'Or type a city or province' })
+  await place.click()
+  await place.pressSequentially('Cebu')
+  const status = page.getByRole('region', { name: 'What can you do?' }).getByRole('status')
+  await expect(status).toHaveText('Near Cebu City')
+  await expect(panel).toContainText('Caloocan City, Metro Manila')
+  await place.fill('')
+  await expect(status).toHaveText(
+    'Near National Capital Region, your home area in your TSP profile',
+  )
+
+  await place.fill('Manila')
+  await page.getByRole('searchbox', { name: 'What can you do?' }).fill('I can drive a car')
+  await page.getByRole('button', { name: 'Search', exact: true }).click()
+  const guidance = page
+    .getByRole('region', { name: 'Get certified', exact: true })
+    .getByTestId('may-be-ready')
+  await expect(guidance.getByText('You may be ready for assessment', { exact: true })).toBeVisible()
+  await expect(guidance).toContainText(
+    "Driving NC II, your TSP profile lists Driving, LTO Professional Driver's License.",
+  )
+  await expect(page.getByRole('region', { name: 'Or train first', exact: true })).toContainText(
+    drivingProvider.name,
+  )
+  await expect(page.getByRole('heading', { level: 3 }).first()).toHaveText('Get certified')
+  expect((await new AxeBuilder({ page }).include('section').analyze()).violations).toEqual([])
+  await page.getByRole('searchbox', { name: 'What can you do?' }).fill('I can weld')
+  await page.getByRole('button', { name: 'Search', exact: true }).click()
+  await expect(page.getByText(WELDING_SITE.name, { exact: true }).first()).toBeVisible()
+  await expect(page.getByTestId('may-be-ready')).toHaveCount(0)
+})
+
+test('US-0025: when the center list fails, the map does not say no centers match', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 667 })
+  await serveRecommendations(page)
+  let fail = true
+  await page.route('**/api/v1/training-providers*', (route) =>
+    fail ? route.abort('internetdisconnected') : route.fallback(),
+  )
+  await page.goto('/explore')
+  await page.getByRole('searchbox', { name: 'What can you do?' }).click()
+  const retry = page.getByRole('button', { name: 'Try loading the list again' })
+  await expect(retry).toBeVisible({ timeout: 15_000 })
+  await expect(page.getByText('Centers couldn’t be loaded. Try again from the list.')).toBeVisible()
+  await expect(page.getByText('No centers match this search yet.')).toHaveCount(0)
+  fail = false
+  await retry.click()
+  await expect(page.getByText('Centers couldn’t be loaded. Try again from the list.')).toHaveCount(
+    0,
+  )
+  await expect(retry).toHaveCount(0)
+})

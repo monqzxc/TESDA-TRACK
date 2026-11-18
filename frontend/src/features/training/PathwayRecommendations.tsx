@@ -10,6 +10,7 @@ import type { MatchResult } from '../finder/api.ts'
 import { useFinderStore } from '../finder/store.ts'
 import { QualificationEvidence } from '../labor-market/QualificationEvidence.tsx'
 import { areaQualificationsQuery, matchPathway } from './recommendationApi.ts'
+import { SuggestionFeedback } from '../suggestion-feedback/SuggestionFeedback.tsx'
 
 interface Props {
   catalog: readonly Qualification[]
@@ -36,6 +37,7 @@ export function PathwayRecommendations({
   const [goal, setGoal] = useState(finderGoal)
   const [result, setResult] = useState<MatchResult | null>(null)
   const [submittedGoal, setSubmittedGoal] = useState<string | null>(null)
+  const [feedbackScope, setFeedbackScope] = useState<string>()
   const [pending, setPending] = useState(false)
   const [requestRegion, setRequestRegion] = useState(regionCode)
   const [error, setError] = useState<string | null>(null)
@@ -76,13 +78,13 @@ export function PathwayRecommendations({
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    if (request.current && !request.current.signal.aborted) return
     setRequestRegion(regionCode)
     const query = goal.trim()
     if (!query) {
       setError(copy.emptyGoal)
       return
     }
-    request.current?.abort()
     const controller = new AbortController()
     request.current = controller
     controller.signal.addEventListener('abort', () => setPending(false), { once: true })
@@ -95,11 +97,15 @@ export function PathwayRecommendations({
       if (!controller.signal.aborted) {
         setResult(matches)
         setSubmittedGoal(query)
+        setFeedbackScope(crypto.randomUUID())
       }
     } catch (failure) {
       if (!controller.signal.aborted) setError(failureMessage(failure))
     } finally {
-      if (!controller.signal.aborted) setPending(false)
+      if (request.current === controller) {
+        request.current = null
+        if (!controller.signal.aborted) setPending(false)
+      }
     }
   }
 
@@ -148,7 +154,11 @@ export function PathwayRecommendations({
           className="min-w-0 flex-[1_1_220px]"
         />
         <Button type="submit" className={button({ variant: 'primary' })} isPending={pendingCurrent}>
-          {pendingCurrent ? copy.matching : copy.match}
+          {pendingCurrent
+            ? copy.matching
+            : error && currentRequest && goal.trim()
+              ? copy.retry
+              : copy.match}
         </Button>
       </form>
       {error && currentRequest && (
@@ -192,6 +202,15 @@ export function PathwayRecommendations({
                   >
                     {selectedCode === match.qualification.code ? copy.selected : copy.choose}
                   </Button>
+                  <div className="w-full">
+                    <SuggestionFeedback
+                      kind="qualification"
+                      resultKey={match.qualification.code}
+                      resultName={match.qualification.name}
+                      goal={submittedGoal}
+                      scope={feedbackScope}
+                    />
+                  </div>
                 </li>
               ))}
             </ul>
@@ -271,6 +290,14 @@ export function PathwayRecommendations({
                       >
                         {copy.choose}
                       </Button>
+                      <div className="w-full">
+                        <SuggestionFeedback
+                          kind="qualification"
+                          resultKey={item.qualification_code}
+                          resultName={item.qualification_name}
+                          scope={`area-${regionCode ?? 'national'}`}
+                        />
+                      </div>
                     </li>
                   ))}
                 </ul>

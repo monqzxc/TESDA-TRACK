@@ -94,8 +94,15 @@ export function recommend({
     for (const region of alternatives) {
       if (relocation.length === MAX_RELOCATION) break
       if (region === homeRegion) continue
+      // A center without coordinates is left out of recommendations until its location is fixed (US-0014).
       const there = supply
-        .filter((center) => center.regionCode === region && !taken.has(center.id))
+        .filter(
+          (center) =>
+            center.regionCode === region &&
+            !taken.has(center.id) &&
+            center.latitude !== null &&
+            center.longitude !== null,
+        )
         .sort(
           (a, b) =>
             Number(b.kind === 'training') - Number(a.kind === 'training') || byDistance(a, b),

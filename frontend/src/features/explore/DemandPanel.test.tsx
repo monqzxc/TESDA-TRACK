@@ -156,7 +156,8 @@ describe('Explore labor demand', () => {
   it('opens and shows jobs and regional markers from the chip without a search or location', async () => {
     open('/explore')
     expect(requests).toHaveLength(0)
-    fireEvent.click(screen.getByRole('button', { name: 'In demand jobs' }))
+    // The chips render twice, one row for a phone and one for wider screens; CSS shows only one.
+    fireEvent.click(screen.getAllByRole('button', { name: 'In demand jobs' })[0]!)
     expect(await screen.findByRole('heading', { name: 'WELDER' })).toBeVisible()
     expect(screen.getByText(/Snapshot: 2026-11-04/)).toBeVisible()
     expect(

@@ -2,12 +2,16 @@ import { NavLink } from 'react-router'
 import { useCopy } from '../i18n/copy.ts'
 import { paths } from '../paths.ts'
 
-/** The shared footer for application pages. Legal information stays with page content, not navigation. */
+/**
+ * The shared footer for application pages. Legal information stays with page content, not navigation. The bottom
+ * padding keeps the privacy link clear of the floating Help button (GuidedHelp: 1rem from the bottom, 44px tall),
+ * which otherwise sat over it at the end of the page.
+ */
 export function PageFooter() {
   const en = useCopy()
 
   return (
-    <footer className="w-full max-w-full px-10 pb-8 max-[1101px]:px-6 max-md:px-4">
+    <footer className="w-full max-w-full px-10 pb-24 max-[1101px]:px-6 max-md:px-4">
       <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 border-t border-border pt-5 text-14 text-muted">
         <p className="m-0">{en.footer.copyright}</p>
         <NavLink

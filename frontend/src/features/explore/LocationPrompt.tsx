@@ -39,12 +39,23 @@ async function permissionState(): Promise<PermissionState | null> {
  * looked up straight away, with no question. When it isn't allowed yet, asks "Open Location?"; Yes turns the switch
  * on (and the browser asks for permission), No leaves it off for this visit. A browser that has blocked the site
  * isn't asked: the switch explains that when pressed.
+ *
+ * `waiting`: a signed-in learner's TSP profile is still loading, so nothing happens until it's known. `skip`: the
+ * profile gives a home area, which is used as the search location instead (US-0004): no question and no device
+ * lookup; nothing is remembered, so a guest on the same browser is still asked.
  */
-export function LocationPrompt() {
+export function LocationPrompt({
+  waiting = false,
+  skip = false,
+}: {
+  waiting?: boolean
+  skip?: boolean
+}) {
   const copy = useCopy().explore.locationPrompt
   const [isOpen, setOpen] = useState(false)
 
   useEffect(() => {
+    if (waiting || skip) return
     let cancelled = false
     const { useLocation, location } = useTrainingStore.getState()
     if (useLocation || location || !('geolocation' in navigator)) return
@@ -60,7 +71,7 @@ export function LocationPrompt() {
     return () => {
       cancelled = true
     }
-  }, [])
+  }, [waiting, skip])
 
   const answer = (yes: boolean) => {
     remember(yes ? 'yes' : 'no')
@@ -69,7 +80,7 @@ export function LocationPrompt() {
   }
   return (
     <ModalDialog
-      isOpen={isOpen}
+      isOpen={isOpen && !waiting && !skip}
       onOpenChange={(open) => {
         if (!open) answer(false)
       }}

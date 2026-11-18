@@ -347,6 +347,89 @@ async function expectSettledAndAccessible(page: Page) {
   ).toEqual([])
 }
 
+test('US-0025: retries an offline goal and a failed readiness check without re-entering answers', async ({
+  page,
+  context,
+}) => {
+  await page.setViewportSize(SIZES.phone)
+  await serveFinder(page)
+  const goalRequests: string[] = []
+  const readinessRequests: unknown[] = []
+  await page.route('**/api/v1/analysis/goal', async (route) => {
+    if (await page.evaluate(() => !navigator.onLine)) return route.abort('internetdisconnected')
+    goalRequests.push(route.request().postDataJSON().query)
+    return route.fallback()
+  })
+  await page.route('**/api/v1/analysis/readiness', async (route) => {
+    readinessRequests.push(route.request().postDataJSON())
+    if (readinessRequests.length === 1) return route.abort('connectionreset')
+    return route.fallback()
+  })
+  await page.goto('/find')
+  const goal = page.getByRole('textbox', { name: FIELD })
+  await goal.fill(GOAL)
+  await context.setOffline(true)
+  await page.getByRole('button', { name: SUBMIT }).click()
+  const retry = page.getByRole('button', { name: 'Try again', exact: true })
+  await expect(retry).toBeVisible()
+  await expect(page.getByText(/You’re offline/)).toBeVisible()
+  await expect(goal).toHaveValue(GOAL)
+  await context.setOffline(false)
+  await expect(retry).toBeVisible()
+  expect(goalRequests).toEqual([])
+  await retry.click()
+  await page.getByRole('button', { name: 'Check my readiness' }).click()
+  expect(goalRequests).toEqual([GOAL])
+
+  for (const [number, next] of [
+    ['1', 'Next: Common skills'],
+    ['2', 'Next: Core skills'],
+    ['3', null],
+  ] as const) {
+    await page
+      .getByRole('radiogroup', { name: new RegExp(`^${number}\\. `) })
+      .getByText('I can do this confidently')
+      .click()
+    if (next) await page.getByRole('button', { name: next }).click()
+  }
+  await page.getByRole('button', { name: 'Analyze my skills' }).click()
+  await expect(retry).toBeVisible()
+  await expect(page.getByRole('radio', { name: 'I can do this confidently' })).toBeChecked()
+  await retry.dblclick()
+  await expect(page).toHaveURL('/find/pathway')
+  expect(readinessRequests).toHaveLength(2)
+  expect(readinessRequests[1]).toEqual(readinessRequests[0])
+})
+
+test('US-0025: retries TSP matching with the goal and optional answers on a narrow phone', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 700 })
+  await serveFinder(page)
+  let attempts = 0
+  await page.route('**/api/v1/analysis/goal', (route) => {
+    attempts += 1
+    return attempts === 1 ? route.abort('connectionreset') : route.fallback()
+  })
+  await page.goto('/tsp/webview')
+  const field = page.getByRole('textbox', { name: FIELD })
+  await field.fill(GOAL)
+  await page.getByRole('button', { name: 'Find my match' }).click()
+  const experience = page.getByRole('button', { name: 'Less than 1 year' })
+  expect((await experience.boundingBox())?.height).toBeGreaterThanOrEqual(44)
+  await experience.click()
+  const skills = page.getByRole('textbox', { name: /Existing skills/ })
+  await skills.fill('Welding, reading drawings')
+  await page.getByRole('button', { name: 'Show my matches' }).click()
+  await expect(page.getByRole('alert')).toContainText('try again')
+  await expect(skills).toHaveValue('Welding, reading drawings')
+  await expect(experience).toHaveClass('is-selected')
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(320)
+  await page.getByRole('button', { name: 'Try again', exact: true }).click()
+  await expect(page).toHaveURL('/tsp/webview/matches')
+  expect(attempts).toBe(2)
+})
+
 for (const colorScheme of ['light', 'dark'] as const) {
   for (const [size, viewport] of Object.entries(SIZES)) {
     test(`${colorScheme} theme, ${size}: goal to pathway, each step passing axe`, async ({

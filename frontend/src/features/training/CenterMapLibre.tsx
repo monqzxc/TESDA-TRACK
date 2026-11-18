@@ -344,7 +344,8 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   const fromSelection: PopupState | null =
     selectedId && !hasRoute && closedAt !== stamp ? { type: 'center', id: selectedId } : null
   const wanted = opened?.stamp === stamp ? opened.popup : fromSelection
-  const popup = wanted?.type === 'center' && !byId.has(wanted.id) ? null : wanted
+  const popup =
+    wanted?.type === 'center' && (props.hideCenterPopups || !byId.has(wanted.id)) ? null : wanted
   const popupKey = popup
     ? popup.type === 'center'
       ? `center:${popup.id}`
@@ -418,7 +419,8 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     (id: string, viaKeyboard: boolean) => {
       pickedOnMap.current = id
       latest.current.props.onPick(id)
-      openPopup({ type: 'center', id }, viaKeyboard, `pin:${id}`)
+      if (!latest.current.props.hideCenterPopups)
+        openPopup({ type: 'center', id }, viaKeyboard, `pin:${id}`)
     },
     [openPopup],
   )
@@ -944,7 +946,9 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     if (!far && insidePadding(map.project(lngLat), size, padding)) return
     // The pin below the middle by half the popup's height, so pin and popup are framed together.
     const [x, y] = paddedOffset(padding)
-    const room = Math.min((popupRef.current?.getElement().offsetHeight ?? 220) / 2, size.height / 4)
+    const room = latest.current.props.hideCenterPopups
+      ? 0
+      : Math.min((popupRef.current?.getElement().offsetHeight ?? 220) / 2, size.height / 4)
     map.easeTo({
       center: lngLat,
       ...(far ? { zoom: 13 } : {}),
@@ -1083,7 +1087,9 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     locating && props.locatingNotice !== false
       ? en.training.filters.locating
       : !points.length && !demandAreas
-        ? copy.none
+        ? props.centersUnavailable
+          ? copy.unavailable
+          : copy.none
         : (statusText ?? coverageText)
 
   const zoomBy = (delta: number) => {

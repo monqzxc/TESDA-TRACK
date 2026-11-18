@@ -158,13 +158,13 @@
 }
 .tsp-suggestions button,
 .tsp-choices button {
-  min-height: 27px;
-  padding: 3px 9px;
+  min-height: 44px;
+  padding: 6px 12px;
   border: 1px solid #d9dfe4;
   border-radius: 999px;
-  color: #8a949d;
+  color: #52606c;
   background: white;
-  font-size: 12px;
+  font-size: 14px;
   cursor: pointer;
 }
 .tsp-suggestions button:hover,
@@ -191,7 +191,7 @@
 .tsp-primary,
 .tsp-secondary {
   display: inline-flex;
-  min-height: 43px;
+  min-height: 44px;
   align-items: center;
   justify-content: center;
   border-radius: 9px;

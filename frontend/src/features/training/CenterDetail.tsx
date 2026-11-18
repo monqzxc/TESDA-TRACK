@@ -11,6 +11,7 @@ import type { CenterKind } from './address.ts'
 import { placeLabel, type Center, type Point } from './centers.ts'
 import { airportLabel, kilometres, travelTime } from './format.ts'
 import { Programs, Schedules, type Fits } from './Listings.tsx'
+import { NoLocationTag } from './NoLocationTag.tsx'
 import { useTrainingStore } from './state.ts'
 
 export const MODE_ICONS: Record<TravelMode, IconName> = {
@@ -147,7 +148,7 @@ export function CenterDetail({
             )
           ) : (
             // No coordinates: no distance and no directions, rather than made-up ones (US-08).
-            <span className={muted}>{copy.center.noLocation}</span>
+            <NoLocationTag />
           )}
           {point && hasMap && (
             <Button className={button()} onPress={onViewOnMap}>

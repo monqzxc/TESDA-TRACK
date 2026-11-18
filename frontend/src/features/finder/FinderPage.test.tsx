@@ -356,7 +356,7 @@ describe('Find my pathway', () => {
     ).toBeInTheDocument()
     expect(useFinderStore.getState().checks[welding.code]).toBeUndefined()
 
-    await user.click(screen.getByRole('button', { name: 'Analyze my skills' }))
+    await user.click(screen.getByRole('button', { name: 'Try again' }))
     expect(await screen.findByRole('heading', { name: /focused training/ })).toBeInTheDocument()
     expect(attempts).toHaveLength(2)
     expect(attempts[1]).toEqual(attempts[0])
@@ -391,9 +391,9 @@ describe('Find my pathway, signed in', () => {
     await screen.findByText(
       "We can't reach the TESDA-TRACK service right now. Please try again shortly.",
     )
-    await send()
+    await user.click(screen.getByRole('button', { name: 'Try again' }))
     await waitFor(() => expect(bodies).toHaveLength(2))
-    await screen.findByRole('button', { name: 'Find my pathways' })
+    await screen.findByRole('button', { name: 'Try again' })
     expect(bodies[1].request_id).toBe(bodies[0].request_id)
     expect(bodies[0].request_id).toMatch(/^[0-9a-f-]{36}$/i)
 
