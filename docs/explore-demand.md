@@ -60,6 +60,14 @@ where it is in demand, where it is offered, and what that means for the learner'
 Example sites are reported beside supply and never counted, so a database with only seed sites shows no supply. A
 demo can set `OUTLOOK_INCLUDE_EXAMPLE_SITES=true`; the analysis then says the counts include examples.
 
+Few qualifications have reviewed posting links yet, so the demand level and the higher-demand areas (US-0018) are
+usually empty. For the December 2 demo, `OUTLOOK_SAMPLE_DEMAND_ENABLED=true` gives a qualification with **no**
+reviewed posting record anywhere sample demand modelled on ABDD planning (`services/sample_demand.py`: each
+region's labor-market weight, raised for its priority sectors, with a fixed per-region spread). Real records always
+win. A sample answer has `demand_is_sample: true`, says "sample demand records" instead of posting records, puts the
+sample note first in `limitations`, is never sent for an AI summary, and is tagged **Sample data** on the brief.
+Turn it off once reviewed posting links cover the catalog.
+
 The summary can be rewritten by Claude (`GET /labor-market/outlook/summary`): set `OUTLOOK_AI_SUMMARY_ENABLED=true`
 and `ANTHROPIC_API_KEY`. Off by default. Only the qualification's name, region names and the public counts are sent.
 The paragraph is rejected if it holds a figure the counts don't, cached for a week, rate limited, and replaced by

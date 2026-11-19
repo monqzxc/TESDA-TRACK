@@ -2502,9 +2502,15 @@ export const en = {
       // The counts for the area, one icon each.
       stats: {
         postings: (n: number) => `posting${n === 1 ? '' : 's'}`,
+        // Sample demand (US-0018) is counted as records, never as postings.
+        samplePostings: (n: number) => `sample record${n === 1 ? '' : 's'}`,
         training: 'training',
         assessment: 'assessment',
       },
+      // The December 2 demo's sample demand, modelled on ABDD planning (US-0018).
+      sample: 'Sample data',
+      sampleNote:
+        'Demand is sample data modelled on ABDD planning, for the December 2 demo. Not real postings.',
       balance: {
         more_demand: 'Demand ahead of supply',
         balanced: 'Balanced',
@@ -2542,6 +2548,7 @@ export const en = {
         records: (postings: number) =>
           `${postings.toLocaleString()} record${postings === 1 ? '' : 's'}`,
         away: (km: number) => `${Math.round(km).toLocaleString()} km`,
+        centers: (n: number) => `${n.toLocaleString()} center${n === 1 ? '' : 's'}`,
         show: (region: string) => `Show ${region} on the map`,
         top: 'Your region leads for this one.',
         noData: 'No posting records yet: missing data, not low demand.',

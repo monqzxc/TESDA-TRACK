@@ -297,11 +297,18 @@ export function OutlookBrief({
               {area?.limited && (
                 <span className={cx(tag, 'bg-chip text-muted')}>{copy.limited}</span>
               )}
+              {data.demand_is_sample && (
+                <span className={cx(tag, 'bg-warn-bg text-warn-ink')} title={copy.sampleNote}>
+                  {copy.sample}
+                </span>
+              )}
             </div>
             {area && (
               <ul className="m-0 flex list-none flex-wrap gap-1.5 p-0">
                 <Stat icon="briefcase" tone="text-navy" value={area.posting_count}>
-                  {copy.stats.postings(area.posting_count)}
+                  {data.demand_is_sample
+                    ? copy.stats.samplePostings(area.posting_count)
+                    : copy.stats.postings(area.posting_count)}
                 </Stat>
                 <Stat icon="learn" tone="text-blue" value={area.training_sites}>
                   {copy.stats.training}
@@ -513,7 +520,9 @@ function LocalDemand({
   onView: (view: View) => void
   skill: string
 }) {
-  const copy = useCopy().explore.outlook.local
+  const outlookCopy = useCopy().explore.outlook
+  const copy = outlookCopy.local
+  const sampleNote = outlookCopy.sampleNote
   const data = explore.outlook.data
   if (!data) return null
   const higher = data.higher_demand ?? []
@@ -568,6 +577,12 @@ function LocalDemand({
           ) : null}
         </span>
       </p>
+      {data.demand_is_sample && (
+        <p className={cx(note, 'flex items-start gap-1.5')}>
+          <Icon name="info" className="mt-[3px] flex-none" />
+          {sampleNote}
+        </p>
+      )}
       {groups.length ? (
         <div className="flex flex-col gap-1">
           <p className="m-0 flex items-center gap-1.5 text-12 font-bold text-navy">
@@ -599,6 +614,10 @@ function LocalDemand({
                         <span className="inline-flex items-center gap-1">
                           <Icon name="distance" />
                           {copy.away(area.distance_km)}
+                        </span>
+                        <span className="inline-flex items-center gap-1">
+                          <Icon name="learn" />
+                          {copy.centers(area.training_sites + area.assessment_sites)}
                         </span>
                       </span>
                     </Button>

@@ -146,7 +146,8 @@ def qualification_outlook_view(
     and no learner input or coordinates are read."""
     return qualification_outlook.build(session, qualification_code, region_code, home_region_code, relocate,
                                        ai_summary_available=writer is not None,
-                                       include_examples=settings.outlook_include_example_sites)
+                                       include_examples=settings.outlook_include_example_sites,
+                                       sample_demand_enabled=settings.outlook_sample_demand_enabled)
 
 
 @router.post("/suggestions", response_model=NearbySuggestions)
@@ -174,7 +175,8 @@ def qualification_outlook_summary(
     the rules' own words."""
     outlook = qualification_outlook.build(session, qualification_code, region_code, home_region_code, relocate,
                                           ai_summary_available=writer is not None,
-                                          include_examples=settings.outlook_include_example_sites)
+                                          include_examples=settings.outlook_include_example_sites,
+                                       sample_demand_enabled=settings.outlook_sample_demand_enabled)
     limits = request.app.state.outlook_summary_limits
 
     def allow_request() -> bool:

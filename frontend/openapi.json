@@ -12687,6 +12687,20 @@
             "type": "boolean",
             "title": "Nearby",
             "description": "Within NEARBY_KM of the learner's region"
+          },
+          "training_sites": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Training Sites",
+            "description": "Recorded training centers for it in that region",
+            "default": 0
+          },
+          "assessment_sites": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Assessment Sites",
+            "description": "Recorded assessment centers for it in that region",
+            "default": 0
           }
         },
         "type": "object",
@@ -15801,6 +15815,12 @@
             "type": "boolean",
             "title": "Demand Available",
             "description": "Whether any posting record links to this qualification at all"
+          },
+          "demand_is_sample": {
+            "type": "boolean",
+            "title": "Demand Is Sample",
+            "description": "The demand counts are sample data modelled on ABDD planning for the December 2 demo (OUTLOOK_SAMPLE_DEMAND_ENABLED), not posting records; shown labelled",
+            "default": false
           },
           "home_demand": {
             "anyOf": [

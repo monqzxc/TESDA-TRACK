@@ -3889,6 +3889,18 @@ export interface components {
              * @description Within NEARBY_KM of the learner's region
              */
             nearby: boolean;
+            /**
+             * Training Sites
+             * @description Recorded training centers for it in that region
+             * @default 0
+             */
+            training_sites: number;
+            /**
+             * Assessment Sites
+             * @description Recorded assessment centers for it in that region
+             * @default 0
+             */
+            assessment_sites: number;
         };
         /**
          * HomeDemand
@@ -5024,6 +5036,12 @@ export interface components {
              * @description Whether any posting record links to this qualification at all
              */
             demand_available: boolean;
+            /**
+             * Demand Is Sample
+             * @description The demand counts are sample data modelled on ABDD planning for the December 2 demo (OUTLOOK_SAMPLE_DEMAND_ENABLED), not posting records; shown labelled
+             * @default false
+             */
+            demand_is_sample: boolean;
             /** @description The learner's region, when they gave one */
             home_demand?: components["schemas"]["HomeDemand"] | null;
             /**

@@ -117,6 +117,9 @@ class Settings(BaseSettings):
     # A demo deployment whose only centers are the seed's example sites can count them as supply, so the map has
     # something to compare; the analysis then says the counts include examples. Leave off wherever real records exist.
     outlook_include_example_sites: bool = False
+    # Sample demand modelled on ABDD planning for the December 2 demo (services.sample_demand), for qualifications
+    # with no reviewed posting record anywhere. Always labelled as sample data; off by default.
+    outlook_sample_demand_enabled: bool = False
     outlook_ai_summary_enabled: bool = False
     anthropic_api_key: SecretStr | None = None
     outlook_summary_model: str = Field(default="claude-opus-5-5", min_length=1, max_length=100)

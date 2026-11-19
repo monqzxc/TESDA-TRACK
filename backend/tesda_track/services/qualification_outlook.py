@@ -6,6 +6,7 @@ The balance compares a region's share of each. It is a rough signal for a learne
 workforce shortage estimate, and the words written from it say so.
 """
 import math
+import re
 from collections import Counter
 from datetime import datetime
 
@@ -18,7 +19,7 @@ from tesda_track.models import (AssessmentCenter, AssessmentSchedule, Region, Tr
 from tesda_track.models.registry import RegistryRecord
 from tesda_track.schemas.outlook import (AreaOutlook, DemandLevel, HigherDemandArea, HomeDemand, OutlookInsight,
                                          OutlookPoint, OutlookQualification, OutlookTotals, QualificationOutlook)
-from tesda_track.services import area_jobs, assessments, catalog
+from tesda_track.services import area_jobs, assessments, catalog, sample_demand
 
 LIMITATIONS = [
     "Demand counts dated posting records with a reviewed link to the qualification; they are not live openings or "
@@ -115,7 +116,8 @@ def home_and_higher(home: AreaOutlook | None, areas: list[AreaOutlook],
                          ranked_of=len(posted), limited=home.posting_count < MIN_RECORDS)
     higher = [HigherDemandArea(region_code=area.region_code, name=area.name, posting_count=area.posting_count,
                                level=level(area), distance_km=round(_km(home, area), 1),
-                               nearby=_km(home, area) <= NEARBY_KM)
+                               nearby=_km(home, area) <= NEARBY_KM, training_sites=area.training_sites,
+                               assessment_sites=area.assessment_sites)
               for area in areas if area.posting_count > home.posting_count]
     higher.sort(key=lambda area: (not area.nearby, -area.posting_count, area.distance_km))
     return summary, higher[:MAX_HIGHER]
@@ -136,7 +138,8 @@ def classify(postings: int, sites: int, total_postings: int, total_sites: int) -
 
 def build(session: Session, qualification_code: str, region_code: str | None = None,
           home_region_code: str | None = None, relocate: bool = False, *, ai_summary_available: bool = False,
-          include_examples: bool = False, now: datetime | None = None) -> QualificationOutlook:
+          include_examples: bool = False, sample_demand_enabled: bool = False,
+          now: datetime | None = None) -> QualificationOutlook:
     qualification = catalog.get_active_qualification(session, qualification_code)
     regions = list(session.exec(select(Region).order_by(Region.position)))
     known = {region.code for region in regions}
@@ -145,13 +148,19 @@ def build(session: Session, qualification_code: str, region_code: str | None = N
 
     demand = area_jobs.discover(session, None, None, qualification_code, limit=1)
     posted = {area.region_code: area for area in demand.areas}
+    # Real records always win: sample demand only stands in for a qualification with none anywhere (US-0018).
+    sample = sample_demand_enabled and not demand.posting_count
+    sample_counts = (sample_demand.counts(qualification.code, qualification.sector.name if qualification.sector else None,
+                                          [region.code for region in regions]) if sample else {})
     training, assessment, examples = _sites(session, qualification.id, now or utcnow(), include_examples)
     trains, assesses, placeholders = (Counter(sites.values()) for sites in (training, assessment, examples))
-    total_postings, total_sites = demand.posting_count, len(training) + len(assessment)
+    total_postings = sum(sample_counts.values()) if sample else demand.posting_count
+    total_sites = len(training) + len(assessment)
 
     areas = []
     for region in regions:
-        postings = posted[region.code].posting_count if region.code in posted else 0
+        postings = (sample_counts.get(region.code, 0) if sample
+                    else posted[region.code].posting_count if region.code in posted else 0)
         sites = trains[region.code] + assesses[region.code]
         balance, limited = classify(postings, sites, total_postings, total_sites)
         areas.append(AreaOutlook(
@@ -171,16 +180,31 @@ def build(session: Session, qualification_code: str, region_code: str | None = N
     alternatives = candidates[:MAX_ALTERNATIVES]
     by_code = {area.region_code: area for area in areas}
     home_demand, higher_demand = home_and_higher(by_code.get(home_region_code), areas, total_postings)
+    insight = write_insight(qualification.name, by_code.get(region_code), by_code.get(home_region_code), relocate,
+                            areas, totals, alternatives, include_examples)
+    limitations = [*LIMITATIONS, *([EXAMPLES_COUNTED] if include_examples else [])]
+    if sample:
+        insight = _as_sample(insight)
+        limitations = [sample_demand.SAMPLE_LIMITATION, *limitations]
     return QualificationOutlook(
         qualification=OutlookQualification(code=qualification.code, name=qualification.name),
         region_code=region_code, home_region_code=home_region_code, relocate=relocate, areas=areas, totals=totals,
         alternatives=[area.region_code for area in alternatives], training_site_ids=sorted(training),
         assessment_site_ids=sorted(assessment), snapshot_dates=demand.snapshot_dates,
-        demand_available=total_postings > 0, home_demand=home_demand, higher_demand=higher_demand,
-        insight=write_insight(qualification.name, by_code.get(region_code), by_code.get(home_region_code), relocate,
-                              areas, totals, alternatives, include_examples),
-        includes_example_sites=include_examples, ai_summary_available=ai_summary_available,
-        limitations=[*LIMITATIONS, *([EXAMPLES_COUNTED] if include_examples else [])])
+        demand_available=total_postings > 0, demand_is_sample=sample, home_demand=home_demand,
+        higher_demand=higher_demand, insight=insight, includes_example_sites=include_examples,
+        ai_summary_available=ai_summary_available, limitations=limitations)
+
+
+def _sample_words(text: str) -> str:
+    """The rules' words for sample demand: they never call it posting records."""
+    text = text.replace("posting record", "sample demand record")
+    return re.sub(r"\b(\d[\d,]*) posting(s?)\b", r"\1 sample demand record\2", text)
+
+
+def _as_sample(insight: OutlookInsight) -> OutlookInsight:
+    return OutlookInsight(headline=_sample_words(insight.headline), summary=_sample_words(insight.summary),
+                          points=[OutlookPoint(kind=p.kind, text=_sample_words(p.text)) for p in insight.points])
 
 
 # The analysis in plain words. Every sentence is built from the counts above, so it can't say more than they do.

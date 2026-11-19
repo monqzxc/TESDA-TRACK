@@ -61,6 +61,7 @@ const area = (region: (typeof regions)[number], extra: object) => ({
 const asked: URL[] = []
 let aiSummary = false
 let demandAvailable = true
+let demandIsSample = false
 
 const outlook = (url: URL) => {
   const relocate = url.searchParams.get('relocate') === 'true'
@@ -110,6 +111,7 @@ const outlook = (url: URL) => {
     },
     // Card 3, as the API ranks it: Manila has 2 of the 10 records, Cebu 8.
     demand_available: demandAvailable,
+    demand_is_sample: demandIsSample,
     home_demand: !demandAvailable
       ? null
       : url.searchParams.get('home_region_code') === 'NCR'
@@ -143,6 +145,8 @@ const outlook = (url: URL) => {
               level: 'high',
               distance_km: 571.2,
               nearby: false,
+              training_sites: 1,
+              assessment_sites: 0,
             },
           ]
         : [],
@@ -157,6 +161,7 @@ beforeEach(() => {
   asked.length = 0
   aiSummary = false
   demandAvailable = true
+  demandIsSample = false
   useDemandStore.setState({
     region: undefined,
     scope: undefined,
@@ -393,6 +398,8 @@ describe('Demand where you are (Card 3)', () => {
     const cebu = within(local).getByRole('button', { name: 'Show Central Visayas on the map' })
     expect(cebu).toHaveTextContent('8 records')
     expect(cebu).toHaveTextContent('571 km')
+    expect(cebu).toHaveTextContent('1 center')
+    expect(within(local).queryByText(/sample data/i)).not.toBeInTheDocument()
     expect(asked.at(-1)?.searchParams.get('home_region_code')).toBe('NCR')
 
     // Chosen, the area is analysed and shaded on the demand map; the learner's own area stays theirs.
@@ -442,6 +449,17 @@ describe('Demand where you are (Card 3)', () => {
     useTrainingStore.setState({ useLocation: false, location: null })
     const local = await brief(/type a city to see local demand/)
     expect(within(local).getByRole('status')).toHaveTextContent(/to see local demand/)
+  })
+
+  it('labels the December 2 demo’s sample demand as sample data (US-0018)', async () => {
+    demandIsSample = true
+    const local = await brief('Low demand')
+    expect(within(local).getByText(/sample data modelled on ABDD/)).toBeInTheDocument()
+    expect(screen.getByText('Sample data')).toBeInTheDocument()
+    expect(screen.getByText('sample records')).toBeInTheDocument()
+    expect(
+      within(local).getByRole('button', { name: 'Show Central Visayas on the map' }),
+    ).toBeInTheDocument()
   })
 
   it('says plainly when there is no demand data for the qualification', async () => {

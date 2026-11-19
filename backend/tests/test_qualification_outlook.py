@@ -420,3 +420,54 @@ def test_demand_results_for_several_learner_locations(client, session, qualifica
     assert response.status_code == 200
     body = response.json()
     assert (body["home_demand"]["level"], [a["region_code"] for a in body["higher_demand"]]) == expected
+
+
+def test_sample_demand_gives_a_labelled_level_and_higher_demand_areas_when_no_posting_is_linked(session):
+    """US-0018 AC1, AC2: with sample demand on, a qualification with no reviewed posting record anywhere still has a
+    demand level and higher-demand areas, and every word says it is sample data."""
+    training(session, "NCR", 2)
+
+    plain = qualification_outlook.build(session, CODE, "NCR", "NCR", relocate=True)
+    assert not plain.demand_available and not plain.demand_is_sample and plain.home_demand.level == "none"
+
+    outlook = qualification_outlook.build(session, CODE, "NCR", "NCR", relocate=True, sample_demand_enabled=True)
+    assert outlook.demand_available and outlook.demand_is_sample
+    assert all(item.posting_count > 0 for item in outlook.areas)
+    assert outlook.totals.posting_count == sum(item.posting_count for item in outlook.areas)
+    assert outlook.home_demand.level in ("high", "moderate", "low")
+    assert outlook.limitations[0] == qualification_outlook.sample_demand.SAMPLE_LIMITATION
+    words = [outlook.insight.headline, outlook.insight.summary, *(point.text for point in outlook.insight.points)]
+    assert not any("posting record" in text for text in words)
+    assert any("sample demand record" in text for text in words)
+
+    # Relocating from a smaller region lists regions with more sample demand, with their distance.
+    away = qualification_outlook.build(session, CODE, "XIII", "XIII", relocate=True, sample_demand_enabled=True)
+    assert away.higher_demand
+    assert all(item.posting_count > away.home_demand.posting_count and item.distance_km >= 0
+               for item in away.higher_demand)
+    # The same answer every time.
+    again = qualification_outlook.build(session, CODE, "XIII", "XIII", relocate=True, sample_demand_enabled=True)
+    assert [a.posting_count for a in again.areas] == [a.posting_count for a in away.areas]
+
+
+def test_real_posting_records_always_win_over_sample_demand(session):
+    postings(session, "III", 4)
+
+    outlook = qualification_outlook.build(session, CODE, "NCR", "NCR", sample_demand_enabled=True)
+    assert not outlook.demand_is_sample
+    assert outlook.totals.posting_count == 4 and area(outlook, "III").posting_count == 4
+    assert area(outlook, "NCR").posting_count == 0
+
+
+def test_sample_demand_is_never_sent_for_an_ai_summary(session):
+    training(session, "NCR", 1)
+    outlook = qualification_outlook.build(session, CODE, "NCR", "NCR", sample_demand_enabled=True)
+
+    class Writer:
+        model = "test"
+
+        def write(self, facts):
+            raise AssertionError("sample demand must not reach the writer")
+
+    summary = outlook_summary.summarize(session, outlook, Writer(), ttl_seconds=0)
+    assert summary.source == "rules" and summary.text == outlook.insight.summary

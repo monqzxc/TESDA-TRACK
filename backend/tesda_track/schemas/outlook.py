@@ -75,6 +75,8 @@ class HigherDemandArea(BaseModel):
     level: DemandLevel
     distance_km: float = Field(ge=0, description="Between the two regions' centers, as the crow flies")
     nearby: bool = Field(description="Within NEARBY_KM of the learner's region")
+    training_sites: int = Field(default=0, ge=0, description="Recorded training centers for it in that region")
+    assessment_sites: int = Field(default=0, ge=0, description="Recorded assessment centers for it in that region")
 
 
 class QualificationOutlook(BaseModel):
@@ -90,6 +92,9 @@ class QualificationOutlook(BaseModel):
     assessment_site_ids: list[int] = Field(description="The assessment centers counted as supply")
     snapshot_dates: list[date]
     demand_available: bool = Field(description="Whether any posting record links to this qualification at all")
+    demand_is_sample: bool = Field(
+        default=False, description="The demand counts are sample data modelled on ABDD planning for the December 2 "
+                                   "demo (OUTLOOK_SAMPLE_DEMAND_ENABLED), not posting records; shown labelled")
     home_demand: HomeDemand | None = Field(default=None, description="The learner's region, when they gave one")
     higher_demand: list[HigherDemandArea] = Field(
         default_factory=list, description="Regions with more posting records than the learner's: nearby ones first, "

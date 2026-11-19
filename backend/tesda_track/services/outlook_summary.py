@@ -141,7 +141,8 @@ def summarize(session: Session, outlook: QualificationOutlook, writer: SummaryWr
               allow_request=lambda: True) -> OutlookSummary:
     """The AI-written paragraph for this outlook, from the cache when it has been written before. `allow_request`
     says whether a new one may be asked for now (the request limits); when it may not, the rules speak."""
-    if writer is None:
+    # Sample demand (US-0018) is described only in the rules' words, which always call it sample data.
+    if writer is None or outlook.demand_is_sample:
         return rules_summary(outlook)
     facts = facts_for(outlook)
     fingerprint = json.dumps([PROMPT_VERSION, writer.model, facts], sort_keys=True, ensure_ascii=False)
