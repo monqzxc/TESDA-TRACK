@@ -14,6 +14,7 @@ import { Programs, Schedules, type Fits } from './Listings.tsx'
 import { NoLocationTag } from './NoLocationTag.tsx'
 import { useSavedCenters } from './savedCenters.ts'
 import { useTrainingFilters, useTrainingStore } from './state.ts'
+import { splitPhones } from '../../lib/phone.ts'
 
 export const MODE_ICONS: Record<TravelMode, IconName> = {
   car: 'car',
@@ -112,12 +113,13 @@ export function CenterDetail({
           {center.address && <p className={muted}>{center.address}</p>}
           {(center.phone || center.email) && (
             <p className="m-0 flex flex-wrap gap-x-[0.9rem] gap-y-1 text-13">
-              {center.phone && (
-                <a className={contact} href={`tel:${center.phone.replace(/[^+\d]/g, '')}`}>
-                  <Icon name="phone" />
-                  {center.phone}
-                </a>
-              )}
+              {center.phone &&
+                splitPhones(center.phone).map((phone) => (
+                  <a key={phone.tel} className={contact} href={`tel:${phone.tel}`}>
+                    <Icon name="phone" />
+                    {phone.text}
+                  </a>
+                ))}
               {center.email && (
                 <a className={contact} href={`mailto:${center.email}`}>
                   <Icon name="mail" />

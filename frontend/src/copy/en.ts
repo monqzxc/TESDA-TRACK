@@ -2449,6 +2449,36 @@ export const en = {
       minutes: (time: string) => `about ${time} by car`,
       byCar: 'By car',
     },
+    // The ranked list beside the map: the best centers for the qualification in focus, each with its reason.
+    ranked: {
+      heading: 'Recommended centers',
+      for: (qualification: string) => `For ${qualification}, best first`,
+      top: 'Recommended',
+      // The trip line: "6 km · about 20 min".
+      km: (km: number) => `${km} km`,
+      about: (time: string) => `about ${time}`,
+      scholarship: 'Scholarship open',
+      demand: 'In demand',
+      ready: 'You may be ready',
+      kinds: { training: 'Training', assessment: 'Assessment' },
+      reasons: {
+        ready: 'Your TSP profile suggests you may be ready to get assessed here',
+        nearest: 'The shortest trip from you',
+        scholarship: 'A scholarship is open here, and the trip is about as short',
+        demand: (region: string) =>
+          `Jobs for this qualification are in demand in ${region}, and the trip is about as short`,
+        inRange: (km: number) => `Within your ${km} km range`,
+        outside: (km: number) => `Nearest, though outside your ${km} km range`,
+      },
+      how: 'Shorter trips rank first. A center with an open scholarship or more demand moves above one with a similar trip.',
+      howSignedIn:
+        'Shorter trips rank first. A center with an open scholarship or more demand moves above one with a similar trip, and so does an assessment center when your TSP profile suggests you may be ready.',
+      sample: 'Sample data',
+      sampleNote:
+        'Travel times are estimated from straight-line distance for the December 2 demo, not measured routes.',
+      none: 'No center offers this qualification yet.',
+      needPlace: 'Share your location or type a city to see the centers ranked for you.',
+    },
     demand: {
       heading: 'Jobs and qualification demand',
       choose: 'Demand for',

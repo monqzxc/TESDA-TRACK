@@ -36,7 +36,9 @@ import {
   type QualificationCard,
   type Related,
 } from './explore.ts'
+import type { RankedCenter } from './recommend.ts'
 import { useExploreStore, type Explore } from './useExplore.ts'
+import { splitPhones } from '../../lib/phone.ts'
 
 const heading = 'm-0 text-15 leading-[1.35] font-bold text-navy'
 const note = 'm-0 text-13 leading-[1.5] text-muted'
@@ -916,6 +918,172 @@ function RangeStep({ rangeKm }: { rangeKm: number }) {
   )
 }
 
+/**
+ * The core of the results: the centers for the qualification in focus, ranked for the learner, best first. Each says
+ * its main reason, its distance and travel time, and any scholarship and demand tags; the first is "Recommended".
+ * Pressed, a center opens on the map with its pin highlighted. The travel times are estimates, so the list is
+ * labelled as sample data.
+ */
+export function RankedCenters({
+  explore,
+  kind,
+  onSelect,
+}: {
+  explore: Explore
+  /** Only this kind, on the Get certified or Train tab. */
+  kind?: CenterKind
+  onSelect: (id: string, code?: string) => void
+}) {
+  const en = useCopy()
+  const copy = en.explore.ranked
+  const headingId = useId()
+  const { demandCode: code, reference, rangeKm, focusName } = explore
+  if (!code) return null
+  const items = explore.ranked.filter((item) => !kind || item.center.kind === kind)
+  const signedIn = explore.passportStatus === 'loaded'
+
+  return (
+    <section
+      aria-labelledby={headingId}
+      data-testid="ranked-centers"
+      className={cx('flex flex-col gap-2 rounded-14 border border-border bg-surface p-3', floating)}
+    >
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div className="min-w-0">
+          <h3 id={headingId} className={cx(heading, 'flex items-center gap-1.5')}>
+            <Icon name="star" className="text-[#b45309]" />
+            {copy.heading}
+          </h3>
+          {focusName && <p className={cx(note, 'mt-0.5')}>{copy.for(focusName)}</p>}
+        </div>
+        {reference && items.length > 0 && (
+          // Quiet on purpose: a note for the demo, not a warning that competes with the ranking.
+          <span className="mt-0.5 inline-flex flex-none items-center gap-1 text-11 text-muted opacity-80">
+            <Icon name="info" size="0.8rem" />
+            {copy.sample}
+          </span>
+        )}
+      </div>
+      {!reference ? (
+        <p className={note}>{copy.needPlace}</p>
+      ) : !items.length ? (
+        <p className={note}>{copy.none}</p>
+      ) : (
+        <>
+          <ol className="m-0 flex list-none flex-col gap-1.5 p-0">
+            {items.map((item, index) => (
+              <li key={item.center.id}>
+                <RankedRow
+                  item={item}
+                  rank={index + 1}
+                  top={index === 0}
+                  rangeKm={rangeKm}
+                  onSelect={() => onSelect(item.center.id, code)}
+                />
+              </li>
+            ))}
+          </ol>
+          <p className="m-0 text-12 leading-[1.45] text-muted">
+            {signedIn ? copy.howSignedIn : copy.how} {copy.sampleNote}
+          </p>
+        </>
+      )}
+    </section>
+  )
+}
+
+/** One ranked center: its place in the list, its name and kind, why it ranks there, and "6 km · about 20 min · tags". */
+function RankedRow({
+  item,
+  rank,
+  top,
+  rangeKm,
+  onSelect,
+}: {
+  item: RankedCenter
+  rank: number
+  top: boolean
+  rangeKm: number
+  onSelect: () => void
+}) {
+  const copy = useCopy().explore.ranked
+  const { center, minutes, reason } = item
+  const why =
+    reason === 'demand'
+      ? copy.reasons.demand(center.region || center.regionCode || '')
+      : reason === 'inRange' || reason === 'outside'
+        ? copy.reasons[reason](rangeKm)
+        : copy.reasons[reason]
+  const trip = [
+    ...(center.distanceKm !== null ? [copy.km(roundKm(center.distanceKm))] : []),
+    ...(minutes !== null ? [copy.about(travelTime(minutes))] : []),
+  ].join(' · ')
+  return (
+    <Button
+      onPress={onSelect}
+      data-testid="ranked-center"
+      className={cx(
+        'group flex w-full cursor-pointer items-start gap-2.5 rounded-10 border px-2.5 py-2 text-left data-focus-visible:outline-3 data-focus-visible:outline-focus',
+        top ? 'border-[#f2c66d] bg-[#fff8e8]' : 'border-transparent bg-soft',
+        lift,
+        'data-hovered:border-hover-border data-hovered:bg-surface data-hovered:shadow-[0_6px_14px_-6px_rgb(var(--track-shadow-rgb)/0.3)] data-pressed:scale-[0.99]',
+      )}
+    >
+      <span
+        aria-hidden="true"
+        className={cx(
+          'mt-0.5 grid size-6 flex-none place-items-center rounded-full text-12 font-bold text-white',
+          kindFill[center.kind],
+        )}
+      >
+        {rank}
+      </span>
+      <span className="min-w-0 flex-1">
+        {top && (
+          <span className={cx(tag, 'mb-1 bg-[#fdecc8] py-0.5 font-bold text-[#7a4a05]')}>
+            <Icon name="star" />
+            {copy.top}
+          </span>
+        )}
+        <span className="block text-14 leading-[1.35] font-semibold wrap-anywhere text-navy">
+          {center.name}
+        </span>
+        <span className="mt-0.5 flex items-center gap-1 text-12 font-semibold text-muted">
+          <Icon name={kindIcon[center.kind]} className={kindColor[center.kind]} />
+          {copy.kinds[center.kind]}
+          {center.city ? ` · ${center.city}` : ''}
+        </span>
+        <span className="mt-1 block text-13 leading-[1.4] font-semibold text-ink">{why}</span>
+        <span className="mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-13 leading-[1.4] text-muted">
+          {trip && <span data-testid="ranked-trip">{trip}</span>}
+          {item.scholarship && (
+            <span className={cx(solidTag, 'bg-scholarship-fill py-0.5')}>
+              <Icon name="star" />
+              {copy.scholarship}
+            </span>
+          )}
+          {item.demand && (
+            <span className={cx(tag, 'bg-good-bg text-good-ink')}>
+              <Icon name="briefcase" />
+              {copy.demand}
+            </span>
+          )}
+          {item.ready && (
+            <span className={cx(tag, 'bg-tint text-blue')}>
+              <Icon name="award" />
+              {copy.ready}
+            </span>
+          )}
+        </span>
+      </span>
+      <Icon
+        name="chevron"
+        className="mt-1 flex-none -rotate-90 text-muted transition-transform duration-200 group-data-hovered:translate-x-0.5 group-data-hovered:text-blue"
+      />
+    </Button>
+  )
+}
+
 /** After a search: tabs, then Get certified and Train in the order the learner's words suggest, or Demand. */
 export function ResultsPanel({
   explore,
@@ -1026,6 +1194,14 @@ export function ResultsPanel({
       )}
       {/* Asked even before there is a place: arriving from Find my pathway opens it straight away. */}
       {view !== 'demand' && <RangeStep rangeKm={rangeKm} />}
+      {/* The ranked list comes first: the answer to "where should I go, and why?". */}
+      {view !== 'demand' && (
+        <RankedCenters
+          explore={explore}
+          kind={view === 'all' ? undefined : view}
+          onSelect={onSelect}
+        />
+      )}
       {shown.map((kind, index) => (
         <Group
           key={kind}
@@ -1126,13 +1302,14 @@ export function CenterCard({
     value: string
     external?: boolean
   }[] = []
-  if (center.phone)
+  // Each number listed gets its own row, so each one dials on its own.
+  for (const phone of center.phone ? splitPhones(center.phone) : [])
     contacts.push({
-      key: 'call',
-      href: `tel:${center.phone}`,
+      key: `call-${phone.tel}`,
+      href: `tel:${phone.tel}`,
       icon: 'phone',
       label: copy.call,
-      value: center.phone,
+      value: phone.text,
     })
   if (center.email)
     contacts.push({

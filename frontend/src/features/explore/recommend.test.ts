@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import type { Center, Program, Schedule } from '../training/centers.ts'
-import { recommend, recommendedIds, supplyCenters } from './recommend.ts'
+import type { Outlook } from './outlookApi.ts'
+import {
+  highDemandRegions,
+  rankCenters,
+  recommend,
+  recommendedIds,
+  supplyCenters,
+} from './recommend.ts'
 
 const CODE = 'PLUMBING'
 
@@ -114,5 +121,102 @@ describe('recommend', () => {
     const moving = pick(supply, true, ['NCR', 'VII'])
     expect(moving.training?.center.id).toBe('training-cebu')
     expect(moving.relocation).toEqual([])
+  })
+})
+
+describe('rankCenters (recommended centers with reasons)', () => {
+  // A training center with a program for CODE, its scholarship open or not.
+  const training = (id: string, km: number, scholarship = false, regionCode = 'NCR') =>
+    ({
+      ...center(`training-${id}`, regionCode, km),
+      programs: [{ qualification: { code: CODE }, scholarship_open: scholarship } as Program],
+    }) as Center
+  const ids = (items: { center: Center }[]) => items.map((item) => item.center.id)
+
+  it('ranks shorter trips first and says the first is the shortest', () => {
+    const ranked = rankCenters({
+      supply: [training('far', 18), training('near', 4), training('mid', 9)],
+      code: CODE,
+    })
+    expect(ids(ranked)).toEqual(['training-near', 'training-mid', 'training-far'])
+    expect(ranked[0]).toMatchObject({ reason: 'nearest', scholarship: false, demand: false })
+    expect(ranked[0].minutes).toBeGreaterThan(0)
+    expect(ranked[1].reason).toBe('inRange')
+  })
+
+  it('moves a center with an open scholarship above one with a similar trip', () => {
+    const ranked = rankCenters({
+      supply: [training('plain', 10), training('funded', 11.5, true)],
+      code: CODE,
+    })
+    expect(ids(ranked)).toEqual(['training-funded', 'training-plain'])
+    expect(ranked[0]).toMatchObject({ reason: 'scholarship', scholarship: true })
+  })
+
+  it('moves a center in a high-demand region above one with a similar trip', () => {
+    const ranked = rankCenters({
+      supply: [training('plain', 10, false, 'NCR'), training('wanted', 10.8, false, 'IV-A')],
+      code: CODE,
+      demandRegions: new Set(['IV-A']),
+    })
+    expect(ids(ranked)).toEqual(['training-wanted', 'training-plain'])
+    expect(ranked[0]).toMatchObject({ reason: 'demand', demand: true })
+  })
+
+  it('keeps a much shorter trip first, scholarship or not', () => {
+    const ranked = rankCenters({
+      supply: [training('near', 3), training('funded', 20, true)],
+      code: CODE,
+    })
+    expect(ids(ranked)).toEqual(['training-near', 'training-funded'])
+  })
+
+  it('moves assessment up when the Skill Passport suggests the learner may be ready', () => {
+    const supply = [training('t', 8), center('assessment-a', 'NCR', 9)]
+    expect(ids(rankCenters({ supply, code: CODE }))).toEqual(['training-t', 'assessment-a'])
+    const ranked = rankCenters({ supply, code: CODE, ready: true })
+    expect(ids(ranked)).toEqual(['assessment-a', 'training-t'])
+    expect(ranked[0]).toMatchObject({ reason: 'ready', ready: true })
+  })
+
+  it('lists only centers within range, and the nearest few when none is', () => {
+    const supply = [training('a', 30), training('b', 60), training('c', 90), training('d', 120)]
+    expect(ids(rankCenters({ supply: [training('in', 5), ...supply], code: CODE }))).toEqual([
+      'training-in',
+    ])
+    const outside = rankCenters({ supply, code: CODE, rangeKm: 10 })
+    expect(ids(outside)).toEqual(['training-a', 'training-b', 'training-c'])
+    expect(outside.every((item) => item.reason === 'outside')).toBe(true)
+  })
+
+  it('ranks nothing without a location', () => {
+    expect(rankCenters({ supply: [center('training-1', 'NCR', null)], code: CODE })).toEqual([])
+  })
+
+  it('gives the brief and the map the same top pick as the list', () => {
+    const supply = [training('plain', 10), training('funded', 11.5, true)]
+    const result = recommend({
+      supply,
+      homeRegion: 'NCR',
+      relocate: false,
+      alternatives: [],
+      code: CODE,
+    })
+    expect(result.training?.center.id).toBe('training-funded')
+  })
+})
+
+describe('highDemandRegions', () => {
+  const area = (region_code: string, demand_share: number | null, limited = false) =>
+    ({ region_code, demand_share, limited }) as Outlook['areas'][number]
+
+  it('marks regions with 1.5 times an even share of the records or more, when not a rough signal', () => {
+    const areas = [area('NCR', 0.5), area('III', 0.3), area('VII', 0.2), area('X', 0)]
+    // Four regions: an even share is 0.25, so 0.375 or more is high.
+    expect([...highDemandRegions({ areas })]).toEqual(['NCR'])
+    expect([...highDemandRegions({ areas: [area('NCR', 0.9, true), area('III', 0.1)] })]).toEqual(
+      [],
+    )
+    expect(highDemandRegions(undefined).size).toBe(0)
   })
 })

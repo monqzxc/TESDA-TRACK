@@ -17,6 +17,7 @@ vi.mock('../training/CenterMap.tsx', () => ({
       data-testid="map"
       data-pins={props.centers.map((center) => center.id).join(' ')}
       data-recommended={(props.recommended ?? []).join(' ')}
+      data-selected={props.selectedId ?? ''}
       data-overview={String(Boolean(props.demandOverview))}
     >
       {props.demandAreas?.map((area) => (
@@ -290,6 +291,33 @@ describe('the supply and demand brief', () => {
     )
   })
 
+  it('ranks the recommended centers beside the map, each with its reason and trip (core)', async () => {
+    open()
+    const list = await screen.findByTestId('ranked-centers')
+    expect(within(list).getByRole('heading', { name: 'Recommended centers' })).toBeVisible()
+    expect(within(list).getByText(`For ${NAME}, best first`)).toBeVisible()
+    const rows = await within(list).findAllByTestId('ranked-center')
+    // Within the 25 km range: Manila's two centers, the nearer first. Cebu is out of range.
+    expect(rows.map((row) => within(row).getByText(/School|Center/).textContent)).toEqual([
+      'Manila Hotel School',
+      'Manila Assessment Center',
+    ])
+    expect(rows[0]).toHaveTextContent('Recommended')
+    expect(rows[0]).toHaveTextContent('The shortest trip from you')
+    expect(rows[1]).not.toHaveTextContent('Recommended')
+    expect(within(rows[0]).getByTestId('ranked-trip')).toHaveTextContent(
+      /^\d+(\.\d)? km · about \d+ min$/,
+    )
+    // The travel times are estimates: the list says it is sample data.
+    expect(within(list).getByText('Sample data')).toBeVisible()
+    expect(within(list).getByText(/not measured routes/)).toBeVisible()
+    // Choosing a center highlights its pin on the map.
+    fireEvent.click(rows[1])
+    await waitFor(() =>
+      expect(screen.getByTestId('map')).toHaveAttribute('data-selected', 'assessment-7'),
+    )
+  })
+
   it('looks further for a learner open to relocating', async () => {
     open()
     const card = within(await brief())
@@ -454,7 +482,11 @@ describe('Demand where you are (Card 3)', () => {
   it('counts modelled demand as records, with no sample label (US-0018)', async () => {
     demandIsSample = true
     const local = await brief('Low demand')
-    expect(screen.queryByText(/sample data|December 2|demo/i)).not.toBeInTheDocument()
+    // The demand is shown as records. (The ranked list beside the map labels its estimated travel times as sample
+    // data, which is about trips, not demand.)
+    const analysis = screen.getByRole('region', { name: 'Supply and demand analysis' })
+    expect(within(analysis).queryByText(/sample data|December 2|demo/i)).not.toBeInTheDocument()
+    expect(screen.queryByText(/demand is modelled/i)).not.toBeInTheDocument()
     expect(screen.getByText('records')).toBeInTheDocument()
     expect(
       within(local).getByRole('button', { name: 'Show Central Visayas on the map' }),

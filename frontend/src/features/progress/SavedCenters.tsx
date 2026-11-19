@@ -14,6 +14,7 @@ import {
   useRemoveSavedCenter,
   type SavedCenter,
 } from '../training/savedCenters.ts'
+import { splitPhones } from '../../lib/phone.ts'
 
 const savedDay = new Intl.DateTimeFormat('en-PH', { dateStyle: 'medium', timeZone: 'Asia/Manila' })
 
@@ -154,15 +155,17 @@ function SavedCenterCard({
         {saved.address && (
           <p className="m-0 text-13 leading-[1.5] wrap-anywhere text-muted">{saved.address}</p>
         )}
-        {saved.contact_phone && (
-          <a
-            className="inline-flex items-center gap-[0.3rem] self-start text-13 text-blue"
-            href={`tel:${saved.contact_phone.replace(/[^+\d]/g, '')}`}
-          >
-            <Icon name="phone" />
-            {saved.contact_phone}
-          </a>
-        )}
+        {saved.contact_phone &&
+          splitPhones(saved.contact_phone).map((phone) => (
+            <a
+              key={phone.tel}
+              className="inline-flex items-center gap-[0.3rem] self-start text-13 text-blue"
+              href={`tel:${phone.tel}`}
+            >
+              <Icon name="phone" />
+              {phone.text}
+            </a>
+          ))}
       </div>
 
       {saved.qualification && (

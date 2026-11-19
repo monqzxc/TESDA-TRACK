@@ -1944,4 +1944,29 @@ export const tl: Record<string, string> = {
     'Tanungin ang provincial o district office ng TESDA na malapit sa iyo kung aling mga provider ang balak mag-alok nito.',
   'Share your location or type a city to see a related qualification near you.':
     'Ibahagi ang lokasyon mo o mag-type ng lungsod para makita ang kaugnay na kwalipikasyong malapit sa iyo.',
+  // The ranked list beside the map: recommended centers with reasons.
+  'Recommended centers': 'Mga inirerekomendang sentro',
+  'For {0}, best first': 'Para sa {0}, pinakamainam muna',
+  'about {0}': 'mga {0}',
+  'In demand': 'Hinahanap',
+  'You may be ready': 'Maaaring handa ka na',
+  'Your TSP profile suggests you may be ready to get assessed here':
+    'Ayon sa TSP profile mo, maaaring handa ka nang magpatasa rito',
+  'The shortest trip from you': 'Pinakamaikling biyahe mula sa iyo',
+  'A scholarship is open here, and the trip is about as short':
+    'May bukas na scholarship dito, at halos kasing-ikli ang biyahe',
+  'Jobs for this qualification are in demand in {0}, and the trip is about as short':
+    'Hinahanap sa {0} ang mga trabaho para sa kwalipikasyong ito, at halos kasing-ikli ang biyahe',
+  'Within your {0} km range': 'Pasok sa {0} km na layo mo',
+  'Nearest, though outside your {0} km range': 'Pinakamalapit, pero lampas sa {0} km na layo mo',
+  'Shorter trips rank first. A center with an open scholarship or more demand moves above one with a similar trip.':
+    'Nauuna ang mas maiikling biyahe. Umaangat ang sentrong may bukas na scholarship o mas mataas na demand kaysa sa sentrong halos kapareho ang biyahe.',
+  'Shorter trips rank first. A center with an open scholarship or more demand moves above one with a similar trip, and so does an assessment center when your TSP profile suggests you may be ready.':
+    'Nauuna ang mas maiikling biyahe. Umaangat ang sentrong may bukas na scholarship o mas mataas na demand kaysa sa sentrong halos kapareho ang biyahe, gayundin ang sentro ng pagtatasa kapag ayon sa TSP profile mo ay maaaring handa ka na.',
+  'Sample data': 'Halimbawang datos',
+  'Travel times are estimated from straight-line distance for the December 2 demo, not measured routes.':
+    'Tantiya lamang ang oras ng biyahe mula sa tuwid na layo para sa demo sa Disyembre 2, hindi sukat ng aktwal na ruta.',
+  'No center offers this qualification yet.': 'Wala pang sentrong nag-aalok ng kwalipikasyong ito.',
+  'Share your location or type a city to see the centers ranked for you.':
+    'Ibahagi ang lokasyon mo o mag-type ng lungsod para makita ang mga sentrong inayos para sa iyo.',
 }

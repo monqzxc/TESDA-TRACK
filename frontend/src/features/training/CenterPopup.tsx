@@ -5,6 +5,7 @@ import { placeLabel, summary, type Center } from './centers.ts'
 import { KIND_DOTS, googleMapsDirections } from './CenterDetail.tsx'
 import type { CenterMapProps } from './CenterMapTypes.ts'
 import { kilometres } from './format.ts'
+import { splitPhones } from '../../lib/phone.ts'
 
 /** A Google Maps link to a center's location, as the popup's Copy link gives it. */
 export function locationLink(center: Pick<Center, 'latitude' | 'longitude'>): string {
@@ -80,12 +81,13 @@ export function CenterPopup({
       {(center.phone || center.email) && (
         // Its links are blue, as every link on the map is (center-map.css).
         <p className="col-span-full flex flex-wrap items-center gap-x-3 gap-y-1.5">
-          {center.phone && (
-            <a className={contact} href={`tel:${center.phone.replace(/[^+\d]/g, '')}`}>
-              <Icon name="phone" />
-              {center.phone}
-            </a>
-          )}
+          {center.phone &&
+            splitPhones(center.phone).map((phone) => (
+              <a key={phone.tel} className={contact} href={`tel:${phone.tel}`}>
+                <Icon name="phone" />
+                {phone.text}
+              </a>
+            ))}
           {center.email && (
             <a className={contact} href={`mailto:${center.email}`}>
               <Icon name="mail" />

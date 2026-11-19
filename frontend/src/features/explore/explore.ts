@@ -36,6 +36,14 @@ export type Strength = 'strong' | 'good' | 'weak'
  */
 export function estimateMinutes(km: number | null): number | null {
   if (km === null || km > FAR_KM) return null
+  return roadMinutes(km)
+}
+
+/**
+ * The same estimate with no upper limit, for ranking only: a center too far for a time to be shown still ranks by
+ * how long the trip would be.
+ */
+export function roadMinutes(km: number): number {
   const road = km * DETOUR_FACTOR
   const town = Math.min(road, TOWN_ROAD_KM)
   const hours = town / SPEED_KMH + (road - town) / HIGHWAY_SPEED_KMH

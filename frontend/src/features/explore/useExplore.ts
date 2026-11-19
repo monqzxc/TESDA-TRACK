@@ -18,12 +18,15 @@ import {
   MAX_QUALIFICATIONS,
   NEAR_KM,
   nearestRegion,
+  readinessEvidence,
 } from './explore.ts'
 import { EXPLORE_KEY } from './key.ts'
 import { areaJobsQuery } from './demandApi.ts'
 import { nearbySuggestionsQuery, outlookQuery, outlookSummaryQuery } from './outlookApi.ts'
 import {
+  highDemandRegions,
   NO_RECOMMENDATIONS,
+  rankCenters,
   recommend,
   recommendedIds as idsOf,
   supplyCenters,
@@ -393,6 +396,24 @@ export function useExplore(
     placeholderData: keepPreviousData,
   })
   const alternatives = outlook.data?.alternatives
+  // Strong demand moves a center up the ranking; while the outlook loads, the ranking is by trip alone.
+  const outlookAreas = outlook.data?.qualification.code === demandCode ? outlook.data : undefined
+  const demandRegions = useMemo(() => highDemandRegions(outlookAreas), [outlookAreas])
+  // Signed in, the Skill Passport can say the learner may be ready to be assessed: assessment centers move up and
+  // say why. A guest is ranked by their location alone.
+  const focusName =
+    matches.find((match) => match.qualification.code === demandCode)?.qualification.name ??
+    (outlook.data?.qualification.code === demandCode ? outlook.data.qualification.name : null)
+  const readyEvidence = useMemo(
+    () => (focusName ? readinessEvidence(passport.data, focusName) : []),
+    [focusName, passport.data],
+  )
+  const ready = readyEvidence.length > 0
+  const ranked = useMemo(
+    () =>
+      demandCode ? rankCenters({ supply, code: demandCode, rangeKm, demandRegions, ready }) : [],
+    [demandCode, supply, rangeKm, demandRegions, ready],
+  )
   const recommendations = useMemo(
     () =>
       demandCode
@@ -402,9 +423,12 @@ export function useExplore(
             relocate,
             alternatives: alternatives ?? [],
             nearKm: rangeKm,
+            code: demandCode,
+            demandRegions,
+            ready,
           })
         : NO_RECOMMENDATIONS,
-    [demandCode, supply, automaticRegion, relocate, alternatives, rangeKm],
+    [demandCode, supply, automaticRegion, relocate, alternatives, rangeKm, demandRegions, ready],
   )
   const recommendedIds = useMemo(() => idsOf(recommendations), [recommendations])
 
@@ -456,6 +480,12 @@ export function useExplore(
     supply,
     recommendations,
     recommendedIds,
+    /** The centers for the qualification in focus, best first, each with its main reason (the list beside the map). */
+    ranked,
+    /** The qualification in focus, by name, when it is known. */
+    focusName,
+    /** Signed in: the Skill Passport's skills and licenses that suggest the learner may be ready for assessment. */
+    readyEvidence,
     demandLocality,
     demandOffset,
     loading: !everything && !(sites.isError || regions.isError),

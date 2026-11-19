@@ -169,7 +169,7 @@ describe('Explore center details', () => {
     // The phone is on file; the email isn't, and the website is blank: neither is drawn.
     expect(within(card).getByRole('link', { name: /Call/ })).toHaveAttribute(
       'href',
-      `tel:${cebuCenter.contact_phone}`,
+      `tel:${cebuCenter.contact_phone!.replace(/[^+\d]/g, '')}`,
     )
     expect(within(card).queryByRole('link', { name: /Email/ })).not.toBeInTheDocument()
     expect(within(card).queryByRole('link', { name: /Website/ })).not.toBeInTheDocument()
