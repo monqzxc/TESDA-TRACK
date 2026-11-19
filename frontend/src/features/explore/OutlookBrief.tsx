@@ -10,7 +10,7 @@ import {
 import { Button, Switch } from 'react-aria-components'
 import { useQualifications } from '../../api/queries.ts'
 import { Icon, type IconName } from '../../components/Icon.tsx'
-import { useCopy } from '../../i18n/copy.ts'
+import { useCopy, useServerText } from '../../i18n/copy.ts'
 import { readItem, writeItem } from '../../lib/storage.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
@@ -68,6 +68,7 @@ export function OutlookBrief({
   ref?: Ref<HTMLElement>
 }) {
   const en = useCopy()
+  const serverText = useServerText()
   const copy = en.explore.outlook
   // Folded, the brief is its headline alone. It starts that way on a phone, where the map has little room to give.
   const [open, setOpen] = useState(
@@ -287,7 +288,7 @@ export function OutlookBrief({
           <>
             <div className="flex flex-wrap items-start gap-x-2 gap-y-1">
               <h2 className="m-0 min-w-0 flex-1 basis-56 text-15 leading-[1.35] font-bold wrap-anywhere text-navy">
-                {data.insight.headline}
+                {serverText(data.insight.headline)}
               </h2>
               {area && (
                 <span className={cx(tag, balanceTone[area.balance])}>

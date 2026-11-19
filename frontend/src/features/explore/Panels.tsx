@@ -5,7 +5,7 @@ import { Button, Input, Label, Switch, TextField, ToggleButton } from 'react-ari
 import { useNavigate } from 'react-router'
 import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { Icon, type IconName } from '../../components/Icon.tsx'
-import { useCopy } from '../../i18n/copy.ts'
+import { useCopy, useServerText } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
@@ -466,6 +466,7 @@ function QualificationCardView({
 }) {
   const changeRange = useExploreStore((state) => state.changeRange)
   const en = useCopy()
+  const serverText = useServerText()
   const copy = en.explore.results
   const [open, setOpen] = useState(false)
   const search = useExploreStore((state) => state.search)
@@ -510,7 +511,7 @@ function QualificationCardView({
       </div>
       <p className="m-0 flex items-start gap-1.5 text-13 leading-[1.45] text-muted">
         <Icon name="sparkle" className="mt-0.5 flex-none" />
-        {card.match.reason}
+        {serverText(card.match.reason)}
       </p>
       {!search?.chosen && card.strength === 'weak' && (
         <p className="m-0 flex items-start gap-1.5 text-13 text-warn-ink">

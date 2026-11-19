@@ -436,4 +436,402 @@ export const bcl: Record<string, string> = {
   'Low readiness': 'Hababang pagkahanda',
   Training: 'Pagsasanay',
   Assessment: 'Pagbalor',
+  // Career Map, Supply & Demand panel, suggestion feedback and Find my pathway (QA-2026-11-19-EXP1).
+  'Show less': 'Ipahiling an mas dikit',
+  'Close map panel': 'Isara an panel kan mapa',
+  'What can you do?': 'Ano an kaya mong gibohon?',
+  'Type what you can do': 'I-type an kaya mong gibohon',
+  Search: 'Hanapon',
+  'Type in Filipino or English, for example “Marunong ako magluto” or “I can weld”.':
+    'Mag-type sa Bikol, Filipino o English, halimbawa “Aram kong magluto” o “I can weld”.',
+  'Finding qualifications that fit…': 'Naghahanap nin mga kwalipikasyon na angay…',
+  'Show on the map': 'Ipahiling sa mapa',
+  'Training centers': 'Mga sentro nin pag-adal',
+  'Assessment centers': 'Mga sentro nin pagtasa',
+  'In demand jobs': 'Mga trabahong in demand',
+  'Open Location?': 'Bukasan an lokasyon?',
+  'Allow your approximate location to see the nearest centers first. It is rounded to about 1 km and never saved. You can change this any time.':
+    'Togotan an tantyang lokasyon mo tanganing mahiling mo muna an pinakaharaning mga sentro. Itinatantya ini sa mga 1 km asin dai noarin man itinatago. Puwede mo ining baguhon noarin man.',
+  'Yes, open it': 'Iyo, bukasan',
+  'Not now': 'Dai muna',
+  'From your TSP profile': 'Hale sa saimong TSP profile',
+  'Sample data': 'Sample na datos',
+  Skills: 'Mga abilidad',
+  Licenses: 'Mga lisensya',
+  'Home area': 'Lugar na estaran',
+  'None listed': 'Mayong nakalista',
+  'Loading your TSP profile…': 'Ikinakarga an saimong TSP profile…',
+  'We couldn’t load your TSP profile. Type a city or province below to continue.':
+    'Dai mi makarga an saimong TSP profile. Mag-type nin siyudad o probinsya sa ibaba tanganing makapadagos.',
+  'You may be ready for assessment': 'Puwedeng handa ka na sa pagtasa',
+  'For {0}, your TSP profile lists {1}. The assessment center confirms what you need to bring.':
+    'Para sa {0}, nakalista sa saimong TSP profile an {1}. An sentro nin pagtasa an magsasabi kun ano an dapat mong darahon.',
+  'Share my location': 'Ibahagi an sakong lokasyon',
+  'Finding your approximate location…': 'Hinahanap an tantyang lokasyon mo…',
+  'On · approximate, rounded to about 1 km and not saved.':
+    'On · tantya, mga 1 km, asin dai itinatago.',
+  'Off. Nothing is shared until you turn this on.':
+    'Off. Mayong ibinabahagi sagkod na dai mo ini i-on.',
+  'Or type a city or province': 'O mag-type nin siyudad o probinsya',
+  'For example: Manila, Cebu, Laguna': 'Halimbawa: Manila, Cebu, Laguna',
+  'Near {0}': 'Harani sa {0}',
+  'Near {0}, your home area in your TSP profile':
+    'Harani sa {0}, an saimong estaran sa saimong TSP profile',
+  'Typing a place changes it for this visit only. Your TSP profile is not changed.':
+    'An lugar na i-type mo para sana sa pagbisitang ini. Dai mababago an saimong TSP profile.',
+  'We don’t know that place yet. Try a city, province or region.':
+    'Dai pa mi bisto an lugar na iyan. Probaran an siyudad, probinsya o rehiyon.',
+  'How far can you go?': 'Gurano kaharayo an kaya mong pakadtuan?',
+  'Share your location or type a place to measure from.':
+    'Ibahagi an lokasyon mo o mag-type nin lugar na susukatan.',
+  'Location is blocked in your browser. Type a city instead, or allow location and try again.':
+    'Naka-block an lokasyon sa saimong browser. Mag-type na sana nin siyudad, o togotan an lokasyon asin probaran giraray.',
+  'We couldn’t get your location. Type a city instead, or try again.':
+    'Dai mi makua an lokasyon mo. Mag-type na sana nin siyudad, o probaran giraray.',
+  'This browser can’t share a location. Type a city instead.':
+    'Dai makapagbahagi nin lokasyon an browser na ini. Mag-type na sana nin siyudad.',
+  'See what is near you': 'Hilingon an harani saimo',
+  'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
+    'I-on an pagbahagi nin lokasyon, o mag-type nin siyudad, tanganing mahiling an pinakaharaning mga sentro nin pag-adal asin pagtasa.',
+  you: 'ika',
+  'Nearest training centers': 'Pinakaharaning mga sentro nin pag-adal',
+  'Nearest assessment centers': 'Pinakaharaning mga sentro nin pagtasa',
+  'No center on the map yet.': 'Mayo pang sentro sa mapa.',
+  '{0} centers on the map. Search to see the ones that fit you.':
+    '{0} na sentro sa mapa. Maghanap tanganing mahiling an mga angay saimo.',
+  'Qualifications that fit what you wrote': 'Mga kwalipikasyon na angay sa sinurat mo',
+  Show: 'Ipahiling',
+  All: 'Gabos',
+  Assess: 'Pagtasa',
+  Train: 'Pag-adal',
+  Demand: 'Demand',
+  'Get certified': 'Magpa-sertipika',
+  'Or train first': 'O mag-adal muna',
+  'Or get certified': 'O magpa-sertipika',
+  'Strong match': 'Makusog na tugma',
+  'Good match': 'Marahay na tugma',
+  'Weaker match': 'Mas maluya na tugma',
+  'This only partly fits what you wrote. Check the qualification before you go.':
+    'Kadikit sana an pagkaangay kaini sa sinurat mo. Hilingon muna an kwalipikasyon bago magduman.',
+  'No center lists this qualification yet.':
+    'Mayo pang sentro na nakalista an kwalipikasyon na ini.',
+  '{0} more': '{0} pa',
+  'No center within {0} km. The closest is {1} km away.':
+    'Mayong sentro sa laog nin {0} km. An pinakaharani {1} km an kaharayo.',
+  Change: 'Baguhon',
+  'Change how far you can go (now {0} km)':
+    'Baguhon kun gurano kaharayo an kaya mo (ngonyan {0} km)',
+  'Centers within this distance count as near you.':
+    'An mga sentro sa laog kan kaharayong ini binibilang na harani saimo.',
+  'Keep as it is': 'Dai baguhon',
+  'A related qualification within {0} km': 'Sarong kaugnay na kwalipikasyon sa laog nin {0} km',
+  'Training for {0}': 'Pag-adal para sa {0}',
+  'Assessment for {0}': 'Pagtasa para sa {0}',
+  'You chose this qualification in the Qualifications Library.':
+    'Pinili mo an kwalipikasyon na ini sa Librarya kan mga Kwalipikasyon.',
+  'Share your location or type a city to see what is nearest.':
+    'Ibahagi an lokasyon mo o mag-type nin siyudad tanganing mahiling an pinakaharani.',
+  'We couldn’t find a clear match. Try describing something you can do, like “marunong ako magluto” or “I repair computers”.':
+    'Mayo kaming nahanap na malinaw na tugma. Probaran na ilarawan an kaya mong gibohon, arog kan “aram kong magluto” o “I repair computers”.',
+  'We couldn’t search right now. Check your connection, then try again.':
+    'Dai kami makahanap ngonyan. Hilingon an koneksyon mo, dangan probaran giraray.',
+  'New search': 'Bagong paghanap',
+  'about {0} by car': 'mga {0} sakay nin kotse',
+  'By car': 'Sakay nin kotse',
+  'Jobs and qualification demand': 'Mga trabaho asin demand sa kwalipikasyon',
+  'Demand for': 'Demand para sa',
+  'Explore recorded jobs, qualifications linked to demand, and the training available in an area.':
+    'Hilingon an mga nakatalang trabaho, mga kwalipikasyon na konektado sa demand, asin an pag-adal na yaon sa sarong lugar.',
+  'Area: {0}': 'Lugar: {0}',
+  'Area: all regions with recorded evidence':
+    'Lugar: gabos na rehiyon na igwang nakatalang ebidensya',
+  'Demand views': 'Mga hiling sa demand',
+  'Jobs by area': 'Mga trabaho kada lugar',
+  'Supply & demand': 'Supply asin demand',
+  'Use my selected location': 'Gamiton an pinili kong lokasyon',
+  'All recorded regions': 'Gabos na nakatalang rehiyon',
+  'Filter by qualification': 'I-filter sa kwalipikasyon',
+  'Qualification: {0}': 'Kwalipikasyon: {0}',
+  'All recorded jobs': 'Gabos na nakatalang trabaho',
+  'City or municipality in the snapshot': 'Siyudad o banwaan sa snapshot',
+  'All recorded cities and municipalities': 'Gabos na nakatalang siyudad asin banwaan',
+  'Loading labor-market evidence…': 'Ikinakarga an impormasyon sa labor market…',
+  'Labor-market information could not be loaded.': 'Dai makarga an impormasyon sa labor market.',
+  'Snapshot: {0}.': 'Snapshot: {0}.',
+  '{0} posting records · {1} employers': '{0} na rekord nin posting · {1} na employer',
+  'Dated PhilJobNet records, ordered by posting count. These are not live openings or worker headcounts. Shaded regions compare recorded posting totals.':
+    'Mga rekord kan PhilJobNet na igwang petsa, sunod sa dakol kan posting. Bakong mga bukas na trabaho ngonyan o bilang nin trabahador an mga ini. An kolor kan rehiyon nagkokompara kan kabilogan na nakatalang posting.',
+  ' · {0} more places': ' · {0} pang lugar',
+  'Reviewed occupation links only. National forecasts retain their national coverage; they do not establish demand in a particular city.':
+    'Mga nasiyasat na koneksyon nin trabaho sana. Nasyonal pa man giraray an nasyonal na forecast; dai kaini pinapatunayan an demand sa sarong siyudad.',
+  '{0} qualifications with reviewed evidence':
+    '{0} na kwalipikasyon na igwang nasiyasat na ebidensya',
+  'No mapped posting records in this area.':
+    'Mayong nagtugmang rekord nin posting sa lugar na ini.',
+  '{0} mapped posting records': '{0} na nagtugmang rekord nin posting',
+  'Forecast support: {0}': 'Suporta kan forecast: {0}',
+  'Compare supply and demand': 'Ikomparar an supply asin demand',
+  'Supply means recorded training and assessment services. Posting records and training seats have different units; no workforce shortage is calculated.':
+    'An supply iyo an nakatalang serbisyo nin pag-adal asin pagtasa. Magkaiba an yunit kan rekord nin posting asin lugar sa pag-adal; mayong kinukwentang kakulangan nin trabahador.',
+  'No posting records for this selection. Try all jobs or another area. Missing evidence does not mean low demand.':
+    'Mayong rekord nin posting para sa pinili na ini. Probaran an gabos na trabaho o ibang lugar. An kawaran nin ebidensya bakong boot sabihon na hababa an demand.',
+  'No reviewed qualification links for this area yet. Try another region or all recorded regions.':
+    'Mayo pang nasiyasat na koneksyon nin kwalipikasyon para sa lugar na ini. Probaran an ibang rehiyon o gabos na nakatalang rehiyon.',
+  Previous: 'Nakaagi',
+  '{0}: {1} posting records (regional coverage)':
+    '{0}: {1} na rekord nin posting (sakop kan rehiyon)',
+  'Regional demand heatmap': 'Heatmap kan demand sa rehiyon',
+  'Recorded postings': 'Nakatalang posting',
+  'Fewer postings': 'Mas dikit na posting',
+  'More postings': 'Mas dakol na posting',
+  'Deeper colors show more recorded postings in the region.':
+    'An mas madiklom na kolor nagpapahiling nin mas dakol na nakatalang posting sa rehiyon.',
+  'No posting records in this snapshot': 'Mayong rekord nin posting sa snapshot na ini',
+  '{0}: no posting records in this snapshot': '{0}: mayong rekord nin posting sa snapshot na ini',
+  'Loading regional boundaries…': 'Ikinakarga an mga sagkodan kan rehiyon…',
+  'Regional boundaries could not be loaded. You can still choose an area in the list.':
+    'Dai makarga an mga sagkodan kan rehiyon. Puwede ka pa man giraray magpili nin lugar sa listahan.',
+  'Supply and demand analysis': 'Pagsiyasat kan supply asin demand',
+  'Qualification analysed': 'Kwalipikasyon na sinisiyasat',
+  'Hide analysis': 'Itago an pagsiyasat',
+  'Show analysis': 'Ipahiling an pagsiyasat',
+  'Reading the records for this qualification…':
+    'Binabasa an mga rekord para sa kwalipikasyon na ini…',
+  'The supply and demand analysis could not be loaded.':
+    'Dai makarga an pagsiyasat kan supply asin demand.',
+  Relocate: 'Magbalyo',
+  'Resize the analysis': 'Baguhon an sukol kan pagsiyasat',
+  postings: 'posting',
+  training: 'pag-adal',
+  assessment: 'pagtasa',
+  'Demand ahead of supply': 'Mas halangkaw an demand kisa sa supply',
+  Balanced: 'Balanse',
+  Saturated: 'Puno na',
+  'Demand, no center here': 'Igwang demand, mayong sentro digdi',
+  'Centers, no postings here': 'Igwang sentro, mayong posting digdi',
+  'No records yet': 'Mayo pang rekord',
+  'Rough signal': 'Tantyang senyales',
+  'Your area': 'An saimong lugar',
+  Supply: 'Supply',
+  Balance: 'Balanse',
+  Elsewhere: 'Sa ibang lugar',
+  'Demand here': 'Demand digdi',
+  'Skill Passport': 'Skill Passport',
+  'High demand': 'Halangkaw na demand',
+  'Moderate demand': 'Tama sanang demand',
+  'Low demand': 'Hababang demand',
+  'No recorded demand': 'Mayong nakatalang demand',
+  '{1} records in {0}': '{1} na rekord sa {0}',
+  '#{0} of {1} regions': '#{0} sa {1} na rehiyon',
+  'Needed more in': 'Mas kaipuhan sa',
+  Nearby: 'Harani',
+  '{0} records': '{0} na rekord',
+  'Show {0} on the map': 'Ipahiling an {0} sa mapa',
+  'Your region leads for this one.': 'An saimong rehiyon an nanginginot para digdi.',
+  'No posting records yet: missing data, not low demand.':
+    'Mayo pang rekord nin posting: kulang na datos, bakong hababang demand.',
+  'Share your location or type a city to see local demand.':
+    'Ibahagi an lokasyon mo o mag-type nin siyudad tanganing mahiling an lokal na demand.',
+  'Find Jobs on TSP': 'Maghanap nin Trabaho sa TSP',
+  'Find Jobs on TSP for {0} in {1} (opens TESDA Skill Passport in a new tab)':
+    'Maghanap nin Trabaho sa TSP para sa {0} sa {1} (bubukasan an TESDA Skill Passport sa bagong tab)',
+  'Link not set up yet': 'Dai pa nakaandam an link',
+  'Also in demand here': 'In demand man digdi',
+  'Looking for other qualifications in demand here…':
+    'Naghahanap nin ibang kwalipikasyon na in demand digdi…',
+  'Other qualifications in demand could not be loaded.':
+    'Dai makarga an ibang kwalipikasyon na in demand.',
+  'Nothing else stands out in {0} yet.': 'Mayo pang ibang nagtataralang sa {0}.',
+  'Look at {0}': 'Hilingon an {0}',
+  'AI summary': 'Buod kan AI',
+  'Written by AI from the counts on this map.': 'Sinurat kan AI hale sa mga bilang sa mapang ini.',
+  Why: 'Taano',
+  Recommended: 'Irinerekomenda',
+  'Share your location or type a city to get a recommended center.':
+    'Ibahagi an lokasyon mo o mag-type nin siyudad tanganing makakua nin irinerekomendang sentro.',
+  'Get assessed': 'Magpatasa',
+  'Nearest in your region': 'Pinakaharani sa saimong rehiyon',
+  'Nearest, in {0}': 'Pinakaharani, sa {0}',
+  'If you relocate: {0}': 'Kun magbalyo ka: {0}',
+  'Demand map': 'Mapa kan demand',
+  'All results': 'Gabos na resulta',
+  'A rough signal from dated records, not a forecast. Confirm with the center or TESDA.':
+    'Tantyang senyales hale sa mga rekord na igwang petsa, bakong forecast. Kumpirmaron sa sentro o sa TESDA.',
+  'Recommended: {0}': 'Irinerekomenda: {0}',
+  'Supply and demand map': 'Mapa kan supply asin demand',
+  '{0}: {1} posting records, {2} centers. {3}.':
+    '{0}: {1} na rekord nin posting, {2} na sentro. {3}.',
+  'Demand against supply': 'Demand kontra supply',
+  'Demand ahead': 'Nanginginot an demand',
+  'An outlined mark means one side has no records.':
+    'An markang may linya sana boot sabihon na mayong rekord an sarong lado.',
+  'About this map': 'Manongod sa mapang ini',
+  'Back to results': 'Bumalik sa mga resulta',
+  'Assessment center · Get certified': 'Sentro nin pagtasa · Magpa-sertipika',
+  'Training center · Train': 'Sentro nin pag-adal · Mag-adal',
+  'Leads to an NC': 'Pasiring sa NC',
+  'Qualifications offered': 'Mga kwalipikasyon na itinatao',
+  'Matches your search': 'Tugma sa saimong paghanap',
+  Directions: 'Direksyon',
+  'Show route on the map': 'Ipahiling an ruta sa mapa',
+  Call: 'Mag-apod',
+  Contact: 'Kontak',
+  'Travel time': 'Oras nin biyahe',
+  Address: 'Address',
+  'Ease of reach': 'Kasayon nin pagduman',
+  'Travel times are estimated from straight-line distance, by car, without traffic.':
+    'Itinatantya an oras nin biyahe hale sa tuwid na kaharayo, sakay nin kotse, mayong trapiko.',
+  'These results come from automatic matching. This is a suggestion: confirm with the center or your TESDA office.':
+    'Hale sa awtomatikong pagtugma an mga resultang ini. Suhestiyon sana ini: kumpirmaron sa sentro o sa opisina kan TESDA.',
+  'Previous version': 'Nakaaging bersyon',
+  'This is the earlier version of this page. The new Explore map finds centers from what you can do.':
+    'Ini an nakaaging bersyon kan pahinang ini. An bagong mapa kan Explore naghahanap nin sentro hale sa kaya mong gibohon.',
+  'Go to Explore': 'Magduman sa Explore',
+  'We couldn’t load the training and assessment list. Your search and filters are still here.':
+    'Dai mi makarga an listahan nin pag-adal asin pagtasa. Yaon pa man an saimong paghanap asin mga filter.',
+  'Try loading the list again': 'Probaran giraray ikarga an listahan',
+  'About {0} away': 'Mga {0} an kaharayo',
+  'Remove from saved centers': 'Haleon sa mga naitagong sentro',
+  'Location not confirmed': 'Dai pa nakumpirma an lokasyon',
+  'Hide route': 'Itago an ruta',
+  'Google Maps': 'Google Maps',
+  'Turn-by-turn directions in Google Maps': 'Direksyon kada liko sa Google Maps',
+  'Finding routes…': 'Naghahanap nin mga ruta…',
+  'Travel mode': 'Paagi nin biyahe',
+  'by car': 'sakay nin kotse',
+  'by bike': 'sakay nin bisikleta',
+  'on foot': 'naglalakaw',
+  'in the air': 'sa hangin',
+  car: 'kotse',
+  bike: 'bisikleta',
+  walking: 'lakaw',
+  '{0} · about {1} {2}': '{0} · mga {1} {2}',
+  'From your approximate location, without traffic.':
+    'Hale sa tantyang lokasyon mo, mayong trapiko.',
+  '{0} to {1} · about {2} in the air': '{0} pasiring {1} · mga {2} sa hangin',
+  'An estimate from the {0} between the airports, not an airline schedule: check airlines for flights and fares. Allow time to reach the airport ({1} from you), check in, and travel {2} on to the center.':
+    'Tantya hale sa {0} sa pag-ultanan kan mga airport, bakong iskedyul nin eroplano: hilingon an mga airline para sa flight asin pasahe. Tawan nin oras an pagduman sa airport ({1} hale saimo), check-in, asin pagbiyahe nin {2} pasiring sa sentro.',
+  'Directions can’t be loaded right now. Try again shortly, or open Google Maps.':
+    'Dai makarga an direksyon ngonyan. Probaran giraray sa madali, o bukasan an Google Maps.',
+  'Sample data for the December 2 demo': 'Sample na datos para sa demo sa Disyembre 2',
+  'Map of training and assessment centers': 'Mapa kan mga sentro nin pag-adal asin pagtasa',
+  'No centers match this search yet.': 'Mayo pang sentro na tugma sa paghanap na ini.',
+  'Centers couldn’t be loaded. Try again from the list.':
+    'Dai makarga an mga sentro. Probaran giraray hale sa listahan.',
+  'Some map tiles could not load. The list of centers still works.':
+    'May mga parte kan mapa na dai nakarga. Nagagana pa man an listahan kan mga sentro.',
+  'The map could not load. The list of centers still works.':
+    'Dai nakarga an mapa. Nagagana pa man an listahan kan mga sentro.',
+  'The detailed map could not load, so the OpenStreetMap map is shown instead.':
+    'Dai nakarga an detalyadong mapa, kaya an mapa kan OpenStreetMap an ipinapahiling.',
+  'The map stopped drawing. Restoring it…': 'Nagpundo an mapa. Ibinabalik ini…',
+  'Show centers near me': 'Ipahiling an mga sentro na harani sako',
+  'Map layers': 'Mga layer kan mapa',
+  Layers: 'Mga layer',
+  OpenStreetMap: 'OpenStreetMap',
+  Satellite: 'Satellite',
+  'Zoom in': 'Padakulaon',
+  'Zoom out': 'Padikiton',
+  'Turn the map back to north': 'Ibalik an mapa sa norte',
+  'Show buildings in 3D': 'Ipahiling an mga building sa 3D',
+  '3D': '3D',
+  'Zoom in to see buildings in 3D.': 'Padakulaon tanganing mahiling an mga building sa 3D.',
+  'No building heights are recorded here yet, so buildings stay flat.':
+    'Mayo pang nakatalang langkaw nin building digdi, kaya patag an mga building.',
+  'No buildings are mapped here yet.': 'Mayo pang building na na-mapa digdi.',
+  'Copy a link to this location': 'Kopyahon an link sa lokasyon na ini',
+  'Link to this location copied.': 'Nakopya an link sa lokasyon na ini.',
+  'Couldn’t copy. The link is {0}': 'Dai makakopya. An link iyo an {0}',
+  '{0} centers here: zoom in': '{0} na sentro digdi: padakulaon',
+  '{0} centers at this spot': '{0} na sentro sa lugar na ini',
+  '{0}: show this route': '{0}: ipahiling an ruta na ini',
+  'Map. Arrow keys move it, plus and minus zoom.':
+    'Mapa. An mga arrow key nagpapahiro kaini, plus asin minus para sa zoom.',
+  'Map credits': 'Mga credit kan mapa',
+  'Use two fingers to move the map': 'Gamiton an duwang muro sa pagpahiro kan mapa',
+  'Use Ctrl + scroll to zoom the map': 'Gamiton an Ctrl + scroll sa pag-zoom kan mapa',
+  'Use ⌘ + scroll to zoom the map': 'Gamiton an ⌘ + scroll sa pag-zoom kan mapa',
+  'Was this helpful?': 'Nakatabang daw ini?',
+  'Report a wrong suggestion': 'I-report an salang suhestiyon',
+  Reason: 'Rason',
+  'Choose a reason': 'Magpili nin rason',
+  'Wrong qualification': 'Salang kwalipikasyon',
+  'Wrong center': 'Salang sentro',
+  'Outdated or incorrect information': 'Luma o salang impormasyon',
+  'Not relevant to what I need': 'Bakong angay sa kaipuhan ko',
+  Other: 'Iba pa',
+  'Include my goal text with this report': 'Iiba an teksto kan sakong katuyuhan sa report na ini',
+  'Only the assigned reviewer will see it. Leave this unchecked if your goal contains personal information.':
+    'An nakatokang parasiyasat sana an makakahiling kaini. Dai i-check kun igwang personal na impormasyon an saimong katuyuhan.',
+  'Send report': 'Ipadara an report',
+  'Thanks for your feedback.': 'Salamat sa saimong feedback.',
+  'Report sent for review.': 'Naipadara an report para siyasaton.',
+  'This version of the app can’t accept feedback. Open an updated version and try again.':
+    'Dai nakakaako nin feedback an bersyon na ini kan app. Bukasan an updated na bersyon asin probaran giraray.',
+  'This is a suggestion. Confirm with the center or your TESDA office.':
+    'Suhestiyon sana ini. Kumpirmaron sa sentro o sa opisina kan TESDA.',
+  'Loading TESDA Track…': 'Ikinakarga an TESDA Track…',
+  "We can't load TESDA Track right now": 'Dai mi makarga an TESDA Track ngonyan',
+  'Your saved progress is safe. Try again in a moment.':
+    'Ligtas an saimong naitagong progreso. Probaran giraray sa madali.',
+  'Selected qualification': 'Piniling kwalipikasyon',
+  'YOUR NEXT CHAPTER': 'AN SAIMONG SUNOD NA KAPITULO',
+  'Where would you like to go?': 'Sain mo gustong magduman?',
+  'Start with a career you want, something you can do, or a skill you’d like to learn. We’ll help you find a TESDA pathway.':
+    'Magpoon sa karera na gusto mo, sa kaya mong gibohon, o sa abilidad na gusto mong maadalan. Tatabangan ka mi na makahanap nin dalan sa TESDA.',
+  'Your career interests or skills': 'An saimong mga interes o abilidad sa karera',
+  'For example: I want to become an electrician, Welding, or Cooking and baking':
+    'Halimbawa: Gusto kong magin electrician, Welding, o Pagluto asin pag-bake',
+  'Use your own words. Separate multiple skills with commas.':
+    'Gamiton an sadiri mong tataramon. Pagbulagon nin koma an dakol na abilidad.',
+  'Enter a career goal, occupation, or skill to continue.':
+    'Magkaag nin katuyuhan sa karera, trabaho o abilidad tanganing makapadagos.',
+  'Try a starting point': 'Probaran an sarong pinagpoonan',
+  'I want to become an electrician.': 'Gusto kong magin electrician.',
+  Welder: 'Welder',
+  'Welding, blueprint reading': 'Welding, pagbasa nin blueprint',
+  'I enjoy caring for older people.': 'Gusto kong mag-ataman nin mga gurang.',
+  'Find my pathways': 'Hanapon an sakong mga dalan',
+  'Your previous search': 'An nakaagi mong paghanap',
+  'Your interests and skills': 'An saimong mga interes asin abilidad',
+  'Edit your input': 'Baguhon an ikinaag mo',
+  'Your goal is saved to your account.': 'Naitago sa saimong account an saimong katuyuhan.',
+  'Your selected qualification': 'An saimong piniling kwalipikasyon',
+  'Set as My Goal': 'Gibohon na Sakong Katuyuhan',
+  'Goal Selected': 'Napili na an Katuyuhan',
+  'Saved for this journey in this tab. Selecting a goal keeps your matching and readiness results.':
+    'Naitago para sa paglakbay na ini sa tab na ini. An pagpili nin katuyuhan nagtatago kan saimong resulta sa pagtugma asin kahandaan.',
+  'Choose an occupation as your career goal. You can change it at any time during this journey.':
+    'Magpili nin trabaho bilang saimong katuyuhan sa karera. Puwede mo ining baguhon noarin man sa paglakbay na ini.',
+  'No occupations are listed for this qualification in the catalog yet.':
+    'Mayo pang nakalistang trabaho para sa kwalipikasyon na ini sa katalogo.',
+  'No approved forecast occupation matches this request for this qualification yet.':
+    'Mayo pang aprobadong trabaho sa forecast na tugma sa hagad na ini para sa kwalipikasyon na ini.',
+  'Checking labor-market information…': 'Sinisiyasat an impormasyon sa labor market…',
+  'Your readiness result applies to the selected qualification. Explore an alternative to check its own competencies.':
+    'Para sa piniling kwalipikasyon an saimong resulta sa kahandaan. Hilingon an alternatibo tanganing masiyasat an sadiri kaining mga abilidad.',
+  'Recommended alternative': 'Irinerekomendang alternatibo',
+  'Also associated with this occupation': 'Konektado man sa trabahong ini',
+  'Readiness results apply to the selected qualification. Other catalog associations are additional options, not necessarily scored recommendations.':
+    'Para sa piniling kwalipikasyon an mga resulta sa kahandaan. Dagdag na pagpipilian an ibang koneksyon sa katalogo, bakong kaipuhan na igwang puntos na rekomendasyon.',
+  'Explore jobs linked to your selected qualification.':
+    'Hilingon an mga trabaho na konektado sa saimong piniling kwalipikasyon.',
+  '© 2026 TESDA-TRACK. All rights reserved.': '© 2026 TESDA-TRACK. Gabos na derecho nakareserba.',
+  // Fixed sentences the API writes (useServerText): the supply and demand headline and match reasons.
+  '{0}: recorded demand for {1} is ahead of training supply':
+    '{0}: mas halangkaw an nakatalang demand para sa {1} kisa sa supply nin pag-adal',
+  '{0}: demand and training supply for {1} look balanced':
+    '{0}: garo balanse an demand asin supply nin pag-adal para sa {1}',
+  '{0}: training supply for {1} is ahead of recorded demand':
+    '{0}: mas halangkaw an supply nin pag-adal para sa {1} kisa sa nakatalang demand',
+  '{0}: employers posted for {1}, but no center is recorded here':
+    '{0}: igwang employer na nag-post para sa {1}, alagad mayong nakatalang sentro digdi',
+  '{0}: centers offer {1}, but no posting records were captured here':
+    '{0}: igwang mga sentro na nag-aalok nin {1}, alagad mayong nakatalang posting digdi',
+  '{0}: nothing is recorded for {1} yet': '{0}: mayo pang nakatala para sa {1}',
+  'Matched your words: {0}': 'Tugma sa saimong mga tataramon: {0}',
+  'Matched your reported career, skills, or sector.':
+    'Tugma sa ireport mong karera, abilidad o sektor.',
+  'Similar in meaning to your goal.': 'Kaagid kan kahulugan kan saimong katuyuhan.',
+  'Scholarship open': 'Bukas an scholarship',
 }
