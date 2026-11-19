@@ -621,13 +621,17 @@ function LocalDemand({
 /**
  * A few other qualifications in demand where the learner is, ranked by demand and how well they fit the learner's
  * skills, each with why (Card 4). Choosing one puts it in focus, so the brief and the map follow it.
+ * Shown only when there is something to list: with no demand data for the area the card is left out, with no
+ * fallback message (US-0021 AC4), and it stays out while loading so it does not appear only to vanish.
  */
 function NearbyQualifications({ explore }: { explore: Explore }) {
   const copy = useCopy().explore.outlook.nearby
   const levels = useCopy().explore.outlook.local.levels
   const { nearby, homeRegion } = explore
-  if (!homeRegion || !explore.outlook.data?.home_demand) return null
-  const data = nearby.data
+  const outlook = explore.outlook.data
+  if (!homeRegion || !outlook?.demand_available || !outlook.home_demand) return null
+  const suggestions = nearby.data?.suggestions ?? []
+  if (!nearby.isError && !suggestions.length) return null
   return (
     <div role="group" aria-label={copy.heading} className="flex min-w-0 flex-col gap-1.5">
       <h3 className={heading}>
@@ -638,13 +642,9 @@ function NearbyQualifications({ explore }: { explore: Explore }) {
         <p className={note} role="alert">
           {copy.failed}
         </p>
-      ) : !data ? (
-        <p className={note} role="status">
-          {copy.loading}
-        </p>
-      ) : data.suggestions.length ? (
+      ) : (
         <ul className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-1.5 p-0">
-          {data.suggestions.map((item) => (
+          {suggestions.map((item) => (
             <li key={item.qualification.code}>
               <Button
                 onPress={() => useDemandStore.getState().setCode(item.qualification.code)}
@@ -668,11 +668,6 @@ function NearbyQualifications({ explore }: { explore: Explore }) {
             </li>
           ))}
         </ul>
-      ) : (
-        <p className={cx(note, 'flex items-center gap-1.5')} role="status">
-          <Icon name="info" className="flex-none" />
-          {copy.none(data.region_name)}
-        </p>
       )}
     </div>
   )

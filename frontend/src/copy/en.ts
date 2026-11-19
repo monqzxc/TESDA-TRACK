@@ -2555,12 +2555,10 @@ export const en = {
           `Find Jobs on TSP${skill ? ` for ${skill}` : ''}${area ? ` in ${area}` : ''} (opens TESDA Skill Passport in a new tab)`,
         notReady: 'Link not set up yet',
       },
-      // Card 4: other qualifications in demand where the learner is.
+      // Card 4: other qualifications in demand where the learner is. Hidden when there is nothing to list.
       nearby: {
-        heading: 'Also in demand here',
-        loading: 'Looking for other qualifications in demand here…',
+        heading: 'Also in demand near you',
         failed: 'Other qualifications in demand could not be loaded.',
-        none: (region: string) => `Nothing else stands out in ${region} yet.`,
         focus: (name: string) => `Look at ${name}`,
       },
       ai: 'AI summary',

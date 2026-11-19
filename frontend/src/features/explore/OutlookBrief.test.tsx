@@ -532,13 +532,27 @@ describe('Other qualifications in demand near you (Card 4)', () => {
     await waitFor(() => expect(sent.at(-1)?.region_code).toBe('VII'))
   })
 
-  it('says so when nothing else is in demand nearby', async () => {
+  it('leaves the card out when nothing else is in demand nearby, with no fallback message', async () => {
     serve([])
     open()
-    const group = await screen.findByRole('group', {
-      name: 'Also in demand here',
-    })
-    expect(await within(group).findByText(/Nothing else stands out/)).toBeInTheDocument()
+    await waitFor(() => expect(sent.length).toBeGreaterThan(0))
+    await waitFor(() =>
+      expect(
+        screen.queryByRole('group', { name: 'Also in demand near you' }),
+      ).not.toBeInTheDocument(),
+    )
+    expect(screen.queryByText(/Nothing else stands out/)).not.toBeInTheDocument()
+  })
+
+  it('leaves the card out when there is no demand data for the area (US-0021 AC4)', async () => {
+    demandAvailable = false
+    serve([food])
+    open()
+    await screen.findByText(/No posting records yet/)
+    expect(screen.queryByRole('group', { name: 'Also in demand near you' })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: 'Look at Food and Beverage Services NC II' }),
+    ).not.toBeInTheDocument()
   })
 })
 
