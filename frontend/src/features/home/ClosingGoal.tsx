@@ -4,14 +4,15 @@ import { useNavigate } from 'react-router'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
-import { GOAL_MAX_LENGTH, useFinderStore } from '../finder/store.ts'
+import { GOAL_MAX_LENGTH } from '../finder/store.ts'
+import { useExploreStore } from '../explore/useExplore.ts'
 import { Glyph } from './Glyph.tsx'
 import { Reveal } from './Reveal.tsx'
 import { homeButton, ui } from './styles.ts'
 
 /**
  * The goal box at the end of the page (after classic/landing.css): a navy band with the question, and the box on a
- * step lighter than the band. Submitting opens Find my path
+ * step lighter than the band. Submitting opens the Career Map
  * with the goal in the finder's store (session storage), never in the address, where the learner can change it
  * before getting matches.
  */
@@ -20,7 +21,6 @@ export function ClosingGoal() {
   const copy = en.home.closing
 
   const navigate = useNavigate()
-  const startWithGoal = useFinderStore((state) => state.startWithGoal)
   const [goal, setGoal] = useState('')
   const [error, setError] = useState<string | null>(null)
   const field = useRef<HTMLTextAreaElement>(null)
@@ -33,8 +33,9 @@ export function ClosingGoal() {
       field.current?.focus()
       return
     }
-    startWithGoal(goal)
-    void navigate(paths.finder)
+    // The goal waits in the Career Map's search box, ready to search or change.
+    useExploreStore.getState().setDraft(goal.trim())
+    void navigate(paths.explore, { state: { focusSearch: true } })
   }
 
   return (

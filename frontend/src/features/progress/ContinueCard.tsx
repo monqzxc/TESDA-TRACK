@@ -109,7 +109,7 @@ export function ContinueCard({
     case 'start':
       text = copy.start
       action = (
-        <Link className={primary} to={paths.finder}>
+        <Link className={primary} to={paths.explore} state={{ focusSearch: true }}>
           {copy.startAction}
           <Icon name="arrowRight" />
         </Link>

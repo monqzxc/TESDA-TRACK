@@ -23,6 +23,7 @@ export const pam: Record<string, string> = {
   Qualifications: 'Kwalipikasyun',
   'My progress': 'Ing pamag-abante ku',
   'Find my path': 'Alapan ing dalan ku',
+  'Get started': 'Magumpisa',
   'Every career': 'Bawat karera',
   'has a track.': 'atin yang dalan.',
   'Find yours.': 'Alapan ing keka.',
@@ -986,8 +987,8 @@ export const pam: Record<string, string> = {
     'Ipapakit mu naman ning bawat programa deng direksyun ampong oras ning pamaglakbe, tantiya ning biyahi king pagitan da reng pulu, ampong bakanteng iskedyul ning pamagmasusi.',
   'Follow an assessment application, and keep the certificate when you pass.':
     'Subaybayan ing aplikasyun king pamagmasusi, ampong itabi ing sertipiku nung pumasa ka.',
-  'Your goal opens in Find my path, where you can change it before you get your matches.':
-    'Mabuklat ing layunin mu king Alapan ing dalan ku, a malyari meng alilan bayu kuaan deng katugma mu.',
+  'Your goal opens in the Career Map, where you can change it before you search.':
+    'Mabuklat ing layunin mu king Career Map, a malyari meng alilan bayu ka manintun.',
   'TESDA Track is a pilot. Matches are guidance, and readiness checks are self-reported: they don’t replace an official TESDA competency assessment.':
     'Metung yang pilot ing TESDA Track. Deng katugma gabay la, at deng pamagsuri king pamagsadya agpang la king sariling pakibat mu: e la pamalit king opisyal a pamagmasusi kabyasnan ning TESDA.',
   'How closely this qualification fits the goal you described. It’s guidance, not a guarantee.':
@@ -1078,8 +1079,8 @@ export const pam: Record<string, string> = {
     'Buksan ing Menu para lumipat kareng bulung ampong abuksan ing account mu. Isara ing gabay a iti muna nung magsadya ka nang lumipat.',
   'Select Help whenever you want another tour of the page you are on. Select Done to return to the page.':
     'Pilinan ing Saup nung buri mung alawen pasibayu ing gabay king bulung a atsu ka. Pilinan ing Yari na para mibalik king bulung.',
-  'Find my pathway opens a guided journey from your career goal to qualifications, a readiness check, and a suggested next step.':
-    'Ing Alapan ing dalan ku magbukas yang gabay manibat king layunin mu king karera, angga kareng kwalipikasyun, pamagsuri king pamagsadya, ampong mungkahing tutuking lakbang.',
+  'Get started opens the Career Map: describe your goal in your own words to see matching qualifications and centers near you.':
+    'Ing Magumpisa buklatan na ing Career Map: ilarawan me ing layunin mu king sariling amanu para akit me deng katugmang kwalipikasyun ampong deng sentru a malapit keka.',
   'These four steps show how your goal becomes a recommendation. You can return to earlier steps as you explore.':
     'Ipapakit da reng apat a lakbang a reni nung makananu maging mungkahi ing layunin mu. Malyari kang mibalik kareng milabas a lakbang kabang manaliksik ka.',
   'Describe the work you want and any experience you already have. Starting with a short sentence is enough.':

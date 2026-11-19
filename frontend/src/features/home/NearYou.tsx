@@ -90,7 +90,7 @@ export function NearYou() {
             {copy.extras}
           </Reveal>
           <Reveal order={3} className={ui.sectionCta}>
-            <Link to={paths.training} className={homeButton('ghost')}>
+            <Link to={paths.explore} className={homeButton('ghost')}>
               {copy.cta}
               <Glyph name="arrow" />
             </Link>

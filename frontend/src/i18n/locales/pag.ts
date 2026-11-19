@@ -20,6 +20,7 @@ export const pag: Record<string, string> = {
   Qualifications: 'Saray kwalipikasyon',
   Qualification: 'Kwalipikasyon',
   'Find my path': 'Anapen so dalan ko',
+  'Get started': 'Gapoen',
   'Skip to content': 'Laktawan ed linaon',
   'Your skills. Your next chapter.': 'Saray pakayarim. Say onsublay mon kapitulo.',
   'Every career': 'Balang karera',

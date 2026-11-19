@@ -5,7 +5,8 @@ import { en } from '../../copy/en.ts'
 import { renderApp, serveCatalog } from '../../test/app.tsx'
 import { mockIntersectionObserver } from '../../test/intersectionObserver.ts'
 import { mockMediaQueries } from '../../test/matchMedia.ts'
-import { FINDER_KEY, GOAL_MAX_LENGTH, useFinderStore } from '../finder/store.ts'
+import { useExploreStore } from '../explore/useExplore.ts'
+import { GOAL_MAX_LENGTH, useFinderStore } from '../finder/store.ts'
 import { CATALOG, REGIONS } from './data.ts'
 
 const REDUCE = '(prefers-reduced-motion: reduce)'
@@ -20,10 +21,11 @@ async function openHomeAt(path: string) {
 const openHome = () => openHomeAt('/')
 
 const goalBox = () => screen.getByRole('textbox', { name: 'Your goal' })
-const submit = () => screen.getByRole('button', { name: 'Find my path' })
+const submit = () => screen.getByRole('button', { name: 'Get started' })
 
 afterEach(() => {
   useFinderStore.getState().reset()
+  useExploreStore.getState().setDraft('')
   window.sessionStorage.clear()
   vi.unstubAllGlobals()
 })
@@ -97,7 +99,7 @@ describe('Home', () => {
 
   it.each([
     ['Browse 319 qualifications', '/qualifications'],
-    ['Find training near you', '/training'],
+    ['Find training near you', '/explore'],
     ['Open the qualifications library', '/qualifications'],
     ['Go to My progress', '/progress'],
   ])('links "%s" to %s', async (name, path) => {
@@ -112,14 +114,14 @@ describe('Home', () => {
     const { router } = await openHome()
     const hero = screen.getByRole('region', { name: HEADING })
 
-    await user.click(within(hero).getByRole('link', { name: 'Find my path' }))
+    await user.click(within(hero).getByRole('link', { name: 'Get started' }))
 
     await waitFor(() => expect(router.state.location.pathname).toBe('/explore'))
     expect(router.state.location.state).toEqual({ focusSearch: true })
     expect(useFinderStore.getState().goal).toBe('')
   })
 
-  it('starts the finder with the goal, which stays out of the address and the title', async () => {
+  it('opens the Career Map with the goal in its search box, out of the address', async () => {
     serveCatalog()
     const user = userEvent.setup()
     const { router } = await openHome()
@@ -128,12 +130,10 @@ describe('Home', () => {
     await user.type(goalBox(), goal)
     await user.click(submit())
 
-    await waitFor(() => expect(router.state.location.pathname).toBe('/find'))
+    await waitFor(() => expect(router.state.location.pathname).toBe('/explore'))
     const { search, hash, state } = router.state.location
-    expect([search, hash, state]).toEqual(['', '', null])
-    expect(useFinderStore.getState().goal).toBe(goal)
-    expect(window.sessionStorage.getItem(FINDER_KEY)).toContain('welder')
-    await waitFor(() => expect(document.title).toBe('Your goal · Find my pathway · TESDA-TRACK'))
+    expect([search, hash, state]).toEqual(['', '', { focusSearch: true }])
+    expect(useExploreStore.getState().draft).toBe(goal)
   })
 
   it.each([
@@ -153,7 +153,7 @@ describe('Home', () => {
     )
     expect(box).toHaveFocus()
     expect(router.state.location.pathname).toBe('/')
-    expect(useFinderStore.getState().goal).toBe('')
+    expect(useExploreStore.getState().draft).toBe('')
 
     // Typing clears the instruction.
     await user.type(box, 'Welding')
@@ -177,8 +177,8 @@ describe('Home', () => {
 
     await user.click(submit())
 
-    await waitFor(() => expect(router.state.location.pathname).toBe('/find'))
-    expect(useFinderStore.getState().goal).toHaveLength(GOAL_MAX_LENGTH)
+    await waitFor(() => expect(router.state.location.pathname).toBe('/explore'))
+    expect(useExploreStore.getState().draft).toHaveLength(GOAL_MAX_LENGTH)
   })
 
   it('scores the readiness check as it changes, and picks the route', async () => {

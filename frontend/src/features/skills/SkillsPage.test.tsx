@@ -242,7 +242,7 @@ describe('Skills Explorer', () => {
     ).toBeVisible()
   })
 
-  it('points a learner asking for ideas to Find my pathway rather than searching', async () => {
+  it('points a learner asking for ideas to the Career Map rather than searching', async () => {
     serveSkillsBridge({
       exploration: {
         ...EXPLORATION,
@@ -266,9 +266,9 @@ describe('Skills Explorer', () => {
       await screen.findByRole('heading', { level: 2, name: 'Not sure what you want yet?' }),
     ).toBeVisible()
     const unsure = screen.getByRole('region', { name: 'Not sure what you want yet?' })
-    expect(within(unsure).getByRole('link', { name: 'Find my pathway' })).toHaveAttribute(
+    expect(within(unsure).getByRole('link', { name: 'Get started' })).toHaveAttribute(
       'href',
-      '/find',
+      '/explore',
     )
     // Not a mistake to fix: the box isn't marked invalid, and no occupations are shown.
     expect(box).not.toHaveAttribute('aria-invalid', 'true')

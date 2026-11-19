@@ -25,6 +25,7 @@ export const tl: Record<string, string> = {
   'Near you': 'Malapit sa iyo',
   Qualifications: 'Mga kwalipikasyon',
   'Find my path': 'Hanapin ang aking landas',
+  'Get started': 'Magsimula',
   'Every career': 'May landas',
   'has a track.': 'ka.',
   'Find yours.': 'Tuklasin mo.',
@@ -163,8 +164,8 @@ export const tl: Record<string, string> = {
     'Sabihin ang karera, kakayahan, o karanasang gusto mong gawing kwalipikasyon.',
   'I’ve worked as a welder for 5 years but I don’t have an NC.':
     'Limang taon na akong nagtatrabaho bilang welder pero wala pa akong NC.',
-  'Your goal opens in Find my path, where you can change it before you get your matches.':
-    'Magbubukas ang layunin mo sa Hanapin ang aking landas, kung saan maaari mo itong baguhin bago makita ang mga tugma.',
+  'Your goal opens in the Career Map, where you can change it before you search.':
+    'Magbubukas ang layunin mo sa Career Map, kung saan maaari mo itong baguhin bago ka maghanap.',
   'Describe your career goal or skills to get started.':
     'Ilarawan ang iyong layunin sa karera o mga kakayahan upang magsimula.',
   'TESDA Track is a pilot. Matches are guidance, and readiness checks are self-reported: they don’t replace an official TESDA competency assessment.':
@@ -771,8 +772,8 @@ export const tl: Record<string, string> = {
   'Skills Bridge connects your skills with occupations and qualifications. You can then review a role’s skills and international mappings.':
     'Iniuugnay ng Skills Bridge ang iyong mga kakayahan sa mga hanapbuhay at kwalipikasyon. Maaari mong suriin ang mga kakayahan ng tungkulin at mga internasyonal na ugnayan nito.',
   'Not sure what you want yet?': 'Hindi ka pa sigurado kung ano ang gusto mo?',
-  'Skills Explorer needs something you can do or enjoy, like cooking, welding or fixing phones. Find my pathway asks about your goal and suggests TESDA programs for you.':
-    'Kailangan ng Tuklasin ang mga Kakayahan ng isang bagay na kaya mong gawin o gusto mo, tulad ng pagluluto, pagwe-welding o pag-aayos ng cellphone. Sa Hanapin ang aking landas, tatanungin ka tungkol sa iyong layunin at magmumungkahi ito ng mga programa ng TESDA para sa iyo.',
+  'Skills Explorer needs something you can do or enjoy, like cooking, welding or fixing phones. The Career Map asks about your goal and suggests TESDA programs for you.':
+    'Kailangan ng Tuklasin ang mga Kakayahan ng isang bagay na kaya mong gawin o gusto mo, tulad ng pagluluto, pagwe-welding o pag-aayos ng cellphone. Sa Career Map, tatanungin ka tungkol sa iyong layunin at magmumungkahi ito ng mga programa ng TESDA para sa iyo.',
   'How your skills were understood': 'Paano naunawaan ang iyong mga kakayahan',
   unknown: 'hindi alam',
   'Occupations to explore': 'Mga hanapbuhay na maaaring tuklasin',
@@ -1150,8 +1151,8 @@ export const tl: Record<string, string> = {
   'Select Help whenever you want another tour of the page you are on. Select Done to return to the page.':
     'Piliin ang Tulong kung gusto mong makita muli ang gabay sa kasalukuyang pahina. Piliin ang Tapos na upang bumalik sa pahina.',
   'Start with your goal': 'Magsimula sa iyong layunin',
-  'Find my pathway opens a guided journey from your career goal to qualifications, a readiness check, and a suggested next step.':
-    'Nagbibigay ang Hanapin ang aking landas ng gabay mula sa iyong layunin sa karera hanggang sa mga kwalipikasyon, pagsusuri ng kahandaan, at mungkahing susunod na hakbang.',
+  'Get started opens the Career Map: describe your goal in your own words to see matching qualifications and centers near you.':
+    'Binubuksan ng Magsimula ang Career Map: ilarawan ang iyong layunin sa sarili mong salita para makita ang mga tugmang kwalipikasyon at mga sentrong malapit sa iyo.',
   'See how your pathway works': 'Tingnan kung paano gumagana ang iyong landas',
   'These four steps show how your goal becomes a recommendation. You can return to earlier steps as you explore.':
     'Ipinapakita ng apat na hakbang kung paano nagiging rekomendasyon ang layunin mo. Maaari mong balikan ang naunang mga hakbang habang tumutuklas.',

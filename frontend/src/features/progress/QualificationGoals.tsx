@@ -7,7 +7,7 @@ import { useCopy } from '../../i18n/copy.ts'
 import { cssVars, cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
-import { useFinderStore } from '../finder/store.ts'
+import { useExploreStore } from '../explore/useExplore.ts'
 import { progressKeys, setGoalStatus, setPathwayStatus, type Enrollment, type Goal } from './api.ts'
 import { goToSection, pathwayHeadingId } from './ContinueCard.tsx'
 
@@ -150,10 +150,8 @@ export function QualificationGoals({
                 remove.isError && remove.variables?.qualification.code === group.qualification.code
               }
               onExplore={() => {
-                useFinderStore
-                  .getState()
-                  .startWithGoal(en.library.exploreGoal(group.qualification.name))
-                void navigate(paths.finder)
+                useExploreStore.getState().setDraft(group.qualification.name)
+                void navigate(paths.explore, { state: { focusSearch: true } })
               }}
               onViewPathway={onViewPathway ?? ((id) => goToSection(pathwayHeadingId(id)))}
               onRemove={() => {

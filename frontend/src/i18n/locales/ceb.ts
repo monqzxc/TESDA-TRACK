@@ -20,6 +20,7 @@ export const ceb: Record<string, string> = {
   Qualifications: 'Mga kwalipikasyon',
   Qualification: 'Kwalipikasyon',
   'Find my path': 'Pangitaa ang akong dalan',
+  'Get started': 'Magsugod',
   'Skip to content': 'Laktaw ngadto sa sulod',
   'Your skills. Your next chapter.': 'Imong kahanas. Imong sunod nga yugto.',
   'Every career': 'Ang matag karera',

@@ -95,7 +95,7 @@ describe('routes', () => {
       '/#how',
     )
     expect(
-      within(screen.getByRole('banner')).getByRole('link', { name: 'Find my path' }),
+      within(screen.getByRole('banner')).getByRole('link', { name: 'Get started' }),
     ).toHaveAttribute('href', '/explore')
     expect(screen.queryByRole('navigation', { name: 'Main' })).not.toBeInTheDocument()
 

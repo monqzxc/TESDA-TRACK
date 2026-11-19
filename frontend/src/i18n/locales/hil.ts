@@ -20,6 +20,7 @@ export const hil: Record<string, string> = {
   Qualifications: 'Mga kwalipikasyon',
   Qualification: 'Kwalipikasyon',
   'Find my path': 'Pangitaa ang akon dalan',
+  'Get started': 'Magsugod',
   'Skip to content': 'Laktaw sa kaundan',
   'Your skills. Your next chapter.': 'Imo ikasarang. Imo masunod nga kapitulo.',
   'Every career': 'Ang tagsa ka karera',

@@ -82,7 +82,7 @@ export const en = {
     catalog: 'Qualifications',
     progress: 'My progress',
     signIn: 'Sign in',
-    findMyPath: 'Find my path',
+    findMyPath: 'Get started',
   },
   // Home, the landing page (classic/landing.html). Names from TESDA's data (qualifications, jobs, units of
   // competency, regions) and the figures it shows are in features/home/data.ts; the lines that quote a figure take it
@@ -93,7 +93,7 @@ export const en = {
       // It reads as en.pages.home.heading.
       title: ['Every career', 'has a track.', 'Find yours.'],
       lead: 'Tell us what you want to do, in your own words. TESDA Track matches you to a TESDA qualification, checks how ready you are, and finds training and assessment near you.',
-      findMyPath: 'Find my path',
+      findMyPath: 'Get started',
       browse: (qualifications: number) => `Browse ${figure(qualifications)} qualifications`,
       notes: (regions: number) => [
         'No account needed to start',
@@ -265,14 +265,14 @@ export const en = {
       ],
       cta: 'Go to My progress',
     },
-    // The goal box at the end of the page, which opens Find my path with the goal.
+    // The goal box at the end of the page, which opens the Career Map with the goal in its search box.
     closing: {
       heading: 'What would you like to achieve?',
       lead: 'Tell us about a career, a skill, or an experience you’d like to turn into a qualification.',
       label: 'Your goal',
       placeholder: 'I’ve worked as a welder for 5 years but I don’t have an NC.',
-      submit: 'Find my path',
-      note: 'Your goal opens in Find my path, where you can change it before you get your matches.',
+      submit: 'Get started',
+      note: 'Your goal opens in the Career Map, where you can change it before you search.',
       // As the finder's goal box says it.
       empty: 'Describe your career goal or skills to get started.',
       // Under the box, as Streamlit's text area counts: "12/500", read as "12 of 500 characters".
@@ -1295,7 +1295,7 @@ export const en = {
       resume: (goal: string) => `Pick up your goal: “${goal}”.`,
       resumeAction: 'Continue in Find my pathway',
       start: 'Tell us what you’d like to achieve, and we’ll suggest qualifications and a pathway.',
-      startAction: 'Find my pathway',
+      startAction: 'Get started',
       // A saved recommendation whose qualification the catalog no longer has (US-10).
       unavailable:
         'The qualification saved with this goal isn’t in the catalog any more. You can explore others.',
@@ -1448,8 +1448,8 @@ export const en = {
     // The text only asked for ideas ("not sure, suggest"), so nothing was searched (the API's reason).
     suggest: {
       heading: 'Not sure what you want yet?',
-      body: 'Skills Explorer needs something you can do or enjoy, like cooking, welding or fixing phones. Find my pathway asks about your goal and suggests TESDA programs for you.',
-      action: 'Find my pathway',
+      body: 'Skills Explorer needs something you can do or enjoy, like cooking, welding or fixing phones. The Career Map asks about your goal and suggests TESDA programs for you.',
+      action: 'Get started',
     },
     results: {
       searched: (terms: readonly string[]) => `Searching Skills Bridge for: ${terms.join(', ')}`,

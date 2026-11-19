@@ -180,7 +180,11 @@ function Explorer({ catalog }: { catalog: Qualification[] }) {
         />
       ) : unsure ? (
         <EmptyState heading={copy.suggest.heading} body={copy.suggest.body}>
-          <Link to={paths.finder} className={button({ variant: 'primary' })}>
+          <Link
+            to={paths.explore}
+            state={{ focusSearch: true }}
+            className={button({ variant: 'primary' })}
+          >
             {copy.suggest.action}
             <Icon name="arrowRight" />
           </Link>

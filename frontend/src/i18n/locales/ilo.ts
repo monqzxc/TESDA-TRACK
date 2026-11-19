@@ -20,6 +20,7 @@ export const ilo: Record<string, string> = {
   Qualifications: 'Dagiti kwalipikasion',
   Qualification: 'Kwalipikasion',
   'Find my path': 'Biroken ti dalanko',
+  'Get started': 'Mangrugi',
   'Skip to content': 'Laktawan a mapan iti linaon',
   'Your skills. Your next chapter.': 'Dagiti kabaelam. Ti sumaruno a kapitulo mo.',
   'Every career': 'Tunggal karera',

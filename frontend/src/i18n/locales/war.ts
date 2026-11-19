@@ -20,6 +20,7 @@ export const war: Record<string, string> = {
   Qualifications: 'Mga kwalipikasyon',
   Qualification: 'Kwalipikasyon',
   'Find my path': 'Bilnga an akon dalan',
+  'Get started': 'Magtikang',
   'Skip to content': 'Laktaw ngadto ha sulod',
   'Your skills. Your next chapter.': 'Imo abilidad. Imo sunod nga kapitulo.',
   'Every career': 'An tagsa nga karera',

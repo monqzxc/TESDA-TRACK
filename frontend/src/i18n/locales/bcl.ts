@@ -20,6 +20,7 @@ export const bcl: Record<string, string> = {
   Qualifications: 'Mga kwalipikasyon',
   Qualification: 'Kwalipikasyon',
   'Find my path': 'Hanapon an sakuyang dalan',
+  'Get started': 'Magpoon',
   'Skip to content': 'Lumaktaw sa laog',
   'Your skills. Your next chapter.': 'Saimong kakayahan. Saimong sunod na kapitulo.',
   'Every career': 'An lambang karera',

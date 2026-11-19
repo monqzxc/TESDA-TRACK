@@ -5,6 +5,7 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import { maria, rememberSignIn, serveAccountApi } from '../../test/account.tsx'
 import { renderApp } from '../../test/app.tsx'
 import { server } from '../../test/server.ts'
+import { useExploreStore } from '../explore/useExplore.ts'
 import { useFinderStore } from '../finder/store.ts'
 import type {
   Application,
@@ -262,13 +263,13 @@ beforeEach(() => {
 })
 
 describe('My Progress', () => {
-  it('sends a learner with no records to the finder, and opens qualification goals by default', async () => {
+  it('sends a learner with no records to the Career Map, and opens qualification goals by default', async () => {
     serveLearner()
     await openProgress()
 
     expect(
-      within(region('Continue your journey')).getByRole('link', { name: 'Find my pathway' }),
-    ).toHaveAttribute('href', '/find')
+      within(region('Continue your journey')).getByRole('link', { name: 'Get started' }),
+    ).toHaveAttribute('href', '/explore')
     expect(region('My qualification goals')).toBeVisible()
     expect(screen.queryByRole('region', { name: 'My pathways' })).not.toBeInTheDocument()
     expect(screen.queryByRole('region', { name: 'Readiness over time' })).not.toBeInTheDocument()
@@ -431,8 +432,8 @@ describe('My Progress', () => {
     )
 
     await user.click(within(collection).getByRole('button', { name: 'Explore this pathway' }))
-    await waitFor(() => expect(router.state.location.pathname).toBe('/find'))
-    expect(useFinderStore.getState().goal).toBe(`I want to pursue ${welding.name}.`)
+    await waitFor(() => expect(router.state.location.pathname).toBe('/explore'))
+    expect(useExploreStore.getState().draft).toBe(welding.name)
   })
 
   it('merges a saved qualification goal and its pathway, and removes both records together', async () => {

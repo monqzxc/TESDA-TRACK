@@ -16,7 +16,7 @@ function pageTargets(): Record<PageKey, readonly Target[]> {
     tspWebview: [{ selector: '#main form', copy: copy.goalInput }],
     home: [
       {
-        selector: 'header a[href$="/find"], [data-home-hero] a[href$="/find"]',
+        selector: 'header a[href$="/explore"], [data-home-hero] a[href$="/explore"]',
         copy: copy.homeStart,
       },
       // Sections stay laid out before their scroll-reveal children become opaque.
