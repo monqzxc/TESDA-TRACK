@@ -830,4 +830,14 @@ export const ceb: Record<string, string> = {
     'Tugma sa imong gi-report nga karera, kahanas o sektor.',
   'Similar in meaning to your goal.': 'Susama sa kahulogan sa imong tumong.',
   'Scholarship open': 'Bukas ang scholarship',
+  // No center offers the qualification anywhere (QA-2026-11-18-E).
+  'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
+    'Wala pay sentro nga nagtanyag og {0} bisan asa. Dili makatabang ang mas lapad nga gilay-on, mao nga sulayi ang usa niini.',
+  'A related qualification offered within {0} km':
+    'Usa ka may kalabotan nga kwalipikasyon nga gitanyag sulod sa {0} km',
+  'Browse other {0} qualifications': 'Tan-awa ang ubang kwalipikasyon sa {0}',
+  'Ask the TESDA provincial or district office near you which providers plan to offer it.':
+    'Pangutan-a ang provincial o district office sa TESDA nga duol nimo kung unsang mga provider ang nagplano nga motanyag niini.',
+  'Share your location or type a city to see a related qualification near you.':
+    'Ipaambit ang imong lokasyon o pag-type og siyudad aron makita ang may kalabotan nga kwalipikasyon duol nimo.',
 }

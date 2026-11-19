@@ -1474,4 +1474,14 @@ export const pam: Record<string, string> = {
     'Mitugma king ireport mung karera, kayanan o sektor.',
   'Similar in meaning to your goal.': 'Kalupa ning kabaldugan ning layunin mu.',
   'Scholarship open': 'Bukas ing scholarship',
+  // No center offers the qualification anywhere (QA-2026-11-18-E).
+  'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
+    'Ala pang sentro a mag-alok {0} nanu man a lugal. E makatulung ing mas malapad a kalayu, nya subukan me ing metung kareni.',
+  'A related qualification offered within {0} km':
+    'Metung a makaugnay a kwalipikasyun a ibie king lub ning {0} km',
+  'Browse other {0} qualifications': 'Lawen la reng aliwang kwalipikasyun king {0}',
+  'Ask the TESDA provincial or district office near you which providers plan to offer it.':
+    'Kutnan me ing provincial o district office ning TESDA a malapit keka nung nanung provider ing mamalanung mag-alok kaniti.',
+  'Share your location or type a city to see a related qualification near you.':
+    'Ibahagi me ing lokasyun mu o mag-type kang lungsod ban akit mu ing makaugnay a kwalipikasyun a malapit keka.',
 }

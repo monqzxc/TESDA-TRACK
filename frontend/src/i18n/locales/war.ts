@@ -829,4 +829,14 @@ export const war: Record<string, string> = {
     'Tugma ha imo gin-report nga karera, abilidad o sektor.',
   'Similar in meaning to your goal.': 'Pariho ha kahulugan han imo tumong.',
   'Scholarship open': 'Abri an scholarship',
+  // No center offers the qualification anywhere (QA-2026-11-18-E).
+  'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
+    'Waray pa sentro nga nagtatanyag hin {0} bisan diin. Diri makakabulig an mas halapad nga kahirayo, salit testingi an usa hini.',
+  'A related qualification offered within {0} km':
+    'Usa nga may kalabotan nga kwalipikasyon nga gintatanyag ha sulod han {0} km',
+  'Browse other {0} qualifications': 'Kitaa an iba nga kwalipikasyon ha {0}',
+  'Ask the TESDA provincial or district office near you which providers plan to offer it.':
+    'Pakianhi an provincial o district office han TESDA nga hirani ha imo kun ano nga mga provider an nagpaplano magtanyag hini.',
+  'Share your location or type a city to see a related qualification near you.':
+    'Ipaambit an imo lokasyon o pag-type hin syudad basi makita an may kalabotan nga kwalipikasyon nga hirani ha imo.',
 }

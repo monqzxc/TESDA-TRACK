@@ -1920,4 +1920,14 @@ export const tl: Record<string, string> = {
   'Matched your reported career, skills, or sector.':
     'Tugma sa iniulat mong karera, kasanayan o sektor.',
   'Similar in meaning to your goal.': 'Kahawig ng kahulugan ng layunin mo.',
+  // No center offers the qualification anywhere (QA-2026-11-18-E).
+  'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
+    'Wala pang sentrong nag-aalok ng {0} kahit saan. Hindi makakatulong ang mas malawak na layo, kaya subukan ang isa sa mga ito.',
+  'A related qualification offered within {0} km':
+    'Isang kaugnay na kwalipikasyong inaalok sa loob ng {0} km',
+  'Browse other {0} qualifications': 'Tingnan ang iba pang kwalipikasyon sa {0}',
+  'Ask the TESDA provincial or district office near you which providers plan to offer it.':
+    'Tanungin ang provincial o district office ng TESDA na malapit sa iyo kung aling mga provider ang balak mag-alok nito.',
+  'Share your location or type a city to see a related qualification near you.':
+    'Ibahagi ang lokasyon mo o mag-type ng lungsod para makita ang kaugnay na kwalipikasyong malapit sa iyo.',
 }

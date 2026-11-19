@@ -829,4 +829,14 @@ export const ilo: Record<string, string> = {
     'Maitunos iti inreport mo a karera, kabaelan wenno sektor.',
   'Similar in meaning to your goal.': 'Kaasping ti kaipapanan ti panggepmo.',
   'Scholarship open': 'Nakalukat ti scholarship',
+  // No center offers the qualification anywhere (QA-2026-11-18-E).
+  'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
+    'Awan pay ti sentro a mangted iti {0} iti aniaman a lugar. Saan a makatulong ti nalawlawa a kaadayo, isu a padasem ti maysa kadagitoy.',
+  'A related qualification offered within {0} km':
+    'Maysa a mainaig a kwalipikasion a maited iti uneg ti {0} km',
+  'Browse other {0} qualifications': 'Kitaen dagiti sabali a kwalipikasion iti {0}',
+  'Ask the TESDA provincial or district office near you which providers plan to offer it.':
+    'Saludsodem iti provincial wenno district office ti TESDA nga asideg kenka no dagiti ania a provider ti mangplano a mangted iti daytoy.',
+  'Share your location or type a city to see a related qualification near you.':
+    'Ibingay ti lokasionmo wenno ag-type iti siudad tapno makita ti mainaig a kwalipikasion nga asideg kenka.',
 }

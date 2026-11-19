@@ -834,4 +834,14 @@ export const bcl: Record<string, string> = {
     'Tugma sa ireport mong karera, abilidad o sektor.',
   'Similar in meaning to your goal.': 'Kaagid kan kahulugan kan saimong katuyuhan.',
   'Scholarship open': 'Bukas an scholarship',
+  // No center offers the qualification anywhere (QA-2026-11-18-E).
+  'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
+    'Mayo pang sentro na nag-aalok nin {0} saen man. Dai makakatabang an mas halabang kaharayo, kaya probaran an saro kaini.',
+  'A related qualification offered within {0} km':
+    'Sarong kaugnay na kwalipikasyon na itinatao sa laog nin {0} km',
+  'Browse other {0} qualifications': 'Hilingon an ibang kwalipikasyon sa {0}',
+  'Ask the TESDA provincial or district office near you which providers plan to offer it.':
+    'Hapoton an provincial o district office kan TESDA na harani saimo kun anong mga provider an may plano na mag-alok kaini.',
+  'Share your location or type a city to see a related qualification near you.':
+    'Ibahagi an lokasyon mo o mag-type nin siyudad tanganing mahiling an kaugnay na kwalipikasyon na harani saimo.',
 }

@@ -837,4 +837,14 @@ export const hil: Record<string, string> = {
     'Tugma sa imo ginreport nga karera, ikasarang ukon sektor.',
   'Similar in meaning to your goal.': 'Kaangay sang kahulugan sang imo tulumuron.',
   'Scholarship open': 'Bukas ang scholarship',
+  // No center offers the qualification anywhere (QA-2026-11-18-E).
+  'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
+    'Wala pa sing sentro nga nagatanyag sang {0} bisan diin. Indi makabulig ang mas malapad nga kalayuon, gani tilawi ang isa sa sini.',
+  'A related qualification offered within {0} km':
+    'Isa ka may kaangtanan nga kwalipikasyon nga gintanyag sa sulod sang {0} km',
+  'Browse other {0} qualifications': 'Tan-awa ang iban nga kwalipikasyon sa {0}',
+  'Ask the TESDA provincial or district office near you which providers plan to offer it.':
+    'Pamangkuta ang provincial ukon district office sang TESDA nga malapit sa imo kon diin nga mga provider ang nagaplano magtanyag sini.',
+  'Share your location or type a city to see a related qualification near you.':
+    'Ipaambit ang imo lokasyon ukon mag-type sang siyudad agod makita ang may kaangtanan nga kwalipikasyon nga malapit sa imo.',
 }

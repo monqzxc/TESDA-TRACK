@@ -821,4 +821,14 @@ export const pag: Record<string, string> = {
     'Tugma ed inreport mon karera, pakayari o sektor.',
   'Similar in meaning to your goal.': 'Mipadpara ed kabaliksan na gagala mo.',
   'Scholarship open': 'Abukas so scholarship',
+  // No center offers the qualification anywhere (QA-2026-11-18-E).
+  'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
+    'Anggapo ni so sentro ya mangiiter na {0} anggan iner. Ag makatulong so mas maawang a karayo, kanian subokan so sakey ed saraya.',
+  'A related qualification offered within {0} km':
+    'Sakey a misiglaotan a kwalipikasyon ya iitdo ed loob na {0} km',
+  'Browse other {0} qualifications': 'Nengnengen iray arum a kwalipikasyon ed {0}',
+  'Ask the TESDA provincial or district office near you which providers plan to offer it.':
+    'Tepetan so provincial o district office na TESDA ya asingger ed sika no siopay provider so manplano ya mangiter na saya.',
+  'Share your location or type a city to see a related qualification near you.':
+    'Iburay so lokasyon mo o man-type na siudad pian nanengneng so misiglaotan a kwalipikasyon ya asingger ed sika.',
 }
