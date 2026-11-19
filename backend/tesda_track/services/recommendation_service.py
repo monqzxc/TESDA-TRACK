@@ -17,10 +17,12 @@ def score_qualifications(query: str, profile: dict, qualifications: list[dict]) 
     context = normalize(" ".join([profile.get("career_goal") or "", *profile.get("existing_skills", [])]))
     results = []
     near = fuzzy_matches(text, qualifications)
+    vehicles = goal_rules.vehicle_words(query)
     # ponytail: transparent keyword scores, not semantic confidence; embeddings can improve recall.
     for qualification in qualifications:
         hits = [word for word in qualification["career_keywords"]
                 if contains(text, word) and not goal_rules.is_generic(word)]
+        hits += [word for word in vehicles.get(qualification["code"], ()) if word not in hits]
         typo_words = [word for word in qualification["career_keywords"]
                       if word in near and not goal_rules.is_generic(word)]
         # A typo of an everyday single word (barko, alaga ...) is not evidence alone: it needs a second signal.

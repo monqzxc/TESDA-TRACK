@@ -115,6 +115,50 @@ def test_hotel_work_returns_active_routes_in_hybrid_and_structured_scoring():
     assert all("hotel" in m.reason for m in structured)
 
 
+DRIVING_CODES = {"DRIVING-NC-II", "DRIVING-NC-III-2", "DRIVING-NC-III"}
+
+
+@pytest.mark.parametrize("goal, codes", [
+    ("Gusto kong maging driver ng truck", {"DRIVING-NC-III", "DRIVING-NC-III-2"}),
+    ("I want to drive a bus", {"DRIVING-NC-III-2"}),
+    ("truck driver with trailer", {"DRIVING-NC-III", "DRIVING-NC-III-2"}),
+    ("gusto ko maging tsuper ng jeep", {"DRIVING-NC-II"}),
+])
+def test_driving_goal_shows_the_vehicle_it_matched(catalog_rules, goal, codes):
+    """BUG-11: "driver ng truck" names the vehicle in everyday words, and the reason says which."""
+    hits = {h["qualification"]["code"]: h for h in score_qualifications(goal, {}, catalog_rules)}
+    for code in codes:
+        assert hits[code]["reason"].startswith("Matched your words: ")
+    assert {code for code in hits if code in DRIVING_CODES} >= codes
+
+
+def test_trailer_puts_the_articulated_vehicle_first(catalog_rules):
+    hits = score_qualifications("truck driver with trailer", {}, catalog_rules)
+    assert hits[0]["qualification"]["code"] == "DRIVING-NC-III"
+
+
+@pytest.mark.parametrize("goal", ["I want to fix trucks", "truck mechanic", "ayoko mag-drive, gusto ko mag-ayos ng bus"])
+def test_vehicle_words_need_a_driving_goal(goal):
+    from tesda_track.services.goal_rules import vehicle_words
+    assert vehicle_words(goal) == {}
+
+
+def test_driving_goal_asks_what_the_learner_will_drive():
+    from tesda_track.schemas.analysis import Match
+    from tesda_track.schemas.catalog import QualificationSummary
+    from tesda_track.services.analysis import clarification
+
+    def found(*codes):
+        return [Match(qualification=QualificationSummary(code=code, name=code, sector="Automotive"), score=60,
+                      reason="r") for code in codes]
+
+    asked = clarification("Gusto kong maging driver ng truck", found("DRIVING-NC-III", "DRIVING-NC-III-2", "DRIVING-NC-II"))
+    assert [(o.id, o.code) for o in asked.options] == [
+        ("light", "DRIVING-NC-II"), ("bus_truck", "DRIVING-NC-III-2"), ("trailer", "DRIVING-NC-III")]
+    assert clarification("Gusto kong maging driver ng truck", found("DRIVING-NC-III", "AUTOMOTIVE-NC-II")) is None
+    assert clarification("I want to be a welder", found(*DRIVING_CODES)) is None
+
+
 def test_unknown_career_has_no_matches(qualifications):
     assert match_qualifications("astronaut", analyze_user_query("astronaut", qualifications), qualifications) == []
 

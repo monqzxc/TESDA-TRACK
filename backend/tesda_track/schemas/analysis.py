@@ -86,11 +86,23 @@ class SkillTerms(BaseModel):
     unmatched: list[str] = Field(description="Terms that name no trade or career TESDA trains for")
 
 
+class ClarifyOption(BaseModel):
+    id: str = Field(description="The answer, which the app words in the learner's language")
+    code: str = Field(description="The matched qualification this answer picks")
+
+
+class Clarification(BaseModel):
+    """One short question that tells close matches apart, such as which vehicle a driver will drive."""
+    id: Literal["vehicle"]
+    options: list[ClarifyOption]
+
+
 class MatchResult(BaseModel):
     profile: Profile
     matches: list[Match]
     search: SkillTerms | None = Field(default=None, description="Skills searches only")
     eligible_qualification_codes: list[str] | None = None
+    clarify: Clarification | None = Field(default=None, description="Goal searches whose matches need telling apart")
 
     @model_serializer(mode="wrap")
     def preserve_goal_shape(self, handler):
@@ -99,6 +111,8 @@ class MatchResult(BaseModel):
             result.pop("search", None)
         if self.eligible_qualification_codes is None:
             result.pop('eligible_qualification_codes', None)
+        if self.clarify is None:
+            result.pop("clarify", None)
         return result
 
 

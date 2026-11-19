@@ -678,6 +678,13 @@ export const en = {
       },
       certification: 'Do you currently hold a related certification?',
       certificationOptions: { yes: 'Yes', no: 'No', unsure: 'I’m not sure' },
+      // A driving goal that matched several driving qualifications: the answer picks one (BUG-11).
+      vehicle: 'What will you drive?',
+      vehicleOptions: {
+        light: 'A car, van or jeepney',
+        bus_truck: 'A bus, or a truck without a trailer',
+        trailer: 'A truck with a trailer',
+      } as Record<string, string>,
       choose: 'Choose an answer',
     },
     matches: {
@@ -713,6 +720,8 @@ export const en = {
       skillMatch: 'Skill match',
       skillMatchScore: (score: number) => `Skill match: ${score}%`,
       centers: 'Find training centers',
+      // A goal's qualification: on to the centers near the learner, starting with how far they can go.
+      nearYou: 'Find centers near you',
       other: 'Or choose any qualification to explore',
       careers: (careers: readonly string[]) => `Sample career options: ${careers.join(', ')}`,
     },

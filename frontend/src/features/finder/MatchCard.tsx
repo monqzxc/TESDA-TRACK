@@ -30,6 +30,8 @@ interface MatchCardProps {
   mode?: SearchMode
   /** Training & Assessment for this qualification, offered beside the readiness check (skills searches). */
   centersHref?: string
+  /** A goal's qualification: the centers near the learner, from "How far can you go?". Leads the readiness check. */
+  nearHref?: string
   feedback?: ReactNode
 }
 
@@ -49,6 +51,7 @@ export function MatchCard({
   onCheck,
   mode = 'goal',
   centersHref,
+  nearHref,
   feedback,
 }: MatchCardProps) {
   const en = useCopy()
@@ -164,10 +167,20 @@ export function MatchCard({
                 )}
               </>
             )}
+            {nearHref && (
+              <Link
+                to={nearHref}
+                className={cx(button({ variant: 'primary', wide: true }), 'mt-auto')}
+              >
+                <Icon name="pin" />
+                {copy.nearYou}
+                <Icon name="arrowRight" />
+              </Link>
+            )}
             <Button
               className={cx(
-                button({ variant: chosen ? 'primary' : 'secondary', wide: true }),
-                'mt-auto',
+                button({ variant: chosen && !nearHref ? 'primary' : 'secondary', wide: true }),
+                !nearHref && 'mt-auto',
               )}
               onPress={onCheck}
             >

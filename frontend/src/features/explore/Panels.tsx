@@ -856,7 +856,8 @@ export function ResultsPanel({
       {!reference && view !== 'demand' && (
         <p className="m-0 rounded-10 bg-tint px-3 py-2 text-13 text-navy">{copy.needPlace}</p>
       )}
-      {reference && view !== 'demand' && <RangeStep rangeKm={rangeKm} />}
+      {/* Asked even before there is a place: arriving from Find my pathway opens it straight away. */}
+      {view !== 'demand' && <RangeStep rangeKm={rangeKm} />}
       {shown.map((kind, index) => (
         <Group
           key={kind}

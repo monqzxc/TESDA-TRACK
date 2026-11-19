@@ -13,6 +13,7 @@ import {
   welding,
   type FinderRequest,
 } from '../../test/finder.ts'
+import type { Qualification } from '../../api/queries.ts'
 import { FINDER_KEY, useFinderStore } from './store.ts'
 import { server } from '../../test/server.ts'
 
@@ -1118,5 +1119,81 @@ describe('Find my pathway, related occupations', () => {
     await submitGoal(user)
 
     expect(screen.queryByRole('region', { name: 'Related occupations' })).not.toBeInTheDocument()
+  })
+})
+
+describe('Find my pathway, telling close matches apart', () => {
+  // BUG-11: "Gusto kong maging driver ng truck" matches the driving qualifications; one short question picks one.
+  const driving = (code: string, name: string): Qualification => ({
+    code,
+    name,
+    sector: 'Automotive and Land Transportation',
+    possible_jobs: [],
+    competencies: [{ id: 1, position: 1, name: 'Drive safely', category: 'Core' }],
+  })
+  const trailer = driving('DRIVING-NC-III', 'Driving (Articulated Vehicle) NC III')
+  const busTruck = driving('DRIVING-NC-III-2', 'Driving (Passenger Bus/Straight Truck) NC III')
+  const light = driving('DRIVING-NC-II', 'Driving NC II')
+  const matched = (q: Qualification, reason: string) => ({
+    qualification: { code: q.code, name: q.name, sector: q.sector },
+    score: 60,
+    reason,
+  })
+
+  beforeEach(() => {
+    serveFinderCatalog([trailer, busTruck, light])
+    serveFinderApi()
+    server.use(
+      http.post('*/api/v1/analysis/matches', async ({ request }) => {
+        const body = (await request.json()) as { profile: unknown }
+        return HttpResponse.json({
+          profile: body.profile,
+          matches: [
+            matched(trailer, 'Matched your words: truck'),
+            matched(busTruck, 'Matched your words: truck'),
+            matched(light, 'Similar in meaning to your goal.'),
+          ],
+          clarify: {
+            id: 'vehicle',
+            options: [
+              { id: 'light', code: light.code },
+              { id: 'bus_truck', code: busTruck.code },
+              { id: 'trailer', code: trailer.code },
+            ],
+          },
+        })
+      }),
+    )
+  })
+
+  it('asks what the learner will drive, and the answer becomes the best match with its matched word', async () => {
+    const user = userEvent.setup()
+    await openFinder()
+    await search(user, 'Gusto kong maging driver ng truck.')
+    await screen.findByRole('article', { name: trailer.name })
+
+    const first = () => screen.getAllByRole('article')[0]
+    expect(within(first()).getByText('Best match')).toBeInTheDocument()
+    expect(within(first()).getByText('Matched your words: truck')).toBeInTheDocument()
+
+    await choose(user, /What will you drive\?/, 'A bus, or a truck without a trailer')
+    expect(within(first()).getByRole('heading', { name: busTruck.name })).toBeInTheDocument()
+    expect(within(first()).getByText('Best match')).toBeInTheDocument()
+    expect(within(first()).getByText('Matched your words: truck')).toBeInTheDocument()
+    expect(screen.getAllByText('Best match')).toHaveLength(1)
+  })
+
+  it('continues the chosen qualification to "How far can you go?" on Explore', async () => {
+    const user = userEvent.setup()
+    await openFinder()
+    await search(user, 'Gusto kong maging driver ng truck.')
+    const card = await screen.findByRole('article', { name: trailer.name })
+
+    expect(within(card).getByRole('link', { name: 'Find centers near you' })).toHaveAttribute(
+      'href',
+      `/explore?qualification=${trailer.code}&range=ask`,
+    )
+    // The readiness check is still offered beside it.
+    expect(within(card).getByRole('button', { name: 'Check my readiness' })).toBeInTheDocument()
   })
 })

@@ -333,6 +333,11 @@ export const tl: Record<string, string> = {
   Yes: 'Oo',
   No: 'Hindi',
   'I’m not sure': 'Hindi ako sigurado',
+  'What will you drive?': 'Ano ang imamaneho mo?',
+  'A car, van or jeepney': 'Kotse, van o dyip',
+  'A bus, or a truck without a trailer': 'Bus, o trak na walang trailer',
+  'A truck with a trailer': 'Trak na may trailer',
+  'Find centers near you': 'Maghanap ng mga sentrong malapit sa iyo',
   'Choose an answer': 'Pumili ng sagot',
   'Qualifications for you': 'Mga kwalipikasyon para sa iyo',
   'These match your goal and experience. Choose one to check your readiness for it.':

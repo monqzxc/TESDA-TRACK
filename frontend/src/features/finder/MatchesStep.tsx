@@ -23,6 +23,7 @@ import {
 } from './store.ts'
 import { card, cardHeading, notice, status } from './styles.ts'
 import type { JourneyContext } from './useJourney.ts'
+import type { Clarification } from './api.ts'
 import { DemandLocation } from './DemandLocation.tsx'
 
 interface MatchesStepProps {
@@ -49,7 +50,15 @@ export function MatchesStep({ journey, context, catalog, onCheck }: MatchesStepP
     () => new Map(catalog.map((qualification) => [qualification.code, qualification])),
     [catalog],
   )
-  const found = useMemo(() => matches.data?.matches ?? [], [matches.data])
+  const selected = useFinderStore((state) => state.selected)
+  const clarify = matches.data?.clarify ?? null
+  // The answer to "What will you drive?" names the qualification that fits: it goes first, as the best match.
+  const answered = clarify?.options.find((option) => option.code === selected)?.code ?? null
+  const found = useMemo(() => {
+    const all = matches.data?.matches ?? []
+    const pick = all.find((match) => match.qualification.code === answered)
+    return pick ? [pick, ...all.filter((match) => match !== pick)] : all
+  }, [matches.data, answered])
   const skills = journey.mode === 'skills'
   const search = matches.data?.search
   const inTsp = useLocation().pathname.startsWith(paths.tspWebview)
@@ -60,10 +69,24 @@ export function MatchesStep({ journey, context, catalog, onCheck }: MatchesStepP
       inTsp ? paths.tspTraining : paths.training,
     )
   const centersFor = (code: string) => (skills ? centersHref(code) : undefined)
+  // A goal goes on to the centers near the learner, asking first how far they can go. The webview has no map, so
+  // there it is the qualification's centers.
+  const nearFor = (code: string) =>
+    skills
+      ? undefined
+      : inTsp
+        ? centersHref(code)
+        : `${paths.explore}?${new URLSearchParams({ qualification: code, range: 'ask' })}`
 
   return (
     <>
-      <StartingPoint journey={journey} profile={context.matchedProfile ?? context.profile} />
+      <StartingPoint
+        journey={journey}
+        profile={context.matchedProfile ?? context.profile}
+        clarify={clarify}
+        answered={answered}
+        onAnswer={choose}
+      />
       <DemandLocation query={journey.query} />
 
       {/* Qualifications for you: the heading with its link, then one wide card per match. */}
@@ -141,6 +164,7 @@ export function MatchesStep({ journey, context, catalog, onCheck }: MatchesStepP
                       onCheck={() => onCheck(code)}
                       mode={journey.mode}
                       centersHref={centersFor(code)}
+                      nearHref={nearFor(code)}
                       feedback={
                         <SuggestionFeedback
                           kind="qualification"
@@ -164,6 +188,7 @@ export function MatchesStep({ journey, context, catalog, onCheck }: MatchesStepP
                     chosen
                     check={results[chosen.code]}
                     onCheck={() => onCheck(chosen.code)}
+                    nearHref={nearFor(chosen.code)}
                   />
                 </li>
               )}
@@ -201,7 +226,21 @@ function factClass(index: number): string {
 }
 
 /** What the finder understood from the goal, as facts in a row, with the follow-up questions under them. */
-function StartingPoint({ journey, profile }: { journey: Journey; profile: Profile }) {
+function StartingPoint({
+  journey,
+  profile,
+  clarify,
+  answered,
+  onAnswer,
+}: {
+  journey: Journey
+  profile: Profile
+  /** One short question that tells the matches apart ("What will you drive?"), when they need it. */
+  clarify: Clarification | null
+  /** The qualification its answer picked, or null until the learner answers. */
+  answered: string | null
+  onAnswer: (code: string) => void
+}) {
   const en = useCopy()
   const copy = en.finder
 
@@ -262,13 +301,26 @@ function StartingPoint({ journey, profile }: { journey: Journey; profile: Profil
           <p className="mt-4 mb-0 text-13 text-muted">{startCopy.skills(skills)}</p>
         )}
 
-        {(askExperience || askCertification) && (
+        {(askExperience || askCertification || clarify) && (
           <div className="mt-5 border-t border-border pt-5">
             <p className="mt-0 mb-3 text-15 font-[650] text-navy">
               {followUp.heading}{' '}
               <span className="ml-[0.4rem] text-13 font-normal text-muted">{followUp.lead}</span>
             </p>
             <div className="grid grid-cols-2 gap-4 @max-[641px]:grid-cols-1">
+              {clarify && (
+                <SelectField
+                  className="col-span-full max-w-[calc(50%-0.5rem)] @max-[641px]:max-w-none"
+                  label={followUp.vehicle}
+                  placeholder={followUp.choose}
+                  options={clarify.options.map((option) => ({
+                    id: option.code,
+                    label: followUp.vehicleOptions[option.id] ?? option.id,
+                  }))}
+                  value={answered}
+                  onChange={onAnswer}
+                />
+              )}
               {askExperience && (
                 <SelectField<ExperienceAnswer>
                   label={

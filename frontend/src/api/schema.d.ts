@@ -3135,6 +3135,32 @@ export interface components {
             /** Expires On */
             expires_on?: string | null;
         };
+        /**
+         * Clarification
+         * @description One short question that tells close matches apart, such as which vehicle a driver will drive.
+         */
+        Clarification: {
+            /**
+             * Id
+             * @constant
+             */
+            id: "vehicle";
+            /** Options */
+            options: components["schemas"]["ClarifyOption"][];
+        };
+        /** ClarifyOption */
+        ClarifyOption: {
+            /**
+             * Id
+             * @description The answer, which the app words in the learner's language
+             */
+            id: string;
+            /**
+             * Code
+             * @description The matched qualification this answer picks
+             */
+            code: string;
+        };
         /** ClientConfig */
         ClientConfig: {
             /**
@@ -4072,6 +4098,8 @@ export interface components {
             search?: components["schemas"]["SkillTerms"] | null;
             /** Eligible Qualification Codes */
             eligible_qualification_codes?: string[] | null;
+            /** @description Goal searches whose matches need telling apart */
+            clarify?: components["schemas"]["Clarification"] | null;
         };
         /**
          * MatchSummary

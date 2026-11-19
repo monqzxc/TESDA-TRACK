@@ -47,7 +47,7 @@ def match_qualifications(request: MatchRequest, session: SessionDep, embedder: E
         return MatchResult(profile=evidence.profile,matches=evidence.matches,eligible_qualification_codes=evidence.eligible_codes)
     profile, matches = analysis.match(session, request.query, request.profile, embedder, answers)
     background.add_task(match_stats.record, no_match=not matches)
-    return MatchResult(profile=profile, matches=matches)
+    return MatchResult(profile=profile, matches=matches, clarify=analysis.clarification(request.query, matches))
 
 
 @router.post("/suggestions", response_model=SuggestionResult, dependencies=[Depends(suggestions_enabled)],

@@ -24,6 +24,7 @@ import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
+import { GOAL_MAX_LENGTH } from '../finder/key.ts'
 import { matchPathway } from '../training/recommendationApi.ts'
 import { useSavedCenters } from '../training/savedCenters.ts'
 import { useTrainingStore } from '../training/state.ts'
@@ -149,11 +150,14 @@ export default function ExplorePage() {
           ],
         },
       })
+      // From Find my pathway (?range=ask): the chosen qualification continues to "How far can you go?".
+      if (params.get('range') === 'ask') useExploreStore.getState().changeRange()
     }
     setParams(
       (current) => {
         const updated = new URLSearchParams(current)
         updated.delete('qualification')
+        updated.delete('range')
         return updated
       },
       { replace: true, preventScrollReset: true },
@@ -623,7 +627,10 @@ function SearchBox({
   const { setDraft, setSearch } = useExploreStore.getState()
   const [pending, setPending] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // An empty submit asks for a goal, as /find does; it is not a failure, so it offers no retry.
+  const [missing, setMissing] = useState(false)
   const request = useRef<AbortController | null>(null)
+  const missingId = useId()
 
   useEffect(() => () => request.current?.abort(), [])
 
@@ -652,6 +659,13 @@ function SearchBox({
 
   const run = (event: FormEvent) => {
     event.preventDefault()
+    if (!draft.trim()) {
+      cancelSearch()
+      setMissing(true)
+      inputRef.current?.focus()
+      return
+    }
+    setMissing(false)
     void search(draft)
   }
 
@@ -680,6 +694,7 @@ function SearchBox({
 
   const clear = () => {
     cancelSearch()
+    setMissing(false)
     setDraft('')
     setSearch(null)
   }
@@ -715,11 +730,13 @@ function SearchBox({
           value={draft}
           onChange={(text) => {
             cancelSearch()
+            setMissing(false)
             setDraft(text)
             onOpen()
           }}
           onClear={clear}
-          maxLength={1000}
+          maxLength={GOAL_MAX_LENGTH}
+          isInvalid={missing}
           className="flex min-w-0 flex-1 items-center"
         >
           <Label className="sr-only">{copy.search.label}</Label>
@@ -727,6 +744,7 @@ function SearchBox({
           <Input
             ref={inputRef}
             data-query
+            aria-describedby={missing ? missingId : undefined}
             onClick={onOpen}
             className="h-11 w-full min-w-0 border-0 bg-transparent px-1.5 text-16 text-navy placeholder:text-muted placeholder:opacity-100 focus-visible:outline-none [&::-webkit-search-cancel-button]:hidden"
             placeholder={copy.search.placeholder}
@@ -749,6 +767,10 @@ function SearchBox({
       {pending ? (
         <p role="status" className="m-0 px-4 pb-2.5 text-13 text-muted">
           {copy.search.searching}
+        </p>
+      ) : missing ? (
+        <p id={missingId} role="alert" className="m-0 px-4 pb-2.5 text-14 text-warn-ink">
+          {en.finder.unified.empty}
         </p>
       ) : (
         error && (

@@ -203,3 +203,30 @@ describe('Explore from a typed place', () => {
     expect(await screen.findByText('Near Makati City, Metro Manila')).toBeInTheDocument()
   })
 })
+
+describe('Explore from Find my pathway', () => {
+  // BUG-11: the qualification chosen in Find my pathway continues to "How far can you go?".
+  it('opens the chosen qualification on "How far can you go?", then leaves the address clean', async () => {
+    const { code, name, sector } = weldingProgram.qualification
+    server.use(
+      http.get('*/api/v1/qualifications', () =>
+        HttpResponse.json([{ code, name, sector, possible_jobs: [], competencies: [] }]),
+      ),
+    )
+    useExploreStore.setState({ search: null })
+    const user = userEvent.setup()
+    renderWithAuth(
+      <MemoryRouter initialEntries={[`/explore?qualification=${code}&range=ask`]}>
+        <ExplorePage />
+      </MemoryRouter>,
+    )
+
+    const step = await screen.findByRole('region', { name: 'How far can you go?' })
+    expect(within(step).getByRole('heading', { name: 'How far can you go?' })).toHaveFocus()
+    expect(useExploreStore.getState().search?.result.matches[0]?.qualification.code).toBe(code)
+
+    await user.click(within(step).getByRole('button', { name: '50 km' }))
+    expect(useExploreStore.getState().rangeKm).toBe(50)
+    expect(screen.queryByRole('region', { name: 'How far can you go?' })).not.toBeInTheDocument()
+  })
+})

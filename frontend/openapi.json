@@ -10926,6 +10926,49 @@
         "type": "object",
         "title": "CertificationUpdate"
       },
+      "Clarification": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "const": "vehicle",
+            "title": "Id"
+          },
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/ClarifyOption"
+            },
+            "type": "array",
+            "title": "Options"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "options"
+        ],
+        "title": "Clarification",
+        "description": "One short question that tells close matches apart, such as which vehicle a driver will drive."
+      },
+      "ClarifyOption": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "The answer, which the app words in the learner's language"
+          },
+          "code": {
+            "type": "string",
+            "title": "Code",
+            "description": "The matched qualification this answer picks"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "code"
+        ],
+        "title": "ClarifyOption"
+      },
       "ClientConfig": {
         "properties": {
           "carto_key": {
@@ -13180,6 +13223,17 @@
               }
             ],
             "title": "Eligible Qualification Codes"
+          },
+          "clarify": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Clarification"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Goal searches whose matches need telling apart"
           }
         },
         "type": "object",

@@ -19,6 +19,8 @@ import { demandPreference } from './demandIntent.ts'
 
 export type MatchResult = components['schemas']['MatchResult']
 export type Match = MatchResult['matches'][number]
+/** One short question that tells close matches apart, such as "What will you drive?". */
+export type Clarification = components['schemas']['Clarification']
 export type PathwayRecommendation = components['schemas']['PathwayRecommendation']
 export type CuratedPathway = components['schemas']['PathwayPublic']
 type Enrollment = components['schemas']['EnrollmentPublic']

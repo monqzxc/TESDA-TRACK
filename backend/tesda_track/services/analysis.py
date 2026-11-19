@@ -8,8 +8,8 @@ from sqlmodel import Session
 from tesda_track.config import get_settings
 from tesda_track.errors import InvalidRequestError
 from tesda_track.models import Qualification
-from tesda_track.schemas.analysis import (Match, MatchComponents, PathwayRecommendation, Profile, ReadinessResult,
-                                          SearchMode, SkillTerms)
+from tesda_track.schemas.analysis import (Clarification, ClarifyOption, Match, MatchComponents,
+                                          PathwayRecommendation, Profile, ReadinessResult, SearchMode, SkillTerms)
 from tesda_track.services import catalog, embeddings, goal_rules, pathways, skill_search, labor_market, pathway_input
 from tesda_track.services.catalog import CatalogItem
 from tesda_track.services.embeddings import Embedder
@@ -218,6 +218,15 @@ def match_evidence(session: Session, query: str, profile: Profile,
     similarities = embeddings.qualification_similarities(session, embedder, goal_rules.strip_negated(query))
     return MatchEvidence(refined, score_matches(current.items, keyword, similarities, params, limit=limit, query=query),
                          strength, z_scores(similarities), embedder.model_name, params)
+
+def clarification(query: str, matches: Sequence[Match]) -> Clarification | None:
+    """"What will you drive?" for a driving goal that matched two or more driving qualifications."""
+    if not goal_rules.is_driving_goal(query):
+        return None
+    matched = {m.qualification.code for m in matches}
+    options = [ClarifyOption(id=option, code=code) for option, code in goal_rules.VEHICLE_OPTIONS if code in matched]
+    return Clarification(id="vehicle", options=options) if len(options) >= 2 else None
+
 
 KEYWORD_REASON_PREFIX = "Matched your words: "
 SUGGESTION_REASON_PREFIX = "From your TSP profile: "

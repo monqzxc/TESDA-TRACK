@@ -64,6 +64,34 @@ def is_hotel_work_goal(query: str) -> bool:
     return bool(_HOTEL_JOB.fullmatch(_UNDECIDED_HOTEL_SUFFIX.sub("", text)))
 
 
+# A driving goal names the vehicle in everyday words ("driver ng truck"), which the catalog's keyword phrases
+# ("straight truck driver") never contain whole. With a driving word in the goal, each vehicle word counts as a
+# matched word for the driving qualifications that cover it. Keys are catalog codes, as for the hotel pathways.
+_DRIVING = re.compile(r"\b(?:drivers?|drayber|draiber|tsuper|tsoper|drive|driving|mag-?drive|"
+                      r"mag-?maneho|maneho|nagmamaneho|pagmamaneho)\b")
+DRIVING_VEHICLES = {
+    "DRIVING-NC-II": ("car", "kotse", "van", "taxi", "jeep", "jeepney", "dyip", "suv", "pickup"),
+    "DRIVING-NC-III-2": ("bus", "truck", "trak", "trok", "dump truck", "ten wheeler"),
+    "DRIVING-NC-III": ("truck", "trak", "trok", "trailer", "prime mover", "articulated"),
+}
+# "What will you drive?": the answers, in the order shown, each with the qualification it picks.
+VEHICLE_OPTIONS = (("light", "DRIVING-NC-II"), ("bus_truck", "DRIVING-NC-III-2"), ("trailer", "DRIVING-NC-III"))
+
+
+def is_driving_goal(query: str) -> bool:
+    return _DRIVING.search(normalize(strip_negated(query))) is not None
+
+
+def vehicle_words(query: str) -> dict[str, list[str]]:
+    """For a driving goal, the vehicle words it uses, by the driving qualification they point to."""
+    if not is_driving_goal(query):
+        return {}
+    text = normalize(strip_negated(query))
+    found = {code: [word for word in words if re.search(rf"\b{re.escape(word)}\b", text)]
+             for code, words in DRIVING_VEHICLES.items()}
+    return {code: words for code, words in found.items() if words}
+
+
 # --- 2. words that are not a trade ------------------------------------------------------------------------------
 
 # Corpus words of the catalog's own text (Trainers Methodology, Web Development ...) that say nothing about a trade
