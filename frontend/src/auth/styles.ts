@@ -54,7 +54,7 @@ export const formStyle = {
 /** The forms' filled blue button, dimmed while its request is on its way. */
 export function submitButton(isPending: boolean): string {
   return cx(
-    'mt-1 inline-flex min-h-12 items-center justify-center rounded-12 border border-fill bg-fill px-[1.2rem] py-[0.6rem] font-bold text-white',
+    'mt-1 inline-flex min-h-12 items-center justify-center gap-2 rounded-12 border border-fill bg-fill px-[1.2rem] py-[0.6rem] font-bold text-white',
     'data-hovered:border-fill-hover data-hovered:bg-fill-hover',
     ring,
     isPending ? 'cursor-progress opacity-85' : 'cursor-pointer',

@@ -1,4 +1,5 @@
-import { useEffect, useRef, type Key } from 'react'
+import { useEffect, useRef, useState, type Key } from 'react'
+import { createPortal } from 'react-dom'
 import {
   Button,
   Header,
@@ -14,6 +15,7 @@ import { failureMessage } from '../../auth/fields.tsx'
 import type { Learner } from '../../auth/session.ts'
 import { useAuth } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
+import { Spinner } from '../../components/Spinner.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { paths } from '../../paths.ts'
 import { shownName, type Variant } from './variant.ts'
@@ -56,14 +58,18 @@ export default function SignedInMenu({
   const { signOut, notify } = useAuth()
   const navigate = useNavigate()
   const trigger = useRef<HTMLButtonElement>(null)
+  const [isSigningOut, setSigningOut] = useState(false)
 
   useEffect(() => onShown(trigger.current), [onShown])
 
   const endSession = async () => {
+    if (isSigningOut) return
     onSessionEnding()
+    setSigningOut(true)
     try {
       await signOut()
     } catch (failure) {
+      setSigningOut(false)
       onSessionKept()
       notify({ tone: 'error', message: failureMessage(failure) })
     }
@@ -113,6 +119,20 @@ export default function SignedInMenu({
           </Menu>
         </Popover>
       </MenuTrigger>
+      {/* Signing out: a loader over the page until the session has ended (this menu then gives way to Sign in). */}
+      {isSigningOut &&
+        createPortal(
+          <div
+            role="status"
+            className="fixed inset-0 z-100 flex items-center justify-center bg-[rgb(var(--track-shadow-rgb)/0.35)] p-4"
+          >
+            <p className="m-0 flex items-center gap-3 rounded-16 border border-border bg-surface px-5 py-4 text-16 font-semibold text-navy shadow-dialog">
+              <Spinner className="size-5 text-blue" />
+              {copy.menu.signingOut}
+            </p>
+          </div>,
+          document.body,
+        )}
     </>
   )
 }

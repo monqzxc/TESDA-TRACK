@@ -73,6 +73,28 @@ describe('the account menu', () => {
     expect(within(menu).queryByRole('radiogroup', { name: 'Theme' })).not.toBeInTheDocument()
   })
 
+  it('shows a loader while signing out', async () => {
+    const user = userEvent.setup()
+    rememberSignIn()
+    const account = serveAccountApi({ signedIn: true })
+    const answer = deferred()
+    server.use(
+      http.delete('*/api/v1/auth/session', async () => {
+        await answer.promise
+        account.signedIn = false
+        return new HttpResponse(null, { status: 204 })
+      }),
+    )
+    await openApp('/qualifications')
+    const { menu } = await openAccountMenu(user)
+    await user.click(within(menu).getByRole('menuitem', { name: 'Sign out' }))
+
+    expect(await screen.findByText('Signing you out…')).toBeInTheDocument()
+    answer.resolve()
+    await screen.findByRole('button', { name: 'Sign in' })
+    expect(screen.queryByText('Signing you out…')).not.toBeInTheDocument()
+  })
+
   it("is in Home's top bar too, with the learner's first name", async () => {
     rememberSignIn()
     serveAccountApi({ signedIn: true })
@@ -82,7 +104,6 @@ describe('the account menu', () => {
     const trigger = await screen.findByRole('button', { name: 'Your account: Maria Santos' })
     expect(trigger).toHaveTextContent(/^Maria$/)
   })
-
 })
 
 describe('Download my data', () => {

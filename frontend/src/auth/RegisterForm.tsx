@@ -15,6 +15,7 @@ import {
 } from './fields.tsx'
 import { SignInAfterRegistrationError } from './session.ts'
 import { useAuth } from './useAuth.ts'
+import { Spinner } from '../components/Spinner.tsx'
 import { formStyle, submitButton } from './styles.ts'
 
 // The form is also in the sign-in dialog, which opens outside the router (AuthProvider): a plain link, with the app's
@@ -145,6 +146,7 @@ export function RegisterForm({
         </p>
       )}
       <Button type="submit" className={submitButton(isPending)}>
+        {isPending && <Spinner />}
         {isPending ? copy.pending : copy.submit}
       </Button>
     </Form>

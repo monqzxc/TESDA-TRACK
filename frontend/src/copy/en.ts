@@ -1731,6 +1731,9 @@ export const en = {
       expired: 'That sign-in ran out of time. Please sign in again.',
       unavailable: 'TSP sign-in is unavailable right now. Please try again shortly.',
       declined: 'Nothing was saved. You can keep using TESDA-TRACK without signing in.',
+      // Sign-in couldn't be reached (US-0002 AC6): try again, or carry on without signing in.
+      retry: 'Retry',
+      continueAsGuest: 'Continue as guest',
     },
     signInForm: {
       heading: 'Sign in',
@@ -1779,6 +1782,7 @@ export const en = {
       admin: 'Administrator',
       learner: 'Learner account',
       signOut: 'Sign out',
+      signingOut: 'Signing you out…',
       settings: 'Settings',
       profile: 'My Profile',
       closeSettings: 'Close settings',

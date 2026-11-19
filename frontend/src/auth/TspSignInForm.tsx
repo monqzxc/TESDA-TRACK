@@ -1,7 +1,8 @@
-import { useState, type FormEvent } from 'react'
+import { useRef, useState, type FormEvent } from 'react'
 import { Button, Form } from 'react-aria-components'
 import { api } from '../api/client.ts'
-import { unwrap } from '../api/errors.ts'
+import { ApiError, unwrap } from '../api/errors.ts'
+import { Spinner } from '../components/Spinner.tsx'
 import {
   postConsent,
   postSession,
@@ -19,14 +20,26 @@ import { useAuth } from './useAuth.ts'
  * password get a one-time handoff code. From there it's the WebView's sign-in: the code goes to
  * POST /api/v1/auth/tsp/session, a first visit asks for consent, and the session cookie is set.
  */
-export function TspSignInForm({ onSignedIn }: { onSignedIn: () => void }) {
+export function TspSignInForm({
+  onSignedIn,
+  onContinueAsGuest,
+}: {
+  onSignedIn: () => void
+  /** Leaves sign-in for the app as a guest, offered when sign-in can't be reached (US-0002 AC6). */
+  onContinueAsGuest?: () => void
+}) {
   const en = useCopy()
   const copy = en.account.tsp
   const form = en.account.signInForm
   const consentCopy = en.tspSignIn.consent
 
   const { adoptSession } = useAuth()
-  const [error, setError] = useState<string | null>(null)
+  // `unreachable`: the service couldn't be reached, so the learner may retry or go on as a guest.
+  const [error, setFailure] = useState<{ message: string; unreachable: boolean } | null>(null)
+  const setError = (message: string | null, unreachable = false) =>
+    setFailure(message === null ? null : { message, unreachable })
+  // What Retry repeats: the last sign-in or consent answer.
+  const lastAttempt = useRef<(() => Promise<void>) | null>(null)
   const [isPending, setPending] = useState(false)
   const [consent, setConsent] = useState<{ pendingId: string; summary: TspConsentSummary } | null>(
     null,
@@ -42,45 +55,83 @@ export function TspSignInForm({ onSignedIn }: { onSignedIn: () => void }) {
     if ('consent' in outcome) return setConsent(outcome.consent)
     setConsent(null)
     if ('declined' in outcome) return setError(copy.declined)
-    setError(
-      outcome.error === 'handoff_expired' || outcome.error === 'pending_expired'
-        ? copy.expired
-        : copy.unavailable,
-    )
+    if (outcome.error === 'handoff_expired' || outcome.error === 'pending_expired') {
+      return setError(copy.expired)
+    }
+    setError(copy.unavailable, outcome.error === 'unavailable')
+  }
+
+  const fail = (failure: unknown) => {
+    setPending(false)
+    // A request that never got an answer, or a server that's down: not a refusal the learner can fix.
+    const unreachable =
+      !(failure instanceof ApiError) || failure.unavailable || failure.status === undefined
+    setError(failureMessage(failure), unreachable)
+  }
+
+  const run = async (attempt: () => Promise<void>) => {
+    lastAttempt.current = attempt
+    setError(null)
+    setPending(true)
+    try {
+      await attempt()
+    } catch (failure) {
+      fail(failure)
+    }
+  }
+
+  const retry = () => {
+    if (isPending || !lastAttempt.current) return
+    void run(lastAttempt.current)
   }
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (isPending) return
     const fields = new FormData(event.currentTarget)
-    setError(null)
-    setPending(true)
-    try {
-      const handoff = await unwrap(
-        api.POST('/api/v1/tsp-mock/handoff', {
-          body: {
-            username: fieldText(fields, 'username').trim(),
-            password: fieldText(fields, 'password'),
-          },
-        }),
-      )
-      await settle(await postSession(handoff.data.code))
-    } catch (failure) {
-      setPending(false)
-      setError(failureMessage(failure))
+    const body = {
+      username: fieldText(fields, 'username').trim(),
+      password: fieldText(fields, 'password'),
     }
+    await run(async () => {
+      const handoff = await unwrap(api.POST('/api/v1/tsp-mock/handoff', { body }))
+      await settle(await postSession(handoff.data.code))
+    })
   }
 
   const answer = async (accept: boolean) => {
     if (isPending || !consent) return
-    setPending(true)
-    try {
-      await settle(await postConsent(consent.pendingId, accept))
-    } catch (failure) {
-      setPending(false)
-      setError(failureMessage(failure))
-    }
+    const { pendingId } = consent
+    await run(async () => settle(await postConsent(pendingId, accept)))
   }
+
+  const alert = error && (
+    <div className="flex flex-col gap-3">
+      <p role="alert" className={formStyle.error}>
+        {error.message}
+      </p>
+      {error.unreachable && (
+        <div className="flex flex-wrap gap-2">
+          <Button
+            className={button({ variant: 'secondary' })}
+            isDisabled={isPending}
+            onPress={retry}
+          >
+            {copy.retry}
+          </Button>
+          {onContinueAsGuest && (
+            <Button
+              className={button({ variant: 'secondary' })}
+              isDisabled={isPending}
+              onPress={onContinueAsGuest}
+            >
+              {copy.continueAsGuest}
+            </Button>
+          )}
+        </div>
+      )}
+    </div>
+  )
 
   if (consent) {
     return (
@@ -97,11 +148,7 @@ export function TspSignInForm({ onSignedIn }: { onSignedIn: () => void }) {
           </ul>
           <p className={formStyle.privacyText}>{consentCopy.privacy}</p>
         </div>
-        {error && (
-          <p role="alert" className={formStyle.error}>
-            {error}
-          </p>
-        )}
+        {alert}
         <div className="flex flex-wrap justify-end gap-2">
           <Button
             className={button({ variant: 'secondary' })}
@@ -115,6 +162,7 @@ export function TspSignInForm({ onSignedIn }: { onSignedIn: () => void }) {
             isDisabled={isPending}
             onPress={() => void answer(true)}
           >
+            {isPending && <Spinner className="mr-2" />}
             {consentCopy.accept}
           </Button>
         </div>
@@ -142,12 +190,9 @@ export function TspSignInForm({ onSignedIn }: { onSignedIn: () => void }) {
         placeholder={form.passwordPlaceholder}
         validate={(value) => (value ? null : form.missingPassword)}
       />
-      {error && (
-        <p role="alert" className={formStyle.error}>
-          {error}
-        </p>
-      )}
+      {alert}
       <Button type="submit" className={submitButton(isPending)}>
+        {isPending && <Spinner />}
         {isPending ? form.pending : copy.signIn}
       </Button>
     </Form>

@@ -3,6 +3,7 @@ import { Button, Form } from 'react-aria-components'
 import { useCopy } from '../i18n/copy.ts'
 import { failureMessage, Field, fieldText, isEmail } from './fields.tsx'
 import { useAuth } from './useAuth.ts'
+import { Spinner } from '../components/Spinner.tsx'
 import { formStyle, submitButton } from './styles.ts'
 
 interface SignInFormProps {
@@ -69,6 +70,7 @@ export function SignInForm({ defaultEmail, focusFirstField = false, onSignedIn }
         </p>
       )}
       <Button type="submit" className={submitButton(isPending)}>
+        {isPending && <Spinner />}
         {isPending ? copy.pending : copy.submit}
       </Button>
     </Form>

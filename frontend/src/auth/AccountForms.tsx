@@ -16,6 +16,8 @@ export interface AccountFormsProps {
   /** Switches between signing in and creating an account, with a message and an email to start the new form. */
   onViewChange: (view: SignInView, start?: { email?: string; message?: string }) => void
   onSignedIn: () => void
+  /** Leaves the forms for the app as a guest: offered when sign-in can't be reached. */
+  onContinueAsGuest?: () => void
   /** A line above the form: why the dialog opened, or what happened. */
   message?: string
   messageId?: string
@@ -31,6 +33,7 @@ export function AccountForms({
   view,
   onViewChange,
   onSignedIn,
+  onContinueAsGuest,
   message,
   messageId,
   defaultEmail,
@@ -66,7 +69,7 @@ export function AccountForms({
           </p>
         )}
         {mockTsp ? (
-          <TspSignInForm onSignedIn={onSignedIn} />
+          <TspSignInForm onSignedIn={onSignedIn} onContinueAsGuest={onContinueAsGuest} />
         ) : (
           <SignInForm defaultEmail={defaultEmail} focusFirstField={false} onSignedIn={onSignedIn} />
         )}

@@ -84,6 +84,7 @@ export function SignInDialog({
                 onChange({ ...request, view, message: start?.message, defaultEmail: start?.email })
               }
               onSignedIn={() => onSignedIn(request)}
+              onContinueAsGuest={onClose}
               Heading={DialogTitle}
             />
           )}

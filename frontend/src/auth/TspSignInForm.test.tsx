@@ -125,4 +125,56 @@ describe('Sign in with TSP, with the mock TSP on', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Nothing was saved.')
     expect(screen.getByLabelText('TSP email')).toBeInTheDocument()
   })
+
+  it('offers Retry and Continue as guest when sign-in cannot be reached (US-0002 AC6)', async () => {
+    const state = serveMockTsp()
+    let down = true
+    server.use(
+      http.post('*/api/v1/tsp-mock/handoff', () =>
+        down
+          ? HttpResponse.error()
+          : HttpResponse.json({
+              success: true,
+              data: { code: 'code-2', state: null, expires_in: 60 },
+            }),
+      ),
+    )
+    const user = await openTspSignIn()
+    await user.type(screen.getByLabelText('TSP email'), 'ana.reyes@example.com')
+    await user.type(screen.getByLabelText('Password'), 'TspDemo-Ana-2026')
+    await user.click(screen.getByRole('button', { name: 'Sign in with TSP' }))
+
+    expect(await screen.findByRole('alert')).toHaveTextContent("We can't reach")
+    expect(screen.getByRole('button', { name: 'Continue as guest' })).toBeInTheDocument()
+
+    down = false
+    await user.click(screen.getByRole('button', { name: 'Retry' }))
+    expect(await screen.findByRole('button', { name: 'Agree and continue' })).toBeInTheDocument()
+    expect(state.codes).toEqual(['code-2'])
+  })
+
+  it('closes sign-in when the learner continues as a guest', async () => {
+    serveMockTsp()
+    server.use(
+      http.post('*/api/v1/tsp-mock/handoff', () => new HttpResponse(null, { status: 503 })),
+    )
+    const user = await openTspSignIn()
+    await user.type(screen.getByLabelText('TSP email'), 'ana.reyes@example.com')
+    await user.type(screen.getByLabelText('Password'), 'TspDemo-Ana-2026')
+    await user.click(screen.getByRole('button', { name: 'Sign in with TSP' }))
+
+    await user.click(await screen.findByRole('button', { name: 'Continue as guest' }))
+    await waitFor(() => expect(screen.queryByLabelText('TSP email')).not.toBeInTheDocument())
+  })
+
+  it('offers no Retry for a wrong password', async () => {
+    serveMockTsp()
+    const user = await openTspSignIn()
+    await user.type(screen.getByLabelText('TSP email'), 'ana.reyes@example.com')
+    await user.type(screen.getByLabelText('Password'), 'wrong password')
+    await user.click(screen.getByRole('button', { name: 'Sign in with TSP' }))
+
+    await screen.findByRole('alert')
+    expect(screen.queryByRole('button', { name: 'Retry' })).not.toBeInTheDocument()
+  })
 })

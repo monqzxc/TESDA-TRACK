@@ -5,6 +5,7 @@ import { safeNextPath } from '../../auth/nextPath.ts'
 import { useAuth, type SignInView } from '../../auth/useAuth.ts'
 import { PageHeading } from '../../components/PageHeading.tsx'
 import { useCopy } from '../../i18n/copy.ts'
+import { paths } from '../../paths.ts'
 
 interface Start {
   view: SignInView
@@ -53,6 +54,7 @@ export default function SignInPage() {
           }
           // The navigation follows from isSignedIn, above.
           onSignedIn={() => undefined}
+          onContinueAsGuest={() => void navigate(paths.home)}
           Heading={PageHeading}
         />
       </div>
