@@ -167,3 +167,24 @@ class AssessmentApplication(Timestamped, table=True):
 
     schedule: AssessmentSchedule = Relationship()
     learner: Learner = Relationship()
+
+
+class SavedCenter(Timestamped, table=True):
+    """A training provider or assessment center the learner bookmarked, and the qualification they were looking at
+    when they did. One row per learner and site; a site leaving the registry takes its bookmarks with it."""
+    __tablename__ = "saved_center"
+    __table_args__ = (
+        CheckConstraint("(training_provider_id IS NULL) <> (assessment_center_id IS NULL)", name="one_site"),
+        UniqueConstraint("learner_id", "training_provider_id", name="uq_saved_center_learner_provider"),
+        UniqueConstraint("learner_id", "assessment_center_id", name="uq_saved_center_learner_assessment"),
+    )
+
+    id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+    learner_id: uuid.UUID = Field(foreign_key="learner.id", ondelete="CASCADE", index=True)
+    training_provider_id: int | None = Field(default=None, foreign_key="training_provider.id", ondelete="CASCADE")
+    assessment_center_id: int | None = Field(default=None, foreign_key="assessment_center.id", ondelete="CASCADE")
+    qualification_id: int | None = Field(default=None, foreign_key="qualification.id", ondelete="SET NULL")
+
+    training_provider: TrainingProvider | None = Relationship()
+    assessment_center: AssessmentCenter | None = Relationship()
+    qualification: Qualification | None = Relationship()

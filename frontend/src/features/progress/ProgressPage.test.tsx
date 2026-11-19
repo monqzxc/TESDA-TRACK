@@ -14,6 +14,7 @@ import type {
   ReadinessCheck,
   RecommendationSession,
 } from './api.ts'
+import type { SavedCenter } from '../training/savedCenters.ts'
 
 const welding = {
   code: 'SMAW-NCII',
@@ -21,6 +22,24 @@ const welding = {
   sector: 'Metals',
 }
 const CATALOG = [{ ...welding, possible_jobs: ['Welder'], competencies: [] }]
+
+const savedCenter: SavedCenter = {
+  center_id: 'assessment-7',
+  kind: 'assessment',
+  name: 'Albuera Technical Services, Inc.',
+  region_code: 'VIII',
+  province: 'Leyte',
+  city: 'Albuera',
+  address: 'National Road, Brgy. San Pedro, Albuera, Leyte',
+  latitude: 10.92,
+  longitude: 124.69,
+  contact_phone: '053-562-9731',
+  contact_email: null,
+  website: null,
+  is_active: true,
+  qualification: welding,
+  saved_at: '2026-11-19T02:00:00Z',
+}
 
 const session: RecommendationSession = {
   id: 'session-1',
@@ -279,6 +298,7 @@ describe('My Progress', () => {
     serveLearner({ sessions: [session] })
     const { router } = await openProgress()
     for (const [label, section, heading] of [
+      ['Saved centers', 'centers', 'My saved centers'],
       ['Pathways', 'pathways', 'My pathways'],
       ['Readiness', 'readiness', 'Readiness over time'],
       ['Recommendations', 'history', 'Recommendation history'],
@@ -551,6 +571,46 @@ describe('My Progress', () => {
     ).toHaveFocus()
     await openSection('Pathways')
     expect(within(region('My pathways')).queryByRole('checkbox')).not.toBeInTheDocument()
+  })
+
+  it('lists saved centers with the qualification they were saved for, and removes one', async () => {
+    const writes = serveLearner()
+    let saved = [savedCenter]
+    server.use(
+      http.get('*/api/v1/me/saved-centers', () => HttpResponse.json(saved)),
+      http.delete('*/api/v1/me/saved-centers/:id', async ({ request }) => {
+        writes.push({ method: 'DELETE', path: new URL(request.url).pathname, body: undefined })
+        saved = []
+        return new HttpResponse(null, { status: 204 })
+      }),
+    )
+    const user = userEvent.setup()
+    await openProgress('centers')
+
+    const centers = region('My saved centers')
+    expect(await within(centers).findByText('1 center saved')).toBeVisible()
+    const card = within(centers).getByRole('article', { name: savedCenter.name })
+    expect(within(card).getByText('Assessment center')).toBeVisible()
+    expect(within(card).getByText('Albuera, Leyte')).toBeVisible()
+    expect(within(card).getByText(`Saved while exploring ${welding.name}`)).toBeVisible()
+    expect(within(card).getByRole('link', { name: '053-562-9731' })).toHaveAttribute(
+      'href',
+      'tel:0535629731',
+    )
+    expect(within(card).getByRole('link', { name: 'View on map' })).toHaveAttribute(
+      'href',
+      '/training?type=assessment&radius=any&center=assessment-7',
+    )
+
+    await user.click(
+      within(card).getByRole('button', { name: `Remove ${savedCenter.name} from saved centers` }),
+    )
+    expect(await within(centers).findByText('0 centers saved')).toBeVisible()
+    expect(writes).toEqual([
+      { method: 'DELETE', path: '/api/v1/me/saved-centers/assessment-7', body: undefined },
+    ])
+    expect(within(centers).getByRole('heading', { name: 'My saved centers' })).toHaveFocus()
+    expect(within(centers).getByText('Keep the centers you’re considering')).toBeVisible()
   })
 
   it('keeps a qualification visible when removing it fails', async () => {

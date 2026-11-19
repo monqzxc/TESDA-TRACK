@@ -6,7 +6,7 @@ from tesda_track.models.catalog import (COMPETENCY_CATEGORIES, RELATIONS, Compet
                                         Qualification, Sector)
 from tesda_track.models.delivery import (APPLICATION_STATUSES, ASSESSMENT_RESULTS, DELIVERY_MODES, SCHEDULE_STATUSES,
                                          AssessmentApplication, AssessmentCenter, AssessmentSchedule, Region,
-                                         TrainingProgram, TrainingProvider)
+                                         SavedCenter, TrainingProgram, TrainingProvider)
 from tesda_track.models.identity import (AUDIT_EVENTS, TSP_PROVIDER, LearnerIdentity, TspPendingSignIn,
                                          TspSignInAudit)
 from tesda_track.models.feedback import FEEDBACK_REASONS, SHARED_GOAL_CONSENT, RecommendationFeedback, SharedGoal, SuggestionFeedback
@@ -42,7 +42,7 @@ __all__ = [
     "Role",
     "AssessmentApplication", "AssessmentCenter", "AssessmentSchedule", "Certification", "Competency", "Goal",
     "Learner", "MatchDailyStat", "FunnelDailyStat", "FUNNEL_EVENTS", "GOAL_ORIGINS", "Pathway", "PathwayEnrollment", "PathwayStep", "Qualification", "ReadinessAnswer", "ReadinessCheck",
-    "RecommendationFeedback", "RecommendationSession", "Region", "Sector", "SharedGoal", "StepProgress", "SuggestionFeedback", "Timestamped",
+    "RecommendationFeedback", "RecommendationSession", "Region", "SavedCenter", "Sector", "SharedGoal", "StepProgress", "SuggestionFeedback", "Timestamped",
     "TrainingProgram",
     "TrainingProvider", "one_of", "utcnow",
 ]

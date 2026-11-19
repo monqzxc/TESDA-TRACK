@@ -12,6 +12,7 @@ import { ANY_DISTANCE, NO_FILTERS, SORTS, shortName, type SortOrder } from './ad
 import { placeLabel, summary, type Center } from './centers.ts'
 import { NoLocationTag, unlocated } from './NoLocationTag.tsx'
 import { CenterDetail, KindBadges } from './CenterDetail.tsx'
+import { useSavedCenters } from './savedCenters.ts'
 import { useTrainingFilters, useTrainingStore } from './state.ts'
 import type { CenterResults } from './useCenters.ts'
 
@@ -50,7 +51,7 @@ export function Results({ results, hasMap, onViewOnMap, onChoose, show }: Result
   const copy = en.training.results
 
   const { filters, update } = useTrainingFilters()
-  const saved = useTrainingStore((state) => state.saved)
+  const { saved } = useSavedCenters()
   const location = useTrainingStore((state) => (state.useLocation ? state.location : null))
   const routing = results.config?.routing_enabled ?? false
   const [limit, setLimit] = useState(LIST_STEP)

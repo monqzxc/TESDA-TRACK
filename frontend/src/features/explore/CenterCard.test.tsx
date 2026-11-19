@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { renderWithQuery } from '../../test/query.tsx'
+import { renderWithAuth } from '../../test/account.tsx'
 import { server } from '../../test/server.ts'
 import {
   cebuCenter,
@@ -127,7 +127,7 @@ describe('Explore center details', () => {
         ],
       },
     })
-    renderWithQuery(
+    renderWithAuth(
       <MemoryRouter initialEntries={['/explore']}>
         <ExplorePage />
       </MemoryRouter>,
@@ -140,7 +140,7 @@ describe('Explore center details', () => {
 
   it('lists only verified-or-unreviewed current offerings, and the card agrees with the results', async () => {
     localStorage.setItem('track.explore.locationAsked', 'no')
-    renderWithQuery(
+    renderWithAuth(
       <MemoryRouter initialEntries={['/explore']}>
         <ExplorePage />
       </MemoryRouter>,

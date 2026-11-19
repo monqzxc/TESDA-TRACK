@@ -22,6 +22,7 @@ import { button } from '../../styles/buttons.ts'
 import { paths } from '../../paths.ts'
 import { FilterPanel } from './FilterPanel.tsx'
 import { Results, type ShowRequest } from './Results.tsx'
+import { useSavedCenters } from './savedCenters.ts'
 import { useTrainingFilters, useTrainingStore } from './state.ts'
 import { useCenters } from './useCenters.ts'
 import { PathwayRecommendations } from './PathwayRecommendations.tsx'
@@ -187,7 +188,9 @@ function Workspace({
   const locating = useTrainingStore((state) => state.locating)
   const routeTo = useTrainingStore((state) => state.routeTo)
   const travelMode = useTrainingStore((state) => state.travelMode)
-  const saved = useTrainingStore((state) => state.saved)
+  const { saved, toggleSaved } = useSavedCenters(
+    filters.qualifications.length === 1 ? filters.qualifications[0] : null,
+  )
   const store = useTrainingStore.getState
   const [mapShown, setMapShown] = useState(() => readItem(MAP_KEY) !== 'hidden')
   // Bumped by View on map, so asking again reopens a center that's already selected.
@@ -359,7 +362,7 @@ function Workspace({
                         select(id)
                         store().showRoute(id)
                       }}
-                      onToggleSaved={(id) => store().toggleSaved(id)}
+                      onToggleSaved={toggleSaved}
                       onLocate={() => store().locate()}
                     />
                   </Suspense>

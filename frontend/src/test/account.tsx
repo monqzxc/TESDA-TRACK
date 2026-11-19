@@ -137,6 +137,7 @@ export function serveAccountApi({ learner = maria, signedIn = false }: AccountAp
       'pathways',
       'assessment-applications',
       'certifications',
+      'saved-centers',
     ].map((records) =>
       http.get(`*/api/v1/me/${records}`, async ({ request }) => {
         await record(request)

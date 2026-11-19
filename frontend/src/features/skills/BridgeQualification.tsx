@@ -20,6 +20,7 @@ import {
   summary,
   withDistances,
 } from '../training/centers.ts'
+import { useSavedCenters } from '../training/savedCenters.ts'
 import { useTrainingStore } from '../training/state.ts'
 import type { BridgeQualification as Item, Standard } from './api.ts'
 import { localQualification } from './local.ts'
@@ -154,7 +155,7 @@ function DeliverySites({ code }: { code: string }) {
   const regions = useQuery(regionsQuery)
   const config = useQuery(clientConfigQuery)
   const location = useTrainingStore((state) => (state.useLocation ? state.location : null))
-  const saved = useTrainingStore((state) => state.saved)
+  const { saved, toggleSaved } = useSavedCenters(code)
   const locating = useTrainingStore((state) => state.locating)
   const today = philippineDay(new Date())
 
@@ -216,7 +217,7 @@ function DeliverySites({ code }: { code: string }) {
                 onPick={() => {}}
                 onDetails={open}
                 onRoute={open}
-                onToggleSaved={(id) => useTrainingStore.getState().toggleSaved(id)}
+                onToggleSaved={toggleSaved}
                 onLocate={() => useTrainingStore.getState().locate()}
               />
             </div>

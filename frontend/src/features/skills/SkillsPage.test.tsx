@@ -183,7 +183,7 @@ async function search(user: UserEvent, box: HTMLElement, text: string) {
 
 beforeEach(() => {
   window.sessionStorage.clear()
-  useTrainingStore.setState({ saved: [], useLocation: false, location: null })
+  useTrainingStore.setState({ useLocation: false, location: null })
 })
 
 describe('Skills Explorer', () => {

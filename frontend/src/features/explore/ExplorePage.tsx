@@ -25,6 +25,7 @@ import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { matchPathway } from '../training/recommendationApi.ts'
+import { useSavedCenters } from '../training/savedCenters.ts'
 import { useTrainingStore } from '../training/state.ts'
 import type { DemandMapArea } from '../training/CenterMapTypes.ts'
 import { nearestRegion, offers } from './explore.ts'
@@ -227,6 +228,8 @@ export default function ExplorePage() {
 
   const { centers, search, matches, reference, location, config } = explore
   const focusCode = explore.demandCode
+  // A center saved from the map remembers the qualification it was opened for, else the one in focus.
+  const { saved, toggleSaved } = useSavedCenters(selectedCode ?? focusCode)
   const codes = new Set(matches.map((match) => match.qualification.code))
   // With a search, the pins are the centers listing a matched qualification; without one, every center. "Listing"
   // is the results panel's own test (offers), so a center accredited to assess a qualification without a dated
@@ -362,7 +365,7 @@ export default function ExplorePage() {
               travelMode={travelMode}
               onTravelMode={(mode) => store().setTravelMode(mode)}
               canRoute={canRoute}
-              saved={[]}
+              saved={saved}
               cartoKey={config?.carto_key ?? ''}
               today={explore.today}
               locating={locatingAny}
@@ -374,7 +377,7 @@ export default function ExplorePage() {
                 select(id)
                 store().showRoute(id)
               }}
-              onToggleSaved={() => {}}
+              onToggleSaved={toggleSaved}
               onLocate={() => store().locate()}
             />
           </Suspense>

@@ -122,7 +122,6 @@ beforeEach(() => {
     placeText: '',
     routeTo: null,
     travelMode: 'car',
-    saved: [],
   })
   server.use(http.get('*/api/v1/qualifications', () => HttpResponse.json(catalog)))
 })

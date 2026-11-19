@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { renderWithQuery } from '../../test/query.tsx'
+import { renderWithAuth } from '../../test/account.tsx'
 import { server } from '../../test/server.ts'
 import { manilaInstitute, REGIONS, weldingProgram } from '../../test/training.ts'
 import type { CenterMapProps } from '../training/CenterMapTypes.ts'
@@ -90,7 +90,7 @@ beforeEach(() => {
 })
 
 function renderPage() {
-  return renderWithQuery(
+  return renderWithAuth(
     <MemoryRouter initialEntries={['/explore']}>
       <ExplorePage />
     </MemoryRouter>,

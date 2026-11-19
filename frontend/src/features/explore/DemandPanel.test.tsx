@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { AuthContext, type Auth } from '../../auth/useAuth.ts'
-import { renderWithQuery } from '../../test/query.tsx'
+import { renderWithAuth } from '../../test/account.tsx'
 import { server } from '../../test/server.ts'
 import type { CenterMapProps } from '../training/CenterMapTypes.ts'
 import { useTrainingStore } from '../training/state.ts'
@@ -127,7 +127,7 @@ beforeEach(() => {
 })
 
 const open = (path = '/explore?type=demand') =>
-  renderWithQuery(
+  renderWithAuth(
     <MemoryRouter initialEntries={[path]}>
       <ExplorePage />
     </MemoryRouter>,
@@ -327,7 +327,7 @@ describe('Explore labor demand', () => {
         })
       }),
     )
-    renderWithQuery(
+    renderWithAuth(
       <AuthContext.Provider value={{ learner: { id: 'ana' } } as Auth}>
         <MemoryRouter initialEntries={['/explore?type=demand']}>
           <ExplorePage />

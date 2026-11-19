@@ -87,6 +87,9 @@ export function useAuth(): Auth {
   return auth
 }
 
+/** How the sign-in dialog opens for an action that needs an account. */
+type AccountPrompt = Pick<OpenSignInOptions, 'view' | 'tsp'>
+
 /**
  * For actions that need an account (follow a pathway, apply, save; US-02). `requireAccount(action)` runs the action
  * now when the learner is signed in. Otherwise it opens the sign-in dialog and runs the action after they sign in
@@ -97,33 +100,30 @@ export function useAuth(): Auth {
  * The action runs after the dialog has closed and focus is back on the control that opened it. It shouldn't rely on
  * auth values it captured before signing in (they're from before); the API call it makes is signed in.
  */
-export function useRequireAccount(): (
-  action: () => void,
-  options?: Pick<OpenSignInOptions, 'view'>,
-) => void {
+export function useRequireAccount(): (action: () => void, options?: AccountPrompt) => void {
   const { isSignedIn, isChecking, openSignIn } = useAuth()
   // An action asked for while the session check was still out. Only the last one counts, as with a dialog.
-  const waiting = useRef<{ action: () => void; view?: SignInView } | null>(null)
+  const waiting = useRef<{ action: () => void; options?: AccountPrompt } | null>(null)
 
   const decide = useCallback(
-    (action: () => void, view?: SignInView) => {
+    (action: () => void, options?: AccountPrompt) => {
       if (isSignedIn) action()
-      else openSignIn({ view, onSignedIn: action })
+      else openSignIn({ ...options, onSignedIn: action })
     },
     [isSignedIn, openSignIn],
   )
 
   useEffect(() => {
     if (isChecking || !waiting.current) return
-    const { action, view } = waiting.current
+    const { action, options } = waiting.current
     waiting.current = null
-    decide(action, view)
+    decide(action, options)
   }, [isChecking, decide])
 
   return useCallback(
     (action, options) => {
-      if (isChecking) waiting.current = { action, view: options?.view }
-      else decide(action, options?.view)
+      if (isChecking) waiting.current = { action, options }
+      else decide(action, options)
     },
     [isChecking, decide],
   )

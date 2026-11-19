@@ -320,3 +320,30 @@ class ProgramSearch(NearbySearch):
     provider_id: int | None = None
     delivery_mode: DeliveryMode | None = None
     scholarship_only: bool = False
+
+
+CenterKey = Annotated[str, StringConstraints(pattern=r"^(training|assessment)-[1-9][0-9]{0,9}$")]
+
+
+class SavedCenterSave(BaseModel):
+    """The qualification the learner was exploring when they saved the center; omitted keeps the one already kept."""
+    qualification_code: QualificationCode | None = None
+
+
+class SavedCenterPublic(BaseModel):
+    """A bookmarked site with enough of its listing to show and find it again without loading every center."""
+    center_id: str = Field(description='"training-12" or "assessment-12", as the map names its centers.')
+    kind: Literal["training", "assessment"]
+    name: str
+    region_code: str
+    province: str | None
+    city: str | None
+    address: str | None
+    latitude: float | None
+    longitude: float | None
+    contact_phone: str | None
+    contact_email: str | None
+    website: str | None
+    is_active: bool
+    qualification: QualificationSummary | None
+    saved_at: datetime

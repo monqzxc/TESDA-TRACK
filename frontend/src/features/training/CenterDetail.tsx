@@ -12,7 +12,8 @@ import { placeLabel, type Center, type Point } from './centers.ts'
 import { airportLabel, kilometres, travelTime } from './format.ts'
 import { Programs, Schedules, type Fits } from './Listings.tsx'
 import { NoLocationTag } from './NoLocationTag.tsx'
-import { useTrainingStore } from './state.ts'
+import { useSavedCenters } from './savedCenters.ts'
+import { useTrainingFilters, useTrainingStore } from './state.ts'
 
 export const MODE_ICONS: Record<TravelMode, IconName> = {
   car: 'car',
@@ -74,8 +75,11 @@ export function CenterDetail({
   const copy = en.training
 
   const headingId = useId()
-  const saved = useTrainingStore((state) => state.saved.includes(center.id))
-  const toggleSaved = useTrainingStore((state) => state.toggleSaved)
+  const { filters } = useTrainingFilters()
+  const { saved: savedIds, toggleSaved } = useSavedCenters(
+    filters.qualifications.length === 1 ? filters.qualifications[0] : null,
+  )
+  const saved = savedIds.includes(center.id)
   const routeTo = useTrainingStore((state) => state.routeTo)
   const showRoute = useTrainingStore((state) => state.showRoute)
   const point =

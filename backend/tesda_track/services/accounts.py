@@ -11,7 +11,7 @@ from tesda_track.schemas.ranking import RankingAuditPublic
 from tesda_track.schemas.records import AccountExport
 from tesda_track.security import burn_verification_time, hash_password, verify_password
 from tesda_track.services import (assessments, certifications, goals, learner_assessments, pathways, readiness_checks,
-                                  recommendation_sessions)
+                                  recommendation_sessions, saved_centers)
 
 
 def normalize_email(email: str) -> str:
@@ -100,4 +100,5 @@ def export(session: Session, learner: Learner) -> AccountExport:
         assessment_applications=[assessments.application_public(session, a)
                                  for a in assessments.list_for(session, learner)],
         training_rankings=[r for r in histories if r.result_type == "training"],
-        assessment_rankings=[r for r in histories if r.result_type == "assessment"])
+        assessment_rankings=[r for r in histories if r.result_type == "assessment"],
+        saved_centers=[saved_centers.to_public(s) for s in saved_centers.list_for(session, learner)])

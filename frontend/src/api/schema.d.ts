@@ -436,6 +436,41 @@ export interface paths {
         patch: operations["update_goal_api_v1_me_goals__goal_id__patch"];
         trace?: never;
     };
+    "/api/v1/me/saved-centers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** List Saved Centers */
+        get: operations["list_saved_centers_api_v1_me_saved_centers_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/me/saved-centers/{center_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /** Save Center */
+        put: operations["save_center_api_v1_me_saved_centers__center_id__put"];
+        post?: never;
+        /** Remove Saved Center */
+        delete: operations["remove_saved_center_api_v1_me_saved_centers__center_id__delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/me/recommendations": {
         parameters: {
             query?: never;
@@ -2124,6 +2159,8 @@ export interface components {
             training_rankings: components["schemas"]["RankingAuditPublic"][];
             /** Assessment Rankings */
             assessment_rankings?: components["schemas"]["RankingAuditPublic"][];
+            /** Saved Centers */
+            saved_centers?: components["schemas"]["SavedCenterPublic"][];
         };
         /** AccountRoleUpdate */
         AccountRoleUpdate: {
@@ -5633,6 +5670,58 @@ export interface components {
             permissions?: string[] | null;
         };
         /**
+         * SavedCenterPublic
+         * @description A bookmarked site with enough of its listing to show and find it again without loading every center.
+         */
+        SavedCenterPublic: {
+            /**
+             * Center Id
+             * @description "training-12" or "assessment-12", as the map names its centers.
+             */
+            center_id: string;
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "training" | "assessment";
+            /** Name */
+            name: string;
+            /** Region Code */
+            region_code: string;
+            /** Province */
+            province: string | null;
+            /** City */
+            city: string | null;
+            /** Address */
+            address: string | null;
+            /** Latitude */
+            latitude: number | null;
+            /** Longitude */
+            longitude: number | null;
+            /** Contact Phone */
+            contact_phone: string | null;
+            /** Contact Email */
+            contact_email: string | null;
+            /** Website */
+            website: string | null;
+            /** Is Active */
+            is_active: boolean;
+            qualification: components["schemas"]["QualificationSummary"] | null;
+            /**
+             * Saved At
+             * Format: date-time
+             */
+            saved_at: string;
+        };
+        /**
+         * SavedCenterSave
+         * @description The qualification the learner was exploring when they saved the center; omitted keeps the one already kept.
+         */
+        SavedCenterSave: {
+            /** Qualification Code */
+            qualification_code?: string | null;
+        };
+        /**
          * ScoreComponents
          * @description Each component on a 0..1 scale before weighting.
          */
@@ -7728,6 +7817,90 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["GoalPublic"];
                 };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    list_saved_centers_api_v1_me_saved_centers_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SavedCenterPublic"][];
+                };
+            };
+        };
+    };
+    save_center_api_v1_me_saved_centers__center_id__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                center_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: {
+            content: {
+                "application/json": components["schemas"]["SavedCenterSave"] | null;
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SavedCenterPublic"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    remove_saved_center_api_v1_me_saved_centers__center_id__delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                center_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
             /** @description Validation Error */
             422: {

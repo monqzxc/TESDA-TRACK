@@ -24,11 +24,14 @@ import { nextStep } from './journey.ts'
 import { Milestones } from './Milestones.tsx'
 import { ReadinessHistory } from './ReadinessHistory.tsx'
 import { QualificationGoals } from './QualificationGoals.tsx'
+import { SavedCenters } from './SavedCenters.tsx'
 import { Pathways, RecommendationHistory } from './Records.tsx'
 
-type ProgressSection = 'qualifications' | 'milestones' | 'pathways' | 'readiness' | 'history'
+type ProgressSection =
+  'qualifications' | 'centers' | 'milestones' | 'pathways' | 'readiness' | 'history'
 const SECTIONS: readonly { id: ProgressSection }[] = [
   { id: 'qualifications' },
+  { id: 'centers' },
   { id: 'milestones' },
   { id: 'pathways' },
   { id: 'readiness' },
@@ -36,8 +39,8 @@ const SECTIONS: readonly { id: ProgressSection }[] = [
 ]
 
 /**
- * My Progress, at /progress: a qualification collection with sections for badges, pathways, readiness and
- * recommendations. Activity, goals, certificates and applications live in My Profile. Signed out, it asks the
+ * My Progress, at /progress: a qualification collection with sections for saved centers, badges, pathways,
+ * readiness and recommendations. Activity, goals, certificates and applications live in My Profile. Signed out, it asks the
  * learner to sign in.
  */
 export default function ProgressPage() {
@@ -192,6 +195,9 @@ function Progress({ catalog }: { catalog: Qualification[] }) {
           goals={goals.data}
           onViewPathway={(id) => selectSection('pathways', pathwayHeadingId(id))}
         />
+      </div>
+      <div id="progress-panel-centers" hidden={section !== 'centers'}>
+        <SavedCenters />
       </div>
       <div id="progress-panel-milestones" hidden={section !== 'milestones'}>
         <Milestones

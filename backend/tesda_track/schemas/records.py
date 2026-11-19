@@ -9,7 +9,7 @@ from tesda_track.schemas.accounts import LearnerPublic
 from tesda_track.schemas.analysis import (ORIGIN_DESCRIPTION, AnswerCode, GoalOrigin, GoalText, Match,
                                           PathwayRecommendation, Profile, ReadinessRequest, ReadinessResult)
 from tesda_track.schemas.catalog import QualificationSummary
-from tesda_track.schemas.delivery import AssessmentApplicationPublic
+from tesda_track.schemas.delivery import AssessmentApplicationPublic, SavedCenterPublic
 from tesda_track.schemas.pathways import EnrollmentPublic
 from tesda_track.schemas.ranking import RankingAuditPublic
 from tesda_track.schemas.learner_assessments import AssessmentPublic, AssessmentReference
@@ -138,3 +138,4 @@ class AccountExport(BaseModel):
     assessment_applications: list[AssessmentApplicationPublic]
     training_rankings: list[RankingAuditPublic]
     assessment_rankings: list[RankingAuditPublic] = Field(default_factory=list)
+    saved_centers: list[SavedCenterPublic] = Field(default_factory=list)

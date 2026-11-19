@@ -94,7 +94,6 @@ beforeEach(() => {
     placeText: '',
     routeTo: null,
     travelMode: 'car',
-    saved: [],
   })
   useFinderStore.getState().reset()
   window.localStorage.clear()

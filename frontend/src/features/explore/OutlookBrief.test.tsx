@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { AuthContext, type Auth } from '../../auth/useAuth.ts'
-import { renderWithQuery } from '../../test/query.tsx'
+import { renderWithAuth } from '../../test/account.tsx'
 import { server } from '../../test/server.ts'
 import type { CenterMapProps } from '../training/CenterMapTypes.ts'
 import { useTrainingStore } from '../training/state.ts'
@@ -243,7 +243,7 @@ beforeEach(() => {
 })
 
 const open = (path = '/explore') =>
-  renderWithQuery(
+  renderWithAuth(
     <MemoryRouter initialEntries={[path]}>
       <ExplorePage />
     </MemoryRouter>,
@@ -376,7 +376,7 @@ describe('the supply and demand brief', () => {
 describe('Demand where you are (Card 3)', () => {
   // The first answer can come before the regions, without an area: wait for the one about the learner's area.
   const brief = async (settled: string | RegExp) => {
-    renderWithQuery(
+    renderWithAuth(
       <MemoryRouter initialEntries={['/explore']}>
         <ExplorePage />
       </MemoryRouter>,
@@ -425,7 +425,7 @@ describe('Demand where you are (Card 3)', () => {
         }),
       ),
     )
-    renderWithQuery(
+    renderWithAuth(
       <AuthContext.Provider value={{ learner: { id: 'ana' } } as Auth}>
         <MemoryRouter initialEntries={['/explore']}>
           <ExplorePage />
@@ -483,7 +483,7 @@ describe('Other qualifications in demand near you (Card 4)', () => {
       }),
     )
   const open = () =>
-    renderWithQuery(
+    renderWithAuth(
       <MemoryRouter initialEntries={['/explore']}>
         <ExplorePage />
       </MemoryRouter>,
@@ -544,7 +544,7 @@ describe('Other qualifications in demand near you (Card 4)', () => {
 
 describe('Find Jobs on TSP (Card 5)', () => {
   const open = () =>
-    renderWithQuery(
+    renderWithAuth(
       <MemoryRouter initialEntries={['/explore']}>
         <ExplorePage />
       </MemoryRouter>,

@@ -1184,6 +1184,149 @@
         }
       }
     },
+    "/api/v1/me/saved-centers": {
+      "get": {
+        "tags": [
+          "saved centers"
+        ],
+        "summary": "List Saved Centers",
+        "operationId": "list_saved_centers_api_v1_me_saved_centers_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/SavedCenterPublic"
+                  },
+                  "type": "array",
+                  "title": "Response List Saved Centers Api V1 Me Saved Centers Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ]
+      }
+    },
+    "/api/v1/me/saved-centers/{center_id}": {
+      "put": {
+        "tags": [
+          "saved centers"
+        ],
+        "summary": "Save Center",
+        "operationId": "save_center_api_v1_me_saved_centers__center_id__put",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "center_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^(training|assessment)-[1-9][0-9]{0,9}$",
+              "title": "Center Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/SavedCenterSave"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Request"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SavedCenterPublic"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "saved centers"
+        ],
+        "summary": "Remove Saved Center",
+        "operationId": "remove_saved_center_api_v1_me_saved_centers__center_id__delete",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "center_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^(training|assessment)-[1-9][0-9]{0,9}$",
+              "title": "Center Id"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Successful Response"
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/me/recommendations": {
       "get": {
         "tags": [
@@ -7418,6 +7561,13 @@
             },
             "type": "array",
             "title": "Assessment Rankings"
+          },
+          "saved_centers": {
+            "items": {
+              "$ref": "#/components/schemas/SavedCenterPublic"
+            },
+            "type": "array",
+            "title": "Saved Centers"
           }
         },
         "type": "object",
@@ -17347,6 +17497,178 @@
         "type": "object",
         "title": "RoleUpdate",
         "description": "Only the fields sent are changed, so a label edit cannot silently clear the permissions."
+      },
+      "SavedCenterPublic": {
+        "properties": {
+          "center_id": {
+            "type": "string",
+            "title": "Center Id",
+            "description": "\"training-12\" or \"assessment-12\", as the map names its centers."
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "training",
+              "assessment"
+            ],
+            "title": "Kind"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "region_code": {
+            "type": "string",
+            "title": "Region Code"
+          },
+          "province": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Province"
+          },
+          "city": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "City"
+          },
+          "address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Address"
+          },
+          "latitude": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latitude"
+          },
+          "longitude": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Longitude"
+          },
+          "contact_phone": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contact Phone"
+          },
+          "contact_email": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Contact Email"
+          },
+          "website": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Website"
+          },
+          "is_active": {
+            "type": "boolean",
+            "title": "Is Active"
+          },
+          "qualification": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/QualificationSummary"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "saved_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Saved At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "center_id",
+          "kind",
+          "name",
+          "region_code",
+          "province",
+          "city",
+          "address",
+          "latitude",
+          "longitude",
+          "contact_phone",
+          "contact_email",
+          "website",
+          "is_active",
+          "qualification",
+          "saved_at"
+        ],
+        "title": "SavedCenterPublic",
+        "description": "A bookmarked site with enough of its listing to show and find it again without loading every center."
+      },
+      "SavedCenterSave": {
+        "properties": {
+          "qualification_code": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 40,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Qualification Code"
+          }
+        },
+        "type": "object",
+        "title": "SavedCenterSave",
+        "description": "The qualification the learner was exploring when they saved the center; omitted keeps the one already kept."
       },
       "ScoreComponents": {
         "properties": {

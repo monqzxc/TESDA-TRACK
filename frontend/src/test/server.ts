@@ -27,6 +27,8 @@ const referenceData = [
       { status: 404 },
     ),
   ),
+  // A signed-in learner has saved no centers unless a test says so.
+  http.get('*/api/v1/me/saved-centers', () => HttpResponse.json([])),
   http.get('*/api/v1/training-providers', () => HttpResponse.json([])),
   http.get('*/api/v1/assessment-centers', () => HttpResponse.json([])),
   http.get('*/api/v1/training-programs', () => HttpResponse.json([])),

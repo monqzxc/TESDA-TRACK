@@ -1030,6 +1030,10 @@ export const en = {
       saved: 'Saved',
       save: 'Save this center',
       unsave: 'Remove from saved centers',
+      savedNotice: 'Center saved. You’ll find it in My Progress.',
+      viewSaved: 'View saved centers',
+      saveFailed: 'This center couldn’t be saved. Try again.',
+      unsaveFailed: 'This center couldn’t be removed from your saved centers. Try again.',
       // US-0014: a center without coordinates is listed but has no pin, distance or directions.
       noLocation: 'Location not confirmed',
       directions: 'Get directions',
@@ -1178,6 +1182,7 @@ export const en = {
     sections: {
       label: 'My Progress sections',
       qualifications: 'Qualifications',
+      centers: 'Saved centers',
       milestones: 'Milestones',
       pathways: 'Pathways',
       readiness: 'Readiness',
@@ -1254,6 +1259,27 @@ export const en = {
       removeFailed: 'This qualification couldn’t be removed. Try again.',
       removed:
         'Qualification removed. Add it again from the Qualifications Library to resume your steps.',
+    },
+    centers: {
+      heading: 'My saved centers',
+      lead: 'Training and assessment centers you bookmarked on the map.',
+      saved: (count: number) => `${count} ${count === 1 ? 'center' : 'centers'} saved`,
+      find: 'Find centers',
+      emptyHeading: 'Keep the centers you’re considering',
+      empty:
+        'On the map, open a training or assessment center and press its bookmark to save it here.',
+      savedFor: (qualification: string) => `Saved while exploring ${qualification}`,
+      savedOn: (day: string) => `Saved ${day}`,
+      notListed: 'No longer listed. Contact the center to confirm it still offers this.',
+      viewOnMap: 'View on map',
+      directions: 'Directions',
+      remove: 'Remove',
+      removing: 'Removing…',
+      removeLabel: (name: string) => `Remove ${name} from saved centers`,
+      removeFailed: 'This center couldn’t be removed. Try again.',
+      removed: 'Center removed from your saved centers.',
+      loadFailed: 'Your saved centers couldn’t be loaded. Try again.',
+      retry: 'Try again',
     },
     // The next useful step (US-10), in this order: a pathway with steps left, an application in review, a
     // recommendation whose qualification has no readiness check yet, the latest recommendation, else the finder.
