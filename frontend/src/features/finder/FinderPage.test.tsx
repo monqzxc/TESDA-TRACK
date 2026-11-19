@@ -8,6 +8,7 @@ import {
   cookery,
   serveFinderApi,
   serveFinderCatalog,
+  weldingMatch,
   welderProfile,
   welding,
   type FinderRequest,
@@ -118,7 +119,28 @@ describe('Find my pathway', () => {
     const card = screen.getByRole('article', { name: welding.name })
     expect(within(card).getByText('Best match')).toBeInTheDocument()
     expect(within(card).getByRole('img', { name: 'Goal match: 76%' })).toBeInTheDocument()
+    expect(within(card).queryByText('Weaker match')).not.toBeInTheDocument()
     expect(within(card).getByText('Matched your words: welder')).toBeInTheDocument()
+  })
+
+  it('labels a 35% goal match as a weaker match, and a 76% one as not', async () => {
+    serveFinderCatalog()
+    serveFinderApi({
+      matches: [
+        { ...weldingMatch, score: 76 },
+        {
+          qualification: { code: cookery.code, name: cookery.name, sector: cookery.sector },
+          score: 35,
+          reason: 'Matched your words: cook',
+        },
+      ],
+    })
+    const user = userEvent.setup()
+    await openFinder()
+    await search(user, GOAL)
+    const weak = await screen.findByRole('img', { name: 'Goal match: 35%' })
+    expect(within(weak.closest('article')!).getByText('Weaker match')).toBeInTheDocument()
+    expect(screen.getAllByText('Weaker match')).toHaveLength(1)
   })
 
   it('asks what the goal left out, and sends the answers with the matches request', async () => {

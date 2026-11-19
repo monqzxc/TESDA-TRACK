@@ -11,6 +11,7 @@ import { useCopy } from '../../i18n/copy.ts'
 import { qualificationBlurb, qualificationTags } from '../../lib/qualifications.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
+import { strength } from '../explore/explore.ts'
 import type { Match } from './api.ts'
 import type { SearchMode, SubmittedCheck } from './store.ts'
 
@@ -130,6 +131,11 @@ export function MatchCard({
                   : copy.goalMatchScore(match.score)
               }
             />
+          )}
+          {match && match.basis !== 'demand_evidence' && strength(match) === 'weak' && (
+            <span className="inline-flex w-fit items-center rounded-full bg-warn-bg px-[0.6rem] py-[0.15rem] text-12 font-semibold text-warn-ink">
+              {copy.weakerMatch}
+            </span>
           )}
           <div className="flex min-w-0 flex-1 flex-col gap-2">
             {/* Once the learner has rated its skills, the card shows how many they already have. */}

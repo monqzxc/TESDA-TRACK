@@ -13,6 +13,7 @@ import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { clientConfigQuery } from '../training/api.ts'
+import { strength } from '../explore/explore.ts'
 import { explore, type Exploration, type OccupationMatch } from './api.ts'
 import { BridgeQualification } from './BridgeQualification.tsx'
 import { OccupationDetails } from './OccupationDetails.tsx'
@@ -351,6 +352,11 @@ function OccupationCard({
         {occupation.title}
       </h3>
       <MatchMeter score={score} label={label} />
+      {strength({ score }) === 'weak' && (
+        <span className="inline-flex w-fit items-center rounded-full bg-warn-bg px-[0.6rem] py-[0.15rem] text-12 font-semibold text-warn-ink">
+          {en.finder.matches.weakerMatch}
+        </span>
+      )}
       <p className={ui.text}>{copy.occupations.matched(occupation.terms_matched)}</p>
       {/* Title matches carry no count, and few job posts are recorded yet: only a real count shows. */}
       {occupation.open_posts ? (

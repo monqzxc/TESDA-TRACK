@@ -694,6 +694,8 @@ export const en = {
       yourChoice: 'Your choice',
       goalMatch: 'Goal match',
       goalMatchScore: (score: number) => `Goal match: ${score}%`,
+      // Under a low goal or skill match: the words only partly fit this qualification.
+      weakerMatch: 'Weaker match',
       hint: 'How closely this qualification fits the goal you described. It’s guidance, not a guarantee.',
       rate: (skills: number) =>
         `Rate its ${figure(skills)} ${skills === 1 ? 'skill' : 'skills'} to see your strengths and gaps.`,
