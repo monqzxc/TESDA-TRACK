@@ -1114,4 +1114,382 @@ export const pam: Record<string, string> = {
     'Buksan ing pamag-abante ku para balikan deng me-save a mungkahi, pamagsuri, ampong dalan para king account a iti.',
   'Enter the details requested by the form. You can switch between signing in and creating an account using the link below it.':
     'Ilagay deng detalyeng kailangan ning form. Malyari kang mamili king pamaglub o pamaggawang account gamit ing link king lalam na.',
+  // Career Map, Supply & Demand panel, suggestion feedback and Find my pathway (QA-2026-11-19-EXP1).
+  'Show less': 'Pakit ing kulang',
+  'Close map panel': 'Isara ing panel ning mapa',
+  'What can you do?': 'Nanu ing agyu mung gawan?',
+  'Type what you can do': 'I-type ing agyu mung gawan',
+  Search: 'Manintun',
+  'Type in Filipino or English, for example “Marunong ako magluto” or “I can weld”.':
+    'Mag-type king Kapampangan, Filipino o English, alimbawa “Balu kung maglutu” o “I can weld”.',
+  'Finding qualifications that fit…': 'Manintun kareng kwalipikasyun a bagay…',
+  'Show on the map': 'Pakit king mapa',
+  'Training centers': 'Deng sentro ning pamag-aral',
+  'Assessment centers': 'Deng sentro ning pamagmasusi',
+  'In demand jobs': 'Deng trabahung in demand',
+  'Open Location?': 'Buksan ing lokasyun?',
+  'Allow your approximate location to see the nearest centers first. It is rounded to about 1 km and never saved. You can change this any time.':
+    'Payagan me ing tantiyang lokasyun mu ban akit mu muna deng pekamalapit a sentro. Itantiya ya king 1 km ampo e ya ibili kailanman. Malyari meng sukyan kanita nung kapilan man.',
+  'Yes, open it': 'Wa, buksan me',
+  'Not now': 'E pa ngeni',
+  'From your TSP profile': 'Ibat king TSP profile mu',
+  'Sample data': 'Sample a datos',
+  Skills: 'Deng kayanan',
+  Licenses: 'Deng lisensya',
+  'Home area': 'Lugal a pagmaragul',
+  'None listed': 'Alang nakalista',
+  'Loading your TSP profile…': 'Ikarga ing TSP profile mu…',
+  'We couldn’t load your TSP profile. Type a city or province below to continue.':
+    'E mi akarga ing TSP profile mu. Mag-type kang lungsod o probinsya king lalam ban magtuloy.',
+  'You may be ready for assessment': 'Malyaring sadya na ka king pamagmasusi',
+  'For {0}, your TSP profile lists {1}. The assessment center confirms what you need to bring.':
+    'Para king {0}, ilista ning TSP profile mu ing {1}. Ing sentro ning pamagmasusi ing mamagsabi nung nanu ing dapat mung dalan.',
+  'Share my location': 'Ibahagi ing lokasyun ku',
+  'On · approximate, rounded to about 1 km and not saved.':
+    'On · tantiya, itantiya king 1 km ampo e ya ibili.',
+  'Off. Nothing is shared until you turn this on.': 'Off. Alang ibahagi angga e mu ya buksan.',
+  'Or type a city or province': 'O mag-type kang lungsod o probinsya',
+  'For example: Manila, Cebu, Laguna': 'Alimbawa: Manila, Cebu, Laguna',
+  'Near {0}': 'Malapit king {0}',
+  'Near {0}, your home area in your TSP profile':
+    'Malapit king {0}, ing pagmaragul mu king TSP profile mu',
+  'Typing a place changes it for this visit only. Your TSP profile is not changed.':
+    'Ing lugal a i-type mu para mu bisa king pamanibat a ini. E masukyan ing TSP profile mu.',
+  'We don’t know that place yet. Try a city, province or region.':
+    'E mi pa balu ing lugal a iyan. Subukan me ing lungsod, probinsya o rehiyun.',
+  'How far can you go?': 'Makanu kalayu ing agyu mung puntalan?',
+  'Share your location or type a place to measure from.':
+    'Ibahagi me ing lokasyun mu o mag-type kang lugal a pamisukatan.',
+  'Location is blocked in your browser. Type a city instead, or allow location and try again.':
+    'Naka-block ing lokasyun king browser mu. Mag-type kang lungsod, o payagan me ing lokasyun at subukan mu pasibayu.',
+  'We couldn’t get your location. Type a city instead, or try again.':
+    'E mi akua ing lokasyun mu. Mag-type kang lungsod, o subukan mu pasibayu.',
+  'This browser can’t share a location. Type a city instead.':
+    'E makapibahagi lokasyun ing browser a ini. Mag-type kang lungsod.',
+  'See what is near you': 'Lawen me ing malapit keka',
+  'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
+    'Buksan me ing pamibahagi ning lokasyun, o mag-type kang lungsod, ban akit mu deng pekamalapit a sentro ning pamag-aral ampong pamagmasusi.',
+  you: 'ika',
+  'Nearest training centers': 'Pekamalapit a sentro ning pamag-aral',
+  'Nearest assessment centers': 'Pekamalapit a sentro ning pamagmasusi',
+  'No center on the map yet.': 'Ala pang sentro king mapa.',
+  '{0} centers on the map. Search to see the ones that fit you.':
+    '{0} a sentro king mapa. Manintun ka ban akit mu deng bagay keka.',
+  'Qualifications that fit what you wrote': 'Deng kwalipikasyun a bagay king sinulat mu',
+  Show: 'Pakit',
+  All: 'Eganagana',
+  Assess: 'Pamagmasusi',
+  Train: 'Pamag-aral',
+  Demand: 'Demand',
+  'Get certified': 'Magpa-sertipika',
+  'Or train first': 'O mag-aral ka muna',
+  'Or get certified': 'O magpa-sertipika',
+  'Strong match': 'Masikan a pamitugma',
+  'Good match': 'Mayap a pamitugma',
+  'Weaker match': 'Malambut a pamitugma',
+  'This only partly fits what you wrote. Check the qualification before you go.':
+    'Bage ya mu ining bagay king sinulat mu. Surian me muna ing kwalipikasyun bayu ka munta.',
+  'No center lists this qualification yet.': 'Ala pang sentro a milista king kwalipikasyun a ini.',
+  '{0} more': '{0} pa',
+  'No center within {0} km. The closest is {1} km away.':
+    'Alang sentro king lub ning {0} km. Ing pekamalapit {1} km ing kalayu na.',
+  Change: 'Sukyan',
+  'Change how far you can go (now {0} km)':
+    'Sukyan me nung makanu kalayu ing agyu mu (ngeni {0} km)',
+  'Centers within this distance count as near you.':
+    'Deng sentro king lub ning kalayu a ini mibibilang lang malapit keka.',
+  'Keep as it is': 'E sukyan',
+  'A related qualification within {0} km':
+    'Metung a makaugnay a kwalipikasyun king lub ning {0} km',
+  'Training for {0}': 'Pamag-aral para king {0}',
+  'Assessment for {0}': 'Pamagmasusi para king {0}',
+  'You chose this qualification in the Qualifications Library.':
+    'Pinili me ing kwalipikasyun a ini king Aklatan da reng kwalipikasyun.',
+  'Share your location or type a city to see what is nearest.':
+    'Ibahagi me ing lokasyun mu o mag-type kang lungsod ban akit mu ing pekamalapit.',
+  'We couldn’t find a clear match. Try describing something you can do, like “marunong ako magluto” or “I repair computers”.':
+    'Ala kaming akit a malino a pamitugma. Subukan meng ilarawan ing agyu mung gawan, alimbawa “balu kung maglutu” o “I repair computers”.',
+  'We couldn’t search right now. Check your connection, then try again.':
+    'E kami makapanintun ngeni. Surian me ing koneksyun mu, kaibat subukan mu pasibayu.',
+  'New search': 'Bayung panintun',
+  'about {0} by car': 'intang {0} nung sakay kotse',
+  'By car': 'Sakay kotse',
+  'Jobs and qualification demand': 'Deng trabaho ampong demand king kwalipikasyun',
+  'Demand for': 'Demand para king',
+  'Explore recorded jobs, qualifications linked to demand, and the training available in an area.':
+    'Lawen la reng milista a trabaho, deng kwalipikasyun a makaugnay king demand, ampo ing pamag-aral a atiu king metung a lugal.',
+  'Area: {0}': 'Lugal: {0}',
+  'Area: all regions with recorded evidence': 'Lugal: eganagang rehiyun a atin milista a ebidensya',
+  'Demand views': 'Deng panlawe king demand',
+  'Jobs by area': 'Deng trabaho king balang lugal',
+  'Supply & demand': 'Supply ampong demand',
+  'Use my selected location': 'Gamitan me ing pinili kung lokasyun',
+  'All recorded regions': 'Eganagang milista a rehiyun',
+  'Filter by qualification': 'Salaan king kwalipikasyun',
+  'Qualification: {0}': 'Kwalipikasyun: {0}',
+  'All recorded jobs': 'Eganagang milista a trabaho',
+  'City or municipality in the snapshot': 'Lungsod o balen king snapshot',
+  'All recorded cities and municipalities': 'Eganagang milista a lungsod ampong balen',
+  'Loading labor-market evidence…': 'Ikarga ing impormasyun king labor market…',
+  'Labor-market information could not be loaded.': 'E akarga ing impormasyun king labor market.',
+  'Snapshot: {0}.': 'Snapshot: {0}.',
+  '{0} posting records · {1} employers': '{0} a rekord ning posting · {1} a employer',
+  'Dated PhilJobNet records, ordered by posting count. These are not live openings or worker headcounts. Shaded regions compare recorded posting totals.':
+    'Deng rekord ning PhilJobNet a atin petsa, makasunud king dakal ning posting. E la reni bukas a trabaho ngeni o bilang da reng obrero. Ing kulay ning rehiyun pipagtulad ne ing kabilian a milista a posting.',
+  ' · {0} more places': ' · {0} pang lugal',
+  'Reviewed occupation links only. National forecasts retain their national coverage; they do not establish demand in a particular city.':
+    'Deng misuri a ugnayan ning trabaho mu. Nasyunal ya pa murin ing nasyunal a forecast; e ne patune ing demand king metung a lungsod.',
+  '{0} qualifications with reviewed evidence': '{0} a kwalipikasyun a atin misuri a ebidensya',
+  'No mapped posting records in this area.':
+    'Alang mitugma a rekord ning posting king lugal a ini.',
+  '{0} mapped posting records': '{0} a mitugma a rekord ning posting',
+  'Forecast support: {0}': 'Suporta ning forecast: {0}',
+  'Compare supply and demand': 'Pagtuladan ing supply ampong demand',
+  'Supply means recorded training and assessment services. Posting records and training seats have different units; no workforce shortage is calculated.':
+    'Ing supply ya ing milista a serbisyu ning pamag-aral ampong pamagmasusi. Aliwa ing yunit ning rekord ning posting ampong lugal king pamag-aral; alang kuwentang kakulangan da reng obrero.',
+  'No posting records for this selection. Try all jobs or another area. Missing evidence does not mean low demand.':
+    'Alang rekord ning posting para king pinili a ini. Subukan me ing eganagang trabaho o aliwang lugal. Ing kawalan ning ebidensya e ya kabaldugan a mababa ing demand.',
+  'No reviewed qualification links for this area yet. Try another region or all recorded regions.':
+    'Ala pang misuri a ugnayan ning kwalipikasyun para king lugal a ini. Subukan me ing aliwang rehiyun o eganagang milista a rehiyun.',
+  '{0}: {1} posting records (regional coverage)':
+    '{0}: {1} a rekord ning posting (sakup ning rehiyun)',
+  'Regional demand heatmap': 'Heatmap ning demand king rehiyun',
+  'Recorded postings': 'Milista a posting',
+  'Fewer postings': 'Kulang a posting',
+  'More postings': 'Dakal a posting',
+  'Deeper colors show more recorded postings in the region.':
+    'Ing mas madalum a kulay pakit ne ing mas dakal a milista a posting king rehiyun.',
+  'No posting records in this snapshot': 'Alang rekord ning posting king snapshot a ini',
+  '{0}: no posting records in this snapshot': '{0}: alang rekord ning posting king snapshot a ini',
+  'Loading regional boundaries…': 'Ikarga la reng angganan ning rehiyun…',
+  'Regional boundaries could not be loaded. You can still choose an area in the list.':
+    'E akarga deng angganan ning rehiyun. Malyari ka murin mamili lugal king listaan.',
+  'Supply and demand analysis': 'Pamanalisa ning supply ampong demand',
+  'Qualification analysed': 'Kwalipikasyun a sinuri',
+  'Hide analysis': 'Isalikut ing pamanalisa',
+  'Show analysis': 'Pakit ing pamanalisa',
+  'Reading the records for this qualification…':
+    'Basan la reng rekord para king kwalipikasyun a ini…',
+  'The supply and demand analysis could not be loaded.':
+    'E akarga ing pamanalisa ning supply ampong demand.',
+  Relocate: 'Lumipat',
+  'Resize the analysis': 'Sukyan ing laki ning pamanalisa',
+  postings: 'posting',
+  training: 'pamag-aral',
+  assessment: 'pamagmasusi',
+  'Demand ahead of supply': 'Mas matas ing demand kesa king supply',
+  Balanced: 'Balanse',
+  Saturated: 'Mapnu na',
+  'Demand, no center here': 'Atin demand, alang sentro keni',
+  'Centers, no postings here': 'Atin sentro, alang posting keni',
+  'No records yet': 'Ala pang rekord',
+  'Rough signal': 'Tantiyang senyales',
+  'Your area': 'Ing lugal mu',
+  Supply: 'Supply',
+  Balance: 'Balanse',
+  Elsewhere: 'King aliwang lugal',
+  'Demand here': 'Demand keni',
+  'Skill Passport': 'Skill Passport',
+  'High demand': 'Matas a demand',
+  'Moderate demand': 'Katamtamang demand',
+  'Low demand': 'Mababang demand',
+  'No recorded demand': 'Alang milista a demand',
+  '{1} records in {0}': '{1} a rekord king {0}',
+  '#{0} of {1} regions': '#{0} king {1} a rehiyun',
+  'Needed more in': 'Mas kailangan king',
+  Nearby: 'Malapit',
+  '{0} records': '{0} a rekord',
+  'Show {0} on the map': 'Pakit ing {0} king mapa',
+  'Your region leads for this one.': 'Ing rehiyun mu ing mangungunang para kaniti.',
+  'No posting records yet: missing data, not low demand.':
+    'Ala pang rekord ning posting: kulang a datos, e mababang demand.',
+  'Share your location or type a city to see local demand.':
+    'Ibahagi me ing lokasyun mu o mag-type kang lungsod ban akit mu ing lokal a demand.',
+  'Find Jobs on TSP': 'Manintun Trabaho king TSP',
+  'Find Jobs on TSP for {0} in {1} (opens TESDA Skill Passport in a new tab)':
+    'Manintun Trabaho king TSP para king {0} king {1} (buksan na ing TESDA Skill Passport king bayung tab)',
+  'Link not set up yet': 'E pa makasadya ing link',
+  'Also in demand here': 'In demand mu naman keni',
+  'Looking for other qualifications in demand here…':
+    'Manintun kareng aliwang kwalipikasyun a in demand keni…',
+  'Other qualifications in demand could not be loaded.':
+    'E akarga deng aliwang kwalipikasyun a in demand.',
+  'Nothing else stands out in {0} yet.': 'Ala pang aliwang mamuntukud king {0}.',
+  'Look at {0}': 'Lawen me ing {0}',
+  'AI summary': 'Buod ning AI',
+  'Written by AI from the counts on this map.':
+    'Sinulat ning AI ibat kareng bilang king mapa a ini.',
+  Why: 'Bakit',
+  Recommended: 'Irekomenda',
+  'Share your location or type a city to get a recommended center.':
+    'Ibahagi me ing lokasyun mu o mag-type kang lungsod ban makakua kang irekomendang sentro.',
+  'Get assessed': 'Magpasuri',
+  'Nearest in your region': 'Pekamalapit king rehiyun mu',
+  'Nearest, in {0}': 'Pekamalapit, king {0}',
+  'If you relocate: {0}': 'Nung lumipat ka: {0}',
+  'Demand map': 'Mapa ning demand',
+  'All results': 'Eganagang resulta',
+  'A rough signal from dated records, not a forecast. Confirm with the center or TESDA.':
+    'Tantiyang senyales ibat kareng rekord a atin petsa, e forecast. Kumpirman me king sentro o king TESDA.',
+  'Recommended: {0}': 'Irekomenda: {0}',
+  'Supply and demand map': 'Mapa ning supply ampong demand',
+  '{0}: {1} posting records, {2} centers. {3}.':
+    '{0}: {1} a rekord ning posting, {2} a sentro. {3}.',
+  'Demand against supply': 'Demand laban king supply',
+  'Demand ahead': 'Mangungunang ing demand',
+  'An outlined mark means one side has no records.':
+    'Ing marka a atin angganan mu kabaldugan na ala yang rekord ing metung a pane.',
+  'About this map': 'Tungkul king mapa a ini',
+  'Back to results': 'Mibalik kareng resulta',
+  'Assessment center · Get certified': 'Sentro ning pamagmasusi · Magpa-sertipika',
+  'Training center · Train': 'Sentro ning pamag-aral · Mag-aral',
+  'Leads to an NC': 'Mamuntala king NC',
+  'Qualifications offered': 'Deng kwalipikasyun a ibie',
+  'Matches your search': 'Mitugma king panintun mu',
+  Directions: 'Direksyun',
+  'Show route on the map': 'Pakit ing ruta king mapa',
+  Call: 'Tumawag',
+  Contact: 'Kontak',
+  'Travel time': 'Oras ning biyahe',
+  Address: 'Address',
+  'Ease of reach': 'Kalwagan ning pamunta',
+  'Travel times are estimated from straight-line distance, by car, without traffic.':
+    'Itantiya ing oras ning biyahe ibat king tuwid a kalayu, sakay kotse, alang trapiku.',
+  'These results come from automatic matching. This is a suggestion: confirm with the center or your TESDA office.':
+    'Ibat king awtomatiku a pamitugma deng resulta a reni. Suhestiyun mu ini: kumpirman me king sentro o king opisina ning TESDA.',
+  'Previous version': 'Minunang bersyun',
+  'This is the earlier version of this page. The new Explore map finds centers from what you can do.':
+    'Ini ing minunang bersyun ning bulung a ini. Ing bayung mapa ning Explore manintun yang sentro ibat king agyu mung gawan.',
+  'Go to Explore': 'Munta king Explore',
+  'Location not confirmed': 'E pa mekumpirma ing lokasyun',
+  'Google Maps': 'Google Maps',
+  '{0} · about {1} {2}': '{0} · intang {1} {2}',
+  '{0} to {1} · about {2} in the air': '{0} anggang {1} · intang {2} king angin',
+  'An estimate from the {0} between the airports, not an airline schedule: check airlines for flights and fares. Allow time to reach the airport ({1} from you), check in, and travel {2} on to the center.':
+    'Tantiya ibat king {0} king pagitan da reng paliparan, e iskedyul ning eroplanu: surian la reng airline para king flight ampong pasahi. Mibie kang panaun para king pamunta king paliparan ({1} ibat keka), check-in, ampong pamibiyahe {2} anggang king sentro.',
+  'Sample data for the December 2 demo': 'Sample a datos para king demo king Disyembri 2',
+  'Centers couldn’t be loaded. Try again from the list.':
+    'E akarga deng sentro. Subukan mu pasibayu ibat king listaan.',
+  'The detailed map could not load, so the OpenStreetMap map is shown instead.':
+    'E akarga ing detalyadung mapa, nya ing mapa ning OpenStreetMap ing pakit.',
+  'The map stopped drawing. Restoring it…': 'Tinuknang ing mapa. Ibalik ne…',
+  OpenStreetMap: 'OpenStreetMap',
+  Satellite: 'Satellite',
+  'Zoom in': 'Palakwan',
+  'Zoom out': 'Paliitan',
+  'Turn the map back to north': 'Ibalik ing mapa king norte',
+  'Show buildings in 3D': 'Pakit la reng building king 3D',
+  '3D': '3D',
+  'Zoom in to see buildings in 3D.': 'Palakwan me ban akit mu deng building king 3D.',
+  'No building heights are recorded here yet, so buildings stay flat.':
+    'Ala pang milista a katasan ning building keni, nya patag la reng building.',
+  'No buildings are mapped here yet.': 'Ala pang building a ne-mapa keni.',
+  'Couldn’t copy. The link is {0}': 'E makakopya. Ing link ya ing {0}',
+  '{0} centers here: zoom in': '{0} a sentro keni: palakwan',
+  '{0} centers at this spot': '{0} a sentro king lugal a ini',
+  '{0}: show this route': '{0}: pakit ing ruta a ini',
+  'Map. Arrow keys move it, plus and minus zoom.':
+    'Mapa. Deng arrow key pakilus de, plus ampong minus para king zoom.',
+  'Map credits': 'Deng credit ning mapa',
+  'Use two fingers to move the map': 'Gamitan me ing adwang taliri ban pakilus ing mapa',
+  'Use Ctrl + scroll to zoom the map': 'Gamitan me ing Ctrl + scroll ban i-zoom ing mapa',
+  'Use ⌘ + scroll to zoom the map': 'Gamitan me ing ⌘ + scroll ban i-zoom ing mapa',
+  'Was this helpful?': 'Mekatulung ya ini?',
+  'Report a wrong suggestion': 'I-report ing malyang suhestiyun',
+  'Choose a reason': 'Mamili kang rason',
+  'Wrong qualification': 'Malyang kwalipikasyun',
+  'Wrong center': 'Malyang sentro',
+  'Outdated or incorrect information': 'Matua o malyang impormasyun',
+  'Not relevant to what I need': 'E bagay king kailangan ku',
+  Other: 'Aliwa pa',
+  'Include my goal text with this report': 'Iapil ing teksto ning layunin ku king report a ini',
+  'Only the assigned reviewer will see it. Leave this unchecked if your goal contains personal information.':
+    'Ing mekatalagang tagasuri mu ing makakit kaniti. E me i-check nung atin personal a impormasyun ing layunin mu.',
+  'Send report': 'Ipadala ing report',
+  'Thanks for your feedback.': 'Salamat king feedback mu.',
+  'Report sent for review.': 'Mipadala ing report para suriin.',
+  'This version of the app can’t accept feedback. Open an updated version and try again.':
+    'E makatanggap feedback ing bersyun a ini ning app. Buksan me ing updated a bersyun at subukan mu pasibayu.',
+  'This is a suggestion. Confirm with the center or your TESDA office.':
+    'Suhestiyun mu ini. Kumpirman me king sentro o king opisina ning TESDA.',
+  'Loading TESDA Track…': 'Ikarga ing TESDA Track…',
+  'Selected qualification': 'Pinili a kwalipikasyun',
+  'YOUR NEXT CHAPTER': 'ING TUKI MUNG KABANATA',
+  'Where would you like to go?': 'Nokarin mu buring munta?',
+  'Start with a career you want, something you can do, or a skill you’d like to learn. We’ll help you find a TESDA pathway.':
+    'Mumpisa ka king karera a buri mu, king agyu mung gawan, o king kayanan a buri mung aralan. Tulungan da ka makatagpu dalan king TESDA.',
+  'Your career interests or skills': 'Deng interes o kayanan mu king karera',
+  'For example: I want to become an electrician, Welding, or Cooking and baking':
+    'Alimbawa: Buri kung magbayu electrician, Welding, o Pamaglutu ampong pamag-bake',
+  'Use your own words. Separate multiple skills with commas.':
+    'Gamitan mo reng sarili mung salita. Pitali la king koma deng dakal a kayanan.',
+  'Enter a career goal, occupation, or skill to continue.':
+    'Mangabiang kang layunin king karera, trabaho o kayanan ban magtuloy.',
+  'Try a starting point': 'Subukan ing metung a pamimpisan',
+  'I want to become an electrician.': 'Buri kung magbayu electrician.',
+  Welder: 'Welder',
+  'Welding, blueprint reading': 'Welding, pamagbasa blueprint',
+  'I enjoy caring for older people.': 'Buri kung mag-alaga kareng matuang tau.',
+  'Find my pathways': 'Panintunan deng dalan ku',
+  'Your previous search': 'Ing minunang panintun mu',
+  'Your interests and skills': 'Deng interes ampong kayanan mu',
+  'Edit your input': 'I-edit ing ingabiang mu',
+  'Your goal is saved to your account.': 'Mibili king account mu ing layunin mu.',
+  'Your selected qualification': 'Ing pinili mung kwalipikasyun',
+  'Set as My Goal': 'Gawan yang Layunin Ku',
+  'Goal Selected': 'Mepili ne ing Layunin',
+  'Saved for this journey in this tab. Selecting a goal keeps your matching and readiness results.':
+    'Mibili para king pamaglakbe a ini king tab a ini. Ing pamamili layunin ibili na la reng resulta ning pamitugma ampong pamagsadya mu.',
+  'Choose an occupation as your career goal. You can change it at any time during this journey.':
+    'Mamili kang trabaho bilang layunin mu king karera. Malyari meng sukyan kapilan man king pamaglakbe a ini.',
+  'No occupations are listed for this qualification in the catalog yet.':
+    'Ala pang milista a trabaho para king kwalipikasyun a ini king katalogu.',
+  'No approved forecast occupation matches this request for this qualification yet.':
+    'Ala pang aprubadung trabaho king forecast a mitugma king aldo a ini para king kwalipikasyun a ini.',
+  'Checking labor-market information…': 'Surian ing impormasyun king labor market…',
+  'Your readiness result applies to the selected qualification. Explore an alternative to check its own competencies.':
+    'Para king pinili a kwalipikasyun ing resulta ning pamagsadya mu. Lawen me ing metung a alternatibo ban surian ing sarili nang kayanan.',
+  'Recommended alternative': 'Irekomendang alternatibo',
+  'Also associated with this occupation': 'Makaugnay murin king trabahung ini',
+  'Readiness results apply to the selected qualification. Other catalog associations are additional options, not necessarily scored recommendations.':
+    'Para king pinili a kwalipikasyun deng resulta ning pamagsadya. Dagdag a pamipilian deng aliwang ugnayan king katalogu, e kailangan a atin puntos a rekomendasyun.',
+  'Explore jobs linked to your selected qualification.':
+    'Lawen la reng trabaho a makaugnay king pinili mung kwalipikasyun.',
+  '© 2026 TESDA-TRACK. All rights reserved.':
+    '© 2026 TESDA-TRACK. Reserbado ing eganagang karapatan.',
+  // Fixed sentences the API writes (useServerText): the supply and demand headline and match reasons.
+  '{0}: recorded demand for {1} is ahead of training supply':
+    '{0}: mas matas ing milista a demand para king {1} kesa king supply ning pamag-aral',
+  '{0}: demand and training supply for {1} look balanced':
+    '{0}: ustung balanse ing demand ampong supply ning pamag-aral para king {1}',
+  '{0}: training supply for {1} is ahead of recorded demand':
+    '{0}: mas matas ing supply ning pamag-aral para king {1} kesa king milista a demand',
+  '{0}: employers posted for {1}, but no center is recorded here':
+    '{0}: atin employer a mag-post para king {1}, oneng alang milista a sentro keni',
+  '{0}: centers offer {1}, but no posting records were captured here':
+    '{0}: atin sentro a mag-alok {1}, oneng alang milista a posting keni',
+  '{0}: nothing is recorded for {1} yet': '{0}: ala pang milista para king {1}',
+  'Matched your words: {0}': 'Mitugma kareng salita mu: {0}',
+  'Matched your reported career, skills, or sector.':
+    'Mitugma king ireport mung karera, kayanan o sektor.',
+  'Similar in meaning to your goal.': 'Kalupa ning kabaldugan ning layunin mu.',
+  'Scholarship open': 'Bukas ing scholarship',
+  // No center offers the qualification anywhere (QA-2026-11-18-E).
+  'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
+    'Ala pang sentro a mag-alok {0} nanu man a lugal. E makatulung ing mas malapad a kalayu, nya subukan me ing metung kareni.',
+  'A related qualification offered within {0} km':
+    'Metung a makaugnay a kwalipikasyun a ibie king lub ning {0} km',
+  'Browse other {0} qualifications': 'Lawen la reng aliwang kwalipikasyun king {0}',
+  'Ask the TESDA provincial or district office near you which providers plan to offer it.':
+    'Kutnan me ing provincial o district office ning TESDA a malapit keka nung nanung provider ing mamalanung mag-alok kaniti.',
+  'Share your location or type a city to see a related qualification near you.':
+    'Ibahagi me ing lokasyun mu o mag-type kang lungsod ban akit mu ing makaugnay a kwalipikasyun a malapit keka.',
+  // Career Map center filters (US-0014 AC3) and demo sample centers (US-0017 AC8).
+  'Filter centers': 'I-filter la reng sentro',
+  '1 center shown': '1 a sentro ing pakit',
+  '{0} centers shown': '{0} a sentro ing pakit',
+  'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.':
+    'Sample a sentro para king demo king Disyembre 2. Ali iti opisyal a listaan ning TESDA: gewa-gewa mu la reng lagyu, lugal ampong iskedyul.',
+  'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':
+    'Sample a datos para king demonstrasyun, ali opisyal a rekord ning TESDA. Kumpirman me ing tutung serbisyu king TESDA.',
 }

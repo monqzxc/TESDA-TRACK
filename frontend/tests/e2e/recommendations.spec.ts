@@ -903,3 +903,57 @@ test('US-0014: the Career Map filters centers by region and province, counts the
   ).toEqual([])
   await filters.screenshot({ path: test.info().outputPath('filters.png') })
 })
+
+// QA-2026-11-18-E (US-0014 AC5): when no center lists the qualification anywhere, a wider range can't help, so the
+// Career Map suggests a related qualification offered within range, the sector in the library and the TESDA office.
+test('US-0014: no center anywhere suggests a related qualification and the library instead', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 })
+  await serveRecommendations(page, 'leaflet')
+  const unlisted = {
+    code: 'ICT-UNLISTED-NC-III',
+    name: 'Unlisted Example Servicing NC III',
+    sector: CSS.sector,
+    possible_jobs: [],
+    competencies: [],
+  }
+  await page.route('**/api/v1/analysis/matches', (route) =>
+    route.fulfill({
+      json: {
+        profile: PROFILE,
+        matches: [{ qualification: unlisted, score: 80, reason: 'Matched your words: unlisted' }],
+      },
+    }),
+  )
+  await page.goto('/explore')
+  // Open Location? is asked on every visit now (LocationPrompt): this test answers it.
+  await page
+    .getByRole('dialog', { name: 'Open Location?' })
+    .getByRole('button', { name: 'Not now' })
+    .click()
+  await page.getByRole('searchbox', { name: 'What can you do?' }).fill('unlisted servicing')
+  await page.getByRole('button', { name: 'Search', exact: true }).click()
+  await page.getByRole('textbox', { name: 'Or type a city or province' }).fill('Manila')
+
+  const help = page.getByTestId('no-center-help').first()
+  await expect(help).toContainText(
+    'No center lists Unlisted Example Servicing NC III yet, anywhere. A wider range won’t help',
+  )
+  await expect(help).toContainText('A related qualification offered within 25 km')
+  await expect(
+    help.getByRole('button', { name: /Example Computer (Training|Assessment) Center/ }),
+  ).toBeVisible()
+  const library = help.getByRole('link', {
+    name: 'Browse other Information and Communication Technology qualifications',
+  })
+  await expect(library).toHaveAttribute(
+    'href',
+    '/qualifications?sector=Information%20and%20Communication%20Technology',
+  )
+  await expect(help).toContainText('Ask the TESDA provincial or district office near you')
+  expect(
+    (await new AxeBuilder({ page }).include('[data-testid="no-center-help"]').analyze()).violations,
+  ).toEqual([])
+  await page.screenshot({ path: test.info().outputPath('no-center-help.png') })
+})
