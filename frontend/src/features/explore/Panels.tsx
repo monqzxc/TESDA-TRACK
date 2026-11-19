@@ -144,7 +144,12 @@ export function TspProfilePanel({ explore }: { explore: Explore }) {
       </p>
     )
   }
-  const home = [passport.municipality, passport.province].filter(Boolean).join(', ')
+  // The city and province, else the region the search measures from (QA-2026-11-18-D: an API or profile with only a
+  // region showed "None listed" here while the location line used that region as the home area).
+  const home =
+    [passport.municipality, passport.province].filter(Boolean).join(', ') ||
+    explore.regions.find((region) => region.code === passport.region_code)?.name ||
+    ''
   const rows: [string, string][] = [
     [copy.skills, passport.skills.join(', ') || copy.none],
     [copy.licenses, (passport.licenses ?? []).join(', ') || copy.none],
