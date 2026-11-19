@@ -26,6 +26,7 @@ from tesda_track.services import assessments, catalog, embeddings, geo, learner_
 from tesda_track.services.embeddings import Embedder
 from tesda_track.utils.helpers import normalize
 from tesda_track.errors import InvalidRequestError
+from tesda_track.services.center_listing import listed
 
 SOON_DAYS = 60
 # One decimal of a degree is about 11 km. Rounding before ranking means nothing finer is ever computed,
@@ -80,7 +81,7 @@ def providers_near_assessment(session: Session, qualification_id: int, provider_
                                              ServiceVerification.qualification_id == qualification_id))
              .where(TrainingProvider.id.in_(provider_ids), AssessmentSchedule.qualification_id == qualification_id,
                     AssessmentSchedule.status == "open", AssessmentSchedule.scheduled_at > now,
-                    AssessmentCenter.is_active, assessments.seats_taken_subquery() < AssessmentSchedule.slots))
+                    listed(AssessmentCenter), assessments.seats_taken_subquery() < AssessmentSchedule.slots))
     return {provider_id for provider_id, schedule, record in session.exec(query)
             if verification.effective_status(record, now) == "verified"
             and verification.authorization_covers(record, schedule.scheduled_at)

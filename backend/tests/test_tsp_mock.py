@@ -168,3 +168,13 @@ def test_mock_alone_satisfies_the_settings_check():
     with pytest.raises(ValueError):
         Settings(tsp_sign_in_enabled=True, tsp_mock_enabled=False, hercules_base_url=None, tracker_client_id=None,
                  tracker_client_secret=None, _env_file=None)
+
+
+def test_ben_lists_a_license_apart_from_his_certificate_and_a_city_home_area(client, mock_tsp):
+    # QA-2026-11-18-D (US-0004 AC1): the profile panel listed "None listed" for licenses on every working account.
+    # Ben now carries a driver's license beside his welding certificate, and his home area is a city and province.
+    sign_in(client, "ben.cruz@example.com", "TspDemo-Ben-2026")
+    profile = client.get("/api/v1/auth/tsp/profile").json()
+    assert profile["licenses"] == ["LTO Non-Professional Driver's License"]
+    assert profile["credentials"] == ["Shielded Metal Arc Welding (SMAW) NC I"]
+    assert (profile["municipality"], profile["province"], profile["region_code"]) == ("Cebu City", "Cebu", "VII")

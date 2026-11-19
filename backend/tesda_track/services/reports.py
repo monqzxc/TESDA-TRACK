@@ -16,6 +16,7 @@ from tesda_track.schemas.reports import (CompetencyGap, DateRange, FeedbackByPla
                                          RegionSupply)
 from tesda_track.services import assessments, catalog
 from tesda_track.services.match_stats import PHILIPPINE_TIME
+from tesda_track.services.center_listing import listed
 
 
 
@@ -211,10 +212,10 @@ def supply(session: Session) -> list[RegionSupply]:
     """Current training and assessment capacity per region (not limited to a date range)."""
     today = date.today()
     providers = _grouped(session, select(TrainingProvider.region_code, func.count())
-                         .where(TrainingProvider.is_active).group_by(TrainingProvider.region_code))
+                         .where(listed(TrainingProvider)).group_by(TrainingProvider.region_code))
     programs = _grouped(session, select(TrainingProvider.region_code, func.count()).select_from(TrainingProgram)
                         .join(TrainingProvider)
-                        .where(TrainingProgram.is_active, TrainingProvider.is_active,
+                        .where(TrainingProgram.is_active, listed(TrainingProvider),
                                or_(TrainingProgram.end_date.is_(None), TrainingProgram.end_date >= today))
                         .group_by(TrainingProvider.region_code))
     open_seats = func.greatest(AssessmentSchedule.slots - assessments.seats_taken_subquery(), 0)
@@ -222,7 +223,7 @@ def supply(session: Session) -> list[RegionSupply]:
         select(AssessmentCenter.region_code, func.count(), func.coalesce(func.sum(open_seats), 0))
         .select_from(AssessmentSchedule).join(AssessmentCenter)
         .where(AssessmentSchedule.status == "open", AssessmentSchedule.scheduled_at > utcnow(),
-               AssessmentCenter.is_active).group_by(AssessmentCenter.region_code))}
+               listed(AssessmentCenter)).group_by(AssessmentCenter.region_code))}
     rows = []
     for region in session.exec(select(Region).order_by(Region.position)):
         upcoming, seats = schedules.get(region.code, (0, 0))

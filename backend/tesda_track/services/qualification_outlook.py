@@ -19,7 +19,8 @@ from tesda_track.models import (AssessmentCenter, AssessmentSchedule, Region, Tr
 from tesda_track.models.registry import RegistryRecord
 from tesda_track.schemas.outlook import (AreaOutlook, DemandLevel, HigherDemandArea, HomeDemand, OutlookInsight,
                                          OutlookPoint, OutlookQualification, OutlookTotals, QualificationOutlook)
-from tesda_track.services import area_jobs, assessments, catalog, sample_demand
+from tesda_track.services import area_jobs, assessments, catalog
+from tesda_track.services.center_listing import listed, sample_mode
 
 LIMITATIONS = [
     "Demand counts dated posting records with a reviewed link to the qualification; they are not live openings or "
@@ -61,21 +62,22 @@ def _sites(session: Session, qualification_id: int, now: datetime, include_examp
         select(TrainingProvider.id, TrainingProvider.region_code,
                or_(TrainingProvider.data_status == "example", TrainingProgram.data_status == "example"))
         .join(TrainingProgram, TrainingProgram.provider_id == TrainingProvider.id)
-        .where(TrainingProgram.is_active, TrainingProvider.is_active,
+        .where(TrainingProgram.is_active, listed(TrainingProvider),
                TrainingProgram.qualification_id == qualification_id)).all())
     # Open schedules that haven't happened yet, as the map's own listing of assessment centers has them.
     sort("assessment", assessment, session.exec(
         select(AssessmentCenter.id, AssessmentCenter.region_code,
                or_(AssessmentCenter.data_status == "example", AssessmentSchedule.data_status == "example"))
         .join(AssessmentSchedule, AssessmentSchedule.center_id == AssessmentCenter.id)
-        .where(AssessmentSchedule.status == "open", AssessmentSchedule.scheduled_at > now, AssessmentCenter.is_active,
+        .where(AssessmentSchedule.status == "open", AssessmentSchedule.scheduled_at > now, listed(AssessmentCenter),
                AssessmentSchedule.qualification_id == qualification_id)).all())
     # The registry accredits centers per qualification without publishing schedules (services.assessments).
     accredited = assessments.accreditations().where(RegistryRecord.qualification_id == qualification_id).subquery()
     for site_id, region_code in session.exec(
             select(AssessmentCenter.id, AssessmentCenter.region_code)
             .join(accredited, accredited.c.center_id == AssessmentCenter.id)
-            .where(AssessmentCenter.is_active, AssessmentCenter.data_status != "example")).all():
+            .where(listed(AssessmentCenter),
+                   *([] if sample_mode() else [AssessmentCenter.data_status != "example"]))).all():
         assessment[site_id] = region_code
         examples.pop(("assessment", site_id), None)
     return training, assessment, examples

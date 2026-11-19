@@ -70,6 +70,25 @@ export function getCopy(language: Language = getLanguage()): typeof en {
   return copy
 }
 
+const serverTexts = new Map<Language, (text: string) => string>()
+
+/**
+ * Fixed sentences the API writes (the supply and demand headline, a match's reason) in the current language, where
+ * the dictionary has their pattern ("{0}: nothing is recorded for {1} yet"); anything else, such as learner input or
+ * record names, comes back unchanged.
+ */
+export function useServerText(): (text: string) => string {
+  const language = useLanguage()
+  let translate = serverTexts.get(language)
+  if (!translate) {
+    const localize =
+      language === 'en' ? null : createTranslator(dictionaries[language as Exclude<Language, 'en'>])
+    translate = (text: string) => (localize ? localize(text, true) : text)
+    serverTexts.set(language, translate)
+  }
+  return translate
+}
+
 /** Every component subscribes to language changes without remounting forms or losing state. */
 export function useCopy(): typeof en {
   return getCopy(useLanguage())

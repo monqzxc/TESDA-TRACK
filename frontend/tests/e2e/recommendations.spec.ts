@@ -473,7 +473,7 @@ test('BUG-18: Career Map center details show the recorded source and source date
   await expect(details.getByText('Reference: DEMO-ASSESS-31')).toBeVisible()
   await expect(details.getByText(/^Source updated:/)).toHaveText('Source updated: 2026-10-21')
   await expect(details.getByText(/^Record updated:/)).toHaveText('Record updated: 2026-11-18')
-  await expect(details.getByText('Example data', { exact: true })).toBeVisible()
+  await expect(details.getByText('Sample data', { exact: true })).toBeVisible()
   await page.getByRole('button', { name: 'Back to results' }).click()
 
   await page.getByRole('button', { name: /Example Computer Training Center Training for/ }).click()
@@ -836,4 +836,124 @@ test('US-0025: when the center list fails, the map does not say no centers match
     0,
   )
   await expect(retry).toHaveCount(0)
+})
+
+// QA (US-0014 AC3): the Career Map is the only center finder, so it filters by type, region, province and place,
+// counts what is shown, and clears everything at once.
+test('US-0014: the Career Map filters centers by region and province, counts them and clears all', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 })
+  await serveRecommendations(page, 'leaflet')
+  const inProvince = (s: ReturnType<typeof site>, province: string) => ({ ...s, province })
+  await page.route('**/api/v1/training-providers*', (route) =>
+    route.fulfill({
+      json: [
+        inProvince(COMPUTER_SITE, 'Metro Manila'),
+        inProvince(CEBU_SITE, 'Cebu'),
+        inProvince(WELDING_SITE, 'Metro Manila'),
+      ],
+    }),
+  )
+  await page.route('**/api/v1/assessment-centers*', (route) =>
+    route.fulfill({ json: [inProvince(ASSESSMENT_SITE, 'Metro Manila')] }),
+  )
+  await page.goto('/explore')
+  // Open Location? is asked on every visit now (LocationPrompt): this test answers it.
+  await page
+    .getByRole('dialog', { name: 'Open Location?' })
+    .getByRole('button', { name: 'Not now' })
+    .click()
+  await page.getByRole('searchbox', { name: 'What can you do?' }).click()
+
+  const filters = page.getByRole('region', { name: 'Filter centers' })
+  const count = filters.getByRole('status')
+  const region = filters.getByRole('combobox', { name: 'Region' })
+  const province = filters.getByRole('combobox', { name: 'Province' })
+  const clear = filters.getByRole('button', { name: 'Clear all' })
+  await expect(count).toHaveText('4 centers shown')
+  await expect(clear).toBeDisabled()
+
+  await region.selectOption('VII')
+  await expect(count).toHaveText('1 center shown')
+  await expect(page).toHaveURL(/region=VII/)
+  await expect(province.locator('option')).toHaveText(['All provinces', 'Cebu'])
+
+  await region.selectOption('NCR')
+  await province.selectOption('Metro Manila')
+  await expect(count).toHaveText('3 centers shown')
+  await page.screenshot({ path: test.info().outputPath('filtered.png') })
+  await page
+    .getByRole('group', { name: 'Show on the map' })
+    .getByRole('button', { name: 'Assessment centers', exact: true })
+    .click()
+  await expect(count).toHaveText('1 center shown')
+
+  await page.getByRole('textbox', { name: 'Or type a city or province' }).fill('Manila')
+  await clear.click()
+  await expect(count).toHaveText('4 centers shown')
+  await expect(region).toHaveValue('')
+  await expect(province).toHaveValue('')
+  await expect(page.getByRole('textbox', { name: 'Or type a city or province' })).toHaveValue('')
+  await expect(page).not.toHaveURL(/region=|province=|type=/)
+  await expect(clear).toBeDisabled()
+  expect(
+    (await new AxeBuilder({ page }).include('section[aria-label="Filter centers"]').analyze())
+      .violations,
+  ).toEqual([])
+  await filters.screenshot({ path: test.info().outputPath('filters.png') })
+})
+
+// QA-2026-11-18-E (US-0014 AC5): when no center lists the qualification anywhere, a wider range can't help, so the
+// Career Map suggests a related qualification offered within range, the sector in the library and the TESDA office.
+test('US-0014: no center anywhere suggests a related qualification and the library instead', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 })
+  await serveRecommendations(page, 'leaflet')
+  const unlisted = {
+    code: 'ICT-UNLISTED-NC-III',
+    name: 'Unlisted Example Servicing NC III',
+    sector: CSS.sector,
+    possible_jobs: [],
+    competencies: [],
+  }
+  await page.route('**/api/v1/analysis/matches', (route) =>
+    route.fulfill({
+      json: {
+        profile: PROFILE,
+        matches: [{ qualification: unlisted, score: 80, reason: 'Matched your words: unlisted' }],
+      },
+    }),
+  )
+  await page.goto('/explore')
+  // Open Location? is asked on every visit now (LocationPrompt): this test answers it.
+  await page
+    .getByRole('dialog', { name: 'Open Location?' })
+    .getByRole('button', { name: 'Not now' })
+    .click()
+  await page.getByRole('searchbox', { name: 'What can you do?' }).fill('unlisted servicing')
+  await page.getByRole('button', { name: 'Search', exact: true }).click()
+  await page.getByRole('textbox', { name: 'Or type a city or province' }).fill('Manila')
+
+  const help = page.getByTestId('no-center-help').first()
+  await expect(help).toContainText(
+    'No center lists Unlisted Example Servicing NC III yet, anywhere. A wider range won’t help',
+  )
+  await expect(help).toContainText('A related qualification offered within 25 km')
+  await expect(
+    help.getByRole('button', { name: /Example Computer (Training|Assessment) Center/ }),
+  ).toBeVisible()
+  const library = help.getByRole('link', {
+    name: 'Browse other Information and Communication Technology qualifications',
+  })
+  await expect(library).toHaveAttribute(
+    'href',
+    '/qualifications?sector=Information%20and%20Communication%20Technology',
+  )
+  await expect(help).toContainText('Ask the TESDA provincial or district office near you')
+  expect(
+    (await new AxeBuilder({ page }).include('[data-testid="no-center-help"]').analyze()).violations,
+  ).toEqual([])
+  await page.screenshot({ path: test.info().outputPath('no-center-help.png') })
 })

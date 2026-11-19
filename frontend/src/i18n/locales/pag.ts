@@ -431,4 +431,413 @@ export const pag: Record<string, string> = {
   'Low readiness': 'Abeba ya kailicay',
   Training: 'Pansanay',
   Assessment: 'Panageksamin',
+  // Career Map, Supply & Demand panel, suggestion feedback and Find my pathway (QA-2026-11-19-EXP1).
+  'Show less': 'Ipanengneng so kulang',
+  'Close map panel': 'Iserra so panel na mapa',
+  'What can you do?': 'Antoy nayarian mon gawaen?',
+  'Type what you can do': 'I-type so nayarian mon gawaen',
+  Search: 'Anapen',
+  'Type in Filipino or English, for example “Marunong ako magluto” or “I can weld”.':
+    'Man-type ed Pangasinan, Filipino o English, alimbawa “Amta kon manluto” o “I can weld”.',
+  'Finding qualifications that fit…': 'Anaanapen so saray kwalipikasyon ya mabetang…',
+  'Show on the map': 'Ipanengneng ed mapa',
+  'Training centers': 'Saray sentro na pansanay',
+  'Assessment centers': 'Saray sentro na panageksamin',
+  'In demand jobs': 'Saray trabaho ya in demand',
+  'Open Location?': 'Ibukas so lokasyon?',
+  'Allow your approximate location to see the nearest centers first. It is rounded to about 1 km and never saved. You can change this any time.':
+    'Pasiyaen so tantiya ya lokasyon mo pian nanengneng mo an mauna iray sankaasinggeran a sentro. Itantiya ed antikey 1 km tan ag nisemper ya isalimbeng. Nayarian mon baloen anggan kapigan.',
+  'Yes, open it': 'On, ibukas',
+  'Not now': 'Ag ni natan',
+  'From your TSP profile': 'Manlapud TSP profile mo',
+  'Sample data': 'Sample a datos',
+  Skills: 'Saray pakayari',
+  Licenses: 'Saray lisensya',
+  'Home area': 'Lugar ya pantataynan',
+  'None listed': 'Anggapoy nalista',
+  'Loading your TSP profile…': 'Ikakarga so TSP profile mo…',
+  'We couldn’t load your TSP profile. Type a city or province below to continue.':
+    'Ag mi nakarga so TSP profile mo. Man-type na siudad o probinsya ed leksab pian ontuloy.',
+  'You may be ready for assessment': 'Nayarin akaparaan ka la ed panageksamin',
+  'For {0}, your TSP profile lists {1}. The assessment center confirms what you need to bring.':
+    'Parad {0}, nalista ed TSP profile mo so {1}. Say sentro na panageksamin so mangibaga no antoy nepeg mon awiten.',
+  'Share my location': 'Iburay so lokasyon ko',
+  'Finding your approximate location…': 'Anaanapen so tantiya ya lokasyon mo…',
+  'On · approximate, rounded to about 1 km and not saved.':
+    'On · tantiya, antikey 1 km, tan ag nisalimbeng.',
+  'Off. Nothing is shared until you turn this on.': 'Off. Anggapoy niburay anggad ag mo ibukas.',
+  'Or type a city or province': 'O man-type na siudad o probinsya',
+  'For example: Manila, Cebu, Laguna': 'Alimbawa: Manila, Cebu, Laguna',
+  'Near {0}': 'Asingger ed {0}',
+  'Near {0}, your home area in your TSP profile':
+    'Asingger ed {0}, say pantataynan mo ed TSP profile mo',
+  'Typing a place changes it for this visit only. Your TSP profile is not changed.':
+    'Say lugar ya i-type mo et parad sayan pansongsong labat. Ag nabalo so TSP profile mo.',
+  'We don’t know that place yet. Try a city, province or region.':
+    'Ag mi ni kabat itan a lugar. Subokan so siudad, probinsya o rehiyon.',
+  'How far can you go?': 'Pigay karayo so nayarian mon laen?',
+  'Share your location or type a place to measure from.':
+    'Iburay so lokasyon mo o man-type na lugar ya panrukodan.',
+  'Location is blocked in your browser. Type a city instead, or allow location and try again.':
+    'Naka-block so lokasyon ed browser mo. Man-type labat na siudad, o pasiyaen so lokasyon tan subokan lamet.',
+  'We couldn’t get your location. Type a city instead, or try again.':
+    'Ag mi naala so lokasyon mo. Man-type labat na siudad, o subokan lamet.',
+  'This browser can’t share a location. Type a city instead.':
+    'Ag makaburay na lokasyon iyan a browser. Man-type labat na siudad.',
+  'See what is near you': 'Nengnengen so asingger ed sika',
+  'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
+    'Ibukas so panangiburay na lokasyon, o man-type na siudad, pian nanengneng iray sankaasinggeran a sentro na pansanay tan panageksamin.',
+  you: 'sika',
+  'Nearest training centers': 'Sankaasinggeran a sentro na pansanay',
+  'Nearest assessment centers': 'Sankaasinggeran a sentro na panageksamin',
+  'No center on the map yet.': 'Anggapo ni so sentro ed mapa.',
+  '{0} centers on the map. Search to see the ones that fit you.':
+    '{0} a sentro ed mapa. Manaanap pian nanengneng iray mabetang ed sika.',
+  'Qualifications that fit what you wrote': 'Saray kwalipikasyon ya mabetang ed insulat mo',
+  Show: 'Ipanengneng',
+  All: 'Amin',
+  Assess: 'Panageksamin',
+  Train: 'Pansanay',
+  Demand: 'Demand',
+  'Get certified': 'Mampa-sertipika',
+  'Or train first': 'O mansanay ka an mauna',
+  'Or get certified': 'O mampa-sertipika',
+  'Strong match': 'Mabiskeg a panagtutugma',
+  'Good match': 'Maong a panagtutugma',
+  'Weaker match': 'Mabalasang a panagtutugma',
+  'This only partly fits what you wrote. Check the qualification before you go.':
+    'Parte labat na saya so mabetang ed insulat mo. Nengnengen an mauna so kwalipikasyon antis a onla.',
+  'No center lists this qualification yet.':
+    'Anggapo ni so sentro ya angilista ed sayan kwalipikasyon.',
+  '{0} more': '{0} ni',
+  'No center within {0} km. The closest is {1} km away.':
+    'Anggapoy sentro ed loob na {0} km. Say sankaasinggeran et {1} km so karayo to.',
+  Change: 'Baloen',
+  'Change how far you can go (now {0} km)': 'Baloen no pigay karayo so nayarian mo (natan {0} km)',
+  'Centers within this distance count as near you.':
+    'Saray sentro ed loob na sayan karayo et ibilang ya asingger ed sika.',
+  'Keep as it is': 'Ag baloen',
+  'A related qualification within {0} km': 'Sakey a misiglaotan a kwalipikasyon ed loob na {0} km',
+  'Training for {0}': 'Pansanay parad {0}',
+  'Assessment for {0}': 'Panageksamin parad {0}',
+  'You chose this qualification in the Qualifications Library.':
+    'Pinili mo iyan a kwalipikasyon ed Libraryaan na saray kwalipikasyon.',
+  'Share your location or type a city to see what is nearest.':
+    'Iburay so lokasyon mo o man-type na siudad pian nanengneng so sankaasinggeran.',
+  'We couldn’t find a clear match. Try describing something you can do, like “marunong ako magluto” or “I repair computers”.':
+    'Anggapoy nanap mi a malinew a panagtutugma. Subokan mon ibaga so nayarian mon gawaen, singa “amta kon manluto” o “I repair computers”.',
+  'We couldn’t search right now. Check your connection, then try again.':
+    'Ag kami makaanap natan. Nengnengen so koneksyon mo, insan subokan lamet.',
+  'New search': 'Balon panaanap',
+  'about {0} by car': 'antikey {0} a nakalugan ed kotse',
+  'By car': 'Nakalugan ed kotse',
+  'Jobs and qualification demand': 'Saray trabaho tan demand ed kwalipikasyon',
+  'Demand for': 'Demand parad',
+  'Explore recorded jobs, qualifications linked to demand, and the training available in an area.':
+    'Nengnengen iray nilistan trabaho, saray kwalipikasyon ya misiglaotan ed demand, tan say pansanay ya walad sakey a lugar.',
+  'Area: {0}': 'Lugar: {0}',
+  'Area: all regions with recorded evidence': 'Lugar: amin a rehiyon ya walay nilistan ebidensya',
+  'Demand views': 'Saray panengneng ed demand',
+  'Jobs by area': 'Saray trabaho ed balang lugar',
+  'Supply & demand': 'Supply tan demand',
+  'Use my selected location': 'Usaren so pinili kon lokasyon',
+  'All recorded regions': 'Amin a nilistan rehiyon',
+  'Filter by qualification': 'Salaen ed kwalipikasyon',
+  'Qualification: {0}': 'Kwalipikasyon: {0}',
+  'All recorded jobs': 'Amin a nilistan trabaho',
+  'City or municipality in the snapshot': 'Siudad o baley ed snapshot',
+  'All recorded cities and municipalities': 'Amin a nilistan siudad tan baley',
+  'Loading labor-market evidence…': 'Ikakarga so impormasyon ed labor market…',
+  'Labor-market information could not be loaded.': 'Ag nakarga so impormasyon ed labor market.',
+  'Snapshot: {0}.': 'Snapshot: {0}.',
+  '{0} posting records · {1} employers': '{0} a rekord na posting · {1} a employer',
+  'Dated PhilJobNet records, ordered by posting count. These are not live openings or worker headcounts. Shaded regions compare recorded posting totals.':
+    'Saray rekord na PhilJobNet ya walay petsa, unong ed dakel na posting. Aliwa iraya ray abukas a trabaho natan o bilang na saray obrero. Say kolor na rehiyon et ipandumaan to so kabuuan a nilistan posting.',
+  ' · {0} more places': ' · {0} ni a lugar',
+  'Reviewed occupation links only. National forecasts retain their national coverage; they do not establish demand in a particular city.':
+    'Saray nausisa a siglaotan na trabaho labat. Nasyonal ni ya anggaman iray nasyonal a forecast; ag da papeknekan so demand ed sakey a siudad.',
+  '{0} qualifications with reviewed evidence': '{0} a kwalipikasyon ya walay nausisan ebidensya',
+  'No mapped posting records in this area.': 'Anggapoy nitugma a rekord na posting ed sayan lugar.',
+  '{0} mapped posting records': '{0} a nitugma a rekord na posting',
+  'Forecast support: {0}': 'Suporta na forecast: {0}',
+  'Compare supply and demand': 'Ipandumaan so supply tan demand',
+  'Supply means recorded training and assessment services. Posting records and training seats have different units; no workforce shortage is calculated.':
+    'Say supply et saray nilistan serbisyo na pansanay tan panageksamin. Nandumaan so yunit na rekord na posting tan lugar ed pansanay; anggapoy kukuentaen ya kakulangan na obrero.',
+  'No posting records for this selection. Try all jobs or another area. Missing evidence does not mean low demand.':
+    'Anggapoy rekord na posting parad sayan pinili. Subokan so amin a trabaho o arum a lugar. Say kaandi na ebidensya et ag kabaliksan a melag so demand.',
+  'No reviewed qualification links for this area yet. Try another region or all recorded regions.':
+    'Anggapo ni so nausisan siglaotan na kwalipikasyon parad sayan lugar. Subokan so arum a rehiyon o amin a nilistan rehiyon.',
+  Previous: 'Akalabas',
+  '{0}: {1} posting records (regional coverage)': '{0}: {1} a rekord na posting (sakop na rehiyon)',
+  'Regional demand heatmap': 'Heatmap na demand ed rehiyon',
+  'Recorded postings': 'Nilistan posting',
+  'Fewer postings': 'Melag a posting',
+  'More postings': 'Dakel a posting',
+  'Deeper colors show more recorded postings in the region.':
+    'Say mas madalem a kolor et ipanengneng to so mas dakel a nilistan posting ed rehiyon.',
+  'No posting records in this snapshot': 'Anggapoy rekord na posting ed sayan snapshot',
+  '{0}: no posting records in this snapshot': '{0}: anggapoy rekord na posting ed sayan snapshot',
+  'Loading regional boundaries…': 'Ikakarga iray beting na rehiyon…',
+  'Regional boundaries could not be loaded. You can still choose an area in the list.':
+    'Ag nakarga iray beting na rehiyon. Nayarian mo ni ya manpili na lugar ed listaan.',
+  'Supply and demand analysis': 'Panusisa ed supply tan demand',
+  'Qualification analysed': 'Kwalipikasyon ya inusisa',
+  'Hide analysis': 'Itago so panusisa',
+  'Show analysis': 'Ipanengneng so panusisa',
+  'Reading the records for this qualification…': 'Babasaen iray rekord parad sayan kwalipikasyon…',
+  'The supply and demand analysis could not be loaded.':
+    'Ag nakarga so panusisa ed supply tan demand.',
+  Relocate: 'Ombalet',
+  'Resize the analysis': 'Baloen so kaabeng na panusisa',
+  postings: 'posting',
+  training: 'pansanay',
+  assessment: 'panageksamin',
+  'Demand ahead of supply': 'Mas atagey so demand nen say supply',
+  Balanced: 'Balanse',
+  Saturated: 'Napno la',
+  'Demand, no center here': 'Walay demand, anggapoy sentro dia',
+  'Centers, no postings here': 'Walay sentro, anggapoy posting dia',
+  'No records yet': 'Anggapo ni so rekord',
+  'Rough signal': 'Tantiyan senyales',
+  'Your area': 'Say lugar mo',
+  Supply: 'Supply',
+  Balance: 'Balanse',
+  Elsewhere: 'Ed arum a lugar',
+  'Demand here': 'Demand dia',
+  'Skill Passport': 'Skill Passport',
+  'High demand': 'Atagey a demand',
+  'Moderate demand': 'Katamtaman a demand',
+  'Low demand': 'Melag a demand',
+  'No recorded demand': 'Anggapoy nilistan demand',
+  '{1} records in {0}': '{1} a rekord ed {0}',
+  '#{0} of {1} regions': '#{0} ed {1} a rehiyon',
+  'Needed more in': 'Mas kaukolan ed',
+  Nearby: 'Asingger',
+  '{0} records': '{0} a rekord',
+  'Show {0} on the map': 'Ipanengneng so {0} ed mapa',
+  'Your region leads for this one.': 'Say rehiyon mo so manuna parad saya.',
+  'No posting records yet: missing data, not low demand.':
+    'Anggapo ni so rekord na posting: kulang a datos, aliwan melag a demand.',
+  'Share your location or type a city to see local demand.':
+    'Iburay so lokasyon mo o man-type na siudad pian nanengneng so lokal a demand.',
+  'Find Jobs on TSP': 'Manaanap na Trabaho ed TSP',
+  'Find Jobs on TSP for {0} in {1} (opens TESDA Skill Passport in a new tab)':
+    'Manaanap na Trabaho ed TSP parad {0} ed {1} (ibukas so TESDA Skill Passport ed balon tab)',
+  'Link not set up yet': 'Ag ni naiparaan so link',
+  'Also in demand here': 'In demand met dia',
+  'Looking for other qualifications in demand here…':
+    'Anaanapen iray arum a kwalipikasyon ya in demand dia…',
+  'Other qualifications in demand could not be loaded.':
+    'Ag nakarga iray arum a kwalipikasyon ya in demand.',
+  'Nothing else stands out in {0} yet.': 'Anggapo ni so arum ya miduma ed {0}.',
+  'Look at {0}': 'Nengnengen so {0}',
+  'AI summary': 'Buod na AI',
+  'Written by AI from the counts on this map.':
+    'Insulat na AI manlapud saray bilang ed sayan mapa.',
+  Why: 'Akin',
+  Recommended: 'Irekomenda',
+  'Share your location or type a city to get a recommended center.':
+    'Iburay so lokasyon mo o man-type na siudad pian makaala na irekomendan sentro.',
+  'Get assessed': 'Mampaeksamin',
+  'Nearest in your region': 'Sankaasinggeran ed rehiyon mo',
+  'Nearest, in {0}': 'Sankaasinggeran, ed {0}',
+  'If you relocate: {0}': 'No ombalet ka: {0}',
+  'Demand map': 'Mapa na demand',
+  'All results': 'Amin a resulta',
+  'A rough signal from dated records, not a forecast. Confirm with the center or TESDA.':
+    'Tantiyan senyales manlapud saray rekord ya walay petsa, aliwan forecast. Kumpirmaen ed sentro o ed TESDA.',
+  'Recommended: {0}': 'Irekomenda: {0}',
+  'Supply and demand map': 'Mapa na supply tan demand',
+  '{0}: {1} posting records, {2} centers. {3}.': '{0}: {1} a rekord na posting, {2} a sentro. {3}.',
+  'Demand against supply': 'Demand kontra supply',
+  'Demand ahead': 'Manuna so demand',
+  'An outlined mark means one side has no records.':
+    'Say marka ya walay beting labat et kabaliksan ya anggapoy rekord so sakey a parte.',
+  'About this map': 'Nipaakar ed sayan mapa',
+  'Back to results': 'Ombalik ed saray resulta',
+  'Assessment center · Get certified': 'Sentro na panageksamin · Mampa-sertipika',
+  'Training center · Train': 'Sentro na pansanay · Mansanay',
+  'Leads to an NC': 'Mangitunda ed NC',
+  'Qualifications offered': 'Saray kwalipikasyon ya iitdo',
+  'Matches your search': 'Tugma ed panaanap mo',
+  Directions: 'Direksyon',
+  'Show route on the map': 'Ipanengneng so ruta ed mapa',
+  Call: 'Ontawag',
+  Contact: 'Kontak',
+  'Travel time': 'Oras na biahe',
+  Address: 'Address',
+  'Ease of reach': 'Kalaka na panla',
+  'Travel times are estimated from straight-line distance, by car, without traffic.':
+    'Itantiya so oras na biahe manlapud matunong a karayo, nakalugan ed kotse, anggapoy trapiko.',
+  'These results come from automatic matching. This is a suggestion: confirm with the center or your TESDA office.':
+    'Manlapud automatikon panagtutugma iraya ray resulta. Suhestiyon labat iya: kumpirmaen ed sentro o ed opisina na TESDA.',
+  'Previous version': 'Akalabas a bersyon',
+  'This is the earlier version of this page. The new Explore map finds centers from what you can do.':
+    'Saya so akalabas a bersyon na sayan pahina. Say balon mapa na Explore et manaanap na sentro manlapud nayarian mon gawaen.',
+  'Go to Explore': 'Onla ed Explore',
+  'We couldn’t load the training and assessment list. Your search and filters are still here.':
+    'Ag mi nakarga so listaan na pansanay tan panageksamin. Wadia ni so panaanap mo tan saray filter.',
+  'Try loading the list again': 'Subokan lamet ya ikarga so listaan',
+  'About {0} away': 'Antikey {0} so karayo',
+  'Remove from saved centers': 'Ekalen ed saray nisalimbeng a sentro',
+  'Location not confirmed': 'Ag ni nakumpirma so lokasyon',
+  'Hide route': 'Itago so ruta',
+  'Google Maps': 'Google Maps',
+  'Turn-by-turn directions in Google Maps': 'Direksyon ed balang liko ed Google Maps',
+  'Finding routes…': 'Anaanapen iray ruta…',
+  'Travel mode': 'Paraan na biahe',
+  'by car': 'nakalugan ed kotse',
+  'by bike': 'nakalugan ed bisikleta',
+  'on foot': 'manakar',
+  'in the air': 'ed tawen',
+  car: 'kotse',
+  bike: 'bisikleta',
+  walking: 'panakar',
+  '{0} · about {1} {2}': '{0} · antikey {1} {2}',
+  'From your approximate location, without traffic.':
+    'Manlapud tantiya ya lokasyon mo, anggapoy trapiko.',
+  '{0} to {1} · about {2} in the air': '{0} anggad {1} · antikey {2} ed tawen',
+  'An estimate from the {0} between the airports, not an airline schedule: check airlines for flights and fares. Allow time to reach the airport ({1} from you), check in, and travel {2} on to the center.':
+    'Tantiya manlapud {0} ed pegley na saray paliparan, aliwan iskedyul na eroplano: nengnengen iray airline parad flight tan pasahe. Mangiter na oras ed panla ed paliparan ({1} manlapud sika), check-in, tan panbiahe na {2} anggad sentro.',
+  'Directions can’t be loaded right now. Try again shortly, or open Google Maps.':
+    'Ag nakarga so direksyon natan. Subokan lamet ed ag nabayag, o ibukas so Google Maps.',
+  'Sample data for the December 2 demo': 'Sample a datos parad demo ed Disyembre 2',
+  'Map of training and assessment centers': 'Mapa na saray sentro na pansanay tan panageksamin',
+  'No centers match this search yet.': 'Anggapo ni so sentro ya tugma ed sayan panaanap.',
+  'Centers couldn’t be loaded. Try again from the list.':
+    'Ag nakarga iray sentro. Subokan lamet manlapud listaan.',
+  'Some map tiles could not load. The list of centers still works.':
+    'Walay parte na mapa ya ag nakarga. Onkikiwas ni so listaan na saray sentro.',
+  'The map could not load. The list of centers still works.':
+    'Ag nakarga so mapa. Onkikiwas ni so listaan na saray sentro.',
+  'The detailed map could not load, so the OpenStreetMap map is shown instead.':
+    'Ag nakarga so detalyadon mapa, kanian say mapa na OpenStreetMap so ipanengneng.',
+  'The map stopped drawing. Restoring it…': 'Tinmunda so mapa. Ipapawil…',
+  'Show centers near me': 'Ipanengneng iray sentro ya asingger ed siak',
+  'Map layers': 'Saray layer na mapa',
+  Layers: 'Saray layer',
+  OpenStreetMap: 'OpenStreetMap',
+  Satellite: 'Satellite',
+  'Zoom in': 'Paabengen',
+  'Zoom out': 'Paakelagen',
+  'Turn the map back to north': 'Ipawil so mapa ed amianan',
+  'Show buildings in 3D': 'Ipanengneng iray building ed 3D',
+  '3D': '3D',
+  'Zoom in to see buildings in 3D.': 'Paabengen pian nanengneng iray building ed 3D.',
+  'No building heights are recorded here yet, so buildings stay flat.':
+    'Anggapo ni so nilistan katagey na building dia, kanian patag iray building.',
+  'No buildings are mapped here yet.': 'Anggapo ni so building ya ni-mapa dia.',
+  'Copy a link to this location': 'Kopyaen so link ed sayan lokasyon',
+  'Link to this location copied.': 'Nakopya so link ed sayan lokasyon.',
+  'Couldn’t copy. The link is {0}': 'Ag nakakopya. Say link et {0}',
+  '{0} centers here: zoom in': '{0} a sentro dia: paabengen',
+  '{0} centers at this spot': '{0} a sentro ed sayan lugar',
+  '{0}: show this route': '{0}: ipanengneng iyan a ruta',
+  'Map. Arrow keys move it, plus and minus zoom.':
+    'Mapa. Saray arrow key et ipakiwas so mapa, plus tan minus parad zoom.',
+  'Map credits': 'Saray credit na mapa',
+  'Use two fingers to move the map': 'Usaren so duaran tamuro ed pangiyakar na mapa',
+  'Use Ctrl + scroll to zoom the map': 'Usaren so Ctrl + scroll ed pang-zoom na mapa',
+  'Use ⌘ + scroll to zoom the map': 'Usaren so ⌘ + scroll ed pang-zoom na mapa',
+  'Was this helpful?': 'Akatulong kasi iya?',
+  'Report a wrong suggestion': 'I-report so mali a suhestiyon',
+  Reason: 'Rason',
+  'Choose a reason': 'Manpili na rason',
+  'Wrong qualification': 'Mali a kwalipikasyon',
+  'Wrong center': 'Mali a sentro',
+  'Outdated or incorrect information': 'Daan o mali ya impormasyon',
+  'Not relevant to what I need': 'Ag mabetang ed kaukolan ko',
+  Other: 'Arum ni',
+  'Include my goal text with this report': 'Ilaktip so teksto na gagala ko ed sayan report',
+  'Only the assigned reviewer will see it. Leave this unchecked if your goal contains personal information.':
+    'Say niitalagan manusisa labat so makanengneng ed saya. Ag mo tsekan no walay personal ya impormasyon so gagala mo.',
+  'Send report': 'Ipatulod so report',
+  'Thanks for your feedback.': 'Salamat ed feedback mo.',
+  'Report sent for review.': 'Nipatulod so report parad panusisa.',
+  'This version of the app can’t accept feedback. Open an updated version and try again.':
+    'Iyan a bersyon na app et ag makaawat na feedback. Ibukas so updated a bersyon tan subokan lamet.',
+  'This is a suggestion. Confirm with the center or your TESDA office.':
+    'Suhestiyon labat iya. Kumpirmaen ed sentro o ed opisina na TESDA.',
+  'Loading TESDA Track…': 'Ikakarga so TESDA Track…',
+  "We can't load TESDA Track right now": 'Ag mi nakarga so TESDA Track natan',
+  'Your saved progress is safe. Try again in a moment.':
+    'Maligen so nisalimbeng ya iyulas mo. Subokan lamet ed ag nabayag.',
+  'Selected qualification': 'Pinilin kwalipikasyon',
+  'YOUR NEXT CHAPTER': 'SAY ONSUBLAY MON KAPITULO',
+  'Where would you like to go?': 'Iner so labay mon laen?',
+  'Start with a career you want, something you can do, or a skill you’d like to learn. We’ll help you find a TESDA pathway.':
+    'Ginmapo ed karera ya labay mo, ed nayarian mon gawaen, o ed pakayari ya labay mon naaralan. Tulongan daka a makaanap na dalan ed TESDA.',
+  'Your career interests or skills': 'Saray interes o pakayari mo ed karera',
+  'For example: I want to become an electrician, Welding, or Cooking and baking':
+    'Alimbawa: Labay kon magmaliw ya electrician, Welding, o Panlutoan tan pan-bake',
+  'Use your own words. Separate multiple skills with commas.':
+    'Usaren so dili mon salita. Isian ed koma iray dakel a pakayari.',
+  'Enter a career goal, occupation, or skill to continue.':
+    'Mangikabil na gagala ed karera, trabaho o pakayari pian ontuloy.',
+  'Try a starting point': 'Subokan so sakey a gapo',
+  'I want to become an electrician.': 'Labay kon magmaliw ya electrician.',
+  Welder: 'Welder',
+  'Welding, blueprint reading': 'Welding, panbasa na blueprint',
+  'I enjoy caring for older people.': 'Labay kon mangasikaso ed saray matatken.',
+  'Find my pathways': 'Anapen so saray dalan ko',
+  'Your previous search': 'Say akalabas mon panaanap',
+  'Your interests and skills': 'Saray interes tan pakayari mo',
+  'Edit your input': 'Baloen so inkabil mo',
+  'Your goal is saved to your account.': 'Nisalimbeng ed account mo so gagala mo.',
+  'Your selected qualification': 'Say pinili mon kwalipikasyon',
+  'Set as My Goal': 'Gawaen ya Gagala Ko',
+  'Goal Selected': 'Napili la so Gagala',
+  'Saved for this journey in this tab. Selecting a goal keeps your matching and readiness results.':
+    'Nisalimbeng parad sayan panagbiahe ed sayan tab. Say panpili na gagala et salimbengen to so resulta na panagtutugma tan kaparaan mo.',
+  'Choose an occupation as your career goal. You can change it at any time during this journey.':
+    'Manpili na trabaho bilang gagala mo ed karera. Nayarian mon baloen anggan kapigan ed sayan panagbiahe.',
+  'No occupations are listed for this qualification in the catalog yet.':
+    'Anggapo ni so nilistan trabaho parad sayan kwalipikasyon ed katalogo.',
+  'No approved forecast occupation matches this request for this qualification yet.':
+    'Anggapo ni so inaprobaan a trabaho ed forecast ya tugma ed sayan kerew parad sayan kwalipikasyon.',
+  'Checking labor-market information…': 'Nengnengen so impormasyon ed labor market…',
+  'Your readiness result applies to the selected qualification. Explore an alternative to check its own competencies.':
+    'Parad pinilin kwalipikasyon so resulta na kaparaan mo. Nengnengen so alternatibo pian nausisa so dili ton pakayari.',
+  'Recommended alternative': 'Irekomendan alternatibo',
+  'Also associated with this occupation': 'Misiglaotan met ed sayan trabaho',
+  'Readiness results apply to the selected qualification. Other catalog associations are additional options, not necessarily scored recommendations.':
+    'Parad pinilin kwalipikasyon iray resulta na kaparaan. Karagdagan a pampilian iray arum a siglaotan ed katalogo, ag kaukolan ya walay puntos a rekomendasyon.',
+  'Explore jobs linked to your selected qualification.':
+    'Nengnengen iray trabaho ya misiglaotan ed pinili mon kwalipikasyon.',
+  '© 2026 TESDA-TRACK. All rights reserved.': '© 2026 TESDA-TRACK. Amin a kanepegan et nireserba.',
+  // Fixed sentences the API writes (useServerText): the supply and demand headline and match reasons.
+  '{0}: recorded demand for {1} is ahead of training supply':
+    '{0}: mas atagey so nilistan demand parad {1} nen say supply na pansanay',
+  '{0}: demand and training supply for {1} look balanced':
+    '{0}: singa balanse so demand tan supply na pansanay parad {1}',
+  '{0}: training supply for {1} is ahead of recorded demand':
+    '{0}: mas atagey so supply na pansanay parad {1} nen say nilistan demand',
+  '{0}: employers posted for {1}, but no center is recorded here':
+    '{0}: walay employer ya nampost parad {1}, balet anggapoy nilistan sentro dia',
+  '{0}: centers offer {1}, but no posting records were captured here':
+    '{0}: walay saray sentro ya mangiiter na {1}, balet anggapoy nilistan posting dia',
+  '{0}: nothing is recorded for {1} yet': '{0}: anggapo ni so nilista parad {1}',
+  'Matched your words: {0}': 'Tugma ed saray salita mo: {0}',
+  'Matched your reported career, skills, or sector.':
+    'Tugma ed inreport mon karera, pakayari o sektor.',
+  'Similar in meaning to your goal.': 'Mipadpara ed kabaliksan na gagala mo.',
+  'Scholarship open': 'Abukas so scholarship',
+  // No center offers the qualification anywhere (QA-2026-11-18-E).
+  'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
+    'Anggapo ni so sentro ya mangiiter na {0} anggan iner. Ag makatulong so mas maawang a karayo, kanian subokan so sakey ed saraya.',
+  'A related qualification offered within {0} km':
+    'Sakey a misiglaotan a kwalipikasyon ya iitdo ed loob na {0} km',
+  'Browse other {0} qualifications': 'Nengnengen iray arum a kwalipikasyon ed {0}',
+  'Ask the TESDA provincial or district office near you which providers plan to offer it.':
+    'Tepetan so provincial o district office na TESDA ya asingger ed sika no siopay provider so manplano ya mangiter na saya.',
+  'Share your location or type a city to see a related qualification near you.':
+    'Iburay so lokasyon mo o man-type na siudad pian nanengneng so misiglaotan a kwalipikasyon ya asingger ed sika.',
+  // Career Map center filters (US-0014 AC3) and demo sample centers (US-0017 AC8).
+  'Filter centers': 'I-filter iray sentro',
+  '1 center shown': '1 a sentro so ipapanengneng',
+  '{0} centers shown': '{0} a sentro so ipapanengneng',
+  'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.':
+    'Saray sample a sentro para ed demo ed Disyembre 2. Aliwan opisyal a listaan na TESDA: ginawa-gawa labat iray ngaran, lugar tan iskedyul.',
+  'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':
+    'Sample a datos para ed demonstrasyon, aliwan opisyal a rekord na TESDA. Kumpirmaen so tuloy a serbisyo ed TESDA.',
 }

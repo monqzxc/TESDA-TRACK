@@ -117,8 +117,11 @@ describe('Explore with nothing in range', () => {
     // About 5 hours by car: the far center has a travel time, not only a distance.
     expect(within(far).getByText(/^\d hr( \d+ min)?$/)).toBeInTheDocument()
 
-    expect(await screen.findByText('A related qualification within 25 km')).toBeInTheDocument()
-    const near = screen.getByRole('button', { name: /Manila Welding Institute/ })
+    // The card's own suggestion; the empty Assessment group suggests the same center too (US-0014 AC5).
+    const related = await screen.findByText('A related qualification within 25 km')
+    const near = within(related.parentElement!).getByRole('button', {
+      name: /Manila Welding Institute/,
+    })
     expect(within(near).getByText('Training for Pipefitting NC II')).toBeInTheDocument()
   })
 

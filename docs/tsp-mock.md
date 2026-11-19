@@ -30,9 +30,9 @@ Anyone who knows a test password below can sign in while the mock is on, so use 
 | Email | Password | Learner | Region | Qualifications |
 | --- | --- | --- | --- | --- |
 | `ana.reyes@example.com` | `TspDemo-Ana-2026` | Career starter | NCR (Quezon City) | None yet |
-| `ben.cruz@example.com` | `TspDemo-Ben-2026` | Experienced welder, upskilling | VII (Cebu City) | SMAW NC I |
+| `ben.cruz@example.com` | `TspDemo-Ben-2026` | Experienced welder, upskilling, with a driver's license | VII (Cebu City) | SMAW NC I |
 | `carla.dizon@example.com` | `TspDemo-Carla-2026` | Career shifter | IV-A (Calamba) | Caregiving (Elderly) NC II |
-| `dan.lim@example.com` | `TspDemo-Dan-2026` | Returning overseas worker | XI (Davao City) | Electrical Installation and Maintenance NC II, NC III |
+| `dan.lim@example.com` | `TspDemo-Dan-2026` | Returning overseas worker, with a driver's license | XI (Davao City) | Electrical Installation and Maintenance NC II, NC III |
 | `ella.ramos@example.com` | `TspDemo-Ella-2026` | Office worker | III (San Fernando) | Bookkeeping NC III |
 | `faisal.usman@example.com` | `TspDemo-Faisal-2026` | Out-of-school youth, nearly empty profile | BARMM (Cotabato City) | None |
 | `gina.bautista@example.com` | `TspDemo-Gina-2026` | Trainer | CAR (Baguio City) | Cookery NC II, Bread and Pastry Production NC II, Trainers Methodology Level I |

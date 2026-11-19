@@ -10997,6 +10997,16 @@
             "description": "Whether \"Sign in with TSP\" signs in to the mock TSP's synthetic accounts (POST /api/v1/tsp-mock/handoff) instead of the real TSP.",
             "default": false
           },
+          "center_data": {
+            "type": "string",
+            "enum": [
+              "official",
+              "sample"
+            ],
+            "title": "Center Data",
+            "description": "sample: the centers are the labelled sample set for the December 2 demo, not an official TESDA list; the pages say so (US-0017 AC8).",
+            "default": "official"
+          },
           "tsp_suggestions": {
             "type": "boolean",
             "title": "Tsp Suggestions",

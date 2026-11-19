@@ -19,7 +19,11 @@ const manuel: Passport = {
 }
 
 const explore = (passportStatus: Explore['passportStatus'], passport?: Passport | null) =>
-  ({ passportStatus, passport }) as unknown as Explore
+  ({
+    passportStatus,
+    passport,
+    regions: [{ code: 'VII', name: 'Region VII (Central Visayas)' }],
+  }) as unknown as Explore
 
 describe('TspProfilePanel', () => {
   it('shows the skills, license and home area, with no sample label', () => {
@@ -38,6 +42,13 @@ describe('TspProfilePanel', () => {
     )
     expect(screen.queryByText('Sample data')).not.toBeInTheDocument()
     expect(screen.getByText('None listed')).toBeInTheDocument()
+  })
+
+  // QA-2026-11-18-D: a profile with only a region showed "None listed" while the search used that region as home.
+  it('falls back to the profile region as the home area when TSP gives no city or province', () => {
+    const ben = { ...manuel, municipality: null, province: null, region_code: 'VII' }
+    render(<TspProfilePanel explore={explore('loaded', ben)} />)
+    expect(screen.getByText('Region VII (Central Visayas)')).toBeInTheDocument()
   })
 
   it('says when the profile could not be loaded, pointing to the place box', () => {

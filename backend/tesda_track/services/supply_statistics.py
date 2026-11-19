@@ -13,6 +13,7 @@ from tesda_track.models import (AssessmentCenter, AssessmentSchedule, Qualificat
 from tesda_track.schemas.evidence import Geography, Measure, SupplyEvidence, measure_sum
 from tesda_track.services import verification
 from tesda_track.services.assessments import seats_taken_subquery
+from tesda_track.services.center_listing import listed
 
 METHOD_VERSION = "supply-statistics-v2"
 NO_TRAINING_SEATS = "Remaining training seats are not recorded; published slots are a separate measure."
@@ -64,7 +65,7 @@ def supply_evidence(session: Session, qualification_code: str, region_code: str 
     # Training: one query, then the verification and availability checks.
     query = (select(TrainingProgram).join(TrainingProvider)
              .join(Qualification, TrainingProgram.qualification_id == Qualification.id)
-             .where(TrainingProgram.is_active, TrainingProvider.is_active, Qualification.is_active,
+             .where(TrainingProgram.is_active, listed(TrainingProvider), Qualification.is_active,
                     TrainingProgram.data_status != "example", TrainingProvider.data_status != "example",
                     Qualification.code == qualification_code).order_by(TrainingProgram.id))
     if region_code:
@@ -82,7 +83,7 @@ def supply_evidence(session: Session, qualification_code: str, region_code: str 
              .join(Qualification, AssessmentSchedule.qualification_id == Qualification.id)
              .where(AssessmentSchedule.status == "open", AssessmentSchedule.scheduled_at > now,
                     AssessmentSchedule.data_status != "example", AssessmentCenter.data_status != "example",
-                    AssessmentCenter.is_active, Qualification.is_active, Qualification.code == qualification_code)
+                    listed(AssessmentCenter), Qualification.is_active, Qualification.code == qualification_code)
              .order_by(AssessmentSchedule.id))
     if region_code:
         query = query.where(AssessmentCenter.region_code == region_code)

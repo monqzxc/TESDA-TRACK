@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query'
 import { qualificationsQuery } from '../../api/queries.ts'
 import { useEffect, useId, useRef, useState } from 'react'
 import { Button, Switch, ToggleButton } from 'react-aria-components'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { Icon, type IconName } from '../../components/Icon.tsx'
-import { useCopy } from '../../i18n/copy.ts'
+import { useCopy, useServerText } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
@@ -21,6 +21,7 @@ import { placeLabel, type Center, type Point } from '../training/centers.ts'
 import { travelTime } from '../training/format.ts'
 import { NoLocationTag, unlocated } from '../training/NoLocationTag.tsx'
 import { useTrainingStore } from '../training/state.ts'
+import type { Match } from '../finder/api.ts'
 import type { View } from './ExplorePage.tsx'
 import {
   cardsFor,
@@ -142,7 +143,12 @@ export function TspProfilePanel({ explore }: { explore: Explore }) {
       </p>
     )
   }
-  const home = [passport.municipality, passport.province].filter(Boolean).join(', ')
+  // The city and province, else the region the search measures from (QA-2026-11-18-D: an API or profile with only a
+  // region showed "None listed" here while the location line used that region as the home area).
+  const home =
+    [passport.municipality, passport.province].filter(Boolean).join(', ') ||
+    explore.regions.find((region) => region.code === passport.region_code)?.name ||
+    ''
   const rows: [string, string][] = [
     [copy.skills, passport.skills.join(', ') || copy.none],
     [copy.licenses, (passport.licenses ?? []).join(', ') || copy.none],
@@ -168,6 +174,97 @@ export function TspProfilePanel({ explore }: { explore: Explore }) {
           </div>
         ))}
       </dl>
+    </section>
+  )
+}
+
+/**
+ * Region and province filters, how many centers they leave, and Clear all (QA: US-0014 AC3). The type filter is the
+ * Training/Assessment chips and the place is the box above; Clear all resets those too. All of it is in the address
+ * except the typed place, which is never stored.
+ */
+export function CenterFilters({
+  regions,
+  provinces,
+  region,
+  province,
+  count,
+  canClear,
+  onRegion,
+  onProvince,
+  onClear,
+}: {
+  regions: { code: string; name: string }[]
+  provinces: string[]
+  region: string | null
+  province: string | null
+  count: number
+  canClear: boolean
+  onRegion: (code: string | null) => void
+  onProvince: (name: string | null) => void
+  onClear: () => void
+}) {
+  const copy = useCopy().explore.filters
+  const select =
+    'min-h-11 w-full min-w-0 cursor-pointer appearance-none truncate rounded-10 border border-hover-border bg-surface py-2 pr-9 pl-3 text-14 text-navy focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus'
+  return (
+    <section aria-label={copy.label} className="flex flex-col gap-2 rounded-12 bg-panel p-3">
+      <div className="grid grid-cols-2 gap-2">
+        <label className="flex min-w-0 flex-col gap-1 text-13 font-semibold text-ink">
+          {copy.region}
+          <span className="relative block">
+            <select
+              className={select}
+              value={region ?? ''}
+              onChange={(event) => onRegion(event.target.value || null)}
+            >
+              <option value="">{copy.allRegions}</option>
+              {regions.map((option) => (
+                <option key={option.code} value={option.code}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+            <Icon
+              name="chevron"
+              className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-muted"
+            />
+          </span>
+        </label>
+        <label className="flex min-w-0 flex-col gap-1 text-13 font-semibold text-ink">
+          {copy.province}
+          <span className="relative block">
+            <select
+              className={select}
+              value={province ?? ''}
+              onChange={(event) => onProvince(event.target.value || null)}
+            >
+              <option value="">{copy.allProvinces}</option>
+              {provinces.map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+            <Icon
+              name="chevron"
+              className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-muted"
+            />
+          </span>
+        </label>
+      </div>
+      <div className="flex items-center justify-between gap-2">
+        <p role="status" className="m-0 text-14 font-semibold text-navy">
+          {copy.shown(count)}
+        </p>
+        <Button
+          className={button({ variant: 'tertiary', height: 38, text: 14 })}
+          isDisabled={!canClear}
+          onPress={onClear}
+        >
+          {copy.clearAll}
+        </Button>
+      </div>
     </section>
   )
 }
@@ -463,6 +560,7 @@ function QualificationCardView({
 }) {
   const changeRange = useExploreStore((state) => state.changeRange)
   const en = useCopy()
+  const serverText = useServerText()
   const copy = en.explore.results
   const [open, setOpen] = useState(false)
   const search = useExploreStore((state) => state.search)
@@ -507,7 +605,7 @@ function QualificationCardView({
       </div>
       <p className="m-0 flex items-start gap-1.5 text-13 leading-[1.45] text-muted">
         <Icon name="sparkle" className="mt-0.5 flex-none" />
-        {card.match.reason}
+        {serverText(card.match.reason)}
       </p>
       {!search?.chosen && card.strength === 'weak' && (
         <p className="m-0 flex items-start gap-1.5 text-13 text-warn-ink">
@@ -601,6 +699,7 @@ function Group({
   relatedFor,
   focus,
   readiness,
+  noCenter,
   onSelect,
 }: {
   kind: CenterKind
@@ -612,6 +711,8 @@ function Group({
   /** The qualification in focus and the centers recommended for it. */
   focus: { code: string | null; recommended: ReadonlySet<string> }
   readiness?: { qualification: string; evidence: string[] }
+  /** No center lists the qualification in focus at all: what to try instead (US-0014 AC5). */
+  noCenter?: { match: Match; related: Related | null } | null
   onSelect: (id: string, code?: string) => void
 }) {
   const { results: copy, tspProfile } = useCopy().explore
@@ -664,10 +765,77 @@ function Group({
             onSelect={onSelect}
           />
         ))
+      ) : noCenter ? (
+        <NoCenterHelp
+          match={noCenter.match}
+          related={noCenter.related}
+          hasReference={hasReference}
+          rangeKm={rangeKm}
+          onSelect={onSelect}
+        />
       ) : (
         <p className={note}>{copy.noCenter}</p>
       )}
     </section>
+  )
+}
+
+/**
+ * No center lists the qualification anywhere (QA-2026-11-18-E, US-0014 AC5). A wider range can't help, so the
+ * learner gets a next step instead: a related qualification offered within their range, other qualifications of
+ * the same sector in the library, and the TESDA office to ask.
+ */
+function NoCenterHelp({
+  match,
+  related,
+  hasReference,
+  rangeKm,
+  onSelect,
+}: {
+  match: Match
+  related: Related | null
+  hasReference: boolean
+  rangeKm: number
+  onSelect: (id: string, code?: string) => void
+}) {
+  const copy = useCopy().explore.results
+  const sector = match.qualification.sector
+  return (
+    <div
+      role="status"
+      data-testid="no-center-help"
+      className="flex flex-col gap-2.5 rounded-12 border border-border bg-surface p-3"
+    >
+      <p className="m-0 text-14 leading-[1.5] text-ink">
+        {copy.noCenterAnywhere(match.qualification.name)}
+      </p>
+      {related ? (
+        <div className="flex flex-col gap-1.5">
+          <p className="m-0 flex items-center gap-1.5 text-12 font-bold tracking-[0.04em] text-muted uppercase">
+            <Icon name="sparkle" />
+            {copy.noCenterRelated(rangeKm)}
+          </p>
+          <CenterRow
+            center={related.center}
+            code={related.qualification.code}
+            qualification={related.qualification.name}
+            onSelect={onSelect}
+          />
+        </div>
+      ) : (
+        !hasReference && <p className={note}>{copy.noCenterPlace}</p>
+      )}
+      {sector && (
+        <Link
+          to={`${paths.qualifications}?sector=${encodeURIComponent(sector)}`}
+          className={cx(button({ variant: 'tertiary', height: 38, text: 14 }), 'self-start')}
+        >
+          {copy.noCenterSector(sector)}
+          <Icon name="arrowRight" />
+        </Link>
+      )}
+      <p className={note}>{copy.noCenterAsk}</p>
+    </div>
   )
 }
 
@@ -869,6 +1037,16 @@ export function ResultsPanel({
           relatedFor={relatedFor}
           focus={focus}
           readiness={kind === 'assessment' ? readiness : undefined}
+          noCenter={
+            matches[0] && (kind === 'assessment' ? assess : train).length === 0
+              ? {
+                  match: matches[0],
+                  related: reference
+                    ? relatedFor(kind, { match: matches[0] } as QualificationCard)
+                    : null,
+                }
+              : null
+          }
           onSelect={onSelect}
         />
       ))}

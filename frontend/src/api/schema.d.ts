@@ -3190,6 +3190,13 @@ export interface components {
              */
             tsp_mock: boolean;
             /**
+             * Center Data
+             * @description sample: the centers are the labelled sample set for the December 2 demo, not an official TESDA list; the pages say so (US-0017 AC8).
+             * @default official
+             * @enum {string}
+             */
+            center_data: "official" | "sample";
+            /**
              * Tsp Suggestions
              * @description Whether /tsp/webview shows qualifications suggested from the TSP profile (POST /api/v1/analysis/suggestions). False: the goal box only.
              * @default false

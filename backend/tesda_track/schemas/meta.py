@@ -14,6 +14,9 @@ class ClientConfig(BaseModel):
                                           "(POST /api/v1/auth/tsp/session). False: it stays guest-only.")
     tsp_mock: bool = Field(default=False, description="Whether \"Sign in with TSP\" signs in to the mock TSP's "
                            "synthetic accounts (POST /api/v1/tsp-mock/handoff) instead of the real TSP.")
+    center_data: Literal["official", "sample"] = Field(
+        default="official", description="sample: the centers are the labelled sample set for the December 2 demo, "
+                                        "not an official TESDA list; the pages say so (US-0017 AC8).")
     tsp_suggestions: bool = Field(default=False, description="Whether /tsp/webview shows qualifications suggested from "
                                   "the TSP profile (POST /api/v1/analysis/suggestions). False: the goal box only.")
     # Defaults, so an app newer than its API reads a missing field as "no vector tiles" and keeps the Leaflet map.

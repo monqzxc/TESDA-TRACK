@@ -1620,4 +1620,328 @@ export const tl: Record<string, string> = {
     'Ang lugar na ita-type mo ay para sa pagbisitang ito lamang. Hindi nababago ang iyong TSP profile.',
   'Centers couldn’t be loaded. Try again from the list.':
     'Hindi makuha ang mga sentro. Subukang muli mula sa listahan.',
+  // Career Map center filters (US-0014 AC3).
+  'Filter centers': 'I-filter ang mga sentro',
+  '1 center shown': '1 sentrong ipinapakita',
+  '{0} centers shown': '{0} sentrong ipinapakita',
+  // US-0017 AC8: sample centers for the December 2 demo.
+  'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.':
+    'Mga halimbawang sentro para sa demo sa Disyembre 2. Hindi ito opisyal na listahan ng TESDA: gawa-gawa lamang ang mga pangalan, lugar at iskedyul.',
+  'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':
+    'Halimbawang datos para sa demonstrasyon, hindi opisyal na tala ng TESDA. Kumpirmahin ang totoong serbisyo sa TESDA.',
+  // Career Map, Supply & Demand panel, suggestion feedback and Find my pathway (QA-2026-11-19-EXP1).
+  'Show less': 'Ipakita nang mas kaunti',
+  'What can you do?': 'Ano ang kaya mong gawin?',
+  'Type what you can do': 'I-type ang kaya mong gawin',
+  Search: 'Hanapin',
+  'Type in Filipino or English, for example “Marunong ako magluto” or “I can weld”.':
+    'Mag-type sa Filipino o Ingles, halimbawa “Marunong ako magluto” o “I can weld”.',
+  'Finding qualifications that fit…': 'Hinahanap ang mga kwalipikasyong bagay…',
+  'Show on the map': 'Ipakita sa mapa',
+  'Training centers': 'Mga sentro ng pagsasanay',
+  'Assessment centers': 'Mga sentro ng pagtatasa',
+  'In demand jobs': 'Mga trabahong in demand',
+  'Open Location?': 'Buksan ang lokasyon?',
+  'Allow your approximate location to see the nearest centers first. It is rounded to about 1 km and never saved. You can change this any time.':
+    'Payagan ang tinatayang lokasyon mo para makita muna ang pinakamalapit na mga sentro. Tinatantiya ito sa humigit-kumulang 1 km at hindi kailanman itinatago. Mababago mo ito anumang oras.',
+  'Yes, open it': 'Oo, buksan',
+  'Not now': 'Hindi muna',
+  'Share my location': 'Ibahagi ang lokasyon ko',
+  'On · approximate, rounded to about 1 km and not saved.':
+    'Naka-on · tinatayang lokasyon, humigit-kumulang 1 km, at hindi itinatago.',
+  'Off. Nothing is shared until you turn this on.':
+    "Naka-off. Walang ibinabahagi hangga't hindi mo ito binubuksan.",
+  'Or type a city or province': 'O mag-type ng lungsod o probinsya',
+  'For example: Manila, Cebu, Laguna': 'Halimbawa: Manila, Cebu, Laguna',
+  'Near {0}': 'Malapit sa {0}',
+  'We don’t know that place yet. Try a city, province or region.':
+    'Hindi pa namin kilala ang lugar na iyan. Subukan ang lungsod, probinsya o rehiyon.',
+  'How far can you go?': 'Gaano kalayo ang kaya mong puntahan?',
+  'Share your location or type a place to measure from.':
+    'Ibahagi ang lokasyon mo o mag-type ng lugar na pagsusukatan.',
+  'Location is blocked in your browser. Type a city instead, or allow location and try again.':
+    'Naka-block ang lokasyon sa browser mo. Mag-type na lang ng lungsod, o payagan ang lokasyon at subukang muli.',
+  'We couldn’t get your location. Type a city instead, or try again.':
+    'Hindi namin makuha ang lokasyon mo. Mag-type na lang ng lungsod, o subukang muli.',
+  'This browser can’t share a location. Type a city instead.':
+    'Hindi makapagbahagi ng lokasyon ang browser na ito. Mag-type na lang ng lungsod.',
+  'See what is near you': 'Tingnan ang malapit sa iyo',
+  'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
+    'Buksan ang pagbabahagi ng lokasyon, o mag-type ng lungsod, para makita ang pinakamalapit na mga sentro ng pagsasanay at pagtatasa.',
+  you: 'ikaw',
+  'Nearest training centers': 'Pinakamalapit na mga sentro ng pagsasanay',
+  'Nearest assessment centers': 'Pinakamalapit na mga sentro ng pagtatasa',
+  'No center on the map yet.': 'Wala pang sentro sa mapa.',
+  '{0} centers on the map. Search to see the ones that fit you.':
+    '{0} sentro sa mapa. Maghanap para makita ang mga bagay sa iyo.',
+  'Qualifications that fit what you wrote': 'Mga kwalipikasyong bagay sa isinulat mo',
+  Show: 'Ipakita',
+  All: 'Lahat',
+  Assess: 'Pagtatasa',
+  Train: 'Pagsasanay',
+  Demand: 'Demand',
+  'Get certified': 'Magpa-sertipika',
+  'Or train first': 'O magsanay muna',
+  'Or get certified': 'O magpa-sertipika',
+  'Strong match': 'Malakas na tugma',
+  'Good match': 'Magandang tugma',
+  'Weaker match': 'Mas mahinang tugma',
+  'This only partly fits what you wrote. Check the qualification before you go.':
+    'Bahagya lamang itong tugma sa isinulat mo. Suriin muna ang kwalipikasyon bago pumunta.',
+  'No center lists this qualification yet.': 'Wala pang sentrong may ganitong kwalipikasyon.',
+  '{0} more': '{0} pa',
+  'No center within {0} km. The closest is {1} km away.':
+    'Walang sentro sa loob ng {0} km. Ang pinakamalapit ay {1} km ang layo.',
+  Change: 'Baguhin',
+  'Change how far you can go (now {0} km)': 'Baguhin kung gaano kalayo ang kaya mo (ngayon {0} km)',
+  'Centers within this distance count as near you.':
+    'Ang mga sentro sa loob ng layong ito ay itinuturing na malapit sa iyo.',
+  'Keep as it is': 'Panatilihin',
+  'A related qualification within {0} km': 'Isang kaugnay na kwalipikasyon sa loob ng {0} km',
+  'Training for {0}': 'Pagsasanay para sa {0}',
+  'Assessment for {0}': 'Pagtatasa para sa {0}',
+  'You chose this qualification in the Qualifications Library.':
+    'Pinili mo ang kwalipikasyong ito sa Aklatan ng mga Kwalipikasyon.',
+  'Share your location or type a city to see what is nearest.':
+    'Ibahagi ang lokasyon mo o mag-type ng lungsod para makita ang pinakamalapit.',
+  'We couldn’t find a clear match. Try describing something you can do, like “marunong ako magluto” or “I repair computers”.':
+    'Wala kaming nakitang malinaw na tugma. Subukang ilarawan ang kaya mong gawin, gaya ng “marunong ako magluto” o “I repair computers”.',
+  'We couldn’t search right now. Check your connection, then try again.':
+    'Hindi kami makapaghanap ngayon. Suriin ang koneksyon mo, saka subukang muli.',
+  'New search': 'Bagong paghahanap',
+  'about {0} by car': 'humigit-kumulang {0} sakay ng kotse',
+  'By car': 'Sakay ng kotse',
+  'Jobs and qualification demand': 'Mga trabaho at demand sa kwalipikasyon',
+  'Demand for': 'Demand para sa',
+  'Explore recorded jobs, qualifications linked to demand, and the training available in an area.':
+    'Tingnan ang mga naitalang trabaho, mga kwalipikasyong may kaugnayan sa demand, at ang pagsasanay na mayroon sa isang lugar.',
+  'Area: {0}': 'Lugar: {0}',
+  'Area: all regions with recorded evidence': 'Lugar: lahat ng rehiyong may naitalang ebidensya',
+  'Demand views': 'Mga tanaw ng demand',
+  'Jobs by area': 'Mga trabaho ayon sa lugar',
+  'Supply & demand': 'Supply at demand',
+  'Use my selected location': 'Gamitin ang napili kong lokasyon',
+  'All recorded regions': 'Lahat ng naitalang rehiyon',
+  'Filter by qualification': 'I-filter ayon sa kwalipikasyon',
+  'Qualification: {0}': 'Kwalipikasyon: {0}',
+  'All recorded jobs': 'Lahat ng naitalang trabaho',
+  'City or municipality in the snapshot': 'Lungsod o munisipyo sa snapshot',
+  'All recorded cities and municipalities': 'Lahat ng naitalang lungsod at munisipyo',
+  'Loading labor-market evidence…': 'Kinukuha ang impormasyon sa labor market…',
+  'Labor-market information could not be loaded.': 'Hindi makuha ang impormasyon sa labor market.',
+  'Snapshot: {0}.': 'Snapshot: {0}.',
+  '{0} posting records · {1} employers': '{0} tala ng posting · {1} employer',
+  'Dated PhilJobNet records, ordered by posting count. These are not live openings or worker headcounts. Shaded regions compare recorded posting totals.':
+    'May-petsang tala mula sa PhilJobNet, ayon sa dami ng posting. Hindi ito mga bukas na trabaho ngayon o bilang ng manggagawa. Inihahambing ng may-kulay na rehiyon ang kabuuang naitalang posting.',
+  ' · {0} more places': ' · {0} pang lugar',
+  'Reviewed occupation links only. National forecasts retain their national coverage; they do not establish demand in a particular city.':
+    'Mga nasuring ugnayan sa trabaho lamang. Pambansa ang saklaw ng mga pambansang forecast; hindi nito pinapatunayan ang demand sa isang partikular na lungsod.',
+  '{0} qualifications with reviewed evidence': '{0} kwalipikasyong may nasuring ebidensya',
+  'No mapped posting records in this area.': 'Walang naitugmang tala ng posting sa lugar na ito.',
+  '{0} mapped posting records': '{0} naitugmang tala ng posting',
+  'Forecast support: {0}': 'Suporta ng forecast: {0}',
+  'Compare supply and demand': 'Ihambing ang supply at demand',
+  'Supply means recorded training and assessment services. Posting records and training seats have different units; no workforce shortage is calculated.':
+    'Ang supply ay ang naitalang serbisyo ng pagsasanay at pagtatasa. Magkaiba ang yunit ng tala ng posting at puwesto sa pagsasanay; walang kinukuwentang kakulangan ng manggagawa.',
+  'No posting records for this selection. Try all jobs or another area. Missing evidence does not mean low demand.':
+    'Walang tala ng posting para sa napiling ito. Subukan ang lahat ng trabaho o ibang lugar. Ang kawalan ng ebidensya ay hindi nangangahulugang mababa ang demand.',
+  'No reviewed qualification links for this area yet. Try another region or all recorded regions.':
+    'Wala pang nasuring ugnayan ng kwalipikasyon para sa lugar na ito. Subukan ang ibang rehiyon o lahat ng naitalang rehiyon.',
+  '{0}: {1} posting records (regional coverage)': '{0}: {1} tala ng posting (saklaw ng rehiyon)',
+  'Regional demand heatmap': 'Heatmap ng demand sa rehiyon',
+  'Recorded postings': 'Naitalang posting',
+  'Fewer postings': 'Mas kaunting posting',
+  'More postings': 'Mas maraming posting',
+  'Deeper colors show more recorded postings in the region.':
+    'Mas madilim na kulay, mas maraming naitalang posting sa rehiyon.',
+  'No posting records in this snapshot': 'Walang tala ng posting sa snapshot na ito',
+  '{0}: no posting records in this snapshot': '{0}: walang tala ng posting sa snapshot na ito',
+  'Loading regional boundaries…': 'Kinukuha ang hangganan ng mga rehiyon…',
+  'Regional boundaries could not be loaded. You can still choose an area in the list.':
+    'Hindi makuha ang hangganan ng mga rehiyon. Maaari ka pa ring pumili ng lugar sa listahan.',
+  'Supply and demand analysis': 'Pagsusuri ng supply at demand',
+  'Qualification analysed': 'Kwalipikasyong sinuri',
+  'Hide analysis': 'Itago ang pagsusuri',
+  'Show analysis': 'Ipakita ang pagsusuri',
+  'Reading the records for this qualification…':
+    'Binabasa ang mga tala para sa kwalipikasyong ito…',
+  'The supply and demand analysis could not be loaded.':
+    'Hindi makuha ang pagsusuri ng supply at demand.',
+  Relocate: 'Lumipat',
+  'Resize the analysis': 'Baguhin ang laki ng pagsusuri',
+  postings: 'posting',
+  training: 'pagsasanay',
+  assessment: 'pagtatasa',
+  'Demand ahead of supply': 'Mas mataas ang demand kaysa supply',
+  Balanced: 'Balanse',
+  Saturated: 'Puno na',
+  'Demand, no center here': 'May demand, walang sentro rito',
+  'Centers, no postings here': 'May sentro, walang posting dito',
+  'No records yet': 'Wala pang tala',
+  'Rough signal': 'Magaspang na senyales',
+  'Your area': 'Ang lugar mo',
+  Supply: 'Supply',
+  Balance: 'Balanse',
+  Elsewhere: 'Sa ibang lugar',
+  'Demand here': 'Demand dito',
+  'Skill Passport': 'Skill Passport',
+  'High demand': 'Mataas na demand',
+  'Moderate demand': 'Katamtamang demand',
+  'Low demand': 'Mababang demand',
+  'No recorded demand': 'Walang naitalang demand',
+  '{1} records in {0}': '{1} tala sa {0}',
+  '#{0} of {1} regions': '#{0} sa {1} rehiyon',
+  'Needed more in': 'Mas kailangan sa',
+  Nearby: 'Malapit',
+  '{0} records': '{0} tala',
+  'Show {0} on the map': 'Ipakita ang {0} sa mapa',
+  'Your region leads for this one.': 'Nangunguna ang rehiyon mo para rito.',
+  'No posting records yet: missing data, not low demand.':
+    'Wala pang tala ng posting: kulang na datos, hindi mababang demand.',
+  'Share your location or type a city to see local demand.':
+    'Ibahagi ang lokasyon mo o mag-type ng lungsod para makita ang lokal na demand.',
+  'Find Jobs on TSP': 'Maghanap ng Trabaho sa TSP',
+  'Find Jobs on TSP for {0} in {1} (opens TESDA Skill Passport in a new tab)':
+    'Maghanap ng Trabaho sa TSP para sa {0} sa {1} (binubuksan ang TESDA Skill Passport sa bagong tab)',
+  'Link not set up yet': 'Hindi pa naka-set up ang link',
+  'Also in demand here': 'In demand din dito',
+  'Looking for other qualifications in demand here…':
+    'Hinahanap ang iba pang kwalipikasyong in demand dito…',
+  'Other qualifications in demand could not be loaded.':
+    'Hindi makuha ang iba pang kwalipikasyong in demand.',
+  'Nothing else stands out in {0} yet.': 'Wala pang ibang namumukod sa {0}.',
+  'Look at {0}': 'Tingnan ang {0}',
+  'AI summary': 'Buod ng AI',
+  'Written by AI from the counts on this map.': 'Isinulat ng AI mula sa mga bilang sa mapang ito.',
+  Why: 'Bakit',
+  Recommended: 'Inirerekomenda',
+  'Share your location or type a city to get a recommended center.':
+    'Ibahagi ang lokasyon mo o mag-type ng lungsod para makakuha ng inirerekomendang sentro.',
+  'Get assessed': 'Magpatasa',
+  'Nearest in your region': 'Pinakamalapit sa rehiyon mo',
+  'Nearest, in {0}': 'Pinakamalapit, sa {0}',
+  'If you relocate: {0}': 'Kung lilipat ka: {0}',
+  'Demand map': 'Mapa ng demand',
+  'All results': 'Lahat ng resulta',
+  'A rough signal from dated records, not a forecast. Confirm with the center or TESDA.':
+    'Magaspang na senyales mula sa may-petsang tala, hindi forecast. Kumpirmahin sa sentro o sa TESDA.',
+  'Recommended: {0}': 'Inirerekomenda: {0}',
+  'Supply and demand map': 'Mapa ng supply at demand',
+  '{0}: {1} posting records, {2} centers. {3}.': '{0}: {1} tala ng posting, {2} sentro. {3}.',
+  'Demand against supply': 'Demand laban sa supply',
+  'Demand ahead': 'Nangunguna ang demand',
+  'An outlined mark means one side has no records.':
+    'Ang markang may balangkas lamang ay nangangahulugang walang tala ang isang panig.',
+  'About this map': 'Tungkol sa mapang ito',
+  'Back to results': 'Bumalik sa mga resulta',
+  'Assessment center · Get certified': 'Sentro ng pagtatasa · Magpa-sertipika',
+  'Training center · Train': 'Sentro ng pagsasanay · Magsanay',
+  'Leads to an NC': 'Humahantong sa NC',
+  'Qualifications offered': 'Mga kwalipikasyong inaalok',
+  'Matches your search': 'Tugma sa paghahanap mo',
+  Directions: 'Direksyon',
+  'Show route on the map': 'Ipakita ang ruta sa mapa',
+  Call: 'Tumawag',
+  Contact: 'Makipag-ugnayan',
+  'Travel time': 'Oras ng biyahe',
+  Address: 'Address',
+  'Ease of reach': 'Dali ng pagpunta',
+  'Travel times are estimated from straight-line distance, by car, without traffic.':
+    'Tinatantiya ang oras ng biyahe mula sa tuwid na layo, sakay ng kotse, walang trapiko.',
+  'These results come from automatic matching. This is a suggestion: confirm with the center or your TESDA office.':
+    'Mula sa awtomatikong pagtutugma ang mga resultang ito. Mungkahi lamang ito: kumpirmahin sa sentro o sa opisina ng TESDA.',
+  'Previous version': 'Naunang bersyon',
+  'This is the earlier version of this page. The new Explore map finds centers from what you can do.':
+    'Ito ang naunang bersyon ng pahinang ito. Ang bagong mapa ng Explore ay naghahanap ng sentro mula sa kaya mong gawin.',
+  'Go to Explore': 'Pumunta sa Explore',
+  'Google Maps': 'Google Maps',
+  OpenStreetMap: 'OpenStreetMap',
+  '3D': '3D',
+  'Was this helpful?': 'Nakatulong ba ito?',
+  'Report a wrong suggestion': 'Iulat ang maling mungkahi',
+  'Choose a reason': 'Pumili ng dahilan',
+  'Wrong qualification': 'Maling kwalipikasyon',
+  'Wrong center': 'Maling sentro',
+  'Outdated or incorrect information': 'Luma o maling impormasyon',
+  'Not relevant to what I need': 'Hindi akma sa kailangan ko',
+  Other: 'Iba pa',
+  'Include my goal text with this report': 'Isama ang teksto ng layunin ko sa ulat na ito',
+  'Only the assigned reviewer will see it. Leave this unchecked if your goal contains personal information.':
+    'Ang nakatalagang tagasuri lamang ang makakakita nito. Huwag itong lagyan ng tsek kung may personal na impormasyon ang layunin mo.',
+  'Send report': 'Ipadala ang ulat',
+  'Thanks for your feedback.': 'Salamat sa iyong feedback.',
+  'Report sent for review.': 'Naipadala ang ulat para suriin.',
+  'This version of the app can’t accept feedback. Open an updated version and try again.':
+    'Hindi tumatanggap ng feedback ang bersyong ito ng app. Magbukas ng updated na bersyon at subukang muli.',
+  'This is a suggestion. Confirm with the center or your TESDA office.':
+    'Mungkahi lamang ito. Kumpirmahin sa sentro o sa opisina ng TESDA.',
+  'Loading TESDA Track…': 'Binubuksan ang TESDA Track…',
+  'Selected qualification': 'Napiling kwalipikasyon',
+  'YOUR NEXT CHAPTER': 'ANG SUSUNOD MONG KABANATA',
+  'Where would you like to go?': 'Saan mo gustong pumunta?',
+  'Start with a career you want, something you can do, or a skill you’d like to learn. We’ll help you find a TESDA pathway.':
+    'Magsimula sa karerang gusto mo, sa kaya mong gawin, o sa kasanayang gusto mong matutunan. Tutulungan ka naming makahanap ng landas sa TESDA.',
+  'Your career interests or skills': 'Ang iyong mga interes o kasanayan sa karera',
+  'For example: I want to become an electrician, Welding, or Cooking and baking':
+    'Halimbawa: Gusto kong maging electrician, Welding, o Pagluluto at pagbe-bake',
+  'Use your own words. Separate multiple skills with commas.':
+    'Gamitin ang sarili mong salita. Paghiwalayin ng kuwit ang maraming kasanayan.',
+  'Enter a career goal, occupation, or skill to continue.':
+    'Maglagay ng layunin sa karera, trabaho o kasanayan para magpatuloy.',
+  'Try a starting point': 'Subukan ang isang panimula',
+  'I want to become an electrician.': 'Gusto kong maging electrician.',
+  Welder: 'Welder',
+  'Welding, blueprint reading': 'Welding, pagbasa ng blueprint',
+  'I enjoy caring for older people.': 'Gusto kong mag-alaga ng matatanda.',
+  'Find my pathways': 'Hanapin ang mga landas ko',
+  'Your previous search': 'Ang naunang paghahanap mo',
+  'Your interests and skills': 'Ang iyong mga interes at kasanayan',
+  'Edit your input': 'I-edit ang inilagay mo',
+  'Your goal is saved to your account.': 'Naka-save sa account mo ang layunin mo.',
+  'Your selected qualification': 'Ang napili mong kwalipikasyon',
+  'Set as My Goal': 'Itakda bilang Layunin Ko',
+  'Goal Selected': 'Napili na ang Layunin',
+  'Saved for this journey in this tab. Selecting a goal keeps your matching and readiness results.':
+    'Naka-save para sa paglalakbay na ito sa tab na ito. Pinapanatili ng pagpili ng layunin ang resulta ng pagtutugma at kahandaan mo.',
+  'Choose an occupation as your career goal. You can change it at any time during this journey.':
+    'Pumili ng trabaho bilang layunin sa karera. Mababago mo ito anumang oras sa paglalakbay na ito.',
+  'No occupations are listed for this qualification in the catalog yet.':
+    'Wala pang nakalistang trabaho para sa kwalipikasyong ito sa katalogo.',
+  'No approved forecast occupation matches this request for this qualification yet.':
+    'Wala pang aprubadong trabaho sa forecast na tugma sa kahilingang ito para sa kwalipikasyong ito.',
+  'Checking labor-market information…': 'Sinusuri ang impormasyon sa labor market…',
+  'Your readiness result applies to the selected qualification. Explore an alternative to check its own competencies.':
+    'Para sa napiling kwalipikasyon ang resulta ng kahandaan mo. Tingnan ang isang alternatibo para suriin ang sarili nitong mga kakayahan.',
+  'Recommended alternative': 'Inirerekomendang alternatibo',
+  'Also associated with this occupation': 'Kaugnay rin ng trabahong ito',
+  'Readiness results apply to the selected qualification. Other catalog associations are additional options, not necessarily scored recommendations.':
+    'Para sa napiling kwalipikasyon ang resulta ng kahandaan. Karagdagang pagpipilian ang ibang ugnayan sa katalogo, hindi kinakailangang may markang rekomendasyon.',
+  'Explore jobs linked to your selected qualification.':
+    'Tingnan ang mga trabahong kaugnay ng napili mong kwalipikasyon.',
+  // Fixed sentences the API writes (useServerText): the supply and demand headline and match reasons.
+  '{0}: recorded demand for {1} is ahead of training supply':
+    '{0}: mas mataas ang naitalang demand para sa {1} kaysa sa supply ng pagsasanay',
+  '{0}: demand and training supply for {1} look balanced':
+    '{0}: mukhang balanse ang demand at supply ng pagsasanay para sa {1}',
+  '{0}: training supply for {1} is ahead of recorded demand':
+    '{0}: mas mataas ang supply ng pagsasanay para sa {1} kaysa sa naitalang demand',
+  '{0}: employers posted for {1}, but no center is recorded here':
+    '{0}: may nag-post na employer para sa {1}, pero walang naitalang sentro rito',
+  '{0}: centers offer {1}, but no posting records were captured here':
+    '{0}: may mga sentrong nag-aalok ng {1}, pero walang naitalang posting dito',
+  '{0}: nothing is recorded for {1} yet': '{0}: wala pang naitala para sa {1}',
+  'Matched your words: {0}': 'Tugma sa mga salita mo: {0}',
+  'Matched your reported career, skills, or sector.':
+    'Tugma sa iniulat mong karera, kasanayan o sektor.',
+  'Similar in meaning to your goal.': 'Kahawig ng kahulugan ng layunin mo.',
+  // No center offers the qualification anywhere (QA-2026-11-18-E).
+  'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
+    'Wala pang sentrong nag-aalok ng {0} kahit saan. Hindi makakatulong ang mas malawak na layo, kaya subukan ang isa sa mga ito.',
+  'A related qualification offered within {0} km':
+    'Isang kaugnay na kwalipikasyong inaalok sa loob ng {0} km',
+  'Browse other {0} qualifications': 'Tingnan ang iba pang kwalipikasyon sa {0}',
+  'Ask the TESDA provincial or district office near you which providers plan to offer it.':
+    'Tanungin ang provincial o district office ng TESDA na malapit sa iyo kung aling mga provider ang balak mag-alok nito.',
+  'Share your location or type a city to see a related qualification near you.':
+    'Ibahagi ang lokasyon mo o mag-type ng lungsod para makita ang kaugnay na kwalipikasyong malapit sa iyo.',
 }

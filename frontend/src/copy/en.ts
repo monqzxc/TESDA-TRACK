@@ -2286,9 +2286,22 @@ export const en = {
   // The map-first center finder demo at /explore (markdowns/TESDA-TRACK-Location-First-Implementation-Plan.md).
   // Wording follows the plan's Task 12; it is for the Product Owner to approve.
   explore: {
+    // US-0017 AC8: while TESDA's approval of its lists is pending, the demo shows labelled sample centers.
+    sampleCenters:
+      'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.',
     panel: {
       collapse: 'Show less',
       closeSheet: 'Close map panel',
+    },
+    // QA: US-0014 AC3. The center type is the Training/Assessment chips; the place is the box above.
+    filters: {
+      label: 'Filter centers',
+      region: 'Region',
+      allRegions: 'All regions',
+      province: 'Province',
+      allProvinces: 'All provinces',
+      shown: (n: number) => (n === 1 ? '1 center shown' : `${n} centers shown`),
+      clearAll: 'Clear all',
     },
     search: {
       label: 'What can you do?',
@@ -2391,6 +2404,14 @@ export const en = {
       // Under a weaker match's reason: the words only partly fit this qualification.
       weakWarning: 'This only partly fits what you wrote. Check the qualification before you go.',
       noCenter: 'No center lists this qualification yet.',
+      // QA-2026-11-18-E (US-0014 AC5): no center anywhere lists it, so a wider range can't help.
+      noCenterAnywhere: (name: string) =>
+        `No center lists ${name} yet, anywhere. A wider range won’t help, so try one of these instead.`,
+      noCenterRelated: (km: number) => `A related qualification offered within ${km} km`,
+      noCenterSector: (sector: string) => `Browse other ${sector} qualifications`,
+      noCenterAsk:
+        'Ask the TESDA provincial or district office near you which providers plan to offer it.',
+      noCenterPlace: 'Share your location or type a city to see a related qualification near you.',
       moreCenters: (n: number) => `${n} more`,
       fewerCenters: 'Show fewer',
       noneNear: (km: number, closest: number) =>

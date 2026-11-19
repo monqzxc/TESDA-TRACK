@@ -39,7 +39,7 @@
       "qualifications": [{"qualification_title": "Shielded Metal Arc Welding (SMAW) NC I", "level": "NC I"}],
       "credentials": {
         "certificates": [{"certificate_name": "Shielded Metal Arc Welding (SMAW) NC I"}],
-        "trainings": [], "assessments": [], "external_certificates": []
+        "trainings": [], "assessments": [], "external_certificates": [{"certificate_name": "LTO Non-Professional Driver's License"}]
       }
     }
   },
@@ -90,7 +90,10 @@
       "credentials": {
         "certificates": [{"certificate_name": "Electrical Installation and Maintenance NC III"}],
         "trainings": [], "assessments": [],
-        "external_certificates": [{"certificate_name": "Site Safety Orientation"}]
+        "external_certificates": [
+          {"certificate_name": "Site Safety Orientation"},
+          {"certificate_name": "LTO Non-Professional Driver's License"}
+        ]
       }
     }
   },

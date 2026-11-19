@@ -37,7 +37,7 @@ describe('source provenance on learner screens', () => {
   it('leaves data-status labels out of the qualifications library', async () => {
     renderApp('/qualifications')
     expect(await screen.findByRole('heading', { name: 'Welding NC II' })).toBeVisible()
-    expect(screen.queryByText('Example data')).not.toBeInTheDocument()
+    expect(screen.queryByText('Sample data')).not.toBeInTheDocument()
     expect(screen.queryByText(/For demonstration/)).not.toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'Pilot source register' })).not.toBeInTheDocument()
   })
