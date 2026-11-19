@@ -10,6 +10,11 @@ assessment center with an upcoming schedule for every qualification. Every recor
 data_status "example", a source naming this as sample data, invented coordinates near the region's center city and
 no contact details. Nothing official is changed or deleted.
 
+Sample programs also carry sample scholarships (US-0019), marked as sample data: in each region three of every four
+qualifications have one open until after the demo, and the fourth has one that already closed, so the demo shows both
+the "Scholarship open" tag and a closed scholarship whose tag has gone. Which ones rotate from region to region, so
+every qualification has an open scholarship in most regions.
+
 Loading alone shows nobody anything new: set CENTER_DATA=sample and restart the API, and learners then see only these
 centers, each labelled as sample data. Set CENTER_DATA=official (or remove it) to return to the official lists.
 Unlike tesda_track.demo, this runs in production, because the demo deployment needs it. Loading again first removes
@@ -25,6 +30,7 @@ from decimal import Decimal
 from sqlalchemy import delete
 from sqlmodel import Session, select
 
+from tesda_track.sample_scholarships import SAMPLE_CLOSED_ON, SAMPLE_CLOSES_ON
 from tesda_track.models import (AssessmentApplication, AssessmentCenter, AssessmentSchedule, Region, TrainingProgram,
                                 TrainingProvider)
 from tesda_track.services import catalog
@@ -63,7 +69,7 @@ def load(session: Session, seed: int = 2026, today: date | None = None) -> Sampl
     rng = random.Random(seed)
     qualifications = catalog.active_qualifications(session)
     provenance = _provenance(today)
-    for region in session.exec(select(Region).order_by(Region.position)):
+    for place, region in enumerate(session.exec(select(Region).order_by(Region.position))):
         providers = []
         for kind in PROVIDER_KINDS:
             latitude, longitude = _near(rng, region.latitude, region.longitude)
@@ -82,6 +88,8 @@ def load(session: Session, seed: int = 2026, today: date | None = None) -> Sampl
                 description=f"Sample program for {qualification.name}, for the December 2 demo. Not a real offering.",
                 delivery_mode=rng.choice(DELIVERY_MODES), duration_hours=hours, start_date=start,
                 end_date=start + timedelta(days=round(hours / 8 * 7 / 5)), slots=rng.choice([20, 25, 30]),
+                scholarship_available=True, scholarship_is_sample=True,
+                scholarship_closes_on=SAMPLE_CLOSED_ON if (index + place) % 4 == 2 else SAMPLE_CLOSES_ON,
                 **provenance))
             report.programs += 1
         latitude, longitude = _near(rng, region.latitude, region.longitude)
