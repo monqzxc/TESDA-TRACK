@@ -1615,4 +1615,8 @@ export const tl: Record<string, string> = {
     'Ang lugar na ita-type mo ay para sa pagbisitang ito lamang. Hindi nababago ang iyong TSP profile.',
   'Centers couldn’t be loaded. Try again from the list.':
     'Hindi makuha ang mga sentro. Subukang muli mula sa listahan.',
+  // Career Map center filters (US-0014 AC3).
+  'Filter centers': 'I-filter ang mga sentro',
+  '1 center shown': '1 sentrong ipinapakita',
+  '{0} centers shown': '{0} sentrong ipinapakita',
 }

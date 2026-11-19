@@ -2247,6 +2247,16 @@ export const en = {
       collapse: 'Show less',
       closeSheet: 'Close map panel',
     },
+    // QA: US-0014 AC3. The center type is the Training/Assessment chips; the place is the box above.
+    filters: {
+      label: 'Filter centers',
+      region: 'Region',
+      allRegions: 'All regions',
+      province: 'Province',
+      allProvinces: 'All provinces',
+      shown: (n: number) => (n === 1 ? '1 center shown' : `${n} centers shown`),
+      clearAll: 'Clear all',
+    },
     search: {
       label: 'What can you do?',
       placeholder: 'Type what you can do',

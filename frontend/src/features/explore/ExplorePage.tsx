@@ -27,10 +27,17 @@ import { button } from '../../styles/buttons.ts'
 import { matchPathway } from '../training/recommendationApi.ts'
 import { useTrainingStore } from '../training/state.ts'
 import type { DemandMapArea } from '../training/CenterMapTypes.ts'
-import { nearestRegion, offers } from './explore.ts'
+import { NEAR_KM, nearestRegion, offers } from './explore.ts'
 import { LocationPrompt } from './LocationPrompt.tsx'
 import { OutlookBrief } from './OutlookBrief.tsx'
-import { CenterCard, LocationRow, NearbyPanel, ResultsPanel, TspProfilePanel } from './Panels.tsx'
+import {
+  CenterCard,
+  CenterFilters,
+  LocationRow,
+  NearbyPanel,
+  ResultsPanel,
+  TspProfilePanel,
+} from './Panels.tsx'
 import { useDemandStore, useExplore, useExploreStore } from './useExplore.ts'
 
 // The map comes down with its renderer the first time it's shown, as on Training & Assessment.
@@ -106,7 +113,35 @@ export default function ExplorePage() {
   const [params, setParams] = useSearchParams()
   const typed = params.get('type') as View | null
   const view: View = typed && VIEWS.includes(typed) ? typed : 'all'
-  const explore = useExplore(view === 'demand')
+  // Region and province filters (QA: US-0014 AC3), in the address like the type.
+  const regionFilter = params.get('region')
+  const provinceFilter = params.get('province')
+  const explore = useExplore(view === 'demand', { region: regionFilter, province: provinceFilter })
+  const setFilter = (name: 'region' | 'province', value: string | null) =>
+    setParams(
+      (current) => {
+        const updated = new URLSearchParams(current)
+        if (value) updated.set(name, value)
+        else updated.delete(name)
+        // Another region's provinces don't apply.
+        if (name === 'region') updated.delete('province')
+        return updated
+      },
+      { replace: true, preventScrollReset: true },
+    )
+  /** Every filter at once: type, region, province, typed place and range. Shared location and the search stay. */
+  const clearFilters = () => {
+    setParams(
+      (current) => {
+        const updated = new URLSearchParams(current)
+        for (const name of ['type', 'region', 'province']) updated.delete(name)
+        return updated
+      },
+      { replace: true, preventScrollReset: true },
+    )
+    useTrainingStore.getState().setPlaceText('')
+    useExploreStore.setState({ rangeKm: NEAR_KM, rangeChosen: false })
+  }
   const setView = (next: View) =>
     setParams(
       (current) => {
@@ -504,6 +539,25 @@ export default function ExplorePage() {
                 <div className={selected && !locationError ? 'max-md:hidden' : undefined}>
                   <LocationRow explore={explore} />
                 </div>
+              )}
+              {view !== 'demand' && !selected && (
+                <CenterFilters
+                  regions={explore.regionOptions}
+                  provinces={explore.provinceOptions}
+                  region={regionFilter}
+                  province={provinceFilter}
+                  count={pins.length}
+                  canClear={Boolean(
+                    view !== 'all' ||
+                    regionFilter ||
+                    provinceFilter ||
+                    explore.placeText.trim() ||
+                    explore.rangeKm !== NEAR_KM,
+                  )}
+                  onRegion={(code) => setFilter('region', code)}
+                  onProvince={(name) => setFilter('province', name)}
+                  onClear={clearFilters}
+                />
               )}
               {explore.failed && (
                 <div className="rounded-12 bg-warn-bg p-3 text-14 text-warn-ink">

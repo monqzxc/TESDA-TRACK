@@ -106,7 +106,11 @@ export const useExploreStore = create<ExploreState>()((set) => ({
  * nearest centers can say how many qualifications they offer). With a qualification in focus (the first match, or
  * one chosen in the demand panel), its supply and demand across the regions and the centers recommended for it.
  */
-export function useExplore(demandActive = false) {
+export function useExplore(
+  demandActive = false,
+  /** Region and province filters (QA: US-0014 AC3), from the address: they narrow the centers shown. */
+  filters: { region?: string | null; province?: string | null } = {},
+) {
   const search = useExploreStore((state) => state.search)
   const relocate = useExploreStore((state) => state.relocate)
   const rangeKm = useExploreStore((state) => state.rangeKm)
@@ -236,12 +240,44 @@ export function useExplore(demandActive = false) {
     ...outlookSummaryQuery(demandCode ?? '', demandRegion, automaticRegion, relocate),
     enabled: Boolean(demandCode) && outlook.data?.ai_summary_available === true,
   })
-  const centers = useMemo(
+  const allCenters = useMemo(
     () =>
       everything
         ? sortCenters(withDistances(everything, reference), reference ? 'nearest' : 'name', today)
         : [],
     [everything, reference, today],
+  )
+  // The region and province filters narrow what the list and the map show. The supply analysis and the
+  // recommendations still count every center: a filter changes what is shown, not the evidence.
+  const regionFilter = filters.region ?? null
+  const provinceFilter = filters.province ?? null
+  const centers = useMemo(
+    () =>
+      allCenters.filter(
+        (center) =>
+          (!regionFilter || center.regionCode === regionFilter) &&
+          (!provinceFilter || center.province === provinceFilter),
+      ),
+    [allCenters, regionFilter, provinceFilter],
+  )
+  const regionOptions = useMemo(() => {
+    const seen = new Map<string, string>()
+    for (const center of allCenters)
+      if (center.regionCode) seen.set(center.regionCode, center.region)
+    return [...seen]
+      .map(([code, name]) => ({ code, name }))
+      .sort((a, b) => a.name.localeCompare(b.name))
+  }, [allCenters])
+  const provinceOptions = useMemo(
+    () =>
+      [
+        ...new Set(
+          allCenters
+            .filter((center) => !regionFilter || center.regionCode === regionFilter)
+            .flatMap((center) => (center.province ? [center.province] : [])),
+        ),
+      ].sort((a, b) => a.localeCompare(b)),
+    [allCenters, regionFilter],
   )
   /** The centers listing the qualification in focus: where its supply is. */
   // A matched qualification with no center in range: everything listed within range, to suggest a related one.
@@ -276,8 +312,8 @@ export function useExplore(demandActive = false) {
     [outOfRange, inRange.data, sites.data, regions.data, regionMap, reference, rangeKm],
   )
   const supply = useMemo(
-    () => (demandCode ? supplyCenters(centers, demandCode, outlook.data) : []),
-    [centers, demandCode, outlook.data],
+    () => (demandCode ? supplyCenters(allCenters, demandCode, outlook.data) : []),
+    [allCenters, demandCode, outlook.data],
   )
   // Card 4: what the learner can do already (the search's skills and their Skill Passport) and what they chose or
   // hold, for the other qualifications in demand where they are.
@@ -323,7 +359,10 @@ export function useExplore(demandActive = false) {
   return {
     search,
     matches,
+    /** The centers shown: every one, narrowed by the region and province filters. */
     centers,
+    regionOptions,
+    provinceOptions,
     reference,
     rangeKm,
     /** Centers within range with everything they list, when a matched qualification has none there. */

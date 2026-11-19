@@ -837,3 +837,69 @@ test('US-0025: when the center list fails, the map does not say no centers match
   )
   await expect(retry).toHaveCount(0)
 })
+
+// QA (US-0014 AC3): the Career Map is the only center finder, so it filters by type, region, province and place,
+// counts what is shown, and clears everything at once.
+test('US-0014: the Career Map filters centers by region and province, counts them and clears all', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 })
+  await serveRecommendations(page, 'leaflet')
+  const inProvince = (s: ReturnType<typeof site>, province: string) => ({ ...s, province })
+  await page.route('**/api/v1/training-providers*', (route) =>
+    route.fulfill({
+      json: [
+        inProvince(COMPUTER_SITE, 'Metro Manila'),
+        inProvince(CEBU_SITE, 'Cebu'),
+        inProvince(WELDING_SITE, 'Metro Manila'),
+      ],
+    }),
+  )
+  await page.route('**/api/v1/assessment-centers*', (route) =>
+    route.fulfill({ json: [inProvince(ASSESSMENT_SITE, 'Metro Manila')] }),
+  )
+  await page.goto('/explore')
+  // Open Location? is asked on every visit now (LocationPrompt): this test answers it.
+  await page
+    .getByRole('dialog', { name: 'Open Location?' })
+    .getByRole('button', { name: 'Not now' })
+    .click()
+  await page.getByRole('searchbox', { name: 'What can you do?' }).click()
+
+  const filters = page.getByRole('region', { name: 'Filter centers' })
+  const count = filters.getByRole('status')
+  const region = filters.getByRole('combobox', { name: 'Region' })
+  const province = filters.getByRole('combobox', { name: 'Province' })
+  const clear = filters.getByRole('button', { name: 'Clear all' })
+  await expect(count).toHaveText('4 centers shown')
+  await expect(clear).toBeDisabled()
+
+  await region.selectOption('VII')
+  await expect(count).toHaveText('1 center shown')
+  await expect(page).toHaveURL(/region=VII/)
+  await expect(province.locator('option')).toHaveText(['All provinces', 'Cebu'])
+
+  await region.selectOption('NCR')
+  await province.selectOption('Metro Manila')
+  await expect(count).toHaveText('3 centers shown')
+  await page.screenshot({ path: test.info().outputPath('filtered.png') })
+  await page
+    .getByRole('group', { name: 'Show on the map' })
+    .getByRole('button', { name: 'Assessment centers', exact: true })
+    .click()
+  await expect(count).toHaveText('1 center shown')
+
+  await page.getByRole('textbox', { name: 'Or type a city or province' }).fill('Manila')
+  await clear.click()
+  await expect(count).toHaveText('4 centers shown')
+  await expect(region).toHaveValue('')
+  await expect(province).toHaveValue('')
+  await expect(page.getByRole('textbox', { name: 'Or type a city or province' })).toHaveValue('')
+  await expect(page).not.toHaveURL(/region=|province=|type=/)
+  await expect(clear).toBeDisabled()
+  expect(
+    (await new AxeBuilder({ page }).include('section[aria-label="Filter centers"]').analyze())
+      .violations,
+  ).toEqual([])
+  await filters.screenshot({ path: test.info().outputPath('filters.png') })
+})
