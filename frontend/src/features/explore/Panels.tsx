@@ -203,39 +203,51 @@ export function CenterFilters({
 }) {
   const copy = useCopy().explore.filters
   const select =
-    'min-h-11 w-full min-w-0 cursor-pointer rounded-10 border border-hover-border bg-surface px-2 text-14 text-navy focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus'
+    'min-h-11 w-full min-w-0 cursor-pointer appearance-none truncate rounded-10 border border-hover-border bg-surface py-2 pr-9 pl-3 text-14 text-navy focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus'
   return (
     <section aria-label={copy.label} className="flex flex-col gap-2 rounded-12 bg-panel p-3">
       <div className="grid grid-cols-2 gap-2">
         <label className="flex min-w-0 flex-col gap-1 text-13 font-semibold text-ink">
           {copy.region}
-          <select
-            className={select}
-            value={region ?? ''}
-            onChange={(event) => onRegion(event.target.value || null)}
-          >
-            <option value="">{copy.allRegions}</option>
-            {regions.map((option) => (
-              <option key={option.code} value={option.code}>
-                {option.name}
-              </option>
-            ))}
-          </select>
+          <span className="relative block">
+            <select
+              className={select}
+              value={region ?? ''}
+              onChange={(event) => onRegion(event.target.value || null)}
+            >
+              <option value="">{copy.allRegions}</option>
+              {regions.map((option) => (
+                <option key={option.code} value={option.code}>
+                  {option.name}
+                </option>
+              ))}
+            </select>
+            <Icon
+              name="chevron"
+              className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-muted"
+            />
+          </span>
         </label>
         <label className="flex min-w-0 flex-col gap-1 text-13 font-semibold text-ink">
           {copy.province}
-          <select
-            className={select}
-            value={province ?? ''}
-            onChange={(event) => onProvince(event.target.value || null)}
-          >
-            <option value="">{copy.allProvinces}</option>
-            {provinces.map((name) => (
-              <option key={name} value={name}>
-                {name}
-              </option>
-            ))}
-          </select>
+          <span className="relative block">
+            <select
+              className={select}
+              value={province ?? ''}
+              onChange={(event) => onProvince(event.target.value || null)}
+            >
+              <option value="">{copy.allProvinces}</option>
+              {provinces.map((name) => (
+                <option key={name} value={name}>
+                  {name}
+                </option>
+              ))}
+            </select>
+            <Icon
+              name="chevron"
+              className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-muted"
+            />
+          </span>
         </label>
       </div>
       <div className="flex items-center justify-between gap-2">
