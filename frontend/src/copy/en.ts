@@ -2337,6 +2337,14 @@ export const en = {
       // Under a weaker match's reason: the words only partly fit this qualification.
       weakWarning: 'This only partly fits what you wrote. Check the qualification before you go.',
       noCenter: 'No center lists this qualification yet.',
+      // QA-2026-11-18-E (US-0014 AC5): no center anywhere lists it, so a wider range can't help.
+      noCenterAnywhere: (name: string) =>
+        `No center lists ${name} yet, anywhere. A wider range won’t help, so try one of these instead.`,
+      noCenterRelated: (km: number) => `A related qualification offered within ${km} km`,
+      noCenterSector: (sector: string) => `Browse other ${sector} qualifications`,
+      noCenterAsk:
+        'Ask the TESDA provincial or district office near you which providers plan to offer it.',
+      noCenterPlace: 'Share your location or type a city to see a related qualification near you.',
       moreCenters: (n: number) => `${n} more`,
       fewerCenters: 'Show fewer',
       noneNear: (km: number, closest: number) =>

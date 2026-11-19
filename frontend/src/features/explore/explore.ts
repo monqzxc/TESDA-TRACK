@@ -143,6 +143,23 @@ export function anyOutOfRange(
   )
 }
 
+/**
+ * A kind (training or assessment) for which no center lists any of the matches at all (QA-2026-11-18-E, US-0014 AC5):
+ * a wider range can't help there, so the page suggests a related qualification and where to look instead.
+ */
+export function anyKindWithoutCenter(
+  matches: readonly Match[],
+  centers: readonly Center[],
+  rangeKm: number,
+) {
+  return (
+    matches.length > 0 &&
+    (['training', 'assessment'] as const).some(
+      (kind) => cardsFor(kind, matches, centers, rangeKm).length === 0,
+    )
+  )
+}
+
 export interface Related {
   qualification: { code: string; name: string }
   /** Its nearest center of the card's kind, within range. */

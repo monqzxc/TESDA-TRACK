@@ -15,7 +15,13 @@ import {
 } from '../training/centers.ts'
 import { useTrainingStore } from '../training/state.ts'
 import type { Reference } from '../training/useCenters.ts'
-import { anyOutOfRange, MAX_QUALIFICATIONS, NEAR_KM, nearestRegion } from './explore.ts'
+import {
+  anyKindWithoutCenter,
+  anyOutOfRange,
+  MAX_QUALIFICATIONS,
+  NEAR_KM,
+  nearestRegion,
+} from './explore.ts'
 import { areaJobsQuery } from './demandApi.ts'
 import { nearbySuggestionsQuery, outlookQuery, outlookSummaryQuery } from './outlookApi.ts'
 import {
@@ -244,9 +250,16 @@ export function useExplore(demandActive = false) {
     [everything, reference, today],
   )
   /** The centers listing the qualification in focus: where its supply is. */
-  // A matched qualification with no center in range: everything listed within range, to suggest a related one.
+  // A matched qualification with no center in range, or with no center at all: everything listed within range, to
+  // suggest a related one.
   const outOfRange = useMemo(
-    () => Boolean(search && reference && anyOutOfRange(matches, centers, rangeKm)),
+    () =>
+      Boolean(
+        search &&
+        reference &&
+        (anyOutOfRange(matches, centers, rangeKm) ||
+          anyKindWithoutCenter(matches, centers, rangeKm)),
+      ),
     [search, reference, matches, centers, rangeKm],
   )
   const inRange = useQuery({
