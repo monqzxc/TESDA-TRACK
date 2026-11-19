@@ -74,6 +74,21 @@ def get_optional_learner(request: Request, session: SessionDep, bearer: BearerTo
 OptionalLearner = Annotated[Learner | None, Depends(get_optional_learner)]
 
 
+def get_lenient_learner(request: Request, session: SessionDep, bearer: BearerToken,
+                        cookie: CookieToken) -> Learner | None:
+    """For public reads that only *tailor* their answer to a learner (the Demand lists): a missing, expired or
+    revoked sign-in is simply nobody, never a 401, so a stale cookie can't break a page that works signed out."""
+    if not (bearer or cookie):
+        return None
+    try:
+        return get_current_learner(request, session, bearer, cookie)
+    except (AuthenticationError, SessionCookieError):
+        return None
+
+
+LenientLearner = Annotated[Learner | None, Depends(get_lenient_learner)]
+
+
 def require_admin(learner: CurrentLearner) -> Learner:
     if learner.role != "admin":
         raise PermissionDeniedError("This action requires an administrator account.")

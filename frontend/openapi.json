@@ -6504,8 +6504,16 @@
           "labor market"
         ],
         "summary": "Area Qualification Evidence",
-        "description": "Reviewed qualification links for an area; observations and forecasts stay separate.",
+        "description": "Reviewed qualification links for an area; observations and forecasts stay separate. With `personalize` and a\nlearner signed in through TESDA Skill Passport, the qualifications their profile fits come first, each with the\nreasons; otherwise the usual alphabetical directory.",
         "operationId": "area_qualification_evidence_api_v1_labor_market_qualifications_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
         "parameters": [
           {
             "name": "region_code",
@@ -6545,6 +6553,18 @@
               "default": 0,
               "title": "Offset"
             }
+          },
+          {
+            "name": "personalize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Rank by the signed-in learner's Skill Passport. Ignored (a plain answer) when nobody is signed in or the account isn't linked to TSP; the response's `personalized` says which.",
+              "default": false,
+              "title": "Personalize"
+            },
+            "description": "Rank by the signed-in learner's Skill Passport. Ignored (a plain answer) when nobody is signed in or the account isn't linked to TSP; the response's `personalized` says which."
           }
         ],
         "responses": {
@@ -6577,7 +6597,16 @@
           "labor market"
         ],
         "summary": "Area Job Evidence",
+        "description": "Posting records by title. With `personalize` and a learner signed in through TESDA Skill Passport, titles\nlinked to qualifications their profile fits come first; otherwise by posting count.",
         "operationId": "area_job_evidence_api_v1_labor_market_jobs_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
         "parameters": [
           {
             "name": "region_code",
@@ -6651,6 +6680,18 @@
               "default": 0,
               "title": "Offset"
             }
+          },
+          {
+            "name": "personalize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Rank by the signed-in learner's Skill Passport. Ignored (a plain answer) when nobody is signed in or the account isn't linked to TSP; the response's `personalized` says which.",
+              "default": false,
+              "title": "Personalize"
+            },
+            "description": "Rank by the signed-in learner's Skill Passport. Ignored (a plain answer) when nobody is signed in or the account isn't linked to TSP; the response's `personalized` says which."
           }
         ],
         "responses": {
@@ -7717,6 +7758,29 @@
             },
             "type": "array",
             "title": "Region Codes"
+          },
+          "personal_fit": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonalFit"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Through the best-fitting qualification this title has a reviewed link to; personalized requests only"
+          },
+          "linked_qualification": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Linked Qualification",
+            "description": "That qualification, by name"
           }
         },
         "type": "object",
@@ -7809,6 +7873,20 @@
             },
             "type": "array",
             "title": "Posted Between"
+          },
+          "ordering": {
+            "type": "string",
+            "enum": [
+              "posting_count",
+              "profile_fit"
+            ],
+            "title": "Ordering",
+            "default": "posting_count"
+          },
+          "personalized": {
+            "type": "boolean",
+            "title": "Personalized",
+            "default": false
           },
           "source_url": {
             "type": "string",
@@ -8014,6 +8092,17 @@
             },
             "type": "array",
             "title": "Limitations"
+          },
+          "personal_fit": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonalFit"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Only on a personalized request from a learner linked to a Skill Passport"
           }
         },
         "type": "object",
@@ -8077,9 +8166,17 @@
           },
           "ordering": {
             "type": "string",
-            "const": "qualification_name",
+            "enum": [
+              "qualification_name",
+              "profile_fit"
+            ],
             "title": "Ordering",
             "default": "qualification_name"
+          },
+          "personalized": {
+            "type": "boolean",
+            "title": "Personalized",
+            "default": false
           },
           "method_version": {
             "type": "string",
@@ -11862,6 +11959,59 @@
         ],
         "title": "FinalRecommendation"
       },
+      "FitReason": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "skill",
+              "experience",
+              "unit",
+              "sector",
+              "held",
+              "renew"
+            ],
+            "title": "Kind"
+          },
+          "terms": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Terms"
+          },
+          "qualification": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Qualification",
+            "description": "A qualification they hold or held, by name"
+          },
+          "sector": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sector"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind"
+        ],
+        "title": "FitReason",
+        "description": "One line of \"because\": the learner's own words or records that point to this result.\n\nskill        a skill they listed (\"cooking\")\nexperience   a job they have done (\"kitchen helper\")\nunit         a CORE unit of competency on one of their certificates, with that certificate's qualification\nsector       the same sector as a qualification they hold or held\nheld         they hold this qualification today (on a job: the job is linked to it)\nrenew        they held it, but the certificate has expired"
+      },
       "FlightEstimate": {
         "properties": {
           "mode": {
@@ -14650,6 +14800,44 @@
           "description"
         ],
         "title": "PermissionPublic"
+      },
+      "PersonalFit": {
+        "properties": {
+          "score": {
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 0,
+            "title": "Score",
+            "description": "How well the Skill Passport fits: not an assessment"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "held",
+                  "renew"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Status"
+          },
+          "reasons": {
+            "items": {
+              "$ref": "#/components/schemas/FitReason"
+            },
+            "type": "array",
+            "title": "Reasons"
+          }
+        },
+        "type": "object",
+        "required": [
+          "score"
+        ],
+        "title": "PersonalFit"
       },
       "PersonalizationWeights": {
         "properties": {

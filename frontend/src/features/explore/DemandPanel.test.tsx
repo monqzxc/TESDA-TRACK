@@ -2,6 +2,7 @@ import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { AuthContext, type Auth } from '../../auth/useAuth.ts'
 import { renderWithQuery } from '../../test/query.tsx'
 import { server } from '../../test/server.ts'
 import type { CenterMapProps } from '../training/CenterMapTypes.ts'
@@ -73,6 +74,7 @@ beforeEach(() => {
     locality: null,
     code: null,
     offset: 0,
+    personal: true,
   })
   useTrainingStore.setState({
     useLocation: false,
@@ -282,5 +284,70 @@ describe('Explore labor demand', () => {
     )
     fireEvent.click(screen.getByRole('button', { name: 'Try again' }))
     expect(await screen.findByText(/Missing evidence does not mean low demand/)).toBeVisible()
+  })
+
+  it('ranks by the Skill Passport without the learner typing it, explains why, and can be turned off', async () => {
+    server.use(
+      http.get('*/api/v1/auth/tsp/profile', () =>
+        HttpResponse.json({
+          skills: ['Cooking'],
+          experience: [],
+          education: [],
+          qualifications: [],
+          credentials: [],
+          licenses: [],
+          sample: false,
+          region_code: null,
+        }),
+      ),
+      http.get('*/api/v1/labor-market/jobs', ({ request }) => {
+        const url = new URL(request.url)
+        requests.push(url)
+        if (url.searchParams.get('personalize') !== 'true') return HttpResponse.json(jobs)
+        return HttpResponse.json({
+          ...jobs,
+          personalized: true,
+          ordering: 'profile_fit',
+          items: [
+            {
+              title: 'COOK',
+              posting_count: 2,
+              employer_count: 1,
+              localities: ['PASAY CITY, NCR'],
+              region_codes: ['NCR'],
+              linked_qualification: 'Cookery NC II',
+              personal_fit: {
+                score: 80,
+                status: null,
+                reasons: [{ kind: 'skill', terms: ['Cooking'], qualification: null, sector: null }],
+              },
+            },
+            ...jobs.items,
+          ],
+        })
+      }),
+    )
+    renderWithQuery(
+      <AuthContext.Provider value={{ learner: { id: 'ana' } } as Auth}>
+        <MemoryRouter initialEntries={['/explore?type=demand']}>
+          <ExplorePage />
+        </MemoryRouter>
+      </AuthContext.Provider>,
+    )
+    expect(await screen.findByRole('heading', { name: /COOK/ })).toBeVisible()
+    expect(screen.getByText('Picked for you from your Skill Passport')).toBeVisible()
+    expect(screen.getByText('Linked to Cookery NC II.')).toBeVisible()
+    expect(screen.getByText('Based on your skill: Cooking.')).toBeVisible()
+    // Hidden from the address bar's point of view too: the skills never travel in the request.
+    const personalized = requests.filter((url) => url.searchParams.get('personalize') === 'true')
+    expect(personalized.length).toBeGreaterThan(0)
+    expect(personalized.every((url) => !url.search.includes('Cooking'))).toBe(true)
+
+    fireEvent.click(screen.getByRole('button', { name: 'Show all instead' }))
+    expect(await screen.findByText('Showing everything, not ranked for you')).toBeVisible()
+    // Back to the plain list (shared with the map, so it may come from the cache without a new request).
+    await waitFor(() => expect(screen.queryByRole('heading', { name: /COOK/ })).toBeNull())
+    expect(screen.getByRole('heading', { name: 'WELDER' })).toBeVisible()
+    expect(screen.queryByText('Based on your skill: Cooking.')).toBeNull()
   })
 })

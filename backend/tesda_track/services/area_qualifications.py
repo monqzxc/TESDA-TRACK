@@ -1,6 +1,12 @@
-"""Bulk, reviewed-only qualification discovery for an area; no demand or personal-fit score."""
+"""Bulk, reviewed-only qualification discovery for an area; no demand score.
+
+By default an alphabetical directory. Given a learner's Skill Passport fit (services/profile_fit), the qualifications
+it fits come first, ordered by fit and posting records together; then those the learner already holds; then the rest
+of the directory in its usual order.
+"""
 
 from datetime import date, datetime
+from typing import TYPE_CHECKING
 from zoneinfo import ZoneInfo
 
 from sqlalchemy import and_, or_
@@ -17,6 +23,9 @@ from tesda_track.schemas.area_qualifications import AreaQualification, AreaQuali
 from tesda_track.schemas.evidence import ForecastSupport, Geography
 from tesda_track.services.demand_evidence import NO_POSTINGS, POSTING_LIMITATION
 
+if TYPE_CHECKING:
+    from tesda_track.services.profile_fit import ProfileFit
+
 
 LIMITATIONS = [
     "This is an evidence-linked directory, not a personalized ranking or a workforce-shortage estimate.",
@@ -24,6 +33,9 @@ LIMITATIONS = [
     "Forecast classifications are categorical; they are not projected vacancy totals.",
     "Regional evidence does not establish demand in a particular municipality.",
 ]
+PERSONALIZED = ("Ordered by how well your Skill Passport fits, then by posting records: a starting point, not an "
+                "assessment of you or a workforce-shortage estimate.")
+FIT_WEIGHT, DEMAND_WEIGHT = 0.7, 0.3
 
 
 def discover(
@@ -33,6 +45,7 @@ def discover(
     limit: int = 50,
     offset: int = 0,
     now: datetime | None = None,
+    fit: "ProfileFit | None" = None,
 ) -> AreaQualifications:
     """Read candidates in one joined query; deduplicate postings by publisher/source ID.
 
@@ -147,6 +160,8 @@ def discover(
         ))
 
     ordered = sorted(found.values(), key=lambda item: (item["qualification"].name.casefold(), item["qualification"].code))
+    if fit is not None:
+        ordered.sort(key=_fit_rank(fit, ordered))  # stable: name order is kept within a tier
     items = []
     for item in ordered[offset:offset + limit]:
         notes = [POSTING_LIMITATION]
@@ -164,6 +179,7 @@ def discover(
             has_selected_area_evidence=item["has_selected_area_evidence"],
             dataset_keys=sorted(item["dataset_keys"]),
             limitations=notes,
+            personal_fit=fit.get(item["qualification"].code) if fit is not None else None,
         ))
     return AreaQualifications(
         items=items,
@@ -174,5 +190,20 @@ def discover(
         evaluated_at=now,
         observed_since=since,
         observed_through=today,
-        limitations=list(LIMITATIONS),
+        ordering="profile_fit" if fit is not None else "qualification_name",
+        personalized=fit is not None,
+        limitations=[PERSONALIZED, *LIMITATIONS[1:]] if fit is not None else list(LIMITATIONS),
     )
+
+
+def _fit_rank(fit: "ProfileFit", items: list[dict]):
+    busiest = max((len(item["posting_ids"]) for item in items), default=0) or 1
+
+    def rank(item: dict) -> tuple[int, float]:
+        personal = fit.get(item["qualification"].code)
+        if personal is None:
+            return 2, 0.0
+        if personal.status == "held":
+            return 1, 0.0
+        return 0, -(FIT_WEIGHT * personal.score / 100 + DEMAND_WEIGHT * len(item["posting_ids"]) / busiest)
+    return rank

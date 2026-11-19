@@ -6,6 +6,7 @@ from typing import Literal
 from pydantic import BaseModel, Field
 
 from tesda_track.schemas.evidence import ForecastSupport, Geography
+from tesda_track.schemas.profile_fit import PersonalFit
 
 
 class AreaQualification(BaseModel):
@@ -19,6 +20,8 @@ class AreaQualification(BaseModel):
     has_selected_area_evidence: bool = False
     dataset_keys: list[str] = Field(default_factory=list)
     limitations: list[str] = Field(default_factory=list)
+    personal_fit: PersonalFit | None = Field(default=None, description=(
+        "Only on a personalized request from a learner linked to a Skill Passport"))
 
 
 class AreaQualifications(BaseModel):
@@ -30,6 +33,7 @@ class AreaQualifications(BaseModel):
     evaluated_at: datetime
     observed_since: date
     observed_through: date
-    ordering: Literal["qualification_name"] = "qualification_name"
+    ordering: Literal["qualification_name", "profile_fit"] = "qualification_name"
+    personalized: bool = False
     method_version: Literal["area-qualifications-v1"] = "area-qualifications-v1"
     limitations: list[str] = Field(default_factory=list)

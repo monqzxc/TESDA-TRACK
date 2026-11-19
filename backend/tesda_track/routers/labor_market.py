@@ -1,14 +1,14 @@
 import uuid
 from functools import lru_cache
 from typing import Annotated, Literal
-from fastapi import APIRouter, Depends, Query, Request
+from fastapi import APIRouter, Depends, Query, Request, Response
 from sqlalchemy import func
 from sqlmodel import select
 from tesda_track.db import SessionDep
 from tesda_track.schemas.nearby_suggestions import NearbySuggestionRequest, NearbySuggestions
 from tesda_track.services import nearby_suggestions
 from tesda_track.services.embeddings import EmbedderDep
-from tesda_track.deps import CurrentLearner, require_permission
+from tesda_track.deps import CurrentLearner, LenientLearner, require_permission
 from tesda_track.models import Qualification, Region
 from tesda_track.models.labor_market import (
     LaborMarketDataset as Dataset,
@@ -20,7 +20,7 @@ from tesda_track.services import labor_market as service, goals, catalog, eviden
 from tesda_track.schemas.evidence import QualificationEvidencePanel
 from tesda_track.schemas.area_qualifications import AreaQualifications
 from tesda_track.services import area_qualifications
-from tesda_track.services import area_jobs
+from tesda_track.services import area_jobs, profile_fit
 from tesda_track.schemas.area_jobs import AreaJobs
 from tesda_track.config import Settings, get_settings
 from tesda_track.schemas.outlook import OutlookSummary, QualificationOutlook
@@ -40,6 +40,9 @@ goal_router = APIRouter(prefix="/me/goals", tags=["goals"])
 SettingsDep = Annotated[Settings, Depends(get_settings)]
 QualificationCode = Annotated[str, Query(min_length=1, max_length=40)]
 RegionCode = Annotated[str | None, Query(max_length=20)]
+Personalize = Annotated[bool, Query(description=(
+    "Rank by the signed-in learner's Skill Passport. Ignored (a plain answer) when nobody is signed in or the "
+    "account isn't linked to TSP; the response's `personalized` says which."))]
 
 
 @lru_cache
@@ -82,24 +85,49 @@ def qualification_evidence(
 @router.get("/qualifications", response_model=AreaQualifications)
 def area_qualification_evidence(
     session: SessionDep,
+    response: Response,
+    learner: LenientLearner,
+    embedder: EmbedderDep,
     region_code: str | None = None,
     limit: int = Query(default=50, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
+    personalize: Personalize = False,
 ) -> AreaQualifications:
-    """Reviewed qualification links for an area; observations and forecasts stay separate."""
-    return area_qualifications.discover(session, region_code, limit=limit, offset=offset)
+    """Reviewed qualification links for an area; observations and forecasts stay separate. With `personalize` and a
+    learner signed in through TESDA Skill Passport, the qualifications their profile fits come first, each with the
+    reasons; otherwise the usual alphabetical directory."""
+    fit = _profile_fit(session, response, learner, embedder, personalize)
+    return area_qualifications.discover(session, region_code, limit=limit, offset=offset, fit=fit)
 
 
 @router.get("/jobs", response_model=AreaJobs)
 def area_job_evidence(
     session: SessionDep,
+    response: Response,
+    learner: LenientLearner,
+    embedder: EmbedderDep,
     region_code: str | None = None,
     locality: str | None = Query(default=None, max_length=120),
     qualification_code: str | None = Query(default=None, max_length=40),
     limit: int = Query(default=30, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
+    personalize: Personalize = False,
 ) -> AreaJobs:
-    return area_jobs.discover(session, region_code, locality, qualification_code, limit=limit, offset=offset)
+    """Posting records by title. With `personalize` and a learner signed in through TESDA Skill Passport, titles
+    linked to qualifications their profile fits come first; otherwise by posting count."""
+    fit = _profile_fit(session, response, learner, embedder, personalize)
+    return area_jobs.discover(session, region_code, locality, qualification_code, limit=limit, offset=offset,
+                              fit=fit)
+
+
+def _profile_fit(session, response: Response, learner, embedder, personalize: bool):
+    """The learner's Skill Passport fit, or None for a plain (shared, cacheable) answer. A personalized answer is
+    marked private, so no shared cache serves one learner's ranking to another."""
+    if not personalize:
+        return None
+    response.headers["Cache-Control"] = "private, no-store"
+    response.headers["Vary"] = "Cookie, Authorization"
+    return profile_fit.for_learner(session, learner, embedder)
 
 
 @router.get("/outlook", response_model=QualificationOutlook)

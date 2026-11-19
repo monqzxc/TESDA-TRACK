@@ -8,6 +8,7 @@ Standard library only. From backend/:
 """
 import base64
 import gzip
+import hashlib
 import io
 import json
 import tarfile
@@ -16,7 +17,13 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 DATA = HERE / "data" / "skills_profile"
 OUTPUT = HERE / "colab" / "train_colab_skills.ipynb"
-V4_SHA = "76cbab6ba7b27672b1f3b5e0b48260b5a4bc0d5d942d4ccaeb625948ab2e5600"  # training/v5.py
+# (repo, pinned revision, sha256 of onnx/model.onnx). v6-colab is what production serves (backend/models/README.md);
+# its digest matches the repo's checksums.json and Hugging Face's LFS hash. v4's is training/v5.V4_SHA.
+PUBLISHED = {
+    "v6": ("Nyanta19/tesda-e5-small-v6-colab", "a871a651887f25c598793411e9d1b8eed9177ec4",
+           "0adef47feb648c7c1b902cf496ce4ceaf052de04784d155730b37b3127f489e1"),
+    "v4": ("Nyanta19/tesda-e5-small-v4", "main", "76cbab6ba7b27672b1f3b5e0b48260b5a4bc0d5d942d4ccaeb625948ab2e5600"),
+}
 PACKAGES = ["sentence-transformers==6.1.0", "transformers==5.19.0", "accelerate==1.15.0", "onnx==1.23.2",
             "onnxruntime==1.31.0", "fastembed==0.8.1", "datasets", "scikit-learn", "joblib"]
 
@@ -31,8 +38,10 @@ def markdown(text: str) -> dict:
 
 
 def bundle() -> str:
-    files = {"profiles.jsonl": DATA / "profiles.jsonl", "demand_quarterly.csv": DATA / "demand_quarterly.csv",
-             "qualifications.json": HERE.parent / "seed" / "qualifications.json", "recover.py": HERE / "recover.py"}
+    """The generator and its inputs (~90 KB), not the generated data (~20 MB): a multi-megabyte line blanks Colab."""
+    files = {"training/skills_profile.py": HERE / "skills_profile.py",
+             "seed/qualifications.json": HERE.parent / "seed" / "qualifications.json",
+             "seed/regions.json": HERE.parent / "seed" / "regions.json", "recover.py": HERE / "recover.py"}
     raw = io.BytesIO()
     with tarfile.open(fileobj=raw, mode="w") as tar:
         for name, path in files.items():
@@ -40,7 +49,12 @@ def bundle() -> str:
             info = tarfile.TarInfo(name)
             info.size, info.mtime = len(data), 0
             tar.addfile(info, io.BytesIO(data))
-    return base64.b64encode(gzip.compress(raw.getvalue(), compresslevel=9, mtime=0)).decode()
+    encoded = base64.b64encode(gzip.compress(raw.getvalue(), compresslevel=9, mtime=0)).decode()
+    return "\n".join(encoded[i:i + 100] for i in range(0, len(encoded), 100))  # short lines; b64decode skips newlines
+
+
+def data_digests() -> dict:
+    return {name: hashlib.sha256((DATA / name).read_bytes()).hexdigest() for name in ("profiles.jsonl", "demand_quarterly.csv")}
 
 
 INTRO = """
@@ -54,7 +68,8 @@ What this notebook does:
    synthetic demand table (job postings, vacancies, applicants) for every qualification × region × quarter,
    2023-Q1 to 2026-Q4 (2026-Q4 is a projection).
 2. **Fine-tunes the matcher** so a learner's TSP skills (`"cooking, baking, customer service"`, exactly the text the
-   app embeds for a TSP suggestion) rank the right qualification first. It continues the published v4 model.
+   app embeds for a TSP suggestion) rank the right qualification first. It continues **v6-colab**, the model production serves now, so its
+   multilingual goal search is the starting point.
 3. **Trains a route model**: should this learner go to an **assessment center** (already skilled) or a **training
    center**?
 4. **Blends in demand**: among qualifications that already match, rising and in-demand ones in the learner's
@@ -70,7 +85,7 @@ locally on the real dev goals and the acceptance gate (`backend/training/README.
 
 SETTINGS = """
 ROUND = "skills-v1"          # new name (skills-v2, ...) for a new experiment
-BASE = "v4"                  # "v4": continue the published TESDA v4 model; "e5": start from intfloat/multilingual-e5-small
+BASE = "v6"                  # "v6": continue v6-colab (what production serves); "v4": the older v4; "e5": plain multilingual-e5-small
 EPOCHS = 2
 LR = 2e-5
 BATCH_SIZE = 128             # in-batch negatives; memory is bounded by MINI_BATCH
@@ -85,18 +100,33 @@ from pathlib import Path
 WORK = Path("/content/tesda-skills"); WORK.mkdir(exist_ok=True)
 (WORK / "settings.json").write_text(json.dumps({k: v for k, v in globals().items()
     if k.isupper() and isinstance(v, (str, int, float, bool))}, indent=2))
+(WORK / "runs_dir.txt").unlink(missing_ok=True)   # re-decide the runs folder with these settings
 print((WORK / "settings.json").read_text())
+if USE_DRIVE:
+    print("Connecting Google Drive: accept the sign-in popup (it can hide behind this window).")
+    try:
+        from google.colab import drive
+        drive.mount("/content/drive")
+    except Exception as error:
+        print(f"Drive did not mount ({error}); training will save in this session instead.")
 """
 
 WRITE_DATA = """
-import base64, gzip, hashlib, io, tarfile
+import base64, gzip, hashlib, io, shutil, subprocess, sys, tarfile
 from pathlib import Path
 WORK = Path("/content/tesda-skills"); WORK.mkdir(exist_ok=True)
-BLOB = "__BLOB__"
+BLOB = \"\"\"
+__BLOB__
+\"\"\"
 with tarfile.open(fileobj=io.BytesIO(gzip.decompress(base64.b64decode(BLOB)))) as tar:
     tar.extractall(WORK, filter="data")
-for name in ("profiles.jsonl", "demand_quarterly.csv", "qualifications.json", "recover.py"):
-    print(f"{name:24s} {(WORK / name).stat().st_size:>12,} bytes  sha256 {hashlib.sha256((WORK / name).read_bytes()).hexdigest()[:16]}")
+shutil.copy2(WORK / "seed" / "qualifications.json", WORK / "qualifications.json")
+# Generate the synthetic profiles and demand table here (deterministic, a few seconds).
+subprocess.run([sys.executable, "-I", str(WORK / "training" / "skills_profile.py"), "--output", str(WORK)], check=True)
+EXPECTED = __DIGESTS__
+for name, want in EXPECTED.items():
+    got = hashlib.sha256((WORK / name).read_bytes()).hexdigest()
+    print(f"{name:24s} {(WORK / name).stat().st_size:>12,} bytes  {'same as the repo' if got == want else 'DIFFERS from the repo copy (fine, but numbers will differ slightly)'}")
 """
 
 COMMON = '''
@@ -128,13 +158,25 @@ def demand():
     return pd.read_csv(WORK / "demand_quarterly.csv")
 
 def runs_dir():
+    # Decided once per session and remembered, so training and export always use the same folder.
+    chosen = WORK / "runs_dir.txt"
+    if chosen.exists():
+        return Path(chosen.read_text())
+    path = WORK / "runs"
     if S["USE_DRIVE"]:
-        from google.colab import drive
-        drive.mount("/content/drive")
-        path = Path("/content/drive/MyDrive/tesda-track-training")
-    else:
-        path = WORK / "runs"
+        drive_root = Path("/content/drive/MyDrive")
+        if not drive_root.exists():
+            try:
+                from google.colab import drive
+                drive.mount("/content/drive")
+            except Exception as error:
+                print(f"Google Drive did not mount ({error}). Saving checkpoints in this session instead: "
+                      "a disconnect restarts training. To use Drive, run cell 2 again and accept the sign-in popup.")
+        if drive_root.exists():
+            path = drive_root / "tesda-track-training"
     path.mkdir(parents=True, exist_ok=True)
+    chosen.write_text(str(path))
+    print("Runs folder:", path)
     return path
 
 def out_dir():
@@ -255,23 +297,33 @@ from pathlib import Path
 WORK = Path("/content/tesda-skills")
 S = json.loads((WORK / "settings.json").read_text())
 BASE = WORK / "base-model"
-if S["BASE"] == "v4":
+# Published TESDA models hold only their ONNX export: pin the revision, check the file, recover trainable weights.
+PUBLISHED = __PUBLISHED__
+marker = BASE / "base.txt"
+if marker.exists() and marker.read_text() != S["BASE"]:
+    shutil.rmtree(BASE)          # BASE changed in the settings: rebuild from the new parent
+if S["BASE"] in PUBLISHED:
+    repo, revision, sha = PUBLISHED[S["BASE"]]
     from huggingface_hub import snapshot_download
-    parent = WORK / "tesda-e5-small-v4"
-    snapshot_download("Nyanta19/tesda-e5-small-v4", local_dir=parent,
+    parent = WORK / repo.split("/")[1]
+    snapshot_download(repo, revision=revision, local_dir=parent,
                       allow_patterns=["config.json", "tokenizer.json", "tokenizer_config.json", "onnx/model.onnx"])
     with open(parent / "onnx/model.onnx", "rb") as f:
-        assert hashlib.file_digest(f, "sha256").hexdigest() == "__V4_SHA__", "Unexpected v4 parent ONNX"
+        assert hashlib.file_digest(f, "sha256").hexdigest() == sha, f"Unexpected {S['BASE']} parent ONNX"
     if not (BASE / "recovered_from.txt").exists():
         shutil.rmtree(BASE, ignore_errors=True)
         subprocess.run([sys.executable, "-u", str(WORK / "recover.py"), "--onnx-folder", str(parent),
                         "--output", str(BASE)], cwd=WORK, check=True)
+    print(f"Base: {repo} @ {revision[:12]}")
     print((BASE / "recovered_from.txt").read_text())
-else:
+elif S["BASE"] == "e5":
     from sentence_transformers import SentenceTransformer
     if not BASE.exists():
         SentenceTransformer("intfloat/multilingual-e5-small").save_pretrained(str(BASE))
     print("Base: intfloat/multilingual-e5-small")
+else:
+    raise SystemExit(f"Unknown BASE {S['BASE']!r}: use v6, v4 or e5")
+marker.write_text(S["BASE"])
 """
 
 BASELINE = """
@@ -291,9 +343,13 @@ import sys, json, random; sys.path.insert(0, "/content/tesda-skills")
 import common
 import torch
 from datasets import Dataset
-from sentence_transformers import (SentenceTransformer, SentenceTransformerTrainer,
-                                   SentenceTransformerTrainingArguments, losses)
-from sentence_transformers.training_args import BatchSamplers
+from sentence_transformers import SentenceTransformer, SentenceTransformerTrainer, SentenceTransformerTrainingArguments
+try:   # sentence-transformers 6 moved these; the old paths still work but warn
+    from sentence_transformers.sentence_transformer import losses
+    from sentence_transformers.sentence_transformer.training_args import BatchSamplers
+except ImportError:
+    from sentence_transformers import losses
+    from sentence_transformers.training_args import BatchSamplers
 
 S = common.S
 P = common.profiles()
@@ -584,14 +640,15 @@ print(torch.__version__, torch.cuda.get_device_name(0))
 print("If Colab asks to restart the session, restart it and choose Runtime > Run all again.")
 """, "1. Install the pinned libraries and require a GPU"),
         code(SETTINGS, "2. Settings"),
-        code(WRITE_DATA.replace("__BLOB__", bundle()), "3. Write the embedded synthetic data, catalog and recover.py"),
+        code(WRITE_DATA.replace("__BLOB__", bundle()).replace("__DIGESTS__", repr(data_digests())),
+             "3. Unpack the catalog and generator, then generate the synthetic data"),
         code(COMMON, "4. Shared helpers"),
         markdown("## Look at the data"),
         code(EXPLORE, "5. Synthetic Skill Passport profiles"),
         code(TRENDS, "6. Demand trend 2023–2026 (synthetic)"),
         code(DEMAND_FEATURES, "7. Demand features per region and qualification"),
         markdown("## Fine-tune the matcher on skills"),
-        code(FETCH_BASE.replace("__V4_SHA__", V4_SHA), "8. Fetch the base model"),
+        code(FETCH_BASE.replace("__PUBLISHED__", repr(PUBLISHED)), "8. Fetch the base model"),
         code(BASELINE, "9. Baseline: how the base model ranks skill profiles"),
         code(TRAIN, "10. Fine-tune (resumes from Drive after a disconnect)"),
         code(AFTER, "11. Before vs after"),

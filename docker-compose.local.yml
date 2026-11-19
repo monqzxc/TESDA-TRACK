@@ -1,0 +1,8 @@
+# Local machine only (plain http://localhost): the API runs in development mode so the session cookie isn't marked
+# Secure, which browsers drop over plain HTTP (Safari always; others outside localhost). Only the API: migrate stays
+# in production mode, so the seed doesn't add sample accounts or fixture centers. Never use this on a server.
+#   docker compose -f docker-compose.yml -f docker-compose.skills-test.yml -f docker-compose.local.yml up -d
+services:
+  api:
+    environment:
+      ENVIRONMENT: development

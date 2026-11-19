@@ -1884,7 +1884,9 @@ export interface paths {
         };
         /**
          * Area Qualification Evidence
-         * @description Reviewed qualification links for an area; observations and forecasts stay separate.
+         * @description Reviewed qualification links for an area; observations and forecasts stay separate. With `personalize` and a
+         *     learner signed in through TESDA Skill Passport, the qualifications their profile fits come first, each with the
+         *     reasons; otherwise the usual alphabetical directory.
          */
         get: operations["area_qualification_evidence_api_v1_labor_market_qualifications_get"];
         put?: never;
@@ -1902,7 +1904,11 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Area Job Evidence */
+        /**
+         * Area Job Evidence
+         * @description Posting records by title. With `personalize` and a learner signed in through TESDA Skill Passport, titles
+         *     linked to qualifications their profile fits come first; otherwise by posting count.
+         */
         get: operations["area_job_evidence_api_v1_labor_market_jobs_get"];
         put?: never;
         post?: never;
@@ -2225,6 +2231,13 @@ export interface components {
             localities: string[];
             /** Region Codes */
             region_codes: string[];
+            /** @description Through the best-fitting qualification this title has a reviewed link to; personalized requests only */
+            personal_fit?: components["schemas"]["PersonalFit"] | null;
+            /**
+             * Linked Qualification
+             * @description That qualification, by name
+             */
+            linked_qualification?: string | null;
         };
         /** AreaJobs */
         AreaJobs: {
@@ -2252,6 +2265,17 @@ export interface components {
             snapshot_dates: string[];
             /** Posted Between */
             posted_between: string[];
+            /**
+             * Ordering
+             * @default posting_count
+             * @enum {string}
+             */
+            ordering: "posting_count" | "profile_fit";
+            /**
+             * Personalized
+             * @default false
+             */
+            personalized: boolean;
             /**
              * Source Url
              * @default https://philjobnet.gov.ph/job-vacancies/
@@ -2344,6 +2368,8 @@ export interface components {
             dataset_keys?: string[];
             /** Limitations */
             limitations?: string[];
+            /** @description Only on a personalized request from a learner linked to a Skill Passport */
+            personal_fit?: components["schemas"]["PersonalFit"] | null;
         };
         /** AreaQualifications */
         AreaQualifications: {
@@ -2375,9 +2401,14 @@ export interface components {
             /**
              * Ordering
              * @default qualification_name
-             * @constant
+             * @enum {string}
              */
-            ordering: "qualification_name";
+            ordering: "qualification_name" | "profile_fit";
+            /**
+             * Personalized
+             * @default false
+             */
+            personalized: boolean;
             /**
              * Method Version
              * @default area-qualifications-v1
@@ -3581,6 +3612,33 @@ export interface components {
             providers: string[];
         };
         /**
+         * FitReason
+         * @description One line of "because": the learner's own words or records that point to this result.
+         *
+         *     skill        a skill they listed ("cooking")
+         *     experience   a job they have done ("kitchen helper")
+         *     unit         a CORE unit of competency on one of their certificates, with that certificate's qualification
+         *     sector       the same sector as a qualification they hold or held
+         *     held         they hold this qualification today (on a job: the job is linked to it)
+         *     renew        they held it, but the certificate has expired
+         */
+        FitReason: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "skill" | "experience" | "unit" | "sector" | "held" | "renew";
+            /** Terms */
+            terms?: string[];
+            /**
+             * Qualification
+             * @description A qualification they hold or held, by name
+             */
+            qualification?: string | null;
+            /** Sector */
+            sector?: string | null;
+        };
+        /**
          * FlightEstimate
          * @description An estimate from the distance between the airports nearest each end, not an airline schedule.
          */
@@ -4621,6 +4679,18 @@ export interface components {
             key: string;
             /** Description */
             description: string;
+        };
+        /** PersonalFit */
+        PersonalFit: {
+            /**
+             * Score
+             * @description How well the Skill Passport fits: not an assessment
+             */
+            score: number;
+            /** Status */
+            status?: ("held" | "renew") | null;
+            /** Reasons */
+            reasons?: components["schemas"]["FitReason"][];
         };
         /** PersonalizationWeights */
         PersonalizationWeights: {
@@ -10563,6 +10633,8 @@ export interface operations {
                 region_code?: string | null;
                 limit?: number;
                 offset?: number;
+                /** @description Rank by the signed-in learner's Skill Passport. Ignored (a plain answer) when nobody is signed in or the account isn't linked to TSP; the response's `personalized` says which. */
+                personalize?: boolean;
             };
             header?: never;
             path?: never;
@@ -10598,6 +10670,8 @@ export interface operations {
                 qualification_code?: string | null;
                 limit?: number;
                 offset?: number;
+                /** @description Rank by the signed-in learner's Skill Passport. Ignored (a plain answer) when nobody is signed in or the account isn't linked to TSP; the response's `personalized` says which. */
+                personalize?: boolean;
             };
             header?: never;
             path?: never;

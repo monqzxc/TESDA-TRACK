@@ -72,6 +72,7 @@ function directory(region: string): components['schemas']['AreaQualifications'] 
     total: 1,
     limit: 20,
     offset: 0,
+    personalized: false,
     region_code: region,
     evaluated_at: '2026-11-10T10:00:00+08:00',
     observed_since: '2026-10-11',

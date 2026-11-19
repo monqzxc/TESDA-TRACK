@@ -1749,6 +1749,9 @@ export const en = {
     menu: {
       // Read before the learner's name on the menu button: "Your account: Maria Santos".
       label: 'Your account',
+      // The same, on the app's top bar (the sidebar has its own): "Account: Maria Santos".
+      topLabel: 'Account',
+      topSignIn: 'Sign in to your account',
       admin: 'Administrator',
       learner: 'Learner account',
       signOut: 'Sign out',
@@ -1759,7 +1762,7 @@ export const en = {
       // The Streamlit panel's "Your data & privacy" expander.
       data: {
         heading: 'Your data & privacy',
-        body: 'Download everything TESDA-TRACK stores about you, or delete your account.',
+        body: 'Download everything TESDA-TRACK stores about you.',
       },
       download: 'Download my data (JSON)',
       delete: 'Delete my account',
@@ -2429,6 +2432,31 @@ export const en = {
       mapBoundaryLoading: 'Loading regional boundaries…',
       mapBoundaryFailed:
         'Regional boundaries could not be loaded. You can still choose an area in the list.',
+      // Ranked by the learner's Skill Passport (the server reads it; nothing is typed or sent from here).
+      personal: {
+        on: 'Picked for you from your Skill Passport',
+        off: 'Showing everything, not ranked for you',
+        turnOff: 'Show all instead',
+        turnOn: 'Rank for me',
+        note: 'Your skills, past jobs and certificates put the closest matches first. This is a starting point, not an assessment.',
+        nothing:
+          'Nothing in your Skill Passport points to these results yet, so they are in the usual order.',
+        forYou: 'For you',
+        via: (qualification: string) => `Linked to ${qualification}.`,
+        reason: {
+          skill: (terms: string) => `Based on your skill: ${terms}.`,
+          experience: (terms: string) => `Since you have worked as ${terms}.`,
+          unit: (terms: string, qualification: string | null) =>
+            qualification
+              ? `Builds on what you learned for ${qualification}: ${terms}.`
+              : `Builds on what you learned: ${terms}.`,
+          sector: (qualification: string, sector: string) =>
+            `Same field as your ${qualification} (${sector}).`,
+          held: (qualification: string) => `You already hold ${qualification}.`,
+          renew: (qualification: string) =>
+            `Your ${qualification} certificate has expired: renew it.`,
+        },
+      },
     },
     // One qualification's supply and demand: the card along the bottom of the map, the starred pins and the badges.
     outlook: {

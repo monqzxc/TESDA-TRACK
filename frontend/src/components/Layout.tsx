@@ -2,6 +2,7 @@ import { useRef, type MouseEvent } from 'react'
 import { Button } from 'react-aria-components'
 import { Outlet, ScrollRestoration, useLocation } from 'react-router'
 import { learnerAccounts } from '../auth/accounts.ts'
+import { AccountControl } from '../features/account/AccountMenu.tsx'
 import { useAuth } from '../auth/useAuth.ts'
 import { useCopy } from '../i18n/copy.ts'
 import { TspNav } from '../features/tsp/TspNav.tsx'
@@ -126,7 +127,8 @@ export function WebviewLayout() {
 }
 
 /**
- * Every other page: a slim bar across the top with the burger and the name, and the page under it. The burger opens
+ * Every other page: a slim bar across the top with the burger, the name and the account control (the learner's icon
+ * and menu, or Sign in), and the page under it. The burger opens
  * the sidebar over the page (Sidebar), the same on every page and at every width. Reports and Admin show in it for
  * staff.
  *
@@ -160,7 +162,7 @@ export function AppLayout() {
               onPress={() => useSidebarStore.getState().openMenu(menuButton.current)}
             />
             <SidebarTitle />
-            {offersTsp && (
+            {offersTsp ? (
               <Button
                 onPress={() => openSignIn({ tsp: true })}
                 className="ml-auto inline-flex min-h-10 cursor-pointer items-center gap-2 rounded-full border-0 bg-transparent px-2 py-1 text-15 font-semibold whitespace-nowrap text-navy data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:bg-soft data-pressed:bg-chip"
@@ -168,6 +170,16 @@ export function AppLayout() {
                 <TspBadge small />
                 <span className="max-[431px]:sr-only">{en.account.tsp.signIn}</span>
               </Button>
+            ) : (
+              // The learner's icon and first name, opening the account menu (Profile, Sign out); Sign in when
+              // signed out. On small phones only the icon shows; the name stays for screen readers.
+              <div className="ml-auto flex min-w-0">
+                <AccountControl
+                  variant="header"
+                  labels={{ menu: en.account.menu.topLabel, signIn: en.account.menu.topSignIn }}
+                  buttonClassName="rounded-full px-2 py-1 text-15 font-semibold whitespace-nowrap text-navy data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:bg-soft data-pressed:bg-chip max-[431px]:[&_span]:sr-only"
+                />
+              </div>
             )}
           </header>
         )}

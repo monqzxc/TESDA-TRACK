@@ -6,7 +6,7 @@ best of those single-term scores. How many terms point to it only orders equal s
 listing more terms can never raise a score above what its strongest term earns alone.
 """
 from collections.abc import Sequence
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from sqlmodel import Session
 
@@ -26,6 +26,7 @@ class SkillEvidence:
     matches: list[Match]
     keyword: dict[str, float]  # best single-term keyword strength (0..1) by qualification code
     z_scores: dict[int, float]  # best single-term z-score by qualification id; empty without the model
+    supporting: dict[str, tuple[str, ...]] = field(default_factory=dict)  # by code: the terms that reached it
 
 
 def read_terms(text: str) -> list[str]:
@@ -42,8 +43,17 @@ def read_terms(text: str) -> list[str]:
 def search(session: Session, items: Sequence[CatalogItem], rule_views: list[dict], text: str,
            embedder: Embedder | None, params, limit: int = LIMIT) -> SkillEvidence:
     """The qualifications for a list of skills or job titles, strongest first (params: analysis.MatchParams)."""
+    return search_terms(session, items, rule_views, read_terms(text), embedder, params, limit, text=text)
+
+
+def search_terms(session: Session, items: Sequence[CatalogItem], rule_views: list[dict], given: Sequence[str],
+                 embedder: Embedder | None, params, limit: int = LIMIT, *, text: str | None = None) -> SkillEvidence:
+    """search() for terms already separated, such as a Skill Passport's skills and unit titles, whose own commas
+    ("Prepare stocks, sauces and soups") must not split them. `text` is what family ordering reads; by default the
+    terms one per line."""
+    text = text if text is not None else "\n".join(given)
     keyword_by_term = {}
-    for term in read_terms(text):
+    for term in given:
         keyword_by_term[term] = {r["qualification"]["code"]: r for r in score_qualifications(term, {}, rule_views)}
     # The same safety rules as a goal: a term naming no trade TESDA trains for is set aside, whatever its meaning.
     terms = [t for t, found in keyword_by_term.items() if not goal_rules.gives_no_match(t, bool(found))]
@@ -56,7 +66,7 @@ def search(session: Session, items: Sequence[CatalogItem], rule_views: list[dict
     strength_by_term = [analysis.strengths(s, params) for s in similarities]
     z_by_term = [analysis.z_scores(s) for s in similarities]
 
-    scored = []
+    scored, by_code = [], {}
     for item in items:
         keyword_scores = [keyword_by_term[t][item.code]["score"] if item.code in keyword_by_term[t] else 0
                           for t in terms]
@@ -77,6 +87,7 @@ def search(session: Session, items: Sequence[CatalogItem], rule_views: list[dict
                                                  semantic=round(semantic, 3)) if embedder else None)
         raw = max((row.get(item.id, 0.0) for row in similarities), default=0.0)
         scored.append((match, len(supporting), keyword, raw))
+        by_code[item.code] = tuple(supporting)
 
     # Equal scores: the qualification more of the terms point to first, then the one the words name directly.
     scored.sort(key=lambda entry: (-entry[0].score, -entry[1], -entry[2], -entry[3], entry[0].qualification.code))
@@ -90,7 +101,7 @@ def search(session: Session, items: Sequence[CatalogItem], rule_views: list[dict
     for by_id in z_by_term:
         for qualification_id, z in by_id.items():
             best_z[qualification_id] = max(best_z.get(qualification_id, z), z)
-    return SkillEvidence(found_terms, matches, keyword_strength, best_z)
+    return SkillEvidence(found_terms, matches, keyword_strength, best_z, by_code)
 
 
 def _reason(supporting: list[str], total: int) -> str:

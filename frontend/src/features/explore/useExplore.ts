@@ -31,21 +31,26 @@ export const useDemandStore = create<{
   scope: string | null | undefined
   code: string | null | undefined
   offset: number
+  /** Rank the Demand lists by the learner's Skill Passport (when they have one). On until they turn it off. */
+  personal: boolean
   setRegion: (region: string | null | undefined) => void
   setLocality: (locality: string | null, scope: string | null) => void
   setCode: (code: string | null | undefined) => void
   setOffset: (offset: number, scope: string | null) => void
+  setPersonal: (personal: boolean) => void
 }>()((set) => ({
   region: undefined,
   locality: null,
   scope: undefined,
   code: undefined,
   offset: 0,
+  personal: true,
   setRegion: (region) => set({ region, locality: null, offset: 0, scope: undefined }),
   setLocality: (locality, scope) => set({ locality, scope, offset: 0 }),
   setCode: (code) => set({ code, locality: null, offset: 0, scope: undefined }),
   setOffset: (offset, scope) =>
     set((state) => ({ offset, scope, locality: state.scope === scope ? state.locality : null })),
+  setPersonal: (personal) => set({ personal, offset: 0 }),
 }))
 
 // The page's state and data. What the learner typed and what came back stay in memory only: never in the address,
@@ -212,8 +217,10 @@ export function useExplore(demandActive = false) {
   const demandRegion = demandFilters.region === undefined ? automaticRegion : demandFilters.region
   const demandLocality = demandFilters.scope === demandRegion ? demandFilters.locality : null
   const demandOffset = demandFilters.scope === demandRegion ? demandFilters.offset : 0
+  // Ranked by the Skill Passport, quietly: the learner types nothing, and the panel says so and can turn it off.
+  const personalFor = learner && passport.data && demandFilters.personal ? learner.id : null
   const jobs = useQuery({
-    ...areaJobsQuery(demandRegion, demandLocality, demandCode, demandOffset),
+    ...areaJobsQuery(demandRegion, demandLocality, demandCode, demandOffset, personalFor),
     enabled: demandActive,
   })
   // The intensity scale compares all regions. Locality and list pagination do not replace the map's dataset, or
@@ -350,6 +357,8 @@ export function useExplore(demandActive = false) {
     config: config.data,
     today,
     jobs,
+    /** The learner's id while the Demand lists are ranked by their Skill Passport, else null. */
+    personalFor,
     demandMap,
     demandRegion,
     demandCode,

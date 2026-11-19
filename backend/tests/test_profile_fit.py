@@ -1,0 +1,146 @@
+"""The Demand view personalized by the signed-in learner's Skill Passport (services/profile_fit)."""
+from datetime import date
+
+import pytest
+from sqlmodel import select
+
+from tesda_track.models import Learner, Qualification, utcnow
+from tesda_track.models.identity import LearnerIdentity
+from tesda_track.models.labor_market import LaborMarketEvidence as Evidence, LaborMarketMapping as Mapping
+from tesda_track.services import catalog, profile_fit, tsp_profile
+from tests.test_area_jobs import seed
+
+TODAY = date(2026, 11, 18)
+QUALIFICATIONS = "/api/v1/labor-market/qualifications"
+JOBS = "/api/v1/labor-market/jobs"
+
+
+def certificate(title, status, expires, core=()):
+    return {"certificate_title": title, "certificate_type": "NC", "level": "II", "status": status,
+            "expiration_date": expires, "issuance_date": "1st of May, 2021",
+            "competencies": [{"unit_code": "B1", "type": "BASIC", "title": "Work in team environment"}]
+                            + [{"unit_code": f"C{n}", "type": "CORE", "title": t} for n, t in enumerate(core)]}
+
+
+def passport(skills=("waiter",), certificates=()):
+    return {"skills": list(skills), "experience": [], "education": [], "qualifications": [],
+            "credentials": {"certificates": list(certificates), "trainings": [], "assessments": [],
+                            "external_certificates": []}}
+
+
+HOLDS_COOKERY = certificate("Cookery NC II", "Active", "18th of July, 2031")
+
+
+@pytest.fixture(autouse=True)
+def fresh_cache():
+    profile_fit.clear_cache()
+    yield
+    profile_fit.clear_cache()
+
+
+def link(session, email, profile):
+    learner = session.exec(select(Learner).where(Learner.email == email)).one()
+    session.add(LearnerIdentity(provider="tsp", subject="sso-" + email, learner_id=learner.id, scopes=[],
+                                profile=profile, linked_at=utcnow(), last_signed_in_at=utcnow()))
+    session.flush()
+    return learner
+
+
+def postings(session, title, code, count, region="NCR"):
+    qualification = session.exec(select(Qualification).where(Qualification.code == code)).one()
+    for n in range(count):
+        key = f"{title}-{code}-{n}".replace(" ", "")
+        seed(session, key, title=title, region=region)
+        evidence = session.exec(select(Evidence).where(Evidence.occurrence_key == key)).one()
+        session.add(Mapping(mapping_key=key + ":link", evidence_id=evidence.id, qualification_id=qualification.id,
+                            proposal="high_confidence", decision="approved"))
+    session.flush()
+
+
+@pytest.fixture
+def market(session):
+    postings(session, "Welder", "SMAW-NC-II", 9)
+    postings(session, "Waiter", "FBS-NC-II", 2)
+    postings(session, "Cook", "COOKERY-NC-II", 3)
+    seed(session, "unlinked-driver", title="Driver")
+
+
+def test_skill_fits_with_its_own_words_and_held_certificate_is_marked(session):
+    fit = profile_fit.compute(session, passport(certificates=[HOLDS_COOKERY]), None, TODAY)
+    waiter = fit.get("FBS-NC-II")
+    assert waiter.score > 0 and waiter.status is None
+    kinds = {reason.kind: reason for reason in waiter.reasons}
+    assert kinds["skill"].terms == ["waiter"]
+    assert kinds["sector"].qualification == "Cookery NC II"  # same sector (Tourism) as what they hold
+    cookery = fit.get("COOKERY-NC-II")
+    assert cookery.status == "held" and cookery.reasons[0].kind == "held"
+    assert fit.get("SMAW-NC-II") is None
+
+
+def test_an_expired_certificate_is_a_renewal(session):
+    expired = certificate("Cookery NC II", "Expired", "14th of November, 2023")
+    fit = profile_fit.compute(session, passport(skills=(), certificates=[expired]), None, TODAY)
+    assert fit.get("COOKERY-NC-II").status == "renew"
+
+
+def test_core_unit_titles_stay_whole_and_basic_units_are_left_out(session):
+    held = certificate("Cookery NC II", "Active", "18th of July, 2031", core=["Prepare stocks, sauces and soups"])
+    normalized = tsp_profile.normalize(passport(skills=["cooking"], certificates=[held]),
+                                       profile_fit.code_book(session, catalog.snapshot(session)), TODAY)
+    terms = profile_fit.evidence_terms(normalized)
+    assert list(terms) == ["cooking", "Prepare stocks, sauces and soups"]
+    assert terms["Prepare stocks, sauces and soups"] == ("unit", "COOKERY-NC-II")
+
+
+def test_personalized_qualifications_put_the_fit_first_then_what_they_hold(session, client, learner, market):
+    link(session, "juan@example.com", passport(certificates=[HOLDS_COOKERY]))
+    response = client.get(QUALIFICATIONS, params={"region_code": "NCR", "personalize": True}, headers=learner)
+    assert response.status_code == 200, response.text
+    assert "no-store" in response.headers["cache-control"]
+    body = response.json()
+    assert body["personalized"] and body["ordering"] == "profile_fit"
+    codes = [item["qualification_code"] for item in body["items"]]
+    assert codes == ["FBS-NC-II", "COOKERY-NC-II", "SMAW-NC-II"]
+    first = body["items"][0]["personal_fit"]
+    assert first["reasons"][0] == {"kind": "skill", "terms": ["waiter"], "qualification": None, "sector": None}
+    assert body["items"][2]["personal_fit"] is None
+    assert body["limitations"][0].startswith("Ordered by how well your Skill Passport fits")
+
+
+def test_personalize_without_a_passport_is_the_plain_directory(session, client, learner, market):
+    signed_out = client.get(QUALIFICATIONS, params={"region_code": "NCR", "personalize": True}).json()
+    unlinked = client.get(QUALIFICATIONS, params={"region_code": "NCR", "personalize": True}, headers=learner).json()
+    plain = client.get(QUALIFICATIONS, params={"region_code": "NCR"}, headers=learner)
+    for body in (signed_out, unlinked):
+        assert not body["personalized"] and body["ordering"] == "qualification_name"
+        assert all(item["personal_fit"] is None for item in body["items"])
+    assert "cache-control" not in plain.headers
+
+
+def test_personalized_jobs_rank_through_reviewed_links_only(session, client, learner, market):
+    link(session, "juan@example.com", passport(certificates=[HOLDS_COOKERY]))
+    body = client.get(JOBS, params={"region_code": "NCR", "personalize": True}, headers=learner).json()
+    assert body["personalized"] and body["ordering"] == "profile_fit"
+    titles = [job["title"] for job in body["items"]]
+    # Cook: linked to the qualification they hold. Waiter: fits their skill. Then the rest by posting count, and a
+    # title with no reviewed link never gets a fit, whatever its wording.
+    assert titles == ["Cook", "Waiter", "Welder", "Driver"]
+    cook, waiter = body["items"][0], body["items"][1]
+    assert cook["linked_qualification"] == "Cookery NC II" and cook["personal_fit"]["status"] == "held"
+    assert waiter["linked_qualification"] == "Food and Beverage Services NC II"
+    assert waiter["personal_fit"]["reasons"][0]["terms"] == ["waiter"]
+    assert body["items"][3]["personal_fit"] is None
+
+    plain = client.get(JOBS, params={"region_code": "NCR"}, headers=learner).json()
+    assert [job["title"] for job in plain["items"]][0] == "Welder" and not plain["personalized"]
+
+
+def test_a_stale_sign_in_never_breaks_the_public_demand_lists(client, market):
+    client.cookies.set("tesda_session", "not-a-valid-token", path="/api")
+    for url in (QUALIFICATIONS, JOBS):
+        for params in ({"region_code": "NCR"}, {"region_code": "NCR", "personalize": True}):
+            response = client.get(url, params=params)
+            assert response.status_code == 200, response.text
+            assert not response.json()["personalized"]
+    expired = client.get(JOBS, params={"personalize": True}, headers={"Authorization": "Bearer expired.token.here"})
+    assert expired.status_code == 200 and not expired.json()["personalized"]

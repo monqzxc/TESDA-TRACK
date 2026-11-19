@@ -1,7 +1,13 @@
-"""Browse imported posting snapshots without inventing qualification associations."""
+"""Browse imported posting snapshots without inventing qualification associations.
+
+Personalized (a learner's Skill Passport fit from services/profile_fit), a job title fits through the qualifications
+its records have a reviewed, approved link to, never through its wording: titles fitting the learner come first,
+ordered by fit and posting records together, then the rest by posting records as usual.
+"""
 
 from collections import defaultdict
 from datetime import datetime
+from typing import TYPE_CHECKING
 from zoneinfo import ZoneInfo
 
 from sqlmodel import Session, select
@@ -17,8 +23,15 @@ from tesda_track.schemas.area_jobs import AreaJob, AreaJobs, JobArea
 from tesda_track.services.demand_evidence import _employer, _posted_on
 from tesda_track.services.labor_market import job_key
 
+if TYPE_CHECKING:
+    from tesda_track.services.profile_fit import ProfileFit
 
-def summarize(rows, regions, *, region_code=None, locality=None, limit=30, offset=0):
+FIT_WEIGHT, DEMAND_WEIGHT = 0.7, 0.3
+PERSONALIZED = ("Titles linked to qualifications your Skill Passport fits come first: a starting point, not an "
+                "assessment of you or a promise of an opening.")
+
+
+def summarize(rows, regions, *, region_code=None, locality=None, limit=30, offset=0, fit=None, links=None):
     """Deduplicate source IDs before grouping titles, employers and regional markers."""
     retained = {}
     for evidence, dataset in rows:
@@ -56,8 +69,14 @@ def summarize(rows, regions, *, region_code=None, locality=None, limit=30, offse
         employer_count=len({name for r in entries if (name := _employer(r.provenance))}),
         localities=sorted({r.locality for r in entries if r.locality}),
         region_codes=sorted({r.region_code for r in entries if r.region_code}),
+        **(_personal(entries, fit, links or {}) if fit is not None else {}),
     ) for entries in groups.values()]
     jobs.sort(key=lambda job: (-job.posting_count, job.title.casefold()))
+    if fit is not None:
+        busiest = max((job.posting_count for job in jobs), default=0) or 1
+        jobs.sort(key=lambda job: (0, -(FIT_WEIGHT * job.personal_fit.score / 100
+                                        + DEMAND_WEIGHT * job.posting_count / busiest))
+                  if job.personal_fit and job.personal_fit.score else (1, 0.0))
     dates = sorted({r.observed_on for r in selected if r.observed_on})
     posted = sorted({day for r in selected if (day := _posted_on((r.provenance or {}).get("posted_on")))})
     return AreaJobs(
@@ -66,10 +85,28 @@ def summarize(rows, regions, *, region_code=None, locality=None, limit=30, offse
         region_code=region_code, locality=locality, localities=localities, areas=areas,
         limit=limit, offset=offset, snapshot_dates=dates,
         posted_between=[posted[0], posted[-1]] if posted else [],
+        ordering="profile_fit" if fit is not None else "posting_count",
+        personalized=fit is not None,
+        **({"limitations": [*AreaJobs.model_fields["limitations"].default_factory(), PERSONALIZED]}
+           if fit is not None else {}),
     )
 
 
-def discover(session: Session, region_code=None, locality=None, qualification_code=None, *, limit=30, offset=0):
+def _personal(entries, fit: "ProfileFit", links: dict[int, list[tuple[str, str]]]) -> dict:
+    """The best fit among the qualifications this title's records are linked to, and that qualification's name."""
+    linked = {code: name for record in entries for code, name in links.get(record.id, ())}
+    if not linked:
+        return {}
+    code = min(linked, key=lambda c: (-fit.job_fit(c), linked[c].casefold(), c))
+    personal = fit.get(code)
+    if personal is None or not fit.job_fit(code):
+        return {}
+    return {"personal_fit": personal.model_copy(update={"score": fit.job_fit(code)}),
+            "linked_qualification": linked[code]}
+
+
+def discover(session: Session, region_code=None, locality=None, qualification_code=None, *, limit=30, offset=0,
+             fit: "ProfileFit | None" = None):
     regions = {r.code: r for r in session.exec(select(Region)).all()}
     if region_code and region_code not in regions:
         raise InvalidRequestError("Unknown region.")
@@ -95,5 +132,19 @@ def discover(session: Session, region_code=None, locality=None, qualification_co
             .where(Qualification.code == qualification_code, Qualification.is_active == True,
                    Mapping.decision == "approved", Mapping.proposal == "high_confidence")
         ))
-    return summarize(session.exec(statement).all(), regions, region_code=region_code,
-                     locality=locality, limit=limit, offset=offset)
+    rows = session.exec(statement).all()
+    return summarize(rows, regions, region_code=region_code, locality=locality, limit=limit, offset=offset,
+                     fit=fit, links=_links(session, fit) if fit else None)
+
+
+def _links(session: Session, fit: "ProfileFit") -> dict[int, list[tuple[str, str]]]:
+    """Reviewed links from posting records to the qualifications the learner fits: evidence id -> (code, name)."""
+    links = defaultdict(list)
+    for evidence_id, code, name in session.exec(
+        select(Mapping.evidence_id, Qualification.code, Qualification.name)
+        .join(Qualification, Qualification.id == Mapping.qualification_id)
+        .where(Qualification.code.in_(list(fit.by_code)), Qualification.is_active == True,
+               Mapping.decision == "approved", Mapping.proposal == "high_confidence")
+    ):
+        links[evidence_id].append((code, name))
+    return links

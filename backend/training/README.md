@@ -3,7 +3,7 @@
 **Skills profile (synthetic TSP skills + 2023–2026 demand):** [Colab notebook](colab/train_colab_skills.ipynb).
 `python3 training/skills_profile.py` writes ~8,000 synthetic Skill Passport profiles and a synthetic
 region × qualification × quarter demand table to `data/skills_profile/`; `python3 training/skills_notebook.py`
-embeds them in the notebook. It continues v4 on skill lists (the text the app embeds for TSP suggestions), trains an
+embeds them in the notebook. It continues v6-colab (the served model; `BASE` can pick v4 or plain e5) on skill lists (the text the app embeds for TSP suggestions), trains an
 assessment-vs-training route model and picks a demand re-ranking weight. All data is synthetic: calibrate on the real
 dev goals before adopting, and don't show the demand figures as real.
 

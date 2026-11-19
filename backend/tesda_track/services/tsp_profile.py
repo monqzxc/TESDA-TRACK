@@ -126,14 +126,23 @@ class CodeBook:
     @classmethod
     def from_catalog(cls, crosswalk: Path, names: Mapping[str, str]) -> "CodeBook":
         """crosswalk: seed/sources/qualification_code_crosswalk.csv; names: catalog name -> catalog code."""
-        official, by_name = {}, {_norm(name): code for name, code in names.items()}
+        rows = []
         if crosswalk.exists():
             with crosswalk.open(encoding="utf-8") as handle:
-                for row in csv.DictReader(handle):
-                    if row["relation"] == "same" and row["qualification_code"] in names.values():
-                        official[row["official_code"].strip().upper()] = row["qualification_code"]
-                        by_name.setdefault(_norm(f"{row['official_title']} NC {row['level']}"),
-                                           row["qualification_code"])
+                rows = [(row["official_code"], row["official_title"], row["level"], row["qualification_code"])
+                        for row in csv.DictReader(handle) if row["relation"] == "same"]
+        return cls.from_rows(rows, names)
+
+    @classmethod
+    def from_rows(cls, same: Iterable[tuple[str, str, str, str]], names: Mapping[str, str]) -> "CodeBook":
+        """same: (official code, official title, level, catalog code) for each 'same' crosswalk relation, as the
+        crosswalk file or the official_qualification_code table holds them; names: catalog name -> catalog code."""
+        official, by_name = {}, {_norm(name): code for name, code in names.items()}
+        known = set(names.values())
+        for official_code, title, level, code in same:
+            if code in known:
+                official[official_code.strip().upper()] = code
+                by_name.setdefault(_norm(f"{title} NC {level}"), code)
         return cls(official, by_name)
 
 

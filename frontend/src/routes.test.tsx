@@ -3,6 +3,8 @@ import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 import { en } from './copy/en.ts'
 import { basename } from './routes.tsx'
+import { SESSION_HINT_KEY } from './auth/session.ts'
+import { serveAccountApi } from './test/account.tsx'
 import { renderApp, serveCatalog } from './test/app.tsx'
 import { server } from './test/server.ts'
 
@@ -101,6 +103,25 @@ describe('routes', () => {
 
     expect(await screen.findByRole('navigation', { name: 'Main' })).toBeInTheDocument()
     expect(screen.queryByRole('navigation', { name: 'Sections' })).not.toBeInTheDocument()
+  })
+
+  it("shows the account's icon in the app's top bar: Sign in signed out, the account menu signed in", async () => {
+    serveCatalog()
+    serveAccountApi({ signedIn: false })
+    const { unmount } = renderApp('/qualifications')
+    const bar = await screen.findByRole('banner')
+    expect(
+      await within(bar).findByRole('button', { name: 'Sign in to your account' }),
+    ).toBeVisible()
+    unmount()
+
+    window.localStorage.setItem(SESSION_HINT_KEY, 'signed-in')
+    serveAccountApi({ signedIn: true })
+    renderApp('/qualifications')
+    const signedIn = await screen.findByRole('banner')
+    const menu = await within(signedIn).findByRole('button', { name: 'Account: Maria Santos' })
+    expect(menu).toHaveTextContent('Maria')
+    window.localStorage.removeItem(SESSION_HINT_KEY)
   })
 
   it('keeps the title fixed when the address carries more', async () => {

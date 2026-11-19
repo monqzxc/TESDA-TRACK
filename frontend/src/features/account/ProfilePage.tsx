@@ -11,6 +11,7 @@ import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { AccountGate } from './AccountGate.tsx'
+import { ProfileData } from './ProfileData.tsx'
 import { ProfilePassport } from './ProfilePassport.tsx'
 import {
   ProfileActivity,
@@ -201,6 +202,8 @@ export default function ProfilePage() {
           )}
         </div>
       </div>
+
+      <ProfileData />
     </div>
   )
 }

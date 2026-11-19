@@ -2,7 +2,6 @@ import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
-import { SESSION_HINT_KEY } from '../../auth/session.ts'
 import {
   admin,
   findAccountButton,
@@ -45,12 +44,14 @@ async function openAccountMenu(user: ReturnType<typeof userEvent.setup>, name = 
   return { trigger, menu }
 }
 
-async function openDataSettings(user: ReturnType<typeof userEvent.setup>) {
-  const { trigger, menu } = await openAccountMenu(user)
-  await user.click(within(menu).getByRole('menuitem', { name: 'Settings' }))
-  const dialog = await screen.findByRole('dialog', { name: 'Settings' })
-  await user.click(within(dialog).getByText('Your data & privacy'))
-  return { trigger, menu: dialog }
+/** "Your data & privacy" sits at the bottom of the profile page. */
+async function openDataSettings(_user: ReturnType<typeof userEvent.setup>) {
+  await openApp('/profile')
+  const trigger = await findAccountButton()
+  const section = (await screen.findByRole('heading', { name: 'Your data & privacy' })).closest(
+    'section',
+  )!
+  return { trigger, menu: section }
 }
 
 describe('the account menu', () => {
@@ -68,7 +69,7 @@ describe('the account menu', () => {
       within(menu)
         .getAllByRole('menuitem')
         .map((item) => item.textContent),
-    ).toEqual(['My Profile', 'Settings', 'Sign out'])
+    ).toEqual(['My Profile', 'Sign out'])
     expect(within(menu).queryByRole('radiogroup', { name: 'Theme' })).not.toBeInTheDocument()
   })
 
@@ -82,21 +83,6 @@ describe('the account menu', () => {
     expect(trigger).toHaveTextContent(/^Maria$/)
   })
 
-  it('opens settings from the profile popup and returns focus when closed', async () => {
-    const user = userEvent.setup()
-    rememberSignIn()
-    serveAccountApi({ signedIn: true })
-    await openApp('/qualifications')
-
-    const { trigger, menu } = await openAccountMenu(user)
-    await user.click(within(menu).getByRole('menuitem', { name: 'Settings' }))
-    const popup = await screen.findByRole('dialog', { name: 'Settings' })
-
-    // The theme is chosen in the sidebar now, not here.
-    expect(within(popup).queryByRole('radiogroup', { name: 'Theme' })).not.toBeInTheDocument()
-    await user.keyboard('{Escape}')
-    await waitFor(() => expect(trigger).toHaveFocus())
-  })
 })
 
 describe('Download my data', () => {
@@ -125,8 +111,6 @@ describe('Download my data', () => {
     const user = userEvent.setup()
     rememberSignIn()
     const account = serveAccountApi({ signedIn: true })
-    await openApp('/qualifications')
-
     const { menu } = await openDataSettings(user)
     await user.click(within(menu).getByRole('button', { name: 'Download my data (JSON)' }))
 
@@ -147,8 +131,6 @@ describe('Download my data', () => {
     rememberSignIn()
     serveAccountApi({ signedIn: true })
     server.use(http.get('*/api/v1/me/export', () => HttpResponse.error()))
-    await openApp('/qualifications')
-
     const { menu } = await openDataSettings(user)
     await user.click(within(menu).getByRole('button', { name: 'Download my data (JSON)' }))
 
@@ -171,8 +153,6 @@ describe('Download my data', () => {
         return HttpResponse.json(account.exported)
       }),
     )
-    await openApp('/qualifications')
-
     const { menu } = await openDataSettings(user)
     await user.click(within(menu).getByRole('button', { name: 'Download my data (JSON)' }))
     expect(await screen.findByText('Preparing your data…')).toBeInTheDocument()
@@ -185,111 +165,6 @@ describe('Download my data', () => {
     await new Promise((resolve) => setTimeout(resolve, 50))
     expect(saved).toEqual([])
     expect(screen.queryByText(/Your data was downloaded/)).not.toBeInTheDocument()
-  })
-})
-
-describe('Delete my account', () => {
-  async function openDeleteDialog(user: ReturnType<typeof userEvent.setup>) {
-    const { trigger, menu } = await openDataSettings(user)
-    await user.click(within(menu).getByRole('button', { name: 'Delete my account' }))
-    const dialog = await screen.findByRole('alertdialog', { name: 'Delete my account' })
-    return { trigger, dialog }
-  }
-
-  it('asks for confirmation first, then deletes, signs out and says so', async () => {
-    const user = userEvent.setup()
-    rememberSignIn()
-    const account = serveAccountApi({ signedIn: true })
-    useFinderStore.getState().startWithGoal('Become an electrician')
-    await openApp('/qualifications')
-
-    const { dialog } = await openDeleteDialog(user)
-    expect(dialog).toHaveAccessibleDescription(
-      "This can't be undone. If you want a copy of your data, download it first.",
-    )
-    const remove = within(dialog).getByRole('button', { name: 'Delete my account' })
-    expect(remove).toBeDisabled()
-
-    await user.click(
-      within(dialog).getByRole('checkbox', {
-        name: 'I understand this permanently deletes my account and saved records.',
-      }),
-    )
-    expect(remove).toBeEnabled()
-    await user.click(remove)
-
-    expect(
-      await screen.findByText('Your account and saved records were deleted.'),
-    ).toBeInTheDocument()
-    const signIn = screen.getByRole('button', { name: 'Sign in' })
-    await waitFor(() => expect(signIn).toHaveFocus())
-    expect(
-      account.requests.slice(-2).map((r) => `${r.method} ${r.path} ${r.requestedWith}`),
-    ).toEqual(['DELETE /api/v1/me XMLHttpRequest', 'DELETE /api/v1/auth/session XMLHttpRequest'])
-    expect(useFinderStore.getState().goal).toBe('')
-    expect(window.localStorage.getItem(SESSION_HINT_KEY)).toBeNull()
-  })
-
-  it('keeps the account when cancelled, with focus back on the menu button', async () => {
-    const user = userEvent.setup()
-    rememberSignIn()
-    const account = serveAccountApi({ signedIn: true })
-    await openApp('/qualifications')
-
-    const { trigger, dialog } = await openDeleteDialog(user)
-    await user.click(within(dialog).getByRole('button', { name: 'Cancel' }))
-
-    await waitFor(() => expect(screen.queryByRole('alertdialog')).not.toBeInTheDocument())
-    await waitFor(() => expect(trigger).toHaveFocus())
-    expect(account.requests.some((r) => r.method === 'DELETE')).toBe(false)
-  })
-
-  it('says when deleting fails, and stays signed in', async () => {
-    const user = userEvent.setup()
-    rememberSignIn()
-    serveAccountApi({ signedIn: true })
-    server.use(http.delete('*/api/v1/me', () => HttpResponse.error()))
-    await openApp('/qualifications')
-
-    const { trigger, dialog } = await openDeleteDialog(user)
-    await user.click(within(dialog).getByRole('checkbox'))
-    await user.click(within(dialog).getByRole('button', { name: 'Delete my account' }))
-
-    expect(await within(dialog).findByRole('alert')).toHaveTextContent(
-      "We can't reach the TESDA-TRACK service right now. Please try again shortly.",
-    )
-    expect(window.localStorage.getItem(SESSION_HINT_KEY)).toBe('1')
-    await user.click(within(dialog).getByRole('button', { name: 'Cancel' }))
-    expect(await findAccountButton()).toBe(trigger)
-    await waitFor(() => expect(trigger).toHaveFocus())
-  })
-
-  it("can't be closed while deleting, so a failure is always seen", async () => {
-    const user = userEvent.setup()
-    rememberSignIn()
-    serveAccountApi({ signedIn: true })
-    const answer = deferred()
-    server.use(
-      http.delete('*/api/v1/me', async () => {
-        await answer.promise
-        return HttpResponse.error()
-      }),
-    )
-    await openApp('/qualifications')
-
-    const { dialog } = await openDeleteDialog(user)
-    await user.click(within(dialog).getByRole('checkbox'))
-    await user.click(within(dialog).getByRole('button', { name: 'Delete my account' }))
-    await within(dialog).findByRole('button', { name: 'Deleting your account…' })
-    await user.keyboard('{Escape}')
-    // A tap outside the dialog.
-    await user.click(document.body)
-    answer.resolve()
-
-    expect(await within(dialog).findByRole('alert')).toHaveTextContent(
-      "We can't reach the TESDA-TRACK service right now. Please try again shortly.",
-    )
-    expect(screen.getByRole('alertdialog')).toBe(dialog)
   })
 })
 

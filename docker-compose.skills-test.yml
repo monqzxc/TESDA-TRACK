@@ -1,0 +1,13 @@
+# Local test only: serve the skills-v1 model from backend/models (migrate re-embeds the catalog with it too).
+#   docker compose -f docker-compose.yml -f docker-compose.skills-test.yml up -d --build
+# Revert to .env's model: docker compose up -d --no-deps api && docker compose exec api python -m tesda_track.embeddings sync
+x-skills-model: &skills-model
+  environment:
+    EMBEDDING_MODEL: tesda-track/tesda-e5-small-skills-v1
+    EMBEDDING_MODEL_PATH: /app/finetuned/tesda-e5-small-skills-v1
+  volumes:
+    - ./backend/models/tesda-e5-small-skills-v1:/app/finetuned/tesda-e5-small-skills-v1:ro
+
+services:
+  migrate: *skills-model
+  api: *skills-model

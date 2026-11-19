@@ -4,8 +4,9 @@ import { Button, ToggleButton } from 'react-aria-components'
 import { useQualifications } from '../../api/queries.ts'
 import { useCopy } from '../../i18n/copy.ts'
 import { button } from '../../styles/buttons.ts'
+import { TspBadge } from '../../components/TspBadge.tsx'
 import { QualificationEvidence } from '../labor-market/QualificationEvidence.tsx'
-import { areaQualificationsQuery } from './demandApi.ts'
+import { areaQualificationsQuery, type PersonalFit } from './demandApi.ts'
 import { useDemandStore, type Explore } from './useExplore.ts'
 
 const note = 'm-0 text-13 leading-[1.5] text-muted'
@@ -27,7 +28,7 @@ export function DemandPanel({ explore }: { explore: Explore }) {
   const filters = useDemandStore()
   const catalog = useQualifications()
   const qualifications = useQuery({
-    ...areaQualificationsQuery(explore.demandRegion, offset),
+    ...areaQualificationsQuery(explore.demandRegion, offset, explore.personalFor),
     enabled: mode === 'qualifications',
   })
   const codes = catalog.data ?? []
@@ -67,6 +68,18 @@ export function DemandPanel({ explore }: { explore: Explore }) {
           </ToggleButton>
         ))}
       </div>
+      {explore.passportStatus === 'loaded' && mode !== 'supply' && (
+        <PersonalBar
+          on={filters.personal}
+          nothingFits={
+            Boolean(page?.personalized) && (page?.items ?? []).every((item) => !item.personal_fit)
+          }
+          onChange={(personal) => {
+            filters.setPersonal(personal)
+            setOffset(0)
+          }}
+        />
+      )}
       <label className="grid gap-1 text-13 font-semibold text-navy">
         {copy.area}
         <select
@@ -195,7 +208,10 @@ export function DemandPanel({ explore }: { explore: Explore }) {
               <ol className="m-0 grid list-none gap-0 p-0">
                 {explore.jobs.data.items.map((job) => (
                   <li key={job.title} className="grid gap-1 border-b border-rule py-3">
-                    <h3 className="m-0 text-14 font-bold text-navy">{job.title}</h3>
+                    <h3 className="m-0 flex flex-wrap items-center gap-2 text-14 font-bold text-navy">
+                      {job.title}
+                      {job.personal_fit && <ForYou />}
+                    </h3>
                     <p className="m-0 text-13 font-semibold text-navy">
                       {copy.jobTotals(job.posting_count, job.employer_count)}
                     </p>
@@ -203,6 +219,9 @@ export function DemandPanel({ explore }: { explore: Explore }) {
                       {job.localities.slice(0, 3).join(' · ')}
                       {job.localities.length > 3 ? copy.morePlaces(job.localities.length - 3) : ''}
                     </p>
+                    {job.personal_fit && (
+                      <FitReasons fit={job.personal_fit} via={job.linked_qualification ?? null} />
+                    )}
                   </li>
                 ))}
               </ol>
@@ -226,7 +245,11 @@ export function DemandPanel({ explore }: { explore: Explore }) {
                   key={q.qualification_code}
                   className="grid gap-1 border-b border-rule py-3"
                 >
-                  <h3 className="m-0 text-14 font-bold text-navy">{q.qualification_name}</h3>
+                  <h3 className="m-0 flex flex-wrap items-center gap-2 text-14 font-bold text-navy">
+                    {q.qualification_name}
+                    {q.personal_fit && q.personal_fit.status !== 'held' && <ForYou />}
+                  </h3>
+                  {q.personal_fit && <FitReasons fit={q.personal_fit} via={null} />}
                   <p className={note}>
                     {q.observed_posting_count == null
                       ? copy.noMappedPostings
@@ -289,6 +312,79 @@ export function DemandPanel({ explore }: { explore: Explore }) {
         </>
       )}
     </section>
+  )
+}
+
+/** Says the lists are ranked from the Skill Passport, and lets the learner turn that off. */
+function PersonalBar({
+  on,
+  nothingFits,
+  onChange,
+}: {
+  on: boolean
+  nothingFits: boolean
+  onChange: (on: boolean) => void
+}) {
+  const copy = useCopy().explore.demand.personal
+  return (
+    <div className="grid gap-1 rounded-10 bg-panel p-3">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <span className="flex items-center gap-2 text-13 font-semibold text-navy">
+          <TspBadge small />
+          {on ? copy.on : copy.off}
+        </span>
+        <Button
+          className={button({ variant: 'tertiary', height: 36, snug: true })}
+          onPress={() => onChange(!on)}
+        >
+          {on ? copy.turnOff : copy.turnOn}
+        </Button>
+      </div>
+      {on && <p className={note}>{nothingFits ? copy.nothing : copy.note}</p>}
+    </div>
+  )
+}
+
+function ForYou() {
+  const copy = useCopy().explore.demand.personal
+  return (
+    <span className="rounded-full bg-blue px-2 py-0.5 text-11 font-semibold text-white">
+      {copy.forYou}
+    </span>
+  )
+}
+
+/** The "because" lines: the learner's own words and records the server matched, never a generic template. */
+function FitReasons({ fit, via }: { fit: PersonalFit; via: string | null }) {
+  const copy = useCopy().explore.demand.personal
+  const lines = (fit.reasons ?? []).map((reason) => {
+    const terms = (reason.terms ?? []).join(', ')
+    const qualification = reason.qualification ?? ''
+    switch (reason.kind) {
+      case 'skill':
+        return copy.reason.skill(terms)
+      case 'experience':
+        return copy.reason.experience(terms)
+      case 'unit':
+        return copy.reason.unit(terms, reason.qualification ?? null)
+      case 'sector':
+        return copy.reason.sector(qualification, reason.sector ?? '')
+      case 'held':
+        return copy.reason.held(qualification)
+      case 'renew':
+        return copy.reason.renew(qualification)
+    }
+  })
+  if (via && fit.status !== 'held') lines.unshift(copy.via(via))
+  if (!lines.length) return null
+  return (
+    <ul className="m-0 grid list-none gap-0.5 p-0">
+      {lines.map((line) => (
+        <li key={line} className="text-13 leading-[1.5] text-blue">
+          {line}
+        </li>
+      ))}
+    </ul>
   )
 }
 

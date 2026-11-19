@@ -20,10 +20,18 @@ interface AccountButtonProps {
   className: string
   isDisabled?: boolean
   onPress?: () => void
+  menuLabel?: string
 }
 
 /** The account menu's button, drawn here while the menu's code comes down (or if it can't). */
-function AccountButton({ learner, variant, className, isDisabled, onPress }: AccountButtonProps) {
+function AccountButton({
+  learner,
+  variant,
+  className,
+  isDisabled,
+  onPress,
+  menuLabel,
+}: AccountButtonProps) {
   const en = useCopy()
   const copy = en.account
 
@@ -32,7 +40,7 @@ function AccountButton({ learner, variant, className, isDisabled, onPress }: Acc
       isDisabled={isDisabled}
       onPress={onPress}
       className={className}
-      aria-label={`${copy.menu.label}: ${learner.full_name}`}
+      aria-label={`${menuLabel ?? copy.menu.label}: ${learner.full_name}`}
     >
       <Icon name="person" size={variant === 'sidebar' ? '1.125rem' : '1.2rem'} />
       <span className={accountName}>{shownName(learner.full_name, variant)}</span>
@@ -50,6 +58,11 @@ interface AccountControlProps {
   onNavigate?: () => void
   /** Where focus goes after the sign-in dialog when this control won't be on screen then (the closed phone menu). */
   returnFocus?: () => HTMLElement | null
+  /**
+   * Names for a second control on the same page (the app's top bar beside the sidebar's), so the two are told
+   * apart: read before the name on the menu button, and Sign in's name.
+   */
+  labels?: { menu: string; signIn: string }
 }
 
 /**
@@ -63,6 +76,7 @@ export function AccountControl({
   onOpenSignIn,
   onNavigate,
   returnFocus,
+  labels,
 }: AccountControlProps) {
   const en = useCopy()
   const copy = en.account
@@ -120,6 +134,7 @@ export function AccountControl({
               learner={learner}
               variant={variant}
               className={buttonClass}
+              menuLabel={labels?.menu}
               onPress={() =>
                 notify({
                   tone: 'error',
@@ -137,6 +152,7 @@ export function AccountControl({
                 learner={learner}
                 variant={variant}
                 className={buttonClass}
+                menuLabel={labels?.menu}
                 isDisabled
               />
             }
@@ -145,6 +161,7 @@ export function AccountControl({
               learner={learner}
               variant={variant}
               buttonClass={buttonClass}
+              menuLabel={labels?.menu}
               onNavigate={onNavigate}
               onShown={takeFocus}
               onSessionEnding={() => {
@@ -165,6 +182,7 @@ export function AccountControl({
             onPress={signIn}
             onHoverStart={prepareSignIn}
             onFocus={prepareSignIn}
+            aria-label={labels?.signIn}
           >
             <Icon name="person" size={variant === 'sidebar' ? '1.125rem' : '1.2rem'} />
             {copy.signIn}
