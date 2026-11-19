@@ -1595,6 +1595,7 @@ export const tl: Record<string, string> = {
     'Walang sentrong may kumpirmadong lokasyon sa loob ng {0} km',
   // US-0004: the TSP profile on the Career Map.
   'From your TSP profile': 'Mula sa iyong TSP profile',
+  'Sample TSP data': 'Halimbawang datos ng TSP',
   Skills: 'Mga kasanayan',
   Licenses: 'Mga lisensya',
   'Home area': 'Tinitirhang lugar',

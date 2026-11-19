@@ -18,10 +18,13 @@ export function ProfilePassport({ learnerId }: { learnerId: string }) {
       aria-labelledby="profile-passport"
       className="mb-6 rounded-18 border border-border bg-surface p-5"
     >
-      <h2 id="profile-passport" className="mb-3 flex items-center gap-2.5 text-17 text-navy">
-        <TspBadge small />
-        {copy.heading}
-      </h2>
+      <div className="mb-3 flex flex-wrap items-center gap-2.5">
+        <h2 id="profile-passport" className="m-0 flex items-center gap-2.5 text-17 text-navy">
+          <TspBadge small />
+          {copy.heading}
+        </h2>
+        <span className="ml-auto text-12 text-muted">{copy.sample}</span>
+      </div>
       <dl className="m-0 grid gap-x-6 gap-y-3 sm:grid-cols-2">
         {SECTIONS.map((section) => (
           <div key={section} className="min-w-0">

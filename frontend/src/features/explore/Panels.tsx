@@ -157,6 +157,7 @@ export function TspProfilePanel({ explore }: { explore: Explore }) {
         <h2 id="tsp-profile-heading" className={heading}>
           {copy.heading}
         </h2>
+        <span className="ml-auto text-11 text-muted">{copy.sample}</span>
       </div>
       <dl className="m-0 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-13 leading-[1.45]">
         {rows.map(([label, value]) => (

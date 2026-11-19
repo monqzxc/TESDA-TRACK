@@ -25,6 +25,7 @@ describe('TspProfilePanel', () => {
   it('shows the skills, license and home area, with no sample label', () => {
     render(<TspProfilePanel explore={explore('loaded', manuel)} />)
     expect(screen.getByRole('heading', { name: 'From your TSP profile' })).toBeInTheDocument()
+    expect(screen.getByText('Sample TSP data')).toBeInTheDocument()
     expect(screen.getByText('Driving, Cooking')).toBeInTheDocument()
     expect(screen.getByText("LTO Professional Driver's License")).toBeInTheDocument()
     expect(screen.getByText('Caloocan City, Metro Manila')).toBeInTheDocument()

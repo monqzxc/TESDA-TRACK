@@ -2162,6 +2162,8 @@ export const en = {
     // The line on the entry page while TSP signs the learner in (features/tsp/TspPassportStatus.tsx).
     passport: {
       heading: 'From your Skill Passport',
+      // US-0003 AC4: a quiet tag that the profile is synthetic, for the December 2 demo.
+      sample: 'Sample TSP data',
       connecting: 'Connecting to your Skill Passport…',
       loading: 'Getting your Skill Passport details…',
       connected: 'Skill Passport connected',
@@ -2298,6 +2300,8 @@ export const en = {
     // US-0004: what the signed-in learner's Skill Passport says, at the top of the panel.
     tspProfile: {
       heading: 'From your TSP profile',
+      // US-0003 AC4: a quiet tag that the profile is synthetic, for the December 2 demo.
+      sample: 'Sample TSP data',
       skills: 'Skills',
       licenses: 'Licenses',
       homeArea: 'Home area',
