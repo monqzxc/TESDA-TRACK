@@ -1,9 +1,11 @@
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { useContext, useMemo } from 'react'
 import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
 import { qualificationsQuery, regionsQuery } from '../../api/queries.ts'
 import { AuthContext } from '../../auth/useAuth.ts'
 import type { MatchResult } from '../finder/api.ts'
+import { sessionStore } from '../../lib/sessionStore.ts'
 import { passportQuery } from '../tsp/passport.ts'
 import { clientConfigQuery, listingsQuery, sitesQuery } from '../training/api.ts'
 import {
@@ -16,6 +18,7 @@ import {
 import { useTrainingStore } from '../training/state.ts'
 import type { Reference } from '../training/useCenters.ts'
 import { anyOutOfRange, MAX_QUALIFICATIONS, NEAR_KM, nearestRegion } from './explore.ts'
+import { EXPLORE_KEY } from './key.ts'
 import { areaJobsQuery } from './demandApi.ts'
 import { nearbySuggestionsQuery, outlookQuery, outlookSummaryQuery } from './outlookApi.ts'
 import {
@@ -53,9 +56,10 @@ export const useDemandStore = create<{
   setPersonal: (personal) => set({ personal, offset: 0 }),
 }))
 
-// The page's state and data. What the learner typed and what came back stay in memory only: never in the address,
-// never in storage, so a reload starts again. The location switch and a typed place are Training & Assessment's own
-// (useTrainingStore), so the two pages share them during a visit.
+// The page's state and data. What the learner typed, what came back and how far they can go are kept in
+// sessionStorage, never in the address: a refresh keeps them, as on Find my pathway, and closing the tab clears them.
+// The location switch and a typed place are Training & Assessment's own (useTrainingStore), so the two pages share
+// them during a visit.
 
 export interface Search {
   query: string
@@ -85,25 +89,49 @@ interface ExploreState {
   changeRange: () => void
   setRange: (rangeKm: number) => void
   closeRange: () => void
+  /** Clears the goal, results and range, e.g. on sign-out. */
+  reset: () => void
 }
 
-export const useExploreStore = create<ExploreState>()((set) => ({
+const EMPTY = {
   draft: '',
   search: null,
   relocate: false,
   rangeKm: NEAR_KM,
   rangeChosen: false,
   askingRange: false,
-  setDraft: (draft) => set({ draft }),
-  setRelocate: (relocate) => set({ relocate }),
-  changeRange: () => set({ askingRange: true }),
-  setRange: (rangeKm) => set({ rangeKm, rangeChosen: true, askingRange: false }),
-  closeRange: () => set({ askingRange: false }),
-  setSearch: (search) => {
-    set({ search })
-    useDemandStore.getState().setCode(undefined)
-  },
-}))
+} satisfies Partial<ExploreState>
+
+export const useExploreStore = create<ExploreState>()(
+  persist(
+    (set) => ({
+      ...EMPTY,
+      setDraft: (draft) => set({ draft }),
+      setRelocate: (relocate) => set({ relocate }),
+      changeRange: () => set({ askingRange: true }),
+      setRange: (rangeKm) => set({ rangeKm, rangeChosen: true, askingRange: false }),
+      closeRange: () => set({ askingRange: false }),
+      setSearch: (search) => {
+        set({ search })
+        useDemandStore.getState().setCode(undefined)
+      },
+      reset: () => set(EMPTY),
+    }),
+    {
+      name: EXPLORE_KEY,
+      storage: createJSONStorage(() => sessionStore),
+      version: 1,
+      // "How far can you go?" being open is a moment, not work: a refresh closes it.
+      partialize: ({ draft, search, relocate, rangeKm, rangeChosen }) => ({
+        draft,
+        search,
+        relocate,
+        rangeKm,
+        rangeChosen,
+      }),
+    },
+  ),
+)
 
 /**
  * Every site with the listings the page needs, measured from the learner's location or a typed place, nearest

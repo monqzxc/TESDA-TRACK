@@ -1,13 +1,17 @@
 import { useCallback, useMemo } from 'react'
 import { useSearchParams } from 'react-router'
 import { create } from 'zustand'
+import { createJSONStorage, persist } from 'zustand/middleware'
+import { sessionStore } from '../../lib/sessionStore.ts'
 import type { TravelMode } from './api.ts'
 import type { Point } from './centers.ts'
 import { readTrainingAddress, writeTrainingAddress, type TrainingFilters } from './address.ts'
+import { PLACE_KEY } from './key.ts'
 
 // The page's state. Filters are in the address (useTrainingFilters). The rest stays in this tab: the learner's
-// location and the place they typed are kept in memory only and never saved or sent anywhere but where the page
-// says. Saved centers belong to the account (savedCenters.ts).
+// location is kept in memory only and never saved or sent anywhere but where the page says. The place they typed is
+// kept in sessionStorage, so a refresh keeps it and closing the tab clears it. Saved centers belong to the account
+// (savedCenters.ts).
 
 /** The filters in the address, and ways to change them. */
 export function useTrainingFilters() {
@@ -67,73 +71,84 @@ interface TrainingState {
 /** Two decimal places: about 1 km, as the page promises. */
 const round = (value: number) => Math.round(value * 100) / 100
 
-export const useTrainingStore = create<TrainingState>()((set, get) => ({
-  useLocation: false,
-  askedOnOpen: false,
-  location: null,
-  locating: false,
-  locationError: null,
-  placeText: '',
-  routeTo: null,
-  travelMode: 'car',
-
-  setUseLocation: (wanted) => {
-    if (wanted) {
-      get().locate()
-      return
-    }
-    // Routes start at the learner's location, so they go with it.
-    set({
+export const useTrainingStore = create<TrainingState>()(
+  persist(
+    (set, get) => ({
       useLocation: false,
+      askedOnOpen: false,
       location: null,
       locating: false,
       locationError: null,
+      placeText: '',
       routeTo: null,
-    })
-  },
-  locateOnOpen: () => {
-    const state = get()
-    if (state.askedOnOpen || state.useLocation) return
-    set({ askedOnOpen: true })
-    // A browser that can't share a location is told so only when the learner asks.
-    if ('geolocation' in navigator) state.locate({ quietly: true })
-  },
-  locate: ({ quietly = false } = {}) => {
-    if (!('geolocation' in navigator)) {
-      set({ useLocation: false, locating: false, locationError: 'unsupported' })
-      return
-    }
-    set({ useLocation: true, locating: true, locationError: null })
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        // Turned off while the browser was asking: the answer isn't used.
-        if (!get().useLocation) return
-        set({
-          locating: false,
-          location: {
-            latitude: round(position.coords.latitude),
-            longitude: round(position.coords.longitude),
-          },
-        })
-      },
-      (error) => {
-        // Turned off while the browser was asking (Show all centers instead): there's nothing to explain.
-        if (!get().useLocation) return
+      travelMode: 'car',
+
+      setUseLocation: (wanted) => {
+        if (wanted) {
+          get().locate()
+          return
+        }
+        // Routes start at the learner's location, so they go with it.
         set({
           useLocation: false,
           location: null,
           locating: false,
-          locationError: quietly
-            ? null
-            : error.code === error.PERMISSION_DENIED
-              ? 'denied'
-              : 'unavailable',
+          locationError: null,
+          routeTo: null,
         })
       },
-      { enableHighAccuracy: false, maximumAge: 300_000, timeout: 10_000 },
-    )
-  },
-  setPlaceText: (placeText) => set({ placeText }),
-  showRoute: (routeTo) => set({ routeTo }),
-  setTravelMode: (travelMode) => set({ travelMode }),
-}))
+      locateOnOpen: () => {
+        const state = get()
+        if (state.askedOnOpen || state.useLocation) return
+        set({ askedOnOpen: true })
+        // A browser that can't share a location is told so only when the learner asks.
+        if ('geolocation' in navigator) state.locate({ quietly: true })
+      },
+      locate: ({ quietly = false } = {}) => {
+        if (!('geolocation' in navigator)) {
+          set({ useLocation: false, locating: false, locationError: 'unsupported' })
+          return
+        }
+        set({ useLocation: true, locating: true, locationError: null })
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            // Turned off while the browser was asking: the answer isn't used.
+            if (!get().useLocation) return
+            set({
+              locating: false,
+              location: {
+                latitude: round(position.coords.latitude),
+                longitude: round(position.coords.longitude),
+              },
+            })
+          },
+          (error) => {
+            // Turned off while the browser was asking (Show all centers instead): there's nothing to explain.
+            if (!get().useLocation) return
+            set({
+              useLocation: false,
+              location: null,
+              locating: false,
+              locationError: quietly
+                ? null
+                : error.code === error.PERMISSION_DENIED
+                  ? 'denied'
+                  : 'unavailable',
+            })
+          },
+          { enableHighAccuracy: false, maximumAge: 300_000, timeout: 10_000 },
+        )
+      },
+      setPlaceText: (placeText) => set({ placeText }),
+      showRoute: (routeTo) => set({ routeTo }),
+      setTravelMode: (travelMode) => set({ travelMode }),
+    }),
+    {
+      name: PLACE_KEY,
+      storage: createJSONStorage(() => sessionStore),
+      version: 1,
+      // Only the typed place: the location is never saved.
+      partialize: ({ placeText }) => ({ placeText }),
+    },
+  ),
+)

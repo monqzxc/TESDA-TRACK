@@ -1,6 +1,7 @@
 import { create } from 'zustand'
-import { createJSONStorage, persist, type StateStorage } from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
 import type { components } from '../../api/schema.d.ts'
+import { sessionStore } from '../../lib/sessionStore.ts'
 import { FINDER_KEY, GOAL_MAX_LENGTH } from './key.ts'
 
 // The finder's state: the learner's goal and their work towards a pathway. It lives in sessionStorage, so a refresh
@@ -149,31 +150,6 @@ const EMPTY = {
   feedback: {},
   place: { region: null, mode: null, scholarship: false },
 } satisfies Partial<FinderState>
-
-/** sessionStorage can be missing or throw (private windows, blocked site data): then nothing is saved. */
-const sessionStore: StateStorage = {
-  getItem: (key) => {
-    try {
-      return window.sessionStorage.getItem(key)
-    } catch {
-      return null
-    }
-  },
-  setItem: (key, value) => {
-    try {
-      window.sessionStorage.setItem(key, value)
-    } catch {
-      // Not saved: the work still applies until the page is closed.
-    }
-  },
-  removeItem: (key) => {
-    try {
-      window.sessionStorage.removeItem(key)
-    } catch {
-      // Nothing to remove.
-    }
-  },
-}
 
 const clean = (goal: string) => goal.slice(0, GOAL_MAX_LENGTH)
 

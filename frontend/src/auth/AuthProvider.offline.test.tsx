@@ -1,7 +1,9 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { EXPLORE_KEY } from '../features/explore/key.ts'
 import { FINDER_KEY } from '../features/finder/key.ts'
+import { PLACE_KEY } from '../features/training/key.ts'
 import { reloadPage } from '../lib/reload.ts'
 import { findAccountButton, rememberSignIn, serveAccountApi } from '../test/account.tsx'
 import { renderApp, serveCatalog } from '../test/app.tsx'
@@ -91,7 +93,7 @@ describe("when the sign-in dialog's code can't be downloaded", () => {
 })
 
 describe("when the finder's code can't be downloaded", () => {
-  it("signing out still clears the finder's work from this tab", async () => {
+  it("signing out still clears the finder's and the Career Map's work from this tab", async () => {
     const user = userEvent.setup()
     rememberSignIn()
     serveAccountApi({ signedIn: true })
@@ -99,6 +101,14 @@ describe("when the finder's code can't be downloaded", () => {
     window.sessionStorage.setItem(
       FINDER_KEY,
       JSON.stringify({ state: { goal: 'Become an electrician' }, version: 1 }),
+    )
+    window.sessionStorage.setItem(
+      EXPLORE_KEY,
+      JSON.stringify({ state: { draft: 'I can weld' }, version: 1 }),
+    )
+    window.sessionStorage.setItem(
+      PLACE_KEY,
+      JSON.stringify({ state: { placeText: 'Manila' }, version: 1 }),
     )
     await openApp('/no-such-page', 'Page not found')
 
@@ -109,5 +119,7 @@ describe("when the finder's code can't be downloaded", () => {
 
     await screen.findByRole('button', { name: 'Sign in' })
     expect(window.sessionStorage.getItem(FINDER_KEY)).toBeNull()
+    expect(window.sessionStorage.getItem(EXPLORE_KEY)).toBeNull()
+    expect(window.sessionStorage.getItem(PLACE_KEY)).toBeNull()
   })
 })

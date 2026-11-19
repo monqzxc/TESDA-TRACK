@@ -12,7 +12,9 @@ import {
 import { onSignInRequired } from '../api/client.ts'
 import { LoadBoundary } from '../components/LoadBoundary.tsx'
 import { useCopy } from '../i18n/copy.ts'
+import { EXPLORE_KEY } from '../features/explore/key.ts'
 import { FINDER_KEY } from '../features/finder/key.ts'
+import { PLACE_KEY } from '../features/training/key.ts'
 import { isBridgeConnected } from '../features/tsp/bridge.ts'
 import { focusedElement, returnFocus } from '../lib/focus.ts'
 import { navigationTarget } from '../lib/navigation.ts'
@@ -48,19 +50,37 @@ const SignInDialog = lazy(() =>
 )
 
 /**
- * Clears the finder's work. Its store's code is only needed here once someone signs out, so it comes down then.
- * Its storage is cleared first and directly: if that code can't be downloaded, it wasn't on the page, so storage is
- * all there was.
+ * Clears the work this tab keeps for a refresh: the finder's, and the Career Map's goal, results and typed place.
+ * Their stores' code is only needed here once someone signs out, so it comes down then. Storage is cleared first and
+ * directly: if that code can't be downloaded, it wasn't on the page, so storage is all there was.
  */
 async function clearFinderWork() {
-  try {
-    window.sessionStorage.removeItem(FINDER_KEY)
-  } catch {
-    // Nothing saved to remove.
+  for (const key of [FINDER_KEY, EXPLORE_KEY, PLACE_KEY]) {
+    try {
+      window.sessionStorage.removeItem(key)
+    } catch {
+      // Nothing saved to remove.
+    }
   }
+  // The finder's store first, as each one is downloaded on its own: a slow one doesn't hold up the others.
   try {
     const { useFinderStore } = await import('../features/finder/store.ts')
     useFinderStore.getState().reset()
+  } catch {
+    // Offline: see above.
+  }
+  try {
+    const { useTrainingStore } = await import('../features/training/state.ts')
+    useTrainingStore.getState().setPlaceText('')
+    // Emptying the store saved the empty place: nothing is left for a refresh to find.
+    await useTrainingStore.persist.clearStorage()
+  } catch {
+    // Offline: see above.
+  }
+  try {
+    const { useExploreStore } = await import('../features/explore/useExplore.ts')
+    useExploreStore.getState().reset()
+    await useExploreStore.persist.clearStorage()
   } catch {
     // Offline: see above.
   }
