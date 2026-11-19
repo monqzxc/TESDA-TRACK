@@ -499,6 +499,15 @@ export default function ExplorePage() {
               {!search && view !== 'demand' && !selected && (
                 <p className="m-0 text-13 leading-[1.5] text-muted">{copy.search.hint}</p>
               )}
+              {config?.center_data === 'sample' && (
+                <p
+                  role="note"
+                  className="m-0 flex items-start gap-2 rounded-10 bg-warn-bg px-3 py-2 text-13 leading-[1.5] font-semibold text-warn-ink"
+                >
+                  <Icon name="info" className="mt-0.5 flex-none" />
+                  {copy.sampleCenters}
+                </p>
+              )}
               {!selected && <TspProfilePanel explore={explore} />}
               {view !== 'demand' && (
                 <div className={selected && !locationError ? 'max-md:hidden' : undefined}>

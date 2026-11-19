@@ -26,7 +26,8 @@ export function sourceLink(value: string | null | undefined): string | undefined
 const labels = {
   verified: 'Verified data',
   incomplete: 'Incomplete data',
-  example: 'Example data',
+  // Sample data: the December 2 demo's sample centers (US-0017 AC8) and other made-up records.
+  example: 'Sample data',
 }
 
 /** The status's dot: green when verified, amber when something is missing, grey for an example. */
@@ -43,7 +44,8 @@ function DateValue({ value }: { value?: string | null }) {
 
 /** What a status asks of the learner, for a list to say once above its cards (ProvenanceNotice). */
 export const statusAdvice = {
-  example: 'For demonstration. Confirm real services with the center before applying.',
+  example:
+    'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.',
   incomplete:
     'Some source or review information is missing. Confirm details before relying on them.',
 }

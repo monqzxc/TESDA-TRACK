@@ -2243,6 +2243,9 @@ export const en = {
   // The map-first center finder demo at /explore (markdowns/TESDA-TRACK-Location-First-Implementation-Plan.md).
   // Wording follows the plan's Task 12; it is for the Product Owner to approve.
   explore: {
+    // US-0017 AC8: while TESDA's approval of its lists is pending, the demo shows labelled sample centers.
+    sampleCenters:
+      'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.',
     panel: {
       collapse: 'Show less',
       closeSheet: 'Close map panel',

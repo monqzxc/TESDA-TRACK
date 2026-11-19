@@ -473,7 +473,7 @@ test('BUG-18: Career Map center details show the recorded source and source date
   await expect(details.getByText('Reference: DEMO-ASSESS-31')).toBeVisible()
   await expect(details.getByText(/^Source updated:/)).toHaveText('Source updated: 2026-10-21')
   await expect(details.getByText(/^Record updated:/)).toHaveText('Record updated: 2026-11-18')
-  await expect(details.getByText('Example data', { exact: true })).toBeVisible()
+  await expect(details.getByText('Sample data', { exact: true })).toBeVisible()
   await page.getByRole('button', { name: 'Back to results' }).click()
 
   await page.getByRole('button', { name: /Example Computer Training Center Training for/ }).click()

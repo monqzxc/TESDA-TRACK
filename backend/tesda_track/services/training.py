@@ -10,6 +10,7 @@ from tesda_track.schemas.delivery import (ProgramSearch, SiteSearch, SiteSummary
                                           TrainingProgramPublic, TrainingProgramUpdate, TrainingProviderCreate)
 from tesda_track.services import catalog, geo, sites, verification
 from tesda_track.services.provenance import validate_update
+from tesda_track.services.center_listing import listed
 
 PROGRAM_REQUIRED_FIELDS = {"title", "delivery_mode", "scholarship_available", "scholarship_is_sample", "is_active"}
 PHILIPPINE_TIME = timezone(timedelta(hours=8))
@@ -42,7 +43,7 @@ def program_public(program: TrainingProgram, distance_km: float | None = None) -
 
 
 def list_providers(session: Session, search: SiteSearch) -> list[TrainingProvider]:
-    query = select(TrainingProvider).where(TrainingProvider.is_active)
+    query = select(TrainingProvider).where(listed(TrainingProvider))
     if search.region_code:
         query = query.where(TrainingProvider.region_code == search.region_code)
     if search.radius_km is not None:
@@ -108,7 +109,7 @@ def search_programs(session: Session, search: ProgramSearch) -> list[tuple[Train
     distance = geo.distance_km(TrainingProvider, search) if search.near_lat is not None else null()
     query = (select(TrainingProgram, distance.label("distance_km"))
              .join(TrainingProvider).join(Qualification, TrainingProgram.qualification_id == Qualification.id)
-             .where(TrainingProgram.is_active, TrainingProvider.is_active, Qualification.is_active)
+             .where(TrainingProgram.is_active, listed(TrainingProvider), Qualification.is_active)
              .options(selectinload(TrainingProgram.provider),
                       selectinload(TrainingProgram.qualification).selectinload(Qualification.sector)))
     if search.qualification_code:

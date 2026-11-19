@@ -1615,4 +1615,9 @@ export const tl: Record<string, string> = {
     'Ang lugar na ita-type mo ay para sa pagbisitang ito lamang. Hindi nababago ang iyong TSP profile.',
   'Centers couldn’t be loaded. Try again from the list.':
     'Hindi makuha ang mga sentro. Subukang muli mula sa listahan.',
+  // US-0017 AC8: sample centers for the December 2 demo.
+  'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.':
+    'Mga halimbawang sentro para sa demo sa Disyembre 2. Hindi ito opisyal na listahan ng TESDA: gawa-gawa lamang ang mga pangalan, lugar at iskedyul.',
+  'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':
+    'Halimbawang datos para sa demonstrasyon, hindi opisyal na tala ng TESDA. Kumpirmahin ang totoong serbisyo sa TESDA.',
 }
