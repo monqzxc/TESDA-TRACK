@@ -26,15 +26,17 @@ export function sourceLink(value: string | null | undefined): string | undefined
 const labels = {
   verified: 'Verified data',
   incomplete: 'Incomplete data',
-  example: 'Example data',
 }
 
-/** The status's dot: green when verified, amber when something is missing, grey for an example. */
+/** The status's dot: green when verified, amber when something is missing. */
 const dots = {
   verified: 'bg-good-ink',
   incomplete: 'bg-warn-ink',
-  example: 'bg-muted',
 }
+
+/** Example records are shown like any other unverified record. */
+const shownStatus = (value?: Provenance | null) =>
+  value?.status === 'verified' ? 'verified' : 'incomplete'
 
 function DateValue({ value }: { value?: string | null }) {
   if (!value || !Number.isFinite(Date.parse(value))) return <>Not recorded</>
@@ -43,7 +45,6 @@ function DateValue({ value }: { value?: string | null }) {
 
 /** What a status asks of the learner, for a list to say once above its cards (ProvenanceNotice). */
 export const statusAdvice = {
-  example: 'For demonstration. Confirm real services with the center before applying.',
   incomplete:
     'Some source or review information is missing. Confirm details before relying on them.',
 }
@@ -63,7 +64,7 @@ export function DataProvenance({
   compact?: boolean
   advice?: boolean
 }) {
-  const status = value?.status ?? 'incomplete'
+  const status = shownStatus(value)
   const href = sourceLink(value?.source_url)
   const sourceName = value?.source_name?.replace(
     /^Accredited Comp(?:e|en)tency Assessment Center based on (.+) Database\.xlsx$/i,
@@ -124,8 +125,8 @@ export function ProvenanceNotice({
 }: {
   values: readonly (Provenance | null | undefined)[]
 }) {
-  const statuses = new Set(values.map((value) => value?.status ?? 'incomplete'))
-  const shown = (['incomplete', 'example'] as const).filter((status) => statuses.has(status))
+  const statuses = new Set(values.map(shownStatus))
+  const shown = (['incomplete'] as const).filter((status) => statuses.has(status))
   if (!shown.length) return null
   return (
     <div className="mb-3 grid gap-0.5 text-13 leading-[1.5] text-muted">

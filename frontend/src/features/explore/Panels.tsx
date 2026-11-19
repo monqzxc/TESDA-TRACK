@@ -20,13 +20,11 @@ import { placeLabel, type Center, type Point } from '../training/centers.ts'
 import { travelTime } from '../training/format.ts'
 import { NoLocationTag, unlocated } from '../training/NoLocationTag.tsx'
 import { useTrainingStore } from '../training/state.ts'
-import { SampleScholarshipNote } from '../training/scholarship.tsx'
 import type { View } from './ExplorePage.tsx'
 import {
   cardsFor,
   estimateMinutes,
   firstKind,
-  hasSampleScholarship,
   hasScholarship,
   inRangeOr,
   RANGES_KM,
@@ -119,7 +117,7 @@ function TripMeta({
 
 /**
  * US-0004: what the signed-in learner's Skill Passport says, under "From your TSP profile": skills, licenses and
- * home area, with a Sample data label for the synthetic demo accounts. Nothing for a guest or an account without a
+ * home area. Nothing for a guest or an account without a
  * passport. If the profile can't be loaded, it says so; the place box below (LocationRow) lets the learner go on.
  */
 export function TspProfilePanel({ explore }: { explore: Explore }) {
@@ -159,9 +157,6 @@ export function TspProfilePanel({ explore }: { explore: Explore }) {
         <h2 id="tsp-profile-heading" className={heading}>
           {copy.heading}
         </h2>
-        {passport.sample && (
-          <span className={cx(tag, 'bg-warn-bg text-warn-ink')}>{copy.sample}</span>
-        )}
       </div>
       <dl className="m-0 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-13 leading-[1.45]">
         {rows.map(([label, value]) => (
@@ -341,9 +336,6 @@ function CenterRow({
                 <Icon name="star" />
                 {copy.results.scholarship}
               </span>
-              {hasSampleScholarship(center, code) && (
-                <SampleScholarshipNote className="mt-1 block" />
-              )}
             </>
           )}
         </span>
@@ -1032,9 +1024,6 @@ export function CenterCard({
                     <Icon name="star" />
                     {en.explore.results.scholarship}
                   </span>
-                  {scholarships.some((program) => program.scholarship_is_sample) && (
-                    <SampleScholarshipNote className="self-center" />
-                  )}
                 </>
               )}
             </div>

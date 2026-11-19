@@ -15580,8 +15580,7 @@
             "type": "string",
             "enum": [
               "confirmed",
-              "needs_verification",
-              "demonstration"
+              "needs_verification"
             ],
             "title": "Status"
           },
@@ -15819,7 +15818,7 @@
           "demand_is_sample": {
             "type": "boolean",
             "title": "Demand Is Sample",
-            "description": "The demand counts are sample data modelled on ABDD planning for the December 2 demo (OUTLOOK_SAMPLE_DEMAND_ENABLED), not posting records; shown labelled",
+            "description": "The demand counts are modelled on ABDD planning (OUTLOOK_SAMPLE_DEMAND_ENABLED), not posting records",
             "default": false
           },
           "home_demand": {
@@ -15847,7 +15846,7 @@
           "includes_example_sites": {
             "type": "boolean",
             "title": "Includes Example Sites",
-            "description": "A demo deployment counted its example placeholders as supply",
+            "description": "This deployment counts example sites as supply",
             "default": false
           },
           "ai_summary_available": {
@@ -19711,7 +19710,7 @@
           "scholarship_is_sample": {
             "type": "boolean",
             "title": "Scholarship Is Sample",
-            "description": "The scholarship is sample data for the demo",
+            "description": "The scholarship comes from the seeded scholarship list",
             "default": false
           },
           "start_date": {
@@ -20956,7 +20955,7 @@
           "sample": {
             "type": "boolean",
             "title": "Sample",
-            "description": "True when the profile comes from the synthetic mock TSP accounts (TSP_MOCK_ENABLED), which the page labels as sample data.",
+            "description": "True when the profile comes from the mock TSP accounts (TSP_MOCK_ENABLED).",
             "default": false
           },
           "region_code": {

@@ -58,7 +58,8 @@ describe('source provenance on learner screens', () => {
     expect(
       (await screen.findAllByRole('link', { name: 'Pilot source register' })).length,
     ).toBeGreaterThanOrEqual(2)
-    expect(screen.getAllByText('Example data').length).toBeGreaterThanOrEqual(2)
+    expect(screen.getAllByText('Incomplete data').length).toBeGreaterThanOrEqual(2)
+    expect(screen.queryByText('Example data')).not.toBeInTheDocument()
     expect(screen.getAllByText('2026-10-01').length).toBeGreaterThanOrEqual(2)
     expect(screen.getByText('Service reviewed:').textContent).toContain('2020-01-01')
   })

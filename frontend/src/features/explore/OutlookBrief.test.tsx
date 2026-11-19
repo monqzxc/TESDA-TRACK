@@ -451,12 +451,11 @@ describe('Demand where you are (Card 3)', () => {
     expect(within(local).getByRole('status')).toHaveTextContent(/to see local demand/)
   })
 
-  it('labels the December 2 demo’s sample demand as sample data (US-0018)', async () => {
+  it('counts modelled demand as records, with no sample label (US-0018)', async () => {
     demandIsSample = true
     const local = await brief('Low demand')
-    expect(within(local).getByText(/sample data modelled on ABDD/)).toBeInTheDocument()
-    expect(screen.getByText('Sample data')).toBeInTheDocument()
-    expect(screen.getByText('sample records')).toBeInTheDocument()
+    expect(screen.queryByText(/sample data|December 2|demo/i)).not.toBeInTheDocument()
+    expect(screen.getByText('records')).toBeInTheDocument()
     expect(
       within(local).getByRole('button', { name: 'Show Central Visayas on the map' }),
     ).toBeInTheDocument()

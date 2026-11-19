@@ -77,16 +77,6 @@ export function hasScholarship(center: Center, code: string): boolean {
   )
 }
 
-/** Whether an open scholarship it shows for the qualification is the December 2 demo's sample data. */
-export function hasSampleScholarship(center: Center, code: string): boolean {
-  return center.programs.some(
-    (program) =>
-      program.qualification.code === code &&
-      program.scholarship_open &&
-      program.scholarship_is_sample,
-  )
-}
-
 export interface QualificationCard {
   match: Match
   strength: Strength

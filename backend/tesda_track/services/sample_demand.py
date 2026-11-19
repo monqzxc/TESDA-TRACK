@@ -1,19 +1,16 @@
-"""Sample demand for the December 2 demo (US-0018), modelled on TESDA's Area-Based Demand-Driven (ABDD) planning.
+"""Modelled demand (US-0018), based on TESDA's Area-Based Demand-Driven (ABDD) planning.
 
 Very few qualifications have reviewed links to posting records yet, so without it the Career Map could never show a
 demand level or a higher-demand area. With OUTLOOK_SAMPLE_DEMAND_ENABLED on, a qualification with no reviewed
-posting record anywhere gets sample demand instead, and every answer built from it says it is sample data. Real
+posting record anywhere gets modelled demand instead, worded as demand records, never as postings. Real
 records always win: a qualification with even one reviewed posting record is never given sample demand.
 
 The numbers are synthetic, not records. Each region has the priority sectors its ABDD planning names (approximated
-here for the demo) and a weight for the size of its labor market. A qualification's sample demand in a region is
+here) and a weight for the size of its labor market. A qualification's sample demand in a region is
 that weight, raised when the qualification's sector is one of the region's priorities, with a fixed per-pair spread
 so neighbouring regions don't read the same. The same qualification and region always get the same number.
 """
 import hashlib
-
-SAMPLE_LIMITATION = ("Demand here is sample data modelled on ABDD regional planning priorities, for the December 2 "
-                     "demo. It is not posting records or a forecast.")
 
 # Relative size of each region's labor market.
 REGION_WEIGHT = {

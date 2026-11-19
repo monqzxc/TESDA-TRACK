@@ -1,4 +1,4 @@
-"""Sample scholarships for the December 2 demo (US-0019), always marked as sample data.
+"""Seeded scholarships (US-0019), flagged scholarship_is_sample on the program.
 
     python -m tesda_track.sample_scholarships apply            # preview what would change
     python -m tesda_track.sample_scholarships apply --commit   # write it
@@ -8,7 +8,7 @@ Within each qualification, every fourth active program (by id, starting with the
 so every qualification that has a program has an open one, and a re-run picks the same programs. They close on
 SAMPLE_CLOSES_ON, after the demo, except each qualification's second one, which closed on SAMPLE_CLOSED_ON, so the
 demo also shows a scholarship whose tag has gone. Programs with real scholarship data are never touched, and clear
-removes only what this command added. Real scholarship data replaces it after December 2.
+removes only what this command added. Real scholarship data replaces it.
 """
 import argparse
 import json

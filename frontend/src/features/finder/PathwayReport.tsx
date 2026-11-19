@@ -210,7 +210,6 @@ const PRIORITY_TONES = { high: 'warning', medium: 'info', low: 'neutral' } as co
 const STATUS_TONES = {
   confirmed: 'success',
   needs_verification: 'warning',
-  demonstration: 'neutral',
 } as const
 
 /**
@@ -532,9 +531,8 @@ function ProviderItem({ provider, today }: { provider: Provider; today: string }
   if (provider.delivery_mode && provider.delivery_mode !== 'unknown') {
     facts.push(en.training.delivery[provider.delivery_mode as DeliveryMode])
   }
-  // The API sends whether a scholarship is open today (US-0019), and whether it is the demo's sample data.
-  if (provider.scholarship_available)
-    facts.push(provider.scholarship_is_sample ? copy.scholarshipSample : copy.scholarship)
+  // The API sends whether a scholarship is open today (US-0019).
+  if (provider.scholarship_available) facts.push(copy.scholarship)
   return (
     <li className={cx(panel, 'flex flex-col gap-1 px-4 py-3')}>
       <p className="m-0 flex flex-wrap items-center gap-x-2 gap-y-1">

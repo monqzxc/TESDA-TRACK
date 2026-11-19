@@ -22,16 +22,16 @@ const explore = (passportStatus: Explore['passportStatus'], passport?: Passport 
   ({ passportStatus, passport }) as unknown as Explore
 
 describe('TspProfilePanel', () => {
-  it('shows the skills, license and home area, labelled as sample data', () => {
+  it('shows the skills, license and home area, with no sample label', () => {
     render(<TspProfilePanel explore={explore('loaded', manuel)} />)
     expect(screen.getByRole('heading', { name: 'From your TSP profile' })).toBeInTheDocument()
     expect(screen.getByText('Driving, Cooking')).toBeInTheDocument()
     expect(screen.getByText("LTO Professional Driver's License")).toBeInTheDocument()
     expect(screen.getByText('Caloocan City, Metro Manila')).toBeInTheDocument()
-    expect(screen.getByText('Sample data')).toBeInTheDocument()
+    expect(screen.queryByText('Sample data')).not.toBeInTheDocument()
   })
 
-  it('has no sample label for a real profile and says when a section is empty', () => {
+  it('says when a section is empty', () => {
     render(
       <TspProfilePanel explore={explore('loaded', { ...manuel, licenses: [], sample: false })} />,
     )

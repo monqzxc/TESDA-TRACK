@@ -53,12 +53,13 @@ describe('record provenance', () => {
     expect(screen.getByRole('link', { name: label })).toHaveAttribute('href', sourceUrl)
   })
 
-  it('labels examples in compact listing cards and explains them in details', () => {
+  it('shows example records as unverified, with no demo label', () => {
     const view = render(<DataProvenance value={{ status: 'example' }} compact />)
-    expect(screen.getByText('Example data')).toBeVisible()
-    expect(screen.queryByText(/For demonstration/)).not.toBeInTheDocument()
+    expect(screen.getByText('Incomplete data')).toBeVisible()
+    expect(screen.queryByText(/Example data|demonstration/i)).not.toBeInTheDocument()
     view.rerender(<DataProvenance value={{ status: 'example' }} />)
-    expect(screen.getByText(/For demonstration/)).toBeVisible()
+    expect(screen.getByText(/Confirm details before relying on them/)).toBeVisible()
+    expect(screen.queryByText(/Example data|demonstration/i)).not.toBeInTheDocument()
   })
 
   it('keeps non-web source references and credentialed URLs out of links', () => {

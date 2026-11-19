@@ -4948,7 +4948,7 @@ export interface components {
              * Status
              * @enum {string}
              */
-            status: "confirmed" | "needs_verification" | "demonstration";
+            status: "confirmed" | "needs_verification";
             /**
              * Score
              * @description The ranking's score; only confirmed options are scored
@@ -5038,7 +5038,7 @@ export interface components {
             demand_available: boolean;
             /**
              * Demand Is Sample
-             * @description The demand counts are sample data modelled on ABDD planning for the December 2 demo (OUTLOOK_SAMPLE_DEMAND_ENABLED), not posting records; shown labelled
+             * @description The demand counts are modelled on ABDD planning (OUTLOOK_SAMPLE_DEMAND_ENABLED), not posting records
              * @default false
              */
             demand_is_sample: boolean;
@@ -5052,7 +5052,7 @@ export interface components {
             insight: components["schemas"]["OutlookInsight"];
             /**
              * Includes Example Sites
-             * @description A demo deployment counted its example placeholders as supply
+             * @description This deployment counts example sites as supply
              * @default false
              */
             includes_example_sites: boolean;
@@ -6476,7 +6476,7 @@ export interface components {
             scholarship_closes_on?: string | null;
             /**
              * Scholarship Is Sample
-             * @description The scholarship is sample data for the demo
+             * @description The scholarship comes from the seeded scholarship list
              * @default false
              */
             scholarship_is_sample: boolean;
@@ -6786,7 +6786,7 @@ export interface components {
             province?: string | null;
             /**
              * Sample
-             * @description True when the profile comes from the synthetic mock TSP accounts (TSP_MOCK_ENABLED), which the page labels as sample data.
+             * @description True when the profile comes from the mock TSP accounts (TSP_MOCK_ENABLED).
              * @default false
              */
             sample: boolean;

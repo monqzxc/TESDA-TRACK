@@ -851,7 +851,6 @@ export const en = {
         statuses: {
           confirmed: 'Verified',
           needs_verification: 'Needs verification',
-          demonstration: 'Demonstration',
         },
         distance: (km: number) => `About ${figure(km)} km from your region’s center`,
         starts: (day: string) => `Starts ${day}`,
@@ -862,7 +861,6 @@ export const en = {
         hours: (n: number) => `${figure(n)} hours`,
         seats: (n: number) => `${figure(n)} ${n === 1 ? 'seat' : 'seats'} left`,
         scholarship: 'Scholarship open',
-        scholarshipSample: 'Scholarship open (sample data for the December 2 demo)',
         allOptions: 'See all options in Training & Assessment',
         steps: 'Your next steps',
         nextAction: 'Your next action',
@@ -1069,8 +1067,6 @@ export const en = {
       details: 'Program details',
       fit: (score: number) => `${score}% fit`,
       scholarship: 'Scholarship open',
-      // US-0019: until real scholarship data arrives after December 2, every scholarship shown is sample data.
-      scholarshipSample: 'Sample data for the December 2 demo',
       why: 'Why this program?',
       whyNote: 'Fit considers your goal, location, start date and preferences.',
       hours: (n: number) => `${figure(n)} hours`,
@@ -2302,7 +2298,6 @@ export const en = {
     // US-0004: what the signed-in learner's Skill Passport says, at the top of the panel.
     tspProfile: {
       heading: 'From your TSP profile',
-      sample: 'Sample data',
       skills: 'Skills',
       licenses: 'Licenses',
       homeArea: 'Home area',
@@ -2502,15 +2497,11 @@ export const en = {
       // The counts for the area, one icon each.
       stats: {
         postings: (n: number) => `posting${n === 1 ? '' : 's'}`,
-        // Sample demand (US-0018) is counted as records, never as postings.
-        samplePostings: (n: number) => `sample record${n === 1 ? '' : 's'}`,
+        // Modelled demand (US-0018) is counted as records, never as postings.
+        records: (n: number) => `record${n === 1 ? '' : 's'}`,
         training: 'training',
         assessment: 'assessment',
       },
-      // The December 2 demo's sample demand, modelled on ABDD planning (US-0018).
-      sample: 'Sample data',
-      sampleNote:
-        'Demand is sample data modelled on ABDD planning, for the December 2 demo. Not real postings.',
       balance: {
         more_demand: 'Demand ahead of supply',
         balanced: 'Balanced',

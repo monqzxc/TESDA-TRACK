@@ -458,9 +458,8 @@ def neighbours(
 def _status(
     evidence: VerificationPublic, confirmed: bool, *sources: ProvenancePublic
 ) -> str:
-    if evidence.is_synthetic or any(source.status == "example" for source in sources):
-        return "demonstration"
-    return "confirmed" if confirmed else "needs_verification"
+    unproven = evidence.is_synthetic or any(source.status == "example" for source in sources)
+    return "confirmed" if confirmed and not unproven else "needs_verification"
 
 
 def _km(distance: float | None) -> int | None:
@@ -1103,12 +1102,8 @@ def considerations(f: Facts) -> list[Consideration]:
         )
 
     statuses = {p.status for p in f.providers}
-    if "needs_verification" in statuses or "demonstration" in statuses:
+    if "needs_verification" in statuses:
         items = []
-        if "demonstration" in statuses:
-            items.append(
-                "Options marked “Demonstration” are sample records, not real providers."
-            )
         if "confirmed" in statuses:
             items.append(
                 "Options marked “Verified” have current verification evidence for this qualification."
@@ -1461,11 +1456,6 @@ def final(
         verified = "verified" if confirmed else "listed (not yet verified)"
         sentences.append(
             f"{listing(providers)} {'is' if len(providers) == 1 else 'are'} {verified} for {name}."
-        )
-    elif f.providers:
-        sentences.append(
-            f"Only demonstration records are listed for {name}, so ask the TESDA office near you which "
-            "providers offer it."
         )
     else:
         sentences.append(

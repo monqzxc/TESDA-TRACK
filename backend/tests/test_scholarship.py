@@ -1,4 +1,4 @@
-"""US-0019: "Scholarship open" only while a scholarship is open, and sample data says so."""
+"""US-0019: "Scholarship open" only while a scholarship is open."""
 from datetime import date, timedelta
 from types import SimpleNamespace
 

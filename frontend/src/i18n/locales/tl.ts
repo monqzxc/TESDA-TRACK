@@ -435,7 +435,6 @@ export const tl: Record<string, string> = {
   Assessment: 'Pagtatasa',
   Verified: 'Naberipika',
   'Needs verification': 'Kailangang beripikahin',
-  Demonstration: 'Pagpapakita ng kakayahan',
   'Date not listed': 'Hindi nakalista ang petsa',
   'Scholarship listed': 'May nakalistang scholarship',
   'See all options in Training & Assessment':
@@ -1587,9 +1586,6 @@ export const tl: Record<string, string> = {
   'No core skills are listed for this qualification yet.':
     'Wala pang nakalistang pangunahing kasanayan para sa kwalipikasyong ito.',
   'Scholarship open': 'Bukas ang scholarship',
-  'Sample data for the December 2 demo': 'Sample data para sa demo sa Disyembre 2',
-  'Scholarship open (sample data for the December 2 demo)':
-    'Bukas ang scholarship (sample data para sa demo sa Disyembre 2)',
   'Location not confirmed': 'Hindi pa kumpirmado ang lokasyon',
   'Close map panel': 'Isara ang panel ng mapa',
   'Centers with unconfirmed locations': 'Mga sentrong hindi pa kumpirmado ang lokasyon',
@@ -1599,7 +1595,6 @@ export const tl: Record<string, string> = {
     'Walang sentrong may kumpirmadong lokasyon sa loob ng {0} km',
   // US-0004: the TSP profile on the Career Map.
   'From your TSP profile': 'Mula sa iyong TSP profile',
-  'Sample data': 'Halimbawang datos',
   Skills: 'Mga kasanayan',
   Licenses: 'Mga lisensya',
   'Home area': 'Tinitirhang lugar',

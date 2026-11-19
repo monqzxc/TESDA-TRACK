@@ -93,15 +93,15 @@ class QualificationOutlook(BaseModel):
     snapshot_dates: list[date]
     demand_available: bool = Field(description="Whether any posting record links to this qualification at all")
     demand_is_sample: bool = Field(
-        default=False, description="The demand counts are sample data modelled on ABDD planning for the December 2 "
-                                   "demo (OUTLOOK_SAMPLE_DEMAND_ENABLED), not posting records; shown labelled")
+        default=False, description="The demand counts are modelled on ABDD planning "
+                                   "(OUTLOOK_SAMPLE_DEMAND_ENABLED), not posting records")
     home_demand: HomeDemand | None = Field(default=None, description="The learner's region, when they gave one")
     higher_demand: list[HigherDemandArea] = Field(
         default_factory=list, description="Regions with more posting records than the learner's: nearby ones first, "
                                           "then the rest, each by records, at most five")
     insight: OutlookInsight
     includes_example_sites: bool = Field(
-        default=False, description="A demo deployment counted its example placeholders as supply")
+        default=False, description="This deployment counts example sites as supply")
     ai_summary_available: bool = Field(description="Whether /labor-market/outlook/summary can return an AI-written summary")
     method_version: Literal["qualification-outlook-v1"] = "qualification-outlook-v1"
     limitations: list[str]

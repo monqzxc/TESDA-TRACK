@@ -160,7 +160,7 @@ class TrainingProgramPublic(BaseModel):
     scholarship_open: bool = Field(
         description="A scholarship is listed and today (Philippine time) is not past its close date")
     scholarship_closes_on: date | None = None
-    scholarship_is_sample: bool = Field(default=False, description="The scholarship is sample data for the demo")
+    scholarship_is_sample: bool = Field(default=False, description="The scholarship comes from the seeded scholarship list")
     start_date: date | None
     end_date: date | None
     slots: int | None

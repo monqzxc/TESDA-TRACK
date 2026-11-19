@@ -6,7 +6,6 @@ import {
   cardsFor,
   estimateMinutes,
   firstKind,
-  hasSampleScholarship,
   hasScholarship,
   inRangeOr,
   nearestRegion,
@@ -259,12 +258,6 @@ describe('hasScholarship', () => {
     expect(hasScholarship(withPrograms([program('A', true, false)]), 'A')).toBe(true)
     expect(hasScholarship(withPrograms([program('A', false, false)]), 'A')).toBe(false)
     expect(hasScholarship(withPrograms([program('B', true, false)]), 'A')).toBe(false)
-  })
-
-  it('says when the open scholarship is sample data', () => {
-    expect(hasSampleScholarship(withPrograms([program('A', true, true)]), 'A')).toBe(true)
-    expect(hasSampleScholarship(withPrograms([program('A', false, true)]), 'A')).toBe(false)
-    expect(hasSampleScholarship(withPrograms([program('A', true, false)]), 'A')).toBe(false)
   })
 })
 

@@ -29,7 +29,6 @@ LIMITATIONS = [
     "signal, not a workforce shortage or surplus estimate.",
     "Missing records do not prove there is no demand or no training in an area.",
 ]
-EXAMPLES_COUNTED = "This deployment counts example sites as supply, for demonstration. They are not TESDA records."
 
 # A region is ahead on demand when its share of the posting records is at least this many times its share of the
 # centers, and ahead on supply when it is at most the inverse. Provisional until the Product Owner signs off.
@@ -181,11 +180,10 @@ def build(session: Session, qualification_code: str, region_code: str | None = N
     by_code = {area.region_code: area for area in areas}
     home_demand, higher_demand = home_and_higher(by_code.get(home_region_code), areas, total_postings)
     insight = write_insight(qualification.name, by_code.get(region_code), by_code.get(home_region_code), relocate,
-                            areas, totals, alternatives, include_examples)
-    limitations = [*LIMITATIONS, *([EXAMPLES_COUNTED] if include_examples else [])]
+                            areas, totals, alternatives)
+    limitations = list(LIMITATIONS)
     if sample:
         insight = _as_sample(insight)
-        limitations = [sample_demand.SAMPLE_LIMITATION, *limitations]
     return QualificationOutlook(
         qualification=OutlookQualification(code=qualification.code, name=qualification.name),
         region_code=region_code, home_region_code=home_region_code, relocate=relocate, areas=areas, totals=totals,
@@ -197,9 +195,9 @@ def build(session: Session, qualification_code: str, region_code: str | None = N
 
 
 def _sample_words(text: str) -> str:
-    """The rules' words for sample demand: they never call it posting records."""
-    text = text.replace("posting record", "sample demand record")
-    return re.sub(r"\b(\d[\d,]*) posting(s?)\b", r"\1 sample demand record\2", text)
+    """The rules' words for modelled demand: they never call it posting records."""
+    text = text.replace("posting record", "demand record")
+    return re.sub(r"\b(\d[\d,]*) posting(s?)\b", r"\1 demand record\2", text)
 
 
 def _as_sample(insight: OutlookInsight) -> OutlookInsight:
@@ -243,8 +241,7 @@ HEADLINES = {
 
 
 def write_insight(name: str, area: AreaOutlook | None, home: AreaOutlook | None, relocate: bool,
-                  areas: list[AreaOutlook], totals: OutlookTotals, alternatives: list[AreaOutlook],
-                  examples_counted: bool = False) -> OutlookInsight:
+                  areas: list[AreaOutlook], totals: OutlookTotals, alternatives: list[AreaOutlook]) -> OutlookInsight:
     points: list[OutlookPoint] = []
 
     def say(kind: str, text: str) -> None:
@@ -288,23 +285,19 @@ def write_insight(name: str, area: AreaOutlook | None, home: AreaOutlook | None,
 
     # Supply.
     total_sites = totals.training_sites + totals.assessment_sites
-    demo = " These counts include example sites, shown for demonstration." if examples_counted and total_sites else ""
     if area is None:
         if total_sites:
             top = [f"{a.name} ({_centers(a):,})" for a in by_centers[:3]]
             say("supply", f"{_count(totals.training_sites, 'training center')} and "
                           f"{_count(totals.assessment_sites, 'assessment center')} are recorded for it across "
-                          f"{_count(totals.regions_with_sites, 'region')}, most in {_listed(top)}.{demo}")
+                          f"{_count(totals.regions_with_sites, 'region')}, most in {_listed(top)}.")
         else:
             say("supply", "No training or assessment center is recorded for it yet.")
     else:
         share = (f", {_percent(area.supply_share)} of the {total_sites:,} recorded nationwide" if _centers(area) else "")
-        placeholders = (f" {_count(area.example_sites, 'example site')} on the map "
-                        f"{'is a placeholder' if area.example_sites == 1 else 'are placeholders'} and not counted."
-                        if area.example_sites else "")
         say("supply", f"{_count(area.training_sites, 'training center')} and "
                       f"{_count(area.assessment_sites, 'assessment center')} are recorded for it in "
-                      f"{area.name}{share}.{placeholders}{demo}")
+                      f"{area.name}{share}.")
 
     # Balance.
     if area is None:
@@ -347,7 +340,7 @@ def write_insight(name: str, area: AreaOutlook | None, home: AreaOutlook | None,
 
     headline = (HEADLINES[area.balance].format(area=area.name, name=name) if area
                 else f"{name}: where it is in demand and where it is offered")
-    summary = write_summary(name, area, home, relocate, areas, totals, alternatives, examples_counted)
+    summary = write_summary(name, area, home, relocate, areas, totals, alternatives)
     return OutlookInsight(headline=headline, summary=summary, points=points)
 
 
@@ -362,8 +355,7 @@ VERDICTS = {
 
 
 def write_summary(name: str, area: AreaOutlook | None, home: AreaOutlook | None, relocate: bool,
-                  areas: list[AreaOutlook], totals: OutlookTotals, alternatives: list[AreaOutlook],
-                  examples_counted: bool = False) -> str:
+                  areas: list[AreaOutlook], totals: OutlookTotals, alternatives: list[AreaOutlook]) -> str:
     """The brief under the map, in a few short sentences: where the learner is and whether they would relocate, the
     demand and the supply there, what that makes of the area, and where else to look."""
     said: list[str] = []
@@ -427,6 +419,4 @@ def write_summary(name: str, area: AreaOutlook | None, home: AreaOutlook | None,
             said.append(f"If your plans change, {names[0]} shows more demand against its supply.")
     elif relocate:
         said.append("No other region shows stronger recorded demand for it.")
-    if examples_counted and sites:
-        said.append("Center counts include example sites, shown for demonstration.")
     return " ".join(said)

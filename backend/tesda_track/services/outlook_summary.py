@@ -100,7 +100,6 @@ def facts_for(outlook: QualificationOutlook) -> dict[str, Any]:
             "training_centers": item.training_sites, "assessment_centers": item.assessment_sites,
             "percent_of_national_centers": percent(item.supply_share), "balance": item.balance,
             "limited_evidence": item.limited, "most_posted_titles": item.titles,
-            "example_sites_not_counted": item.example_sites,
         }
 
     return {
@@ -117,7 +116,6 @@ def facts_for(outlook: QualificationOutlook) -> dict[str, Any]:
         },
         "regions_with_stronger_demand_against_supply": [counts(areas[code]) for code in outlook.alternatives],
         "posting_snapshot_dates": [day.isoformat() for day in outlook.snapshot_dates],
-        "center_counts_include_example_sites": outlook.includes_example_sites,
         "analysis_by_rules": {"headline": outlook.insight.headline, "summary": outlook.insight.summary,
                               "points": [point.text for point in outlook.insight.points]},
         "limitations": outlook.limitations,
@@ -141,7 +139,7 @@ def summarize(session: Session, outlook: QualificationOutlook, writer: SummaryWr
               allow_request=lambda: True) -> OutlookSummary:
     """The AI-written paragraph for this outlook, from the cache when it has been written before. `allow_request`
     says whether a new one may be asked for now (the request limits); when it may not, the rules speak."""
-    # Sample demand (US-0018) is described only in the rules' words, which always call it sample data.
+    # Modelled demand (US-0018) is described only in the rules' words, which call it demand records, never postings.
     if writer is None or outlook.demand_is_sample:
         return rules_summary(outlook)
     facts = facts_for(outlook)

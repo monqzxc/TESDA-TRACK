@@ -365,7 +365,6 @@ export const pam: Record<string, string> = {
   Assessment: 'Pamagmasusi',
   Verified: 'Mepatunay',
   'Needs verification': 'Kailangan patunayan',
-  Demonstration: 'Pamagpakit',
   'Starts {0}': 'Mag-umpisa king {0}',
   'Assessment on {0}': 'Pamagmasusi king {0}',
   'Date not listed': 'E makalista ing petsa',

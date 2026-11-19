@@ -104,8 +104,6 @@ def prompt(facts: dict, language: str = "en", version: str = "2") -> str:
                          "supply.")
     else:
         said.append("Do not name any other region.")
-    if facts["examples_counted"]:
-        said.append("Add that the center counts include example sites, shown for demonstration.")
     meaning = {"qualification": "the qualification's name", "area": "the region's name",
                "demand": "how many posting records are here", "supply": "how many centers are here",
                "alternatives": "the other region or regions to look at", "ahead": "regions where demand is ahead",

@@ -256,7 +256,7 @@ def test_existing_matching_and_rankings_are_reused_unchanged(client, report, mak
     assert result["rankings"]["training_policy"] == "verified-services-v2"
 
 
-def test_unverified_and_demonstration_listings_are_never_presented_as_verified(report, make_provider, make_program,
+def test_unverified_and_synthetic_listings_are_never_presented_as_verified(report, make_provider, make_program,
                                                                                verify_service):
     unverified = make_program(title="Unverified batch", verified=False)
     demo = make_provider(name="Demo Welding School")
@@ -266,17 +266,17 @@ def test_unverified_and_demonstration_listings_are_never_presented_as_verified(r
     result = report(region_code="NCR")
     statuses = {p["name"]: (p["status"], p["score"]) for p in result["providers"]}
     assert statuses == {"Manila Welding Institute": ("needs_verification", None),
-                        "Demo Welding School": ("demonstration", None)}
+                        "Demo Welding School": ("needs_verification", None)}
     verification = topics(result["considerations"])["verification"]
     assert "aren't verified" in verification["text"]
-    assert verification["items"] == ["Options marked “Demonstration” are sample records, not real providers."]
-    assert "Manila Welding Institute is listed (not yet verified)" in result["final"]["summary"]
+    assert verification["items"] == []
+    assert "Manila Welding Institute and Demo Welding School are listed (not yet verified)" in result["final"]["summary"]
     assert unverified["id"] in {p["service_id"] for p in result["providers"]}
 
 
 @pytest.mark.parametrize("kind", ["training", "assessment"])
 @pytest.mark.parametrize("example_on", ["service", "site"])
-def test_example_record_or_site_provenance_is_shown_as_demonstration(
+def test_example_record_or_site_provenance_is_shown_as_unverified(
         report, make_provider, make_program, make_center, make_schedule, kind, example_on):
     # Source provenance is independent of service authorization. A sample must stay a sample even
     # when its separate service-verification record would otherwise put it in the scored rankings.
@@ -290,10 +290,10 @@ def test_example_record_or_site_provenance_is_shown_as_demonstration(
     result = report(region_code="NCR")
     [option] = result["providers"]
     assert (option["kind"], option["service_id"], option["status"], option["score"]) == (
-        kind, service["id"], "demonstration", None)
-    assert topics(result["considerations"])["verification"]["items"] == [
-        "Options marked “Demonstration” are sample records, not real providers."]
-    assert "Only demonstration records are listed" in result["final"]["summary"]
+        kind, service["id"], "needs_verification", None)
+    assert topics(result["considerations"])["verification"]["items"] == []
+    assert "is listed (not yet verified)" in result["final"]["summary"]
+    assert "demonstration" not in str(result).lower()
 
 
 def test_rankings_are_audited_and_feedback_still_works_without_storing_the_goal(client, session, learner, report,

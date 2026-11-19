@@ -297,17 +297,12 @@ export function OutlookBrief({
               {area?.limited && (
                 <span className={cx(tag, 'bg-chip text-muted')}>{copy.limited}</span>
               )}
-              {data.demand_is_sample && (
-                <span className={cx(tag, 'bg-warn-bg text-warn-ink')} title={copy.sampleNote}>
-                  {copy.sample}
-                </span>
-              )}
             </div>
             {area && (
               <ul className="m-0 flex list-none flex-wrap gap-1.5 p-0">
                 <Stat icon="briefcase" tone="text-navy" value={area.posting_count}>
                   {data.demand_is_sample
-                    ? copy.stats.samplePostings(area.posting_count)
+                    ? copy.stats.records(area.posting_count)
                     : copy.stats.postings(area.posting_count)}
                 </Stat>
                 <Stat icon="learn" tone="text-blue" value={area.training_sites}>
@@ -520,9 +515,7 @@ function LocalDemand({
   onView: (view: View) => void
   skill: string
 }) {
-  const outlookCopy = useCopy().explore.outlook
-  const copy = outlookCopy.local
-  const sampleNote = outlookCopy.sampleNote
+  const copy = useCopy().explore.outlook.local
   const data = explore.outlook.data
   if (!data) return null
   const higher = data.higher_demand ?? []
@@ -577,12 +570,6 @@ function LocalDemand({
           ) : null}
         </span>
       </p>
-      {data.demand_is_sample && (
-        <p className={cx(note, 'flex items-start gap-1.5')}>
-          <Icon name="info" className="mt-[3px] flex-none" />
-          {sampleNote}
-        </p>
-      )}
       {groups.length ? (
         <div className="flex flex-col gap-1">
           <p className="m-0 flex items-center gap-1.5 text-12 font-bold text-navy">

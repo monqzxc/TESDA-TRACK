@@ -115,8 +115,6 @@ def judge(template: str, facts: dict, *, prose: bool = False) -> dict:
         failed["caution"] = f"promises or misnames the records: {re.search(PROMISES, low).group(0)!r}"
     elif facts["limited"] and not re.search(r"small|rough|few|limited|careful|caution", low):
         failed["caution"] = "small counts aren't called a rough signal"
-    elif facts["examples_counted"] and "example" not in low:
-        failed["caution"] = "doesn't say the centers include example sites"
 
     words = len(text.split())
     if words > MAX_WORDS:

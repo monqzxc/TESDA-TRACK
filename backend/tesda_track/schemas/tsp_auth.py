@@ -42,7 +42,7 @@ class TspProfile(BaseModel):
     municipality: str | None = Field(default=None, description="The city or municipality the Skill Passport gives as "
                                      "home; null when it gives none.")
     province: str | None = Field(default=None, description="The province the Skill Passport gives as home.")
-    sample: bool = Field(default=False, description="True when the profile comes from the synthetic mock TSP "
-                         "accounts (TSP_MOCK_ENABLED), which the page labels as sample data.")
+    sample: bool = Field(default=False, description="True when the profile comes from the mock TSP "
+                         "accounts (TSP_MOCK_ENABLED).")
     region_code: str | None = Field(default=None, description="The region the Skill Passport gives as home, as one "
                                     "of the app's region codes; null when it gives none or an unknown one.")

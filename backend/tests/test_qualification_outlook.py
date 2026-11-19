@@ -111,13 +111,13 @@ def test_example_sites_are_reported_beside_supply_and_counted_only_when_the_depl
     assert (ncr.training_sites, ncr.example_sites) == (1, 2)
     assert strict.training_site_ids == [real.id] and not strict.includes_example_sites
     supply = next(point.text for point in strict.insight.points if point.kind == "supply")
-    assert "2 example sites on the map are placeholders and not counted" in supply
+    assert "example" not in supply and "placeholder" not in supply
 
     demo = qualification_outlook.build(session, CODE, "NCR", include_examples=True)
     ncr = area(demo, "NCR")
     assert (ncr.training_sites, ncr.example_sites) == (3, 0) and demo.includes_example_sites
-    assert any("example sites" in text for text in demo.limitations)
-    assert "include example sites" in next(p.text for p in demo.insight.points if p.kind == "supply")
+    assert not any("example" in text for text in demo.limitations)
+    assert "example" not in next(p.text for p in demo.insight.points if p.kind == "supply")
 
 
 def test_assessment_supply_is_open_schedules_and_the_registrys_latest_accreditations(session):
@@ -230,8 +230,7 @@ def test_the_brief_covers_every_mix_of_records(session):
     training(session, "VII", 2, **EXAMPLE)
     counted = brief(include_examples=True, relocate=True)
     assert "is here (20%), but none of its 2 recorded centers." in counted
-    assert counted.endswith("If you relocate, look first at Region VII (Central Visayas). Center counts include "
-                            "example sites, shown for demonstration.")
+    assert counted.endswith("If you relocate, look first at Region VII (Central Visayas).")
 
 
 def test_outlook_is_public_and_refuses_unknown_codes(client, session):
@@ -424,7 +423,7 @@ def test_demand_results_for_several_learner_locations(client, session, qualifica
 
 def test_sample_demand_gives_a_labelled_level_and_higher_demand_areas_when_no_posting_is_linked(session):
     """US-0018 AC1, AC2: with sample demand on, a qualification with no reviewed posting record anywhere still has a
-    demand level and higher-demand areas, and every word says it is sample data."""
+    demand level and higher-demand areas, worded as demand records and never labelled as sample or demo data."""
     training(session, "NCR", 2)
 
     plain = qualification_outlook.build(session, CODE, "NCR", "NCR", relocate=True)
@@ -435,10 +434,10 @@ def test_sample_demand_gives_a_labelled_level_and_higher_demand_areas_when_no_po
     assert all(item.posting_count > 0 for item in outlook.areas)
     assert outlook.totals.posting_count == sum(item.posting_count for item in outlook.areas)
     assert outlook.home_demand.level in ("high", "moderate", "low")
-    assert outlook.limitations[0] == qualification_outlook.sample_demand.SAMPLE_LIMITATION
     words = [outlook.insight.headline, outlook.insight.summary, *(point.text for point in outlook.insight.points)]
     assert not any("posting record" in text for text in words)
-    assert any("sample demand record" in text for text in words)
+    assert any("demand record" in text for text in words)
+    assert not any(w in text.lower() for text in [*words, *outlook.limitations] for w in ("sample", "demo"))
 
     # Relocating from a smaller region lists regions with more sample demand, with their distance.
     away = qualification_outlook.build(session, CODE, "XIII", "XIII", relocate=True, sample_demand_enabled=True)

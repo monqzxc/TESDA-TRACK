@@ -15,7 +15,6 @@ import { applyForAssessment, type Application, type ProgramFit } from './api.ts'
 import { friendlyDay, placeLabel, type Center, type Program, type Schedule } from './centers.ts'
 import { canReviewApplication, evidenceMessages } from './evidence.ts'
 import { deliveryLabel, localTime, programCost, programFacts, scheduleFee } from './format.ts'
-import { SampleScholarshipNote, sampleScholarship } from './scholarship.tsx'
 
 /** Listings shown under a center before View all (classic/training_view.py PREVIEW). */
 const PREVIEW = 2
@@ -208,7 +207,6 @@ function ProgramCard({
             {program.scholarship_open && (
               <span className={scholarshipBadge}>{copy.programs.scholarship}</span>
             )}
-            {sampleScholarship(program) && <SampleScholarshipNote />}
           </p>
         )}
         {fit && fit.explanation.length > 0 && (
@@ -286,7 +284,6 @@ function ProgramDialog({
           {program.scholarship_open && (
             <span className={scholarshipBadge}>{copy.programs.scholarship}</span>
           )}
-          {sampleScholarship(program) && <SampleScholarshipNote />}
         </p>
       </div>
       <dl className={factList}>

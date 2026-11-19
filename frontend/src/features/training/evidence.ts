@@ -71,11 +71,7 @@ export function evidenceMessages(service: Service, now = Date.now()): string[] {
     unavailable: 'Service unavailable',
     unknown: 'Service requires verification',
   }
-  const messages = [
-    evidence?.is_synthetic
-      ? 'Demonstration record — not a verified service'
-      : (labels[status] ?? labels.unknown),
-  ]
+  const messages = [labels[status] ?? labels.unknown]
   if (evidence?.source_name) messages.push(`Source: ${evidence.source_name}`)
   if ('scheduled_at' in service && !authorizationCoversSchedule(service)) {
     messages.push('Service authorization does not cover the scheduled assessment date')
