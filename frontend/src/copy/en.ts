@@ -272,7 +272,7 @@ export const en = {
       label: 'Your goal',
       placeholder: 'I’ve worked as a welder for 5 years but I don’t have an NC.',
       submit: 'Get started',
-      note: 'Your goal opens in the Career Map, where you can change it before you search.',
+      note: 'Your goal is searched in the Career Map, where you can change it and search again.',
       // As the finder's goal box says it.
       empty: 'Describe your career goal or skills to get started.',
       // Under the box, as Streamlit's text area counts: "12/500", read as "12 of 500 characters".

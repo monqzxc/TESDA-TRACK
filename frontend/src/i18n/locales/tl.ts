@@ -164,8 +164,8 @@ export const tl: Record<string, string> = {
     'Sabihin ang karera, kakayahan, o karanasang gusto mong gawing kwalipikasyon.',
   'I’ve worked as a welder for 5 years but I don’t have an NC.':
     'Limang taon na akong nagtatrabaho bilang welder pero wala pa akong NC.',
-  'Your goal opens in the Career Map, where you can change it before you search.':
-    'Magbubukas ang layunin mo sa Career Map, kung saan maaari mo itong baguhin bago ka maghanap.',
+  'Your goal is searched in the Career Map, where you can change it and search again.':
+    'Hahanapin ang layunin mo sa Career Map, kung saan maaari mo itong baguhin at hanapin ulit.',
   'Describe your career goal or skills to get started.':
     'Ilarawan ang iyong layunin sa karera o mga kakayahan upang magsimula.',
   'TESDA Track is a pilot. Matches are guidance, and readiness checks are self-reported: they don’t replace an official TESDA competency assessment.':

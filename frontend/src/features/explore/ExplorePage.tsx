@@ -13,7 +13,7 @@ import {
   type RefObject,
 } from 'react'
 import { Button, Input, Label, SearchField, ToggleButton } from 'react-aria-components'
-import { NavLink, useLocation, useSearchParams } from 'react-router'
+import { NavLink, useLocation, useNavigate, useSearchParams } from 'react-router'
 import { useQualifications } from '../../api/queries.ts'
 import { failureMessage } from '../../auth/fields.tsx'
 import { Icon } from '../../components/Icon.tsx'
@@ -181,9 +181,10 @@ export default function ExplorePage() {
   const bodyId = useId()
   const input = useRef<HTMLInputElement>(null)
   // Arriving from the home page's Find my path, the search box takes focus, ready to type in.
-  const focusSearch = Boolean(
-    (useLocation().state as { focusSearch?: boolean } | null)?.focusSearch,
-  )
+  const arrival = useLocation().state as { focusSearch?: boolean; runSearch?: boolean } | null
+  const focusSearch = Boolean(arrival?.focusSearch)
+  // Arriving from the home page's goal box, the goal already in the box is searched straight away.
+  const runSearch = Boolean(arrival?.runSearch)
   useEffect(() => {
     if (focusSearch) input.current?.focus()
   }, [focusSearch])
@@ -426,6 +427,7 @@ export default function ExplorePage() {
           <SearchBox
             regionCode={nearestRegion(reference, explore.regions)?.code ?? null}
             inputRef={input}
+            autoRun={runSearch}
             menuOpen={menuOpen}
             menuRef={menuButton}
             onMenu={() => useSidebarStore.getState().openMenu(menuButton.current)}
@@ -589,6 +591,7 @@ export default function ExplorePage() {
 function SearchBox({
   regionCode,
   inputRef,
+  autoRun,
   menuOpen,
   menuRef,
   onMenu,
@@ -597,6 +600,8 @@ function SearchBox({
 }: {
   regionCode: string | null
   inputRef: RefObject<HTMLInputElement | null>
+  /** Search the draft once on arrival (the home page's goal box sent it). */
+  autoRun: boolean
   /** The burger's drawer is open: the burger spins a half turn as it opens, and back as it closes. */
   menuOpen: boolean
   menuRef: RefObject<HTMLButtonElement | null>
@@ -615,10 +620,9 @@ function SearchBox({
 
   useEffect(() => () => request.current?.abort(), [])
 
-  const run = async (event: FormEvent) => {
-    event.preventDefault()
+  const search = async (text: string) => {
     if (request.current) return
-    const query = draft.trim()
+    const query = text.trim()
     if (!query) return
     const controller = new AbortController()
     request.current = controller
@@ -639,6 +643,27 @@ function SearchBox({
     }
   }
 
+  const run = (event: FormEvent) => {
+    event.preventDefault()
+    void search(draft)
+  }
+
+  // The arrival's request leaves the history entry once read, so a reload or Back doesn't search again.
+  const navigate = useNavigate()
+  const location = useLocation()
+  useEffect(() => {
+    if (!autoRun) return
+    void navigate(
+      { pathname: location.pathname, search: location.search, hash: location.hash },
+      { replace: true, state: { focusSearch: true }, preventScrollReset: true },
+    )
+    // Scheduled rather than run inline, so a remount (StrictMode) cancels it instead of searching twice.
+    const timer = setTimeout(() => void search(useExploreStore.getState().draft), 0)
+    return () => clearTimeout(timer)
+    // Runs once per arrival: the request is cleared from the location above.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoRun])
+
   const cancelSearch = () => {
     request.current?.abort()
     request.current = null
@@ -654,7 +679,7 @@ function SearchBox({
 
   return (
     <form
-      onSubmit={(event) => void run(event)}
+      onSubmit={run}
       className={cx(
         'pointer-events-auto flex flex-none flex-col',
         // On a phone the bar is a card of its own across the top; from a tablet up it is the panel's first row.

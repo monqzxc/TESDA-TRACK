@@ -19,3 +19,17 @@
   document.documentElement.dataset.theme = theme
   document.documentElement.style.colorScheme = theme
 })()
+
+// If the app's script fails to download, show the "can't load" message at once instead of after the delay in
+// app-fallback.css. A failed <script> fires 'error' on the element only, so listen in the capture phase.
+window.addEventListener(
+  'error',
+  function (event) {
+    var el = event.target
+    if (el && el.tagName === 'SCRIPT' && el.type === 'module') {
+      var box = document.querySelector('.app-fallback-delayed')
+      if (box) box.className += ' app-fallback-now'
+    }
+  },
+  true,
+)

@@ -37,7 +37,13 @@
 /* Waits before it shows, so a normal start never flashes it. */
 .app-fallback-delayed {
   visibility: hidden;
-  animation: app-fallback-show 0s 6s forwards;
+  animation: app-fallback-show 0s 3s forwards;
+}
+
+/* Added by theme-init.js when the app's script fails to download. */
+.app-fallback-now {
+  animation: none;
+  visibility: visible;
 }
 
 @keyframes app-fallback-show {

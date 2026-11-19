@@ -13,8 +13,8 @@ import { homeButton, ui } from './styles.ts'
 /**
  * The goal box at the end of the page (after classic/landing.css): a navy band with the question, and the box on a
  * step lighter than the band. Submitting opens the Career Map
- * with the goal in the finder's store (session storage), never in the address, where the learner can change it
- * before getting matches.
+ * with the goal in the finder's store (session storage), never in the address, and runs its search there; the
+ * learner can change it and search again.
  */
 export function ClosingGoal() {
   const en = useCopy()
@@ -33,9 +33,9 @@ export function ClosingGoal() {
       field.current?.focus()
       return
     }
-    // The goal waits in the Career Map's search box, ready to search or change.
+    // The goal opens in the Career Map's search box and its search runs on arrival; the learner can still change it.
     useExploreStore.getState().setDraft(goal.trim())
-    void navigate(paths.explore, { state: { focusSearch: true } })
+    void navigate(paths.explore, { state: { focusSearch: true, runSearch: true } })
   }
 
   return (

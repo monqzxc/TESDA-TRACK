@@ -987,8 +987,8 @@ export const pam: Record<string, string> = {
     'Ipapakit mu naman ning bawat programa deng direksyun ampong oras ning pamaglakbe, tantiya ning biyahi king pagitan da reng pulu, ampong bakanteng iskedyul ning pamagmasusi.',
   'Follow an assessment application, and keep the certificate when you pass.':
     'Subaybayan ing aplikasyun king pamagmasusi, ampong itabi ing sertipiku nung pumasa ka.',
-  'Your goal opens in the Career Map, where you can change it before you search.':
-    'Mabuklat ing layunin mu king Career Map, a malyari meng alilan bayu ka manintun.',
+  'Your goal is searched in the Career Map, where you can change it and search again.':
+    'Panintunan ing layunin mu king Career Map, a malyari meng alilan at panintunan pasibayu.',
   'TESDA Track is a pilot. Matches are guidance, and readiness checks are self-reported: they don’t replace an official TESDA competency assessment.':
     'Metung yang pilot ing TESDA Track. Deng katugma gabay la, at deng pamagsuri king pamagsadya agpang la king sariling pakibat mu: e la pamalit king opisyal a pamagmasusi kabyasnan ning TESDA.',
   'How closely this qualification fits the goal you described. It’s guidance, not a guarantee.':
