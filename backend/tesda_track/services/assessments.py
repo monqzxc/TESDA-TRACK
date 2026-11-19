@@ -14,6 +14,7 @@ from tesda_track.schemas.delivery import (ApplicationReview, AssessmentApplicati
                                           LearnerSummary, ScheduleSearch, SiteSummary)
 from tesda_track.services import catalog, geo, sites, verification
 from tesda_track.services.ownership import get_owned
+from tesda_track.services.center_listing import listed
 
 SEAT_HOLDING = ("approved", "completed")
 # Review transitions an administrator may make; withdrawal belongs to the learner.
@@ -78,7 +79,7 @@ def center_public(center: AssessmentCenter, codes: list[str]) -> AssessmentCente
 
 
 def list_centers(session: Session, search: CenterSearch) -> list[AssessmentCenterPublic]:
-    query = select(AssessmentCenter).where(AssessmentCenter.is_active)
+    query = select(AssessmentCenter).where(listed(AssessmentCenter))
     if search.qualification_code:
         # Accredited for it, or with an open schedule for it (a center added by hand has no registry rows).
         qualification = select(Qualification.id).where(Qualification.code == search.qualification_code,
@@ -160,7 +161,7 @@ def search_schedules(session: Session, search: ScheduleSearch) -> list[tuple[Ass
     query = (select(AssessmentSchedule, seats_taken_subquery().label("taken"), distance.label("distance_km"))
              .join(AssessmentCenter).join(Qualification, AssessmentSchedule.qualification_id == Qualification.id)
              .where(AssessmentSchedule.status == "open", AssessmentSchedule.scheduled_at > utcnow(),
-                    AssessmentCenter.is_active, Qualification.is_active)
+                    listed(AssessmentCenter), Qualification.is_active)
              .options(selectinload(AssessmentSchedule.center),
                       selectinload(AssessmentSchedule.qualification).selectinload(Qualification.sector)))
     if search.qualification_code:

@@ -14,6 +14,7 @@ from tesda_track.schemas.service_access import (
     ServiceAccessComparison, ServiceAccessRequest, ServiceAccessResult, ServiceKind,
 )
 from tesda_track.services import catalog, routing
+from tesda_track.services.center_listing import listed
 
 
 @dataclass(frozen=True)
@@ -35,7 +36,7 @@ def resolve_sites(session: Session, request: ServiceAccessRequest) -> list[Acces
         providers = session.exec(
             select(TrainingProvider)
             .join(TrainingProgram, TrainingProgram.provider_id == TrainingProvider.id)
-            .where(TrainingProvider.id.in_(training_ids), TrainingProvider.is_active,
+            .where(TrainingProvider.id.in_(training_ids), listed(TrainingProvider),
                    TrainingProgram.is_active, TrainingProgram.qualification_id == qualification.id)
             .distinct()
         ).all()
@@ -52,7 +53,7 @@ def resolve_sites(session: Session, request: ServiceAccessRequest) -> list[Acces
         ).exists()
         centers = session.exec(
             select(AssessmentCenter).where(
-                AssessmentCenter.id.in_(assessment_ids), AssessmentCenter.is_active,
+                AssessmentCenter.id.in_(assessment_ids), listed(AssessmentCenter),
                 or_(has_schedule, has_registration),
             )
         ).all()

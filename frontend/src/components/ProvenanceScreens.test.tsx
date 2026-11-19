@@ -37,7 +37,7 @@ describe('source provenance on learner screens', () => {
   it('leaves data-status labels out of the qualifications library', async () => {
     renderApp('/qualifications')
     expect(await screen.findByRole('heading', { name: 'Welding NC II' })).toBeVisible()
-    expect(screen.queryByText('Example data')).not.toBeInTheDocument()
+    expect(screen.queryByText('Sample data')).not.toBeInTheDocument()
     expect(screen.queryByText(/For demonstration/)).not.toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'Pilot source register' })).not.toBeInTheDocument()
   })
@@ -58,7 +58,7 @@ describe('source provenance on learner screens', () => {
     expect(
       (await screen.findAllByRole('link', { name: 'Pilot source register' })).length,
     ).toBeGreaterThanOrEqual(2)
-    expect(screen.getAllByText('Example data').length).toBeGreaterThanOrEqual(2)
+    expect(screen.getAllByText('Sample data').length).toBeGreaterThanOrEqual(2)
     expect(screen.getAllByText('2026-10-01').length).toBeGreaterThanOrEqual(2)
     expect(screen.getByText('Service reviewed:').textContent).toContain('2020-01-01')
   })

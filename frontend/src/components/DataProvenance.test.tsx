@@ -55,10 +55,10 @@ describe('record provenance', () => {
 
   it('labels examples in compact listing cards and explains them in details', () => {
     const view = render(<DataProvenance value={{ status: 'example' }} compact />)
-    expect(screen.getByText('Example data')).toBeVisible()
-    expect(screen.queryByText(/For demonstration/)).not.toBeInTheDocument()
+    expect(screen.getByText('Sample data')).toBeVisible()
+    expect(screen.queryByText(/Sample data for demonstration/)).not.toBeInTheDocument()
     view.rerender(<DataProvenance value={{ status: 'example' }} />)
-    expect(screen.getByText(/For demonstration/)).toBeVisible()
+    expect(screen.getByText(/Sample data for demonstration/)).toBeVisible()
   })
 
   it('keeps non-web source references and credentialed URLs out of links', () => {

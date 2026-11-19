@@ -170,6 +170,10 @@ class Settings(BaseSettings):
     # never called, even when its client is set, and "Sign in with TSP" asks for a synthetic account's password.
     # Needs TSP_SIGN_IN_ENABLED as well. Anyone who knows a test password can sign in: demos and tests only.
     tsp_mock_enabled: bool = False
+    # Which centers learners see (US-0017 AC8). "official": the imported TESDA lists, as always. "sample": only the
+    # labelled sample centers that `python -m tesda_track.sample_centers load` adds, for the December 2 demo while
+    # TESDA's approval to use the official lists is pending. Every page then labels them as sample data.
+    center_data: Literal["official", "sample"] = "official"
     # TSP Find Jobs (Card 5): the "Find Jobs on TSP" button opens this page with the learner's chosen skill and area
     # as query parameters, named below. Empty: the button shows but is turned off. TSP hasn't confirmed the address
     # or its parameter names yet; set them here once it does.
