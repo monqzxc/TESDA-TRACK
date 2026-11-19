@@ -53,6 +53,8 @@ export interface CenterMapProps {
   onRoute: (centerId: string) => void
   onToggleSaved: (centerId: string) => void
   onLocate: () => void
+  /** A searched place's dot was dragged: measure from where it was dropped. Without it, the dot stays put. */
+  onMoveReference?: (point: Point) => void
 }
 
 /** How a region's share of a qualification's posting records compares with its share of the centers listing it. */

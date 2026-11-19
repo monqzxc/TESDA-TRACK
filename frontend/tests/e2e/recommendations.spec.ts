@@ -459,7 +459,7 @@ test('BUG-18: Career Map center details show the recorded source and source date
   )
   await page.goto('/explore')
   await page.getByRole('searchbox', { name: 'What can you do?' }).fill(GOAL)
-  await page.getByRole('textbox', { name: 'Or type a city or province' }).fill('Manila')
+  await page.getByRole('combobox', { name: 'Or type a city or province' }).fill('Manila')
   await page.getByRole('button', { name: 'Search', exact: true }).click()
   await page
     .getByRole('button', { name: /Example Computer Assessment Center Assessment for/ })
@@ -783,7 +783,7 @@ test('BUG-15: Kuya Manuel sees matching profile evidence in the assessment group
   // A typed place replaces it for this visit only; the profile stays as it was.
   // The panel opens from the search box (folded, its body is inert).
   await page.getByRole('searchbox', { name: 'What can you do?' }).click()
-  const place = page.getByRole('textbox', { name: 'Or type a city or province' })
+  const place = page.getByRole('combobox', { name: 'Or type a city or province' })
   await place.click()
   await place.pressSequentially('Cebu')
   const status = page.getByRole('region', { name: 'What can you do?' }).getByRole('status')

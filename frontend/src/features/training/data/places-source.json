@@ -1,0 +1,20 @@
+{
+  "built": "2026-11-19",
+  "towns": 1634,
+  "provinces": 82,
+  "sources": {
+    "PH.zip": {
+      "url": "https://download.geonames.org/export/dump/PH.zip",
+      "sha256": "a183fac0764d7f2b5849748101bab960ccefa85a50561ce56e8145911ff7235f"
+    },
+    "psgc_municipalities.json": {
+      "url": "https://psgc.gitlab.io/api/cities-municipalities.json",
+      "sha256": "ad08a909329793de103d791156edb92a8b4a76bacf1950f9a23cbd440e815857"
+    },
+    "psgc_provinces.json": {
+      "url": "https://psgc.gitlab.io/api/provinces.json",
+      "sha256": "8e8edfd4e8ccc12417088ae988a4961f5a64604910ec7a38b159e90f3ebebe11"
+    }
+  },
+  "license": "Points: GeoNames (geonames.org), CC BY 4.0. Names and capitals: PSA PSGC via psgc.gitlab.io."
+}

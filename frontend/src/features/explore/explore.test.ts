@@ -10,6 +10,7 @@ import {
   inRangeOr,
   nearestRegion,
   readinessEvidence,
+  qualificationFamily,
   relatedWithin,
   strength,
 } from './explore.ts'
@@ -209,7 +210,7 @@ describe('relatedWithin', () => {
     expect(related?.center.id).toBe('gtaw')
   })
 
-  it('names an accreditation from the catalog, and stays within range and kind', () => {
+  it('names an accreditation from the catalog, and stays within range', () => {
     const related = relatedWithin({
       kind: 'assessment',
       match: welding,
@@ -226,9 +227,89 @@ describe('relatedWithin', () => {
         matches: [welding],
         nearby,
         catalog,
-        rangeKm: 3,
+        rangeKm: 0.5,
       }),
     ).toBeNull()
+  })
+
+  it('falls back to a center of the other kind when none of its own kind lists a related one', () => {
+    // Within 3 km only the assessment center, 1 km away, lists a welding qualification.
+    const related = relatedWithin({
+      kind: 'training',
+      match: welding,
+      matches: [welding],
+      nearby,
+      catalog,
+      rangeKm: 3,
+    })
+    expect([related?.qualification.code, related?.center.id]).toEqual(['FCAW', 'assessor'])
+  })
+
+  // BUG-16: Tagum, "Gusto kong maging driver ng truck". Nothing for Driving (Articulated Vehicle) NC III within
+  // 25 km, but an assessment center 3.7 km away is accredited for Driving NC II.
+  describe('another level of the same qualification', () => {
+    const transport = 'Automotive and Land Transportation'
+    const articulated = {
+      qualification: {
+        code: 'DRIVING-NC-III',
+        name: 'Driving (Articulated Vehicle) NC III',
+        sector: transport,
+      },
+      score: 68,
+      reason: 'Similar in meaning to your goal.',
+    } as unknown as Match
+    const bus = {
+      qualification: {
+        code: 'DRIVING-NC-III-2',
+        name: 'Driving (Passenger Bus/Straight Truck) NC III',
+        sector: transport,
+      },
+      score: 44,
+      reason: 'Similar in meaning to your goal.',
+    } as unknown as Match
+    const drivingCatalog = [
+      { code: 'DRIVING-NC-II', name: 'Driving NC II', sector: transport },
+      { code: 'AUTO-NC-I', name: 'Automotive Servicing NC I', sector: transport },
+    ]
+    const tagum = [
+      center('auto-shop', 'training', ['AUTO-NC-I'], 2, [], transport),
+      center('magugpo', 'assessment', [], 3.7, ['DRIVING-NC-II']),
+    ]
+
+    it('reads a family from the name, without level or variant', () => {
+      expect(qualificationFamily('Driving (Articulated Vehicle) NC III')).toBe('driving')
+      expect(qualificationFamily('Driving NC II')).toBe('driving')
+      expect(qualificationFamily('Bread and Pastry Production NC II')).toBe(
+        'bread and pastry production',
+      )
+    })
+
+    it('suggests Driving NC II at the nearby assessment center over a closer same-sector course', () => {
+      const related = relatedWithin({
+        kind: 'training',
+        match: articulated,
+        matches: [articulated, bus],
+        nearby: tagum,
+        catalog: drivingCatalog,
+        rangeKm: 25,
+      })
+      expect(related?.qualification).toEqual({ code: 'DRIVING-NC-II', name: 'Driving NC II' })
+      expect(related?.center.id).toBe('magugpo')
+    })
+
+    it('prefers the family at a center of the card’s own kind', () => {
+      const school = center('school', 'training', ['DRIVING-NC-II'], 12, [], transport)
+      school.programs[0].qualification.name = 'Driving NC II'
+      const related = relatedWithin({
+        kind: 'training',
+        match: articulated,
+        matches: [articulated],
+        nearby: [...tagum, school],
+        catalog: drivingCatalog,
+        rangeKm: 25,
+      })
+      expect(related?.center.id).toBe('school')
+    })
   })
 })
 

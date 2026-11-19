@@ -15,7 +15,6 @@ import {
 import {
   buildCenters,
   filterCenters,
-  findPlace,
   philippineDay,
   provinces,
   sortCenters,
@@ -24,6 +23,7 @@ import {
   type Point,
 } from './centers.ts'
 import { unlocated } from './NoLocationTag.tsx'
+import { gazetteer, resolvePlace } from './places.ts'
 import { useTrainingFilters, useTrainingStore } from './state.ts'
 
 /** Where distances are measured from: the learner's own location, or a place they typed. */
@@ -31,6 +31,8 @@ export interface Reference extends Point {
   label: string
   /** The learner's own location, not a place they typed. */
   mine: boolean
+  /** A typed place whose pin the learner moved on the map. */
+  pinned?: boolean
 }
 
 /**
@@ -50,6 +52,7 @@ export function useCenters(catalog: readonly Qualification[], goalOverride?: str
     (state) => state.useLocation && state.locating && !state.location,
   )
   const placeText = useTrainingStore((state) => state.placeText)
+  const placePoint = useTrainingStore((state) => state.placePoint)
   const finderGoal = useFinderStore((state) => state.journey?.query ?? null)
   // undefined inherits the Finder journey; explicit null means area exploration without a personal goal.
   const goal = goalOverride === undefined ? finderGoal : goalOverride
@@ -114,8 +117,13 @@ export function useCenters(catalog: readonly Qualification[], goalOverride?: str
       ? filters.province
       : null
   const place: FoundPlace | null = useMemo(
-    () => (everything && placeText.trim() ? findPlace(placeText, everything, regionMap) : null),
-    [everything, placeText, regionMap],
+    () =>
+      placePoint
+        ? placePoint
+        : everything
+          ? resolvePlace(placeText, gazetteer(), everything, regionMap)
+          : null,
+    [placePoint, everything, placeText, regionMap],
   )
   const reference: Reference | null = useMemo(
     () =>

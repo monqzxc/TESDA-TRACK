@@ -845,7 +845,13 @@ an administrator's email (as `username`) and password. Then use the admin endpoi
 - **Directions:** the API asks an OSRM router for road routes (`GET /api/v1/routes`) and adds an estimated
   flight for long trips, so the router sees the server's address, not the learner's. `ROUTING_URL` picks the
   router (see `.env.example`); set it empty to turn Directions off, and the app links to Google Maps instead.
-  The learner's location is rounded to about 1 km first and never logged.
+  The learner's location is rounded to about 1 km first and never logged. Directions also start from a typed
+  place (or its pin) when location sharing is off.
+- **Typed places:** with location sharing off, the Career Map suggests cities, municipalities and provinces as
+  the learner types, from a list bundled with the app (`frontend/src/features/training/data/places.json`), so
+  nothing they type goes to a geocoding service. A town is measured from its town center and a province from its
+  capital ("Pampanga" from San Fernando City). The learner can drag the pin on the map to a more exact spot.
+  Rebuild the list with `python3 scripts/prepare_places.py` (PSGC names and capitals, GeoNames points, CC BY 4.0).
 - **App settings:** the React app asks `GET /api/v1/client-config` for the map's CARTO key (`CARTO_API`), its
   vector tiles and renderer (`MAPTILER_KEY` or `MAP_TILES_URL`, `MAP_ENGINE`, `MAP_3D_ENABLED`; see
   [docs/center-map.md](docs/center-map.md)), and whether Directions and Skills Bridge are on, so one build runs in

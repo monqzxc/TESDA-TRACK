@@ -227,7 +227,7 @@ export default function ExplorePage() {
     }
   }, [bottomReach])
 
-  const { centers, search, matches, reference, location, config } = explore
+  const { centers, search, matches, reference, config } = explore
   const focusCode = explore.demandCode
   // A center saved from the map remembers the qualification it was opened for, else the one in focus.
   const { saved, toggleSaved } = useSavedCenters(selectedCode ?? focusCode)
@@ -265,16 +265,18 @@ export default function ExplorePage() {
     : explore.demandMap.data?.snapshot_dates
   const selected = centers.find((center) => center.id === selectedId) ?? null
 
-  const canRoute = Boolean(config?.routing_enabled && location)
+  // Directions start where distances do: the learner's location, or the place they typed (or its pin).
+  const origin = reference ? { latitude: reference.latitude, longitude: reference.longitude } : null
+  const canRoute = Boolean(config?.routing_enabled && origin)
   const route =
     canRoute &&
-    location &&
+    origin &&
     selected &&
     routeTo === selected.id &&
     selected.latitude !== null &&
     selected.longitude !== null
       ? {
-          from: location,
+          from: origin,
           to: { latitude: selected.latitude, longitude: selected.longitude },
           kind: selected.kind,
         }
@@ -361,6 +363,11 @@ export default function ExplorePage() {
               hideCenterPopups={!tabletUp}
               focus={focus}
               reference={reference}
+              onMoveReference={
+                reference && !reference.mine
+                  ? (point) => store().movePlace({ ...point, label: reference.label })
+                  : undefined
+              }
               radiusKm={view === 'demand' ? null : pickedRange}
               route={route}
               travelMode={travelMode}
@@ -539,7 +546,7 @@ export default function ExplorePage() {
                     code={selectedCode}
                     codes={codes}
                     canRoute={canRoute}
-                    routeFrom={canRoute ? location : null}
+                    routeFrom={canRoute ? origin : null}
                     config={config}
                     onBack={back}
                     onRoute={() => store().showRoute(selected.id)}

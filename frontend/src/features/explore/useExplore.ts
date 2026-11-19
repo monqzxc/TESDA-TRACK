@@ -8,13 +8,8 @@ import type { MatchResult } from '../finder/api.ts'
 import { sessionStore } from '../../lib/sessionStore.ts'
 import { passportQuery } from '../tsp/passport.ts'
 import { clientConfigQuery, listingsQuery, sitesQuery } from '../training/api.ts'
-import {
-  buildCenters,
-  findPlace,
-  philippineDay,
-  sortCenters,
-  withDistances,
-} from '../training/centers.ts'
+import { buildCenters, philippineDay, sortCenters, withDistances } from '../training/centers.ts'
+import { gazetteer, resolvePlace } from '../training/places.ts'
 import { useTrainingStore } from '../training/state.ts'
 import type { Reference } from '../training/useCenters.ts'
 import { anyOutOfRange, MAX_QUALIFICATIONS, NEAR_KM, nearestRegion } from './explore.ts'
@@ -148,6 +143,7 @@ export function useExplore(demandActive = false) {
     (state) => state.useLocation && state.locating && !state.location,
   )
   const placeText = useTrainingStore((state) => state.placeText)
+  const placePoint = useTrainingStore((state) => state.placePoint)
 
   const matches = useMemo(
     () => (search?.result.matches ?? []).slice(0, MAX_QUALIFICATIONS),
@@ -196,7 +192,7 @@ export function useExplore(demandActive = false) {
   )
 
   const place = useMemo(
-    () => (everything && placeText.trim() ? findPlace(placeText, everything, regionMap) : null),
+    () => (everything ? resolvePlace(placeText, gazetteer(), everything, regionMap) : null),
     [everything, placeText, regionMap],
   )
   // The signed-in learner's Skill Passport (US-0004). Optional: the page also renders without an account provider
@@ -215,18 +211,26 @@ export function useExplore(demandActive = false) {
       passportData.province,
       passportData.region_code,
     ].filter((text): text is string => Boolean(text))
-    return tries.map((text) => findPlace(text, everything, regionMap)).find(Boolean) ?? null
+    if (passportData.municipality && passportData.province) {
+      tries.unshift(`${passportData.municipality}, ${passportData.province}`)
+    }
+    return (
+      tries.map((text) => resolvePlace(text, gazetteer(), everything, regionMap)).find(Boolean) ??
+      null
+    )
   }, [passportData, everything, regionMap])
   const reference: (Reference & { fromProfile?: boolean }) | null = useMemo(
     () =>
       location
         ? { ...location, label: 'you', mine: true }
-        : place
-          ? { ...place, mine: false }
-          : homeArea && !placeText.trim()
-            ? { ...homeArea, mine: false, fromProfile: true }
-            : null,
-    [location, place, homeArea, placeText],
+        : placePoint
+          ? { ...placePoint, mine: false }
+          : place
+            ? { ...place, mine: false }
+            : homeArea && !placeText.trim()
+              ? { ...homeArea, mine: false, fromProfile: true }
+              : null,
+    [location, placePoint, place, homeArea, placeText],
   )
 
   const today = philippineDay(new Date())
@@ -367,7 +371,7 @@ export function useExplore(demandActive = false) {
     location,
     locating,
     placeText,
-    placeNotFound: Boolean(everything && placeText.trim() && !place),
+    placeNotFound: Boolean(everything && placeText.trim() && !place && !placePoint),
     /** The signed-in learner's Skill Passport: null without one, undefined while it loads or when it failed. */
     passport: passport.data,
     passportStatus: (learner === null

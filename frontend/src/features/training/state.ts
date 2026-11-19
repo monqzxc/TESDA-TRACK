@@ -35,6 +35,12 @@ export function useTrainingFilters() {
   return { filters, update }
 }
 
+export interface PlacePoint extends Point {
+  label: string
+  /** Moved by the learner on the map, rather than the town center of the place they chose. */
+  pinned: boolean
+}
+
 export type LocationError = 'denied' | 'unavailable' | 'unsupported'
 
 interface TrainingState {
@@ -48,6 +54,11 @@ interface TrainingState {
   locationError: LocationError | null
   /** A city, province or region the learner typed, to measure distances from. */
   placeText: string
+  /**
+   * The point of the place they picked from the suggestions, or where they moved its pin: what distances, routes and
+   * travel times start from. Null while they only typed: the page then works out the place from the text.
+   */
+  placePoint: PlacePoint | null
   /** The center whose routes are drawn, from the learner's location. */
   routeTo: string | null
   travelMode: TravelMode
@@ -63,13 +74,22 @@ interface TrainingState {
    * the country. Once a visit: turned off, or refused, it stays off until the learner turns it on.
    */
   locateOnOpen: () => void
+  /** Typing changes the place, so a point picked or pinned for the old text is dropped. */
   setPlaceText: (text: string) => void
+  /** A place picked from the suggestions: its name in the box, its point to measure from. */
+  choosePlace: (place: { label: string } & Point) => void
+  /** The place's pin moved on the map: `label` names the place it was moved from. */
+  movePlace: (point: { label: string } & Point) => void
+  /** Back to the place's own point, from its name. */
+  unpinPlace: () => void
   showRoute: (centerId: string | null) => void
   setTravelMode: (mode: TravelMode) => void
 }
 
 /** Two decimal places: about 1 km, as the page promises. */
 const round = (value: number) => Math.round(value * 100) / 100
+/** A pin the learner placed themselves: three decimal places, about 100 m, so it doesn't jump when dropped. */
+const roundPin = (value: number) => Math.round(value * 1000) / 1000
 
 export const useTrainingStore = create<TrainingState>()(
   persist(
@@ -80,6 +100,7 @@ export const useTrainingStore = create<TrainingState>()(
       locating: false,
       locationError: null,
       placeText: '',
+      placePoint: null,
       routeTo: null,
       travelMode: 'car',
 
@@ -139,7 +160,23 @@ export const useTrainingStore = create<TrainingState>()(
           { enableHighAccuracy: false, maximumAge: 300_000, timeout: 10_000 },
         )
       },
-      setPlaceText: (placeText) => set({ placeText }),
+      setPlaceText: (placeText) =>
+        set((state) => ({
+          placeText,
+          placePoint: placeText && placeText === state.placeText ? state.placePoint : null,
+        })),
+      choosePlace: ({ label, latitude, longitude }) =>
+        set({ placeText: label, placePoint: { label, latitude, longitude, pinned: false } }),
+      movePlace: ({ label, latitude, longitude }) =>
+        set({
+          placePoint: {
+            label,
+            latitude: roundPin(latitude),
+            longitude: roundPin(longitude),
+            pinned: true,
+          },
+        }),
+      unpinPlace: () => set({ placePoint: null }),
       showRoute: (routeTo) => set({ routeTo }),
       setTravelMode: (travelMode) => set({ travelMode }),
     }),
@@ -147,8 +184,8 @@ export const useTrainingStore = create<TrainingState>()(
       name: PLACE_KEY,
       storage: createJSONStorage(() => sessionStore),
       version: 1,
-      // Only the typed place: the location is never saved.
-      partialize: ({ placeText }) => ({ placeText }),
+      // Only the typed place and its point: the location is never saved.
+      partialize: ({ placeText, placePoint }) => ({ placeText, placePoint }),
     },
   ),
 )

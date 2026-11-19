@@ -33,7 +33,7 @@ import { readItem, writeItem } from '../../lib/storage.ts'
 import { cx } from '../../lib/style.ts'
 import type { CenterKind } from './address.ts'
 import { directionsQuery, type TravelMode } from './api.ts'
-import type { Center } from './centers.ts'
+import type { Center, Point } from './centers.ts'
 import { KIND_DOTS, MODE_ICONS } from './CenterDetail.tsx'
 import {
   BASEMAP_KEY,
@@ -267,7 +267,7 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
             onCopied={(message) => setStatus({ message })}
           />
         )}
-        <ReferenceDot reference={props.reference} />
+        <ReferenceDot reference={props.reference} onMove={props.onMoveReference} />
         {props.demandAreas && (
           <DemandAreas
             areas={props.demandAreas}
@@ -705,30 +705,54 @@ function Pins({
   )
 }
 
-/** The learner's approximate location, or the place they searched for, beneath the pins. */
-function ReferenceDot({ reference }: { reference: Reference | null }) {
+/**
+ * The learner's approximate location, or the place they searched for, beneath the pins. A searched place's dot can be
+ * dragged (`onMove`), with room around it for a finger, to measure from a more exact spot.
+ */
+function ReferenceDot({
+  reference,
+  onMove,
+}: {
+  reference: Reference | null
+  onMove?: (point: Point) => void
+}) {
   const en = useCopy()
   const copy = en.training.map
 
   if (!reference) return null
+  const movable = Boolean(onMove && !reference.mine)
+  const dot = `<div class="${cx(
+    'box-border size-4.5 rounded-full border-3 border-white',
+    reference.mine
+      ? 'bg-[#175cd3] shadow-[0_0_0_7px_#175cd333,0_1px_4px_rgb(var(--track-shadow-rgb)/0.4)]'
+      : 'bg-step-current shadow-[0_0_0_7px_rgb(var(--track-shadow-rgb)/0.13),0_1px_4px_rgb(var(--track-shadow-rgb)/0.4)]',
+  )}"></div>`
   return (
     <Marker
       position={[reference.latitude, reference.longitude]}
       icon={L.divIcon({
         className: '',
-        iconSize: [18, 18],
-        iconAnchor: [9, 9],
-        html: `<div class="${cx(
-          'box-border size-4.5 rounded-full border-3 border-white',
-          reference.mine
-            ? 'bg-[#175cd3] shadow-[0_0_0_7px_#175cd333,0_1px_4px_rgb(var(--track-shadow-rgb)/0.4)]'
-            : 'bg-step-current shadow-[0_0_0_7px_rgb(var(--track-shadow-rgb)/0.13),0_1px_4px_rgb(var(--track-shadow-rgb)/0.4)]',
-        )}"></div>`,
+        iconSize: movable ? [40, 40] : [18, 18],
+        iconAnchor: movable ? [20, 20] : [9, 9],
+        html: movable
+          ? `<div class="grid size-10 cursor-grab place-items-center" title="${copy.dragPin}">${dot}</div>`
+          : dot,
       })}
       keyboard={false}
-      zIndexOffset={-1000}
+      draggable={movable}
+      eventHandlers={
+        movable
+          ? {
+              dragend: (event) => {
+                const { lat, lng } = (event.target as L.Marker).getLatLng()
+                onMove?.({ latitude: lat, longitude: lng })
+              },
+            }
+          : {}
+      }
+      zIndexOffset={movable ? 0 : -1000}
     >
-      <Tooltip direction="top" offset={[0, -8]}>
+      <Tooltip direction="top" offset={[0, movable ? -18 : -8]}>
         {reference.mine ? copy.yourLocation : reference.label}
       </Tooltip>
     </Marker>

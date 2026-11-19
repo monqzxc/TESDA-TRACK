@@ -17,9 +17,20 @@ import { useDemandStore, useExploreStore } from './useExplore.ts'
 // center shows a travel time, a related qualification within range is suggested, and the range can be changed.
 vi.mock('../training/CenterMap.tsx', () => ({
   default: (props: CenterMapProps) => (
-    <ul data-testid="map" data-radius={props.radiusKm ?? ''}>
-      {props.centers.length}
-    </ul>
+    <div>
+      <ul data-testid="map" data-radius={props.radiusKm ?? ''}>
+        {props.centers.length}
+      </ul>
+      {/* Stands in for dragging the searched place's dot on the map. */}
+      {props.onMoveReference && (
+        <button
+          type="button"
+          onClick={() => props.onMoveReference?.({ latitude: 14.5612, longitude: 121.0301 })}
+        >
+          Drop the pin
+        </button>
+      )}
+    </div>
   ),
 }))
 
@@ -75,6 +86,7 @@ beforeEach(() => {
     location: MAKATI,
     locating: false,
     placeText: '',
+    placePoint: null,
     locationError: null,
     routeTo: null,
   })
@@ -142,5 +154,52 @@ describe('Explore with nothing in range', () => {
     await user.click(within(picker).getByRole('button', { name: '10 km' }))
     expect(await screen.findByText(/No center within 10 km\./)).toBeInTheDocument()
     expect(screen.getByTestId('map')).toHaveAttribute('data-radius', '10')
+  })
+})
+
+describe('Explore from a typed place', () => {
+  beforeEach(() => useTrainingStore.setState({ useLocation: false, location: null }))
+
+  it('suggests places as the learner types, and measures a province from its capital', async () => {
+    const user = userEvent.setup()
+    renderPage()
+    const place = await screen.findByRole('combobox', { name: 'Or type a city or province' })
+    await user.type(place, 'pampa')
+    const option = await screen.findByRole('option', { name: /^Pampanga/ })
+    expect(within(option).getByText('From San Fernando City, the capital')).toBeInTheDocument()
+    await user.click(option)
+    expect(place).toHaveValue('Pampanga')
+    expect(useTrainingStore.getState().placePoint).toMatchObject({
+      label: 'Pampanga',
+      pinned: false,
+    })
+    expect(useTrainingStore.getState().placePoint?.latitude).toBeCloseTo(15.03, 1)
+    expect(await screen.findByText('Near Pampanga')).toBeInTheDocument()
+  })
+
+  it('measures from a picked town as from a shared location, and from the pin once it is moved', async () => {
+    const user = userEvent.setup()
+    renderPage()
+    await user.type(
+      await screen.findByRole('combobox', { name: 'Or type a city or province' }),
+      'makati',
+    )
+    await user.click(await screen.findByRole('option', { name: 'Makati City, Metro Manila' }))
+    expect(await screen.findByText('Near Makati City, Metro Manila')).toBeInTheDocument()
+    expect(screen.getByText(/Drag the pin on the map to be more exact/)).toBeInTheDocument()
+    // The same answer as from a shared location in Makati: the far center, and a related one within range.
+    expect(await screen.findByText(/No center within 25 km\. The closest is/)).toBeInTheDocument()
+    expect(await screen.findByText('A related qualification within 25 km')).toBeInTheDocument()
+
+    await user.click(screen.getByText('Drop the pin'))
+    expect(await screen.findByText('Your pin near Makati City, Metro Manila')).toBeInTheDocument()
+    expect(useTrainingStore.getState().placePoint).toEqual({
+      label: 'Makati City, Metro Manila',
+      latitude: 14.561,
+      longitude: 121.03,
+      pinned: true,
+    })
+    await user.click(screen.getByRole('button', { name: 'Reset pin' }))
+    expect(await screen.findByText('Near Makati City, Metro Manila')).toBeInTheDocument()
   })
 })

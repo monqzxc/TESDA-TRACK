@@ -1152,6 +1152,7 @@ export const en = {
         noBuildings: 'No buildings are mapped here yet.',
       },
       yourLocation: 'Your approximate location',
+      dragPin: 'Drag to measure from a more exact spot',
       copy: 'Copy a link to this location',
       copied: 'Link to this location copied.',
       copyFailed: (url: string) => `Couldn’t copy. The link is ${url}`,
@@ -2324,6 +2325,16 @@ export const en = {
       place: 'Or type a city or province',
       placePlaceholder: 'For example: Manila, Cebu, Laguna',
       fromPlace: (place: string) => `Near ${place}`,
+      fromPin: (place: string) => `Your pin near ${place}`,
+      // A province in the suggestions: where its distances start.
+      placeCapital: (capital: string) => `From ${capital}, the capital`,
+      placeSuggestions: 'Places',
+      placeCredit: 'Places from',
+      // Under the status, for a typed place: its point is the place's center, which the learner can move.
+      pinHint:
+        'Distances start from the center of this place. Drag the pin on the map to be more exact.',
+      pinMoved: 'Distances start from your pin. Drag it again to move it.',
+      unpin: 'Reset pin',
       // US-0004: the Skill Passport's home area, used without asking.
       fromProfile: (place: string) => `Near ${place}, your home area in your TSP profile`,
       changeForVisit:

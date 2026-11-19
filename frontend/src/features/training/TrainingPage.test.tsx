@@ -239,7 +239,9 @@ describe('Training & Assessment', () => {
 
     await user.type(screen.getByRole('searchbox', { name: 'Search location' }), 'Cebu City')
     expect(router.state.location.search).not.toMatch(/cebu/i)
-    expect(await screen.findByText('Approximate distances from Cebu City')).toBeInTheDocument()
+    expect(
+      await screen.findByText('Approximate distances from Cebu City, Cebu'),
+    ).toBeInTheDocument()
   })
 
   it('keeps typed search and location after a training-list failure and reloads without clearing them', async () => {

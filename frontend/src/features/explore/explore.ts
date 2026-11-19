@@ -153,10 +153,26 @@ function listedAt(center: Center, names: ReadonlyMap<string, { name: string; sec
 }
 
 /**
- * For a qualification with no center of `kind` within range: a related one that has, with its nearest such
- * center. Related means another qualification the search matched, best match first, or else one in the same
- * sector. `nearby` are the centers within range with everything they list; `catalog` names and sectors the
- * registry's accreditations, which are codes only.
+ * A qualification's family: its name without its level or variant, so "Driving (Articulated Vehicle) NC III" and
+ * "Driving NC II" are both "driving".
+ */
+export function qualificationFamily(name: string): string {
+  return name
+    .replace(/\([^)]*\)/g, ' ')
+    .replace(/\bNC\s*(?:I{1,3}|IV|[1-4])\b/gi, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .toLocaleLowerCase('en-US')
+}
+
+/**
+ * For a qualification with no center of `kind` within range: a related one that has a center within range, with
+ * its nearest such center. Related means, best first: another qualification the search matched (in match order),
+ * then one of the same family (another level or variant: Driving NC II for Driving (Articulated Vehicle) NC III),
+ * then one in the same sector. Within each, a center of the card's own kind comes first, then one of the other kind:
+ * a Train card with no driving school near can still point to the assessment center for Driving NC II a few km away.
+ * `nearby` are the centers within range with everything they list; `catalog` names and sectors the registry's
+ * accreditations, which are codes only.
  */
 export function relatedWithin({
   kind,
@@ -174,27 +190,40 @@ export function relatedWithin({
   rangeKm: number
 }): Related | null {
   const own = match.qualification.code
-  const names = new Map(catalog.map((item) => [item.code, item]))
-  const candidates = nearby
-    .filter((center) => center.kind === kind && within(center, rangeKm))
-    .sort((a, b) => (a.distanceKm as number) - (b.distanceKm as number))
-    .map((center) => ({ center, listed: listedAt(center, names) }))
-  for (const other of matches) {
-    const code = other.qualification.code
-    if (code === own) continue
-    const found = candidates.find((candidate) => candidate.listed.has(code))
-    if (found) return { qualification: other.qualification, center: found.center }
-  }
+  const family = qualificationFamily(match.qualification.name)
   const sector = match.qualification.sector
-  if (!sector) return null
-  for (const { center, listed } of candidates) {
-    for (const [code, qualification] of listed) {
-      if (code !== own && qualification.sector === sector) {
-        return { qualification: { code, name: qualification.name }, center }
+  const names = new Map(catalog.map((item) => [item.code, item]))
+  const matched = new Map(matches.map((other, index) => [other.qualification.code, index] as const))
+  const candidates = nearby
+    .filter((center) => within(center, rangeKm))
+    .sort((a, b) => (a.distanceKm as number) - (b.distanceKm as number))
+  let best: { rank: readonly number[]; related: Related } | null = null
+  for (const center of candidates) {
+    const otherKind = center.kind === kind ? 0 : 1
+    for (const [code, qualification] of listedAt(center, names)) {
+      if (code === own) continue
+      // Matched ones keep the search's order among themselves.
+      const tier = matched.has(code)
+        ? 0
+        : family && qualificationFamily(qualification.name) === family
+          ? 1
+          : sector && qualification.sector === sector
+            ? 2
+            : null
+      if (tier === null) continue
+      const rank = [tier, otherKind, tier === 0 ? (matched.get(code) as number) : 0] as const
+      // Candidates come nearest first, so the first of a rank is its nearest center.
+      if (!best || compare(rank, best.rank) < 0) {
+        best = { rank, related: { qualification: { code, name: qualification.name }, center } }
       }
     }
   }
-  return null
+  return best?.related ?? null
+}
+
+function compare(a: readonly number[], b: readonly number[]): number {
+  for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return a[i] - b[i]
+  return 0
 }
 
 /** The region whose center is nearest the point: where demand evidence is looked up. */

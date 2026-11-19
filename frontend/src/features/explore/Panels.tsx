@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { qualificationsQuery } from '../../api/queries.ts'
 import { useEffect, useId, useRef, useState } from 'react'
-import { Button, Input, Label, Switch, TextField, ToggleButton } from 'react-aria-components'
+import { Button, Switch, ToggleButton } from 'react-aria-components'
 import { useNavigate } from 'react-router'
 import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { Icon, type IconName } from '../../components/Icon.tsx'
@@ -13,6 +13,7 @@ import { useFinderStore } from '../finder/store.ts'
 import { CenterSuggestionFeedback } from '../suggestion-feedback/CenterSuggestionFeedback.tsx'
 import { SuggestionFeedback } from '../suggestion-feedback/SuggestionFeedback.tsx'
 import { DemandPanel } from './DemandPanel.tsx'
+import { PlaceField } from './PlaceField.tsx'
 import { offeringsQuery, type ClientConfig } from '../training/api.ts'
 import type { CenterKind } from '../training/address.ts'
 import { googleMapsDirections, RoutePanel } from '../training/CenterDetail.tsx'
@@ -176,7 +177,7 @@ export function LocationRow({ explore }: { explore: Explore }) {
   const copy = useCopy().explore.location
   const useLocation = useTrainingStore((state) => state.useLocation)
   const error = useTrainingStore((state) => state.locationError)
-  const { setUseLocation, setPlaceText } = useTrainingStore.getState()
+  const { setUseLocation, unpinPlace } = useTrainingStore.getState()
   const state = explore.locating
     ? 'locating'
     : explore.location
@@ -189,11 +190,13 @@ export function LocationRow({ explore }: { explore: Explore }) {
       ? copy.locating
       : state === 'on'
         ? copy.on
-        : explore.reference?.fromProfile
-          ? copy.fromProfile(explore.reference.label)
-          : explore.reference
-            ? copy.fromPlace(explore.reference.label)
-            : copy.off
+        : explore.reference?.pinned
+          ? copy.fromPin(explore.reference.label)
+          : explore.reference?.fromProfile
+            ? copy.fromProfile(explore.reference.label)
+            : explore.reference
+              ? copy.fromPlace(explore.reference.label)
+              : copy.off
   const tone = {
     locating: 'bg-tint text-blue',
     on: 'bg-good-bg text-good-ink',
@@ -240,19 +243,20 @@ export function LocationRow({ explore }: { explore: Explore }) {
           {copy.errors[error]}
         </p>
       )}
-      {!explore.location && (
-        <TextField
-          value={explore.placeText}
-          onChange={setPlaceText}
-          className="flex flex-col gap-1"
-        >
-          <Label className="text-13 font-semibold text-ink">{copy.place}</Label>
-          <Input
-            className="min-h-10 rounded-10 border border-hover-border bg-surface px-3 text-15 text-navy placeholder:text-muted data-focused:border-blue"
-            placeholder={copy.placePlaceholder}
-          />
-        </TextField>
+      {!explore.location && explore.reference && (
+        <div className="flex flex-wrap items-baseline gap-x-2 text-12 leading-[1.45] text-muted">
+          <span>{explore.reference.pinned ? copy.pinMoved : copy.pinHint}</span>
+          {explore.reference.pinned && (
+            <Button
+              className="cursor-pointer border-0 bg-transparent p-0 text-12 font-semibold text-blue underline"
+              onPress={unpinPlace}
+            >
+              {copy.unpin}
+            </Button>
+          )}
+        </div>
       )}
+      {!explore.location && <PlaceField text={explore.placeText} />}
       {!explore.location && explore.placeNotFound && (
         <p className="m-0 text-13 text-warn-ink">{copy.notFound}</p>
       )}

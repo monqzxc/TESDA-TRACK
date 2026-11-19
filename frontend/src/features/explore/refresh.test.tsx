@@ -79,7 +79,7 @@ describe('Career Map after a refresh', () => {
     )
 
     expect(screen.getByRole('searchbox')).toHaveValue('I can weld')
-    expect(await screen.findByRole('textbox', { name: 'Or type a city or province' })).toHaveValue(
+    expect(await screen.findByRole('combobox', { name: 'Or type a city or province' })).toHaveValue(
       'Manila',
     )
     expect((await screen.findAllByText(weldingProgram.qualification.name)).length).toBeGreaterThan(
@@ -95,8 +95,10 @@ describe('Career Map after a refresh', () => {
     })
     useTrainingStore.getState().setPlaceText('Manila')
 
+    // The typed place, and the point picked or pinned for it (none here): never the location.
     expect(JSON.parse(window.sessionStorage.getItem(PLACE_KEY)!).state).toEqual({
       placeText: 'Manila',
+      placePoint: null,
     })
   })
 

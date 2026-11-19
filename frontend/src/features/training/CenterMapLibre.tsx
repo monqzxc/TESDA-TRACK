@@ -297,11 +297,13 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     }
     return { type: 'FeatureCollection', features }
   }, [selectedId, byId, toLat, toLng, routeKind])
+  // A searched place's dot can be dragged: it's drawn as a marker over the map instead of in the reference layer.
+  const movableReference = Boolean(props.onMoveReference && reference && !reference.mine)
   const referenceData = useMemo(
-    () => referencePoint(reference),
+    () => referencePoint(movableReference ? null : reference),
     // The point and whether it's the learner's own; its label doesn't change what's drawn.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [reference?.latitude, reference?.longitude, reference?.mine],
+    [reference?.latitude, reference?.longitude, reference?.mine, movableReference],
   )
   const radiusData = useMemo(
     () => radiusArea(reference, radius),
@@ -836,6 +838,32 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     })
     return () => markers.forEach((marker) => marker.remove())
   }, [ready, demandAreas, demandRegion, regionLabel])
+
+  // A searched place's dot, with room around it for a finger: dropped elsewhere, distances start from there.
+  const referenceLabel = reference?.label
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map || !movableReference || !reference) return
+    const element = document.createElement('div')
+    element.className = 'grid size-10 cursor-grab place-items-center'
+    element.title = `${referenceLabel ?? ''} · ${copy.dragPin}`
+    const dot = document.createElement('div')
+    dot.className =
+      'box-border size-4.5 rounded-full border-3 border-white bg-step-current shadow-[0_0_0_7px_rgb(var(--track-shadow-rgb)/0.13),0_1px_4px_rgb(var(--track-shadow-rgb)/0.4)]'
+    element.append(dot)
+    const marker = new MapLibreMarker({ element, draggable: true })
+      .setLngLat([reference.longitude, reference.latitude])
+      .addTo(map)
+    marker.on('dragend', () => {
+      const { lat, lng } = marker.getLngLat()
+      latest.current.props.onMoveReference?.({ latitude: lat, longitude: lng })
+    })
+    return () => {
+      marker.remove()
+    }
+    // The marker moves with the point; its label only changes its title.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, movableReference, reference?.latitude, reference?.longitude, referenceLabel, copy])
 
   // The camera follows the regions' shapes and the selection, not each refresh of their counts, nor a card of the
   // page's growing by a line: the edges are read as they stand when it moves.
