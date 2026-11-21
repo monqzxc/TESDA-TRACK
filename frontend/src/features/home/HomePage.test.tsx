@@ -121,7 +121,7 @@ describe('Home', () => {
     expect(useFinderStore.getState().goal).toBe('')
   })
 
-  it('opens the Career Map with the goal in its search box, out of the address', async () => {
+  it('opens the Career Map with the goal in its search box and runs the search, out of the address', async () => {
     serveCatalog()
     const user = userEvent.setup()
     const { router } = await openHome()
@@ -132,7 +132,7 @@ describe('Home', () => {
 
     await waitFor(() => expect(router.state.location.pathname).toBe('/explore'))
     const { search, hash, state } = router.state.location
-    expect([search, hash, state]).toEqual(['', '', { focusSearch: true }])
+    expect([search, hash, state]).toEqual(['', '', { focusSearch: true, runSearch: true }])
     expect(useExploreStore.getState().draft).toBe(goal)
   })
 

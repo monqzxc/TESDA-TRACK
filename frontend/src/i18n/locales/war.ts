@@ -860,4 +860,60 @@ export const war: Record<string, string> = {
     'Mga sample nga sentro para ha demo ha Disyembre 2. Diri ini opisyal nga lista han TESDA: hinimo-himo la an mga ngaran, lugar ngan iskedyul.',
   'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':
     'Sample nga datos para ha demonstrasyon, diri opisyal nga rekord han TESDA. Kumpirmaha an tinuod nga serbisyo ha TESDA.',
+  // Career Map: place search, pin, Skill Passport ranking and suggestion reasons.
+  'Your pin near {0}': 'An imo pin hirani ha {0}',
+  'From {0}, the capital': 'Tikang ha {0}, an kapital',
+  Places: 'Mga lugar',
+  'Places from': 'Mga lugar tikang ha',
+  'Distances start from the center of this place. Drag the pin on the map to be more exact.':
+    'Nagtitikang an kahirayo ha sentro hini nga lugar. I-drag an pin ha mapa basi mas eksakto.',
+  'Distances start from your pin. Drag it again to move it.':
+    'Nagtitikang an kahirayo ha imo pin. I-drag liwat basi ibalhin.',
+  'Reset pin': 'I-reset an pin',
+  'Picked for you from your Skill Passport': 'Ginpili para ha imo tikang ha imo Skill Passport',
+  'Showing everything, not ranked for you': 'Ginpapakita an ngatanan, diri ginhan-ay para ha imo',
+  'Show all instead': 'Ipakita na la an ngatanan',
+  'Rank for me': 'Han-aya para ha akon',
+  'Your skills, past jobs and certificates put the closest matches first. This is a starting point, not an assessment.':
+    'An imo mga kaaram, kanhi nga trabaho ngan sertipiko an nag-uuna han gidadaniin nga tugma. Tinikangan ini, diri assessment.',
+  'Nothing in your Skill Passport points to these results yet, so they are in the usual order.':
+    'Waray pa bisan ano ha imo Skill Passport nga natudlo hini nga mga resulta, salit aada hira ha naandan nga han-ay.',
+  'For you': 'Para ha imo',
+  'Linked to {0}.': 'Konektado ha {0}.',
+  'Based on your skill: {0}.': 'Base ha imo kaaram: {0}.',
+  'Since you have worked as {0}.': 'Kay nagtrabaho ka sugad nga {0}.',
+  'Builds on what you learned for {1}: {0}.': 'Nagdudugang ha imo hinbaroan para ha {1}: {0}.',
+  'Same field as your {0} ({1}).': 'Pareho nga natad han imo {0} ({1}).',
+  'You already hold {0}.': 'Mayda ka na {0}.',
+  'Your {0} certificate has expired: renew it.':
+    'Nag-expire na an imo sertipiko ha {0}: i-renew ini.',
+  records: 'rekord',
+  '{0} centers': '{0} nga sentro',
+  'Also in demand near you': 'Ginkikinahanglan liwat hirani ha imo',
+  'Drag to measure from a more exact spot': 'I-drag basi sukuon tikang ha mas eksakto nga lugar',
+  'Sample TSP data': 'Sample nga datos han TSP',
+  'Recommended centers': 'Mga ginrekomenda nga sentro',
+  'For {0}, best first': 'Para ha {0}, an gimaupayi siyahan',
+  'about {0}': 'mga {0}',
+  'In demand': 'Ginkikinahanglan',
+  'You may be ready': 'Bangin andam ka na',
+  'Your TSP profile suggests you may be ready to get assessed here':
+    'Ginpapakita han imo TSP profile nga bangin andam ka na nga ma-assess dinhi',
+  'The shortest trip from you': 'An gimubua nga biyahe tikang ha imo',
+  'A scholarship is open here, and the trip is about as short':
+    'Abri an scholarship dinhi, ngan haros sugad la kamubo an biyahe',
+  'Jobs for this qualification are in demand in {0}, and the trip is about as short':
+    'Ginkikinahanglan an mga trabaho para hini nga kwalipikasyon ha {0}, ngan haros sugad la kamubo an biyahe',
+  'Within your {0} km range': 'Sulod han imo {0} km nga kahirayo',
+  'Nearest, though outside your {0} km range': 'Gidadaniin, pero labaw ha imo {0} km nga kahirayo',
+  'Shorter trips rank first. A center with an open scholarship or more demand moves above one with a similar trip.':
+    'Nauna an mas mubo nga biyahe. An sentro nga mayda abri nga scholarship o mas damu nga demand nasaka labaw ha usa nga pareho an biyahe.',
+  'Shorter trips rank first. A center with an open scholarship or more demand moves above one with a similar trip, and so does an assessment center when your TSP profile suggests you may be ready.':
+    'Nauna an mas mubo nga biyahe. An sentro nga mayda abri nga scholarship o mas damu nga demand nasaka labaw ha usa nga pareho an biyahe, ngan sugad liwat an assessment center kon ginpapakita han imo TSP profile nga bangin andam ka na.',
+  'Travel times are estimated from straight-line distance for the December 2 demo, not measured routes.':
+    'Gintantiya an oras han biyahe tikang ha tadong nga kahirayo para ha demo ha Disyembre 2, diri ginsukol nga ruta.',
+  'No center offers this qualification yet.':
+    'Waray pa sentro nga nagtatanyag hini nga kwalipikasyon.',
+  'Share your location or type a city to see the centers ranked for you.':
+    'Ipaambit an imo lokasyon o i-type an syudad basi makita an mga sentro nga ginhan-ay para ha imo.',
 }

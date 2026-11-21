@@ -1505,4 +1505,60 @@ export const pam: Record<string, string> = {
     'Sample a sentro para king demo king Disyembre 2. Ali iti opisyal a listaan ning TESDA: gewa-gewa mu la reng lagyu, lugal ampong iskedyul.',
   'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':
     'Sample a datos para king demonstrasyun, ali opisyal a rekord ning TESDA. Kumpirman me ing tutung serbisyu king TESDA.',
+  // Career Map: place search, pin, Skill Passport ranking and suggestion reasons.
+  'Your pin near {0}': 'Ing pin mu malapit king {0}',
+  'From {0}, the capital': 'Manibat king {0}, ing kapitolyo',
+  Places: 'Deng lugal',
+  'Places from': 'Deng lugal manibat king',
+  'Distances start from the center of this place. Drag the pin on the map to be more exact.':
+    'Mumpisa la reng layu king pusod ning lugal a iti. I-drag ing pin king mapa ban mas eksaktu.',
+  'Distances start from your pin. Drag it again to move it.':
+    'Mumpisa la reng layu king pin mu. I-drag me pasibayu ban ilipat.',
+  'Reset pin': 'I-reset ing pin',
+  'Picked for you from your Skill Passport': 'Pinili para keka manibat king Skill Passport mu',
+  'Showing everything, not ranked for you': 'Ipakit ne ngan, ali makaayus para keka',
+  'Show all instead': 'Ipakit ne mu ngan',
+  'Rank for me': 'Ayusan para kaku',
+  'Your skills, past jobs and certificates put the closest matches first. This is a starting point, not an assessment.':
+    'Mumuna la reng pekamalapit a tugma batay king kakayan mu, dating trabaho ampong sertipiku. Pamagumpisa mu iti, ali assessment.',
+  'Nothing in your Skill Passport points to these results yet, so they are in the usual order.':
+    'Alang nanuman king Skill Passport mu a tuturu kareng resulta a iti, anya karaniwan a ayus la.',
+  'For you': 'Para keka',
+  'Linked to {0}.': 'Makaugnay king {0}.',
+  'Based on your skill: {0}.': 'Batay king kakayan mu: {0}.',
+  'Since you have worked as {0}.': 'Uling megobra kang {0}.',
+  'Builds on what you learned for {1}: {0}.': 'Daragdag king atutu mu para king {1}: {0}.',
+  'Same field as your {0} ({1}).': 'Pareung larangan ning {0} mu ({1}).',
+  'You already hold {0}.': 'Atin ka nang {0}.',
+  'Your {0} certificate has expired: renew it.':
+    'Me-expire ne ing sertipiku mu king {0}: i-renew me.',
+  records: 'rekord',
+  '{0} centers': '{0} a sentro',
+  'Also in demand near you': 'Pakakailangan mu naman malapit keka',
+  'Drag to measure from a more exact spot': 'I-drag ban sukatan manibat king mas eksaktung lugal',
+  'Sample TSP data': 'Sample a datos ning TSP',
+  'Recommended centers': 'Deng mirekomendang sentro',
+  'For {0}, best first': 'Para king {0}, ing pekamayap mumuna',
+  'about {0}': 'tantiyang {0}',
+  'In demand': 'Pakakailangan',
+  'You may be ready': 'Malyari makasadya na ka',
+  'Your TSP profile suggests you may be ready to get assessed here':
+    'Ing TSP profile mu pakit na a malyari makasadya na kang ma-assess keni',
+  'The shortest trip from you': 'Ing pekamalapit a byahe manibat keka',
+  'A scholarship is open here, and the trip is about as short':
+    'Bukas ing scholarship keni, at mipapareu mu ing layu ning byahe',
+  'Jobs for this qualification are in demand in {0}, and the trip is about as short':
+    'Pakakailangan la reng trabaho para king kwalipikasyun a iti king {0}, at mipapareu mu ing layu ning byahe',
+  'Within your {0} km range': 'Lalam ning {0} km a layu mu',
+  'Nearest, though outside your {0} km range': 'Pekamalapit, oneng lampas king {0} km a layu mu',
+  'Shorter trips rank first. A center with an open scholarship or more demand moves above one with a similar trip.':
+    'Mumuna la reng mas malapit a byahe. Ing sentro a atin bukas a scholarship o mas pakakailangan, mumuna ya king sentro a pareu ing byahe.',
+  'Shorter trips rank first. A center with an open scholarship or more demand moves above one with a similar trip, and so does an assessment center when your TSP profile suggests you may be ready.':
+    'Mumuna la reng mas malapit a byahe. Ing sentro a atin bukas a scholarship o mas pakakailangan, mumuna ya king sentro a pareu ing byahe, ampo naman ing assessment center nung ing TSP profile mu pakit na a malyari makasadya na ka.',
+  'Travel times are estimated from straight-line distance for the December 2 demo, not measured routes.':
+    'Tantiya mu la reng oras ning byahe manibat king tuwid a layu para king demo king Disyembre 2, ali sukat a dalan.',
+  'No center offers this qualification yet.':
+    'Ala pang sentro a mag-alok ning kwalipikasyun a iti.',
+  'Share your location or type a city to see the centers ranked for you.':
+    'Ibahagi me ing lokasyun mu o i-type ing siudad ban akit me reng sentro a makaayus para keka.',
 }

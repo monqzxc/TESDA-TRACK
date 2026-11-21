@@ -852,4 +852,59 @@ export const pag: Record<string, string> = {
     'Saray sample a sentro para ed demo ed Disyembre 2. Aliwan opisyal a listaan na TESDA: ginawa-gawa labat iray ngaran, lugar tan iskedyul.',
   'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':
     'Sample a datos para ed demonstrasyon, aliwan opisyal a rekord na TESDA. Kumpirmaen so tuloy a serbisyo ed TESDA.',
+  // Career Map: place search, pin, Skill Passport ranking and suggestion reasons.
+  'Your pin near {0}': 'Say pin mo ya asingger ed {0}',
+  'From {0}, the capital': 'Manlapud {0}, say kapitolyo',
+  Places: 'Saray lugar',
+  'Places from': 'Saray lugar manlapud',
+  'Distances start from the center of this place. Drag the pin on the map to be more exact.':
+    'Ompepetek so arawi ed pegley na sayan lugar. I-drag so pin ed mapa pian mas eksakto.',
+  'Distances start from your pin. Drag it again to move it.':
+    'Ompepetek so arawi ed pin mo. I-drag lamet pian iyalis.',
+  'Reset pin': 'I-reset so pin',
+  'Picked for you from your Skill Passport': 'Pinili parad sika manlapud Skill Passport mo',
+  'Showing everything, not ranked for you': 'Ipapanengneng so amin, aliwan inyurnos parad sika',
+  'Show all instead': 'Ipanengneng labat so amin',
+  'Rank for me': 'Iyurnos parad siak',
+  'Your skills, past jobs and certificates put the closest matches first. This is a starting point, not an assessment.':
+    'Saray kabaleg mo, dating trabaho tan sertipiko so mangiyuna ed saray sankaasingger a tugma. Gapoan iya, aliwan assessment.',
+  'Nothing in your Skill Passport points to these results yet, so they are in the usual order.':
+    'Anggapo ni so anggaman ed Skill Passport mo a mangitutoro ed saraya a resulta, kanian walad naandan ya urnos ira.',
+  'For you': 'Parad sika',
+  'Linked to {0}.': 'Akakonekta ed {0}.',
+  'Based on your skill: {0}.': 'Base ed kabaleg mo: {0}.',
+  'Since you have worked as {0}.': 'Lapud nantrabaho ka bilang {0}.',
+  'Builds on what you learned for {1}: {0}.': 'Mangiyarum ed inaral mo parad {1}: {0}.',
+  'Same field as your {0} ({1}).': 'Parehon larangan na {0} mo ({1}).',
+  'You already hold {0}.': 'Walaan ka la na {0}.',
+  'Your {0} certificate has expired: renew it.': 'Nan-expire lay sertipiko mo ed {0}: i-renew mo.',
+  records: 'rekord',
+  '{0} centers': '{0} a sentro',
+  'Also in demand near you': 'Kakaplanan met ya asingger ed sika',
+  'Drag to measure from a more exact spot': 'I-drag pian sukaten manlapud mas eksakton lugar',
+  'Sample TSP data': 'Sample a datos na TSP',
+  'Recommended centers': 'Saray inrekomendan sentro',
+  'For {0}, best first': 'Parad {0}, say sankaabigan unona',
+  'about {0}': 'nayarin {0}',
+  'In demand': 'Kakaplanan',
+  'You may be ready': 'Nayarin paraan ka la',
+  'Your TSP profile suggests you may be ready to get assessed here':
+    'Ipapanengneng na TSP profile mo a nayarin paraan ka lan ma-assess dia',
+  'The shortest trip from you': 'Say sankaababan a biyahe manlapud sika',
+  'A scholarship is open here, and the trip is about as short':
+    'Abukas so scholarship dia, tan ngalngali pareho labat so kaabeba na biyahe',
+  'Jobs for this qualification are in demand in {0}, and the trip is about as short':
+    'Kakaplanan iray trabaho parad sayan kwalipikasyon ed {0}, tan ngalngali pareho labat so kaabeba na biyahe',
+  'Within your {0} km range': 'Loob na {0} km ya arawi mo',
+  'Nearest, though outside your {0} km range': 'Sankaasingger, balet labas ed {0} km ya arawi mo',
+  'Shorter trips rank first. A center with an open scholarship or more demand moves above one with a similar trip.':
+    'Ompaunona iray mas ababa a biyahe. Say sentro a walaay abukas a scholarship odino mas dakel a demand so ompaunona ed sakey a parehon biyahe.',
+  'Shorter trips rank first. A center with an open scholarship or more demand moves above one with a similar trip, and so does an assessment center when your TSP profile suggests you may be ready.':
+    'Ompaunona iray mas ababa a biyahe. Say sentro a walaay abukas a scholarship odino mas dakel a demand so ompaunona ed sakey a parehon biyahe, tan ontan met so assessment center no ipapanengneng na TSP profile mo a nayarin paraan ka la.',
+  'Travel times are estimated from straight-line distance for the December 2 demo, not measured routes.':
+    'Tinantiya iray oras na biyahe manlapud tuloy ya arawi parad demo ed Disyembre 2, aliwan sinukat a ruta.',
+  'No center offers this qualification yet.':
+    'Anggapo ni so sentro ya mangiyopresi na sayan kwalipikasyon.',
+  'Share your location or type a city to see the centers ranked for you.':
+    'Iyabobon so lokasyon mo odino i-type so siyudad pian nanengneng iray sentro ya inyurnos parad sika.',
 }

@@ -860,4 +860,61 @@ export const ilo: Record<string, string> = {
     'Dagiti sample a sentro para iti demo iti Disiembre 2. Saan daytoy nga opisial a listaan ti TESDA: inaramid laeng dagiti nagan, lugar ken iskedyul.',
   'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':
     'Sample a datos para iti demonstrasion, saan nga opisial a rekord ti TESDA. Kumpirmaren dagiti pudno a serbisio iti TESDA.',
+  // Career Map: place search, pin, Skill Passport ranking and suggestion reasons.
+  'Your pin near {0}': 'Ti pin mo nga asideg iti {0}',
+  'From {0}, the capital': 'Manipud iti {0}, ti kapitolio',
+  Places: 'Dagiti lugar',
+  'Places from': 'Dagiti lugar manipud iti',
+  'Distances start from the center of this place. Drag the pin on the map to be more exact.':
+    'Mangrugi ti adayo iti tengnga daytoy a lugar. I-drag ti pin iti mapa tapno ad-adda nga eksakto.',
+  'Distances start from your pin. Drag it again to move it.':
+    'Mangrugi ti adayo iti pin mo. I-drag manen tapno iyalis.',
+  'Reset pin': 'I-reset ti pin',
+  'Picked for you from your Skill Passport': 'Napili para kenka manipud iti Skill Passport mo',
+  'Showing everything, not ranked for you': 'Maipakpakita amin, saan a naurnos para kenka',
+  'Show all instead': 'Ipakita laengen amin',
+  'Rank for me': 'Urnosen para kaniak',
+  'Your skills, past jobs and certificates put the closest matches first. This is a starting point, not an assessment.':
+    'Dagiti kabaelam, dati a trabaho ken sertipiko ti mangipangruna kadagiti kaasidegan a tugma. Pangrugian daytoy, saan nga assessment.',
+  'Nothing in your Skill Passport points to these results yet, so they are in the usual order.':
+    'Awan pay ti aniaman iti Skill Passport mo a mangitudo kadagitoy a resulta, isu a adda dagitoy iti kadawyan nga urnos.',
+  'For you': 'Para kenka',
+  'Linked to {0}.': 'Nainaig iti {0}.',
+  'Based on your skill: {0}.': 'Naibatay iti kabaelam: {0}.',
+  'Since you have worked as {0}.': 'Gapu ta nagtrabahoka a kas {0}.',
+  'Builds on what you learned for {1}: {0}.': 'Mangnayon iti nasursurom para iti {1}: {0}.',
+  'Same field as your {0} ({1}).': 'Agpada a tay-ak ti {0} mo ({1}).',
+  'You already hold {0}.': 'Adda kenkan ti {0}.',
+  'Your {0} certificate has expired: renew it.':
+    'Nag-expire ti sertipiko mo iti {0}: i-renew daytoy.',
+  records: 'rekord',
+  '{0} centers': '{0} a sentro',
+  'Also in demand near you': 'Kasapulan met nga asideg kenka',
+  'Drag to measure from a more exact spot':
+    'I-drag tapno rukoden manipud iti ad-adda nga eksakto a lugar',
+  'Sample TSP data': 'Sample a datos ti TSP',
+  'Recommended centers': 'Dagiti nairekomenda a sentro',
+  'For {0}, best first': 'Para iti {0}, ti kasayaatan nga umuna',
+  'about {0}': 'agarup {0}',
+  'In demand': 'Kasapulan',
+  'You may be ready': 'Mabalin a nakasaganaka',
+  'Your TSP profile suggests you may be ready to get assessed here':
+    'Ipakita ti TSP profile mo a mabalin a nakasaganakan a ma-assess ditoy',
+  'The shortest trip from you': 'Ti kaababaan a biahe manipud kenka',
+  'A scholarship is open here, and the trip is about as short':
+    'Nakalukat ti scholarship ditoy, ken agarup kasta met ti kaabab ti biahe',
+  'Jobs for this qualification are in demand in {0}, and the trip is about as short':
+    'Kasapulan dagiti trabaho para iti daytoy a kwalipikasion iti {0}, ken agarup kasta met ti kaabab ti biahe',
+  'Within your {0} km range': 'Uneg ti {0} km nga adayom',
+  'Nearest, though outside your {0} km range': 'Kaasidegan, ngem nalabes iti {0} km nga adayom',
+  'Shorter trips rank first. A center with an open scholarship or more demand moves above one with a similar trip.':
+    'Umuna dagiti ab-ababa a biahe. Ti sentro nga addaan iti nakalukat a scholarship wenno ad-adu a demand ket umuna iti sentro nga agpada ti biahena.',
+  'Shorter trips rank first. A center with an open scholarship or more demand moves above one with a similar trip, and so does an assessment center when your TSP profile suggests you may be ready.':
+    'Umuna dagiti ab-ababa a biahe. Ti sentro nga addaan iti nakalukat a scholarship wenno ad-adu a demand ket umuna iti sentro nga agpada ti biahena, kasta met ti assessment center no ipakita ti TSP profile mo a mabalin a nakasaganakan.',
+  'Travel times are estimated from straight-line distance for the December 2 demo, not measured routes.':
+    'Natantia dagiti oras ti biahe manipud iti nalinteg nga adayo para iti demo iti Disiembre 2, saan a narukod a ruta.',
+  'No center offers this qualification yet.':
+    'Awan pay ti sentro a mangidaton iti daytoy a kwalipikasion.',
+  'Share your location or type a city to see the centers ranked for you.':
+    'Ibingay ti lokasionmo wenno i-type ti siudad tapno makita dagiti sentro a naurnos para kenka.',
 }

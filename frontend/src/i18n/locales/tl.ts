@@ -1979,4 +1979,35 @@ export const tl: Record<string, string> = {
   'No center offers this qualification yet.': 'Wala pang sentrong nag-aalok ng kwalipikasyong ito.',
   'Share your location or type a city to see the centers ranked for you.':
     'Ibahagi ang lokasyon mo o mag-type ng lungsod para makita ang mga sentrong inayos para sa iyo.',
+  // Career Map: place search, pin, Skill Passport ranking and suggestion reasons.
+  'Your pin near {0}': 'Ang pin mo malapit sa {0}',
+  'From {0}, the capital': 'Mula sa {0}, ang kabisera',
+  Places: 'Mga lugar',
+  'Places from': 'Mga lugar mula sa',
+  'Distances start from the center of this place. Drag the pin on the map to be more exact.':
+    'Nagsisimula ang layo sa gitna ng lugar na ito. I-drag ang pin sa mapa para mas eksakto.',
+  'Distances start from your pin. Drag it again to move it.':
+    'Nagsisimula ang layo sa pin mo. I-drag itong muli para ilipat.',
+  'Reset pin': 'I-reset ang pin',
+  'Picked for you from your Skill Passport': 'Pinili para sa iyo mula sa iyong Skill Passport',
+  'Showing everything, not ranked for you': 'Ipinapakita ang lahat, hindi inayos para sa iyo',
+  'Show all instead': 'Ipakita na lang ang lahat',
+  'Rank for me': 'Ayusin para sa akin',
+  'Your skills, past jobs and certificates put the closest matches first. This is a starting point, not an assessment.':
+    'Inuuna ng iyong mga kakayahan, dating trabaho at sertipiko ang pinakamalapit na tugma. Panimula ito, hindi assessment.',
+  'Nothing in your Skill Passport points to these results yet, so they are in the usual order.':
+    'Wala pang tumuturo sa mga resultang ito mula sa iyong Skill Passport, kaya nasa karaniwang ayos ang mga ito.',
+  'For you': 'Para sa iyo',
+  'Linked to {0}.': 'Kaugnay ng {0}.',
+  'Based on your skill: {0}.': 'Batay sa iyong kakayahan: {0}.',
+  'Since you have worked as {0}.': 'Dahil nagtrabaho ka bilang {0}.',
+  'Builds on what you learned for {1}: {0}.': 'Dagdag sa natutunan mo para sa {1}: {0}.',
+  'Same field as your {0} ({1}).': 'Kaparehong larangan ng iyong {0} ({1}).',
+  'You already hold {0}.': 'Hawak mo na ang {0}.',
+  'Your {0} certificate has expired: renew it.':
+    'Nag-expire na ang iyong sertipiko sa {0}: i-renew ito.',
+  records: 'rekord',
+  '{0} centers': '{0} sentro',
+  'Also in demand near you': 'Hinahanap din malapit sa iyo',
+  'Drag to measure from a more exact spot': 'I-drag para sukatin mula sa mas eksaktong lugar',
 }

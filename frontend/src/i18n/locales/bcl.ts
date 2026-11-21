@@ -865,4 +865,61 @@ export const bcl: Record<string, string> = {
     'Mga sample na sentro para sa demo sa Disyembre 2. Bako ini opisyal na listahan kan TESDA: gibo-gibo sana an mga pangaran, lugar asin iskedyul.',
   'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':
     'Sample na datos para sa demonstrasyon, bakong opisyal na rekord kan TESDA. Kumpirmaron an totoong serbisyo sa TESDA.',
+  // Career Map: place search, pin, Skill Passport ranking and suggestion reasons.
+  'Your pin near {0}': 'An saimong pin harani sa {0}',
+  'From {0}, the capital': 'Hale sa {0}, an kapital',
+  Places: 'Mga lugar',
+  'Places from': 'Mga lugar hale sa',
+  'Distances start from the center of this place. Drag the pin on the map to be more exact.':
+    'Nagpopoon an rayo sa sentro kaining lugar. I-drag an pin sa mapa tanganing mas eksakto.',
+  'Distances start from your pin. Drag it again to move it.':
+    'Nagpopoon an rayo sa saimong pin. I-drag giraray tanganing ibalyo.',
+  'Reset pin': 'I-reset an pin',
+  'Picked for you from your Skill Passport': 'Pinili para saimo hale sa saimong Skill Passport',
+  'Showing everything, not ranked for you':
+    'Ipinapahiling an gabos, bakong pinagsunod-sunod para saimo',
+  'Show all instead': 'Ipahiling na sana an gabos',
+  'Rank for me': 'Pagsunod-sunodon para sako',
+  'Your skills, past jobs and certificates put the closest matches first. This is a starting point, not an assessment.':
+    'An saimong mga kakayahan, dating trabaho asin sertipiko an nagpapauna sa pinakaharaning tugma. Pinagpoonan ini, bakong assessment.',
+  'Nothing in your Skill Passport points to these results yet, so they are in the usual order.':
+    'Mayo pang ano man sa saimong Skill Passport na nagtutukdo sa mga resultang ini, kaya nasa normal na pagkasunod-sunod sinda.',
+  'For you': 'Para saimo',
+  'Linked to {0}.': 'Konektado sa {0}.',
+  'Based on your skill: {0}.': 'Basado sa saimong kakayahan: {0}.',
+  'Since you have worked as {0}.': 'Huli ta nagtrabaho ka bilang {0}.',
+  'Builds on what you learned for {1}: {0}.': 'Nagdadagdag sa naaraman mo para sa {1}: {0}.',
+  'Same field as your {0} ({1}).': 'Parehong larangan kan saimong {0} ({1}).',
+  'You already hold {0}.': 'Igwa ka na nin {0}.',
+  'Your {0} certificate has expired: renew it.':
+    'Nag-expire na an saimong sertipiko sa {0}: i-renew ini.',
+  records: 'rekord',
+  '{0} centers': '{0} na sentro',
+  'Also in demand near you': 'Hinahanap man harani saimo',
+  'Drag to measure from a more exact spot': 'I-drag tanganing sukulon hale sa mas eksaktong lugar',
+  'Sample TSP data': 'Sample na datos kan TSP',
+  'Recommended centers': 'Mga inirekomendang sentro',
+  'For {0}, best first': 'Para sa {0}, an pinakamarhay enot',
+  'about {0}': 'mga {0}',
+  'In demand': 'Hinahanap',
+  'You may be ready': 'Pwedeng handa ka na',
+  'Your TSP profile suggests you may be ready to get assessed here':
+    'Ipinapahiling kan saimong TSP profile na pwedeng handa ka nang ma-assess digdi',
+  'The shortest trip from you': 'An pinakahalipot na biyahe hale saimo',
+  'A scholarship is open here, and the trip is about as short':
+    'Bukas an scholarship digdi, asin haros siring man kahalipot an biyahe',
+  'Jobs for this qualification are in demand in {0}, and the trip is about as short':
+    'Hinahanap an mga trabaho para kaining kwalipikasyon sa {0}, asin haros siring man kahalipot an biyahe',
+  'Within your {0} km range': 'Laog kan saimong {0} km na rayo',
+  'Nearest, though outside your {0} km range':
+    'Pinakaharani, alagad lampas sa saimong {0} km na rayo',
+  'Shorter trips rank first. A center with an open scholarship or more demand moves above one with a similar trip.':
+    'Nauuna an mas halipot na biyahe. An sentro na igwang bukas na scholarship o mas dakol na demand nauuna sa sarong parehong biyahe.',
+  'Shorter trips rank first. A center with an open scholarship or more demand moves above one with a similar trip, and so does an assessment center when your TSP profile suggests you may be ready.':
+    'Nauuna an mas halipot na biyahe. An sentro na igwang bukas na scholarship o mas dakol na demand nauuna sa sarong parehong biyahe, asin siring man an assessment center kun ipinapahiling kan saimong TSP profile na pwedeng handa ka na.',
+  'Travel times are estimated from straight-line distance for the December 2 demo, not measured routes.':
+    'Tinantiya an oras nin biyahe hale sa tuwid na rayo para sa demo sa Disyembre 2, bakong sinukol na ruta.',
+  'No center offers this qualification yet.': 'Mayo pang sentrong nag-aalok kaining kwalipikasyon.',
+  'Share your location or type a city to see the centers ranked for you.':
+    'Ibahagi an saimong lokasyon o i-type an siyudad tanganing mahiling an mga sentrong pinagsunod-sunod para saimo.',
 }
