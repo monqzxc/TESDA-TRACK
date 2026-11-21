@@ -471,6 +471,10 @@ export const bcl: Record<string, string> = {
   'Train for the units you’re missing': 'Magsanay sa mga yunit na kulang pa saimo',
   'Your certificates show {1} of the {2} core units of {0}.':
     'Pinapahiling kan saimong mga sertipiko an {1} sa {2} na pangenot na yunit kan {0}.',
+  'Your work as {0} counts: experienced workers can take the {1} assessment without the training.':
+    'Bilang an saimong trabaho bilang {0}: an may eksperyensya puwedeng magpatasa sa {1} dawa mayong pagsanay.',
+  'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
+    'Nakalista man sa saimong TSP profile an {0}. An sentro nin pagtasa an magsasabi kun ano an dapat mong darahon.',
   'Still to cover: {0}.': 'Kaipuhan pang adalan: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kaipuhan pang adalan: {0}, asin {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

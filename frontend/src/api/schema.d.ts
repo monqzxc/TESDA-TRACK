@@ -4831,6 +4831,21 @@ export interface components {
              * @enum {string}
              */
             next_step: "held" | "renew" | "assessment" | "gap_training" | "training";
+            /**
+             * Assessment Basis
+             * @description Why next_step is assessment: units (the CORE units on their certificates) or experience (a strong fit backed by a job they have done; TESDA assesses experienced workers without the training).
+             */
+            assessment_basis?: ("units" | "experience") | null;
+            /**
+             * Experience
+             * @description With assessment_basis experience: the jobs on the profile behind it, in their own words
+             */
+            experience?: string[];
+            /**
+             * Licenses
+             * @description Licenses the profile lists (e.g. an LTO license), shown beside an assessment step; not checked for relevance
+             */
+            licenses?: string[];
         };
         /** PersonalizationWeights */
         PersonalizationWeights: {
@@ -5328,33 +5343,41 @@ export interface components {
         /**
          * RankingWeights
          * @description How much each component counts when ranking training options. Must add up to 1.
+         *
+         *     Demand took its 0.10 from the others in proportion (each is 0.9 of what it was), so where no posting records
+         *     exist the renormalized weights are exactly the earlier ones and nothing reorders.
          */
         RankingWeights: {
             /**
              * Semantic
-             * @default 0.5
+             * @default 0.45
              */
             semantic: number;
             /**
              * Proximity
-             * @default 0.2
+             * @default 0.18
              */
             proximity: number;
             /**
              * Assessment
-             * @default 0.15
+             * @default 0.135
              */
             assessment: number;
             /**
              * Schedule
-             * @default 0.1
+             * @default 0.09
              */
             schedule: number;
             /**
              * Preference
-             * @default 0.05
+             * @default 0.045
              */
             preference: number;
+            /**
+             * Demand
+             * @default 0.1
+             */
+            demand: number;
         };
         /** ReadinessCheckCreate */
         ReadinessCheckCreate: {
@@ -5855,6 +5878,12 @@ export interface components {
             schedule: number;
             /** Preference */
             preference: number;
+            /**
+             * Demand
+             * @description Job postings linked to the qualification in the provider's region, relative to its busiest region (1 there, 0 where none). Only reviewed, high-confidence posting links count.
+             * @default 0
+             */
+            demand: number;
         };
         /** ScoreFactor */
         ScoreFactor: {

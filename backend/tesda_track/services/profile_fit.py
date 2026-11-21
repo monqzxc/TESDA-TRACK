@@ -36,6 +36,7 @@ from tesda_track.services import (analysis, catalog, competency_coverage, labor_
 from tesda_track.services.embeddings import Embedder
 
 SECTOR_FIT = 30          # the same credit nearby_suggestions gives for a shared sector
+EXPERIENCE_ASSESS_MIN = 80  # a fit at least this strong, backed by a job they have done, goes to assessment
 HELD_JOB_FIT = 100       # a job linked to a qualification the learner holds today fits as well as anything can
 TERMS_PER_REASON = 3
 CACHE_SIZE = 256
@@ -135,6 +136,7 @@ def compute(session: Session, profile: dict, embedder: Embedder | None, today: d
             embedder, analysis.match_params(embedder), limit=len(current.items))
     matched = {match.qualification.code: match for match in found.matches} if found else {}
     covered = competency_coverage.for_profile(normalized, {code: item.rules for code, item in items.items()})
+    licenses = list(tsp_sign_in.profile_labels(profile).get("licenses", []))[:5]
 
     fits = {}
     for code, item in items.items():
@@ -150,11 +152,26 @@ def compute(session: Session, profile: dict, embedder: Embedder | None, today: d
         # Assessed units are stronger evidence than any one term: 4 of 5 CORE units fits as 80 at least.
         score = min(100, max((match.score if match else 0) + (SECTOR_FIT if sector_of and sector_of != names[code] else 0),
                              round(100 * units.share) if units else 0))
+        jobs = [term for reason in reasons if reason.kind == "experience" for term in reason.terms]
+        backing = {word for reason in reasons if reason.kind in ("skill", "experience")
+                   for term in reason.terms for word in competency_coverage.title_key(term)} - _GENERIC
+        experienced = bool(jobs) and score >= EXPERIENCE_ASSESS_MIN
+        step = competency_coverage.next_step(status, units, experienced)
+        basis = None
+        if step == "assessment":
+            basis = "units" if units and units.share >= competency_coverage.ASSESS_AT else "experience"
         if score or status:
             fits[code] = PersonalFit(score=score, status=status, reasons=reasons,
-                                     coverage=_coverage_public(units) if units else None,
-                                     next_step=competency_coverage.next_step(status, units))
+                                     coverage=_coverage_public(units) if units else None, next_step=step,
+                                     assessment_basis=basis, experience=jobs[:3] if basis == "experience" else [],
+                                     licenses=[label for label in licenses
+                                               if step in ("assessment", "renew")
+                                               and (competency_coverage.title_key(label) - _GENERIC) & backing])
     return ProfileFit(fits)
+
+
+# Words that say nothing about a trade, so a license never matches a fit through them alone.
+_GENERIC = frozenset({"s", "license", "licence", "professional", "non", "lto", "prc", "certificate", "and", "of", "the"})
 
 
 def _coverage_public(units: competency_coverage.Coverage) -> CompetencyCoverage:

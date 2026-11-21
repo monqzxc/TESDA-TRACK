@@ -470,6 +470,10 @@ export const hil: Record<string, string> = {
   'Train for the units you’re missing': 'Magbansay sa mga yunit nga kulang pa sa imo',
   'Your certificates show {1} of the {2} core units of {0}.':
     'Ginapakita sang imo mga sertipiko ang {1} sa {2} ka pangunahon nga yunit sang {0}.',
+  'Your work as {0} counts: experienced workers can take the {1} assessment without the training.':
+    'Ginaisip ang imo obra subong {0}: ang may eksperyensya mahimo magpatasa sa {1} bisan wala sang pagbansay.',
+  'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
+    'Nakalista man sa imo TSP profile ang {0}. Ang sentro sang pagtasa ang magasiling kon ano ang dal-on.',
   'Still to cover: {0}.': 'Kinahanglan pa tun-an: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kinahanglan pa tun-an: {0}, kag {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

@@ -242,8 +242,8 @@ def test_existing_matching_and_rankings_are_reused_unchanged(client, report, mak
     ranked = client.post("/api/v1/recommendations/training", json={
         "qualification_code": "SMAW-NC-II", "goal": WELDER, "near_lat": 14.5995, "near_lon": 120.9842, "limit": 3})
     direct = ranked.json()
-    assert direct["weights"] == {"semantic": 0.5, "proximity": 0.2, "assessment": 0.15, "schedule": 0.1,
-                                 "preference": 0.05}
+    assert direct["weights"] == {"semantic": 0.45, "proximity": 0.18, "assessment": 0.135, "schedule": 0.09,
+                                 "preference": 0.045, "demand": 0.1}
     shown = [(p["service_id"], p["score"]) for p in result["providers"] if p["kind"] == "training"]
     assert shown == [(r["program"]["id"], r["score"]) for r in direct["results"]]
     assert [s for s, _ in shown] == [first["id"], second["id"]]

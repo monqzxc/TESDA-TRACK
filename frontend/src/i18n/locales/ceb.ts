@@ -475,6 +475,10 @@ export const ceb: Record<string, string> = {
   'Train for the units you’re missing': 'Pagbansay sa mga yunit nga kulang pa nimo',
   'Your certificates show {1} of the {2} core units of {0}.':
     'Gipakita sa imong mga sertipiko ang {1} sa {2} ka pangunang yunit sa {0}.',
+  'Your work as {0} counts: experienced workers can take the {1} assessment without the training.':
+    'Maihap ang imong trabaho isip {0}: ang mga eksperyensiyado mahimong mopasusi sa {1} bisan walay pagbansay.',
+  'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
+    'Gilista usab sa imong TSP profile ang {0}. Ang sentro sa pagsusi maoy mosulti kung unsa ang dad-on.',
   'Still to cover: {0}.': 'Kinahanglan pa nga tun-an: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kinahanglan pa nga tun-an: {0}, ug {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

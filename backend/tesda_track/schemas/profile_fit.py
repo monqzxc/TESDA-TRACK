@@ -31,6 +31,7 @@ class CompetencyCoverage(BaseModel):
 
 
 NextStep = Literal["held", "renew", "assessment", "gap_training", "training"]
+AssessmentBasis = Literal["units", "experience"]
 
 
 class PersonalFit(BaseModel):
@@ -43,6 +44,13 @@ class PersonalFit(BaseModel):
         "held: certified today. renew: certificate expired, take the assessment again. assessment: 70% or more of "
         "the CORE units shown. gap_training: 30% or more, so train for the missing units (COC per cluster), then "
         "assess. training: the full program. Self-declared skills never count toward coverage."))
+    assessment_basis: AssessmentBasis | None = Field(default=None, description=(
+        "Why next_step is assessment: units (the CORE units on their certificates) or experience (a strong fit "
+        "backed by a job they have done; TESDA assesses experienced workers without the training)."))
+    experience: list[str] = Field(default_factory=list, max_length=3, description=(
+        "With assessment_basis experience: the jobs on the profile behind it, in their own words"))
+    licenses: list[str] = Field(default_factory=list, max_length=5, description=(
+        "Licenses the profile lists (e.g. an LTO license), shown beside an assessment step; not checked for relevance"))
 
 
 class QualificationFit(BaseModel):

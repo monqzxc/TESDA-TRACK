@@ -15182,6 +15182,40 @@
             "title": "Next Step",
             "description": "held: certified today. renew: certificate expired, take the assessment again. assessment: 70% or more of the CORE units shown. gap_training: 30% or more, so train for the missing units (COC per cluster), then assess. training: the full program. Self-declared skills never count toward coverage.",
             "default": "training"
+          },
+          "assessment_basis": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "units",
+                  "experience"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assessment Basis",
+            "description": "Why next_step is assessment: units (the CORE units on their certificates) or experience (a strong fit backed by a job they have done; TESDA assesses experienced workers without the training)."
+          },
+          "experience": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Experience",
+            "description": "With assessment_basis experience: the jobs on the profile behind it, in their own words"
+          },
+          "licenses": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 5,
+            "title": "Licenses",
+            "description": "Licenses the profile lists (e.g. an LTO license), shown beside an assessment step; not checked for relevance"
           }
         },
         "type": "object",
@@ -16529,36 +16563,42 @@
             "type": "number",
             "minimum": 0,
             "title": "Semantic",
-            "default": 0.5
+            "default": 0.45
           },
           "proximity": {
             "type": "number",
             "minimum": 0,
             "title": "Proximity",
-            "default": 0.2
+            "default": 0.18
           },
           "assessment": {
             "type": "number",
             "minimum": 0,
             "title": "Assessment",
-            "default": 0.15
+            "default": 0.135
           },
           "schedule": {
             "type": "number",
             "minimum": 0,
             "title": "Schedule",
-            "default": 0.1
+            "default": 0.09
           },
           "preference": {
             "type": "number",
             "minimum": 0,
             "title": "Preference",
-            "default": 0.05
+            "default": 0.045
+          },
+          "demand": {
+            "type": "number",
+            "minimum": 0,
+            "title": "Demand",
+            "default": 0.1
           }
         },
         "type": "object",
         "title": "RankingWeights",
-        "description": "How much each component counts when ranking training options. Must add up to 1."
+        "description": "How much each component counts when ranking training options. Must add up to 1.\n\nDemand took its 0.10 from the others in proportion (each is 0.9 of what it was), so where no posting records\nexist the renormalized weights are exactly the earlier ones and nothing reorders."
       },
       "ReadinessCheckCreate": {
         "properties": {
@@ -17922,6 +17962,12 @@
           "preference": {
             "type": "number",
             "title": "Preference"
+          },
+          "demand": {
+            "type": "number",
+            "title": "Demand",
+            "description": "Job postings linked to the qualification in the provider's region, relative to its busiest region (1 there, 0 where none). Only reviewed, high-confidence posting links count.",
+            "default": 0
           }
         },
         "type": "object",

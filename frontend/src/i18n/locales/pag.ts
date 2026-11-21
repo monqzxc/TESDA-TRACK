@@ -465,6 +465,10 @@ export const pag: Record<string, string> = {
   'Train for the units you’re missing': 'Mansanay ed saray yunit ya kulang ni ed sika',
   'Your certificates show {1} of the {2} core units of {0}.':
     'Ipapanengneng na saray sertipiko mo so {1} ed {2} ya ungol a yunit na {0}.',
+  'Your work as {0} counts: experienced workers can take the {1} assessment without the training.':
+    'Nibilang so trabaho mo bilang {0}: saray walay karanasan et nayarin manpaeksamin ed {1} anggano ag-ilalo ed panagsanay.',
+  'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
+    'Nalista met ed TSP profile mo so {0}. Say sentro na panageksamin so mangibaga no antoy nepeg mon awiten.',
   'Still to cover: {0}.': 'Nepeg ni ya aralen: {0}.',
   'Still to cover: {0}, and {1} more.': 'Nepeg ni ya aralen: {0}, tan {1} ni.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

@@ -12,12 +12,16 @@ DEFAULT_EMBEDDING_MODEL = "intfloat/multilingual-e5-small"
 
 
 class RankingWeights(BaseModel):
-    """How much each component counts when ranking training options. Must add up to 1."""
-    semantic: float = Field(default=0.50, ge=0)
-    proximity: float = Field(default=0.20, ge=0)
-    assessment: float = Field(default=0.15, ge=0)
-    schedule: float = Field(default=0.10, ge=0)
-    preference: float = Field(default=0.05, ge=0)
+    """How much each component counts when ranking training options. Must add up to 1.
+
+    Demand took its 0.10 from the others in proportion (each is 0.9 of what it was), so where no posting records
+    exist the renormalized weights are exactly the earlier ones and nothing reorders."""
+    semantic: float = Field(default=0.45, ge=0)
+    proximity: float = Field(default=0.18, ge=0)
+    assessment: float = Field(default=0.135, ge=0)
+    schedule: float = Field(default=0.09, ge=0)
+    preference: float = Field(default=0.045, ge=0)
+    demand: float = Field(default=0.10, ge=0)
 
     @model_validator(mode="after")
     def sums_to_one(self):

@@ -466,6 +466,10 @@ export const ilo: Record<string, string> = {
   'Train for the units you’re missing': 'Agsanay kadagiti yunit nga kurang pay kenka',
   'Your certificates show {1} of the {2} core units of {0}.':
     'Ipakita dagiti sertipikom ti {1} kadagiti {2} a kangrunaan a yunit ti {0}.',
+  'Your work as {0} counts: experienced workers can take the {1} assessment without the training.':
+    'Mabilang ti trabahom kas {0}: dagiti addaan iti kapadasan ket mabalin nga agpasukat iti {1} uray awan ti panagsanay.',
+  'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
+    'Nailista met iti TSP profile-mo ti {0}. Ti sentro ti panagsukat ti mangkumpirma no ania ti itugotmo.',
   'Still to cover: {0}.': 'Masapul pay a maadal: {0}.',
   'Still to cover: {0}, and {1} more.': 'Masapul pay a maadal: {0}, ken {1} pay.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

@@ -15,12 +15,15 @@ The next step follows from what they hold and how much they cover (thresholds si
 
     held          a certificate for it, valid today              nothing to do; look one level up
     renew         held, but every certificate for it expired     the assessment again, to renew it
-    assessment    at least ASSESS_AT of its CORE units           go to assessment: train only if unsure
+    assessment    at least ASSESS_AT of its CORE units,          go to assessment: train only if unsure
+                  or a strong fit their work experience backs    (TESDA assesses experienced workers directly,
+                  (profile_fit decides "strong")                 without the training: Kuya Manuel, US-0004)
     gap_training  at least GAP_AT                                train for the missing units (a COC as each
                                                                  cluster is passed), then the full assessment
     training      less, or no certificate units at all           the full training program
 
-Self-declared skills never count as coverage: they are not assessed.
+Self-declared skills never count as coverage: they are not assessed. A job they have done is stronger evidence than
+a skill they list, so it can send them to assessment; the assessment center confirms eligibility either way.
 """
 import re
 from collections.abc import Iterable, Sequence
@@ -98,11 +101,11 @@ def coverage(core: Sequence[str], units: Iterable[Unit]) -> Coverage | None:
     return Coverage(tuple(covered), tuple(missing), tuple(expired))
 
 
-def next_step(status: Literal["held", "renew"] | None, found: Coverage | None) -> NextStep:
+def next_step(status: Literal["held", "renew"] | None, found: Coverage | None, experienced: bool = False) -> NextStep:
     if status is not None:
         return status
     share = found.share if found else 0.0
-    if share >= ASSESS_AT:
+    if share >= ASSESS_AT or experienced:
         return "assessment"
     if share >= GAP_AT:
         return "gap_training"

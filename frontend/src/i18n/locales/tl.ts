@@ -1620,6 +1620,10 @@ export const tl: Record<string, string> = {
   'Train for the units you’re missing': 'Magsanay sa mga yunit na kulang pa sa iyo',
   'Your certificates show {1} of the {2} core units of {0}.':
     'Ipinapakita ng iyong mga sertipiko ang {1} sa {2} pangunahing yunit ng {0}.',
+  'Your work as {0} counts: experienced workers can take the {1} assessment without the training.':
+    'Bilang ang iyong trabaho bilang {0}: ang may karanasan ay maaaring kumuha ng assessment sa {1} nang hindi na dumadaan sa pagsasanay.',
+  'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
+    'Nakalista rin sa iyong TSP profile ang {0}. Ang assessment center ang magsasabi kung ano ang kailangan mong dalhin.',
   'Still to cover: {0}.': 'Kailangan pang matutunan: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kailangan pang matutunan: {0}, at {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

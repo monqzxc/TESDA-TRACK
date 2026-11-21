@@ -2355,6 +2355,10 @@ export const en = {
         missingMore: (units: string, more: number) => `Still to cover: ${units}, and ${more} more.`,
         renew: (qualification: string) =>
           `Your ${qualification} certificate has expired. Take the assessment again to renew it.`,
+        experience: (jobs: string, qualification: string) =>
+          `Your work as ${jobs} counts: experienced workers can take the ${qualification} assessment without the training.`,
+        licenses: (licenses: string) =>
+          `Your TSP profile also lists ${licenses}. The assessment center confirms what you need to bring.`,
         coc: 'You can be assessed for a Certificate of Competency (COC) as you finish each group of units, then for the full NC.',
         expired:
           'Some of these units are on certificates that have expired. The assessment center confirms what counts.',

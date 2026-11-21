@@ -8,6 +8,10 @@ Score = Σ weight × component, each component on 0..1 (weights from settings.ra
 - schedule:   1 starts within 60 days, 0.7 starts later, 0 unknown dates, 0.2 already running;
               finished programs are left out
 - preference: the share of the learner's stated preferences (delivery mode, scholarship) the program meets
+- demand:     job postings linked to the qualification in the provider's region, relative to its busiest region
+              (1 there, 0 where none). Not the Outlook's level: posting data covers only some regions, and against
+              all 18 nearly any region with records reads as "high". Counted only when the qualification has
+              reviewed, high-confidence posting links somewhere; otherwise left out of the effective weights.
 """
 import hashlib
 import hmac
@@ -22,13 +26,16 @@ from tesda_track.models import (AssessmentCenter, AssessmentSchedule, Learner, R
                                 TrainingProvider, utcnow)
 from tesda_track.schemas.delivery import ProgramSearch
 from tesda_track.schemas.ranking import RankedProgram, ScoreComponents, TrainingRanking, TrainingRankingRequest, UnconfirmedProgram
-from tesda_track.services import assessments, catalog, embeddings, geo, learner_assessments, personalization, training, verification
+from tesda_track.services import (area_jobs, assessments, catalog, embeddings, geo, learner_assessments, personalization,
+                                  training, verification)
 from tesda_track.services.embeddings import Embedder
 from tesda_track.utils.helpers import normalize
 from tesda_track.errors import InvalidRequestError
 from tesda_track.services.center_listing import listed
 
 SOON_DAYS = 60
+DEMAND_REASON_SHARE = 0.5   # say why only where demand is at least half the busiest region's
+DEMAND_REASON_MIN = 3       # and there are enough records to say it (the Outlook's MIN_RECORDS)
 # One decimal of a degree is about 11 km. Rounding before ranking means nothing finer is ever computed,
 # returned or stored, so stored scores can't be used to trilaterate where a learner is.
 LOCATION_DECIMALS = 1
@@ -90,11 +97,38 @@ def providers_near_assessment(session: Session, qualification_id: int, provider_
                 schedule.scheduled_at.astimezone(verification.PHILIPPINE_TIME).date()).status == "satisfied"}
 
 
+class RegionalDemand:
+    """Posting records linked to one qualification, by region: real records only, never the sample stand-in."""
+
+    def __init__(self, session: Session, qualification_code: str):
+        found = area_jobs.discover(session, None, None, qualification_code, limit=1)
+        self.counts = {area.region_code: area.posting_count for area in found.areas}
+        self.total = found.posting_count
+        self.names = {region.code: region.name for region in session.exec(select(Region)).all()}
+
+    def __bool__(self) -> bool:
+        return self.total > 0
+
+    def score(self, region_code: str | None) -> float:
+        if not region_code or not self:
+            return 0.0
+        return round(self.counts.get(region_code, 0) / max(self.counts.values()), 3)
+
+    def reason(self, region_code: str | None) -> str | None:
+        """Said only where demand is strong and the records are enough to say so, with the count behind it."""
+        if self.score(region_code) < DEMAND_REASON_SHARE or self.counts.get(region_code, 0) < DEMAND_REASON_MIN:
+            return None
+        n = self.counts[region_code]
+        return f"{n} job posting{'s' if n != 1 else ''} linked to this qualification in {self.names[region_code]}"
+
+
 def _explain(program: TrainingProgram, distance_km: float | None, components: ScoreComponents,
-             semantic_used: bool) -> list[str]:
+             semantic_used: bool, demand_reason: str | None = None) -> list[str]:
     reasons = []
     if semantic_used and components.semantic >= 0.6:
         reasons.append("Closely matches your goal")
+    if demand_reason:
+        reasons.append(demand_reason)
     if distance_km is not None:
         reasons.append(f"About {distance_km:,.0f} km from you")
     if components.assessment:
@@ -195,8 +229,10 @@ def rank_programs(session: Session, request: TrainingRankingRequest, embedder: E
     semantic_used = semantic_requested and bool(similarities) and high - low >= 1e-6
     with_assessment = providers_near_assessment(session, qualification.id, {p.provider_id for p, _ in rows},
                                                 settings.proximity_radius_km, evidence, now) if answers is None else set()
+    demand = RegionalDemand(session, qualification.code) if answers is None else None
     active = {"semantic": semantic_requested, "proximity": near_lat is not None, "assessment": True,
-              "schedule": True, "preference": bool(request.preferred_delivery_mode or request.needs_scholarship)}
+              "schedule": True, "preference": bool(request.preferred_delivery_mode or request.needs_scholarship),
+              "demand": bool(demand)}
     effective_weights = {}
     if answers is None:
         denominator = sum(value for key, value in weights.model_dump().items() if active[key])
@@ -226,7 +262,8 @@ def rank_programs(session: Session, request: TrainingRankingRequest, embedder: E
             semantic=round(semantic, 3),
             proximity=round(proximity_component(distance, settings.proximity_radius_km), 3),
             assessment=1.0 if program.provider_id in with_assessment else 0.0,
-            schedule=schedule, preference=preference_component(program, request))
+            schedule=schedule, preference=preference_component(program, request),
+            demand=demand.score(program.provider.region_code) if demand else 0.0)
         statuses = {key: "observed" if active[key] else "not_applicable" for key in active}
         if semantic_requested and (not semantic_used or program.id not in similarities):
             statuses["semantic"] = "unknown"
@@ -234,13 +271,16 @@ def rank_programs(session: Session, request: TrainingRankingRequest, embedder: E
             statuses["proximity"] = "unknown"
         if program.start_date is None:
             statuses["schedule"] = "unknown"
+        if demand and not program.provider.region_code:
+            statuses["demand"] = "unknown"
         coverage = sum(effective_weights[key] for key, status in statuses.items() if status == "observed")
         score = round(100 * sum(effective_weights[name] * value for name, value in components.model_dump().items()))
         ranked.append(RankedProgram(program=training.program_public(program, distance), score=score,
                                     effective_weights=effective_weights, component_status=statuses, evidence_coverage=min(1, coverage),
                                     eligibility=eligibility_by_id[program.id],
                                     components=components,
-                                    explanation=_explain(program, distance, components, semantic_used)))
+                                    explanation=_explain(program, distance, components, semantic_used,
+                                                         demand.reason(program.provider.region_code) if demand else None)))
     ranked.sort(key=lambda item: (-item.score, item.program.id))
     ranked = ranked[:request.limit]
     audit = RankingAudit(

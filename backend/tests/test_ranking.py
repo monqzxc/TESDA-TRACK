@@ -1,4 +1,4 @@
-"""Training recommendations ranked by the configurable weighted score (defaults 50/20/15/10/5)."""
+"""Training recommendations ranked by the configurable weighted score (defaults 45/18/13.5/9/4.5, demand 10)."""
 from datetime import date, timedelta
 
 import pytest
@@ -28,8 +28,10 @@ def test_options_are_ranked_by_the_weighted_components(client, make_provider, ma
     make_schedule()  # Manila assessment center, near the Manila provider only
 
     ranked = rank(client, goal=GOAL, near_lat=QUEZON_CITY[0], near_lon=QUEZON_CITY[1])
-    assert ranked["weights"] == {"semantic": 0.5, "proximity": 0.2, "assessment": 0.15, "schedule": 0.1,
-                                 "preference": 0.05}
+    assert ranked["weights"] == {"semantic": 0.45, "proximity": 0.18, "assessment": 0.135, "schedule": 0.09,
+                                 "preference": 0.045, "demand": 0.1}
+    # No posting records for the qualification: demand is left out, and the rest renormalize to the earlier weights.
+    assert ranked["results"][0]["component_status"]["demand"] == "not_applicable"
     assert ranked["semantic_used"] is False
     first, second = ranked["results"]
     assert first["program"]["id"] == manila_program["id"] and second["program"]["id"] == cebu_program["id"]
@@ -43,7 +45,8 @@ def test_options_are_ranked_by_the_weighted_components(client, make_provider, ma
     assert first["effective_weights"]["semantic"] == 0
     assert first["component_status"]["semantic"] == "not_applicable"
     # Cebu: about 570 km away; missing dates never prove rolling intake.
-    assert second["components"] == {"semantic": 0, "proximity": 0, "assessment": 0, "schedule": 0, "preference": 0}
+    assert second["components"] == {"semantic": 0, "proximity": 0, "assessment": 0, "schedule": 0, "preference": 0,
+                                    "demand": 0}
     assert second["score"] == 0
     assert any("km" in reason for reason in first["explanation"])
 
@@ -140,3 +143,23 @@ def test_learners_export_includes_their_rankings(client, learner, make_program):
     export = client.get("/api/v1/me/export", headers=learner).json()
     assert [r["qualification_code"] for r in export["training_rankings"]] == ["SMAW-NC-II"]
     assert "query_hash" not in export["training_rankings"][0]
+
+
+def test_demand_in_the_provider_region_moves_a_program_up_and_says_why(session, client, make_provider, make_program):
+    from tests.test_profile_fit import postings
+    postings(session, "Welder", "SMAW-NC-II", 8, region="VII")         # the busiest region
+    postings(session, "Welder helper", "SMAW-NC-II", 1, region="NCR")  # an eighth of it
+    cebu = make_program(provider=make_provider(name="Cebu Skills Center", region_code="VII", location=CEBU_CITY),
+                        title="Cebu batch", start_date=soon(30))
+    manila = make_program(title="Manila batch", start_date=soon(30))
+
+    ranked = rank(client)
+    by_id = {item["program"]["id"]: item for item in ranked["results"]}
+    assert by_id[cebu["id"]]["components"]["demand"] == 1.0
+    assert by_id[manila["id"]]["components"]["demand"] == 0.125
+    assert [item["program"]["id"] for item in ranked["results"]] == [cebu["id"], manila["id"]]
+    assert by_id[cebu["id"]]["component_status"]["demand"] == "observed"
+    assert any(reason.startswith("8 job postings linked to this qualification in")
+               for reason in by_id[cebu["id"]]["explanation"])
+    assert not any("job posting" in reason for reason in by_id[manila["id"]]["explanation"])
+    assert ranked["effective_weights"]["demand"] > 0

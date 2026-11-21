@@ -211,3 +211,46 @@ def test_fit_endpoint_gives_the_next_step_privately(session, client, learner, ts
 def test_fit_endpoint_needs_a_linked_passport(client, learner, tsp_enabled):
     assert client.get(FIT, params={"qualification_code": "COOKERY-NC-II"}, headers=learner).status_code == 404
     assert client.get(FIT, params={"qualification_code": "COOKERY-NC-II"}).status_code == 401
+
+
+def manuel(experience=("Jeepney driver",), licenses=("LTO Professional Driver's License",)):
+    """Kuya Manuel (US-0004): years behind the wheel and a license, but no TESDA certificate. The test catalog has no
+    Driving NC II, so FBS-NC-II stands in for it: the rule reads the evidence, never the code."""
+    return {**passport(skills=("Driving",)), "experience": [{"job_title": job} for job in experience],
+            "credentials": {"certificates": [], "trainings": [], "assessments": [],
+                            "external_certificates": [{"certificate_name": name} for name in licenses]}}
+
+
+def test_a_strong_fit_backed_by_experience_goes_to_assessment(session, monkeypatch):
+    monkeypatch.setattr(profile_fit.skill_search, "search_terms", fake_search({"FBS-NC-II": (91, ["Driving", "Jeepney driver"])}))
+    fit = profile_fit.compute(session, manuel(), None, TODAY).get("FBS-NC-II")
+    assert fit.next_step == "assessment" and fit.assessment_basis == "experience"
+    assert fit.experience == ["Jeepney driver"]
+    assert fit.licenses == ["LTO Professional Driver's License"]
+
+
+def test_skills_alone_or_a_weak_fit_stay_training_and_unrelated_licenses_are_left_out(session, monkeypatch):
+    monkeypatch.setattr(profile_fit.skill_search, "search_terms", fake_search({"FBS-NC-II": (60, ["Jeepney driver"])}))
+    weak = profile_fit.compute(session, manuel(), None, TODAY).get("FBS-NC-II")
+    assert weak.next_step == "training" and weak.assessment_basis is None and weak.licenses == []
+
+    monkeypatch.setattr(profile_fit.skill_search, "search_terms", fake_search({"SMAW-NC-II": (90, ["Welder"])}))
+    welder = profile_fit.compute(session, manuel(experience=("Welder",), licenses=("LTO Non-Professional Driver's License",)),
+                                 None, TODAY).get("SMAW-NC-II")
+    assert welder.assessment_basis == "experience" and welder.licenses == []
+
+    monkeypatch.setattr(profile_fit.skill_search, "search_terms", fake_search({"FBS-NC-II": (91, ["Driving"])}))
+    skill_only = profile_fit.compute(session, manuel(experience=()), None, TODAY).get("FBS-NC-II")
+    assert skill_only.next_step == "training"
+
+
+def fake_search(results):
+    """skill_search.search_terms answering with fixed scores and supporting terms, by catalog code."""
+    from types import SimpleNamespace
+
+    def search(session, items, rules, terms, embedder, params, limit, **_):
+        by_code = {item.code: item for item in items}
+        matches = [SimpleNamespace(qualification=by_code[code].summary, score=score)
+                   for code, (score, _) in results.items() if code in by_code]
+        return SimpleNamespace(matches=matches, supporting={code: tuple(t) for code, (_, t) in results.items()})
+    return search

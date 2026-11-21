@@ -1151,6 +1151,10 @@ export const pam: Record<string, string> = {
   'Train for the units you’re missing': 'Mag-ensayu king yunit a kulang pa keka',
   'Your certificates show {1} of the {2} core units of {0}.':
     'Ipakit da reng sertipiku mu ing {1} kareng {2} a pangunang yunit ning {0}.',
+  'Your work as {0} counts: experienced workers can take the {1} assessment without the training.':
+    'Mibilang ing obra mu bilang {0}: ding atin nang karanasan malyari lang mamagmasusi king {1} kahit ali na mag-ensayu.',
+  'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
+    'Ilista na murin ning TSP profile mu ing {0}. Ing sentro ning pamagmasusi ing mamagsabi nung nanu ing dapat mung dalan.',
   'Still to cover: {0}.': 'Kailangan pang aralan: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kailangan pang aralan: {0}, at {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

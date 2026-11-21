@@ -92,6 +92,9 @@ function NextStepNote({ readiness, copy }: { readiness: Readiness; copy: NextSte
   const step =
     fit.next_step === 'renew' ? 'renew' : fit.next_step === 'gap_training' ? 'gap' : 'assess'
   const good = step !== 'gap'
+  // Kuya Manuel: no certificate, but a job he has done backs a strong fit, so experience is the reason.
+  const byExperience = fit.assessment_basis === 'experience'
+  const licenses = fit.licenses ?? []
   return (
     <div
       data-testid="may-be-ready"
@@ -105,9 +108,14 @@ function NextStepNote({ readiness, copy }: { readiness: Readiness; copy: NextSte
       <div className="grid gap-1">
         <strong className="block">{copy.title[step]}</strong>
         <p className="m-0">
-          {step === 'renew' ? copy.renew(qualification) : copy.units(qualification, covered, total)}
+          {step === 'renew'
+            ? copy.renew(qualification)
+            : byExperience
+              ? copy.experience((fit.experience ?? []).join(', '), qualification)
+              : copy.units(qualification, covered, total)}
         </p>
-        {step !== 'renew' && missing.length > 0 && (
+        {licenses.length > 0 && <p className="m-0">{copy.licenses(licenses.join(', '))}</p>}
+        {step !== 'renew' && !byExperience && missing.length > 0 && (
           <p className="m-0">{more > 0 ? copy.missingMore(listed, more) : copy.missing(listed)}</p>
         )}
         {step === 'gap' && <p className="m-0">{copy.coc}</p>}

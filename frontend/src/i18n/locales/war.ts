@@ -466,6 +466,10 @@ export const war: Record<string, string> = {
   'Train for the units you’re missing': 'Magbansay ha mga yunit nga kulang pa ha imo',
   'Your certificates show {1} of the {2} core units of {0}.':
     'Ginpapakita han imo mga sertipiko an {1} ha {2} nga panguna nga yunit han {0}.',
+  'Your work as {0} counts: experienced workers can take the {1} assessment without the training.':
+    'Iniihap an imo trabaho sugad nga {0}: an may eksperyensya puydi magpatasa ha {1} bisan waray pagbansay.',
+  'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
+    'Nakalista liwat ha imo TSP profile an {0}. An sentro han pagtasa an magsisiring kun ano an imo dadad-on.',
   'Still to cover: {0}.': 'Kinahanglan pa hibaroan: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kinahanglan pa hibaroan: {0}, ngan {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

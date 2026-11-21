@@ -35,6 +35,9 @@ class ScoreComponents(BaseModel):
     assessment: float
     schedule: float
     preference: float
+    demand: float = Field(default=0.0, description=(
+        "Job postings linked to the qualification in the provider's region, relative to its busiest region (1 there, "
+        "0 where none). Only reviewed, high-confidence posting links count."))
 
 
 class RankedProgram(BaseModel):
