@@ -469,6 +469,13 @@ export const pag: Record<string, string> = {
     'Nibilang so trabaho mo bilang {0}: saray walay karanasan et nayarin manpaeksamin ed {1} anggano ag-ilalo ed panagsanay.',
   'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
     'Nalista met ed TSP profile mo so {0}. Say sentro na panageksamin so mangibaga no antoy nepeg mon awiten.',
+  'Listed, but its service details still need confirming':
+    'Nalista, balet nepeg ni ya kumpirmaen so detalye na serbisyo to',
+  'Score {0}/100': 'Iskor {0}/100',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.':
+    'Sakey ya iskor so pinagbatayan na ranggo na saray training center: no panon kaasingger, no wala so beripikadon panageksamin ed asingger, no panon kapaga ya ompupuna so klase, tan say demand ed trabaho ed rehiyon da. Manatili ed device mo so lokasyon mo. Saray assessment center et niraranggo base ed kaarawi na biahe.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.':
+    'Sakey ya iskor so pinagbatayan na ranggo na saray training center: no panon kaasingger, no wala so beripikadon panageksamin ed asingger, no panon kapaga ya ompupuna so klase, tan say demand ed trabaho ed rehiyon da. Manatili ed device mo so lokasyon mo. Saray assessment center et niraranggo base ed kaarawi na biahe, tan ontatagey no ipapanengneng na TSP profile mo ya nayarin akaparaan ka la.',
   'Still to cover: {0}.': 'Nepeg ni ya aralen: {0}.',
   'Still to cover: {0}, and {1} more.': 'Nepeg ni ya aralen: {0}, tan {1} ni.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

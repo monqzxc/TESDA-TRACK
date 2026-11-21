@@ -470,6 +470,13 @@ export const war: Record<string, string> = {
     'Iniihap an imo trabaho sugad nga {0}: an may eksperyensya puydi magpatasa ha {1} bisan waray pagbansay.',
   'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
     'Nakalista liwat ha imo TSP profile an {0}. An sentro han pagtasa an magsisiring kun ano an imo dadad-on.',
+  'Listed, but its service details still need confirming':
+    'Nakalista, pero kinahanglan pa kumpirmahon an detalye han serbisyo hini',
+  'Score {0}/100': 'Iskor {0}/100',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.':
+    'Usa nga iskor an basehan han ranggo han mga training center: kun ano kahirani, kun may-ada beripikado nga pagtasa ha hirani, kun ano kadali magtikang an klase, ngan an demand ha trabaho ha ira rehiyon. Magpapabilin ha imo device an imo lokasyon. An mga assessment center ginraranggo sumala ha kahirayo han biyahe.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.':
+    'Usa nga iskor an basehan han ranggo han mga training center: kun ano kahirani, kun may-ada beripikado nga pagtasa ha hirani, kun ano kadali magtikang an klase, ngan an demand ha trabaho ha ira rehiyon. Magpapabilin ha imo device an imo lokasyon. An mga assessment center ginraranggo sumala ha kahirayo han biyahe, ngan sumasaka kun ginpapakita han imo TSP profile nga bangin andam ka na.',
   'Still to cover: {0}.': 'Kinahanglan pa hibaroan: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kinahanglan pa hibaroan: {0}, ngan {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

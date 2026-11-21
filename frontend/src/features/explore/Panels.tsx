@@ -74,6 +74,8 @@ const segOption = cx(
 /** A qualification whose CORE units the learner's certificates show, and what the server says to do next. */
 type Readiness = { qualification: string; fit: QualificationFit }
 type NextStepCopy = ReturnType<typeof useCopy>['explore']['tspProfile']['nextStep']
+/** How many of the server's reasons a ranked training center shows. */
+const SERVER_REASONS_SHOWN = 2
 /** How many unit names the note lists before "and N more". */
 const UNITS_SHOWN = 3
 
@@ -1135,13 +1137,20 @@ function RankedRow({
   onSelect: () => void
 }) {
   const copy = useCopy().explore.ranked
+  const serverText = useServerText()
   const { center, minutes, reason } = item
+  // Ranked by the server's service score: its own reasons (the first two), never a template.
+  const serverWhy = (item.why ?? []).slice(0, SERVER_REASONS_SHOWN).map(serverText).join(' · ')
   const why =
-    reason === 'demand'
-      ? copy.reasons.demand(center.region || center.regionCode || '')
-      : reason === 'inRange' || reason === 'outside'
-        ? copy.reasons[reason](rangeKm)
-        : copy.reasons[reason]
+    reason === 'service'
+      ? serverWhy || copy.reasons.inRange(rangeKm)
+      : reason === 'unconfirmed'
+        ? copy.reasons.unconfirmed
+        : reason === 'demand'
+          ? copy.reasons.demand(center.region || center.regionCode || '')
+          : reason === 'inRange' || reason === 'outside'
+            ? copy.reasons[reason](rangeKm)
+            : copy.reasons[reason]
   const trip = [
     ...(center.distanceKm !== null ? [copy.km(roundKm(center.distanceKm))] : []),
     ...(minutes !== null ? [copy.about(travelTime(minutes))] : []),
@@ -1184,6 +1193,11 @@ function RankedRow({
         <span className="mt-1 block text-13 leading-[1.4] font-semibold text-ink">{why}</span>
         <span className="mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-13 leading-[1.4] text-muted">
           {trip && <span data-testid="ranked-trip">{trip}</span>}
+          {item.score !== undefined && (
+            <span data-testid="ranked-score" className={cx(tag, 'bg-tint text-blue tabular-nums')}>
+              {copy.score(item.score)}
+            </span>
+          )}
           {item.scholarship && (
             <span className={cx(solidTag, 'bg-scholarship-fill py-0.5')}>
               <Icon name="learn" />

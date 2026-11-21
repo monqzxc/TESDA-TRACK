@@ -1624,6 +1624,13 @@ export const tl: Record<string, string> = {
     'Bilang ang iyong trabaho bilang {0}: ang may karanasan ay maaaring kumuha ng assessment sa {1} nang hindi na dumadaan sa pagsasanay.',
   'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
     'Nakalista rin sa iyong TSP profile ang {0}. Ang assessment center ang magsasabi kung ano ang kailangan mong dalhin.',
+  'Listed, but its service details still need confirming':
+    'Nakalista, pero kailangan pang kumpirmahin ang detalye ng serbisyo nito',
+  'Score {0}/100': 'Iskor {0}/100',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.':
+    'Isang iskor ang batayan ng ranggo ng mga training center: gaano kalapit, may beripikadong assessment sa malapit, gaano kabilis magsisimula ang klase, at demand sa trabaho sa kanilang rehiyon. Nananatili sa iyong device ang iyong lokasyon. Ang mga assessment center ay niraranggo ayon sa layo ng biyahe.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.':
+    'Isang iskor ang batayan ng ranggo ng mga training center: gaano kalapit, may beripikadong assessment sa malapit, gaano kabilis magsisimula ang klase, at demand sa trabaho sa kanilang rehiyon. Nananatili sa iyong device ang iyong lokasyon. Ang mga assessment center ay niraranggo ayon sa layo ng biyahe, at umaakyat kapag ipinapakita ng iyong TSP profile na maaaring handa ka na.',
   'Still to cover: {0}.': 'Kailangan pang matutunan: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kailangan pang matutunan: {0}, at {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

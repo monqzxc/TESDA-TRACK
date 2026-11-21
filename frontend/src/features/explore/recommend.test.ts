@@ -6,7 +6,9 @@ import {
   rankCenters,
   recommend,
   recommendedIds,
+  serviceScore,
   supplyCenters,
+  type ServiceScores,
 } from './recommend.ts'
 
 const CODE = 'PLUMBING'
@@ -218,5 +220,133 @@ describe('highDemandRegions', () => {
       [],
     )
     expect(highDemandRegions(undefined).size).toBe(0)
+  })
+})
+
+describe("rankCenters with the server's service scores (Day 5)", () => {
+  // The server's default weights (config.RankingWeights).
+  const WEIGHTS = {
+    semantic: 0.45,
+    proximity: 0.18,
+    assessment: 0.135,
+    schedule: 0.09,
+    preference: 0.045,
+    demand: 0.1,
+  }
+  // Asked for without a location, so the server marks proximity not_applicable.
+  const entry = (components: Partial<Record<string, number>>, explanation: string[] = []) => ({
+    components: {
+      semantic: 0,
+      proximity: 0,
+      assessment: 0,
+      schedule: 0,
+      preference: 0,
+      demand: 0,
+      ...components,
+    },
+    status: {
+      semantic: 'not_applicable',
+      proximity: 'not_applicable',
+      assessment: 'observed',
+      schedule: 'observed',
+      preference: 'not_applicable',
+      demand: 'observed',
+    },
+    explanation,
+  })
+  const program = (id: number) => ({ id, qualification: { code: CODE } }) as Program
+  const training = (id: string, km: number, programId: number) =>
+    ({ ...center(`training-${id}`, 'NCR', km), programs: [program(programId)] }) as Center
+  const scores = (
+    byProgram: [number, ReturnType<typeof entry>][],
+    unconfirmed: [number, string[]][] = [],
+  ): ServiceScores => ({
+    weights: WEIGHTS,
+    byProgram: new Map(byProgram),
+    unconfirmed: new Map(unconfirmed),
+  })
+  const ids = (items: { center: Center }[]) => items.map((item) => item.center.id)
+
+  it("adds proximity in the browser with the server's weight and formula", () => {
+    // Measured: assessment, schedule, demand (0.325) and proximity (0.18): 0.505 in all.
+    const full = entry({ assessment: 1, schedule: 1, demand: 0.5 })
+    // 10 km: proximity 0.9. (0.18*0.9 + 0.135 + 0.09 + 0.1*0.5) / 0.505 = 0.865
+    expect(serviceScore(full, WEIGHTS, 10)).toBe(87)
+    // Without a distance, proximity is left out, not counted as zero.
+    expect(serviceScore(full, WEIGHTS, null)).toBe(Math.round((100 * 0.275) / 0.325))
+  })
+
+  it("lets a better service beat a slightly shorter trip, and says the server's reasons", () => {
+    const ranked = rankCenters({
+      supply: [training('near', 4, 1), training('better', 9, 2)],
+      code: CODE,
+      scores: scores([
+        [1, entry({ schedule: 0 }, ['Start date not confirmed'])],
+        [
+          2,
+          entry({ assessment: 1, schedule: 1, demand: 1 }, [
+            'An assessment with open seats is available nearby',
+          ]),
+        ],
+      ]),
+    })
+    expect(ids(ranked)).toEqual(['training-better', 'training-near'])
+    expect(ranked[0]).toMatchObject({
+      reason: 'service',
+      why: ['An assessment with open seats is available nearby'],
+    })
+    expect(ranked[0].score).toBeGreaterThan(ranked[1].score as number)
+  })
+
+  it('leaves out a center the server excluded, and puts unconfirmed ones after the scored', () => {
+    const ranked = rankCenters({
+      supply: [training('excluded', 2, 1), training('unsure', 3, 2), training('ok', 20, 3)],
+      code: CODE,
+      scores: scores(
+        [[3, entry({ schedule: 1 })]],
+        [[2, ['Provider authority requires verification.']]],
+      ),
+    })
+    expect(ids(ranked)).toEqual(['training-ok', 'training-unsure'])
+    expect(ranked[1]).toMatchObject({
+      reason: 'unconfirmed',
+      why: ['Provider authority requires verification.'],
+    })
+  })
+
+  it('still ranks assessment centers by trip, first when the learner may be ready', () => {
+    const supply = [
+      training('t', 8, 1),
+      center('assessment-a', 'NCR', 9),
+      center('assessment-b', 'NCR', 3),
+    ]
+    const withScores = scores([[1, entry({ schedule: 1 })]])
+    expect(ids(rankCenters({ supply, code: CODE, scores: withScores }))).toEqual([
+      'training-t',
+      'assessment-b',
+      'assessment-a',
+    ])
+    expect(ids(rankCenters({ supply, code: CODE, scores: withScores, ready: true }))).toEqual([
+      'assessment-b',
+      'training-t',
+      'assessment-a',
+    ])
+  })
+
+  it('gives the brief and the map the same top training pick as the list', () => {
+    const supply = [training('near', 4, 1), training('better', 9, 2)]
+    const withScores = scores([
+      [1, entry({})],
+      [2, entry({ assessment: 1, schedule: 1 })],
+    ])
+    const result = recommend({
+      supply,
+      homeRegion: 'NCR',
+      relocate: false,
+      alternatives: [],
+      code: CODE,
+      scores: withScores,
+    })
+    expect(result.training?.center.id).toBe('training-better')
   })
 })

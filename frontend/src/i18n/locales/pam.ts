@@ -1155,6 +1155,13 @@ export const pam: Record<string, string> = {
     'Mibilang ing obra mu bilang {0}: ding atin nang karanasan malyari lang mamagmasusi king {1} kahit ali na mag-ensayu.',
   'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
     'Ilista na murin ning TSP profile mu ing {0}. Ing sentro ning pamagmasusi ing mamagsabi nung nanu ing dapat mung dalan.',
+  'Listed, but its service details still need confirming':
+    'Nakalista, oneng kailangan pang kumpirman ing detalye ning serbisyu na',
+  'Score {0}/100': 'Puntus {0}/100',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.':
+    'Metung a puntus ing batayan ning ranggu da reng training center: nung makanu lang kasilip, nung atin beripikadung pamagmasusi king malapit, nung kanu kasalikut magumpisa ing klasi, at ing demand king obra king rehiyun da. Manatili king device mu ing lokasyun mu. Ding assessment center miranggu la agpang king layu ning biyahi.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.':
+    'Metung a puntus ing batayan ning ranggu da reng training center: nung makanu lang kasilip, nung atin beripikadung pamagmasusi king malapit, nung kanu kasalikut magumpisa ing klasi, at ing demand king obra king rehiyun da. Manatili king device mu ing lokasyun mu. Ding assessment center miranggu la agpang king layu ning biyahi, at mumuntuk la nung ipakit ning TSP profile mu a malyaring sadya na ka.',
   'Still to cover: {0}.': 'Kailangan pang aralan: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kailangan pang aralan: {0}, at {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

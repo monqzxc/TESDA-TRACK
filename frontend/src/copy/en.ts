@@ -2497,10 +2497,12 @@ export const en = {
           `Jobs for this qualification are in demand in ${region}, and the trip is about as short`,
         inRange: (km: number) => `Within your ${km} km range`,
         outside: (km: number) => `Nearest, though outside your ${km} km range`,
+        unconfirmed: 'Listed, but its service details still need confirming',
       },
-      how: 'Shorter trips rank first. A center with an open scholarship or more demand moves above one with a similar trip.',
+      score: (score: number) => `Score ${score}/100`,
+      how: 'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.',
       howSignedIn:
-        'Shorter trips rank first. A center with an open scholarship or more demand moves above one with a similar trip, and so does an assessment center when your TSP profile suggests you may be ready.',
+        'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.',
       sample: 'Sample data',
       sampleNote:
         'Travel times are estimated from straight-line distance for the December 2 demo, not measured routes.',

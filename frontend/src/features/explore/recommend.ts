@@ -6,8 +6,14 @@ import type { Outlook } from './outlookApi.ts'
 // The ranked list beside the map (US: "Recommended centers with reasons"). Within the learner's range, the centers
 // offering the qualification in focus are ranked by estimated travel time; an open scholarship, strong demand in the
 // center's region, or (signed in) a Skill Passport that shows the learner may be ready for assessment shortens the
-// time a center is ranked by, so it moves above a center with a similar trip but none of these. The weights are
-// provisional until the Product Owner signs them off.
+// time a center is ranked by, so it moves above a center with a similar trip but none of these.
+//
+// Training centers, once the server's service scores arrive (POST /recommendations/training, sent WITHOUT the
+// learner's location), rank by the same weighted score as everywhere else in TESDA-TRACK: the server scores what
+// doesn't depend on where the learner is (verification, an assessment nearby, schedule, demand, goal, preferences),
+// and the browser adds proximity with the server's own weight and formula, so the location never leaves it. A
+// program the server leaves out (an expired authority, an unmet prerequisite) is not ranked. Assessment centers
+// still rank by trip, with the Skill Passport's next step moving them up.
 // ---------------------------------------------------------------------------------------------------------------
 
 /** A center with an open scholarship for the qualification ranks as if its trip were this much shorter. */
@@ -35,6 +41,10 @@ export type RankReason =
   | 'demand'
   /** Within range, with none of the above. */
   | 'inRange'
+  /** A training center ranked by the server's service score: `why` holds its reasons. */
+  | 'service'
+  /** A training center whose service the server can't confirm yet: `why` says what needs checking. */
+  | 'unconfirmed'
   /** Nothing is within range: one of the nearest outside it. */
   | 'outside'
 
@@ -48,6 +58,75 @@ export interface RankedCenter {
   /** An assessment center the learner may be ready for (signed in, from their Skill Passport). */
   ready: boolean
   reason: RankReason
+  /** With reason service: the combined score, 0..100. */
+  score?: number
+  /** With reason service or unconfirmed: the server's reasons, in its words. */
+  why?: string[]
+}
+
+/** The server's scores for one qualification's programs, from a ranking asked for without a location. */
+export interface ServiceScores {
+  /** Configured weights by component, adding up to 1 (the server's ranking_weights). */
+  weights: Readonly<Record<string, number>>
+  byProgram: ReadonlyMap<
+    number,
+    {
+      components: Readonly<Record<string, number | null>>
+      status: Readonly<Record<string, string>>
+      explanation: readonly string[]
+    }
+  >
+  /** Programs the server lists as requiring verification, with why. */
+  unconfirmed: ReadonlyMap<number, readonly string[]>
+}
+
+/** The server's proximity_radius_km: proximity is 1 at the learner and 0 this far away. */
+export const PROXIMITY_RADIUS_KM = 100
+
+/**
+ * One program's score as the server computes it, with proximity added here: each component the server measured
+ * or tried to (not "not_applicable"), plus proximity, weighted and renormalized over those it counted.
+ */
+export function serviceScore(
+  entry: NonNullable<ReturnType<ServiceScores['byProgram']['get']>>,
+  weights: ServiceScores['weights'],
+  distanceKm: number | null,
+): number {
+  let total = 0
+  let counted = 0
+  for (const [name, weight] of Object.entries(weights)) {
+    if (name === 'proximity') {
+      if (distanceKm === null) continue
+      total += weight * Math.max(0, 1 - distanceKm / PROXIMITY_RADIUS_KM)
+      counted += weight
+      continue
+    }
+    if ((entry.status[name] ?? 'not_applicable') === 'not_applicable') continue
+    total += weight * (entry.components[name] ?? 0)
+    counted += weight
+  }
+  return counted ? Math.round((100 * total) / counted) : 0
+}
+
+/** A training center's best program for the qualification: scored, unconfirmed, or left out by the server. */
+function serviceOf(center: Center, code: string, scores: ServiceScores) {
+  let best: { score: number; why: readonly string[] } | null = null
+  let unconfirmed: readonly string[] | null = null
+  for (const program of center.programs) {
+    if (program.qualification.code !== code) continue
+    const entry = scores.byProgram.get(program.id)
+    if (entry) {
+      const score = serviceScore(entry, scores.weights, center.distanceKm)
+      if (!best || score > best.score) best = { score, why: entry.explanation }
+    } else if (!unconfirmed) {
+      unconfirmed = scores.unconfirmed.get(program.id) ?? null
+    }
+  }
+  return best
+    ? { kind: 'scored' as const, ...best }
+    : unconfirmed
+      ? { kind: 'unconfirmed' as const, why: unconfirmed }
+      : null
 }
 
 /**
@@ -79,6 +158,7 @@ export function rankCenters({
   demandRegions = new Set(),
   ready = false,
   limit = MAX_RANKED,
+  scores,
 }: {
   supply: readonly Center[]
   code: string
@@ -87,6 +167,8 @@ export function rankCenters({
   /** The learner's Skill Passport suggests they may be ready for assessment in this qualification. */
   ready?: boolean
   limit?: number
+  /** The server's service scores for the qualification's programs; without them, training ranks by trip too. */
+  scores?: ServiceScores
 }): RankedCenter[] {
   const measured = supply.filter((center) => center.distanceKm !== null)
   const near = measured.filter((center) => (center.distanceKm as number) <= rangeKm)
@@ -109,30 +191,61 @@ export function rankCenters({
       .map((center) => ({ ...describe(center), reason: 'outside' as const }))
   }
 
-  const scored = near.map((center) => {
-    const item = describe(center)
-    const weight =
-      (item.scholarship ? SCHOLARSHIP_WEIGHT : 1) *
-      (item.demand ? DEMAND_WEIGHT : 1) *
-      (item.ready ? READY_WEIGHT : 1)
-    return { item, trip: road(center), score: road(center) * weight }
-  })
-  const fastest = Math.min(...scored.map(({ trip }) => trip))
-  return scored
-    .sort((a, b) => a.score - b.score || tieBreak(a.item.center, b.item.center))
-    .slice(0, limit)
-    .map(({ item, trip }) => {
-      const reason: RankReason = item.ready
-        ? 'ready'
-        : trip === fastest
-          ? 'nearest'
-          : item.scholarship
-            ? 'scholarship'
-            : item.demand
-              ? 'demand'
-              : 'inRange'
-      return { ...item, reason }
+  if (scores) {
+    const training: RankedCenter[] = []
+    const unconfirmed: RankedCenter[] = []
+    for (const center of near.filter((candidate) => candidate.kind === 'training')) {
+      const service = serviceOf(center, code, scores)
+      if (!service) continue // the server left every program here out: not ranked
+      const item = { ...describe(center), why: [...service.why] }
+      if (service.kind === 'scored')
+        training.push({ ...item, reason: 'service', score: service.score })
+      else unconfirmed.push({ ...item, reason: 'unconfirmed' })
+    }
+    training.sort(
+      (a, b) => (b.score as number) - (a.score as number) || tieBreak(a.center, b.center),
+    )
+    unconfirmed.sort((a, b) => tieBreak(a.center, b.center))
+    const assessment = byTrip(near.filter((candidate) => candidate.kind === 'assessment'))
+    // Two rankings on different scales: take turns, the kind the learner's next step points to first.
+    const first = ready ? assessment : [...training, ...unconfirmed]
+    const second = ready ? [...training, ...unconfirmed] : assessment
+    const merged: RankedCenter[] = []
+    for (let i = 0; merged.length < limit && (i < first.length || i < second.length); i++) {
+      if (first[i]) merged.push(first[i] as RankedCenter)
+      if (second[i] && merged.length < limit) merged.push(second[i] as RankedCenter)
+    }
+    return merged
+  }
+  return byTrip(near)
+
+  function byTrip(candidates: readonly Center[]): RankedCenter[] {
+    if (!candidates.length) return []
+    const scored = candidates.map((center) => {
+      const item = describe(center)
+      const weight =
+        (item.scholarship ? SCHOLARSHIP_WEIGHT : 1) *
+        (item.demand ? DEMAND_WEIGHT : 1) *
+        (item.ready ? READY_WEIGHT : 1)
+      return { item, trip: road(center), score: road(center) * weight }
     })
+    const fastest = Math.min(...scored.map(({ trip }) => trip))
+    return scored
+      .sort((a, b) => a.score - b.score || tieBreak(a.item.center, b.item.center))
+      .slice(0, limit)
+      .map(({ item, trip }) => {
+        const reason: RankReason = item.ready
+          ? 'ready'
+          : trip === fastest
+            ? 'nearest'
+            : item.scholarship
+              ? 'scholarship'
+              : item.demand
+                ? 'demand'
+                : 'inRange'
+        return { ...item, reason }
+      })
+  }
 }
 
 // Which centers the page recommends for the qualification in focus, worked out in the browser: the learner's
@@ -202,6 +315,7 @@ export function recommend({
   code = '',
   demandRegions,
   ready = false,
+  scores,
 }: {
   supply: readonly Center[]
   homeRegion: string | null
@@ -213,6 +327,7 @@ export function recommend({
   code?: string
   demandRegions?: ReadonlySet<string>
   ready?: boolean
+  scores?: ServiceScores
 }): Recommendations {
   // Each kind's pick is the top of its own ranking (rankCenters), so the brief, the map's stars and the ranked
   // list beside the map agree.
@@ -224,6 +339,7 @@ export function recommend({
       demandRegions,
       ready,
       limit: 1,
+      scores,
     })[0]?.center
     if (!center) return null
     const reason: Reason =

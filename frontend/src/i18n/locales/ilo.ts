@@ -470,6 +470,13 @@ export const ilo: Record<string, string> = {
     'Mabilang ti trabahom kas {0}: dagiti addaan iti kapadasan ket mabalin nga agpasukat iti {1} uray awan ti panagsanay.',
   'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
     'Nailista met iti TSP profile-mo ti {0}. Ti sentro ti panagsukat ti mangkumpirma no ania ti itugotmo.',
+  'Listed, but its service details still need confirming':
+    'Nailista, ngem masapul pay a makumpirma dagiti detalye ti serbisiona',
+  'Score {0}/100': 'Iskor {0}/100',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.':
+    'Maysa nga iskor ti pagibatayan ti ranggo dagiti training center: no kasano ti kaasideg, no adda beripikado a panagsukat iti asideg, no kasano kapartak nga agrugi ti klase, ken ti demand ti trabaho iti rehionda. Agtalinaed iti device-mo ti lokasionmo. Dagiti assessment center ket mairanggo segun iti kaadayo ti biahe.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.':
+    'Maysa nga iskor ti pagibatayan ti ranggo dagiti training center: no kasano ti kaasideg, no adda beripikado a panagsukat iti asideg, no kasano kapartak nga agrugi ti klase, ken ti demand ti trabaho iti rehionda. Agtalinaed iti device-mo ti lokasionmo. Dagiti assessment center ket mairanggo segun iti kaadayo ti biahe, ken umuli no ipakita ti TSP profile-mo a mabalin a nakasaganaka.',
   'Still to cover: {0}.': 'Masapul pay a maadal: {0}.',
   'Still to cover: {0}, and {1} more.': 'Masapul pay a maadal: {0}, ken {1} pay.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

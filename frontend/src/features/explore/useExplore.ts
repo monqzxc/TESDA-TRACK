@@ -28,6 +28,7 @@ import {
 import { EXPLORE_KEY } from './key.ts'
 import { areaJobsQuery } from './demandApi.ts'
 import { nearbySuggestionsQuery, outlookQuery, outlookSummaryQuery } from './outlookApi.ts'
+import { serviceScoresQuery } from './serviceScores.ts'
 import {
   highDemandRegions,
   NO_RECOMMENDATIONS,
@@ -429,14 +430,23 @@ export function useExplore(
   })
   const focusFit = demandCode ? (fits.get(demandCode) ?? null) : null
   const ready = Boolean(focusFit && ASSESS_FIRST.has(focusFit.next_step))
+  // The server's scores for the training programs, asked for without the learner's location (recommend.ts). While
+  // they load, or if they fail, training centers rank by trip as before.
+  const serviceScores = useQuery({
+    ...serviceScoresQuery(learner?.id ?? '', demandCode ?? '', search?.query.trim() || null),
+    enabled: Boolean(demandCode),
+    placeholderData: keepPreviousData,
+  })
+  const scores =
+    serviceScores.data && serviceScores.isPlaceholderData === false ? serviceScores.data : undefined
   const ranked = useMemo(
     () =>
       demandCode
-        ? rankCenters({ supply, code: demandCode, rangeKm, demandRegions, ready }).filter(
+        ? rankCenters({ supply, code: demandCode, rangeKm, demandRegions, ready, scores }).filter(
             (item) => !scholarshipOnly || item.center.kind !== 'training' || item.scholarship,
           )
         : [],
-    [demandCode, supply, rangeKm, demandRegions, ready, scholarshipOnly],
+    [demandCode, supply, rangeKm, demandRegions, ready, scores, scholarshipOnly],
   )
   const recommendations = useMemo(
     () =>
@@ -450,9 +460,20 @@ export function useExplore(
             code: demandCode,
             demandRegions,
             ready,
+            scores,
           })
         : NO_RECOMMENDATIONS,
-    [demandCode, supply, automaticRegion, relocate, alternatives, rangeKm, demandRegions, ready],
+    [
+      demandCode,
+      supply,
+      automaticRegion,
+      relocate,
+      alternatives,
+      rangeKm,
+      demandRegions,
+      ready,
+      scores,
+    ],
   )
   const recommendedIds = useMemo(() => idsOf(recommendations), [recommendations])
 

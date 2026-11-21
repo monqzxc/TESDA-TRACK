@@ -474,6 +474,13 @@ export const hil: Record<string, string> = {
     'Ginaisip ang imo obra subong {0}: ang may eksperyensya mahimo magpatasa sa {1} bisan wala sang pagbansay.',
   'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
     'Nakalista man sa imo TSP profile ang {0}. Ang sentro sang pagtasa ang magasiling kon ano ang dal-on.',
+  'Listed, but its service details still need confirming':
+    'Nakalista, pero kinahanglan pa kumpirmahon ang detalye sang serbisyo sini',
+  'Score {0}/100': 'Iskor {0}/100',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.':
+    'Isa ka iskor ang basehan sang ranggo sang mga training center: kon daw ano kalapit, kon may beripikado nga pagtasa sa malapit, kon daw ano kadali magsugod ang klase, kag demand sa obra sa ila rehiyon. Magapabilin sa imo device ang imo lokasyon. Ang mga assessment center ginaranggo suno sa kalayuon sang biyahe.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.':
+    'Isa ka iskor ang basehan sang ranggo sang mga training center: kon daw ano kalapit, kon may beripikado nga pagtasa sa malapit, kon daw ano kadali magsugod ang klase, kag demand sa obra sa ila rehiyon. Magapabilin sa imo device ang imo lokasyon. Ang mga assessment center ginaranggo suno sa kalayuon sang biyahe, kag nagasaka kon ginapakita sang imo TSP profile nga basi handa ka na.',
   'Still to cover: {0}.': 'Kinahanglan pa tun-an: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kinahanglan pa tun-an: {0}, kag {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

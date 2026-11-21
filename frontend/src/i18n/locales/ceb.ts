@@ -479,6 +479,13 @@ export const ceb: Record<string, string> = {
     'Maihap ang imong trabaho isip {0}: ang mga eksperyensiyado mahimong mopasusi sa {1} bisan walay pagbansay.',
   'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
     'Gilista usab sa imong TSP profile ang {0}. Ang sentro sa pagsusi maoy mosulti kung unsa ang dad-on.',
+  'Listed, but its service details still need confirming':
+    'Nalista, apan kinahanglan pa nga kumpirmahon ang detalye sa serbisyo niini',
+  'Score {0}/100': 'Iskor {0}/100',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.':
+    'Usa ka iskor ang basehan sa ranggo sa mga training center: unsa kaduol, naay beripikado nga pagsusi duol, unsa kadali magsugod ang klase, ug demand sa trabaho sa ilang rehiyon. Magpabilin sa imong device ang imong lokasyon. Ang mga assessment center giranggo sumala sa gilay-on sa biyahe.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.':
+    'Usa ka iskor ang basehan sa ranggo sa mga training center: unsa kaduol, naay beripikado nga pagsusi duol, unsa kadali magsugod ang klase, ug demand sa trabaho sa ilang rehiyon. Magpabilin sa imong device ang imong lokasyon. Ang mga assessment center giranggo sumala sa gilay-on sa biyahe, ug mosaka kung ipakita sa imong TSP profile nga basin andam ka na.',
   'Still to cover: {0}.': 'Kinahanglan pa nga tun-an: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kinahanglan pa nga tun-an: {0}, ug {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

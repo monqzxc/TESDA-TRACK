@@ -475,6 +475,13 @@ export const bcl: Record<string, string> = {
     'Bilang an saimong trabaho bilang {0}: an may eksperyensya puwedeng magpatasa sa {1} dawa mayong pagsanay.',
   'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
     'Nakalista man sa saimong TSP profile an {0}. An sentro nin pagtasa an magsasabi kun ano an dapat mong darahon.',
+  'Listed, but its service details still need confirming':
+    'Nakalista, alagad kaipuhan pang kompirmahon an detalye kan serbisyo kaini',
+  'Score {0}/100': 'Iskor {0}/100',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.':
+    'Saro sanang iskor an basehan kan ranggo kan mga training center: kun gurano kaharani, kun igwa nin beripikadong pagtasa sa harani, kun gurano kadali magpoon an klase, asin an demand sa trabaho sa saindang rehiyon. Mapapadagos sa saimong device an saimong lokasyon. An mga assessment center niraranggo segun sa rayo kan biyahe.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.':
+    'Saro sanang iskor an basehan kan ranggo kan mga training center: kun gurano kaharani, kun igwa nin beripikadong pagtasa sa harani, kun gurano kadali magpoon an klase, asin an demand sa trabaho sa saindang rehiyon. Mapapadagos sa saimong device an saimong lokasyon. An mga assessment center niraranggo segun sa rayo kan biyahe, asin minatukad kun pinapahiling kan saimong TSP profile na puwedeng handa ka na.',
   'Still to cover: {0}.': 'Kaipuhan pang adalan: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kaipuhan pang adalan: {0}, asin {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':
