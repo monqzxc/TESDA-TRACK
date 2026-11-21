@@ -1,4 +1,5 @@
 import {
+  useEffect,
   useId,
   useRef,
   useState,
@@ -102,6 +103,32 @@ export function OutlookBrief({
   const bodyId = useId()
   const catalog = useQualifications()
   const { outlook, summary, demandCode: code, matches, recommendations, relocate, search } = explore
+  // Whether the open body has more below its fold: a short brief would otherwise hide its recommended centers.
+  const [more, setMore] = useState(false)
+  useEffect(() => {
+    const body = bodyRef.current
+    if (!body) return
+    const check = () =>
+      setMore(!body.hidden && body.scrollHeight - body.scrollTop - body.clientHeight > 12)
+    check()
+    body.addEventListener('scroll', check, { passive: true })
+    const observer = typeof ResizeObserver === 'function' ? new ResizeObserver(check) : null
+    observer?.observe(body)
+    if (body.firstElementChild) observer?.observe(body.firstElementChild)
+    return () => {
+      body.removeEventListener('scroll', check)
+      observer?.disconnect()
+    }
+  }, [open, code, outlook.data])
+  const scrollMore = () => {
+    const body = bodyRef.current
+    if (!body) return
+    const still = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
+    body.scrollBy({
+      top: Math.max(body.clientHeight * 0.8, 80),
+      behavior: still ? 'auto' : 'smooth',
+    })
+  }
   if (!code) return null
 
   const data = outlook.data
@@ -353,104 +380,122 @@ export function OutlookBrief({
       </div>
 
       {/* The open brief stops well short of the window's height, and scrolls: the map keeps most of it. Dragged, it
-          takes the height the learner gave it. */}
-      <div
-        ref={bodyRef}
-        id={bodyId}
-        hidden={!open || !data}
-        style={size ? { maxHeight: size } : undefined}
-        className={cx(
-          'overflow-y-auto overscroll-contain border-t border-rule px-3 pt-2.5 pb-2.5',
-          !size && 'max-h-[max(30dvh,11rem)]',
-        )}
-      >
-        {data && (
-          <div
-            className={cx(
-              'flex flex-col gap-4 transition-opacity duration-200',
-              outlook.isPlaceholderData && 'opacity-60',
-            )}
-          >
-            <LocalDemand explore={explore} onView={onView} skill={name} />
-            <NearbyQualifications explore={explore} />
-
-            <div className="flex min-w-0 flex-col gap-1.5">
-              <h3 className={heading}>
-                <Icon name="star" />
-                {copy.recommended}
-              </h3>
-              {picks.length ? (
-                // Side by side where they fit: the wider the window, the shorter the brief.
-                <>
-                  <ul className="-m-1 grid list-none grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-2 p-1">
-                    {picks.map(({ key, item }) => (
-                      <li
-                        key={key}
-                        className={cx(tile, 'relative flex min-w-0 flex-col overflow-hidden')}
-                      >
-                        <RecommendedRow
-                          item={item}
-                          onSelect={() => onSelect(item.center.id, code)}
-                        />
-                        <CenterSuggestionFeedback
-                          compact
-                          center={item.center}
-                          qualificationCode={code}
-                          goal={search?.chosen ? undefined : search?.query}
-                          scope={search?.feedbackScope}
-                        />
-                      </li>
-                    ))}
-                  </ul>
-                  <p className="m-0 text-12 leading-[1.45] text-muted">
-                    {en.suggestionFeedback.note}
-                  </p>
-                </>
-              ) : (
-                <p className={note}>{explore.reference ? copy.none : copy.needPlace}</p>
+          takes the height the learner gave it. While more of it sits below the fold, a fade and a "More below" button
+          say so. */}
+      <div className="relative flex min-h-0 flex-col">
+        <div
+          ref={bodyRef}
+          id={bodyId}
+          hidden={!open || !data}
+          style={size ? { maxHeight: size } : undefined}
+          className={cx(
+            'overflow-y-auto overscroll-contain border-t border-rule px-3 pt-2.5 pb-2.5',
+            !size && 'max-h-[max(30dvh,11rem)]',
+          )}
+        >
+          {data && (
+            <div
+              className={cx(
+                'flex flex-col gap-4 transition-opacity duration-200',
+                outlook.isPlaceholderData && 'opacity-60',
               )}
-            </div>
+            >
+              <LocalDemand explore={explore} onView={onView} skill={name} />
+              <NearbyQualifications explore={explore} />
 
-            {/* The analysis in words, folded: the headline and counts above already carry it. */}
-            <details className="group/why text-13 text-navy" aria-live="polite">
-              <summary className="flex w-fit cursor-pointer list-none items-center gap-1.5 rounded-8 py-0.5 font-semibold text-blue [&::-webkit-details-marker]:hidden">
-                <Icon name="info" />
-                {copy.numbers}
-                <Icon
-                  name="chevron"
-                  className="rotate-180 transition-transform group-open/why:rotate-0"
-                />
-              </summary>
-              <div className="flex flex-col gap-1.5 pt-1.5">
-                <p className="m-0 max-w-[110ch] text-13 leading-[1.55] text-ink">
-                  {written ? written.text : data.insight.summary}
-                </p>
-                {written && (
-                  <p className="m-0 flex flex-wrap items-center gap-1.5 text-12 text-muted">
-                    <span className={cx(tag, 'bg-tint px-2 text-blue')}>
-                      <Icon name="sparkle" />
-                      {copy.ai}
-                    </span>
-                    {copy.aiNote}
-                  </p>
+              <div className="flex min-w-0 flex-col gap-1.5">
+                <h3 className={heading}>
+                  <Icon name="star" />
+                  {copy.recommended}
+                </h3>
+                {picks.length ? (
+                  // Side by side where they fit: the wider the window, the shorter the brief.
+                  <>
+                    <ul className="-m-1 grid list-none grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-2 p-1">
+                      {picks.map(({ key, item }) => (
+                        <li
+                          key={key}
+                          className={cx(tile, 'relative flex min-w-0 flex-col overflow-hidden')}
+                        >
+                          <RecommendedRow
+                            item={item}
+                            onSelect={() => onSelect(item.center.id, code)}
+                          />
+                          <CenterSuggestionFeedback
+                            compact
+                            center={item.center}
+                            qualificationCode={code}
+                            goal={search?.chosen ? undefined : search?.query}
+                            scope={search?.feedbackScope}
+                          />
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="m-0 text-12 leading-[1.45] text-muted">
+                      {en.suggestionFeedback.note}
+                    </p>
+                  </>
+                ) : (
+                  <p className={note}>{explore.reference ? copy.none : copy.needPlace}</p>
                 )}
-                {points}
               </div>
-            </details>
 
-            <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-t border-rule pt-2">
-              <p className="m-0 flex min-w-0 flex-1 basis-64 items-start gap-1.5 text-12 leading-[1.45] text-muted">
-                <Icon name="info" className="mt-0.5 flex-none" />
-                {copy.footnote}
-              </p>
-              <Button
-                className={cx(button({ variant: 'tertiary', height: 36, snug: true }), 'flex-none')}
-                onPress={() => onView(view === 'demand' ? 'all' : 'demand')}
-              >
-                <Icon name={view === 'demand' ? 'pin' : 'map'} />
-                {view === 'demand' ? copy.showCenters : copy.showDemand}
-              </Button>
+              {/* The analysis in words, folded: the headline and counts above already carry it. */}
+              <details className="group/why text-13 text-navy" aria-live="polite">
+                <summary className="flex w-fit cursor-pointer list-none items-center gap-1.5 rounded-8 py-0.5 font-semibold text-blue [&::-webkit-details-marker]:hidden">
+                  <Icon name="info" />
+                  {copy.numbers}
+                  <Icon
+                    name="chevron"
+                    className="rotate-180 transition-transform group-open/why:rotate-0"
+                  />
+                </summary>
+                <div className="flex flex-col gap-1.5 pt-1.5">
+                  <p className="m-0 max-w-[110ch] text-13 leading-[1.55] text-ink">
+                    {written ? written.text : data.insight.summary}
+                  </p>
+                  {written && (
+                    <p className="m-0 flex flex-wrap items-center gap-1.5 text-12 text-muted">
+                      <span className={cx(tag, 'bg-tint px-2 text-blue')}>
+                        <Icon name="sparkle" />
+                        {copy.ai}
+                      </span>
+                      {copy.aiNote}
+                    </p>
+                  )}
+                  {points}
+                </div>
+              </details>
+
+              <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-t border-rule pt-2">
+                <p className="m-0 flex min-w-0 flex-1 basis-64 items-start gap-1.5 text-12 leading-[1.45] text-muted">
+                  <Icon name="info" className="mt-0.5 flex-none" />
+                  {copy.footnote}
+                </p>
+                <Button
+                  className={cx(
+                    button({ variant: 'tertiary', height: 36, snug: true }),
+                    'flex-none',
+                  )}
+                  onPress={() => onView(view === 'demand' ? 'all' : 'demand')}
+                >
+                  <Icon name={view === 'demand' ? 'pin' : 'map'} />
+                  {view === 'demand' ? copy.showCenters : copy.showDemand}
+                </Button>
+              </div>
             </div>
+          )}
+        </div>
+        {more && (
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 flex h-16 items-end justify-center rounded-b-[15px] bg-linear-to-t from-surface from-35% to-transparent pb-2">
+            <Button
+              aria-controls={bodyId}
+              onPress={scrollMore}
+              className="pointer-events-auto inline-flex cursor-pointer items-center gap-1 rounded-full border border-border bg-surface py-1 pr-2 pl-3 text-12 font-semibold text-blue shadow-[0_6px_16px_-8px_rgb(var(--track-shadow-rgb)/0.45)] transition-colors data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:bg-tint"
+            >
+              {copy.more}
+              <Icon name="chevron" size="0.9rem" />
+            </Button>
           </div>
         )}
       </div>

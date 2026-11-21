@@ -2677,6 +2677,8 @@ export const en = {
       },
       showDemand: 'Demand map',
       showCenters: 'All results',
+      // Over the bottom of a brief with more below its fold.
+      more: 'More below',
       footnote:
         'A rough signal from dated records, not a forecast. Confirm with the center or TESDA.',
       // On the map.

@@ -670,6 +670,7 @@ export const war: Record<string, string> = {
   'If you relocate: {0}': 'Kun bumalhin ka: {0}',
   'Demand map': 'Mapa han demand',
   'All results': 'Ngatanan nga resulta',
+  'More below': 'Mayda pa ha ubos',
   'A rough signal from dated records, not a forecast. Confirm with the center or TESDA.':
     'Gintantya nga senyales tikang ha mga rekord nga may petsa, diri forecast. Kumpirmaha ha sentro o ha TESDA.',
   'Recommended: {0}': 'Ginrerekomenda: {0}',

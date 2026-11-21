@@ -672,6 +672,7 @@ export const ilo: Record<string, string> = {
   'If you relocate: {0}': 'No umaliska: {0}',
   'Demand map': 'Mapa ti demand',
   'All results': 'Amin a resulta',
+  'More below': 'Adda pay iti baba',
   'A rough signal from dated records, not a forecast. Confirm with the center or TESDA.':
     'Agarup a pagilasinan manipud kadagiti rekord nga addaan petsa, saan a forecast. Ikumpirma iti sentro wenno iti TESDA.',
   'Recommended: {0}': 'Mairekomenda: {0}',

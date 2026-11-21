@@ -677,6 +677,7 @@ export const ceb: Record<string, string> = {
   'If you relocate: {0}': 'Kung mobalhin ka: {0}',
   'Demand map': 'Mapa sa demand',
   'All results': 'Tanang resulta',
+  'More below': 'Daghan pa sa ubos',
   'A rough signal from dated records, not a forecast. Confirm with the center or TESDA.':
     'Gibanabana nga timaan gikan sa mga rekord nga may petsa, dili forecast. Kumpirmaha sa sentro o sa TESDA.',
   'Recommended: {0}': 'Girekomenda: {0}',

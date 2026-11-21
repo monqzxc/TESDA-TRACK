@@ -677,6 +677,7 @@ export const hil: Record<string, string> = {
   'If you relocate: {0}': 'Kon magsaylo ka: {0}',
   'Demand map': 'Mapa sang demand',
   'All results': 'Tanan nga resulta',
+  'More below': 'May dugang pa sa idalom',
   'A rough signal from dated records, not a forecast. Confirm with the center or TESDA.':
     'Ginbanabana nga senyales halin sa mga rekord nga may petsa, indi forecast. Kumpirmaha sa sentro ukon sa TESDA.',
   'Recommended: {0}': 'Ginarekomenda: {0}',

@@ -664,6 +664,7 @@ export const pag: Record<string, string> = {
   'If you relocate: {0}': 'No ombalet ka: {0}',
   'Demand map': 'Mapa na demand',
   'All results': 'Amin a resulta',
+  'More below': 'Wala ni ed leksab',
   'A rough signal from dated records, not a forecast. Confirm with the center or TESDA.':
     'Tantiyan senyales manlapud saray rekord ya walay petsa, aliwan forecast. Kumpirmaen ed sentro o ed TESDA.',
   'Recommended: {0}': 'Irekomenda: {0}',

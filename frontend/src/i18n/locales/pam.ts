@@ -1352,6 +1352,7 @@ export const pam: Record<string, string> = {
   'If you relocate: {0}': 'Nung lumipat ka: {0}',
   'Demand map': 'Mapa ning demand',
   'All results': 'Eganagang resulta',
+  'More below': 'Ati pa king lalam',
   'A rough signal from dated records, not a forecast. Confirm with the center or TESDA.':
     'Tantiyang senyales ibat kareng rekord a atin petsa, e forecast. Kumpirman me king sentro o king TESDA.',
   'Recommended: {0}': 'Irekomenda: {0}',

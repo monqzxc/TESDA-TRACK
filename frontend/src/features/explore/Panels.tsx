@@ -89,7 +89,8 @@ function NextStepNote({ readiness, copy }: { readiness: Readiness; copy: NextSte
   const missing = coverage?.missing ?? []
   const listed = missing.slice(0, UNITS_SHOWN).join('; ')
   const more = missing.length - UNITS_SHOWN
-  const step = fit.next_step === 'renew' ? 'renew' : fit.next_step === 'gap_training' ? 'gap' : 'assess'
+  const step =
+    fit.next_step === 'renew' ? 'renew' : fit.next_step === 'gap_training' ? 'gap' : 'assess'
   const good = step !== 'gap'
   return (
     <div
@@ -110,7 +111,9 @@ function NextStepNote({ readiness, copy }: { readiness: Readiness; copy: NextSte
           <p className="m-0">{more > 0 ? copy.missingMore(listed, more) : copy.missing(listed)}</p>
         )}
         {step === 'gap' && <p className="m-0">{copy.coc}</p>}
-        {(coverage?.expired?.length ?? 0) > 0 && step !== 'renew' && <p className="m-0">{copy.expired}</p>}
+        {(coverage?.expired?.length ?? 0) > 0 && step !== 'renew' && (
+          <p className="m-0">{copy.expired}</p>
+        )}
       </div>
     </div>
   )
@@ -1254,7 +1257,8 @@ export function ResultsPanel({
     }))
     .find(
       (item): item is Readiness =>
-        item.fit !== null && (ASSESS_FIRST.has(item.fit.next_step) || item.fit.next_step === 'gap_training'),
+        item.fit !== null &&
+        (ASSESS_FIRST.has(item.fit.next_step) || item.fit.next_step === 'gap_training'),
     )
   const assessFirst = readiness !== undefined && ASSESS_FIRST.has(readiness.fit.next_step)
   const order: CenterKind[] =
@@ -1274,44 +1278,52 @@ export function ResultsPanel({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* An underlined tab row: icon and label sit on one line, the chosen view is navy with a bar beneath it. */}
-      <div
-        role="group"
-        aria-label={copy.tabs.label}
-        className="flex items-stretch border-b border-line"
-      >
-        {tabs.map((tab) => (
-          <ToggleButton
-            key={tab.view}
-            isSelected={view === tab.view}
-            onChange={() => onView(tab.view)}
-            aria-label={
-              tab.count === undefined ? undefined : copy.tabs.counted(tab.label, tab.count)
-            }
-            className={cx(
-              'group relative flex min-h-11 min-w-0 flex-auto cursor-pointer items-center justify-center gap-1.5 rounded-t-10 border-0 bg-transparent px-1.5',
-              'text-13 font-semibold whitespace-nowrap text-muted',
-              'transition-colors duration-150 ease-out',
-              'data-hovered:text-navy data-selected:text-navy',
-              'data-focus-visible:outline-3 data-focus-visible:-outline-offset-3 data-focus-visible:outline-focus',
-            )}
-          >
-            <Icon name={tab.icon} size="1rem" className="shrink-0" />
-            <span className="truncate">{tab.label}</span>
-            {tab.count !== undefined && (
+      {/* An underlined tab row: icon and label sit on one line, the chosen view is navy with a bar beneath it.
+          Labels never truncate; when the row is narrow the icons drop out first. */}
+      <div className="@container/tabs">
+        <div
+          role="group"
+          aria-label={copy.tabs.label}
+          className="flex items-stretch gap-1 border-b border-line"
+        >
+          {tabs.map((tab) => (
+            <ToggleButton
+              key={tab.view}
+              isSelected={view === tab.view}
+              onChange={() => onView(tab.view)}
+              aria-label={
+                tab.count === undefined ? undefined : copy.tabs.counted(tab.label, tab.count)
+              }
+              className={cx(
+                'group relative flex min-h-11 flex-auto shrink-0 cursor-pointer items-center justify-center gap-1.5 rounded-t-10 border-0 bg-transparent px-2',
+                'text-13 font-semibold whitespace-nowrap text-muted',
+                'transition-colors duration-150 ease-out',
+                'data-hovered:text-navy data-selected:text-navy',
+                'data-focus-visible:outline-3 data-focus-visible:-outline-offset-3 data-focus-visible:outline-focus',
+              )}
+            >
+              <Icon
+                name={tab.icon}
+                size="1rem"
+                className="hidden shrink-0 @min-[27rem]/tabs:block"
+              />
+              <span>{tab.label}</span>
+              {tab.count !== undefined && (
+                <span
+                  aria-hidden="true"
+                  className="grid h-5 min-w-5 shrink-0 place-items-center rounded-full bg-chip px-1.5 text-11 leading-none font-bold text-muted tabular-nums transition-colors duration-150 group-data-hovered:text-navy group-data-selected:bg-navy group-data-selected:text-surface"
+                >
+                  {tab.count.toLocaleString()}
+                </span>
+              )}
+              {/* Hover previews the bar in the line color; the chosen tab fills it navy. */}
               <span
                 aria-hidden="true"
-                className="grid h-4.5 min-w-4.5 shrink-0 place-items-center rounded-full bg-chip px-1.5 text-11 leading-none font-bold tabular-nums text-muted transition-colors duration-150 group-data-selected:bg-navy group-data-selected:text-surface"
-              >
-                {tab.count}
-              </span>
-            )}
-            <span
-              aria-hidden="true"
-              className="absolute inset-x-1.5 -bottom-px h-0.75 origin-center scale-x-0 rounded-full bg-navy transition-transform duration-200 ease-out group-data-selected:scale-x-100 motion-reduce:transition-none"
-            />
-          </ToggleButton>
-        ))}
+                className="absolute inset-x-2 -bottom-px h-0.75 origin-center scale-x-0 rounded-full bg-line transition-transform duration-200 ease-out group-data-hovered:scale-x-100 group-data-selected:scale-x-100 group-data-selected:bg-navy motion-reduce:transition-none"
+              />
+            </ToggleButton>
+          ))}
+        </div>
       </div>
       <h2 className="sr-only">{copy.heading}</h2>
       {!reference && view !== 'demand' && (

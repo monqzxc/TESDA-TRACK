@@ -676,6 +676,7 @@ export const bcl: Record<string, string> = {
   'If you relocate: {0}': 'Kun magbalyo ka: {0}',
   'Demand map': 'Mapa kan demand',
   'All results': 'Gabos na resulta',
+  'More below': 'Igwa pa sa ibaba',
   'A rough signal from dated records, not a forecast. Confirm with the center or TESDA.':
     'Tantyang senyales hale sa mga rekord na igwang petsa, bakong forecast. Kumpirmaron sa sentro o sa TESDA.',
   'Recommended: {0}': 'Irinerekomenda: {0}',

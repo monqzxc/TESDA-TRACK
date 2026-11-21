@@ -1845,6 +1845,7 @@ export const tl: Record<string, string> = {
   'If you relocate: {0}': 'Kung lilipat ka: {0}',
   'Demand map': 'Mapa ng demand',
   'All results': 'Lahat ng resulta',
+  'More below': 'Marami pa sa ibaba',
   'A rough signal from dated records, not a forecast. Confirm with the center or TESDA.':
     'Magaspang na senyales mula sa may-petsang tala, hindi forecast. Kumpirmahin sa sentro o sa TESDA.',
   'Recommended: {0}': 'Inirerekomenda: {0}',
