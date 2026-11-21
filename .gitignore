@@ -1,49 +1,37 @@
-.venv/
-.venv-train/
-__pycache__/
-*.pyc
-.env
-.pytest_cache/
-.models/
-backend/models/*
-!backend/models/README.md
-backend/seed/sources/tr-pdfs/
-# Source PDFs for the labor-demand CSVs (26 MB+); the CSVs and README are kept.
-backend/seed/sources/labor_demand/pdfs/
-T2MISDB.bak
-*.bak
-worker_profiles_*.csv
-30_DATABASE_SCHEMA_MERMAID.md
-backend/training/runs/
-# Goals learners shared, in their own words (training/shared_goals.py): never committed.
-backend/training/learner/
-.railway/node_modules/
-/reports/
-frontend/node_modules
-frontend/.agents/   
-frontend/.claude/
-tesda-e5-small-v4-scenarios-20261020-03.zip
-tesda-e5-small-v4-colab-1.zip
-# Claude Code session lock, written per machine.
-.claude/scheduled_tasks.lock
-/.github
-/.models
-/models
-.github
-/.impeccable
-/.railway
-/tmp32ao24ul
-/.vscode
-tesda-e5-small-v5-mvp.zip
-tesda-e5-small-v6-colab.zip
-docs/aws-ec2-runbook.md
-/models
-31-TRACKER_IFRAME_INTEGRATION.md
-/data
-classic/data/aws-ec2-runbook*.md
-/markdowns/
+# --- AI agent / editor tooling: local only, never shipped ---
+# Anchored paths so app code such as frontend/src/features/skills/ stays tracked.
+.agents/
+.claude/
+**/.agents/
+**/.claude/
+/skills/
+.skills/
+.taste-skill/
+.impeccable/
+**/.impeccable/
+skills-lock.json
+**/skills-lock.json
+CLAUDE.md
+**/CLAUDE.md
+AGENTS.md
+**/AGENTS.md
+.cursor/
+.cursorrules
+.windsurf/
+.aider*
+.codex/
+.gemini/
+.continue/
+.vscode/
+.idea/
+# graphify knowledge graph (regenerated locally)
+graphify-out/
+# CI and Railway CLI helpers (kept local per previous config)
+.github/
+/.railway/
 
 # --- Secrets and credentials: never public ---
+.env
 .env.*
 !.env.example
 *.pem
@@ -53,23 +41,22 @@ classic/data/aws-ec2-runbook*.md
 credentials*.json
 service-account*.json
 
-# --- OS / editor files ---
-.DS_Store
-Thumbs.db
-.idea/
-*.swp
-
-# --- Dependencies and build output ---
-node_modules/
+# --- Python ---
+__pycache__/
+*.pyc
 .venv*/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Node / build output ---
+node_modules/
 frontend/dist/
 dist/
 build/
 coverage/
-.coverage
-htmlcov/
-.mypy_cache/
-.ruff_cache/
 *.tsbuildinfo
 
 # --- Test and tooling output ---
@@ -79,15 +66,44 @@ playwright-report/
 test-results/
 *.log
 
-# --- Local tooling and scratch ---
-.claude/
-.taste-skill/
-/output/
-/tmp*/
+# --- Models and training artifacts ---
+.models/
+/models/
+backend/models/*
+!backend/models/README.md
+backend/training/runs/
+# Goals learners shared, in their own words (training/shared_goals.py): never committed.
+backend/training/learner/
 *.zip
 
-# --- Local databases and dumps ---
+# --- Large source data ---
+backend/seed/sources/tr-pdfs/
+# Source PDFs for the labor-demand CSVs (26 MB+); the CSVs and README are kept.
+backend/seed/sources/labor_demand/pdfs/
+/data/
+worker_profiles_*.csv
+
+# --- Local databases, dumps and backups ---
+/backups/
+*.bak
 *.sqlite
 *.sqlite3
 *.db
 *.dump
+
+# --- Private / internal docs ---
+/markdowns/
+/reports/
+docs/aws-ec2-runbook.md
+classic/data/aws-ec2-runbook*.md
+30_DATABASE_SCHEMA_MERMAID.md
+31-TRACKER_IFRAME_INTEGRATION.md
+
+# --- Local scratch ---
+/output/
+/tmp*/
+
+# --- OS files ---
+.DS_Store
+Thumbs.db
+*.swp
