@@ -45,7 +45,7 @@ async function openAccountMenu(user: ReturnType<typeof userEvent.setup>, name = 
 }
 
 /** "Your data & privacy" sits at the bottom of the profile page. */
-async function openDataSettings(_user: ReturnType<typeof userEvent.setup>) {
+async function openDataSettings() {
   await openApp('/profile')
   const trigger = await findAccountButton()
   const section = (await screen.findByRole('heading', { name: 'Your data & privacy' })).closest(
@@ -132,7 +132,7 @@ describe('Download my data', () => {
     const user = userEvent.setup()
     rememberSignIn()
     const account = serveAccountApi({ signedIn: true })
-    const { menu } = await openDataSettings(user)
+    const { menu } = await openDataSettings()
     await user.click(within(menu).getByRole('button', { name: 'Download my data (JSON)' }))
 
     expect(
@@ -152,7 +152,7 @@ describe('Download my data', () => {
     rememberSignIn()
     serveAccountApi({ signedIn: true })
     server.use(http.get('*/api/v1/me/export', () => HttpResponse.error()))
-    const { menu } = await openDataSettings(user)
+    const { menu } = await openDataSettings()
     await user.click(within(menu).getByRole('button', { name: 'Download my data (JSON)' }))
 
     expect(
@@ -174,7 +174,7 @@ describe('Download my data', () => {
         return HttpResponse.json(account.exported)
       }),
     )
-    const { menu } = await openDataSettings(user)
+    const { menu } = await openDataSettings()
     await user.click(within(menu).getByRole('button', { name: 'Download my data (JSON)' }))
     expect(await screen.findByText('Preparing your data…')).toBeInTheDocument()
     const { menu: again } = await openAccountMenu(user)
