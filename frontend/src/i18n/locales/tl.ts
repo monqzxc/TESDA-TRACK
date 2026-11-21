@@ -1616,6 +1616,18 @@ export const tl: Record<string, string> = {
   'You may be ready for assessment': 'Maaaring handa ka na para sa assessment',
   'For {0}, your TSP profile lists {1}. The assessment center confirms what you need to bring.':
     'Para sa {0}, nakalista sa iyong TSP profile ang {1}. Ang assessment center ang magsasabi kung ano ang kailangan mong dalhin.',
+  'Renew your certificate': 'I-renew ang iyong sertipiko',
+  'Train for the units you’re missing': 'Magsanay sa mga yunit na kulang pa sa iyo',
+  'Your certificates show {1} of the {2} core units of {0}.':
+    'Ipinapakita ng iyong mga sertipiko ang {1} sa {2} pangunahing yunit ng {0}.',
+  'Still to cover: {0}.': 'Kailangan pang matutunan: {0}.',
+  'Still to cover: {0}, and {1} more.': 'Kailangan pang matutunan: {0}, at {1} pa.',
+  'Your {0} certificate has expired. Take the assessment again to renew it.':
+    'Nag-expire na ang iyong sertipiko sa {0}. Kumuha muli ng assessment para ma-renew ito.',
+  'You can be assessed for a Certificate of Competency (COC) as you finish each group of units, then for the full NC.':
+    'Maaari kang ma-assess para sa Certificate of Competency (COC) sa bawat pangkat ng yunit na matatapos mo, at pagkatapos ay para sa buong NC.',
+  'Some of these units are on certificates that have expired. The assessment center confirms what counts.':
+    'Ang ilan sa mga yunit na ito ay nasa mga sertipikong nag-expire na. Ang assessment center ang magkukumpirma kung alin ang bibilangin.',
   'Near {0}, your home area in your TSP profile':
     'Malapit sa {0}, ang tinitirhan mo ayon sa iyong TSP profile',
   'Typing a place changes it for this visit only. Your TSP profile is not changed.':

@@ -471,6 +471,18 @@ export const ceb: Record<string, string> = {
   'You may be ready for assessment': 'Basin andam ka na sa pagsusi',
   'For {0}, your TSP profile lists {1}. The assessment center confirms what you need to bring.':
     'Para sa {0}, ang imong TSP profile naglista og {1}. Ang sentro sa pagsusi maoy mosulti kung unsa ang dad-on.',
+  'Renew your certificate': 'Bag-oha ang imong sertipiko',
+  'Train for the units you’re missing': 'Pagbansay sa mga yunit nga kulang pa nimo',
+  'Your certificates show {1} of the {2} core units of {0}.':
+    'Gipakita sa imong mga sertipiko ang {1} sa {2} ka pangunang yunit sa {0}.',
+  'Still to cover: {0}.': 'Kinahanglan pa nga tun-an: {0}.',
+  'Still to cover: {0}, and {1} more.': 'Kinahanglan pa nga tun-an: {0}, ug {1} pa.',
+  'Your {0} certificate has expired. Take the assessment again to renew it.':
+    'Na-expire na ang imong sertipiko sa {0}. Pagpasusi pag-usab aron mabag-o kini.',
+  'You can be assessed for a Certificate of Competency (COC) as you finish each group of units, then for the full NC.':
+    'Mahimo kang susihon alang sa Certificate of Competency (COC) samtang mahuman nimo ang matag grupo sa mga yunit, dayon alang sa tibuok NC.',
+  'Some of these units are on certificates that have expired. The assessment center confirms what counts.':
+    'Ang uban niini nga mga yunit anaa sa mga sertipiko nga na-expire na. Ang sentro sa pagsusi maoy mokumpirma kung unsa ang maihap.',
   'Share my location': 'Ipaambit ang akong lokasyon',
   'Finding your approximate location…': 'Gipangita ang imong gibanabanang lokasyon…',
   'On · approximate, rounded to about 1 km and not saved.':

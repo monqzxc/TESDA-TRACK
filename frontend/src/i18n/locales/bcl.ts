@@ -467,6 +467,18 @@ export const bcl: Record<string, string> = {
   'You may be ready for assessment': 'Puwedeng handa ka na sa pagtasa',
   'For {0}, your TSP profile lists {1}. The assessment center confirms what you need to bring.':
     'Para sa {0}, nakalista sa saimong TSP profile an {1}. An sentro nin pagtasa an magsasabi kun ano an dapat mong darahon.',
+  'Renew your certificate': 'Bag-uhon an saimong sertipiko',
+  'Train for the units you’re missing': 'Magsanay sa mga yunit na kulang pa saimo',
+  'Your certificates show {1} of the {2} core units of {0}.':
+    'Pinapahiling kan saimong mga sertipiko an {1} sa {2} na pangenot na yunit kan {0}.',
+  'Still to cover: {0}.': 'Kaipuhan pang adalan: {0}.',
+  'Still to cover: {0}, and {1} more.': 'Kaipuhan pang adalan: {0}, asin {1} pa.',
+  'Your {0} certificate has expired. Take the assessment again to renew it.':
+    'Nag-expire na an saimong sertipiko sa {0}. Magpatasa giraray tanganing mabag-o ini.',
+  'You can be assessed for a Certificate of Competency (COC) as you finish each group of units, then for the full NC.':
+    'Puwede kang tasahon para sa Certificate of Competency (COC) mantang natatapos mo an kada grupo nin mga yunit, dangan para sa bilog na NC.',
+  'Some of these units are on certificates that have expired. The assessment center confirms what counts.':
+    'An nagkapira sa mga yunit na ini yaon sa mga sertipikong nag-expire na. An sentro nin pagtasa an magkokompirma kun ano an mabibilang.',
   'Share my location': 'Ibahagi an sakong lokasyon',
   'Finding your approximate location…': 'Hinahanap an tantyang lokasyon mo…',
   'On · approximate, rounded to about 1 km and not saved.':

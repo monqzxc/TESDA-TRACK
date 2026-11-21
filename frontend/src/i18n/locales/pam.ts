@@ -1147,6 +1147,18 @@ export const pam: Record<string, string> = {
   'You may be ready for assessment': 'Malyaring sadya na ka king pamagmasusi',
   'For {0}, your TSP profile lists {1}. The assessment center confirms what you need to bring.':
     'Para king {0}, ilista ning TSP profile mu ing {1}. Ing sentro ning pamagmasusi ing mamagsabi nung nanu ing dapat mung dalan.',
+  'Renew your certificate': 'Panibayuan me ing sertipiku mu',
+  'Train for the units you’re missing': 'Mag-ensayu king yunit a kulang pa keka',
+  'Your certificates show {1} of the {2} core units of {0}.':
+    'Ipakit da reng sertipiku mu ing {1} kareng {2} a pangunang yunit ning {0}.',
+  'Still to cover: {0}.': 'Kailangan pang aralan: {0}.',
+  'Still to cover: {0}, and {1} more.': 'Kailangan pang aralan: {0}, at {1} pa.',
+  'Your {0} certificate has expired. Take the assessment again to renew it.':
+    'Mewala ne ing bisa ning sertipiku mu king {0}. Mamagmasusi kang pasibayu ban mapanibayu me.',
+  'You can be assessed for a Certificate of Competency (COC) as you finish each group of units, then for the full NC.':
+    'Malyari kang masusi para king Certificate of Competency (COC) potang mayari me ing balang grupu ning yunit, kaybat para king buung NC.',
+  'Some of these units are on certificates that have expired. The assessment center confirms what counts.':
+    'Atin karening yunit a ati la kareng sertipiku a mewala nang bisa. Ing sentro ning pamagmasusi ing mamagsabi nung nanu ing mibilang.',
   'Share my location': 'Ibahagi ing lokasyun ku',
   'On · approximate, rounded to about 1 km and not saved.':
     'On · tantiya, itantiya king 1 km ampo e ya ibili.',

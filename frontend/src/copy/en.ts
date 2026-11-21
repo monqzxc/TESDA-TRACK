@@ -2342,6 +2342,23 @@ export const en = {
       mayBeReady: 'You may be ready for assessment',
       readinessEvidence: (qualification: string, evidence: string) =>
         `For ${qualification}, your TSP profile lists ${evidence}. The assessment center confirms what you need to bring.`,
+      // The next step from the CORE units on the learner's certificates (GET /auth/tsp/fit).
+      nextStep: {
+        title: {
+          assess: 'You may be ready for assessment',
+          renew: 'Renew your certificate',
+          gap: 'Train for the units you’re missing',
+        },
+        units: (qualification: string, covered: number, total: number) =>
+          `Your certificates show ${covered} of the ${total} core units of ${qualification}.`,
+        missing: (units: string) => `Still to cover: ${units}.`,
+        missingMore: (units: string, more: number) => `Still to cover: ${units}, and ${more} more.`,
+        renew: (qualification: string) =>
+          `Your ${qualification} certificate has expired. Take the assessment again to renew it.`,
+        coc: 'You can be assessed for a Certificate of Competency (COC) as you finish each group of units, then for the full NC.',
+        expired:
+          'Some of these units are on certificates that have expired. The assessment center confirms what counts.',
+      },
     },
     location: {
       share: 'Share my location',

@@ -461,6 +461,18 @@ export const pag: Record<string, string> = {
   'You may be ready for assessment': 'Nayarin akaparaan ka la ed panageksamin',
   'For {0}, your TSP profile lists {1}. The assessment center confirms what you need to bring.':
     'Parad {0}, nalista ed TSP profile mo so {1}. Say sentro na panageksamin so mangibaga no antoy nepeg mon awiten.',
+  'Renew your certificate': 'Pabaloen so sertipiko mo',
+  'Train for the units you’re missing': 'Mansanay ed saray yunit ya kulang ni ed sika',
+  'Your certificates show {1} of the {2} core units of {0}.':
+    'Ipapanengneng na saray sertipiko mo so {1} ed {2} ya ungol a yunit na {0}.',
+  'Still to cover: {0}.': 'Nepeg ni ya aralen: {0}.',
+  'Still to cover: {0}, and {1} more.': 'Nepeg ni ya aralen: {0}, tan {1} ni.',
+  'Your {0} certificate has expired. Take the assessment again to renew it.':
+    'Asumpal la so sertipiko mo ed {0}. Manpaeksamin ka lamet pian napabalo.',
+  'You can be assessed for a Certificate of Competency (COC) as you finish each group of units, then for the full NC.':
+    'Nayarin naeksamin ka parad Certificate of Competency (COC) no apasal mo so balang grupo na saray yunit, kayari parad interon NC.',
+  'Some of these units are on certificates that have expired. The assessment center confirms what counts.':
+    'Arum ed saraya ya yunit et wala ed saray sertipiko ya asumpal la. Say sentro na panageksamin so mangikumpirma no antoy nibilang.',
   'Share my location': 'Iburay so lokasyon ko',
   'Finding your approximate location…': 'Anaanapen so tantiya ya lokasyon mo…',
   'On · approximate, rounded to about 1 km and not saved.':

@@ -31,7 +31,6 @@ import {
   hasScholarship,
   inRangeOr,
   RANGES_KM,
-  readinessEvidence,
   relatedWithin,
   roundKm,
   type QualificationCard,
@@ -39,6 +38,7 @@ import {
 } from './explore.ts'
 import type { RankedCenter } from './recommend.ts'
 import { useExploreStore, type Explore } from './useExplore.ts'
+import { ASSESS_FIRST, type QualificationFit } from '../tsp/passport.ts'
 import { splitPhones } from '../../lib/phone.ts'
 
 const heading = 'm-0 text-15 leading-[1.35] font-bold text-navy'
@@ -70,6 +70,51 @@ const segOption = cx(
   'data-hovered:bg-surface/70 data-hovered:text-navy',
   'data-selected:bg-navy data-selected:text-surface data-selected:shadow-[0_2px_6px_-2px_rgb(var(--track-shadow-rgb)/0.45)]',
 )
+
+/** A qualification whose CORE units the learner's certificates show, and what the server says to do next. */
+type Readiness = { qualification: string; fit: QualificationFit }
+type NextStepCopy = ReturnType<typeof useCopy>['explore']['tspProfile']['nextStep']
+/** How many unit names the note lists before "and N more". */
+const UNITS_SHOWN = 3
+
+/**
+ * The next step from the learner's Skill Passport (US-0004): ready for assessment, renew, or train for the
+ * missing units first. Counts and unit names come from the server's coverage, never from a template.
+ */
+function NextStepNote({ readiness, copy }: { readiness: Readiness; copy: NextStepCopy }) {
+  const { qualification, fit } = readiness
+  const coverage = fit.coverage
+  const covered = coverage?.covered.length ?? 0
+  const total = covered + (coverage?.missing.length ?? 0)
+  const missing = coverage?.missing ?? []
+  const listed = missing.slice(0, UNITS_SHOWN).join('; ')
+  const more = missing.length - UNITS_SHOWN
+  const step = fit.next_step === 'renew' ? 'renew' : fit.next_step === 'gap_training' ? 'gap' : 'assess'
+  const good = step !== 'gap'
+  return (
+    <div
+      data-testid="may-be-ready"
+      data-next-step={fit.next_step}
+      className={cx(
+        'flex items-start gap-2 rounded-10 px-3 py-2 text-13 leading-[1.5]',
+        good ? 'bg-good-bg text-good-ink' : 'bg-soft text-blue',
+      )}
+    >
+      <Icon name={good ? 'award' : 'learn'} className="mt-0.5 flex-none" />
+      <div className="grid gap-1">
+        <strong className="block">{copy.title[step]}</strong>
+        <p className="m-0">
+          {step === 'renew' ? copy.renew(qualification) : copy.units(qualification, covered, total)}
+        </p>
+        {step !== 'renew' && missing.length > 0 && (
+          <p className="m-0">{more > 0 ? copy.missingMore(listed, more) : copy.missing(listed)}</p>
+        )}
+        {step === 'gap' && <p className="m-0">{copy.coc}</p>}
+        {(coverage?.expired?.length ?? 0) > 0 && step !== 'renew' && <p className="m-0">{copy.expired}</p>}
+      </div>
+    </div>
+  )
+}
 
 /** The on/off track of a Switch, drawn the same for every switch in the panel. Put it inside a `group` Switch. */
 function SwitchTrack() {
@@ -791,7 +836,7 @@ function Group({
   relatedFor: (kind: CenterKind, card: QualificationCard) => Related | null
   /** The qualification in focus and the centers recommended for it. */
   focus: { code: string | null; recommended: ReadonlySet<string> }
-  readiness?: { qualification: string; evidence: string[] }
+  readiness?: Readiness
   /** No center lists the qualification in focus at all: what to try instead (US-0014 AC5). */
   noCenter?: { match: Match; related: Related | null } | null
   /** The Scholarships filter is on: an empty Train group says so instead of "no center lists it". */
@@ -823,18 +868,7 @@ function Group({
           {text.heading}
         </h3>
       </div>
-      {readiness && (
-        <div
-          data-testid="may-be-ready"
-          className="flex items-start gap-2 rounded-10 bg-good-bg px-3 py-2 text-13 leading-[1.5] text-good-ink"
-        >
-          <Icon name="award" className="mt-0.5 flex-none" />
-          <p className="m-0">
-            <strong className="block">{tspProfile.mayBeReady}</strong>
-            {tspProfile.readinessEvidence(readiness.qualification, readiness.evidence.join(', '))}
-          </p>
-        </div>
-      )}
+      {readiness && <NextStepNote readiness={readiness} copy={tspProfile.nextStep} />}
       {cards.length ? (
         cards.map((card) => (
           <QualificationCardView
@@ -1211,24 +1245,30 @@ export function ResultsPanel({
       rangeKm,
     })
   const focus = { code: explore.demandCode, recommended: new Set(explore.recommendedIds) }
-  // Use the highest-ranked match with evidence, even when the profile does not cover the first match.
-  const readiness = explore.passport
-    ? matches
-        .map(({ qualification }) => ({
-          qualification: qualification.name,
-          evidence: readinessEvidence(explore.passport, qualification.name),
-        }))
-        .find(({ evidence }) => evidence.length > 0)
-    : undefined
+  // The highest-ranked match whose CORE units the learner's certificates show (the server's next step), even when
+  // it isn't the first match. Self-declared skills alone never make one.
+  const readiness = matches
+    .map(({ qualification }) => ({
+      qualification: qualification.name,
+      fit: explore.fits.get(qualification.code) ?? null,
+    }))
+    .find(
+      (item): item is Readiness =>
+        item.fit !== null && (ASSESS_FIRST.has(item.fit.next_step) || item.fit.next_step === 'gap_training'),
+    )
+  const assessFirst = readiness !== undefined && ASSESS_FIRST.has(readiness.fit.next_step)
   const order: CenterKind[] =
-    readiness || firstKind(search.query) !== 'training'
+    assessFirst || (!readiness && firstKind(search.query) !== 'training')
       ? ['assessment', 'training']
       : ['training', 'assessment']
   const shown = view === 'all' ? order : view === 'demand' ? [] : [view]
+  // A tab counts the centers it would pin (as "N centers shown" does), not the qualifications listed under it.
+  const centerCount = (cards: readonly QualificationCard[]) =>
+    new Set(cards.flatMap((card) => card.centers.map((center) => center.id))).size
   const tabs: { view: View; label: string; icon: IconName; count?: number }[] = [
     { view: 'all', label: copy.tabs.all, icon: 'grid' },
-    { view: 'assessment', label: copy.tabs.assess, icon: 'award', count: assess.length },
-    { view: 'training', label: copy.tabs.train, icon: 'learn', count: train.length },
+    { view: 'assessment', label: copy.tabs.assess, icon: 'award', count: centerCount(assess) },
+    { view: 'training', label: copy.tabs.train, icon: 'learn', count: centerCount(train) },
     { view: 'demand', label: copy.tabs.demand, icon: 'briefcase' },
   ]
 
@@ -1297,7 +1337,7 @@ export function ResultsPanel({
           rangeKm={rangeKm}
           relatedFor={relatedFor}
           focus={focus}
-          readiness={kind === 'assessment' ? readiness : undefined}
+          readiness={(kind === 'assessment') === assessFirst ? readiness : undefined}
           scholarshipOnly={explore.scholarshipOnly}
           noCenter={
             matches[0] && (kind === 'assessment' ? assess : train).length === 0

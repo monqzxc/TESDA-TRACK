@@ -466,6 +466,18 @@ export const hil: Record<string, string> = {
   'You may be ready for assessment': 'Basi handa ka na sa pagtasa',
   'For {0}, your TSP profile lists {1}. The assessment center confirms what you need to bring.':
     'Para sa {0}, ang imo TSP profile nagalista sang {1}. Ang sentro sang pagtasa ang magasiling kon ano ang dal-on.',
+  'Renew your certificate': 'Bag-uha ang imo sertipiko',
+  'Train for the units you’re missing': 'Magbansay sa mga yunit nga kulang pa sa imo',
+  'Your certificates show {1} of the {2} core units of {0}.':
+    'Ginapakita sang imo mga sertipiko ang {1} sa {2} ka pangunahon nga yunit sang {0}.',
+  'Still to cover: {0}.': 'Kinahanglan pa tun-an: {0}.',
+  'Still to cover: {0}, and {1} more.': 'Kinahanglan pa tun-an: {0}, kag {1} pa.',
+  'Your {0} certificate has expired. Take the assessment again to renew it.':
+    'Nag-expire na ang imo sertipiko sa {0}. Magpatasa liwat agod mabag-o ini.',
+  'You can be assessed for a Certificate of Competency (COC) as you finish each group of units, then for the full NC.':
+    'Mahimo ka tasahan para sa Certificate of Competency (COC) samtang matapos mo ang kada grupo sang mga yunit, dayon para sa bug-os nga NC.',
+  'Some of these units are on certificates that have expired. The assessment center confirms what counts.':
+    'Ang iban sini nga mga yunit yara sa mga sertipiko nga nag-expire na. Ang sentro sang pagtasa ang magakumpirma kon ano ang maisip.',
   'Share my location': 'Ipaambit ang akon lokasyon',
   'Finding your approximate location…': 'Ginapangita ang imo ginbanabana nga lokasyon…',
   'On · approximate, rounded to about 1 km and not saved.':

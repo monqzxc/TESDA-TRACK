@@ -6474,6 +6474,62 @@
         ]
       }
     },
+    "/api/v1/auth/tsp/fit": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Read Qualification Fit",
+        "description": "How the learner's Skill Passport fits one qualification: the CORE units it shows and the next step\n(assessment, training for the missing units, or the full program). Private to the learner.",
+        "operationId": "read_qualification_fit_api_v1_auth_tsp_fit_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "qualification_code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 40,
+              "title": "Qualification Code"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/QualificationFit"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The learner isn't linked to a Skill Passport, or no such qualification."
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/tsp-mock/handoff": {
       "post": {
         "tags": [
@@ -11284,6 +11340,49 @@
         ],
         "title": "CompetencyAnswer"
       },
+      "CompetencyCoverage": {
+        "properties": {
+          "covered": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Covered",
+            "description": "CORE units a certificate on the profile shows, by the catalog's name"
+          },
+          "missing": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing",
+            "description": "CORE units no certificate shows"
+          },
+          "expired": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Expired",
+            "description": "Covered units shown only by expired certificates"
+          },
+          "share": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Share",
+            "description": "covered / (covered + missing)"
+          }
+        },
+        "type": "object",
+        "required": [
+          "covered",
+          "missing",
+          "share"
+        ],
+        "title": "CompetencyCoverage",
+        "description": "The qualification's CORE units, split by whether a certificate on the Skill Passport shows each."
+      },
       "CompetencyGap": {
         "properties": {
           "competency_id": {
@@ -15059,6 +15158,30 @@
             },
             "type": "array",
             "title": "Reasons"
+          },
+          "coverage": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CompetencyCoverage"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Present when a certificate on the profile shows at least one of the qualification's CORE units."
+          },
+          "next_step": {
+            "type": "string",
+            "enum": [
+              "held",
+              "renew",
+              "assessment",
+              "gap_training",
+              "training"
+            ],
+            "title": "Next Step",
+            "description": "held: certified today. renew: certificate expired, take the assessment again. assessment: 70% or more of the CORE units shown. gap_training: 30% or more, so train for the missing units (COC per cluster), then assess. training: the full program. Self-declared skills never count toward coverage.",
+            "default": "training"
           }
         },
         "type": "object",
@@ -15797,6 +15920,31 @@
           "qualification"
         ],
         "title": "QualificationFeedback"
+      },
+      "QualificationFit": {
+        "properties": {
+          "qualification_code": {
+            "type": "string",
+            "title": "Qualification Code"
+          },
+          "fit": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/PersonalFit"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "None when nothing on the profile points to it"
+          }
+        },
+        "type": "object",
+        "required": [
+          "qualification_code"
+        ],
+        "title": "QualificationFit",
+        "description": "The signed-in learner's fit for one qualification, for the Explore view's next step."
       },
       "QualificationOutlook": {
         "properties": {

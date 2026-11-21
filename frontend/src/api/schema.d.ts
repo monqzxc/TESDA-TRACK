@@ -1856,6 +1856,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/auth/tsp/fit": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Read Qualification Fit
+         * @description How the learner's Skill Passport fits one qualification: the CORE units it shows and the next step
+         *     (assessment, training for the missing units, or the full program). Private to the learner.
+         */
+        get: operations["read_qualification_fit_api_v1_auth_tsp_fit_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/tsp-mock/handoff": {
         parameters: {
             query?: never;
@@ -3332,6 +3353,32 @@ export interface components {
              */
             answer: "confident" | "some_experience" | "not_familiar";
         };
+        /**
+         * CompetencyCoverage
+         * @description The qualification's CORE units, split by whether a certificate on the Skill Passport shows each.
+         */
+        CompetencyCoverage: {
+            /**
+             * Covered
+             * @description CORE units a certificate on the profile shows, by the catalog's name
+             */
+            covered: string[];
+            /**
+             * Missing
+             * @description CORE units no certificate shows
+             */
+            missing: string[];
+            /**
+             * Expired
+             * @description Covered units shown only by expired certificates
+             */
+            expired?: string[];
+            /**
+             * Share
+             * @description covered / (covered + missing)
+             */
+            share: number;
+        };
         /** CompetencyGap */
         CompetencyGap: {
             /** Competency Id */
@@ -4775,6 +4822,15 @@ export interface components {
             status?: ("held" | "renew") | null;
             /** Reasons */
             reasons?: components["schemas"]["FitReason"][];
+            /** @description Present when a certificate on the profile shows at least one of the qualification's CORE units. */
+            coverage?: components["schemas"]["CompetencyCoverage"] | null;
+            /**
+             * Next Step
+             * @description held: certified today. renew: certificate expired, take the assessment again. assessment: 70% or more of the CORE units shown. gap_training: 30% or more, so train for the missing units (COC per cluster), then assess. training: the full program. Self-declared skills never count toward coverage.
+             * @default training
+             * @enum {string}
+             */
+            next_step: "held" | "renew" | "assessment" | "gap_training" | "training";
         };
         /** PersonalizationWeights */
         PersonalizationWeights: {
@@ -5027,6 +5083,16 @@ export interface components {
             /** Satisfied */
             satisfied: number;
             qualification: components["schemas"]["QualificationSummary"];
+        };
+        /**
+         * QualificationFit
+         * @description The signed-in learner's fit for one qualification, for the Explore view's next step.
+         */
+        QualificationFit: {
+            /** Qualification Code */
+            qualification_code: string;
+            /** @description None when nothing on the profile points to it */
+            fit?: components["schemas"]["PersonalFit"] | null;
         };
         /** QualificationOutlook */
         QualificationOutlook: {
@@ -10744,6 +10810,44 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    read_qualification_fit_api_v1_auth_tsp_fit_get: {
+        parameters: {
+            query: {
+                qualification_code: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["QualificationFit"];
+                };
+            };
+            /** @description The learner isn't linked to a Skill Passport, or no such qualification. */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
             };
         };
     };

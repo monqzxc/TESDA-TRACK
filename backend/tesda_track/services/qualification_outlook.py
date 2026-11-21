@@ -19,7 +19,7 @@ from tesda_track.models import (AssessmentCenter, AssessmentSchedule, Region, Tr
 from tesda_track.models.registry import RegistryRecord
 from tesda_track.schemas.outlook import (AreaOutlook, DemandLevel, HigherDemandArea, HomeDemand, OutlookInsight,
                                          OutlookPoint, OutlookQualification, OutlookTotals, QualificationOutlook)
-from tesda_track.services import area_jobs, assessments, catalog
+from tesda_track.services import area_jobs, assessments, catalog, sample_demand
 from tesda_track.services.center_listing import listed, sample_mode
 
 LIMITATIONS = [

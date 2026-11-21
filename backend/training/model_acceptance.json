@@ -1,6 +1,6 @@
 {
-  "version": "pilot-v3-2026-10-21",
-  "model": "tesda-track/tesda-e5-small-v3",
+  "version": "pilot-v6-colab-2026-11-21",
+  "model": "tesda-track/tesda-e5-small-v6-colab",
   "evaluation_set": "test_v1",
   "expected_goal_count": 120,
   "minimum_metrics": {

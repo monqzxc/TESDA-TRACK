@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQueries, useQuery } from '@tanstack/react-query'
 import { useContext, useMemo } from 'react'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
@@ -6,7 +6,12 @@ import { qualificationsQuery, regionsQuery } from '../../api/queries.ts'
 import { AuthContext } from '../../auth/useAuth.ts'
 import type { MatchResult } from '../finder/api.ts'
 import { sessionStore } from '../../lib/sessionStore.ts'
-import { passportQuery } from '../tsp/passport.ts'
+import {
+  ASSESS_FIRST,
+  passportQuery,
+  qualificationFitQuery,
+  type QualificationFit,
+} from '../tsp/passport.ts'
 import { clientConfigQuery, listingsQuery, sitesQuery } from '../training/api.ts'
 import { buildCenters, philippineDay, sortCenters, withDistances } from '../training/centers.ts'
 import { gazetteer, resolvePlace } from '../training/places.ts'
@@ -19,7 +24,6 @@ import {
   MAX_QUALIFICATIONS,
   NEAR_KM,
   nearestRegion,
-  readinessEvidence,
 } from './explore.ts'
 import { EXPLORE_KEY } from './key.ts'
 import { areaJobsQuery } from './demandApi.ts'
@@ -409,11 +413,22 @@ export function useExplore(
   const focusName =
     matches.find((match) => match.qualification.code === demandCode)?.qualification.name ??
     (outlook.data?.qualification.code === demandCode ? outlook.data.qualification.name : null)
-  const readyEvidence = useMemo(
-    () => (focusName ? readinessEvidence(passport.data, focusName) : []),
-    [focusName, passport.data],
-  )
-  const ready = readyEvidence.length > 0
+  // The server's next step per qualification, from the CORE units on the learner's certificates
+  // (GET /auth/tsp/fit). Self-declared skills never make a learner "ready": only assessed units do.
+  const fits = useQueries({
+    queries: codes.map((code) => ({
+      ...qualificationFitQuery(learner?.id ?? '', code),
+      enabled: Boolean(learner && passport.data),
+    })),
+    combine: (results) =>
+      new Map<string, QualificationFit | null>(
+        results.flatMap((result, i) =>
+          result.data === undefined ? [] : [[codes[i] as string, result.data] as const],
+        ),
+      ),
+  })
+  const focusFit = demandCode ? (fits.get(demandCode) ?? null) : null
+  const ready = Boolean(focusFit && ASSESS_FIRST.has(focusFit.next_step))
   const ranked = useMemo(
     () =>
       demandCode
@@ -495,8 +510,10 @@ export function useExplore(
     ranked,
     /** The qualification in focus, by name, when it is known. */
     focusName,
-    /** Signed in: the Skill Passport's skills and licenses that suggest the learner may be ready for assessment. */
-    readyEvidence,
+    /** Signed in: the next step for each qualification listed, by code, once the server has answered. */
+    fits,
+    /** The next step for the qualification in focus, when the Skill Passport points to it. */
+    focusFit,
     demandLocality,
     demandOffset,
     loading: !everything && !(sites.isError || regions.isError),

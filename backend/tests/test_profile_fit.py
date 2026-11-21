@@ -144,3 +144,70 @@ def test_a_stale_sign_in_never_breaks_the_public_demand_lists(client, market):
             assert not response.json()["personalized"]
     expired = client.get(JOBS, params={"personalize": True}, headers={"Authorization": "Bearer expired.token.here"})
     assert expired.status_code == 200 and not expired.json()["personalized"]
+
+
+# The test catalog's five CORE units for Cookery NC II, written as TSP might (case, punctuation).
+COOKERY_CORE = ["USE AND MAINTAIN KITCHEN EQUIPMENT", "Prepare ingredients and mise en place", "Prepare hot dishes",
+                "Prepare salads & cold dishes", "Present and store prepared food safely."]
+
+
+def coc(title, units, status="Active", expires="18th of July, 2031"):
+    """A Certificate of Competency: some of a qualification's CORE units, under a title of its own."""
+    return {**certificate(title, status, expires, core=units), "certificate_type": "COC"}
+
+
+def test_core_units_on_certificates_decide_the_next_step(session):
+    most = coc("Cookery COC 1", COOKERY_CORE[:4])           # 4 of 5
+    fit = profile_fit.compute(session, passport(skills=(), certificates=[most]), None, TODAY).get("COOKERY-NC-II")
+    assert fit.next_step == "assessment" and fit.status is None
+    assert fit.coverage.share == pytest.approx(0.8)
+    assert fit.coverage.missing == ["Present and store prepared food safely"]  # the catalog's own name
+    assert fit.score >= 80  # never less than the share of CORE units shown
+
+    some = coc("Cookery COC 1", COOKERY_CORE[:2])           # 2 of 5
+    assert profile_fit.compute(session, passport(skills=(), certificates=[some]), None,
+                               TODAY).get("COOKERY-NC-II").next_step == "gap_training"
+
+    few = coc("Cookery COC 1", COOKERY_CORE[:1], status="Expired", expires="1st of May, 2022")
+    fit = profile_fit.compute(session, passport(skills=(), certificates=[few]), None, TODAY).get("COOKERY-NC-II")
+    assert fit.next_step == "training" and fit.coverage.expired == ["Use and maintain kitchen equipment"]
+
+
+def test_skills_alone_never_count_as_coverage(session):
+    fit = profile_fit.compute(session, passport(skills=("cooking", "prepare hot dishes")), None, TODAY)
+    cookery = fit.get("COOKERY-NC-II")
+    assert cookery is None or (cookery.coverage is None and cookery.next_step == "training")
+
+
+def test_held_today_stays_held_whatever_the_coverage(session):
+    held = certificate("Cookery NC II", "Active", "18th of July, 2031", core=COOKERY_CORE)
+    fit = profile_fit.compute(session, passport(skills=(), certificates=[held]), None, TODAY).get("COOKERY-NC-II")
+    assert fit.status == "held" and fit.next_step == "held" and fit.coverage.share == 1
+
+
+FIT = "/api/v1/auth/tsp/fit"
+
+
+@pytest.fixture
+def tsp_enabled(app):
+    from tesda_track.config import get_settings
+    settings = get_settings().model_copy(update={"tsp_sign_in_enabled": True})
+    app.dependency_overrides[get_settings] = lambda: settings
+    yield
+    app.dependency_overrides.pop(get_settings, None)
+
+
+def test_fit_endpoint_gives_the_next_step_privately(session, client, learner, tsp_enabled):
+    link(session, "juan@example.com", passport(skills=(), certificates=[coc("Cookery COC 1", COOKERY_CORE[:4])]))
+    response = client.get(FIT, params={"qualification_code": "COOKERY-NC-II"}, headers=learner)
+    assert response.status_code == 200, response.text
+    assert "no-store" in response.headers["cache-control"]
+    body = response.json()
+    assert body["qualification_code"] == "COOKERY-NC-II" and body["fit"]["next_step"] == "assessment"
+    assert client.get(FIT, params={"qualification_code": "SMAW-NC-II"}, headers=learner).json()["fit"] is None
+    assert client.get(FIT, params={"qualification_code": "NO-SUCH"}, headers=learner).status_code == 404
+
+
+def test_fit_endpoint_needs_a_linked_passport(client, learner, tsp_enabled):
+    assert client.get(FIT, params={"qualification_code": "COOKERY-NC-II"}, headers=learner).status_code == 404
+    assert client.get(FIT, params={"qualification_code": "COOKERY-NC-II"}).status_code == 401

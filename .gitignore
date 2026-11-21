@@ -40,6 +40,27 @@ graphify-out/
 *.pfx
 credentials*.json
 service-account*.json
+.envrc
+*.secret
+*.secrets
+secrets/
+**/secrets/
+*.jks
+*.keystore
+*.ovpn
+*.kdbx
+id_rsa*
+id_ed25519*
+.ssh/
+.aws/
+.netrc
+.npmrc
+.pypirc
+.htpasswd
+kubeconfig*
+# Local Compose overrides can hold real passwords and hostnames.
+docker-compose.override.yml
+compose.override.yml
 
 # --- Python ---
 __pycache__/
@@ -50,6 +71,10 @@ __pycache__/
 .ruff_cache/
 .coverage
 htmlcov/
+*.egg-info/
+.hypothesis/
+.ipynb_checkpoints/
+.tox/
 
 # --- Node / build output ---
 node_modules/
@@ -58,6 +83,9 @@ dist/
 build/
 coverage/
 *.tsbuildinfo
+.vite/
+.eslintcache
+.npm/
 
 # --- Test and tooling output ---
 frontend/test-results/
@@ -75,6 +103,20 @@ backend/training/runs/
 # Goals learners shared, in their own words (training/shared_goals.py): never committed.
 backend/training/learner/
 *.zip
+# Model weights and experiment trackers, wherever they land.
+*.safetensors
+*.onnx
+*.pt
+*.pth
+*.ckpt
+*.gguf
+.cache/
+wandb/
+mlruns/
+# Evaluation runs on the server's real TSP profiles and feedback (aggregates, but still learner-derived).
+backend/competency-*.json
+competency-real*.json
+feedback*.csv
 
 # --- Large source data ---
 backend/seed/sources/tr-pdfs/
@@ -90,6 +132,8 @@ worker_profiles_*.csv
 *.sqlite3
 *.db
 *.dump
+*.sql.gz
+*.backup
 
 # --- Private / internal docs ---
 /markdowns/
@@ -102,6 +146,8 @@ classic/data/aws-ec2-runbook*.md
 # --- Local scratch ---
 /output/
 /tmp*/
+*.pid
+*.tmp
 
 # --- OS files ---
 .DS_Store

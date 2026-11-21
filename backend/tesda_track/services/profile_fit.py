@@ -10,7 +10,9 @@ BASIC and COMMON units are left out: shared by dozens of qualifications, they sa
 terms one at a time, rather than as one long query, keeps "cooking" and "welding" from blurring into neither.
 
 A qualification's fit is its best single-term score, plus credit for sharing a sector with one the learner holds or
-held. Qualifications they hold today are marked "held", expired ones "renew". Each fit keeps the terms behind it, so
+held, and never less than the share of its CORE units their certificates show (competency_coverage, which also
+gives the next step: assessment, training for the missing units, or the full program). Qualifications they hold
+today are marked "held", expired ones "renew". Each fit keeps the terms behind it, so
 the reasons shown ("Based on your skill: cooking") are what the matcher actually used, never a template.
 
 The terms are never stored, logged or sent anywhere. Fits are kept in memory per learner and profile version, so
@@ -28,8 +30,9 @@ from sqlmodel import Session, select
 
 from tesda_track.models import Learner, Qualification
 from tesda_track.models.catalog import OfficialQualificationCode
-from tesda_track.schemas.profile_fit import FitReason, PersonalFit
-from tesda_track.services import analysis, catalog, labor_market, skill_search, skills_terms, tsp_profile, tsp_sign_in
+from tesda_track.schemas.profile_fit import CompetencyCoverage, FitReason, PersonalFit
+from tesda_track.services import (analysis, catalog, competency_coverage, labor_market, skill_search, skills_terms,
+                                  tsp_profile, tsp_sign_in)
 from tesda_track.services.embeddings import Embedder
 
 SECTOR_FIT = 30          # the same credit nearby_suggestions gives for a shared sector
@@ -131,6 +134,7 @@ def compute(session: Session, profile: dict, embedder: Embedder | None, today: d
             session, current.items, labor_market.matching_rule_views(session, current.rule_views), list(terms),
             embedder, analysis.match_params(embedder), limit=len(current.items))
     matched = {match.qualification.code: match for match in found.matches} if found else {}
+    covered = competency_coverage.for_profile(normalized, {code: item.rules for code, item in items.items()})
 
     fits = {}
     for code, item in items.items():
@@ -142,10 +146,20 @@ def compute(session: Session, profile: dict, embedder: Embedder | None, today: d
         status = "held" if code in held_today else "renew" if code in held_before else None
         if status:
             reasons.insert(0, FitReason(kind=status, qualification=names[code]))
-        score = min(100, (match.score if match else 0) + (SECTOR_FIT if sector_of and sector_of != names[code] else 0))
+        units = covered.get(code)
+        # Assessed units are stronger evidence than any one term: 4 of 5 CORE units fits as 80 at least.
+        score = min(100, max((match.score if match else 0) + (SECTOR_FIT if sector_of and sector_of != names[code] else 0),
+                             round(100 * units.share) if units else 0))
         if score or status:
-            fits[code] = PersonalFit(score=score, status=status, reasons=reasons)
+            fits[code] = PersonalFit(score=score, status=status, reasons=reasons,
+                                     coverage=_coverage_public(units) if units else None,
+                                     next_step=competency_coverage.next_step(status, units))
     return ProfileFit(fits)
+
+
+def _coverage_public(units: competency_coverage.Coverage) -> CompetencyCoverage:
+    return CompetencyCoverage(covered=list(units.covered), missing=list(units.missing), expired=list(units.expired),
+                              share=round(units.share, 3))
 
 
 def _term_reasons(supporting: tuple[str, ...], terms: dict[str, tuple[str, str | None]],

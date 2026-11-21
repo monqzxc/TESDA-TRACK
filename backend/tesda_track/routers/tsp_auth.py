@@ -8,7 +8,7 @@ TSP_SIGN_IN_ENABLED is off.
 """
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, Request, Response, status
+from fastapi import APIRouter, Depends, Query, Request, Response, status
 from fastapi.responses import JSONResponse
 
 from tesda_track.config import Settings, get_settings
@@ -17,10 +17,12 @@ from tesda_track.deps import CurrentLearner, RequestedWith
 from tesda_track.errors import NotFoundError, TspSignInError
 from tesda_track.models import Learner
 from tesda_track.schemas.accounts import LearnerPublic, SessionResponse
+from tesda_track.schemas.profile_fit import QualificationFit
 from tesda_track.schemas.tsp_auth import (TspConsentRequest, TspConsentRequired, TspConsentSummary, TspProfile,
                                           TspSessionRequest)
 from tesda_track.security import create_access_token, set_session_cookie
-from tesda_track.services import tsp_mock, tsp_sign_in
+from tesda_track.services import catalog, profile_fit, tsp_mock, tsp_sign_in
+from tesda_track.services.embeddings import EmbedderDep
 from tesda_track.services.hercules import HerculesClient
 from tesda_track.services.rate_limit import client_address_key
 
@@ -86,6 +88,20 @@ def read_tsp_profile(learner: CurrentLearner, session: SessionDep, settings: Ena
         raise NotFoundError("This account isn't linked to a Skill Passport.")
     return TspProfile(**tsp_sign_in.profile_labels(profile), **tsp_sign_in.home_area(profile),
                       region_code=tsp_sign_in.region_code(session, profile), sample=settings.tsp_mock_enabled)
+
+
+@router.get("/fit", response_model=QualificationFit, dependencies=[Depends(enabled_settings)],
+            responses={404: {"description": "The learner isn't linked to a Skill Passport, or no such qualification."}})
+def read_qualification_fit(learner: CurrentLearner, session: SessionDep, embedder: EmbedderDep, response: Response,
+                           qualification_code: str = Query(min_length=1, max_length=40)):
+    """How the learner's Skill Passport fits one qualification: the CORE units it shows and the next step
+    (assessment, training for the missing units, or the full program). Private to the learner."""
+    response.headers["Cache-Control"] = "private, no-store"
+    catalog.get_active_qualification(session, qualification_code)
+    fit = profile_fit.for_learner(session, learner, embedder)
+    if fit is None:
+        raise NotFoundError("This account isn't linked to a Skill Passport.")
+    return QualificationFit(qualification_code=qualification_code, fit=fit.get(qualification_code))
 
 
 def _start_session(learner: Learner, response: Response, settings: Settings) -> SessionResponse:

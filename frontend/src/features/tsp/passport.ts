@@ -54,3 +54,33 @@ export function withPassport(profile: Profile, passport: Passport | null | undef
     .slice(0, SKILL_LIMIT)
   return { ...profile, existing_skills: skills }
 }
+
+export type QualificationFit = components['schemas']['PersonalFit']
+export type NextStep = QualificationFit['next_step']
+
+/** Next steps that send the learner to an assessment center first: ready, or renewing an expired certificate. */
+export const ASSESS_FIRST: ReadonlySet<NextStep> = new Set(['assessment', 'renew'])
+
+/**
+ * How the learner's Skill Passport fits one qualification (GET /api/v1/auth/tsp/fit): the CORE units their
+ * certificates show and the next step. null when nothing on the profile points to it, or no passport is linked.
+ */
+export const qualificationFitQuery = (learnerId: string, code: string) =>
+  queryOptions<QualificationFit | null, ApiError>({
+    queryKey: ['tsp-fit', learnerId, code],
+    queryFn: async ({ signal }) => {
+      try {
+        const body = await unwrap(
+          api.GET('/api/v1/auth/tsp/fit', {
+            params: { query: { qualification_code: code } },
+            signal,
+          }),
+        )
+        return body.fit ?? null
+      } catch (error) {
+        if (error instanceof ApiError && error.status === 404) return null
+        throw error
+      }
+    },
+    staleTime: 5 * 60_000,
+  })

@@ -462,6 +462,18 @@ export const ilo: Record<string, string> = {
   'You may be ready for assessment': 'Mabalin a nakasaganaka iti panagsukat',
   'For {0}, your TSP profile lists {1}. The assessment center confirms what you need to bring.':
     'Para iti {0}, ilista ti TSP profile-mo ti {1}. Ti sentro ti panagsukat ti mangkumpirma no ania ti itugotmo.',
+  'Renew your certificate': 'Pabaruem ti sertipikom',
+  'Train for the units you’re missing': 'Agsanay kadagiti yunit nga kurang pay kenka',
+  'Your certificates show {1} of the {2} core units of {0}.':
+    'Ipakita dagiti sertipikom ti {1} kadagiti {2} a kangrunaan a yunit ti {0}.',
+  'Still to cover: {0}.': 'Masapul pay a maadal: {0}.',
+  'Still to cover: {0}, and {1} more.': 'Masapul pay a maadal: {0}, ken {1} pay.',
+  'Your {0} certificate has expired. Take the assessment again to renew it.':
+    'Nalpasen ti sertipikom iti {0}. Agpasukat manen tapno mapabaro.',
+  'You can be assessed for a Certificate of Competency (COC) as you finish each group of units, then for the full NC.':
+    'Mabalinka a masukat para iti Certificate of Competency (COC) bayat a malpasmo ti tunggal grupo dagiti yunit, kalpasanna para iti intero a NC.',
+  'Some of these units are on certificates that have expired. The assessment center confirms what counts.':
+    'Dadduma kadagitoy a yunit ket adda kadagiti sertipiko a nalpasen. Ti sentro ti panagsukat ti mangkumpirma no ania ti mabilang.',
   'Share my location': 'Ibingay ti lokasionko',
   'Finding your approximate location…': 'Birbiruken ti agarup a lokasionmo…',
   'On · approximate, rounded to about 1 km and not saved.':
