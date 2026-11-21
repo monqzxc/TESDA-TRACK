@@ -458,7 +458,7 @@ export function QualificationEvidence({
   qualificationCode,
   regionCode,
   compact = false,
-  note,
+  note: callerNote,
 }: {
   qualificationCode: string
   regionCode: string | null
@@ -502,7 +502,7 @@ export function QualificationEvidence({
             </Button>
           </div>
         ) : (
-          <CompactEvidence data={query.data} note={note} />
+          <CompactEvidence data={query.data} note={callerNote} />
         )}
       </section>
     )
