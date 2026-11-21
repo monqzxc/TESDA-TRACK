@@ -302,6 +302,24 @@ export const icons = {
       filled: true,
     },
   ],
+  thumbUp: [
+    { tag: 'path', d: 'M7 10v11' },
+    {
+      tag: 'path',
+      d: 'M15 5.9 14 10h5.8a2 2 0 0 1 1.9 2.6l-2.3 7A2 2 0 0 1 17.5 21H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h2.8a2 2 0 0 0 1.8-1.1L12 2.5a3 3 0 0 1 3 3.4Z',
+    },
+  ],
+  thumbDown: [
+    { tag: 'path', d: 'M17 14V3' },
+    {
+      tag: 'path',
+      d: 'M9 18.1 10 14H4.2a2 2 0 0 1-1.9-2.6l2.3-7A2 2 0 0 1 6.5 3H20a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1h-2.8a2 2 0 0 0-1.8 1.1L12 21.5a3 3 0 0 1-3-3.4Z',
+    },
+  ],
+  flag: [
+    { tag: 'path', d: 'M5 21V4' },
+    { tag: 'path', d: 'M5 4.5s1.2-1 4-1 4.5 2 7.5 2 3.5-1 3.5-1v9s-1 1-3.5 1-4.7-2-7.5-2-4 1-4 1' },
+  ],
 } as const satisfies Record<string, readonly IconShape[]>
 
 export type IconName = keyof typeof icons

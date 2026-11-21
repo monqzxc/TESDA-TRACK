@@ -558,6 +558,13 @@ export const war: Record<string, string> = {
   'Dated PhilJobNet records, ordered by posting count. These are not live openings or worker headcounts. Shaded regions compare recorded posting totals.':
     'Mga rekord han PhilJobNet nga may petsa, ginhan-ay sugad han kadamu han posting. Diri ini mga abri nga trabaho yana o ihap han mga trabahador. An kolor han rehiyon nagkukumpara han kabug-osan nga natala nga posting.',
   ' · {0} more places': ' · {0} pa nga lugar',
+  'City or municipality': 'Syudad o munisipyo',
+  '{0} postings': '{0} nga posting',
+  '{0} employers': '{0} nga employer',
+  'Dated PhilJobNet records, not live openings or worker headcounts.':
+    'Mga rekord han PhilJobNet nga may petsa, diri mga bukas nga trabaho yana o ihap han mga trabahador.',
+  '+{0} more': '+{0} pa',
+  'Show jobs in {0}': 'Ipakita an mga trabaho ha {0}',
   'Reviewed occupation links only. National forecasts retain their national coverage; they do not establish demand in a particular city.':
     'Mga nausisa nga kalabotan han trabaho la. Nasyonal gihapon an nasyonal nga forecast; diri ini nagpapamatuod han demand ha usa nga syudad.',
   '{0} qualifications with reviewed evidence':
@@ -566,6 +573,7 @@ export const war: Record<string, string> = {
   '{0} mapped posting records': '{0} nga natugma nga rekord han posting',
   'Forecast support: {0}': 'Suporta han forecast: {0}',
   'Compare supply and demand': 'Ikumpara an supply ngan demand',
+  'About this data': 'Mahitungod hini nga datos',
   'Supply means recorded training and assessment services. Posting records and training seats have different units; no workforce shortage is calculated.':
     'An supply amo an natala nga serbisyo han pagbansay ngan pagtasa. Iba an yunit han rekord han posting ngan lugar ha pagbansay; waray ginkukwenta nga kakulangan han trabahador.',
   'No posting records for this selection. Try all jobs or another area. Missing evidence does not mean low demand.':
@@ -830,6 +838,10 @@ export const war: Record<string, string> = {
     'Tugma ha imo gin-report nga karera, abilidad o sektor.',
   'Similar in meaning to your goal.': 'Pariho ha kahulugan han imo tumong.',
   'Scholarship open': 'Abri an scholarship',
+  'Applies to training centers. A scholarship listed isn’t a guaranteed award.':
+    'Para ha mga training center. An nakalista nga scholarship diri garantiya nga makakarawat ka.',
+  'No training center has an open scholarship for these qualifications. Turn off Scholarships to see every center.':
+    'Waray training center nga may-ada abri nga scholarship para hini nga mga kwalipikasyon. I-off an Scholarships basi makita an ngatanan nga center.',
   // No center offers the qualification anywhere (QA-2026-11-18-E).
   'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
     'Waray pa sentro nga nagtatanyag hin {0} bisan diin. Diri makakabulig an mas halapad nga kahirayo, salit testingi an usa hini.',

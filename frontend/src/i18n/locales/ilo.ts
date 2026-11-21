@@ -558,6 +558,13 @@ export const ilo: Record<string, string> = {
   'Dated PhilJobNet records, ordered by posting count. These are not live openings or worker headcounts. Shaded regions compare recorded posting totals.':
     'Dagiti rekord ti PhilJobNet nga addaan petsa, naurnos segun iti bilang ti posting. Saan dagitoy a nalukatan a trabaho ita wenno bilang dagiti trabahador. Ti kolor ti rehion ket mangidilig kadagiti dagup a nairehistro a posting.',
   ' · {0} more places': ' · {0} pay a lugar',
+  'City or municipality': 'Siudad wenno munisipalidad',
+  '{0} postings': '{0} a posting',
+  '{0} employers': '{0} nga employer',
+  'Dated PhilJobNet records, not live openings or worker headcounts.':
+    'Napetsaan a rekord ti PhilJobNet, saan a dagiti agdama a nakalukat a trabaho wenno bilang dagiti trabahador.',
+  '+{0} more': '+{0} pay',
+  'Show jobs in {0}': 'Ipakita dagiti trabaho idiay {0}',
   'Reviewed occupation links only. National forecasts retain their national coverage; they do not establish demand in a particular city.':
     'Dagiti nasukimat a pannakainaig ti trabaho laeng. Nailian latta dagiti nailian a forecast; saanda a paneknekan ti demand iti maysa a siudad.',
   '{0} qualifications with reviewed evidence':
@@ -567,6 +574,7 @@ export const ilo: Record<string, string> = {
   '{0} mapped posting records': '{0} a naitunos a rekord ti posting',
   'Forecast support: {0}': 'Suporta ti forecast: {0}',
   'Compare supply and demand': 'Idilig ti supply ken demand',
+  'About this data': 'Maipapan iti daytoy a datos',
   'Supply means recorded training and assessment services. Posting records and training seats have different units; no workforce shortage is calculated.':
     'Ti supply ket dagiti nairehistro a serbisio ti panagsanay ken panagsukat. Agduma ti yunit ti rekord ti posting ken puesto ti panagsanay; awan ti makuenta a kurang a trabahador.',
   'No posting records for this selection. Try all jobs or another area. Missing evidence does not mean low demand.':
@@ -830,6 +838,10 @@ export const ilo: Record<string, string> = {
     'Maitunos iti inreport mo a karera, kabaelan wenno sektor.',
   'Similar in meaning to your goal.': 'Kaasping ti kaipapanan ti panggepmo.',
   'Scholarship open': 'Nakalukat ti scholarship',
+  'Applies to training centers. A scholarship listed isn’t a guaranteed award.':
+    'Para kadagiti training center. Ti nakalista a scholarship ket saan a garantiya a maawatmo.',
+  'No training center has an open scholarship for these qualifications. Turn off Scholarships to see every center.':
+    'Awan ti training center nga addaan iti nakalukat a scholarship para kadagitoy a kualipikasion. I-off ti Scholarships tapno makitam amin a center.',
   // No center offers the qualification anywhere (QA-2026-11-18-E).
   'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
     'Awan pay ti sentro a mangted iti {0} iti aniaman a lugar. Saan a makatulong ti nalawlawa a kaadayo, isu a padasem ti maysa kadagitoy.',

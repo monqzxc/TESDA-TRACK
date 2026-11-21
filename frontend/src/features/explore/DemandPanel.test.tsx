@@ -150,9 +150,9 @@ describe('Explore labor demand', () => {
       },
     })
     open()
-    await screen.findByRole('heading', { name: 'WELDER' })
+    await screen.findByRole('heading', { name: 'Welder' })
     expect(requests.at(-1)?.searchParams.get('qualification_code')).toBe('SMAW-NC-II')
-    expect(screen.getByText('Qualification: Welding NC II')).toBeVisible()
+    expect(screen.getByLabelText('Qualification')).toHaveValue('SMAW-NC-II')
   })
 
   it('opens and shows jobs and regional markers from the chip without a search or location', async () => {
@@ -160,7 +160,7 @@ describe('Explore labor demand', () => {
     expect(requests).toHaveLength(0)
     // The chips render twice, one row for a phone and one for wider screens; CSS shows only one.
     fireEvent.click(screen.getAllByRole('button', { name: 'In demand jobs' })[0]!)
-    expect(await screen.findByRole('heading', { name: 'WELDER' })).toBeVisible()
+    expect(await screen.findByRole('heading', { name: 'Welder' })).toBeVisible()
     expect(screen.getByText(/Snapshot: 2026-11-04/)).toBeVisible()
     expect(
       await screen.findByRole('button', { name: 'Metro Manila regional marker' }),
@@ -170,22 +170,36 @@ describe('Explore labor demand', () => {
 
   it('refetches with explicit region, locality and reviewed qualification filters', async () => {
     open()
-    await screen.findByRole('heading', { name: 'WELDER' })
+    await screen.findByRole('heading', { name: 'Welder' })
     fireEvent.change(screen.getByLabelText('Region'), { target: { value: 'NCR' } })
     await waitFor(() => expect(requests.at(-1)?.searchParams.get('region_code')).toBe('NCR'))
-    fireEvent.change(screen.getByLabelText('City or municipality in the snapshot'), {
+    fireEvent.change(screen.getByLabelText('City or municipality'), {
       target: { value: 'MAKATI CITY, NCR' },
     })
     await waitFor(() =>
       expect(requests.at(-1)?.searchParams.get('locality')).toBe('MAKATI CITY, NCR'),
     )
-    fireEvent.change(screen.getByLabelText('Filter by qualification'), {
+    fireEvent.change(screen.getByLabelText('Qualification'), {
       target: { value: 'SMAW-NC-II' },
     })
     await waitFor(() =>
       expect(requests.at(-1)?.searchParams.get('qualification_code')).toBe('SMAW-NC-II'),
     )
     expect(requests.at(-1)?.searchParams.has('locality')).toBe(false)
+  })
+
+  it('filters to a place from its chip on a job card and lets go when pressed again', async () => {
+    open()
+    await screen.findByRole('heading', { name: 'Welder' })
+    const chip = screen.getByRole('button', { name: 'Show jobs in Makati City, NCR' })
+    fireEvent.click(chip)
+    await waitFor(() =>
+      expect(requests.at(-1)?.searchParams.get('locality')).toBe('MAKATI CITY, NCR'),
+    )
+    expect(screen.getByLabelText('City or municipality')).toHaveValue('MAKATI CITY, NCR')
+    fireEvent.click(await screen.findByRole('button', { name: 'Show jobs in Makati City, NCR' }))
+    // The unfiltered list may come back from the cache, so the select shows the release.
+    await waitFor(() => expect(screen.getByLabelText('City or municipality')).toHaveValue(''))
   })
 
   it('discovers qualifications with national scope retained and opens their supply comparison', async () => {
@@ -256,7 +270,7 @@ describe('Explore labor demand', () => {
     )
     useTrainingStore.setState({ placeText: 'Manila' })
     open()
-    fireEvent.change(await screen.findByLabelText('City or municipality in the snapshot'), {
+    fireEvent.change(await screen.findByLabelText('City or municipality'), {
       target: { value: 'MAKATI CITY, NCR' },
     })
     await waitFor(() =>
@@ -334,7 +348,7 @@ describe('Explore labor demand', () => {
         </MemoryRouter>
       </AuthContext.Provider>,
     )
-    expect(await screen.findByRole('heading', { name: /COOK/ })).toBeVisible()
+    expect(await screen.findByRole('heading', { name: /Cook/ })).toBeVisible()
     expect(screen.getByText('Picked for you from your Skill Passport')).toBeVisible()
     expect(screen.getByText('Linked to Cookery NC II.')).toBeVisible()
     expect(screen.getByText('Based on your skill: Cooking.')).toBeVisible()
@@ -346,8 +360,8 @@ describe('Explore labor demand', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Show all instead' }))
     expect(await screen.findByText('Showing everything, not ranked for you')).toBeVisible()
     // Back to the plain list (shared with the map, so it may come from the cache without a new request).
-    await waitFor(() => expect(screen.queryByRole('heading', { name: /COOK/ })).toBeNull())
-    expect(screen.getByRole('heading', { name: 'WELDER' })).toBeVisible()
+    await waitFor(() => expect(screen.queryByRole('heading', { name: /Cook/ })).toBeNull())
+    expect(screen.getByRole('heading', { name: 'Welder' })).toBeVisible()
     expect(screen.queryByText('Based on your skill: Cooking.')).toBeNull()
   })
 })

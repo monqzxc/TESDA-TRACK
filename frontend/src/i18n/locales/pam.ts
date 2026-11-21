@@ -1240,6 +1240,13 @@ export const pam: Record<string, string> = {
   'Dated PhilJobNet records, ordered by posting count. These are not live openings or worker headcounts. Shaded regions compare recorded posting totals.':
     'Deng rekord ning PhilJobNet a atin petsa, makasunud king dakal ning posting. E la reni bukas a trabaho ngeni o bilang da reng obrero. Ing kulay ning rehiyun pipagtulad ne ing kabilian a milista a posting.',
   ' · {0} more places': ' · {0} pang lugal',
+  'City or municipality': 'Lakanbalen o balen',
+  '{0} postings': '{0} posting',
+  '{0} employers': '{0} employer',
+  'Dated PhilJobNet records, not live openings or worker headcounts.':
+    'Tala ning PhilJobNet a atin petsa, e la reng bukas a obra ngeni o bilang da reng obrero.',
+  '+{0} more': '+{0} pa',
+  'Show jobs in {0}': 'Ipakit la reng obra king {0}',
   'Reviewed occupation links only. National forecasts retain their national coverage; they do not establish demand in a particular city.':
     'Deng misuri a ugnayan ning trabaho mu. Nasyunal ya pa murin ing nasyunal a forecast; e ne patune ing demand king metung a lungsod.',
   '{0} qualifications with reviewed evidence': '{0} a kwalipikasyun a atin misuri a ebidensya',
@@ -1248,6 +1255,7 @@ export const pam: Record<string, string> = {
   '{0} mapped posting records': '{0} a mitugma a rekord ning posting',
   'Forecast support: {0}': 'Suporta ning forecast: {0}',
   'Compare supply and demand': 'Pagtuladan ing supply ampong demand',
+  'About this data': 'Tungkol king datos a iti',
   'Supply means recorded training and assessment services. Posting records and training seats have different units; no workforce shortage is calculated.':
     'Ing supply ya ing milista a serbisyu ning pamag-aral ampong pamagmasusi. Aliwa ing yunit ning rekord ning posting ampong lugal king pamag-aral; alang kuwentang kakulangan da reng obrero.',
   'No posting records for this selection. Try all jobs or another area. Missing evidence does not mean low demand.':
@@ -1477,6 +1485,8 @@ export const pam: Record<string, string> = {
     'Mitugma king ireport mung karera, kayanan o sektor.',
   'Similar in meaning to your goal.': 'Kalupa ning kabaldugan ning layunin mu.',
   'Scholarship open': 'Bukas ing scholarship',
+  'No training center has an open scholarship for these qualifications. Turn off Scholarships to see every center.':
+    'Alang training center a ating bukas a scholarship para kareng kwalipikasyun a reni. I-off ye ing Scholarships ban akit mu la ngan deng center.',
   // No center offers the qualification anywhere (QA-2026-11-18-E).
   'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
     'Ala pang sentro a mag-alok {0} nanu man a lugal. E makatulung ing mas malapad a kalayu, nya subukan me ing metung kareni.',

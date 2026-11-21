@@ -6,11 +6,13 @@ export function CenterSuggestionFeedback({
   qualificationCode,
   goal,
   scope,
+  compact,
 }: {
   center: Pick<Center, 'id' | 'kind' | 'name'>
   qualificationCode?: string
   goal?: string | null
   scope?: string
+  compact?: boolean | 'inset'
 }) {
   return (
     <SuggestionFeedback
@@ -20,6 +22,7 @@ export function CenterSuggestionFeedback({
       qualificationCode={qualificationCode}
       goal={goal}
       scope={scope}
+      compact={compact}
     />
   )
 }

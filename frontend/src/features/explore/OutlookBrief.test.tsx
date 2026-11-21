@@ -650,11 +650,10 @@ describe('Find Jobs on TSP (Card 5)', () => {
     expect(link.getAttribute('href')).toContain('area=Central+Visayas')
   })
 
-  it('stays turned off until the deployment sets the TSP link', async () => {
+  it('is left out until the deployment sets the TSP link', async () => {
     open()
-    const button = await screen.findByRole('button', { name: /Find Jobs on TSP/ })
-    expect(button).toBeDisabled()
-    expect(screen.getByText('Link not set up yet')).toBeInTheDocument()
+    await screen.findByRole('group', { name: /Demand here/i })
+    expect(screen.queryByRole('button', { name: /Find Jobs on TSP/ })).not.toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /Find Jobs on TSP/ })).not.toBeInTheDocument()
   })
 })

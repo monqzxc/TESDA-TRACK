@@ -14,6 +14,7 @@ import { useTrainingStore } from '../training/state.ts'
 import type { Reference } from '../training/useCenters.ts'
 import {
   anyKindWithoutCenter,
+  anyScholarship,
   anyOutOfRange,
   MAX_QUALIFICATIONS,
   NEAR_KM,
@@ -145,8 +146,8 @@ export const useExploreStore = create<ExploreState>()(
  */
 export function useExplore(
   demandActive = false,
-  /** Region and province filters (QA: US-0014 AC3), from the address: they narrow the centers shown. */
-  filters: { region?: string | null; province?: string | null } = {},
+  /** Region, province and scholarship filters (QA: US-0014 AC3), from the address: they narrow the centers shown. */
+  filters: { region?: string | null; province?: string | null; scholarship?: boolean } = {},
 ) {
   const search = useExploreStore((state) => state.search)
   const relocate = useExploreStore((state) => state.relocate)
@@ -299,14 +300,18 @@ export function useExplore(
   // recommendations still count every center: a filter changes what is shown, not the evidence.
   const regionFilter = filters.region ?? null
   const provinceFilter = filters.province ?? null
+  // Scholarships only: a training center stays when one of its programs listed here has a scholarship open (with a
+  // search, the matched qualifications' programs). Assessment centers have no scholarships listed, so they stay.
+  const scholarshipOnly = Boolean(filters.scholarship)
   const centers = useMemo(
     () =>
       allCenters.filter(
         (center) =>
           (!regionFilter || center.regionCode === regionFilter) &&
-          (!provinceFilter || center.province === provinceFilter),
+          (!provinceFilter || center.province === provinceFilter) &&
+          (!scholarshipOnly || center.kind !== 'training' || anyScholarship(center)),
       ),
-    [allCenters, regionFilter, provinceFilter],
+    [allCenters, regionFilter, provinceFilter, scholarshipOnly],
   )
   const regionOptions = useMemo(() => {
     const seen = new Map<string, string>()
@@ -411,8 +416,12 @@ export function useExplore(
   const ready = readyEvidence.length > 0
   const ranked = useMemo(
     () =>
-      demandCode ? rankCenters({ supply, code: demandCode, rangeKm, demandRegions, ready }) : [],
-    [demandCode, supply, rangeKm, demandRegions, ready],
+      demandCode
+        ? rankCenters({ supply, code: demandCode, rangeKm, demandRegions, ready }).filter(
+            (item) => !scholarshipOnly || item.center.kind !== 'training' || item.scholarship,
+          )
+        : [],
+    [demandCode, supply, rangeKm, demandRegions, ready, scholarshipOnly],
   )
   const recommendations = useMemo(
     () =>
@@ -439,6 +448,8 @@ export function useExplore(
     centers,
     regionOptions,
     provinceOptions,
+    /** The Scholarships filter is on: training centers without an open scholarship are left out. */
+    scholarshipOnly,
     reference,
     rangeKm,
     /** Centers within range with everything they list, when a matched qualification has none there. */

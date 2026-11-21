@@ -1594,6 +1594,8 @@ export const tl: Record<string, string> = {
   'No core skills are listed for this qualification yet.':
     'Wala pang nakalistang pangunahing kasanayan para sa kwalipikasyong ito.',
   'Scholarship open': 'Bukas ang scholarship',
+  'No training center has an open scholarship for these qualifications. Turn off Scholarships to see every center.':
+    'Walang sentro ng pagsasanay na may bukas na scholarship para sa mga kwalipikasyong ito. I-off ang Scholarships para makita ang lahat ng sentro.',
   'Location not confirmed': 'Hindi pa kumpirmado ang lokasyon',
   'Close map panel': 'Isara ang panel ng mapa',
   'Centers with unconfirmed locations': 'Mga sentrong hindi pa kumpirmado ang lokasyon',
@@ -1734,6 +1736,13 @@ export const tl: Record<string, string> = {
   'Dated PhilJobNet records, ordered by posting count. These are not live openings or worker headcounts. Shaded regions compare recorded posting totals.':
     'May-petsang tala mula sa PhilJobNet, ayon sa dami ng posting. Hindi ito mga bukas na trabaho ngayon o bilang ng manggagawa. Inihahambing ng may-kulay na rehiyon ang kabuuang naitalang posting.',
   ' · {0} more places': ' · {0} pang lugar',
+  'City or municipality': 'Lungsod o munisipyo',
+  '{0} postings': '{0} posting',
+  '{0} employers': '{0} employer',
+  'Dated PhilJobNet records, not live openings or worker headcounts.':
+    'May-petsang tala mula sa PhilJobNet, hindi mga bukas na trabaho ngayon o bilang ng manggagawa.',
+  '+{0} more': '+{0} pa',
+  'Show jobs in {0}': 'Ipakita ang mga trabaho sa {0}',
   'Reviewed occupation links only. National forecasts retain their national coverage; they do not establish demand in a particular city.':
     'Mga nasuring ugnayan sa trabaho lamang. Pambansa ang saklaw ng mga pambansang forecast; hindi nito pinapatunayan ang demand sa isang partikular na lungsod.',
   '{0} qualifications with reviewed evidence': '{0} kwalipikasyong may nasuring ebidensya',
@@ -1741,6 +1750,7 @@ export const tl: Record<string, string> = {
   '{0} mapped posting records': '{0} naitugmang tala ng posting',
   'Forecast support: {0}': 'Suporta ng forecast: {0}',
   'Compare supply and demand': 'Ihambing ang supply at demand',
+  'About this data': 'Tungkol sa datos na ito',
   'Supply means recorded training and assessment services. Posting records and training seats have different units; no workforce shortage is calculated.':
     'Ang supply ay ang naitalang serbisyo ng pagsasanay at pagtatasa. Magkaiba ang yunit ng tala ng posting at puwesto sa pagsasanay; walang kinukuwentang kakulangan ng manggagawa.',
   'No posting records for this selection. Try all jobs or another area. Missing evidence does not mean low demand.':

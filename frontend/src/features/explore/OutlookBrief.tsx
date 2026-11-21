@@ -23,8 +23,9 @@ import type { Recommendation } from './recommend.ts'
 import { useDemandStore, useExploreStore, type Explore } from './useExplore.ts'
 
 const note = 'm-0 text-13 leading-[1.5] text-muted'
+// Section labels in sentence case, their icon in the accent.
 const heading =
-  'm-0 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-12 font-bold tracking-[0.04em] text-muted uppercase'
+  'm-0 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-13 font-bold text-navy [&>svg]:text-blue'
 // The brief's body height as the learner dragged it, the smallest it opens at, and a keyboard step.
 const SIZE_KEY = 'tesda-track.brief-height'
 const MIN_BODY = 96
@@ -40,9 +41,26 @@ const balanceTone: Record<Balance, string> = {
   supply_only: 'bg-warn-bg text-warn-ink',
   no_records: 'bg-chip text-muted',
 }
+// The brief's cards: a soft tile that lifts and grows a little under the pointer and gives back when pressed.
+const tile =
+  'rounded-12 border border-transparent bg-soft transition-[transform,background-color,border-color,box-shadow] ' +
+  'duration-200 ease-out hover:z-10 hover:scale-[1.02] hover:border-hover-border hover:bg-surface ' +
+  'hover:shadow-[0_10px_24px_-12px_rgb(var(--track-shadow-rgb)/0.4)] active:scale-[0.99] ' +
+  'motion-reduce:hover:scale-100 motion-reduce:active:scale-100'
+// A whole card that is one button: the tile, plus the button's cursor, focus ring and alignment.
+const tileButton = cx(
+  tile,
+  'relative flex w-full cursor-pointer flex-col items-start text-left data-focus-visible:outline-3 data-focus-visible:outline-focus',
+)
+// The area's counts, tinted like their map layer: demand green, training blue, assessment teal.
+const statTone = {
+  demand: 'bg-good-bg text-good-ink',
+  training: 'bg-tint text-blue',
+  assessment: 'bg-teal/10 text-teal',
+} as const
 const kindIcon = { training: 'learn', assessment: 'award' } as const
 // The map's marker colors, so a recommended center's row and its starred pin read as the same kind.
-const kindColor = { training: 'text-blue', assessment: 'text-teal' } as const
+const kindBadge = { training: 'bg-tint text-blue', assessment: 'bg-teal/10 text-teal' } as const
 
 /**
  * The brief along the bottom of the map, for the qualification in focus: where the learner is and whether they
@@ -185,7 +203,7 @@ export function OutlookBrief({
       ref={ref}
       aria-label={copy.label}
       className={cx(
-        'z-[900] flex min-w-0 flex-col rounded-14 border border-border bg-surface shadow-[0_4px_16px_rgb(var(--track-shadow-rgb)/0.14)]',
+        'z-[900] flex min-w-0 flex-col rounded-16 border border-border bg-surface shadow-[0_12px_32px_-10px_rgb(var(--track-shadow-rgb)/0.3)]',
         className,
       )}
     >
@@ -227,10 +245,10 @@ export function OutlookBrief({
           className="m-0 flex flex-none items-center gap-1.5 text-12 font-bold tracking-[0.06em] text-eyebrow uppercase"
           title={copy.eyebrow}
         >
-          <span className="grid size-7 place-items-center rounded-full bg-tint text-blue">
-            <Icon name="growth" size="1rem" />
+          <span className="grid size-8 place-items-center rounded-10 bg-fill text-white shadow-[0_4px_10px_-4px_rgb(23_92_211/0.6)]">
+            <Icon name="growth" size="1.05rem" />
           </span>
-          <span className="max-lg:sr-only">{copy.eyebrow}</span>
+          <span className="sr-only">{copy.eyebrow}</span>
         </p>
         {choices.length > 1 ? (
           <label className="min-w-0 flex-1 basis-40">
@@ -301,15 +319,15 @@ export function OutlookBrief({
             </div>
             {area && (
               <ul className="m-0 flex list-none flex-wrap gap-1.5 p-0">
-                <Stat icon="briefcase" tone="text-navy" value={area.posting_count}>
+                <Stat icon="briefcase" tone={statTone.demand} value={area.posting_count}>
                   {data.demand_is_sample
                     ? copy.stats.records(area.posting_count)
                     : copy.stats.postings(area.posting_count)}
                 </Stat>
-                <Stat icon="learn" tone="text-blue" value={area.training_sites}>
+                <Stat icon="learn" tone={statTone.training} value={area.training_sites}>
                   {copy.stats.training}
                 </Stat>
-                <Stat icon="award" tone="text-teal" value={area.assessment_sites}>
+                <Stat icon="award" tone={statTone.assessment} value={area.assessment_sites}>
                   {copy.stats.assessment}
                 </Stat>
               </ul>
@@ -349,7 +367,7 @@ export function OutlookBrief({
         {data && (
           <div
             className={cx(
-              'flex flex-col gap-3 transition-opacity duration-200',
+              'flex flex-col gap-4 transition-opacity duration-200',
               outlook.isPlaceholderData && 'opacity-60',
             )}
           >
@@ -363,19 +381,31 @@ export function OutlookBrief({
               </h3>
               {picks.length ? (
                 // Side by side where they fit: the wider the window, the shorter the brief.
-                <ul className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(14.5rem,1fr))] gap-1.5 p-0">
-                  {picks.map(({ key, item }) => (
-                    <li key={key}>
-                      <RecommendedRow item={item} onSelect={() => onSelect(item.center.id, code)} />
-                      <CenterSuggestionFeedback
-                        center={item.center}
-                        qualificationCode={code}
-                        goal={search?.chosen ? undefined : search?.query}
-                        scope={search?.feedbackScope}
-                      />
-                    </li>
-                  ))}
-                </ul>
+                <>
+                  <ul className="-m-1 grid list-none grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-2 p-1">
+                    {picks.map(({ key, item }) => (
+                      <li
+                        key={key}
+                        className={cx(tile, 'relative flex min-w-0 flex-col overflow-hidden')}
+                      >
+                        <RecommendedRow
+                          item={item}
+                          onSelect={() => onSelect(item.center.id, code)}
+                        />
+                        <CenterSuggestionFeedback
+                          compact
+                          center={item.center}
+                          qualificationCode={code}
+                          goal={search?.chosen ? undefined : search?.query}
+                          scope={search?.feedbackScope}
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="m-0 text-12 leading-[1.45] text-muted">
+                    {en.suggestionFeedback.note}
+                  </p>
+                </>
               ) : (
                 <p className={note}>{explore.reference ? copy.none : copy.needPlace}</p>
               )}
@@ -443,12 +473,13 @@ function Stat({
   return (
     <li
       className={cx(
-        'inline-flex items-center gap-1.5 rounded-8 bg-soft px-2 py-1 text-12 text-muted',
+        'inline-flex items-center gap-1.5 rounded-10 px-2.5 py-1 text-12 font-semibold',
+        tone,
         value === 0 && 'opacity-70',
       )}
     >
-      <Icon name={icon} size="0.95rem" className={tone} />
-      <strong className="text-13 font-bold text-navy tabular-nums">{value.toLocaleString()}</strong>
+      <Icon name={icon} size="0.95rem" />
+      <strong className="text-14 font-bold tabular-nums">{value.toLocaleString()}</strong>
       {children}
     </li>
   )
@@ -467,29 +498,33 @@ function RecommendedRow({ item, onSelect }: { item: Recommendation; onSelect: ()
   return (
     <Button
       onPress={onSelect}
-      className="group flex w-full cursor-pointer items-start gap-2.5 rounded-10 border border-transparent bg-soft px-2.5 py-2 text-left transition-[border-color,background-color,box-shadow] duration-200 data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:border-hover-border data-hovered:bg-surface data-hovered:shadow-[0_6px_14px_-6px_rgb(var(--track-shadow-rgb)/0.3)]"
+      className="group flex w-full cursor-pointer items-start gap-2.5 border-0 bg-transparent px-3 pt-2.5 pb-2 text-left outline-none data-focus-visible:outline-3 data-focus-visible:-outline-offset-3 data-focus-visible:outline-focus"
     >
-      <Icon
-        name={kindIcon[center.kind]}
-        size="1.1rem"
-        className={cx('mt-0.5 flex-none', kindColor[center.kind])}
-        label={copy.kinds[center.kind]}
-      />
+      <span
+        className={cx(
+          'mt-0.5 grid size-8 flex-none place-items-center rounded-10',
+          kindBadge[center.kind],
+        )}
+      >
+        <Icon name={kindIcon[center.kind]} size="1.05rem" label={copy.kinds[center.kind]} />
+      </span>
       <span className="min-w-0 flex-1">
-        <span className="block text-13 leading-[1.35] font-semibold wrap-anywhere text-navy">
+        <span className="line-clamp-2 text-14 leading-[1.35] font-semibold wrap-anywhere text-navy">
           {center.name}
         </span>
-        <span className="mt-0.5 flex flex-wrap gap-x-2 text-12 leading-[1.4] text-muted">
-          <span className="font-semibold text-ink">{why}</span>
-          {center.distanceKm !== null && (
-            <span>{en.explore.trip.km(roundKm(center.distanceKm))}</span>
-          )}
-          {minutes !== null && <span>{en.explore.trip.minutes(travelTime(minutes))}</span>}
-        </span>
+        <span className="mt-0.5 block text-12 leading-[1.45] font-semibold text-ink">{why}</span>
+        {(center.distanceKm !== null || minutes !== null) && (
+          <span className="flex flex-wrap items-center gap-x-2.5 text-12 leading-[1.45] text-muted tabular-nums">
+            {center.distanceKm !== null && (
+              <span>{en.explore.trip.km(roundKm(center.distanceKm))}</span>
+            )}
+            {minutes !== null && <span>{en.explore.trip.minutes(travelTime(minutes))}</span>}
+          </span>
+        )}
       </span>
       <Icon
         name="chevron"
-        className="mt-1 flex-none -rotate-90 text-muted transition-transform duration-200 group-data-hovered:translate-x-0.5 group-data-hovered:text-blue"
+        className="mt-2 flex-none -rotate-90 text-muted transition-transform duration-200 group-data-hovered:translate-x-0.5 group-data-hovered:text-blue"
       />
     </Button>
   )
@@ -580,13 +615,13 @@ function LocalDemand({
           {groups.map((group) => (
             <div key={group.key} className="flex flex-col gap-1">
               <p className="m-0 text-12 font-semibold text-muted">{group.label}</p>
-              <ul className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(13rem,1fr))] gap-1.5 p-0">
+              <ul className="-m-1 grid list-none grid-cols-[repeat(auto-fill,minmax(13rem,1fr))] gap-2 p-1">
                 {group.areas.map((area) => (
                   <li key={area.region_code}>
                     <Button
                       aria-label={copy.show(area.name)}
                       onPress={() => show(area.region_code)}
-                      className="flex w-full cursor-pointer flex-col items-start gap-0.5 rounded-10 border border-transparent bg-soft px-2.5 py-1.5 text-left transition-colors duration-150 data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:border-hover-border data-hovered:bg-surface"
+                      className={cx(tileButton, 'gap-0.5 px-2.5 py-1.5')}
                     >
                       <span className="flex w-full items-center gap-1.5 text-13 font-semibold wrap-anywhere text-navy">
                         <span className="min-w-0 flex-1">{area.name}</span>
@@ -650,13 +685,13 @@ function NearbyQualifications({ explore }: { explore: Explore }) {
           {copy.failed}
         </p>
       ) : (
-        <ul className="m-0 grid list-none grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-1.5 p-0">
+        <ul className="-m-1 grid list-none grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-2 p-1">
           {suggestions.map((item) => (
             <li key={item.qualification.code}>
               <Button
                 onPress={() => useDemandStore.getState().setCode(item.qualification.code)}
                 aria-label={copy.focus(item.qualification.name)}
-                className="flex w-full cursor-pointer flex-col items-start gap-0.5 rounded-10 border border-transparent bg-soft px-2.5 py-2 text-left transition-colors duration-150 data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:border-hover-border data-hovered:bg-surface"
+                className={cx(tileButton, 'gap-0.5 px-2.5 py-2')}
               >
                 <span className="flex w-full flex-wrap items-center gap-1.5">
                   <span className="min-w-0 flex-1 text-13 font-semibold wrap-anywhere text-navy">
@@ -690,18 +725,8 @@ function FindJobsButton({ explore, skill }: { explore: Explore; skill: string })
   const area = code ? (explore.regions.find((region) => region.code === code)?.name ?? null) : null
   const href = findJobsUrl(explore.config, skill || null, area)
   const look = cx(button({ variant: 'secondary', height: 36, snug: true }), 'flex-none')
-  if (!href) {
-    return (
-      <span className="flex flex-none items-center gap-2">
-        <span className="text-12 text-muted">{copy.notReady}</span>
-        <Button isDisabled className={cx(look, 'opacity-60')}>
-          <Icon name="briefcase" />
-          {copy.label}
-          <Icon name="external" />
-        </Button>
-      </span>
-    )
-  }
+  // Until the deployment sets the TSP link there is nowhere to go, so the button is left out rather than shown dead.
+  if (!href) return null
   return (
     <a
       href={href}

@@ -554,6 +554,13 @@ export const pag: Record<string, string> = {
   'Dated PhilJobNet records, ordered by posting count. These are not live openings or worker headcounts. Shaded regions compare recorded posting totals.':
     'Saray rekord na PhilJobNet ya walay petsa, unong ed dakel na posting. Aliwa iraya ray abukas a trabaho natan o bilang na saray obrero. Say kolor na rehiyon et ipandumaan to so kabuuan a nilistan posting.',
   ' · {0} more places': ' · {0} ni a lugar',
+  'City or municipality': 'Siyudad odino munisipyo',
+  '{0} postings': '{0} ya posting',
+  '{0} employers': '{0} ya employer',
+  'Dated PhilJobNet records, not live openings or worker headcounts.':
+    'Saray rekord na PhilJobNet ya walay petsa, aliwan bukas ya trabaho natan odino bilang na saray trabahador.',
+  '+{0} more': '+{0} ni',
+  'Show jobs in {0}': 'Ipanengneng so saray trabaho ed {0}',
   'Reviewed occupation links only. National forecasts retain their national coverage; they do not establish demand in a particular city.':
     'Saray nausisa a siglaotan na trabaho labat. Nasyonal ni ya anggaman iray nasyonal a forecast; ag da papeknekan so demand ed sakey a siudad.',
   '{0} qualifications with reviewed evidence': '{0} a kwalipikasyon ya walay nausisan ebidensya',
@@ -561,6 +568,7 @@ export const pag: Record<string, string> = {
   '{0} mapped posting records': '{0} a nitugma a rekord na posting',
   'Forecast support: {0}': 'Suporta na forecast: {0}',
   'Compare supply and demand': 'Ipandumaan so supply tan demand',
+  'About this data': 'Nipaakar ed sayan datos',
   'Supply means recorded training and assessment services. Posting records and training seats have different units; no workforce shortage is calculated.':
     'Say supply et saray nilistan serbisyo na pansanay tan panageksamin. Nandumaan so yunit na rekord na posting tan lugar ed pansanay; anggapoy kukuentaen ya kakulangan na obrero.',
   'No posting records for this selection. Try all jobs or another area. Missing evidence does not mean low demand.':
@@ -822,6 +830,10 @@ export const pag: Record<string, string> = {
     'Tugma ed inreport mon karera, pakayari o sektor.',
   'Similar in meaning to your goal.': 'Mipadpara ed kabaliksan na gagala mo.',
   'Scholarship open': 'Abukas so scholarship',
+  'Applies to training centers. A scholarship listed isn’t a guaranteed award.':
+    'Parad saray training center. Say nakalistan scholarship et aliwan garantiya ya naalam mo.',
+  'No training center has an open scholarship for these qualifications. Turn off Scholarships to see every center.':
+    'Anggapoy training center ya walay abukas ya scholarship parad saraya ya kwalipikasyon. I-off so Scholarships pian nanengneng so amin ya center.',
   // No center offers the qualification anywhere (QA-2026-11-18-E).
   'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
     'Anggapo ni so sentro ya mangiiter na {0} anggan iner. Ag makatulong so mas maawang a karayo, kanian subokan so sakey ed saraya.',

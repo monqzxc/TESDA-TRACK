@@ -2300,6 +2300,10 @@ export const en = {
       allRegions: 'All regions',
       province: 'Province',
       allProvinces: 'All provinces',
+      // Training centers with a scholarship open: the switch narrows the list, the map and the ranking.
+      scholarship: 'Scholarships',
+      scholarshipHelp:
+        'Applies to training centers. A scholarship listed isn’t a guaranteed award.',
       shown: (n: number) => (n === 1 ? '1 center shown' : `${n} centers shown`),
       clearAll: 'Clear all',
     },
@@ -2430,6 +2434,9 @@ export const en = {
         heading: (km: number) => `A related qualification within ${km} km`,
       },
       scholarship: 'Scholarship open',
+      // The Train group with the Scholarships filter on and no training center left for the matches.
+      noScholarship:
+        'No training center has an open scholarship for these qualifications. Turn off Scholarships to see every center.',
       // Under a center's name in the results: the matched qualification it lists.
       offers: {
         training: (name: string) => `Training for ${name}`,
@@ -2482,32 +2489,31 @@ export const en = {
     demand: {
       heading: 'Jobs and qualification demand',
       choose: 'Demand for',
-      body: 'Explore recorded jobs, qualifications linked to demand, and the training available in an area.',
-      region: (region: string) => `Area: ${region}`,
-      national: 'Area: all regions with recorded evidence',
       views: 'Demand views',
       modes: { jobs: 'Jobs by area', qualifications: 'Qualifications', supply: 'Supply & demand' },
       area: 'Region',
       autoArea: 'Use my selected location',
       allAreas: 'All recorded regions',
-      qualification: 'Filter by qualification',
-      filteredFor: (name: string) => `Qualification: ${name}`,
+      qualification: 'Qualification',
       allJobs: 'All recorded jobs',
-      locality: 'City or municipality in the snapshot',
+      locality: 'City or municipality',
       allLocalities: 'All recorded cities and municipalities',
       loading: 'Loading labor-market evidence…',
       failed: 'Labor-market information could not be loaded.',
       retry: 'Try again',
       snapshot: (dates: string) => `Snapshot: ${dates}.`,
-      jobTotals: (postings: number, employers: number) =>
-        `${postings.toLocaleString()} posting records · ${employers.toLocaleString()} employers`,
-      snapshotNote:
-        'Dated PhilJobNet records, ordered by posting count. These are not live openings or worker headcounts. Shaded regions compare recorded posting totals.',
-      morePlaces: (count: number) => ` · ${count} more places`,
+      postingCount: (count: number) => `${count.toLocaleString()} postings`,
+      employerCount: (count: number) => `${count.toLocaleString()} employers`,
+      snapshotNote: 'Dated PhilJobNet records, not live openings or worker headcounts.',
+      morePlaces: (count: number) => `+${count} more`,
+      fewerPlaces: 'Show fewer',
+      jobsIn: (place: string) => `Show jobs in ${place}`,
+      clearFilters: 'Clear filters',
       source: 'Source: DOLE-BLE / PhilJobNet',
       qualificationNote:
         'Reviewed occupation links only. National forecasts retain their national coverage; they do not establish demand in a particular city.',
       qualificationTotal: (count: number) => `${count} qualifications with reviewed evidence`,
+      about: 'About this data',
       noMappedPostings: 'No mapped posting records in this area.',
       postings: (count: number) => `${count.toLocaleString()} mapped posting records`,
       forecast: (label: string) => `Forecast support: ${label}`,

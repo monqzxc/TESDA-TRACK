@@ -563,6 +563,13 @@ export const hil: Record<string, string> = {
   'Dated PhilJobNet records, ordered by posting count. These are not live openings or worker headcounts. Shaded regions compare recorded posting totals.':
     'Mga rekord sang PhilJobNet nga may petsa, ginhan-ay suno sa kadamuon sang posting. Indi ini mga bukas nga trabaho subong ukon ihap sang mga mamumugon. Ang kolor sang rehiyon nagatandi sang kabilugan nga natala nga posting.',
   ' · {0} more places': ' · {0} pa ka lugar',
+  'City or municipality': 'Siudad ukon banwa',
+  '{0} postings': '{0} ka posting',
+  '{0} employers': '{0} ka employer',
+  'Dated PhilJobNet records, not live openings or worker headcounts.':
+    'Mga rekord sang PhilJobNet nga may petsa, indi mga bukas nga trabaho subong ukon kadamuon sang mga trabahador.',
+  '+{0} more': '+{0} pa',
+  'Show jobs in {0}': 'Ipakita ang mga trabaho sa {0}',
   'Reviewed occupation links only. National forecasts retain their national coverage; they do not establish demand in a particular city.':
     'Mga nausisa nga kaangtanan sang trabaho lamang. Nasyonal gihapon ang nasyonal nga forecast; indi ini pamatuod sang demand sa isa ka siyudad.',
   '{0} qualifications with reviewed evidence': '{0} ka kwalipikasyon nga may nausisa nga ebidensya',
@@ -571,6 +578,7 @@ export const hil: Record<string, string> = {
   '{0} mapped posting records': '{0} ka natugma nga rekord sang posting',
   'Forecast support: {0}': 'Suporta sang forecast: {0}',
   'Compare supply and demand': 'Itandi ang supply kag demand',
+  'About this data': 'Parte sa sini nga datos',
   'Supply means recorded training and assessment services. Posting records and training seats have different units; no workforce shortage is calculated.':
     'Ang supply amo ang natala nga serbisyo sang pagbansay kag pagtasa. Lain ang yunit sang rekord sang posting kag lugar sa pagbansay; wala sing ginakuwenta nga kakulang sang mamumugon.',
   'No posting records for this selection. Try all jobs or another area. Missing evidence does not mean low demand.':
@@ -838,6 +846,10 @@ export const hil: Record<string, string> = {
     'Tugma sa imo ginreport nga karera, ikasarang ukon sektor.',
   'Similar in meaning to your goal.': 'Kaangay sang kahulugan sang imo tulumuron.',
   'Scholarship open': 'Bukas ang scholarship',
+  'Applies to training centers. A scholarship listed isn’t a guaranteed award.':
+    'Para sa mga training center. Ang nakalista nga scholarship indi garantiya nga makuha mo.',
+  'No training center has an open scholarship for these qualifications. Turn off Scholarships to see every center.':
+    'Wala sing training center nga may bukas nga scholarship para sa sini nga mga kwalipikasyon. I-off ang Scholarships para makita ang tanan nga center.',
   // No center offers the qualification anywhere (QA-2026-11-18-E).
   'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
     'Wala pa sing sentro nga nagatanyag sang {0} bisan diin. Indi makabulig ang mas malapad nga kalayuon, gani tilawi ang isa sa sini.',

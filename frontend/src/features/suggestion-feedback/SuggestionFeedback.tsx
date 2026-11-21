@@ -24,6 +24,11 @@ interface Props {
   qualificationCode?: string
   goal?: string | null
   scope?: string
+  /**
+   * A slim strip that sits inside a card: the question, thumbs up and down, and a flag to report. It leaves out the
+   * "this is a suggestion" note, which the list around the cards then shows once.
+   */
+  compact?: boolean | 'inset'
 }
 
 const receiptKey = (kind: string, key: string, scope?: string, code?: string) =>
@@ -50,11 +55,20 @@ export function SuggestionFeedback(props: Props) {
   return <FeedbackForm key={key} storageKey={key} {...props} />
 }
 
-function FeedbackSuccess({ children }: { children: string }) {
+// The compact strip's round icon buttons: quiet until hovered, then tinted for the answer they give.
+const thumb =
+  'grid size-8 flex-none cursor-pointer place-items-center rounded-full border border-border bg-surface text-muted ' +
+  'transition-[transform,background-color,border-color,color] duration-150 data-pressed:scale-90 ' +
+  'data-focus-visible:outline-3 data-focus-visible:outline-focus data-disabled:cursor-progress data-disabled:opacity-60'
+
+function FeedbackSuccess({ children, slim = false }: { children: string; slim?: boolean }) {
   return (
     <span
       role="status"
-      className="flex min-w-0 items-center gap-2 rounded-12 bg-good-bg px-2.5 py-2 leading-snug font-semibold text-good-ink"
+      className={cx(
+        'flex min-w-0 items-center gap-2 bg-good-bg leading-snug font-semibold text-good-ink',
+        slim ? 'rounded-full px-2.5 py-1 text-12' : 'rounded-12 px-2.5 py-2',
+      )}
     >
       <Icon name="check" size="1rem" className="shrink-0" />
       <span className="wrap-anywhere">{children}</span>
@@ -69,6 +83,7 @@ function FeedbackForm({
   resultName,
   qualificationCode,
   goal,
+  compact = false,
 }: Props & { storageKey: string }) {
   const copy = useCopy().suggestionFeedback
   const heading = useId()
@@ -121,47 +136,116 @@ function FeedbackForm({
     })
   }
 
+  const toggleReport = () => setOpen(!open)
+  const strip = (
+    <div className="flex min-w-0 items-center gap-2">
+      <span
+        id={heading}
+        className="inline-flex min-w-0 flex-1 items-center gap-1.5 leading-tight font-semibold text-navy"
+      >
+        <Icon name="chat" size="0.95rem" className="flex-none text-blue" />
+        {copy.question}
+      </span>
+      {receipt?.rating ? (
+        <FeedbackSuccess slim>{copy.rated}</FeedbackSuccess>
+      ) : (
+        <div role="group" aria-labelledby={heading} className="flex items-center gap-1">
+          {([true, false] as const).map((helpful) => (
+            <Button
+              key={String(helpful)}
+              aria-label={helpful ? copy.yes : copy.no}
+              className={cx(
+                thumb,
+                helpful
+                  ? 'data-hovered:border-good-ink/40 data-hovered:bg-good-bg data-hovered:text-good-ink'
+                  : 'data-hovered:border-warn-ink/40 data-hovered:bg-warn-bg data-hovered:text-warn-ink',
+              )}
+              isDisabled={mutation.isPending}
+              onPress={() => submit({ action: 'rating', helpful })}
+            >
+              <Icon name={helpful ? 'thumbUp' : 'thumbDown'} size="1rem" />
+            </Button>
+          ))}
+        </div>
+      )}
+      {receipt?.report ? (
+        <Icon name="flag" size="1rem" className="text-good-ink" label={copy.reported} />
+      ) : (
+        <Button
+          aria-label={copy.report}
+          aria-expanded={open}
+          aria-controls={open ? form : undefined}
+          className={cx(
+            thumb,
+            'data-hovered:bg-soft data-hovered:text-navy',
+            open && 'border-hover-border bg-tint text-blue',
+          )}
+          onPress={toggleReport}
+        >
+          <Icon name="flag" size="1rem" />
+        </Button>
+      )}
+    </div>
+  )
+
   return (
     <section
       aria-label={resultName}
-      className="flex min-w-0 flex-col gap-2 border-t border-rule pt-3 text-13 text-muted"
+      className={cx(
+        'flex min-w-0 flex-col text-13 text-muted',
+        compact === 'inset'
+          ? 'gap-2 border-t border-rule pt-2.5'
+          : compact
+            ? 'gap-2 border-t border-rule bg-tint/40 px-3 py-2'
+            : 'gap-2 border-t border-rule pt-3',
+      )}
     >
-      <span id={heading} className="font-semibold text-ink">
-        {copy.question}
-      </span>
-      <div className="grid grid-cols-[minmax(0,2fr)_minmax(0,1.5fr)] gap-2">
-        {receipt?.rating ? (
-          <FeedbackSuccess>{copy.rated}</FeedbackSuccess>
-        ) : (
-          <div role="group" aria-labelledby={heading} className="grid min-w-0 grid-cols-2 gap-2">
-            {([true, false] as const).map((helpful) => (
-              <Button
-                key={String(helpful)}
-                className={cx(button({ height: 44, text: 13 }), 'min-w-0 px-1! wrap-anywhere')}
-                isDisabled={mutation.isPending}
-                onPress={() => submit({ action: 'rating', helpful })}
+      {compact ? (
+        strip
+      ) : (
+        <>
+          <span id={heading} className="font-semibold text-ink">
+            {copy.question}
+          </span>
+          <div className="grid grid-cols-[minmax(0,2fr)_minmax(0,1.5fr)] gap-2">
+            {receipt?.rating ? (
+              <FeedbackSuccess>{copy.rated}</FeedbackSuccess>
+            ) : (
+              <div
+                role="group"
+                aria-labelledby={heading}
+                className="grid min-w-0 grid-cols-2 gap-2"
               >
-                {helpful ? copy.yes : copy.no}
-              </Button>
-            ))}
-          </div>
-        )}
-        {receipt?.report ? (
-          <FeedbackSuccess>{copy.reported}</FeedbackSuccess>
-        ) : (
-          <Button
-            className={cx(
-              button({ height: 44, text: 13, on: open }),
-              'min-w-0 px-1! wrap-anywhere',
+                {([true, false] as const).map((helpful) => (
+                  <Button
+                    key={String(helpful)}
+                    className={cx(button({ height: 44, text: 13 }), 'min-w-0 px-1! wrap-anywhere')}
+                    isDisabled={mutation.isPending}
+                    onPress={() => submit({ action: 'rating', helpful })}
+                  >
+                    {helpful ? copy.yes : copy.no}
+                  </Button>
+                ))}
+              </div>
             )}
-            aria-expanded={open}
-            aria-controls={open ? form : undefined}
-            onPress={() => setOpen(!open)}
-          >
-            {copy.report}
-          </Button>
-        )}
-      </div>
+            {receipt?.report ? (
+              <FeedbackSuccess>{copy.reported}</FeedbackSuccess>
+            ) : (
+              <Button
+                className={cx(
+                  button({ height: 44, text: 13, on: open }),
+                  'min-w-0 px-1! wrap-anywhere',
+                )}
+                aria-expanded={open}
+                aria-controls={open ? form : undefined}
+                onPress={toggleReport}
+              >
+                {copy.report}
+              </Button>
+            )}
+          </div>
+        </>
+      )}
       {open && !receipt?.report && (
         <div id={form} className="flex flex-col gap-2 rounded-10 bg-panel p-3">
           <SelectField
@@ -216,7 +300,7 @@ function FeedbackForm({
           {failureMessage(mutation.error)}
         </p>
       )}
-      <p className="m-0">{copy.note}</p>
+      {!compact && <p className="m-0">{copy.note}</p>}
     </section>
   )
 }

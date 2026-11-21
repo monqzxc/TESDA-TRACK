@@ -3,6 +3,7 @@ import type { Match } from '../finder/api.ts'
 import type { Center, Program, Schedule } from '../training/centers.ts'
 import {
   anyOutOfRange,
+  anyScholarship,
   cardsFor,
   estimateMinutes,
   firstKind,
@@ -339,6 +340,15 @@ describe('hasScholarship', () => {
     expect(hasScholarship(withPrograms([program('A', true, false)]), 'A')).toBe(true)
     expect(hasScholarship(withPrograms([program('A', false, false)]), 'A')).toBe(false)
     expect(hasScholarship(withPrograms([program('B', true, false)]), 'A')).toBe(false)
+  })
+
+  it('labels a training center with any open scholarship, for the Scholarships filter', () => {
+    expect(
+      anyScholarship(withPrograms([program('A', false, false), program('B', true, false)])),
+    ).toBe(true)
+    expect(anyScholarship(withPrograms([program('A', false, false)]))).toBe(false)
+    const assessment = { kind: 'assessment', programs: [program('A', true, false)], schedules: [] }
+    expect(anyScholarship(assessment as unknown as Center)).toBe(false)
   })
 })
 

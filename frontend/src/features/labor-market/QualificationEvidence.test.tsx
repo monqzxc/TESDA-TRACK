@@ -255,4 +255,36 @@ describe('qualification evidence', () => {
     expect(screen.getByText('Recorded training sites')).toBeVisible()
     expect(screen.getByText('Recorded program listings')).toBeVisible()
   })
+
+  it('leads the compact view with headline counts, a quiet dash for missing ones, and details on press', async () => {
+    const data = evidence()
+    data.observed_postings.employers = measure('employers', {
+      value: null,
+      unit: 'employers',
+      statement: 'Employer names were not captured.',
+    })
+    data.forecast_support = []
+    server.use(http.get('*/api/v1/labor-market/evidence', () => HttpResponse.json(data)))
+    const client = new QueryClient({ defaultOptions: { queries: { retry: false } } })
+    render(
+      <QueryClientProvider client={client}>
+        <QualificationEvidence
+          compact
+          qualificationCode="CSS-NC-II"
+          regionCode="IV-A"
+          note="Units differ."
+        />
+      </QueryClientProvider>,
+    )
+    const postings = await screen.findByRole('button', { name: /11\s*Job postings/ })
+    expect(screen.getByRole('button', { name: /Not recorded\s*Employers/ })).toBeVisible()
+    expect(screen.queryByText(/Unknown/)).not.toBeInTheDocument()
+    expect(screen.getByText('None on record')).toBeVisible()
+    expect(screen.queryByText('11 retained posting records from a dated snapshot.')).toBeNull()
+    fireEvent.click(postings)
+    expect(postings).toHaveAttribute('aria-pressed', 'true')
+    expect(screen.getByText('11 retained posting records from a dated snapshot.')).toBeVisible()
+    fireEvent.click(screen.getByText('Sources and notes'))
+    expect(screen.getByText('Units differ.')).toBeVisible()
+  })
 })

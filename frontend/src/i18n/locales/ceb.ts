@@ -566,6 +566,13 @@ export const ceb: Record<string, string> = {
   'Dated PhilJobNet records, ordered by posting count. These are not live openings or worker headcounts. Shaded regions compare recorded posting totals.':
     'Mga rekord sa PhilJobNet nga may petsa, gihan-ay sumala sa gidaghanon sa posting. Dili kini mga bukas nga trabaho karon o ihap sa mga trabahante. Ang kolor sa rehiyon nagtandi sa kinatibuk-ang natalang posting.',
   ' · {0} more places': ' · {0} pa ka lugar',
+  'City or municipality': 'Siyudad o munisipyo',
+  '{0} postings': '{0} ka posting',
+  '{0} employers': '{0} ka employer',
+  'Dated PhilJobNet records, not live openings or worker headcounts.':
+    'Mga rekord sa PhilJobNet nga may petsa, dili mga bukas nga trabaho karon o ihap sa mga trabahante.',
+  '+{0} more': '+{0} pa',
+  'Show jobs in {0}': 'Ipakita ang mga trabaho sa {0}',
   'Reviewed occupation links only. National forecasts retain their national coverage; they do not establish demand in a particular city.':
     'Mga nasusi nga kalabotan sa trabaho lamang. Ang nasudnong forecast nagpabilin nga nasudnon; dili kini pamatuod sa demand sa usa ka siyudad.',
   '{0} qualifications with reviewed evidence': '{0} ka kwalipikasyon nga may nasusi nga ebidensya',
@@ -573,6 +580,7 @@ export const ceb: Record<string, string> = {
   '{0} mapped posting records': '{0} ka natugma nga rekord sa posting',
   'Forecast support: {0}': 'Suporta sa forecast: {0}',
   'Compare supply and demand': 'Itandi ang supply ug demand',
+  'About this data': 'Bahin niining datos',
   'Supply means recorded training and assessment services. Posting records and training seats have different units; no workforce shortage is calculated.':
     'Ang supply mao ang natalang serbisyo sa pagbansay ug pagsusi. Lahi ang yunit sa rekord sa posting ug lingkoranan sa pagbansay; walay gikuwenta nga kakulang sa trabahante.',
   'No posting records for this selection. Try all jobs or another area. Missing evidence does not mean low demand.':
@@ -836,6 +844,10 @@ export const ceb: Record<string, string> = {
     'Tugma sa imong gi-report nga karera, kahanas o sektor.',
   'Similar in meaning to your goal.': 'Susama sa kahulogan sa imong tumong.',
   'Scholarship open': 'Bukas ang scholarship',
+  'Applies to training centers. A scholarship listed isn’t a guaranteed award.':
+    'Para sa mga training center. Ang nakalistang scholarship dili garantiya nga makuha nimo.',
+  'No training center has an open scholarship for these qualifications. Turn off Scholarships to see every center.':
+    'Walay training center nga adunay bukas nga scholarship alang niining mga kwalipikasyon. I-off ang Scholarships aron makita ang tanang center.',
   // No center offers the qualification anywhere (QA-2026-11-18-E).
   'No center lists {0} yet, anywhere. A wider range won’t help, so try one of these instead.':
     'Wala pay sentro nga nagtanyag og {0} bisan asa. Dili makatabang ang mas lapad nga gilay-on, mao nga sulayi ang usa niini.',

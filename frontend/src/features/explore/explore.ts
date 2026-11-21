@@ -85,6 +85,11 @@ export function hasScholarship(center: Center, code: string): boolean {
   )
 }
 
+/** Whether any of a training center's programs listed here has a scholarship open today. */
+export function anyScholarship(center: Center): boolean {
+  return center.kind === 'training' && center.programs.some((program) => program.scholarship_open)
+}
+
 export interface QualificationCard {
   match: Match
   strength: Strength

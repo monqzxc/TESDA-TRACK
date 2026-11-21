@@ -118,8 +118,14 @@ export default function ExplorePage() {
   // Region and province filters (QA: US-0014 AC3), in the address like the type.
   const regionFilter = params.get('region')
   const provinceFilter = params.get('province')
-  const explore = useExplore(view === 'demand', { region: regionFilter, province: provinceFilter })
-  const setFilter = (name: 'region' | 'province', value: string | null) =>
+  // Scholarships only (?scholarship=1), as on Training & Assessment.
+  const scholarshipFilter = params.get('scholarship') === '1'
+  const explore = useExplore(view === 'demand', {
+    region: regionFilter,
+    province: provinceFilter,
+    scholarship: scholarshipFilter,
+  })
+  const setFilter = (name: 'region' | 'province' | 'scholarship', value: string | null) =>
     setParams(
       (current) => {
         const updated = new URLSearchParams(current)
@@ -131,12 +137,12 @@ export default function ExplorePage() {
       },
       { replace: true, preventScrollReset: true },
     )
-  /** Every filter at once: type, region, province, typed place and range. Shared location and the search stay. */
+  /** Every filter at once: type, region, province, scholarships, typed place and range. Shared location and the search stay. */
   const clearFilters = () => {
     setParams(
       (current) => {
         const updated = new URLSearchParams(current)
-        for (const name of ['type', 'region', 'province']) updated.delete(name)
+        for (const name of ['type', 'region', 'province', 'scholarship']) updated.delete(name)
         return updated
       },
       { replace: true, preventScrollReset: true },
@@ -462,7 +468,7 @@ export default function ExplorePage() {
           'pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-[1000] flex flex-col',
           // From a tablet up, one card at the top left. Folded, a slim search bar; open, the search row with the
           // results under it. Only the body below the row scrolls.
-          'md:pointer-events-auto md:top-3 md:right-auto md:bottom-auto md:left-3 md:max-h-[calc(100%-1.5rem)] md:w-[360px] md:overflow-hidden md:rounded-12 md:border md:border-border md:bg-surface md:shadow-[0_4px_16px_rgb(var(--track-shadow-rgb)/0.14)] md:has-[[data-query]:focus]:border-blue',
+          'md:pointer-events-auto md:top-3 md:right-auto md:bottom-auto md:left-3 md:max-h-[calc(100%-1.5rem)] md:w-[360px] md:overflow-hidden md:rounded-12 md:border md:border-border md:bg-surface md:shadow-[0_8px_28px_-6px_rgb(var(--track-shadow-rgb)/0.22)]',
           // Open, it runs the map's height. The height grows and shrinks with the body below (a min-height, since a
           // height can't move to or from auto).
           'motion-reduce:transition-none md:transition-[min-height] md:duration-300 md:ease-out',
@@ -515,13 +521,13 @@ export default function ExplorePage() {
               scrollable && 'overflow-y-auto',
             )}
           >
-            <div className="flex min-h-full flex-col gap-3 border-rule p-4 max-md:pt-2 md:border-t">
+            <div className="flex min-h-full flex-col gap-3 border-rule bg-page p-3 max-md:pt-2 md:border-t">
               <button
                 type="button"
                 aria-label={copy.panel.closeSheet}
                 aria-controls={bodyId}
                 aria-expanded={!collapsed}
-                className="sticky top-0 z-10 -mx-4 -mt-2 -mb-2 grid h-11 flex-none cursor-grab touch-none place-items-center rounded-t-16 border-0 bg-surface focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-blue active:cursor-grabbing md:hidden"
+                className="sticky top-0 z-10 -mx-3 -mt-2 -mb-2 grid h-11 flex-none cursor-grab touch-none place-items-center rounded-t-16 border-0 bg-page focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-blue active:cursor-grabbing md:hidden"
                 onPointerDown={(event) => {
                   if (!event.isPrimary || event.button !== 0) return
                   sheetDrag.current = { id: event.pointerId, x: event.clientX, y: event.clientY }
@@ -571,16 +577,19 @@ export default function ExplorePage() {
                   provinces={explore.provinceOptions}
                   region={regionFilter}
                   province={provinceFilter}
+                  scholarship={scholarshipFilter}
                   count={pins.length}
                   canClear={Boolean(
                     view !== 'all' ||
                     regionFilter ||
                     provinceFilter ||
+                    scholarshipFilter ||
                     explore.placeText.trim() ||
                     explore.rangeKm !== NEAR_KM,
                   )}
                   onRegion={(code) => setFilter('region', code)}
                   onProvince={(name) => setFilter('province', name)}
+                  onScholarship={(on) => setFilter('scholarship', on ? '1' : null)}
                   onClear={clearFilters}
                 />
               )}
@@ -768,11 +777,11 @@ function SearchBox({
       className={cx(
         'pointer-events-auto flex flex-none flex-col',
         // On a phone the bar is a card of its own across the top; from a tablet up it is the panel's first row.
-        'max-md:mx-3 max-md:mt-3 max-md:rounded-12 max-md:border max-md:border-border max-md:bg-surface max-md:shadow-[0_4px_16px_rgb(var(--track-shadow-rgb)/0.14)] max-md:has-[[data-query]:focus]:border-blue',
+        'max-md:mx-3 max-md:mt-3 max-md:rounded-12 max-md:border max-md:border-border max-md:bg-surface max-md:shadow-[0_4px_16px_rgb(var(--track-shadow-rgb)/0.14)]',
       )}
     >
-      {/* One slim bar: the burger, the box, and a search button at its end. */}
-      <div className="flex min-h-11 items-center gap-0.5 px-1">
+      {/* The burger, then one bordered field: its leading magnifier submits, the clear button sits at its end. */}
+      <div className="flex min-h-11 items-center gap-1.5 px-1.5 py-1.5 md:px-3 md:py-3">
         <Button
           ref={menuRef}
           data-tour="mobile-menu"
@@ -789,43 +798,57 @@ function SearchBox({
             <Icon name="menu" size="1.15rem" />
           </span>
         </Button>
-        <SearchField
-          value={draft}
-          onChange={(text) => {
-            cancelSearch()
-            setMissing(false)
-            setDraft(text)
-            onOpen()
-          }}
-          onClear={clear}
-          maxLength={GOAL_MAX_LENGTH}
-          isInvalid={missing}
-          className="flex min-w-0 flex-1 items-center"
-        >
-          <Label className="sr-only">{copy.search.label}</Label>
-          {/* The panel's border shows focus (has-[[data-query]:focus]), so the box draws no ring of its own. */}
-          <Input
-            ref={inputRef}
-            data-query
-            aria-describedby={missing ? missingId : undefined}
-            onClick={onOpen}
-            className="h-11 w-full min-w-0 border-0 bg-transparent px-1.5 text-16 text-navy placeholder:text-muted placeholder:opacity-100 focus-visible:outline-none [&::-webkit-search-cancel-button]:hidden"
-            placeholder={copy.search.placeholder}
-          />
-          {draft && (
-            <Button aria-label={copy.search.clear} className={iconButton} onPress={clear}>
-              <Icon name="close" />
-            </Button>
-          )}
-        </SearchField>
-        <Button
-          type="submit"
-          aria-label={copy.search.submit}
-          isPending={pending}
-          className={cx(iconButton, 'data-pending:cursor-progress data-pending:opacity-60')}
-        >
-          <Icon name="search" size="1.1rem" />
-        </Button>
+        {/* One bordered field. The submit button sits outside the SearchField, whose own buttons all clear it. */}
+        <div className="flex h-11 min-w-0 flex-1 items-center gap-0.5 rounded-12 border border-border bg-page pr-1 pl-1 transition-[border-color,background-color,box-shadow] duration-150 has-[[data-invalid]]:border-warn-ink has-[[data-query]:focus]:border-blue has-[[data-query]:focus]:bg-surface has-[[data-query]:focus]:shadow-[0_0_0_3px_rgb(23_92_211/0.14)]">
+          <Button
+            type="submit"
+            aria-label={copy.search.submit}
+            isPending={pending}
+            className="grid size-9 flex-none cursor-pointer place-items-center rounded-10 border-0 bg-transparent text-muted data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:text-blue data-pending:cursor-progress"
+          >
+            {pending ? (
+              <span
+                aria-hidden="true"
+                className="size-4 rounded-full border-2 border-blue border-t-transparent motion-safe:animate-spin"
+              />
+            ) : (
+              <Icon name="search" size="1.1rem" />
+            )}
+          </Button>
+          <SearchField
+            value={draft}
+            onChange={(text) => {
+              cancelSearch()
+              setMissing(false)
+              setDraft(text)
+              onOpen()
+            }}
+            onClear={clear}
+            maxLength={GOAL_MAX_LENGTH}
+            isInvalid={missing}
+            className="flex h-full min-w-0 flex-1 items-center"
+          >
+            <Label className="sr-only">{copy.search.label}</Label>
+            {/* The field's border shows focus, so the box draws no ring of its own. */}
+            <Input
+              ref={inputRef}
+              data-query
+              aria-describedby={missing ? missingId : undefined}
+              onClick={onOpen}
+              className="h-full w-full min-w-0 border-0 bg-transparent px-0.5 text-15 text-navy placeholder:text-muted placeholder:opacity-100 focus-visible:outline-none [&::-webkit-search-cancel-button]:hidden"
+              placeholder={copy.search.placeholder}
+            />
+            {draft && (
+              <Button
+                aria-label={copy.search.clear}
+                className="grid size-8 flex-none cursor-pointer place-items-center rounded-full border-0 bg-transparent text-muted data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:bg-chip data-hovered:text-navy"
+                onPress={clear}
+              >
+                <Icon name="close" />
+              </Button>
+            )}
+          </SearchField>
+        </div>
       </div>
       {pending ? (
         <p role="status" className="m-0 px-4 pb-2.5 text-13 text-muted">
@@ -875,14 +898,14 @@ function Chips({
           isSelected={view === chip.view}
           onChange={(on) => onView(on ? chip.view : 'all')}
           className={cx(
-            'pointer-events-auto inline-flex min-h-11 min-w-0 cursor-pointer items-center justify-center gap-2 rounded-full border px-2 text-center text-13 leading-tight font-semibold wrap-anywhere md:h-[46px] md:shrink-0 md:px-4 md:text-14 md:whitespace-nowrap',
+            'pointer-events-auto inline-flex min-h-11 min-w-0 cursor-pointer items-center justify-center gap-2 rounded-12 border px-2 text-center text-13 leading-tight font-semibold wrap-anywhere md:h-[46px] md:shrink-0 md:px-4 md:text-14 md:whitespace-nowrap',
             '[&_svg]:shrink-0 max-md:[&_svg]:hidden',
             'shadow-[0_1px_2px_rgb(var(--track-shadow-rgb)/0.08),0_6px_16px_-4px_rgb(var(--track-shadow-rgb)/0.24)]',
             'transition-[transform,box-shadow,background-color,border-color] duration-200 ease-out',
             'data-hovered:shadow-[0_2px_4px_rgb(var(--track-shadow-rgb)/0.10),0_12px_24px_-6px_rgb(var(--track-shadow-rgb)/0.32)] motion-safe:data-pressed:scale-100 md:motion-safe:data-hovered:-translate-y-0.5 md:motion-safe:data-hovered:scale-105',
             'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus',
             'border-border bg-surface text-navy data-hovered:border-hover-border',
-            'data-selected:border-fill data-selected:bg-fill data-selected:text-white',
+            'data-selected:border-navy data-selected:bg-navy data-selected:text-surface',
           )}
         >
           <Icon name={chip.icon} />
