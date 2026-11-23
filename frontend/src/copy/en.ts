@@ -2635,7 +2635,7 @@ export const en = {
           high: 'High demand',
           moderate: 'Moderate demand',
           low: 'Low demand',
-          none: 'No recorded demand',
+          none: 'Demand not available',
         },
         here: (region: string, postings: number) =>
           `${postings.toLocaleString()} record${postings === 1 ? '' : 's'} in ${region}`,

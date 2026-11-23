@@ -62,6 +62,7 @@ const area = (region: (typeof regions)[number], extra: object) => ({
 const asked: URL[] = []
 let aiSummary = false
 let demandAvailable = true
+let noRecordsAtHome = false
 let demandIsSample = false
 
 const outlook = (url: URL) => {
@@ -119,9 +120,9 @@ const outlook = (url: URL) => {
         ? {
             region_code: 'NCR',
             name: 'Metro Manila',
-            posting_count: 2,
-            level: 'low',
-            rank: 2,
+            posting_count: noRecordsAtHome ? 0 : 2,
+            level: noRecordsAtHome ? 'none' : 'low',
+            rank: noRecordsAtHome ? null : 2,
             ranked_of: 2,
             limited: true,
           }
@@ -162,6 +163,7 @@ beforeEach(() => {
   asked.length = 0
   aiSummary = false
   demandAvailable = true
+  noRecordsAtHome = false
   demandIsSample = false
   useDemandStore.setState({
     region: undefined,
@@ -496,8 +498,18 @@ describe('Demand where you are (Card 3)', () => {
   it('says plainly when there is no demand data for the qualification', async () => {
     demandAvailable = false
     const local = await brief(/No posting records yet/)
+    expect(within(local).getByText('Demand not available')).toBeInTheDocument()
     expect(within(local).getByRole('status')).toHaveTextContent(/not low demand/)
     expect(within(local).queryByText(/ demand$/)).not.toBeInTheDocument()
+  })
+
+  // QA-2026-11-23-W (US-0018 AC5): the Product Owner's exact wording, and no "0 records" to read as low demand.
+  it('says "Demand not available" for an area with no records, without a count', async () => {
+    noRecordsAtHome = true
+    const local = await brief('Demand not available')
+    expect(local).toHaveTextContent('Metro Manila')
+    expect(local).toHaveTextContent(/not low demand/)
+    expect(local).not.toHaveTextContent(/No recorded demand|0 records in/)
   })
 })
 

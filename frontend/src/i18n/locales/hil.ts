@@ -652,7 +652,7 @@ export const hil: Record<string, string> = {
   'High demand': 'Mataas nga demand',
   'Moderate demand': 'Tunga-tunga nga demand',
   'Low demand': 'Manubo nga demand',
-  'No recorded demand': 'Wala sing natala nga demand',
+  'Demand not available': 'Indi available ang demand',
   '{1} records in {0}': '{1} ka rekord sa {0}',
   '#{0} of {1} regions': '#{0} sa {1} ka rehiyon',
   'Needed more in': 'Mas kinahanglan sa',

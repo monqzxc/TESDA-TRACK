@@ -652,7 +652,7 @@ export const bcl: Record<string, string> = {
   'High demand': 'Halangkaw na demand',
   'Moderate demand': 'Tama sanang demand',
   'Low demand': 'Hababang demand',
-  'No recorded demand': 'Mayong nakatalang demand',
+  'Demand not available': 'Dai available an demand',
   '{1} records in {0}': '{1} na rekord sa {0}',
   '#{0} of {1} regions': '#{0} sa {1} na rehiyon',
   'Needed more in': 'Mas kaipuhan sa',

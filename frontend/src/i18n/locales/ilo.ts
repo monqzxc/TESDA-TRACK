@@ -647,7 +647,7 @@ export const ilo: Record<string, string> = {
   'High demand': 'Nangato a demand',
   'Moderate demand': 'Kalkalainganna a demand',
   'Low demand': 'Nababa a demand',
-  'No recorded demand': 'Awan ti nairehistro a demand',
+  'Demand not available': 'Saan a magun-odan ti demand',
   '{1} records in {0}': '{1} a rekord iti {0}',
   '#{0} of {1} regions': '#{0} kadagiti {1} a rehion',
   'Needed more in': 'Ad-adda a kasapulan iti',

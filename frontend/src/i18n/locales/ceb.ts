@@ -653,7 +653,7 @@ export const ceb: Record<string, string> = {
   'High demand': 'Taas nga demand',
   'Moderate demand': 'Tunga-tunga nga demand',
   'Low demand': 'Ubos nga demand',
-  'No recorded demand': 'Walay natalang demand',
+  'Demand not available': 'Dili available ang demand',
   '{1} records in {0}': '{1} ka rekord sa {0}',
   '#{0} of {1} regions': '#{0} sa {1} ka rehiyon',
   'Needed more in': 'Mas gikinahanglan sa',

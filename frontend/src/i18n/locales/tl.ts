@@ -1821,7 +1821,7 @@ export const tl: Record<string, string> = {
   'High demand': 'Mataas na demand',
   'Moderate demand': 'Katamtamang demand',
   'Low demand': 'Mababang demand',
-  'No recorded demand': 'Walang naitalang demand',
+  'Demand not available': 'Hindi available ang demand',
   '{1} records in {0}': '{1} tala sa {0}',
   '#{0} of {1} regions': '#{0} sa {1} rehiyon',
   'Needed more in': 'Mas kailangan sa',

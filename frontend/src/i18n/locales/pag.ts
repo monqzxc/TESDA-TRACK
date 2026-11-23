@@ -639,7 +639,7 @@ export const pag: Record<string, string> = {
   'High demand': 'Atagey a demand',
   'Moderate demand': 'Katamtaman a demand',
   'Low demand': 'Melag a demand',
-  'No recorded demand': 'Anggapoy nilistan demand',
+  'Demand not available': 'Ag-available so demand',
   '{1} records in {0}': '{1} a rekord ed {0}',
   '#{0} of {1} regions': '#{0} ed {1} a rehiyon',
   'Needed more in': 'Mas kaukolan ed',

@@ -1327,7 +1327,7 @@ export const pam: Record<string, string> = {
   'High demand': 'Matas a demand',
   'Moderate demand': 'Katamtamang demand',
   'Low demand': 'Mababang demand',
-  'No recorded demand': 'Alang milista a demand',
+  'Demand not available': 'Ali available ing demand',
   '{1} records in {0}': '{1} a rekord king {0}',
   '#{0} of {1} regions': '#{0} king {1} a rehiyun',
   'Needed more in': 'Mas kailangan king',

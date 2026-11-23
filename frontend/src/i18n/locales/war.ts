@@ -646,7 +646,7 @@ export const war: Record<string, string> = {
   'High demand': 'Hitaas nga demand',
   'Moderate demand': 'Tunga-tunga nga demand',
   'Low demand': 'Hamubo nga demand',
-  'No recorded demand': 'Waray natala nga demand',
+  'Demand not available': 'Diri available an demand',
   '{1} records in {0}': '{1} nga rekord ha {0}',
   '#{0} of {1} regions': '#{0} ha {1} nga rehiyon',
   'Needed more in': 'Mas kinahanglan ha',
