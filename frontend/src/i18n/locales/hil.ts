@@ -966,4 +966,31 @@ export const hil: Record<string, string> = {
     'Wala pa sang sentro nga nagatanyag sini nga kwalipikasyon.',
   'Share your location or type a city to see the centers ranked for you.':
     'Ipaambit ang imo lokasyon ukon i-type ang siudad agod makita ang mga sentro nga ginhan-ay para sa imo.',
+  // The "Around you" card (needs native review).
+  'Around you': 'Sa palibot mo',
+  'Around you · {0}': 'Sa palibot mo · {0}',
+  'Top in demand · Philippines': 'Pinakaginapangita · Pilipinas',
+  'Near you · {0}': 'Malapit sa imo · {0}',
+  'In your province · {0}': 'Sa imo probinsya · {0}',
+  'Top 3 skills': 'Top 3 nga ikasarang',
+  'Top 3 qualifications': 'Top 3 nga kwalipikasyon',
+  'Top 3 jobs': 'Top 3 nga trabaho',
+  Jobs: 'Mga trabaho',
+  Postings: 'Mga posting',
+  'Forecast: in demand': 'Forecast: ginapangita',
+  'Forecast: hard to fill': 'Forecast: mabudlay pun-on',
+  'Based on job postings, {0}': 'Base sa mga job posting, {0}',
+  'Based on job postings': 'Base sa mga job posting',
+  'Your skills are in demand in…': 'Ginapangita ang imo ikasarang sa…',
+  'Show demand in {0} on the map': 'Ipakita sa mapa ang demand sa {0}',
+  'Find centers for {0}': 'Pangita sang mga sentro para sa {0}',
+  "Search your skills or sign in to see where else you're in demand.":
+    'Pangitaa ang imo ikasarang ukon mag-sign in agod makita kon diin ka pa ginapangita.',
+  'No job postings recorded here yet.': 'Wala pa sang natala nga job posting diri.',
+  'No job postings recorded in {0} yet.': 'Wala pa sang natala nga job posting sa {0}.',
+  'No other province has enough job postings for your skills yet.':
+    'Wala pa sang iban nga probinsya nga may igo nga job posting para sa imo ikasarang.',
+  'Loading what is in demand around you…': 'Ginakarga ang ginapangita sa palibot mo…',
+  'What is in demand around you could not be loaded.':
+    'Indi makarga ang ginapangita sa palibot mo.',
 }

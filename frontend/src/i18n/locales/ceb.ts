@@ -963,4 +963,31 @@ export const ceb: Record<string, string> = {
     'Wala pay sentro nga nagtanyag niining kwalipikasyon.',
   'Share your location or type a city to see the centers ranked for you.':
     'Ipaambit ang imong lokasyon o pag-type og siyudad aron makita ang mga sentro nga gihan-ay para nimo.',
+  // The "Around you" card (needs native review).
+  'Around you': 'Sa imong palibot',
+  'Around you · {0}': 'Sa imong palibot · {0}',
+  'Top in demand · Philippines': 'Labing gipangita · Pilipinas',
+  'Near you · {0}': 'Duol kanimo · {0}',
+  'In your province · {0}': 'Sa imong probinsya · {0}',
+  'Top 3 skills': 'Top 3 nga kahanas',
+  'Top 3 qualifications': 'Top 3 nga kwalipikasyon',
+  'Top 3 jobs': 'Top 3 nga trabaho',
+  Jobs: 'Mga trabaho',
+  Postings: 'Mga posting',
+  'Forecast: in demand': 'Forecast: gipangita',
+  'Forecast: hard to fill': 'Forecast: lisod pun-on',
+  'Based on job postings, {0}': 'Base sa mga job posting, {0}',
+  'Based on job postings': 'Base sa mga job posting',
+  'Your skills are in demand in…': 'Gipangita ang imong kahanas sa…',
+  'Show demand in {0} on the map': 'Ipakita sa mapa ang demand sa {0}',
+  'Find centers for {0}': 'Pangitaa ang mga sentro para sa {0}',
+  "Search your skills or sign in to see where else you're in demand.":
+    'Pangitaa ang imong kahanas o mag-sign in aron makita kung asa pa ka gipangita.',
+  'No job postings recorded here yet.': 'Wala pay natala nga job posting dinhi.',
+  'No job postings recorded in {0} yet.': 'Wala pay natala nga job posting sa {0}.',
+  'No other province has enough job postings for your skills yet.':
+    'Wala pay laing probinsya nga igo ang job posting para sa imong kahanas.',
+  'Loading what is in demand around you…': 'Gikarga ang gipangita sa imong palibot…',
+  'What is in demand around you could not be loaded.':
+    'Dili makarga ang gipangita sa imong palibot.',
 }

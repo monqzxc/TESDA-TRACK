@@ -1603,4 +1603,31 @@ export const pam: Record<string, string> = {
     'Ala pang sentro a mag-alok ning kwalipikasyun a iti.',
   'Share your location or type a city to see the centers ranked for you.':
     'Ibahagi me ing lokasyun mu o i-type ing siudad ban akit me reng sentro a makaayus para keka.',
+  // The "Around you" card (needs native review).
+  'Around you': 'King paligid mu',
+  'Around you · {0}': 'King paligid mu · {0}',
+  'Top in demand · Philippines': 'Pekamaliaring panintunan · Pilipinas',
+  'Near you · {0}': 'Malapit keka · {0}',
+  'In your province · {0}': 'King kekang probinsya · {0}',
+  'Top 3 skills': 'Top 3 kayabaldan',
+  'Top 3 qualifications': 'Top 3 kwalipikasyun',
+  'Top 3 jobs': 'Top 3 trabaho',
+  Jobs: 'Deng trabaho',
+  Postings: 'Deng posting',
+  'Forecast: in demand': 'Forecast: pipanintunan',
+  'Forecast: hard to fill': 'Forecast: masakit punan',
+  'Based on job postings, {0}': 'Batay kareng job posting, {0}',
+  'Based on job postings': 'Batay kareng job posting',
+  'Your skills are in demand in…': 'Pipanintunan la ding kayabaldan mu king…',
+  'Show demand in {0} on the map': 'Ipakit king mapa ing demand king {0}',
+  'Find centers for {0}': 'Manintun kareng sentro para king {0}',
+  "Search your skills or sign in to see where else you're in demand.":
+    'Panintunan me ing kayabaldan mu o mag-sign in ka ban akit mu nu ka pa pipanintunan.',
+  'No job postings recorded here yet.': 'Ala pang metalang job posting keni.',
+  'No job postings recorded in {0} yet.': 'Ala pang metalang job posting king {0}.',
+  'No other province has enough job postings for your skills yet.':
+    'Ala pang aliwang probinsya a maki sapat a job posting para king kayabaldan mu.',
+  'Loading what is in demand around you…': 'Lo-load de ing pipanintunan king paligid mu…',
+  'What is in demand around you could not be loaded.':
+    'E ma-load ing pipanintunan king paligid mu.',
 }

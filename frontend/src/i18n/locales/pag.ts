@@ -948,4 +948,30 @@ export const pag: Record<string, string> = {
     'Anggapo ni so sentro ya mangiyopresi na sayan kwalipikasyon.',
   'Share your location or type a city to see the centers ranked for you.':
     'Iyabobon so lokasyon mo odino i-type so siyudad pian nanengneng iray sentro ya inyurnos parad sika.',
+  // The "Around you" card (needs native review).
+  'Around you': 'Ed paliber mo',
+  'Around you · {0}': 'Ed paliber mo · {0}',
+  'Top in demand · Philippines': 'Sankaanapan · Filipinas',
+  'Near you · {0}': 'Asingger ed sika · {0}',
+  'In your province · {0}': 'Ed probinsiam · {0}',
+  'Top 3 skills': 'Top 3 ya abilidad',
+  'Top 3 qualifications': 'Top 3 ya kwalipikasyon',
+  'Top 3 jobs': 'Top 3 ya trabaho',
+  Jobs: 'Saray trabaho',
+  Postings: 'Saray posting',
+  'Forecast: in demand': 'Forecast: anapen',
+  'Forecast: hard to fill': 'Forecast: mairap a punoen',
+  'Based on job postings, {0}': 'Base ed saray job posting, {0}',
+  'Based on job postings': 'Base ed saray job posting',
+  'Your skills are in demand in…': 'Anapen so abilidad mo ed…',
+  'Show demand in {0} on the map': 'Ipanengneng ed mapa so demand ed {0}',
+  'Find centers for {0}': 'Anapen iray sentro parad {0}',
+  "Search your skills or sign in to see where else you're in demand.":
+    'Anapen so abilidad mo odino mag-sign in pian nanengneng mo no iner ka ni anapen.',
+  'No job postings recorded here yet.': 'Anggapo ni so nailistan job posting dia.',
+  'No job postings recorded in {0} yet.': 'Anggapo ni so nailistan job posting ed {0}.',
+  'No other province has enough job postings for your skills yet.':
+    'Anggapo ni so arum ya probinsia ya walay sapat ya job posting parad abilidad mo.',
+  'Loading what is in demand around you…': 'Ikakarga so anapen ed paliber mo…',
+  'What is in demand around you could not be loaded.': 'Agnayarin ikarga so anapen ed paliber mo.',
 }

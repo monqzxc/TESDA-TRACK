@@ -105,11 +105,13 @@ export function overlayPadding(
   size: { width: number; height: number },
   inset: number,
   margin: number,
+  /** A card of the page's over the right edge, controls included ("Around you"). */
+  right = 0,
 ): Padding {
   const narrow = size.width < NARROW
   const padding = {
     top: margin + (narrow ? 12 : 8),
-    right: Math.max(CONTROLS, margin + 8),
+    right: Math.max(CONTROLS, margin + 8, right ? right + margin + 8 : 0),
     bottom: margin + (narrow ? 44 : 52),
     left: inset + margin + 8,
   }

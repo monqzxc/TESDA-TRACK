@@ -958,4 +958,31 @@ export const ilo: Record<string, string> = {
     'Awan pay ti sentro a mangidaton iti daytoy a kwalipikasion.',
   'Share your location or type a city to see the centers ranked for you.':
     'Ibingay ti lokasionmo wenno i-type ti siudad tapno makita dagiti sentro a naurnos para kenka.',
+  // The "Around you" card (needs native review).
+  'Around you': 'Iti aglawlawmo',
+  'Around you · {0}': 'Iti aglawlawmo · {0}',
+  'Top in demand · Philippines': 'Kasapulan unay · Filipinas',
+  'Near you · {0}': 'Asideg kenka · {0}',
+  'In your province · {0}': 'Iti probinsiam · {0}',
+  'Top 3 skills': 'Top 3 a kabaelan',
+  'Top 3 qualifications': 'Top 3 a kwalipikasion',
+  'Top 3 jobs': 'Top 3 a trabaho',
+  Jobs: 'Dagiti trabaho',
+  Postings: 'Dagiti posting',
+  'Forecast: in demand': 'Forecast: kasapulan',
+  'Forecast: hard to fill': 'Forecast: narigat a punnoen',
+  'Based on job postings, {0}': 'Naibatay kadagiti job posting, {0}',
+  'Based on job postings': 'Naibatay kadagiti job posting',
+  'Your skills are in demand in…': 'Kasapulan ti kabaelam idiay…',
+  'Show demand in {0} on the map': 'Ipakita iti mapa ti demand idiay {0}',
+  'Find centers for {0}': 'Biroken dagiti sentro para iti {0}',
+  "Search your skills or sign in to see where else you're in demand.":
+    'Biroken ti kabaelam wenno ag-sign in tapno makitam no sadino pay ti pakasapulam.',
+  'No job postings recorded here yet.': 'Awan pay ti nailista a job posting ditoy.',
+  'No job postings recorded in {0} yet.': 'Awan pay ti nailista a job posting idiay {0}.',
+  'No other province has enough job postings for your skills yet.':
+    'Awan pay ti sabali a probinsia nga addaan iti umanay a job posting para iti kabaelam.',
+  'Loading what is in demand around you…': 'Ikarkarga ti kasapulan iti aglawlawmo…',
+  'What is in demand around you could not be loaded.':
+    'Saan a maikarga ti kasapulan iti aglawlawmo.',
 }

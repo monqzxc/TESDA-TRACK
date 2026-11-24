@@ -2052,4 +2052,31 @@ export const tl: Record<string, string> = {
   '{0} centers': '{0} sentro',
   'Also in demand near you': 'Hinahanap din malapit sa iyo',
   'Drag to measure from a more exact spot': 'I-drag para sukatin mula sa mas eksaktong lugar',
+  // The "Around you" card (needs native review).
+  'Around you': 'Sa paligid mo',
+  'Around you · {0}': 'Sa paligid mo · {0}',
+  'Top in demand · Philippines': 'Pinakahinahanap · Pilipinas',
+  'Near you · {0}': 'Malapit sa iyo · {0}',
+  'In your province · {0}': 'Sa iyong probinsya · {0}',
+  'Top 3 skills': 'Top 3 kakayahan',
+  'Top 3 qualifications': 'Top 3 kwalipikasyon',
+  'Top 3 jobs': 'Top 3 trabaho',
+  Jobs: 'Mga trabaho',
+  Postings: 'Mga posting',
+  'Forecast: in demand': 'Forecast: hinahanap',
+  'Forecast: hard to fill': 'Forecast: mahirap punan',
+  'Based on job postings, {0}': 'Batay sa mga job posting, {0}',
+  'Based on job postings': 'Batay sa mga job posting',
+  'Your skills are in demand in…': 'Hinahanap ang iyong kakayahan sa…',
+  'Show demand in {0} on the map': 'Ipakita sa mapa ang demand sa {0}',
+  'Find centers for {0}': 'Maghanap ng mga sentro para sa {0}',
+  "Search your skills or sign in to see where else you're in demand.":
+    'Hanapin ang iyong kakayahan o mag-sign in para makita kung saan ka pa hinahanap.',
+  'No job postings recorded here yet.': 'Wala pang naitalang job posting dito.',
+  'No job postings recorded in {0} yet.': 'Wala pang naitalang job posting sa {0}.',
+  'No other province has enough job postings for your skills yet.':
+    'Wala pang ibang probinsya na may sapat na job posting para sa iyong kakayahan.',
+  'Loading what is in demand around you…': 'Nilo-load ang mga hinahanap sa paligid mo…',
+  'What is in demand around you could not be loaded.':
+    'Hindi ma-load ang mga hinahanap sa paligid mo.',
 }

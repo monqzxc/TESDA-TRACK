@@ -47,7 +47,7 @@ import { DemandLegend, RECOMMENDED_COLOR } from './DemandLegend.tsx'
 import { BALANCE_MARKS, demandRegions, demandSymbol, useRegionBoundaries } from './demandMap.ts'
 import { routeLabel } from './format.ts'
 import { homeView, homeWorldSize, zoomFor } from './mapLimits.ts'
-import { useOverlayEdges, type OverlayEdges } from './overlayEdges.ts'
+import { useOverlayEdges, useStatusReach, type OverlayEdges } from './overlayEdges.ts'
 import { partialPath, useRouteDraw } from './routeDraw.ts'
 import { useTrainingStore } from './state.ts'
 import type { Reference } from './useCenters.ts'
@@ -198,6 +198,7 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
   // How far the page's panels, bars and cards reach over the map's edges. From the left it is the filter panel
   // (0 when it doesn't reach over the map): framing and popups keep clear.
   const edges = useOverlayEdges(shell)
+  const statusRef = useStatusReach(props.onStatusReach)
   const inset = edges.left
   // How far out the map may go, once StayOnPhilippines has worked it out. Leaflet.markercluster builds the pins'
   // clusters for the whole-number zooms from the map's lowest up, and can't follow that lowest zoom down afterwards:
@@ -302,6 +303,7 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
 
       {shownStatus && (
         <p
+          ref={statusRef}
           className="pointer-events-none absolute top-[var(--map-status-top,0.875rem)] right-[70px] left-[calc(var(--map-overlay-inset,0px)_+_14px)] z-800 m-0 rounded-12 bg-glass px-3.5 py-2.5 text-13 text-muted shadow-[0_2px_10px_rgb(var(--track-shadow-rgb)/0.08)]"
           role="status"
         >

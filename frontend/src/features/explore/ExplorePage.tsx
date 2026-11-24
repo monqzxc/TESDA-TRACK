@@ -29,6 +29,9 @@ import { matchPathway } from '../training/recommendationApi.ts'
 import { useSavedCenters } from '../training/savedCenters.ts'
 import { useLocationWatch, useTrainingStore } from '../training/state.ts'
 import type { DemandMapArea } from '../training/CenterMapTypes.ts'
+import { AroundYouCard, useAroundYouOpen } from './AroundYouCard.tsx'
+import { planAroundYou, shortRegion } from './aroundYou.ts'
+import type { ElsewhereProvince } from './demandApi.ts'
 import { NEAR_KM, nearestRegion, offers } from './explore.ts'
 import { LocationPrompt } from './LocationPrompt.tsx'
 import { OutlookBrief } from './OutlookBrief.tsx'
@@ -68,7 +71,8 @@ function useHeight(): [(node: HTMLElement | null) => void, number] {
   return [setNode, node ? height : 0]
 }
 
-const TABLET_UP = '(min-width: 768px)'
+// The stylesheet's md breakpoint (769px): at 768px the page is still laid out as on a phone.
+const TABLET_UP = '(min-width: 769px)'
 const SHEET_DISMISS_DISTANCE = 48
 const SHEET_TAP_TOLERANCE = 10
 
@@ -346,7 +350,14 @@ export default function ExplorePage() {
     setSelectedId(null)
     setMotion('back')
   }
+  // A province picked in the "Around you" card: the demand view goes to its point, with its region selected.
+  const [demandFocus, setDemandFocus] = useState<{
+    latitude: number
+    longitude: number
+    regionCode: string
+  } | null>(null)
   const changeView = (next: View) => {
+    if (next !== 'demand') setDemandFocus(null)
     setView(next)
     setSelectedId(null)
     setCollapsed(false)
@@ -358,6 +369,93 @@ export default function ExplorePage() {
     if (selectedId) body.scrollTop = 0
     else if (motion === 'back') body.scrollTop = listScroll.current
   }, [selectedId, motion])
+
+  // The "Around you" card (section 3 of markdowns/explore-map-first-visit-updates.md): over the map's top right from
+  // a tablet up, and at the top of the results sheet on a phone. Not in the demand view, whose panel says the same.
+  const { liveRegion, liveProvince, learnerId } = explore
+  const homeProvince = explore.passport?.province ?? null
+  const searchCodes = useMemo(() => matches.map((match) => match.qualification.code), [matches])
+  const aroundPlan = useMemo(
+    () =>
+      view === 'demand'
+        ? null
+        : planAroundYou({
+            learnerId,
+            live: liveRegion
+              ? {
+                  regionCode: liveRegion.code,
+                  regionName: shortRegion(liveRegion),
+                  province: liveProvince,
+                }
+              : null,
+            homeProvince,
+            searchCodes,
+          }),
+    [view, learnerId, liveRegion, liveProvince, homeProvince, searchCodes],
+  )
+  const [aroundOpen, setAroundOpen] = useAroundYouOpen(tabletUp)
+  const aroundFloats = Boolean(aroundPlan && tabletUp)
+  // Below the chips, and below the map's status line while it shows.
+  const [chipsRef, chipsHeight] = useHeight()
+  const [statusReach, setStatusReach] = useState(0)
+  const aroundTop = Math.max(12 + (chipsHeight || 46), statusReach) + 12
+  const showProvince = (province: ElsewhereProvince) => {
+    setDemandFocus({
+      latitude: province.latitude,
+      longitude: province.longitude,
+      regionCode: province.region_code,
+    })
+    useDemandStore.getState().setRegion(province.region_code)
+    changeView('demand')
+  }
+  // A qualification picked in the card is searched as one chosen from the library is.
+  const chooseQualification = (code: string, name: string) => {
+    const found = catalog.data?.find((item) => item.code === code)
+    const { setDraft, setSearch } = useExploreStore.getState()
+    setDraft(found?.name ?? name)
+    setSearch({
+      query: en.library.exploreGoal(found?.name ?? name),
+      chosen: true,
+      result: {
+        profile: { intent: 'training_recommendation' },
+        matches: [
+          {
+            qualification: {
+              code,
+              name: found?.name ?? name,
+              sector: found?.sector ?? '',
+              provenance: found?.provenance,
+            },
+            score: 100,
+            reason: copy.results.chosen,
+          },
+        ],
+      },
+    })
+    setSelectedId(null)
+    setMotion(null)
+    setView('all')
+    setCollapsed(false)
+  }
+  const aroundCard = (variant: 'float' | 'sheet') =>
+    aroundPlan && (
+      <AroundYouCard
+        plan={aroundPlan}
+        catalog={catalog.data ?? []}
+        open={aroundOpen}
+        onOpenChange={setAroundOpen}
+        variant={variant}
+        onProvince={showProvince}
+        onQualification={chooseQualification}
+        className={variant === 'float' ? 'absolute right-[70px] z-[950]' : undefined}
+        style={variant === 'float' ? { top: aroundTop } : undefined}
+        bodyStyle={
+          variant === 'float'
+            ? { maxHeight: `calc(100dvh - ${aroundTop + 44 + 12 + bottomReach}px)` }
+            : undefined
+        }
+      />
+    )
 
   return (
     // The window, edge to edge. Its own stacking context: what floats here is lifted over the map, not over the
@@ -386,6 +484,8 @@ export default function ExplorePage() {
             '--map-overlay-top': `${topReach}px`,
             '--map-status-top': `${tabletUp ? 70 : topReach + 12}px`,
             '--map-overlay-inset': tabletUp && !collapsed ? '388px' : '0px',
+            // The open "Around you" card beside the map's buttons: 70px + its 300px.
+            '--map-overlay-right': aroundFloats && aroundOpen ? '370px' : '0px',
           } as CSSProperties
         }
       >
@@ -434,6 +534,12 @@ export default function ExplorePage() {
               }}
               onToggleSaved={toggleSaved}
               onLocate={() => store().locate()}
+              demandFocus={
+                view === 'demand' && demandFocus?.regionCode === explore.demandRegion
+                  ? demandFocus
+                  : null
+              }
+              onStatusReach={setStatusReach}
             />
           </Suspense>
         </LoadBoundary>
@@ -457,10 +563,13 @@ export default function ExplorePage() {
       />
 
       <Chips
+        ref={chipsRef}
         view={view}
         onView={changeView}
         className="absolute top-3 right-[70px] left-[384px] z-[1000] hidden flex-wrap gap-3 md:flex"
       />
+
+      {aroundFloats && aroundCard('float')}
 
       <section
         aria-label={copy.search.label}
@@ -555,6 +664,8 @@ export default function ExplorePage() {
               >
                 <span aria-hidden="true" className="h-1 w-9 rounded-full bg-dash" />
               </button>
+              {/* On a phone the card is the sheet's first section, out of the way while a center is open. */}
+              {!tabletUp && !selected && aroundCard('sheet')}
               {!search && view !== 'demand' && !selected && (
                 <p className="m-0 text-13 leading-[1.5] text-muted">{copy.search.hint}</p>
               )}
@@ -878,10 +989,12 @@ function SearchBox({
 
 /** Training centers, Assessment centers, In demand jobs: each shows that kind; pressed again, everything. */
 function Chips({
+  ref,
   view,
   onView,
   className,
 }: {
+  ref?: (node: HTMLElement | null) => void
   view: View
   onView: (view: View) => void
   className: string
@@ -893,7 +1006,12 @@ function Chips({
     { view: 'demand', label: copy.demand, icon: 'briefcase' },
   ]
   return (
-    <div role="group" aria-label={copy.label} className={cx('pointer-events-none', className)}>
+    <div
+      ref={ref}
+      role="group"
+      aria-label={copy.label}
+      className={cx('pointer-events-none', className)}
+    >
       {chips.map((chip) => (
         <ToggleButton
           key={chip.view}

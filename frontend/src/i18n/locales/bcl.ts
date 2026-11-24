@@ -962,4 +962,30 @@ export const bcl: Record<string, string> = {
   'No center offers this qualification yet.': 'Mayo pang sentrong nag-aalok kaining kwalipikasyon.',
   'Share your location or type a city to see the centers ranked for you.':
     'Ibahagi an saimong lokasyon o i-type an siyudad tanganing mahiling an mga sentrong pinagsunod-sunod para saimo.',
+  // The "Around you" card (needs native review).
+  'Around you': 'Sa palibot mo',
+  'Around you · {0}': 'Sa palibot mo · {0}',
+  'Top in demand · Philippines': 'Pinakahinahanap · Pilipinas',
+  'Near you · {0}': 'Harani saimo · {0}',
+  'In your province · {0}': 'Sa saimong probinsya · {0}',
+  'Top 3 skills': 'Top 3 na abilidad',
+  'Top 3 qualifications': 'Top 3 na kwalipikasyon',
+  'Top 3 jobs': 'Top 3 na trabaho',
+  Jobs: 'Mga trabaho',
+  Postings: 'Mga posting',
+  'Forecast: in demand': 'Forecast: hinahanap',
+  'Forecast: hard to fill': 'Forecast: masakit punuon',
+  'Based on job postings, {0}': 'Basado sa mga job posting, {0}',
+  'Based on job postings': 'Basado sa mga job posting',
+  'Your skills are in demand in…': 'Hinahanap an saimong abilidad sa…',
+  'Show demand in {0} on the map': 'Ipahiling sa mapa an demand sa {0}',
+  'Find centers for {0}': 'Maghanap nin mga sentro para sa {0}',
+  "Search your skills or sign in to see where else you're in demand.":
+    'Hanapon an saimong abilidad o mag-sign in tanganing mahiling kun saen ka pa hinahanap.',
+  'No job postings recorded here yet.': 'Mayo pang nakatalang job posting digdi.',
+  'No job postings recorded in {0} yet.': 'Mayo pang nakatalang job posting sa {0}.',
+  'No other province has enough job postings for your skills yet.':
+    'Mayo pang ibang probinsya na igwang igong job posting para sa saimong abilidad.',
+  'Loading what is in demand around you…': 'Pigkakarga an hinahanap sa palibot mo…',
+  'What is in demand around you could not be loaded.': 'Dai makarga an hinahanap sa palibot mo.',
 }

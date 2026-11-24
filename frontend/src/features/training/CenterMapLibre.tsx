@@ -55,7 +55,7 @@ import { routeLabel } from './format.ts'
 import type { GeoJSON } from 'geojson'
 import { homeView, homeWorldSize, zoomFor } from './mapLimits.ts'
 import type { MapSettings, VectorTiles } from './mapSettings.ts'
-import { useOverlayEdges } from './overlayEdges.ts'
+import { useOverlayEdges, useStatusReach } from './overlayEdges.ts'
 import { useTrainingStore } from './state.ts'
 import {
   PHILIPPINES,
@@ -118,6 +118,8 @@ export interface CenterMapLibreProps extends CenterMapProps {
 /** 3D buildings were turned on in this browser (the plan's small preferences). */
 const THREE_D_KEY = 'tesda-track.map-3d'
 const PITCH_3D = 55
+/** How close the demand view goes in on a province picked from the page: the province, with its neighbours' edges. */
+const DEMAND_FOCUS_ZOOM = 8.5
 const BEARING_3D = -17
 /** How long a lost drawing context may take to come back before the map gives way to Leaflet. */
 const CONTEXT_RESTORE_MS = 8000
@@ -238,6 +240,9 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   const edges = useOverlayEdges(shell)
   // From the left it is the filter panel (0 when it doesn't reach over the map): framing and popups keep clear.
   const inset = edges.left
+  // From the right, a card of the page's beside the controls: results are framed clear of it too.
+  const rightReach = edges.right
+  const statusRef = useStatusReach(props.onStatusReach)
 
   const basemaps = useMemo(() => basemapsFor(settings.tiles), [settings.tiles])
   const [basemapId, setBasemapId] = useState<BasemapId>(() => {
@@ -821,22 +826,27 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     reference && [reference.latitude, reference.longitude],
     radius,
   ])
-  const framed = useRef<{ key: string; inset: number } | null>(null)
+  const framed = useRef<{ key: string; inset: number; right: number } | null>(null)
   useEffect(() => {
     const map = mapRef.current
     if (!ready || !map || hasRoute || props.demandAreas) return
     const previous = framed.current
     const changed = previous?.key !== frameKey
-    if (!changed && (previous?.inset === inset || movedByUser.current)) return
-    framed.current = { key: frameKey, inset }
+    if (
+      !changed &&
+      ((previous?.inset === inset && previous.right === rightReach) || movedByUser.current)
+    )
+      return
+    framed.current = { key: frameKey, inset, right: rightReach }
     if (changed) movedByUser.current = false
     const frame: Frame = frameResults({ points, reference, radiusKm: radius })
     // The first frame is drawn at once; later ones ease there.
-    applyFrame(map, frame, inset, previous ? motion(reducedMotion) : motion(true))
+    applyFrame(map, frame, inset, previous ? motion(reducedMotion) : motion(true), rightReach)
   }, [
     ready,
     frameKey,
     inset,
+    rightReach,
     hasRoute,
     points,
     reference,
@@ -907,9 +917,30 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   const demandShown = demandAreas !== undefined
   // A learner open to relocating compares every region; otherwise the selected one fills the view.
   const demandFramed = props.demandOverview ? null : demandRegion
+  // A province picked from the page ("Around you"): its point, in its region, rather than the whole region.
+  const focusPoint =
+    props.demandFocus && props.demandFocus.regionCode === demandRegion ? props.demandFocus : null
+  const focusLatitude = focusPoint?.latitude
+  const focusLongitude = focusPoint?.longitude
   useEffect(() => {
     const map = mapRef.current
     if (!ready || !map || !demandShown || !demandShapes) return
+    if (focusLatitude !== undefined && focusLongitude !== undefined) {
+      const element = map.getContainer()
+      const size = { width: element.clientWidth, height: element.clientHeight }
+      const base = overlayPadding(size, inset, 0)
+      map.easeTo({
+        center: [focusLongitude, focusLatitude],
+        zoom: DEMAND_FOCUS_ZOOM,
+        offset: paddedOffset({
+          ...base,
+          top: base.top + latest.current.edges.top,
+          bottom: base.bottom + latest.current.edges.bottom,
+        }),
+        duration: 0,
+      })
+      return
+    }
     const bounds = demandBounds(demandRegions(demandShapes, [], demandFramed), demandFramed)
     if (bounds) {
       map.fitBounds(bounds, {
@@ -923,7 +954,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
         duration: 0,
       })
     }
-  }, [ready, demandShown, demandShapes, demandFramed, inset])
+  }, [ready, demandShown, demandShapes, demandFramed, inset, focusLatitude, focusLongitude])
 
   useEffect(() => {
     const map = mapRef.current
@@ -982,7 +1013,9 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
       map.easeTo({
         center: [mineAt.longitude, mineAt.latitude],
         zoom: LOCATE_ZOOM,
-        offset: paddedOffset(overlayPadding(size, latest.current.inset, 40)),
+        offset: paddedOffset(
+          overlayPadding(size, latest.current.inset, 40, latest.current.edges.right),
+        ),
         ...motion(reducedMotion, 800),
       })
       return
@@ -1043,7 +1076,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     if (!center || (fromMap && !askedAgain)) return
     const element = map.getContainer()
     const size = { width: element.clientWidth, height: element.clientHeight }
-    const padding = overlayPadding(size, latest.current.inset, 40)
+    const padding = overlayPadding(size, latest.current.inset, 40, latest.current.edges.right)
     const lngLat = lngLatOf(center)
     const far = map.getZoom() < 11
     if (!far && insidePadding(map.project(lngLat), size, padding)) return
@@ -1346,6 +1379,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
 
       {shownStatus && (
         <p
+          ref={statusRef}
           className="pointer-events-none absolute top-[var(--map-status-top,0.875rem)] right-[70px] left-[calc(var(--map-overlay-inset,0px)_+_14px)] z-860 m-0 rounded-12 bg-glass px-3.5 py-2.5 text-13 text-muted shadow-[0_2px_10px_rgb(var(--track-shadow-rgb)/0.08)]"
           role="status"
         >
@@ -1530,6 +1564,7 @@ function applyFrame(
   frame: Frame,
   inset: number,
   animation: { duration: number; essential: boolean },
+  right = 0,
 ) {
   const element = map.getContainer()
   const size = { width: element.clientWidth, height: element.clientHeight }
@@ -1537,13 +1572,13 @@ function applyFrame(
     map.easeTo({
       center: frame.center,
       zoom: frame.zoom,
-      offset: paddedOffset(overlayPadding(size, inset, 0)),
+      offset: paddedOffset(overlayPadding(size, inset, 0, right)),
       ...animation,
     })
     return
   }
   map.fitBounds(frame.bounds, {
-    padding: overlayPadding(size, inset, frame.margin),
+    padding: overlayPadding(size, inset, frame.margin, right),
     ...(frame.maxZoom ? { maxZoom: frame.maxZoom } : {}),
     ...animation,
   })

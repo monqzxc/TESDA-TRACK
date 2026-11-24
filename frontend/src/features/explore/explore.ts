@@ -351,3 +351,33 @@ export function readinessEvidence(
     [...trades(label)].some((word) => wanted.has(word)),
   )
 }
+
+/** All of NCR is one province here, as the Skill Passport and the labor-market records write it. */
+export const METRO_MANILA = 'Metro Manila'
+const NCR_NAMES = new Set([
+  'metro manila',
+  'metropolitan manila',
+  'ncr',
+  'national capital region',
+  'manila',
+  'first district',
+  'second district',
+  'third district',
+  'fourth district',
+])
+
+/** A province's name in the form two are compared in: no case, punctuation, brackets or "Province of". */
+export function provinceKey(name: string): string {
+  const key = name
+    .toLowerCase()
+    .replace(/\(.*$/, '')
+    .replace(/[.\-_/]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .replace(/^province of /, '')
+  return NCR_NAMES.has(key) ? 'metro manila' : key
+}
+
+export function sameProvince(a: string | null | undefined, b: string | null | undefined) {
+  return Boolean(a && b && provinceKey(a) === provinceKey(b))
+}
