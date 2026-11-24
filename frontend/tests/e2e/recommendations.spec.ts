@@ -434,6 +434,104 @@ for (const engine of ['leaflet', 'maplibre'] as const) {
   })
 }
 
+for (const width of [1280, 390]) {
+  test(`BUG-108: the retired training URL redirects to Career Map at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 })
+    await serveRecommendations(page, 'leaflet')
+    await page.goto('/')
+    expect(await page.locator('a[href^="/training"]').count()).toBe(0)
+    await page.goto('/training')
+    await expect(page).toHaveURL(/\/explore$/)
+    await expect(page.getByText(/This is the earlier version of this page/)).toHaveCount(0)
+    await page.goto('/')
+    await page.goto('/training?qualification=CSS-NC-II&type=training&region=NCR&scholarship=1')
+    await expect(page).toHaveURL(/\/explore\?/)
+    await page
+      .getByRole('dialog', { name: 'Open Location?' })
+      .getByRole('button', { name: 'Not now', exact: true })
+      .click()
+    await expect(page.getByRole('searchbox', { name: 'What can you do?' })).toHaveValue(CSS.name)
+    await expect(page.getByRole('combobox', { name: 'Region', exact: true })).toHaveValue('NCR')
+    await expect(page.getByRole('switch', { name: 'Scholarships', exact: true })).toBeChecked()
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Training & Assessment', exact: true }),
+    ).toHaveCount(0)
+    await page.screenshot({
+      path: test.info().outputPath('training-redirect.png'),
+      animations: 'disabled',
+    })
+    await page.goBack()
+    await expect(page).toHaveURL(/\/$/)
+  })
+}
+
+for (const viewport of [
+  { width: 1280, height: 900 },
+  { width: 390, height: 844 },
+]) {
+  test(`BUG-125: browser Back closes center detail and preserves the search at ${viewport.width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport)
+    const seen = await serveRecommendations(page, 'leaflet')
+    await page.goto('/')
+    await page.goto('/explore?region=NCR')
+    await page
+      .getByRole('dialog', { name: 'Open Location?' })
+      .getByRole('button', { name: 'Not now', exact: true })
+      .click()
+    const goal = page.getByRole('searchbox', { name: 'What can you do?' })
+    await goal.fill(GOAL)
+    await page.getByRole('button', { name: 'Search', exact: true }).click()
+    const place = page.getByRole('combobox', { name: 'Or type a city or province' })
+    await place.fill('Manila')
+    await place.press('Enter')
+    await page.getByRole('button', { name: '5 km', exact: true }).click()
+    const result = page.getByRole('button', {
+      name: /Example Computer Training Center Training for/,
+    })
+    await result.click()
+    const detail = page.getByRole('heading', { name: COMPUTER_SITE.name, exact: true })
+    await expect(detail).toBeVisible()
+    const mapUrl = page.url()
+    const matches = seen.matches.length
+    await page.screenshot({
+      path: test.info().outputPath('center-detail.png'),
+      animations: 'disabled',
+    })
+
+    await page.goBack()
+    await expect(page).toHaveURL(mapUrl)
+    await expect(detail).toHaveCount(0)
+    await expect(result).toBeVisible()
+    await expect(goal).toHaveValue(GOAL)
+    await expect(place).toHaveValue(/Manila/)
+    await expect(page.getByRole('combobox', { name: 'Region', exact: true })).toHaveValue('NCR')
+    await expect(page.getByRole('button', { name: '5 km', exact: true })).toHaveAttribute(
+      'aria-pressed',
+      'true',
+    )
+    expect(seen.matches).toHaveLength(matches)
+    await page.screenshot({ path: test.info().outputPath('back-to-results.png') })
+
+    await page.goForward()
+    await expect(detail).toBeVisible()
+    await page.reload()
+    await page
+      .getByRole('dialog', { name: 'Open Location?' })
+      .getByRole('button', { name: 'Not now', exact: true })
+      .click()
+    await expect(detail).toBeVisible()
+    await page.getByRole('button', { name: 'Back to results', exact: true }).click()
+    await expect(result).toBeVisible()
+    await expect(detail).toHaveCount(0)
+    await page.goBack()
+    await expect(page).toHaveURL(/\/$/)
+  })
+}
+
 test('BUG-18: Career Map center details show the recorded source and source date', async ({
   page,
 }) => {

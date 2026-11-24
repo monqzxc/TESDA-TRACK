@@ -1031,4 +1031,8 @@ export const bcl: Record<string, string> = {
   'About travel times': 'Manongod sa oras nin biyahe',
   'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.':
     'An mga center nakaayos sa tinantiyang oras asin harayo kan biyahe. An bukas na scholarship o halangkaw na demand sa rehiyon puwedeng magpabor sa magkaparehong biyahe. Nagdadanay sa saimong device an saimong lokasyon.',
+  'Placeholder — pending legal approval.': 'Placeholder — naghahalat nin legal na pag-aprobar.',
+  'You can use TESDA Track without an account. Signing in uses your TSP (TESDA Skill Passport) email and profile (skills, licenses and home area) to personalize suggestions. We keep your name, email and saved progress until you delete your account.':
+    'Puwede mong gamiton an TESDA Track dawa mayong account. Sa pag-sign in, ginagamit an saimong TSP (TESDA Skill Passport) email asin profile (mga kakayahan, lisensya asin lugar na ineestaran) tanganing iangay an mga suhestyon. Itinatago mi an saimong ngaran, email asin na-save na progreso sagkod na burahon mo an account.',
+  'Last updated 24 November 2026': 'Huring na-update 24 Nobyembre 2026',
 }

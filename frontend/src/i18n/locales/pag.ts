@@ -1017,4 +1017,8 @@ export const pag: Record<string, string> = {
   'About travel times': 'Nipaakar ed oras na biahe',
   'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.':
     'Nakaayos iray center ed tantyan oras tan kaarawi na biahe. Say bukas ya scholarship odino mataas ya demand ed rehiyon et nayarin mamapabor ed singano ya biahe. Say lokasyon mo et mansiansia ed device mo.',
+  'Placeholder — pending legal approval.': 'Placeholder — manaalagar na legal ya pag-apruba.',
+  'You can use TESDA Track without an account. Signing in uses your TSP (TESDA Skill Passport) email and profile (skills, licenses and home area) to personalize suggestions. We keep your name, email and saved progress until you delete your account.':
+    'Nayari mon usaren so TESDA Track anggapo account. No man-sign in ka, usaren so TSP (TESDA Skill Passport) email tan profile mo (kakayahan, lisensya tan lugar ya ayaman) pian ibagay iray suhestyon. Itatago mi so ngaran mo, email tan na-save ya progreso anggad buraken mo so account mo.',
+  'Last updated 24 November 2026': 'Kaunoran ya na-update 24 Nobyembre 2026',
 }

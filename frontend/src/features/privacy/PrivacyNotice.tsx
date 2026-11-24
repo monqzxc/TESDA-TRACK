@@ -9,6 +9,7 @@ import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { hasSeenPrivacyNotice, markPrivacyNoticeSeen } from './notice.ts'
+import { PrivacyPlaceholder } from './PrivacyPlaceholder.tsx'
 
 // One per point, in their order: the finder, the account, the location, and the learner's control of it all.
 const POINT_ICONS: readonly IconName[] = ['route', 'person', 'pin', 'check']
@@ -43,6 +44,9 @@ export function PrivacyNotice() {
       closeLabel={copy.close}
       wide
     >
+      <div className="mb-4">
+        <PrivacyPlaceholder />
+      </div>
       <div className="mb-4 max-w-64">
         <LanguageSelector />
       </div>

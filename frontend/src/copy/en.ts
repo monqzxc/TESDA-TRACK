@@ -1886,13 +1886,14 @@ export const en = {
   // change them together. A changed policy gets a new PRIVACY_NOTICE_VERSION in features/privacy/notice.ts.
   privacy: {
     link: 'Privacy policy',
+    placeholder: 'Placeholder — pending legal approval.',
     notice: {
       title: 'Your privacy on TESDA Track',
       lead: 'TESDA Track is a pilot, and it collects some data to work. In short:',
       // Also the policy's summary.
       points: [
         'Find my pathway sends your goal and answers to our server to find your matches. Without an account they stay in this browser tab, and our server keeps only a coded fingerprint of your goal and daily counts. Your goal’s words are kept only if you tick a box to share them.',
-        'You don’t need an account to use TESDA Track. To sign in, you use your TSP (TESDA Skill Passport) account, and we keep your name, email and progress (goals, readiness checks, certifications and applications) until you delete it.',
+        'You can use TESDA Track without an account. Signing in uses your TSP (TESDA Skill Passport) email and profile (skills, licenses and home area) to personalize suggestions. We keep your name, email and saved progress until you delete your account.',
         'Your location is used only if you allow it, rounded to about 1 km, to find centers near you.',
         'We never sell your data or use it for advertising. You can download it or delete your account at any time.',
       ],
@@ -1900,7 +1901,7 @@ export const en = {
       accept: 'I understand',
       close: 'Close the privacy notice',
     },
-    updated: 'Last updated 17 November 2026',
+    updated: 'Last updated 24 November 2026',
     summary: 'In short',
     contents: 'On this page',
     sections: [

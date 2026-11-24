@@ -8,6 +8,61 @@ test.use({ storageState: { cookies: [], origins: [] } })
 
 const NOTICE = 'Your privacy on TESDA Track'
 
+for (const viewport of [
+  { width: 1280, height: 900 },
+  { width: 390, height: 844 },
+]) {
+  test(`BUG-07: the privacy draft explains TSP profile use at ${viewport.width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport)
+    // A returning learner who saw the previous version must see the revised notice too.
+    await page.addInitScript(() => localStorage.setItem('tesda-track.privacy-notice', '2026-11-17'))
+    await page.goto('/')
+    const notice = page.getByRole('dialog', { name: NOTICE })
+    await expect(
+      notice.getByText('Placeholder — pending legal approval.', { exact: true }),
+    ).toBeVisible()
+    await expect(notice).toContainText('email and profile (skills, licenses and home area)')
+    await notice.getByRole('button', { name: 'I understand', exact: true }).scrollIntoViewIfNeeded()
+    await expect(notice.getByRole('button', { name: 'I understand', exact: true })).toBeInViewport()
+    // Show the notice header and draft label in the evidence.
+    await notice.getByRole('heading', { name: NOTICE }).scrollIntoViewIfNeeded()
+    await page.screenshot({
+      path: test.info().outputPath('privacy-placeholder-popup.png'),
+      animations: 'disabled',
+    })
+    expect(
+      (await new AxeBuilder({ page }).include('[role="dialog"]').analyze()).violations,
+    ).toEqual([])
+    await notice.getByRole('link', { name: 'Read the privacy policy', exact: true }).click()
+    await expect(page).toHaveURL(/\/privacy$/)
+    await expect(
+      page.getByText('Placeholder — pending legal approval.', { exact: true }),
+    ).toBeVisible()
+    await expect(page.getByRole('region', { name: 'In short', exact: true })).toContainText(
+      'email and profile (skills, licenses and home area)',
+    )
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+    ).toBe(true)
+    await page.screenshot({
+      path: test.info().outputPath('privacy-placeholder-page.png'),
+      animations: 'disabled',
+    })
+  })
+}
+
+test('BUG-07: Filipino notice includes the draft label and profile details', async ({ page }) => {
+  await page.goto('/')
+  const notice = page.getByRole('dialog')
+  await notice.getByRole('combobox', { name: 'Language / Wika' }).selectOption('tl')
+  await expect(notice).toContainText('Placeholder — naghihintay ng legal na pag-apruba.')
+  await expect(notice).toContainText(
+    'email at profile (mga kasanayan, lisensya at lugar ng tirahan)',
+  )
+})
+
 for (const colorScheme of ['light', 'dark'] as const) {
   test(`the notice opens on a first visit and passes axe (${colorScheme})`, async ({ page }) => {
     await page.emulateMedia({ colorScheme })
@@ -80,7 +135,7 @@ test.describe('the privacy link on every screen', () => {
         {
           origin: `http://localhost:${process.env.E2E_PORT ?? 5173}`,
           localStorage: [
-            { name: 'tesda-track.privacy-notice', value: '2026-11-17' },
+            { name: 'tesda-track.privacy-notice', value: '2026-11-24' },
             { name: 'track.explore.locationAsked', value: 'no' },
           ],
         },

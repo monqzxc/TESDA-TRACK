@@ -2122,4 +2122,8 @@ export const tl: Record<string, string> = {
   'About travel times': 'Tungkol sa oras ng biyahe',
   'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.':
     'Inuuna ang mga center ayon sa tinatayang oras at layo ng biyahe. Maaaring umangat ang center na may bukas na scholarship o mataas na demand sa rehiyon kung magkahawig ang biyahe. Nananatili sa iyong device ang lokasyon mo.',
+  'Placeholder — pending legal approval.': 'Placeholder — naghihintay ng legal na pag-apruba.',
+  'You can use TESDA Track without an account. Signing in uses your TSP (TESDA Skill Passport) email and profile (skills, licenses and home area) to personalize suggestions. We keep your name, email and saved progress until you delete your account.':
+    'Maaari mong gamitin ang TESDA Track nang walang account. Sa pag-sign in, ginagamit ang iyong TSP (TESDA Skill Passport) email at profile (mga kasanayan, lisensya at lugar ng tirahan) upang iangkop ang mga mungkahi. Itinatago namin ang iyong pangalan, email at naka-save na progreso hanggang burahin mo ang iyong account.',
+  'Last updated 24 November 2026': 'Huling na-update noong 24 Nobyembre 2026',
 }

@@ -4,6 +4,7 @@ import { Icon } from '../../components/Icon.tsx'
 import { PageHeading } from '../../components/PageHeading.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
+import { PrivacyPlaceholder } from './PrivacyPlaceholder.tsx'
 
 type Section = (typeof en.privacy.sections)[number]
 type Item = NonNullable<Extract<Section, { items: unknown }>['items']>[number]
@@ -40,6 +41,7 @@ export default function PrivacyPage() {
         <PageHeading>{page.heading}</PageHeading>
         <p className="text-17">{page.lead}</p>
         <p className="text-14 text-muted">{copy.updated}</p>
+        <PrivacyPlaceholder />
       </header>
 
       <section

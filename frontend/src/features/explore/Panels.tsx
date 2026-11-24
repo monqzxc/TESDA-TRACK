@@ -1542,12 +1542,15 @@ export function CenterCard({
   return (
     <article className="flex flex-col gap-3">
       <Button
-        className={cx(button({ variant: 'tertiary', height: 36, snug: true }), 'group self-start')}
+        className={cx(
+          button({ variant: 'pill', height: 44, text: 14, snug: true }),
+          'group shadow-sm self-start motion-reduce:transition-none',
+        )}
         onPress={onBack}
       >
         <Icon
           name="arrowLeft"
-          className="transition-transform duration-200 group-data-hovered:-translate-x-0.5"
+          className="transition-transform duration-200 group-data-hovered:-translate-x-0.5 motion-reduce:transform-none motion-reduce:transition-none"
         />
         {copy.back}
       </Button>

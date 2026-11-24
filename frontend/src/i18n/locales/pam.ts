@@ -1673,4 +1673,8 @@ export const pam: Record<string, string> = {
   'About travel times': 'Tungkul king oras ning biyahe',
   'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.':
     'Makaayos la reng center king tantiyang oras at karayu ning biahe. Ing bukas a scholarship o matas a demand king rehiyon malyari yang mamabor king kaparung biahe. Manatili ya king kekang device ing kekang lokasyun.',
+  'Placeholder — pending legal approval.': 'Placeholder — manaya king legal a pamag-apruba.',
+  'You can use TESDA Track without an account. Signing in uses your TSP (TESDA Skill Passport) email and profile (skills, licenses and home area) to personalize suggestions. We keep your name, email and saved progress until you delete your account.':
+    'Malyari meng gamitan ing TESDA Track maski ala kang account. King pag-sign in, gagamitan ing kekang TSP (TESDA Skill Passport) email at profile (kasanayan, lisensya at lugar a panuknangan) para iangkop la reng mungkahi. Itatabi mi ing kekang lagyu, email at na-save a progreso angga king buran me ing kekang account.',
+  'Last updated 24 November 2026': 'Tauling na-update 24 Nobyembre 2026',
 }

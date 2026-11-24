@@ -27,7 +27,14 @@ const PAGES = [
   ['/find/readiness', 'Find my pathway', GOAL_STEP, GOAL_TITLE, true],
   ['/find/pathway', 'Find my pathway', GOAL_STEP, GOAL_TITLE, true],
   ['/qualifications', 'Qualifications Library', null, 'Qualifications Library · TESDA-TRACK', true],
-  ['/training', 'Training & Assessment', null, 'Training & Assessment · TESDA-TRACK', true],
+  ['/training', 'Find training and assessment centers', null, 'Career Map · TESDA-TRACK', true],
+  [
+    '/tsp/webview/training',
+    'Training & Assessment',
+    null,
+    'Training & Assessment · TESDA-TRACK',
+    true,
+  ],
   // Signed out, My Progress asks the learner to sign in, and Reports isn't available (see account tests).
   ['/progress', 'My Progress', null, 'My Progress · TESDA-TRACK', false],
   // Skills Bridge is off on the test server, so Skills Explorer says so without the catalog.
@@ -45,7 +52,10 @@ describe('routes', () => {
     async (path, heading, step, title, needsCatalog) => {
       const catalog = serveCatalog()
 
-      renderApp(path)
+      const { router } = renderApp(path)
+      if (path === '/training') {
+        await waitFor(() => expect(router.state.location.pathname).toBe('/explore'))
+      }
 
       expect(await screen.findByRole('heading', { level: 1, name: heading })).toBeInTheDocument()
       if (step) {
@@ -60,6 +70,15 @@ describe('routes', () => {
       expect(catalog.count).toBe(needsCatalog ? 1 : 0)
     },
   )
+
+  it('keeps filters and the fragment when redirecting an old training bookmark', async () => {
+    serveCatalog()
+    const { router } = renderApp('/training?type=assessment&region=NCR&scholarship=1#centers')
+    await waitFor(() => expect(router.state.location.pathname).toBe('/explore'))
+    expect(router.state.location.search).toBe('?type=assessment&region=NCR&scholarship=1')
+    expect(router.state.location.hash).toBe('#centers')
+    expect(screen.queryByText(/This is the earlier version of this page/)).not.toBeInTheDocument()
+  })
 
   it('shows Home without the API', async () => {
     let requests = 0
