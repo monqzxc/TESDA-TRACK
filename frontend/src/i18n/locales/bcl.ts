@@ -968,6 +968,7 @@ export const bcl: Record<string, string> = {
   'Top in demand · Philippines': 'Pinakahinahanap · Pilipinas',
   'Near you · {0}': 'Harani saimo · {0}',
   'In your province · {0}': 'Sa saimong probinsya · {0}',
+  Provinces: 'Mga probinsya',
   'Top 3 skills': 'Top 3 na abilidad',
   'Top 3 qualifications': 'Top 3 na kwalipikasyon',
   'Top 3 jobs': 'Top 3 na trabaho',

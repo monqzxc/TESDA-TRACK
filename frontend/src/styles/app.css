@@ -194,6 +194,8 @@
   --animate-menu-spin-in: menu-spin-in 0.5s ease-out; /* its burger, as the drawer comes in */
   --animate-notice: notice 0.2s ease-out; /* the account notice at the foot of the screen */
   --animate-pop: pop 0.16s ease-out; /* the account menu */
+  /* The "Around you" card: its lists rise in one after another, and so do the rows "more" opens. */
+  --animate-row-in: rise 0.28s cubic-bezier(0.2, 0.75, 0.2, 1) backwards;
   /* The finder's feedback question: it rises once the step has slid in, then rings twice to be noticed. */
   --animate-float-in:
     rise 0.3s cubic-bezier(0.2, 0.75, 0.2, 1) 0.5s backwards, beckon 1s ease-out 0.9s 2;

@@ -1609,6 +1609,7 @@ export const pam: Record<string, string> = {
   'Top in demand · Philippines': 'Pekamaliaring panintunan · Pilipinas',
   'Near you · {0}': 'Malapit keka · {0}',
   'In your province · {0}': 'King kekang probinsya · {0}',
+  Provinces: 'Deng probinsya',
   'Top 3 skills': 'Top 3 kayabaldan',
   'Top 3 qualifications': 'Top 3 kwalipikasyun',
   'Top 3 jobs': 'Top 3 trabaho',

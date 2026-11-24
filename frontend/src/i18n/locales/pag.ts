@@ -954,6 +954,7 @@ export const pag: Record<string, string> = {
   'Top in demand · Philippines': 'Sankaanapan · Filipinas',
   'Near you · {0}': 'Asingger ed sika · {0}',
   'In your province · {0}': 'Ed probinsiam · {0}',
+  Provinces: 'Saray probinsia',
   'Top 3 skills': 'Top 3 ya abilidad',
   'Top 3 qualifications': 'Top 3 ya kwalipikasyon',
   'Top 3 jobs': 'Top 3 ya trabaho',

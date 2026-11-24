@@ -972,6 +972,7 @@ export const hil: Record<string, string> = {
   'Top in demand · Philippines': 'Pinakaginapangita · Pilipinas',
   'Near you · {0}': 'Malapit sa imo · {0}',
   'In your province · {0}': 'Sa imo probinsya · {0}',
+  Provinces: 'Mga probinsya',
   'Top 3 skills': 'Top 3 nga ikasarang',
   'Top 3 qualifications': 'Top 3 nga kwalipikasyon',
   'Top 3 jobs': 'Top 3 nga trabaho',

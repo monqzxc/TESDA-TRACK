@@ -969,6 +969,7 @@ export const ceb: Record<string, string> = {
   'Top in demand · Philippines': 'Labing gipangita · Pilipinas',
   'Near you · {0}': 'Duol kanimo · {0}',
   'In your province · {0}': 'Sa imong probinsya · {0}',
+  Provinces: 'Mga probinsya',
   'Top 3 skills': 'Top 3 nga kahanas',
   'Top 3 qualifications': 'Top 3 nga kwalipikasyon',
   'Top 3 jobs': 'Top 3 nga trabaho',

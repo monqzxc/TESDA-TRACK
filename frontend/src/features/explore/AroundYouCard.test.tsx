@@ -346,6 +346,40 @@ describe('AroundYouCard', () => {
     expect(requests.some((url) => url.pathname.endsWith('/elsewhere'))).toBe(false)
   })
 
+  it('each list is its own panel: the top 3 show, and "more" opens and closes the rest', async () => {
+    serve({
+      jobs: jobsPage([
+        ['WELDER', 12],
+        ['PIPE FITTER', 5],
+        ['COOK', 3],
+        ['BAKER', 2],
+        ['DRIVER', 1],
+      ]),
+    })
+    renderWithQuery(<Card plan={planAroundYou(guest)!} />)
+    const card = screen.getByRole('region', { name: 'Around you' })
+    await within(card).findByText('Welder')
+    // The rest wait behind "more": not yet on the page.
+    expect(within(card).queryByText('Baker')).toBeNull()
+    // Only the jobs list has more than three: one "more", counting what it opens.
+    const more = within(card).getByRole('button', { name: /^2 more/ })
+    expect(more).toHaveAttribute('aria-expanded', 'false')
+    fireEvent.click(more)
+    expect(more).toHaveAttribute('aria-expanded', 'true')
+    expect(more).toHaveTextContent('Show fewer')
+    expect(within(card).getByText('Baker')).toBeVisible()
+    expect(within(card).getByText('Driver')).toBeVisible()
+    // Closed again, the rest slide shut and leave the reach of keyboards and screen readers.
+    fireEvent.click(more)
+    expect(more).toHaveAttribute('aria-expanded', 'false')
+    const rest = document.getElementById(more.getAttribute('aria-controls')!)!
+    expect(rest).toHaveAttribute('aria-hidden', 'true')
+    expect(rest).toHaveAttribute('inert')
+    // Asks for up to 10 jobs, so there is something to open.
+    const jobs = requests.find((url) => url.pathname.endsWith('/jobs'))!
+    expect(jobs.searchParams.get('limit')).toBe('10')
+  })
+
   it('a guest with a search also sees elsewhere, for the searched qualifications', async () => {
     serve({
       elsewhere: [

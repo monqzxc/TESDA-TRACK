@@ -962,6 +962,7 @@ export const war: Record<string, string> = {
   'Top in demand · Philippines': 'Gidamo nga ginbibiling · Pilipinas',
   'Near you · {0}': 'Hirani ha imo · {0}',
   'In your province · {0}': 'Ha imo probinsya · {0}',
+  Provinces: 'Mga probinsya',
   'Top 3 skills': 'Top 3 nga abilidad',
   'Top 3 qualifications': 'Top 3 nga kwalipikasyon',
   'Top 3 jobs': 'Top 3 nga trabaho',

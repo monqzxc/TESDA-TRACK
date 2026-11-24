@@ -964,6 +964,7 @@ export const ilo: Record<string, string> = {
   'Top in demand · Philippines': 'Kasapulan unay · Filipinas',
   'Near you · {0}': 'Asideg kenka · {0}',
   'In your province · {0}': 'Iti probinsiam · {0}',
+  Provinces: 'Dagiti probinsia',
   'Top 3 skills': 'Top 3 a kabaelan',
   'Top 3 qualifications': 'Top 3 a kwalipikasion',
   'Top 3 jobs': 'Top 3 a trabaho',

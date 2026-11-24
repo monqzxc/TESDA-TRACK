@@ -78,6 +78,8 @@ function useHeight(): [(node: HTMLElement | null) => void, number] {
 const TABLET_UP = '(min-width: 769px)'
 /** The account button over the map (42px, as the map's own buttons) and the 14px gap under it. */
 const ACCOUNT_ROOM = 56
+/** How far the floating "Around you" card stays above the window's bottom: clear of Help and Layers. */
+const AROUND_BOTTOM_CLEAR = 52 + 28 + 44 + 12
 const SHEET_DISMISS_DISTANCE = 48
 const SHEET_TAP_TOLERANCE = 10
 
@@ -454,9 +456,13 @@ export default function ExplorePage() {
         onQualification={chooseQualification}
         className={variant === 'float' ? 'absolute right-[70px] z-[950]' : undefined}
         style={variant === 'float' ? { top: aroundTop } : undefined}
+        // Opened lists make it tall: it scrolls inside, ending above the map's Layers button (the bottom-right
+        // column: the Help button's 52px, 28px, then Layers' 44px) with a 12px gap.
         bodyStyle={
           variant === 'float'
-            ? { maxHeight: `calc(100dvh - ${aroundTop + 44 + 12 + bottomReach}px)` }
+            ? {
+                maxHeight: `calc(100dvh - ${aroundTop + 44 + bottomReach + AROUND_BOTTOM_CLEAR}px)`,
+              }
             : undefined
         }
       />

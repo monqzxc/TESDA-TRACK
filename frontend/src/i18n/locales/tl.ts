@@ -2058,6 +2058,7 @@ export const tl: Record<string, string> = {
   'Top in demand · Philippines': 'Pinakahinahanap · Pilipinas',
   'Near you · {0}': 'Malapit sa iyo · {0}',
   'In your province · {0}': 'Sa iyong probinsya · {0}',
+  Provinces: 'Mga probinsya',
   'Top 3 skills': 'Top 3 kakayahan',
   'Top 3 qualifications': 'Top 3 kwalipikasyon',
   'Top 3 jobs': 'Top 3 trabaho',

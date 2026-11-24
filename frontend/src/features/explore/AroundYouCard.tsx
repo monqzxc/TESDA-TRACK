@@ -3,6 +3,7 @@ import { useId, useState, type CSSProperties, type ReactNode } from 'react'
 import { Button } from 'react-aria-components'
 import type { Qualification } from '../../api/queries.ts'
 import { Icon } from '../../components/Icon.tsx'
+import type { IconName } from '../../components/icons.ts'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { sessionStore } from '../../lib/sessionStore.ts'
@@ -14,6 +15,7 @@ import {
   type AroundYouPlan,
 } from './aroundYou.ts'
 import {
+  AROUND_MORE,
   AROUND_TOP,
   aroundJobsQuery,
   aroundQualificationsQuery,
@@ -189,8 +191,11 @@ function AreaSection({
   const ranked = qualifications.data
     ? rankQualifications(qualifications.data.items, qualifications.data.ordering)
     : []
-  const shownQualifications = ranked.slice(0, AROUND_TOP)
-  const skills = top ? topSkills(ranked, catalog) : []
+  // Past the top 3, only qualifications with postings here: "more" shouldn't fill up with rows that have none.
+  const shownQualifications = ranked
+    .filter((item, index) => index < AROUND_TOP || (item.observed_posting_count ?? 0) > 0)
+    .slice(0, AROUND_MORE)
+  const skills = top ? topSkills(ranked, catalog, AROUND_MORE) : []
   const date = latestDate(jobs.data?.snapshot_dates ?? [])
   const nothing = Boolean(
     jobs.data && qualifications.data && !jobs.data.items.length && !ranked.length,
@@ -218,6 +223,8 @@ function AreaSection({
     const jobList = (
       <RankList
         title={top ? copy.topJobs : copy.jobs}
+        icon="briefcase"
+        phone={phone}
         unit={copy.postings}
         rows={(jobs.data?.items ?? []).map((job) => ({
           key: job.title,
@@ -229,6 +236,7 @@ function AreaSection({
     const qualificationList = (
       <RankList
         title={top ? copy.topQualifications : copy.qualifications}
+        icon="award"
         unit={copy.postings}
         rows={shownQualifications.map((item) => ({
           key: item.qualification_code,
@@ -242,10 +250,12 @@ function AreaSection({
       />
     )
     body = (
-      <>
+      <div className="grid gap-2">
         {top && skills.length > 0 && (
           <RankList
             title={copy.topSkills}
+            icon="target"
+            phone={phone}
             rows={skills.map((skill) => ({ key: skill, name: skill, count: null }))}
           />
         )}
@@ -260,8 +270,8 @@ function AreaSection({
             {qualificationList}
           </>
         )}
-        <p className={footnote}>{date ? copy.basedOn(date) : copy.basedOnUndated}</p>
-      </>
+        <p className={cx(footnote, 'px-0.5')}>{date ? copy.basedOn(date) : copy.basedOnUndated}</p>
+      </div>
     )
   }
 
@@ -305,14 +315,19 @@ interface Row {
   pressLabel?: string
 }
 
-/** A short ranked list: names on the left, posting records on the right in tabular figures. */
+/**
+ * One list in its own panel, so skills, qualifications and jobs read as separate things: names on the left, posting
+ * records on the right in tabular figures. The top 3 show; "more" opens the rest.
+ */
 function RankList({
   title,
+  icon,
   unit,
   rows,
   phone = false,
 }: {
   title: string
+  icon: IconName
   unit?: string
   rows: Row[]
   phone?: boolean
@@ -320,17 +335,23 @@ function RankList({
   const copy = useCopy().explore.aroundYou
   if (!rows.length) return null
   return (
-    <div className="grid gap-1">
-      <div className="flex items-baseline justify-between gap-3">
-        <h4 className={listHeading}>{title}</h4>
-        {unit && rows.some((row) => row.count !== null) && (
+    <Panel
+      title={title}
+      icon={icon}
+      aside={
+        unit &&
+        rows.some((row) => row.count !== null) && (
           <span aria-hidden="true" className="text-11 font-semibold text-muted">
             {unit}
           </span>
-        )}
-      </div>
-      <ol className="m-0 grid list-none p-0">
-        {rows.map((row) => {
+        )
+      }
+    >
+      <MoreList
+        items={rows}
+        keyOf={(row) => row.key}
+        phone={phone}
+        render={(row) => {
           const name = (
             <span className="grid min-w-0 gap-0.5">
               <span className="line-clamp-2 min-w-0">{row.name}</span>
@@ -344,32 +365,155 @@ function RankList({
                 <span className="sr-only">{copy.postingCount(row.count)}</span>
               </span>
             )
-          return (
-            <li key={row.key} className="min-w-0">
-              {row.onPress ? (
-                <Button
-                  onPress={row.onPress}
-                  aria-label={row.pressLabel}
-                  className={cx(
-                    '-mx-1.5 flex w-[calc(100%+0.75rem)] cursor-pointer items-baseline justify-between gap-3 rounded-8 border-0 bg-transparent px-1.5 py-1 text-left text-13 text-ink transition-colors duration-150',
-                    'data-hovered:bg-soft data-hovered:text-blue data-pressed:bg-chip',
-                    focusRing,
-                    phone ? 'min-h-11' : 'min-h-8',
-                  )}
-                >
-                  {name}
-                  {count}
-                </Button>
-              ) : (
-                <div className="flex min-h-7 items-baseline justify-between gap-3 py-1 text-13">
-                  {name}
-                  {count}
-                </div>
+          return row.onPress ? (
+            <Button
+              onPress={row.onPress}
+              aria-label={row.pressLabel}
+              className={cx(
+                '-mx-1.5 flex w-[calc(100%+0.75rem)] cursor-pointer items-baseline justify-between gap-3 rounded-8 border-0 bg-transparent px-1.5 py-1 text-left text-13 text-ink transition-colors duration-150',
+                'data-hovered:bg-soft data-hovered:text-blue data-pressed:bg-chip',
+                focusRing,
+                phone ? 'min-h-11' : 'min-h-8',
               )}
-            </li>
+            >
+              {name}
+              {count}
+            </Button>
+          ) : (
+            <div className="flex min-h-7 items-baseline justify-between gap-3 py-1 text-13">
+              {name}
+              {count}
+            </div>
           )
-        })}
+        }}
+      />
+    </Panel>
+  )
+}
+
+/** A panel of the card: a tinted icon and a title over its list, set apart from the lists beside it. */
+function Panel({
+  title,
+  icon,
+  aside,
+  headingId,
+  children,
+}: {
+  title: string
+  icon: IconName
+  aside?: ReactNode
+  headingId?: string
+  children: ReactNode
+}) {
+  return (
+    <div className="grid gap-1.5 rounded-12 border border-line bg-surface px-2.5 pt-2 pb-1.5 motion-safe:animate-row-in">
+      <div className="flex min-h-6 items-center gap-2">
+        <span
+          aria-hidden="true"
+          className="grid size-6 shrink-0 place-items-center rounded-8 bg-tint text-blue"
+        >
+          <Icon name={icon} size={14} />
+        </span>
+        <h4 id={headingId} className={cx(listHeading, 'min-w-0 flex-1 text-navy')}>
+          {title}
+        </h4>
+        {aside}
+      </div>
+      {children}
+    </div>
+  )
+}
+
+/**
+ * The first AROUND_TOP items, then the rest behind "more". The rest slide open (their height grows from nothing)
+ * and rise in one after another; closed, they are out of reach for keyboards and screen readers.
+ */
+function MoreList<T>({
+  items,
+  keyOf,
+  render,
+  phone,
+  gap = '',
+}: {
+  items: readonly T[]
+  keyOf: (item: T) => string
+  render: (item: T) => ReactNode
+  phone: boolean
+  gap?: string
+}) {
+  const copy = useCopy().explore.aroundYou
+  const restId = useId()
+  const [more, setMore] = useState(false)
+  // The rest join the page the first time they are asked for, and stay so that closing can slide them shut.
+  const [opened, setOpened] = useState(false)
+  const first = items.slice(0, AROUND_TOP)
+  const rest = items.slice(AROUND_TOP)
+  return (
+    <div className="grid">
+      <ol className={cx('m-0 grid list-none p-0', gap)}>
+        {first.map((item) => (
+          <li key={keyOf(item)} className="min-w-0">
+            {render(item)}
+          </li>
+        ))}
       </ol>
+      {rest.length > 0 && (
+        <>
+          <div
+            id={restId}
+            aria-hidden={!more}
+            inert={!more}
+            className={cx(
+              'grid transition-[grid-template-rows,opacity] ease-[cubic-bezier(0.2,0.75,0.2,1)] motion-reduce:transition-none',
+              more ? 'duration-300' : 'opacity-0 duration-200',
+            )}
+            style={{ gridTemplateRows: more ? '1fr' : '0fr' }}
+          >
+            <div className="min-h-0 overflow-hidden">
+              {opened && (
+                <ol
+                  start={AROUND_TOP + 1}
+                  className={cx('m-0 grid list-none p-0', gap, gap && 'pt-2')}
+                >
+                  {rest.map((item, index) => (
+                    <li
+                      key={keyOf(item)}
+                      className={cx('min-w-0', more && 'motion-safe:animate-row-in')}
+                      style={more ? { animationDelay: `${index * 35}ms` } : undefined}
+                    >
+                      {render(item)}
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </div>
+          </div>
+          <Button
+            aria-expanded={more}
+            aria-controls={restId}
+            onPress={() => {
+              setOpened(true)
+              setMore(!more)
+            }}
+            className={cx(
+              'group -mx-1.5 mt-0.5 inline-flex cursor-pointer items-center gap-1 justify-self-start rounded-8 border-0 bg-transparent px-1.5 text-12 font-semibold text-blue transition-colors duration-150',
+              'data-hovered:bg-soft data-pressed:bg-chip',
+              focusRing,
+              phone ? 'min-h-11' : 'min-h-7',
+            )}
+          >
+            {more ? copy.fewer : copy.more(rest.length)}
+            <Icon
+              name="chevron"
+              size={14}
+              className={cx(
+                'transition-transform duration-200 motion-reduce:transition-none',
+                more && 'rotate-180',
+              )}
+            />
+          </Button>
+        </>
+      )}
     </div>
   )
 }
@@ -411,20 +555,35 @@ function Elsewhere({
           {copy.emptyElsewhere}
         </p>
       ) : (
-        <>
-          <ol className="m-0 grid list-none gap-2 p-0">
-            {elsewhere.data.items.map((item) => (
-              <ElsewhereRow
-                key={item.province}
-                item={item}
-                phone={phone}
-                onProvince={onProvince}
-                onQualification={onQualification}
-              />
-            ))}
-          </ol>
-          <p className={footnote}>{date ? copy.basedOn(date) : copy.basedOnUndated}</p>
-        </>
+        <div className="grid gap-2">
+          <Panel
+            title={copy.provinces}
+            icon="map"
+            aside={
+              <span aria-hidden="true" className="text-11 font-semibold text-muted">
+                {copy.postings}
+              </span>
+            }
+          >
+            <MoreList
+              items={elsewhere.data.items}
+              keyOf={(item) => item.province}
+              phone={phone}
+              gap="gap-2"
+              render={(item) => (
+                <ElsewhereRow
+                  item={item}
+                  phone={phone}
+                  onProvince={onProvince}
+                  onQualification={onQualification}
+                />
+              )}
+            />
+          </Panel>
+          <p className={cx(footnote, 'px-0.5')}>
+            {date ? copy.basedOn(date) : copy.basedOnUndated}
+          </p>
+        </div>
       )}
     </section>
   )
@@ -444,7 +603,7 @@ function ElsewhereRow({
   const copy = useCopy().explore.aroundYou
   const reasons = useReasonLines(item.reasons ?? []).slice(0, 2)
   return (
-    <li className="grid min-w-0 gap-1">
+    <div className="grid min-w-0 gap-1">
       <Button
         onPress={() => onProvince(item)}
         aria-label={copy.showProvince(item.province)}
@@ -496,7 +655,7 @@ function ElsewhereRow({
           <ReasonList lines={reasons} className="text-12" />
         </div>
       )}
-    </li>
+    </div>
   )
 }
 

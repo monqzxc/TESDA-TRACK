@@ -75,7 +75,9 @@ export interface AroundArea {
   province: string | null
 }
 
+/** The card shows each list's top 3; "more" opens the rest, up to AROUND_MORE. */
 export const AROUND_TOP = 3
+export const AROUND_MORE = 10
 // A region's qualifications come back in name order unless they are personalized (only a province's are ranked by
 // postings), so the card reads them all, ranks them itself and works out the top skills from the same list.
 const AROUND_QUALIFICATIONS_READ = 100
@@ -90,7 +92,7 @@ export const aroundJobsQuery = (area: AroundArea, personalFor: string | null) =>
             query: {
               region_code: area.region,
               province: area.province,
-              limit: AROUND_TOP,
+              limit: AROUND_MORE,
               ...(personalFor ? { personalize: true } : {}),
             },
           },
@@ -137,7 +139,7 @@ export const elsewhereQuery = (
           params: {
             query: {
               exclude_province: exclude,
-              limit: AROUND_TOP,
+              limit: AROUND_MORE,
               ...(codes.length ? { qualification_code: codes.slice(0, 5) } : {}),
               ...(personalFor ? { personalize: true } : {}),
             },

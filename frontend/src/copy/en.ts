@@ -2552,6 +2552,7 @@ export const en = {
       basedOn: (date: string) => `Based on job postings, ${date}`,
       basedOnUndated: 'Based on job postings',
       elsewhere: 'Your skills are in demand in…',
+      provinces: 'Provinces',
       showProvince: (province: string) => `Show demand in ${province} on the map`,
       searchFor: (name: string) => `Find centers for ${name}`,
       hint: "Search your skills or sign in to see where else you're in demand.",
@@ -2561,6 +2562,9 @@ export const en = {
       loading: 'Loading what is in demand around you…',
       failed: 'What is in demand around you could not be loaded.',
       retry: 'Try again',
+      // "More" under a list of the card: the same words as the center lists' (already translated).
+      more: (n: number) => `${n} more`,
+      fewer: 'Show fewer',
     },
     demand: {
       heading: 'Jobs and qualification demand',
