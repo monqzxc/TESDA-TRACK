@@ -29,7 +29,7 @@ import { matchPathway } from '../training/recommendationApi.ts'
 import { useSavedCenters } from '../training/savedCenters.ts'
 import { useTrainingStore } from '../training/state.ts'
 import type { DemandMapArea } from '../training/CenterMapTypes.ts'
-import { NEAR_KM, nearestRegion, offers } from './explore.ts'
+import { countedCenters, NEAR_KM, nearestRegion, offers } from './explore.ts'
 import { LocationPrompt } from './LocationPrompt.tsx'
 import { OutlookBrief } from './OutlookBrief.tsx'
 import {
@@ -578,7 +578,8 @@ export default function ExplorePage() {
                   region={regionFilter}
                   province={provinceFilter}
                   scholarship={scholarshipFilter}
-                  count={pins.length}
+                  count={countedCenters(pins, Boolean(reference), explore.rangeKm).length}
+                  rangeKm={reference ? explore.rangeKm : null}
                   canClear={Boolean(
                     view !== 'all' ||
                     regionFilter ||

@@ -880,6 +880,7 @@ export const ilo: Record<string, string> = {
   'Filter centers': 'I-filter dagiti sentro',
   '1 center shown': '1 a sentro ti maipakpakita',
   '{0} centers shown': '{0} a sentro ti maipakpakita',
+  'Centers within {0} km: {1}': 'Dagiti sentro iti uneg ti {0} km: {1}',
   'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.':
     'Dagiti sample a sentro para iti demo iti Disiembre 2. Saan daytoy nga opisial a listaan ti TESDA: inaramid laeng dagiti nagan, lugar ken iskedyul.',
   'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':

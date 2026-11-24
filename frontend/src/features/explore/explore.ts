@@ -111,6 +111,18 @@ export function inRangeOr<T extends Center>(centers: readonly T[], rangeKm: numb
   return near.length ? near : [...centers]
 }
 
+/**
+ * The centers the result counts should count (US-0014 AC3): with a place, those within the learner's range; a center
+ * with no known distance can't be said to be near. Without a place, all of them.
+ */
+export function countedCenters<T extends Center>(
+  centers: readonly T[],
+  hasPlace: boolean,
+  rangeKm: number,
+): readonly T[] {
+  return hasPlace ? centers.filter((center) => within(center, rangeKm)) : centers
+}
+
 /** For one kind, a card per matched qualification that some center of that kind lists. */
 export function cardsFor(
   kind: CenterKind,

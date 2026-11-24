@@ -1525,6 +1525,7 @@ export const pam: Record<string, string> = {
   'Filter centers': 'I-filter la reng sentro',
   '1 center shown': '1 a sentro ing pakit',
   '{0} centers shown': '{0} a sentro ing pakit',
+  'Centers within {0} km: {1}': 'Reng sentro king lub ning {0} km: {1}',
   'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.':
     'Sample a sentro para king demo king Disyembre 2. Ali iti opisyal a listaan ning TESDA: gewa-gewa mu la reng lagyu, lugal ampong iskedyul.',
   'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':

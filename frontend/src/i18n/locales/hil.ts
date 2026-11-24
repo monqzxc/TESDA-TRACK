@@ -888,6 +888,7 @@ export const hil: Record<string, string> = {
   'Filter centers': 'I-filter ang mga sentro',
   '1 center shown': '1 ka sentro ang ginapakita',
   '{0} centers shown': '{0} ka sentro ang ginapakita',
+  'Centers within {0} km: {1}': 'Mga sentro sa sulod sang {0} km: {1}',
   'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.':
     'Mga sample nga sentro para sa demo sa Disyembre 2. Indi ini opisyal nga lista sang TESDA: ginhimo-himo lang ang mga ngalan, lugar kag iskedyul.',
   'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':

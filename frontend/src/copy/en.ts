@@ -2305,6 +2305,8 @@ export const en = {
       scholarshipHelp:
         'Applies to training centers. A scholarship listed isn’t a guaranteed award.',
       shown: (n: number) => (n === 1 ? '1 center shown' : `${n} centers shown`),
+      // With a place: the map keeps farther centers for context, so this says what the number counts.
+      inRange: (km: number, n: number) => `Centers within ${km} km: ${n}`,
       clearAll: 'Clear all',
     },
     search: {

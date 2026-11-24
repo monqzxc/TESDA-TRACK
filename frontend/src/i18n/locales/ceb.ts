@@ -886,6 +886,7 @@ export const ceb: Record<string, string> = {
   'Filter centers': 'Salaa ang mga sentro',
   '1 center shown': '1 ka sentro ang gipakita',
   '{0} centers shown': '{0} ka sentro ang gipakita',
+  'Centers within {0} km: {1}': 'Mga sentro sulod sa {0} km: {1}',
   'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.':
     'Mga sample nga sentro para sa demo sa Disyembre 2. Dili kini opisyal nga lista sa TESDA: hinimo-himo ra ang mga ngalan, lugar ug iskedyul.',
   'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':

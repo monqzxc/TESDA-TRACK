@@ -26,6 +26,7 @@ import type { View } from './ExplorePage.tsx'
 import {
   anyScholarship,
   cardsFor,
+  countedCenters,
   estimateMinutes,
   firstKind,
   hasScholarship,
@@ -271,6 +272,7 @@ export function CenterFilters({
   province,
   scholarship,
   count,
+  rangeKm,
   canClear,
   onRegion,
   onProvince,
@@ -284,6 +286,8 @@ export function CenterFilters({
   /** Only training centers with an open scholarship. */
   scholarship: boolean
   count: number
+  /** The learner's range when there is a place, so the count is of the centers within it. */
+  rangeKm: number | null
   canClear: boolean
   onRegion: (code: string | null) => void
   onProvince: (name: string | null) => void
@@ -368,7 +372,7 @@ export function CenterFilters({
       </div>
       <div className="flex items-center justify-between gap-2 border-t border-rule pt-2">
         <p role="status" className="m-0 text-13 font-semibold text-ink tabular-nums">
-          {copy.shown(count)}
+          {rangeKm === null ? copy.shown(count) : copy.inRange(rangeKm, count)}
         </p>
         <Button
           className={button({ variant: 'tertiary', height: 38, text: 14 })}
@@ -1288,9 +1292,14 @@ export function ResultsPanel({
       ? ['assessment', 'training']
       : ['training', 'assessment']
   const shown = view === 'all' ? order : view === 'demand' ? [] : [view]
-  // A tab counts the centers it would pin (as "N centers shown" does), not the qualifications listed under it.
+  // A tab counts the centers it would pin (as the filter count does, so within range when there is a place), not
+  // the qualifications listed under it.
   const centerCount = (cards: readonly QualificationCard[]) =>
-    new Set(cards.flatMap((card) => card.centers.map((center) => center.id))).size
+    new Set(
+      cards.flatMap((card) =>
+        countedCenters(card.centers, Boolean(reference), rangeKm).map((center) => center.id),
+      ),
+    ).size
   const tabs: { view: View; label: string; icon: IconName; count?: number }[] = [
     { view: 'all', label: copy.tabs.all, icon: 'grid' },
     { view: 'assessment', label: copy.tabs.assess, icon: 'award', count: centerCount(assess) },

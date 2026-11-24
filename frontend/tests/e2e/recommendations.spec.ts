@@ -889,12 +889,15 @@ test('US-0014: the Career Map filters centers by region and province, counts the
     .click()
   await expect(count).toHaveText('1 center shown')
 
-  await page.getByRole('textbox', { name: 'Or type a city or province' }).fill('Manila')
+  const place = page.getByRole('combobox', { name: 'Or type a city or province' })
+  await place.fill('Manila')
+  // QA-2026-11-23-EXP7: with a place the count is of the centers within the range.
+  await expect(count).toHaveText('Centers within 25 km: 1')
   await clear.click()
   await expect(count).toHaveText('4 centers shown')
   await expect(region).toHaveValue('')
   await expect(province).toHaveValue('')
-  await expect(page.getByRole('textbox', { name: 'Or type a city or province' })).toHaveValue('')
+  await expect(place).toHaveValue('')
   await expect(page).not.toHaveURL(/region=|province=|type=/)
   await expect(clear).toBeDisabled()
   expect(
@@ -902,6 +905,23 @@ test('US-0014: the Career Map filters centers by region and province, counts the
       .violations,
   ).toEqual([])
   await filters.screenshot({ path: test.info().outputPath('filters.png') })
+
+  // QA-2026-11-23-EXP7: the count and the tabs follow the place and the range, not the national total.
+  await place.fill('Manila')
+  await expect(count).toHaveText('Centers within 25 km: 3')
+  await page.screenshot({ path: test.info().outputPath('count-manila-25.png') })
+  await page.getByRole('button', { name: '100 km', exact: true }).click()
+  await expect(count).toHaveText('Centers within 100 km: 3')
+  await place.fill('Cebu City')
+  await page.getByRole('option', { name: 'Cebu City, Cebu' }).click()
+  await expect(count).toHaveText('Centers within 100 km: 1')
+  await page.getByRole('searchbox', { name: 'What can you do?' }).fill('I can fix computers')
+  await page.getByRole('button', { name: 'Search', exact: true }).click()
+  await expect(page.getByRole('button', { name: /^Train, \d+$/ })).toHaveAccessibleName('Train, 1')
+  await expect(page.getByRole('button', { name: /^Assess, \d+$/ })).toHaveAccessibleName(
+    'Assess, 0',
+  )
+  await page.screenshot({ path: test.info().outputPath('count-cebu-100.png') })
 })
 
 // QA-2026-11-18-E (US-0014 AC5): when no center lists the qualification anywhere, a wider range can't help, so the

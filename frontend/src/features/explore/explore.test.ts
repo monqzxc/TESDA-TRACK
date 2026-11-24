@@ -5,6 +5,7 @@ import {
   anyOutOfRange,
   anyScholarship,
   cardsFor,
+  countedCenters,
   estimateMinutes,
   firstKind,
   hasScholarship,
@@ -141,6 +142,29 @@ describe('cardsFor with a range', () => {
     const centers = [center('t', 'training', ['COOKERY'], 40)]
     expect(cardsFor('training', [match('COOKERY', 90)], centers)[0].near).toBe(0)
     expect(cardsFor('training', [match('COOKERY', 90)], centers, 50)[0].near).toBe(1)
+  })
+})
+
+// QA-2026-11-23-EXP7 (US-0014 AC3): the result counts follow the place and the range.
+describe('countedCenters', () => {
+  const centers = [
+    center('near', 'training', ['A'], 3),
+    center('edge', 'training', ['A'], 25),
+    center('far', 'assessment', ['A'], 80),
+    center('unmapped', 'assessment', ['A'], null),
+  ]
+  const ids = (hasPlace: boolean, km: number) =>
+    countedCenters(centers, hasPlace, km).map((c) => c.id)
+
+  it('counts only centers within the range once there is a place', () => {
+    expect(ids(true, 5)).toEqual(['near'])
+    expect(ids(true, 25)).toEqual(['near', 'edge'])
+    expect(ids(true, 100)).toEqual(['near', 'edge', 'far'])
+    expect(ids(true, 1)).toEqual([])
+  })
+
+  it('counts every center without a place', () => {
+    expect(ids(false, 5)).toEqual(['near', 'edge', 'far', 'unmapped'])
   })
 })
 

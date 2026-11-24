@@ -872,6 +872,7 @@ export const pag: Record<string, string> = {
   'Filter centers': 'I-filter iray sentro',
   '1 center shown': '1 a sentro so ipapanengneng',
   '{0} centers shown': '{0} a sentro so ipapanengneng',
+  'Centers within {0} km: {1}': 'Saray sentro ed loob na {0} km: {1}',
   'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.':
     'Saray sample a sentro para ed demo ed Disyembre 2. Aliwan opisyal a listaan na TESDA: ginawa-gawa labat iray ngaran, lugar tan iskedyul.',
   'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':

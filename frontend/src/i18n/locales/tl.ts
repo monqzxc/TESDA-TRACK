@@ -1649,6 +1649,7 @@ export const tl: Record<string, string> = {
   'Filter centers': 'I-filter ang mga sentro',
   '1 center shown': '1 sentrong ipinapakita',
   '{0} centers shown': '{0} sentrong ipinapakita',
+  'Centers within {0} km: {1}': 'Mga sentro sa loob ng {0} km: {1}',
   // US-0017 AC8: sample centers for the December 2 demo.
   'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.':
     'Mga halimbawang sentro para sa demo sa Disyembre 2. Hindi ito opisyal na listahan ng TESDA: gawa-gawa lamang ang mga pangalan, lugar at iskedyul.',

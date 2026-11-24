@@ -885,6 +885,7 @@ export const bcl: Record<string, string> = {
   'Filter centers': 'I-filter an mga sentro',
   '1 center shown': '1 na sentro an ipinapahiling',
   '{0} centers shown': '{0} na sentro an ipinapahiling',
+  'Centers within {0} km: {1}': 'Mga sentro sa laog nin {0} km: {1}',
   'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.':
     'Mga sample na sentro para sa demo sa Disyembre 2. Bako ini opisyal na listahan kan TESDA: gibo-gibo sana an mga pangaran, lugar asin iskedyul.',
   'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':
