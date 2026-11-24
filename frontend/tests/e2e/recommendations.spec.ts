@@ -532,6 +532,143 @@ for (const viewport of [
   })
 }
 
+for (const { width, engine } of [
+  { width: 1280, engine: 'leaflet' },
+  { width: 390, engine: 'leaflet' },
+  { width: 1280, engine: 'maplibre' },
+] as const) {
+  test(`BUG-127: popup and detail hand off directions with routing enabled at ${width}px (${engine})`, async ({
+    page,
+    context,
+  }) => {
+    await page.setViewportSize({ width, height: 900 })
+    await serveRecommendations(page, engine)
+    // Verify the actual new-tab navigation without depending on Google's network or changing any records.
+    const destination = 'https://www.google.com/maps/dir/?api=1&destination=14.5995,120.9842'
+    await context.route('https://www.google.com/maps/**', (route) =>
+      route.fulfill({
+        contentType: 'text/html',
+        body: '<title>Directions hand-off test</title>',
+      }),
+    )
+    await page.goto('/explore')
+    await page
+      .getByRole('dialog', { name: 'Open Location?' })
+      .getByRole('button', { name: 'Not now', exact: true })
+      .click()
+    await page.getByRole('searchbox', { name: 'What can you do?' }).fill(GOAL)
+    await page.getByRole('button', { name: 'Search', exact: true }).click()
+    const place = page.getByRole('combobox', { name: 'Or type a city or province' })
+    await place.fill('Manila')
+    await place.press('Enter')
+    await page
+      .getByRole('button', { name: /Example Computer Training Center Training for/ })
+      .click()
+    const detail = page
+      .locator('article')
+      .filter({ has: page.getByRole('heading', { name: COMPUTER_SITE.name, exact: true }) })
+    const directions = detail.getByRole('link', { name: 'Directions', exact: true })
+    await expect(directions).toHaveAttribute('href', destination)
+    await expect(
+      detail.getByRole('button', { name: 'Show route on the map', exact: true }),
+    ).toBeVisible()
+    const openMaps = async (link: ReturnType<Page['getByRole']>) => {
+      const opened = context.waitForEvent('page')
+      await link.click()
+      const maps = await opened
+      await expect(maps).toHaveURL(destination)
+      await maps.close()
+      await expect(page).toHaveURL(/\/explore/)
+    }
+    await directions.scrollIntoViewIfNeeded()
+    await page.screenshot({
+      path: test.info().outputPath('directions-detail.png'),
+      animations: 'disabled',
+    })
+    await openMaps(directions)
+    // Phones deliberately use the center detail rather than a second popup over the small map.
+    if (width < 768) return
+    await detail
+      .getByRole('heading', { name: COMPUTER_SITE.name, exact: true })
+      .scrollIntoViewIfNeeded()
+    const popup = page.locator(
+      engine === 'leaflet' ? '.leaflet-popup-content' : '.maplibregl-popup-content',
+    )
+    const popupDirections = popup.getByRole('link', { name: 'Get directions', exact: true })
+    await expect(popupDirections).toHaveAttribute('href', destination)
+    await expect(
+      popup.getByRole('button', { name: 'Show route on the map', exact: true }),
+    ).toBeAttached()
+    await popupDirections.scrollIntoViewIfNeeded()
+    await page.screenshot({
+      path: test.info().outputPath('directions-popup.png'),
+      animations: 'disabled',
+    })
+    await openMaps(popupDirections)
+    await expect(
+      detail.getByRole('heading', { name: COMPUTER_SITE.name, exact: true }),
+    ).toBeAttached()
+  })
+}
+
+for (const width of [1280, 390]) {
+  test(`BUG-05: phone ranges, repeated codes, extensions and fax stay separate at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 })
+    await serveRecommendations(page, 'leaflet')
+    const phone =
+      '(032) 256-1302 to 04; 255-2331; (084) 822-4182 (084) 628-6915; (032) 410-8822 local: 7145 / 7153; Fax: 2561669'
+    await page.route('**/api/v1/training-providers*', (route) =>
+      route.fulfill({
+        json: [{ ...COMPUTER_SITE, contact_phone: phone }, CEBU_SITE, WELDING_SITE],
+      }),
+    )
+    await page.goto('/explore?qualification=CSS-NC-II')
+    await page
+      .getByRole('dialog', { name: 'Open Location?' })
+      .getByRole('button', { name: 'Not now' })
+      .click()
+    await page.getByRole('combobox', { name: 'Or type a city or province' }).fill('Manila')
+    await page
+      .getByRole('button', { name: /Example Computer Training Center Training for/ })
+      .click()
+    const detail = page
+      .locator('article')
+      .filter({ has: page.getByRole('heading', { name: COMPUTER_SITE.name, exact: true }) })
+    const targets = [
+      'tel:0322561302',
+      'tel:0322552331',
+      'tel:0848224182',
+      'tel:0846286915',
+      'tel:0324108822;ext=7145',
+      'tel:0324108822;ext=7153',
+    ]
+    await expect(detail.locator('a[href^="tel:"]')).toHaveCount(targets.length)
+    expect(
+      await detail
+        .locator('a[href^="tel:"]')
+        .evaluateAll((links) => links.map((link) => link.getAttribute('href'))),
+    ).toEqual(targets)
+    await detail.getByRole('link', { name: /local 7153/ }).scrollIntoViewIfNeeded()
+    await page.screenshot({
+      path: test.info().outputPath('separate-phone-links.png'),
+      animations: 'disabled',
+    })
+    // Desktop map popup uses the same parser; phones use the detail panel.
+    if (width > 768) {
+      const popup = page.locator('.leaflet-popup-content')
+      await expect(popup.locator('a[href^="tel:"]')).toHaveCount(targets.length)
+      expect(
+        await popup
+          .locator('a[href^="tel:"]')
+          .evaluateAll((links) => links.map((link) => link.getAttribute('href'))),
+      ).toEqual(targets)
+    }
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+  })
+}
+
 for (const width of [1280, 390]) {
   test(`BUG-120: detail keeps the list estimate and explains road-route differences at ${width}px`, async ({
     page,
@@ -558,8 +695,8 @@ for (const width of [1280, 390]) {
       .filter({ has: page.getByRole('heading', { name: COMPUTER_SITE.name, exact: true }) })
     await expect(card).toContainText('7.6 km')
     await expect(card).toContainText('21 min')
-    await expect(card).toContainText('Straight-line distance Â· estimated time by car')
-    await expect(card).toContainText('10.3 km Â· about 22 min by car')
+    await expect(card).toContainText('Straight-line distance · estimated time by car')
+    await expect(card).toContainText('10.3 km · about 22 min by car')
     await expect(card).toContainText('starting point is rounded to about 1 km for privacy')
     await expect(card).toContainText(
       'may differ from the straight-line estimate in the list and map popup',
@@ -585,6 +722,125 @@ for (const width of [1280, 390]) {
     ).toBe(true)
   })
 }
+
+test('BUG-123: other demand areas follow range and Relocate, including cached responses', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1280, height: 900 })
+  await serveRecommendations(page, 'leaflet')
+  await page.route('**/api/v1/labor-market/outlook?*', (route) =>
+    route.fulfill({
+      json: {
+        qualification: CSS,
+        region_code: 'NCR',
+        home_region_code: 'NCR',
+        relocate: false,
+        areas: [],
+        alternatives: [],
+        training_site_ids: [11, 21],
+        assessment_site_ids: [31],
+        totals: {
+          posting_count: 50,
+          employer_count: 5,
+          training_sites: 2,
+          assessment_sites: 1,
+          regions_with_postings: 4,
+          regions_with_sites: 2,
+        },
+        snapshot_dates: ['2026-11-04'],
+        demand_available: true,
+        home_demand: {
+          region_code: 'NCR',
+          name: 'Metro Manila',
+          posting_count: 2,
+          level: 'low',
+          rank: 4,
+          ranked_of: 4,
+          limited: false,
+        },
+        higher_demand: [
+          {
+            region_code: 'IV-A',
+            name: 'CALABARZON',
+            distance_km: 47,
+            nearby: true,
+            posting_count: 10,
+            level: 'moderate',
+            training_sites: 1,
+            assessment_sites: 1,
+          },
+          {
+            region_code: 'III',
+            name: 'Central Luzon',
+            distance_km: 57,
+            nearby: true,
+            posting_count: 15,
+            level: 'high',
+            training_sites: 2,
+            assessment_sites: 1,
+          },
+          {
+            region_code: 'VII',
+            name: 'Central Visayas',
+            distance_km: 571,
+            nearby: false,
+            posting_count: 23,
+            level: 'high',
+            training_sites: 1,
+            assessment_sites: 0,
+          },
+        ],
+        insight: {
+          headline: 'Demand for your qualification',
+          summary: 'Isolated test evidence.',
+          points: [],
+        },
+        includes_example_sites: false,
+        ai_summary_available: false,
+        limitations: [],
+        method_version: 'e2e',
+      },
+    }),
+  )
+  await page.goto('/explore?qualification=CSS-NC-II')
+  await page
+    .getByRole('dialog', { name: 'Open Location?' })
+    .getByRole('button', { name: 'Not now' })
+    .click()
+  await page.getByRole('combobox', { name: 'Or type a city or province' }).fill('Makati')
+  const local = page.getByRole('group', { name: 'Demand here', exact: true })
+  await expect(local).toContainText('Low demand')
+  const area = (name: string) =>
+    local.getByRole('button', { name: `Show ${name} on the map`, exact: true })
+  for (const km of [5, 25]) {
+    await page.getByRole('button', { name: `${km} km`, exact: true }).click()
+    await expect(local.getByText('Needed more in', { exact: true })).toHaveCount(0)
+    await expect(area('Central Visayas')).toHaveCount(0)
+    await expect(local).not.toContainText('Your region leads for this one.')
+  }
+  await local.screenshot({
+    path: test.info().outputPath('near-only-demand.png'),
+    animations: 'disabled',
+  })
+  await page.getByRole('button', { name: '50 km', exact: true }).click()
+  await expect(area('CALABARZON')).toBeVisible()
+  await expect(area('Central Luzon')).toHaveCount(0)
+  await page.getByRole('button', { name: '100 km', exact: true }).click()
+  await expect(area('Central Luzon')).toBeVisible()
+  await expect(area('Central Visayas')).toHaveCount(0)
+  await page.getByText('Relocate', { exact: true }).click()
+  await expect(area('Central Visayas')).toBeVisible()
+  await local.screenshot({
+    path: test.info().outputPath('relocate-demand.png'),
+    animations: 'disabled',
+  })
+  await page.getByText('Relocate', { exact: true }).click()
+  await expect(area('Central Visayas')).toHaveCount(0)
+  await expect(area('CALABARZON')).toBeVisible()
+  await page.getByRole('button', { name: '25 km', exact: true }).click()
+  await expect(local.getByText('Needed more in', { exact: true })).toHaveCount(0)
+  await expect(local).toContainText('2 records in Metro Manila')
+})
 
 test('BUG-18: Career Map center details show the recorded source and source date', async ({
   page,

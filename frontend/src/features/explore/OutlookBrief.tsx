@@ -19,7 +19,7 @@ import { button } from '../../styles/buttons.ts'
 import { CenterSuggestionFeedback } from '../suggestion-feedback/CenterSuggestionFeedback.tsx'
 import type { View } from './ExplorePage.tsx'
 import { travelTime } from '../training/format.ts'
-import { estimateMinutes, findJobsUrl, roundKm } from './explore.ts'
+import { estimateMinutes, findJobsUrl, NEAR_KM, roundKm } from './explore.ts'
 import type { Balance } from './outlookApi.ts'
 import type { Recommendation } from './recommend.ts'
 import { useDemandStore, useExploreStore, type Explore } from './useExplore.ts'
@@ -600,7 +600,16 @@ function LocalDemand({
   const copy = useCopy().explore.outlook.local
   const data = explore.outlook.data
   if (!data) return null
-  const higher = data.higher_demand ?? []
+  const allHigher = data.higher_demand ?? []
+  // Respect the current choice immediately, even while an earlier relocation response remains cached.
+  const higher = allHigher.filter(
+    (area) =>
+      explore.relocate ||
+      (explore.rangeKm > NEAR_KM &&
+        area.distance_km !== null &&
+        Number.isFinite(area.distance_km) &&
+        area.distance_km <= explore.rangeKm),
+  )
   const home = data.home_demand
   const header = (
     <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5">
@@ -705,7 +714,7 @@ function LocalDemand({
             </div>
           ))}
         </div>
-      ) : home.level === 'none' ? null : (
+      ) : home.level === 'none' || allHigher.length > 0 ? null : (
         <p className={cx(note, 'flex items-center gap-1.5')}>
           <Icon name="check" className="flex-none text-good-ink" />
           {copy.top}

@@ -174,6 +174,7 @@ beforeEach(() => {
   })
   useExploreStore.setState({
     draft: 'housekeeping',
+    rangeKm: 25,
     relocate: false,
     search: {
       query: 'housekeeping',
@@ -433,6 +434,37 @@ describe('the supply and demand brief', () => {
 })
 
 describe('Demand where you are (Card 3)', () => {
+  it.each([5, 10, 25])('keeps other regions hidden at %s km with Relocate off', async (rangeKm) => {
+    useExploreStore.setState({ rangeKm, relocate: false })
+    const local = await brief('Low demand')
+    expect(within(local).queryByText('Needed more in')).not.toBeInTheDocument()
+    expect(
+      within(local).queryByRole('button', { name: 'Show Central Visayas on the map' }),
+    ).not.toBeInTheDocument()
+    expect(local).not.toHaveTextContent('Your region leads for this one.')
+    expect(local).toHaveTextContent('2 records in Metro Manila')
+  })
+
+  it('hides cached distant areas immediately when Relocate is turned off', async () => {
+    useExploreStore.setState({ rangeKm: 25, relocate: true })
+    const local = await brief('Low demand')
+    expect(
+      await within(local).findByRole('button', { name: 'Show Central Visayas on the map' }),
+    ).toBeVisible()
+    fireEvent.click(screen.getByRole('switch', { name: 'Relocate' }))
+    expect(
+      within(local).queryByRole('button', { name: 'Show Central Visayas on the map' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('does not show a 571 km alternative when farther means 100 km', async () => {
+    useExploreStore.setState({ rangeKm: 100, relocate: false })
+    const local = await brief('Low demand')
+    expect(
+      within(local).queryByRole('button', { name: 'Show Central Visayas on the map' }),
+    ).not.toBeInTheDocument()
+  })
+
   // The first answer can come before the regions, without an area: wait for the one about the learner's area.
   const brief = async (settled: string | RegExp) => {
     renderWithAuth(
@@ -445,6 +477,7 @@ describe('Demand where you are (Card 3)', () => {
   }
 
   it('gives the level where the learner is and where the qualification is needed more', async () => {
+    useExploreStore.getState().setRelocate(true)
     const local = await brief('Low demand')
     expect(within(local).getByText(/Your location/)).toBeInTheDocument()
     expect(local).toHaveTextContent(/2 records in Metro Manila · #2 of 2 regions/)
@@ -507,6 +540,7 @@ describe('Demand where you are (Card 3)', () => {
 
   it('counts modelled demand as records, with no sample label (US-0018)', async () => {
     demandIsSample = true
+    useExploreStore.getState().setRelocate(true)
     const local = await brief('Low demand')
     // The demand is shown as records. (The ranked list beside the map labels its estimated travel times as sample
     // data, which is about trips, not demand.)

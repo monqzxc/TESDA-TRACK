@@ -1154,14 +1154,14 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     // Above the pin: a selected pin is drawn larger.
     frame.setOffset(popup.type === 'together' ? 26 : raised ? 60 : 48).setLngLat(lngLat)
     if (!frame.isOpen()) frame.addTo(map)
-    // Once it's laid out: moved into view, and, opened from the keyboard, focused on its first button (Get route).
+    // Once laid out: moved into view, and, opened from the keyboard, focused on Get directions.
     // A redraw in the same frame (the center becoming selected) cancels this one, and its own does it instead.
     const frameRequest = requestAnimationFrame(() => {
       // Not while the camera is still on its way somewhere: it checks again when it gets there.
       if (!map.isMoving()) keepPopupInView()
       if (!focusPopup.current) return
       focusPopup.current = false
-      popupNode.querySelector<HTMLElement>('button')?.focus()
+      popupNode.querySelector<HTMLElement>('a[target="_blank"], button')?.focus()
     })
     return () => cancelAnimationFrame(frameRequest)
     // popupKey says what the popup shows; the popup object itself is new on every render.

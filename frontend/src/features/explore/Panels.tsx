@@ -1655,23 +1655,26 @@ export function CenterCard({
             </div>
           )}
 
-          {point &&
-            (canRoute && config?.routing_enabled ? (
-              <Button className={directions} onPress={onRoute}>
-                <Icon name="directions" />
-                {copy.route}
-              </Button>
-            ) : (
+          {point && (
+            <>
               <a
                 className={directions}
                 href={googleMapsDirections(point)}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
+                title={en.training.center.googleMapsHelp}
               >
                 <Icon name="directions" />
                 {copy.directions}
               </a>
-            ))}
+              {canRoute && config?.routing_enabled && (
+                <Button className={cx(button({ height: 44 }), 'w-full')} onPress={onRoute}>
+                  <Icon name="route" />
+                  {copy.route}
+                </Button>
+              )}
+            </>
+          )}
 
           {readiness && openPathway && (
             <Button
