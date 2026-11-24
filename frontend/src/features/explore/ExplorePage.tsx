@@ -348,12 +348,15 @@ export default function ExplorePage() {
     if (!selectedId) listScroll.current = scroller.current?.scrollTop ?? 0
     setSelectedId(id)
     setSelectedCode(code)
+    // Opening a center draws the way there straight away, when the page can draw routes from somewhere.
+    store().showRoute(canRoute ? id : null)
     setMotion('forward')
     // A center picked on the map opens its card, so a folded panel opens with it.
     setCollapsed(false)
     if (onMap) setFocus((n) => n + 1)
   }
   const back = () => {
+    store().showRoute(null)
     setSelectedId(null)
     setMotion('back')
   }
@@ -520,7 +523,8 @@ export default function ExplorePage() {
             }
           >
             <CenterMap
-              centers={pins}
+              // While a route is drawn, only its center stays on the map.
+              centers={route && selected ? [selected] : pins}
               centersUnavailable={explore.failed}
               demandAreas={demandAreas}
               demandRegion={explore.demandRegion}
@@ -766,6 +770,7 @@ export default function ExplorePage() {
                     config={config}
                     onBack={back}
                     onRoute={() => store().showRoute(selected.id)}
+                    onHideRoute={() => store().showRoute(null)}
                   />
                 ) : explore.centerResultsUnavailable && view !== 'demand' ? null : search ? (
                   <ResultsPanel

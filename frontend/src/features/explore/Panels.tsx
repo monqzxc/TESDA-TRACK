@@ -1443,6 +1443,7 @@ export function CenterCard({
   config,
   onBack,
   onRoute,
+  onHideRoute,
 }: {
   center: Center
   /** The qualification whose card it was opened from; from the map, none. */
@@ -1454,6 +1455,8 @@ export function CenterCard({
   config: ClientConfig | undefined
   onBack: () => void
   onRoute: () => void
+  /** Clears the drawn route, so every center is back on the map. */
+  onHideRoute: () => void
 }) {
   const en = useCopy()
   const copy = en.explore.card
@@ -1642,9 +1645,9 @@ export function CenterCard({
 
           {point &&
             (canRoute && config?.routing_enabled ? (
-              <Button className={directions} onPress={onRoute}>
-                <Icon name="directions" />
-                {copy.route}
+              <Button className={directions} onPress={routed ? onHideRoute : onRoute}>
+                <Icon name={routed ? 'close' : 'directions'} />
+                {routed ? copy.hideRoute : copy.route}
               </Button>
             ) : (
               <a

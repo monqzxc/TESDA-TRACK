@@ -2816,6 +2816,7 @@ export const en = {
       matchesSearch: 'Matches your search',
       directions: 'Directions',
       route: 'Show route on the map',
+      hideRoute: 'Hide route',
       call: 'Call',
       email: 'Email',
       website: 'Website',
