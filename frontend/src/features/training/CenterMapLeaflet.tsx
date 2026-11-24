@@ -49,6 +49,7 @@ import { routeLabel } from './format.ts'
 import { homeView, homeWorldSize, zoomFor } from './mapLimits.ts'
 import { useOverlayEdges, type OverlayEdges } from './overlayEdges.ts'
 import { partialPath, useRouteDraw } from './routeDraw.ts'
+import { useTrainingStore } from './state.ts'
 import type { Reference } from './useCenters.ts'
 
 // The center map drawn by Leaflet (classic/training_view.py _CENTER_MAP, ported from its Leaflet code): clustered pins
@@ -706,8 +707,10 @@ function Pins({
 }
 
 /**
- * The learner's approximate location, or the place they searched for, beneath the pins. A searched place's dot can be
- * dragged (`onMove`), with room around it for a finger, to measure from a more exact spot.
+ * The learner's approximate location, or the place they searched for. The learner's own is drawn over the pins, a
+ * little finer than the rounded location the page measures from (state.ts livePoint), so no center hides it. A
+ * searched place's dot sits beneath the pins and can be dragged (`onMove`), with room around it for a finger, to
+ * measure from a more exact spot.
  */
 function ReferenceDot({
   reference,
@@ -718,22 +721,25 @@ function ReferenceDot({
 }) {
   const en = useCopy()
   const copy = en.training.map
+  const live = useTrainingStore((state) => (state.useLocation ? state.livePoint : null))
 
   if (!reference) return null
   const movable = Boolean(onMove && !reference.mine)
+  const at = reference.mine && live ? live : reference
   const dot = `<div class="${cx(
-    'box-border size-4.5 rounded-full border-3 border-white',
+    'box-border rounded-full border-3 border-white',
+    reference.mine ? 'size-5' : 'size-4.5',
     reference.mine
       ? 'bg-[#175cd3] shadow-[0_0_0_7px_#175cd333,0_1px_4px_rgb(var(--track-shadow-rgb)/0.4)]'
       : 'bg-step-current shadow-[0_0_0_7px_rgb(var(--track-shadow-rgb)/0.13),0_1px_4px_rgb(var(--track-shadow-rgb)/0.4)]',
   )}"></div>`
   return (
     <Marker
-      position={[reference.latitude, reference.longitude]}
+      position={[at.latitude, at.longitude]}
       icon={L.divIcon({
         className: '',
-        iconSize: movable ? [40, 40] : [18, 18],
-        iconAnchor: movable ? [20, 20] : [9, 9],
+        iconSize: movable ? [40, 40] : reference.mine ? [20, 20] : [18, 18],
+        iconAnchor: movable ? [20, 20] : reference.mine ? [10, 10] : [9, 9],
         html: movable
           ? `<div class="grid size-10 cursor-grab place-items-center" title="${copy.dragPin}">${dot}</div>`
           : dot,
@@ -750,7 +756,7 @@ function ReferenceDot({
             }
           : {}
       }
-      zIndexOffset={movable ? 0 : -1000}
+      zIndexOffset={reference.mine ? 1000 : movable ? 0 : -1000}
     >
       <Tooltip direction="top" offset={[0, movable ? -18 : -8]}>
         {reference.mine ? copy.yourLocation : reference.label}

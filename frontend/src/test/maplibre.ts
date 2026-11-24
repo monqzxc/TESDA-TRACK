@@ -73,6 +73,13 @@ export class Map {
     this.applyStyle(style)
     return this
   })
+  setPaintProperty = vi.fn((id: string, name: string, value: unknown) => {
+    const layer = this.style.layers.find((item) => item.id === id) as {
+      paint?: Record<string, unknown>
+    }
+    layer.paint = { ...layer.paint, [name]: value }
+    return this
+  })
   setLayoutProperty = vi.fn((id: string, name: string, value: unknown) => {
     const layer = this.style.layers.find((item) => item.id === id) as {
       layout?: Record<string, unknown>

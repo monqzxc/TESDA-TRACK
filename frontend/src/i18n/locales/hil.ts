@@ -513,6 +513,8 @@ export const hil: Record<string, string> = {
     'Indi namon makuha ang imo lokasyon. Mag-type na lang sang siyudad, ukon tilawi liwat.',
   'This browser can’t share a location. Type a city instead.':
     'Indi makaambit sang lokasyon ini nga browser. Mag-type na lang sang siyudad.',
+  'Your browser shares a location only with secure (HTTPS) pages. Type a city instead.':
+    'Ginaambit lang sang imo browser ang lokasyon sa mga secure (HTTPS) nga pahina. Mag-type na lang sang siyudad.',
   'See what is near you': 'Tan-awa ang malapit sa imo',
   'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
     'I-on ang pag-ambit sang lokasyon, ukon mag-type sang siyudad, agod makita ang pinakamalapit nga mga sentro sang pagbansay kag pagtasa.',

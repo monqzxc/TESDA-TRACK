@@ -511,6 +511,8 @@ export const tl: Record<string, string> = {
     'Hindi matukoy ang iyong lokasyon. Maghanap ng lugar o pumili ng rehiyon.',
   'This browser can’t share a location. Search a place or choose a region instead.':
     'Hindi makapagbahagi ng lokasyon ang browser na ito. Maghanap ng lugar o pumili ng rehiyon.',
+  'Your browser shares a location only with secure (HTTPS) pages. Search a place or choose a region instead.':
+    'Ibinabahagi lang ng browser mo ang lokasyon sa mga secure (HTTPS) na pahina. Maghanap ng lugar o pumili ng rehiyon.',
   'Search location': 'Maghanap ng lokasyon',
   'Enter city, province, or region': 'Ilagay ang lungsod, lalawigan, o rehiyon',
   'Distances are measured from this place when your own location is off.':
@@ -1690,6 +1692,8 @@ export const tl: Record<string, string> = {
     'Hindi namin makuha ang lokasyon mo. Mag-type na lang ng lungsod, o subukang muli.',
   'This browser can’t share a location. Type a city instead.':
     'Hindi makapagbahagi ng lokasyon ang browser na ito. Mag-type na lang ng lungsod.',
+  'Your browser shares a location only with secure (HTTPS) pages. Type a city instead.':
+    'Ibinabahagi lang ng browser mo ang lokasyon sa mga secure (HTTPS) na pahina. Mag-type na lang ng lungsod.',
   'See what is near you': 'Tingnan ang malapit sa iyo',
   'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
     'Buksan ang pagbabahagi ng lokasyon, o mag-type ng lungsod, para makita ang pinakamalapit na mga sentro ng pagsasanay at pagtatasa.',

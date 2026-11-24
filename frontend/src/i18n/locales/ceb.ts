@@ -518,6 +518,8 @@ export const ceb: Record<string, string> = {
     'Dili namo makuha ang imong lokasyon. Pag-type na lang og siyudad, o sulayi pag-usab.',
   'This browser can’t share a location. Type a city instead.':
     'Dili makapaambit og lokasyon kini nga browser. Pag-type na lang og siyudad.',
+  'Your browser shares a location only with secure (HTTPS) pages. Type a city instead.':
+    'Ipaambit lang sa imong browser ang lokasyon sa mga secure (HTTPS) nga panid. Pag-type na lang og siyudad.',
   'See what is near you': 'Tan-awa ang duol nimo',
   'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
     'I-on ang pagpaambit sa lokasyon, o pag-type og siyudad, aron makita ang labing duol nga mga sentro sa pagbansay ug pagsusi.',

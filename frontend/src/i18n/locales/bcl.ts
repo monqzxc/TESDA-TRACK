@@ -514,6 +514,8 @@ export const bcl: Record<string, string> = {
     'Dai mi makua an lokasyon mo. Mag-type na sana nin siyudad, o probaran giraray.',
   'This browser can’t share a location. Type a city instead.':
     'Dai makapagbahagi nin lokasyon an browser na ini. Mag-type na sana nin siyudad.',
+  'Your browser shares a location only with secure (HTTPS) pages. Type a city instead.':
+    'Ibinabahagi sana kan saimong browser an lokasyon sa mga secure (HTTPS) na pahina. Mag-type na sana nin siyudad.',
   'See what is near you': 'Hilingon an harani saimo',
   'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
     'I-on an pagbahagi nin lokasyon, o mag-type nin siyudad, tanganing mahiling an pinakaharaning mga sentro nin pag-adal asin pagtasa.',

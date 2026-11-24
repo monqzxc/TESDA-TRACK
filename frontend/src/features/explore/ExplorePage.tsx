@@ -27,7 +27,7 @@ import { button } from '../../styles/buttons.ts'
 import { GOAL_MAX_LENGTH } from '../finder/key.ts'
 import { matchPathway } from '../training/recommendationApi.ts'
 import { useSavedCenters } from '../training/savedCenters.ts'
-import { useTrainingStore } from '../training/state.ts'
+import { useLocationWatch, useTrainingStore } from '../training/state.ts'
 import type { DemandMapArea } from '../training/CenterMapTypes.ts'
 import { NEAR_KM, nearestRegion, offers } from './explore.ts'
 import { LocationPrompt } from './LocationPrompt.tsx'
@@ -110,6 +110,8 @@ function prefersReducedMotion() {
  * marks and its training and assessment centers pinned over them.
  */
 export default function ExplorePage() {
+  // While sharing is on, the "you are here" pin follows the learner; leaving the page stops the browser reporting it.
+  useLocationWatch()
   const en = useCopy()
   const copy = en.explore
   const [params, setParams] = useSearchParams()

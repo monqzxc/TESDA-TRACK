@@ -429,6 +429,8 @@ export const pam: Record<string, string> = {
     'E meakit ing lokasyun mu. Manintun kang lugar o mamili kang rehiyun.',
   'This browser can’t share a location. Search a place or choose a region instead.':
     'E ya makapagbahagi lokasyun ing browser a iti. Manintun kang lugar o mamili kang rehiyun.',
+  'Your browser shares a location only with secure (HTTPS) pages. Search a place or choose a region instead.':
+    'Ibahagi na mu ning browser mu ing lokasyun king secure (HTTPS) a pahina. Manintun kang lugar o mamili kang rehiyun.',
   'Search location': 'Manintun lokasyun',
   'Enter city, province, or region': 'Ilagay ing lakanbalen, lalawigan, o rehiyun',
   'Your location': 'Ing lokasyun mu',
@@ -1192,6 +1194,8 @@ export const pam: Record<string, string> = {
     'E mi akua ing lokasyun mu. Mag-type kang lungsod, o subukan mu pasibayu.',
   'This browser can’t share a location. Type a city instead.':
     'E makapibahagi lokasyun ing browser a ini. Mag-type kang lungsod.',
+  'Your browser shares a location only with secure (HTTPS) pages. Type a city instead.':
+    'Ibahagi na mu ning browser mu ing lokasyun king secure (HTTPS) a pahina. Mag-type kang lungsod.',
   'See what is near you': 'Lawen me ing malapit keka',
   'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
     'Buksan me ing pamibahagi ning lokasyun, o mag-type kang lungsod, ban akit mu deng pekamalapit a sentro ning pamag-aral ampong pamagmasusi.',

@@ -509,6 +509,8 @@ export const war: Record<string, string> = {
     'Diri namon makuha an imo lokasyon. Pag-type la hin syudad, o testingi utro.',
   'This browser can’t share a location. Type a city instead.':
     'Diri makapaambit hin lokasyon ini nga browser. Pag-type la hin syudad.',
+  'Your browser shares a location only with secure (HTTPS) pages. Type a city instead.':
+    'Iginbabahin la han imo browser an lokasyon ha mga secure (HTTPS) nga pahina. Pag-type la hin syudad.',
   'See what is near you': 'Kitaa an hirani ha imo',
   'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
     'I-on an pagpaambit han lokasyon, o pag-type hin syudad, basi makita an pinakahirani nga mga sentro han pagbansay ngan pagtasa.',

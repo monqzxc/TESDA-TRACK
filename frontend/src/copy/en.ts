@@ -955,6 +955,9 @@ export const en = {
         unavailable: 'Your location couldn’t be found. Search a place or choose a region instead.',
         unsupported:
           'This browser can’t share a location. Search a place or choose a region instead.',
+        // The page is on plain HTTP (a test server): browsers share a location only with HTTPS pages.
+        insecure:
+          'Your browser shares a location only with secure (HTTPS) pages. Search a place or choose a region instead.',
       },
       place: 'Search location',
       placePlaceholder: 'Search location…',
@@ -2395,6 +2398,8 @@ export const en = {
           'Location is blocked in your browser. Type a city instead, or allow location and try again.',
         unavailable: 'We couldn’t get your location. Type a city instead, or try again.',
         unsupported: 'This browser can’t share a location. Type a city instead.',
+        insecure:
+          'Your browser shares a location only with secure (HTTPS) pages. Type a city instead.',
       },
     },
     nearby: {

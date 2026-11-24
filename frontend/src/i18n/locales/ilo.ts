@@ -509,6 +509,8 @@ export const ilo: Record<string, string> = {
     'Saanmi a maala ti lokasionmo. Ag-type laeng iti siudad, wenno padasem manen.',
   'This browser can’t share a location. Type a city instead.':
     'Saan a makaibingay iti lokasion daytoy a browser. Ag-type laeng iti siudad.',
+  'Your browser shares a location only with secure (HTTPS) pages. Type a city instead.':
+    'Iti laeng secure (HTTPS) a panid ti pangibingayan ti browser-mo iti lokasion. Ag-type laeng iti siudad.',
   'See what is near you': 'Kitaen ti asideg kenka',
   'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
     'I-on ti panangibingay iti lokasion, wenno ag-type iti siudad, tapno makita dagiti kaasitgan a sentro ti panagsanay ken panagsukat.',

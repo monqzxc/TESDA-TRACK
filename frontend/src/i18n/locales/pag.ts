@@ -507,6 +507,8 @@ export const pag: Record<string, string> = {
     'Ag mi naala so lokasyon mo. Man-type labat na siudad, o subokan lamet.',
   'This browser can’t share a location. Type a city instead.':
     'Ag makaburay na lokasyon iyan a browser. Man-type labat na siudad.',
+  'Your browser shares a location only with secure (HTTPS) pages. Type a city instead.':
+    'Ibuburay labat na browser mo so lokasyon ed saray secure (HTTPS) a pahina. Man-type labat na siudad.',
   'See what is near you': 'Nengnengen so asingger ed sika',
   'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
     'Ibukas so panangiburay na lokasyon, o man-type na siudad, pian nanengneng iray sankaasinggeran a sentro na pansanay tan panageksamin.',

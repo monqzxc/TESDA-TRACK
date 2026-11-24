@@ -56,6 +56,7 @@ import type { GeoJSON } from 'geojson'
 import { homeView, homeWorldSize, zoomFor } from './mapLimits.ts'
 import type { MapSettings, VectorTiles } from './mapSettings.ts'
 import { useOverlayEdges } from './overlayEdges.ts'
+import { useTrainingStore } from './state.ts'
 import {
   PHILIPPINES,
   REGION,
@@ -72,8 +73,10 @@ import {
   EMPTY_OVERLAYS,
   LAYERS,
   MAX_ZOOM,
+  REFERENCE_HALO,
   ROUTE_LAYERS,
   SOURCES,
+  accuracyArea,
   centerPoints,
   radiusArea,
   referencePoint,
@@ -123,6 +126,9 @@ let vectorFailed = false
 
 const NOWHERE: Point = { latitude: 0, longitude: 0 }
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'
+/** The "you are here" halo's pulse: this many beats, each this long. */
+const PULSE_BEATS = 3
+const PULSE_MS = 1400
 const TOUCH = '(pointer: coarse)'
 
 // The map's own controls float over it, as on the Leaflet map.
@@ -200,6 +206,16 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     settings,
     support,
   } = props
+  // The "you are here" pin is drawn a little finer than the rounded location the page measures from (state.ts
+  // livePoint). It's only drawn: nothing here sends it anywhere.
+  const live = useTrainingStore((state) => (state.useLocation ? state.livePoint : null))
+  const mineAt: Point | null =
+    reference?.mine && live
+      ? { latitude: live.latitude, longitude: live.longitude }
+      : reference?.mine
+        ? reference
+        : null
+  const accuracyM = reference?.mine ? (live?.accuracyM ?? null) : null
 
   const theme = useDocumentTheme()
   const reducedMotion = useMediaQuery(REDUCED_MOTION)
@@ -299,11 +315,28 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   }, [selectedId, byId, toLat, toLng, routeKind])
   // A searched place's dot can be dragged: it's drawn as a marker over the map instead of in the reference layer.
   const movableReference = Boolean(props.onMoveReference && reference && !reference.mine)
+  const shownLat = mineAt?.latitude ?? reference?.latitude
+  const shownLng = mineAt?.longitude ?? reference?.longitude
   const referenceData = useMemo(
-    () => referencePoint(movableReference ? null : reference),
+    () =>
+      referencePoint(
+        movableReference || !reference || shownLat === undefined || shownLng === undefined
+          ? null
+          : { ...reference, latitude: shownLat, longitude: shownLng },
+      ),
     // The point and whether it's the learner's own; its label doesn't change what's drawn.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [reference?.latitude, reference?.longitude, reference?.mine, movableReference],
+    [shownLat, shownLng, reference?.mine, movableReference],
+  )
+  const accuracyData = useMemo(
+    () =>
+      accuracyArea(
+        shownLat === undefined || shownLng === undefined
+          ? null
+          : { latitude: shownLat, longitude: shownLng },
+        accuracyM,
+      ),
+    [shownLat, shownLng, accuracyM],
   )
   const radiusData = useMemo(
     () => radiusArea(reference, radius),
@@ -663,6 +696,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
       selected: selectedData,
       recommended: recommendedData,
       reference: referenceData,
+      accuracy: accuracyData,
       radius: radiusData,
       routes: routesData,
       demand: heatmapData,
@@ -674,6 +708,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     update(SOURCES.selected, selectedData)
     update(SOURCES.recommended, recommendedData)
     update(SOURCES.reference, referenceData)
+    update(SOURCES.accuracy, accuracyData)
     update(SOURCES.radius, radiusData)
     update(SOURCES.routes, routesData)
     update(SOURCES.demand, heatmapData)
@@ -688,6 +723,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     selectedData,
     recommendedData,
     referenceData,
+    accuracyData,
     radiusData,
     routesData,
     heatmapData,
@@ -939,12 +975,12 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   useEffect(() => {
     const map = mapRef.current
     if (!ready || !map || !locateAsk || answeredLocate.current === locateAsk) return
-    if (reference?.mine) {
+    if (mineAt) {
       answeredLocate.current = locateAsk
       const element = map.getContainer()
       const size = { width: element.clientWidth, height: element.clientHeight }
       map.easeTo({
-        center: [reference.longitude, reference.latitude],
+        center: [mineAt.longitude, mineAt.latitude],
         zoom: LOCATE_ZOOM,
         offset: paddedOffset(overlayPadding(size, latest.current.inset, 40)),
         ...motion(reducedMotion, 800),
@@ -952,7 +988,46 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
       return
     }
     if (!locating) answeredLocate.current = locateAsk
-  }, [ready, locateAsk, reference, locating, reducedMotion])
+    // The point, not its object: a new one each render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, locateAsk, mineAt?.latitude, mineAt?.longitude, locating, reducedMotion])
+
+  // "You are here": the halo pulses for a few beats when the learner's location arrives, and again with each press
+  // of Locate, then rests, so it catches the eye without moving for ever. Not for a learner who asked for less motion.
+  const mineShown = mineAt !== null
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map || !mineShown || reducedMotion) return
+    const halo = (phase: number | null) => {
+      if (!map.getLayer(LAYERS.referenceHalo)) return
+      map.setPaintProperty(
+        LAYERS.referenceHalo,
+        'circle-radius',
+        phase === null ? REFERENCE_HALO.radius : 12 + 24 * phase,
+      )
+      map.setPaintProperty(
+        LAYERS.referenceHalo,
+        'circle-opacity',
+        phase === null ? REFERENCE_HALO.opacity : 0.4 * (1 - phase),
+      )
+    }
+    const start = performance.now()
+    let frame = 0
+    const step = (now: number) => {
+      const beats = (now - start) / PULSE_MS
+      if (beats >= PULSE_BEATS) {
+        halo(null)
+        return
+      }
+      halo(beats % 1)
+      frame = requestAnimationFrame(step)
+    }
+    frame = requestAnimationFrame(step)
+    return () => {
+      cancelAnimationFrame(frame)
+      halo(null)
+    }
+  }, [ready, mineShown, locateAsk, reducedMotion])
 
   // The selected center, chosen from the list or with View on map (which bumps `focus` to ask again): the camera goes
   // to it, closer in from far out, leaving room above it for its popup. Picked on the map itself, it's already in
