@@ -12,15 +12,17 @@ beforeEach(() => {
 })
 
 describe('picked qualifications', () => {
-  it('picks up to three', () => {
+  it('selects one at a time: another replaces it', () => {
     const { togglePicked } = useExploreStore.getState()
-    for (const code of ['A', 'B', 'C', 'D']) togglePicked(code)
-    expect(useExploreStore.getState().picked).toEqual(['A', 'B', 'C'])
+    togglePicked('A')
+    togglePicked('B')
+    expect(useExploreStore.getState().picked).toEqual(['B'])
   })
-  it('unpicks a picked one', () => {
+  it('clears the selection when the selected one is tapped again', () => {
     const { togglePicked } = useExploreStore.getState()
-    for (const code of ['A', 'B', 'C', 'B']) togglePicked(code)
-    expect(useExploreStore.getState().picked).toEqual(['A', 'C'])
+    togglePicked('A')
+    togglePicked('A')
+    expect(useExploreStore.getState().picked).toEqual([])
   })
   it('clears the picks on a new search', () => {
     useExploreStore.getState().togglePicked('A')
@@ -31,13 +33,12 @@ describe('picked qualifications', () => {
     useExploreStore.getState().togglePicked('A')
     expect(useDemandStore.getState().code).toBe('A')
   })
-  it('moves the demand focus back to what is still picked on an unpick', () => {
+  it('gives the demand focus back to the search when the selection is cleared', () => {
     const { togglePicked } = useExploreStore.getState()
     togglePicked('A')
     togglePicked('B')
+    expect(useDemandStore.getState().code).toBe('B')
     togglePicked('B')
-    expect(useDemandStore.getState().code).toBe('A')
-    togglePicked('A')
     expect(useDemandStore.getState().code).toBeUndefined()
   })
 })

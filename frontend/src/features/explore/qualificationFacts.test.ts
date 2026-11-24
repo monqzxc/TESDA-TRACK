@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { Match } from '../finder/api.ts'
 import type { Center, Program } from '../training/centers.ts'
 import type { QualificationFit } from '../tsp/passport.ts'
-import { compareColumns } from './compare.ts'
+import { qualificationFacts } from './qualificationFacts.ts'
 
 const match = (code: string): Match => ({
   qualification: { code, name: `${code} NC II`, sector: 'Test' },
@@ -30,9 +30,9 @@ const base = {
   catalog: [],
 }
 
-describe('compareColumns', () => {
+describe('qualificationFacts', () => {
   it('gives the range of training hours across centers in range', () => {
-    const [column] = compareColumns({
+    const [column] = qualificationFacts({
       ...base,
       matches: [match('A')],
       centers: [
@@ -45,7 +45,7 @@ describe('compareColumns', () => {
   })
 
   it('says nothing about hours no program lists', () => {
-    const [column] = compareColumns({
+    const [column] = qualificationFacts({
       ...base,
       matches: [match('A')],
       centers: [center('t1', 'training', 3, [program('A', null)])],
@@ -54,7 +54,7 @@ describe('compareColumns', () => {
   })
 
   it('knows a scholarship only from a program offering one, and nothing without a program', () => {
-    const [withOne, without] = compareColumns({
+    const [withOne, without] = qualificationFacts({
       ...base,
       matches: [match('A'), match('B')],
       centers: [center('t1', 'training', 3, [program('A', 100, true)])],
@@ -69,9 +69,9 @@ describe('compareColumns', () => {
       center('a1', 'assessment', 4, [], ['A']),
       center('a2', 'assessment', 70, [], ['A']),
     ]
-    const [near] = compareColumns({ ...base, matches: [match('A')], centers })
+    const [near] = qualificationFacts({ ...base, matches: [match('A')], centers })
     expect([near!.trainNear, near!.assessNear]).toEqual([1, 1])
-    const [unknown] = compareColumns({
+    const [unknown] = qualificationFacts({
       ...base,
       hasReference: false,
       matches: [match('A')],
@@ -86,7 +86,7 @@ describe('compareColumns', () => {
       next_step: 'assessment',
       coverage: { covered: ['u1', 'u2', 'u3'], missing: ['u4'], expired: [] },
     } as unknown as QualificationFit
-    const [a, b, c] = compareColumns({
+    const [a, b, c] = qualificationFacts({
       ...base,
       matches: [match('A'), match('B'), match('C')],
       centers: [],
@@ -102,7 +102,7 @@ describe('compareColumns', () => {
   })
 
   it('lists at most three possible jobs from the catalog', () => {
-    const [column] = compareColumns({
+    const [column] = qualificationFacts({
       ...base,
       matches: [match('A')],
       centers: [],

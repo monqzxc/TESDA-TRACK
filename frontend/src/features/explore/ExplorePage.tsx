@@ -636,8 +636,7 @@ export default function ExplorePage() {
           />
           {!selected && (
             <QualificationChips
-              matches={explore.allMatches}
-              chosen={search?.chosen}
+              explore={explore}
               className="mx-3 mt-2 rounded-12 max-md:bg-surface max-md:p-2 max-md:shadow-[0_6px_16px_-4px_rgb(var(--track-shadow-rgb)/0.24)] md:mt-0 md:mb-2"
             />
           )}

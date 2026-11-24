@@ -35,16 +35,6 @@ const match = (qualification: Match['qualification'], score = 80): Match => ({
 })
 const cookery = match(cookeryProgram.qualification, 90)
 const welding = match(weldingProgram.qualification, 85)
-const bread = match({
-  code: 'BPP-NCII',
-  name: 'Bread and Pastry Production NC II',
-  sector: 'Tourism',
-})
-const eim = match({
-  code: 'EIM-NCII',
-  name: 'Electrical Installation and Maintenance NC II',
-  sector: 'Construction',
-})
 
 let listingRequests = 0
 const searchFor = (matches: Match[], chosen?: boolean) =>
@@ -93,7 +83,7 @@ const renderPage = () =>
     </MemoryRouter>,
   )
 
-const chipGroup = () => screen.queryByRole('group', { name: 'Narrow it down (optional)' })
+const chipGroup = () => screen.queryByRole('group', { name: 'Matched qualifications' })
 const pinNames = () =>
   within(screen.getByTestId('map'))
     .queryAllByRole('listitem')
@@ -114,34 +104,57 @@ describe('Qualification chips', () => {
     expect(chipGroup()).not.toBeInTheDocument()
   })
 
-  it('toggles a chip and narrows the map', async () => {
+  it('selects a qualification: explains it under the chips and narrows the map', async () => {
     searchFor([cookery, welding])
     renderPage()
     const user = userEvent.setup()
     await screen.findByRole('button', { name: /Manila Welding Institute/ })
+    expect(screen.queryByRole('note', { name: 'Cookery NC II' })).not.toBeInTheDocument()
     const chip = within(chipGroup()!).getByRole('button', { name: 'Cookery NC II' })
     const before = listingRequests
     await user.click(chip)
-    await screen.findByRole('region', { name: 'Compare' })
-    expect(listingRequests).toBe(before)
     expect(chip).toHaveAttribute('aria-pressed', 'true')
-    // Narrowing filters what is already loaded: the results and the comparison stay, with no loading in between.
-    expect(screen.getByRole('region', { name: 'Compare' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /Cebu Skills Center/ })).toBeInTheDocument()
+    const note = await screen.findByRole('note', { name: 'Cookery NC II' })
+    expect(note).toHaveTextContent('Cookery NC II')
+    // Selecting filters what is already loaded: no new listings request.
+    expect(listingRequests).toBe(before)
     expect(pinNames()).toEqual(['Cebu Skills Center'])
-    await user.click(chip)
+  })
+
+  it('switches to another qualification, and clears when tapped again', async () => {
+    searchFor([cookery, welding])
+    renderPage()
+    const user = userEvent.setup()
+    await screen.findByRole('button', { name: /Manila Welding Institute/ })
+    const group = chipGroup()!
+    await user.click(within(group).getByRole('button', { name: 'Cookery NC II' }))
+    const weld = within(group).getByRole('button', { name: /Shielded Metal Arc/ })
+    await user.click(weld)
+    expect(within(group).getByRole('button', { name: 'Cookery NC II' })).toHaveAttribute(
+      'aria-pressed',
+      'false',
+    )
+    expect(screen.getByRole('note', { name: /Shielded Metal Arc/ })).toBeInTheDocument()
+    expect(pinNames()).toEqual(['Manila Welding Institute'])
+    await user.click(weld)
+    expect(screen.queryByRole('note')).not.toBeInTheDocument()
     expect(pinNames()).toHaveLength(2)
   })
 
-  it('disables a 4th pick with the hint', async () => {
-    searchFor([cookery, welding, bread, eim])
+  it('no longer shows a comparison table', async () => {
+    searchFor([cookery, welding])
     renderPage()
-    const user = userEvent.setup()
-    const group = await screen.findByRole('group', { name: 'Narrow it down (optional)' })
-    for (const name of ['Cookery NC II', /Shielded Metal Arc/, /Bread and Pastry/]) {
-      await user.click(within(group).getByRole('button', { name }))
-    }
-    expect(within(group).getByRole('button', { name: /Electrical Installation/ })).toBeDisabled()
-    expect(screen.getByText('Compare up to 3')).toBeInTheDocument()
+    await screen.findByRole('button', { name: /Manila Welding Institute/ })
+    expect(screen.queryByRole('region', { name: 'Compare' })).not.toBeInTheDocument()
+  })
+
+  it('edges each result card with its kind of center', async () => {
+    searchFor([cookery, welding])
+    renderPage()
+    await screen.findByRole('button', { name: /Manila Welding Institute/ })
+    const kinds = [...document.querySelectorAll('article[data-kind]')].map((a) =>
+      a.getAttribute('data-kind'),
+    )
+    expect(kinds).toContain('training')
   })
 })

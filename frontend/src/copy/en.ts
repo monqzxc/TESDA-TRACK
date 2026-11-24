@@ -2325,32 +2325,22 @@ export const en = {
       assessment: 'Assessment centers',
       demand: 'In demand jobs',
     },
-    // The search's qualifications to pick from, and the side-by-side comparison of those picked.
-    compare: {
-      narrowLabel: 'Narrow it down (optional)',
-      maxHint: 'Compare up to 3',
-      title: 'Compare',
-      rowFit: 'Your fit',
-      rowCore: 'CORE units you have',
-      coreOf: (have: number, total: number) => `${have} of ${total} units`,
-      rowHours: 'Training hours',
-      rowCenters: 'Centers near you',
-      centersValue: (train: number, assess: number) => `${train} train · ${assess} assess`,
-      rowScholarship: 'Scholarship',
-      rowJobs: 'Possible jobs',
-      yes: 'Yes',
-      no: 'No',
-      none: '—',
-      checking: 'Checking…',
-      noFit: 'Nothing on your passport points to this yet',
-      signIn: 'Sign in and add your Skill Passport to see which fits you',
-      // The server's next step for the learner, short enough for a table cell.
+    // The search's matched qualifications under the search box, and the short explanation of the one selected.
+    matched: {
+      label: 'Matched qualifications',
+      hint: 'Tap one to see what it’s about',
+      hours: (hours: number) => `${hours} hrs of training`,
+      hoursRange: (min: number, max: number) => `${min}–${max} hrs of training`,
+      near: (count: number) => `${count} centers near you`,
+      nearOne: '1 center near you',
+      none: 'Details not listed yet',
+      // The server's next step for the learner, from their Skill Passport.
       step: {
-        held: 'Certified',
-        renew: 'Renew',
-        assessment: 'Assess now',
-        gap_training: 'Gap training',
-        training: 'Full training',
+        held: 'You’re already certified',
+        renew: 'Renew your certificate',
+        assessment: 'You may be ready for assessment',
+        gap_training: 'Short training first, then assessment',
+        training: 'Full training needed',
       },
     },
     locationPrompt: {

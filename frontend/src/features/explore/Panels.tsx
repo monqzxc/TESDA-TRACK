@@ -39,7 +39,6 @@ import {
 } from './explore.ts'
 import type { AssessmentWhy, RankedCenter } from './recommend.ts'
 import { useExploreStore, type Explore } from './useExplore.ts'
-import { ComparePanel } from './ComparePanel.tsx'
 import { ASSESS_FIRST, type QualificationFit } from '../tsp/passport.ts'
 import { splitPhones } from '../../lib/phone.ts'
 
@@ -53,6 +52,8 @@ const kindIcon = { training: 'learn', assessment: 'award' } as const
 // The map's marker colors (CenterMapLeaflet's COLORS), so a row and its pin read as the same kind.
 const kindColor = { training: 'text-blue', assessment: 'text-teal' } as const
 const kindFill = { training: 'bg-fill', assessment: 'bg-[#0d9488]' } as const
+// A result card's left edge, in its kind's map color, so each card reads as training or assessment at a glance.
+const kindEdge = { training: 'border-l-blue', assessment: 'border-l-[#0d9488]' } as const
 // The center card's header band: a shade darker for assessment, so its small white text stays readable.
 const kindBand = { training: 'bg-fill', assessment: 'bg-[#0f766e]' } as const
 // Cards that float over the panel, and lift a little more when hovered.
@@ -669,6 +670,7 @@ export function NearbyPanel({
 /** A qualification that fits, with its nearest center of one kind and, opened, the next ones. */
 function QualificationCardView({
   card,
+  kind,
   groupLabel,
   hasReference,
   rangeKm,
@@ -677,6 +679,7 @@ function QualificationCardView({
   onSelect,
 }: {
   card: QualificationCard
+  kind: CenterKind
   groupLabel: string
   hasReference: boolean
   /** How far the learner can go. */
@@ -706,8 +709,10 @@ function QualificationCardView({
 
   return (
     <article
+      data-kind={kind}
       className={cx(
-        'flex flex-col gap-2 rounded-14 border border-border bg-surface p-3',
+        'flex flex-col gap-2 rounded-14 border border-l-4 border-border bg-surface p-3',
+        kindEdge[kind],
         floating,
         lift,
         'hover:border-hover-border',
@@ -887,6 +892,7 @@ function Group({
       {cards.length ? (
         cards.map((card) => (
           <QualificationCardView
+            kind={kind}
             key={card.match.qualification.code}
             card={card}
             groupLabel={text.heading}
@@ -1335,8 +1341,6 @@ export function ResultsPanel({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* The search's qualifications side by side (the picked ones, once any are), above whichever view is open. */}
-      <ComparePanel explore={explore} />
       {/* An underlined tab row: icon and label sit on one line, the chosen view is navy with a bar beneath it.
           Labels never truncate; when the row is narrow the icons drop out first. */}
       <div className="@container/tabs">

@@ -3,8 +3,8 @@ import type { Center } from '../training/centers.ts'
 import type { QualificationFit } from '../tsp/passport.ts'
 import { hasScholarship, offers } from './explore.ts'
 
-/** One picked qualification, side by side with the others: the learner's fit and what the course involves. */
-export interface CompareColumn {
+/** What a matched qualification involves near the learner, and how their Skill Passport fits it. */
+export interface QualificationFacts {
   code: string
   name: string
   /** The Skill Passport's fit; null when nothing on it points here; undefined when not known (loading, or no passport). */
@@ -25,10 +25,10 @@ export interface CompareColumn {
 const MAX_JOBS = 3
 
 /**
- * The comparison's columns. With a reference point, programs are read from the centers within range; without one,
+ * The facts behind each qualification's short explanation. With a reference point, programs are read from the centers within range; without one,
  * from every center listing the qualification.
  */
-export function compareColumns({
+export function qualificationFacts({
   matches,
   centers,
   rangeKm,
@@ -42,7 +42,7 @@ export function compareColumns({
   hasReference: boolean
   fits: ReadonlyMap<string, QualificationFit | null>
   catalog: readonly { code: string; possible_jobs?: readonly string[] }[]
-}): CompareColumn[] {
+}): QualificationFacts[] {
   const near = (center: Center) =>
     !hasReference || (center.distanceKm !== null && center.distanceKm <= rangeKm)
   return matches.map(({ qualification: { code, name } }) => {

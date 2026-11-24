@@ -21,7 +21,6 @@ import {
   anyKindWithoutCenter,
   anyScholarship,
   anyOutOfRange,
-  MAX_PICKED,
   MAX_QUALIFICATIONS,
   METRO_MANILA,
   narrowMatches,
@@ -96,9 +95,9 @@ interface ExploreState {
   rangeChosen: boolean
   /** "How far can you go?" is on screen. */
   askingRange: boolean
-  /** The search's qualifications the learner picked to compare (codes, at most MAX_PICKED). None: all of them. */
+  /** The matched qualification the learner selected (at most one code). None: all of them. */
   picked: string[]
-  /** Picks a qualification, or unpicks it if it was picked. A pick past MAX_PICKED is ignored. */
+  /** Selects a qualification in place of any other, or clears it if it was the one selected. */
   togglePicked: (code: string) => void
   setDraft: (draft: string) => void
   setSearch: (search: Search | null) => void
@@ -133,14 +132,13 @@ export const useExploreStore = create<ExploreState>()(
       togglePicked: (code) => {
         const { picked } = useExploreStore.getState()
         if (picked.includes(code)) {
-          const rest = picked.filter((item) => item !== code)
-          set({ picked: rest })
-          // The demand and outlook follow what is still picked, not the one just unpicked.
+          set({ picked: [] })
+          // Cleared, the demand and outlook speak about the search's first match again.
           const demand = useDemandStore.getState()
-          if (demand.code === code) demand.setCode(rest.at(-1))
-        } else if (picked.length < MAX_PICKED) {
-          set({ picked: [...picked, code] })
-          // The qualification just picked is the one the demand and outlook speak about.
+          if (demand.code === code) demand.setCode(undefined)
+        } else {
+          set({ picked: [code] })
+          // The qualification just selected is the one the demand and outlook speak about.
           useDemandStore.getState().setCode(code)
         }
       },
