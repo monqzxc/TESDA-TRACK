@@ -582,6 +582,10 @@ export const tl: Record<string, string> = {
   'Turn-by-turn directions in Google Maps': 'Mga direksyon sa bawat liko sa Google Maps',
   'Finding routes…': 'Naghahanap ng mga ruta…',
   'Travel mode': 'Paraan ng paglalakbay',
+  'Straight-line distance · estimated time by car':
+    'Distansya sa tuwid na linya · tinatayang oras sakay ng kotse',
+  'Road route, without traffic. Its starting point is rounded to about 1 km for privacy, so distance and time may differ from the straight-line estimate in the list and map popup.':
+    'Ruta sa kalsada, walang trapiko. Tinatayang nasa 1 km ang panimulang lokasyon para sa privacy, kaya maaaring iba ang distansya at oras sa pagtataya gamit ang tuwid na linya sa listahan at popup ng mapa.',
   'by car': 'sakay ng kotse',
   'by bike': 'sakay ng bisikleta',
   'on foot': 'naglalakad',

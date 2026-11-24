@@ -1063,6 +1063,9 @@ export const en = {
       modeNames: { car: 'car', bike: 'bike', foot: 'walking' },
       road: (km: string, time: string, mode: string) => `${km} · about ${time} ${mode}`,
       fromYou: 'From your approximate location, without traffic.',
+      estimateLabel: 'Straight-line distance · estimated time by car',
+      estimateComparison:
+        'Road route, without traffic. Its starting point is rounded to about 1 km for privacy, so distance and time may differ from the straight-line estimate in the list and map popup.',
       flight: (from: string, to: string, time: string) =>
         `${from} to ${to} · about ${time} in the air`,
       flightNote: (between: string, toAirport: string, fromAirport: string) =>

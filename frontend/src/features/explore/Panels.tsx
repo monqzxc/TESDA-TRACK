@@ -1536,7 +1536,7 @@ export function CenterCard({
       external: true,
     })
   const directions = cx(button({ variant: 'primary', height: 44 }), 'w-full')
-  // With real routes below, the straight-line estimate would disagree with them, so it only stands in for them.
+  // Keep the list's estimate visible; the route below explains its different method and rounded starting point.
   const routed = Boolean(routeFrom && point && config?.routing_enabled)
 
   return (
@@ -1571,7 +1571,10 @@ export function CenterCard({
             <Icon name="pin" className="flex-none" />
             {placeLabel(center)}
           </p>
-          {!routed && <TripMeta center={center} className="text-white/90" withPlace={false} />}
+          <TripMeta center={center} className="text-white/90" withPlace={false} />
+          {center.distanceKm !== null && (
+            <p className="m-0 text-12 text-white/90">{en.training.routes.estimateLabel}</p>
+          )}
         </div>
 
         <div className="flex flex-col gap-3 p-4">
@@ -1648,7 +1651,7 @@ export function CenterCard({
                 <Icon name="route" />
                 {copy.travel}
               </p>
-              <RoutePanel from={routeFrom} to={point} />
+              <RoutePanel from={routeFrom} to={point} explainEstimate />
             </div>
           )}
 

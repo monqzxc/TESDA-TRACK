@@ -532,6 +532,60 @@ for (const viewport of [
   })
 }
 
+for (const width of [1280, 390]) {
+  test(`BUG-120: detail keeps the list estimate and explains road-route differences at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 })
+    await serveRecommendations(page, 'leaflet')
+    await page.goto('/explore?qualification=CSS-NC-II')
+    await page
+      .getByRole('dialog', { name: 'Open Location?' })
+      .getByRole('button', { name: 'Not now' })
+      .click()
+    const place = page.getByRole('combobox', { name: 'Or type a city or province' })
+    await place.fill('Makati')
+    await place.press('Enter')
+    const result = page.getByRole('button', {
+      name: /Example Computer Training Center Training for/,
+    })
+    await expect(result).toContainText('7.6 km')
+    await expect(result).toContainText('21 min')
+    await result.screenshot({ path: test.info().outputPath('list-estimate.png') })
+    await result.click()
+    const card = page
+      .locator('article')
+      .filter({ has: page.getByRole('heading', { name: COMPUTER_SITE.name, exact: true }) })
+    await expect(card).toContainText('7.6 km')
+    await expect(card).toContainText('21 min')
+    await expect(card).toContainText('Straight-line distance Â· estimated time by car')
+    await expect(card).toContainText('10.3 km Â· about 22 min by car')
+    await expect(card).toContainText('starting point is rounded to about 1 km for privacy')
+    await expect(card).toContainText(
+      'may differ from the straight-line estimate in the list and map popup',
+    )
+    const header = card
+      .getByRole('heading', { name: COMPUTER_SITE.name, exact: true })
+      .locator('..')
+    await header.screenshot({ path: test.info().outputPath('detail-estimate.png') })
+    const travel = card.getByText('Travel time', { exact: true }).locator('..')
+    await travel.scrollIntoViewIfNeeded()
+    await travel.screenshot({
+      path: test.info().outputPath('detail-route-explained.png'),
+      animations: 'disabled',
+    })
+    // Desktop opens a popup with the detail; phones show the detail alone to leave room for the map.
+    if (width >= 768) {
+      const popup = page.locator('.leaflet-popup')
+      await expect(popup).toContainText('About 7.6 km away')
+      await popup.screenshot({ path: test.info().outputPath('popup-estimate.png') })
+    }
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+    ).toBe(true)
+  })
+}
+
 test('BUG-18: Career Map center details show the recorded source and source date', async ({
   page,
 }) => {

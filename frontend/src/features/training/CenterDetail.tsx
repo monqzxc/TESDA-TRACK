@@ -248,7 +248,16 @@ export function KindBadges({
  * The routes from the learner's approximate location, one per travel mode, with the chosen one's distance and time.
  * The map draws the same routes (it reads the same request).
  */
-export function RoutePanel({ from, to }: { from: Point; to: Point }) {
+export function RoutePanel({
+  from,
+  to,
+  explainEstimate = false,
+}: {
+  from: Point
+  to: Point
+  /** The Career Map list uses a straight-line estimate, not these road-route measurements. */
+  explainEstimate?: boolean
+}) {
   const en = useCopy()
   const copy = en.training
 
@@ -333,7 +342,9 @@ export function RoutePanel({ from, to }: { from: Point; to: Point }) {
               copy.routes.modes[route.mode],
             )}
           </p>
-          <p className={muted}>{copy.routes.fromYou}</p>
+          <p className={muted}>
+            {explainEstimate ? copy.routes.estimateComparison : copy.routes.fromYou}
+          </p>
         </>
       )}
       {missing.length > 0 && (
