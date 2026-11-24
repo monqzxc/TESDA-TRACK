@@ -411,7 +411,7 @@ export function OutlookBrief({
                 </h3>
                 {picks.length ? (
                   // Side by side where they fit: the wider the window, the shorter the brief.
-                  <ul className="-m-1 grid list-none grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-2 p-1">
+                  <ul className="-m-1 grid list-none auto-rows-fr grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-2 p-1">
                     {picks.map(({ key, item }) => (
                       <li
                         key={key}
@@ -544,7 +544,7 @@ function RecommendedRow({ item, onSelect }: { item: Recommendation; onSelect: ()
   return (
     <Button
       onPress={onSelect}
-      className="group flex w-full cursor-pointer items-start gap-2.5 border-0 bg-transparent px-3 pt-2.5 pb-2 text-left outline-none data-focus-visible:outline-3 data-focus-visible:-outline-offset-3 data-focus-visible:outline-focus"
+      className="group flex w-full flex-1 cursor-pointer items-start gap-2.5 border-0 bg-transparent px-3 pt-2.5 pb-2 text-left outline-none data-focus-visible:outline-3 data-focus-visible:-outline-offset-3 data-focus-visible:outline-focus"
     >
       <span
         className={cx(
@@ -731,13 +731,13 @@ function NearbyQualifications({ explore }: { explore: Explore }) {
           {copy.failed}
         </p>
       ) : (
-        <ul className="-m-1 grid list-none grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-2 p-1">
+        <ul className="-m-1 grid list-none auto-rows-fr grid-cols-[repeat(auto-fill,minmax(15rem,1fr))] gap-2 p-1">
           {suggestions.map((item) => (
-            <li key={item.qualification.code}>
+            <li key={item.qualification.code} className="flex">
               <Button
                 onPress={() => useDemandStore.getState().setCode(item.qualification.code)}
                 aria-label={copy.focus(item.qualification.name)}
-                className={cx(tileButton, 'gap-0.5 px-2.5 py-2')}
+                className={cx(tileButton, 'h-full gap-1.5 px-2.5 py-2')}
               >
                 <span className="flex w-full flex-wrap items-center gap-1.5">
                   <span className="min-w-0 flex-1 text-13 font-semibold wrap-anywhere text-navy">
@@ -745,9 +745,10 @@ function NearbyQualifications({ explore }: { explore: Explore }) {
                   </span>
                   <span className={cx(tag, levelTone[item.level])}>{levels[item.level]}</span>
                 </span>
-                <ul className="m-0 list-none p-0">
+                {/* The why, set off in a soft panel: easier to spot than plain muted text, without competing with the name. */}
+                <ul className="m-0 flex w-full flex-1 list-none flex-col gap-0.5 rounded-8 border-l-2 border-blue/40 bg-tint/50 px-2 py-1.5">
                   {item.reasons.map((reason) => (
-                    <li key={reason} className="text-12 leading-[1.45] text-muted">
+                    <li key={reason} className="text-12 leading-[1.45] text-ink">
                       {reason}
                     </li>
                   ))}

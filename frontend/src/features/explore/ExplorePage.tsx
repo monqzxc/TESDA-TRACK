@@ -105,6 +105,43 @@ function prefersReducedMotion() {
   )
 }
 
+/** How long everything over the map stays folded away while a new route draws itself (routeDraw's DRAW_MS, and a
+ * beat to look at it), and how long the pieces then take to come back one by one (app.css: six steps of 140ms and
+ * each piece's 460ms). */
+const ROUTE_INTRO_HOLD_MS = 2000
+const ROUTE_INTRO_REVEAL_MS = 6 * 140 + 460
+
+/**
+ * While a new route is first drawn: 'hidden', everything floating over the map folded away; then 'revealing', the
+ * pieces coming back one at a time; then null, at rest. A route to another center starts again; closing the route
+ * ends it at once. Nothing folds away for a learner who asked for less motion.
+ */
+function useRouteIntro(routeKey: string | null): 'hidden' | 'revealing' | null {
+  const [state, setState] = useState<{ key: string | null; phase: 'hidden' | 'revealing' | null }>({
+    key: routeKey,
+    phase: null,
+  })
+  // During render, so the panel never shows for a frame before it folds.
+  if (state.key !== routeKey) {
+    setState({ key: routeKey, phase: routeKey && !prefersReducedMotion() ? 'hidden' : null })
+  }
+  const phase = state.key === routeKey ? state.phase : null
+  useEffect(() => {
+    if (!phase) return
+    const timer = window.setTimeout(
+      () =>
+        setState((now) =>
+          now.key === routeKey
+            ? { key: routeKey, phase: now.phase === 'hidden' ? 'revealing' : null }
+            : now,
+        ),
+      phase === 'hidden' ? ROUTE_INTRO_HOLD_MS : ROUTE_INTRO_REVEAL_MS,
+    )
+    return () => window.clearTimeout(timer)
+  }, [phase, routeKey])
+  return phase
+}
+
 /**
  * The map-first center finder at /explore (markdowns/TESDA-TRACK-Location-First-Implementation-Plan.md). The map
  * covers the window at every size, as a maps app does, and stays on the Philippines; everything else floats over it:
@@ -340,6 +377,7 @@ export default function ExplorePage() {
           kind: selected.kind,
         }
       : null
+  const intro = useRouteIntro(route && selected ? selected.id : null)
 
   const select = (
     id: string,
@@ -466,7 +504,11 @@ export default function ExplorePage() {
         onQualification={chooseQualification}
         centers={explore.allCenters}
         onCenter={openCenter}
-        className={variant === 'float' ? 'absolute right-[70px] z-[950]' : undefined}
+        className={
+          variant === 'float'
+            ? 'intro-piece absolute right-[70px] z-[950] [--intro-order:4]'
+            : undefined
+        }
         style={variant === 'float' ? { top: aroundTop } : undefined}
         // Opened lists make it tall: it scrolls inside, ending above the map's Layers button (the bottom-right
         // column: the Help button's 52px, 28px, then Layers' 44px) with a 12px gap.
@@ -483,7 +525,10 @@ export default function ExplorePage() {
   return (
     // The window, edge to edge. Its own stacking context: what floats here is lifted over the map, not over the
     // page's dialogs.
-    <div className="relative isolate h-dvh w-full overflow-hidden bg-map-water">
+    <div
+      className="relative isolate h-dvh w-full overflow-hidden bg-map-water"
+      data-route-intro={intro ?? undefined}
+    >
       <PageHeading className="sr-only">{en.pages.explore.heading}</PageHeading>
       {/* A learner whose TSP profile gives a home area isn't asked: it is the search location (US-0004). */}
       <LocationPrompt
@@ -584,7 +629,7 @@ export default function ExplorePage() {
         }}
         onSelect={(id, code) => select(id, { onMap: true, code })}
         className={cx(
-          'absolute right-3 bottom-3 left-3',
+          'intro-piece absolute right-3 bottom-3 left-3 [--intro-order:5]',
           !collapsed && 'max-md:hidden md:left-[388px]',
         )}
       />
@@ -593,12 +638,17 @@ export default function ExplorePage() {
         ref={chipsRef}
         view={view}
         onView={changeView}
-        className="absolute top-3 right-[70px] left-[384px] z-[1000] hidden flex-wrap gap-3 md:flex"
+        className="intro-piece absolute top-3 right-[70px] left-[384px] z-[1000] hidden flex-wrap gap-3 [--intro-order:1] md:flex"
       />
 
       {/* The learner's icon and account menu, or Sign in, at the top of the map's button column (the chips and
           the status banner stop 70px from the right, clear of it). On a phone it is in the search bar. */}
-      {tabletUp && <MapAccount placement="map" className="absolute top-3.5 right-3.5 z-[1000]" />}
+      {tabletUp && (
+        <MapAccount
+          placement="map"
+          className="intro-piece absolute top-3.5 right-3.5 z-[1000] [--intro-order:2]"
+        />
+      )}
 
       {aroundFloats && aroundCard('float')}
 
@@ -607,7 +657,7 @@ export default function ExplorePage() {
         className={cx(
           // On a phone, a frame over the whole map that takes no presses itself: the search bar at its top, and the
           // results in a sheet at its bottom.
-          'pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-[1000] flex flex-col',
+          'intro-piece pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-[1000] flex flex-col [--intro-order:0]',
           // From a tablet up, one card at the top left. Folded, a slim search bar; open, the search row with the
           // results under it. Only the body below the row scrolls.
           'md:pointer-events-auto md:top-3 md:right-auto md:bottom-auto md:left-3 md:max-h-[calc(100%-1.5rem)] md:w-[360px] md:overflow-hidden md:rounded-12 md:border md:border-border md:bg-surface md:shadow-[0_8px_28px_-6px_rgb(var(--track-shadow-rgb)/0.22)]',
@@ -662,11 +712,14 @@ export default function ExplorePage() {
           )}
         >
           {/* No padding on the clipped row itself: it would stay showing when the row is 0 tall. A phone's sheet
-              stops at about half the screen, so the map stays in sight above it. */}
+              stops at about half the screen, so the map stays in sight above it. Relative, so the visually hidden
+              inputs of radios and checkboxes in it (absolutely placed) scroll with it: placed against the page
+              instead, they stay put while the sheet scrolls, and focusing one by a press scrolls the clipped page
+              itself to reach it, pushing everything up. */}
           <div
             ref={scroller}
             className={cx(
-              'min-h-0 overflow-hidden max-md:max-h-[52dvh]',
+              'relative min-h-0 overflow-hidden max-md:max-h-[52dvh]',
               scrollable && 'overflow-y-auto',
             )}
           >

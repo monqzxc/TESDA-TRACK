@@ -1388,7 +1388,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
 
       {/* Under any bar the page floats over the map's top edge (--map-overlay-top), and under anything it puts at
           the top of this column (--map-controls-top: the Career Map's account button). */}
-      <div className="absolute top-[calc(var(--map-overlay-top,0px)_+_var(--map-controls-top,0px)_+_0.875rem)] right-3.5 z-800 flex flex-col items-end gap-2">
+      <div className="intro-piece absolute top-[calc(var(--map-overlay-top,0px)_+_var(--map-controls-top,0px)_+_0.875rem)] right-3.5 z-800 flex flex-col items-end gap-2 [--intro-order:3]">
         <Button
           className={cx(controlButton, 'rounded-12')}
           aria-label={copy.locate}
@@ -1479,7 +1479,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
         {threeD && <NorthButton mapRef={mapRef} ready={ready} reducedMotion={reducedMotion} />}
       </div>
 
-      <div className="absolute bottom-[calc(var(--map-overlay-bottom,0px)_+_0.875rem)] left-[calc(var(--map-overlay-inset,0px)_+_4px)] z-800 flex flex-col items-start gap-2">
+      <div className="intro-piece absolute bottom-[calc(var(--map-overlay-bottom,0px)_+_0.875rem)] left-[calc(var(--map-overlay-inset,0px)_+_4px)] z-800 flex flex-col items-start gap-2 [--intro-order:6]">
         {logo && (
           // MapTiler's free plan asks maps that use it to show its logo.
           <a
