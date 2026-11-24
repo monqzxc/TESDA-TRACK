@@ -39,6 +39,7 @@ import {
 } from './explore.ts'
 import type { AssessmentWhy, RankedCenter } from './recommend.ts'
 import { useExploreStore, type Explore } from './useExplore.ts'
+import { ComparePanel } from './ComparePanel.tsx'
 import { ASSESS_FIRST, type QualificationFit } from '../tsp/passport.ts'
 import { splitPhones } from '../../lib/phone.ts'
 
@@ -1335,6 +1336,8 @@ export function ResultsPanel({
 
   return (
     <div className="flex flex-col gap-4">
+      {/* The picked qualifications side by side, above whichever view is open. */}
+      <ComparePanel explore={explore} />
       {/* An underlined tab row: icon and label sit on one line, the chosen view is navy with a bar beneath it.
           Labels never truncate; when the row is narrow the icons drop out first. */}
       <div className="@container/tabs">
