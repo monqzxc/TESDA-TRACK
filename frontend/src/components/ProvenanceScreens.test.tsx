@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { fireEvent, screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { renderApp } from '../test/app.tsx'
@@ -58,9 +58,13 @@ describe('source provenance on learner screens', () => {
     expect(
       (await screen.findAllByRole('link', { name: 'Pilot source register' })).length,
     ).toBeGreaterThanOrEqual(2)
-    expect(screen.getAllByText('Incomplete data').length).toBeGreaterThanOrEqual(2)
+    // The listing shows its status and dates; the center keeps them behind its "i" button.
+    expect(screen.getAllByText('Incomplete data')).toHaveLength(1)
     expect(screen.queryByText('Example data')).not.toBeInTheDocument()
-    expect(screen.getAllByText('2026-10-01').length).toBeGreaterThanOrEqual(2)
+    expect(screen.getAllByText('2026-10-01')).toHaveLength(1)
+    fireEvent.click(screen.getByRole('button', { name: 'About this record' }))
+    expect(await screen.findByText(/^Incomplete data:/)).toBeVisible()
+    expect(screen.getByText('Source updated: 2026-10-01')).toBeVisible()
     expect(screen.getByText('Service reviewed:').textContent).toContain('2020-01-01')
   })
 })

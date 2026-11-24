@@ -1,7 +1,6 @@
 import type { ReactNode } from 'react'
 import { Button, Dialog, DialogTrigger, Heading, Popover } from 'react-aria-components'
 import { cx } from '../lib/style.ts'
-import { Icon } from './Icon.tsx'
 
 /**
  * Background a reader needs only now and then (how a ranking works, where travel times come from, that a result is a
@@ -32,7 +31,17 @@ export function InfoPopover({
           className,
         )}
       >
-        <Icon name="info" size="1rem" />
+        {/* A filled disc with the "i" cut out in the surface color, so it reads as one solid mark with no ring. */}
+        <svg viewBox="0 0 24 24" width="1rem" height="1rem" aria-hidden="true" focusable="false">
+          <circle cx="12" cy="12" r="10" fill="currentColor" />
+          <path
+            d="M12 11v5.5M12 7.6v.4"
+            className="stroke-surface"
+            fill="none"
+            strokeWidth={2.2}
+            strokeLinecap="round"
+          />
+        </svg>
         {showLabel && label}
       </Button>
       <Popover

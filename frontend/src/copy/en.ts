@@ -1049,6 +1049,7 @@ export const en = {
       // US-0014: a center without coordinates is listed but has no pin, distance or directions.
       noLocation: 'Location not confirmed',
       directions: 'Get directions',
+      getRoute: 'Get route',
       hideRoute: 'Hide route',
       viewOnMap: 'View on map',
       website: 'Website',

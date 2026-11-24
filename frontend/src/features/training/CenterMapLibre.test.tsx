@@ -224,9 +224,8 @@ describe('the MapLibre center map', () => {
     expect(callbacks.onPick).toHaveBeenCalledWith('training-2')
     const popup = within(Popup.instances.at(-1)!.getElement())
     expect(popup.getByText('Cebu Skills Center')).toBeInTheDocument()
-    await user.click(popup.getByRole('button', { name: 'View details' }))
-    expect(callbacks.onDetails).toHaveBeenCalledWith('training-2')
-    await user.click(popup.getByRole('button', { name: 'Get directions' }))
+    expect(popup.queryByRole('button', { name: 'View details' })).not.toBeInTheDocument()
+    await user.click(popup.getByRole('button', { name: 'Get route' }))
     expect(callbacks.onRoute).toHaveBeenCalledWith('training-2')
     await user.click(popup.getByRole('button', { name: 'Save this center' }))
     expect(callbacks.onToggleSaved).toHaveBeenCalledWith('training-2')
@@ -274,10 +273,10 @@ describe('the MapLibre center map', () => {
     fireEvent.click(button, { detail: 0 })
     const popup = Popup.instances.at(-1)!.getElement()
     await waitFor(() =>
-      expect(within(popup).getByRole('button', { name: 'View details' })).toHaveFocus(),
+      expect(within(popup).getByRole('button', { name: 'Get route' })).toHaveFocus(),
     )
 
-    fireEvent.keyDown(within(popup).getByRole('button', { name: 'View details' }), {
+    fireEvent.keyDown(within(popup).getByRole('button', { name: 'Get route' }), {
       key: 'Escape',
     })
     await waitFor(() => expect(Popup.instances.at(-1)!.isOpen()).toBe(false))

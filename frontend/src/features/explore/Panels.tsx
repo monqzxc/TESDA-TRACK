@@ -3,7 +3,7 @@ import { qualificationsQuery } from '../../api/queries.ts'
 import { useEffect, useId, useRef, useState } from 'react'
 import { Button, Switch, ToggleButton } from 'react-aria-components'
 import { Link, useNavigate } from 'react-router'
-import { DataProvenance } from '../../components/DataProvenance.tsx'
+import { FoldedProvenance } from '../../components/DataProvenance.tsx'
 import { Icon, type IconName } from '../../components/Icon.tsx'
 import { InfoPopover } from '../../components/InfoPopover.tsx'
 import { useCopy, useServerText } from '../../i18n/copy.ts'
@@ -1564,7 +1564,7 @@ export function CenterCard({
         </div>
 
         <div className="flex flex-col gap-3 p-4">
-          <DataProvenance value={center.provenance} />
+          <FoldedProvenance value={center.provenance} />
           <CenterSuggestionFeedback
             center={center}
             qualificationCode={code ?? undefined}
