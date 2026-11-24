@@ -1015,4 +1015,6 @@ export const pag: Record<string, string> = {
   'How ranking works': 'Panon so pan-ranggo',
   'About these results': 'Nipaakar ed sarayan resulta',
   'About travel times': 'Nipaakar ed oras na biahe',
+  'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.':
+    'Nakaayos iray center ed tantyan oras tan kaarawi na biahe. Say bukas ya scholarship odino mataas ya demand ed rehiyon et nayarin mamapabor ed singano ya biahe. Say lokasyon mo et mansiansia ed device mo.',
 }

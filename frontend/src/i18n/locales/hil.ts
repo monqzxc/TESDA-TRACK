@@ -1034,4 +1034,6 @@ export const hil: Record<string, string> = {
   'How ranking works': 'Paano ginara-ranggo',
   'About these results': 'Parte sa sini nga mga resulta',
   'About travel times': 'Parte sa oras sang biyahe',
+  'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.':
+    'Ang mga center ginahan-ay suno sa ginabulubanta nga oras kag kalayuon sang biyahe. Ang bukas nga scholarship ukon mataas nga demand sa rehiyon mahimo makapabor sa pareho nga biyahe. Ang imo lokasyon nagapabilin sa imo device.',
 }

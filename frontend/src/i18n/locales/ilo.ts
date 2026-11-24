@@ -1026,4 +1026,6 @@ export const ilo: Record<string, string> = {
   'How ranking works': 'No kasano ti panag-ranggo',
   'About these results': 'Maipapan kadagitoy a resulta',
   'About travel times': 'Maipapan iti oras ti panagbiahe',
+  'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.':
+    'Maurnos dagiti center babaen iti napattapatta nga oras ken kaadayo ti biyahe. Ti nakalukat a scholarship wenno nangato a demand iti rehion ket mabalin a mangipanguna iti kapada a biyahe. Agtalinaed iti device-mo ti lokasionmo.',
 }

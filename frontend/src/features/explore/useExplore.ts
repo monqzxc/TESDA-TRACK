@@ -33,7 +33,7 @@ import { serviceScoresQuery } from './serviceScores.ts'
 import {
   highDemandRegions,
   NO_RECOMMENDATIONS,
-  rankCenters,
+  rankCombinedCenters,
   recommend,
   recommendedIds as idsOf,
   regionalDemand,
@@ -456,7 +456,7 @@ export function useExplore(
   const ranked = useMemo(
     () =>
       demandCode
-        ? rankCenters({
+        ? rankCombinedCenters({
             supply,
             code: demandCode,
             rangeKm,

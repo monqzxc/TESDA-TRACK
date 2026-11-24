@@ -1671,4 +1671,6 @@ export const pam: Record<string, string> = {
   'How ranking works': 'Nanu ing pamag-ranggo',
   'About these results': 'Tungkul kareng resulta a ini',
   'About travel times': 'Tungkul king oras ning biyahe',
+  'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.':
+    'Makaayos la reng center king tantiyang oras at karayu ning biahe. Ing bukas a scholarship o matas a demand king rehiyon malyari yang mamabor king kaparung biahe. Manatili ya king kekang device ing kekang lokasyun.',
 }

@@ -1029,4 +1029,6 @@ export const bcl: Record<string, string> = {
   'How ranking works': 'Paano an pag-ranggo',
   'About these results': 'Manongod sa mga resultang ini',
   'About travel times': 'Manongod sa oras nin biyahe',
+  'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.':
+    'An mga center nakaayos sa tinantiyang oras asin harayo kan biyahe. An bukas na scholarship o halangkaw na demand sa rehiyon puwedeng magpabor sa magkaparehong biyahe. Nagdadanay sa saimong device an saimong lokasyon.',
 }

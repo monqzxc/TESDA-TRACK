@@ -2527,9 +2527,9 @@ export const en = {
         fee: 'Lower fee than others nearby',
       },
       score: (score: number) => `Score ${score}/100`,
-      how: 'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee. Your location stays on your device.',
+      how: 'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.',
       howSignedIn:
-        'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee, and come first when your TSP profile shows you may be ready. Your location stays on your device.',
+        'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.',
       sample: 'Sample data',
       sampleNote:
         'Travel times are estimated from straight-line distance for the December 2 demo, not measured routes.',

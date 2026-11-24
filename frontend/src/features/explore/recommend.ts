@@ -464,6 +464,45 @@ export function rankCenters({
   }
 }
 
+/**
+ * US-0011: one combined list, independent of center type. Keep eligibility and service metadata from each kind's
+ * ranking, but never compare their incompatible service scores or alternate the two lists. The existing bounded
+ * scholarship/demand discounts allow a similar trip to move up; outside the chosen range there are no discounts.
+ */
+export function rankCombinedCenters(options: Parameters<typeof rankCenters>[0]): RankedCenter[] {
+  const candidates = rankCenters({ ...options, limit: options.supply.length })
+  const trip = (item: RankedCenter) => roadMinutes(item.center.distanceKm as number)
+  const byTrip = (a: RankedCenter, b: RankedCenter) =>
+    trip(a) - trip(b) ||
+    (a.center.distanceKm as number) - (b.center.distanceKm as number) ||
+    a.center.name.localeCompare(b.center.name) ||
+    a.center.id.localeCompare(b.center.id)
+  const baseline = [...candidates].sort(byTrip)
+  const position = new Map(baseline.map((item, index) => [item.center.id, index]))
+  const range = options.rangeKm ?? NEAR_KM
+  const adjustedTrip = (item: RankedCenter) =>
+    trip(item) *
+    ((item.center.distanceKm as number) > range
+      ? 1
+      : (item.scholarship ? SCHOLARSHIP_WEIGHT : 1) * (item.demand ? DEMAND_WEIGHT : 1))
+  return [...candidates]
+    .sort((a, b) => adjustedTrip(a) - adjustedTrip(b) || byTrip(a, b))
+    .slice(0, options.limit ?? MAX_RANKED)
+    .map((item, index) => ({
+      ...item,
+      reason:
+        (item.center.distanceKm as number) > range
+          ? 'outside'
+          : index < (position.get(item.center.id) ?? index)
+            ? item.scholarship
+              ? 'scholarship'
+              : 'demand'
+            : item.center.id === baseline[0]?.center.id
+              ? 'nearest'
+              : 'inRange',
+    }))
+}
+
 // Which centers the page recommends for the qualification in focus, worked out in the browser: the learner's
 // location never leaves it. Nearest first, as everywhere on this page; a learner open to relocating also sees a
 // center in each region where recorded demand is strongest against supply.

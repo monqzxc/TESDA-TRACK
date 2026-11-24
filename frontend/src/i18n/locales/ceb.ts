@@ -1031,4 +1031,6 @@ export const ceb: Record<string, string> = {
   'How ranking works': 'Unsaon pag-ranggo',
   'About these results': 'Mahitungod niini nga mga resulta',
   'About travel times': 'Mahitungod sa oras sa biyahe',
+  'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.':
+    'Ang mga center gihan-ay sumala sa gibanabanang oras ug gilay-on sa biyahe. Ang bukas nga scholarship o taas nga demand sa rehiyon mahimong mopabor sa susamang biyahe. Ang imong lokasyon magpabilin sa imong device.',
 }

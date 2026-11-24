@@ -307,9 +307,8 @@ describe('the supply and demand brief', () => {
     expect(rows[0]).toHaveTextContent('Recommended')
     expect(rows[0]).toHaveTextContent('The shortest trip from you')
     expect(rows[1]).not.toHaveTextContent('Recommended')
-    // An assessment center says its distance band and distance, and that it has no open schedule.
-    expect(rows[1]).toHaveTextContent(/(Very near|Near) · \d+(\.\d)? km · /)
-    expect(rows[1]).toHaveTextContent(/no open schedule/i)
+    // In the combined list the reason describes travel order; schedule details remain on the center.
+    expect(rows[1]).toHaveTextContent(/Within your \d+ km range/)
     expect(within(rows[0]).getByTestId('ranked-trip')).toHaveTextContent(
       /^\d+(\.\d)? km · about \d+ min$/,
     )
@@ -325,6 +324,24 @@ describe('the supply and demand brief', () => {
     await waitFor(() =>
       expect(screen.getByTestId('map')).toHaveAttribute('data-selected', 'assessment-7'),
     )
+  })
+
+  it('recommends a nearer assessment before training in the combined list', async () => {
+    server.use(
+      http.get('*/api/v1/assessment-centers', () =>
+        HttpResponse.json([{ ...centers[0], latitude: 14.6009, longitude: 121 }]),
+      ),
+    )
+    open()
+    const list = await screen.findByTestId('ranked-centers')
+    await waitFor(() => {
+      const rows = within(list).getAllByTestId('ranked-center')
+      expect(rows[0]).toHaveTextContent('Manila Assessment Center')
+      expect(rows[0]).toHaveTextContent('Recommended')
+      expect(rows[0]).toHaveTextContent('The shortest trip from you')
+      expect(rows[1]).toHaveTextContent('Manila Hotel School')
+      expect(rows[1]).not.toHaveTextContent('Recommended')
+    })
   })
 
   it('looks further for a learner open to relocating', async () => {

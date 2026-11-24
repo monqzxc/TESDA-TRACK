@@ -2120,4 +2120,6 @@ export const tl: Record<string, string> = {
   'How ranking works': 'Paano nira-ranggo',
   'About these results': 'Tungkol sa mga resultang ito',
   'About travel times': 'Tungkol sa oras ng biyahe',
+  'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.':
+    'Inuuna ang mga center ayon sa tinatayang oras at layo ng biyahe. Maaaring umangat ang center na may bukas na scholarship o mataas na demand sa rehiyon kung magkahawig ang biyahe. Nananatili sa iyong device ang lokasyon mo.',
 }

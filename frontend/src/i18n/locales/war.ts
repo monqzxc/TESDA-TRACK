@@ -1024,4 +1024,6 @@ export const war: Record<string, string> = {
   'How ranking works': 'Paonan-o an pag-ranggo',
   'About these results': 'Mahitungod hini nga mga resulta',
   'About travel times': 'Mahitungod han oras han biyahe',
+  'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.':
+    'An mga center gin-aayos sumala han ginbabanabana nga oras ngan kahirayo han biyahe. An abrido nga scholarship o hitaas nga demand ha rehiyon mahimo pumabor ha magkapariho nga biyahe. An imo lokasyon nagpapabilin ha imo device.',
 }
