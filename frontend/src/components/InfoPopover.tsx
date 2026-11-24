@@ -11,15 +11,12 @@ export function InfoPopover({
   label,
   paragraphs,
   showLabel = false,
-  tone = 'muted',
   className,
   children,
 }: {
   label: string
   paragraphs: readonly string[]
   showLabel?: boolean
-  /** `warn` colors the button amber, for a disclaimer (estimates, sample data) rather than plain background. */
-  tone?: 'muted' | 'warn'
   className?: string
   /** Shown after the paragraphs, such as a link to the source. */
   children?: ReactNode
@@ -29,10 +26,9 @@ export function InfoPopover({
       <Button
         aria-label={showLabel ? undefined : label}
         className={cx(
-          'inline-flex flex-none cursor-pointer items-center gap-1 rounded-full text-12 font-semibold outline-none transition-colors data-focus-visible:outline-3 data-focus-visible:outline-offset-1 data-focus-visible:outline-focus',
-          tone === 'warn'
-            ? 'text-[#d97706] hover:text-[#b45309] data-pressed:text-[#b45309]'
-            : 'text-muted hover:text-blue data-pressed:text-blue',
+          // Amber marks every "i" as a disclaimer (estimates, sample data, suggestions). No border, ring or fill
+          // behind the disc: only the keyboard focus outline is drawn around it.
+          'inline-flex flex-none cursor-pointer appearance-none items-center gap-1 rounded-full border-0 bg-transparent text-12 font-semibold text-[#d97706] shadow-none outline-none ring-0 transition-colors hover:text-[#b45309] data-pressed:text-[#b45309] data-focus-visible:outline-3 data-focus-visible:outline-offset-1 data-focus-visible:outline-focus',
           showLabel ? 'min-h-8 px-1' : 'size-8 justify-center',
           className,
         )}

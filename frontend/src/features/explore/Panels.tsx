@@ -1089,7 +1089,6 @@ export function RankedCenters({
             // A disclaimer beside the heading: how the ranking works and that travel times are estimates, behind
             // the "i" button so the list is not followed by a paragraph every time.
             <InfoPopover
-              tone="warn"
               label={en.explore.info.ranking}
               paragraphs={[signedIn ? copy.howSignedIn : copy.how, copy.sampleNote]}
               className="-my-1.5"
