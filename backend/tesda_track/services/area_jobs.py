@@ -21,6 +21,7 @@ from tesda_track.models.labor_market import (
 )
 from tesda_track.schemas.area_jobs import AreaJob, AreaJobs, JobArea
 from tesda_track.services.demand_evidence import _employer, _posted_on
+from tesda_track.services import provinces
 from tesda_track.services.labor_market import job_key
 
 if TYPE_CHECKING:
@@ -31,8 +32,10 @@ PERSONALIZED = ("Titles linked to qualifications your Skill Passport fits come f
                 "assessment of you or a promise of an opening.")
 
 
-def summarize(rows, regions, *, region_code=None, locality=None, limit=30, offset=0, fit=None, links=None):
-    """Deduplicate source IDs before grouping titles, employers and regional markers."""
+def summarize(rows, regions, *, region_code=None, locality=None, limit=30, offset=0, fit=None, links=None,
+              province=None):
+    """Deduplicate source IDs before grouping titles, employers and regional markers. `province` (a display name from
+    services/provinces) keeps the records whose locality is in it; the regional markers stay nationwide."""
     retained = {}
     for evidence, dataset in rows:
         retained.setdefault((dataset.publisher, evidence.source_record_id), evidence)
@@ -57,7 +60,8 @@ def summarize(rows, regions, *, region_code=None, locality=None, limit=30, offse
             titles=[titles[key] for key in sorted(counts, key=lambda key: (-counts[key], key))[:3]],
         ))
     areas.sort(key=lambda area: (-area.posting_count, area.name))
-    scoped = [r for r in records if not region_code or r.region_code == region_code]
+    scoped = [r for r in records if (not region_code or r.region_code == region_code)
+              and (province is None or provinces.of_locality(r.locality) == province)]
     localities = sorted({r.locality for r in scoped if r.locality})
     selected = [r for r in scoped if not locality or r.locality == locality]
     groups = defaultdict(list)
@@ -82,7 +86,7 @@ def summarize(rows, regions, *, region_code=None, locality=None, limit=30, offse
     return AreaJobs(
         items=jobs[offset:offset + limit], total=len(jobs), posting_count=len(selected),
         employer_count=len({name for r in selected if (name := _employer(r.provenance))}),
-        region_code=region_code, locality=locality, localities=localities, areas=areas,
+        region_code=region_code, province=province, locality=locality, localities=localities, areas=areas,
         limit=limit, offset=offset, snapshot_dates=dates,
         posted_between=[posted[0], posted[-1]] if posted else [],
         ordering="profile_fit" if fit is not None else "posting_count",
@@ -106,7 +110,10 @@ def _personal(entries, fit: "ProfileFit", links: dict[int, list[tuple[str, str]]
 
 
 def discover(session: Session, region_code=None, locality=None, qualification_code=None, *, limit=30, offset=0,
-             fit: "ProfileFit | None" = None):
+             fit: "ProfileFit | None" = None, province: str | None = None):
+    """`province` filters in Python after the query: there is no province column, the name has to be parsed and
+    normalized from `locality`, and the whole posting set (a few thousand records) is read anyway for the regional
+    markers. An unknown province matches no record, so the list is empty rather than an error."""
     regions = {r.code: r for r in session.exec(select(Region)).all()}
     if region_code and region_code not in regions:
         raise InvalidRequestError("Unknown region.")
@@ -134,7 +141,7 @@ def discover(session: Session, region_code=None, locality=None, qualification_co
         ))
     rows = session.exec(statement).all()
     return summarize(rows, regions, region_code=region_code, locality=locality, limit=limit, offset=offset,
-                     fit=fit, links=_links(session, fit) if fit else None)
+                     fit=fit, links=_links(session, fit) if fit else None, province=provinces.normalize(province))
 
 
 def _links(session: Session, fit: "ProfileFit") -> dict[int, list[tuple[str, str]]]:

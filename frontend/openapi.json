@@ -6703,7 +6703,7 @@
           "labor market"
         ],
         "summary": "Area Qualification Evidence",
-        "description": "Reviewed qualification links for an area; observations and forecasts stay separate. With `personalize` and a\nlearner signed in through TESDA Skill Passport, the qualifications their profile fits come first, each with the\nreasons; otherwise the usual alphabetical directory.",
+        "description": "Reviewed qualification links for an area; observations and forecasts stay separate. With `personalize` and a\nlearner signed in through TESDA Skill Passport, the qualifications their profile fits come first, each with the\nreasons; otherwise the usual alphabetical directory. With `province`, only that province's posting records count\n(no forecasts, which are regional), ordered by posting records.",
         "operationId": "area_qualification_evidence_api_v1_labor_market_qualifications_get",
         "security": [
           {
@@ -6729,6 +6729,25 @@
               ],
               "title": "Region Code"
             }
+          },
+          {
+            "name": "province",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 100
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A province, as the Skill Passport writes it (\"Laguna\", \"Metro Manila\" for all of NCR). Matched without case against the province in each posting's locality; an unknown province gives an empty list.",
+              "title": "Province"
+            },
+            "description": "A province, as the Skill Passport writes it (\"Laguna\", \"Metro Manila\" for all of NCR). Matched without case against the province in each posting's locality; an unknown province gives an empty list."
           },
           {
             "name": "limit",
@@ -6824,6 +6843,25 @@
             }
           },
           {
+            "name": "province",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 100
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A province, as the Skill Passport writes it (\"Laguna\", \"Metro Manila\" for all of NCR). Matched without case against the province in each posting's locality; an unknown province gives an empty list.",
+              "title": "Province"
+            },
+            "description": "A province, as the Skill Passport writes it (\"Laguna\", \"Metro Manila\" for all of NCR). Matched without case against the province in each posting's locality; an unknown province gives an empty list."
+          },
+          {
             "name": "locality",
             "in": "query",
             "required": false,
@@ -6900,6 +6938,112 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AreaJobs"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labor-market/elsewhere": {
+      "get": {
+        "tags": [
+          "labor market"
+        ],
+        "summary": "Elsewhere Demand View",
+        "description": "Other provinces where the learner's qualifications are in demand, by posting records. Signed in with\n`personalize`, the qualifications the Skill Passport fits, weighted by fit, with the reasons; otherwise the given\n`qualification_code`s (none: an empty list). `exclude_province` is the learner's own. Provinces with fewer than 3\nposting records are left out.",
+        "operationId": "elsewhere_demand_view_api_v1_labor_market_elsewhere_get",
+        "security": [
+          {
+            "OAuth2PasswordBearer": []
+          },
+          {
+            "SessionCookie": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "exclude_province",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 100
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A province, as the Skill Passport writes it (\"Laguna\", \"Metro Manila\" for all of NCR). Matched without case against the province in each posting's locality; an unknown province gives an empty list.",
+              "title": "Exclude Province"
+            },
+            "description": "A province, as the Skill Passport writes it (\"Laguna\", \"Metro Manila\" for all of NCR). Matched without case against the province in each posting's locality; an unknown province gives an empty list."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 10,
+              "minimum": 1,
+              "default": 3,
+              "title": "Limit"
+            }
+          },
+          {
+            "name": "personalize",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "description": "Rank by the signed-in learner's Skill Passport. Ignored (a plain answer) when nobody is signed in or the account isn't linked to TSP; the response's `personalized` says which.",
+              "default": false,
+              "title": "Personalize"
+            },
+            "description": "Rank by the signed-in learner's Skill Passport. Ignored (a plain answer) when nobody is signed in or the account isn't linked to TSP; the response's `personalized` says which."
+          },
+          {
+            "name": "qualification_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A guest's searched qualifications, repeated, up to 5; ignored when the answer is personalized",
+              "title": "Qualification Code"
+            },
+            "description": "A guest's searched qualifications, repeated, up to 5; ignored when the answer is personalized"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ElsewhereDemand"
                 }
               }
             }
@@ -8039,6 +8183,18 @@
             ],
             "title": "Region Code"
           },
+          "province": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Province",
+            "description": "The province filter as a display name (\"Metro Manila\" for all of NCR); its records' locality ends in it"
+          },
           "locality": {
             "anyOf": [
               {
@@ -8355,6 +8511,18 @@
             ],
             "title": "Region Code"
           },
+          "province": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Province",
+            "description": "The province filter as a display name (\"Metro Manila\" for all of NCR). Postings only: no forecast support is given for a province"
+          },
           "evaluated_at": {
             "type": "string",
             "format": "date-time",
@@ -8374,6 +8542,7 @@
             "type": "string",
             "enum": [
               "qualification_name",
+              "posting_count",
               "profile_fit"
             ],
             "title": "Ordering",
@@ -11757,6 +11926,198 @@
         },
         "type": "object",
         "title": "EligibilityPublic"
+      },
+      "ElsewhereDemand": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ElsewhereProvince"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "exclude_province": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Exclude Province",
+            "description": "The province left out, as a display name"
+          },
+          "personalized": {
+            "type": "boolean",
+            "title": "Personalized",
+            "default": false
+          },
+          "ordering": {
+            "type": "string",
+            "enum": [
+              "profile_fit",
+              "posting_count"
+            ],
+            "title": "Ordering",
+            "default": "posting_count"
+          },
+          "min_postings": {
+            "type": "integer",
+            "title": "Min Postings",
+            "description": "Provinces with fewer posting records are left out",
+            "default": 3
+          },
+          "snapshot_dates": {
+            "items": {
+              "type": "string",
+              "format": "date"
+            },
+            "type": "array",
+            "title": "Snapshot Dates",
+            "description": "Snapshot dates of the listed postings"
+          },
+          "source_url": {
+            "type": "string",
+            "title": "Source Url",
+            "default": "https://philjobnet.gov.ph/job-vacancies/"
+          },
+          "method_version": {
+            "type": "string",
+            "const": "elsewhere-demand-v1",
+            "title": "Method Version",
+            "default": "elsewhere-demand-v1"
+          },
+          "limitations": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Limitations"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "ElsewhereDemand"
+      },
+      "ElsewhereProvince": {
+        "properties": {
+          "province": {
+            "type": "string",
+            "title": "Province",
+            "description": "Display name, as the Skill Passport writes it (\"Metro Manila\" for NCR)"
+          },
+          "region_code": {
+            "type": "string",
+            "title": "Region Code"
+          },
+          "region_name": {
+            "type": "string",
+            "title": "Region Name"
+          },
+          "latitude": {
+            "type": "number",
+            "title": "Latitude"
+          },
+          "longitude": {
+            "type": "number",
+            "title": "Longitude"
+          },
+          "location_basis": {
+            "type": "string",
+            "enum": [
+              "centers",
+              "region"
+            ],
+            "title": "Location Basis",
+            "description": "centers: the mean of the province's training and assessment centers; region: the region's point, when no center in the province has one"
+          },
+          "posting_count": {
+            "type": "integer",
+            "minimum": 1,
+            "title": "Posting Count",
+            "description": "Distinct posting records linked to the qualifications used"
+          },
+          "titles": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Titles",
+            "description": "The most posted job titles"
+          },
+          "qualifications": {
+            "items": {
+              "$ref": "#/components/schemas/ElsewhereQualification"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Qualifications"
+          },
+          "reasons": {
+            "items": {
+              "$ref": "#/components/schemas/FitReason"
+            },
+            "type": "array",
+            "maxItems": 3,
+            "title": "Reasons",
+            "description": "Why these qualifications fit the Skill Passport; personalized requests only"
+          },
+          "observed_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Observed On",
+            "description": "The latest snapshot date of these postings"
+          }
+        },
+        "type": "object",
+        "required": [
+          "province",
+          "region_code",
+          "region_name",
+          "latitude",
+          "longitude",
+          "location_basis",
+          "posting_count",
+          "titles",
+          "qualifications"
+        ],
+        "title": "ElsewhereProvince"
+      },
+      "ElsewhereQualification": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "posting_count": {
+            "type": "integer",
+            "minimum": 1,
+            "title": "Posting Count",
+            "description": "Distinct posting records in the province linked to it"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "name",
+          "posting_count"
+        ],
+        "title": "ElsewhereQualification"
       },
       "Employment": {
         "properties": {
