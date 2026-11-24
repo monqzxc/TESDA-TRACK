@@ -31,4 +31,13 @@ describe('picked qualifications', () => {
     useExploreStore.getState().togglePicked('A')
     expect(useDemandStore.getState().code).toBe('A')
   })
+  it('moves the demand focus back to what is still picked on an unpick', () => {
+    const { togglePicked } = useExploreStore.getState()
+    togglePicked('A')
+    togglePicked('B')
+    togglePicked('B')
+    expect(useDemandStore.getState().code).toBe('A')
+    togglePicked('A')
+    expect(useDemandStore.getState().code).toBeUndefined()
+  })
 })

@@ -46,6 +46,7 @@ const eim = match({
   sector: 'Construction',
 })
 
+let listingRequests = 0
 const searchFor = (matches: Match[], chosen?: boolean) =>
   useExploreStore.getState().setSearch({
     query: 'skills',
@@ -78,6 +79,7 @@ beforeEach(() => {
     http.get('*/api/v1/qualifications', () => HttpResponse.json([])),
     http.get('*/api/v1/training-providers', () => HttpResponse.json([manilaInstitute, cebuCenter])),
     http.get('*/api/v1/training-programs', ({ request }) => {
+      listingRequests += 1
       const code = new URL(request.url).searchParams.get('qualification_code')
       return HttpResponse.json(programs.filter((p) => !code || p.qualification.code === code))
     }),
@@ -118,8 +120,14 @@ describe('Qualification chips', () => {
     const user = userEvent.setup()
     await screen.findByRole('button', { name: /Manila Welding Institute/ })
     const chip = within(chipGroup()!).getByRole('button', { name: 'Cookery NC II' })
+    const before = listingRequests
     await user.click(chip)
+    await screen.findByRole('region', { name: 'Compare' })
+    expect(listingRequests).toBe(before)
     expect(chip).toHaveAttribute('aria-pressed', 'true')
+    // Narrowing filters what is already loaded: the results and the comparison stay, with no loading in between.
+    expect(screen.getByRole('region', { name: 'Compare' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /Cebu Skills Center/ })).toBeInTheDocument()
     expect(pinNames()).toEqual(['Cebu Skills Center'])
     await user.click(chip)
     expect(pinNames()).toHaveLength(2)

@@ -133,7 +133,11 @@ export const useExploreStore = create<ExploreState>()(
       togglePicked: (code) => {
         const { picked } = useExploreStore.getState()
         if (picked.includes(code)) {
-          set({ picked: picked.filter((item) => item !== code) })
+          const rest = picked.filter((item) => item !== code)
+          set({ picked: rest })
+          // The demand and outlook follow what is still picked, not the one just unpicked.
+          const demand = useDemandStore.getState()
+          if (demand.code === code) demand.setCode(rest.at(-1))
         } else if (picked.length < MAX_PICKED) {
           set({ picked: [...picked, code] })
           // The qualification just picked is the one the demand and outlook speak about.
@@ -195,14 +199,15 @@ export function useExplore(
   const demandCode =
     demandFilters.code === undefined ? (matches[0]?.qualification.code ?? null) : demandFilters.code
   // The qualification in focus may be one the search didn't match: its listings are read with the matches'.
+  // Every chip's listings are read at once, so picking only filters what is already loaded.
   const codes = useMemo(
     () => [
       ...new Set([
-        ...matches.map((match) => match.qualification.code),
+        ...allMatches.map((match) => match.qualification.code),
         ...(search && demandCode ? [demandCode] : []),
       ]),
     ],
-    [matches, search, demandCode],
+    [allMatches, search, demandCode],
   )
 
   const regions = useQuery(regionsQuery)
