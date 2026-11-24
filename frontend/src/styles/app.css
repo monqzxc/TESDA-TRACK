@@ -335,9 +335,9 @@
   }
 }
 
-/* The Career Map while a route is first drawn: everything floating over the map folds away so the line has the view
-   to itself, then comes back one piece at a time (ExplorePage sets data-route-intro; each piece has the intro-piece
-   class and its place in line as --intro-order). Animations, not transitions, so the pieces keep their own
+/* The Career Map while a route draws (a new one, or another travel mode): everything floating over the map folds away
+   so the line has the view to itself, then, once it reaches the center, comes back one piece at a time, 500ms apart
+   (ExplorePage sets data-route-intro; each piece has the intro-piece class and its place in line as --intro-order). Animations, not transitions, so the pieces keep their own
    transitions. Unlayered, so it wins over the utilities. Nothing moves for a learner who asked for less motion. */
 [data-route-intro='hidden'] .intro-piece {
   animation: intro-out 0.24s cubic-bezier(0.4, 0, 1, 1) forwards;
@@ -348,7 +348,7 @@
 }
 [data-route-intro='revealing'] .intro-piece {
   animation: intro-in 0.46s cubic-bezier(0.2, 0.75, 0.2, 1) backwards;
-  animation-delay: calc(var(--intro-order, 0) * 140ms);
+  animation-delay: calc(var(--intro-order, 0) * 500ms);
 }
 @media (prefers-reduced-motion: reduce) {
   [data-route-intro] .intro-piece {

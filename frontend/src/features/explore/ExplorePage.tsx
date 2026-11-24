@@ -28,6 +28,7 @@ import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { GOAL_MAX_LENGTH } from '../finder/key.ts'
 import { matchPathway } from '../training/recommendationApi.ts'
+import { useRoutesDrawn } from '../training/routeDraw.ts'
 import { useSavedCenters } from '../training/savedCenters.ts'
 import { useLocationWatch, useTrainingStore } from '../training/state.ts'
 import type { DemandMapArea } from '../training/CenterMapTypes.ts'
@@ -105,37 +106,50 @@ function prefersReducedMotion() {
   )
 }
 
-/** How long everything over the map stays folded away while a new route draws itself (routeDraw's DRAW_MS, and a
- * beat to look at it), and how long the pieces then take to come back one by one (app.css: six steps of 140ms and
- * each piece's 460ms). */
-const ROUTE_INTRO_HOLD_MS = 2000
-const ROUTE_INTRO_REVEAL_MS = 6 * 140 + 460
+/** The longest everything over the map stays folded away waiting for the route to finish drawing (directions can
+ * be slow or fail, and then nothing draws), and how long the pieces then take to come back one by one (app.css: six
+ * pieces 500ms apart, each taking 460ms). */
+const ROUTE_INTRO_MAX_HOLD_MS = 6000
+const ROUTE_INTRO_REVEAL_MS = 5 * 500 + 460
+
+type IntroPhase = 'hidden' | 'revealing' | null
 
 /**
- * While a new route is first drawn: 'hidden', everything floating over the map folded away; then 'revealing', the
- * pieces coming back one at a time; then null, at rest. A route to another center starts again; closing the route
- * ends it at once. Nothing folds away for a learner who asked for less motion.
+ * While a route draws: 'hidden', everything floating over the map folded away until the line reaches the center
+ * (routeDraw's useRoutesDrawn); then 'revealing', the pieces coming back one at a time; then null, at rest. Every new
+ * route, or another travel mode of it, starts again; closing the route ends it at once. Nothing folds away for a
+ * learner who asked for less motion.
  */
-function useRouteIntro(routeKey: string | null): 'hidden' | 'revealing' | null {
-  const [state, setState] = useState<{ key: string | null; phase: 'hidden' | 'revealing' | null }>({
+function useRouteIntro(routeKey: string | null): IntroPhase {
+  const drawnCount = useRoutesDrawn((state) => state.count)
+  const [state, setState] = useState<{ key: string | null; phase: IntroPhase; since: number }>({
     key: routeKey,
     phase: null,
+    since: drawnCount,
   })
   // During render, so the panel never shows for a frame before it folds.
   if (state.key !== routeKey) {
-    setState({ key: routeKey, phase: routeKey && !prefersReducedMotion() ? 'hidden' : null })
+    setState({
+      key: routeKey,
+      phase: routeKey && !prefersReducedMotion() ? 'hidden' : null,
+      since: drawnCount,
+    })
   }
   const phase = state.key === routeKey ? state.phase : null
+  // The line has arrived: the pieces come back.
+  if (phase === 'hidden' && state.key === routeKey && drawnCount > state.since) {
+    setState({ ...state, phase: 'revealing' })
+  }
   useEffect(() => {
     if (!phase) return
     const timer = window.setTimeout(
       () =>
         setState((now) =>
           now.key === routeKey
-            ? { key: routeKey, phase: now.phase === 'hidden' ? 'revealing' : null }
+            ? { ...now, phase: now.phase === 'hidden' ? 'revealing' : null }
             : now,
         ),
-      phase === 'hidden' ? ROUTE_INTRO_HOLD_MS : ROUTE_INTRO_REVEAL_MS,
+      phase === 'hidden' ? ROUTE_INTRO_MAX_HOLD_MS : ROUTE_INTRO_REVEAL_MS,
     )
     return () => window.clearTimeout(timer)
   }, [phase, routeKey])
@@ -377,7 +391,7 @@ export default function ExplorePage() {
           kind: selected.kind,
         }
       : null
-  const intro = useRouteIntro(route && selected ? selected.id : null)
+  const intro = useRouteIntro(route && selected ? `${selected.id}:${travelMode}` : null)
 
   const select = (
     id: string,

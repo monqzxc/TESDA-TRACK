@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { create } from 'zustand'
 
 // A route draws itself from the learner to the center when it first shows, and again when another travel mode is
 // chosen: the chosen line grows along its path, evenly by distance, in at most two seconds. Both map renderers use
@@ -14,6 +15,12 @@ function drawsInstantly(): boolean {
     window.matchMedia('(prefers-reduced-motion: reduce)').matches
   )
 }
+
+/**
+ * How many routes have finished drawing themselves, on any map. The Career Map watches it to bring its panels back
+ * once the line has arrived (ExplorePage's route intro).
+ */
+export const useRoutesDrawn = create<{ count: number }>(() => ({ count: 0 }))
 
 /** Slow at both ends, so the line sets off and arrives rather than starting and stopping. */
 function easeInOut(t: number): number {
@@ -37,6 +44,7 @@ export function useRouteDraw(key: string | null): number {
       const progress = Math.min(1, (now - start) / DRAW_MS)
       setDrawn({ key, t: easeInOut(progress) })
       if (progress < 1) frame = requestAnimationFrame(tick)
+      else useRoutesDrawn.setState((state) => ({ count: state.count + 1 }))
     }
     frame = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(frame)

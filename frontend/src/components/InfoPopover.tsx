@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react'
 import { Button, Dialog, DialogTrigger, Heading, Popover } from 'react-aria-components'
+import { useCopy } from '../i18n/copy.ts'
 import { cx } from '../lib/style.ts'
+import { Icon } from './Icon.tsx'
 
 /**
  * Background a reader needs only now and then (how a ranking works, where travel times come from, that a result is a
@@ -21,6 +23,7 @@ export function InfoPopover({
   /** Shown after the paragraphs, such as a link to the source. */
   children?: ReactNode
 }) {
+  const closeLabel = useCopy().account.close
   return (
     <DialogTrigger>
       <Button
@@ -46,21 +49,33 @@ export function InfoPopover({
         </svg>
         {showLabel && label}
       </Button>
+      {/* Set apart from the page in the amber of its "i", so it reads as a note laid over the screen, not part of it. */}
       <Popover
         placement="bottom end"
         offset={6}
-        className="w-[min(20rem,calc(100vw-2rem))] rounded-12 border border-border bg-surface p-3 shadow-[0_10px_28px_rgb(var(--track-shadow-rgb)/0.2)] outline-none"
+        className="w-[min(21rem,calc(100vw-2rem))] overflow-hidden rounded-12 border border-[#d97706]/45 bg-warn-bg shadow-[0_14px_36px_-6px_rgb(var(--track-shadow-rgb)/0.45)] outline-none"
       >
-        <Dialog className="flex flex-col gap-1.5 outline-none">
-          <Heading slot="title" className="m-0 text-13 font-bold text-navy">
-            {label}
-          </Heading>
-          {paragraphs.map((text) => (
-            <p key={text} className="m-0 text-13 leading-[1.5] text-ink">
-              {text}
-            </p>
-          ))}
-          {children}
+        <Dialog className="relative flex flex-col gap-2 border-l-4 border-[#d97706] py-3.5 pr-11 pl-4 outline-none">
+          {({ close }) => (
+            <>
+              <Heading slot="title" className="m-0 text-14 leading-[1.35] font-bold text-warn-ink">
+                {label}
+              </Heading>
+              {paragraphs.map((text) => (
+                <p key={text} className="m-0 text-13 leading-[1.55] text-ink">
+                  {text}
+                </p>
+              ))}
+              {children}
+              <Button
+                onPress={close}
+                aria-label={closeLabel}
+                className="absolute top-2 right-2 grid size-8 cursor-pointer place-items-center rounded-full border-0 bg-transparent text-warn-ink outline-none transition-colors data-hovered:bg-[#d97706]/15 data-pressed:bg-[#d97706]/25 data-focus-visible:outline-3 data-focus-visible:outline-focus"
+              >
+                <Icon name="close" size="1rem" />
+              </Button>
+            </>
+          )}
         </Dialog>
       </Popover>
     </DialogTrigger>
