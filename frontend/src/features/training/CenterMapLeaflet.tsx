@@ -312,7 +312,7 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
       )}
       <Button
         className={cx(
-          'absolute top-[calc(var(--map-overlay-top,0px)_+_0.875rem)] right-3.5 z-800 grid size-10.5 cursor-pointer place-items-center rounded-12 border-0 bg-surface text-navy data-hovered:bg-soft',
+          'absolute top-[calc(var(--map-overlay-top,0px)_+_var(--map-controls-top,0px)_+_0.875rem)] right-3.5 z-800 grid size-10.5 cursor-pointer place-items-center rounded-12 border-0 bg-surface text-navy data-hovered:bg-soft',
           floating,
         )}
         aria-label={copy.locate}

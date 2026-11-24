@@ -18,7 +18,7 @@ import { Icon } from '../../components/Icon.tsx'
 import { Spinner } from '../../components/Spinner.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { paths } from '../../paths.ts'
-import { shownName, type Variant } from './variant.ts'
+import { iconSize, shownName, type Variant } from './variant.ts'
 import { accountName, menu } from './styles.ts'
 
 export interface SignedInMenuProps {
@@ -91,11 +91,14 @@ export default function SignedInMenu({
           className={buttonClass}
           aria-label={`${menuLabel ?? copy.menu.label}: ${name}`}
         >
-          <Icon name="person" size={variant === 'sidebar' ? '1.125rem' : '1.2rem'} />
-          <span className={accountName}>{shownName(name, variant)}</span>
+          <Icon name="person" size={iconSize(variant)} />
+          <span className={variant === 'map' ? 'sr-only' : accountName}>
+            {shownName(name, variant)}
+          </span>
         </Button>
+        {/* Under the button, lined up with its right edge where it sits at the right (a top bar, the map's corner). */}
         <Popover
-          placement={variant === 'header' ? 'bottom end' : 'bottom start'}
+          placement={variant === 'sidebar' ? 'bottom start' : 'bottom end'}
           className={menu.popover}
         >
           <Menu onAction={onAction} className={menu.menu}>
