@@ -989,4 +989,40 @@ export const bcl: Record<string, string> = {
     'Mayo pang ibang probinsya na igwang igong job posting para sa saimong abilidad.',
   'Loading what is in demand around you…': 'Pigkakarga an hinahanap sa palibot mo…',
   'What is in demand around you could not be loaded.': 'Dai makarga an hinahanap sa palibot mo.',
+  // The "Around you" card's details.
+  'See details for {0}': 'Hilingon an detalye kan {0}',
+  'Close details': 'Isara an detalye',
+  'Back to {0}': 'Magbalik sa {0}',
+  'Employers ask for this skill. These TESDA qualifications teach it and certify it.':
+    'Hinahanap kan mga employer an abilidad na ini. Itinotokdo asin pinapatunayan ini kan mga kwalipikasyon na ini kan TESDA.',
+  'No qualification in the catalog lists this skill yet.':
+    'Mayo pang kwalipikasyon sa katalogo na naglilista kan abilidad na ini.',
+  'Qualifications that teach it': 'Mga kwalipikasyon na nagtotokdo kaini',
+  'Jobs that use it': 'Mga trabaho na naggagamit kaini',
+  'Postings here': 'Mga posting digdi',
+  'Open scholarships': 'Bukas na scholarship',
+  'Training centers: {0}': 'Mga sentro nin pag-adal: {0}',
+  Nearest: 'Pinakaharani',
+  'Nearest center {0}': 'Pinakaharani na sentro {0}',
+  'No training center listed yet': 'Mayo pang nakalistang sentro nin pag-adal',
+  'Nearest first. Choose one to see it on the map.':
+    'Pinakaharani muna. Magpili nin saro tanganing mahiling sa mapa.',
+  'Share your location to see the nearest first. Choose one to see it on the map.':
+    'Ibaranga an saimong lokasyon tanganing mahiling muna an pinakaharani. Magpili nin saro tanganing mahiling sa mapa.',
+  'No training center lists this qualification yet.':
+    'Mayo pang sentro nin pag-adal na nag-aalok kan kwalipikasyon na ini.',
+  'Possible jobs': 'Mga posibleng trabaho',
+  'The catalog lists no jobs for this qualification yet.':
+    'Mayo pang nakalistang trabaho sa katalogo para sa kwalipikasyon na ini.',
+  'Show all its centers on the map': 'Ipahiling sa mapa an gabos na sentro kaini',
+  'Qualifications for this job': 'Mga kwalipikasyon para sa trabahong ini',
+  'Where to train': 'Sain mag-adal',
+  'The nearest training centers for these qualifications.':
+    'An pinakaharaning mga sentro nin pag-adal para sa mga kwalipikasyon na ini.',
+  'Skills you will need': 'Mga abilidad na kakaipuhanon mo',
+  'No TESDA qualification is linked to this job title yet. Search the Career Map for a related one.':
+    'Mayo pang kwalipikasyon kan TESDA na konektado sa trabahong ini. Maghanap sa Career Map nin kaugnay.',
+  'Search for it on the map': 'Hanapon ini sa mapa',
+  'Loading training centers…': 'Kinakarga an mga sentro nin pag-adal…',
+  'Training centers could not be loaded.': 'Dai makarga an mga sentro nin pag-adal.',
 }

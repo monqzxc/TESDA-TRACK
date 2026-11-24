@@ -166,3 +166,82 @@ export function shortRegion(region: { code: string; name: string }): string {
   if (region.code === 'NCR') return 'NCR'
   return /\(([^)]+)\)/.exec(region.name)?.[1]?.trim() || region.name
 }
+
+// The card's detail dialogs (AroundYouDetail.tsx): what a skill, a qualification or a job links to, read from the
+// qualification catalog and the centers the page has loaded. No new request: the catalog lists each qualification's
+// competencies and possible jobs, and each center its programs.
+
+/** Lower case, letters and digits only, single spaces: "SERVICE CREW (FAST FOOD)" and "Service crew" compare. */
+export function plainTitle(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+}
+
+/**
+ * Whether a posting title is one of a qualification's possible jobs: the same words, or one holding the other as
+ * whole words ("Service Crew" and "Fast Food Service Crew"). A single short word is too loose to hold another.
+ */
+export function sameJob(posting: string, possible: string): boolean {
+  const a = plainTitle(posting)
+  const b = plainTitle(possible)
+  if (!a || !b) return false
+  if (a === b) return true
+  const [short, long] = a.length <= b.length ? [a, b] : [b, a]
+  if (short.length < 4) return false
+  return ` ${long} `.includes(` ${short} `)
+}
+
+/** The catalog's qualifications that list the skill among their competencies, core ones first. */
+export function qualificationsTeaching(
+  skill: string,
+  catalog: readonly Qualification[],
+): Qualification[] {
+  const key = skill.trim().toLowerCase()
+  const listing = (qualification: Qualification) =>
+    qualification.competencies.find((competency) => competency.name.trim().toLowerCase() === key)
+  return catalog
+    .map((qualification) => ({ qualification, competency: listing(qualification) }))
+    .filter((entry) => entry.competency)
+    .sort(
+      (a, b) =>
+        Number(b.competency!.category.toLowerCase() === 'core') -
+        Number(a.competency!.category.toLowerCase() === 'core'),
+    )
+    .map((entry) => entry.qualification)
+}
+
+/**
+ * The qualifications that lead to a job: the one the server linked the title to (personalized answers), then those
+ * whose possible jobs name it.
+ */
+export function qualificationsForJob(
+  title: string,
+  catalog: readonly Qualification[],
+  linked: string | null = null,
+): Qualification[] {
+  const found = new Map<string, Qualification>()
+  if (linked) {
+    const key = linked.trim().toLowerCase()
+    const match = catalog.find((qualification) => qualification.name.trim().toLowerCase() === key)
+    if (match) found.set(match.code, match)
+  }
+  for (const qualification of catalog) {
+    if (qualification.possible_jobs.some((job) => sameJob(title, job)))
+      found.set(qualification.code, qualification)
+  }
+  return [...found.values()]
+}
+
+/** A qualification's core competencies, or all of them where it lists no core ones. */
+export function coreSkills(qualification: Qualification): string[] {
+  const core = qualification.competencies.filter(
+    (competency) => competency.category.toLowerCase() === 'core',
+  )
+  return (core.length ? core : qualification.competencies)
+    .slice()
+    .sort((a, b) => a.position - b.position)
+    .map((competency) => competency.name.trim())
+    .filter(Boolean)
+}

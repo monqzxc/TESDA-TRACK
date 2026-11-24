@@ -975,4 +975,40 @@ export const pag: Record<string, string> = {
     'Anggapo ni so arum ya probinsia ya walay sapat ya job posting parad abilidad mo.',
   'Loading what is in demand around you…': 'Ikakarga so anapen ed paliber mo…',
   'What is in demand around you could not be loaded.': 'Agnayarin ikarga so anapen ed paliber mo.',
+  // The "Around you" card's details.
+  'See details for {0}': 'Nengnengen so detalye na {0}',
+  'Close details': 'Isara so detalye',
+  'Back to {0}': 'Ompawil ed {0}',
+  'Employers ask for this skill. These TESDA qualifications teach it and certify it.':
+    'Anapen na saray employer so abilidad a iyan. Ibabangat tan papatunayan iyan na saray kwalipikasyon na TESDA.',
+  'No qualification in the catalog lists this skill yet.':
+    'Anggapo ni so kwalipikasyon ed katalogo a manlista ed abilidad a iyan.',
+  'Qualifications that teach it': 'Saray kwalipikasyon a mamabangat ed satan',
+  'Jobs that use it': 'Saray trabaho a mangusar ed satan',
+  'Postings here': 'Saray posting dia',
+  'Open scholarships': 'Abukas a scholarship',
+  'Training centers: {0}': 'Saray sentro na pansanay: {0}',
+  Nearest: 'Asingger',
+  'Nearest center {0}': 'Asingger a sentro {0}',
+  'No training center listed yet': 'Anggapo ni so nakalistan sentro na pansanay',
+  'Nearest first. Choose one to see it on the map.':
+    'Asingger an inmuna. Mamili na sakey pian nanengneng ed mapa.',
+  'Share your location to see the nearest first. Choose one to see it on the map.':
+    'Ibingay so lokasyon mo pian nanengneng an inmuna so asingger. Mamili na sakey pian nanengneng ed mapa.',
+  'No training center lists this qualification yet.':
+    'Anggapo ni so sentro na pansanay ya mangiter na kwalipikasyon a iyan.',
+  'Possible jobs': 'Saray posiblen trabaho',
+  'The catalog lists no jobs for this qualification yet.':
+    'Anggapo ni so nakalistan trabaho ed katalogo parad kwalipikasyon a iyan.',
+  'Show all its centers on the map': 'Ipanengneng ed mapa so amin a sentro to',
+  'Qualifications for this job': 'Saray kwalipikasyon parad trabahon iya',
+  'Where to train': 'Iner so pansanayan',
+  'The nearest training centers for these qualifications.':
+    'Saray asingger a sentro na pansanay parad saray kwalipikasyon a iyan.',
+  'Skills you will need': 'Saray abilidad a kaukolan mo',
+  'No TESDA qualification is linked to this job title yet. Search the Career Map for a related one.':
+    'Anggapo ni so kwalipikasyon na TESDA ya akakonekta ed trabahon iya. Anapen ed Career Map so mankaukolan.',
+  'Search for it on the map': 'Anapen iya ed mapa',
+  'Loading training centers…': 'Ikakarga iray sentro na pansanay…',
+  'Training centers could not be loaded.': 'Agnayarin ikarga iray sentro na pansanay.',
 }

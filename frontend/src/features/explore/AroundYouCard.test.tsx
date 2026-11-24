@@ -10,9 +10,13 @@ import { createTestQueryClient, renderWithQuery } from '../../test/query.tsx'
 import { server } from '../../test/server.ts'
 import type { CenterMapProps } from '../training/CenterMapTypes.ts'
 import { useTrainingStore } from '../training/state.ts'
+import type { Center, Program } from '../training/centers.ts'
 import { AroundYouCard, useAroundYouOpen } from './AroundYouCard.tsx'
 import {
   planAroundYou,
+  qualificationsForJob,
+  qualificationsTeaching,
+  sameJob,
   shortRegion,
   topSkills,
   type AroundYouInput,
@@ -114,7 +118,7 @@ const catalog: Qualification[] = [
     code: 'SMAW-II',
     name: 'Shielded Metal Arc Welding NC II',
     sector: 'Metals',
-    possible_jobs: [],
+    possible_jobs: ['Welder', 'Pipe Welder'],
     competencies: [
       competency('Participate in workplace communication', 'Basic'),
       competency('Weld carbon steel plates'),
@@ -167,6 +171,28 @@ const area = (
       ] as never)
     : [],
   has_selected_area_evidence: true,
+})
+
+describe('detail matching', () => {
+  it('matches a posting title to a possible job by whole words', () => {
+    expect(sameJob('SERVICE CREW', 'Service Crew')).toBe(true)
+    expect(sameJob('FAST FOOD SERVICE CREW', 'Service crew')).toBe(true)
+    expect(sameJob('WELDER', 'Pipe Welder')).toBe(true)
+    expect(sameJob('COOK', 'Cookery Instructor')).toBe(false)
+    expect(sameJob('IT', 'IT Support')).toBe(false)
+  })
+
+  it('finds the qualifications that teach a skill and that lead to a job', () => {
+    expect(qualificationsTeaching('weld carbon steel plates', catalog).map((q) => q.code)).toEqual([
+      'SMAW-II',
+      'GTAW-II',
+    ])
+    expect(qualificationsForJob('WELDER', catalog).map((q) => q.code)).toEqual(['SMAW-II'])
+    // The server's link comes first, even where the catalog's jobs don't name the title.
+    expect(qualificationsForJob('LINE COOK', catalog, 'Cookery NC II').map((q) => q.code)).toEqual([
+      'COOK-II',
+    ])
+  })
 })
 
 describe('shortRegion', () => {
@@ -286,10 +312,14 @@ function Card({
   plan,
   onProvince = () => {},
   onQualification = () => {},
+  centers = [],
+  onCenter,
 }: {
   plan: AroundYouPlan
   onProvince?: () => void
   onQualification?: (code: string, name: string) => void
+  centers?: Center[]
+  onCenter?: (id: string, code: string) => void
 }) {
   const [open, setOpen] = useAroundYouOpen(true)
   return (
@@ -301,6 +331,8 @@ function Card({
       variant="float"
       onProvince={onProvince}
       onQualification={onQualification}
+      centers={centers}
+      onCenter={onCenter}
     />
   )
 }
@@ -326,12 +358,12 @@ describe('AroundYouCard', () => {
     expect(within(card).queryByText('Participate in workplace communication')).toBeNull()
     // Qualifications ranked by postings here, not in the server's name order.
     const names = within(card)
-      .getAllByRole('button', { name: /^Find centers for/ })
+      .getAllByRole('button', { name: /NC II$/ })
       .map((button) => button.getAttribute('aria-label'))
     expect(names).toEqual([
-      'Find centers for Shielded Metal Arc Welding NC II',
-      'Find centers for Gas Tungsten Arc Welding NC II',
-      'Find centers for Cookery NC II',
+      'See details for Shielded Metal Arc Welding NC II',
+      'See details for Gas Tungsten Arc Welding NC II',
+      'See details for Cookery NC II',
     ])
     expect(within(card).getByText('Welder')).toBeVisible()
     expect(within(card).getByText('Based on job postings, Nov 4, 2026')).toBeVisible()
@@ -574,5 +606,176 @@ describe('Around you on the Career Map', () => {
     // The Skill Passport answers "not linked" (the default handler): there is nothing to place the card by.
     await waitFor(() => expect(requests.length).toBe(0))
     expect(screen.queryByRole('region', { name: 'Around you' })).toBeNull()
+  })
+})
+
+const trainingCenter = (id: number, name: string, distanceKm: number | null): Center =>
+  ({
+    id: `training-${id}`,
+    kind: 'training',
+    name,
+    city: 'Imus',
+    province: 'Cavite',
+    region: 'CALABARZON',
+    distanceKm,
+    accredited: [],
+    schedules: [],
+    // The page's own programs are ignored: the details read each qualification's.
+    programs: [],
+  }) as unknown as Center
+
+const program = (provider: number, code: string, extra: Partial<Program> = {}) =>
+  ({
+    id: provider * 100,
+    title: code,
+    description: null,
+    qualification: { code, name: code, sector: 'Metals' },
+    provider: { id: provider, name: `Provider ${provider}`, region_code: 'IV-A' },
+    delivery_mode: 'institution_based',
+    duration_hours: 268,
+    cost: null,
+    scholarship_available: false,
+    scholarship_open: false,
+    start_date: null,
+    end_date: null,
+    slots: null,
+    is_active: true,
+    ...extra,
+  }) as unknown as Program
+
+/** Each qualification's programs, as /training-programs answers for it. */
+function servePrograms(programs: Program[]) {
+  server.use(
+    http.get('*/api/v1/training-programs', ({ request }) => {
+      const code = new URL(request.url).searchParams.get('qualification_code')
+      return HttpResponse.json(programs.filter((item) => item.qualification.code === code))
+    }),
+    http.get('*/api/v1/assessment-schedules', () => HttpResponse.json([])),
+  )
+}
+
+describe('AroundYouCard details', () => {
+  const centers = [
+    trainingCenter(1, 'Far Welding School', 40),
+    trainingCenter(2, 'Near Welding School', 3.2),
+    trainingCenter(3, 'Kitchen Academy', 5),
+  ]
+  beforeEach(() =>
+    servePrograms([
+      program(1, 'SMAW-II'),
+      program(2, 'SMAW-II'),
+      program(2, 'SMAW-II', { id: 201, scholarship_open: true }),
+      program(3, 'COOK-II'),
+    ]),
+  )
+
+  it('a skill shows the qualifications that teach it, and leads on to one of them and back', async () => {
+    serve()
+    renderWithQuery(<Card plan={planAroundYou(guest)!} centers={centers} />)
+    fireEvent.click(
+      await screen.findByRole('button', { name: 'See details for Weld carbon steel plates' }),
+    )
+    const dialog = await screen.findByRole('dialog', { name: 'Weld carbon steel plates' })
+    expect(
+      within(dialog).getByRole('heading', { name: 'Qualifications that teach it' }),
+    ).toBeVisible()
+    // Most posting records here first: SMAW (10), then GTAW (4).
+    const rows = within(dialog).getAllByRole('button', { name: /Arc Welding NC II/ })
+    expect(rows.map((row) => row.textContent)).toEqual([
+      expect.stringContaining('Shielded Metal Arc Welding NC II'),
+      expect.stringContaining('Gas Tungsten Arc Welding NC II'),
+    ])
+    await waitFor(() => expect(rows[0]).toHaveTextContent('Nearest center 3.2 km'))
+    // The jobs those qualifications lead to.
+    expect(within(dialog).getByRole('button', { name: /Pipe Welder/ })).toBeVisible()
+
+    fireEvent.click(rows[0]!)
+    const next = await screen.findByRole('dialog', { name: 'Shielded Metal Arc Welding NC II' })
+    fireEvent.click(within(next).getByRole('button', { name: 'Back to Weld carbon steel plates' }))
+    expect(await screen.findByRole('dialog', { name: 'Weld carbon steel plates' })).toBeVisible()
+  })
+
+  it('a qualification lists its training centers nearest first, its jobs, and the way to the map', async () => {
+    serve()
+    const onQualification = vi.fn()
+    const onCenter = vi.fn()
+    renderWithQuery(
+      <Card
+        plan={planAroundYou(guest)!}
+        centers={centers}
+        onQualification={onQualification}
+        onCenter={onCenter}
+      />,
+    )
+    fireEvent.click(
+      await screen.findByRole('button', {
+        name: 'See details for Shielded Metal Arc Welding NC II',
+      }),
+    )
+    const dialog = await screen.findByRole('dialog', { name: 'Shielded Metal Arc Welding NC II' })
+    expect(within(dialog).getByText('Metals')).toBeVisible()
+    const rows = await within(dialog).findAllByRole('button', {
+      name: /^Show .* School on the map$/,
+    })
+    expect(rows.map((row) => row.getAttribute('aria-label'))).toEqual([
+      'Show Near Welding School on the map',
+      'Show Far Welding School on the map',
+    ])
+    expect(rows[0]).toHaveTextContent('3.2 km')
+    expect(rows[0]).toHaveTextContent('Imus, Cavite')
+    expect(rows[0]).toHaveTextContent('268 hours')
+    expect(rows[0]).toHaveTextContent('Scholarship open')
+    expect(rows[1]).not.toHaveTextContent('Scholarship open')
+    // Welder has 12 postings here, so its chip carries the count.
+    expect(within(dialog).getByRole('button', { name: /Welder, 12 postings/ })).toBeVisible()
+
+    fireEvent.click(rows[0]!)
+    expect(onCenter).toHaveBeenCalledWith('training-2', 'SMAW-II')
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+
+    fireEvent.click(
+      screen.getByRole('button', { name: 'See details for Shielded Metal Arc Welding NC II' }),
+    )
+    fireEvent.click(await screen.findByRole('button', { name: /Show all its centers on the map/ }))
+    expect(onQualification).toHaveBeenCalledWith('SMAW-II', 'Shielded Metal Arc Welding NC II')
+  })
+
+  it('a job shows its qualifications, where to train and the skills it needs', async () => {
+    serve()
+    renderWithQuery(<Card plan={planAroundYou(guest)!} centers={centers} onCenter={() => {}} />)
+    fireEvent.click(await screen.findByRole('button', { name: 'See details for Welder' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Welder' })
+    expect(within(dialog).getByText('12 postings · 1 employers')).toBeVisible()
+    expect(
+      within(dialog).getByRole('button', { name: /Shielded Metal Arc Welding NC II/ }),
+    ).toBeVisible()
+    expect(await within(dialog).findByRole('heading', { name: 'Where to train' })).toBeVisible()
+    expect(
+      (await within(dialog).findAllByRole('button', { name: /^Show .* on the map$/ }))[0],
+    ).toHaveAccessibleName('Show Near Welding School on the map')
+    fireEvent.click(within(dialog).getByRole('button', { name: 'Weld carbon steel pipes' }))
+    expect(await screen.findByRole('dialog', { name: 'Weld carbon steel pipes' })).toBeVisible()
+  })
+
+  it('a qualification no center offers says so, and offers the map search instead', async () => {
+    serve({ qualifications: qualificationsPage([area('COOK-II', 'Cookery NC II', 3)]) })
+    servePrograms([])
+    renderWithQuery(<Card plan={planAroundYou(guest)!} centers={centers} />)
+    fireEvent.click(await screen.findByRole('button', { name: 'See details for Cookery NC II' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Cookery NC II' })
+    expect(
+      await within(dialog).findByText('No training center lists this qualification yet.'),
+    ).toBeVisible()
+    expect(within(dialog).getByRole('button', { name: /Search for it on the map/ })).toBeVisible()
+  })
+
+  it('a job no qualification leads to says so', async () => {
+    serve()
+    renderWithQuery(<Card plan={planAroundYou(guest)!} centers={centers} />)
+    fireEvent.click(await screen.findByRole('button', { name: 'See details for Pipe Fitter' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Pipe Fitter' })
+    expect(
+      within(dialog).getByText(/No TESDA qualification is linked to this job title yet/),
+    ).toBeVisible()
   })
 })

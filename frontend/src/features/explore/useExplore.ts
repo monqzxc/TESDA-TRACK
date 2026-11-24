@@ -506,6 +506,8 @@ export function useExplore(
     matches,
     /** The centers shown: every one, narrowed by the region and province filters. */
     centers,
+    /** Every center, whatever the filters (the "Around you" card's details look past them). */
+    allCenters,
     regionOptions,
     provinceOptions,
     /** The Scholarships filter is on: training centers without an open scholarship are left out. */

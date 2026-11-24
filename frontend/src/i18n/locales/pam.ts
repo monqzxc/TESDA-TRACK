@@ -1631,4 +1631,40 @@ export const pam: Record<string, string> = {
   'Loading what is in demand around you…': 'Lo-load de ing pipanintunan king paligid mu…',
   'What is in demand around you could not be loaded.':
     'E ma-load ing pipanintunan king paligid mu.',
+  // The "Around you" card's details.
+  'See details for {0}': 'Lawan ing detalye ning {0}',
+  'Close details': 'Isara ing detalye',
+  'Back to {0}': 'Mibalik king {0}',
+  'Employers ask for this skill. These TESDA qualifications teach it and certify it.':
+    'Pamintuan da ning employer ing abilidad a iti. Ituru ampo patune de iti deng kwalipikasyun a reti ning TESDA.',
+  'No qualification in the catalog lists this skill yet.':
+    'Ala pang kwalipikasyun king katalogo a manlista king abilidad a iti.',
+  'Qualifications that teach it': 'Deng kwalipikasyun a manuru kaniti',
+  'Jobs that use it': 'Deng obra a gagamit kaniti',
+  'Postings here': 'Deng posting keti',
+  'Open scholarships': 'Bukas a scholarship',
+  'Training centers: {0}': 'Deng sentro ning pamag-aral: {0}',
+  Nearest: 'Pekamalapit',
+  'Nearest center {0}': 'Pekamalapit a sentro {0}',
+  'No training center listed yet': 'Ala pang makalista a sentro ning pamag-aral',
+  'Nearest first. Choose one to see it on the map.':
+    'Pekamalapit muna. Mamili kang metung ban akit me king mapa.',
+  'Share your location to see the nearest first. Choose one to see it on the map.':
+    'Ibahagi me ing lokasyun mu ban akit me muna ing pekamalapit. Mamili kang metung ban akit me king mapa.',
+  'No training center lists this qualification yet.':
+    'Ala pang sentro ning pamag-aral a manyalukung king kwalipikasyun a iti.',
+  'Possible jobs': 'Deng posibling obra',
+  'The catalog lists no jobs for this qualification yet.':
+    'Ala pang makalista a obra king katalogo para king kwalipikasyun a iti.',
+  'Show all its centers on the map': 'Pakit king mapa ngan ding sentro na',
+  'Qualifications for this job': 'Deng kwalipikasyun para king obrang iti',
+  'Where to train': 'Nokarin mag-aral',
+  'The nearest training centers for these qualifications.':
+    'Deng pekamalapit a sentro ning pamag-aral para kareng kwalipikasyun a reti.',
+  'Skills you will need': 'Deng abilidad a kailangan mu',
+  'No TESDA qualification is linked to this job title yet. Search the Career Map for a related one.':
+    'Ala pang kwalipikasyun ning TESDA a makakabit king obrang iti. Manintun king Career Map ning maki-ugne.',
+  'Search for it on the map': 'Panintunan me iti king mapa',
+  'Loading training centers…': 'Ikarga de ding sentro ning pamag-aral…',
+  'Training centers could not be loaded.': 'E makarga deng sentro ning pamag-aral.',
 }

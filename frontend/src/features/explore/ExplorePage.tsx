@@ -444,6 +444,12 @@ export default function ExplorePage() {
     setView('all')
     setCollapsed(false)
   }
+  // A center chosen in the card's details: its qualification searched, so the list beside the map matches, and the
+  // center open on the map.
+  const openCenter = (id: string, code: string) => {
+    chooseQualification(code, catalog.data?.find((item) => item.code === code)?.name ?? code)
+    select(id, { onMap: true, code })
+  }
   const aroundCard = (variant: 'float' | 'sheet') =>
     aroundPlan && (
       <AroundYouCard
@@ -454,6 +460,8 @@ export default function ExplorePage() {
         variant={variant}
         onProvince={showProvince}
         onQualification={chooseQualification}
+        centers={explore.allCenters}
+        onCenter={openCenter}
         className={variant === 'float' ? 'absolute right-[70px] z-[950]' : undefined}
         style={variant === 'float' ? { top: aroundTop } : undefined}
         // Opened lists make it tall: it scrolls inside, ending above the map's Layers button (the bottom-right

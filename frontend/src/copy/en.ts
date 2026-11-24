@@ -2565,6 +2565,42 @@ export const en = {
       // "More" under a list of the card: the same words as the center lists' (already translated).
       more: (n: number) => `${n} more`,
       fewer: 'Show fewer',
+      // A skill, qualification or job pressed in the card opens its details (AroundYouDetail.tsx).
+      details: {
+        open: (name: string) => `See details for ${name}`,
+        close: 'Close details',
+        back: (name: string) => `Back to ${name}`,
+        skillLead:
+          'Employers ask for this skill. These TESDA qualifications teach it and certify it.',
+        skillNone: 'No qualification in the catalog lists this skill yet.',
+        teachIt: 'Qualifications that teach it',
+        usedIn: 'Jobs that use it',
+        postingsHere: 'Postings here',
+        openScholarships: 'Open scholarships',
+        trainingCenters: 'Training centers',
+        centersListed: (n: number) => `Training centers: ${n}`,
+        nearest: 'Nearest',
+        nearestCenter: (km: string) => `Nearest center ${km}`,
+        noCenterYet: 'No training center listed yet',
+        centersLead: 'Nearest first. Choose one to see it on the map.',
+        centersLeadNoPlace:
+          'Share your location to see the nearest first. Choose one to see it on the map.',
+        noCenters: 'No training center lists this qualification yet.',
+        possibleJobs: 'Possible jobs',
+        noJobs: 'The catalog lists no jobs for this qualification yet.',
+        showAll: 'Show all its centers on the map',
+        searchOnMap: 'Search for it on the map',
+        loadingCenters: 'Loading training centers…',
+        centersFailed: 'Training centers could not be loaded.',
+        showCenter: (name: string) => `Show ${name} on the map`,
+        hours: (n: number) => `${n} hours`,
+        forJob: 'Qualifications for this job',
+        whereToTrain: 'Where to train',
+        whereLead: 'The nearest training centers for these qualifications.',
+        skillsNeeded: 'Skills you will need',
+        noQualification:
+          'No TESDA qualification is linked to this job title yet. Search the Career Map for a related one.',
+      },
     },
     demand: {
       heading: 'Jobs and qualification demand',

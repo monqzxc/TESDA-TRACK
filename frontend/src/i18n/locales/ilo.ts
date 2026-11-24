@@ -986,4 +986,40 @@ export const ilo: Record<string, string> = {
   'Loading what is in demand around you…': 'Ikarkarga ti kasapulan iti aglawlawmo…',
   'What is in demand around you could not be loaded.':
     'Saan a maikarga ti kasapulan iti aglawlawmo.',
+  // The "Around you" card's details.
+  'See details for {0}': 'Kitaen ti detalye ti {0}',
+  'Close details': 'Iserra ti detalye',
+  'Back to {0}': 'Agsubli iti {0}',
+  'Employers ask for this skill. These TESDA qualifications teach it and certify it.':
+    'Birbiroken dagiti employer daytoy a kabaelan. Isursuro ken patalgeden daytoy dagitoy a kwalipikasion ti TESDA.',
+  'No qualification in the catalog lists this skill yet.':
+    'Awan pay ti kwalipikasion iti katalogo a nangilista iti daytoy a kabaelan.',
+  'Qualifications that teach it': 'Dagiti kwalipikasion a mangisursuro iti daytoy',
+  'Jobs that use it': 'Dagiti trabaho a mangusar iti daytoy',
+  'Postings here': 'Dagiti posting ditoy',
+  'Open scholarships': 'Nakalukat a scholarship',
+  'Training centers: {0}': 'Dagiti sentro ti panagsanay: {0}',
+  Nearest: 'Kaasitgan',
+  'Nearest center {0}': 'Kaasitgan a sentro {0}',
+  'No training center listed yet': 'Awan pay ti nailista a sentro ti panagsanay',
+  'Nearest first. Choose one to see it on the map.':
+    'Kaasitgan nga umuna. Agpili iti maysa tapno makita iti mapa.',
+  'Share your location to see the nearest first. Choose one to see it on the map.':
+    'Iranud ti lokasionmo tapno makita nga umuna ti kaasitgan. Agpili iti maysa tapno makita iti mapa.',
+  'No training center lists this qualification yet.':
+    'Awan pay ti sentro ti panagsanay a mangidaton iti daytoy a kwalipikasion.',
+  'Possible jobs': 'Dagiti mabalin a trabaho',
+  'The catalog lists no jobs for this qualification yet.':
+    'Awan pay ti nailista a trabaho iti katalogo para iti daytoy a kwalipikasion.',
+  'Show all its centers on the map': 'Ipakita iti mapa amin a sentrona',
+  'Qualifications for this job': 'Dagiti kwalipikasion para iti daytoy a trabaho',
+  'Where to train': 'Sadino ti pagsanayan',
+  'The nearest training centers for these qualifications.':
+    'Dagiti kaasitgan a sentro ti panagsanay para kadagitoy a kwalipikasion.',
+  'Skills you will need': 'Dagiti kabaelan a kasapulam',
+  'No TESDA qualification is linked to this job title yet. Search the Career Map for a related one.':
+    'Awan pay ti kwalipikasion ti TESDA a nakasilpo iti daytoy a trabaho. Agbiruk iti Career Map iti mainaig.',
+  'Search for it on the map': 'Biroken daytoy iti mapa',
+  'Loading training centers…': 'Ik-ikarga dagiti sentro ti panagsanay…',
+  'Training centers could not be loaded.': 'Saan a maikarga dagiti sentro ti panagsanay.',
 }

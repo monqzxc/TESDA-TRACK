@@ -68,6 +68,7 @@ export const areaQualificationsQuery = (
 
 export type AreaQualification = components['schemas']['AreaQualification']
 export type ElsewhereProvince = components['schemas']['ElsewhereProvince']
+export type AreaJob = components['schemas']['AreaJob']
 
 /** The card's area: a region, a province (its postings only), or neither for every recorded region. */
 export interface AroundArea {

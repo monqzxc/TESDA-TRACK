@@ -15,6 +15,8 @@ interface ModalDialogProps {
   /** While something is being sent: the dialog can't be closed. */
   isPending?: boolean
   role?: 'dialog' | 'alertdialog'
+  /** Above the title, e.g. a way back to what was open before. */
+  before?: ReactNode
 }
 
 /**
@@ -31,6 +33,7 @@ export function ModalDialog({
   wide = false,
   isPending = false,
   role = 'dialog',
+  before,
 }: ModalDialogProps) {
   return (
     <ModalOverlay
@@ -50,6 +53,7 @@ export function ModalDialog({
           className="relative px-[1.6rem] pt-[1.6rem] pb-[1.4rem] focus:outline-none max-xs:px-[1.1rem] max-xs:pt-[1.2rem] max-xs:pb-[1.1rem]"
           role={role}
         >
+          {before}
           <Heading slot="title" className="mr-12 mb-[0.6rem] text-[1.4rem] text-navy">
             {title}
           </Heading>

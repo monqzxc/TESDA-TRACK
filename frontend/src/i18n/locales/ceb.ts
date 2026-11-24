@@ -991,4 +991,40 @@ export const ceb: Record<string, string> = {
   'Loading what is in demand around you…': 'Gikarga ang gipangita sa imong palibot…',
   'What is in demand around you could not be loaded.':
     'Dili makarga ang gipangita sa imong palibot.',
+  // The "Around you" card's details.
+  'See details for {0}': 'Tan-awa ang detalye sa {0}',
+  'Close details': 'Isira ang detalye',
+  'Back to {0}': 'Balik sa {0}',
+  'Employers ask for this skill. These TESDA qualifications teach it and certify it.':
+    'Gipangita sa mga employer kini nga kahanas. Kini nga mga kwalipikasyon sa TESDA ang nagtudlo ug nagpamatuod niini.',
+  'No qualification in the catalog lists this skill yet.':
+    'Wala pay kwalipikasyon sa katalogo nga naglista niini nga kahanas.',
+  'Qualifications that teach it': 'Mga kwalipikasyon nga nagtudlo niini',
+  'Jobs that use it': 'Mga trabaho nga mogamit niini',
+  'Postings here': 'Mga posting dinhi',
+  'Open scholarships': 'Bukas nga scholarship',
+  'Training centers: {0}': 'Mga sentro sa pagbansay: {0}',
+  Nearest: 'Pinakaduol',
+  'Nearest center {0}': 'Pinakaduol nga sentro {0}',
+  'No training center listed yet': 'Wala pay nalista nga sentro sa pagbansay',
+  'Nearest first. Choose one to see it on the map.':
+    'Pinakaduol una. Pilia ang usa aron makita kini sa mapa.',
+  'Share your location to see the nearest first. Choose one to see it on the map.':
+    'Ipaambit ang imong lokasyon aron makita una ang pinakaduol. Pilia ang usa aron makita kini sa mapa.',
+  'No training center lists this qualification yet.':
+    'Wala pay sentro sa pagbansay nga nagtanyag niini nga kwalipikasyon.',
+  'Possible jobs': 'Mga posible nga trabaho',
+  'The catalog lists no jobs for this qualification yet.':
+    'Wala pay nalista nga trabaho sa katalogo para niini nga kwalipikasyon.',
+  'Show all its centers on the map': 'Ipakita sa mapa ang tanan niini nga sentro',
+  'Qualifications for this job': 'Mga kwalipikasyon para niini nga trabaho',
+  'Where to train': 'Asa magbansay',
+  'The nearest training centers for these qualifications.':
+    'Ang pinakaduol nga mga sentro sa pagbansay para niini nga mga kwalipikasyon.',
+  'Skills you will need': 'Mga kahanas nga imong kinahanglan',
+  'No TESDA qualification is linked to this job title yet. Search the Career Map for a related one.':
+    'Wala pay kwalipikasyon sa TESDA nga nakasumpay niini nga trabaho. Pangitaa sa Career Map ang may kalabutan.',
+  'Search for it on the map': 'Pangitaa kini sa mapa',
+  'Loading training centers…': 'Gikarga ang mga sentro sa pagbansay…',
+  'Training centers could not be loaded.': 'Dili makarga ang mga sentro sa pagbansay.',
 }

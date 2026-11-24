@@ -24,6 +24,8 @@ import {
   type ElsewhereProvince,
 } from './demandApi.ts'
 import { ReasonList, useReasonLines } from './DemandPanel.tsx'
+import { AroundYouDetail, type Detail, type DetailArea } from './AroundYouDetail.tsx'
+import type { Center } from '../training/centers.ts'
 import { readable } from './jobDisplay.ts'
 
 /** Whether the card is folded to its pill, kept for the visit (this tab) once the learner chooses. */
@@ -59,6 +61,10 @@ export interface AroundYouCardProps {
   variant: 'float' | 'sheet'
   onProvince: (province: ElsewhereProvince) => void
   onQualification: (code: string, name: string) => void
+  /** The page's centers, for a qualification's or a job's training centers in the details. */
+  centers?: readonly Center[]
+  /** A center chosen in the details: open it on the map, for the qualification. */
+  onCenter?: (id: string, code: string) => void
   className?: string
   style?: CSSProperties
   /** How tall the open card may grow, over the map. */
@@ -83,12 +89,21 @@ export function AroundYouCard({
   variant,
   onProvince,
   onQualification,
+  centers = [],
+  onCenter,
   className,
   style,
   bodyStyle,
 }: AroundYouCardProps) {
   const copy = useCopy().explore.aroundYou
   const bodyId = useId()
+  // The details open over the page: what was pressed, what it led to, and the area it was pressed in.
+  const [trail, setTrail] = useState<Detail[]>([])
+  const [detailArea, setDetailArea] = useState<DetailArea | null>(null)
+  const openDetail = (detail: Detail, area: DetailArea) => {
+    setDetailArea(area)
+    setTrail([detail])
+  }
   const phone = variant === 'sheet'
   const title = plan.pillPlace ? copy.pill(plan.pillPlace) : copy.nationwide
   return (
@@ -144,7 +159,7 @@ export function AroundYouCard({
               block={block}
               catalog={catalog}
               phone={phone}
-              onQualification={onQualification}
+              onDetail={openDetail}
             />
           ))}
           {plan.elsewhere && (
@@ -158,6 +173,15 @@ export function AroundYouCard({
           {plan.hint && <p className="m-0 text-12 leading-[1.5] text-muted">{copy.hint}</p>}
         </div>
       )}
+      <AroundYouDetail
+        trail={trail}
+        area={detailArea}
+        catalog={catalog}
+        centers={centers}
+        onTrail={setTrail}
+        onQualification={onQualification}
+        onCenter={onCenter}
+      />
     </section>
   )
 }
@@ -171,12 +195,12 @@ function AreaSection({
   block,
   catalog,
   phone,
-  onQualification,
+  onDetail,
 }: {
   block: AreaBlock
   catalog: readonly Qualification[]
   phone: boolean
-  onQualification: (code: string, name: string) => void
+  onDetail: (detail: Detail, area: DetailArea) => void
 }) {
   const copy = useCopy().explore.aroundYou
   const headingId = useId()
@@ -197,6 +221,11 @@ function AreaSection({
     .slice(0, AROUND_MORE)
   const skills = top ? topSkills(ranked, catalog, AROUND_MORE) : []
   const date = latestDate(jobs.data?.snapshot_dates ?? [])
+  const area: DetailArea = {
+    qualifications: ranked,
+    jobs: jobs.data?.items ?? [],
+    forecast: (item) => (block.postingsOnly ? null : forecastLabel(item, copy)),
+  }
   const nothing = Boolean(
     jobs.data && qualifications.data && !jobs.data.items.length && !ranked.length,
   )
@@ -230,6 +259,9 @@ function AreaSection({
           key: job.title,
           name: readable(job.title),
           count: job.posting_count,
+          onPress: () =>
+            onDetail({ kind: 'job', title: job.title, linked: job.linked_qualification }, area),
+          pressLabel: copy.details.open(readable(job.title)),
         }))}
       />
     )
@@ -243,8 +275,16 @@ function AreaSection({
           name: item.qualification_name,
           count: item.observed_posting_count ?? null,
           note: block.postingsOnly ? null : forecastLabel(item, copy),
-          onPress: () => onQualification(item.qualification_code, item.qualification_name),
-          pressLabel: copy.searchFor(item.qualification_name),
+          onPress: () =>
+            onDetail(
+              {
+                kind: 'qualification',
+                code: item.qualification_code,
+                name: item.qualification_name,
+              },
+              area,
+            ),
+          pressLabel: copy.details.open(item.qualification_name),
         }))}
         phone={phone}
       />
@@ -256,7 +296,13 @@ function AreaSection({
             title={copy.topSkills}
             icon="target"
             phone={phone}
-            rows={skills.map((skill) => ({ key: skill, name: skill, count: null }))}
+            rows={skills.map((skill) => ({
+              key: skill,
+              name: skill,
+              count: null,
+              onPress: () => onDetail({ kind: 'skill', name: skill }, area),
+              pressLabel: copy.details.open(skill),
+            }))}
           />
         )}
         {top ? (
@@ -353,7 +399,7 @@ function RankList({
         phone={phone}
         render={(row) => {
           const name = (
-            <span className="grid min-w-0 gap-0.5">
+            <span className="grid min-w-0 flex-1 gap-0.5">
               <span className="line-clamp-2 min-w-0">{row.name}</span>
               {row.note && <span className="text-12 font-semibold text-good-ink">{row.note}</span>}
             </span>
@@ -370,7 +416,7 @@ function RankList({
               onPress={row.onPress}
               aria-label={row.pressLabel}
               className={cx(
-                '-mx-1.5 flex w-[calc(100%+0.75rem)] cursor-pointer items-baseline justify-between gap-3 rounded-8 border-0 bg-transparent px-1.5 py-1 text-left text-13 text-ink transition-colors duration-150',
+                'group -mx-1.5 flex w-[calc(100%+0.75rem)] cursor-pointer items-baseline justify-between gap-2 rounded-8 border-0 bg-transparent px-1.5 py-1 text-left text-13 text-ink transition-colors duration-150',
                 'data-hovered:bg-soft data-hovered:text-blue data-pressed:bg-chip',
                 focusRing,
                 phone ? 'min-h-11' : 'min-h-8',
@@ -378,6 +424,11 @@ function RankList({
             >
               {name}
               {count}
+              <Icon
+                name="arrowRight"
+                size={13}
+                className="shrink-0 self-center text-blue opacity-0 transition-opacity duration-150 group-data-focus-visible:opacity-100 group-data-hovered:opacity-100 motion-reduce:transition-none"
+              />
             </Button>
           ) : (
             <div className="flex min-h-7 items-baseline justify-between gap-3 py-1 text-13">
