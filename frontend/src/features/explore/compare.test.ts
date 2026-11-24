@@ -71,7 +71,12 @@ describe('compareColumns', () => {
     ]
     const [near] = compareColumns({ ...base, matches: [match('A')], centers })
     expect([near!.trainNear, near!.assessNear]).toEqual([1, 1])
-    const [unknown] = compareColumns({ ...base, hasReference: false, matches: [match('A')], centers })
+    const [unknown] = compareColumns({
+      ...base,
+      hasReference: false,
+      matches: [match('A')],
+      centers,
+    })
     expect([unknown!.trainNear, unknown!.assessNear]).toEqual([null, null])
   })
 

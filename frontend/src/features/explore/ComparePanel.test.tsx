@@ -30,7 +30,11 @@ const school = {
 } as unknown as Center
 
 const fit = (next_step: QualificationFit['next_step'], score: number) =>
-  ({ score, next_step, coverage: { covered: ['a', 'b'], missing: ['c'], expired: [] } }) as unknown as QualificationFit
+  ({
+    score,
+    next_step,
+    coverage: { covered: ['a', 'b'], missing: ['c'], expired: [] },
+  }) as unknown as QualificationFit
 
 const explore = (over: Partial<Record<string, unknown>> = {}) =>
   ({
@@ -66,11 +70,12 @@ describe('ComparePanel', () => {
     renderPanel(explore())
     expect(screen.getByRole('columnheader', { name: 'Driving NC II' })).toBeInTheDocument()
     expect(within(row('Training hours')).getByText('118')).toBeInTheDocument()
-    expect(within(row('Possible jobs')).getByText('Taxi driver, Delivery driver')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /Sign in and add your Skill Passport/ })).toHaveAttribute(
-      'href',
-      '/sign-in',
-    )
+    expect(
+      within(row('Possible jobs')).getByText('Taxi driver, Delivery driver'),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: /Sign in and add your Skill Passport/ }),
+    ).toHaveAttribute('href', '/sign-in')
     expect(screen.queryByRole('rowheader', { name: 'Your fit' })).not.toBeInTheDocument()
   })
 
@@ -89,7 +94,7 @@ describe('ComparePanel', () => {
     const fitRow = row('Your fit')
     expect(within(fitRow).getByText('82 · Assess now')).toBeInTheDocument()
     expect(within(fitRow).getByText('40 · Gap training')).toBeInTheDocument()
-    expect(within(row('CORE units you have')).getAllByText('2 of 3')).toHaveLength(2)
+    expect(within(row('CORE units you have')).getAllByText('2 of 3 units')).toHaveLength(2)
     expect(screen.queryByText(/Sign in and add/)).not.toBeInTheDocument()
   })
 
@@ -112,10 +117,11 @@ describe('ComparePanel', () => {
     renderPanel(explore())
     const cells = within(row('Training hours')).getAllByRole('cell')
     expect(cells.map((cell) => cell.textContent)).toEqual(['118', '—'])
-    expect(within(row('Scholarship')).getAllByRole('cell').map((c) => c.textContent)).toEqual([
-      'Yes',
-      '—',
-    ])
+    expect(
+      within(row('Scholarship'))
+        .getAllByRole('cell')
+        .map((c) => c.textContent),
+    ).toEqual(['Yes', '—'])
   })
 
   it('renders a single column for one pick', () => {

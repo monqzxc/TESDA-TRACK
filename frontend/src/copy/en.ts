@@ -2332,7 +2332,7 @@ export const en = {
       title: 'Compare',
       rowFit: 'Your fit',
       rowCore: 'CORE units you have',
-      coreOf: (have: number, total: number) => `${have} of ${total}`,
+      coreOf: (have: number, total: number) => `${have} of ${total} units`,
       rowHours: 'Training hours',
       rowCenters: 'Centers near you',
       centersValue: (train: number, assess: number) => `${train} train · ${assess} assess`,

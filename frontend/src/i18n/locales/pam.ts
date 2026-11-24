@@ -1670,4 +1670,23 @@ export const pam: Record<string, string> = {
   'How ranking works': 'Nanu ing pamag-ranggo',
   'About these results': 'Tungkul kareng resulta a ini',
   'About travel times': 'Tungkul king oras ning biyahe',
+  // Narrow and compare qualifications, route on click (2026-11-24): best effort, needs native review.
+  'Narrow it down (optional)': 'Pakaditan ing pamipili (opsyonal)',
+  'Compare up to 3': 'Anggang 3 ing malyari mung ikumpara',
+  Compare: 'Ikumpara',
+  'Your fit': 'Bagay keka',
+  'CORE units you have': 'CORE units a atin ka',
+  '{0} of {1} units': '{0} king {1} a units',
+  'Training hours': 'Oras ning pamagsanay',
+  'Centers near you': 'Deng sentro a malapit keka',
+  '{0} train · {1} assess': '{0} pamagsanay · {1} pamagtasa',
+  Scholarship: 'Scholarship',
+  'Checking…': 'Sisiyasatan…',
+  'Nothing on your passport points to this yet': 'Ala pang atyu king passport mu a tutuldu kaniti',
+  'Sign in and add your Skill Passport to see which fits you':
+    'Mag-sign in at idagdag me ing Skill Passport mu ban akit mu nanu ing bagay keka',
+  Renew: 'I-renew',
+  'Assess now': 'Magpa-assess na',
+  'Gap training': 'Gap training',
+  'Full training': 'Buring pamagsanay',
 }

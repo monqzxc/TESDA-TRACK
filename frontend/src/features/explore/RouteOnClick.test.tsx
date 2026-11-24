@@ -47,7 +47,13 @@ beforeEach(() => {
       matches: [{ qualification: cookeryProgram.qualification, score: 90, reason: 'Matched cook' }],
     },
   })
-  useDemandStore.setState({ region: undefined, scope: undefined, locality: null, code: null, offset: 0 })
+  useDemandStore.setState({
+    region: undefined,
+    scope: undefined,
+    locality: null,
+    code: null,
+    offset: 0,
+  })
   useTrainingStore.setState({
     useLocation: false,
     location: null,
@@ -70,7 +76,11 @@ beforeEach(() => {
       return HttpResponse.json(programs.filter((p) => !code || p.qualification.code === code))
     }),
     http.get('*/api/v1/routes', () =>
-      HttpResponse.json({ routing_enabled: true, routes: [], missing_modes: ['car', 'bike', 'foot'] }),
+      HttpResponse.json({
+        routing_enabled: true,
+        routes: [],
+        missing_modes: ['car', 'bike', 'foot'],
+      }),
     ),
   )
 })

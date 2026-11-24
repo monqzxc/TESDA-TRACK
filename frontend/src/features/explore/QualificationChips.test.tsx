@@ -35,8 +35,16 @@ const match = (qualification: Match['qualification'], score = 80): Match => ({
 })
 const cookery = match(cookeryProgram.qualification, 90)
 const welding = match(weldingProgram.qualification, 85)
-const bread = match({ code: 'BPP-NCII', name: 'Bread and Pastry Production NC II', sector: 'Tourism' })
-const eim = match({ code: 'EIM-NCII', name: 'Electrical Installation and Maintenance NC II', sector: 'Construction' })
+const bread = match({
+  code: 'BPP-NCII',
+  name: 'Bread and Pastry Production NC II',
+  sector: 'Tourism',
+})
+const eim = match({
+  code: 'EIM-NCII',
+  name: 'Electrical Installation and Maintenance NC II',
+  sector: 'Construction',
+})
 
 const searchFor = (matches: Match[], chosen?: boolean) =>
   useExploreStore.getState().setSearch({
@@ -48,7 +56,13 @@ const searchFor = (matches: Match[], chosen?: boolean) =>
 beforeEach(() => {
   localStorage.setItem('track.explore.locationAsked', 'no')
   useExploreStore.getState().reset()
-  useDemandStore.setState({ region: undefined, scope: undefined, locality: null, code: null, offset: 0 })
+  useDemandStore.setState({
+    region: undefined,
+    scope: undefined,
+    locality: null,
+    code: null,
+    offset: 0,
+  })
   useTrainingStore.setState({
     useLocation: false,
     location: null,

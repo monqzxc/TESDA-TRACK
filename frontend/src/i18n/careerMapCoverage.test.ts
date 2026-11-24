@@ -22,6 +22,8 @@ const NOT_TRANSLATED = new Set([
   'OpenStreetMap',
   'Google Maps',
   '3D',
+  // A dash for a value no source lists.
+  '—',
 ])
 
 function sentences(value: unknown, out: Set<string>) {
