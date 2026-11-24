@@ -62,6 +62,17 @@ describe('record provenance', () => {
     expect(screen.queryByText(/Example data|demonstration/i)).not.toBeInTheDocument()
   })
 
+  // QA-2026-11-19-L (US-0017 AC8): the December 2 demo's sample centers are labelled as sample data.
+  it('labels the demo sample set as sample data', () => {
+    const reference =
+      "US-0017 AC8: sample centers while TESDA's approval of the official lists is pending"
+    render(<DataProvenance value={{ status: 'example', source_reference: reference }} />)
+    expect(screen.getByText('Sample data')).toBeVisible()
+    expect(screen.getByText(/not an official TESDA record/)).toBeVisible()
+    expect(screen.queryByText('Incomplete data')).not.toBeInTheDocument()
+    expect(screen.queryByText(/US-0017/)).not.toBeInTheDocument()
+  })
+
   it('keeps non-web source references and credentialed URLs out of links', () => {
     for (const value of [
       'javascript:alert(1)',

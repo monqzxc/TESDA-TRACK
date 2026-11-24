@@ -188,6 +188,11 @@ class Settings(BaseSettings):
     tsp_find_jobs_skill_param: str = Field(default="skill", pattern=r"^[A-Za-z0-9_.-]{1,40}$")
     tsp_find_jobs_area_param: str = Field(default="area", pattern=r"^[A-Za-z0-9_.-]{1,40}$")
 
+    @property
+    def outlook_counts_example_sites(self) -> bool:
+        """In the sample-center demo the sample centers are the supply, so the analysis counts them."""
+        return self.outlook_include_example_sites or self.center_data == "sample"
+
     @field_validator("mcp_token_secret", "hercules_base_url", "tracker_client_id", "tracker_client_secret",
                      "anthropic_api_key", mode="before")
     @classmethod

@@ -27,17 +27,29 @@ export function sourceLink(value: string | null | undefined): string | undefined
 const labels = {
   verified: 'Verified data',
   incomplete: 'Incomplete data',
+  sample: 'Sample data',
 }
 
 /** The status's dot: green when verified, amber when something is missing. */
 const dots = {
   verified: 'bg-good-ink',
   incomplete: 'bg-warn-ink',
+  sample: 'bg-warn-ink',
 }
 
-/** Example records are shown like any other unverified record. */
+/** Marks the December 2 demo's sample centers (backend: center_listing.SAMPLE_REFERENCE). */
+const SAMPLE_REFERENCE =
+  "US-0017 AC8: sample centers while TESDA's approval of the official lists is pending"
+
+/**
+ * The demo's sample set says so (US-0017 AC8). Other example records are shown like any other unverified record.
+ */
 const shownStatus = (value?: Provenance | null) =>
-  value?.status === 'verified' ? 'verified' : 'incomplete'
+  value?.status === 'verified'
+    ? 'verified'
+    : value?.status === 'example' && value.source_reference === SAMPLE_REFERENCE
+      ? 'sample'
+      : 'incomplete'
 
 const isDate = (value?: string | null): value is string =>
   !!value && Number.isFinite(Date.parse(value))
@@ -60,6 +72,8 @@ const readableSourceName = (value?: string | null) =>
 export const statusAdvice = {
   incomplete:
     'Some source or review information is missing. Confirm details before relying on them.',
+  sample:
+    'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.',
 }
 
 /**
@@ -108,7 +122,9 @@ export function DataProvenance({
             )}
             {!href && ' (public source link not recorded)'}
           </span>
-          {value?.source_reference && <span>Reference: {value.source_reference}</span>}
+          {value?.source_reference && status !== 'sample' && (
+            <span>Reference: {value.source_reference}</span>
+          )}
           <span>
             Source updated: <DateValue value={value?.source_updated_on} />
           </span>
@@ -174,7 +190,7 @@ export function ProvenanceNotice({
   values: readonly (Provenance | null | undefined)[]
 }) {
   const statuses = new Set(values.map(shownStatus))
-  const shown = (['incomplete'] as const).filter((status) => statuses.has(status))
+  const shown = (['sample', 'incomplete'] as const).filter((status) => statuses.has(status))
   if (!shown.length) return null
   return (
     <div className="mb-3 grid gap-0.5 text-13 leading-[1.5] text-muted">
