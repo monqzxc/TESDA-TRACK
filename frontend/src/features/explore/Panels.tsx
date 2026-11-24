@@ -1335,7 +1335,7 @@ export function ResultsPanel({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* The picked qualifications side by side, above whichever view is open. */}
+      {/* The search's qualifications side by side (the picked ones, once any are), above whichever view is open. */}
       <ComparePanel explore={explore} />
       {/* An underlined tab row: icon and label sit on one line, the chosen view is navy with a bar beneath it.
           Labels never truncate; when the row is narrow the icons drop out first. */}

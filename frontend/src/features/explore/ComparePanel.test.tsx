@@ -38,6 +38,8 @@ const fit = (next_step: QualificationFit['next_step'], score: number) =>
 
 const explore = (over: Partial<Record<string, unknown>> = {}) =>
   ({
+    search: { query: 'driver', result: { matches: [driving, bus] } },
+    allMatches: [driving, bus],
     matches: [driving, bus],
     picked: ['DRV-NCII', 'DPB-NCIII'],
     centers: [school],
@@ -61,8 +63,28 @@ const renderPanel = (value: Explore) =>
 const row = (label: string) => screen.getByRole('rowheader', { name: label }).closest('tr')!
 
 describe('ComparePanel', () => {
-  it('shows nothing when nothing is picked', () => {
-    const { container } = renderPanel(explore({ picked: [] }))
+  it('compares every match when nothing is picked', () => {
+    renderPanel(explore({ picked: [] }))
+    expect(screen.getAllByRole('columnheader').map((cell) => cell.textContent)).toEqual([
+      'Driving NC II',
+      'Driving (Passenger Bus) NC III',
+    ])
+  })
+
+  it('shows nothing when the search matched only one qualification', () => {
+    const { container } = renderPanel(
+      explore({ picked: [], allMatches: [driving], matches: [driving] }),
+    )
+    expect(container).toBeEmptyDOMElement()
+  })
+
+  it('shows nothing for a qualification chosen from the library', () => {
+    const { container } = renderPanel(
+      explore({
+        picked: [],
+        search: { query: 'Driving NC II', chosen: true, result: { matches: [driving, bus] } },
+      }),
+    )
     expect(container).toBeEmptyDOMElement()
   })
 
@@ -126,6 +148,7 @@ describe('ComparePanel', () => {
 
   it('renders a single column for one pick', () => {
     renderPanel(explore({ matches: [driving], picked: ['DRV-NCII'] }))
+    // One picked of several: only it is compared.
     expect(screen.getAllByRole('columnheader')).toHaveLength(1)
   })
 })

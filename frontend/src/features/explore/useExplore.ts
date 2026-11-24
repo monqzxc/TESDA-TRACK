@@ -398,7 +398,7 @@ export function useExplore(
     enabled: outOfRange,
   })
   // The catalog names related qualifications, and gives the comparison each picked one's possible jobs.
-  const catalog = useQuery({ ...qualificationsQuery, enabled: outOfRange || picked.length > 0 })
+  const catalog = useQuery({ ...qualificationsQuery, enabled: outOfRange || allMatches.length > 1 })
   const nearbyCenters = useMemo(
     () =>
       outOfRange && inRange.data && sites.data && regions.data

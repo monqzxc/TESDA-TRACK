@@ -6,12 +6,13 @@ import { compareColumns, type CompareColumn } from './compare.ts'
 import type { Explore } from './useExplore.ts'
 
 /**
- * The picked qualifications side by side: how the learner's Skill Passport fits each (when they have one), then what
+ * The search's qualifications side by side (only those picked, once any are): how the learner's Skill Passport fits each (when they have one), then what
  * each course involves near them. Values no source lists show a dash, never a guess.
  */
 export function ComparePanel({ explore }: { explore: Explore }) {
   const copy = useCopy().explore.compare
-  if (!explore.picked.length) return null
+  // Nothing to compare with one match, or with one qualification chosen from the library.
+  if (explore.search?.chosen || explore.allMatches.length < 2) return null
   const columns = compareColumns({
     matches: explore.matches,
     centers: explore.centers,
