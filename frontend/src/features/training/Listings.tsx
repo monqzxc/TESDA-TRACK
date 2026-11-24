@@ -6,6 +6,7 @@ import { failureMessage } from '../../auth/fields.tsx'
 import { useAuth, useRequireAccount } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
 import { DataProvenance, sourceLink } from '../../components/DataProvenance.tsx'
+import { ScholarshipSampleNote } from './ScholarshipSampleNote.tsx'
 import { ModalDialog } from '../../components/ModalDialog.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
@@ -207,6 +208,7 @@ function ProgramCard({
             {program.scholarship_open && (
               <span className={scholarshipBadge}>{copy.programs.scholarship}</span>
             )}
+            <ScholarshipSampleNote programs={[program]} />
           </p>
         )}
         {fit && fit.explanation.length > 0 && (
@@ -284,6 +286,7 @@ function ProgramDialog({
           {program.scholarship_open && (
             <span className={scholarshipBadge}>{copy.programs.scholarship}</span>
           )}
+          <ScholarshipSampleNote programs={[program]} />
         </p>
       </div>
       <dl className={factList}>

@@ -10,10 +10,9 @@ assessment center with an upcoming schedule for every qualification. Every recor
 data_status "example", a source naming this as sample data, invented coordinates near the region's center city and
 no contact details. Nothing official is changed or deleted.
 
-Sample programs also carry sample scholarships (US-0019), marked as sample data: in each region three of every four
-qualifications have one open until after the demo, and the fourth has one that already closed, so the demo shows both
-the "Scholarship open" tag and a closed scholarship whose tag has gone. Which ones rotate from region to region, so
-every qualification has an open scholarship in most regions.
+Sample programs also carry sample scholarships (US-0019), marked as sample data. Every qualification has an open
+scholarship in every region. Every fourth qualification also has a closed sample batch, so the demo shows both
+the "Scholarship open" tag and a closed scholarship whose tag has gone.
 
 Loading alone shows nobody anything new: set CENTER_DATA=sample and restart the API, and learners then see only these
 centers, each labelled as sample data. Set CENTER_DATA=official (or remove it) to return to the official lists.
@@ -27,7 +26,7 @@ from dataclasses import asdict, dataclass
 from datetime import date, datetime, time, timedelta, timezone
 from decimal import Decimal
 
-from sqlalchemy import delete
+from sqlalchemy import delete, text
 from sqlmodel import Session, select
 
 from tesda_track.sample_scholarships import SAMPLE_CLOSED_ON, SAMPLE_CLOSES_ON
@@ -35,6 +34,7 @@ from tesda_track.models import (AssessmentApplication, AssessmentCenter, Assessm
                                 TrainingProvider)
 from tesda_track.services import catalog
 from tesda_track.services.center_listing import SAMPLE_REFERENCE, SAMPLE_STATUS
+from tesda_track.services.training import scholarship_open
 
 SAMPLE_PREFIX = "[Sample] "
 SOURCE_NAME = "Sample data for the December 2 demo. Not an official TESDA list."
@@ -62,6 +62,13 @@ def _near(rng: random.Random, latitude: float, longitude: float) -> tuple[float,
     return round(latitude + rng.uniform(-0.05, 0.05), 4), round(longitude + rng.uniform(-0.05, 0.05), 4)
 
 
+def _add_open_sample(session: Session, program: TrainingProgram) -> None:
+    values = program.model_dump(exclude={"id", "provider_id", "qualification_id"})
+    values.update(title=f"{program.qualification.name} (sample open scholarship batch)",
+                  scholarship_closes_on=SAMPLE_CLOSES_ON)
+    session.add(TrainingProgram(provider=program.provider, qualification=program.qualification, **values))
+
+
 def load(session: Session, seed: int = 2026, today: date | None = None) -> SampleReport:
     today = today or date.today()
     report = remove(session)
@@ -82,7 +89,7 @@ def load(session: Session, seed: int = 2026, today: date | None = None) -> Sampl
         for index, qualification in enumerate(qualifications):
             hours = rng.choice([160, 240, 268, 320, 436])
             start = today + timedelta(days=rng.randint(7, 90))
-            session.add(TrainingProgram(
+            program = TrainingProgram(
                 provider=providers[index % len(providers)], qualification=qualification,
                 title=f"{qualification.name} (sample {start:%B %Y} batch)",
                 description=f"Sample program for {qualification.name}, for the December 2 demo. Not a real offering.",
@@ -90,8 +97,12 @@ def load(session: Session, seed: int = 2026, today: date | None = None) -> Sampl
                 end_date=start + timedelta(days=round(hours / 8 * 7 / 5)), slots=rng.choice([20, 25, 30]),
                 scholarship_available=True, scholarship_is_sample=True,
                 scholarship_closes_on=SAMPLE_CLOSED_ON if (index + place) % 4 == 2 else SAMPLE_CLOSES_ON,
-                **provenance))
+                **provenance)
+            session.add(program)
             report.programs += 1
+            if program.scholarship_closes_on == SAMPLE_CLOSED_ON:
+                _add_open_sample(session, program)
+                report.programs += 1
         latitude, longitude = _near(rng, region.latitude, region.longitude)
         center = AssessmentCenter(name=f"{SAMPLE_PREFIX}{region.center_city} Assessment Center",
                                   region_code=region.code, city=region.center_city, latitude=latitude,
@@ -106,6 +117,35 @@ def load(session: Session, seed: int = 2026, today: date | None = None) -> Sampl
             report.schedules += 1
     session.flush()
     return report
+
+
+def ensure(session: Session) -> SampleReport | None:
+    """Provision the demo once when its listing mode is selected, preserving existing sample IDs."""
+    from tesda_track.services.center_listing import sample_mode
+
+    if not sample_mode():
+        return None
+    # Deploy jobs can overlap. A transaction lock lets the second see the first one's committed sample set.
+    session.execute(text("SELECT pg_advisory_xact_lock(20261202, 19)"))
+    existing = session.exec(select(TrainingProvider.id).where(
+        TrainingProvider.source_reference == SOURCE_REFERENCE)).first()
+    if existing is not None:
+        # Older sample sets gave some qualification/region pairs only a closed scholarship.
+        programs = session.exec(select(TrainingProgram).where(
+            TrainingProgram.source_reference == SOURCE_REFERENCE, TrainingProgram.is_active,
+            TrainingProgram.scholarship_is_sample)).all()
+        covered = {(p.provider_id, p.qualification_id) for p in programs if scholarship_open(p)}
+        report = SampleReport()
+        for program in programs:
+            key = (program.provider_id, program.qualification_id)
+            if program.scholarship_closes_on == SAMPLE_CLOSED_ON and key not in covered:
+                _add_open_sample(session, program)
+                covered.add(key)
+                report.programs += 1
+        return report if report.programs else None
+    if not session.exec(select(Region.code)).first() or not catalog.active_qualifications(session):
+        raise ValueError("Load the region and qualification catalog before enabling sample centers.")
+    return load(session)
 
 
 def remove(session: Session) -> SampleReport:

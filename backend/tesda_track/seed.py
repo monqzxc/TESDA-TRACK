@@ -421,6 +421,7 @@ def seed_all(session: Session, seed_dir: Path = SEED_DIR) -> dict[str, SyncRepor
 
 def main() -> None:
     from tesda_track.db import get_engine
+    from tesda_track.sample_centers import ensure
 
     parser = argparse.ArgumentParser(description="Sync reference data from seed files into the database.")
     parser.add_argument("--dir", type=Path, default=SEED_DIR, help="directory containing the seed JSON files")
@@ -428,7 +429,11 @@ def main() -> None:
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
     with Session(get_engine()) as session:
         reports = seed_all(session, args.dir)
+        samples = ensure(session)
         session.commit()
+    if samples is not None:
+        logger.info("Sample demo centers loaded: %d providers, %d programs, %d assessment centers, %d schedules",
+                    samples.providers, samples.programs, samples.centers, samples.schedules)
     for name, report in reports.items():
         if isinstance(report, AccountSeedReport):
             logger.info("%s: %d created, %d skipped", name, report.created, report.skipped)

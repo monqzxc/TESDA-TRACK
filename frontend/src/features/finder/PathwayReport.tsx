@@ -543,6 +543,11 @@ function ProviderItem({ provider, today }: { provider: Provider; today: string }
       <p className="m-0 text-14 leading-[1.5] text-ink">
         {[provider.title, ...facts].filter(Boolean).join(' · ')}
       </p>
+      {provider.scholarship_available && provider.scholarship_is_sample && (
+        <p className="m-0 text-12 leading-[1.5] text-muted">
+          {en.training.programs.sampleScholarship}
+        </p>
+      )}
       {provider.notes.length > 0 && (
         <p className="m-0 text-13 leading-[1.5] text-muted">{provider.notes.join(' ')}</p>
       )}
