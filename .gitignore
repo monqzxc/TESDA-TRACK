@@ -153,3 +153,5 @@ classic/data/aws-ec2-runbook*.md
 .DS_Store
 Thumbs.db
 *.swp
+/docs/superpowers
+/docs
