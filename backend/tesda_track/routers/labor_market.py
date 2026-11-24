@@ -20,8 +20,9 @@ from tesda_track.services import labor_market as service, goals, catalog, eviden
 from tesda_track.schemas.evidence import QualificationEvidencePanel
 from tesda_track.schemas.area_qualifications import AreaQualifications
 from tesda_track.services import area_qualifications
-from tesda_track.services import area_jobs, profile_fit
+from tesda_track.services import area_jobs, profile_fit, elsewhere_demand
 from tesda_track.schemas.area_jobs import AreaJobs
+from tesda_track.schemas.elsewhere import ElsewhereDemand
 from tesda_track.config import Settings, get_settings
 from tesda_track.schemas.outlook import OutlookSummary, QualificationOutlook
 from tesda_track.services import outlook_summary, qualification_outlook
@@ -40,6 +41,9 @@ goal_router = APIRouter(prefix="/me/goals", tags=["goals"])
 SettingsDep = Annotated[Settings, Depends(get_settings)]
 QualificationCode = Annotated[str, Query(min_length=1, max_length=40)]
 RegionCode = Annotated[str | None, Query(max_length=20)]
+Province = Annotated[str | None, Query(max_length=100, description=(
+    "A province, as the Skill Passport writes it (\"Laguna\", \"Metro Manila\" for all of NCR). Matched without case "
+    "against the province in each posting's locality; an unknown province gives an empty list."))]
 Personalize = Annotated[bool, Query(description=(
     "Rank by the signed-in learner's Skill Passport. Ignored (a plain answer) when nobody is signed in or the "
     "account isn't linked to TSP; the response's `personalized` says which."))]
@@ -89,15 +93,17 @@ def area_qualification_evidence(
     learner: LenientLearner,
     embedder: EmbedderDep,
     region_code: str | None = None,
+    province: Province = None,
     limit: int = Query(default=50, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
     personalize: Personalize = False,
 ) -> AreaQualifications:
     """Reviewed qualification links for an area; observations and forecasts stay separate. With `personalize` and a
     learner signed in through TESDA Skill Passport, the qualifications their profile fits come first, each with the
-    reasons; otherwise the usual alphabetical directory."""
+    reasons; otherwise the usual alphabetical directory. With `province`, only that province's posting records count
+    (no forecasts, which are regional), ordered by posting records."""
     fit = _profile_fit(session, response, learner, embedder, personalize)
-    return area_qualifications.discover(session, region_code, limit=limit, offset=offset, fit=fit)
+    return area_qualifications.discover(session, region_code, limit=limit, offset=offset, fit=fit, province=province)
 
 
 @router.get("/jobs", response_model=AreaJobs)
@@ -107,6 +113,7 @@ def area_job_evidence(
     learner: LenientLearner,
     embedder: EmbedderDep,
     region_code: str | None = None,
+    province: Province = None,
     locality: str | None = Query(default=None, max_length=120),
     qualification_code: str | None = Query(default=None, max_length=40),
     limit: int = Query(default=30, ge=1, le=100),
@@ -117,7 +124,31 @@ def area_job_evidence(
     linked to qualifications their profile fits come first; otherwise by posting count."""
     fit = _profile_fit(session, response, learner, embedder, personalize)
     return area_jobs.discover(session, region_code, locality, qualification_code, limit=limit, offset=offset,
-                              fit=fit)
+                              fit=fit, province=province)
+
+
+@router.get("/elsewhere", response_model=ElsewhereDemand)
+def elsewhere_demand_view(
+    session: SessionDep,
+    response: Response,
+    learner: LenientLearner,
+    embedder: EmbedderDep,
+    exclude_province: Province = None,
+    limit: int = Query(default=3, ge=1, le=10),
+    personalize: Personalize = False,
+    qualification_code: Annotated[list[str] | None, Query(description=(
+        "A guest's searched qualifications, repeated, up to 5; ignored when the answer is personalized"))] = None,
+) -> ElsewhereDemand:
+    """Other provinces where the learner's qualifications are in demand, by posting records. Signed in with
+    `personalize`, the qualifications the Skill Passport fits, weighted by fit, with the reasons; otherwise the given
+    `qualification_code`s (none: an empty list). `exclude_province` is the learner's own. Provinces with fewer than 3
+    posting records are left out."""
+    codes = qualification_code or []
+    if len(codes) > elsewhere_demand.MAX_CODES or any(not 1 <= len(code) <= 40 for code in codes):
+        raise InvalidRequestError(f"Give up to {elsewhere_demand.MAX_CODES} qualification codes.")
+    fit = _profile_fit(session, response, learner, embedder, personalize)
+    return elsewhere_demand.find(session, exclude_province=exclude_province, limit=limit, fit=fit,
+                                 qualification_codes=codes)
 
 
 def _profile_fit(session, response: Response, learner, embedder, personalize: bool):

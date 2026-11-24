@@ -163,3 +163,27 @@ def test_unknown_region_and_invalid_paging_are_rejected(session):
     for kwargs in ({"region_code": "missing"}, {"limit": 0}, {"limit": 101}, {"offset": -1}):
         with pytest.raises(InvalidRequestError):
             area_qualifications.discover(session, now=NOW, **kwargs)
+
+
+def test_province_counts_its_postings_only_by_posting_count(session, client, seed_evidence):
+    for n in range(2):
+        _, evidence, _, _ = seed_evidence(f"cook-{n}", code="COOKERY-NC-II", source_id=f"cook-{n}")
+        evidence.locality = "CITY OF MAKATI, NCR, FOURTH DISTRICT"
+    _, evidence, _, _ = seed_evidence("weld", source_id="weld")
+    evidence.locality = "QUEZON CITY, NCR, SECOND DISTRICT"
+    _, evidence, _, _ = seed_evidence("weld-pampanga", region="III", source_id="weld-pampanga")
+    evidence.locality = "ANGELES CITY, PAMPANGA"
+    seed_evidence("regional", kind="regional_forecast", source_id="forecast")
+    seed_evidence("national", scope="national", region=None, kind="national_forecast", source_id="national")
+    session.flush()
+    result = area_qualifications.discover(session, province="metro manila", now=NOW)
+    assert result.province == "Metro Manila" and result.ordering == "posting_count"
+    assert [(i.qualification_code, i.observed_posting_count) for i in result.items] == [
+        ("COOKERY-NC-II", 2), ("SMAW-NC-II", 1)]
+    assert all(i.forecast_support == [] for i in result.items)  # forecasts are regional, never a province's
+    assert result.items[0].observation_geography.scope == "local"
+    assert result.items[0].observation_geography.label == "Metro Manila"
+    assert any("per region" in note for note in result.limitations)
+    assert area_qualifications.discover(session, "III", province="Metro Manila", now=NOW).items == []
+    response = client.get("/api/v1/labor-market/qualifications", params={"province": "Atlantis"})
+    assert response.status_code == 200 and response.json()["items"] == [] and response.json()["total"] == 0
