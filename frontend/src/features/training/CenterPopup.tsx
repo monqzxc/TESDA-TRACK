@@ -22,13 +22,12 @@ export function CenterPopup({
   canRoute,
   saved,
   today,
-  onDetails,
   onRoute,
   onToggleSaved,
   onCopied,
 }: Pick<
   CenterMapProps,
-  'canRoute' | 'saved' | 'today' | 'onDetails' | 'onRoute' | 'onToggleSaved'
+  'canRoute' | 'saved' | 'today' | 'onRoute' | 'onToggleSaved'
 > & { center: Center; onCopied: (status: string) => void }) {
   const en = useCopy()
   const copy = en.training.map
@@ -48,6 +47,8 @@ export function CenterPopup({
     }
   }
   const contact = 'inline-flex items-center gap-1.5 no-underline'
+  const routeButton =
+    'inline-flex h-10.5 flex-[1_1_auto] cursor-pointer items-center justify-center gap-2 rounded-10 border-0 bg-fill px-4 text-14 font-[650] text-white hovered:bg-fill-hover'
   const iconButton = (active = false) =>
     cx(
       'box-border grid h-10.5 flex-[0_0_42px] cursor-pointer place-items-center rounded-10 border text-blue hovered:bg-soft',
@@ -97,34 +98,23 @@ export function CenterPopup({
         </p>
       )}
       <div className="col-span-full flex items-center gap-2.5 pt-0.5">
-        <button
-          type="button"
-          className="inline-flex h-10.5 flex-[1_1_auto] cursor-pointer items-center justify-center gap-2 rounded-10 border-0 bg-fill px-4 text-14 font-[650] text-white hovered:bg-fill-hover"
-          onClick={() => onDetails(center.id)}
-        >
-          {en.training.results.viewDetails}
-          <Icon name="arrowRight" />
-        </button>
+        {/* The center's details are already in the panel beside the map, so the popup's main button routes there:
+            on the map when routing is available, otherwise in Google Maps. */}
         {canRoute ? (
-          <button
-            type="button"
-            className={iconButton()}
-            aria-label={en.training.center.directions}
-            title={en.training.center.directions}
-            onClick={() => onRoute(center.id)}
-          >
+          <button type="button" className={routeButton} onClick={() => onRoute(center.id)}>
             <Icon name="directions" size={18} />
+            {en.training.center.getRoute}
           </button>
         ) : (
           <a
-            className={iconButton()}
+            className={cx(routeButton, 'no-underline')}
             href={googleMapsDirections(point)}
             target="_blank"
             rel="noopener noreferrer"
-            aria-label={en.training.center.googleMapsHelp}
             title={en.training.center.googleMapsHelp}
           >
             <Icon name="directions" size={18} />
+            {en.training.center.getRoute}
           </a>
         )}
         <button

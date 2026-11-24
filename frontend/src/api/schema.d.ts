@@ -1942,7 +1942,8 @@ export interface paths {
          * Area Qualification Evidence
          * @description Reviewed qualification links for an area; observations and forecasts stay separate. With `personalize` and a
          *     learner signed in through TESDA Skill Passport, the qualifications their profile fits come first, each with the
-         *     reasons; otherwise the usual alphabetical directory.
+         *     reasons; otherwise the usual alphabetical directory. With `province`, only that province's posting records count
+         *     (no forecasts, which are regional), ordered by posting records.
          */
         get: operations["area_qualification_evidence_api_v1_labor_market_qualifications_get"];
         put?: never;
@@ -1966,6 +1967,29 @@ export interface paths {
          *     linked to qualifications their profile fits come first; otherwise by posting count.
          */
         get: operations["area_job_evidence_api_v1_labor_market_jobs_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/labor-market/elsewhere": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Elsewhere Demand View
+         * @description Other provinces where the learner's qualifications are in demand, by posting records. Signed in with
+         *     `personalize`, the qualifications the Skill Passport fits, weighted by fit, with the reasons; otherwise the given
+         *     `qualification_code`s (none: an empty list). `exclude_province` is the learner's own. Provinces with fewer than 3
+         *     posting records are left out.
+         */
+        get: operations["elsewhere_demand_view_api_v1_labor_market_elsewhere_get"];
         put?: never;
         post?: never;
         delete?: never;
@@ -2313,6 +2337,11 @@ export interface components {
             offset: number;
             /** Region Code */
             region_code: string | null;
+            /**
+             * Province
+             * @description The province filter as a display name ("Metro Manila" for all of NCR); its records' locality ends in it
+             */
+            province?: string | null;
             /** Locality */
             locality: string | null;
             /** Localities */
@@ -2442,6 +2471,11 @@ export interface components {
             /** Region Code */
             region_code?: string | null;
             /**
+             * Province
+             * @description The province filter as a display name ("Metro Manila" for all of NCR). Postings only: no forecast support is given for a province
+             */
+            province?: string | null;
+            /**
              * Evaluated At
              * Format: date-time
              */
@@ -2461,7 +2495,7 @@ export interface components {
              * @default qualification_name
              * @enum {string}
              */
-            ordering: "qualification_name" | "profile_fit";
+            ordering: "qualification_name" | "posting_count" | "profile_fit";
             /**
              * Personalized
              * @default false
@@ -3517,6 +3551,107 @@ export interface components {
             status: "satisfied" | "unsatisfied" | "unknown";
             /** Checks */
             checks?: components["schemas"]["EligibilityCheck"][];
+        };
+        /** ElsewhereDemand */
+        ElsewhereDemand: {
+            /** Items */
+            items: components["schemas"]["ElsewhereProvince"][];
+            /**
+             * Exclude Province
+             * @description The province left out, as a display name
+             */
+            exclude_province?: string | null;
+            /**
+             * Personalized
+             * @default false
+             */
+            personalized: boolean;
+            /**
+             * Ordering
+             * @default posting_count
+             * @enum {string}
+             */
+            ordering: "profile_fit" | "posting_count";
+            /**
+             * Min Postings
+             * @description Provinces with fewer posting records are left out
+             * @default 3
+             */
+            min_postings: number;
+            /**
+             * Snapshot Dates
+             * @description Snapshot dates of the listed postings
+             */
+            snapshot_dates?: string[];
+            /**
+             * Source Url
+             * @default https://philjobnet.gov.ph/job-vacancies/
+             */
+            source_url: string;
+            /**
+             * Method Version
+             * @default elsewhere-demand-v1
+             * @constant
+             */
+            method_version: "elsewhere-demand-v1";
+            /** Limitations */
+            limitations?: string[];
+        };
+        /** ElsewhereProvince */
+        ElsewhereProvince: {
+            /**
+             * Province
+             * @description Display name, as the Skill Passport writes it ("Metro Manila" for NCR)
+             */
+            province: string;
+            /** Region Code */
+            region_code: string;
+            /** Region Name */
+            region_name: string;
+            /** Latitude */
+            latitude: number;
+            /** Longitude */
+            longitude: number;
+            /**
+             * Location Basis
+             * @description centers: the mean of the province's training and assessment centers; region: the region's point, when no center in the province has one
+             * @enum {string}
+             */
+            location_basis: "centers" | "region";
+            /**
+             * Posting Count
+             * @description Distinct posting records linked to the qualifications used
+             */
+            posting_count: number;
+            /**
+             * Titles
+             * @description The most posted job titles
+             */
+            titles: string[];
+            /** Qualifications */
+            qualifications: components["schemas"]["ElsewhereQualification"][];
+            /**
+             * Reasons
+             * @description Why these qualifications fit the Skill Passport; personalized requests only
+             */
+            reasons?: components["schemas"]["FitReason"][];
+            /**
+             * Observed On
+             * @description The latest snapshot date of these postings
+             */
+            observed_on?: string | null;
+        };
+        /** ElsewhereQualification */
+        ElsewhereQualification: {
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
+            /**
+             * Posting Count
+             * @description Distinct posting records in the province linked to it
+             */
+            posting_count: number;
         };
         /** Employment */
         Employment: {
@@ -10990,6 +11125,8 @@ export interface operations {
         parameters: {
             query?: {
                 region_code?: string | null;
+                /** @description A province, as the Skill Passport writes it ("Laguna", "Metro Manila" for all of NCR). Matched without case against the province in each posting's locality; an unknown province gives an empty list. */
+                province?: string | null;
                 limit?: number;
                 offset?: number;
                 /** @description Rank by the signed-in learner's Skill Passport. Ignored (a plain answer) when nobody is signed in or the account isn't linked to TSP; the response's `personalized` says which. */
@@ -11025,6 +11162,8 @@ export interface operations {
         parameters: {
             query?: {
                 region_code?: string | null;
+                /** @description A province, as the Skill Passport writes it ("Laguna", "Metro Manila" for all of NCR). Matched without case against the province in each posting's locality; an unknown province gives an empty list. */
+                province?: string | null;
                 locality?: string | null;
                 qualification_code?: string | null;
                 limit?: number;
@@ -11045,6 +11184,43 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AreaJobs"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    elsewhere_demand_view_api_v1_labor_market_elsewhere_get: {
+        parameters: {
+            query?: {
+                /** @description A province, as the Skill Passport writes it ("Laguna", "Metro Manila" for all of NCR). Matched without case against the province in each posting's locality; an unknown province gives an empty list. */
+                exclude_province?: string | null;
+                limit?: number;
+                /** @description Rank by the signed-in learner's Skill Passport. Ignored (a plain answer) when nobody is signed in or the account isn't linked to TSP; the response's `personalized` says which. */
+                personalize?: boolean;
+                /** @description A guest's searched qualifications, repeated, up to 5; ignored when the answer is personalized */
+                qualification_code?: string[] | null;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ElsewhereDemand"];
                 };
             };
             /** @description Validation Error */

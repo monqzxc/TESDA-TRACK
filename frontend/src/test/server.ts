@@ -20,6 +20,56 @@ const referenceData = [
       limitations: [],
     }),
   ),
+  // The Career Map's "Around you" card: no postings anywhere unless a test says so.
+  http.get('*/api/v1/labor-market/jobs', () =>
+    HttpResponse.json({
+      items: [],
+      total: 0,
+      posting_count: 0,
+      employer_count: 0,
+      limit: 3,
+      offset: 0,
+      region_code: null,
+      locality: null,
+      localities: [],
+      areas: [],
+      snapshot_dates: [],
+      posted_between: [],
+      ordering: 'posting_count',
+      personalized: false,
+      source_url: 'https://philjobnet.gov.ph/job-vacancies/',
+      limitations: [],
+    }),
+  ),
+  http.get('*/api/v1/labor-market/qualifications', () =>
+    HttpResponse.json({
+      items: [],
+      total: 0,
+      limit: 100,
+      offset: 0,
+      region_code: null,
+      evaluated_at: '2026-11-24T00:00:00+08:00',
+      observed_since: '2026-01-01',
+      observed_through: '2026-11-24',
+      ordering: 'qualification_name',
+      personalized: false,
+      method_version: 'area-qualifications-v1',
+      limitations: [],
+    }),
+  ),
+  http.get('*/api/v1/labor-market/elsewhere', () =>
+    HttpResponse.json({
+      items: [],
+      exclude_province: null,
+      personalized: false,
+      ordering: 'posting_count',
+      min_postings: 3,
+      snapshot_dates: [],
+      source_url: 'https://philjobnet.gov.ph/job-vacancies/',
+      method_version: 'elsewhere-demand-v1',
+      limitations: [],
+    }),
+  ),
   // No Skill Passport is linked unless a test says so.
   http.get('*/api/v1/auth/tsp/profile', () =>
     HttpResponse.json(

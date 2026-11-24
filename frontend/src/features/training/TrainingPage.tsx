@@ -23,7 +23,7 @@ import { paths } from '../../paths.ts'
 import { FilterPanel } from './FilterPanel.tsx'
 import { Results, type ShowRequest } from './Results.tsx'
 import { useSavedCenters } from './savedCenters.ts'
-import { useTrainingFilters, useTrainingStore } from './state.ts'
+import { useLocationWatch, useTrainingFilters, useTrainingStore } from './state.ts'
 import { useCenters } from './useCenters.ts'
 import { PathwayRecommendations } from './PathwayRecommendations.tsx'
 import { ServiceAccessComparison } from './ServiceAccessComparison.tsx'
@@ -48,6 +48,8 @@ export default function TrainingPage() {
   const recommendationsId = useId()
   // The learner's area first: asked for alongside the catalog, so the centers near them load as soon as it's known.
   useEffect(() => useTrainingStore.getState().locateOnOpen(), [])
+  // While sharing is on, the location follows the learner; leaving the page stops the browser reporting it.
+  useLocationWatch()
   return (
     <div className="max-w-full">
       <PreviousVersion />

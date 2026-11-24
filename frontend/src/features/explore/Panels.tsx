@@ -3,8 +3,9 @@ import { qualificationsQuery } from '../../api/queries.ts'
 import { useEffect, useId, useRef, useState } from 'react'
 import { Button, Switch, ToggleButton } from 'react-aria-components'
 import { Link, useNavigate } from 'react-router'
-import { DataProvenance } from '../../components/DataProvenance.tsx'
+import { FoldedProvenance } from '../../components/DataProvenance.tsx'
 import { Icon, type IconName } from '../../components/Icon.tsx'
+import { InfoPopover } from '../../components/InfoPopover.tsx'
 import { useCopy, useServerText } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
@@ -37,7 +38,7 @@ import {
   type QualificationCard,
   type Related,
 } from './explore.ts'
-import type { RankedCenter } from './recommend.ts'
+import type { AssessmentWhy, RankedCenter } from './recommend.ts'
 import { useExploreStore, type Explore } from './useExplore.ts'
 import { ASSESS_FIRST, type QualificationFit } from '../tsp/passport.ts'
 import { splitPhones } from '../../lib/phone.ts'
@@ -1082,48 +1083,73 @@ export function RankedCenters({
       data-testid="ranked-centers"
       className={cx('flex flex-col gap-2 rounded-14 border border-border bg-surface p-3', floating)}
     >
-      <div className="flex flex-wrap items-start justify-between gap-2">
-        <div className="min-w-0">
+      <div className="min-w-0">
+        <div className="flex items-center gap-0.5">
           <h3 id={headingId} className={cx(heading, 'flex items-center gap-1.5')}>
             <Icon name="star" className="text-[#b45309]" />
             {copy.heading}
           </h3>
-          {focusName && <p className={cx(note, 'mt-0.5')}>{copy.for(focusName)}</p>}
+          {reference && items.length > 0 && (
+            // A disclaimer beside the heading: how the ranking works and that travel times are estimates, behind
+            // the "i" button so the list is not followed by a paragraph every time.
+            <InfoPopover
+              tone="warn"
+              label={en.explore.info.ranking}
+              paragraphs={[signedIn ? copy.howSignedIn : copy.how, copy.sampleNote]}
+              className="-my-1.5"
+            />
+          )}
         </div>
-        {reference && items.length > 0 && (
-          // Quiet on purpose: a note for the demo, not a warning that competes with the ranking.
-          <span className="mt-0.5 inline-flex flex-none items-center gap-1 text-11 text-muted opacity-80">
-            <Icon name="info" size="0.8rem" />
-            {copy.sample}
-          </span>
-        )}
+        {focusName && <p className={cx(note, 'mt-0.5')}>{copy.for(focusName)}</p>}
       </div>
       {!reference ? (
         <p className={note}>{copy.needPlace}</p>
       ) : !items.length ? (
         <p className={note}>{copy.none}</p>
       ) : (
-        <>
-          <ol className="m-0 flex list-none flex-col gap-1.5 p-0">
-            {items.map((item, index) => (
-              <li key={item.center.id}>
-                <RankedRow
-                  item={item}
-                  rank={index + 1}
-                  top={index === 0}
-                  rangeKm={rangeKm}
-                  onSelect={() => onSelect(item.center.id, code)}
-                />
-              </li>
-            ))}
-          </ol>
-          <p className="m-0 text-12 leading-[1.45] text-muted">
-            {signedIn ? copy.howSignedIn : copy.how} {copy.sampleNote}
-          </p>
-        </>
+        <ol className="m-0 flex list-none flex-col gap-1.5 p-0">
+          {items.map((item, index) => (
+            <li key={item.center.id}>
+              <RankedRow
+                item={item}
+                rank={index + 1}
+                top={index === 0}
+                rangeKm={rangeKm}
+                onSelect={() => onSelect(item.center.id, code)}
+              />
+            </li>
+          ))}
+        </ol>
       )}
     </section>
   )
+}
+
+/**
+ * An assessment center's reason line: its distance band and distance, then its strongest component ("Near · 18 km ·
+ * Open schedule with seats"). A center without an open schedule says so, so a nearer one without seats winning reads
+ * as the distance band, not as a better schedule.
+ */
+function assessmentWhy(
+  why: AssessmentWhy,
+  km: number,
+  center: Center,
+  copy: ReturnType<typeof useCopy>['explore']['ranked']['assessment'],
+): string {
+  const strongest =
+    why.strongest === 'schedule'
+      ? copy.schedule[why.schedule]
+      : why.strongest === 'demand'
+        ? copy.demand(center.region || center.regionCode || '')
+        : copy[why.strongest]
+  const noSchedule =
+    why.strongest !== 'schedule' &&
+    (why.schedule === 'accredited' || why.schedule === 'full' || why.schedule === 'none')
+  return [
+    copy.bands[why.band](km),
+    strongest,
+    ...(noSchedule ? [copy.schedule[why.schedule]] : []),
+  ].join(' · ')
 }
 
 /** One ranked center: its place in the list, its name and kind, why it ranks there, and "6 km · about 20 min · tags". */
@@ -1146,15 +1172,19 @@ function RankedRow({
   // Ranked by the server's service score: its own reasons (the first two), never a template.
   const serverWhy = (item.why ?? []).slice(0, SERVER_REASONS_SHOWN).map(serverText).join(' · ')
   const why =
-    reason === 'service'
-      ? serverWhy || copy.reasons.inRange(rangeKm)
-      : reason === 'unconfirmed'
-        ? copy.reasons.unconfirmed
-        : reason === 'demand'
-          ? copy.reasons.demand(center.region || center.regionCode || '')
-          : reason === 'inRange' || reason === 'outside'
-            ? copy.reasons[reason](rangeKm)
-            : copy.reasons[reason]
+    reason === 'assessment'
+      ? item.assessment && center.distanceKm !== null
+        ? assessmentWhy(item.assessment, roundKm(center.distanceKm), center, copy.assessment)
+        : copy.reasons.inRange(rangeKm)
+      : reason === 'service'
+        ? serverWhy || copy.reasons.inRange(rangeKm)
+        : reason === 'unconfirmed'
+          ? copy.reasons.unconfirmed
+          : reason === 'demand'
+            ? copy.reasons.demand(center.region || center.regionCode || '')
+            : reason === 'inRange' || reason === 'outside'
+              ? copy.reasons[reason](rangeKm)
+              : copy.reasons[reason]
   const trip = [
     ...(center.distanceKm !== null ? [copy.km(roundKm(center.distanceKm))] : []),
     ...(minutes !== null ? [copy.about(travelTime(minutes))] : []),
@@ -1396,12 +1426,18 @@ export function ResultsPanel({
         />
       ))}
       {view === 'demand' && <DemandPanel explore={explore} />}
-      {/* The demand views list records, not trips or suggestions to rate: one line says where they come from. */}
-      <div className="flex flex-col gap-1">
-        {reference && view !== 'demand' && <p className={note}>{en.explore.notes.times}</p>}
-        <p className={note}>{en.explore.notes.automatic}</p>
-        {search && view !== 'demand' && <p className={note}>{en.suggestionFeedback.note}</p>}
-      </div>
+      {/* Where the results come from, folded behind one button. The demand views list records, not trips, so they
+          leave out the travel-time note. "Automatic" already says to confirm with the center, so the suggestion
+          note is not repeated under it. */}
+      <InfoPopover
+        showLabel
+        label={en.explore.info.results}
+        className="self-start"
+        paragraphs={[
+          ...(reference && view !== 'demand' ? [en.explore.notes.times] : []),
+          en.explore.notes.automatic,
+        ]}
+      />
     </div>
   )
 }
@@ -1536,7 +1572,7 @@ export function CenterCard({
         </div>
 
         <div className="flex flex-col gap-3 p-4">
-          <DataProvenance value={center.provenance} />
+          <FoldedProvenance value={center.provenance} />
           <CenterSuggestionFeedback
             center={center}
             qualificationCode={code ?? undefined}
@@ -1695,7 +1731,14 @@ export function CenterCard({
         </section>
       )}
 
-      {!routed && center.distanceKm !== null && <p className={note}>{en.explore.notes.times}</p>}
+      {!routed && center.distanceKm !== null && (
+        <InfoPopover
+          showLabel
+          label={en.explore.info.times}
+          className="self-start"
+          paragraphs={[en.explore.notes.times]}
+        />
+      )}
     </article>
   )
 }

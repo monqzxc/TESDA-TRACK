@@ -22,6 +22,8 @@ export const SOURCES = {
   selected: 'center-selected',
   recommended: 'center-recommended',
   reference: 'center-reference',
+  /** How sure the browser is of the learner's location: a circle around the "you are here" pin. */
+  accuracy: 'center-reference-accuracy',
   radius: 'center-radius',
   routes: 'center-routes',
   demand: 'regional-demand',
@@ -32,7 +34,9 @@ export const LAYERS = {
   pins: 'center-pins',
   selected: 'center-selected-pins',
   recommended: 'center-recommended-pins',
+  referenceHalo: 'center-reference-halo',
   referenceDot: 'center-reference-dot',
+  accuracyFill: 'center-reference-accuracy-fill',
   radiusFill: 'center-radius-fill',
   demandFill: 'regional-demand-fill',
   demandLine: 'regional-demand-line',
@@ -62,6 +66,16 @@ export const CLUSTER_RADIUS = 46
 export const MAX_ZOOM = 19
 
 const BLUE = '#175cd3'
+/**
+ * The halo around the learner's location or searched place, at rest. The map pulses it for a few beats when the
+ * location arrives or Locate is pressed (CenterMapLibre), then puts it back to this.
+ */
+export const REFERENCE_HALO = {
+  radius: 20,
+  opacity: ['case', ['get', 'mine'], 0.22, 0.13] as ExpressionSpecification,
+}
+/** An accuracy wider than this (in metres) is a guess at the town, not a place: no circle is drawn for it. */
+export const MAX_ACCURACY_M = 1500
 const PALE_BLUE = '#8db2ee'
 const ROUTE_CREDIT =
   'Route by <a href="https://project-osrm.org/" target="_blank" rel="noopener noreferrer">OSRM</a> · <a href="https://www.openstreetmap.org/fixthemap" target="_blank" rel="noopener noreferrer">Fix the map</a>'
@@ -77,6 +91,8 @@ export interface OverlayData {
   /** Centers recommended to the learner: starred, in a source of their own so no cluster folds them in. */
   recommended?: FeatureCollection<Point, CenterProperties>
   reference: FeatureCollection<Point, { mine: boolean }>
+  /** The circle the learner's location is somewhere inside, when the browser says. */
+  accuracy?: FeatureCollection<Polygon>
   radius: FeatureCollection<Polygon>
   routes: FeatureCollection<LineString, RouteProperties>
   demand?: DemandRegions
@@ -124,6 +140,21 @@ export function referencePoint(reference: Reference | null): OverlayData['refere
       type: 'Feature',
       properties: { mine: reference.mine },
       geometry: { type: 'Point', coordinates: [reference.longitude, reference.latitude] },
+    },
+  ])
+}
+
+/** The circle the learner is somewhere inside, `meters` across its radius. None when the browser is far from sure. */
+export function accuracyArea(
+  point: { latitude: number; longitude: number } | null,
+  meters: number | null,
+): FeatureCollection<Polygon> {
+  if (!point || !meters || meters <= 0 || meters > MAX_ACCURACY_M) return collection()
+  return collection([
+    {
+      type: 'Feature',
+      properties: {},
+      geometry: { type: 'Polygon', coordinates: [circleRing(point, meters / 1000)] },
     },
   ])
 }
@@ -181,6 +212,7 @@ export function overlaySources(data: OverlayData): Record<string, SourceSpecific
     // The routing service asks to be credited, with a way to report mistakes in the map it routes on. The credit
     // shows while the route layers do.
     [SOURCES.routes]: { type: 'geojson', data: data.routes, attribution: ROUTE_CREDIT },
+    [SOURCES.accuracy]: { type: 'geojson', data: data.accuracy ?? collection() },
     [SOURCES.reference]: { type: 'geojson', data: data.reference },
     [SOURCES.centers]: {
       type: 'geojson',
@@ -305,31 +337,22 @@ export function overlayLayers(
         source: SOURCES.radius,
         paint: { 'line-color': BLUE, 'line-width': 2, 'line-opacity': 0.65 },
       },
+      // Under the labels and the pins, so a wide circle doesn't hide the centers inside it.
+      {
+        id: LAYERS.accuracyFill,
+        type: 'fill',
+        source: SOURCES.accuracy,
+        paint: { 'fill-color': BLUE, 'fill-opacity': 0.1 },
+      },
+      {
+        id: 'center-reference-accuracy-line',
+        type: 'line',
+        source: SOURCES.accuracy,
+        paint: { 'line-color': BLUE, 'line-width': 1, 'line-opacity': 0.4 },
+      },
       ...routeLayers(routes),
     ],
     over: [
-      {
-        id: 'center-reference-halo',
-        type: 'circle',
-        source: SOURCES.reference,
-        paint: {
-          'circle-radius': 16,
-          'circle-color': ['case', ['get', 'mine'], BLUE, '#102a56'],
-          'circle-opacity': ['case', ['get', 'mine'], 0.2, 0.13],
-          'circle-pitch-alignment': 'map',
-        },
-      },
-      {
-        id: LAYERS.referenceDot,
-        type: 'circle',
-        source: SOURCES.reference,
-        paint: {
-          'circle-radius': 7.5,
-          'circle-color': ['case', ['get', 'mine'], BLUE, placeDot],
-          'circle-stroke-width': 3,
-          'circle-stroke-color': '#ffffff',
-        },
-      },
       {
         id: LAYERS.clusters,
         type: 'symbol',
@@ -372,6 +395,29 @@ export function overlayLayers(
           'icon-image': ['concat', 'pin-', ['get', 'kind'], '-selected'],
           'icon-anchor': 'bottom',
           'icon-offset': [0, SELECTED_TIP_BELOW],
+        },
+      },
+      // The learner's location or searched place last, over the centers' pins and clusters, so none of them hides it.
+      {
+        id: LAYERS.referenceHalo,
+        type: 'circle',
+        source: SOURCES.reference,
+        paint: {
+          'circle-radius': REFERENCE_HALO.radius,
+          'circle-color': ['case', ['get', 'mine'], BLUE, '#102a56'],
+          'circle-opacity': REFERENCE_HALO.opacity,
+          'circle-pitch-alignment': 'map',
+        },
+      },
+      {
+        id: LAYERS.referenceDot,
+        type: 'circle',
+        source: SOURCES.reference,
+        paint: {
+          'circle-radius': 9.5,
+          'circle-color': ['case', ['get', 'mine'], BLUE, placeDot],
+          'circle-stroke-width': 3,
+          'circle-stroke-color': '#ffffff',
         },
       },
     ],

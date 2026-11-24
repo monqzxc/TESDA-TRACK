@@ -470,13 +470,28 @@ export const ilo: Record<string, string> = {
     'Mabilang ti trabahom kas {0}: dagiti addaan iti kapadasan ket mabalin nga agpasukat iti {1} uray awan ti panagsanay.',
   'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
     'Nailista met iti TSP profile-mo ti {0}. Ti sentro ti panagsukat ti mangkumpirma no ania ti itugotmo.',
+  'Very near · {0} km': 'Asideg unay · {0} km',
+  'Near · {0} km': 'Asideg · {0} km',
+  'Within 60 km · {0} km': 'Uneg ti 60 km · {0} km',
+  'Nearest available · {0} km': 'Kaasidegan nga adda · {0} km',
+  'Open schedule with seats': 'Nakalukat nga eskediul nga addaan bakante a tugaw',
+  'Open schedule with seats, more than 60 days away':
+    'Nakalukat nga eskediul nga addaan bakante a tugaw, nalabes pay iti 60 nga aldaw',
+  'Accredited for it, no open schedule yet':
+    'Akreditado para iti daytoy, awan pay ti nakalukat nga eskediul',
+  'Every open schedule is full': 'Napno amin a nakalukat nga eskediul',
+  'No open schedule': 'Awan ti nakalukat nga eskediul',
+  'Verified and available': 'Beripikado ken nakalukat',
+  'Close to you': 'Asideg kenka',
+  'Jobs for it are in demand in {0}': 'Kasapulan dagiti trabaho para iti daytoy idiay {0}',
+  'Lower fee than others nearby': 'Nababbaba ti bayad ngem dagiti dadduma nga asideg',
   'Listed, but its service details still need confirming':
     'Nailista, ngem masapul pay a makumpirma dagiti detalye ti serbisiona',
   'Score {0}/100': 'Iskor {0}/100',
-  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.':
-    'Maysa nga iskor ti pagibatayan ti ranggo dagiti training center: no kasano ti kaasideg, no adda beripikado a panagsukat iti asideg, no kasano kapartak nga agrugi ti klase, ken ti demand ti trabaho iti rehionda. Agtalinaed iti device-mo ti lokasionmo. Dagiti assessment center ket mairanggo segun iti kaadayo ti biahe.',
-  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.':
-    'Maysa nga iskor ti pagibatayan ti ranggo dagiti training center: no kasano ti kaasideg, no adda beripikado a panagsukat iti asideg, no kasano kapartak nga agrugi ti klase, ken ti demand ti trabaho iti rehionda. Agtalinaed iti device-mo ti lokasionmo. Dagiti assessment center ket mairanggo segun iti kaadayo ti biahe, ken umuli no ipakita ti TSP profile-mo a mabalin a nakasaganaka.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee. Your location stays on your device.':
+    'Maysa nga iskor ti pagibatayan ti ranggo dagiti training center: no kasano ti kaasideg, no adda beripikado a panagsukat iti asideg, no kasano kapartak nga agrugi ti klase, ken ti demand ti trabaho iti rehionda. Dagiti assessment center ket mairanggo nga umuna segun iti kaadayo, sa iti bakante a tugaw, beripikasion, demand ti trabaho ken bayad. Agtalinaed iti device-mo ti lokasionmo.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee, and come first when your TSP profile shows you may be ready. Your location stays on your device.':
+    'Maysa nga iskor ti pagibatayan ti ranggo dagiti training center: no kasano ti kaasideg, no adda beripikado a panagsukat iti asideg, no kasano kapartak nga agrugi ti klase, ken ti demand ti trabaho iti rehionda. Dagiti assessment center ket mairanggo nga umuna segun iti kaadayo, sa iti bakante a tugaw, beripikasion, demand ti trabaho ken bayad, ken umuna no ipakita ti TSP profile-mo a mabalin a nakasaganaka. Agtalinaed iti device-mo ti lokasionmo.',
   'Still to cover: {0}.': 'Masapul pay a maadal: {0}.',
   'Still to cover: {0}, and {1} more.': 'Masapul pay a maadal: {0}, ken {1} pay.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':
@@ -509,6 +524,8 @@ export const ilo: Record<string, string> = {
     'Saanmi a maala ti lokasionmo. Ag-type laeng iti siudad, wenno padasem manen.',
   'This browser can’t share a location. Type a city instead.':
     'Saan a makaibingay iti lokasion daytoy a browser. Ag-type laeng iti siudad.',
+  'Your browser shares a location only with secure (HTTPS) pages. Type a city instead.':
+    'Iti laeng secure (HTTPS) a panid ti pangibingayan ti browser-mo iti lokasion. Ag-type laeng iti siudad.',
   'See what is near you': 'Kitaen ti asideg kenka',
   'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
     'I-on ti panangibingay iti lokasion, wenno ag-type iti siudad, tapno makita dagiti kaasitgan a sentro ti panagsanay ken panagsukat.',
@@ -942,4 +959,71 @@ export const ilo: Record<string, string> = {
     'Awan pay ti sentro a mangidaton iti daytoy a kwalipikasion.',
   'Share your location or type a city to see the centers ranked for you.':
     'Ibingay ti lokasionmo wenno i-type ti siudad tapno makita dagiti sentro a naurnos para kenka.',
+  // The "Around you" card (needs native review).
+  'Around you': 'Iti aglawlawmo',
+  'Around you · {0}': 'Iti aglawlawmo · {0}',
+  'Top in demand · Philippines': 'Kasapulan unay · Filipinas',
+  'Near you · {0}': 'Asideg kenka · {0}',
+  'In your province · {0}': 'Iti probinsiam · {0}',
+  Provinces: 'Dagiti probinsia',
+  'Top 3 skills': 'Top 3 a kabaelan',
+  'Top 3 qualifications': 'Top 3 a kwalipikasion',
+  'Top 3 jobs': 'Top 3 a trabaho',
+  Jobs: 'Dagiti trabaho',
+  Postings: 'Dagiti posting',
+  'Forecast: in demand': 'Forecast: kasapulan',
+  'Forecast: hard to fill': 'Forecast: narigat a punnoen',
+  'Based on job postings, {0}': 'Naibatay kadagiti job posting, {0}',
+  'Based on job postings': 'Naibatay kadagiti job posting',
+  'Your skills are in demand in…': 'Kasapulan ti kabaelam idiay…',
+  'Show demand in {0} on the map': 'Ipakita iti mapa ti demand idiay {0}',
+  'Find centers for {0}': 'Biroken dagiti sentro para iti {0}',
+  "Search your skills or sign in to see where else you're in demand.":
+    'Biroken ti kabaelam wenno ag-sign in tapno makitam no sadino pay ti pakasapulam.',
+  'No job postings recorded here yet.': 'Awan pay ti nailista a job posting ditoy.',
+  'No job postings recorded in {0} yet.': 'Awan pay ti nailista a job posting idiay {0}.',
+  'No other province has enough job postings for your skills yet.':
+    'Awan pay ti sabali a probinsia nga addaan iti umanay a job posting para iti kabaelam.',
+  'Loading what is in demand around you…': 'Ikarkarga ti kasapulan iti aglawlawmo…',
+  'What is in demand around you could not be loaded.':
+    'Saan a maikarga ti kasapulan iti aglawlawmo.',
+  // The "Around you" card's details.
+  'See details for {0}': 'Kitaen ti detalye ti {0}',
+  'Close details': 'Iserra ti detalye',
+  'Back to {0}': 'Agsubli iti {0}',
+  'Employers ask for this skill. These TESDA qualifications teach it and certify it.':
+    'Birbiroken dagiti employer daytoy a kabaelan. Isursuro ken patalgeden daytoy dagitoy a kwalipikasion ti TESDA.',
+  'No qualification in the catalog lists this skill yet.':
+    'Awan pay ti kwalipikasion iti katalogo a nangilista iti daytoy a kabaelan.',
+  'Qualifications that teach it': 'Dagiti kwalipikasion a mangisursuro iti daytoy',
+  'Jobs that use it': 'Dagiti trabaho a mangusar iti daytoy',
+  'Postings here': 'Dagiti posting ditoy',
+  'Open scholarships': 'Nakalukat a scholarship',
+  'Training centers: {0}': 'Dagiti sentro ti panagsanay: {0}',
+  Nearest: 'Kaasitgan',
+  'Nearest center {0}': 'Kaasitgan a sentro {0}',
+  'No training center listed yet': 'Awan pay ti nailista a sentro ti panagsanay',
+  'Nearest first. Choose one to see it on the map.':
+    'Kaasitgan nga umuna. Agpili iti maysa tapno makita iti mapa.',
+  'Share your location to see the nearest first. Choose one to see it on the map.':
+    'Iranud ti lokasionmo tapno makita nga umuna ti kaasitgan. Agpili iti maysa tapno makita iti mapa.',
+  'No training center lists this qualification yet.':
+    'Awan pay ti sentro ti panagsanay a mangidaton iti daytoy a kwalipikasion.',
+  'Possible jobs': 'Dagiti mabalin a trabaho',
+  'The catalog lists no jobs for this qualification yet.':
+    'Awan pay ti nailista a trabaho iti katalogo para iti daytoy a kwalipikasion.',
+  'Show all its centers on the map': 'Ipakita iti mapa amin a sentrona',
+  'Qualifications for this job': 'Dagiti kwalipikasion para iti daytoy a trabaho',
+  'Where to train': 'Sadino ti pagsanayan',
+  'The nearest training centers for these qualifications.':
+    'Dagiti kaasitgan a sentro ti panagsanay para kadagitoy a kwalipikasion.',
+  'Skills you will need': 'Dagiti kabaelan a kasapulam',
+  'No TESDA qualification is linked to this job title yet. Search the Career Map for a related one.':
+    'Awan pay ti kwalipikasion ti TESDA a nakasilpo iti daytoy a trabaho. Agbiruk iti Career Map iti mainaig.',
+  'Search for it on the map': 'Biroken daytoy iti mapa',
+  'Loading training centers…': 'Ik-ikarga dagiti sentro ti panagsanay…',
+  'Training centers could not be loaded.': 'Saan a maikarga dagiti sentro ti panagsanay.',
+  'How ranking works': 'No kasano ti panag-ranggo',
+  'About these results': 'Maipapan kadagitoy a resulta',
+  'About travel times': 'Maipapan iti oras ti panagbiahe',
 }

@@ -6,7 +6,9 @@ import {
   EMPTY_OVERLAYS,
   LAYERS,
   ROUTE_LAYERS,
+  MAX_ACCURACY_M,
   SOURCES,
+  accuracyArea,
   centerPoints,
   circleRing,
   radiusArea,
@@ -57,6 +59,14 @@ describe('the overlays’ data', () => {
     expect(referencePoint(null).features).toEqual([])
     expect(referencePoint(MAKATI).features[0].properties).toEqual({ mine: true })
   })
+
+  it('draws the accuracy circle only when the browser is reasonably sure', () => {
+    const ring = accuracyArea(MAKATI, 200).features[0].geometry.coordinates[0]
+    expect(distanceKm(MAKATI, { latitude: ring[0][1], longitude: ring[0][0] })).toBeCloseTo(0.2, 6)
+    expect(accuracyArea(MAKATI, null).features).toEqual([])
+    expect(accuracyArea(null, 200).features).toEqual([])
+    expect(accuracyArea(MAKATI, MAX_ACCURACY_M + 1).features).toEqual([])
+  })
 })
 
 describe('the overlays over the base map', () => {
@@ -74,12 +84,23 @@ describe('the overlays over the base map', () => {
     const ids = style.layers.map((layer) => layer.id)
     expect(ids.indexOf(LAYERS.radiusFill)).toBeLessThan(ids.indexOf(FIRST_LABEL_LAYER))
     expect(ids.indexOf('center-route-chosen-line')).toBeLessThan(ids.indexOf(FIRST_LABEL_LAYER))
-    expect(ids.slice(-4)).toEqual([
+    expect(ids.slice(-6)).toEqual([
       LAYERS.clusters,
       LAYERS.pins,
       LAYERS.recommended,
       LAYERS.selected,
+      LAYERS.referenceHalo,
+      LAYERS.referenceDot,
     ])
+  })
+
+  it('draw the learner’s location over the centers’ pins and clusters, and its accuracy under them', () => {
+    const ids = withOverlays(base, EMPTY_OVERLAYS, 'light').layers.map((layer) => layer.id)
+    for (const reference of [LAYERS.referenceHalo, LAYERS.referenceDot]) {
+      expect(ids.indexOf(reference)).toBeGreaterThan(ids.indexOf(LAYERS.pins))
+      expect(ids.indexOf(reference)).toBeGreaterThan(ids.indexOf(LAYERS.clusters))
+    }
+    expect(ids.indexOf(LAYERS.accuracyFill)).toBeLessThan(ids.indexOf(FIRST_LABEL_LAYER))
   })
 
   it('cluster centers closer than Leaflet’s 46 pixels, even at the deepest zoom', () => {

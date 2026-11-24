@@ -511,6 +511,8 @@ export const tl: Record<string, string> = {
     'Hindi matukoy ang iyong lokasyon. Maghanap ng lugar o pumili ng rehiyon.',
   'This browser can’t share a location. Search a place or choose a region instead.':
     'Hindi makapagbahagi ng lokasyon ang browser na ito. Maghanap ng lugar o pumili ng rehiyon.',
+  'Your browser shares a location only with secure (HTTPS) pages. Search a place or choose a region instead.':
+    'Ibinabahagi lang ng browser mo ang lokasyon sa mga secure (HTTPS) na pahina. Maghanap ng lugar o pumili ng rehiyon.',
   'Search location': 'Maghanap ng lokasyon',
   'Enter city, province, or region': 'Ilagay ang lungsod, lalawigan, o rehiyon',
   'Distances are measured from this place when your own location is off.':
@@ -1624,13 +1626,27 @@ export const tl: Record<string, string> = {
     'Bilang ang iyong trabaho bilang {0}: ang may karanasan ay maaaring kumuha ng assessment sa {1} nang hindi na dumadaan sa pagsasanay.',
   'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
     'Nakalista rin sa iyong TSP profile ang {0}. Ang assessment center ang magsasabi kung ano ang kailangan mong dalhin.',
+  'Very near · {0} km': 'Napakalapit · {0} km',
+  'Near · {0} km': 'Malapit · {0} km',
+  'Within 60 km · {0} km': 'Pasok sa 60 km · {0} km',
+  'Nearest available · {0} km': 'Pinakamalapit na mayroon · {0} km',
+  'Open schedule with seats': 'Bukas na iskedyul na may bakanteng upuan',
+  'Open schedule with seats, more than 60 days away':
+    'Bukas na iskedyul na may bakanteng upuan, lampas 60 araw pa',
+  'Accredited for it, no open schedule yet': 'Akreditado para rito, wala pang bukas na iskedyul',
+  'Every open schedule is full': 'Puno na ang lahat ng bukas na iskedyul',
+  'No open schedule': 'Walang bukas na iskedyul',
+  'Verified and available': 'Beripikado at bukas',
+  'Close to you': 'Malapit sa iyo',
+  'Jobs for it are in demand in {0}': 'Hinahanap ang mga trabaho para rito sa {0}',
+  'Lower fee than others nearby': 'Mas mababa ang bayad kaysa sa iba sa malapit',
   'Listed, but its service details still need confirming':
     'Nakalista, pero kailangan pang kumpirmahin ang detalye ng serbisyo nito',
   'Score {0}/100': 'Iskor {0}/100',
-  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.':
-    'Isang iskor ang batayan ng ranggo ng mga training center: gaano kalapit, may beripikadong assessment sa malapit, gaano kabilis magsisimula ang klase, at demand sa trabaho sa kanilang rehiyon. Nananatili sa iyong device ang iyong lokasyon. Ang mga assessment center ay niraranggo ayon sa layo ng biyahe.',
-  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.':
-    'Isang iskor ang batayan ng ranggo ng mga training center: gaano kalapit, may beripikadong assessment sa malapit, gaano kabilis magsisimula ang klase, at demand sa trabaho sa kanilang rehiyon. Nananatili sa iyong device ang iyong lokasyon. Ang mga assessment center ay niraranggo ayon sa layo ng biyahe, at umaakyat kapag ipinapakita ng iyong TSP profile na maaaring handa ka na.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee. Your location stays on your device.':
+    'Isang iskor ang batayan ng ranggo ng mga training center: gaano kalapit, may beripikadong assessment sa malapit, gaano kabilis magsisimula ang klase, at demand sa trabaho sa kanilang rehiyon. Ang mga assessment center ay niraranggo ayon muna sa layo, saka sa bakanteng upuan, beripikasyon, demand sa trabaho at bayad. Nananatili sa iyong device ang iyong lokasyon.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee, and come first when your TSP profile shows you may be ready. Your location stays on your device.':
+    'Isang iskor ang batayan ng ranggo ng mga training center: gaano kalapit, may beripikadong assessment sa malapit, gaano kabilis magsisimula ang klase, at demand sa trabaho sa kanilang rehiyon. Ang mga assessment center ay niraranggo ayon muna sa layo, saka sa bakanteng upuan, beripikasyon, demand sa trabaho at bayad, at nauuna kapag ipinapakita ng iyong TSP profile na maaaring handa ka na. Nananatili sa iyong device ang iyong lokasyon.',
   'Still to cover: {0}.': 'Kailangan pang matutunan: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kailangan pang matutunan: {0}, at {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':
@@ -1691,6 +1707,8 @@ export const tl: Record<string, string> = {
     'Hindi namin makuha ang lokasyon mo. Mag-type na lang ng lungsod, o subukang muli.',
   'This browser can’t share a location. Type a city instead.':
     'Hindi makapagbahagi ng lokasyon ang browser na ito. Mag-type na lang ng lungsod.',
+  'Your browser shares a location only with secure (HTTPS) pages. Type a city instead.':
+    'Ibinabahagi lang ng browser mo ang lokasyon sa mga secure (HTTPS) na pahina. Mag-type na lang ng lungsod.',
   'See what is near you': 'Tingnan ang malapit sa iyo',
   'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
     'Buksan ang pagbabahagi ng lokasyon, o mag-type ng lungsod, para makita ang pinakamalapit na mga sentro ng pagsasanay at pagtatasa.',
@@ -2035,4 +2053,71 @@ export const tl: Record<string, string> = {
   '{0} centers': '{0} sentro',
   'Also in demand near you': 'Hinahanap din malapit sa iyo',
   'Drag to measure from a more exact spot': 'I-drag para sukatin mula sa mas eksaktong lugar',
+  // The "Around you" card (needs native review).
+  'Around you': 'Sa paligid mo',
+  'Around you · {0}': 'Sa paligid mo · {0}',
+  'Top in demand · Philippines': 'Pinakahinahanap · Pilipinas',
+  'Near you · {0}': 'Malapit sa iyo · {0}',
+  'In your province · {0}': 'Sa iyong probinsya · {0}',
+  Provinces: 'Mga probinsya',
+  'Top 3 skills': 'Top 3 kakayahan',
+  'Top 3 qualifications': 'Top 3 kwalipikasyon',
+  'Top 3 jobs': 'Top 3 trabaho',
+  Jobs: 'Mga trabaho',
+  Postings: 'Mga posting',
+  'Forecast: in demand': 'Forecast: hinahanap',
+  'Forecast: hard to fill': 'Forecast: mahirap punan',
+  'Based on job postings, {0}': 'Batay sa mga job posting, {0}',
+  'Based on job postings': 'Batay sa mga job posting',
+  'Your skills are in demand in…': 'Hinahanap ang iyong kakayahan sa…',
+  'Show demand in {0} on the map': 'Ipakita sa mapa ang demand sa {0}',
+  'Find centers for {0}': 'Maghanap ng mga sentro para sa {0}',
+  "Search your skills or sign in to see where else you're in demand.":
+    'Hanapin ang iyong kakayahan o mag-sign in para makita kung saan ka pa hinahanap.',
+  'No job postings recorded here yet.': 'Wala pang naitalang job posting dito.',
+  'No job postings recorded in {0} yet.': 'Wala pang naitalang job posting sa {0}.',
+  'No other province has enough job postings for your skills yet.':
+    'Wala pang ibang probinsya na may sapat na job posting para sa iyong kakayahan.',
+  'Loading what is in demand around you…': 'Nilo-load ang mga hinahanap sa paligid mo…',
+  'What is in demand around you could not be loaded.':
+    'Hindi ma-load ang mga hinahanap sa paligid mo.',
+  // The "Around you" card's details.
+  'See details for {0}': 'Tingnan ang detalye ng {0}',
+  'Close details': 'Isara ang detalye',
+  'Back to {0}': 'Bumalik sa {0}',
+  'Employers ask for this skill. These TESDA qualifications teach it and certify it.':
+    'Hinahanap ng mga employer ang kakayahang ito. Itinuturo at pinatutunayan ito ng mga kwalipikasyong TESDA na ito.',
+  'No qualification in the catalog lists this skill yet.':
+    'Wala pang kwalipikasyon sa katalogo na naglilista ng kakayahang ito.',
+  'Qualifications that teach it': 'Mga kwalipikasyong nagtuturo nito',
+  'Jobs that use it': 'Mga trabahong gumagamit nito',
+  'Postings here': 'Mga posting dito',
+  'Open scholarships': 'Bukas na scholarship',
+  'Training centers: {0}': 'Mga sentro ng pagsasanay: {0}',
+  Nearest: 'Pinakamalapit',
+  'Nearest center {0}': 'Pinakamalapit na sentro {0}',
+  'No training center listed yet': 'Wala pang nakalistang sentro ng pagsasanay',
+  'Nearest first. Choose one to see it on the map.':
+    'Pinakamalapit muna. Pumili ng isa para makita ito sa mapa.',
+  'Share your location to see the nearest first. Choose one to see it on the map.':
+    'Ibahagi ang iyong lokasyon para makita muna ang pinakamalapit. Pumili ng isa para makita ito sa mapa.',
+  'No training center lists this qualification yet.':
+    'Wala pang sentro ng pagsasanay na nag-aalok ng kwalipikasyong ito.',
+  'Possible jobs': 'Mga posibleng trabaho',
+  'The catalog lists no jobs for this qualification yet.':
+    'Wala pang nakalistang trabaho sa katalogo para sa kwalipikasyong ito.',
+  'Show all its centers on the map': 'Ipakita sa mapa ang lahat ng sentro nito',
+  'Qualifications for this job': 'Mga kwalipikasyon para sa trabahong ito',
+  'Where to train': 'Saan magsasanay',
+  'The nearest training centers for these qualifications.':
+    'Ang pinakamalapit na sentro ng pagsasanay para sa mga kwalipikasyong ito.',
+  'Skills you will need': 'Mga kakayahang kakailanganin mo',
+  'No TESDA qualification is linked to this job title yet. Search the Career Map for a related one.':
+    'Wala pang kwalipikasyong TESDA na nakaugnay sa trabahong ito. Maghanap ng kaugnay na kwalipikasyon sa Career Map.',
+  'Search for it on the map': 'Hanapin ito sa mapa',
+  'Loading training centers…': 'Nilo-load ang mga sentro ng pagsasanay…',
+  'Training centers could not be loaded.': 'Hindi ma-load ang mga sentro ng pagsasanay.',
+  'How ranking works': 'Paano nira-ranggo',
+  'About these results': 'Tungkol sa mga resultang ito',
+  'About travel times': 'Tungkol sa oras ng biyahe',
 }

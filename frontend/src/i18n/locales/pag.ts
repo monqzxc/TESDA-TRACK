@@ -469,13 +469,28 @@ export const pag: Record<string, string> = {
     'Nibilang so trabaho mo bilang {0}: saray walay karanasan et nayarin manpaeksamin ed {1} anggano ag-ilalo ed panagsanay.',
   'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
     'Nalista met ed TSP profile mo so {0}. Say sentro na panageksamin so mangibaga no antoy nepeg mon awiten.',
+  'Very near · {0} km': 'Asingger a maong · {0} km',
+  'Near · {0} km': 'Asingger · {0} km',
+  'Within 60 km · {0} km': 'Loob na 60 km · {0} km',
+  'Nearest available · {0} km': 'Sankaasinggeran ya walay · {0} km',
+  'Open schedule with seats': 'Abukas ya iskedyul ya walay bakanten yurungan',
+  'Open schedule with seats, more than 60 days away':
+    'Abukas ya iskedyul ya walay bakanten yurungan, labas ni ed 60 ya agew',
+  'Accredited for it, no open schedule yet':
+    'Akreditado parad satan, anggapo ni so abukas ya iskedyul',
+  'Every open schedule is full': 'Napno la so amin ya abukas ya iskedyul',
+  'No open schedule': 'Anggapo so abukas ya iskedyul',
+  'Verified and available': 'Beripikado tan abukas',
+  'Close to you': 'Asingger ed sika',
+  'Jobs for it are in demand in {0}': 'Kakaplanan so trabaho parad satan ed {0}',
+  'Lower fee than others nearby': 'Mas mabeba so bayad nen saray arum ya asingger',
   'Listed, but its service details still need confirming':
     'Nalista, balet nepeg ni ya kumpirmaen so detalye na serbisyo to',
   'Score {0}/100': 'Iskor {0}/100',
-  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.':
-    'Sakey ya iskor so pinagbatayan na ranggo na saray training center: no panon kaasingger, no wala so beripikadon panageksamin ed asingger, no panon kapaga ya ompupuna so klase, tan say demand ed trabaho ed rehiyon da. Manatili ed device mo so lokasyon mo. Saray assessment center et niraranggo base ed kaarawi na biahe.',
-  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.':
-    'Sakey ya iskor so pinagbatayan na ranggo na saray training center: no panon kaasingger, no wala so beripikadon panageksamin ed asingger, no panon kapaga ya ompupuna so klase, tan say demand ed trabaho ed rehiyon da. Manatili ed device mo so lokasyon mo. Saray assessment center et niraranggo base ed kaarawi na biahe, tan ontatagey no ipapanengneng na TSP profile mo ya nayarin akaparaan ka la.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee. Your location stays on your device.':
+    'Sakey ya iskor so pinagbatayan na ranggo na saray training center: no panon kaasingger, no wala so beripikadon panageksamin ed asingger, no panon kapaga ya ompupuna so klase, tan say demand ed trabaho ed rehiyon da. Saray assessment center et niraranggo base unona ed kaarawi, insan ed bakanten yurungan, beripikasyon, demand ed trabaho tan bayad. Manatili ed device mo so lokasyon mo.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee, and come first when your TSP profile shows you may be ready. Your location stays on your device.':
+    'Sakey ya iskor so pinagbatayan na ranggo na saray training center: no panon kaasingger, no wala so beripikadon panageksamin ed asingger, no panon kapaga ya ompupuna so klase, tan say demand ed trabaho ed rehiyon da. Saray assessment center et niraranggo base unona ed kaarawi, insan ed bakanten yurungan, beripikasyon, demand ed trabaho tan bayad, tan onuna no ipapanengneng na TSP profile mo ya nayarin akaparaan ka la. Manatili ed device mo so lokasyon mo.',
   'Still to cover: {0}.': 'Nepeg ni ya aralen: {0}.',
   'Still to cover: {0}, and {1} more.': 'Nepeg ni ya aralen: {0}, tan {1} ni.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':
@@ -507,6 +522,8 @@ export const pag: Record<string, string> = {
     'Ag mi naala so lokasyon mo. Man-type labat na siudad, o subokan lamet.',
   'This browser can’t share a location. Type a city instead.':
     'Ag makaburay na lokasyon iyan a browser. Man-type labat na siudad.',
+  'Your browser shares a location only with secure (HTTPS) pages. Type a city instead.':
+    'Ibuburay labat na browser mo so lokasyon ed saray secure (HTTPS) a pahina. Man-type labat na siudad.',
   'See what is near you': 'Nengnengen so asingger ed sika',
   'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
     'Ibukas so panangiburay na lokasyon, o man-type na siudad, pian nanengneng iray sankaasinggeran a sentro na pansanay tan panageksamin.',
@@ -932,4 +949,70 @@ export const pag: Record<string, string> = {
     'Anggapo ni so sentro ya mangiyopresi na sayan kwalipikasyon.',
   'Share your location or type a city to see the centers ranked for you.':
     'Iyabobon so lokasyon mo odino i-type so siyudad pian nanengneng iray sentro ya inyurnos parad sika.',
+  // The "Around you" card (needs native review).
+  'Around you': 'Ed paliber mo',
+  'Around you · {0}': 'Ed paliber mo · {0}',
+  'Top in demand · Philippines': 'Sankaanapan · Filipinas',
+  'Near you · {0}': 'Asingger ed sika · {0}',
+  'In your province · {0}': 'Ed probinsiam · {0}',
+  Provinces: 'Saray probinsia',
+  'Top 3 skills': 'Top 3 ya abilidad',
+  'Top 3 qualifications': 'Top 3 ya kwalipikasyon',
+  'Top 3 jobs': 'Top 3 ya trabaho',
+  Jobs: 'Saray trabaho',
+  Postings: 'Saray posting',
+  'Forecast: in demand': 'Forecast: anapen',
+  'Forecast: hard to fill': 'Forecast: mairap a punoen',
+  'Based on job postings, {0}': 'Base ed saray job posting, {0}',
+  'Based on job postings': 'Base ed saray job posting',
+  'Your skills are in demand in…': 'Anapen so abilidad mo ed…',
+  'Show demand in {0} on the map': 'Ipanengneng ed mapa so demand ed {0}',
+  'Find centers for {0}': 'Anapen iray sentro parad {0}',
+  "Search your skills or sign in to see where else you're in demand.":
+    'Anapen so abilidad mo odino mag-sign in pian nanengneng mo no iner ka ni anapen.',
+  'No job postings recorded here yet.': 'Anggapo ni so nailistan job posting dia.',
+  'No job postings recorded in {0} yet.': 'Anggapo ni so nailistan job posting ed {0}.',
+  'No other province has enough job postings for your skills yet.':
+    'Anggapo ni so arum ya probinsia ya walay sapat ya job posting parad abilidad mo.',
+  'Loading what is in demand around you…': 'Ikakarga so anapen ed paliber mo…',
+  'What is in demand around you could not be loaded.': 'Agnayarin ikarga so anapen ed paliber mo.',
+  // The "Around you" card's details.
+  'See details for {0}': 'Nengnengen so detalye na {0}',
+  'Close details': 'Isara so detalye',
+  'Back to {0}': 'Ompawil ed {0}',
+  'Employers ask for this skill. These TESDA qualifications teach it and certify it.':
+    'Anapen na saray employer so abilidad a iyan. Ibabangat tan papatunayan iyan na saray kwalipikasyon na TESDA.',
+  'No qualification in the catalog lists this skill yet.':
+    'Anggapo ni so kwalipikasyon ed katalogo a manlista ed abilidad a iyan.',
+  'Qualifications that teach it': 'Saray kwalipikasyon a mamabangat ed satan',
+  'Jobs that use it': 'Saray trabaho a mangusar ed satan',
+  'Postings here': 'Saray posting dia',
+  'Open scholarships': 'Abukas a scholarship',
+  'Training centers: {0}': 'Saray sentro na pansanay: {0}',
+  Nearest: 'Asingger',
+  'Nearest center {0}': 'Asingger a sentro {0}',
+  'No training center listed yet': 'Anggapo ni so nakalistan sentro na pansanay',
+  'Nearest first. Choose one to see it on the map.':
+    'Asingger an inmuna. Mamili na sakey pian nanengneng ed mapa.',
+  'Share your location to see the nearest first. Choose one to see it on the map.':
+    'Ibingay so lokasyon mo pian nanengneng an inmuna so asingger. Mamili na sakey pian nanengneng ed mapa.',
+  'No training center lists this qualification yet.':
+    'Anggapo ni so sentro na pansanay ya mangiter na kwalipikasyon a iyan.',
+  'Possible jobs': 'Saray posiblen trabaho',
+  'The catalog lists no jobs for this qualification yet.':
+    'Anggapo ni so nakalistan trabaho ed katalogo parad kwalipikasyon a iyan.',
+  'Show all its centers on the map': 'Ipanengneng ed mapa so amin a sentro to',
+  'Qualifications for this job': 'Saray kwalipikasyon parad trabahon iya',
+  'Where to train': 'Iner so pansanayan',
+  'The nearest training centers for these qualifications.':
+    'Saray asingger a sentro na pansanay parad saray kwalipikasyon a iyan.',
+  'Skills you will need': 'Saray abilidad a kaukolan mo',
+  'No TESDA qualification is linked to this job title yet. Search the Career Map for a related one.':
+    'Anggapo ni so kwalipikasyon na TESDA ya akakonekta ed trabahon iya. Anapen ed Career Map so mankaukolan.',
+  'Search for it on the map': 'Anapen iya ed mapa',
+  'Loading training centers…': 'Ikakarga iray sentro na pansanay…',
+  'Training centers could not be loaded.': 'Agnayarin ikarga iray sentro na pansanay.',
+  'How ranking works': 'Panon so pan-ranggo',
+  'About these results': 'Nipaakar ed sarayan resulta',
+  'About travel times': 'Nipaakar ed oras na biahe',
 }

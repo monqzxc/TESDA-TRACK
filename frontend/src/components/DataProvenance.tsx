@@ -1,4 +1,5 @@
 import { cx } from '../lib/style.ts'
+import { InfoPopover } from './InfoPopover.tsx'
 
 export interface Provenance {
   status?: 'verified' | 'incomplete' | 'example'
@@ -38,10 +39,22 @@ const dots = {
 const shownStatus = (value?: Provenance | null) =>
   value?.status === 'verified' ? 'verified' : 'incomplete'
 
+const isDate = (value?: string | null): value is string =>
+  !!value && Number.isFinite(Date.parse(value))
+
 function DateValue({ value }: { value?: string | null }) {
-  if (!value || !Number.isFinite(Date.parse(value))) return <>Not recorded</>
+  if (!isDate(value)) return <>Not recorded</>
   return <time dateTime={value}>{value.slice(0, 10)}</time>
 }
+
+const dateText = (value?: string | null) => (isDate(value) ? value.slice(0, 10) : 'Not recorded')
+
+/** The registry workbook's file name, read as the registry it is. */
+const readableSourceName = (value?: string | null) =>
+  value?.replace(
+    /^Accredited Comp(?:e|en)tency Assessment Center based on (.+) Database\.xlsx$/i,
+    'Accredited Competency Assessment Center registry ($1)',
+  )
 
 /** What a status asks of the learner, for a list to say once above its cards (ProvenanceNotice). */
 export const statusAdvice = {
@@ -66,10 +79,7 @@ export function DataProvenance({
 }) {
   const status = shownStatus(value)
   const href = sourceLink(value?.source_url)
-  const sourceName = value?.source_name?.replace(
-    /^Accredited Comp(?:e|en)tency Assessment Center based on (.+) Database\.xlsx$/i,
-    'Accredited Competency Assessment Center registry ($1)',
-  )
+  const sourceName = readableSourceName(value?.source_name)
   return (
     <div className="grid min-w-0 gap-0.5 text-13 leading-[1.5] wrap-anywhere text-muted">
       <p className="m-0">
@@ -112,6 +122,44 @@ export function DataProvenance({
           )}
         </p>
       )}
+    </div>
+  )
+}
+
+/**
+ * A record's source as one quiet line, with its status, reference and dates folded behind an "i" button: for cards
+ * (a center's details) where the record's own content should carry the space.
+ */
+export function FoldedProvenance({ value }: { value?: Provenance | null }) {
+  const status = shownStatus(value)
+  const href = sourceLink(value?.source_url)
+  const sourceName = readableSourceName(value?.source_name)
+  const details = [
+    status === 'verified' ? labels.verified : `${labels.incomplete}: ${statusAdvice.incomplete}`,
+    ...(href ? [] : ['Public source link not recorded.']),
+    ...(value?.source_reference ? [`Reference: ${value.source_reference}`] : []),
+    `Source updated: ${dateText(value?.source_updated_on)}`,
+    `Reviewed: ${dateText(value?.reviewed_at)}`,
+    ...(value?.record_updated_at ? [`Record updated: ${dateText(value.record_updated_at)}`] : []),
+  ]
+  return (
+    <div className="flex min-w-0 items-center gap-1 text-13 leading-[1.5] wrap-anywhere text-muted">
+      <p className="m-0 min-w-0">
+        Source:{' '}
+        {href ? (
+          <a
+            className="text-blue underline underline-offset-2"
+            href={href}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {sourceName || 'Source record'}
+          </a>
+        ) : (
+          sourceName || 'Not recorded'
+        )}
+      </p>
+      <InfoPopover label="About this record" paragraphs={details} className="-my-1.5" />
     </div>
   )
 }

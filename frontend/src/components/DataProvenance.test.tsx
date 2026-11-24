@@ -1,6 +1,6 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
-import { DataProvenance, sourceLink } from './DataProvenance.tsx'
+import { DataProvenance, FoldedProvenance, sourceLink } from './DataProvenance.tsx'
 
 describe('record provenance', () => {
   it('shows a named source link and distinguishes source, review and record dates', () => {
@@ -72,5 +72,29 @@ describe('record provenance', () => {
       expect(sourceLink(value)).toBeUndefined()
     }
     expect(sourceLink('https://tesda.gov.ph/')).toBe('https://tesda.gov.ph/')
+  })
+
+  it('folds the status, reference and dates behind an info button', async () => {
+    render(
+      <FoldedProvenance
+        value={{
+          source_name: 'Accredited Competency Assessment Center based on Oct 7, 2026 Database.xlsx',
+          source_reference: 'Sheet1 · row 57042',
+          source_updated_on: '2026-10-07',
+          record_updated_at: '2026-11-03T01:00:00Z',
+        }}
+      />,
+    )
+    expect(
+      screen.getByText(/Accredited Competency Assessment Center registry \(Oct 7, 2026\)/),
+    ).toBeVisible()
+    expect(screen.queryByText(/Incomplete data/)).toBeNull()
+    expect(screen.queryByText(/Reference:/)).toBeNull()
+    fireEvent.click(screen.getByRole('button', { name: 'About this record' }))
+    expect(await screen.findByText(/^Incomplete data:/)).toBeVisible()
+    expect(screen.getByText('Reference: Sheet1 · row 57042')).toBeVisible()
+    expect(screen.getByText('Source updated: 2026-10-07')).toBeVisible()
+    expect(screen.getByText('Reviewed: Not recorded')).toBeVisible()
+    expect(screen.getByText('Record updated: 2026-11-03')).toBeVisible()
   })
 })

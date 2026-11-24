@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useId, type Ref } from 'react'
 import { Button, Radio, RadioGroup, ToggleButton } from 'react-aria-components'
 import { Icon, type IconName } from '../../components/Icon.tsx'
-import { DataProvenance } from '../../components/DataProvenance.tsx'
+import { FoldedProvenance } from '../../components/DataProvenance.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
@@ -129,7 +129,7 @@ export function CenterDetail({
             </p>
           )}
         </div>
-        <DataProvenance value={center.provenance} />
+        <FoldedProvenance value={center.provenance} />
 
         <div className="flex flex-wrap items-center gap-2 [&>*]:min-h-10">
           {point ? (

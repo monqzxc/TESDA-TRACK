@@ -88,3 +88,24 @@ def test_other_portal_snapshots_are_not_labeled_philjobnet(session):
     session.add(other)
     session.flush()
     assert area_jobs.discover(session).posting_count == 1
+
+
+def test_province_filters_by_the_locality_and_unknown_is_empty(session, client):
+    seed(session, "makati", locality="CITY OF MAKATI, NCR, FOURTH DISTRICT")
+    seed(session, "quezon", title="Cook", locality="QUEZON CITY, NCR, SECOND DISTRICT")
+    seed(session, "angeles", region="III", locality="ANGELES CITY, PAMPANGA")
+    seed(session, "san-fernando", region="III", title="Cook", locality="CITY OF SAN FERNANDO, PAMPANGA")
+    seed(session, "malolos", region="III", locality="CITY OF MALOLOS, BULACAN")
+    manila = area_jobs.discover(session, province="Metro Manila")
+    assert manila.province == "Metro Manila" and manila.posting_count == 2  # every NCR district
+    response = client.get("/api/v1/labor-market/jobs", params={"province": "pampanga", "limit": 3})
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["province"] == "Pampanga" and body["posting_count"] == 2
+    assert {item["title"] for item in body["items"]} == {"Welder", "Cook"}
+    assert body["localities"] == ["ANGELES CITY, PAMPANGA", "CITY OF SAN FERNANDO, PAMPANGA"]
+    assert {a["region_code"] for a in body["areas"]} == {"NCR", "III"}  # the map's markers stay nationwide
+    assert area_jobs.discover(session, "NCR", province="Pampanga").posting_count == 0
+    unknown = client.get("/api/v1/labor-market/jobs", params={"province": "Maguindanao del Norte"})
+    assert unknown.status_code == 200 and unknown.json()["items"] == [] and unknown.json()["posting_count"] == 0
+    assert client.get("/api/v1/labor-market/jobs", params={"province": "x" * 101}).status_code == 422

@@ -22,6 +22,7 @@ import {
   anyScholarship,
   anyOutOfRange,
   MAX_QUALIFICATIONS,
+  METRO_MANILA,
   NEAR_KM,
   nearestRegion,
 } from './explore.ts'
@@ -35,6 +36,7 @@ import {
   rankCenters,
   recommend,
   recommendedIds as idsOf,
+  regionalDemand,
   supplyCenters,
 } from './recommend.ts'
 
@@ -301,6 +303,16 @@ export function useExplore(
         : [],
     [everything, reference, today],
   )
+  // Where the shared location is (the "Around you" card): its nearest region, and the province of the nearest center
+  // that names one. The browser gives a point, not a province; NCR's centers count as one province, Metro Manila.
+  const liveRegion = location ? nearestRegion(location, regions.data ?? []) : null
+  const liveProvince = useMemo(() => {
+    if (!location) return null
+    const nearest = allCenters.find(
+      (center) => center.distanceKm !== null && (center.province || center.regionCode === 'NCR'),
+    )
+    return nearest ? (nearest.regionCode === 'NCR' ? METRO_MANILA : nearest.province) : null
+  }, [location, allCenters])
   // The region and province filters narrow what the list and the map show. The supply analysis and the
   // recommendations still count every center: a filter changes what is shown, not the evidence.
   const regionFilter = filters.region ?? null
@@ -409,8 +421,10 @@ export function useExplore(
   // Strong demand moves a center up the ranking; while the outlook loads, the ranking is by trip alone.
   const outlookAreas = outlook.data?.qualification.code === demandCode ? outlook.data : undefined
   const demandRegions = useMemo(() => highDemandRegions(outlookAreas), [outlookAreas])
-  // Signed in, the Skill Passport can say the learner may be ready to be assessed: assessment centers move up and
-  // say why. A guest is ranked by their location alone.
+  // Each region's demand against the busiest: an assessment center's demand component (left out while it loads).
+  const regionDemand = useMemo(() => regionalDemand(outlookAreas), [outlookAreas])
+  // Signed in, the Skill Passport can say the learner may be ready to be assessed: assessment centers come first in
+  // the list and say so. A guest is ranked by their location alone.
   const focusName =
     matches.find((match) => match.qualification.code === demandCode)?.qualification.name ??
     (outlook.data?.qualification.code === demandCode ? outlook.data.qualification.name : null)
@@ -442,11 +456,19 @@ export function useExplore(
   const ranked = useMemo(
     () =>
       demandCode
-        ? rankCenters({ supply, code: demandCode, rangeKm, demandRegions, ready, scores }).filter(
+        ? rankCenters({
+            supply,
+            code: demandCode,
+            rangeKm,
+            demandRegions,
+            regionDemand,
+            ready,
+            scores,
+          }).filter(
             (item) => !scholarshipOnly || item.center.kind !== 'training' || item.scholarship,
           )
         : [],
-    [demandCode, supply, rangeKm, demandRegions, ready, scores, scholarshipOnly],
+    [demandCode, supply, rangeKm, demandRegions, regionDemand, ready, scores, scholarshipOnly],
   )
   const recommendations = useMemo(
     () =>
@@ -459,6 +481,7 @@ export function useExplore(
             nearKm: rangeKm,
             code: demandCode,
             demandRegions,
+            regionDemand,
             ready,
             scores,
           })
@@ -471,6 +494,7 @@ export function useExplore(
       alternatives,
       rangeKm,
       demandRegions,
+      regionDemand,
       ready,
       scores,
     ],
@@ -482,6 +506,8 @@ export function useExplore(
     matches,
     /** The centers shown: every one, narrowed by the region and province filters. */
     centers,
+    /** Every center, whatever the filters (the "Around you" card's details look past them). */
+    allCenters,
     regionOptions,
     provinceOptions,
     /** The Scholarships filter is on: training centers without an open scholarship are left out. */
@@ -495,6 +521,11 @@ export function useExplore(
     locating,
     placeText,
     placeNotFound: Boolean(everything && placeText.trim() && !place && !placePoint),
+    /** The signed-in learner's id, or null for a guest. */
+    learnerId: learner?.id ?? null,
+    /** The shared location's region and province (that of its nearest center), while sharing is on. */
+    liveRegion,
+    liveProvince,
     /** The signed-in learner's Skill Passport: null without one, undefined while it loads or when it failed. */
     passport: passport.data,
     passportStatus: (learner === null

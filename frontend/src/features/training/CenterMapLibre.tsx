@@ -55,7 +55,8 @@ import { routeLabel } from './format.ts'
 import type { GeoJSON } from 'geojson'
 import { homeView, homeWorldSize, zoomFor } from './mapLimits.ts'
 import type { MapSettings, VectorTiles } from './mapSettings.ts'
-import { useOverlayEdges } from './overlayEdges.ts'
+import { useOverlayEdges, useStatusReach } from './overlayEdges.ts'
+import { useTrainingStore } from './state.ts'
 import {
   PHILIPPINES,
   REGION,
@@ -72,8 +73,10 @@ import {
   EMPTY_OVERLAYS,
   LAYERS,
   MAX_ZOOM,
+  REFERENCE_HALO,
   ROUTE_LAYERS,
   SOURCES,
+  accuracyArea,
   centerPoints,
   radiusArea,
   referencePoint,
@@ -115,6 +118,8 @@ export interface CenterMapLibreProps extends CenterMapProps {
 /** 3D buildings were turned on in this browser (the plan's small preferences). */
 const THREE_D_KEY = 'tesda-track.map-3d'
 const PITCH_3D = 55
+/** How close the demand view goes in on a province picked from the page: the province, with its neighbours' edges. */
+const DEMAND_FOCUS_ZOOM = 8.5
 const BEARING_3D = -17
 /** How long a lost drawing context may take to come back before the map gives way to Leaflet. */
 const CONTEXT_RESTORE_MS = 8000
@@ -123,6 +128,9 @@ let vectorFailed = false
 
 const NOWHERE: Point = { latitude: 0, longitude: 0 }
 const REDUCED_MOTION = '(prefers-reduced-motion: reduce)'
+/** The "you are here" halo's pulse: this many beats, each this long. */
+const PULSE_BEATS = 3
+const PULSE_MS = 1400
 const TOUCH = '(pointer: coarse)'
 
 // The map's own controls float over it, as on the Leaflet map.
@@ -200,6 +208,16 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     settings,
     support,
   } = props
+  // The "you are here" pin is drawn a little finer than the rounded location the page measures from (state.ts
+  // livePoint). It's only drawn: nothing here sends it anywhere.
+  const live = useTrainingStore((state) => (state.useLocation ? state.livePoint : null))
+  const mineAt: Point | null =
+    reference?.mine && live
+      ? { latitude: live.latitude, longitude: live.longitude }
+      : reference?.mine
+        ? reference
+        : null
+  const accuracyM = reference?.mine ? (live?.accuracyM ?? null) : null
 
   const theme = useDocumentTheme()
   const reducedMotion = useMediaQuery(REDUCED_MOTION)
@@ -222,6 +240,9 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   const edges = useOverlayEdges(shell)
   // From the left it is the filter panel (0 when it doesn't reach over the map): framing and popups keep clear.
   const inset = edges.left
+  // From the right, a card of the page's beside the controls: results are framed clear of it too.
+  const rightReach = edges.right
+  const statusRef = useStatusReach(props.onStatusReach)
 
   const basemaps = useMemo(() => basemapsFor(settings.tiles), [settings.tiles])
   const [basemapId, setBasemapId] = useState<BasemapId>(() => {
@@ -299,11 +320,28 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   }, [selectedId, byId, toLat, toLng, routeKind])
   // A searched place's dot can be dragged: it's drawn as a marker over the map instead of in the reference layer.
   const movableReference = Boolean(props.onMoveReference && reference && !reference.mine)
+  const shownLat = mineAt?.latitude ?? reference?.latitude
+  const shownLng = mineAt?.longitude ?? reference?.longitude
   const referenceData = useMemo(
-    () => referencePoint(movableReference ? null : reference),
+    () =>
+      referencePoint(
+        movableReference || !reference || shownLat === undefined || shownLng === undefined
+          ? null
+          : { ...reference, latitude: shownLat, longitude: shownLng },
+      ),
     // The point and whether it's the learner's own; its label doesn't change what's drawn.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [reference?.latitude, reference?.longitude, reference?.mine, movableReference],
+    [shownLat, shownLng, reference?.mine, movableReference],
+  )
+  const accuracyData = useMemo(
+    () =>
+      accuracyArea(
+        shownLat === undefined || shownLng === undefined
+          ? null
+          : { latitude: shownLat, longitude: shownLng },
+        accuracyM,
+      ),
+    [shownLat, shownLng, accuracyM],
   )
   const radiusData = useMemo(
     () => radiusArea(reference, radius),
@@ -663,6 +701,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
       selected: selectedData,
       recommended: recommendedData,
       reference: referenceData,
+      accuracy: accuracyData,
       radius: radiusData,
       routes: routesData,
       demand: heatmapData,
@@ -674,6 +713,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     update(SOURCES.selected, selectedData)
     update(SOURCES.recommended, recommendedData)
     update(SOURCES.reference, referenceData)
+    update(SOURCES.accuracy, accuracyData)
     update(SOURCES.radius, radiusData)
     update(SOURCES.routes, routesData)
     update(SOURCES.demand, heatmapData)
@@ -688,6 +728,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     selectedData,
     recommendedData,
     referenceData,
+    accuracyData,
     radiusData,
     routesData,
     heatmapData,
@@ -785,22 +826,27 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     reference && [reference.latitude, reference.longitude],
     radius,
   ])
-  const framed = useRef<{ key: string; inset: number } | null>(null)
+  const framed = useRef<{ key: string; inset: number; right: number } | null>(null)
   useEffect(() => {
     const map = mapRef.current
     if (!ready || !map || hasRoute || props.demandAreas) return
     const previous = framed.current
     const changed = previous?.key !== frameKey
-    if (!changed && (previous?.inset === inset || movedByUser.current)) return
-    framed.current = { key: frameKey, inset }
+    if (
+      !changed &&
+      ((previous?.inset === inset && previous.right === rightReach) || movedByUser.current)
+    )
+      return
+    framed.current = { key: frameKey, inset, right: rightReach }
     if (changed) movedByUser.current = false
     const frame: Frame = frameResults({ points, reference, radiusKm: radius })
     // The first frame is drawn at once; later ones ease there.
-    applyFrame(map, frame, inset, previous ? motion(reducedMotion) : motion(true))
+    applyFrame(map, frame, inset, previous ? motion(reducedMotion) : motion(true), rightReach)
   }, [
     ready,
     frameKey,
     inset,
+    rightReach,
     hasRoute,
     points,
     reference,
@@ -871,9 +917,30 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   const demandShown = demandAreas !== undefined
   // A learner open to relocating compares every region; otherwise the selected one fills the view.
   const demandFramed = props.demandOverview ? null : demandRegion
+  // A province picked from the page ("Around you"): its point, in its region, rather than the whole region.
+  const focusPoint =
+    props.demandFocus && props.demandFocus.regionCode === demandRegion ? props.demandFocus : null
+  const focusLatitude = focusPoint?.latitude
+  const focusLongitude = focusPoint?.longitude
   useEffect(() => {
     const map = mapRef.current
     if (!ready || !map || !demandShown || !demandShapes) return
+    if (focusLatitude !== undefined && focusLongitude !== undefined) {
+      const element = map.getContainer()
+      const size = { width: element.clientWidth, height: element.clientHeight }
+      const base = overlayPadding(size, inset, 0)
+      map.easeTo({
+        center: [focusLongitude, focusLatitude],
+        zoom: DEMAND_FOCUS_ZOOM,
+        offset: paddedOffset({
+          ...base,
+          top: base.top + latest.current.edges.top,
+          bottom: base.bottom + latest.current.edges.bottom,
+        }),
+        duration: 0,
+      })
+      return
+    }
     const bounds = demandBounds(demandRegions(demandShapes, [], demandFramed), demandFramed)
     if (bounds) {
       map.fitBounds(bounds, {
@@ -887,7 +954,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
         duration: 0,
       })
     }
-  }, [ready, demandShown, demandShapes, demandFramed, inset])
+  }, [ready, demandShown, demandShapes, demandFramed, inset, focusLatitude, focusLongitude])
 
   useEffect(() => {
     const map = mapRef.current
@@ -939,20 +1006,61 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   useEffect(() => {
     const map = mapRef.current
     if (!ready || !map || !locateAsk || answeredLocate.current === locateAsk) return
-    if (reference?.mine) {
+    if (mineAt) {
       answeredLocate.current = locateAsk
       const element = map.getContainer()
       const size = { width: element.clientWidth, height: element.clientHeight }
       map.easeTo({
-        center: [reference.longitude, reference.latitude],
+        center: [mineAt.longitude, mineAt.latitude],
         zoom: LOCATE_ZOOM,
-        offset: paddedOffset(overlayPadding(size, latest.current.inset, 40)),
+        offset: paddedOffset(
+          overlayPadding(size, latest.current.inset, 40, latest.current.edges.right),
+        ),
         ...motion(reducedMotion, 800),
       })
       return
     }
     if (!locating) answeredLocate.current = locateAsk
-  }, [ready, locateAsk, reference, locating, reducedMotion])
+    // The point, not its object: a new one each render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, locateAsk, mineAt?.latitude, mineAt?.longitude, locating, reducedMotion])
+
+  // "You are here": the halo pulses for a few beats when the learner's location arrives, and again with each press
+  // of Locate, then rests, so it catches the eye without moving for ever. Not for a learner who asked for less motion.
+  const mineShown = mineAt !== null
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map || !mineShown || reducedMotion) return
+    const halo = (phase: number | null) => {
+      if (!map.getLayer(LAYERS.referenceHalo)) return
+      map.setPaintProperty(
+        LAYERS.referenceHalo,
+        'circle-radius',
+        phase === null ? REFERENCE_HALO.radius : 12 + 24 * phase,
+      )
+      map.setPaintProperty(
+        LAYERS.referenceHalo,
+        'circle-opacity',
+        phase === null ? REFERENCE_HALO.opacity : 0.4 * (1 - phase),
+      )
+    }
+    const start = performance.now()
+    let frame = 0
+    const step = (now: number) => {
+      const beats = (now - start) / PULSE_MS
+      if (beats >= PULSE_BEATS) {
+        halo(null)
+        return
+      }
+      halo(beats % 1)
+      frame = requestAnimationFrame(step)
+    }
+    frame = requestAnimationFrame(step)
+    return () => {
+      cancelAnimationFrame(frame)
+      halo(null)
+    }
+  }, [ready, mineShown, locateAsk, reducedMotion])
 
   // The selected center, chosen from the list or with View on map (which bumps `focus` to ask again): the camera goes
   // to it, closer in from far out, leaving room above it for its popup. Picked on the map itself, it's already in
@@ -968,7 +1076,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     if (!center || (fromMap && !askedAgain)) return
     const element = map.getContainer()
     const size = { width: element.clientWidth, height: element.clientHeight }
-    const padding = overlayPadding(size, latest.current.inset, 40)
+    const padding = overlayPadding(size, latest.current.inset, 40, latest.current.edges.right)
     const lngLat = lngLatOf(center)
     const far = map.getZoom() < 11
     if (!far && insidePadding(map.project(lngLat), size, padding)) return
@@ -1046,7 +1154,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     // Above the pin: a selected pin is drawn larger.
     frame.setOffset(popup.type === 'together' ? 26 : raised ? 60 : 48).setLngLat(lngLat)
     if (!frame.isOpen()) frame.addTo(map)
-    // Once it's laid out: moved into view, and, opened from the keyboard, focused on its first button (View details).
+    // Once it's laid out: moved into view, and, opened from the keyboard, focused on its first button (Get route).
     // A redraw in the same frame (the center becoming selected) cancels this one, and its own does it instead.
     const frameRequest = requestAnimationFrame(() => {
       // Not while the camera is still on its way somewhere: it checks again when it gets there.
@@ -1232,7 +1340,6 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
               canRoute={props.canRoute}
               saved={props.saved}
               today={props.today}
-              onDetails={props.onDetails}
               onRoute={props.onRoute}
               onToggleSaved={props.onToggleSaved}
               onCopied={(message) => setStatus({ message })}
@@ -1271,6 +1378,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
 
       {shownStatus && (
         <p
+          ref={statusRef}
           className="pointer-events-none absolute top-[var(--map-status-top,0.875rem)] right-[70px] left-[calc(var(--map-overlay-inset,0px)_+_14px)] z-860 m-0 rounded-12 bg-glass px-3.5 py-2.5 text-13 text-muted shadow-[0_2px_10px_rgb(var(--track-shadow-rgb)/0.08)]"
           role="status"
         >
@@ -1278,7 +1386,9 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
         </p>
       )}
 
-      <div className="absolute top-[calc(var(--map-overlay-top,0px)_+_0.875rem)] right-3.5 z-800 flex flex-col items-end gap-2">
+      {/* Under any bar the page floats over the map's top edge (--map-overlay-top), and under anything it puts at
+          the top of this column (--map-controls-top: the Career Map's account button). */}
+      <div className="absolute top-[calc(var(--map-overlay-top,0px)_+_var(--map-controls-top,0px)_+_0.875rem)] right-3.5 z-800 flex flex-col items-end gap-2">
         <Button
           className={cx(controlButton, 'rounded-12')}
           aria-label={copy.locate}
@@ -1455,6 +1565,7 @@ function applyFrame(
   frame: Frame,
   inset: number,
   animation: { duration: number; essential: boolean },
+  right = 0,
 ) {
   const element = map.getContainer()
   const size = { width: element.clientWidth, height: element.clientHeight }
@@ -1462,13 +1573,13 @@ function applyFrame(
     map.easeTo({
       center: frame.center,
       zoom: frame.zoom,
-      offset: paddedOffset(overlayPadding(size, inset, 0)),
+      offset: paddedOffset(overlayPadding(size, inset, 0, right)),
       ...animation,
     })
     return
   }
   map.fitBounds(frame.bounds, {
-    padding: overlayPadding(size, inset, frame.margin),
+    padding: overlayPadding(size, inset, frame.margin, right),
     ...(frame.maxZoom ? { maxZoom: frame.maxZoom } : {}),
     ...animation,
   })

@@ -8,7 +8,7 @@ import { Icon, type IconName } from '../../components/Icon.tsx'
 import { TspBadge } from '../../components/TspBadge.tsx'
 import { QualificationEvidence } from '../labor-market/QualificationEvidence.tsx'
 import type { components } from '../../api/schema.d.ts'
-import { areaQualificationsQuery, type PersonalFit } from './demandApi.ts'
+import { areaQualificationsQuery, type FitReason, type PersonalFit } from './demandApi.ts'
 import { jobIcon, placeParts, readable, tier, type Tier } from './jobDisplay.ts'
 import { useDemandStore, type Explore } from './useExplore.ts'
 
@@ -323,7 +323,15 @@ function ForYou() {
 /** The "because" lines: the learner's own words and records the server matched, never a generic template. */
 function FitReasons({ fit, via }: { fit: PersonalFit; via: string | null }) {
   const copy = useCopy().explore.demand.personal
-  const lines = (fit.reasons ?? []).map((reason) => {
+  const lines = useReasonLines(fit.reasons ?? [])
+  if (via && fit.status !== 'held') lines.unshift(copy.via(via))
+  return <ReasonList lines={lines} />
+}
+
+/** The server's fit reasons in words (also the "Around you" card's, for the other provinces). */
+export function useReasonLines(reasons: readonly FitReason[]): string[] {
+  const copy = useCopy().explore.demand.personal
+  return reasons.map((reason) => {
     const terms = (reason.terms ?? []).join(', ')
     const qualification = reason.qualification ?? ''
     switch (reason.kind) {
@@ -341,12 +349,20 @@ function FitReasons({ fit, via }: { fit: PersonalFit; via: string | null }) {
         return copy.reason.renew(qualification)
     }
   })
-  if (via && fit.status !== 'held') lines.unshift(copy.via(via))
+}
+
+export function ReasonList({
+  lines,
+  className = 'text-13',
+}: {
+  lines: string[]
+  className?: string
+}) {
   if (!lines.length) return null
   return (
     <ul className="m-0 grid list-none gap-0.5 p-0">
       {lines.map((line) => (
-        <li key={line} className="text-13 leading-[1.5] text-blue">
+        <li key={line} className={`${className} leading-[1.5] text-blue`}>
           {line}
         </li>
       ))}
