@@ -15,6 +15,7 @@ import { server } from '../../test/server.ts'
 import { manilaInstitute, REGIONS } from '../../test/training.ts'
 import type { CenterMapProps } from '../training/CenterMapTypes.ts'
 import { useTrainingStore } from '../training/state.ts'
+import { initials } from '../account/variant.ts'
 import ExplorePage from './ExplorePage.tsx'
 import { useDemandStore, useExploreStore } from './useExplore.ts'
 
@@ -95,8 +96,13 @@ describe('the Career Map account control, from a tablet up', () => {
     renderPage()
 
     const avatar = await findAvatar()
-    // Only the icon shows; the name is read out.
+    // Only the initials show; the name is read out.
     expect(within(avatar).getByText(maria.full_name)).toHaveClass('sr-only')
+    expect(within(avatar).getByText(initials(maria.full_name))).toHaveAttribute(
+      'aria-hidden',
+      'true',
+    )
+    expect(avatar.querySelector('svg')).toBeNull()
     // Not in the search card: over the map.
     expect(avatar.closest('form')).toBeNull()
 

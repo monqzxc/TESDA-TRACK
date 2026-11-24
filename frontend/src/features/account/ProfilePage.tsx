@@ -11,6 +11,7 @@ import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { AccountGate } from './AccountGate.tsx'
+import { initials } from './variant.ts'
 import { ProfileData } from './ProfileData.tsx'
 import { ProfilePassport } from './ProfilePassport.tsx'
 import {
@@ -83,14 +84,7 @@ export default function ProfilePage() {
     )
   }
 
-  const initials = learner.full_name
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => Array.from(part)[0])
-    .join('')
-    .toLocaleUpperCase('en-PH')
+  const letters = initials(learner.full_name)
   const role = copy.roleName(learner.role)
 
   return (
@@ -106,7 +100,7 @@ export default function ProfilePage() {
           aria-hidden="true"
           className="grid size-20 shrink-0 place-items-center rounded-full border border-border bg-surface font-display text-[1.75rem] font-bold text-blue"
         >
-          {initials || <Icon name="person" size={32} />}
+          {letters || <Icon name="person" size={32} />}
         </span>
         <div className="min-w-0">
           <h2 id="profile-name" className="mb-2 text-24 wrap-anywhere text-navy">

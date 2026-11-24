@@ -14,11 +14,11 @@ import { useNavigate } from 'react-router'
 import { failureMessage } from '../../auth/fields.tsx'
 import type { Learner } from '../../auth/session.ts'
 import { useAuth } from '../../auth/useAuth.ts'
-import { Icon } from '../../components/Icon.tsx'
 import { Spinner } from '../../components/Spinner.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { paths } from '../../paths.ts'
-import { iconSize, shownName, type Variant } from './variant.ts'
+import { AccountGlyph } from './AccountGlyph.tsx'
+import { shownName, type Variant } from './variant.ts'
 import { accountName, menu } from './styles.ts'
 
 export interface SignedInMenuProps {
@@ -91,7 +91,7 @@ export default function SignedInMenu({
           className={buttonClass}
           aria-label={`${menuLabel ?? copy.menu.label}: ${name}`}
         >
-          <Icon name="person" size={iconSize(variant)} />
+          <AccountGlyph fullName={name} variant={variant} />
           <span className={variant === 'map' ? 'sr-only' : accountName}>
             {shownName(name, variant)}
           </span>

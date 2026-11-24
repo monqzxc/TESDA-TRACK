@@ -42,11 +42,6 @@ export const icons = {
     { tag: 'circle', cx: 12, cy: 8, r: 4 },
     { tag: 'path', d: 'M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7' },
   ],
-  // A door, with an arrow going in: Sign in where only an icon fits (the Career Map's corner).
-  signIn: [
-    { tag: 'path', d: 'M14 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4' },
-    { tag: 'path', d: 'M3 12h11m-4-4 4 4-4 4' },
-  ],
   compass: [
     { tag: 'circle', cx: 12, cy: 12, r: 9 },
     { tag: 'path', d: 'm15.5 8.5-2 5-5 2 2-5 5-2Z' },

@@ -9,6 +9,18 @@ export function firstName(fullName: string): string {
   return fullName.trim().split(/\s+/)[0] || fullName
 }
 
+/** Up to two initials from a name ("Maria Santos" → "MS"), or '' when it has no letters to take. */
+export function initials(fullName: string): string {
+  return fullName
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => Array.from(part)[0])
+    .join('')
+    .toLocaleUpperCase('en-PH')
+}
+
 /** The name the account button shows: the full name in the sidebar, the first name in the top bar. */
 export function shownName(fullName: string, variant: Variant): string {
   return variant === 'header' ? firstName(fullName) : fullName

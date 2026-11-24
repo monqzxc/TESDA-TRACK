@@ -2,14 +2,14 @@ import { lazy, Suspense, useCallback, useEffect, useRef, type ReactNode } from '
 import { Button, Tooltip, TooltipTrigger } from 'react-aria-components'
 import type { Learner } from '../../auth/session.ts'
 import { loadSignInDialog, useAuth } from '../../auth/useAuth.ts'
-import { Icon } from '../../components/Icon.tsx'
 import { LoadBoundary } from '../../components/LoadBoundary.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { focusIsLost } from '../../lib/focus.ts'
 import { prefetch } from '../../lib/prefetch.ts'
 import { reloadPage } from '../../lib/reload.ts'
 import { loadSignedInMenu } from './loaders.ts'
-import { iconSize, shownName, type Variant } from './variant.ts'
+import { AccountGlyph } from './AccountGlyph.tsx'
+import { shownName, type Variant } from './variant.ts'
 import { accountButton, accountName, control, mapTip } from './styles.ts'
 
 const SignedInMenu = lazy(loadSignedInMenu)
@@ -42,7 +42,7 @@ function AccountButton({
       className={className}
       aria-label={`${menuLabel ?? copy.menu.label}: ${learner.full_name}`}
     >
-      <Icon name="person" size={iconSize(variant)} />
+      <AccountGlyph fullName={learner.full_name} variant={variant} />
       <span className={variant === 'map' ? 'sr-only' : accountName}>
         {shownName(learner.full_name, variant)}
       </span>
@@ -199,7 +199,7 @@ export function AccountControl({
               onFocus={prepareSignIn}
               aria-label={labels?.signIn ?? copy.signIn}
             >
-              <Icon name="signIn" size={iconSize(variant)} />
+              <AccountGlyph variant={variant} />
             </Button>
           </MapTip>
         ) : (
@@ -211,7 +211,7 @@ export function AccountControl({
             onFocus={prepareSignIn}
             aria-label={labels?.signIn}
           >
-            <Icon name="person" size={iconSize(variant)} />
+            <AccountGlyph variant={variant} />
             {copy.signIn}
           </Button>
         ))

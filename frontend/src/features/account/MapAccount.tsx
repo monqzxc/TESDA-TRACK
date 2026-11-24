@@ -2,12 +2,11 @@ import { useRef } from 'react'
 import { Button } from 'react-aria-components'
 import { learnerAccounts } from '../../auth/accounts.ts'
 import { loadSignInDialog, useAuth } from '../../auth/useAuth.ts'
-import { Icon } from '../../components/Icon.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { prefetch } from '../../lib/prefetch.ts'
 import { AccountControl, MapTip } from './AccountMenu.tsx'
-import { iconSize } from './variant.ts'
+import { AccountGlyph } from './AccountGlyph.tsx'
 import { accountButton } from './styles.ts'
 
 // Over the map: the size of its Locate and Zoom buttons, in their column, with the search card's shadow. In the
@@ -52,7 +51,7 @@ export function MapAccount({
               })
             }
           >
-            <Icon name="signIn" size={iconSize('map')} />
+            <AccountGlyph variant="map" />
           </Button>
         </MapTip>
       ) : (
