@@ -9,6 +9,7 @@ import {
   firstKind,
   hasScholarship,
   inRangeOr,
+  narrowMatches,
   nearestRegion,
   readinessEvidence,
   qualificationFamily,
@@ -372,5 +373,24 @@ describe('readinessEvidence (US-0004)', () => {
       readinessEvidence({ skills: [], licenses: ['PRC License'] }, 'Pharmacy Services NC III'),
     ).toEqual([])
     expect(readinessEvidence(null, 'Driving NC II')).toEqual([])
+  })
+})
+
+describe('narrowMatches', () => {
+  const m = (code: string): Match => ({
+    qualification: { code, name: code, sector: 'Test' },
+    score: 80,
+    reason: '',
+  })
+  const [a, b, c] = [m('A'), m('B'), m('C')]
+
+  it('keeps the picked matches in match order', () => {
+    expect(narrowMatches([a, b, c], ['C', 'A'])).toEqual([a, c])
+  })
+  it('keeps every match when nothing is picked', () => {
+    expect(narrowMatches([a, b], [])).toEqual([a, b])
+  })
+  it('ignores picks that are no longer among the matches', () => {
+    expect(narrowMatches([a, b], ['ZZZ'])).toEqual([a, b])
   })
 })

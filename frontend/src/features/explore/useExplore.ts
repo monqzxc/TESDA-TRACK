@@ -21,8 +21,10 @@ import {
   anyKindWithoutCenter,
   anyScholarship,
   anyOutOfRange,
+  MAX_PICKED,
   MAX_QUALIFICATIONS,
   METRO_MANILA,
+  narrowMatches,
   NEAR_KM,
   nearestRegion,
 } from './explore.ts'
@@ -94,6 +96,10 @@ interface ExploreState {
   rangeChosen: boolean
   /** "How far can you go?" is on screen. */
   askingRange: boolean
+  /** The search's qualifications the learner picked to compare (codes, at most MAX_PICKED). None: all of them. */
+  picked: string[]
+  /** Picks a qualification, or unpicks it if it was picked. A pick past MAX_PICKED is ignored. */
+  togglePicked: (code: string) => void
   setDraft: (draft: string) => void
   setSearch: (search: Search | null) => void
   setRelocate: (relocate: boolean) => void
@@ -112,6 +118,7 @@ const EMPTY = {
   rangeKm: NEAR_KM,
   rangeChosen: false,
   askingRange: false,
+  picked: [] as string[],
 } satisfies Partial<ExploreState>
 
 export const useExploreStore = create<ExploreState>()(
@@ -123,8 +130,18 @@ export const useExploreStore = create<ExploreState>()(
       changeRange: () => set({ askingRange: true }),
       setRange: (rangeKm) => set({ rangeKm, rangeChosen: true, askingRange: false }),
       closeRange: () => set({ askingRange: false }),
+      togglePicked: (code) => {
+        const { picked } = useExploreStore.getState()
+        if (picked.includes(code)) {
+          set({ picked: picked.filter((item) => item !== code) })
+        } else if (picked.length < MAX_PICKED) {
+          set({ picked: [...picked, code] })
+          // The qualification just picked is the one the demand and outlook speak about.
+          useDemandStore.getState().setCode(code)
+        }
+      },
       setSearch: (search) => {
-        set({ search })
+        set({ search, picked: [] })
         useDemandStore.getState().setCode(undefined)
       },
       reset: () => set(EMPTY),
@@ -134,7 +151,8 @@ export const useExploreStore = create<ExploreState>()(
       storage: createJSONStorage(() => sessionStore),
       version: 1,
       // "How far can you go?" being open is a moment, not work: a refresh closes it.
-      partialize: ({ draft, search, relocate, rangeKm, rangeChosen }) => ({
+      partialize: ({ draft, search, relocate, rangeKm, rangeChosen, picked }) => ({
+        picked,
         draft,
         search,
         relocate,
@@ -166,10 +184,13 @@ export function useExplore(
   const placeText = useTrainingStore((state) => state.placeText)
   const placePoint = useTrainingStore((state) => state.placePoint)
 
-  const matches = useMemo(
+  const picked = useExploreStore((state) => state.picked)
+  // The search's top qualifications, all offered as chips; those picked narrow everything else on the page.
+  const allMatches = useMemo(
     () => (search?.result.matches ?? []).slice(0, MAX_QUALIFICATIONS),
     [search],
   )
+  const matches = useMemo(() => narrowMatches(allMatches, picked), [allMatches, picked])
   const demandFilters = useDemandStore()
   const demandCode =
     demandFilters.code === undefined ? (matches[0]?.qualification.code ?? null) : demandFilters.code
@@ -503,7 +524,11 @@ export function useExplore(
 
   return {
     search,
+    /** The matches the page works from: the picked ones, or all of them when none are picked. */
     matches,
+    /** The search's top matches, whatever is picked: the chips. */
+    allMatches,
+    picked,
     /** The centers shown: every one, narrowed by the region and province filters. */
     centers,
     /** Every center, whatever the filters (the "Around you" card's details look past them). */
