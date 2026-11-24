@@ -49,10 +49,13 @@ export function QualificationChips({
             onChange={() => togglePicked(qualification.code)}
             className={cx(
               'inline-flex min-h-9 flex-none cursor-pointer items-center rounded-full border px-3 text-13 leading-tight font-semibold whitespace-nowrap',
-              'shadow-[0_1px_2px_rgb(var(--track-shadow-rgb)/0.08)] transition-[background-color,border-color] duration-200 ease-out',
+              'shadow-[0_1px_2px_rgb(var(--track-shadow-rgb)/0.08)] transition-[background-color,border-color,color] duration-200 ease-out',
               'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus',
-              'border-border bg-surface text-navy data-hovered:border-hover-border',
-              'data-selected:border-navy data-selected:bg-navy data-selected:text-surface',
+              // Blue tint and blue ink, like the app's other pressable pills, so the chips read as buttons, not tags.
+              'border-pill-border bg-pill text-blue data-hovered:border-pill-hover-border data-hovered:bg-pill-hover data-hovered:text-pill-hover-ink',
+              'data-pressed:bg-pill-hover',
+              'data-selected:border-fill data-selected:bg-fill data-selected:text-white',
+              'data-selected:data-hovered:border-fill-hover data-selected:data-hovered:bg-fill-hover data-selected:data-hovered:text-white',
             )}
           >
             {qualification.name}
