@@ -311,8 +311,8 @@ describe('the supply and demand brief', () => {
     expect(within(rows[0]).getByTestId('ranked-trip')).toHaveTextContent(
       /^\d+(\.\d)? km · about \d+ min$/,
     )
-    // The travel times are estimates: the list says it is sample data, and its "i" button says how it ranks.
-    expect(within(list).getByText('Sample data')).toBeVisible()
+    // The travel times are estimates: the "i" button beside the heading says so, and how the list ranks.
+    expect(within(list).queryByText('Sample data')).toBeNull()
     expect(screen.queryByText(/not measured routes/)).toBeNull()
     fireEvent.click(within(list).getByRole('button', { name: 'How ranking works' }))
     expect(await screen.findByText(/not measured routes/)).toBeVisible()

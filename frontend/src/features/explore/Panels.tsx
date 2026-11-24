@@ -1079,25 +1079,24 @@ export function RankedCenters({
       data-testid="ranked-centers"
       className={cx('flex flex-col gap-2 rounded-14 border border-border bg-surface p-3', floating)}
     >
-      <div className="flex flex-wrap items-start justify-between gap-2">
-        <div className="min-w-0">
+      <div className="min-w-0">
+        <div className="flex items-center gap-0.5">
           <h3 id={headingId} className={cx(heading, 'flex items-center gap-1.5')}>
             <Icon name="star" className="text-[#b45309]" />
             {copy.heading}
           </h3>
-          {focusName && <p className={cx(note, 'mt-0.5')}>{copy.for(focusName)}</p>}
-        </div>
-        {reference && items.length > 0 && (
-          // Quiet on purpose: a note for the demo, not a warning that competes with the ranking. How the ranking
-          // works sits behind the "i" button, so the list is not followed by a paragraph every time.
-          <div className="-mt-1 -mr-1.5 flex flex-none items-center">
-            <span className="text-11 text-muted opacity-80">{copy.sample}</span>
+          {reference && items.length > 0 && (
+            // A disclaimer beside the heading: how the ranking works and that travel times are estimates, behind
+            // the "i" button so the list is not followed by a paragraph every time.
             <InfoPopover
+              tone="warn"
               label={en.explore.info.ranking}
               paragraphs={[signedIn ? copy.howSignedIn : copy.how, copy.sampleNote]}
+              className="-my-1.5"
             />
-          </div>
-        )}
+          )}
+        </div>
+        {focusName && <p className={cx(note, 'mt-0.5')}>{copy.for(focusName)}</p>}
       </div>
       {!reference ? (
         <p className={note}>{copy.needPlace}</p>
