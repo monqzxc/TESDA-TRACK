@@ -10,6 +10,7 @@ import {
   useSyncExternalStore,
   type CSSProperties,
   type FormEvent,
+  type ReactNode,
   type RefObject,
 } from 'react'
 import { Button, Input, Label, SearchField, ToggleButton } from 'react-aria-components'
@@ -19,6 +20,7 @@ import { failureMessage } from '../../auth/fields.tsx'
 import { Icon } from '../../components/Icon.tsx'
 import { LoadBoundary } from '../../components/LoadBoundary.tsx'
 import { useSidebarStore } from '../../components/sidebarState.ts'
+import { MapAccount } from '../account/MapAccount.tsx'
 import { PageHeading } from '../../components/PageHeading.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
@@ -68,7 +70,11 @@ function useHeight(): [(node: HTMLElement | null) => void, number] {
   return [setNode, node ? height : 0]
 }
 
-const TABLET_UP = '(min-width: 768px)'
+// The same width as the md: classes (--breakpoint-md in app.css), so what this decides (where the account button
+// goes, how far the bars reach over the map) matches the layout the CSS draws, at exactly 768px too.
+const TABLET_UP = '(min-width: 769px)'
+/** The account button over the map (42px, as the map's own buttons) and the 14px gap under it. */
+const ACCOUNT_ROOM = 56
 const SHEET_DISMISS_DISTANCE = 48
 const SHEET_TAP_TOLERANCE = 10
 
@@ -384,6 +390,9 @@ export default function ExplorePage() {
             '--map-overlay-top': `${topReach}px`,
             '--map-status-top': `${tabletUp ? 70 : topReach + 12}px`,
             '--map-overlay-inset': tabletUp && !collapsed ? '388px' : '0px',
+            // From a tablet up the account button takes the top of the map's button column: the rest move down
+            // under it. On a phone it sits in the search bar instead.
+            '--map-controls-top': tabletUp ? `${ACCOUNT_ROOM}px` : '0px',
           } as CSSProperties
         }
       >
@@ -460,6 +469,10 @@ export default function ExplorePage() {
         className="absolute top-3 right-[70px] left-[384px] z-[1000] hidden flex-wrap gap-3 md:flex"
       />
 
+      {/* The learner's icon and account menu, or Sign in, at the top of the map's button column (the chips and
+          the status banner stop 70px from the right, clear of it). On a phone it is in the search bar. */}
+      {tabletUp && <MapAccount placement="map" className="absolute top-3.5 right-3.5 z-[1000]" />}
+
       <section
         aria-label={copy.search.label}
         className={cx(
@@ -483,6 +496,7 @@ export default function ExplorePage() {
             menuOpen={menuOpen}
             menuRef={menuButton}
             onMenu={() => useSidebarStore.getState().openMenu(menuButton.current)}
+            account={!tabletUp && <MapAccount placement="bar" />}
             onOpen={() => setCollapsed(false)}
             onSearched={() => {
               setSelectedId(null)
@@ -678,6 +692,7 @@ function SearchBox({
   menuOpen,
   menuRef,
   onMenu,
+  account,
   onOpen,
   onSearched,
 }: {
@@ -689,6 +704,8 @@ function SearchBox({
   menuOpen: boolean
   menuRef: RefObject<HTMLButtonElement | null>
   onMenu: () => void
+  /** On a phone, the account button at the row's right end (MapAccount); from a tablet up it is over the map. */
+  account?: ReactNode
   /** Pressing in the box, or typing, opens the rest of the panel. Focus alone doesn't: Show less hands it back. */
   onOpen: () => void
   onSearched: () => void
@@ -849,6 +866,7 @@ function SearchBox({
             )}
           </SearchField>
         </div>
+        {account}
       </div>
       {pending ? (
         <p role="status" className="m-0 px-4 pb-2.5 text-13 text-muted">

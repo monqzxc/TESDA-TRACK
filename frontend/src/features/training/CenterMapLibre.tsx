@@ -1278,7 +1278,9 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
         </p>
       )}
 
-      <div className="absolute top-[calc(var(--map-overlay-top,0px)_+_0.875rem)] right-3.5 z-800 flex flex-col items-end gap-2">
+      {/* Under any bar the page floats over the map's top edge (--map-overlay-top), and under anything it puts at
+          the top of this column (--map-controls-top: the Career Map's account button). */}
+      <div className="absolute top-[calc(var(--map-overlay-top,0px)_+_var(--map-controls-top,0px)_+_0.875rem)] right-3.5 z-800 flex flex-col items-end gap-2">
         <Button
           className={cx(controlButton, 'rounded-12')}
           aria-label={copy.locate}
