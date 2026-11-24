@@ -68,7 +68,8 @@ function shareLocation() {
   Object.defineProperty(navigator, 'geolocation', {
     configurable: true,
     value: {
-      getCurrentPosition: (success: PositionCallback) =>
+      clearWatch: () => {},
+      watchPosition: (success: PositionCallback) =>
         success({ coords: { latitude: 14.55471, longitude: 121.02441 } } as GeolocationPosition),
     },
   })
@@ -87,6 +88,7 @@ beforeEach(() => {
   serveCatalog()
   useTrainingStore.setState({
     useLocation: false,
+    livePoint: null,
     askedOnOpen: false,
     location: null,
     locating: false,
@@ -456,7 +458,7 @@ describe('Training & Assessment', () => {
     const asked = vi.fn()
     Object.defineProperty(navigator, 'geolocation', {
       configurable: true,
-      value: { getCurrentPosition: asked },
+      value: { watchPosition: asked, clearWatch: () => {} },
     })
     const api = serveTrainingApi()
     const user = userEvent.setup()
@@ -480,7 +482,7 @@ describe('Training & Assessment', () => {
     )
     Object.defineProperty(navigator, 'geolocation', {
       configurable: true,
-      value: { getCurrentPosition: asked },
+      value: { watchPosition: asked, clearWatch: () => {} },
     })
     serveTrainingApi()
     const user = userEvent.setup()
@@ -605,7 +607,8 @@ describe('Training & Assessment', () => {
     Object.defineProperty(navigator, 'geolocation', {
       configurable: true,
       value: {
-        getCurrentPosition: (_: PositionCallback, failure: PositionErrorCallback) =>
+        clearWatch: () => {},
+        watchPosition: (_: PositionCallback, failure: PositionErrorCallback) =>
           failure({ code: 1, PERMISSION_DENIED: 1 } as GeolocationPositionError),
       },
     })

@@ -53,6 +53,10 @@ export interface CenterMapProps {
   onRoute: (centerId: string) => void
   onToggleSaved: (centerId: string) => void
   onLocate: () => void
+  /** In the demand view, a province picked on the page: the map goes to its point while its region is selected. */
+  demandFocus?: (Point & { regionCode: string }) | null
+  /** Where the map's status line ends, from the map's top (0 without one): a page's card can sit below it. */
+  onStatusReach?: (bottom: number) => void
   /** A searched place's dot was dragged: measure from where it was dropped. Without it, the dot stays put. */
   onMoveReference?: (point: Point) => void
 }

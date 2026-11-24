@@ -429,6 +429,8 @@ export const pam: Record<string, string> = {
     'E meakit ing lokasyun mu. Manintun kang lugar o mamili kang rehiyun.',
   'This browser can’t share a location. Search a place or choose a region instead.':
     'E ya makapagbahagi lokasyun ing browser a iti. Manintun kang lugar o mamili kang rehiyun.',
+  'Your browser shares a location only with secure (HTTPS) pages. Search a place or choose a region instead.':
+    'Ibahagi na mu ning browser mu ing lokasyun king secure (HTTPS) a pahina. Manintun kang lugar o mamili kang rehiyun.',
   'Search location': 'Manintun lokasyun',
   'Enter city, province, or region': 'Ilagay ing lakanbalen, lalawigan, o rehiyun',
   'Your location': 'Ing lokasyun mu',
@@ -1155,13 +1157,27 @@ export const pam: Record<string, string> = {
     'Mibilang ing obra mu bilang {0}: ding atin nang karanasan malyari lang mamagmasusi king {1} kahit ali na mag-ensayu.',
   'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
     'Ilista na murin ning TSP profile mu ing {0}. Ing sentro ning pamagmasusi ing mamagsabi nung nanu ing dapat mung dalan.',
+  'Very near · {0} km': 'Malapit dili · {0} km',
+  'Near · {0} km': 'Malapit · {0} km',
+  'Within 60 km · {0} km': 'Lalam ning 60 km · {0} km',
+  'Nearest available · {0} km': 'Pekamalapit a atiu · {0} km',
+  'Open schedule with seats': 'Bukas a iskedyul a atin bakanteng upuan',
+  'Open schedule with seats, more than 60 days away':
+    'Bukas a iskedyul a atin bakanteng upuan, lagpas 60 aldo pa',
+  'Accredited for it, no open schedule yet': 'Akreditadu para kaniti, ala pang bukas a iskedyul',
+  'Every open schedule is full': 'Puno na ngan ding bukas a iskedyul',
+  'No open schedule': 'Alang bukas a iskedyul',
+  'Verified and available': 'Beripikadu at bukas',
+  'Close to you': 'Malapit keka',
+  'Jobs for it are in demand in {0}': 'Pakakailangan ing obra para kaniti king {0}',
+  'Lower fee than others nearby': 'Mas mababa ing bayad kesa kareng aliwa king malapit',
   'Listed, but its service details still need confirming':
     'Nakalista, oneng kailangan pang kumpirman ing detalye ning serbisyu na',
   'Score {0}/100': 'Puntus {0}/100',
-  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.':
-    'Metung a puntus ing batayan ning ranggu da reng training center: nung makanu lang kasilip, nung atin beripikadung pamagmasusi king malapit, nung kanu kasalikut magumpisa ing klasi, at ing demand king obra king rehiyun da. Manatili king device mu ing lokasyun mu. Ding assessment center miranggu la agpang king layu ning biyahi.',
-  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.':
-    'Metung a puntus ing batayan ning ranggu da reng training center: nung makanu lang kasilip, nung atin beripikadung pamagmasusi king malapit, nung kanu kasalikut magumpisa ing klasi, at ing demand king obra king rehiyun da. Manatili king device mu ing lokasyun mu. Ding assessment center miranggu la agpang king layu ning biyahi, at mumuntuk la nung ipakit ning TSP profile mu a malyaring sadya na ka.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee. Your location stays on your device.':
+    'Metung a puntus ing batayan ning ranggu da reng training center: nung makanu lang kasilip, nung atin beripikadung pamagmasusi king malapit, nung kanu kasalikut magumpisa ing klasi, at ing demand king obra king rehiyun da. Ding assessment center miranggu la agpang muna king layu, kaibat king bakanteng upuan, beripikasyun, demand king obra at bayad. Manatili king device mu ing lokasyun mu.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee, and come first when your TSP profile shows you may be ready. Your location stays on your device.':
+    'Metung a puntus ing batayan ning ranggu da reng training center: nung makanu lang kasilip, nung atin beripikadung pamagmasusi king malapit, nung kanu kasalikut magumpisa ing klasi, at ing demand king obra king rehiyun da. Ding assessment center miranggu la agpang muna king layu, kaibat king bakanteng upuan, beripikasyun, demand king obra at bayad, at mauna la nung ipakit ning TSP profile mu a malyaring sadya na ka. Manatili king device mu ing lokasyun mu.',
   'Still to cover: {0}.': 'Kailangan pang aralan: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kailangan pang aralan: {0}, at {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':
@@ -1192,6 +1208,8 @@ export const pam: Record<string, string> = {
     'E mi akua ing lokasyun mu. Mag-type kang lungsod, o subukan mu pasibayu.',
   'This browser can’t share a location. Type a city instead.':
     'E makapibahagi lokasyun ing browser a ini. Mag-type kang lungsod.',
+  'Your browser shares a location only with secure (HTTPS) pages. Type a city instead.':
+    'Ibahagi na mu ning browser mu ing lokasyun king secure (HTTPS) a pahina. Mag-type kang lungsod.',
   'See what is near you': 'Lawen me ing malapit keka',
   'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
     'Buksan me ing pamibahagi ning lokasyun, o mag-type kang lungsod, ban akit mu deng pekamalapit a sentro ning pamag-aral ampong pamagmasusi.',
@@ -1585,4 +1603,32 @@ export const pam: Record<string, string> = {
     'Ala pang sentro a mag-alok ning kwalipikasyun a iti.',
   'Share your location or type a city to see the centers ranked for you.':
     'Ibahagi me ing lokasyun mu o i-type ing siudad ban akit me reng sentro a makaayus para keka.',
+  // The "Around you" card (needs native review).
+  'Around you': 'King paligid mu',
+  'Around you · {0}': 'King paligid mu · {0}',
+  'Top in demand · Philippines': 'Pekamaliaring panintunan · Pilipinas',
+  'Near you · {0}': 'Malapit keka · {0}',
+  'In your province · {0}': 'King kekang probinsya · {0}',
+  Provinces: 'Deng probinsya',
+  'Top 3 skills': 'Top 3 kayabaldan',
+  'Top 3 qualifications': 'Top 3 kwalipikasyun',
+  'Top 3 jobs': 'Top 3 trabaho',
+  Jobs: 'Deng trabaho',
+  Postings: 'Deng posting',
+  'Forecast: in demand': 'Forecast: pipanintunan',
+  'Forecast: hard to fill': 'Forecast: masakit punan',
+  'Based on job postings, {0}': 'Batay kareng job posting, {0}',
+  'Based on job postings': 'Batay kareng job posting',
+  'Your skills are in demand in…': 'Pipanintunan la ding kayabaldan mu king…',
+  'Show demand in {0} on the map': 'Ipakit king mapa ing demand king {0}',
+  'Find centers for {0}': 'Manintun kareng sentro para king {0}',
+  "Search your skills or sign in to see where else you're in demand.":
+    'Panintunan me ing kayabaldan mu o mag-sign in ka ban akit mu nu ka pa pipanintunan.',
+  'No job postings recorded here yet.': 'Ala pang metalang job posting keni.',
+  'No job postings recorded in {0} yet.': 'Ala pang metalang job posting king {0}.',
+  'No other province has enough job postings for your skills yet.':
+    'Ala pang aliwang probinsya a maki sapat a job posting para king kayabaldan mu.',
+  'Loading what is in demand around you…': 'Lo-load de ing pipanintunan king paligid mu…',
+  'What is in demand around you could not be loaded.':
+    'E ma-load ing pipanintunan king paligid mu.',
 }

@@ -955,6 +955,9 @@ export const en = {
         unavailable: 'Your location couldn’t be found. Search a place or choose a region instead.',
         unsupported:
           'This browser can’t share a location. Search a place or choose a region instead.',
+        // The page is on plain HTTP (a test server): browsers share a location only with HTTPS pages.
+        insecure:
+          'Your browser shares a location only with secure (HTTPS) pages. Search a place or choose a region instead.',
       },
       place: 'Search location',
       placePlaceholder: 'Search location…',
@@ -2395,6 +2398,8 @@ export const en = {
           'Location is blocked in your browser. Type a city instead, or allow location and try again.',
         unavailable: 'We couldn’t get your location. Type a city instead, or try again.',
         unsupported: 'This browser can’t share a location. Type a city instead.',
+        insecure:
+          'Your browser shares a location only with secure (HTTPS) pages. Type a city instead.',
       },
     },
     nearby: {
@@ -2490,7 +2495,6 @@ export const en = {
       ready: 'You may be ready',
       kinds: { training: 'Training', assessment: 'Assessment' },
       reasons: {
-        ready: 'Your TSP profile suggests you may be ready to get assessed here',
         nearest: 'The shortest trip from you',
         scholarship: 'A scholarship is open here, and the trip is about as short',
         demand: (region: string) =>
@@ -2499,15 +2503,68 @@ export const en = {
         outside: (km: number) => `Nearest, though outside your ${km} km range`,
         unconfirmed: 'Listed, but its service details still need confirming',
       },
+      // An assessment center's reason line: "Near · 18 km · Open schedule with seats" (recommend.ts, rankCenters).
+      assessment: {
+        bands: {
+          1: (km: number) => `Very near · ${km} km`,
+          2: (km: number) => `Near · ${km} km`,
+          3: (km: number) => `Within 60 km · ${km} km`,
+          4: (km: number) => `Nearest available · ${km} km`,
+        },
+        schedule: {
+          open: 'Open schedule with seats',
+          later: 'Open schedule with seats, more than 60 days away',
+          accredited: 'Accredited for it, no open schedule yet',
+          full: 'Every open schedule is full',
+          none: 'No open schedule',
+        },
+        verification: 'Verified and available',
+        proximity: 'Close to you',
+        demand: (region: string) => `Jobs for it are in demand in ${region}`,
+        fee: 'Lower fee than others nearby',
+      },
       score: (score: number) => `Score ${score}/100`,
-      how: 'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.',
+      how: 'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee. Your location stays on your device.',
       howSignedIn:
-        'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.',
+        'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee, and come first when your TSP profile shows you may be ready. Your location stays on your device.',
       sample: 'Sample data',
       sampleNote:
         'Travel times are estimated from straight-line distance for the December 2 demo, not measured routes.',
       none: 'No center offers this qualification yet.',
       needPlace: 'Share your location or type a city to see the centers ranked for you.',
+    },
+    // The "Around you" card over the map's top right (a section of the results sheet on a phone).
+    aroundYou: {
+      label: 'Around you',
+      pill: (place: string) => `Around you · ${place}`,
+      nationwide: 'Top in demand · Philippines',
+      near: (place: string) => `Near you · ${place}`,
+      province: (place: string) => `In your province · ${place}`,
+      topSkills: 'Top 3 skills',
+      topQualifications: 'Top 3 qualifications',
+      topJobs: 'Top 3 jobs',
+      jobs: 'Jobs',
+      qualifications: 'Qualifications',
+      postings: 'Postings',
+      postingCount: (count: number) => `${count.toLocaleString()} postings`,
+      inDemand: 'Forecast: in demand',
+      hardToFill: 'Forecast: hard to fill',
+      basedOn: (date: string) => `Based on job postings, ${date}`,
+      basedOnUndated: 'Based on job postings',
+      elsewhere: 'Your skills are in demand in…',
+      provinces: 'Provinces',
+      showProvince: (province: string) => `Show demand in ${province} on the map`,
+      searchFor: (name: string) => `Find centers for ${name}`,
+      hint: "Search your skills or sign in to see where else you're in demand.",
+      empty: 'No job postings recorded here yet.',
+      emptyProvince: (province: string) => `No job postings recorded in ${province} yet.`,
+      emptyElsewhere: 'No other province has enough job postings for your skills yet.',
+      loading: 'Loading what is in demand around you…',
+      failed: 'What is in demand around you could not be loaded.',
+      retry: 'Try again',
+      // "More" under a list of the card: the same words as the center lists' (already translated).
+      more: (n: number) => `${n} more`,
+      fewer: 'Show fewer',
     },
     demand: {
       heading: 'Jobs and qualification demand',

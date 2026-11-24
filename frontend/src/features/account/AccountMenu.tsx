@@ -1,5 +1,5 @@
-import { lazy, Suspense, useCallback, useEffect, useRef } from 'react'
-import { Button } from 'react-aria-components'
+import { lazy, Suspense, useCallback, useEffect, useRef, type ReactNode } from 'react'
+import { Button, Tooltip, TooltipTrigger } from 'react-aria-components'
 import type { Learner } from '../../auth/session.ts'
 import { loadSignInDialog, useAuth } from '../../auth/useAuth.ts'
 import { Icon } from '../../components/Icon.tsx'
@@ -9,8 +9,8 @@ import { focusIsLost } from '../../lib/focus.ts'
 import { prefetch } from '../../lib/prefetch.ts'
 import { reloadPage } from '../../lib/reload.ts'
 import { loadSignedInMenu } from './loaders.ts'
-import { shownName, type Variant } from './variant.ts'
-import { accountButton, accountName, control } from './styles.ts'
+import { iconSize, shownName, type Variant } from './variant.ts'
+import { accountButton, accountName, control, mapTip } from './styles.ts'
 
 const SignedInMenu = lazy(loadSignedInMenu)
 
@@ -42,9 +42,26 @@ function AccountButton({
       className={className}
       aria-label={`${menuLabel ?? copy.menu.label}: ${learner.full_name}`}
     >
-      <Icon name="person" size={variant === 'sidebar' ? '1.125rem' : '1.2rem'} />
-      <span className={accountName}>{shownName(learner.full_name, variant)}</span>
+      <Icon name="person" size={iconSize(variant)} />
+      <span className={variant === 'map' ? 'sr-only' : accountName}>
+        {shownName(learner.full_name, variant)}
+      </span>
     </Button>
+  )
+}
+
+/**
+ * A tip under a button that shows only an icon, on hover and on keyboard focus: the button's name, which screen
+ * readers get from the button itself. Lined up with the button's right edge, as the map's corner has no room right.
+ */
+export function MapTip({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <TooltipTrigger delay={400} closeDelay={0}>
+      {children}
+      <Tooltip placement="bottom end" offset={8} className={mapTip}>
+        {label}
+      </Tooltip>
+    </TooltipTrigger>
   )
 }
 
@@ -109,12 +126,7 @@ export function AccountControl({
     if (isChecking) prefetch(loadSignedInMenu)
   }, [isChecking])
 
-  const buttonClass = [
-    variant === 'sidebar' ? accountButton.sidebar : accountButton.header,
-    buttonClassName,
-  ]
-    .filter(Boolean)
-    .join(' ')
+  const buttonClass = [accountButton[variant], buttonClassName].filter(Boolean).join(' ')
 
   const signIn = () => {
     handOver.current = true
@@ -125,7 +137,7 @@ export function AccountControl({
   const prepareSignIn = () => prefetch(loadSignInDialog)
 
   return (
-    <div ref={wrapper} className={variant === 'sidebar' ? control.sidebar : control.header}>
+    <div ref={wrapper} className={control[variant]}>
       {learner ? (
         // The menu's code couldn't be downloaded: the same button says so, and offers to reload.
         <LoadBoundary
@@ -175,7 +187,22 @@ export function AccountControl({
         </LoadBoundary>
       ) : (
         // Guest-only: no Sign in for learners (see learnerAccounts).
-        offersAccounts && (
+        offersAccounts &&
+        (variant === 'map' ? (
+          // On the map only the icon shows: the name is read out, and shown in a tip on hover or focus.
+          <MapTip label={labels?.signIn ?? copy.signIn}>
+            <Button
+              ref={signInButton}
+              className={buttonClass}
+              onPress={signIn}
+              onHoverStart={prepareSignIn}
+              onFocus={prepareSignIn}
+              aria-label={labels?.signIn ?? copy.signIn}
+            >
+              <Icon name="signIn" size={iconSize(variant)} />
+            </Button>
+          </MapTip>
+        ) : (
           <Button
             ref={signInButton}
             className={buttonClass}
@@ -184,10 +211,10 @@ export function AccountControl({
             onFocus={prepareSignIn}
             aria-label={labels?.signIn}
           >
-            <Icon name="person" size={variant === 'sidebar' ? '1.125rem' : '1.2rem'} />
+            <Icon name="person" size={iconSize(variant)} />
             {copy.signIn}
           </Button>
-        )
+        ))
       )}
     </div>
   )

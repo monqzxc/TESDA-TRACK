@@ -9,6 +9,7 @@ const ring =
 export const control = {
   sidebar: 'flex flex-col border-t border-rule pt-3',
   header: 'inline-flex min-w-0',
+  map: 'inline-flex',
 }
 
 export const accountButton = {
@@ -19,7 +20,18 @@ export const accountButton = {
   ),
   header:
     'inline-flex min-h-11 max-w-[12rem] cursor-pointer items-center gap-[0.45rem] border-0 bg-transparent',
+  // Round, with the search card's surface and border. Only the icon shows; the name is read out (variant.ts). Its
+  // size and shadow depend on where it sits (MapAccount): floating over the map, or in the phone's search bar.
+  map: cx(
+    'grid flex-none cursor-pointer place-items-center rounded-full border border-solid border-border bg-surface p-0 text-navy',
+    'data-hovered:bg-soft data-pressed:bg-chip',
+    ring,
+  ),
 }
+
+/** The hover (and focus) tip over the map's round Sign in, which has no text of its own. */
+export const mapTip =
+  'pointer-events-none max-w-[16rem] rounded-8 border border-border bg-surface px-2.5 py-1 text-13 font-semibold text-navy shadow-[0_4px_14px_rgb(var(--track-shadow-rgb)/0.16)] data-entering:animate-pop'
 
 export const accountName = 'min-w-0 truncate'
 

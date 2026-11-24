@@ -35,6 +35,8 @@ class AreaJobs(BaseModel):
     limit: int
     offset: int
     region_code: str | None
+    province: str | None = Field(default=None, description=(
+        "The province filter as a display name (\"Metro Manila\" for all of NCR); its records' locality ends in it"))
     locality: str | None
     localities: list[str]
     areas: list[JobArea]

@@ -14,6 +14,7 @@ import { directionsQuery, type Directions } from './api.ts'
 import type { Center } from './centers.ts'
 import CenterMapLibre, { type CenterMapLibreProps } from './CenterMapLibre.tsx'
 import { PHILIPPINES } from './maplibre/camera.ts'
+import { useTrainingStore } from './state.ts'
 
 // The MapLibre renderer's wiring, against a stand-in for MapLibre (src/test/maplibre.ts): jsdom can't draw WebGL.
 // tests/e2e/training.spec.ts checks the real thing in a browser.
@@ -344,6 +345,35 @@ describe('the MapLibre center map', () => {
       expect.anything(),
       expect.objectContaining({ maxZoom: 13 }),
     )
+  })
+
+  it('draws the learner’s pin once sharing is on and the browser answers, finer than the rounded location', () => {
+    useTrainingStore.setState({ useLocation: true, location: null, livePoint: null })
+    const view = renderWithQuery(<CenterMapLibre {...props()} />)
+    const map = loaded()
+    expect(sourceData(map, 'center-reference').features).toEqual([])
+
+    // The location arrives: the page measures from the rounded point, the pin is drawn at the finer one.
+    act(() =>
+      useTrainingStore.setState({
+        location: { latitude: 14.55, longitude: 121.02 },
+        livePoint: { latitude: 14.555, longitude: 121.024, accuracyM: 120 },
+      }),
+    )
+    const reference = { latitude: 14.55, longitude: 121.02, label: 'you', mine: true }
+    view.rerender(<CenterMapLibre {...props({ reference })} />)
+    const { features } = sourceData(map, 'center-reference')
+    expect(features).toHaveLength(1)
+    expect(features[0].properties).toEqual({ mine: true })
+    expect(features[0].geometry).toMatchObject({ coordinates: [121.024, 14.555] })
+    expect(sourceData(map, 'center-reference-accuracy').features).toHaveLength(1)
+
+    // Locate goes to the pin.
+    fireEvent.click(screen.getByRole('button', { name: 'Show centers near me' }))
+    expect(map.easeTo).toHaveBeenLastCalledWith(
+      expect.objectContaining({ center: [121.024, 14.555] }),
+    )
+    useTrainingStore.setState({ useLocation: false, location: null, livePoint: null })
   })
 
   it('draws the routes, fits them once, and lets their labels pick the travel mode', async () => {

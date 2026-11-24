@@ -3,6 +3,10 @@
 By default an alphabetical directory. Given a learner's Skill Passport fit (services/profile_fit), the qualifications
 it fits come first, ordered by fit and posting records together; then those the learner already holds; then the rest
 of the directory in its usual order.
+
+A province (services/provinces, parsed from each posting's locality) is postings only: DOLE forecasts are published
+per region, so none is shown for a province. Its qualifications are those its postings have reviewed links to,
+ordered by posting records (or by fit first, when personalized).
 """
 
 from datetime import date, datetime
@@ -21,6 +25,7 @@ from tesda_track.models.labor_market import (
 )
 from tesda_track.schemas.area_qualifications import AreaQualification, AreaQualifications
 from tesda_track.schemas.evidence import ForecastSupport, Geography
+from tesda_track.services import provinces
 from tesda_track.services.demand_evidence import NO_POSTINGS, POSTING_LIMITATION
 
 if TYPE_CHECKING:
@@ -36,6 +41,8 @@ LIMITATIONS = [
 PERSONALIZED = ("Ordered by how well your Skill Passport fits, then by posting records: a starting point, not an "
                 "assessment of you or a workforce-shortage estimate.")
 FIT_WEIGHT, DEMAND_WEIGHT = 0.7, 0.3
+PROVINCE_LIMITATION = ("Province results count posting records only: labor market forecasts are published per region, "
+                       "not per province.")
 
 
 def discover(
@@ -46,6 +53,7 @@ def discover(
     offset: int = 0,
     now: datetime | None = None,
     fit: "ProfileFit | None" = None,
+    province: str | None = None,
 ) -> AreaQualifications:
     """Read candidates in one joined query; deduplicate postings by publisher/source ID.
 
@@ -53,12 +61,16 @@ def discover(
     pagination. A region selection admits only its posting/forecast observations
     plus explicitly labeled national forecasts. Without a selection, posting
     counts cover the regions present in the dataset, never a national census.
+
+    `province` keeps the postings whose locality is in it, filtered in Python after the query (there is no province
+    column; the name is parsed and normalized from `locality`). An unknown province gives an empty directory.
     """
     if not 1 <= limit <= 100 or offset < 0:
         raise InvalidRequestError("Invalid area qualification page.")
     regions = {region.code: region.name for region in session.exec(select(Region)).all()}
     if region_code and region_code not in regions:
         raise InvalidRequestError("Unknown region.")
+    province = provinces.normalize(province)
     now = now or datetime.now(ZoneInfo("Asia/Manila"))
     today = now.date()
     since = date(today.year, 1, 1)
@@ -98,13 +110,17 @@ def discover(
             Mapping.decision == "approved",
             Mapping.proposal == "high_confidence",
             Dataset.status == "active",
-            or_(forecasts, postings),
+            postings if province else or_(forecasts, postings),
         )
         .order_by(Qualification.name, Qualification.code, Evidence.id)
     ).all()
 
+    if province:
+        rows = [row for row in rows if provinces.of_locality(row[2].locality) == province]
     observation_geography = (
-        Geography(scope="regional", region_code=region_code, label=regions[region_code])
+        Geography(scope="local", region_code=region_code, label=province)
+        if province
+        else Geography(scope="regional", region_code=region_code, label=regions[region_code])
         if region_code
         else Geography(scope="multi_regional", label="Regions with mapped posting records (not a national total)")
     )
@@ -122,7 +138,7 @@ def discover(
             ),
         )
         item["dataset_keys"].add(dataset.key)
-        if region_code and evidence.region_code == region_code:
+        if province or (region_code and evidence.region_code == region_code):
             item["has_selected_area_evidence"] = True
         if dataset.evidence_class == "observed_posting":
             item["posting_ids"].add((dataset.publisher, evidence.source_record_id))
@@ -160,6 +176,8 @@ def discover(
         ))
 
     ordered = sorted(found.values(), key=lambda item: (item["qualification"].name.casefold(), item["qualification"].code))
+    if province:
+        ordered.sort(key=lambda item: -len(item["posting_ids"]))  # stable: name order breaks ties
     if fit is not None:
         ordered.sort(key=_fit_rank(fit, ordered))  # stable: name order is kept within a tier
     items = []
@@ -167,7 +185,7 @@ def discover(
         notes = [POSTING_LIMITATION]
         if not item["posting_ids"]:
             notes.append(NO_POSTINGS)
-        if region_code and not item["has_selected_area_evidence"]:
+        if not province and region_code and not item["has_selected_area_evidence"]:
             notes.append("Only broader national forecast support is available for this qualification in the selected area.")
         items.append(AreaQualification(
             qualification_code=item["qualification"].code,
@@ -187,12 +205,14 @@ def discover(
         limit=limit,
         offset=offset,
         region_code=region_code,
+        province=province,
         evaluated_at=now,
         observed_since=since,
         observed_through=today,
-        ordering="profile_fit" if fit is not None else "qualification_name",
+        ordering="profile_fit" if fit is not None else "posting_count" if province else "qualification_name",
         personalized=fit is not None,
-        limitations=[PERSONALIZED, *LIMITATIONS[1:]] if fit is not None else list(LIMITATIONS),
+        limitations=([PERSONALIZED, *LIMITATIONS[1:]] if fit is not None else list(LIMITATIONS))
+        + ([PROVINCE_LIMITATION] if province else []),
     )
 
 

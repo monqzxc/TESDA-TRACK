@@ -479,13 +479,27 @@ export const ceb: Record<string, string> = {
     'Maihap ang imong trabaho isip {0}: ang mga eksperyensiyado mahimong mopasusi sa {1} bisan walay pagbansay.',
   'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
     'Gilista usab sa imong TSP profile ang {0}. Ang sentro sa pagsusi maoy mosulti kung unsa ang dad-on.',
+  'Very near · {0} km': 'Duol kaayo · {0} km',
+  'Near · {0} km': 'Duol · {0} km',
+  'Within 60 km · {0} km': 'Sulod sa 60 km · {0} km',
+  'Nearest available · {0} km': 'Labing duol nga anaa · {0} km',
+  'Open schedule with seats': 'Bukas nga iskedyul nga may bakanteng lingkoranan',
+  'Open schedule with seats, more than 60 days away':
+    'Bukas nga iskedyul nga may bakanteng lingkoranan, lapas pa sa 60 ka adlaw',
+  'Accredited for it, no open schedule yet': 'Akreditado para niini, wala pay bukas nga iskedyul',
+  'Every open schedule is full': 'Puno na ang tanang bukas nga iskedyul',
+  'No open schedule': 'Walay bukas nga iskedyul',
+  'Verified and available': 'Beripikado ug bukas',
+  'Close to you': 'Duol nimo',
+  'Jobs for it are in demand in {0}': 'Gipangita ang mga trabaho para niini sa {0}',
+  'Lower fee than others nearby': 'Mas barato ang bayad kaysa sa uban nga duol',
   'Listed, but its service details still need confirming':
     'Nalista, apan kinahanglan pa nga kumpirmahon ang detalye sa serbisyo niini',
   'Score {0}/100': 'Iskor {0}/100',
-  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.':
-    'Usa ka iskor ang basehan sa ranggo sa mga training center: unsa kaduol, naay beripikado nga pagsusi duol, unsa kadali magsugod ang klase, ug demand sa trabaho sa ilang rehiyon. Magpabilin sa imong device ang imong lokasyon. Ang mga assessment center giranggo sumala sa gilay-on sa biyahe.',
-  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.':
-    'Usa ka iskor ang basehan sa ranggo sa mga training center: unsa kaduol, naay beripikado nga pagsusi duol, unsa kadali magsugod ang klase, ug demand sa trabaho sa ilang rehiyon. Magpabilin sa imong device ang imong lokasyon. Ang mga assessment center giranggo sumala sa gilay-on sa biyahe, ug mosaka kung ipakita sa imong TSP profile nga basin andam ka na.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee. Your location stays on your device.':
+    'Usa ka iskor ang basehan sa ranggo sa mga training center: unsa kaduol, naay beripikado nga pagsusi duol, unsa kadali magsugod ang klase, ug demand sa trabaho sa ilang rehiyon. Ang mga assessment center giranggo una sumala sa gilay-on, dayon sa bakanteng lingkoranan, beripikasyon, demand sa trabaho ug bayad. Magpabilin sa imong device ang imong lokasyon.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee, and come first when your TSP profile shows you may be ready. Your location stays on your device.':
+    'Usa ka iskor ang basehan sa ranggo sa mga training center: unsa kaduol, naay beripikado nga pagsusi duol, unsa kadali magsugod ang klase, ug demand sa trabaho sa ilang rehiyon. Ang mga assessment center giranggo una sumala sa gilay-on, dayon sa bakanteng lingkoranan, beripikasyon, demand sa trabaho ug bayad, ug mauna kung ipakita sa imong TSP profile nga basin andam ka na. Magpabilin sa imong device ang imong lokasyon.',
   'Still to cover: {0}.': 'Kinahanglan pa nga tun-an: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kinahanglan pa nga tun-an: {0}, ug {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':
@@ -518,6 +532,8 @@ export const ceb: Record<string, string> = {
     'Dili namo makuha ang imong lokasyon. Pag-type na lang og siyudad, o sulayi pag-usab.',
   'This browser can’t share a location. Type a city instead.':
     'Dili makapaambit og lokasyon kini nga browser. Pag-type na lang og siyudad.',
+  'Your browser shares a location only with secure (HTTPS) pages. Type a city instead.':
+    'Ipaambit lang sa imong browser ang lokasyon sa mga secure (HTTPS) nga panid. Pag-type na lang og siyudad.',
   'See what is near you': 'Tan-awa ang duol nimo',
   'Turn on location sharing, or type a city, to see the nearest training and assessment centers.':
     'I-on ang pagpaambit sa lokasyon, o pag-type og siyudad, aron makita ang labing duol nga mga sentro sa pagbansay ug pagsusi.',
@@ -947,4 +963,32 @@ export const ceb: Record<string, string> = {
     'Wala pay sentro nga nagtanyag niining kwalipikasyon.',
   'Share your location or type a city to see the centers ranked for you.':
     'Ipaambit ang imong lokasyon o pag-type og siyudad aron makita ang mga sentro nga gihan-ay para nimo.',
+  // The "Around you" card (needs native review).
+  'Around you': 'Sa imong palibot',
+  'Around you · {0}': 'Sa imong palibot · {0}',
+  'Top in demand · Philippines': 'Labing gipangita · Pilipinas',
+  'Near you · {0}': 'Duol kanimo · {0}',
+  'In your province · {0}': 'Sa imong probinsya · {0}',
+  Provinces: 'Mga probinsya',
+  'Top 3 skills': 'Top 3 nga kahanas',
+  'Top 3 qualifications': 'Top 3 nga kwalipikasyon',
+  'Top 3 jobs': 'Top 3 nga trabaho',
+  Jobs: 'Mga trabaho',
+  Postings: 'Mga posting',
+  'Forecast: in demand': 'Forecast: gipangita',
+  'Forecast: hard to fill': 'Forecast: lisod pun-on',
+  'Based on job postings, {0}': 'Base sa mga job posting, {0}',
+  'Based on job postings': 'Base sa mga job posting',
+  'Your skills are in demand in…': 'Gipangita ang imong kahanas sa…',
+  'Show demand in {0} on the map': 'Ipakita sa mapa ang demand sa {0}',
+  'Find centers for {0}': 'Pangitaa ang mga sentro para sa {0}',
+  "Search your skills or sign in to see where else you're in demand.":
+    'Pangitaa ang imong kahanas o mag-sign in aron makita kung asa pa ka gipangita.',
+  'No job postings recorded here yet.': 'Wala pay natala nga job posting dinhi.',
+  'No job postings recorded in {0} yet.': 'Wala pay natala nga job posting sa {0}.',
+  'No other province has enough job postings for your skills yet.':
+    'Wala pay laing probinsya nga igo ang job posting para sa imong kahanas.',
+  'Loading what is in demand around you…': 'Gikarga ang gipangita sa imong palibot…',
+  'What is in demand around you could not be loaded.':
+    'Dili makarga ang gipangita sa imong palibot.',
 }
