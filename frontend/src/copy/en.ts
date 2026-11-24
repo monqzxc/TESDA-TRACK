@@ -2551,6 +2551,15 @@ export const en = {
       hardToFill: 'Forecast: hard to fill',
       basedOn: (date: string) => `Based on job postings, ${date}`,
       basedOnUndated: 'Based on job postings',
+      // The "i" beside "Based on job postings": what the counts are, and a link to where they come from.
+      postingsInfo: 'About these postings',
+      postingsTotal: (postings: number, employers: number) =>
+        `${postings.toLocaleString()} posting records from ${employers.toLocaleString()} employers in this area.`,
+      postedBetween: (from: string, to: string) =>
+        from === to ? `Posted ${from}.` : `Posted between ${from} and ${to}.`,
+      snapshotOn: (dates: string) => `Snapshot: ${dates}.`,
+      source: 'PhilJobNet',
+      sourceLink: 'View postings on PhilJobNet',
       elsewhere: 'Your skills are in demand in…',
       provinces: 'Provinces',
       showProvince: (province: string) => `Show demand in ${province} on the map`,

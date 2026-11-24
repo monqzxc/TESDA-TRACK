@@ -486,6 +486,15 @@ describe('AroundYouCard', () => {
       .parentElement!
     expect(await within(block).findByText('Based on job postings, Nov 4, 2026')).toBeVisible()
     expect(within(block).queryByText(/Forecast/)).toBeNull()
+    // The postings link to their source, and the "i" says what they are.
+    expect(within(block).getByRole('link', { name: 'View postings on PhilJobNet' })).toHaveAttribute(
+      'href',
+      'https://philjobnet.gov.ph/job-vacancies/',
+    )
+    fireEvent.click(within(block).getByRole('button', { name: 'About these postings' }))
+    const about = await screen.findByRole('dialog', { name: 'About these postings' })
+    expect(within(about).getByText(/^Snapshot: /)).toBeVisible()
+    expect(within(about).getByRole('link', { name: /View postings on PhilJobNet/ })).toBeVisible()
   })
 
   it('a region shows its forecast as the demand level', async () => {

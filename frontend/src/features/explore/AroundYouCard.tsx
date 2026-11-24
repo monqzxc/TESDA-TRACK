@@ -4,7 +4,8 @@ import { Button } from 'react-aria-components'
 import type { Qualification } from '../../api/queries.ts'
 import { Icon } from '../../components/Icon.tsx'
 import type { IconName } from '../../components/icons.ts'
-import { useCopy } from '../../i18n/copy.ts'
+import { InfoPopover } from '../../components/InfoPopover.tsx'
+import { useCopy, useServerText } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { sessionStore } from '../../lib/sessionStore.ts'
 import {
@@ -316,7 +317,18 @@ function AreaSection({
             {qualificationList}
           </>
         )}
-        <p className={cx(footnote, 'px-0.5')}>{date ? copy.basedOn(date) : copy.basedOnUndated}</p>
+        <PostingsNote
+          date={date}
+          snapshotDates={jobs.data?.snapshot_dates ?? []}
+          postedBetween={jobs.data?.posted_between ?? []}
+          totals={
+            jobs.data
+              ? { postings: jobs.data.posting_count, employers: jobs.data.employer_count }
+              : null
+          }
+          limitations={jobs.data?.limitations ?? []}
+          sourceUrl={jobs.data?.source_url ?? null}
+        />
       </div>
     )
   }
@@ -631,9 +643,14 @@ function Elsewhere({
               )}
             />
           </Panel>
-          <p className={cx(footnote, 'px-0.5')}>
-            {date ? copy.basedOn(date) : copy.basedOnUndated}
-          </p>
+          <PostingsNote
+            date={date}
+            snapshotDates={elsewhere.data.snapshot_dates ?? []}
+            postedBetween={[]}
+            totals={null}
+            limitations={elsewhere.data.limitations ?? []}
+            sourceUrl={elsewhere.data.source_url}
+          />
         </div>
       )}
     </section>
@@ -705,6 +722,81 @@ function ElsewhereRow({
         <div className="pl-[1.4rem]">
           <ReasonList lines={reasons} className="text-12" />
         </div>
+      )}
+    </div>
+  )
+}
+
+/** A snapshot date as "Nov 4, 2026". */
+const shortDate = (value: string) => latestDate([value]) ?? value
+
+/**
+ * "Based on job postings, <date>" with the postings' source a press away: a PhilJobNet link on the line, and an "i"
+ * button holding what the counts are (totals, posting and snapshot dates, the server's limitations).
+ */
+function PostingsNote({
+  date,
+  snapshotDates,
+  postedBetween,
+  totals,
+  limitations,
+  sourceUrl,
+}: {
+  date: string | null
+  snapshotDates: readonly string[]
+  postedBetween: readonly string[]
+  totals: { postings: number; employers: number } | null
+  limitations: readonly string[]
+  sourceUrl: string | null
+}) {
+  const copy = useCopy().explore.aroundYou
+  const serverText = useServerText()
+  const posted = [...postedBetween].sort()
+  const from = posted[0]
+  const to = posted.at(-1)
+  const paragraphs = [
+    ...(totals ? [copy.postingsTotal(totals.postings, totals.employers)] : []),
+    ...(from ? [copy.postedBetween(shortDate(from), shortDate(to ?? from))] : []),
+    ...(snapshotDates.length
+      ? [copy.snapshotOn([...snapshotDates].sort().map(shortDate).join(', '))]
+      : []),
+    ...limitations.map(serverText),
+  ]
+  const link = 'font-semibold text-blue underline-offset-2 hover:underline'
+  return (
+    <div className="flex min-w-0 items-center justify-between gap-2 px-0.5">
+      <p className={cx(footnote, 'min-w-0')}>
+        <span>{date ? copy.basedOn(date) : copy.basedOnUndated}</span>
+        {sourceUrl && (
+          <>
+            {' · '}
+            <a
+              href={sourceUrl}
+              target="_blank"
+              rel="noreferrer"
+              aria-label={copy.sourceLink}
+              className={cx(link, 'inline-flex items-center gap-0.5')}
+            >
+              {copy.source}
+              <Icon name="external" size={11} />
+            </a>
+          </>
+        )}
+      </p>
+      {(paragraphs.length > 0 || sourceUrl) && (
+        <InfoPopover label={copy.postingsInfo} paragraphs={paragraphs} className="-my-1.5">
+          {sourceUrl && (
+            <a
+              href={sourceUrl}
+              target="_blank"
+              rel="noreferrer"
+              className={cx(link, 'inline-flex items-center gap-1 text-13')}
+            >
+              {copy.sourceLink}
+              <Icon name="external" size={12} />
+            </a>
+          )}
+        </InfoPopover>
       )}
     </div>
   )

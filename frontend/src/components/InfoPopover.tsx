@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { Button, Dialog, DialogTrigger, Heading, Popover } from 'react-aria-components'
 import { cx } from '../lib/style.ts'
 import { Icon } from './Icon.tsx'
@@ -12,11 +13,14 @@ export function InfoPopover({
   paragraphs,
   showLabel = false,
   className,
+  children,
 }: {
   label: string
   paragraphs: readonly string[]
   showLabel?: boolean
   className?: string
+  /** Shown after the paragraphs, such as a link to the source. */
+  children?: ReactNode
 }) {
   return (
     <DialogTrigger>
@@ -45,6 +49,7 @@ export function InfoPopover({
               {text}
             </p>
           ))}
+          {children}
         </Dialog>
       </Popover>
     </DialogTrigger>
