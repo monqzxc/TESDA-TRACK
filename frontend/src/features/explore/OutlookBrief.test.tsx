@@ -305,6 +305,9 @@ describe('the supply and demand brief', () => {
     expect(rows[0]).toHaveTextContent('Recommended')
     expect(rows[0]).toHaveTextContent('The shortest trip from you')
     expect(rows[1]).not.toHaveTextContent('Recommended')
+    // An assessment center says its distance band and distance, and that it has no open schedule.
+    expect(rows[1]).toHaveTextContent(/(Very near|Near) · \d+(\.\d)? km · /)
+    expect(rows[1]).toHaveTextContent(/no open schedule/i)
     expect(within(rows[0]).getByTestId('ranked-trip')).toHaveTextContent(
       /^\d+(\.\d)? km · about \d+ min$/,
     )

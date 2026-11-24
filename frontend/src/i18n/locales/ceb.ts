@@ -479,13 +479,27 @@ export const ceb: Record<string, string> = {
     'Maihap ang imong trabaho isip {0}: ang mga eksperyensiyado mahimong mopasusi sa {1} bisan walay pagbansay.',
   'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
     'Gilista usab sa imong TSP profile ang {0}. Ang sentro sa pagsusi maoy mosulti kung unsa ang dad-on.',
+  'Very near · {0} km': 'Duol kaayo · {0} km',
+  'Near · {0} km': 'Duol · {0} km',
+  'Within 60 km · {0} km': 'Sulod sa 60 km · {0} km',
+  'Nearest available · {0} km': 'Labing duol nga anaa · {0} km',
+  'Open schedule with seats': 'Bukas nga iskedyul nga may bakanteng lingkoranan',
+  'Open schedule with seats, more than 60 days away':
+    'Bukas nga iskedyul nga may bakanteng lingkoranan, lapas pa sa 60 ka adlaw',
+  'Accredited for it, no open schedule yet': 'Akreditado para niini, wala pay bukas nga iskedyul',
+  'Every open schedule is full': 'Puno na ang tanang bukas nga iskedyul',
+  'No open schedule': 'Walay bukas nga iskedyul',
+  'Verified and available': 'Beripikado ug bukas',
+  'Close to you': 'Duol nimo',
+  'Jobs for it are in demand in {0}': 'Gipangita ang mga trabaho para niini sa {0}',
+  'Lower fee than others nearby': 'Mas barato ang bayad kaysa sa uban nga duol',
   'Listed, but its service details still need confirming':
     'Nalista, apan kinahanglan pa nga kumpirmahon ang detalye sa serbisyo niini',
   'Score {0}/100': 'Iskor {0}/100',
-  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.':
-    'Usa ka iskor ang basehan sa ranggo sa mga training center: unsa kaduol, naay beripikado nga pagsusi duol, unsa kadali magsugod ang klase, ug demand sa trabaho sa ilang rehiyon. Magpabilin sa imong device ang imong lokasyon. Ang mga assessment center giranggo sumala sa gilay-on sa biyahe.',
-  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.':
-    'Usa ka iskor ang basehan sa ranggo sa mga training center: unsa kaduol, naay beripikado nga pagsusi duol, unsa kadali magsugod ang klase, ug demand sa trabaho sa ilang rehiyon. Magpabilin sa imong device ang imong lokasyon. Ang mga assessment center giranggo sumala sa gilay-on sa biyahe, ug mosaka kung ipakita sa imong TSP profile nga basin andam ka na.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee. Your location stays on your device.':
+    'Usa ka iskor ang basehan sa ranggo sa mga training center: unsa kaduol, naay beripikado nga pagsusi duol, unsa kadali magsugod ang klase, ug demand sa trabaho sa ilang rehiyon. Ang mga assessment center giranggo una sumala sa gilay-on, dayon sa bakanteng lingkoranan, beripikasyon, demand sa trabaho ug bayad. Magpabilin sa imong device ang imong lokasyon.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee, and come first when your TSP profile shows you may be ready. Your location stays on your device.':
+    'Usa ka iskor ang basehan sa ranggo sa mga training center: unsa kaduol, naay beripikado nga pagsusi duol, unsa kadali magsugod ang klase, ug demand sa trabaho sa ilang rehiyon. Ang mga assessment center giranggo una sumala sa gilay-on, dayon sa bakanteng lingkoranan, beripikasyon, demand sa trabaho ug bayad, ug mauna kung ipakita sa imong TSP profile nga basin andam ka na. Magpabilin sa imong device ang imong lokasyon.',
   'Still to cover: {0}.': 'Kinahanglan pa nga tun-an: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kinahanglan pa nga tun-an: {0}, ug {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':
