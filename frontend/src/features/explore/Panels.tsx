@@ -36,7 +36,7 @@ import {
   type QualificationCard,
   type Related,
 } from './explore.ts'
-import type { RankedCenter } from './recommend.ts'
+import type { AssessmentWhy, RankedCenter } from './recommend.ts'
 import { useExploreStore, type Explore } from './useExplore.ts'
 import { ASSESS_FIRST, type QualificationFit } from '../tsp/passport.ts'
 import { splitPhones } from '../../lib/phone.ts'
@@ -1122,6 +1122,33 @@ export function RankedCenters({
   )
 }
 
+/**
+ * An assessment center's reason line: its distance band and distance, then its strongest component ("Near · 18 km ·
+ * Open schedule with seats"). A center without an open schedule says so, so a nearer one without seats winning reads
+ * as the distance band, not as a better schedule.
+ */
+function assessmentWhy(
+  why: AssessmentWhy,
+  km: number,
+  center: Center,
+  copy: ReturnType<typeof useCopy>['explore']['ranked']['assessment'],
+): string {
+  const strongest =
+    why.strongest === 'schedule'
+      ? copy.schedule[why.schedule]
+      : why.strongest === 'demand'
+        ? copy.demand(center.region || center.regionCode || '')
+        : copy[why.strongest]
+  const noSchedule =
+    why.strongest !== 'schedule' &&
+    (why.schedule === 'accredited' || why.schedule === 'full' || why.schedule === 'none')
+  return [
+    copy.bands[why.band](km),
+    strongest,
+    ...(noSchedule ? [copy.schedule[why.schedule]] : []),
+  ].join(' · ')
+}
+
 /** One ranked center: its place in the list, its name and kind, why it ranks there, and "6 km · about 20 min · tags". */
 function RankedRow({
   item,
@@ -1142,15 +1169,19 @@ function RankedRow({
   // Ranked by the server's service score: its own reasons (the first two), never a template.
   const serverWhy = (item.why ?? []).slice(0, SERVER_REASONS_SHOWN).map(serverText).join(' · ')
   const why =
-    reason === 'service'
-      ? serverWhy || copy.reasons.inRange(rangeKm)
-      : reason === 'unconfirmed'
-        ? copy.reasons.unconfirmed
-        : reason === 'demand'
-          ? copy.reasons.demand(center.region || center.regionCode || '')
-          : reason === 'inRange' || reason === 'outside'
-            ? copy.reasons[reason](rangeKm)
-            : copy.reasons[reason]
+    reason === 'assessment'
+      ? item.assessment && center.distanceKm !== null
+        ? assessmentWhy(item.assessment, roundKm(center.distanceKm), center, copy.assessment)
+        : copy.reasons.inRange(rangeKm)
+      : reason === 'service'
+        ? serverWhy || copy.reasons.inRange(rangeKm)
+        : reason === 'unconfirmed'
+          ? copy.reasons.unconfirmed
+          : reason === 'demand'
+            ? copy.reasons.demand(center.region || center.regionCode || '')
+            : reason === 'inRange' || reason === 'outside'
+              ? copy.reasons[reason](rangeKm)
+              : copy.reasons[reason]
   const trip = [
     ...(center.distanceKm !== null ? [copy.km(roundKm(center.distanceKm))] : []),
     ...(minutes !== null ? [copy.about(travelTime(minutes))] : []),

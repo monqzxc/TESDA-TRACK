@@ -2490,7 +2490,6 @@ export const en = {
       ready: 'You may be ready',
       kinds: { training: 'Training', assessment: 'Assessment' },
       reasons: {
-        ready: 'Your TSP profile suggests you may be ready to get assessed here',
         nearest: 'The shortest trip from you',
         scholarship: 'A scholarship is open here, and the trip is about as short',
         demand: (region: string) =>
@@ -2499,10 +2498,30 @@ export const en = {
         outside: (km: number) => `Nearest, though outside your ${km} km range`,
         unconfirmed: 'Listed, but its service details still need confirming',
       },
+      // An assessment center's reason line: "Near · 18 km · Open schedule with seats" (recommend.ts, rankCenters).
+      assessment: {
+        bands: {
+          1: (km: number) => `Very near · ${km} km`,
+          2: (km: number) => `Near · ${km} km`,
+          3: (km: number) => `Within 60 km · ${km} km`,
+          4: (km: number) => `Nearest available · ${km} km`,
+        },
+        schedule: {
+          open: 'Open schedule with seats',
+          later: 'Open schedule with seats, more than 60 days away',
+          accredited: 'Accredited for it, no open schedule yet',
+          full: 'Every open schedule is full',
+          none: 'No open schedule',
+        },
+        verification: 'Verified and available',
+        proximity: 'Close to you',
+        demand: (region: string) => `Jobs for it are in demand in ${region}`,
+        fee: 'Lower fee than others nearby',
+      },
       score: (score: number) => `Score ${score}/100`,
-      how: 'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.',
+      how: 'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee. Your location stays on your device.',
       howSignedIn:
-        'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.',
+        'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee, and come first when your TSP profile shows you may be ready. Your location stays on your device.',
       sample: 'Sample data',
       sampleNote:
         'Travel times are estimated from straight-line distance for the December 2 demo, not measured routes.',

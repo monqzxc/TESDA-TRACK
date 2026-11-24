@@ -474,13 +474,28 @@ export const hil: Record<string, string> = {
     'Ginaisip ang imo obra subong {0}: ang may eksperyensya mahimo magpatasa sa {1} bisan wala sang pagbansay.',
   'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
     'Nakalista man sa imo TSP profile ang {0}. Ang sentro sang pagtasa ang magasiling kon ano ang dal-on.',
+  'Very near · {0} km': 'Malapit gid · {0} km',
+  'Near · {0} km': 'Malapit · {0} km',
+  'Within 60 km · {0} km': 'Sulod sang 60 km · {0} km',
+  'Nearest available · {0} km': 'Pinakamalapit nga may ara · {0} km',
+  'Open schedule with seats': 'Bukas nga iskedyul nga may bakante nga pulungkuan',
+  'Open schedule with seats, more than 60 days away':
+    'Bukas nga iskedyul nga may bakante nga pulungkuan, sobra pa sa 60 ka adlaw',
+  'Accredited for it, no open schedule yet':
+    'Akreditado para sini, wala pa sing bukas nga iskedyul',
+  'Every open schedule is full': 'Puno na ang tanan nga bukas nga iskedyul',
+  'No open schedule': 'Wala sing bukas nga iskedyul',
+  'Verified and available': 'Beripikado kag bukas',
+  'Close to you': 'Malapit sa imo',
+  'Jobs for it are in demand in {0}': 'Ginapangita ang mga obra para sini sa {0}',
+  'Lower fee than others nearby': 'Mas manubo ang bayad sangsa iban nga malapit',
   'Listed, but its service details still need confirming':
     'Nakalista, pero kinahanglan pa kumpirmahon ang detalye sang serbisyo sini',
   'Score {0}/100': 'Iskor {0}/100',
-  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.':
-    'Isa ka iskor ang basehan sang ranggo sang mga training center: kon daw ano kalapit, kon may beripikado nga pagtasa sa malapit, kon daw ano kadali magsugod ang klase, kag demand sa obra sa ila rehiyon. Magapabilin sa imo device ang imo lokasyon. Ang mga assessment center ginaranggo suno sa kalayuon sang biyahe.',
-  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.':
-    'Isa ka iskor ang basehan sang ranggo sang mga training center: kon daw ano kalapit, kon may beripikado nga pagtasa sa malapit, kon daw ano kadali magsugod ang klase, kag demand sa obra sa ila rehiyon. Magapabilin sa imo device ang imo lokasyon. Ang mga assessment center ginaranggo suno sa kalayuon sang biyahe, kag nagasaka kon ginapakita sang imo TSP profile nga basi handa ka na.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee. Your location stays on your device.':
+    'Isa ka iskor ang basehan sang ranggo sang mga training center: kon daw ano kalapit, kon may beripikado nga pagtasa sa malapit, kon daw ano kadali magsugod ang klase, kag demand sa obra sa ila rehiyon. Ang mga assessment center ginaranggo una suno sa kalayuon, dayon sa bakante nga pulungkuan, beripikasyon, demand sa obra kag bayad. Magapabilin sa imo device ang imo lokasyon.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee, and come first when your TSP profile shows you may be ready. Your location stays on your device.':
+    'Isa ka iskor ang basehan sang ranggo sang mga training center: kon daw ano kalapit, kon may beripikado nga pagtasa sa malapit, kon daw ano kadali magsugod ang klase, kag demand sa obra sa ila rehiyon. Ang mga assessment center ginaranggo una suno sa kalayuon, dayon sa bakante nga pulungkuan, beripikasyon, demand sa obra kag bayad, kag nagauna kon ginapakita sang imo TSP profile nga basi handa ka na. Magapabilin sa imo device ang imo lokasyon.',
   'Still to cover: {0}.': 'Kinahanglan pa tun-an: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kinahanglan pa tun-an: {0}, kag {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

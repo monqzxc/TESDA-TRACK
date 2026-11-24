@@ -475,13 +475,27 @@ export const bcl: Record<string, string> = {
     'Bilang an saimong trabaho bilang {0}: an may eksperyensya puwedeng magpatasa sa {1} dawa mayong pagsanay.',
   'Your TSP profile also lists {0}. The assessment center confirms what you need to bring.':
     'Nakalista man sa saimong TSP profile an {0}. An sentro nin pagtasa an magsasabi kun ano an dapat mong darahon.',
+  'Very near · {0} km': 'Harani na marhay · {0} km',
+  'Near · {0} km': 'Harani · {0} km',
+  'Within 60 km · {0} km': 'Laog kan 60 km · {0} km',
+  'Nearest available · {0} km': 'Pinakaharaning igwa · {0} km',
+  'Open schedule with seats': 'Bukas na iskedyul na igwang bakanteng tukawan',
+  'Open schedule with seats, more than 60 days away':
+    'Bukas na iskedyul na igwang bakanteng tukawan, labi pa sa 60 aldaw',
+  'Accredited for it, no open schedule yet': 'Akreditado para digdi, mayo pang bukas na iskedyul',
+  'Every open schedule is full': 'Puno na an gabos na bukas na iskedyul',
+  'No open schedule': 'Mayong bukas na iskedyul',
+  'Verified and available': 'Beripikado asin bukas',
+  'Close to you': 'Harani saimo',
+  'Jobs for it are in demand in {0}': 'Hinahanap an mga trabaho para digdi sa {0}',
+  'Lower fee than others nearby': 'Mas hababa an bayad kaysa sa iba na harani',
   'Listed, but its service details still need confirming':
     'Nakalista, alagad kaipuhan pang kompirmahon an detalye kan serbisyo kaini',
   'Score {0}/100': 'Iskor {0}/100',
-  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip.':
-    'Saro sanang iskor an basehan kan ranggo kan mga training center: kun gurano kaharani, kun igwa nin beripikadong pagtasa sa harani, kun gurano kadali magpoon an klase, asin an demand sa trabaho sa saindang rehiyon. Mapapadagos sa saimong device an saimong lokasyon. An mga assessment center niraranggo segun sa rayo kan biyahe.',
-  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Your location stays on your device. Assessment centers rank by trip, and move up when your TSP profile shows you may be ready.':
-    'Saro sanang iskor an basehan kan ranggo kan mga training center: kun gurano kaharani, kun igwa nin beripikadong pagtasa sa harani, kun gurano kadali magpoon an klase, asin an demand sa trabaho sa saindang rehiyon. Mapapadagos sa saimong device an saimong lokasyon. An mga assessment center niraranggo segun sa rayo kan biyahe, asin minatukad kun pinapahiling kan saimong TSP profile na puwedeng handa ka na.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee. Your location stays on your device.':
+    'Saro sanang iskor an basehan kan ranggo kan mga training center: kun gurano kaharani, kun igwa nin beripikadong pagtasa sa harani, kun gurano kadali magpoon an klase, asin an demand sa trabaho sa saindang rehiyon. An mga assessment center niraranggo enot segun sa rayo, dangan sa bakanteng tukawan, beripikasyon, demand sa trabaho asin bayad. Mapapadagos sa saimong device an saimong lokasyon.',
+  'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee, and come first when your TSP profile shows you may be ready. Your location stays on your device.':
+    'Saro sanang iskor an basehan kan ranggo kan mga training center: kun gurano kaharani, kun igwa nin beripikadong pagtasa sa harani, kun gurano kadali magpoon an klase, asin an demand sa trabaho sa saindang rehiyon. An mga assessment center niraranggo enot segun sa rayo, dangan sa bakanteng tukawan, beripikasyon, demand sa trabaho asin bayad, asin nauuna kun pinapahiling kan saimong TSP profile na puwedeng handa ka na. Mapapadagos sa saimong device an saimong lokasyon.',
   'Still to cover: {0}.': 'Kaipuhan pang adalan: {0}.',
   'Still to cover: {0}, and {1} more.': 'Kaipuhan pang adalan: {0}, asin {1} pa.',
   'Your {0} certificate has expired. Take the assessment again to renew it.':

@@ -35,6 +35,7 @@ import {
   rankCenters,
   recommend,
   recommendedIds as idsOf,
+  regionalDemand,
   supplyCenters,
 } from './recommend.ts'
 
@@ -409,8 +410,10 @@ export function useExplore(
   // Strong demand moves a center up the ranking; while the outlook loads, the ranking is by trip alone.
   const outlookAreas = outlook.data?.qualification.code === demandCode ? outlook.data : undefined
   const demandRegions = useMemo(() => highDemandRegions(outlookAreas), [outlookAreas])
-  // Signed in, the Skill Passport can say the learner may be ready to be assessed: assessment centers move up and
-  // say why. A guest is ranked by their location alone.
+  // Each region's demand against the busiest: an assessment center's demand component (left out while it loads).
+  const regionDemand = useMemo(() => regionalDemand(outlookAreas), [outlookAreas])
+  // Signed in, the Skill Passport can say the learner may be ready to be assessed: assessment centers come first in
+  // the list and say so. A guest is ranked by their location alone.
   const focusName =
     matches.find((match) => match.qualification.code === demandCode)?.qualification.name ??
     (outlook.data?.qualification.code === demandCode ? outlook.data.qualification.name : null)
@@ -442,11 +445,19 @@ export function useExplore(
   const ranked = useMemo(
     () =>
       demandCode
-        ? rankCenters({ supply, code: demandCode, rangeKm, demandRegions, ready, scores }).filter(
+        ? rankCenters({
+            supply,
+            code: demandCode,
+            rangeKm,
+            demandRegions,
+            regionDemand,
+            ready,
+            scores,
+          }).filter(
             (item) => !scholarshipOnly || item.center.kind !== 'training' || item.scholarship,
           )
         : [],
-    [demandCode, supply, rangeKm, demandRegions, ready, scores, scholarshipOnly],
+    [demandCode, supply, rangeKm, demandRegions, regionDemand, ready, scores, scholarshipOnly],
   )
   const recommendations = useMemo(
     () =>
@@ -459,6 +470,7 @@ export function useExplore(
             nearKm: rangeKm,
             code: demandCode,
             demandRegions,
+            regionDemand,
             ready,
             scores,
           })
@@ -471,6 +483,7 @@ export function useExplore(
       alternatives,
       rangeKm,
       demandRegions,
+      regionDemand,
       ready,
       scores,
     ],
