@@ -39,6 +39,7 @@ import {
 } from './explore.ts'
 import type { AssessmentWhy, RankedCenter } from './recommend.ts'
 import { useExploreStore, type Explore } from './useExplore.ts'
+import { ComparePanel } from './ComparePanel.tsx'
 import { ASSESS_FIRST, type QualificationFit } from '../tsp/passport.ts'
 import { splitPhones } from '../../lib/phone.ts'
 
@@ -1289,6 +1290,9 @@ export function ResultsPanel({
   const { rangeKm } = explore
   const assess = cardsFor('assessment', matches, centers, rangeKm)
   const train = cardsFor('training', matches, centers, rangeKm)
+  const chipCodes = explore.picked.length
+    ? new Set(explore.allMatches.map((match) => match.qualification.code))
+    : undefined
   const relatedFor = (kind: CenterKind, card: QualificationCard) =>
     relatedWithin({
       kind,
@@ -1297,6 +1301,8 @@ export function ResultsPanel({
       nearby: explore.nearbyCenters,
       catalog: explore.catalog,
       rangeKm,
+      // Narrowed by chips, the other chips are already in sight: suggest something new instead.
+      exclude: chipCodes,
     })
   const focus = { code: explore.demandCode, recommended: new Set(explore.recommendedIds) }
   // The highest-ranked match whose CORE units the learner's certificates show (the server's next step), even when
@@ -1329,6 +1335,8 @@ export function ResultsPanel({
 
   return (
     <div className="flex flex-col gap-4">
+      {/* The picked qualifications side by side, above whichever view is open. */}
+      <ComparePanel explore={explore} />
       {/* An underlined tab row: icon and label sit on one line, the chosen view is navy with a bar beneath it.
           Labels never truncate; when the row is narrow the icons drop out first. */}
       <div className="@container/tabs">
@@ -1442,6 +1450,7 @@ export function CenterCard({
   config,
   onBack,
   onRoute,
+  onHideRoute,
 }: {
   center: Center
   /** The qualification whose card it was opened from; from the map, none. */
@@ -1453,6 +1462,8 @@ export function CenterCard({
   config: ClientConfig | undefined
   onBack: () => void
   onRoute: () => void
+  /** Clears the drawn route, so every center is back on the map. */
+  onHideRoute: () => void
 }) {
   const en = useCopy()
   const copy = en.explore.card
@@ -1641,9 +1652,9 @@ export function CenterCard({
 
           {point &&
             (canRoute && config?.routing_enabled ? (
-              <Button className={directions} onPress={onRoute}>
-                <Icon name="directions" />
-                {copy.route}
+              <Button className={directions} onPress={routed ? onHideRoute : onRoute}>
+                <Icon name={routed ? 'close' : 'directions'} />
+                {routed ? copy.hideRoute : copy.route}
               </Button>
             ) : (
               <a

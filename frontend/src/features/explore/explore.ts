@@ -27,6 +27,17 @@ const STRONG_SCORE = 60
 const WEAK_SCORE = 35
 /** At most this many qualifications are shown. */
 export const MAX_QUALIFICATIONS = 5
+/** How many of a search's qualifications can be picked to compare at once. */
+export const MAX_PICKED = 3
+
+/**
+ * The matches the learner picked, in match order. With nothing picked, or only picks the search no longer matches
+ * (a stale visit), every match: narrowing never leaves the page empty.
+ */
+export function narrowMatches(matches: readonly Match[], picked: readonly string[]): Match[] {
+  const narrowed = matches.filter((match) => picked.includes(match.qualification.code))
+  return narrowed.length ? narrowed : [...matches]
+}
 
 export type Strength = 'strong' | 'good' | 'weak'
 
@@ -211,6 +222,7 @@ export function relatedWithin({
   nearby,
   catalog,
   rangeKm,
+  exclude,
 }: {
   kind: CenterKind
   match: Match
@@ -218,6 +230,8 @@ export function relatedWithin({
   nearby: readonly Center[]
   catalog: readonly { code: string; name: string; sector: string }[]
   rangeKm: number
+  /** Qualifications never to suggest: those already offered as chips beside the results. */
+  exclude?: ReadonlySet<string>
 }): Related | null {
   const own = match.qualification.code
   const family = qualificationFamily(match.qualification.name)
@@ -231,7 +245,7 @@ export function relatedWithin({
   for (const center of candidates) {
     const otherKind = center.kind === kind ? 0 : 1
     for (const [code, qualification] of listedAt(center, names)) {
-      if (code === own) continue
+      if (code === own || exclude?.has(code)) continue
       // Matched ones keep the search's order among themselves.
       const tier = matched.has(code)
         ? 0

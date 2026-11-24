@@ -1030,4 +1030,25 @@ export const ceb: Record<string, string> = {
   'How ranking works': 'Unsaon pag-ranggo',
   'About these results': 'Mahitungod niini nga mga resulta',
   'About travel times': 'Mahitungod sa oras sa biyahe',
+  // Narrow and compare qualifications, route on click (2026-11-24): best effort, needs native review.
+  'Narrow it down (optional)': 'Pakigutoka ang pilianan (opsyonal)',
+  'Compare up to 3': 'Hangtod 3 ang maikumpara',
+  Compare: 'Ikumpara',
+  'Your fit': 'Haom kanimo',
+  'CORE units you have': 'CORE units nga anaa nimo',
+  '{0} of {1} units': '{0} sa {1} ka units',
+  'Training hours': 'Oras sa pagbansay',
+  'Centers near you': 'Mga sentro duol kanimo',
+  '{0} train · {1} assess': '{0} pagbansay · {1} pagtasa',
+  Scholarship: 'Scholarship',
+  'Checking…': 'Gisusi…',
+  'Nothing on your passport points to this yet':
+    'Wala pay bisan unsa sa imong passport nga motumbok niini',
+  'Sign in and add your Skill Passport to see which fits you':
+    'Pag-sign in ug idugang ang imong Skill Passport aron makita kung asa ang haom kanimo',
+  Certified: 'Sertipikado na',
+  Renew: 'I-renew',
+  'Assess now': 'Magpa-assess na',
+  'Gap training': 'Gap training',
+  'Full training': 'Tibuok nga pagbansay',
 }

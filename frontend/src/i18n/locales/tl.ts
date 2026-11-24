@@ -2119,4 +2119,23 @@ export const tl: Record<string, string> = {
   'How ranking works': 'Paano nira-ranggo',
   'About these results': 'Tungkol sa mga resultang ito',
   'About travel times': 'Tungkol sa oras ng biyahe',
+  // Narrow and compare qualifications, route on click (2026-11-24): best effort, needs native review.
+  'Narrow it down (optional)': 'Paliitin ang pagpipilian (opsyonal)',
+  'Compare up to 3': 'Hanggang 3 ang maihahambing',
+  Compare: 'Ihambing',
+  'Your fit': 'Bagay sa iyo',
+  'CORE units you have': 'CORE units na mayroon ka',
+  '{0} of {1} units': '{0} sa {1} units',
+  'Training hours': 'Oras ng pagsasanay',
+  'Centers near you': 'Mga sentro malapit sa iyo',
+  '{0} train · {1} assess': '{0} pagsasanay · {1} pagtatasa',
+  Scholarship: 'Scholarship',
+  'Checking…': 'Sinusuri…',
+  'Nothing on your passport points to this yet': 'Wala pa sa iyong passport ang tumutugma rito',
+  'Sign in and add your Skill Passport to see which fits you':
+    'Mag-sign in at idagdag ang iyong Skill Passport para makita kung alin ang bagay sa iyo',
+  Renew: 'I-renew',
+  'Assess now': 'Magpa-assess na',
+  'Gap training': 'Gap training',
+  'Full training': 'Buong pagsasanay',
 }

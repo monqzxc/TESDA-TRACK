@@ -1033,4 +1033,25 @@ export const hil: Record<string, string> = {
   'How ranking works': 'Paano ginara-ranggo',
   'About these results': 'Parte sa sini nga mga resulta',
   'About travel times': 'Parte sa oras sang biyahe',
+  // Narrow and compare qualifications, route on click (2026-11-24): best effort, needs native review.
+  'Narrow it down (optional)': 'Pagamya ang pilian (opsyonal)',
+  'Compare up to 3': 'Tubtob 3 ang mahimo ikumparar',
+  Compare: 'Ikumparar',
+  'Your fit': 'Bagay sa imo',
+  'CORE units you have': 'CORE units nga ara sa imo',
+  '{0} of {1} units': '{0} sa {1} ka units',
+  'Training hours': 'Oras sang paghanas',
+  'Centers near you': 'Mga sentro malapit sa imo',
+  '{0} train · {1} assess': '{0} paghanas · {1} pagtasa',
+  Scholarship: 'Scholarship',
+  'Checking…': 'Ginausisa…',
+  'Nothing on your passport points to this yet':
+    'Wala pa sang bisan ano sa imo passport nga nagatudlo diri',
+  'Sign in and add your Skill Passport to see which fits you':
+    'Mag-sign in kag idugang ang imo Skill Passport agod makita kon diin ang bagay sa imo',
+  Certified: 'Sertipikado na',
+  Renew: 'I-renew',
+  'Assess now': 'Magpa-assess na',
+  'Gap training': 'Gap training',
+  'Full training': 'Bug-os nga paghanas',
 }

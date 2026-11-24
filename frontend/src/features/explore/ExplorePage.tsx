@@ -37,6 +37,7 @@ import type { ElsewhereProvince } from './demandApi.ts'
 import { NEAR_KM, nearestRegion, offers } from './explore.ts'
 import { LocationPrompt } from './LocationPrompt.tsx'
 import { OutlookBrief } from './OutlookBrief.tsx'
+import { QualificationChips } from './QualificationChips.tsx'
 import {
   CenterCard,
   CenterFilters,
@@ -348,12 +349,15 @@ export default function ExplorePage() {
     if (!selectedId) listScroll.current = scroller.current?.scrollTop ?? 0
     setSelectedId(id)
     setSelectedCode(code)
+    // Opening a center draws the way there straight away, when the page can draw routes from somewhere.
+    store().showRoute(canRoute ? id : null)
     setMotion('forward')
     // A center picked on the map opens its card, so a folded panel opens with it.
     setCollapsed(false)
     if (onMap) setFocus((n) => n + 1)
   }
   const back = () => {
+    store().showRoute(null)
     setSelectedId(null)
     setMotion('back')
   }
@@ -520,7 +524,8 @@ export default function ExplorePage() {
             }
           >
             <CenterMap
-              centers={pins}
+              // While a route is drawn, only its center stays on the map.
+              centers={route && selected ? [selected] : pins}
               centersUnavailable={explore.failed}
               demandAreas={demandAreas}
               demandRegion={explore.demandRegion}
@@ -629,6 +634,13 @@ export default function ExplorePage() {
               setCollapsed(false)
             }}
           />
+          {!selected && (
+            <QualificationChips
+              matches={explore.allMatches}
+              chosen={search?.chosen}
+              className="mx-3 mt-2 rounded-12 max-md:bg-surface max-md:p-2 max-md:shadow-[0_6px_16px_-4px_rgb(var(--track-shadow-rgb)/0.24)] md:mt-0 md:mb-2"
+            />
+          )}
           <Chips
             view={view}
             onView={changeView}
@@ -766,6 +778,7 @@ export default function ExplorePage() {
                     config={config}
                     onBack={back}
                     onRoute={() => store().showRoute(selected.id)}
+                    onHideRoute={() => store().showRoute(null)}
                   />
                 ) : explore.centerResultsUnavailable && view !== 'demand' ? null : search ? (
                   <ResultsPanel
