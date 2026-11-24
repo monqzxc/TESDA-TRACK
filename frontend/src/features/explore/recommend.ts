@@ -129,6 +129,8 @@ export interface RankedCenter {
   assessment?: AssessmentWhy
   /** With reason service or unconfirmed: the server's reasons, in its words. */
   why?: string[]
+  /** Service verification caveats stay separate from the reason for the center's position. */
+  verificationWarnings?: string[]
 }
 
 /** The server's scores for one qualification's programs, from a ranking asked for without a location. */
@@ -371,7 +373,12 @@ export function rankCenters({
       const item = { ...describe(center), why: [...service.why] }
       if (service.kind === 'scored')
         scored.push({ ...item, reason: 'service', score: service.score })
-      else unconfirmed.push({ ...item, reason: 'unconfirmed' })
+      else
+        unconfirmed.push({
+          ...item,
+          reason: 'unconfirmed',
+          verificationWarnings: [...service.why],
+        })
     }
     scored.sort((a, b) => (b.score as number) - (a.score as number) || tieBreak(a.center, b.center))
     unconfirmed.sort((a, b) => tieBreak(a.center, b.center))

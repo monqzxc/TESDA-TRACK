@@ -223,6 +223,37 @@ describe('combined recommended centers (QA-2026-11-23-Q)', () => {
   const ids = (supply: Center[], extra = {}) =>
     rankCombinedCenters({ supply, code: CODE, ...extra }).map((item) => item.center.id)
 
+  it('keeps a nearest recommendation reason separate from an unconfirmed service warning', () => {
+    const warnings = ['Provider authority requires verification.']
+    const [top] = rankCombinedCenters({
+      supply: [training('unconfirmed', 0.7), center('assessment-far', 'NCR', 2)],
+      code: CODE,
+      scores: { weights: {}, byProgram: new Map(), unconfirmed: new Map([[1, warnings]]) },
+    })
+    expect(top).toMatchObject({
+      center: { id: 'training-unconfirmed' },
+      reason: 'nearest',
+      verificationWarnings: warnings,
+    })
+  })
+
+  it('preserves the warning when an open scholarship is the reason a center moves up', () => {
+    const [top] = rankCombinedCenters({
+      supply: [training('funded', 11.5, true), center('assessment-near', 'NCR', 10)],
+      code: CODE,
+      scores: {
+        weights: {},
+        byProgram: new Map(),
+        unconfirmed: new Map([[1, ['Confirm service details.']]]),
+      },
+    })
+    expect(top).toMatchObject({
+      center: { id: 'training-funded' },
+      reason: 'scholarship',
+      verificationWarnings: ['Confirm service details.'],
+    })
+  })
+
   it('orders QA’s mixed training and assessment example by trip, not by type', () => {
     expect(
       ids([

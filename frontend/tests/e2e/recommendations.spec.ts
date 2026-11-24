@@ -670,6 +670,58 @@ for (const width of [1280, 390]) {
 }
 
 for (const width of [1280, 390]) {
+  test(`BUG-121: the main recommendation reason is separate from service warnings at ${width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 900 })
+    await serveRecommendations(page, 'leaflet')
+    await page.route('**/api/v1/recommendations/training', (route) =>
+      route.fulfill({
+        json: {
+          policy_version: 'verified-services-v2',
+          requires_verification: PROGRAMS.filter(
+            (program) => program.qualification.code === CSS.code,
+          ).map((program) => ({ program, reasons: ['Provider authority requires verification.'] })),
+          weights: {},
+          effective_weights: {},
+          semantic_used: false,
+          results: [],
+          audit_id: 1,
+        },
+      }),
+    )
+    await page.goto('/explore?qualification=CSS-NC-II')
+    await page
+      .getByRole('dialog', { name: 'Open Location?' })
+      .getByRole('button', { name: 'Not now' })
+      .click()
+    const place = page.getByRole('combobox', { name: 'Or type a city or province' })
+    await place.fill('Makati')
+    await place.press('Enter')
+    const rows = page.getByTestId('ranked-center')
+    const top = rows.first()
+    await expect(top).toContainText(COMPUTER_SITE.name)
+    await expect(top).toContainText('Recommended')
+    await expect(top.getByTestId('ranked-reason')).toHaveText('The shortest trip from you')
+    await expect(top.getByTestId('ranked-warning')).toContainText(
+      'Listed, but its service details still need confirming',
+    )
+    await expect(top.getByTestId('ranked-warning')).toContainText(
+      'Provider authority requires verification.',
+    )
+    const assessment = rows.filter({ hasText: ASSESSMENT_SITE.name })
+    await expect(assessment.getByTestId('ranked-warning')).toHaveCount(0)
+    await top.screenshot({
+      path: test.info().outputPath('reason-and-warning.png'),
+      animations: 'disabled',
+    })
+    expect(
+      await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth),
+    ).toBe(true)
+  })
+}
+
+for (const width of [1280, 390]) {
   test(`BUG-120: detail keeps the list estimate and explains road-route differences at ${width}px`, async ({
     page,
   }) => {

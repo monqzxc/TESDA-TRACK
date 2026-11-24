@@ -1179,12 +1179,21 @@ function RankedRow({
       : reason === 'service'
         ? serverWhy || copy.reasons.inRange(rangeKm)
         : reason === 'unconfirmed'
-          ? copy.reasons.unconfirmed
+          ? copy.reasons.inRange(rangeKm)
           : reason === 'demand'
             ? copy.reasons.demand(center.region || center.regionCode || '')
             : reason === 'inRange' || reason === 'outside'
               ? copy.reasons[reason](rangeKm)
               : copy.reasons[reason]
+  const needsVerification = item.verificationWarnings !== undefined || reason === 'unconfirmed'
+  const verificationDetails = (
+    item.verificationWarnings ??
+    (reason === 'unconfirmed' ? item.why : []) ??
+    []
+  )
+    .slice(0, SERVER_REASONS_SHOWN)
+    .map(serverText)
+    .join(' · ')
   const trip = [
     ...(center.distanceKm !== null ? [copy.km(roundKm(center.distanceKm))] : []),
     ...(minutes !== null ? [copy.about(travelTime(minutes))] : []),
@@ -1224,7 +1233,22 @@ function RankedRow({
           {copy.kinds[center.kind]}
           {center.city ? ` · ${center.city}` : ''}
         </span>
-        <span className="mt-1 block text-13 leading-[1.4] font-semibold text-ink">{why}</span>
+        <span
+          data-testid="ranked-reason"
+          className="mt-1 block text-13 leading-[1.4] font-semibold text-ink"
+        >
+          {why}
+        </span>
+        {needsVerification && (
+          <span
+            data-testid="ranked-warning"
+            className="mt-1 block text-12 leading-[1.4] text-warn-ink"
+          >
+            <Icon name="info" className="mr-1 inline-block align-text-bottom" />
+            {copy.reasons.unconfirmed}
+            {verificationDetails ? ` · ${verificationDetails}` : ''}
+          </span>
+        )}
         <span className="mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-13 leading-[1.4] text-muted">
           {trip && <span data-testid="ranked-trip">{trip}</span>}
           {item.score !== undefined && (
