@@ -223,5 +223,29 @@
         "external_certificates": [{"certificate_name": "LTO Professional Driver's License"}]
       }
     }
+  },
+  {
+    "username": "coach.gary@example.com",
+    "password": "TspDemo-garyq-2026",
+    "learner_type": "IT Consultant",
+    "profile": {
+      "sso_id": "mock-sso-0010",
+      "uli": "MOCK-ULI-0010",
+      "personal_information": {
+        "first_name": "Garry", "middle_name": "S", "last_name": "Quilala", "sex": "male",
+        "date_of_birth": "1988-06-20", "mobile_number": "+639000000009", "email_address": "coach.gary@example.com",
+        "address": "9 Sample Street", "baranggay": "Sample Barangay", "municipality": "Caloocan City",
+        "province": "Metro Manila", "region": "NCR", "country": "Philippines", "zip_code": "0000",
+        "profile_photo": null
+      },
+      "skills": [{"name": "Driving"}, {"name": "Cooking"}, {"name": "IT Consulting"}],
+      "experience": [{"job_title": "Jeepney driver"}],
+      "education": [{"degree": "BS Information Technology", "school": "Sample High School"}],
+      "qualifications": [],
+      "credentials": {
+        "certificates": [], "trainings": [], "assessments": [],
+        "external_certificates": []
+      }
+    }
   }
 ]
