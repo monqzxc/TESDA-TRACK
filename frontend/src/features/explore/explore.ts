@@ -222,6 +222,7 @@ export function relatedWithin({
   nearby,
   catalog,
   rangeKm,
+  exclude,
 }: {
   kind: CenterKind
   match: Match
@@ -229,6 +230,8 @@ export function relatedWithin({
   nearby: readonly Center[]
   catalog: readonly { code: string; name: string; sector: string }[]
   rangeKm: number
+  /** Qualifications never to suggest: those already offered as chips beside the results. */
+  exclude?: ReadonlySet<string>
 }): Related | null {
   const own = match.qualification.code
   const family = qualificationFamily(match.qualification.name)
@@ -242,7 +245,7 @@ export function relatedWithin({
   for (const center of candidates) {
     const otherKind = center.kind === kind ? 0 : 1
     for (const [code, qualification] of listedAt(center, names)) {
-      if (code === own) continue
+      if (code === own || exclude?.has(code)) continue
       // Matched ones keep the search's order among themselves.
       const tier = matched.has(code)
         ? 0

@@ -2325,6 +2325,11 @@ export const en = {
       assessment: 'Assessment centers',
       demand: 'In demand jobs',
     },
+    // The search's qualifications to pick from, and the side-by-side comparison of those picked.
+    compare: {
+      narrowLabel: 'Narrow it down (optional)',
+      maxHint: 'Compare up to 3',
+    },
     locationPrompt: {
       title: 'Open Location?',
       body: 'Allow your approximate location to see the nearest centers first. It is rounded to about 1 km and never saved. You can change this any time.',

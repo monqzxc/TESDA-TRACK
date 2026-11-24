@@ -37,6 +37,7 @@ import type { ElsewhereProvince } from './demandApi.ts'
 import { NEAR_KM, nearestRegion, offers } from './explore.ts'
 import { LocationPrompt } from './LocationPrompt.tsx'
 import { OutlookBrief } from './OutlookBrief.tsx'
+import { QualificationChips } from './QualificationChips.tsx'
 import {
   CenterCard,
   CenterFilters,
@@ -633,6 +634,13 @@ export default function ExplorePage() {
               setCollapsed(false)
             }}
           />
+          {!selected && (
+            <QualificationChips
+              matches={explore.allMatches}
+              chosen={search?.chosen}
+              className="mx-3 mt-2 rounded-12 max-md:bg-surface max-md:p-2 max-md:shadow-[0_6px_16px_-4px_rgb(var(--track-shadow-rgb)/0.24)] md:mt-0 md:mb-2"
+            />
+          )}
           <Chips
             view={view}
             onView={changeView}

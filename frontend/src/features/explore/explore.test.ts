@@ -212,6 +212,19 @@ describe('relatedWithin', () => {
     expect(related?.center.id).toBe('gtaw')
   })
 
+  it('skips qualifications already offered as chips, falling back to the next best', () => {
+    const related = relatedWithin({
+      kind: 'training',
+      match: welding,
+      matches: [welding],
+      nearby,
+      catalog,
+      rangeKm: 25,
+      exclude: new Set(['GMAW']),
+    })
+    expect([related?.qualification.code, related?.center.id]).toEqual(['GTAW', 'gtaw'])
+  })
+
   it('names an accreditation from the catalog, and stays within range', () => {
     const related = relatedWithin({
       kind: 'assessment',

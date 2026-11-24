@@ -1290,6 +1290,9 @@ export function ResultsPanel({
   const { rangeKm } = explore
   const assess = cardsFor('assessment', matches, centers, rangeKm)
   const train = cardsFor('training', matches, centers, rangeKm)
+  const chipCodes = explore.picked.length
+    ? new Set(explore.allMatches.map((match) => match.qualification.code))
+    : undefined
   const relatedFor = (kind: CenterKind, card: QualificationCard) =>
     relatedWithin({
       kind,
@@ -1298,6 +1301,8 @@ export function ResultsPanel({
       nearby: explore.nearbyCenters,
       catalog: explore.catalog,
       rangeKm,
+      // Narrowed by chips, the other chips are already in sight: suggest something new instead.
+      exclude: chipCodes,
     })
   const focus = { code: explore.demandCode, recommended: new Set(explore.recommendedIds) }
   // The highest-ranked match whose CORE units the learner's certificates show (the server's next step), even when
