@@ -5,6 +5,7 @@ import { Button, Switch, ToggleButton } from 'react-aria-components'
 import { Link, useNavigate } from 'react-router'
 import { DataProvenance } from '../../components/DataProvenance.tsx'
 import { Icon, type IconName } from '../../components/Icon.tsx'
+import { InfoPopover } from '../../components/InfoPopover.tsx'
 import { useCopy, useServerText } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { paths } from '../../paths.ts'
@@ -1087,11 +1088,15 @@ export function RankedCenters({
           {focusName && <p className={cx(note, 'mt-0.5')}>{copy.for(focusName)}</p>}
         </div>
         {reference && items.length > 0 && (
-          // Quiet on purpose: a note for the demo, not a warning that competes with the ranking.
-          <span className="mt-0.5 inline-flex flex-none items-center gap-1 text-11 text-muted opacity-80">
-            <Icon name="info" size="0.8rem" />
-            {copy.sample}
-          </span>
+          // Quiet on purpose: a note for the demo, not a warning that competes with the ranking. How the ranking
+          // works sits behind the "i" button, so the list is not followed by a paragraph every time.
+          <div className="-mt-1 -mr-1.5 flex flex-none items-center">
+            <span className="text-11 text-muted opacity-80">{copy.sample}</span>
+            <InfoPopover
+              label={en.explore.info.ranking}
+              paragraphs={[signedIn ? copy.howSignedIn : copy.how, copy.sampleNote]}
+            />
+          </div>
         )}
       </div>
       {!reference ? (
@@ -1099,24 +1104,19 @@ export function RankedCenters({
       ) : !items.length ? (
         <p className={note}>{copy.none}</p>
       ) : (
-        <>
-          <ol className="m-0 flex list-none flex-col gap-1.5 p-0">
-            {items.map((item, index) => (
-              <li key={item.center.id}>
-                <RankedRow
-                  item={item}
-                  rank={index + 1}
-                  top={index === 0}
-                  rangeKm={rangeKm}
-                  onSelect={() => onSelect(item.center.id, code)}
-                />
-              </li>
-            ))}
-          </ol>
-          <p className="m-0 text-12 leading-[1.45] text-muted">
-            {signedIn ? copy.howSignedIn : copy.how} {copy.sampleNote}
-          </p>
-        </>
+        <ol className="m-0 flex list-none flex-col gap-1.5 p-0">
+          {items.map((item, index) => (
+            <li key={item.center.id}>
+              <RankedRow
+                item={item}
+                rank={index + 1}
+                top={index === 0}
+                rangeKm={rangeKm}
+                onSelect={() => onSelect(item.center.id, code)}
+              />
+            </li>
+          ))}
+        </ol>
       )}
     </section>
   )
@@ -1418,12 +1418,18 @@ export function ResultsPanel({
         />
       ))}
       {view === 'demand' && <DemandPanel explore={explore} />}
-      {/* The demand views list records, not trips or suggestions to rate: one line says where they come from. */}
-      <div className="flex flex-col gap-1">
-        {reference && view !== 'demand' && <p className={note}>{en.explore.notes.times}</p>}
-        <p className={note}>{en.explore.notes.automatic}</p>
-        {search && view !== 'demand' && <p className={note}>{en.suggestionFeedback.note}</p>}
-      </div>
+      {/* Where the results come from, folded behind one button. The demand views list records, not trips, so they
+          leave out the travel-time note. "Automatic" already says to confirm with the center, so the suggestion
+          note is not repeated under it. */}
+      <InfoPopover
+        showLabel
+        label={en.explore.info.results}
+        className="self-start"
+        paragraphs={[
+          ...(reference && view !== 'demand' ? [en.explore.notes.times] : []),
+          en.explore.notes.automatic,
+        ]}
+      />
     </div>
   )
 }
@@ -1717,7 +1723,14 @@ export function CenterCard({
         </section>
       )}
 
-      {!routed && center.distanceKm !== null && <p className={note}>{en.explore.notes.times}</p>}
+      {!routed && center.distanceKm !== null && (
+        <InfoPopover
+          showLabel
+          label={en.explore.info.times}
+          className="self-start"
+          paragraphs={[en.explore.notes.times]}
+        />
+      )}
     </article>
   )
 }

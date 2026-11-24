@@ -11,6 +11,7 @@ import {
 import { Button, Switch } from 'react-aria-components'
 import { useQualifications } from '../../api/queries.ts'
 import { Icon, type IconName } from '../../components/Icon.tsx'
+import { InfoPopover } from '../../components/InfoPopover.tsx'
 import { useCopy, useServerText } from '../../i18n/copy.ts'
 import { readItem, writeItem } from '../../lib/storage.ts'
 import { cx } from '../../lib/style.ts'
@@ -410,31 +411,26 @@ export function OutlookBrief({
                 </h3>
                 {picks.length ? (
                   // Side by side where they fit: the wider the window, the shorter the brief.
-                  <>
-                    <ul className="-m-1 grid list-none grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-2 p-1">
-                      {picks.map(({ key, item }) => (
-                        <li
-                          key={key}
-                          className={cx(tile, 'relative flex min-w-0 flex-col overflow-hidden')}
-                        >
-                          <RecommendedRow
-                            item={item}
-                            onSelect={() => onSelect(item.center.id, code)}
-                          />
-                          <CenterSuggestionFeedback
-                            compact
-                            center={item.center}
-                            qualificationCode={code}
-                            goal={search?.chosen ? undefined : search?.query}
-                            scope={search?.feedbackScope}
-                          />
-                        </li>
-                      ))}
-                    </ul>
-                    <p className="m-0 text-12 leading-[1.45] text-muted">
-                      {en.suggestionFeedback.note}
-                    </p>
-                  </>
+                  <ul className="-m-1 grid list-none grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-2 p-1">
+                    {picks.map(({ key, item }) => (
+                      <li
+                        key={key}
+                        className={cx(tile, 'relative flex min-w-0 flex-col overflow-hidden')}
+                      >
+                        <RecommendedRow
+                          item={item}
+                          onSelect={() => onSelect(item.center.id, code)}
+                        />
+                        <CenterSuggestionFeedback
+                          compact
+                          center={item.center}
+                          qualificationCode={code}
+                          goal={search?.chosen ? undefined : search?.query}
+                          scope={search?.feedbackScope}
+                        />
+                      </li>
+                    ))}
+                  </ul>
                 ) : (
                   <p className={note}>{explore.reference ? copy.none : copy.needPlace}</p>
                 )}
@@ -468,10 +464,15 @@ export function OutlookBrief({
               </details>
 
               <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 border-t border-rule pt-2">
-                <p className="m-0 flex min-w-0 flex-1 basis-64 items-start gap-1.5 text-12 leading-[1.45] text-muted">
-                  <Icon name="info" className="mt-0.5 flex-none" />
-                  {copy.footnote}
-                </p>
+                {/* Where the brief comes from, behind one button instead of a standing footnote. */}
+                <InfoPopover
+                  showLabel
+                  label={en.explore.info.results}
+                  paragraphs={[
+                    copy.footnote,
+                    ...(picks.length ? [en.suggestionFeedback.note] : []),
+                  ]}
+                />
                 <Button
                   className={cx(
                     button({ variant: 'tertiary', height: 36, snug: true }),

@@ -1011,4 +1011,7 @@ export const pag: Record<string, string> = {
   'Search for it on the map': 'Anapen iya ed mapa',
   'Loading training centers…': 'Ikakarga iray sentro na pansanay…',
   'Training centers could not be loaded.': 'Agnayarin ikarga iray sentro na pansanay.',
+  'How ranking works': 'Panon so pan-ranggo',
+  'About these results': 'Nipaakar ed sarayan resulta',
+  'About travel times': 'Nipaakar ed oras na biahe',
 }

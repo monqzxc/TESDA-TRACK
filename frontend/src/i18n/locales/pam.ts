@@ -1667,4 +1667,7 @@ export const pam: Record<string, string> = {
   'Search for it on the map': 'Panintunan me iti king mapa',
   'Loading training centers…': 'Ikarga de ding sentro ning pamag-aral…',
   'Training centers could not be loaded.': 'E makarga deng sentro ning pamag-aral.',
+  'How ranking works': 'Nanu ing pamag-ranggo',
+  'About these results': 'Tungkul kareng resulta a ini',
+  'About travel times': 'Tungkul king oras ning biyahe',
 }

@@ -1030,4 +1030,7 @@ export const hil: Record<string, string> = {
   'Search for it on the map': 'Pangitaa ini sa mapa',
   'Loading training centers…': 'Ginakarga ang mga sentro sang pagbansay…',
   'Training centers could not be loaded.': 'Indi makarga ang mga sentro sang pagbansay.',
+  'How ranking works': 'Paano ginara-ranggo',
+  'About these results': 'Parte sa sini nga mga resulta',
+  'About travel times': 'Parte sa oras sang biyahe',
 }

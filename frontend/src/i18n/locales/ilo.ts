@@ -1022,4 +1022,7 @@ export const ilo: Record<string, string> = {
   'Search for it on the map': 'Biroken daytoy iti mapa',
   'Loading training centers…': 'Ik-ikarga dagiti sentro ti panagsanay…',
   'Training centers could not be loaded.': 'Saan a maikarga dagiti sentro ti panagsanay.',
+  'How ranking works': 'No kasano ti panag-ranggo',
+  'About these results': 'Maipapan kadagitoy a resulta',
+  'About travel times': 'Maipapan iti oras ti panagbiahe',
 }

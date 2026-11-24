@@ -1020,4 +1020,7 @@ export const war: Record<string, string> = {
   'Search for it on the map': 'Bilnga ini ha mapa',
   'Loading training centers…': 'Ginkakarga an mga sentro han pagbansay…',
   'Training centers could not be loaded.': 'Diri makarga an mga sentro han pagbansay.',
+  'How ranking works': 'Paonan-o an pag-ranggo',
+  'About these results': 'Mahitungod hini nga mga resulta',
+  'About travel times': 'Mahitungod han oras han biyahe',
 }

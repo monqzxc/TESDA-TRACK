@@ -2116,4 +2116,7 @@ export const tl: Record<string, string> = {
   'Search for it on the map': 'Hanapin ito sa mapa',
   'Loading training centers…': 'Nilo-load ang mga sentro ng pagsasanay…',
   'Training centers could not be loaded.': 'Hindi ma-load ang mga sentro ng pagsasanay.',
+  'How ranking works': 'Paano nira-ranggo',
+  'About these results': 'Tungkol sa mga resultang ito',
+  'About travel times': 'Tungkol sa oras ng biyahe',
 }

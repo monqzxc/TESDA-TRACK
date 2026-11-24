@@ -1027,4 +1027,7 @@ export const ceb: Record<string, string> = {
   'Search for it on the map': 'Pangitaa kini sa mapa',
   'Loading training centers…': 'Gikarga ang mga sentro sa pagbansay…',
   'Training centers could not be loaded.': 'Dili makarga ang mga sentro sa pagbansay.',
+  'How ranking works': 'Unsaon pag-ranggo',
+  'About these results': 'Mahitungod niini nga mga resulta',
+  'About travel times': 'Mahitungod sa oras sa biyahe',
 }

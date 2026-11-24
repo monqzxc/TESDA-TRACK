@@ -2823,6 +2823,12 @@ export const en = {
       automatic:
         'These results come from automatic matching. This is a suggestion: confirm with the center or your TESDA office.',
     },
+    // The "i" buttons that hold the notes above instead of showing them as paragraphs (InfoPopover).
+    info: {
+      ranking: 'How ranking works',
+      results: 'About these results',
+      times: 'About travel times',
+    },
   },
   theme: {
     // The accessible name of the System / Light / Dark switch.

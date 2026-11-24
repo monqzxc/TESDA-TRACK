@@ -1025,4 +1025,7 @@ export const bcl: Record<string, string> = {
   'Search for it on the map': 'Hanapon ini sa mapa',
   'Loading training centers…': 'Kinakarga an mga sentro nin pag-adal…',
   'Training centers could not be loaded.': 'Dai makarga an mga sentro nin pag-adal.',
+  'How ranking works': 'Paano an pag-ranggo',
+  'About these results': 'Manongod sa mga resultang ini',
+  'About travel times': 'Manongod sa oras nin biyahe',
 }
