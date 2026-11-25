@@ -473,7 +473,7 @@ describe('Demand where you are (Card 3)', () => {
       </MemoryRouter>,
     )
     await screen.findByText(settled)
-    return screen.getByRole('group', { name: 'Demand here' })
+    return screen.getByRole('group', { name: 'Demand in your area' })
   }
 
   it('gives the level where the learner is and where the qualification is needed more', async () => {
@@ -527,7 +527,7 @@ describe('Demand where you are (Card 3)', () => {
       </AuthContext.Provider>,
     )
     await screen.findByText('High demand')
-    const local = screen.getByRole('group', { name: 'Demand here' })
+    const local = screen.getByRole('group', { name: 'Demand in your area' })
     expect(within(local).getByText(/Skill Passport/)).toBeInTheDocument()
     expect(asked.at(-1)?.searchParams.get('home_region_code')).toBe('VII')
   })
@@ -657,7 +657,7 @@ describe('Other qualifications in demand near you (Card 4)', () => {
     await waitFor(() => expect(sent.length).toBeGreaterThan(0))
     await waitFor(() =>
       expect(
-        screen.queryByRole('group', { name: 'Also in demand near you' }),
+        screen.queryByRole('group', { name: 'Also in demand skills near you' }),
       ).not.toBeInTheDocument(),
     )
     expect(screen.queryByText(/Nothing else stands out/)).not.toBeInTheDocument()
@@ -668,7 +668,7 @@ describe('Other qualifications in demand near you (Card 4)', () => {
     serve([food])
     open()
     await screen.findByText(/No posting records yet/)
-    expect(screen.queryByRole('group', { name: 'Also in demand near you' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('group', { name: 'Also in demand skills near you' })).not.toBeInTheDocument()
     expect(
       screen.queryByRole('button', { name: 'Look at Food and Beverage Services NC II' }),
     ).not.toBeInTheDocument()
@@ -722,7 +722,7 @@ describe('Find Jobs on TSP (Card 5)', () => {
 
   it('is left out until the deployment sets the TSP link', async () => {
     open()
-    await screen.findByRole('group', { name: /Demand here/i })
+    await screen.findByRole('group', { name: /Demand in your area/i })
     expect(screen.queryByRole('button', { name: /Find Jobs on TSP/ })).not.toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /Find Jobs on TSP/ })).not.toBeInTheDocument()
   })

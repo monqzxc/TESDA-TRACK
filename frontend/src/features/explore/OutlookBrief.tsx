@@ -248,10 +248,7 @@ export function OutlookBrief({
           aria-valuemax={100}
           aria-valuenow={
             open
-              ? Math.min(
-                  100,
-                  Math.round(((size ?? Math.max(window.innerHeight * 0.3, 176)) / limit()) * 100),
-                )
+              ? Math.min(100, Math.round(((size ?? window.innerHeight * 0.1) / limit()) * 100))
               : 0
           }
           // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
@@ -391,7 +388,8 @@ export function OutlookBrief({
           style={size ? { maxHeight: size } : undefined}
           className={cx(
             'overflow-y-auto overscroll-contain border-t border-rule px-3 pt-2.5 pb-2.5',
-            !size && 'max-h-[max(30dvh,11rem)]',
+            // Opens small by default, so the map stays the focus; drag the sash to give it more.
+            !size && 'max-h-[10dvh]',
           )}
         >
           {data && (
@@ -405,10 +403,17 @@ export function OutlookBrief({
               <NearbyQualifications explore={explore} />
 
               <div className="flex min-w-0 flex-col gap-1.5">
-                <h3 className={heading}>
-                  <Icon name="star" />
-                  {copy.recommended}
-                </h3>
+                <div className="flex items-center gap-0.5">
+                  <h3 className={heading}>
+                    <Icon name="star" />
+                    {copy.recommended}
+                  </h3>
+                  <InfoPopover
+                    label={copy.recommendedWhy}
+                    paragraphs={[copy.recommendedWhyText]}
+                    className="-my-1.5"
+                  />
+                </div>
                 {picks.length ? (
                   // Side by side where they fit: the wider the window, the shorter the brief.
                   <ul className="-m-1 grid list-none auto-rows-fr grid-cols-[repeat(auto-fill,minmax(17rem,1fr))] gap-2 p-1">
@@ -669,7 +674,14 @@ function LocalDemand({
           </span>
         )}
       </p>
-      {home.level === 'none' && <p className={note}>{copy.noData}</p>}
+      {home.level === 'none' ? (
+        <p className={note}>{copy.noData}</p>
+      ) : (
+        // The takeaway, set off like the reasons in "Also in demand": easy to spot without reading the numbers.
+        <p className="m-0 rounded-8 border-l-2 border-blue/40 bg-tint/50 px-2 py-1.5 text-13 leading-[1.45] font-semibold text-navy">
+          {copy.meaning[home.level]}
+        </p>
+      )}
       {groups.length ? (
         <div className="flex flex-col gap-1">
           <p className="m-0 flex items-center gap-1.5 text-12 font-bold text-navy">
@@ -740,10 +752,13 @@ function NearbyQualifications({ explore }: { explore: Explore }) {
   if (!nearby.isError && !suggestions.length) return null
   return (
     <div role="group" aria-label={copy.heading} className="flex min-w-0 flex-col gap-1.5">
-      <h3 className={heading}>
-        <Icon name="lightbulb" />
-        {copy.heading}
-      </h3>
+      <div className="flex items-center gap-0.5">
+        <h3 className={heading}>
+          <Icon name="lightbulb" />
+          {copy.heading}
+        </h3>
+        <InfoPopover label={copy.why} paragraphs={[copy.whyText]} className="-my-1.5" />
+      </div>
       {nearby.isError ? (
         <p className={note} role="alert">
           {copy.failed}

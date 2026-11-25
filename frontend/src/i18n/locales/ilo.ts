@@ -660,6 +660,20 @@ export const ilo: Record<string, string> = {
   Balance: 'Balanse',
   Elsewhere: 'Iti sabali a lugar',
   'Demand here': 'Demand ditoy',
+  'Demand in your area': 'Demand iti lugaryo',
+  'Employers here ask for this skill more than in most regions.':
+    'Ad-adda a sapulen dagiti employer ditoy daytoy a kabaelan ngem iti kaaduan a rehion.',
+  'There is steady demand for this skill here.':
+    'Agtultuloy ti panagkasapulan iti daytoy a kabaelan ditoy.',
+  'Few employers here ask for this skill yet. See where it is needed more.':
+    'Bassit pay laeng nga employer ditoy ti agsapsapul iti daytoy a kabaelan. Kitaem no sadino ti ad-adda a pakasapulanna.',
+  'Also in demand skills near you': 'Sabsabali pay a kasapulan a kabaelan nga asideg kenka',
+  'Why these skills?': 'Apay dagitoy a kabaelan?',
+  'These skills have many job records in your region and fit what is in your Skill Passport. Tap one to see its demand and centers.':
+    'Adu ti rekord ti trabaho para kadagitoy a kabaelan iti rehionyo, ken maitutop dagitoy iti linaon ti Skill Passport mo. Pindutem ti maysa tapno makita ti demand ken dagiti sentrona.',
+  'Why these centers?': 'Apay dagitoy a sentro?',
+  'The closest training and assessment centers that offer this skill, from where you are. With Relocate on, centers in regions where it is needed more are added.':
+    'Dagiti kaasidegan a training ken assessment center a mangitukon iti daytoy a kabaelan, manipud iti ayanmo. No naka-on ti Relocate, mainayon dagiti sentro kadagiti rehion nga ad-adda a mangkasapulan iti daytoy.',
   'Skill Passport': 'Skill Passport',
   'High demand': 'Nangato a demand',
   'Moderate demand': 'Kalkalainganna a demand',

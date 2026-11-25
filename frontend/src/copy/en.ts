@@ -2837,7 +2837,13 @@ export const en = {
       },
       // Card 3: how much the qualification is needed where the learner is, and where it's needed more.
       local: {
-        heading: 'Demand here',
+        heading: 'Demand in your area',
+        // One highlighted line under the level: what it means for the learner, in plain words.
+        meaning: {
+          high: 'Employers here ask for this skill more than in most regions.',
+          moderate: 'There is steady demand for this skill here.',
+          low: 'Few employers here ask for this skill yet. See where it is needed more.',
+        },
         from: { location: 'Your location', profile: 'Skill Passport' },
         levels: {
           high: 'High demand',
@@ -2871,14 +2877,20 @@ export const en = {
       },
       // Card 4: other qualifications in demand where the learner is. Hidden when there is nothing to list.
       nearby: {
-        heading: 'Also in demand near you',
+        heading: 'Also in demand skills near you',
+        why: 'Why these skills?',
+        whyText:
+          'These skills have many job records in your region and fit what is in your Skill Passport. Tap one to see its demand and centers.',
         failed: 'Other qualifications in demand could not be loaded.',
         focus: (name: string) => `Look at ${name}`,
       },
       ai: 'AI summary',
       aiNote: 'Written by AI from the counts on this map.',
       numbers: 'Why',
-      recommended: 'Recommended',
+      recommended: 'Recommended centers',
+      recommendedWhy: 'Why these centers?',
+      recommendedWhyText:
+        'The closest training and assessment centers that offer this skill, from where you are. With Relocate on, centers in regions where it is needed more are added.',
       tag: 'Recommended',
       none: 'No center lists this qualification yet.',
       needPlace: 'Share your location or type a city to get a recommended center.',

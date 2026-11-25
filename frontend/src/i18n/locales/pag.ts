@@ -652,6 +652,20 @@ export const pag: Record<string, string> = {
   Balance: 'Balanse',
   Elsewhere: 'Ed arum a lugar',
   'Demand here': 'Demand dia',
+  'Demand in your area': 'Demand ed lugar yo',
+  'Employers here ask for this skill more than in most regions.':
+    'Mas anapen na saray employer dia so kabaelan ya ia nen say kaslakan a rehiyon.',
+  'There is steady demand for this skill here.':
+    'Tuloy-tuloy so pankaukolan ed kabaelan ya ia dia.',
+  'Few employers here ask for this skill yet. See where it is needed more.':
+    'Daiset ni ray employer dia ya mangaanap ed kabaelan ya ia. Nengnengen no iner so mas pankaukolan to.',
+  'Also in demand skills near you': 'Arum ni ya kaukolan a kabaelan ya asingger ed sika',
+  'Why these skills?': 'Akin et saray kabaelan ya ia?',
+  'These skills have many job records in your region and fit what is in your Skill Passport. Tap one to see its demand and centers.':
+    'Dakel so rekord na trabaho parad saraya ran kabaelan ed rehiyon yo, tan maong ira ed laman na Skill Passport mo. Pindoten so sakey pian nanengneng so demand tan saray sentro to.',
+  'Why these centers?': 'Akin et saray sentro ya ia?',
+  'The closest training and assessment centers that offer this skill, from where you are. With Relocate on, centers in regions where it is needed more are added.':
+    'Saray sankaasinggeran a training tan assessment center ya mangiiter ed kabaelan ya ia, manlapud kawalaan mo. No naka-on so Relocate, nidadagdag so saray sentro ed saray rehiyon ya mas mangaukolan ed satan.',
   'Skill Passport': 'Skill Passport',
   'High demand': 'Atagey a demand',
   'Moderate demand': 'Katamtaman a demand',

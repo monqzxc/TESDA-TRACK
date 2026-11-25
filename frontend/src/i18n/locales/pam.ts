@@ -1341,6 +1341,20 @@ export const pam: Record<string, string> = {
   Balance: 'Balanse',
   Elsewhere: 'King aliwang lugal',
   'Demand here': 'Demand keni',
+  'Demand in your area': 'Demand king lugar yu',
+  'Employers here ask for this skill more than in most regions.':
+    'Mas pakamalan da reng employer keni ing kayang ini kesa king karamwan a rehiyun.',
+  'There is steady demand for this skill here.':
+    'Tuloy-tuloy ing pamangailangan king kayang ini keni.',
+  'Few employers here ask for this skill yet. See where it is needed more.':
+    'Kakaunti pa la reng employer keni a mamanintun king kayang ini. Lawan me nung nokarin ya mas kailangan.',
+  'Also in demand skills near you': 'Aliwa pang pakakailangan a kayang malapit keka',
+  'Why these skills?': 'Bakit deni ring kayang?',
+  'These skills have many job records in your region and fit what is in your Skill Passport. Tap one to see its demand and centers.':
+    'Dakal ing rekord da reng obra para kareni ring kayang king rehiyun yu, at miyayabe la king laman ning Skill Passport mu. Pindutan me ing metung ban akit me ing demand at deng sentru na.',
+  'Why these centers?': 'Bakit deni ring sentru?',
+  'The closest training and assessment centers that offer this skill, from where you are. With Relocate on, centers in regions where it is needed more are added.':
+    'Deng pekamalapit a training at assessment center a mamye king kayang ini, manibat king ayan mu. Nung naka-on ing Relocate, mayayaliwang la reng sentru kareng rehiyun a mas mangailangan kaniti.',
   'Skill Passport': 'Skill Passport',
   'High demand': 'Matas a demand',
   'Moderate demand': 'Katamtamang demand',

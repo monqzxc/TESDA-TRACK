@@ -658,6 +658,20 @@ export const war: Record<string, string> = {
   Balance: 'Balanse',
   Elsewhere: 'Ha iba nga lugar',
   'Demand here': 'Demand dinhi',
+  'Demand in your area': 'Demand ha iyo lugar',
+  'Employers here ask for this skill more than in most regions.':
+    'Mas ginbibiling han mga employer dinhi ini nga abilidad kay ha kadam-an nga rehiyon.',
+  'There is steady demand for this skill here.':
+    'Padayon an panginahanglan hini nga abilidad dinhi.',
+  'Few employers here ask for this skill yet. See where it is needed more.':
+    'Gutiay pa an employer dinhi nga nangangita hini nga abilidad. Kitaa kun hain ini mas kinahanglan.',
+  'Also in demand skills near you': 'Iba pa nga ginkikinahanglan nga abilidad hirani ha imo',
+  'Why these skills?': 'Kay ano ini nga mga abilidad?',
+  'These skills have many job records in your region and fit what is in your Skill Passport. Tap one to see its demand and centers.':
+    'Damo an rekord han trabaho para hini nga mga abilidad ha iyo rehiyon, ngan angay hira ha sulod han imo Skill Passport. Pindota an usa basi makita an demand ngan mga sentro hini.',
+  'Why these centers?': 'Kay ano ini nga mga sentro?',
+  'The closest training and assessment centers that offer this skill, from where you are. With Relocate on, centers in regions where it is needed more are added.':
+    'An pinakahirani nga training ngan assessment center nga nagtatanyag hini nga abilidad, tikang ha imo kahimtangan. Kun naka-on an Relocate, gindudugang an mga sentro ha mga rehiyon nga mas nagkikinahanglan hini.',
   'Skill Passport': 'Skill Passport',
   'High demand': 'Hitaas nga demand',
   'Moderate demand': 'Tunga-tunga nga demand',
