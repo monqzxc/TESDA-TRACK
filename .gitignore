@@ -21,7 +21,25 @@ AGENTS.md
 .aider*
 .codex/
 .gemini/
+GEMINI.md
+**/GEMINI.md
 .continue/
+.agent/
+.kiro/
+.roo/
+.clinerules
+.junie/
+.opencode/
+.trae/
+.serena/
+.superpowers/
+.playwright-mcp/
+.mcp.json
+# Output of the design skills (ui-ux-pro-max --persist, tasteskill screenshots and checks).
+/design-system/
+**/design-system/MASTER.md
+shots/
+.zed/
 .vscode/
 .idea/
 # graphify knowledge graph (regenerated locally)
