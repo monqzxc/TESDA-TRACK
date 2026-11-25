@@ -138,6 +138,30 @@ describe('Explore center details', () => {
     expect(screen.queryByText('Strong match')).not.toBeInTheDocument()
   })
 
+  it('shows and dials a spreadsheet phone as a Philippine mobile number', async () => {
+    localStorage.setItem('track.explore.locationAsked', 'no')
+    server.use(
+      http.get('*/api/v1/training-providers', () =>
+        HttpResponse.json([{ ...cebuCenter, contact_phone: '9.606888727E9' }]),
+      ),
+    )
+    renderWithAuth(
+      <MemoryRouter initialEntries={['/explore']}>
+        <ExplorePage />
+      </MemoryRouter>,
+    )
+    await userEvent.setup().click(await screen.findByRole('button', { name: /Cebu Skills Center/ }))
+    const card = (await screen.findByRole('heading', { name: 'Cebu Skills Center' })).closest(
+      'article',
+    )!
+    expect(within(card).getByRole('link', { name: /Call/ })).toHaveAttribute(
+      'href',
+      'tel:09606888727',
+    )
+    expect(within(card).getByText('09606888727')).toBeInTheDocument()
+    expect(within(card).queryByText('9.606888727E9')).not.toBeInTheDocument()
+  })
+
   it('lists only verified-or-unreviewed current offerings, and the card agrees with the results', async () => {
     localStorage.setItem('track.explore.locationAsked', 'no')
     renderWithAuth(

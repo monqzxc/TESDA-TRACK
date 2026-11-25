@@ -27,6 +27,7 @@ import type { View } from './ExplorePage.tsx'
 import {
   anyScholarship,
   cardsFor,
+  countedCenters,
   estimateMinutes,
   firstKind,
   hasScholarship,
@@ -274,6 +275,7 @@ export function CenterFilters({
   province,
   scholarship,
   count,
+  rangeKm,
   canClear,
   onRegion,
   onProvince,
@@ -287,6 +289,8 @@ export function CenterFilters({
   /** Only training centers with an open scholarship. */
   scholarship: boolean
   count: number
+  /** The learner's range when there is a place, so the count is of the centers within it. */
+  rangeKm: number | null
   canClear: boolean
   onRegion: (code: string | null) => void
   onProvince: (name: string | null) => void
@@ -371,7 +375,7 @@ export function CenterFilters({
       </div>
       <div className="flex items-center justify-between gap-2 border-t border-rule pt-2">
         <p role="status" className="m-0 text-13 font-semibold text-ink tabular-nums">
-          {copy.shown(count)}
+          {rangeKm === null ? copy.shown(count) : copy.inRange(rangeKm, count)}
         </p>
         <Button
           className={button({ variant: 'tertiary', height: 38, text: 14 })}
@@ -1181,12 +1185,21 @@ function RankedRow({
       : reason === 'service'
         ? serverWhy || copy.reasons.inRange(rangeKm)
         : reason === 'unconfirmed'
-          ? copy.reasons.unconfirmed
+          ? copy.reasons.inRange(rangeKm)
           : reason === 'demand'
             ? copy.reasons.demand(center.region || center.regionCode || '')
             : reason === 'inRange' || reason === 'outside'
               ? copy.reasons[reason](rangeKm)
               : copy.reasons[reason]
+  const needsVerification = item.verificationWarnings !== undefined || reason === 'unconfirmed'
+  const verificationDetails = (
+    item.verificationWarnings ??
+    (reason === 'unconfirmed' ? item.why : []) ??
+    []
+  )
+    .slice(0, SERVER_REASONS_SHOWN)
+    .map(serverText)
+    .join(' · ')
   const trip = [
     ...(center.distanceKm !== null ? [copy.km(roundKm(center.distanceKm))] : []),
     ...(minutes !== null ? [copy.about(travelTime(minutes))] : []),
@@ -1226,7 +1239,22 @@ function RankedRow({
           {copy.kinds[center.kind]}
           {center.city ? ` · ${center.city}` : ''}
         </span>
-        <span className="mt-1 block text-13 leading-[1.4] font-semibold text-ink">{why}</span>
+        <span
+          data-testid="ranked-reason"
+          className="mt-1 block text-13 leading-[1.4] font-semibold text-ink"
+        >
+          {why}
+        </span>
+        {needsVerification && (
+          <span
+            data-testid="ranked-warning"
+            className="mt-1 block text-12 leading-[1.4] text-warn-ink"
+          >
+            <Icon name="info" className="mr-1 inline-block align-text-bottom" />
+            {copy.reasons.unconfirmed}
+            {verificationDetails ? ` · ${verificationDetails}` : ''}
+          </span>
+        )}
         <span className="mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-13 leading-[1.4] text-muted">
           {trip && <span data-testid="ranked-trip">{trip}</span>}
           {item.score !== undefined && (
@@ -1329,9 +1357,14 @@ export function ResultsPanel({
       ? ['assessment', 'training']
       : ['training', 'assessment']
   const shown = view === 'all' ? order : view === 'demand' ? [] : [view]
-  // A tab counts the centers it would pin (as "N centers shown" does), not the qualifications listed under it.
+  // A tab counts the centers it would pin (as the filter count does, so within range when there is a place), not
+  // the qualifications listed under it.
   const centerCount = (cards: readonly QualificationCard[]) =>
-    new Set(cards.flatMap((card) => card.centers.map((center) => center.id))).size
+    new Set(
+      cards.flatMap((card) =>
+        countedCenters(card.centers, Boolean(reference), rangeKm).map((center) => center.id),
+      ),
+    ).size
   const tabs: { view: View; label: string; icon: IconName; count?: number }[] = [
     { view: 'all', label: copy.tabs.all, icon: 'grid' },
     { view: 'assessment', label: copy.tabs.assess, icon: 'award', count: centerCount(assess) },
@@ -1541,18 +1574,21 @@ export function CenterCard({
       external: true,
     })
   const directions = cx(button({ variant: 'primary', height: 44 }), 'w-full')
-  // With real routes below, the straight-line estimate would disagree with them, so it only stands in for them.
+  // Keep the list's estimate visible; the route below explains its different method and rounded starting point.
   const routed = Boolean(routeFrom && point && config?.routing_enabled)
 
   return (
     <article className="flex flex-col gap-3">
       <Button
-        className={cx(button({ variant: 'tertiary', height: 36, snug: true }), 'group self-start')}
+        className={cx(
+          button({ variant: 'pill', height: 44, text: 14, snug: true }),
+          'group shadow-sm self-start motion-reduce:transition-none',
+        )}
         onPress={onBack}
       >
         <Icon
           name="arrowLeft"
-          className="transition-transform duration-200 group-data-hovered:-translate-x-0.5"
+          className="transition-transform duration-200 group-data-hovered:-translate-x-0.5 motion-reduce:transform-none motion-reduce:transition-none"
         />
         {copy.back}
       </Button>
@@ -1573,7 +1609,10 @@ export function CenterCard({
             <Icon name="pin" className="flex-none" />
             {placeLabel(center)}
           </p>
-          {!routed && <TripMeta center={center} className="text-white/90" withPlace={false} />}
+          <TripMeta center={center} className="text-white/90" withPlace={false} />
+          {center.distanceKm !== null && (
+            <p className="m-0 text-12 text-white/90">{en.training.routes.estimateLabel}</p>
+          )}
         </div>
 
         <div className="flex flex-col gap-3 p-4">
@@ -1650,27 +1689,33 @@ export function CenterCard({
                 <Icon name="route" />
                 {copy.travel}
               </p>
-              <RoutePanel from={routeFrom} to={point} />
+              <RoutePanel from={routeFrom} to={point} explainEstimate />
             </div>
           )}
 
-          {point &&
-            (canRoute && config?.routing_enabled ? (
-              <Button className={directions} onPress={routed ? onHideRoute : onRoute}>
-                <Icon name={routed ? 'close' : 'directions'} />
-                {routed ? copy.hideRoute : copy.route}
-              </Button>
-            ) : (
+          {point && (
+            <>
               <a
                 className={directions}
                 href={googleMapsDirections(point)}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
+                title={en.training.center.googleMapsHelp}
               >
                 <Icon name="directions" />
                 {copy.directions}
               </a>
-            ))}
+              {canRoute && config?.routing_enabled && (
+                <Button
+                  className={cx(button({ height: 44 }), 'w-full')}
+                  onPress={routed ? onHideRoute : onRoute}
+                >
+                  <Icon name={routed ? 'close' : 'route'} />
+                  {routed ? copy.hideRoute : copy.route}
+                </Button>
+              )}
+            </>
+          )}
 
           {readiness && openPathway && (
             <Button

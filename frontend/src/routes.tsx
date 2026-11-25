@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react'
 import type { RouteObject } from 'react-router'
+import { Navigate, useLocation } from 'react-router'
 import { AppLayout, HomeLayout, Root, WebviewLayout } from './components/Layout.tsx'
 import { RootError, RouteError } from './components/RouteError.tsx'
 import { useCopy } from './i18n/copy.ts'
@@ -29,6 +30,12 @@ function page(key: PageKey, load: () => Promise<PageModule>) {
 }
 
 const finder = () => import('./features/finder/FinderPage.tsx')
+
+/** The public previous-version finder is retired; old qualification/filter links continue in Career Map. */
+function LegacyTrainingRedirect() {
+  const { search, hash, state } = useLocation()
+  return <Navigate to={{ pathname: paths.explore, search, hash }} state={state} replace />
+}
 
 // A design check, at /dev/tokens, left out of production builds.
 const devRoutes: RouteObject[] = import.meta.env.DEV
@@ -142,7 +149,7 @@ export const routes: RouteObject[] = [
               },
               {
                 path: paths.training,
-                ...page('training', () => import('./features/training/TrainingPage.tsx')),
+                Component: LegacyTrainingRedirect,
               },
               {
                 path: paths.explore,

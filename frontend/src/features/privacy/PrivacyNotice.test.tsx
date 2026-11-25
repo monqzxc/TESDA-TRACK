@@ -24,6 +24,8 @@ describe('the privacy notice', () => {
     renderApp('/', undefined, { firstVisit: true })
 
     const notice = await findNotice()
+    expect(within(notice).getByText('Placeholder — pending legal approval.')).toBeInTheDocument()
+    expect(notice).toHaveTextContent('email and profile (skills, licenses and home area)')
     for (const point of en.privacy.notice.points) {
       expect(within(notice).getByText(point)).toBeInTheDocument()
     }
@@ -90,7 +92,7 @@ describe('the privacy notice', () => {
   })
 
   it('counts as unseen once the policy has changed', () => {
-    window.localStorage.setItem(PRIVACY_NOTICE_KEY, '2026-01-01')
+    window.localStorage.setItem(PRIVACY_NOTICE_KEY, '2026-11-17')
     expect(hasSeenPrivacyNotice()).toBe(false)
 
     markPrivacyNoticeSeen()
@@ -124,6 +126,8 @@ describe('the privacy policy', () => {
       await screen.findByRole('heading', { level: 1, name: 'Privacy policy' }),
     ).toBeInTheDocument()
     const summary = screen.getByRole('region', { name: en.privacy.summary })
+    expect(screen.getByText('Placeholder — pending legal approval.')).toBeInTheDocument()
+    expect(summary).toHaveTextContent('email and profile (skills, licenses and home area)')
     expect(within(summary).getAllByRole('listitem')).toHaveLength(en.privacy.notice.points.length)
 
     const contents = screen.getByRole('navigation', { name: en.privacy.contents })

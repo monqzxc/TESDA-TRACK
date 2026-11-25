@@ -669,7 +669,7 @@ export const ceb: Record<string, string> = {
   'High demand': 'Taas nga demand',
   'Moderate demand': 'Tunga-tunga nga demand',
   'Low demand': 'Ubos nga demand',
-  'No recorded demand': 'Walay natalang demand',
+  'Demand not available': 'Dili available ang demand',
   '{1} records in {0}': '{1} ka rekord sa {0}',
   '#{0} of {1} regions': '#{0} sa {1} ka rehiyon',
   'Needed more in': 'Mas gikinahanglan sa',
@@ -902,6 +902,7 @@ export const ceb: Record<string, string> = {
   'Filter centers': 'Salaa ang mga sentro',
   '1 center shown': '1 ka sentro ang gipakita',
   '{0} centers shown': '{0} ka sentro ang gipakita',
+  'Centers within {0} km: {1}': 'Mga sentro sulod sa {0} km: {1}',
   'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.':
     'Mga sample nga sentro para sa demo sa Disyembre 2. Dili kini opisyal nga lista sa TESDA: hinimo-himo ra ang mga ngalan, lugar ug iskedyul.',
   'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':
@@ -1041,4 +1042,10 @@ export const ceb: Record<string, string> = {
   'You’re already certified': 'Sertipikado ka na',
   'Short training first, then assessment': 'Mubo nga pagbansay una, dayon assessment',
   'Full training needed': 'Kinahanglan ang tibuok nga pagbansay',
+  'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.':
+    'Ang mga center gihan-ay sumala sa gibanabanang oras ug gilay-on sa biyahe. Ang bukas nga scholarship o taas nga demand sa rehiyon mahimong mopabor sa susamang biyahe. Ang imong lokasyon magpabilin sa imong device.',
+  'Placeholder — pending legal approval.': 'Placeholder — naghulat sa legal nga pag-apruba.',
+  'You can use TESDA Track without an account. Signing in uses your TSP (TESDA Skill Passport) email and profile (skills, licenses and home area) to personalize suggestions. We keep your name, email and saved progress until you delete your account.':
+    'Magamit nimo ang TESDA Track bisan walay account. Sa pag-sign in, gamiton ang imong TSP (TESDA Skill Passport) email ug profile (mga kahanas, lisensya ug lugar nga gipuy-an) aron ipahiangay ang mga sugyot. Tipigan namo ang imong ngalan, email ug na-save nga progreso hangtod imong papason ang account.',
+  'Last updated 24 November 2026': 'Kataposang gi-update 24 Nobyembre 2026',
 }

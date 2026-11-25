@@ -1345,7 +1345,7 @@ export const pam: Record<string, string> = {
   'High demand': 'Matas a demand',
   'Moderate demand': 'Katamtamang demand',
   'Low demand': 'Mababang demand',
-  'No recorded demand': 'Alang milista a demand',
+  'Demand not available': 'Ali available ing demand',
   '{1} records in {0}': '{1} a rekord king {0}',
   '#{0} of {1} regions': '#{0} king {1} a rehiyun',
   'Needed more in': 'Mas kailangan king',
@@ -1543,6 +1543,7 @@ export const pam: Record<string, string> = {
   'Filter centers': 'I-filter la reng sentro',
   '1 center shown': '1 a sentro ing pakit',
   '{0} centers shown': '{0} a sentro ing pakit',
+  'Centers within {0} km: {1}': 'Reng sentro king lub ning {0} km: {1}',
   'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.':
     'Sample a sentro para king demo king Disyembre 2. Ali iti opisyal a listaan ning TESDA: gewa-gewa mu la reng lagyu, lugal ampong iskedyul.',
   'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':
@@ -1681,4 +1682,10 @@ export const pam: Record<string, string> = {
   'You’re already certified': 'Sertipikadu ka na',
   'Short training first, then assessment': 'Maklat a pamagsanay pa, kaibat assessment',
   'Full training needed': 'Kailangan ing buring pamagsanay',
+  'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.':
+    'Makaayos la reng center king tantiyang oras at karayu ning biahe. Ing bukas a scholarship o matas a demand king rehiyon malyari yang mamabor king kaparung biahe. Manatili ya king kekang device ing kekang lokasyun.',
+  'Placeholder — pending legal approval.': 'Placeholder — manaya king legal a pamag-apruba.',
+  'You can use TESDA Track without an account. Signing in uses your TSP (TESDA Skill Passport) email and profile (skills, licenses and home area) to personalize suggestions. We keep your name, email and saved progress until you delete your account.':
+    'Malyari meng gamitan ing TESDA Track maski ala kang account. King pag-sign in, gagamitan ing kekang TSP (TESDA Skill Passport) email at profile (kasanayan, lisensya at lugar a panuknangan) para iangkop la reng mungkahi. Itatabi mi ing kekang lagyu, email at na-save a progreso angga king buran me ing kekang account.',
+  'Last updated 24 November 2026': 'Tauling na-update 24 Nobyembre 2026',
 }

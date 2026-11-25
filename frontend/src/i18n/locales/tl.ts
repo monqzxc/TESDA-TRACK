@@ -582,6 +582,10 @@ export const tl: Record<string, string> = {
   'Turn-by-turn directions in Google Maps': 'Mga direksyon sa bawat liko sa Google Maps',
   'Finding routes…': 'Naghahanap ng mga ruta…',
   'Travel mode': 'Paraan ng paglalakbay',
+  'Straight-line distance · estimated time by car':
+    'Distansya sa tuwid na linya · tinatayang oras sakay ng kotse',
+  'Road route, without traffic. Its starting point is rounded to about 1 km for privacy, so distance and time may differ from the straight-line estimate in the list and map popup.':
+    'Ruta sa kalsada, walang trapiko. Tinatayang nasa 1 km ang panimulang lokasyon para sa privacy, kaya maaaring iba ang distansya at oras sa pagtataya gamit ang tuwid na linya sa listahan at popup ng mapa.',
   'by car': 'sakay ng kotse',
   'by bike': 'sakay ng bisikleta',
   'on foot': 'naglalakad',
@@ -1665,6 +1669,7 @@ export const tl: Record<string, string> = {
   'Filter centers': 'I-filter ang mga sentro',
   '1 center shown': '1 sentrong ipinapakita',
   '{0} centers shown': '{0} sentrong ipinapakita',
+  'Centers within {0} km: {1}': 'Mga sentro sa loob ng {0} km: {1}',
   // US-0017 AC8: sample centers for the December 2 demo.
   'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.':
     'Mga halimbawang sentro para sa demo sa Disyembre 2. Hindi ito opisyal na listahan ng TESDA: gawa-gawa lamang ang mga pangalan, lugar at iskedyul.',
@@ -1839,7 +1844,7 @@ export const tl: Record<string, string> = {
   'High demand': 'Mataas na demand',
   'Moderate demand': 'Katamtamang demand',
   'Low demand': 'Mababang demand',
-  'No recorded demand': 'Walang naitalang demand',
+  'Demand not available': 'Hindi available ang demand',
   '{1} records in {0}': '{1} tala sa {0}',
   '#{0} of {1} regions': '#{0} sa {1} rehiyon',
   'Needed more in': 'Mas kailangan sa',
@@ -2130,4 +2135,10 @@ export const tl: Record<string, string> = {
   'You’re already certified': 'May sertipiko ka na',
   'Short training first, then assessment': 'Maikling pagsasanay muna, saka assessment',
   'Full training needed': 'Kailangan ng buong pagsasanay',
+  'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.':
+    'Inuuna ang mga center ayon sa tinatayang oras at layo ng biyahe. Maaaring umangat ang center na may bukas na scholarship o mataas na demand sa rehiyon kung magkahawig ang biyahe. Nananatili sa iyong device ang lokasyon mo.',
+  'Placeholder — pending legal approval.': 'Placeholder — naghihintay ng legal na pag-apruba.',
+  'You can use TESDA Track without an account. Signing in uses your TSP (TESDA Skill Passport) email and profile (skills, licenses and home area) to personalize suggestions. We keep your name, email and saved progress until you delete your account.':
+    'Maaari mong gamitin ang TESDA Track nang walang account. Sa pag-sign in, ginagamit ang iyong TSP (TESDA Skill Passport) email at profile (mga kasanayan, lisensya at lugar ng tirahan) upang iangkop ang mga mungkahi. Itinatago namin ang iyong pangalan, email at naka-save na progreso hanggang burahin mo ang iyong account.',
+  'Last updated 24 November 2026': 'Huling na-update noong 24 Nobyembre 2026',
 }

@@ -1063,6 +1063,9 @@ export const en = {
       modeNames: { car: 'car', bike: 'bike', foot: 'walking' },
       road: (km: string, time: string, mode: string) => `${km} · about ${time} ${mode}`,
       fromYou: 'From your approximate location, without traffic.',
+      estimateLabel: 'Straight-line distance · estimated time by car',
+      estimateComparison:
+        'Road route, without traffic. Its starting point is rounded to about 1 km for privacy, so distance and time may differ from the straight-line estimate in the list and map popup.',
       flight: (from: string, to: string, time: string) =>
         `${from} to ${to} · about ${time} in the air`,
       flightNote: (between: string, toAirport: string, fromAirport: string) =>
@@ -1886,13 +1889,14 @@ export const en = {
   // change them together. A changed policy gets a new PRIVACY_NOTICE_VERSION in features/privacy/notice.ts.
   privacy: {
     link: 'Privacy policy',
+    placeholder: 'Placeholder — pending legal approval.',
     notice: {
       title: 'Your privacy on TESDA Track',
       lead: 'TESDA Track is a pilot, and it collects some data to work. In short:',
       // Also the policy's summary.
       points: [
         'Find my pathway sends your goal and answers to our server to find your matches. Without an account they stay in this browser tab, and our server keeps only a coded fingerprint of your goal and daily counts. Your goal’s words are kept only if you tick a box to share them.',
-        'You don’t need an account to use TESDA Track. To sign in, you use your TSP (TESDA Skill Passport) account, and we keep your name, email and progress (goals, readiness checks, certifications and applications) until you delete it.',
+        'You can use TESDA Track without an account. Signing in uses your TSP (TESDA Skill Passport) email and profile (skills, licenses and home area) to personalize suggestions. We keep your name, email and saved progress until you delete your account.',
         'Your location is used only if you allow it, rounded to about 1 km, to find centers near you.',
         'We never sell your data or use it for advertising. You can download it or delete your account at any time.',
       ],
@@ -1900,7 +1904,7 @@ export const en = {
       accept: 'I understand',
       close: 'Close the privacy notice',
     },
-    updated: 'Last updated 17 November 2026',
+    updated: 'Last updated 24 November 2026',
     summary: 'In short',
     contents: 'On this page',
     sections: [
@@ -2309,6 +2313,8 @@ export const en = {
       scholarshipHelp:
         'Applies to training centers. A scholarship listed isn’t a guaranteed award.',
       shown: (n: number) => (n === 1 ? '1 center shown' : `${n} centers shown`),
+      // With a place: the map keeps farther centers for context, so this says what the number counts.
+      inRange: (km: number, n: number) => `Centers within ${km} km: ${n}`,
       clearAll: 'Clear all',
     },
     search: {
@@ -2543,9 +2549,9 @@ export const en = {
         fee: 'Lower fee than others nearby',
       },
       score: (score: number) => `Score ${score}/100`,
-      how: 'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee. Your location stays on your device.',
+      how: 'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.',
       howSignedIn:
-        'Training centers rank by one score: how close they are, a verified assessment nearby, how soon classes start, and job demand in their region. Assessment centers rank by distance first, then by open seats, verification, job demand and fee, and come first when your TSP profile shows you may be ready. Your location stays on your device.',
+        'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.',
       sample: 'Sample data',
       sampleNote:
         'Travel times are estimated from straight-line distance for the December 2 demo, not measured routes.',
@@ -2756,7 +2762,7 @@ export const en = {
           high: 'High demand',
           moderate: 'Moderate demand',
           low: 'Low demand',
-          none: 'No recorded demand',
+          none: 'Demand not available',
         },
         here: (region: string, postings: number) =>
           `${postings.toLocaleString()} record${postings === 1 ? '' : 's'} in ${region}`,

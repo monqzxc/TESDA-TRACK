@@ -656,7 +656,7 @@ export const pag: Record<string, string> = {
   'High demand': 'Atagey a demand',
   'Moderate demand': 'Katamtaman a demand',
   'Low demand': 'Melag a demand',
-  'No recorded demand': 'Anggapoy nilistan demand',
+  'Demand not available': 'Ag-available so demand',
   '{1} records in {0}': '{1} a rekord ed {0}',
   '#{0} of {1} regions': '#{0} ed {1} a rehiyon',
   'Needed more in': 'Mas kaukolan ed',
@@ -889,6 +889,7 @@ export const pag: Record<string, string> = {
   'Filter centers': 'I-filter iray sentro',
   '1 center shown': '1 a sentro so ipapanengneng',
   '{0} centers shown': '{0} a sentro so ipapanengneng',
+  'Centers within {0} km: {1}': 'Saray sentro ed loob na {0} km: {1}',
   'Sample centers for the December 2 demo. These are not an official TESDA list: names, places and schedules are made up.':
     'Saray sample a sentro para ed demo ed Disyembre 2. Aliwan opisyal a listaan na TESDA: ginawa-gawa labat iray ngaran, lugar tan iskedyul.',
   'Sample data for demonstration, not an official TESDA record. Confirm real services with TESDA.':
@@ -1025,4 +1026,10 @@ export const pag: Record<string, string> = {
   'You’re already certified': 'Sertipikado ka la',
   'Short training first, then assessment': 'Melag ya panagsanay ni, insan assessment',
   'Full training needed': 'Nakaukolan so kompleton panagsanay',
+  'Centers rank by estimated travel time and distance. An open scholarship or high regional demand can favor a similar trip. Your location stays on your device.':
+    'Nakaayos iray center ed tantyan oras tan kaarawi na biahe. Say bukas ya scholarship odino mataas ya demand ed rehiyon et nayarin mamapabor ed singano ya biahe. Say lokasyon mo et mansiansia ed device mo.',
+  'Placeholder — pending legal approval.': 'Placeholder — manaalagar na legal ya pag-apruba.',
+  'You can use TESDA Track without an account. Signing in uses your TSP (TESDA Skill Passport) email and profile (skills, licenses and home area) to personalize suggestions. We keep your name, email and saved progress until you delete your account.':
+    'Nayari mon usaren so TESDA Track anggapo account. No man-sign in ka, usaren so TSP (TESDA Skill Passport) email tan profile mo (kakayahan, lisensya tan lugar ya ayaman) pian ibagay iray suhestyon. Itatago mi so ngaran mo, email tan na-save ya progreso anggad buraken mo so account mo.',
+  'Last updated 24 November 2026': 'Kaunoran ya na-update 24 Nobyembre 2026',
 }

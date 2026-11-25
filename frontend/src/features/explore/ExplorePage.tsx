@@ -35,7 +35,7 @@ import type { DemandMapArea } from '../training/CenterMapTypes.ts'
 import { AroundYouCard, useAroundYouOpen } from './AroundYouCard.tsx'
 import { planAroundYou, shortRegion } from './aroundYou.ts'
 import type { ElsewhereProvince } from './demandApi.ts'
-import { NEAR_KM, nearestRegion, offers } from './explore.ts'
+import { countedCenters, NEAR_KM, nearestRegion, offers } from './explore.ts'
 import { LocationPrompt } from './LocationPrompt.tsx'
 import { OutlookBrief } from './OutlookBrief.tsx'
 import { QualificationChips } from './QualificationChips.tsx'
@@ -54,6 +54,11 @@ const CenterMap = lazy(() => import('../training/CenterMap.tsx'))
 
 /** What the panel and the map show: everything, one kind of center, or where the skills are in demand. */
 export type View = 'all' | 'assessment' | 'training' | 'demand'
+type ExploreNavigationState = {
+  focusSearch?: boolean
+  runSearch?: boolean
+  exploreCenter?: { id: string; code: string | null }
+}
 const VIEWS: readonly View[] = ['all', 'assessment', 'training', 'demand']
 
 const mapStandIn = 'm-0 grid h-full place-items-center bg-map-water text-15 text-muted'
@@ -178,6 +183,9 @@ export default function ExplorePage() {
   const en = useCopy()
   const copy = en.explore
   const [params, setParams] = useSearchParams()
+  const location = useLocation()
+  const navigate = useNavigate()
+  const arrival = location.state as ExploreNavigationState | null
   const typed = params.get('type') as View | null
   const view: View = typed && VIEWS.includes(typed) ? typed : 'all'
   // Region and province filters (QA: US-0014 AC3), in the address like the type.
@@ -270,9 +278,10 @@ export default function ExplorePage() {
     )
   }, [linked, catalog.data, params, setParams, en, copy])
 
-  const [selectedId, setSelectedId] = useState<string | null>(null)
+  // Opening a detail adds one router history entry. Back/Forward restore the panel without leaving the map.
+  const selectedId = arrival?.exploreCenter?.id ?? null
   // The qualification whose card a center was opened from: its readiness check is the one the center card offers.
-  const [selectedCode, setSelectedCode] = useState<string | null>(null)
+  const selectedCode = arrival?.exploreCenter?.code ?? null
   // Which way the panel last moved: a center slides in from the right, and the list comes back from the left.
   const [motion, setMotion] = useState<'forward' | 'back' | null>(null)
   const scroller = useRef<HTMLDivElement>(null)
@@ -291,7 +300,6 @@ export default function ExplorePage() {
   const bodyId = useId()
   const input = useRef<HTMLInputElement>(null)
   // Arriving from the home page's Find my path, the search box takes focus, ready to type in.
-  const arrival = useLocation().state as { focusSearch?: boolean; runSearch?: boolean } | null
   const focusSearch = Boolean(arrival?.focusSearch)
   // Arriving from the home page's goal box, the goal already in the box is searched straight away.
   const runSearch = Boolean(arrival?.runSearch)
@@ -399,8 +407,12 @@ export default function ExplorePage() {
   ) => {
     // Leaving the list, keep its place to come back to.
     if (!selectedId) listScroll.current = scroller.current?.scrollTop ?? 0
-    setSelectedId(id)
-    setSelectedCode(code)
+    navigate(`${location.pathname}${location.search}${location.hash}`, {
+      state: { ...arrival, exploreCenter: { id, code } },
+      // Switching centers keeps one detail entry, so Back returns directly to the results.
+      replace: Boolean(selectedId),
+      preventScrollReset: true,
+    })
     // Opening a center draws the way there straight away, when the page can draw routes from somewhere.
     store().showRoute(canRoute ? id : null)
     setMotion('forward')
@@ -410,7 +422,7 @@ export default function ExplorePage() {
   }
   const back = () => {
     store().showRoute(null)
-    setSelectedId(null)
+    navigate(-1)
     setMotion('back')
   }
   // A province picked in the "Around you" card: the demand view goes to its point, with its region selected.
@@ -422,7 +434,6 @@ export default function ExplorePage() {
   const changeView = (next: View) => {
     if (next !== 'demand') setDemandFocus(null)
     setView(next)
-    setSelectedId(null)
     setCollapsed(false)
   }
   // A center's card starts at its top; the list comes back where the learner left it.
@@ -430,7 +441,7 @@ export default function ExplorePage() {
     const body = scroller.current
     if (!body) return
     if (selectedId) body.scrollTop = 0
-    else if (motion === 'back') body.scrollTop = listScroll.current
+    else body.scrollTop = listScroll.current
   }, [selectedId, motion])
 
   // The "Around you" card (section 3 of markdowns/explore-map-first-visit-updates.md): over the map's top right from
@@ -495,7 +506,6 @@ export default function ExplorePage() {
         ],
       },
     })
-    setSelectedId(null)
     setMotion(null)
     setView('all')
     setCollapsed(false)
@@ -639,7 +649,6 @@ export default function ExplorePage() {
         view={view}
         onView={(next) => {
           setView(next)
-          setSelectedId(null)
         }}
         onSelect={(id, code) => select(id, { onMap: true, code })}
         className={cx(
@@ -692,7 +701,6 @@ export default function ExplorePage() {
             account={!tabletUp && <MapAccount placement="bar" />}
             onOpen={() => setCollapsed(false)}
             onSearched={() => {
-              setSelectedId(null)
               setMotion(null)
               setView('all')
               setCollapsed(false)
@@ -796,7 +804,8 @@ export default function ExplorePage() {
                   region={regionFilter}
                   province={provinceFilter}
                   scholarship={scholarshipFilter}
-                  count={pins.length}
+                  count={countedCenters(pins, Boolean(reference), explore.rangeKm).length}
+                  rangeKm={reference ? explore.rangeKm : null}
                   canClear={Boolean(
                     view !== 'all' ||
                     regionFilter ||

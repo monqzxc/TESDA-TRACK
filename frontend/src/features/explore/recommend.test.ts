@@ -7,6 +7,7 @@ import {
   assessmentBand,
   assessmentScore,
   highDemandRegions,
+  rankCombinedCenters,
   rankCenters,
   recommend,
   recommendedIds,
@@ -211,6 +212,113 @@ describe('rankCenters (recommended centers with reasons)', () => {
       code: CODE,
     })
     expect(result.training?.center.id).toBe('training-funded')
+  })
+})
+
+describe('combined recommended centers (QA-2026-11-23-Q)', () => {
+  const training = (id: string, km: number, funded = false) => ({
+    ...center(`training-${id}`, 'NCR', km),
+    programs: [{ id: 1, qualification: { code: CODE }, scholarship_open: funded } as Program],
+  })
+  const ids = (supply: Center[], extra = {}) =>
+    rankCombinedCenters({ supply, code: CODE, ...extra }).map((item) => item.center.id)
+
+  it('keeps a nearest recommendation reason separate from an unconfirmed service warning', () => {
+    const warnings = ['Provider authority requires verification.']
+    const [top] = rankCombinedCenters({
+      supply: [training('unconfirmed', 0.7), center('assessment-far', 'NCR', 2)],
+      code: CODE,
+      scores: { weights: {}, byProgram: new Map(), unconfirmed: new Map([[1, warnings]]) },
+    })
+    expect(top).toMatchObject({
+      center: { id: 'training-unconfirmed' },
+      reason: 'nearest',
+      verificationWarnings: warnings,
+    })
+  })
+
+  it('preserves the warning when an open scholarship is the reason a center moves up', () => {
+    const [top] = rankCombinedCenters({
+      supply: [training('funded', 11.5, true), center('assessment-near', 'NCR', 10)],
+      code: CODE,
+      scores: {
+        weights: {},
+        byProgram: new Map(),
+        unconfirmed: new Map([[1, ['Confirm service details.']]]),
+      },
+    })
+    expect(top).toMatchObject({
+      center: { id: 'training-funded' },
+      reason: 'scholarship',
+      verificationWarnings: ['Confirm service details.'],
+    })
+  })
+
+  it('orders QA’s mixed training and assessment example by trip, not by type', () => {
+    expect(
+      ids([
+        training('udm', 0.7),
+        center('assessment-hospitality', 'NCR', 0.1),
+        training('seatech', 2.5),
+        center('assessment-interface', 'NCR', 0.5),
+        training('makati', 3),
+      ]),
+    ).toEqual([
+      'assessment-hospitality',
+      'assessment-interface',
+      'training-udm',
+      'training-seatech',
+      'training-makati',
+    ])
+  })
+
+  it('retains readiness tags without putting a farther assessment first', () => {
+    const ranked = rankCombinedCenters({
+      supply: [training('near', 1), center('assessment-far', 'NCR', 20)],
+      code: CODE,
+      ready: true,
+    })
+    expect(ranked.map((item) => item.center.id)).toEqual(['training-near', 'assessment-far'])
+    expect(ranked[1].ready).toBe(true)
+  })
+
+  it('lets a scholarship favor a similar trip across types, but not a much longer one', () => {
+    expect(ids([center('assessment-near', 'NCR', 10), training('funded', 11.5, true)])).toEqual([
+      'training-funded',
+      'assessment-near',
+    ])
+    expect(ids([center('assessment-near', 'NCR', 1), training('funded', 20, true)])).toEqual([
+      'assessment-near',
+      'training-funded',
+    ])
+  })
+
+  it('lets supported demand favor a similar trip and disables boosts outside the range', () => {
+    const wanted = { ...training('wanted', 10.8), regionCode: 'IV-A' }
+    expect(
+      ids([center('assessment-near', 'NCR', 10), wanted], { demandRegions: new Set(['IV-A']) }),
+    ).toEqual(['training-wanted', 'assessment-near'])
+    expect(ids([training('near', 30), training('funded', 32, true)], { rangeKm: 10 })).toEqual([
+      'training-near',
+      'training-funded',
+    ])
+  })
+
+  it('keeps excluded programs out even when they are the nearest', () => {
+    expect(
+      ids([training('excluded', 0.1), center('assessment-ok', 'NCR', 2)], {
+        scores: { weights: {}, byProgram: new Map(), unconfirmed: new Map() },
+      }),
+    ).toEqual(['assessment-ok'])
+  })
+
+  it('selects the nearest candidates before applying the visible list limit', () => {
+    expect(
+      ids(
+        Array.from({ length: 7 }, (_, i) => training(String(i), 7 - i)),
+        { limit: 2 },
+      ),
+    ).toEqual(['training-6', 'training-5'])
   })
 })
 

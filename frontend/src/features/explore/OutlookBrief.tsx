@@ -19,7 +19,7 @@ import { button } from '../../styles/buttons.ts'
 import { CenterSuggestionFeedback } from '../suggestion-feedback/CenterSuggestionFeedback.tsx'
 import type { View } from './ExplorePage.tsx'
 import { travelTime } from '../training/format.ts'
-import { estimateMinutes, findJobsUrl, roundKm } from './explore.ts'
+import { estimateMinutes, findJobsUrl, NEAR_KM, roundKm } from './explore.ts'
 import type { Balance } from './outlookApi.ts'
 import type { Recommendation } from './recommend.ts'
 import { useDemandStore, useExploreStore, type Explore } from './useExplore.ts'
@@ -600,7 +600,16 @@ function LocalDemand({
   const copy = useCopy().explore.outlook.local
   const data = explore.outlook.data
   if (!data) return null
-  const higher = data.higher_demand ?? []
+  const allHigher = data.higher_demand ?? []
+  // Respect the current choice immediately, even while an earlier relocation response remains cached.
+  const higher = allHigher.filter(
+    (area) =>
+      explore.relocate ||
+      (explore.rangeKm > NEAR_KM &&
+        area.distance_km !== null &&
+        Number.isFinite(area.distance_km) &&
+        area.distance_km <= explore.rangeKm),
+  )
   const home = data.home_demand
   const header = (
     <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5">
@@ -621,6 +630,9 @@ function LocalDemand({
     return (
       <div role="group" aria-label={copy.heading} className="flex min-w-0 flex-col gap-1.5">
         {header}
+        {!data.demand_available && (
+          <span className={cx(tag, 'self-start', levelTone.none)}>{copy.levels.none}</span>
+        )}
         <p className={cx(note, 'flex items-start gap-1.5')} role="status">
           <Icon name="info" className="mt-[3px] flex-none" />
           {data.demand_available ? copy.noArea : copy.noData}
@@ -645,13 +657,19 @@ function LocalDemand({
       {header}
       <p className="m-0 flex flex-wrap items-center gap-x-2 gap-y-1 text-13 leading-[1.5] text-ink">
         <span className={cx(tag, levelTone[home.level])}>{copy.levels[home.level]}</span>
-        <span>
-          {copy.here(home.name, home.posting_count)}
-          {home.rank ? (
-            <span className="text-muted"> · {copy.rank(home.rank, home.ranked_of)}</span>
-          ) : null}
-        </span>
+        {/* US-0018 AC5: no data is not a count of zero, so an area without records shows no figure to read as low. */}
+        {home.level === 'none' ? (
+          <span>{home.name}</span>
+        ) : (
+          <span>
+            {copy.here(home.name, home.posting_count)}
+            {home.rank ? (
+              <span className="text-muted"> · {copy.rank(home.rank, home.ranked_of)}</span>
+            ) : null}
+          </span>
+        )}
       </p>
+      {home.level === 'none' && <p className={note}>{copy.noData}</p>}
       {groups.length ? (
         <div className="flex flex-col gap-1">
           <p className="m-0 flex items-center gap-1.5 text-12 font-bold text-navy">
@@ -696,7 +714,7 @@ function LocalDemand({
             </div>
           ))}
         </div>
-      ) : (
+      ) : home.level === 'none' || allHigher.length > 0 ? null : (
         <p className={cx(note, 'flex items-center gap-1.5')}>
           <Icon name="check" className="flex-none text-good-ink" />
           {copy.top}

@@ -62,6 +62,7 @@ const area = (region: (typeof regions)[number], extra: object) => ({
 const asked: URL[] = []
 let aiSummary = false
 let demandAvailable = true
+let noRecordsAtHome = false
 let demandIsSample = false
 
 const outlook = (url: URL) => {
@@ -119,9 +120,9 @@ const outlook = (url: URL) => {
         ? {
             region_code: 'NCR',
             name: 'Metro Manila',
-            posting_count: 2,
-            level: 'low',
-            rank: 2,
+            posting_count: noRecordsAtHome ? 0 : 2,
+            level: noRecordsAtHome ? 'none' : 'low',
+            rank: noRecordsAtHome ? null : 2,
             ranked_of: 2,
             limited: true,
           }
@@ -162,6 +163,7 @@ beforeEach(() => {
   asked.length = 0
   aiSummary = false
   demandAvailable = true
+  noRecordsAtHome = false
   demandIsSample = false
   useDemandStore.setState({
     region: undefined,
@@ -172,6 +174,7 @@ beforeEach(() => {
   })
   useExploreStore.setState({
     draft: 'housekeeping',
+    rangeKm: 25,
     relocate: false,
     search: {
       query: 'housekeeping',
@@ -305,9 +308,8 @@ describe('the supply and demand brief', () => {
     expect(rows[0]).toHaveTextContent('Recommended')
     expect(rows[0]).toHaveTextContent('The shortest trip from you')
     expect(rows[1]).not.toHaveTextContent('Recommended')
-    // An assessment center says its distance band and distance, and that it has no open schedule.
-    expect(rows[1]).toHaveTextContent(/(Very near|Near) · \d+(\.\d)? km · /)
-    expect(rows[1]).toHaveTextContent(/no open schedule/i)
+    // In the combined list the reason describes travel order; schedule details remain on the center.
+    expect(rows[1]).toHaveTextContent(/Within your \d+ km range/)
     expect(within(rows[0]).getByTestId('ranked-trip')).toHaveTextContent(
       /^\d+(\.\d)? km · about \d+ min$/,
     )
@@ -323,6 +325,24 @@ describe('the supply and demand brief', () => {
     await waitFor(() =>
       expect(screen.getByTestId('map')).toHaveAttribute('data-selected', 'assessment-7'),
     )
+  })
+
+  it('recommends a nearer assessment before training in the combined list', async () => {
+    server.use(
+      http.get('*/api/v1/assessment-centers', () =>
+        HttpResponse.json([{ ...centers[0], latitude: 14.6009, longitude: 121 }]),
+      ),
+    )
+    open()
+    const list = await screen.findByTestId('ranked-centers')
+    await waitFor(() => {
+      const rows = within(list).getAllByTestId('ranked-center')
+      expect(rows[0]).toHaveTextContent('Manila Assessment Center')
+      expect(rows[0]).toHaveTextContent('Recommended')
+      expect(rows[0]).toHaveTextContent('The shortest trip from you')
+      expect(rows[1]).toHaveTextContent('Manila Hotel School')
+      expect(rows[1]).not.toHaveTextContent('Recommended')
+    })
   })
 
   it('looks further for a learner open to relocating', async () => {
@@ -414,6 +434,37 @@ describe('the supply and demand brief', () => {
 })
 
 describe('Demand where you are (Card 3)', () => {
+  it.each([5, 10, 25])('keeps other regions hidden at %s km with Relocate off', async (rangeKm) => {
+    useExploreStore.setState({ rangeKm, relocate: false })
+    const local = await brief('Low demand')
+    expect(within(local).queryByText('Needed more in')).not.toBeInTheDocument()
+    expect(
+      within(local).queryByRole('button', { name: 'Show Central Visayas on the map' }),
+    ).not.toBeInTheDocument()
+    expect(local).not.toHaveTextContent('Your region leads for this one.')
+    expect(local).toHaveTextContent('2 records in Metro Manila')
+  })
+
+  it('hides cached distant areas immediately when Relocate is turned off', async () => {
+    useExploreStore.setState({ rangeKm: 25, relocate: true })
+    const local = await brief('Low demand')
+    expect(
+      await within(local).findByRole('button', { name: 'Show Central Visayas on the map' }),
+    ).toBeVisible()
+    fireEvent.click(screen.getByRole('switch', { name: 'Relocate' }))
+    expect(
+      within(local).queryByRole('button', { name: 'Show Central Visayas on the map' }),
+    ).not.toBeInTheDocument()
+  })
+
+  it('does not show a 571 km alternative when farther means 100 km', async () => {
+    useExploreStore.setState({ rangeKm: 100, relocate: false })
+    const local = await brief('Low demand')
+    expect(
+      within(local).queryByRole('button', { name: 'Show Central Visayas on the map' }),
+    ).not.toBeInTheDocument()
+  })
+
   // The first answer can come before the regions, without an area: wait for the one about the learner's area.
   const brief = async (settled: string | RegExp) => {
     renderWithAuth(
@@ -426,6 +477,7 @@ describe('Demand where you are (Card 3)', () => {
   }
 
   it('gives the level where the learner is and where the qualification is needed more', async () => {
+    useExploreStore.getState().setRelocate(true)
     const local = await brief('Low demand')
     expect(within(local).getByText(/Your location/)).toBeInTheDocument()
     expect(local).toHaveTextContent(/2 records in Metro Manila · #2 of 2 regions/)
@@ -488,6 +540,7 @@ describe('Demand where you are (Card 3)', () => {
 
   it('counts modelled demand as records, with no sample label (US-0018)', async () => {
     demandIsSample = true
+    useExploreStore.getState().setRelocate(true)
     const local = await brief('Low demand')
     // The demand is shown as records. (The ranked list beside the map labels its estimated travel times as sample
     // data, which is about trips, not demand.)
@@ -503,8 +556,18 @@ describe('Demand where you are (Card 3)', () => {
   it('says plainly when there is no demand data for the qualification', async () => {
     demandAvailable = false
     const local = await brief(/No posting records yet/)
+    expect(within(local).getByText('Demand not available')).toBeInTheDocument()
     expect(within(local).getByRole('status')).toHaveTextContent(/not low demand/)
     expect(within(local).queryByText(/ demand$/)).not.toBeInTheDocument()
+  })
+
+  // QA-2026-11-23-W (US-0018 AC5): the Product Owner's exact wording, and no "0 records" to read as low demand.
+  it('says "Demand not available" for an area with no records, without a count', async () => {
+    noRecordsAtHome = true
+    const local = await brief('Demand not available')
+    expect(local).toHaveTextContent('Metro Manila')
+    expect(local).toHaveTextContent(/not low demand/)
+    expect(local).not.toHaveTextContent(/No recorded demand|0 records in/)
   })
 })
 

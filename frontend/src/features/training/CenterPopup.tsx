@@ -25,10 +25,10 @@ export function CenterPopup({
   onRoute,
   onToggleSaved,
   onCopied,
-}: Pick<
-  CenterMapProps,
-  'canRoute' | 'saved' | 'today' | 'onRoute' | 'onToggleSaved'
-> & { center: Center; onCopied: (status: string) => void }) {
+}: Pick<CenterMapProps, 'canRoute' | 'saved' | 'today' | 'onRoute' | 'onToggleSaved'> & {
+  center: Center
+  onCopied: (status: string) => void
+}) {
   const en = useCopy()
   const copy = en.training.map
 
@@ -98,25 +98,17 @@ export function CenterPopup({
         </p>
       )}
       <div className="col-span-full flex items-center gap-2.5 pt-0.5">
-        {/* The center's details are already in the panel beside the map, so the popup's main button routes there:
-            on the map when routing is available, otherwise in Google Maps. */}
-        {canRoute ? (
-          <button type="button" className={routeButton} onClick={() => onRoute(center.id)}>
-            <Icon name="directions" size={18} />
-            {en.training.center.getRoute}
-          </button>
-        ) : (
-          <a
-            className={cx(routeButton, 'no-underline')}
-            href={googleMapsDirections(point)}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={en.training.center.googleMapsHelp}
-          >
-            <Icon name="directions" size={18} />
-            {en.training.center.getRoute}
-          </a>
-        )}
+        {/* Navigation hand-off stays available even when the map can draw its own route. */}
+        <a
+          className={cx(routeButton, 'text-white! no-underline')}
+          href={googleMapsDirections(point)}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={en.training.center.googleMapsHelp}
+        >
+          <Icon name="directions" size={18} />
+          {en.training.center.directions}
+        </a>
         <button
           type="button"
           className={iconButton(isSaved)}
@@ -137,6 +129,16 @@ export function CenterPopup({
           <Icon name="link" size={18} />
         </button>
       </div>
+      {canRoute && (
+        <button
+          type="button"
+          className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-10 border border-border bg-surface px-3 text-13 font-semibold text-blue hovered:bg-soft"
+          onClick={() => onRoute(center.id)}
+        >
+          <Icon name="route" size={18} />
+          {en.explore.card.route}
+        </button>
+      )}
     </div>
   )
 }
