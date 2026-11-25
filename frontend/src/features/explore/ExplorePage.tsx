@@ -35,7 +35,7 @@ import type { DemandMapArea } from '../training/CenterMapTypes.ts'
 import { AroundYouCard, useAroundYouOpen } from './AroundYouCard.tsx'
 import { planAroundYou, shortRegion } from './aroundYou.ts'
 import type { ElsewhereProvince } from './demandApi.ts'
-import { countedCenters, nearestRegion, offers, REACH_KM } from './explore.ts'
+import { countedCenters, inRangeOr, nearestRegion, offers, REACH_KM } from './explore.ts'
 import { LocationPrompt } from './LocationPrompt.tsx'
 import { MapFilters } from './MapFilters.tsx'
 import { OutlookAnalysis, OutlookBrief } from './OutlookBrief.tsx'
@@ -357,12 +357,18 @@ export default function ExplorePage() {
     : centers
   // The demand view pins where the qualification in focus is offered, over the regions where it is in demand;
   // without one it shades all recorded jobs, and has no centers to show.
+  const viewed =
+    view === 'training' || view === 'assessment'
+      ? listed.filter((center) => center.kind === view)
+      : listed
+  // Once a radius is drawn, the map keeps to it like the list does (inRangeOr): only the centers inside it, or, when
+  // none is, all of them, so the nearest is still there to find.
   const pins =
     view === 'demand'
       ? explore.supply
-      : view === 'training' || view === 'assessment'
-        ? listed.filter((center) => center.kind === view)
-        : listed
+      : reference && pickedRange
+        ? inRangeOr(viewed, pickedRange)
+        : viewed
   const outlookAreas = explore.outlook.data?.areas
   const jobAreas = explore.demandMap.data?.areas
   const demandAreas = useMemo((): DemandMapArea[] | undefined => {
