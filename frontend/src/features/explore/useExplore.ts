@@ -25,6 +25,7 @@ import {
   METRO_MANILA,
   narrowMatches,
   nearestRegion,
+  rangeOf,
   REACH_KM,
   type Reach,
 } from './explore.ts'
@@ -130,10 +131,13 @@ export const useExploreStore = create<ExploreState>()(
       setDraft: (draft) => set({ draft }),
       setRelocate: (relocate) => set({ relocate }),
       changeRange: () => set({ askingRange: true }),
-      setRange: (rangeKm) => set({ rangeKm, rangeChosen: true, askingRange: false }),
+      // A typed distance is a radius: Relocate (no limit) goes off.
+      setRange: (rangeKm) =>
+        set({ rangeKm, relocate: false, rangeChosen: true, askingRange: false }),
+      // Relocate keeps the last km, so the radius is there again once the learner narrows back down.
       setReach: (reach) =>
         set({
-          rangeKm: REACH_KM[reach],
+          ...(reach === 'relocate' ? {} : { rangeKm: REACH_KM[reach] }),
           relocate: reach === 'relocate',
           rangeChosen: true,
           askingRange: false,
@@ -188,7 +192,8 @@ export function useExplore(
 ) {
   const search = useExploreStore((state) => state.search)
   const relocate = useExploreStore((state) => state.relocate)
-  const rangeKm = useExploreStore((state) => state.rangeKm)
+  // While relocating there is no limit (Infinity): every center is within range.
+  const rangeKm = useExploreStore((state) => rangeOf(state.rangeKm, state.relocate))
   const location = useTrainingStore((state) => (state.useLocation ? state.location : null))
   const locating = useTrainingStore(
     (state) => state.useLocation && state.locating && !state.location,
@@ -400,7 +405,12 @@ export function useExplore(
     ...listingsQuery(
       [],
       reference
-        ? { latitude: reference.latitude, longitude: reference.longitude, radiusKm: rangeKm }
+        ? {
+            latitude: reference.latitude,
+            longitude: reference.longitude,
+            // No radius is sent while relocating: every listing.
+            radiusKm: Number.isFinite(rangeKm) ? rangeKm : null,
+          }
         : null,
     ),
     enabled: outOfRange,

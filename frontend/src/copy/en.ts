@@ -2522,7 +2522,10 @@ export const en = {
       // QA-2026-11-18-E (US-0014 AC5): no center anywhere lists it, so a wider range can't help.
       noCenterAnywhere: (name: string) =>
         `No center lists ${name} yet, anywhere. A wider range won’t help, so try one of these instead.`,
-      noCenterRelated: (km: number) => `A related qualification offered within ${km} km`,
+      noCenterRelated: (km: number) =>
+        Number.isFinite(km)
+          ? `A related qualification offered within ${km} km`
+          : 'A related qualification offered at a center',
       noCenterSector: (sector: string) => `Browse other ${sector} qualifications`,
       noCenterAsk:
         'Ask the TESDA provincial or district office near you which providers plan to offer it.',
@@ -2533,28 +2536,39 @@ export const en = {
         `No center within ${km} km. The closest is ${closest} km away.`,
       // Beside "No center within …": back to "How far can you go?".
       changeRange: 'Change',
-      changeRangeLabel: (km: number) => `Change how far you can go (now ${km} km)`,
+      changeRangeLabel: (km: number) =>
+        Number.isFinite(km)
+          ? `Change how far you can go (now ${km} km)`
+          : 'Change how far you can go (now any distance)',
       range: {
         heading: 'How far can you go?',
         option: (km: number) => `${km} km`,
-        // The three answers, each with its radius under it.
+        // The three answers, each with its radius under it (the learner's own km under the one it falls in).
         near: 'Near me',
         farther: 'Travel farther',
         relocate: 'Relocate',
         nearHint: '10 km',
         fartherHint: '50 km',
-        relocateHint: 'Other regions',
+        relocateHint: 'Any distance',
+        // The learner's own distance, under the answers.
+        custom: 'Or your own distance',
+        customLabel: 'Your own distance, in kilometers',
+        customApply: 'Set',
+        customError: (min: number, max: number) => `Type a distance from ${min} to ${max} km.`,
         info: 'About these choices',
         infoBody: [
-          'Near me shows centers within about 10 km. Travel farther, within about 50 km.',
-          'Relocate looks up to 100 km away and adds regions with more jobs for this skill.',
-          'Set an exact radius any time under Filters on the map.',
+          'Near me shows centers within 10 km. Travel farther, within 50 km.',
+          'Relocate shows every center, at any distance, and adds regions with more jobs for this skill.',
+          'Type your own distance under the choices, here or under Filters on the map.',
         ],
         keep: 'Keep as it is',
       },
       // Under a qualification with no center in range: a related one that has a center in range.
       related: {
-        heading: (km: number) => `A related qualification within ${km} km`,
+        heading: (km: number) =>
+          Number.isFinite(km)
+            ? `A related qualification within ${km} km`
+            : 'A related qualification you can take',
       },
       scholarship: 'Scholarship open',
       // The Train group with the Scholarships filter on and no training center left for the matches.
@@ -2596,7 +2610,8 @@ export const en = {
         scholarship: 'A scholarship is open here, and the trip is about as short',
         demand: (region: string) =>
           `Jobs for this qualification are in demand in ${region}, and the trip is about as short`,
-        inRange: (km: number) => `Within your ${km} km range`,
+        inRange: (km: number) =>
+          Number.isFinite(km) ? `Within your ${km} km range` : 'Open to any distance',
         outside: (km: number) => `Nearest, though outside your ${km} km range`,
         unconfirmed: 'Listed, but its service details still need confirming',
       },

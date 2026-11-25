@@ -323,7 +323,10 @@ export default function ExplorePage() {
   const menuButton = useRef<HTMLButtonElement>(null)
   const travelMode = useTrainingStore((state) => state.travelMode)
   // The range the learner picked is drawn on the map and framed; until then the map frames the nearest centers.
-  const pickedRange = useExploreStore((state) => (state.rangeChosen ? state.rangeKm : null))
+  // Relocate has no limit: no circle, every center.
+  const pickedRange = useExploreStore((state) =>
+    state.rangeChosen && !state.relocate ? state.rangeKm : null,
+  )
   const routeTo = useTrainingStore((state) => state.routeTo)
   const locatingAny = useTrainingStore((state) => state.locating)
   const store = useTrainingStore.getState
@@ -720,7 +723,7 @@ export default function ExplorePage() {
             province: provinceFilter,
             scholarship: scholarshipFilter,
             count: countedCenters(pins, Boolean(reference), explore.rangeKm).length,
-            rangeKm: reference ? explore.rangeKm : null,
+            rangeKm: reference && Number.isFinite(explore.rangeKm) ? explore.rangeKm : null,
             canClear: Boolean(view !== 'all' || activeFilters),
             onRegion: (code) => setFilter('region', code),
             onProvince: (name) => setFilter('province', name),

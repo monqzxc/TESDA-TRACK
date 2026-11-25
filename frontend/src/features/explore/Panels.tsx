@@ -31,8 +31,10 @@ import {
   estimateMinutes,
   firstKind,
   hasScholarship,
+  CUSTOM_KM,
+  customKm,
   inRangeOr,
-  RANGES_KM,
+  REACH_KM,
   reachOf,
   relatedWithin,
   roundKm,
@@ -67,15 +69,6 @@ const lifted =
 const lift = 'transition-[transform,box-shadow,border-color,background-color] duration-200 ease-out'
 // A white card on the panel's page tone: the panel's sections all sit on one.
 const card = 'rounded-14 border border-border bg-surface'
-// A segmented control: a quiet track, the chosen option a solid navy pill.
-const segTrack = 'grid gap-1 rounded-12 bg-chip p-1'
-const segOption = cx(
-  'cursor-pointer rounded-10 border-0 bg-transparent font-semibold text-muted',
-  'transition-[background-color,color,box-shadow] duration-150 ease-out',
-  'data-focus-visible:outline-3 data-focus-visible:outline-offset-1 data-focus-visible:outline-focus',
-  'data-hovered:bg-surface/70 data-hovered:text-navy',
-  'data-selected:bg-navy data-selected:text-surface data-selected:shadow-[0_2px_6px_-2px_rgb(var(--track-shadow-rgb)/0.45)]',
-)
 
 /** A qualification whose CORE units the learner's certificates show, and what the server says to do next. */
 type Readiness = { qualification: string; fit: QualificationFit }
@@ -493,17 +486,20 @@ export function LocationRow({ explore }: { explore: Explore }) {
   )
 }
 
-/** The radius the lists keep to, 5 to 100 km; the map draws it once picked. Bare, for the Filters popover. */
+/**
+ * "How far can you go?" under Filters on the map: the same answers and own distance as in the results, so the two can
+ * never disagree. The map draws the radius once picked (none for Relocate).
+ */
 export function RadiusRow({ explore }: { explore: Explore }) {
-  const copy = useCopy().explore.location
+  const copy = useCopy().explore
   return (
     <div className="flex flex-col gap-2">
       <p className="m-0 flex items-center gap-1.5 text-13 font-semibold text-navy">
         <Icon name="distance" className="text-blue" />
-        {copy.radius}
+        {copy.results.range.heading}
       </p>
-      <RangeChips rangeKm={explore.rangeKm} label={copy.radius} compact />
-      {!explore.reference && <p className={note}>{copy.rangeNeedsPlace}</p>}
+      <ReachPicker compact />
+      {!explore.reference && <p className={note}>{copy.location.rangeNeedsPlace}</p>}
     </div>
   )
 }
@@ -992,51 +988,156 @@ function NoCenterHelp({
   )
 }
 
-/** 5, 10, 25, 50 or 100 km: one pressed, the learner's range. */
-function RangeChips({
-  rangeKm,
-  label,
-  compact = false,
-}: {
-  rangeKm: number
-  label: string
-  compact?: boolean
-}) {
+/**
+ * "How far can you go?" as one control: Near me, Travel farther or Relocate, and the learner's own km under them. The
+ * own km selects the answer it falls in (up to 10 km is Near me) and shows under it, so the answer and the distance
+ * always agree. Relocate is any distance. The same in the results and under Filters on the map.
+ */
+function ReachPicker({ compact = false }: { compact?: boolean }) {
   const copy = useCopy().explore.results.range
-  const { setRange } = useExploreStore.getState()
+  const rangeKm = useExploreStore((state) => state.rangeKm)
+  const relocate = useExploreStore((state) => state.relocate)
+  const { setReach } = useExploreStore.getState()
+  const current = reachOf(rangeKm, relocate)
+  const choices: { reach: Reach; label: string; hint: string; icon: IconName }[] = [
+    { reach: 'near', label: copy.near, hint: copy.nearHint, icon: 'pin' },
+    { reach: 'farther', label: copy.farther, hint: copy.fartherHint, icon: 'car' },
+    { reach: 'relocate', label: copy.relocate, hint: copy.relocateHint, icon: 'plane' },
+  ]
+  // The learner's own km, when it isn't the answer's own radius: shown under the answer it falls in.
+  const ownKm = !relocate && current !== 'relocate' && rangeKm !== REACH_KM[current]
   return (
-    <div role="group" aria-label={label} className={cx(segTrack, 'grid-cols-5')}>
-      {RANGES_KM.map((km) => (
-        <ToggleButton
-          key={km}
-          isSelected={km === rangeKm}
-          onChange={() => setRange(km)}
-          className={cx(
-            segOption,
-            'px-0.5 whitespace-nowrap tabular-nums',
-            // In the Filters popover each radius is a full 44px target.
-            compact ? 'min-h-11 text-13' : 'min-h-9 text-13',
-          )}
-        >
-          {copy.option(km)}
-        </ToggleButton>
-      ))}
+    <div className="flex flex-col gap-2">
+      <div role="group" aria-label={copy.heading} className="grid grid-cols-3 gap-2">
+        {choices.map((choice) => (
+          <ToggleButton
+            key={choice.reach}
+            isSelected={choice.reach === current}
+            onChange={() => setReach(choice.reach)}
+            className={cx(
+              'group flex min-w-0 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-12 border border-border bg-page px-1.5 text-center',
+              compact ? 'min-h-[76px] py-2' : 'min-h-[92px] py-2.5',
+              'transition-[transform,background-color,border-color,color,box-shadow] duration-150 ease-out motion-reduce:transition-none',
+              // Lifts 2px under the pointer, and presses back down on click.
+              'data-hovered:border-hover-border data-hovered:bg-surface data-hovered:shadow-[0_6px_14px_-6px_rgb(var(--track-shadow-rgb)/0.3)] motion-safe:data-hovered:-translate-y-0.5',
+              'data-pressed:bg-soft motion-safe:data-pressed:translate-y-0 motion-safe:data-pressed:scale-[0.98]',
+              'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus',
+              'data-selected:border-navy data-selected:bg-navy data-selected:shadow-[0_4px_12px_-4px_rgb(var(--track-shadow-rgb)/0.45)]',
+            )}
+          >
+            <span
+              aria-hidden="true"
+              className={cx(
+                'grid place-items-center rounded-full bg-tint text-blue transition-colors duration-150 group-data-selected:bg-surface/15 group-data-selected:text-surface',
+                compact ? 'size-7' : 'size-8',
+              )}
+            >
+              <Icon name={choice.icon} size={compact ? '0.95rem' : '1.05rem'} />
+            </span>
+            <span className="text-13 leading-tight font-semibold text-navy group-data-selected:text-surface">
+              {choice.label}
+            </span>
+            <span className="text-12 leading-tight text-muted tabular-nums group-data-selected:text-surface/80">
+              {ownKm && choice.reach === current ? copy.option(rangeKm) : choice.hint}
+            </span>
+          </ToggleButton>
+        ))}
+      </div>
+      <CustomKmField value={ownKm ? rangeKm : null} />
     </div>
   )
 }
 
+/** The learner's own distance, CUSTOM_KM.min to .max km, set with Set or Enter. A km turns Relocate off. */
+function CustomKmField({ value }: { value: number | null }) {
+  const copy = useCopy().explore.results.range
+  const { setRange } = useExploreStore.getState()
+  const inputId = useId()
+  const errorId = useId()
+  const [text, setText] = useState(value === null ? '' : String(value))
+  const [error, setError] = useState(false)
+  // A km set elsewhere (the other copy of this control, or an answer pressed) shows here too.
+  const [seen, setSeen] = useState(value)
+  if (seen !== value) {
+    setSeen(value)
+    setText(value === null ? '' : String(value))
+    setError(false)
+  }
+  const apply = () => {
+    const km = customKm(Number(text.trim() || NaN))
+    if (km === null) {
+      setError(true)
+      return
+    }
+    setError(false)
+    setText(String(km))
+    setRange(km)
+  }
+  return (
+    <form
+      className="flex flex-col gap-1"
+      noValidate
+      onSubmit={(event) => {
+        event.preventDefault()
+        apply()
+      }}
+    >
+      <label htmlFor={inputId} className="text-12 font-semibold text-muted">
+        {copy.custom}
+      </label>
+      <div className="flex items-center gap-2">
+        <div className="relative min-w-0 flex-1">
+          <input
+            id={inputId}
+            type="number"
+            inputMode="numeric"
+            min={CUSTOM_KM.min}
+            max={CUSTOM_KM.max}
+            step={1}
+            value={text}
+            placeholder={`${CUSTOM_KM.min}–${CUSTOM_KM.max}`}
+            aria-label={copy.customLabel}
+            aria-invalid={error || undefined}
+            aria-describedby={error ? errorId : undefined}
+            onChange={(event) => {
+              setText(event.target.value)
+              if (error) setError(false)
+            }}
+            className={cx(
+              'min-h-11 w-full rounded-10 border bg-surface pr-10 pl-3 text-15 text-navy tabular-nums placeholder:text-muted focus:border-blue focus:outline-none',
+              '[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none',
+              error ? 'border-warn-ink' : 'border-hover-border',
+            )}
+          />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 text-13 text-muted"
+          >
+            km
+          </span>
+        </div>
+        <Button type="submit" className={button({ variant: 'secondary', height: 44, snug: true })}>
+          {copy.customApply}
+        </Button>
+      </div>
+      {error && (
+        <p id={errorId} role="alert" className="m-0 text-12 text-warn-ink">
+          {copy.customError(CUSTOM_KM.min, CUSTOM_KM.max)}
+        </p>
+      )}
+    </form>
+  )
+}
+
 /**
- * "How far can you go?": Near me, Travel farther or Relocate, each a radius (REACH_KM). Asked after a search, before
- * the results, and again when the learner presses "Change" on a qualification with no center in range. The exact
- * radius stays under Filters on the map.
+ * "How far can you go?" (ReachPicker), asked after a search, before the results, and again when the learner presses
+ * "Change" on a qualification with no center in range. The same control is under Filters on the map.
  */
 function RangeStep() {
   const copy = useCopy().explore.results.range
   const asking = useExploreStore((state) => state.askingRange)
-  const rangeKm = useExploreStore((state) => state.rangeKm)
-  const relocate = useExploreStore((state) => state.relocate)
   const rangeChosen = useExploreStore((state) => state.rangeChosen)
-  const { closeRange, setReach } = useExploreStore.getState()
+  const { closeRange } = useExploreStore.getState()
   const headingRef = useRef<HTMLHeadingElement>(null)
   // Brought into view and focused, so a keyboard or screen-reader user lands on the question.
   useEffect(() => {
@@ -1045,12 +1146,6 @@ function RangeStep() {
     headingRef.current?.scrollIntoView?.({ block: 'nearest' })
   }, [asking])
   if (!asking) return null
-  const current = reachOf(rangeKm, relocate)
-  const choices: { reach: Reach; label: string; hint: string; icon: IconName }[] = [
-    { reach: 'near', label: copy.near, hint: copy.nearHint, icon: 'pin' },
-    { reach: 'farther', label: copy.farther, hint: copy.fartherHint, icon: 'car' },
-    { reach: 'relocate', label: copy.relocate, hint: copy.relocateHint, icon: 'plane' },
-  ]
   return (
     <section
       aria-labelledby="explore-range-heading"
@@ -1068,37 +1163,7 @@ function RangeStep() {
         </h3>
         <InfoPopover label={copy.info} paragraphs={copy.infoBody} />
       </div>
-      <div role="group" aria-label={copy.heading} className="grid grid-cols-3 gap-2">
-        {choices.map((choice) => (
-          <ToggleButton
-            key={choice.reach}
-            isSelected={choice.reach === current}
-            onChange={() => setReach(choice.reach)}
-            className={cx(
-              'group flex min-h-[92px] min-w-0 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-12 border border-border bg-page px-1.5 py-2.5 text-center',
-              'transition-[transform,background-color,border-color,color,box-shadow] duration-150 ease-out motion-reduce:transition-none',
-              // Lifts 2px under the pointer, and presses back down on click.
-              'data-hovered:border-hover-border data-hovered:bg-surface data-hovered:shadow-[0_6px_14px_-6px_rgb(var(--track-shadow-rgb)/0.3)] motion-safe:data-hovered:-translate-y-0.5',
-              'data-pressed:bg-soft motion-safe:data-pressed:translate-y-0 motion-safe:data-pressed:scale-[0.98]',
-              'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus',
-              'data-selected:border-navy data-selected:bg-navy data-selected:shadow-[0_4px_12px_-4px_rgb(var(--track-shadow-rgb)/0.45)]',
-            )}
-          >
-            <span
-              aria-hidden="true"
-              className="grid size-8 place-items-center rounded-full bg-tint text-blue transition-colors duration-150 group-data-selected:bg-surface/15 group-data-selected:text-surface"
-            >
-              <Icon name={choice.icon} size="1.05rem" />
-            </span>
-            <span className="text-13 leading-tight font-semibold text-navy group-data-selected:text-surface">
-              {choice.label}
-            </span>
-            <span className="text-12 leading-tight text-muted tabular-nums group-data-selected:text-surface/80">
-              {choice.hint}
-            </span>
-          </ToggleButton>
-        ))}
-      </div>
+      <ReachPicker />
       {rangeChosen && (
         <Button
           className={cx(button({ variant: 'tertiary', height: 36, snug: true }), 'self-start')}
@@ -1127,7 +1192,7 @@ function RangeSummary() {
     relocate: { label: copy.range.relocate, icon: 'plane' },
   }
   const answer = answers[current]
-  // The exact radius (Filters can set any of RANGES_KM), or "Other regions" for Relocate.
+  // The exact radius (the learner's own km, too), or "Any distance" for Relocate.
   const hint = relocate ? copy.range.relocateHint : copy.range.option(rangeKm)
   return (
     <div className="flex min-w-0 items-center gap-2 rounded-12 border border-border bg-surface py-1.5 pr-1.5 pl-3">
@@ -1143,7 +1208,7 @@ function RangeSummary() {
       <Button
         className={cx(button({ variant: 'tertiary', height: 36, snug: true }), 'shrink-0')}
         onPress={changeRange}
-        aria-label={copy.changeRangeLabel(rangeKm)}
+        aria-label={copy.changeRangeLabel(relocate ? Infinity : rangeKm)}
       >
         {copy.changeRange}
       </Button>

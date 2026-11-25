@@ -8,18 +8,26 @@ import type { Match } from '../finder/api.ts'
 
 /** Within this distance a center counts as near, until the learner says how far they can go. */
 export const NEAR_KM = 25
-/** The radius choices under Filters on the map. */
-export const RANGES_KM = [5, 10, 25, 50, 100] as const
 /**
- * "How far can you go?": three answers, each a radius. Near me is the default before the learner answers; Relocate
- * also widens the outlook to other regions with more demand.
+ * "How far can you go?": Near me and Travel farther are each a radius; Relocate is no limit at all (every center,
+ * and the outlook widens to other regions with more demand). Near me is the default before the learner answers.
  */
-export const REACH_KM = { near: 10, farther: 50, relocate: 100 } as const
-export type Reach = keyof typeof REACH_KM
+export const REACH_KM = { near: 10, farther: 50 } as const
+export type Reach = keyof typeof REACH_KM | 'relocate'
+/** The learner's own distance, typed under the answers: 1 to FAR_KM. */
+export const CUSTOM_KM = { min: 1, max: 400 } as const
 /** The answer a radius (and the relocate switch) stands for: within 10 km is near, anything wider is farther. */
 export function reachOf(rangeKm: number, relocate: boolean): Reach {
   if (relocate) return 'relocate'
   return rangeKm <= REACH_KM.near ? 'near' : 'farther'
+}
+/** The range the page keeps to: the learner's km, or no limit (Infinity) while they would relocate. */
+export const rangeOf = (rangeKm: number, relocate: boolean) => (relocate ? Infinity : rangeKm)
+/** A typed distance as a whole km within CUSTOM_KM, or null when it isn't one. */
+export function customKm(value: number): number | null {
+  if (!Number.isFinite(value)) return null
+  const km = Math.round(value)
+  return km >= CUSTOM_KM.min && km <= CUSTOM_KM.max ? km : null
 }
 /**
  * Beyond this distance no travel time is shown: a trip that long is likely to need a ferry or a flight, which a

@@ -66,7 +66,12 @@ const manilaPipefitting: Program = {
 const programs = [baguioWelding, manilaPipefitting]
 
 beforeEach(() => {
-  useExploreStore.setState({ rangeKm: NEAR_KM, rangeChosen: false, askingRange: false })
+  useExploreStore.setState({
+    rangeKm: NEAR_KM,
+    relocate: false,
+    rangeChosen: false,
+    askingRange: false,
+  })
   useExploreStore.getState().setSearch({
     query: 'I can weld',
     result: {
@@ -139,43 +144,72 @@ describe('Explore with nothing in range', () => {
     )
     const step = screen.getByRole('region', { name: 'How far can you go?' })
     expect(within(step).getByRole('heading', { name: 'How far can you go?' })).toHaveFocus()
-    // Near me, Travel farther or Relocate: 25 km is wider than near.
+    // Near me, Travel farther or Relocate: 25 km is wider than near, so Travel farther shows it.
     expect(
       within(step)
         .getAllByRole('button', { pressed: undefined })
         .filter((b) => b.hasAttribute('aria-pressed'))
         .map((b) => b.textContent),
-    ).toEqual(['Near me10 km', 'Travel farther50 km', 'RelocateOther regions'])
+    ).toEqual(['Near me10 km', 'Travel farther25 km', 'RelocateAny distance'])
     expect(
       within(step).getByRole('button', { name: /^Travel farther/, pressed: true }),
     ).toBeVisible()
+    expect(
+      within(step).getByRole('spinbutton', { name: 'Your own distance, in kilometers' }),
+    ).toHaveValue(25)
     // While the question is open, the results wait for the answer.
     expect(screen.queryByText(/No center within/)).not.toBeInTheDocument()
 
+    // Relocate is any distance: the far center is in range, and no circle is drawn.
     await user.click(within(step).getByRole('button', { name: /^Relocate/ }))
     expect(screen.queryByRole('region', { name: 'How far can you go?' })).not.toBeInTheDocument()
-    expect(await screen.findByText(/No center within 100 km\./)).toBeInTheDocument()
-    expect(useExploreStore.getState()).toMatchObject({ rangeKm: 100, relocate: true })
+    expect(useExploreStore.getState()).toMatchObject({ rangeKm: 25, relocate: true })
+    expect(
+      await screen.findByRole('button', { name: 'Change how far you can go (now any distance)' }),
+    ).toBeInTheDocument()
+    expect(screen.queryByText(/No center within/)).not.toBeInTheDocument()
+    expect(screen.getByTestId('map')).toHaveAttribute('data-radius', '')
   })
 
-  it('offers 5 to 100 km under Filters on the map, and the map draws the radius once picked', async () => {
+  it('asks "How far can you go?" under Filters too, with the learner\'s own km, and draws the radius once picked', async () => {
     const user = userEvent.setup()
     renderPage()
     const filters = await openFilters(user)
     expect(within(filters).getByRole('switch', { name: 'Share my location' })).toBeChecked()
-    const picker = within(filters).getByRole('group', { name: 'Radius' })
+    const picker = within(filters).getByRole('group', { name: 'How far can you go?' })
     expect(
       within(picker)
         .getAllByRole('button')
         .map((b) => b.textContent),
-    ).toEqual(['5 km', '10 km', '25 km', '50 km', '100 km'])
-    expect(within(picker).getByRole('button', { name: '25 km', pressed: true })).toBeVisible()
+    ).toEqual(['Near me10 km', 'Travel farther25 km', 'RelocateAny distance'])
     // Until the learner picks, the map frames the nearest centers, not a circle.
     expect(screen.getByTestId('map')).toHaveAttribute('data-radius', '')
 
-    await user.click(within(picker).getByRole('button', { name: '10 km' }))
-    expect(await screen.findByText(/No center within 10 km\./)).toBeInTheDocument()
-    expect(screen.getByTestId('map')).toHaveAttribute('data-radius', '10')
+    // Their own km picks the answer it falls in: 8 km is Near me, and says so.
+    const own = within(filters).getByRole('spinbutton', {
+      name: 'Your own distance, in kilometers',
+    })
+    await user.clear(own)
+    await user.type(own, '8{Enter}')
+    expect(await screen.findByText(/No center within 8 km\./)).toBeInTheDocument()
+    expect(screen.getByTestId('map')).toHaveAttribute('data-radius', '8')
+    expect(
+      within(picker).getByRole('button', { name: /^Near me/, pressed: true }),
+    ).toHaveTextContent('Near me8 km')
+
+    // Out of bounds is refused, and the range stays.
+    await user.clear(own)
+    await user.type(own, '0')
+    await user.click(within(filters).getByRole('button', { name: 'Set' }))
+    expect(within(filters).getByRole('alert')).toHaveTextContent(
+      'Type a distance from 1 to 400 km.',
+    )
+    expect(useExploreStore.getState().rangeKm).toBe(8)
+
+    // Relocate: every center, no circle.
+    await user.click(within(picker).getByRole('button', { name: /^Relocate/ }))
+    expect(screen.getByTestId('map')).toHaveAttribute('data-radius', '')
+    expect(screen.queryByText(/No center within/)).not.toBeInTheDocument()
   })
 })
 
