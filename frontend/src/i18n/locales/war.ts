@@ -676,6 +676,10 @@ export const war: Record<string, string> = {
     'Padayon an panginahanglan hini nga abilidad dinhi.',
   'Few employers here ask for this skill yet. See where it is needed more.':
     'Gutiay pa an employer dinhi nga nangangita hini nga abilidad. Kitaa kun hain ini mas kinahanglan.',
+  'Employers here ask for this skill more than in most regions, but many centers here train for it too: expect competition.':
+    'Mas ginbibiling han mga employer didi ini nga kahanas kaysa ha kadamoan nga rehiyon, kondi damu liwat nga sentro didi an nagtutdo hini: paabuta an kompetisyon.',
+  'There is steady demand for this skill here, but many centers here train for it too: expect competition.':
+    'Padayon an panginahanglan hini nga kahanas didi, kondi damu liwat nga sentro didi an nagtutdo hini: paabuta an kompetisyon.',
   'Also in demand skills near you': 'Iba pa nga ginkikinahanglan nga abilidad hirani ha imo',
   'Why these skills?': 'Kay ano ini nga mga abilidad?',
   'These skills have many job records in your region and fit what is in your Skill Passport. Tap one to see its demand and centers.':

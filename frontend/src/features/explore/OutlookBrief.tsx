@@ -555,7 +555,12 @@ function LocalDemand({
       ) : (
         // The takeaway, set off like the reasons in "Also in demand": easy to spot without reading the numbers.
         <p className="m-0 rounded-8 border-l-2 border-blue/40 bg-tint/50 px-2 py-1.5 text-13 leading-[1.45] font-semibold text-navy">
-          {copy.meaning[home.level]}
+          {/* In demand and saturated can both be true: many jobs, and even more centers. Say both, not one. */}
+          {home.level !== 'low' &&
+          data.areas.find((area) => area.region_code === home.region_code)?.balance ===
+            'more_supply'
+            ? copy.crowded[home.level]
+            : copy.meaning[home.level]}
         </p>
       )}
       {groups.length ? (

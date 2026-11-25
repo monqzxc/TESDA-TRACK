@@ -1359,6 +1359,10 @@ export const pam: Record<string, string> = {
     'Tuloy-tuloy ing pamangailangan king kayang ini keni.',
   'Few employers here ask for this skill yet. See where it is needed more.':
     'Kakaunti pa la reng employer keni a mamanintun king kayang ini. Lawan me nung nokarin ya mas kailangan.',
+  'Employers here ask for this skill more than in most regions, but many centers here train for it too: expect competition.':
+    'Mas pane-anapan da reng employer keni ing kayang iti kesa kareng kayaliwang rehiyun, oneng dakal muring sentro keni ing manuru kaniti: asahan ing kompetisyun.',
+  'There is steady demand for this skill here, but many centers here train for it too: expect competition.':
+    'Tuloy-tuloy ing pamangailangan king kayang iti keni, oneng dakal muring sentro keni ing manuru kaniti: asahan ing kompetisyun.',
   'Also in demand skills near you': 'Aliwa pang pakakailangan a kayang malapit keka',
   'Why these skills?': 'Bakit deni ring kayang?',
   'These skills have many job records in your region and fit what is in your Skill Passport. Tap one to see its demand and centers.':

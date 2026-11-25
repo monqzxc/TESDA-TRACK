@@ -83,7 +83,10 @@ def _sites(session: Session, qualification_id: int, now: datetime, include_examp
     return training, assessment, examples
 
 
-# Card 3's demand level: a region's share of the posting records against an even share across the regions.
+# Card 3's demand level: a region's share of the posting records against an even share across the regions. Under
+# MIN_RECORDS a region's share says nothing (with 10 records over 18 regions, one record is 1.8 even shares), so it is
+# low: few employers ask for it there yet. That keeps the level from calling an area in high demand while the balance,
+# from the same handful of records, calls it saturated.
 HIGH_RATIO, LOW_RATIO = 1.5, 0.5
 # Regions whose centers are this close count as nearby; the rest of the country is "elsewhere".
 NEARBY_KM = 400
@@ -93,6 +96,8 @@ MAX_HIGHER = 5
 def demand_level(postings: int, total_postings: int, region_count: int) -> DemandLevel:
     if not postings or not total_postings or not region_count:
         return "none"
+    if postings < MIN_RECORDS:
+        return "low"
     ratio = (postings / total_postings) * region_count
     return "high" if ratio >= HIGH_RATIO else "moderate" if ratio >= LOW_RATIO else "low"
 
@@ -105,7 +110,8 @@ def _km(a: AreaOutlook, b: AreaOutlook) -> float:
 
 def home_and_higher(home: AreaOutlook | None, areas: list[AreaOutlook],
                     total_postings: int) -> tuple[HomeDemand | None, list[HigherDemandArea]]:
-    """The learner's region's demand level, and the regions with more records: nearby first, then the rest."""
+    """The learner's region's demand level, and the regions with more records: nearby first, then the rest. A region
+    with fewer than MIN_RECORDS is never listed as needing it more: its level would be low."""
     if home is None:
         return None, []
     def level(area: AreaOutlook) -> DemandLevel:
@@ -119,7 +125,7 @@ def home_and_higher(home: AreaOutlook | None, areas: list[AreaOutlook],
                                level=level(area), distance_km=round(_km(home, area), 1),
                                nearby=_km(home, area) <= NEARBY_KM, training_sites=area.training_sites,
                                assessment_sites=area.assessment_sites)
-              for area in areas if area.posting_count > home.posting_count]
+              for area in areas if area.posting_count > home.posting_count and area.posting_count >= MIN_RECORDS]
     higher.sort(key=lambda area: (not area.nearby, -area.posting_count, area.distance_km))
     return summary, higher[:MAX_HIGHER]
 

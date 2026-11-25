@@ -682,6 +682,10 @@ export const bcl: Record<string, string> = {
     'Padagos an pangangaipo sa kakayahan na ini digdi.',
   'Few employers here ask for this skill yet. See where it is needed more.':
     'Kadikit pa sana an employer digdi na naghahanap kan kakayahan na ini. Hilinga kun sain ini mas kaipuhan.',
+  'Employers here ask for this skill more than in most regions, but many centers here train for it too: expect competition.':
+    'Mas hinahanap kan mga employer digdi an abilidad na ini kaysa sa kadaklan na rehiyon, alagad dakol man na sentro digdi an nagtutukdo kaini: asahan an kompetisyon.',
+  'There is steady demand for this skill here, but many centers here train for it too: expect competition.':
+    'Padagos an pangangaipo sa abilidad na ini digdi, alagad dakol man na sentro digdi an nagtutukdo kaini: asahan an kompetisyon.',
   'Also in demand skills near you': 'Iba pang hinahanap na kakayahan harani saimo',
   'Why these skills?': 'Taano ining mga kakayahan?',
   'These skills have many job records in your region and fit what is in your Skill Passport. Tap one to see its demand and centers.':

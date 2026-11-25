@@ -683,6 +683,10 @@ export const hil: Record<string, string> = {
     'Padayon ang kinahanglanon sa sini nga ikasarang diri.',
   'Few employers here ask for this skill yet. See where it is needed more.':
     'Diutay pa ang employer diri nga nagapangita sang sini nga ikasarang. Tan-awa kon diin ini mas kinahanglan.',
+  'Employers here ask for this skill more than in most regions, but many centers here train for it too: expect competition.':
+    'Mas ginapangita sang mga employer diri ini nga kahanas sangsa kadamuan sang rehiyon, pero madamo man nga sentro diri ang nagatudlo sini: maghulat sang kompetisyon.',
+  'There is steady demand for this skill here, but many centers here train for it too: expect competition.':
+    'Padayon ang kinahanglan sa sini nga kahanas diri, pero madamo man nga sentro diri ang nagatudlo sini: maghulat sang kompetisyon.',
   'Also in demand skills near you': 'Iban pa nga ginapangita nga ikasarang malapit sa imo',
   'Why these skills?': 'Ngaa ini nga mga ikasarang?',
   'These skills have many job records in your region and fit what is in your Skill Passport. Tap one to see its demand and centers.':

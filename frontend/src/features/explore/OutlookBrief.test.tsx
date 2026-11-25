@@ -63,6 +63,8 @@ const asked: URL[] = []
 let aiSummary = false
 let demandAvailable = true
 let noRecordsAtHome = false
+// Metro Manila in high demand while saturated: many jobs, and even more centers.
+let crowdedAtHome = false
 let demandIsSample = false
 
 const outlook = (url: URL) => {
@@ -121,7 +123,7 @@ const outlook = (url: URL) => {
             region_code: 'NCR',
             name: 'Metro Manila',
             posting_count: noRecordsAtHome ? 0 : 2,
-            level: noRecordsAtHome ? 'none' : 'low',
+            level: noRecordsAtHome ? 'none' : crowdedAtHome ? 'high' : 'low',
             rank: noRecordsAtHome ? null : 2,
             ranked_of: 2,
             limited: true,
@@ -164,6 +166,7 @@ beforeEach(() => {
   aiSummary = false
   demandAvailable = true
   noRecordsAtHome = false
+  crowdedAtHome = false
   demandIsSample = false
   useDemandStore.setState({
     region: undefined,
@@ -507,6 +510,14 @@ describe('Demand where you are (Card 3)', () => {
     await waitFor(() => expect(asked.at(-1)?.searchParams.get('region_code')).toBe('VII'))
     expect(asked.at(-1)?.searchParams.get('home_region_code')).toBe('NCR')
     expect(await screen.findByText('VII:8:1:more_demand')).toBeInTheDocument()
+  })
+
+  it('says both when the area is in demand and saturated', async () => {
+    crowdedAtHome = true
+    const local = await brief('High demand')
+    expect(local).toHaveTextContent(
+      'Employers here ask for this skill more than in most regions, but many centers here train for it too: expect competition.',
+    )
   })
 
   it('says the learner is already where it is needed most', async () => {

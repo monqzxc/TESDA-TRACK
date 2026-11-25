@@ -678,6 +678,10 @@ export const ilo: Record<string, string> = {
     'Agtultuloy ti panagkasapulan iti daytoy a kabaelan ditoy.',
   'Few employers here ask for this skill yet. See where it is needed more.':
     'Bassit pay laeng nga employer ditoy ti agsapsapul iti daytoy a kabaelan. Kitaem no sadino ti ad-adda a pakasapulanna.',
+  'Employers here ask for this skill more than in most regions, but many centers here train for it too: expect competition.':
+    'Ad-adu nga employer ditoy ti agsapul iti daytoy a kabaelan ngem kadagiti kaaduan a rehion, ngem adu met a sentro ditoy ti mangisursuro iti daytoy: namnamaen ti panagsisinnalisal.',
+  'There is steady demand for this skill here, but many centers here train for it too: expect competition.':
+    'Agtultuloy ti panagkasapulan iti daytoy a kabaelan ditoy, ngem adu met a sentro ditoy ti mangisursuro iti daytoy: namnamaen ti panagsisinnalisal.',
   'Also in demand skills near you': 'Sabsabali pay a kasapulan a kabaelan nga asideg kenka',
   'Why these skills?': 'Apay dagitoy a kabaelan?',
   'These skills have many job records in your region and fit what is in your Skill Passport. Tap one to see its demand and centers.':

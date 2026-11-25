@@ -683,6 +683,10 @@ export const ceb: Record<string, string> = {
     'Padayon ang panginahanglan niini nga kahanas dinhi.',
   'Few employers here ask for this skill yet. See where it is needed more.':
     'Gamay pa ang employer dinhi nga nangita niini nga kahanas. Tan-awa kung asa kini mas gikinahanglan.',
+  'Employers here ask for this skill more than in most regions, but many centers here train for it too: expect competition.':
+    'Mas gipangita sa mga employer dinhi kini nga kahanas kaysa sa kadaghanan sa rehiyon, apan daghan usab nga sentro dinhi ang nagtudlo niini: paabota ang kompetisyon.',
+  'There is steady demand for this skill here, but many centers here train for it too: expect competition.':
+    'Padayon ang panginahanglan niini nga kahanas dinhi, apan daghan usab nga sentro dinhi ang nagtudlo niini: paabota ang kompetisyon.',
   'Also in demand skills near you': 'Ubang gipangita nga kahanas duol nimo',
   'Why these skills?': 'Nganong kini nga mga kahanas?',
   'These skills have many job records in your region and fit what is in your Skill Passport. Tap one to see its demand and centers.':

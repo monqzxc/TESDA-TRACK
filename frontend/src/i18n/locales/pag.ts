@@ -670,6 +670,10 @@ export const pag: Record<string, string> = {
     'Tuloy-tuloy so pankaukolan ed kabaelan ya ia dia.',
   'Few employers here ask for this skill yet. See where it is needed more.':
     'Daiset ni ray employer dia ya mangaanap ed kabaelan ya ia. Nengnengen no iner so mas pankaukolan to.',
+  'Employers here ask for this skill more than in most regions, but many centers here train for it too: expect competition.':
+    'Mas anapen na saray employer dia so kabaletan a saya nen saray dakel a rehiyon, balet dakel met so sentro dia ya mangibabangat ed saya: alagden so kompetisyon.',
+  'There is steady demand for this skill here, but many centers here train for it too: expect competition.':
+    'Ontuloy so pankaukolan ed kabaletan a saya dia, balet dakel met so sentro dia ya mangibabangat ed saya: alagden so kompetisyon.',
   'Also in demand skills near you': 'Arum ni ya kaukolan a kabaelan ya asingger ed sika',
   'Why these skills?': 'Akin et saray kabaelan ya ia?',
   'These skills have many job records in your region and fit what is in your Skill Passport. Tap one to see its demand and centers.':

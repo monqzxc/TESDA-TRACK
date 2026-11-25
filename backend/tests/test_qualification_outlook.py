@@ -360,7 +360,8 @@ def test_the_learners_region_gets_a_demand_level_and_rank(session):
     home = qualification_outlook.build(session, CODE, "VII", "VII").home_demand
 
     assert (home.region_code, home.posting_count, home.rank, home.ranked_of) == ("VII", 2, 3, 3)
-    assert (home.level, home.limited) == ("high", True)  # 2/20 is 1.8 even shares, but only two records
+    # 2/20 is 1.8 even shares, but two records are too few to call it high demand: few employers ask for it yet.
+    assert (home.level, home.limited) == ("low", True)
     assert qualification_outlook.build(session, CODE, "IV-A", "IV-A").home_demand.level == "none"
 
 
@@ -368,6 +369,29 @@ def test_the_learners_region_gets_a_demand_level_and_rank(session):
 def test_demand_levels_compare_a_region_with_an_even_share(count, level):
     # 100 records over 18 regions: an even share is about 5.6.
     assert qualification_outlook.demand_level(count, 100, 18) == level
+
+
+@pytest.mark.parametrize("count, level", [(1, "low"), (2, "low"), (3, "high"), (4, "high")])
+def test_too_few_records_are_never_high_demand(count, level):
+    # 10 records over 18 regions, as for Housekeeping NC II: one record is already 1.8 even shares.
+    assert qualification_outlook.demand_level(count, 10, 18) == level
+
+
+def test_a_saturated_region_with_a_handful_of_records_is_not_called_high_demand(session):
+    # NCR: 2 of 10 records but 3 of the 4 centers. The balance says saturated; the level must not say high demand.
+    postings(session, "NCR", 2)
+    postings(session, "MIMAROPA", 4)
+    postings(session, "CAR", 2)
+    postings(session, "III", 2)
+    training(session, "NCR", 3)
+    training(session, "III", 1)
+
+    outlook = qualification_outlook.build(session, CODE, "NCR", "NCR")
+
+    assert next(a for a in outlook.areas if a.region_code == "NCR").balance == "more_supply"
+    assert outlook.home_demand.level == "low"
+    # Only regions with enough records to judge are listed as needing it more.
+    assert [a.region_code for a in outlook.higher_demand] == ["MIMAROPA"]
 
 
 def test_higher_demand_areas_rank_nearby_regions_first(session):

@@ -1858,6 +1858,10 @@ export const tl: Record<string, string> = {
     'Tuloy-tuloy ang pangangailangan sa kasanayang ito dito.',
   'Few employers here ask for this skill yet. See where it is needed more.':
     'Kaunti pa lang ang employer dito na naghahanap ng kasanayang ito. Tingnan kung saan ito mas kailangan.',
+  'Employers here ask for this skill more than in most regions, but many centers here train for it too: expect competition.':
+    'Mas hinahanap ng mga employer dito ang kasanayang ito kaysa sa karamihan ng rehiyon, pero marami ring sentro dito ang nagtuturo nito: asahan ang kompetisyon.',
+  'There is steady demand for this skill here, but many centers here train for it too: expect competition.':
+    'Tuloy-tuloy ang pangangailangan sa kasanayang ito dito, pero marami ring sentro dito ang nagtuturo nito: asahan ang kompetisyon.',
   'Also in demand skills near you': 'Iba pang hinahanap na kasanayan malapit sa iyo',
   'Why these skills?': 'Bakit ang mga kasanayang ito?',
   'These skills have many job records in your region and fit what is in your Skill Passport. Tap one to see its demand and centers.':

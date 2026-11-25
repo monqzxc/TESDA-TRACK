@@ -75,10 +75,9 @@ def test_without_skills_it_ranks_by_demand_alone(session, market):
     assert all(s.fit == 0 and len(s.reasons) == 1 for s in result.suggestions)
 
 
-def test_a_few_records_are_marked_as_a_rough_signal(session, market):
-    cebu_cookery = next(s for s in suggest(session, "VII", ["cooking"]).suggestions
-                        if s.qualification.code == "COOKERY-NC-II")
-    assert cebu_cookery.limited is True
+def test_a_single_record_is_not_called_in_demand(session, market):
+    # One cookery record in Cebu is 2.6 even shares of its seven, but too few records to call it in demand there.
+    assert "COOKERY-NC-II" not in codes(suggest(session, "VII", ["cooking"]))
 
 
 def test_nothing_in_demand_nearby_is_an_empty_list(session, market):

@@ -2846,6 +2846,12 @@ export const en = {
           moderate: 'There is steady demand for this skill here.',
           low: 'Few employers here ask for this skill yet. See where it is needed more.',
         },
+        // In place of the meaning where the area is also saturated: both are true, so both are said.
+        crowded: {
+          high: 'Employers here ask for this skill more than in most regions, but many centers here train for it too: expect competition.',
+          moderate:
+            'There is steady demand for this skill here, but many centers here train for it too: expect competition.',
+        },
         from: { location: 'Your location', profile: 'Skill Passport' },
         levels: {
           high: 'High demand',
