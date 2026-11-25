@@ -121,5 +121,10 @@ describe('Career Map goal box', () => {
       relocate: false,
       rangeChosen: true,
     })
+
+    // The question folds to one line with the answer; Change opens it again.
+    expect(screen.getByText('Near me')).toBeVisible()
+    await user.click(screen.getByRole('button', { name: 'Change how far you can go (now 10 km)' }))
+    expect(await screen.findByRole('region', { name: 'How far can you go?' })).toBeVisible()
   })
 })

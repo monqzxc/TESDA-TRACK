@@ -1112,6 +1112,46 @@ function RangeStep() {
 }
 
 /**
+ * "How far can you go?" once answered, folded to one line: the question, the answer and its radius, and Change, which
+ * opens the full question again.
+ */
+function RangeSummary() {
+  const copy = useCopy().explore.results
+  const rangeKm = useExploreStore((state) => state.rangeKm)
+  const relocate = useExploreStore((state) => state.relocate)
+  const { changeRange } = useExploreStore.getState()
+  const current = reachOf(rangeKm, relocate)
+  const answers: Record<Reach, { label: string; icon: IconName }> = {
+    near: { label: copy.range.near, icon: 'pin' },
+    farther: { label: copy.range.farther, icon: 'car' },
+    relocate: { label: copy.range.relocate, icon: 'plane' },
+  }
+  const answer = answers[current]
+  // The exact radius (Filters can set any of RANGES_KM), or "Other regions" for Relocate.
+  const hint = relocate ? copy.range.relocateHint : copy.range.option(rangeKm)
+  return (
+    <div className="flex min-w-0 items-center gap-2 rounded-12 border border-border bg-surface py-1.5 pr-1.5 pl-3">
+      <Icon name="distance" className="shrink-0 text-blue" />
+      <p className="m-0 flex min-w-0 flex-1 flex-wrap items-center gap-x-1.5 text-13 leading-tight">
+        <span className="text-muted">{copy.range.heading}</span>
+        <span className="inline-flex items-center gap-1 font-semibold text-navy">
+          <Icon name={answer.icon} size="0.9rem" className="text-blue" />
+          {answer.label}
+          <span className="font-normal text-muted tabular-nums">· {hint}</span>
+        </span>
+      </p>
+      <Button
+        className={cx(button({ variant: 'tertiary', height: 36, snug: true }), 'shrink-0')}
+        onPress={changeRange}
+        aria-label={copy.changeRangeLabel(rangeKm)}
+      >
+        {copy.changeRange}
+      </Button>
+    </div>
+  )
+}
+
+/**
  * The core of the results: the centers for the qualification in focus, ranked for the learner, best first. Each says
  * its main reason, its distance and travel time, and any scholarship and demand tags; the first is "Recommended".
  * Pressed, a center opens on the map with its pin highlighted. The travel times are estimates, so the list is
@@ -1379,9 +1419,12 @@ export function ResultsPanel({
   }
   if (explore.listingsLoading && view !== 'demand') {
     return (
-      <p role="status" className={note}>
-        {en.training.results.loading}
-      </p>
+      <div className="flex flex-col gap-3">
+        <RangeSummary />
+        <p role="status" className={note}>
+          {en.training.results.loading}
+        </p>
+      </div>
     )
   }
 
@@ -1438,6 +1481,7 @@ export function ResultsPanel({
 
   return (
     <div className="flex flex-col gap-4">
+      {view !== 'demand' && <RangeSummary />}
       {/* An underlined tab row: icon and label sit on one line, the chosen view is navy with a bar beneath it.
           Labels never truncate; when the row is narrow the icons drop out first. */}
       <div className="@container/tabs">

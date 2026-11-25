@@ -398,6 +398,8 @@ export default function ExplorePage() {
         }
       : null
   const intro = useRouteIntro(route && selected ? `${selected.id}:${travelMode}` : null)
+  // While a route draws the search bar stays, but the panel under it folds down to it, and opens again with the reveal.
+  const folded = collapsed || intro === 'hidden'
 
   const select = (
     id: string,
@@ -704,14 +706,15 @@ export default function ExplorePage() {
         className={cx(
           // On a phone, a frame over the whole map that takes no presses itself: the search bar at its top, and the
           // results in a sheet at its bottom.
-          'intro-piece pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-[1000] flex flex-col [--intro-order:0]',
+          // Not an intro piece itself: the search bar stays put while a route draws, and only what is under it folds away.
+          'pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-[1000] flex flex-col',
           // From a tablet up, one card at the top left. Folded, a slim search bar; open, the search row with the
           // results under it. Only the body below the row scrolls.
           'md:pointer-events-auto md:top-3 md:right-auto md:bottom-auto md:left-3 md:max-h-[calc(100%-1.5rem)] md:w-[360px] md:overflow-hidden md:rounded-12 md:border md:border-border md:bg-surface md:shadow-[0_8px_28px_-6px_rgb(var(--track-shadow-rgb)/0.22)]',
           // Open, it runs the map's height. The height grows and shrinks with the body below (a min-height, since a
           // height can't move to or from auto).
           'motion-reduce:transition-none md:transition-[min-height] md:duration-300 md:ease-out',
-          collapsed ? 'md:min-h-0' : 'md:min-h-[calc(100%-1.5rem)]',
+          folded ? 'md:min-h-0' : 'md:min-h-[calc(100%-1.5rem)]',
         )}
       >
         <div ref={headerRef} className="min-w-0 shrink-0">
@@ -733,13 +736,13 @@ export default function ExplorePage() {
           {!selected && (
             <QualificationChips
               explore={explore}
-              className="mx-3 mt-2 rounded-12 max-md:bg-surface max-md:p-2 max-md:shadow-[0_6px_16px_-4px_rgb(var(--track-shadow-rgb)/0.24)] md:mt-0 md:mb-2"
+              className="intro-piece mx-3 mt-2 rounded-12 max-md:bg-surface max-md:p-2 max-md:shadow-[0_6px_16px_-4px_rgb(var(--track-shadow-rgb)/0.24)] md:mt-0 md:mb-2"
             />
           )}
           <Chips
             view={view}
             onView={changeView}
-            className="mx-3 mt-2 grid grid-cols-3 gap-1.5 md:hidden"
+            className="intro-piece mx-3 mt-2 grid grid-cols-3 gap-1.5 md:hidden"
           />
         </div>
         {/* The body slides open and shut: its one row grows from 0fr to 1fr, so it animates to its own height. On a
@@ -747,14 +750,14 @@ export default function ExplorePage() {
         <div
           id={bodyId}
           ref={sheetRef}
-          inert={collapsed}
+          inert={folded}
           onTransitionEnd={(event) => {
             if (event.target === event.currentTarget && !collapsed) setOpened(true)
           }}
           className={cx(
-            'pointer-events-auto mt-auto grid min-h-0 transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none md:mt-0 md:flex-1',
+            'intro-piece pointer-events-auto mt-auto grid min-h-0 transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none md:mt-0 md:flex-1',
             'max-md:rounded-t-16 max-md:bg-surface max-md:shadow-[0_-6px_20px_rgb(var(--track-shadow-rgb)/0.18)]',
-            collapsed ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100',
+            folded ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100',
           )}
         >
           {/* No padding on the clipped row itself: it would stay showing when the row is 0 tall. A phone's sheet

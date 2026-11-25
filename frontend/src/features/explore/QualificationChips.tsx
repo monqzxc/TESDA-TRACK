@@ -39,7 +39,11 @@ export function QualificationChips({
   return (
     <div className={cx('pointer-events-auto flex min-w-0 flex-col gap-1.5', className)}>
       <p className="m-0 text-12 text-muted">
-        <span className="font-semibold text-navy">{copy.label}</span> · {copy.hint}
+        <span className="font-semibold text-navy">{copy.label}</span>{' '}
+        <span className="ml-0.5 inline-grid h-5 min-w-5 place-items-center rounded-full bg-navy px-1.5 align-middle text-11 leading-none font-bold text-surface tabular-nums">
+          {matches.length.toLocaleString()}
+        </span>{' '}
+        · {copy.hint}
       </p>
       <ScrollRow label={copy.label}>
         {matches.map(({ qualification }) => (
