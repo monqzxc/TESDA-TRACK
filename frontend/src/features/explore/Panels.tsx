@@ -1812,8 +1812,14 @@ export function CenterCard({
             </div>
           )}
 
-          {point && (
-            <>
+          {/* Directions are drawn on this map; Google Maps only when there is nowhere to route from. */}
+          {point &&
+            (canRoute && config?.routing_enabled ? (
+              <Button className={directions} onPress={routed ? onHideRoute : onRoute}>
+                <Icon name={routed ? 'close' : 'directions'} />
+                {routed ? copy.hideRoute : copy.directions}
+              </Button>
+            ) : (
               <a
                 className={directions}
                 href={googleMapsDirections(point)}
@@ -1824,17 +1830,7 @@ export function CenterCard({
                 <Icon name="directions" />
                 {copy.directions}
               </a>
-              {canRoute && config?.routing_enabled && (
-                <Button
-                  className={cx(button({ height: 44 }), 'w-full')}
-                  onPress={routed ? onHideRoute : onRoute}
-                >
-                  <Icon name={routed ? 'close' : 'route'} />
-                  {routed ? copy.hideRoute : copy.route}
-                </Button>
-              )}
-            </>
-          )}
+            ))}
 
           {readiness && openPathway && (
             <Button

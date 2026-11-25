@@ -886,7 +886,7 @@ export default function ExplorePage() {
                     code={selectedCode}
                     codes={codes}
                     canRoute={canRoute}
-                    routeFrom={canRoute ? origin : null}
+                    routeFrom={route ? origin : null}
                     config={config}
                     onBack={back}
                     onRoute={() => store().showRoute(selected.id)}

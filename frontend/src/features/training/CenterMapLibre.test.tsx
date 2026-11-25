@@ -225,15 +225,10 @@ describe('the MapLibre center map', () => {
     const popup = within(Popup.instances.at(-1)!.getElement())
     expect(popup.getByText('Cebu Skills Center')).toBeInTheDocument()
     expect(popup.queryByRole('button', { name: 'View details' })).not.toBeInTheDocument()
-    const directions = popup.getByRole('link', { name: 'Get directions' })
-    expect(directions).toHaveAttribute(
-      'href',
-      'https://www.google.com/maps/dir/?api=1&destination=10.3157,123.8854',
-    )
-    expect(directions).toHaveAttribute('target', '_blank')
-    expect(directions).toHaveAttribute('rel', 'noopener noreferrer')
+    // Directions are drawn on this map, not handed off to Google Maps.
+    expect(popup.queryByRole('link', { name: 'Get directions' })).not.toBeInTheDocument()
     expect(callbacks.onRoute).not.toHaveBeenCalled()
-    await user.click(popup.getByRole('button', { name: 'Show route on the map' }))
+    await user.click(popup.getByRole('button', { name: 'Get directions' }))
     expect(callbacks.onRoute).toHaveBeenCalledWith('training-2')
     await user.click(popup.getByRole('button', { name: 'Save this center' }))
     expect(callbacks.onToggleSaved).toHaveBeenCalledWith('training-2')
@@ -247,7 +242,7 @@ describe('the MapLibre center map', () => {
     await user.click(screen.getByRole('button', { name: 'Cebu Skills Center, training center' }))
     const popup = within(Popup.instances.at(-1)!.getElement())
     expect(popup.getByRole('link', { name: 'Get directions' })).toHaveAttribute('target', '_blank')
-    expect(popup.queryByRole('button', { name: 'Show route on the map' })).not.toBeInTheDocument()
+    expect(popup.queryByRole('button', { name: 'Get directions' })).not.toBeInTheDocument()
   })
 
   it('opens the selected center in its popup, and moves the camera only when it’s out of view', () => {
@@ -292,10 +287,10 @@ describe('the MapLibre center map', () => {
     fireEvent.click(button, { detail: 0 })
     const popup = Popup.instances.at(-1)!.getElement()
     await waitFor(() =>
-      expect(within(popup).getByRole('link', { name: 'Get directions' })).toHaveFocus(),
+      expect(within(popup).getByRole('button', { name: 'Get directions' })).toHaveFocus(),
     )
 
-    fireEvent.keyDown(within(popup).getByRole('link', { name: 'Get directions' }), {
+    fireEvent.keyDown(within(popup).getByRole('button', { name: 'Get directions' }), {
       key: 'Escape',
     })
     await waitFor(() => expect(Popup.instances.at(-1)!.isOpen()).toBe(false))

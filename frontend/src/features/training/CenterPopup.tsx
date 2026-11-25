@@ -98,17 +98,24 @@ export function CenterPopup({
         </p>
       )}
       <div className="col-span-full flex items-center gap-2.5 pt-0.5">
-        {/* Navigation hand-off stays available even when the map can draw its own route. */}
-        <a
-          className={cx(routeButton, 'text-white! no-underline')}
-          href={googleMapsDirections(point)}
-          target="_blank"
-          rel="noopener noreferrer"
-          title={en.training.center.googleMapsHelp}
-        >
-          <Icon name="directions" size={18} />
-          {en.training.center.directions}
-        </a>
+        {/* Directions are drawn on this map; Google Maps only when there is nowhere to route from. */}
+        {canRoute ? (
+          <button type="button" className={routeButton} onClick={() => onRoute(center.id)}>
+            <Icon name="directions" size={18} />
+            {en.training.center.directions}
+          </button>
+        ) : (
+          <a
+            className={cx(routeButton, 'text-white! no-underline')}
+            href={googleMapsDirections(point)}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={en.training.center.googleMapsHelp}
+          >
+            <Icon name="directions" size={18} />
+            {en.training.center.directions}
+          </a>
+        )}
         <button
           type="button"
           className={iconButton(isSaved)}
@@ -129,16 +136,6 @@ export function CenterPopup({
           <Icon name="link" size={18} />
         </button>
       </div>
-      {canRoute && (
-        <button
-          type="button"
-          className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-10 border border-border bg-surface px-3 text-13 font-semibold text-blue hovered:bg-soft"
-          onClick={() => onRoute(center.id)}
-        >
-          <Icon name="route" size={18} />
-          {en.explore.card.route}
-        </button>
-      )}
     </div>
   )
 }

@@ -537,20 +537,14 @@ for (const { width, engine } of [
   { width: 390, engine: 'leaflet' },
   { width: 1280, engine: 'maplibre' },
 ] as const) {
-  test(`BUG-127: popup and detail hand off directions with routing enabled at ${width}px (${engine})`, async ({
+  test(`BUG-127: popup and detail draw directions on the map, never in Google Maps, at ${width}px (${engine})`, async ({
     page,
     context,
   }) => {
     await page.setViewportSize({ width, height: 900 })
     await serveRecommendations(page, engine)
-    // Verify the actual new-tab navigation without depending on Google's network or changing any records.
-    const destination = 'https://www.google.com/maps/dir/?api=1&destination=14.5995,120.9842'
-    await context.route('https://www.google.com/maps/**', (route) =>
-      route.fulfill({
-        contentType: 'text/html',
-        body: '<title>Directions hand-off test</title>',
-      }),
-    )
+    const opened: string[] = []
+    context.on('page', (other) => opened.push(other.url()))
     await page.goto('/explore')
     await page
       .getByRole('dialog', { name: 'Open Location?' })
@@ -567,47 +561,21 @@ for (const { width, engine } of [
     const detail = page
       .locator('article')
       .filter({ has: page.getByRole('heading', { name: COMPUTER_SITE.name, exact: true }) })
-    const directions = detail.getByRole('link', { name: 'Directions', exact: true })
-    await expect(directions).toHaveAttribute('href', destination)
-    await expect(
-      detail.getByRole('button', { name: 'Show route on the map', exact: true }),
-    ).toBeVisible()
-    const openMaps = async (link: ReturnType<Page['getByRole']>) => {
-      const opened = context.waitForEvent('page')
-      await link.click()
-      const maps = await opened
-      await expect(maps).toHaveURL(destination)
-      await maps.close()
-      await expect(page).toHaveURL(/\/explore/)
-    }
+    // Opening the center draws the way there; the one directions button toggles that route.
+    await expect(page.locator('a[href*="google.com/maps/dir"]')).toHaveCount(0)
+    const hide = detail.getByRole('button', { name: 'Hide route', exact: true })
+    await expect(hide).toBeVisible()
+    await hide.click()
+    const directions = detail.getByRole('button', { name: 'Directions', exact: true })
     await directions.scrollIntoViewIfNeeded()
     await page.screenshot({
       path: test.info().outputPath('directions-detail.png'),
       animations: 'disabled',
     })
-    await openMaps(directions)
-    // Phones deliberately use the center detail rather than a second popup over the small map.
-    if (width < 768) return
-    await detail
-      .getByRole('heading', { name: COMPUTER_SITE.name, exact: true })
-      .scrollIntoViewIfNeeded()
-    const popup = page.locator(
-      engine === 'leaflet' ? '.leaflet-popup-content' : '.maplibregl-popup-content',
-    )
-    const popupDirections = popup.getByRole('link', { name: 'Get directions', exact: true })
-    await expect(popupDirections).toHaveAttribute('href', destination)
-    await expect(
-      popup.getByRole('button', { name: 'Show route on the map', exact: true }),
-    ).toBeAttached()
-    await popupDirections.scrollIntoViewIfNeeded()
-    await page.screenshot({
-      path: test.info().outputPath('directions-popup.png'),
-      animations: 'disabled',
-    })
-    await openMaps(popupDirections)
-    await expect(
-      detail.getByRole('heading', { name: COMPUTER_SITE.name, exact: true }),
-    ).toBeAttached()
+    await directions.click()
+    await expect(hide).toBeVisible()
+    await expect(page).toHaveURL(/\/explore/)
+    expect(opened).toEqual([])
   })
 }
 
