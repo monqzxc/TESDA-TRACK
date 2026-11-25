@@ -2382,6 +2382,7 @@ export const en = {
     // The search's matched qualifications under the search box, and the short explanation of the one selected.
     matched: {
       label: 'Matched qualifications',
+      labelOne: 'Matched qualification',
       hint: 'Tap one to see what it’s about',
       hours: (hours: number) => `${hours} hrs of training`,
       hoursRange: (min: number, max: number) => `${min}–${max} hrs of training`,

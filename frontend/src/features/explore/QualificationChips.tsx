@@ -9,8 +9,8 @@ const MAX_JOBS = 2
 
 /**
  * The search's matched qualifications under the search box. Selecting one (optional) narrows the map and the results
- * to it and explains it in a line or two below. Nothing to choose between with one match, or when the learner chose
- * the qualification from the library.
+ * to it and explains it in a line or two below. Shown even for a single match, so the learner still sees what the search found;
+ * hidden only when the learner chose the qualification from the library.
  */
 export function QualificationChips({
   explore,
@@ -23,7 +23,8 @@ export function QualificationChips({
   const picked = useExploreStore((state) => state.picked)
   const togglePicked = useExploreStore((state) => state.togglePicked)
   const matches = explore.allMatches
-  if (explore.search?.chosen || matches.length < 2) return null
+  if (explore.search?.chosen || matches.length === 0) return null
+  const label = matches.length === 1 ? copy.labelOne : copy.label
   const selected = matches.find((match) => picked.includes(match.qualification.code))
   const [facts] = selected
     ? qualificationFacts({
@@ -39,13 +40,13 @@ export function QualificationChips({
   return (
     <div className={cx('pointer-events-auto flex min-w-0 flex-col gap-1.5', className)}>
       <p className="m-0 text-12 text-muted">
-        <span className="font-semibold text-navy">{copy.label}</span>{' '}
+        <span className="font-semibold text-navy">{label}</span>{' '}
         <span className="ml-0.5 inline-grid h-5 min-w-5 place-items-center rounded-full bg-navy px-1.5 align-middle text-11 leading-none font-bold text-surface tabular-nums">
           {matches.length.toLocaleString()}
         </span>{' '}
         · {copy.hint}
       </p>
-      <ScrollRow label={copy.label}>
+      <ScrollRow label={label}>
         {matches.map(({ qualification }) => (
           <ToggleButton
             key={qualification.code}
