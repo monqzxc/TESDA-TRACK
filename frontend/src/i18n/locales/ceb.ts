@@ -666,6 +666,17 @@ export const ceb: Record<string, string> = {
   Elsewhere: 'Sa laing lugar',
   'Demand here': 'Demand dinhi',
   'Demand in your area': 'Demand sa inyong lugar',
+  'See full analysis': 'Tan-awa ang tibuok nga pagtuki',
+  'From training to work': 'Gikan sa pagbansay ngadto sa trabaho',
+  'Step {0}:': 'Lakang {0}:',
+  'Get trained': 'Pagbansay',
+  'Grow your skills': 'Palambua ang imong kahanas',
+  'Land a job': 'Pagkuha og trabaho',
+  '1 recommended center is starred in your results and on the map.':
+    'Adunay bitoon ang 1 ka girekomendang sentro sa imong mga resulta ug sa mapa.',
+  '{0} recommended centers are starred in your results and on the map.':
+    'Adunay bitoon ang {0} ka girekomendang sentro sa imong mga resulta ug sa mapa.',
+  'See them in your results': 'Tan-awa sila sa imong mga resulta',
   'Employers here ask for this skill more than in most regions.':
     'Mas gipangita sa mga employer dinhi kini nga kahanas kaysa sa kadaghanan sa rehiyon.',
   'There is steady demand for this skill here.':

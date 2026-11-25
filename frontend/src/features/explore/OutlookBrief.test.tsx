@@ -1,4 +1,4 @@
-import { fireEvent, screen, waitFor, within } from '@testing-library/react'
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
@@ -258,20 +258,24 @@ const open = (path = '/explore') =>
     </MemoryRouter>,
   )
 const brief = () => screen.findByRole('region', { name: 'Supply and demand analysis' })
+// The strip's button opens the full analysis in the panel beside the map.
+const showAnalysis = async () => {
+  fireEvent.click(await screen.findByRole('button', { name: 'See full analysis' }))
+  return screen.findByRole('article', { name: 'Supply and demand analysis' })
+}
 
-describe('the supply and demand brief', () => {
-  it('analyses the first matched qualification for the learner’s own region and recommends the nearest centers', async () => {
+describe('the supply and demand strip and analysis', () => {
+  it('gives the verdict and counts in one line, and the full analysis in the panel', async () => {
     open()
-    const card = within(await brief())
-    expect(await card.findByRole('heading', { level: 2 })).toHaveTextContent(
-      'training supply for Housekeeping NC II is ahead',
-    )
-    expect(await card.findByText('Saturated')).toBeVisible()
-    expect(card.getByText('Rough signal')).toBeVisible()
-    // The analysis in words sits folded under Why: the headline and counts carry it.
-    expect(card.getByText(/prefer not to relocate/)).not.toBeVisible()
-    fireEvent.click(card.getByText('Why'))
-    expect(card.getByText(/prefer not to relocate/)).toBeVisible()
+    const strip = within(await brief())
+    expect(await strip.findByText('Saturated')).toBeVisible()
+    // How rough the signal is, is said in the full analysis: the strip keeps to one verdict.
+    expect(strip.queryByText('Rough signal')).toBeNull()
+    expect(strip.getByText(NAME)).toBeVisible()
+    // The strip is one line: the analysis's words, steps and centers are in the panel, not over the map.
+    expect(strip.queryByText(/ahead of recorded demand/)).toBeNull()
+    expect(strip.queryByRole('button', { name: /Manila Hotel School/ })).toBeNull()
+    expect(strip.queryByRole('switch')).toBeNull()
     // Only codes and the relocation choice are sent: the region nearest the learner, never their coordinates.
     const url = asked.at(-1) as URL
     expect(Object.fromEntries(url.searchParams)).toEqual({
@@ -280,18 +284,49 @@ describe('the supply and demand brief', () => {
       home_region_code: 'NCR',
       relocate: 'false',
     })
-    // The nearest training center, and the assessment center only the registry links to the qualification.
-    expect(await card.findByRole('button', { name: /Manila Hotel School/ })).toHaveTextContent(
-      'Nearest to you',
-    )
-    expect(card.getByRole('button', { name: /Manila Assessment Center/ })).toBeVisible()
-    expect(card.queryByRole('button', { name: /Cebu Hotel School/ })).toBeNull()
+
+    const analysis = within(await showAnalysis())
+    expect(analysis.getByRole('heading', { level: 2 })).toHaveTextContent(NAME)
+    expect(analysis.getByText('Rough signal')).toBeVisible()
+    expect(analysis.getByText(/training supply for Housekeeping NC II is ahead/)).toBeVisible()
+    expect(analysis.getByRole('heading', { name: 'From training to work' })).toBeVisible()
+    expect(analysis.getByText('Get trained')).toBeVisible()
+    expect(analysis.getByText('Land a job')).toBeVisible()
+    // The recommended centers are starred in the results and on the map, not listed again here.
+    expect(
+      await analysis.findByText(
+        '2 recommended centers are starred in your results and on the map.',
+      ),
+    ).toBeVisible()
+    expect(analysis.queryByRole('button', { name: /Manila Hotel School/ })).toBeNull()
     await waitFor(() =>
       expect(screen.getByTestId('map')).toHaveAttribute(
         'data-recommended',
         'training-1 assessment-7',
       ),
     )
+    // The analysis in words sits folded under Why: the verdict and counts carry it.
+    expect(analysis.getByText(/prefer not to relocate/)).not.toBeVisible()
+    fireEvent.click(analysis.getByText('Why'))
+    expect(analysis.getByText(/prefer not to relocate/)).toBeVisible()
+  })
+
+  it('opens and closes the analysis from the strip, and goes back to the results', async () => {
+    open()
+    await showAnalysis()
+    expect(screen.queryByTestId('ranked-centers')).toBeNull()
+    const toggle = within(await brief()).getByRole('button', { name: 'Hide analysis' })
+    expect(toggle).toHaveAttribute('aria-expanded', 'true')
+    fireEvent.click(toggle)
+    expect(await screen.findByTestId('ranked-centers')).toBeVisible()
+    expect(screen.queryByRole('article', { name: 'Supply and demand analysis' })).toBeNull()
+    // "See them in your results" returns to the list where the starred centers are.
+    const analysis = within(await showAnalysis())
+    fireEvent.click(await analysis.findByRole('button', { name: 'See them in your results' }))
+    expect(await screen.findByTestId('ranked-centers')).toBeVisible()
+    const again = within(await showAnalysis())
+    fireEvent.click(again.getByRole('button', { name: 'Back to results' }))
+    expect(await screen.findByTestId('ranked-centers')).toBeVisible()
   })
 
   it('ranks the recommended centers beside the map, each with its reason and trip (core)', async () => {
@@ -318,7 +353,10 @@ describe('the supply and demand brief', () => {
     expect(screen.queryByText(/not measured routes/)).toBeNull()
     fireEvent.click(within(list).getByRole('button', { name: 'How ranking works' }))
     expect(await screen.findByText(/not measured routes/)).toBeVisible()
-    fireEvent.keyDown(document.activeElement ?? document.body, { key: 'Escape' })
+    // Escape closes it once focus has moved into it, as a learner's key press would find it.
+    const dialog = screen.getByRole('dialog')
+    await waitFor(() => expect(dialog).toHaveFocus())
+    fireEvent.keyDown(dialog, { key: 'Escape' })
     await waitFor(() => expect(screen.queryByText(/not measured routes/)).toBeNull())
     // Choosing a center highlights its pin on the map.
     fireEvent.click(rows[1])
@@ -347,85 +385,59 @@ describe('the supply and demand brief', () => {
 
   it('looks further for a learner open to relocating', async () => {
     open()
-    const card = within(await brief())
-    fireEvent.click(await card.findByRole('switch', { name: 'Relocate' }))
-    await card.findByText(/look first at Central Visayas/)
-    fireEvent.click(card.getByText('Why'))
-    expect(card.getByText(/look first at Central Visayas/)).toBeVisible()
+    const analysis = within(await showAnalysis())
+    act(() => useExploreStore.getState().setRelocate(true))
+    await analysis.findByText(/look first at Central Visayas/)
+    fireEvent.click(analysis.getByText('Why'))
+    expect(analysis.getByText(/look first at Central Visayas/)).toBeVisible()
     expect(asked.at(-1)?.searchParams.get('relocate')).toBe('true')
-    expect(await card.findByRole('button', { name: /Cebu Hotel School/ })).toHaveTextContent(
-      'If you relocate: Central Visayas',
-    )
     await waitFor(() =>
       expect(screen.getByTestId('map')).toHaveAttribute(
         'data-recommended',
         'training-1 assessment-7 training-2',
       ),
     )
+    expect(
+      analysis.getByText('3 recommended centers are starred in your results and on the map.'),
+    ).toBeVisible()
   })
 
   it('shows the demand view as the qualification’s regions with its centers pinned over them', async () => {
     open()
-    const card = within(await brief())
-    fireEvent.click(await card.findByRole('button', { name: 'Demand map' }))
+    const analysis = within(await showAnalysis())
+    fireEvent.click(await analysis.findByRole('button', { name: 'Demand map' }))
     const map = screen.getByTestId('map')
     expect(await within(map).findByText('NCR:2:2:more_supply')).toBeInTheDocument()
     expect(within(map).getByText('VII:8:1:more_demand')).toBeInTheDocument()
     expect(map).toHaveAttribute('data-pins', 'training-1 assessment-7 training-2')
     expect(map).toHaveAttribute('data-overview', 'false')
-    fireEvent.click(card.getByRole('switch', { name: 'Relocate' }))
+    act(() => useExploreStore.getState().setRelocate(true))
     await waitFor(() => expect(map).toHaveAttribute('data-overview', 'true'))
-    expect(card.getByRole('button', { name: 'All results' })).toBeVisible()
+    expect(analysis.getByRole('button', { name: 'All results' })).toBeVisible()
   })
 
   it('shows the AI-written summary where the deployment has it, with the numbers behind it', async () => {
     aiSummary = true
     open()
-    const card = within(await brief())
-    await card.findByText('An AI-written note about Metro Manila.')
-    fireEvent.click(card.getByText('Why'))
-    expect(card.getByText('An AI-written note about Metro Manila.')).toBeVisible()
-    expect(card.getByText('AI summary')).toBeVisible()
+    const analysis = within(await showAnalysis())
+    await analysis.findByText('An AI-written note about Metro Manila.')
+    fireEvent.click(analysis.getByText('Why'))
+    expect(analysis.getByText('An AI-written note about Metro Manila.')).toBeVisible()
+    expect(analysis.getByText('AI summary')).toBeVisible()
     expect(
-      card.getByText('2 posting records in Metro Manila are linked to it.'),
+      analysis.getByText('2 posting records in Metro Manila are linked to it.'),
     ).toBeInTheDocument()
-  })
-
-  it('resizes from the bar along its top, and folds when dragged all the way down', async () => {
-    open()
-    const card = within(await brief())
-    await card.findByText('Saturated')
-    const sash = card.getByRole('separator', { name: 'Resize the analysis' })
-    const body = document.getElementById(sash.getAttribute('aria-controls') ?? '') as HTMLElement
-    expect(body).toBeVisible()
-    fireEvent.keyDown(sash, { key: 'Home' })
-    expect(body).not.toBeVisible()
-    expect(sash).toHaveAttribute('aria-valuenow', '0')
-    fireEvent.keyDown(sash, { key: 'ArrowUp' })
-    expect(body).toBeVisible()
-    expect(body.style.maxHeight).toBe('96px')
-    fireEvent.keyDown(sash, { key: 'ArrowUp' })
-    expect(body.style.maxHeight).toBe('144px')
-    expect(window.localStorage.getItem('tesda-track.brief-height')).toBe('144')
-    window.localStorage.removeItem('tesda-track.brief-height')
   })
 
   it('shows the area’s counts with an icon each', async () => {
     open()
-    const card = within(await brief())
-    await card.findByText('Saturated')
-    expect(card.getByText('training').closest('li')).toHaveTextContent(/^\d+training$/)
-    expect(card.getByText('assessment').closest('li')).toHaveTextContent(/^\d+assessment$/)
+    const strip = within(await brief())
+    await strip.findByText('Saturated')
+    expect(strip.getByText('training').closest('li')).toHaveTextContent(/^\d+training$/)
+    expect(strip.getByText('assessment').closest('li')).toHaveTextContent(/^\d+assessment$/)
   })
 
-  it('folds to its headline, and is absent without a qualification in focus', async () => {
-    const view = open()
-    const card = within(await brief())
-    await card.findByText(/prefer not to relocate/)
-    fireEvent.click(card.getByRole('button', { name: 'Hide analysis' }))
-    expect(card.getByRole('heading', { level: 2 })).toBeVisible()
-    expect(card.queryByText(/prefer not to relocate/)).not.toBeVisible()
-    view.unmount()
+  it('is absent without a qualification in focus', async () => {
     useExploreStore.setState({ search: null })
     open()
     await screen.findByTestId('map')
@@ -451,7 +463,7 @@ describe('Demand where you are (Card 3)', () => {
     expect(
       await within(local).findByRole('button', { name: 'Show Central Visayas on the map' }),
     ).toBeVisible()
-    fireEvent.click(screen.getByRole('switch', { name: 'Relocate' }))
+    act(() => useExploreStore.getState().setRelocate(false))
     expect(
       within(local).queryByRole('button', { name: 'Show Central Visayas on the map' }),
     ).not.toBeInTheDocument()
@@ -472,6 +484,7 @@ describe('Demand where you are (Card 3)', () => {
         <ExplorePage />
       </MemoryRouter>,
     )
+    await showAnalysis()
     await screen.findByText(settled)
     return screen.getByRole('group', { name: 'Demand in your area' })
   }
@@ -526,6 +539,7 @@ describe('Demand where you are (Card 3)', () => {
         </MemoryRouter>
       </AuthContext.Provider>,
     )
+    await showAnalysis()
     await screen.findByText('High demand')
     const local = screen.getByRole('group', { name: 'Demand in your area' })
     expect(within(local).getByText(/Skill Passport/)).toBeInTheDocument()
@@ -547,7 +561,7 @@ describe('Demand where you are (Card 3)', () => {
     const analysis = screen.getByRole('region', { name: 'Supply and demand analysis' })
     expect(within(analysis).queryByText(/sample data|December 2|demo/i)).not.toBeInTheDocument()
     expect(screen.queryByText(/demand is modelled/i)).not.toBeInTheDocument()
-    expect(screen.getByText('records')).toBeInTheDocument()
+    expect(screen.getAllByText('records').length).toBeGreaterThan(0)
     expect(
       within(local).getByRole('button', { name: 'Show Central Visayas on the map' }),
     ).toBeInTheDocument()
@@ -624,6 +638,7 @@ describe('Other qualifications in demand near you (Card 4)', () => {
   it('suggests a few with why, from the learner’s region, skills and chosen qualification', async () => {
     serve([food])
     open()
+    await showAnalysis()
     const choice = await screen.findByRole('button', {
       name: 'Look at Food and Beverage Services NC II',
     })
@@ -654,6 +669,7 @@ describe('Other qualifications in demand near you (Card 4)', () => {
   it('leaves the card out when nothing else is in demand nearby, with no fallback message', async () => {
     serve([])
     open()
+    await showAnalysis()
     await waitFor(() => expect(sent.length).toBeGreaterThan(0))
     await waitFor(() =>
       expect(
@@ -667,8 +683,11 @@ describe('Other qualifications in demand near you (Card 4)', () => {
     demandAvailable = false
     serve([food])
     open()
+    await showAnalysis()
     await screen.findByText(/No posting records yet/)
-    expect(screen.queryByRole('group', { name: 'Also in demand skills near you' })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('group', { name: 'Also in demand skills near you' }),
+    ).not.toBeInTheDocument()
     expect(
       screen.queryByRole('button', { name: 'Look at Food and Beverage Services NC II' }),
     ).not.toBeInTheDocument()
@@ -696,6 +715,7 @@ describe('Find Jobs on TSP (Card 5)', () => {
       ),
     )
     open()
+    await showAnalysis()
     const link = await screen.findByRole('link', {
       name: 'Find Jobs on TSP for Housekeeping NC II in Metro Manila (opens TESDA Skill Passport in a new tab)',
     })
@@ -716,12 +736,14 @@ describe('Find Jobs on TSP (Card 5)', () => {
     )
     useDemandStore.setState({ region: 'VII' })
     open()
+    await showAnalysis()
     const link = await screen.findByRole('link', { name: /in Central Visayas/ })
     expect(link.getAttribute('href')).toContain('area=Central+Visayas')
   })
 
   it('is left out until the deployment sets the TSP link', async () => {
     open()
+    await showAnalysis()
     await screen.findByRole('group', { name: /Demand in your area/i })
     expect(screen.queryByRole('button', { name: /Find Jobs on TSP/ })).not.toBeInTheDocument()
     expect(screen.queryByRole('link', { name: /Find Jobs on TSP/ })).not.toBeInTheDocument()

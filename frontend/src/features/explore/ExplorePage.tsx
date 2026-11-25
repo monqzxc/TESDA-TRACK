@@ -38,7 +38,7 @@ import type { ElsewhereProvince } from './demandApi.ts'
 import { countedCenters, nearestRegion, offers, REACH_KM } from './explore.ts'
 import { LocationPrompt } from './LocationPrompt.tsx'
 import { MapFilters } from './MapFilters.tsx'
-import { OutlookBrief } from './OutlookBrief.tsx'
+import { OutlookAnalysis, OutlookBrief } from './OutlookBrief.tsx'
 import { QualificationChips } from './QualificationChips.tsx'
 import { CenterCard, NearbyPanel, ResultsPanel, TspProfilePanel } from './Panels.tsx'
 import { useDemandStore, useExplore, useExploreStore } from './useExplore.ts'
@@ -52,6 +52,8 @@ type ExploreNavigationState = {
   focusSearch?: boolean
   runSearch?: boolean
   exploreCenter?: { id: string; code: string | null }
+  /** The full supply and demand analysis is open in the panel, opened from the strip along the map's foot. */
+  exploreAnalysis?: boolean
 }
 const VIEWS: readonly View[] = ['all', 'assessment', 'training', 'demand']
 
@@ -227,7 +229,15 @@ export default function ExplorePage() {
         else updated.set('type', next)
         return updated
       },
-      { replace: true, preventScrollReset: true },
+      {
+        replace: true,
+        preventScrollReset: true,
+        // The analysis open in the panel stays open: its Demand map button changes the view under it.
+        state:
+          arrival?.exploreAnalysis && !arrival.exploreCenter
+            ? { exploreAnalysis: true }
+            : undefined,
+      },
     )
 
   // Arriving from a qualification's page (?qualification=CODE&type=training): that qualification's centers, as a
@@ -371,6 +381,8 @@ export default function ExplorePage() {
     ? explore.outlook.data?.snapshot_dates
     : explore.demandMap.data?.snapshot_dates
   const selected = centers.find((center) => center.id === selectedId) ?? null
+  // The analysis takes the panel as a center does; a center opened over it comes first, and Back returns to it.
+  const analysisOpen = Boolean(arrival?.exploreAnalysis && focusCode && !selected)
   const showFilters = view !== 'demand'
   // The filters that are on, for the Filters button's badge (the type is the chips, counted by Clear all only).
   const activeFilters = [
@@ -406,7 +418,7 @@ export default function ExplorePage() {
     { onMap = false, code = null }: { onMap?: boolean; code?: string | null } = {},
   ) => {
     // Leaving the list, keep its place to come back to.
-    if (!selectedId) listScroll.current = scroller.current?.scrollTop ?? 0
+    if (!selectedId && !analysisOpen) listScroll.current = scroller.current?.scrollTop ?? 0
     navigate(`${location.pathname}${location.search}${location.hash}`, {
       state: { ...arrival, exploreCenter: { id, code } },
       // Switching centers keeps one detail entry, so Back returns directly to the results.
@@ -425,6 +437,21 @@ export default function ExplorePage() {
     navigate(-1)
     setMotion('back')
   }
+  // The strip's button: opens the full analysis in the panel (one history entry, as a center), or closes it.
+  const toggleAnalysis = () => {
+    if (analysisOpen) {
+      back()
+      return
+    }
+    if (!selectedId) listScroll.current = scroller.current?.scrollTop ?? 0
+    store().showRoute(null)
+    navigate(`${location.pathname}${location.search}${location.hash}`, {
+      state: { ...arrival, exploreCenter: undefined, exploreAnalysis: true },
+      preventScrollReset: true,
+    })
+    setMotion('forward')
+    setCollapsed(false)
+  }
   // A province picked in the "Around you" card: the demand view goes to its point, with its region selected.
   const [demandFocus, setDemandFocus] = useState<{
     latitude: number
@@ -440,9 +467,9 @@ export default function ExplorePage() {
   useLayoutEffect(() => {
     const body = scroller.current
     if (!body) return
-    if (selectedId) body.scrollTop = 0
+    if (selectedId || analysisOpen) body.scrollTop = 0
     else body.scrollTop = listScroll.current
-  }, [selectedId, motion])
+  }, [selectedId, analysisOpen, motion])
 
   // The "Around you" card (section 3 of markdowns/explore-map-first-visit-updates.md): over the map's top right from
   // a tablet up, and at the top of the results sheet on a phone. Not in the demand view, whose panel says the same.
@@ -641,18 +668,16 @@ export default function ExplorePage() {
         </LoadBoundary>
       </div>
 
-      {/* Along the bottom, beside the open panel: the qualification in focus, analysed for the learner's area. On a
-          phone the results sheet takes its place while it's open. */}
+      {/* Along the bottom, beside the open panel: the qualification in focus and its verdict for the learner's area,
+          in one line, centered over the map and only as wide as it needs. Its button opens the full analysis in the
+          panel. On a phone the results sheet takes its place while it's open. */}
       <OutlookBrief
         ref={briefRef}
         explore={explore}
-        view={view}
-        onView={(next) => {
-          setView(next)
-        }}
-        onSelect={(id, code) => select(id, { onMap: true, code })}
+        analysisOpen={analysisOpen}
+        onAnalysis={toggleAnalysis}
         className={cx(
-          'intro-piece absolute right-3 bottom-3 left-3 [--intro-order:5]',
+          'intro-piece absolute right-3 bottom-3 left-3 [--intro-order:5] md:mx-auto md:w-fit',
           !collapsed && 'max-md:hidden md:left-[388px]',
         )}
       />
@@ -733,7 +758,7 @@ export default function ExplorePage() {
               setCollapsed(false)
             }}
           />
-          {!selected && (
+          {!selected && !analysisOpen && (
             <QualificationChips
               explore={explore}
               className="intro-piece mx-3 mt-2 rounded-12 max-md:bg-surface max-md:p-2 max-md:shadow-[0_6px_16px_-4px_rgb(var(--track-shadow-rgb)/0.24)] md:mt-0 md:mb-2"
@@ -805,7 +830,7 @@ export default function ExplorePage() {
                 <span aria-hidden="true" className="h-1 w-9 rounded-full bg-dash" />
               </button>
               {/* On a phone the card is the sheet's first section, out of the way while a center is open. */}
-              {!tabletUp && !selected && aroundCard('sheet')}
+              {!tabletUp && !selected && !analysisOpen && aroundCard('sheet')}
               {!search && view !== 'demand' && !selected && (
                 <p className="m-0 text-13 leading-[1.5] text-muted">{copy.search.hint}</p>
               )}
@@ -818,7 +843,7 @@ export default function ExplorePage() {
                   {copy.sampleCenters}
                 </p>
               )}
-              {!selected && <TspProfilePanel explore={explore} />}
+              {!selected && !analysisOpen && <TspProfilePanel explore={explore} />}
               {explore.failed && (
                 <div className="rounded-12 bg-warn-bg p-3 text-14 text-warn-ink">
                   <p role="alert" className="mt-0">
@@ -836,13 +861,20 @@ export default function ExplorePage() {
               )}
               {/* Keyed, so each move between the list and a center plays its slide again. */}
               <div
-                key={selected ? `center-${selected.id}` : 'list'}
+                key={selected ? `center-${selected.id}` : analysisOpen ? 'analysis' : 'list'}
                 className={cx(
-                  selected && motion === 'forward' && 'motion-safe:animate-enter-forward',
-                  !selected && motion === 'back' && 'motion-safe:animate-enter-back',
+                  (selected || analysisOpen) &&
+                    motion === 'forward' &&
+                    'motion-safe:animate-enter-forward',
+                  !selected &&
+                    !analysisOpen &&
+                    motion === 'back' &&
+                    'motion-safe:animate-enter-back',
                 )}
               >
-                {selected ? (
+                {analysisOpen ? (
+                  <OutlookAnalysis explore={explore} view={view} onView={setView} onBack={back} />
+                ) : selected ? (
                   <CenterCard
                     center={selected}
                     code={selectedCode}

@@ -661,6 +661,17 @@ export const ilo: Record<string, string> = {
   Elsewhere: 'Iti sabali a lugar',
   'Demand here': 'Demand ditoy',
   'Demand in your area': 'Demand iti lugaryo',
+  'See full analysis': 'Kitaen ti intero a panangusig',
+  'From training to work': 'Manipud panagsanay agingga iti trabaho',
+  'Step {0}:': 'Addang {0}:',
+  'Get trained': 'Agsanay',
+  'Grow your skills': 'Padakkelen ti abilidadmo',
+  'Land a job': 'Makagun-od iti trabaho',
+  '1 recommended center is starred in your results and on the map.':
+    'Addaan iti bituen ti 1 a nairekomenda a sentro kadagiti resultam ken iti mapa.',
+  '{0} recommended centers are starred in your results and on the map.':
+    'Addaan iti bituen ti {0} a nairekomenda a sentro kadagiti resultam ken iti mapa.',
+  'See them in your results': 'Kitaen ida kadagiti resultam',
   'Employers here ask for this skill more than in most regions.':
     'Ad-adda a sapulen dagiti employer ditoy daytoy a kabaelan ngem iti kaaduan a rehion.',
   'There is steady demand for this skill here.':

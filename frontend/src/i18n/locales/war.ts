@@ -659,6 +659,17 @@ export const war: Record<string, string> = {
   Elsewhere: 'Ha iba nga lugar',
   'Demand here': 'Demand dinhi',
   'Demand in your area': 'Demand ha iyo lugar',
+  'See full analysis': 'Kitaa an bug-os nga pag-analisa',
+  'From training to work': 'Tikang ha pagbansay ngadto ha trabaho',
+  'Step {0}:': 'Lakang {0}:',
+  'Get trained': 'Magbansay',
+  'Grow your skills': 'Pauswaga an imo kahanas',
+  'Land a job': 'Makakuha hin trabaho',
+  '1 recommended center is starred in your results and on the map.':
+    'May bituon an 1 nga ginrekomenda nga sentro ha imo mga resulta ngan ha mapa.',
+  '{0} recommended centers are starred in your results and on the map.':
+    'May bituon an {0} nga ginrekomenda nga sentro ha imo mga resulta ngan ha mapa.',
+  'See them in your results': 'Kitaa hira ha imo mga resulta',
   'Employers here ask for this skill more than in most regions.':
     'Mas ginbibiling han mga employer dinhi ini nga abilidad kay ha kadam-an nga rehiyon.',
   'There is steady demand for this skill here.':

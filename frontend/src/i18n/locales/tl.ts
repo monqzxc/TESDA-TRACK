@@ -1841,6 +1841,17 @@ export const tl: Record<string, string> = {
   Elsewhere: 'Sa ibang lugar',
   'Demand here': 'Demand dito',
   'Demand in your area': 'Demand sa inyong lugar',
+  'See full analysis': 'Tingnan ang buong pagsusuri',
+  'From training to work': 'Mula pagsasanay hanggang trabaho',
+  'Step {0}:': 'Hakbang {0}:',
+  'Get trained': 'Magsanay',
+  'Grow your skills': 'Palaguin ang iyong kakayahan',
+  'Land a job': 'Makakuha ng trabaho',
+  '1 recommended center is starred in your results and on the map.':
+    'May bituin ang 1 inirerekomendang sentro sa iyong mga resulta at sa mapa.',
+  '{0} recommended centers are starred in your results and on the map.':
+    'May bituin ang {0} inirerekomendang sentro sa iyong mga resulta at sa mapa.',
+  'See them in your results': 'Tingnan sila sa iyong mga resulta',
   'Employers here ask for this skill more than in most regions.':
     'Mas hinahanap ng mga employer dito ang kasanayang ito kaysa sa karamihan ng rehiyon.',
   'There is steady demand for this skill here.':

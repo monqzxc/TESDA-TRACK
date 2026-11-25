@@ -666,6 +666,17 @@ export const hil: Record<string, string> = {
   Elsewhere: 'Sa iban nga lugar',
   'Demand here': 'Demand diri',
   'Demand in your area': 'Demand sa inyo lugar',
+  'See full analysis': 'Tan-awa ang bug-os nga pagtuki',
+  'From training to work': 'Halin sa pagbansay pakadto sa trabaho',
+  'Step {0}:': 'Lakang {0}:',
+  'Get trained': 'Magbansay',
+  'Grow your skills': 'Padakua ang imo kahanas',
+  'Land a job': 'Makakuha sang trabaho',
+  '1 recommended center is starred in your results and on the map.':
+    'May bituon ang 1 ka ginrekomenda nga sentro sa imo mga resulta kag sa mapa.',
+  '{0} recommended centers are starred in your results and on the map.':
+    'May bituon ang {0} ka ginrekomenda nga sentro sa imo mga resulta kag sa mapa.',
+  'See them in your results': 'Tan-awa sila sa imo mga resulta',
   'Employers here ask for this skill more than in most regions.':
     'Mas ginapangita sang mga employer diri ini nga ikasarang sangsa kalabanan nga rehiyon.',
   'There is steady demand for this skill here.':

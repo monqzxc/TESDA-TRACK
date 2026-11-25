@@ -1173,6 +1173,7 @@ export function RankedCenters({
   const { demandCode: code, reference, rangeKm, focusName } = explore
   if (!code) return null
   const items = explore.ranked.filter((item) => !kind || item.center.kind === kind)
+  const recommended = new Set(explore.recommendedIds)
   const signedIn = explore.passportStatus === 'loaded'
 
   return (
@@ -1211,6 +1212,7 @@ export function RankedCenters({
                 item={item}
                 rank={index + 1}
                 top={index === 0}
+                starred={recommended.has(item.center.id)}
                 rangeKm={rangeKm}
                 onSelect={() => onSelect(item.center.id, code)}
               />
@@ -1254,12 +1256,15 @@ function RankedRow({
   item,
   rank,
   top,
+  starred,
   rangeKm,
   onSelect,
 }: {
   item: RankedCenter
   rank: number
   top: boolean
+  /** Recommended for the qualification in focus, as its pin is starred: the top row says so in words already. */
+  starred: boolean
   rangeKm: number
   onSelect: () => void
 }) {
@@ -1324,6 +1329,13 @@ function RankedRow({
         )}
         <span className="block text-14 leading-[1.35] font-semibold wrap-anywhere text-navy">
           {center.name}
+          {starred && !top && (
+            <Icon
+              name="star"
+              label={copy.top}
+              className="ml-1.5 inline-block align-[-2px] text-[#b45309]"
+            />
+          )}
         </span>
         <span className="mt-0.5 flex items-center gap-1 text-12 font-semibold text-muted">
           <Icon name={kindIcon[center.kind]} className={kindColor[center.kind]} />

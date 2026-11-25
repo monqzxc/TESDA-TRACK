@@ -665,6 +665,17 @@ export const bcl: Record<string, string> = {
   Elsewhere: 'Sa ibang lugar',
   'Demand here': 'Demand digdi',
   'Demand in your area': 'Demand sa saindong lugar',
+  'See full analysis': 'Hilingon an bilog na pagsiyasat',
+  'From training to work': 'Poon sa pag-adal sagkod sa trabaho',
+  'Step {0}:': 'Hakbang {0}:',
+  'Get trained': 'Mag-adal',
+  'Grow your skills': 'Padakulaon an saimong abilidad',
+  'Land a job': 'Makakua nin trabaho',
+  '1 recommended center is starred in your results and on the map.':
+    'May bituon an 1 irinekomendang sentro sa saimong mga resulta asin sa mapa.',
+  '{0} recommended centers are starred in your results and on the map.':
+    'May bituon an {0} irinekomendang sentro sa saimong mga resulta asin sa mapa.',
+  'See them in your results': 'Hilingon sinda sa saimong mga resulta',
   'Employers here ask for this skill more than in most regions.':
     'Mas hinahanap kan mga employer digdi an kakayahan na ini kaysa sa kadaklan na rehiyon.',
   'There is steady demand for this skill here.':

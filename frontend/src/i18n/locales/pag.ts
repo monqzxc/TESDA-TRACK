@@ -653,6 +653,17 @@ export const pag: Record<string, string> = {
   Elsewhere: 'Ed arum a lugar',
   'Demand here': 'Demand dia',
   'Demand in your area': 'Demand ed lugar yo',
+  'See full analysis': 'Nengnengen so interon panusisa',
+  'From training to work': 'Manlapud pansanay anggad trabaho',
+  'Step {0}:': 'Akbang {0}:',
+  'Get trained': 'Mansanay',
+  'Grow your skills': 'Papabaleg so kabaletan mo',
+  'Land a job': 'Makaala na trabaho',
+  '1 recommended center is starred in your results and on the map.':
+    'Walay bitewen na 1 inrekomendan sentro ed saray resulta mo tan ed mapa.',
+  '{0} recommended centers are starred in your results and on the map.':
+    'Walay bitewen na {0} inrekomendan sentro ed saray resulta mo tan ed mapa.',
+  'See them in your results': 'Nengnengen ira ed saray resulta mo',
   'Employers here ask for this skill more than in most regions.':
     'Mas anapen na saray employer dia so kabaelan ya ia nen say kaslakan a rehiyon.',
   'There is steady demand for this skill here.':

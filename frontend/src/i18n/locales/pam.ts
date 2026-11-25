@@ -1342,6 +1342,17 @@ export const pam: Record<string, string> = {
   Elsewhere: 'King aliwang lugal',
   'Demand here': 'Demand keni',
   'Demand in your area': 'Demand king lugar yu',
+  'See full analysis': 'Lawan ing buong pamanalisa',
+  'From training to work': 'Manibat king pamag-aral angga king obra',
+  'Step {0}:': 'Pamikatagal {0}:',
+  'Get trained': 'Mag-aral',
+  'Grow your skills': 'Pakaybatan ing kayang mu',
+  'Land a job': 'Makakuang obra',
+  '1 recommended center is starred in your results and on the map.':
+    'Atin bitwin ing 1 mirekomendang sentro kareng resulta mu ampong king mapa.',
+  '{0} recommended centers are starred in your results and on the map.':
+    'Atin bitwin ing {0} mirekomendang sentro kareng resulta mu ampong king mapa.',
+  'See them in your results': 'Lawan me kareng resulta mu',
   'Employers here ask for this skill more than in most regions.':
     'Mas pakamalan da reng employer keni ing kayang ini kesa king karamwan a rehiyun.',
   'There is steady demand for this skill here.':

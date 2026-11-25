@@ -2808,9 +2808,10 @@ export const en = {
       loading: 'Reading the records for this qualification…',
       failed: 'The supply and demand analysis could not be loaded.',
       retry: 'Try again',
-      relocate: 'Relocate',
-      // The bar along the top edge: drag it up or down, like an editor's panel.
-      resize: 'Resize the analysis',
+      // The strip's button: the full analysis opens in the panel beside the map, as a center does.
+      open: 'See full analysis',
+      // In place of the verdict when there is no area to judge: the counts across the country.
+      nationwide: 'All regions',
       // The counts for the area, one icon each.
       stats: {
         postings: (n: number) => `posting${n === 1 ? '' : 's'}`,
@@ -2888,24 +2889,24 @@ export const en = {
       ai: 'AI summary',
       aiNote: 'Written by AI from the counts on this map.',
       numbers: 'Why',
-      recommended: 'Recommended centers',
-      recommendedWhy: 'Why these centers?',
-      recommendedWhyText:
-        'The closest training and assessment centers that offer this skill, from where you are. With Relocate on, centers in regions where it is needed more are added.',
       tag: 'Recommended',
       none: 'No center lists this qualification yet.',
       needPlace: 'Share your location or type a city to get a recommended center.',
-      kinds: { training: 'Train', assessment: 'Get assessed' },
-      reasons: {
-        near: 'Nearest to you',
-        region: 'Nearest in your region',
-        elsewhere: (region: string) => `Nearest, in ${region}`,
-        relocation: (region: string) => `If you relocate: ${region}`,
+      // The analysis in the panel: the way from training to work, in three steps.
+      journey: {
+        heading: 'From training to work',
+        step: (n: number) => `Step ${n}:`,
+        train: 'Get trained',
+        skills: 'Grow your skills',
+        work: 'Land a job',
+        starred: (n: number) =>
+          n === 1
+            ? '1 recommended center is starred in your results and on the map.'
+            : `${n} recommended centers are starred in your results and on the map.`,
+        see: 'See them in your results',
       },
       showDemand: 'Demand map',
       showCenters: 'All results',
-      // Over the bottom of a brief with more below its fold.
-      more: 'More below',
       footnote:
         'A rough signal from dated records, not a forecast. Confirm with the center or TESDA.',
       // On the map.
