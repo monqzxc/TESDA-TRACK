@@ -1041,4 +1041,13 @@ export const war: Record<string, string> = {
   'You can use TESDA Track without an account. Signing in uses your TSP (TESDA Skill Passport) email and profile (skills, licenses and home area) to personalize suggestions. We keep your name, email and saved progress until you delete your account.':
     'Magagamit mo an TESDA Track bisan waray account. Ha pag-sign in, ginagamit an imo TSP (TESDA Skill Passport) email ngan profile (mga abilidad, lisensya ngan lugar nga inuukyan) basi ipahiangay an mga suhestyon. Gintitipigan namon an imo ngaran, email ngan na-save nga progreso tubtob nga imo burahon an account.',
   'Last updated 24 November 2026': 'Kataposan nga gin-update 24 Nobyembre 2026',
+  'The posting': 'An posting',
+  'The {0} postings': 'An {0} nga posting',
+  'Newest first. Open one to see the full posting.':
+    'Pinakabag-o anay. Abrihi an usa basi makita an bug-os nga posting.',
+  'Loading postings…': 'Ginkakarga an mga posting…',
+  'The postings could not be loaded.': 'Diri makarga an mga posting.',
+  'Employer not named': 'Waray ngaran an employer',
+  'Open the {0} posting at {1}': 'Abrihi an posting nga {0} ha {1}',
+  'Typically {0} a month': 'Agsob {0} kada bulan',
 }

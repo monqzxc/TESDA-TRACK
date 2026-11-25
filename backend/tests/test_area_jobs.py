@@ -8,7 +8,7 @@ from tesda_track.services import area_jobs
 
 
 def seed(session, key, *, title="Welder", source_id=None, region="NCR", locality="MAKATI CITY, NCR",
-         employer="Acme", decision=None, status="active", observed=None):
+         employer="Acme", decision=None, status="active", observed=None, extra=None):
     dataset = Dataset(key=key + "@1", source_id="philjobnet-postings-" + key, version=1, publisher="Fixture board",
                       title="Test snapshot", evidence_class="observed_posting", geographic_scope="regional",
                       region_code=region, source_url="https://example.com/", input_sha256="0" * 64,
@@ -18,7 +18,7 @@ def seed(session, key, *, title="Welder", source_id=None, region="NCR", locality
     evidence = Evidence(dataset_id=dataset.id, occurrence_key=key, source_record_id=source_id or key,
                         occupation_title=title, normalized_title=title.casefold(), classification="observed_posting",
                         geographic_scope="regional", region_code=region, locality=locality,
-                        observed_on=observed or date.today(), provenance={"employer": employer, "posted_on": "11/1/2026"})
+                        observed_on=observed or date.today(), provenance={"employer": employer, "posted_on": "11/1/2026", **(extra or {})})
     session.add(evidence)
     session.flush()
     if decision:
@@ -109,3 +109,33 @@ def test_province_filters_by_the_locality_and_unknown_is_empty(session, client):
     unknown = client.get("/api/v1/labor-market/jobs", params={"province": "Maguindanao del Norte"})
     assert unknown.status_code == 200 and unknown.json()["items"] == [] and unknown.json()["posting_count"] == 0
     assert client.get("/api/v1/labor-market/jobs", params={"province": "x" * 101}).status_code == 422
+
+
+def test_postings_list_the_records_behind_a_titles_count(session, client):
+    seed(session, "a", source_id="101", extra={"salary_php": "18000", "employment_type": "Permanent",
+                                               "education": "Educ level not specified"})
+    seed(session, "b", source_id="102", title="WELDER", employer="Beta", extra={"posted_on": "11/5/2026"})
+    seed(session, "c", source_id="103", title="Cook")
+    seed(session, "d", source_id="104", region="III", locality="ANGELES CITY, PAMPANGA")
+    response = client.get("/api/v1/labor-market/jobs/postings", params={"title": "Welder", "region_code": "NCR"})
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert body["total"] == 2 and [item["job_id"] for item in body["items"]] == ["102", "101"]
+    first = body["items"][1]
+    assert first["salary_php"] == 18000 and first["employment_type"] == "Permanent" and first["education"] is None
+    jobs = client.get("/api/v1/labor-market/jobs", params={"region_code": "NCR"}).json()
+    welder = next(item for item in jobs["items"] if item["title"].casefold() == "welder")
+    assert welder["posting_count"] == body["total"]
+    assert welder["salary_min"] == welder["salary_max"] == welder["salary_median"] == 18000
+
+
+def test_one_posting_by_id_with_its_reviewed_links_and_same_title_records(session, client):
+    seed(session, "a", source_id="201", decision="approved", extra={"salary_php": "15000"})
+    seed(session, "b", source_id="202", region="III", locality="ANGELES CITY, PAMPANGA", extra={"salary_php": "21000"})
+    seed(session, "c", source_id="203", locality="PASAY CITY, NCR")
+    body = client.get("/api/v1/labor-market/postings/201").json()
+    assert body["posting"]["job_id"] == "201" and body["posting"]["region_name"]
+    assert [q["code"] for q in body["qualifications"]] == ["SMAW-NC-II"]
+    assert [p["job_id"] for p in body["same_title"]] == ["203", "202"] and body["same_title_total"] == 2
+    assert (body["salary_min"], body["salary_max"]) == (15000, 21000)
+    assert client.get("/api/v1/labor-market/postings/999").status_code == 404

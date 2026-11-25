@@ -45,6 +45,8 @@ export const helpCopy = {
     privacy: 'Read how TESDA-TRACK uses information and how you can exercise your privacy rights.',
     suggestionReports:
       'The assigned reviewer can read reports about qualification and center suggestions here.',
+    jobPosting:
+      'See what this employer offers, the qualifications that prepare you for it, and where to train.',
     notFound: 'This address could not be found. Use the page links or navigation to continue.',
   },
   shared: {

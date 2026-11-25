@@ -370,12 +370,54 @@ export const en = {
       heading: 'Privacy policy',
       lead: 'What TESDA Track collects, why, who sees it, and how you stay in control of it.',
     },
+    jobPosting: {
+      title: 'Job posting · TESDA-TRACK',
+      heading: 'Job posting',
+    },
     notFound: {
       title: 'Page not found · TESDA-TRACK',
       heading: 'Page not found',
       lead: 'The address may be mistyped, or the page may have moved.',
       home: 'Go to the home page',
     },
+  },
+  jobPosting: {
+    breadcrumb: 'Breadcrumb',
+    careerMap: 'Career Map',
+    salary: 'Monthly salary',
+    salaryUnstated: 'Not stated',
+    type: 'Employment',
+    education: 'Education',
+    educationAny: 'Any level',
+    posted: 'Posted',
+    location: 'Location',
+    apply: 'Apply on PhilJobNet',
+    jobId: (id: string) => `PhilJobNet job ID ${id}`,
+    recorded: (date: string) => `Recorded ${date}`,
+    rangeLabel: 'Pay for this role',
+    range: (min: string, max: string) => (min === max ? min : `${min} – ${max}`),
+    rangeNote: (n: number, typical: string | null) =>
+      typical
+        ? `Typically ${typical} across ${n.toLocaleString()} postings`
+        : `Across ${n.toLocaleString()} postings`,
+    thisOne: 'This posting',
+    prepare: 'Qualifications that prepare you',
+    prepareLead: 'TESDA qualifications that certify the skills this job asks for.',
+    noQualification: 'No TESDA qualification is linked to this job title yet.',
+    findTraining: 'Find training',
+    more: 'More openings for this role',
+    moreLead: (n: number) =>
+      n > 6 ? `Nearest first · ${n.toLocaleString()} in all` : 'Nearest first',
+    noMore: 'This is the only posting recorded for this role.',
+    loading: 'Loading the posting…',
+    failed: 'The posting could not be loaded.',
+    retry: 'Try again',
+    notFound: {
+      heading: 'Posting not found',
+      body: 'It may have closed or been removed from the latest PhilJobNet snapshot.',
+      back: 'Back to the Career Map',
+    },
+    note: 'Dated PhilJobNet record. Confirm the opening with the employer before applying.',
   },
   catalog: {
     loading: 'Loading qualifications…',
@@ -2572,6 +2614,7 @@ export const en = {
       qualifications: 'Qualifications',
       postings: 'Postings',
       postingCount: (count: number) => `${count.toLocaleString()} postings`,
+      typicalPay: (pay: string) => `Typically ${pay} a month`,
       inDemand: 'Forecast: in demand',
       hardToFill: 'Forecast: hard to fill',
       basedOn: (date: string) => `Based on job postings, ${date}`,
@@ -2632,6 +2675,15 @@ export const en = {
         whereToTrain: 'Where to train',
         whereLead: 'The nearest training centers for these qualifications.',
         skillsNeeded: 'Skills you will need',
+        // The posting records behind the job's count: one row each, opening its own page.
+        postingsBehind: (n: number) =>
+          n === 1 ? 'The posting' : `The ${n.toLocaleString()} postings`,
+        postingsLead: 'Newest first. Open one to see the full posting.',
+        postingsLoading: 'Loading postings…',
+        postingsFailed: 'The postings could not be loaded.',
+        employerUnnamed: 'Employer not named',
+        openPosting: (title: string, employer: string) =>
+          `Open the ${title} posting at ${employer}`,
         noQualification:
           'No TESDA qualification is linked to this job title yet. Search the Career Map for a related one.',
       },

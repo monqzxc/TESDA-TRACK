@@ -1,12 +1,14 @@
-import { useQueries } from '@tanstack/react-query'
+import { useQueries, useQuery } from '@tanstack/react-query'
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Button } from 'react-aria-components'
+import { Link } from 'react-router'
 import type { Qualification } from '../../api/queries.ts'
 import { Icon } from '../../components/Icon.tsx'
 import type { IconName } from '../../components/icons.ts'
 import { ModalDialog } from '../../components/ModalDialog.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
+import { jobPostingPath } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { listingsQuery } from '../training/api.ts'
 import { placeLabel, type Center, type Program } from '../training/centers.ts'
@@ -16,9 +18,16 @@ import {
   plainTitle,
   qualificationsTeaching,
 } from './aroundYou.ts'
-import type { AreaJob, AreaQualification } from './demandApi.ts'
+import {
+  jobPostingsQuery,
+  pesos,
+  type AreaJob,
+  type AreaQualification,
+  type AroundArea,
+  type JobPosting,
+} from './demandApi.ts'
 import { roundKm } from './explore.ts'
-import { readable } from './jobDisplay.ts'
+import { placeParts, readable, shortDay } from './jobDisplay.ts'
 
 /** What a press in the "Around you" card opened. A dialog can lead to another; the trail is the way back. */
 export type Detail =
@@ -28,6 +37,8 @@ export type Detail =
 
 /** The area the item was pressed in: its posting records give the counts the dialogs show. */
 export interface DetailArea {
+  /** Where the card's lists were read: the job's own posting records are read for the same area. */
+  place: AroundArea
   qualifications: readonly AreaQualification[]
   jobs: readonly AreaJob[]
   /** A forecast line for a qualification (regions only), as the card writes it. */
@@ -354,8 +365,12 @@ function JobBody({
         <p className={cx(muted, '-mt-2')}>
           {copy.explore.demand.postingCount(job.posting_count)} ·{' '}
           {copy.explore.demand.employerCount(job.employer_count)}
+          {job.salary_median != null && (
+            <> · {copy.explore.aroundYou.typicalPay(pesos(job.salary_median))}</>
+          )}
         </p>
       )}
+      {area && <Postings title={job?.title ?? title} place={area.place} />}
       <Section icon="award" title={details.forJob}>
         {qualifications.length ? (
           <Expandable
@@ -410,6 +425,66 @@ function JobBody({
     </>
   )
 }
+
+/**
+ * The posting records behind the job's count, one row each: who posted it, where, when, and the pay. Each opens the
+ * posting's own page.
+ */
+function Postings({ title, place }: { title: string; place: AroundArea }) {
+  const details = useCopy().explore.aroundYou.details
+  const postings = useQuery(jobPostingsQuery(title, place))
+  const heading = postings.data
+    ? details.postingsBehind(postings.data.total)
+    : details.postingsBehind(0)
+  return (
+    <Section icon="briefcase" title={heading} lead={details.postingsLead}>
+      {postings.isPending ? (
+        <RowsLoading label={details.postingsLoading} />
+      ) : postings.isError ? (
+        <p role="status" className={muted}>
+          {details.postingsFailed}
+        </p>
+      ) : (
+        <Expandable
+          items={postings.data.items}
+          limit={4}
+          keyOf={(posting) => posting.job_id}
+          render={(posting) => <PostingRow posting={posting} />}
+        />
+      )}
+    </Section>
+  )
+}
+
+function PostingRow({ posting }: { posting: JobPosting }) {
+  const details = useCopy().explore.aroundYou.details
+  const employer = posting.employer ? readable(posting.employer) : details.employerUnnamed
+  const where = posting.location ? placeParts(posting.location).place : null
+  const facts = [where, posting.employment_type, shortDay(posting.posted_on)].filter(Boolean)
+  return (
+    <Link
+      to={jobPostingPath(posting.job_id)}
+      aria-label={details.openPosting(readable(posting.title), employer)}
+      className={linkRow}
+    >
+      <span className="grid min-w-0 flex-1 gap-0.5">
+        <span className="text-14 leading-snug font-semibold text-navy group-hover:text-blue">
+          {employer}
+        </span>
+        <span className="text-12 leading-[1.45] text-muted">{facts.join(' · ')}</span>
+      </span>
+      {posting.salary_php != null && (
+        <span className="shrink-0 text-14 font-bold text-navy tabular-nums">
+          {pesos(posting.salary_php)}
+        </span>
+      )}
+      <Icon name="arrowRight" size={16} className="shrink-0 text-muted group-hover:text-blue" />
+    </Link>
+  )
+}
+
+const linkRow =
+  'group flex min-h-14 w-full items-center gap-3 px-3 py-2.5 text-left no-underline transition-colors duration-150 hover:bg-soft active:bg-chip outline-none focus-visible:relative focus-visible:z-1 focus-visible:rounded-12 focus-visible:outline-3 focus-visible:outline-focus'
 
 // ——— Parts ———
 

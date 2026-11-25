@@ -6955,6 +6955,142 @@
         }
       }
     },
+    "/api/v1/labor-market/jobs/postings": {
+      "get": {
+        "tags": [
+          "labor market"
+        ],
+        "summary": "Job Postings",
+        "description": "The individual posting records behind one title's count in an area, newest first.",
+        "operationId": "job_postings_api_v1_labor_market_jobs_postings_get",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200,
+              "title": "Title"
+            }
+          },
+          {
+            "name": "region_code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Region Code"
+            }
+          },
+          {
+            "name": "province",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "maxLength": 100
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A province, as the Skill Passport writes it (\"Laguna\", \"Metro Manila\" for all of NCR). Matched without case against the province in each posting's locality; an unknown province gives an empty list.",
+              "title": "Province"
+            },
+            "description": "A province, as the Skill Passport writes it (\"Laguna\", \"Metro Manila\" for all of NCR). Matched without case against the province in each posting's locality; an unknown province gives an empty list."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "maximum": 300,
+              "minimum": 1,
+              "default": 10,
+              "title": "Limit"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobPostings"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/labor-market/postings/{job_id}": {
+      "get": {
+        "tags": [
+          "labor market"
+        ],
+        "summary": "Job Posting",
+        "description": "One posting record by its PhilJobNet job ID.",
+        "operationId": "job_posting_api_v1_labor_market_postings__job_id__get",
+        "parameters": [
+          {
+            "name": "job_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "maxLength": 40,
+              "title": "Job Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobPostingDetail"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/labor-market/elsewhere": {
       "get": {
         "tags": [
@@ -8131,6 +8267,42 @@
             ],
             "title": "Linked Qualification",
             "description": "That qualification, by name"
+          },
+          "salary_min": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Salary Min",
+            "description": "Lowest monthly salary stated among its records, PHP"
+          },
+          "salary_max": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Salary Max",
+            "description": "Highest monthly salary stated among its records, PHP"
+          },
+          "salary_median": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Salary Median",
+            "description": "Median monthly salary stated among its records, PHP"
           }
         },
         "type": "object",
@@ -13422,6 +13594,231 @@
         ],
         "title": "JobArea"
       },
+      "JobPosting": {
+        "properties": {
+          "job_id": {
+            "type": "string",
+            "title": "Job Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "employer": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Employer"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location"
+          },
+          "region_code": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Code"
+          },
+          "region_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Region Name"
+          },
+          "salary_php": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Salary Php"
+          },
+          "employment_type": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Employment Type"
+          },
+          "education": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Education"
+          },
+          "posted_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Posted On"
+          },
+          "observed_on": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Observed On"
+          },
+          "source_url": {
+            "type": "string",
+            "title": "Source Url",
+            "default": "https://philjobnet.gov.ph/job-vacancies/"
+          }
+        },
+        "type": "object",
+        "required": [
+          "job_id",
+          "title",
+          "employer",
+          "location",
+          "region_code",
+          "salary_php",
+          "employment_type",
+          "education",
+          "posted_on",
+          "observed_on"
+        ],
+        "title": "JobPosting",
+        "description": "One posting record as PhilJobNet listed it."
+      },
+      "JobPostingDetail": {
+        "properties": {
+          "posting": {
+            "$ref": "#/components/schemas/JobPosting"
+          },
+          "qualifications": {
+            "items": {
+              "$ref": "#/components/schemas/PostingQualification"
+            },
+            "type": "array",
+            "title": "Qualifications",
+            "description": "Reviewed, approved links from this record"
+          },
+          "same_title": {
+            "items": {
+              "$ref": "#/components/schemas/JobPosting"
+            },
+            "type": "array",
+            "title": "Same Title",
+            "description": "Other records with this title, nearest region first"
+          },
+          "same_title_total": {
+            "type": "integer",
+            "title": "Same Title Total"
+          },
+          "salary_min": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Salary Min"
+          },
+          "salary_max": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Salary Max"
+          },
+          "salary_median": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Salary Median"
+          }
+        },
+        "type": "object",
+        "required": [
+          "posting",
+          "qualifications",
+          "same_title",
+          "same_title_total",
+          "salary_min",
+          "salary_max",
+          "salary_median"
+        ],
+        "title": "JobPostingDetail"
+      },
+      "JobPostings": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/JobPosting"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items",
+          "total"
+        ],
+        "title": "JobPostings"
+      },
       "LearnerPublic": {
         "properties": {
           "id": {
@@ -15773,6 +16170,24 @@
           "fingerprint"
         ],
         "title": "PostingEvidence"
+      },
+      "PostingQualification": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "code",
+          "name"
+        ],
+        "title": "PostingQualification"
       },
       "Prerequisite": {
         "properties": {

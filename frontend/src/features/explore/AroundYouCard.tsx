@@ -21,6 +21,7 @@ import {
   aroundJobsQuery,
   aroundQualificationsQuery,
   elsewhereQuery,
+  pesos,
   type AreaQualification,
   type ElsewhereProvince,
 } from './demandApi.ts'
@@ -223,6 +224,7 @@ function AreaSection({
   const skills = top ? topSkills(ranked, catalog, AROUND_MORE) : []
   const date = latestDate(jobs.data?.snapshot_dates ?? [])
   const area: DetailArea = {
+    place: block.area,
     qualifications: ranked,
     jobs: jobs.data?.items ?? [],
     forecast: (item) => (block.postingsOnly ? null : forecastLabel(item, copy)),
@@ -260,6 +262,7 @@ function AreaSection({
           key: job.title,
           name: readable(job.title),
           count: job.posting_count,
+          meta: job.salary_median != null ? copy.typicalPay(pesos(job.salary_median, true)) : null,
           onPress: () =>
             onDetail({ kind: 'job', title: job.title, linked: job.linked_qualification }, area),
           pressLabel: copy.details.open(readable(job.title)),
@@ -369,6 +372,8 @@ interface Row {
   name: string
   count: number | null
   note?: string | null
+  /** A quiet fact under the name, such as the pay its postings state. */
+  meta?: string | null
   onPress?: () => void
   pressLabel?: string
 }
@@ -414,6 +419,7 @@ function RankList({
             <span className="grid min-w-0 flex-1 gap-0.5">
               <span className="line-clamp-2 min-w-0">{row.name}</span>
               {row.note && <span className="text-12 font-semibold text-good-ink">{row.note}</span>}
+              {row.meta && <span className="text-12 text-muted tabular-nums">{row.meta}</span>}
             </span>
           )
           const count =

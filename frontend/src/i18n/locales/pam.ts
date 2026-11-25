@@ -1688,4 +1688,13 @@ export const pam: Record<string, string> = {
   'You can use TESDA Track without an account. Signing in uses your TSP (TESDA Skill Passport) email and profile (skills, licenses and home area) to personalize suggestions. We keep your name, email and saved progress until you delete your account.':
     'Malyari meng gamitan ing TESDA Track maski ala kang account. King pag-sign in, gagamitan ing kekang TSP (TESDA Skill Passport) email at profile (kasanayan, lisensya at lugar a panuknangan) para iangkop la reng mungkahi. Itatabi mi ing kekang lagyu, email at na-save a progreso angga king buran me ing kekang account.',
   'Last updated 24 November 2026': 'Tauling na-update 24 Nobyembre 2026',
+  'The posting': 'Ing posting',
+  'The {0} postings': 'Ding {0} a posting',
+  'Newest first. Open one to see the full posting.':
+    'Ing bayu mumuna. Buksan me ing metung ban akit me ing buong posting.',
+  'Loading postings…': 'Lo-load de ring posting…',
+  'The postings could not be loaded.': 'E la ma-load ding posting.',
+  'Employer not named': 'Alang lagyu ing employer',
+  'Open the {0} posting at {1}': 'Buksan me ing posting a {0} king {1}',
+  'Typically {0} a month': 'Karaniwan {0} king bulan',
 }

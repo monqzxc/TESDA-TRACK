@@ -1048,4 +1048,13 @@ export const ceb: Record<string, string> = {
   'You can use TESDA Track without an account. Signing in uses your TSP (TESDA Skill Passport) email and profile (skills, licenses and home area) to personalize suggestions. We keep your name, email and saved progress until you delete your account.':
     'Magamit nimo ang TESDA Track bisan walay account. Sa pag-sign in, gamiton ang imong TSP (TESDA Skill Passport) email ug profile (mga kahanas, lisensya ug lugar nga gipuy-an) aron ipahiangay ang mga sugyot. Tipigan namo ang imong ngalan, email ug na-save nga progreso hangtod imong papason ang account.',
   'Last updated 24 November 2026': 'Kataposang gi-update 24 Nobyembre 2026',
+  'The posting': 'Ang posting',
+  'The {0} postings': 'Ang {0} ka posting',
+  'Newest first. Open one to see the full posting.':
+    'Pinakabag-o una. Ablihi ang usa aron makita ang tibuok posting.',
+  'Loading postings…': 'Gikarga ang mga posting…',
+  'The postings could not be loaded.': 'Dili makarga ang mga posting.',
+  'Employer not named': 'Walay ngalan ang employer',
+  'Open the {0} posting at {1}': 'Ablihi ang posting nga {0} sa {1}',
+  'Typically {0} a month': 'Kasagaran {0} matag bulan',
 }

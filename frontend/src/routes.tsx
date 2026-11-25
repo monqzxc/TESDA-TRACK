@@ -187,6 +187,10 @@ export const routes: RouteObject[] = [
                 ...page('signIn', () => import('./features/account/SignInPage.tsx')),
               },
               {
+                path: paths.jobPosting,
+                ...page('jobPosting', () => import('./features/jobs/JobPostingPage.tsx')),
+              },
+              {
                 path: paths.privacy,
                 ...page('privacy', () => import('./features/privacy/PrivacyPage.tsx')),
               },

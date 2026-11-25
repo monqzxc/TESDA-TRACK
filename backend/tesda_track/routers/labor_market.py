@@ -1,7 +1,7 @@
 import uuid
 from functools import lru_cache
 from typing import Annotated, Literal
-from fastapi import APIRouter, Depends, Query, Request, Response
+from fastapi import APIRouter, Depends, Path, Query, Request, Response
 from sqlalchemy import func
 from sqlmodel import select
 from tesda_track.db import SessionDep
@@ -21,7 +21,7 @@ from tesda_track.schemas.evidence import QualificationEvidencePanel
 from tesda_track.schemas.area_qualifications import AreaQualifications
 from tesda_track.services import area_qualifications
 from tesda_track.services import area_jobs, profile_fit, elsewhere_demand
-from tesda_track.schemas.area_jobs import AreaJobs
+from tesda_track.schemas.area_jobs import AreaJobs, JobPostingDetail, JobPostings
 from tesda_track.schemas.elsewhere import ElsewhereDemand
 from tesda_track.config import Settings, get_settings
 from tesda_track.schemas.outlook import OutlookSummary, QualificationOutlook
@@ -29,7 +29,7 @@ from tesda_track.services import outlook_summary, qualification_outlook
 from tesda_track.services.rate_limit import client_address_key
 from tesda_track.schemas.labor_market import ReviewInput, DatasetStatusInput
 from tesda_track.schemas.records import GoalCreate, GoalUpdate, GoalPublic
-from tesda_track.errors import InvalidRequestError
+from tesda_track.errors import InvalidRequestError, NotFoundError
 
 router = APIRouter(prefix="/labor-market", tags=["labor market"])
 admin_router = APIRouter(
@@ -125,6 +125,27 @@ def area_job_evidence(
     fit = _profile_fit(session, response, learner, embedder, personalize)
     return area_jobs.discover(session, region_code, locality, qualification_code, limit=limit, offset=offset,
                               fit=fit, province=province)
+
+
+@router.get("/jobs/postings", response_model=JobPostings)
+def job_postings(
+    session: SessionDep,
+    title: str = Query(min_length=1, max_length=200),
+    region_code: str | None = None,
+    province: Province = None,
+    limit: int = Query(default=10, ge=1, le=300),
+) -> JobPostings:
+    """The individual posting records behind one title's count in an area, newest first."""
+    return area_jobs.postings(session, title, region_code, province, limit=limit)
+
+
+@router.get("/postings/{job_id}", response_model=JobPostingDetail)
+def job_posting(session: SessionDep, job_id: str = Path(max_length=40)) -> JobPostingDetail:
+    """One posting record by its PhilJobNet job ID."""
+    found = area_jobs.posting(session, job_id)
+    if found is None:
+        raise NotFoundError("No posting record with that ID.")
+    return found
 
 
 @router.get("/elsewhere", response_model=ElsewhereDemand)

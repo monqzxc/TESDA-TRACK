@@ -1046,4 +1046,13 @@ export const bcl: Record<string, string> = {
   'You can use TESDA Track without an account. Signing in uses your TSP (TESDA Skill Passport) email and profile (skills, licenses and home area) to personalize suggestions. We keep your name, email and saved progress until you delete your account.':
     'Puwede mong gamiton an TESDA Track dawa mayong account. Sa pag-sign in, ginagamit an saimong TSP (TESDA Skill Passport) email asin profile (mga kakayahan, lisensya asin lugar na ineestaran) tanganing iangay an mga suhestyon. Itinatago mi an saimong ngaran, email asin na-save na progreso sagkod na burahon mo an account.',
   'Last updated 24 November 2026': 'Huring na-update 24 Nobyembre 2026',
+  'The posting': 'An posting',
+  'The {0} postings': 'An {0} na posting',
+  'Newest first. Open one to see the full posting.':
+    'Pinakabago enot. Buksan an saro tanganing mahiling an bilog na posting.',
+  'Loading postings…': 'Kinakarga an mga posting…',
+  'The postings could not be loaded.': 'Dai makarga an mga posting.',
+  'Employer not named': 'Mayong pangaran an employer',
+  'Open the {0} posting at {1}': 'Buksan an posting na {0} sa {1}',
+  'Typically {0} a month': 'Kadaklan {0} kada bulan',
 }

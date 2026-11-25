@@ -89,6 +89,7 @@ function pageTargets(): Record<PageKey, readonly Target[]> {
     explore: [],
     suggestionReports: [],
     qualificationDetail: [],
+    jobPosting: [],
     notFound: [],
   }
 }

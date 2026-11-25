@@ -1032,4 +1032,13 @@ export const pag: Record<string, string> = {
   'You can use TESDA Track without an account. Signing in uses your TSP (TESDA Skill Passport) email and profile (skills, licenses and home area) to personalize suggestions. We keep your name, email and saved progress until you delete your account.':
     'Nayari mon usaren so TESDA Track anggapo account. No man-sign in ka, usaren so TSP (TESDA Skill Passport) email tan profile mo (kakayahan, lisensya tan lugar ya ayaman) pian ibagay iray suhestyon. Itatago mi so ngaran mo, email tan na-save ya progreso anggad buraken mo so account mo.',
   'Last updated 24 November 2026': 'Kaunoran ya na-update 24 Nobyembre 2026',
+  'The posting': 'Say posting',
+  'The {0} postings': 'Saray {0} a posting',
+  'Newest first. Open one to see the full posting.':
+    'Balo ya inmuna. Lukasan so sakey pian nanengneng so interon posting.',
+  'Loading postings…': 'Ikakarga iray posting…',
+  'The postings could not be loaded.': 'Agnayarin ikarga iray posting.',
+  'Employer not named': 'Anggapoy ngaran na employer',
+  'Open the {0} posting at {1}': 'Lukasan so posting a {0} ed {1}',
+  'Typically {0} a month': 'Kaslakan {0} kada bulan',
 }

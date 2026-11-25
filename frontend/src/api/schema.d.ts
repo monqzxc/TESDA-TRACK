@@ -1975,6 +1975,46 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/labor-market/jobs/postings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Job Postings
+         * @description The individual posting records behind one title's count in an area, newest first.
+         */
+        get: operations["job_postings_api_v1_labor_market_jobs_postings_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/labor-market/postings/{job_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Job Posting
+         * @description One posting record by its PhilJobNet job ID.
+         */
+        get: operations["job_posting_api_v1_labor_market_postings__job_id__get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/labor-market/elsewhere": {
         parameters: {
             query?: never;
@@ -2320,6 +2360,21 @@ export interface components {
              * @description That qualification, by name
              */
             linked_qualification?: string | null;
+            /**
+             * Salary Min
+             * @description Lowest monthly salary stated among its records, PHP
+             */
+            salary_min?: number | null;
+            /**
+             * Salary Max
+             * @description Highest monthly salary stated among its records, PHP
+             */
+            salary_max?: number | null;
+            /**
+             * Salary Median
+             * @description Median monthly salary stated among its records, PHP
+             */
+            salary_median?: number | null;
         };
         /** AreaJobs */
         AreaJobs: {
@@ -4201,6 +4256,68 @@ export interface components {
             /** Titles */
             titles: string[];
         };
+        /**
+         * JobPosting
+         * @description One posting record as PhilJobNet listed it.
+         */
+        JobPosting: {
+            /** Job Id */
+            job_id: string;
+            /** Title */
+            title: string;
+            /** Employer */
+            employer: string | null;
+            /** Location */
+            location: string | null;
+            /** Region Code */
+            region_code: string | null;
+            /** Region Name */
+            region_name?: string | null;
+            /** Salary Php */
+            salary_php: number | null;
+            /** Employment Type */
+            employment_type: string | null;
+            /** Education */
+            education: string | null;
+            /** Posted On */
+            posted_on: string | null;
+            /** Observed On */
+            observed_on: string | null;
+            /**
+             * Source Url
+             * @default https://philjobnet.gov.ph/job-vacancies/
+             */
+            source_url: string;
+        };
+        /** JobPostingDetail */
+        JobPostingDetail: {
+            posting: components["schemas"]["JobPosting"];
+            /**
+             * Qualifications
+             * @description Reviewed, approved links from this record
+             */
+            qualifications: components["schemas"]["PostingQualification"][];
+            /**
+             * Same Title
+             * @description Other records with this title, nearest region first
+             */
+            same_title: components["schemas"]["JobPosting"][];
+            /** Same Title Total */
+            same_title_total: number;
+            /** Salary Min */
+            salary_min: number | null;
+            /** Salary Max */
+            salary_max: number | null;
+            /** Salary Median */
+            salary_median: number | null;
+        };
+        /** JobPostings */
+        JobPostings: {
+            /** Items */
+            items: components["schemas"]["JobPosting"][];
+            /** Total */
+            total: number;
+        };
         /** LearnerPublic */
         LearnerPublic: {
             /**
@@ -5064,6 +5181,13 @@ export interface components {
             dataset_keys: string[];
             /** Fingerprint */
             fingerprint: string;
+        };
+        /** PostingQualification */
+        PostingQualification: {
+            /** Code */
+            code: string;
+            /** Name */
+            name: string;
         };
         /** Prerequisite */
         Prerequisite: {
@@ -11184,6 +11308,72 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AreaJobs"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    job_postings_api_v1_labor_market_jobs_postings_get: {
+        parameters: {
+            query: {
+                title: string;
+                region_code?: string | null;
+                /** @description A province, as the Skill Passport writes it ("Laguna", "Metro Manila" for all of NCR). Matched without case against the province in each posting's locality; an unknown province gives an empty list. */
+                province?: string | null;
+                limit?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobPostings"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    job_posting_api_v1_labor_market_postings__job_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                job_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["JobPostingDetail"];
                 };
             };
             /** @description Validation Error */

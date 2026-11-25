@@ -27,4 +27,8 @@ export const paths = {
   profile: '/profile',
   signIn: '/sign-in',
   privacy: '/privacy',
+  jobPosting: '/jobs/:id',
 } as const
+
+/** One job posting's page. */
+export const jobPostingPath = (id: string) => `/jobs/${encodeURIComponent(id)}`

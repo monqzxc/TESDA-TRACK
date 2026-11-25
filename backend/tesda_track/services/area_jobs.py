@@ -6,6 +6,7 @@ ordered by fit and posting records together, then the rest by posting records as
 """
 
 from collections import defaultdict
+from statistics import median
 from datetime import datetime
 from typing import TYPE_CHECKING
 from zoneinfo import ZoneInfo
@@ -19,7 +20,9 @@ from tesda_track.models.labor_market import (
     LaborMarketEvidence as Evidence,
     LaborMarketMapping as Mapping,
 )
-from tesda_track.schemas.area_jobs import AreaJob, AreaJobs, JobArea
+from tesda_track.schemas.area_jobs import (
+    AreaJob, AreaJobs, JobArea, JobPosting, JobPostingDetail, JobPostings, PostingQualification,
+)
 from tesda_track.services.demand_evidence import _employer, _posted_on
 from tesda_track.services import provinces
 from tesda_track.services.labor_market import job_key
@@ -73,6 +76,7 @@ def summarize(rows, regions, *, region_code=None, locality=None, limit=30, offse
         employer_count=len({name for r in entries if (name := _employer(r.provenance))}),
         localities=sorted({r.locality for r in entries if r.locality}),
         region_codes=sorted({r.region_code for r in entries if r.region_code}),
+        **_salary_range(entries),
         **(_personal(entries, fit, links or {}) if fit is not None else {}),
     ) for entries in groups.values()]
     jobs.sort(key=lambda job: (-job.posting_count, job.title.casefold()))
@@ -117,8 +121,24 @@ def discover(session: Session, region_code=None, locality=None, qualification_co
     regions = {r.code: r for r in session.exec(select(Region)).all()}
     if region_code and region_code not in regions:
         raise InvalidRequestError("Unknown region.")
+    statement = _eligible(regions)
+    if qualification_code:
+        # A qualification filter must never turn an unreviewed title into an association.
+        statement = statement.where(Evidence.id.in_(
+            select(Mapping.evidence_id)
+            .join(Qualification, Qualification.id == Mapping.qualification_id)
+            .where(Qualification.code == qualification_code, Qualification.is_active == True,
+                   Mapping.decision == "approved", Mapping.proposal == "high_confidence")
+        ))
+    rows = session.exec(statement).all()
+    return summarize(rows, regions, region_code=region_code, locality=locality, limit=limit, offset=offset,
+                     fit=fit, links=_links(session, fit) if fit else None, province=provinces.normalize(province))
+
+
+def _eligible(regions):
+    """The posting records the map counts: active PhilJobNet snapshots, dated, in a known region."""
     today = datetime.now(ZoneInfo("Asia/Manila")).date()
-    statement = (
+    return (
         select(Evidence, Dataset)
         .join(Dataset, Dataset.id == Evidence.dataset_id)
         .where(
@@ -131,17 +151,99 @@ def discover(session: Session, region_code=None, locality=None, qualification_co
         )
         .order_by(Evidence.observed_on.desc(), Evidence.id)
     )
-    if qualification_code:
-        # A qualification filter must never turn an unreviewed title into an association.
-        statement = statement.where(Evidence.id.in_(
-            select(Mapping.evidence_id)
-            .join(Qualification, Qualification.id == Mapping.qualification_id)
-            .where(Qualification.code == qualification_code, Qualification.is_active == True,
-                   Mapping.decision == "approved", Mapping.proposal == "high_confidence")
-        ))
-    rows = session.exec(statement).all()
-    return summarize(rows, regions, region_code=region_code, locality=locality, limit=limit, offset=offset,
-                     fit=fit, links=_links(session, fit) if fit else None, province=provinces.normalize(province))
+
+
+def _salary(record) -> int | None:
+    try:
+        value = int(float(str((record.provenance or {}).get("salary_php", "")).replace(",", "")))
+    except ValueError:
+        return None
+    return value if value > 0 else None
+
+
+def _salary_range(entries) -> dict:
+    salaries = sorted(value for r in entries if (value := _salary(r)))
+    return {"salary_min": salaries[0], "salary_max": salaries[-1],
+            "salary_median": round(median(salaries))} if salaries else {}
+
+
+def _text(value) -> str | None:
+    value = " ".join(str(value).split()) if value else ""
+    return value if value and not value.casefold().endswith("not specified") else None
+
+
+def _posting(record, regions) -> JobPosting:
+    provenance = record.provenance or {}
+    region = regions.get(record.region_code)
+    return JobPosting(
+        job_id=str(provenance.get("job_id") or record.source_record_id),
+        title=record.occupation_title,
+        employer=_text(provenance.get("employer")),
+        location=_text(record.locality or provenance.get("location")),
+        region_code=record.region_code,
+        region_name=region.name if region else None,
+        salary_php=_salary(record),
+        employment_type=_text(provenance.get("employment_type")),
+        education=_text(provenance.get("education")),
+        posted_on=_posted_on(provenance.get("posted_on")),
+        observed_on=record.observed_on,
+    )
+
+
+def _unique(rows):
+    """One record per source ID, the latest capture first (the statement's order)."""
+    retained = {}
+    for evidence, dataset in rows:
+        retained.setdefault((dataset.publisher, evidence.source_record_id), evidence)
+    return list(retained.values())
+
+
+def _newest(posting: JobPosting):
+    day = posting.posted_on or posting.observed_on
+    return (-day.toordinal() if day else 0, posting.job_id)
+
+
+def postings(session: Session, title: str, region_code=None, province=None, *, limit=10) -> JobPostings:
+    """The posting records behind one title's count in an area, newest posted first."""
+    regions = {r.code: r for r in session.exec(select(Region)).all()}
+    if region_code and region_code not in regions:
+        raise InvalidRequestError("Unknown region.")
+    key = job_key(title)
+    province = provinces.normalize(province)
+    records = [r for r in _unique(session.exec(_eligible(regions)).all())
+               if job_key(r.occupation_title) == key
+               and (not region_code or r.region_code == region_code)
+               and (province is None or provinces.of_locality(r.locality) == province)]
+    items = sorted((_posting(r, regions) for r in records), key=_newest)
+    return JobPostings(items=items[:limit], total=len(items))
+
+
+def posting(session: Session, job_id: str) -> JobPostingDetail | None:
+    """One posting record by its PhilJobNet job ID, its reviewed qualification links and others with its title."""
+    regions = {r.code: r for r in session.exec(select(Region)).all()}
+    found = session.exec(_eligible(regions).where(Evidence.source_record_id == job_id)).first()
+    if found is None:
+        return None
+    record = found[0]
+    key = job_key(record.occupation_title)
+    linked = session.exec(
+        select(Qualification.code, Qualification.name)
+        .join(Mapping, Mapping.qualification_id == Qualification.id)
+        .join(Evidence, Evidence.id == Mapping.evidence_id)
+        .where(Evidence.source_record_id == job_id, Qualification.is_active == True,
+               Mapping.decision == "approved", Mapping.proposal == "high_confidence")
+        .distinct()
+    ).all()
+    peers = [r for r in _unique(session.exec(_eligible(regions)).all())
+             if job_key(r.occupation_title) == key and r.source_record_id != record.source_record_id]
+    peers.sort(key=lambda r: (r.region_code != record.region_code, r.locality != record.locality))
+    same = [_posting(r, regions) for r in peers]
+    return JobPostingDetail(
+        posting=_posting(record, regions),
+        qualifications=[PostingQualification(code=code, name=name) for code, name in linked],
+        same_title=same[:6], same_title_total=len(same),
+        **{"salary_min": None, "salary_max": None, "salary_median": None, **_salary_range([record, *peers])},
+    )
 
 
 def _links(session: Session, fit: "ProfileFit") -> dict[int, list[tuple[str, str]]]:

@@ -150,3 +150,45 @@ export const elsewhereQuery = (
       ),
     staleTime: 60_000,
   })
+
+// The posting records behind one job title's count in the card's area, and one record's own page.
+
+export type JobPosting = components['schemas']['JobPosting']
+export type JobPostingDetail = components['schemas']['JobPostingDetail']
+
+export const jobPostingsQuery = (title: string, area: AroundArea) =>
+  queryOptions({
+    queryKey: ['labor-market', 'job-postings', title, area.region, area.province],
+    queryFn: ({ signal }) =>
+      unwrap(
+        api.GET('/api/v1/labor-market/jobs/postings', {
+          params: {
+            query: { title, region_code: area.region, province: area.province, limit: 300 },
+          },
+          signal,
+        }),
+      ),
+    staleTime: 60_000,
+  })
+
+export const jobPostingQuery = (id: string) =>
+  queryOptions({
+    queryKey: ['labor-market', 'posting', id],
+    queryFn: ({ signal }) =>
+      unwrap(
+        api.GET('/api/v1/labor-market/postings/{job_id}', {
+          params: { path: { job_id: id } },
+          signal,
+        }),
+      ),
+    staleTime: 60_000,
+  })
+
+/** "₱20,000"; thousands in short form ("₱13k") when `short`. */
+export function pesos(value: number, short = false): string {
+  if (short && value >= 1000) {
+    const k = value / 1000
+    return `₱${k.toLocaleString('en-PH', { maximumFractionDigits: k < 10 ? 1 : 0 })}k`
+  }
+  return `₱${value.toLocaleString('en-PH')}`
+}

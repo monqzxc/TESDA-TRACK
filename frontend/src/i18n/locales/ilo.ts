@@ -1043,4 +1043,13 @@ export const ilo: Record<string, string> = {
   'You can use TESDA Track without an account. Signing in uses your TSP (TESDA Skill Passport) email and profile (skills, licenses and home area) to personalize suggestions. We keep your name, email and saved progress until you delete your account.':
     'Mabalinmo nga usaren ti TESDA Track uray awan ti account. No ag-sign in ka, mausar ti TSP (TESDA Skill Passport) email ken profile-mo (dagiti abilidad, lisensia ken lugar a pagnaedan) tapno maiyannatop dagiti singasing. Iduldulinmi ti naganmo, email ken naidulin a progreso agingga nga ikkatenmo ti account-mo.',
   'Last updated 24 November 2026': 'Naudi a napabaro 24 Nobiembre 2026',
+  'The posting': 'Ti posting',
+  'The {0} postings': 'Dagiti {0} a posting',
+  'Newest first. Open one to see the full posting.':
+    'Kabaruan nga umuna. Lukatan ti maysa tapno makita ti intero a posting.',
+  'Loading postings…': 'Ikarkarga dagiti posting…',
+  'The postings could not be loaded.': 'Saan a makarga dagiti posting.',
+  'Employer not named': 'Awan ti nagan ti employer',
+  'Open the {0} posting at {1}': 'Lukatan ti posting a {0} iti {1}',
+  'Typically {0} a month': 'Kadawyan a {0} iti binulan',
 }

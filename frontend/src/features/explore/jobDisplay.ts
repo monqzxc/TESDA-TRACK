@@ -90,3 +90,12 @@ export function tier(count: number, top: number): Tier {
   const share = top > 0 ? count / top : 0
   return share >= 2 / 3 ? 'high' : share >= 1 / 3 ? 'mid' : 'low'
 }
+
+const dayMonth = new Intl.DateTimeFormat('en-PH', { month: 'short', day: 'numeric' })
+
+/** "Oct 20", from the API's "2026-10-20", read as a calendar day (no time zone shift). */
+export function shortDay(value: string | null | undefined): string | null {
+  if (!value) return null
+  const [year, month, day] = value.split('-').map(Number)
+  return dayMonth.format(new Date(year!, month! - 1, day))
+}
