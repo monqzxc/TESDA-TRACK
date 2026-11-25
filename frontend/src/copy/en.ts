@@ -2358,6 +2358,12 @@ export const en = {
       // With a place: the map keeps farther centers for context, so this says what the number counts.
       inRange: (km: number, n: number) => `Centers within ${km} km: ${n}`,
       clearAll: 'Clear all',
+      // The map's button that opens location, radius, region and scholarship together.
+      button: 'Filters',
+      buttonActive: (n: number) => `Filters, ${n} on`,
+      heading: 'Filters',
+      close: 'Close filters',
+      scholarshipInfo: 'About scholarships',
     },
     search: {
       label: 'What can you do?',
@@ -2460,6 +2466,17 @@ export const en = {
       // Under the place: how far the learner can go, 5 to 100 km.
       range: 'How far can you go?',
       rangeNeedsPlace: 'Share your location or type a place to measure from.',
+      // The map's Filters popover: short status lines, with the details behind an (i).
+      radius: 'Radius',
+      onShort: 'On · approximate',
+      offShort: 'Off',
+      info: 'About your location',
+      infoBody: [
+        'Your location is rounded to about 1 km and never saved. Nothing is shared until you turn this on.',
+        'A typed place measures from its center. Drag its pin on the map to be more exact.',
+      ],
+      infoProfile:
+        'Typing a place changes it for this visit only. Your TSP profile is not changed.',
       errors: {
         denied:
           'Location is blocked in your browser. Type a city instead, or allow location and try again.',
@@ -2518,8 +2535,20 @@ export const en = {
       changeRangeLabel: (km: number) => `Change how far you can go (now ${km} km)`,
       range: {
         heading: 'How far can you go?',
-        body: 'Centers within this distance count as near you.',
         option: (km: number) => `${km} km`,
+        // The three answers, each with its radius under it.
+        near: 'Near me',
+        farther: 'Travel farther',
+        relocate: 'Relocate',
+        nearHint: '10 km',
+        fartherHint: '50 km',
+        relocateHint: 'Other regions',
+        info: 'About these choices',
+        infoBody: [
+          'Near me shows centers within about 10 km. Travel farther, within about 50 km.',
+          'Relocate looks up to 100 km away and adds regions with more jobs for this skill.',
+          'Set an exact radius any time under Filters on the map.',
+        ],
         keep: 'Keep as it is',
       },
       // Under a qualification with no center in range: a related one that has a center in range.

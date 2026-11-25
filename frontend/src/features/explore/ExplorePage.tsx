@@ -35,18 +35,12 @@ import type { DemandMapArea } from '../training/CenterMapTypes.ts'
 import { AroundYouCard, useAroundYouOpen } from './AroundYouCard.tsx'
 import { planAroundYou, shortRegion } from './aroundYou.ts'
 import type { ElsewhereProvince } from './demandApi.ts'
-import { countedCenters, NEAR_KM, nearestRegion, offers } from './explore.ts'
+import { countedCenters, nearestRegion, offers, REACH_KM } from './explore.ts'
 import { LocationPrompt } from './LocationPrompt.tsx'
+import { MapFilters } from './MapFilters.tsx'
 import { OutlookBrief } from './OutlookBrief.tsx'
 import { QualificationChips } from './QualificationChips.tsx'
-import {
-  CenterCard,
-  CenterFilters,
-  LocationRow,
-  NearbyPanel,
-  ResultsPanel,
-  TspProfilePanel,
-} from './Panels.tsx'
+import { CenterCard, NearbyPanel, ResultsPanel, TspProfilePanel } from './Panels.tsx'
 import { useDemandStore, useExplore, useExploreStore } from './useExplore.ts'
 
 // The map comes down with its renderer the first time it's shown, as on Training & Assessment.
@@ -85,6 +79,8 @@ function useHeight(): [(node: HTMLElement | null) => void, number] {
 const TABLET_UP = '(min-width: 769px)'
 /** The account button over the map (42px, as the map's own buttons) and the 14px gap under it. */
 const ACCOUNT_ROOM = 56
+/** The Filters button under it, the same size and gap: the map's own buttons start below both. */
+const FILTERS_ROOM = 56
 /** How far the floating "Around you" card stays above the window's bottom: clear of Help and Layers. */
 const AROUND_BOTTOM_CLEAR = 52 + 28 + 44 + 12
 const SHEET_DISMISS_DISTANCE = 48
@@ -221,7 +217,7 @@ export default function ExplorePage() {
       { replace: true, preventScrollReset: true },
     )
     useTrainingStore.getState().setPlaceText('')
-    useExploreStore.setState({ rangeKm: NEAR_KM, rangeChosen: false })
+    useExploreStore.setState({ rangeKm: REACH_KM.near, relocate: false, rangeChosen: false })
   }
   const setView = (next: View) =>
     setParams(
@@ -315,13 +311,6 @@ export default function ExplorePage() {
   // The search bar's burger opens the app's sidebar over the map: this page has no top bar for it.
   const menuOpen = useSidebarStore((state) => state.open)
   const menuButton = useRef<HTMLButtonElement>(null)
-  // The panel explains a refused location (Locate on the map, or the switch), so a folded one opens to show it.
-  const locationError = useTrainingStore((state) => state.locationError)
-  const [seenError, setSeenError] = useState(locationError)
-  if (seenError !== locationError) {
-    setSeenError(locationError)
-    if (locationError) setCollapsed(false)
-  }
   const travelMode = useTrainingStore((state) => state.travelMode)
   // The range the learner picked is drawn on the map and framed; until then the map frames the nearest centers.
   const pickedRange = useExploreStore((state) => (state.rangeChosen ? state.rangeKm : null))
@@ -382,6 +371,15 @@ export default function ExplorePage() {
     ? explore.outlook.data?.snapshot_dates
     : explore.demandMap.data?.snapshot_dates
   const selected = centers.find((center) => center.id === selectedId) ?? null
+  const showFilters = view !== 'demand'
+  // The filters that are on, for the Filters button's badge (the type is the chips, counted by Clear all only).
+  const activeFilters = [
+    regionFilter,
+    provinceFilter,
+    scholarshipFilter,
+    explore.placeText.trim(),
+    explore.relocate || explore.rangeKm !== REACH_KM.near,
+  ].filter(Boolean).length
 
   // Directions start where distances do: the learner's location, or the place they typed (or its pin).
   const origin = reference ? { latitude: reference.latitude, longitude: reference.longitude } : null
@@ -578,9 +576,9 @@ export default function ExplorePage() {
             '--map-overlay-inset': tabletUp && !collapsed ? '388px' : '0px',
             // The open "Around you" card beside the map's buttons: 70px + its 300px.
             '--map-overlay-right': aroundFloats && aroundOpen ? '370px' : '0px',
-            // From a tablet up the account button takes the top of the map's button column: the rest move down
-            // under it. On a phone it sits in the search bar instead.
-            '--map-controls-top': tabletUp ? `${ACCOUNT_ROOM}px` : '0px',
+            // From a tablet up the account button takes the top of the map's button column (on a phone it sits in
+            // the search bar instead), then the Filters button: the rest move down under them.
+            '--map-controls-top': `${(tabletUp ? ACCOUNT_ROOM : 0) + (showFilters ? FILTERS_ROOM : 0)}px`,
           } as CSSProperties
         }
       >
@@ -670,6 +668,32 @@ export default function ExplorePage() {
         <MapAccount
           placement="map"
           className="intro-piece absolute top-3.5 right-3.5 z-[1000] [--intro-order:2]"
+        />
+      )}
+
+      {/* Location, radius, region and scholarships, grouped behind one button at the top of the map's button
+          column, above Locate and zoom. The demand view has its own region picker, so it has none. */}
+      {showFilters && (
+        <MapFilters
+          explore={explore}
+          tabletUp={tabletUp}
+          active={activeFilters}
+          className="intro-piece absolute right-3.5 z-[1000] [--intro-order:3]"
+          style={{ top: tabletUp ? 14 + ACCOUNT_ROOM : topReach + 14 }}
+          filters={{
+            regions: explore.regionOptions,
+            provinces: explore.provinceOptions,
+            region: regionFilter,
+            province: provinceFilter,
+            scholarship: scholarshipFilter,
+            count: countedCenters(pins, Boolean(reference), explore.rangeKm).length,
+            rangeKm: reference ? explore.rangeKm : null,
+            canClear: Boolean(view !== 'all' || activeFilters),
+            onRegion: (code) => setFilter('region', code),
+            onProvince: (name) => setFilter('province', name),
+            onScholarship: (on) => setFilter('scholarship', on ? '1' : null),
+            onClear: clearFilters,
+          }}
         />
       )}
 
@@ -792,34 +816,6 @@ export default function ExplorePage() {
                 </p>
               )}
               {!selected && <TspProfilePanel explore={explore} />}
-              {view !== 'demand' && (
-                <div className={selected && !locationError ? 'max-md:hidden' : undefined}>
-                  <LocationRow explore={explore} />
-                </div>
-              )}
-              {view !== 'demand' && !selected && (
-                <CenterFilters
-                  regions={explore.regionOptions}
-                  provinces={explore.provinceOptions}
-                  region={regionFilter}
-                  province={provinceFilter}
-                  scholarship={scholarshipFilter}
-                  count={countedCenters(pins, Boolean(reference), explore.rangeKm).length}
-                  rangeKm={reference ? explore.rangeKm : null}
-                  canClear={Boolean(
-                    view !== 'all' ||
-                    regionFilter ||
-                    provinceFilter ||
-                    scholarshipFilter ||
-                    explore.placeText.trim() ||
-                    explore.rangeKm !== NEAR_KM,
-                  )}
-                  onRegion={(code) => setFilter('region', code)}
-                  onProvince={(name) => setFilter('province', name)}
-                  onScholarship={(on) => setFilter('scholarship', on ? '1' : null)}
-                  onClear={clearFilters}
-                />
-              )}
               {explore.failed && (
                 <div className="rounded-12 bg-warn-bg p-3 text-14 text-warn-ink">
                   <p role="alert" className="mt-0">
@@ -949,6 +945,8 @@ function SearchBox({
       const result = await matchPathway(query, regionCode, controller.signal)
       if (controller.signal.aborted) return
       setSearch({ query, result, feedbackScope: crypto.randomUUID() })
+      // Next: "How far can you go?", before the results.
+      useExploreStore.getState().changeRange()
       onSearched()
     } catch (failure) {
       if (!controller.signal.aborted) setError(failureMessage(failure))

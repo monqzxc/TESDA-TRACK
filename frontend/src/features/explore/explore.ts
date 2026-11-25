@@ -8,8 +8,19 @@ import type { Match } from '../finder/api.ts'
 
 /** Within this distance a center counts as near, until the learner says how far they can go. */
 export const NEAR_KM = 25
-/** The choices for "How far can you go?". */
+/** The radius choices under Filters on the map. */
 export const RANGES_KM = [5, 10, 25, 50, 100] as const
+/**
+ * "How far can you go?": three answers, each a radius. Near me is the default before the learner answers; Relocate
+ * also widens the outlook to other regions with more demand.
+ */
+export const REACH_KM = { near: 10, farther: 50, relocate: 100 } as const
+export type Reach = keyof typeof REACH_KM
+/** The answer a radius (and the relocate switch) stands for: within 10 km is near, anything wider is farther. */
+export function reachOf(rangeKm: number, relocate: boolean): Reach {
+  if (relocate) return 'relocate'
+  return rangeKm <= REACH_KM.near ? 'near' : 'farther'
+}
 /**
  * Beyond this distance no travel time is shown: a trip that long is likely to need a ferry or a flight, which a
  * straight-line estimate by car can't say. (Makati to Baguio, 211 km, is a drive; to Cebu, 570 km, is not.)

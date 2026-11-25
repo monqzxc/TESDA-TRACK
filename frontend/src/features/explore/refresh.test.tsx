@@ -1,3 +1,4 @@
+import userEvent from '@testing-library/user-event'
 import { screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
@@ -79,6 +80,8 @@ describe('Career Map after a refresh', () => {
     )
 
     expect(screen.getByRole('searchbox')).toHaveValue('I can weld')
+    // The typed place is under the map's Filters button.
+    await userEvent.setup().click(await screen.findByRole('button', { name: /^Filters/ }))
     expect(await screen.findByRole('combobox', { name: 'Or type a city or province' })).toHaveValue(
       'Manila',
     )

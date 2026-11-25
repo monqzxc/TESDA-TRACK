@@ -101,6 +101,12 @@ beforeEach(() => {
   )
 })
 
+/** Location, radius, region and scholarships are behind the map's Filters button. */
+async function openFilters(user: ReturnType<typeof userEvent.setup>) {
+  await user.click(await screen.findByRole('button', { name: /^Filters/ }))
+  return screen.findByRole('dialog', { name: 'Filters' })
+}
+
 function renderPage() {
   return renderWithAuth(
     <MemoryRouter initialEntries={['/explore']}>
@@ -133,18 +139,31 @@ describe('Explore with nothing in range', () => {
     )
     const step = screen.getByRole('region', { name: 'How far can you go?' })
     expect(within(step).getByRole('heading', { name: 'How far can you go?' })).toHaveFocus()
-    expect(within(step).getByRole('button', { name: '25 km', pressed: true })).toBeInTheDocument()
+    // Near me, Travel farther or Relocate: 25 km is wider than near.
+    expect(
+      within(step)
+        .getAllByRole('button', { pressed: undefined })
+        .filter((b) => b.hasAttribute('aria-pressed'))
+        .map((b) => b.textContent),
+    ).toEqual(['Near me10 km', 'Travel farther50 km', 'RelocateOther regions'])
+    expect(
+      within(step).getByRole('button', { name: /^Travel farther/, pressed: true }),
+    ).toBeVisible()
+    // While the question is open, the results wait for the answer.
+    expect(screen.queryByText(/No center within/)).not.toBeInTheDocument()
 
-    await user.click(within(step).getByRole('button', { name: '100 km' }))
+    await user.click(within(step).getByRole('button', { name: /^Relocate/ }))
     expect(screen.queryByRole('region', { name: 'How far can you go?' })).not.toBeInTheDocument()
     expect(await screen.findByText(/No center within 100 km\./)).toBeInTheDocument()
-    expect(useExploreStore.getState().rangeKm).toBe(100)
+    expect(useExploreStore.getState()).toMatchObject({ rangeKm: 100, relocate: true })
   })
 
-  it('offers 5 to 100 km next to the location, and the map draws the range once picked', async () => {
+  it('offers 5 to 100 km under Filters on the map, and the map draws the radius once picked', async () => {
     const user = userEvent.setup()
     renderPage()
-    const picker = await screen.findByRole('group', { name: 'How far can you go?' })
+    const filters = await openFilters(user)
+    expect(within(filters).getByRole('switch', { name: 'Share my location' })).toBeChecked()
+    const picker = within(filters).getByRole('group', { name: 'Radius' })
     expect(
       within(picker)
         .getAllByRole('button')
@@ -166,6 +185,7 @@ describe('Explore from a typed place', () => {
   it('suggests places as the learner types, and measures a province from its capital', async () => {
     const user = userEvent.setup()
     renderPage()
+    await openFilters(user)
     const place = await screen.findByRole('combobox', { name: 'Or type a city or province' })
     await user.type(place, 'pampa')
     const option = await screen.findByRole('option', { name: /^Pampanga/ })
@@ -183,18 +203,20 @@ describe('Explore from a typed place', () => {
   it('measures from a picked town as from a shared location, and from the pin once it is moved', async () => {
     const user = userEvent.setup()
     renderPage()
+    await openFilters(user)
     await user.type(
       await screen.findByRole('combobox', { name: 'Or type a city or province' }),
       'makati',
     )
     await user.click(await screen.findByRole('option', { name: 'Makati City, Metro Manila' }))
     expect(await screen.findByText('Near Makati City, Metro Manila')).toBeInTheDocument()
-    expect(screen.getByText(/Drag the pin on the map to be more exact/)).toBeInTheDocument()
+    await user.keyboard('{Escape}')
     // The same answer as from a shared location in Makati: the far center, and a related one within range.
     expect(await screen.findByText(/No center within 25 km\. The closest is/)).toBeInTheDocument()
     expect(await screen.findByText('A related qualification within 25 km')).toBeInTheDocument()
 
     await user.click(screen.getByText('Drop the pin'))
+    await openFilters(user)
     expect(await screen.findByText('Your pin near Makati City, Metro Manila')).toBeInTheDocument()
     expect(useTrainingStore.getState().placePoint).toEqual({
       label: 'Makati City, Metro Manila',
@@ -228,8 +250,8 @@ describe('Explore from Find my pathway', () => {
     expect(within(step).getByRole('heading', { name: 'How far can you go?' })).toHaveFocus()
     expect(useExploreStore.getState().search?.result.matches[0]?.qualification.code).toBe(code)
 
-    await user.click(within(step).getByRole('button', { name: '50 km' }))
-    expect(useExploreStore.getState().rangeKm).toBe(50)
+    await user.click(within(step).getByRole('button', { name: /^Travel farther/ }))
+    expect(useExploreStore.getState()).toMatchObject({ rangeKm: 50, relocate: false })
     expect(screen.queryByRole('region', { name: 'How far can you go?' })).not.toBeInTheDocument()
   })
 })

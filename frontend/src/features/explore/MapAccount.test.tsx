@@ -135,11 +135,11 @@ describe('the Career Map account control, from a tablet up', () => {
     await waitFor(() => expect(avatar).toHaveFocus())
   })
 
-  it('moves the map’s own buttons down under it', async () => {
+  it('moves the map’s own buttons down under it, and under the Filters button', async () => {
     serveAccountApi()
     renderPage()
     await screen.findByRole('button', { name: 'Sign in' })
-    expect(mapShell().style.getPropertyValue('--map-controls-top')).toBe('56px')
+    expect(mapShell().style.getPropertyValue('--map-controls-top')).toBe('112px')
   })
 })
 
@@ -198,7 +198,7 @@ describe('the Career Map’s Sign in, for a guest', () => {
 })
 
 describe('the Career Map account control on a phone', () => {
-  it('sits in the search bar, and leaves the map’s own buttons where they are', async () => {
+  it('sits in the search bar, leaving only the Filters button above the map’s own', async () => {
     mockMediaQueries({ [TABLET_UP]: false })
     rememberSignIn()
     serveAccountApi({ signedIn: true })
@@ -207,6 +207,6 @@ describe('the Career Map account control on a phone', () => {
     const avatar = await findAvatar()
     const bar = screen.getByRole('button', { name: 'Menu' }).closest('form')!
     expect(bar).toContainElement(avatar)
-    expect(mapShell().style.getPropertyValue('--map-controls-top')).toBe('0px')
+    expect(mapShell().style.getPropertyValue('--map-controls-top')).toBe('56px')
   })
 })

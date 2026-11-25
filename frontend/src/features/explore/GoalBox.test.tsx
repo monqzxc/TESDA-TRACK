@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react'
+import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
@@ -83,5 +83,43 @@ describe('Career Map goal box', () => {
     await user.click(box)
     await user.paste('a'.repeat(GOAL_MAX_LENGTH + 20))
     expect(box).toHaveValue('a'.repeat(GOAL_MAX_LENGTH))
+  })
+
+  // The flow: the goal, then the qualification chips, then "How far can you go?", then the results.
+  it('asks how far the learner can go after a search, before the results', async () => {
+    server.use(
+      http.post('*/api/v1/analysis/goal', () =>
+        HttpResponse.json({
+          profile: { intent: 'training_recommendation' },
+          matching_mode: 'goal',
+        }),
+      ),
+      http.post('*/api/v1/analysis/matches', () =>
+        HttpResponse.json({
+          profile: { intent: 'training_recommendation' },
+          matches: [
+            { qualification: weldingProgram.qualification, score: 70, reason: 'Matched weld' },
+          ],
+        }),
+      ),
+    )
+    const user = userEvent.setup()
+    renderPage()
+    const box = await screen.findByPlaceholderText(en.explore.search.placeholder)
+    await user.type(box, 'I can weld{Enter}')
+
+    const step = await screen.findByRole('region', { name: 'How far can you go?' })
+    // Near me is the default, at about 10 km.
+    expect(within(step).getByRole('button', { name: /^Near me/, pressed: true })).toBeVisible()
+    expect(screen.queryByRole('group', { name: 'Show' })).not.toBeInTheDocument()
+
+    await user.click(within(step).getByRole('button', { name: /^Near me/ }))
+    expect(screen.queryByRole('region', { name: 'How far can you go?' })).not.toBeInTheDocument()
+    expect(await screen.findByRole('group', { name: 'Show' })).toBeInTheDocument()
+    expect(useExploreStore.getState()).toMatchObject({
+      rangeKm: 10,
+      relocate: false,
+      rangeChosen: true,
+    })
   })
 })

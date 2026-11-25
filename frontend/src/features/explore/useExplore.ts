@@ -24,8 +24,9 @@ import {
   MAX_QUALIFICATIONS,
   METRO_MANILA,
   narrowMatches,
-  NEAR_KM,
   nearestRegion,
+  REACH_KM,
+  type Reach,
 } from './explore.ts'
 import { EXPLORE_KEY } from './key.ts'
 import { areaJobsQuery } from './demandApi.ts'
@@ -105,6 +106,8 @@ interface ExploreState {
   /** Back to "How far can you go?". */
   changeRange: () => void
   setRange: (rangeKm: number) => void
+  /** Answers "How far can you go?": its radius, and whether the learner would relocate. */
+  setReach: (reach: Reach) => void
   closeRange: () => void
   /** Clears the goal, results and range, e.g. on sign-out. */
   reset: () => void
@@ -114,7 +117,7 @@ const EMPTY = {
   draft: '',
   search: null,
   relocate: false,
-  rangeKm: NEAR_KM,
+  rangeKm: REACH_KM.near,
   rangeChosen: false,
   askingRange: false,
   picked: [] as string[],
@@ -128,6 +131,13 @@ export const useExploreStore = create<ExploreState>()(
       setRelocate: (relocate) => set({ relocate }),
       changeRange: () => set({ askingRange: true }),
       setRange: (rangeKm) => set({ rangeKm, rangeChosen: true, askingRange: false }),
+      setReach: (reach) =>
+        set({
+          rangeKm: REACH_KM[reach],
+          relocate: reach === 'relocate',
+          rangeChosen: true,
+          askingRange: false,
+        }),
       closeRange: () => set({ askingRange: false }),
       togglePicked: (code) => {
         const { picked } = useExploreStore.getState()

@@ -33,9 +33,11 @@ import {
   hasScholarship,
   inRangeOr,
   RANGES_KM,
+  reachOf,
   relatedWithin,
   roundKm,
   type QualificationCard,
+  type Reach,
   type Related,
 } from './explore.ts'
 import type { AssessmentWhy, RankedCenter } from './recommend.ts'
@@ -134,7 +136,7 @@ function NextStepNote({ readiness, copy }: { readiness: Readiness; copy: NextSte
 }
 
 /** The on/off track of a Switch, drawn the same for every switch in the panel. Put it inside a `group` Switch. */
-function SwitchTrack() {
+export function SwitchTrack() {
   return (
     <span
       className="relative h-6 w-[42px] flex-none rounded-full bg-dash transition-[background] duration-200 group-data-selected:bg-fill motion-reduce:transition-none"
@@ -265,8 +267,9 @@ export function TspProfilePanel({ explore }: { explore: Explore }) {
 
 /**
  * Region and province filters, Scholarships only, how many centers they leave, and Clear all (QA: US-0014 AC3). The
- * type filter is the Training/Assessment chips and the place is the box above; Clear all resets those too. All of it
- * is in the address except the typed place, which is never stored.
+ * type filter is the Training/Assessment chips and the place is the location section above; Clear all resets those
+ * too. All of it is in the address except the typed place, which is never stored. Drawn bare: it sits in the map's
+ * Filters popover (MapFilters), which gives it its surface.
  */
 export function CenterFilters({
   regions,
@@ -302,7 +305,7 @@ export function CenterFilters({
   const select =
     'min-h-11 w-full min-w-0 cursor-pointer appearance-none truncate rounded-10 border border-border bg-page py-2 pr-9 pl-3 text-14 text-navy transition-colors duration-150 hover:border-hover-border focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus'
   return (
-    <section aria-label={copy.label} className={cx(card, 'flex flex-col gap-2.5 p-3')}>
+    <section aria-label={copy.label} className="flex flex-col gap-3">
       <div className="grid grid-cols-2 gap-2">
         <label className="flex min-w-0 flex-col gap-1 text-13 font-semibold text-ink">
           {copy.region}
@@ -347,10 +350,10 @@ export function CenterFilters({
           </span>
         </label>
       </div>
-      {/* One switch, worded and colored like the Scholarship open tag it filters by. */}
-      <div className="flex flex-col border-t border-rule pt-1.5">
+      {/* One switch, worded and colored like the Scholarship open tag it filters by. Its caveat is behind the (i). */}
+      <div className="flex items-center gap-1">
         <Switch
-          className="group flex min-h-11 cursor-pointer items-center gap-3 rounded-10 text-14 font-semibold text-navy data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus"
+          className="group flex min-h-11 min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-10 text-14 font-semibold text-navy data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus"
           isSelected={scholarship}
           onChange={onScholarship}
           aria-describedby={scholarshipHelpId}
@@ -369,6 +372,7 @@ export function CenterFilters({
           <span className="flex-1">{copy.scholarship}</span>
           <SwitchTrack />
         </Switch>
+        <InfoPopover label={copy.scholarshipInfo} paragraphs={[copy.scholarshipHelp]} />
         <p id={scholarshipHelpId} className="sr-only">
           {copy.scholarshipHelp}
         </p>
@@ -389,7 +393,10 @@ export function CenterFilters({
   )
 }
 
-/** Share my location, or type a place: where distances are measured from. Never saved, never in the address. */
+/**
+ * Share my location, or type a place: where distances are measured from. Never saved, never in the address. Drawn
+ * bare for the map's Filters popover; the privacy and pin details sit behind its (i).
+ */
 export function LocationRow({ explore }: { explore: Explore }) {
   const copy = useCopy().explore.location
   const useLocation = useTrainingStore((state) => state.useLocation)
@@ -406,41 +413,45 @@ export function LocationRow({ explore }: { explore: Explore }) {
     state === 'locating'
       ? copy.locating
       : state === 'on'
-        ? copy.on
+        ? copy.onShort
         : explore.reference?.pinned
           ? copy.fromPin(explore.reference.label)
           : explore.reference?.fromProfile
             ? copy.fromProfile(explore.reference.label)
             : explore.reference
               ? copy.fromPlace(explore.reference.label)
-              : copy.off
+              : copy.offShort
   const tone = {
     locating: 'text-blue',
     on: 'text-good-ink',
     place: 'text-ink',
     off: 'text-muted',
   }[state]
+  const info = explore.homeArea ? [...copy.infoBody, copy.infoProfile] : copy.infoBody
 
   return (
-    <div className={cx(card, 'flex flex-col gap-2 p-3')}>
-      <Switch
-        className="group flex cursor-pointer items-center gap-3 text-15 font-semibold text-navy data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus"
-        isSelected={useLocation}
-        onChange={setUseLocation}
-      >
-        <span
-          aria-hidden="true"
-          className={cx(
-            'grid size-8 flex-none place-items-center rounded-full transition-colors duration-200',
-            useLocation ? 'bg-fill text-white' : 'bg-tint text-blue',
-          )}
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center gap-1">
+        <Switch
+          className="group flex min-h-11 min-w-0 flex-1 cursor-pointer items-center gap-3 rounded-10 text-15 font-semibold text-navy data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus"
+          isSelected={useLocation}
+          onChange={setUseLocation}
         >
-          <Icon name="locate" size="1.05rem" />
-        </span>
-        <span className="flex-1">{copy.share}</span>
-        <SwitchTrack />
-      </Switch>
-      {/* A status bar under the switch: a spinner while the browser finds the learner, then a dot for on or off. */}
+          <span
+            aria-hidden="true"
+            className={cx(
+              'grid size-8 flex-none place-items-center rounded-full transition-colors duration-200',
+              useLocation ? 'bg-fill text-white' : 'bg-tint text-blue',
+            )}
+          >
+            <Icon name="locate" size="1.05rem" />
+          </span>
+          <span className="flex-1">{copy.share}</span>
+          <SwitchTrack />
+        </Switch>
+        <InfoPopover label={copy.info} paragraphs={info} />
+      </div>
+      {/* A status line under the switch: a spinner while the browser finds the learner, then a dot for on or off. */}
       <p
         role="status"
         className={cx(
@@ -459,45 +470,40 @@ export function LocationRow({ explore }: { explore: Explore }) {
             className="mt-[5px] size-1.5 flex-none rounded-full bg-current"
           />
         )}
-        {status}
+        <span className="min-w-0 flex-1">{status}</span>
+        {!explore.location && explore.reference?.pinned && (
+          <Button
+            className="flex-none cursor-pointer border-0 bg-transparent p-0 text-12 font-semibold text-blue underline"
+            onPress={unpinPlace}
+          >
+            {copy.unpin}
+          </Button>
+        )}
       </p>
       {error && (
         <p role="alert" className="m-0 text-13 text-warn-ink">
           {copy.errors[error]}
         </p>
       )}
-      {!explore.location && explore.reference && (
-        <div className="flex flex-wrap items-baseline gap-x-2 text-12 leading-[1.45] text-muted">
-          <span>{explore.reference.pinned ? copy.pinMoved : copy.pinHint}</span>
-          {explore.reference.pinned && (
-            <Button
-              className="cursor-pointer border-0 bg-transparent p-0 text-12 font-semibold text-blue underline"
-              onPress={unpinPlace}
-            >
-              {copy.unpin}
-            </Button>
-          )}
-        </div>
-      )}
       {!explore.location && <PlaceField text={explore.placeText} />}
       {!explore.location && explore.placeNotFound && (
         <p className="m-0 text-13 text-warn-ink">{copy.notFound}</p>
       )}
-      {!explore.location && explore.homeArea && (
-        <p className="m-0 text-12 leading-[1.45] text-muted">{copy.changeForVisit}</p>
-      )}
-      {/* How far the learner can go: the lists keep to it, and the map draws it once picked. */}
-      <div className="flex flex-col gap-2 border-t border-rule pt-2.5">
-        <p
-          id="explore-location-range"
-          className="m-0 flex items-center gap-1.5 text-13 font-semibold text-navy"
-        >
-          <Icon name="distance" className="text-blue" />
-          {copy.range}
-        </p>
-        <RangeChips rangeKm={explore.rangeKm} label={copy.range} compact />
-        {!explore.reference && <p className={note}>{copy.rangeNeedsPlace}</p>}
-      </div>
+    </div>
+  )
+}
+
+/** The radius the lists keep to, 5 to 100 km; the map draws it once picked. Bare, for the Filters popover. */
+export function RadiusRow({ explore }: { explore: Explore }) {
+  const copy = useCopy().explore.location
+  return (
+    <div className="flex flex-col gap-2">
+      <p className="m-0 flex items-center gap-1.5 text-13 font-semibold text-navy">
+        <Icon name="distance" className="text-blue" />
+        {copy.radius}
+      </p>
+      <RangeChips rangeKm={explore.rangeKm} label={copy.radius} compact />
+      {!explore.reference && <p className={note}>{copy.rangeNeedsPlace}</p>}
     </div>
   )
 }
@@ -1008,7 +1014,8 @@ function RangeChips({
           className={cx(
             segOption,
             'px-0.5 whitespace-nowrap tabular-nums',
-            compact ? 'min-h-8 text-12' : 'min-h-9 text-13',
+            // In the Filters popover each radius is a full 44px target.
+            compact ? 'min-h-11 text-13' : 'min-h-9 text-13',
           )}
         >
           {copy.option(km)}
@@ -1019,13 +1026,17 @@ function RangeChips({
 }
 
 /**
- * "How far can you go?": the distance within which a center counts as near. Asked again when the learner presses
- * "Change" on a qualification with no center in range; until then, nothing is shown.
+ * "How far can you go?": Near me, Travel farther or Relocate, each a radius (REACH_KM). Asked after a search, before
+ * the results, and again when the learner presses "Change" on a qualification with no center in range. The exact
+ * radius stays under Filters on the map.
  */
-function RangeStep({ rangeKm }: { rangeKm: number }) {
+function RangeStep() {
   const copy = useCopy().explore.results.range
   const asking = useExploreStore((state) => state.askingRange)
-  const { closeRange } = useExploreStore.getState()
+  const rangeKm = useExploreStore((state) => state.rangeKm)
+  const relocate = useExploreStore((state) => state.relocate)
+  const rangeChosen = useExploreStore((state) => state.rangeChosen)
+  const { closeRange, setReach } = useExploreStore.getState()
   const headingRef = useRef<HTMLHeadingElement>(null)
   // Brought into view and focused, so a keyboard or screen-reader user lands on the question.
   useEffect(() => {
@@ -1034,28 +1045,68 @@ function RangeStep({ rangeKm }: { rangeKm: number }) {
     headingRef.current?.scrollIntoView?.({ block: 'nearest' })
   }, [asking])
   if (!asking) return null
+  const current = reachOf(rangeKm, relocate)
+  const choices: { reach: Reach; label: string; hint: string; icon: IconName }[] = [
+    { reach: 'near', label: copy.near, hint: copy.nearHint, icon: 'pin' },
+    { reach: 'farther', label: copy.farther, hint: copy.fartherHint, icon: 'car' },
+    { reach: 'relocate', label: copy.relocate, hint: copy.relocateHint, icon: 'plane' },
+  ]
   return (
     <section
       aria-labelledby="explore-range-heading"
-      className="flex flex-col gap-2 rounded-12 border border-pill-border bg-tint p-3"
+      className="flex flex-col gap-3 rounded-14 border border-border bg-surface p-3"
     >
-      <h3
-        id="explore-range-heading"
-        ref={headingRef}
-        tabIndex={-1}
-        className={cx(heading, 'flex items-center gap-1.5 outline-none')}
-      >
-        <Icon name="distance" />
-        {copy.heading}
-      </h3>
-      <p className={note}>{copy.body}</p>
-      <RangeChips rangeKm={rangeKm} label={copy.heading} />
-      <Button
-        className={cx(button({ variant: 'tertiary', height: 36, snug: true }), 'self-start')}
-        onPress={closeRange}
-      >
-        {copy.keep}
-      </Button>
+      <div className="flex items-center justify-between gap-2">
+        <h3
+          id="explore-range-heading"
+          ref={headingRef}
+          tabIndex={-1}
+          className={cx(heading, 'flex items-center gap-1.5 outline-none')}
+        >
+          <Icon name="distance" className="text-blue" />
+          {copy.heading}
+        </h3>
+        <InfoPopover label={copy.info} paragraphs={copy.infoBody} />
+      </div>
+      <div role="group" aria-label={copy.heading} className="grid grid-cols-3 gap-2">
+        {choices.map((choice) => (
+          <ToggleButton
+            key={choice.reach}
+            isSelected={choice.reach === current}
+            onChange={() => setReach(choice.reach)}
+            className={cx(
+              'group flex min-h-[92px] min-w-0 cursor-pointer flex-col items-center justify-center gap-1.5 rounded-12 border border-border bg-page px-1.5 py-2.5 text-center',
+              'transition-[transform,background-color,border-color,color,box-shadow] duration-150 ease-out motion-reduce:transition-none',
+              // Lifts 2px under the pointer, and presses back down on click.
+              'data-hovered:border-hover-border data-hovered:bg-surface data-hovered:shadow-[0_6px_14px_-6px_rgb(var(--track-shadow-rgb)/0.3)] motion-safe:data-hovered:-translate-y-0.5',
+              'data-pressed:bg-soft motion-safe:data-pressed:translate-y-0 motion-safe:data-pressed:scale-[0.98]',
+              'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus',
+              'data-selected:border-navy data-selected:bg-navy data-selected:shadow-[0_4px_12px_-4px_rgb(var(--track-shadow-rgb)/0.45)]',
+            )}
+          >
+            <span
+              aria-hidden="true"
+              className="grid size-8 place-items-center rounded-full bg-tint text-blue transition-colors duration-150 group-data-selected:bg-surface/15 group-data-selected:text-surface"
+            >
+              <Icon name={choice.icon} size="1.05rem" />
+            </span>
+            <span className="text-13 leading-tight font-semibold text-navy group-data-selected:text-surface">
+              {choice.label}
+            </span>
+            <span className="text-12 leading-tight text-muted tabular-nums group-data-selected:text-surface/80">
+              {choice.hint}
+            </span>
+          </ToggleButton>
+        ))}
+      </div>
+      {rangeChosen && (
+        <Button
+          className={cx(button({ variant: 'tertiary', height: 36, snug: true }), 'self-start')}
+          onPress={closeRange}
+        >
+          {copy.keep}
+        </Button>
+      )}
     </section>
   )
 }
@@ -1304,6 +1355,7 @@ export function ResultsPanel({
 }) {
   const en = useCopy()
   const copy = en.explore.results
+  const asking = useExploreStore((state) => state.askingRange)
   const { search, matches, centers, reference } = explore
   if (!search) return null
   if (!matches.length && view !== 'demand') {
@@ -1311,6 +1363,18 @@ export function ResultsPanel({
       <p role="status" className="m-0 rounded-12 bg-panel p-3 text-14 leading-[1.5] text-ink">
         {copy.noMatch}
       </p>
+    )
+  }
+  // The goal, then the qualification chips, then "How far can you go?", then the results: until it's answered, the
+  // question stands alone. Asked even before there is a place: arriving from Find my pathway opens it straight away.
+  if (asking && view !== 'demand') {
+    return (
+      <div className="flex flex-col gap-3">
+        {!reference && (
+          <p className="m-0 rounded-10 bg-tint px-3 py-2 text-13 text-navy">{copy.needPlace}</p>
+        )}
+        <RangeStep />
+      </div>
     )
   }
   if (explore.listingsLoading && view !== 'demand') {
@@ -1425,8 +1489,7 @@ export function ResultsPanel({
       {!reference && view !== 'demand' && (
         <p className="m-0 rounded-10 bg-tint px-3 py-2 text-13 text-navy">{copy.needPlace}</p>
       )}
-      {/* Asked even before there is a place: arriving from Find my pathway opens it straight away. */}
-      {view !== 'demand' && <RangeStep rangeKm={rangeKm} />}
+
       {/* The ranked list comes first: the answer to "where should I go, and why?". */}
       {view !== 'demand' && (
         <RankedCenters
