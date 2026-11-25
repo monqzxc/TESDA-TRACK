@@ -16713,7 +16713,7 @@
  {
   "code": "GARBAGE-COLLECTION-NC-I",
   "name": "Garbage Collection NC I",
-  "sector": "Other",
+  "sector": "Utilities",
   "skill_label": "Garbage Collection",
   "career_keywords": [
    "garbage collection",
@@ -20781,7 +20781,7 @@
  {
   "code": "ILLUSTRATION-NC-II",
   "name": "Illustration NC II",
-  "sector": "Other",
+  "sector": "Visual Arts",
   "skill_label": "Illustration",
   "career_keywords": [
    "illustration",
@@ -21066,7 +21066,7 @@
  {
   "code": "LMCS-NC-II",
   "name": "Laboratory and Metrology/Calibration Services NC II",
-  "sector": "Other",
+  "sector": "Metals and Engineering",
   "skill_label": "Laboratory and Metrology/Calibration Services",
   "career_keywords": [
    "laboratory and metrology/calibration services",
@@ -21141,7 +21141,7 @@
  {
   "code": "LMCS-NC-III",
   "name": "Laboratory and Metrology/Calibration Services NC III",
-  "sector": "Other",
+  "sector": "Metals and Engineering",
   "skill_label": "Laboratory and Metrology/Calibration Services",
   "career_keywords": [
    "laboratory and metrology/calibration services",
@@ -23731,7 +23731,7 @@
  {
   "code": "METAL-STAMPING-NC-II",
   "name": "Metal Stamping NC II",
-  "sector": "Other",
+  "sector": "Metals and Engineering",
   "skill_label": "Metal Stamping",
   "career_keywords": [
    "metal stamping",
@@ -23906,7 +23906,7 @@
  {
   "code": "MICROFINANCE-TECHNOLOGY-NC-IV",
   "name": "Microfinance Technology NC IV",
-  "sector": "Other",
+  "sector": "Health, Social and Other Community Development Services",
   "skill_label": "Microfinance Technology",
   "career_keywords": [
    "microfinance technology",
@@ -24763,7 +24763,7 @@
  {
   "code": "MTOLS-NC-II",
   "name": "Multimodal Transport Operations and Logistics (Seafreight Import) Services NC II",
-  "sector": "Other",
+  "sector": "Transport and Logistics",
   "skill_label": "Multimodal Transport Operations and Logistics Services",
   "career_keywords": [
    "multimodal transport operations and logistics services",
@@ -28582,7 +28582,7 @@
  {
   "code": "SANITARY-LANDFILL-OPERATIONS-NC-III",
   "name": "Sanitary Landfill Operations NC III",
-  "sector": "Other",
+  "sector": "Utilities",
   "skill_label": "Sanitary Landfill Operations",
   "career_keywords": [
    "sanitary landfill operations",
@@ -30460,7 +30460,7 @@
  {
   "code": "TINSMITHING-NC-II",
   "name": "Tinsmithing (Automotive Manufacturing) NC II",
-  "sector": "Automotive Industry (manufacturing",
+  "sector": "Automotive Manufacturing",
   "skill_label": "Tinsmithing",
   "career_keywords": [
    "tinsmithing",
@@ -31727,7 +31727,7 @@
  {
   "code": "WAREHOUSING-SERVICES-NC-II",
   "name": "Warehousing Services NC II",
-  "sector": "Other",
+  "sector": "Transport and Logistics",
   "skill_label": "Warehousing Services",
   "career_keywords": [
    "warehousing services",

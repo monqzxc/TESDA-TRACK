@@ -352,7 +352,8 @@ def build_entry(row: dict, lines: list[str], cover: list[str], taken_codes: set[
     return {
         "code": make_code(row["title"], taken_codes),
         "name": row["title"],
-        "sector": parse_sector(cover) or sector_from_text(lines) or "Other",
+        "sector": (parse_sector(cover) or sector_from_text(lines)
+                   or SECTOR_BY_TITLE.get(_base_name(row["title"]).lower(), "Other")),
         "skill_label": skill_label(row["title"]),
         "career_keywords": search_keywords(row["title"], jobs),
         "possible_jobs": jobs,
@@ -381,6 +382,7 @@ SECTOR_ALIASES = {
     "automotive and land transport": "Automotive and Land Transportation",
     "automotive/land transport": "Automotive and Land Transportation",
     "automotive manufacturing sub-": "Automotive Manufacturing",
+    "automotive industry (manufacturing": "Automotive Manufacturing",
     "conditioning and refrigeration technology": "Heating, Ventilation, Air Conditioning and Refrigeration Technology",
     "heating, ventilation, air-conditioning and refrigeration technology":
         "Heating, Ventilation, Air Conditioning and Refrigeration Technology",
@@ -394,6 +396,17 @@ SECTOR_ALIASES = {
     "logistics and transport": "Transport and Logistics",
     "tour guiding services iii tourism": "Tourism",
     "tvet": "TVET",
+}
+# TRs whose cover and text name no sector; placed beside their sibling qualifications.
+SECTOR_BY_TITLE = {
+    "garbage collection": "Utilities",
+    "sanitary landfill operations": "Utilities",
+    "illustration": "Visual Arts",
+    "laboratory and metrology/calibration services": "Metals and Engineering",
+    "metal stamping": "Metals and Engineering",
+    "microfinance technology": "Health, Social and Other Community Development Services",
+    "multimodal transport operations and logistics (seafreight import) services": "Transport and Logistics",
+    "warehousing services": "Transport and Logistics",
 }
 
 
