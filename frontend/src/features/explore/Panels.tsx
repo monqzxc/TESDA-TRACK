@@ -1210,6 +1210,64 @@ function RangeSummary() {
   )
 }
 
+/** How long the loader stays after each answer to "How far can you go?". None in tests, which don't wait for it. */
+export const RANGE_LOADER = { ms: import.meta.env.MODE === 'test' ? 0 : 650 }
+
+/**
+ * True for a moment after each answer to "How far can you go?" (an answer the same as before, too), so the learner
+ * sees the results being redone for their distance rather than a list that silently changed.
+ */
+function useRangeLoader() {
+  const answers = useExploreStore((state) => state.rangeAnswers)
+  const [seen, setSeen] = useState(answers)
+  const [loading, setLoading] = useState(false)
+  if (answers !== seen) {
+    setSeen(answers)
+    if (RANGE_LOADER.ms > 0) setLoading(true)
+  }
+  useEffect(() => {
+    if (!loading) return
+    const timer = window.setTimeout(() => setLoading(false), RANGE_LOADER.ms)
+    return () => window.clearTimeout(timer)
+  }, [loading, answers])
+  return loading
+}
+
+/** A spinner and its line, over three placeholder rows shaped like the ranked centers to come. */
+function ResultsLoader({ label }: { label: string }) {
+  return (
+    <div
+      role="status"
+      data-testid="results-loader"
+      className={cx('flex flex-col gap-2 rounded-14 border border-border bg-surface p-3', floating)}
+    >
+      <p className="m-0 flex items-center gap-2 text-13 font-semibold text-navy">
+        <span
+          aria-hidden="true"
+          className="size-4 flex-none animate-spin rounded-full border-2 border-blue/25 border-t-blue"
+        />
+        {label}
+      </p>
+      <div aria-hidden="true" className="flex flex-col gap-1.5">
+        {[0, 1, 2].map((row) => (
+          <div
+            key={row}
+            className="flex animate-shimmer items-start gap-2.5 rounded-10 bg-soft px-2.5 py-2.5"
+            style={{ animationDelay: `${row * 0.15}s` }}
+          >
+            <span className="size-6 flex-none rounded-full bg-chip" />
+            <span className="flex min-w-0 flex-1 flex-col gap-1.5">
+              <span className={cx('h-3.5 rounded-full bg-chip', row === 0 ? 'w-3/4' : 'w-2/3')} />
+              <span className="h-3 w-1/3 rounded-full bg-chip" />
+              <span className="h-3 w-1/2 rounded-full bg-chip" />
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 /**
  * The core of the results: the centers for the qualification in focus, ranked for the learner, best first. Each says
  * its main reason, its distance and travel time, and any scholarship and demand tags; the first is "Recommended".
@@ -1359,96 +1417,128 @@ function RankedRow({
     ...(center.distanceKm !== null ? [copy.km(roundKm(center.distanceKm))] : []),
     ...(minutes !== null ? [copy.about(travelTime(minutes))] : []),
   ].join(' · ')
+  // The recommended center's (i): why it comes first, in full (every server reason, not just the two shown).
+  const allServerWhy = reason === 'service' ? (item.why ?? []).map(serverText) : []
+  const whyParagraphs = top
+    ? [
+        copy.why.first,
+        ...(allServerWhy.length ? allServerWhy.map((text) => `${text}.`) : [`${why}.`]),
+        ...(trip ? [copy.why.trip(trip)] : []),
+        ...(item.scholarship ? [copy.why.scholarship] : []),
+        ...(item.demand && reason !== 'demand'
+          ? [copy.why.demand(center.region || center.regionCode || '')]
+          : []),
+        ...(item.ready ? [copy.why.ready] : []),
+        ...(needsVerification ? [copy.why.unconfirmed] : []),
+      ]
+    : []
   return (
-    <Button
-      onPress={onSelect}
-      data-testid="ranked-center"
-      className={cx(
-        'group flex w-full cursor-pointer items-start gap-2.5 rounded-10 border px-2.5 py-2 text-left data-focus-visible:outline-3 data-focus-visible:outline-focus',
-        top ? 'border-warn-ink/35 bg-warn-bg' : 'border-transparent bg-soft',
-        lift,
-        'data-hovered:border-hover-border data-hovered:bg-surface data-hovered:shadow-[0_6px_14px_-6px_rgb(var(--track-shadow-rgb)/0.3)] data-pressed:scale-[0.99]',
-      )}
-    >
-      <span
-        aria-hidden="true"
+    // The recommended center pulses softly (not at all with reduced motion), and its (i) sits beside the row's
+    // button, not in it, so it opens on its own and never gets in the way of opening the center.
+    <div className={cx('relative rounded-10', top && 'animate-recommend-pulse')}>
+      <Button
+        onPress={onSelect}
+        data-testid="ranked-center"
         className={cx(
-          'mt-0.5 grid size-6 flex-none place-items-center rounded-full text-12 font-bold text-white',
-          kindFill[center.kind],
+          'group flex w-full cursor-pointer items-start gap-2.5 rounded-10 border px-2.5 py-2 text-left data-focus-visible:outline-3 data-focus-visible:outline-focus',
+          top ? 'border-warn-ink/35 bg-warn-bg' : 'border-transparent bg-soft',
+          lift,
+          'data-hovered:border-hover-border data-hovered:bg-surface data-hovered:shadow-[0_6px_14px_-6px_rgb(var(--track-shadow-rgb)/0.3)] data-pressed:scale-[0.99]',
         )}
       >
-        {rank}
-      </span>
-      <span className="min-w-0 flex-1">
-        {top && (
-          <span className={cx(tag, 'mb-1 bg-[#fdecc8] py-0.5 font-bold text-[#7a4a05]')}>
-            <Icon name="star" />
-            {copy.top}
-          </span>
-        )}
-        <span className="block text-14 leading-[1.35] font-semibold wrap-anywhere text-navy">
-          {center.name}
-          {starred && !top && (
-            <Icon
-              name="star"
-              label={copy.top}
-              className="ml-1.5 inline-block align-[-2px] text-[#b45309]"
-            />
-          )}
-        </span>
-        <span className="mt-0.5 flex items-center gap-1 text-12 font-semibold text-muted">
-          <Icon name={kindIcon[center.kind]} className={kindColor[center.kind]} />
-          {copy.kinds[center.kind]}
-          {center.city ? ` · ${center.city}` : ''}
-        </span>
         <span
-          data-testid="ranked-reason"
-          className="mt-1 block text-13 leading-[1.4] font-semibold text-ink"
+          aria-hidden="true"
+          className={cx(
+            'mt-0.5 grid size-6 flex-none place-items-center rounded-full text-12 font-bold text-white',
+            kindFill[center.kind],
+          )}
         >
-          {why}
+          {rank}
         </span>
-        {needsVerification && (
-          <span
-            data-testid="ranked-warning"
-            className="mt-1 block text-12 leading-[1.4] text-warn-ink"
-          >
-            <Icon name="info" className="mr-1 inline-block align-text-bottom" />
-            {copy.reasons.unconfirmed}
-            {verificationDetails ? ` · ${verificationDetails}` : ''}
+        <span className={cx('min-w-0 flex-1', top && 'pr-7')}>
+          {top && (
+            <span className={cx(tag, 'mb-1 bg-[#fdecc8] py-0.5 font-bold text-[#7a4a05]')}>
+              <Icon name="star" />
+              {copy.top}
+            </span>
+          )}
+          <span className="block text-14 leading-[1.35] font-semibold wrap-anywhere text-navy">
+            {center.name}
+            {starred && !top && (
+              <Icon
+                name="star"
+                label={copy.top}
+                className="ml-1.5 inline-block align-[-2px] text-[#b45309]"
+              />
+            )}
           </span>
-        )}
-        <span className="mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-13 leading-[1.4] text-muted">
-          {trip && <span data-testid="ranked-trip">{trip}</span>}
-          {item.score !== undefined && (
-            <span data-testid="ranked-score" className={cx(tag, 'bg-tint text-blue tabular-nums')}>
-              {copy.score(item.score)}
+          <span className="mt-0.5 flex items-center gap-1 text-12 font-semibold text-muted">
+            <Icon name={kindIcon[center.kind]} className={kindColor[center.kind]} />
+            {copy.kinds[center.kind]}
+            {center.city ? ` · ${center.city}` : ''}
+          </span>
+          <span
+            data-testid="ranked-reason"
+            className="mt-1 block text-13 leading-[1.4] font-semibold text-ink"
+          >
+            {why}
+          </span>
+          {needsVerification && (
+            <span
+              data-testid="ranked-warning"
+              className="mt-1 block text-12 leading-[1.4] text-warn-ink"
+            >
+              <Icon name="info" className="mr-1 inline-block align-text-bottom" />
+              {copy.reasons.unconfirmed}
+              {verificationDetails ? ` · ${verificationDetails}` : ''}
             </span>
           )}
-          {item.scholarship && (
-            <span className={cx(solidTag, 'bg-scholarship-fill py-0.5')}>
-              <Icon name="learn" />
-              {copy.scholarship}
-            </span>
-          )}
-          {item.demand && (
-            <span className={cx(tag, 'bg-good-bg text-good-ink')}>
-              <Icon name="briefcase" />
-              {copy.demand}
-            </span>
-          )}
-          {item.ready && (
-            <span className={cx(tag, 'bg-tint text-blue')}>
-              <Icon name="award" />
-              {copy.ready}
-            </span>
-          )}
+          <span className="mt-0.5 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-13 leading-[1.4] text-muted">
+            {trip && <span data-testid="ranked-trip">{trip}</span>}
+            {item.score !== undefined && (
+              <span
+                data-testid="ranked-score"
+                className={cx(tag, 'bg-tint text-blue tabular-nums')}
+              >
+                {copy.score(item.score)}
+              </span>
+            )}
+            {item.scholarship && (
+              <span className={cx(solidTag, 'bg-scholarship-fill py-0.5')}>
+                <Icon name="learn" />
+                {copy.scholarship}
+              </span>
+            )}
+            {item.demand && (
+              <span className={cx(tag, 'bg-good-bg text-good-ink')}>
+                <Icon name="briefcase" />
+                {copy.demand}
+              </span>
+            )}
+            {item.ready && (
+              <span className={cx(tag, 'bg-tint text-blue')}>
+                <Icon name="award" />
+                {copy.ready}
+              </span>
+            )}
+          </span>
         </span>
-      </span>
-      <Icon
-        name="chevron"
-        className="mt-1 flex-none -rotate-90 text-muted transition-transform duration-200 group-data-hovered:translate-x-0.5 group-data-hovered:text-blue"
-      />
-    </Button>
+        <Icon
+          name="chevron"
+          className={cx(
+            'flex-none -rotate-90 text-muted transition-transform duration-200 group-data-hovered:translate-x-0.5 group-data-hovered:text-blue',
+            top ? 'self-center' : 'mt-1',
+          )}
+        />
+      </Button>
+      {top && (
+        <InfoPopover
+          label={copy.why.label}
+          paragraphs={whyParagraphs}
+          className="absolute top-0.5 right-0.5"
+        />
+      )}
+    </div>
   )
 }
 
@@ -1467,6 +1557,7 @@ export function ResultsPanel({
   const en = useCopy()
   const copy = en.explore.results
   const asking = useExploreStore((state) => state.askingRange)
+  const rangeLoading = useRangeLoader()
   const { search, matches, centers, reference } = explore
   if (!search) return null
   if (!matches.length && view !== 'demand') {
@@ -1488,13 +1579,13 @@ export function ResultsPanel({
       </div>
     )
   }
-  if (explore.listingsLoading && view !== 'demand') {
+  if ((explore.listingsLoading || rangeLoading) && view !== 'demand') {
     return (
       <div className="flex flex-col gap-3">
         <RangeSummary />
-        <p role="status" className={note}>
-          {en.training.results.loading}
-        </p>
+        <ResultsLoader
+          label={explore.listingsLoading ? en.training.results.loading : copy.updating}
+        />
       </div>
     )
   }

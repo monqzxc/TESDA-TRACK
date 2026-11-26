@@ -104,13 +104,27 @@ describe('Qualification chips', () => {
     expect(chipGroup()).not.toBeInTheDocument()
   })
 
+  it('shows every match at once and marks the highest scoring one as the best match', async () => {
+    searchFor([welding, cookery])
+    renderPage()
+    await screen.findByRole('button', { name: /Manila Welding Institute/ })
+    const group = chipGroup()!
+    expect(within(group).getAllByRole('button')).toHaveLength(2)
+    expect(within(group).getByRole('button', { name: /Cookery NC II/ })).toHaveTextContent(
+      'Best match',
+    )
+    expect(within(group).getByRole('button', { name: /Shielded Metal Arc/ })).not.toHaveTextContent(
+      'Best match',
+    )
+  })
+
   it('selects a qualification: explains it under the chips and narrows the map', async () => {
     searchFor([cookery, welding])
     renderPage()
     const user = userEvent.setup()
     await screen.findByRole('button', { name: /Manila Welding Institute/ })
     expect(screen.queryByRole('note', { name: 'Cookery NC II' })).not.toBeInTheDocument()
-    const chip = within(chipGroup()!).getByRole('button', { name: 'Cookery NC II' })
+    const chip = within(chipGroup()!).getByRole('button', { name: /Cookery NC II/ })
     const before = listingRequests
     await user.click(chip)
     expect(chip).toHaveAttribute('aria-pressed', 'true')
@@ -127,10 +141,10 @@ describe('Qualification chips', () => {
     const user = userEvent.setup()
     await screen.findByRole('button', { name: /Manila Welding Institute/ })
     const group = chipGroup()!
-    await user.click(within(group).getByRole('button', { name: 'Cookery NC II' }))
+    await user.click(within(group).getByRole('button', { name: /Cookery NC II/ }))
     const weld = within(group).getByRole('button', { name: /Shielded Metal Arc/ })
     await user.click(weld)
-    expect(within(group).getByRole('button', { name: 'Cookery NC II' })).toHaveAttribute(
+    expect(within(group).getByRole('button', { name: /Cookery NC II/ })).toHaveAttribute(
       'aria-pressed',
       'false',
     )

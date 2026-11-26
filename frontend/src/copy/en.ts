@@ -2384,6 +2384,8 @@ export const en = {
       label: 'Matched qualifications',
       labelOne: 'Matched qualification',
       hint: 'Tap one to see what it’s about',
+      // The badge on the search's highest scoring match.
+      best: 'Best match',
       hours: (hours: number) => `${hours} hrs of training`,
       hoursRange: (min: number, max: number) => `${min}–${max} hrs of training`,
       near: (count: number) => `${count} centers near you`,
@@ -2502,6 +2504,8 @@ export const en = {
     },
     results: {
       heading: 'Qualifications that fit what you wrote',
+      // The loader after the learner answers "How far can you go?".
+      updating: 'Finding centers within your distance…',
       tabs: {
         label: 'Show',
         all: 'All',
@@ -2597,6 +2601,16 @@ export const en = {
       heading: 'Recommended centers',
       for: (qualification: string) => `For ${qualification}, best first`,
       top: 'Recommended',
+      // The (i) on the recommended center: why it comes first, in a few short lines.
+      why: {
+        label: 'Why it’s recommended',
+        first: 'It comes first of the centers listed for you.',
+        trip: (trip: string) => `Trip from you: ${trip}.`,
+        scholarship: 'A scholarship is open here.',
+        demand: (region: string) => `Jobs for this qualification are in demand in ${region}.`,
+        ready: 'Your Skill Passport shows you may be ready for its assessment.',
+        unconfirmed: 'Its service details still need confirming, so check with the center first.',
+      },
       // The trip line: "6 km · about 20 min".
       km: (km: number) => `${km} km`,
       about: (time: string) => `about ${time}`,

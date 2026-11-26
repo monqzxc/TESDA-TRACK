@@ -97,6 +97,8 @@ interface ExploreState {
   rangeChosen: boolean
   /** "How far can you go?" is on screen. */
   askingRange: boolean
+  /** Counts the learner's answers to "How far can you go?", so the results can show a loader after each one. */
+  rangeAnswers: number
   /** The matched qualification the learner selected (at most one code). None: all of them. */
   picked: string[]
   /** Selects a qualification in place of any other, or clears it if it was the one selected. */
@@ -121,6 +123,7 @@ const EMPTY = {
   rangeKm: REACH_KM.near,
   rangeChosen: false,
   askingRange: false,
+  rangeAnswers: 0,
   picked: [] as string[],
 } satisfies Partial<ExploreState>
 
@@ -133,15 +136,22 @@ export const useExploreStore = create<ExploreState>()(
       changeRange: () => set({ askingRange: true }),
       // A typed distance is a radius: Relocate (no limit) goes off.
       setRange: (rangeKm) =>
-        set({ rangeKm, relocate: false, rangeChosen: true, askingRange: false }),
+        set((state) => ({
+          rangeKm,
+          relocate: false,
+          rangeChosen: true,
+          askingRange: false,
+          rangeAnswers: state.rangeAnswers + 1,
+        })),
       // Relocate keeps the last km, so the radius is there again once the learner narrows back down.
       setReach: (reach) =>
-        set({
+        set((state) => ({
           ...(reach === 'relocate' ? {} : { rangeKm: REACH_KM[reach] }),
           relocate: reach === 'relocate',
           rangeChosen: true,
           askingRange: false,
-        }),
+          rangeAnswers: state.rangeAnswers + 1,
+        })),
       closeRange: () => set({ askingRange: false }),
       togglePicked: (code) => {
         const { picked } = useExploreStore.getState()

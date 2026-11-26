@@ -8,6 +8,7 @@ import { server } from '../../test/server.ts'
 import type { CenterMapProps } from '../training/CenterMapTypes.ts'
 import { useTrainingStore } from '../training/state.ts'
 import ExplorePage from './ExplorePage.tsx'
+import { RANGE_LOADER } from './Panels.tsx'
 import { useDemandStore, useExploreStore } from './useExplore.ts'
 
 // The map says what it was given: which centers are starred, which regions carry a balance, and how it is framed.
@@ -330,6 +331,35 @@ describe('the supply and demand strip and analysis', () => {
     const again = within(await showAnalysis())
     fireEvent.click(again.getByRole('button', { name: 'Back to results' }))
     expect(await screen.findByTestId('ranked-centers')).toBeVisible()
+  })
+
+  it('marks the recommended center with a pulse and an (i) that says why, without opening it', async () => {
+    open()
+    const list = await screen.findByTestId('ranked-centers')
+    const [top] = await within(list).findAllByTestId('ranked-center')
+    expect(top!.parentElement).toHaveClass('animate-recommend-pulse')
+    fireEvent.click(within(list).getByRole('button', { name: 'Why it’s recommended' }))
+    const why = await screen.findByRole('dialog', { name: 'Why it’s recommended' })
+    expect(within(why).getByText('It comes first of the centers listed for you.')).toBeVisible()
+    // The (i) opens only its note: the center itself stays closed.
+    expect(screen.getByTestId('ranked-centers')).toBeVisible()
+  })
+
+  it('shows a loader for a moment after each answer to "How far can you go?"', async () => {
+    RANGE_LOADER.ms = 300
+    try {
+      open()
+      await screen.findByTestId('ranked-centers')
+      act(() => useExploreStore.getState().setReach('farther'))
+      expect(screen.getByTestId('results-loader')).toHaveTextContent(
+        'Finding centers within your distance…',
+      )
+      expect(screen.queryByTestId('ranked-centers')).toBeNull()
+      expect(await screen.findByTestId('ranked-centers')).toBeVisible()
+      expect(screen.queryByTestId('results-loader')).toBeNull()
+    } finally {
+      RANGE_LOADER.ms = 0
+    }
   })
 
   it('ranks the recommended centers beside the map, each with its reason and trip (core)', async () => {

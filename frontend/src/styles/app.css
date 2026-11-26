@@ -210,6 +210,9 @@
   --animate-blink: blink 1s steps(1) infinite;
   --animate-drift: drift 70s linear infinite;
   --animate-home-pulse: home-pulse 3.2s cubic-bezier(0.2, 0.75, 0.2, 1) infinite;
+  /* Explore: a soft amber ring around the recommended center, and the loader's placeholder rows. */
+  --animate-recommend-pulse: recommend-pulse 2.4s ease-out infinite;
+  --animate-shimmer: shimmer 1.3s ease-in-out infinite;
 
   @keyframes fade-in {
     from {
@@ -306,6 +309,24 @@
   @keyframes drift {
     to {
       transform: translateX(-50%);
+    }
+  }
+  @keyframes recommend-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgb(217 119 6 / 0.45);
+    }
+    70%,
+    100% {
+      box-shadow: 0 0 0 9px rgb(217 119 6 / 0);
+    }
+  }
+  @keyframes shimmer {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.45;
     }
   }
   @keyframes home-pulse {

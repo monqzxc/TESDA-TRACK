@@ -1,4 +1,3 @@
-import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { ToggleButton } from 'react-aria-components'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
@@ -37,6 +36,12 @@ export function QualificationChips({
       })
     : []
 
+  // The search's highest scoring match (the first on a tie), marked so the learner sees where to start.
+  const best =
+    matches.length > 1
+      ? matches.reduce((top, match) => (match.score > top.score ? match : top)).qualification.code
+      : null
+
   return (
     <div className={cx('pointer-events-auto flex min-w-0 flex-col gap-1.5', className)}>
       <p className="m-0 text-12 text-muted">
@@ -46,119 +51,55 @@ export function QualificationChips({
         </span>{' '}
         · {copy.hint}
       </p>
-      <ScrollRow label={label}>
-        {matches.map(({ qualification }) => (
-          <ToggleButton
-            key={qualification.code}
-            isSelected={picked.includes(qualification.code)}
-            onChange={() => togglePicked(qualification.code)}
-            className={cx(
-              'inline-flex min-h-9 flex-none cursor-pointer items-center rounded-full border px-3 text-13 leading-tight font-semibold whitespace-nowrap',
-              'shadow-[0_1px_2px_rgb(var(--track-shadow-rgb)/0.08)] transition-[background-color,border-color,color] duration-200 ease-out',
-              'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus',
-              // Blue tint and blue ink, like the app's other pressable pills, so the chips read as buttons, not tags.
-              'border-pill-border bg-pill text-blue data-hovered:border-pill-hover-border data-hovered:bg-pill-hover data-hovered:text-pill-hover-ink',
-              'data-pressed:bg-pill-hover',
-              'data-selected:border-fill data-selected:bg-fill data-selected:text-white',
-              'data-selected:data-hovered:border-fill-hover data-selected:data-hovered:bg-fill-hover data-selected:data-hovered:text-white',
-            )}
-          >
-            {qualification.name}
-          </ToggleButton>
-        ))}
-      </ScrollRow>
+      {/* Every match on screen at once: the chips wrap onto more lines rather than scroll sideways. */}
+      <div role="group" aria-label={label} className="flex min-w-0 flex-wrap gap-1.5">
+        {matches.map(({ qualification }) => {
+          const isBest = qualification.code === best
+          return (
+            <ToggleButton
+              key={qualification.code}
+              isSelected={picked.includes(qualification.code)}
+              onChange={() => togglePicked(qualification.code)}
+              className={cx(
+                'group inline-flex min-h-9 max-w-full cursor-pointer items-center gap-1.5 rounded-full border px-3 py-1 text-left text-13 leading-tight font-semibold',
+                'shadow-[0_1px_2px_rgb(var(--track-shadow-rgb)/0.08)] transition-[background-color,border-color,color] duration-200 ease-out',
+                'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus',
+                isBest
+                  ? // The best match in green, like the app's "Strong match" tags, so it stands out from the rest.
+                    'border-good-fill bg-good-bg text-good-ink data-hovered:brightness-95 data-pressed:brightness-90'
+                  : // Blue tint and blue ink, like the app's other pressable pills, so the chips read as buttons, not tags.
+                    'border-pill-border bg-pill text-blue data-hovered:border-pill-hover-border data-hovered:bg-pill-hover data-hovered:text-pill-hover-ink data-pressed:bg-pill-hover',
+                isBest
+                  ? 'data-selected:border-good-fill data-selected:bg-good-fill data-selected:text-white data-selected:brightness-100 data-selected:data-hovered:brightness-110'
+                  : 'data-selected:border-fill data-selected:bg-fill data-selected:text-white data-selected:data-hovered:border-fill-hover data-selected:data-hovered:bg-fill-hover data-selected:data-hovered:text-white',
+              )}
+            >
+              {isBest && (
+                <span
+                  className={cx(
+                    'inline-flex flex-none items-center gap-1 rounded-full bg-good-fill px-1.5 py-0.5 text-11 leading-none font-bold text-white',
+                    'group-data-selected:bg-white/20',
+                  )}
+                >
+                  <svg
+                    viewBox="0 0 20 20"
+                    width="11"
+                    height="11"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.9l-5.2 2.7 1-5.8L1.5 7.7l5.9-.9z" />
+                  </svg>
+                  {copy.best}
+                </span>
+              )}
+              <span className="min-w-0">{qualification.name}</span>
+            </ToggleButton>
+          )
+        })}
+      </div>
       {facts && <QualificationNote facts={facts} hasPassport={Boolean(explore.passport)} />}
     </div>
-  )
-}
-
-const FADE = '2.5rem'
-
-/**
- * One row that scrolls sideways inside itself (the page never scrolls sideways on a phone). The edge with more chips
- * past it fades out and carries a round arrow, so the learner sees the list goes on; the arrow scrolls it along.
- */
-function ScrollRow({ label, children }: { label: string; children: ReactNode }) {
-  const row = useRef<HTMLDivElement>(null)
-  const [more, setMore] = useState({ start: false, end: false })
-
-  const measure = useCallback(() => {
-    const el = row.current
-    if (!el) return
-    // A pixel of slack: fractional widths can leave the last scroll position just short of the end.
-    const start = el.scrollLeft > 1
-    const end = el.scrollLeft + el.clientWidth < el.scrollWidth - 1
-    setMore((prev) => (prev.start === start && prev.end === end ? prev : { start, end }))
-  }, [])
-
-  useEffect(() => {
-    const el = row.current
-    if (!el) return
-    measure()
-    el.addEventListener('scroll', measure, { passive: true })
-    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure)
-    observer?.observe(el)
-    for (const child of el.children) observer?.observe(child)
-    return () => {
-      el.removeEventListener('scroll', measure)
-      observer?.disconnect()
-    }
-  }, [measure, children])
-
-  const scrollBy = (direction: 1 | -1) => {
-    const el = row.current
-    if (!el) return
-    const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    el.scrollBy({ left: direction * el.clientWidth * 0.7, behavior: reduce ? 'auto' : 'smooth' })
-  }
-
-  const mask = `linear-gradient(to right, ${more.start ? 'transparent' : '#000'} 0, #000 ${more.start ? FADE : '0px'}, #000 calc(100% - ${more.end ? FADE : '0px'}), ${more.end ? 'transparent' : '#000'} 100%)`
-
-  return (
-    <div className="relative -mx-1 min-w-0">
-      <div
-        ref={row}
-        role="group"
-        aria-label={label}
-        className="flex [scrollbar-width:thin] gap-1.5 overflow-x-auto px-1 pb-1"
-        style={more.start || more.end ? { maskImage: mask, WebkitMaskImage: mask } : undefined}
-      >
-        {children}
-      </div>
-      {more.start && <ScrollArrow side="start" onPress={() => scrollBy(-1)} />}
-      {more.end && <ScrollArrow side="end" onPress={() => scrollBy(1)} />}
-    </div>
-  )
-}
-
-/** A pointer shortcut only: keyboard users reach every chip with Tab, which scrolls it into view. */
-function ScrollArrow({ side, onPress }: { side: 'start' | 'end'; onPress: () => void }) {
-  return (
-    <button
-      type="button"
-      tabIndex={-1}
-      aria-hidden="true"
-      onClick={onPress}
-      className={cx(
-        'absolute top-0 grid size-9 cursor-pointer place-items-center rounded-full border border-border bg-surface text-navy',
-        'shadow-[0_1px_2px_rgb(var(--track-shadow-rgb)/0.12),0_4px_10px_-2px_rgb(var(--track-shadow-rgb)/0.25)]',
-        'transition-colors duration-200 ease-out hover:border-navy hover:bg-navy hover:text-surface',
-        side === 'start' ? 'left-0' : 'right-0',
-      )}
-    >
-      <svg
-        viewBox="0 0 20 20"
-        width="16"
-        height="16"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2.25"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <path d={side === 'start' ? 'M12 5l-5 5 5 5' : 'M8 5l5 5-5 5'} />
-      </svg>
-    </button>
   )
 }
 
