@@ -558,7 +558,7 @@ export const ilo: Record<string, string> = {
   'Change how far you can go (now {0} km)': 'Baliwan no kasano kaadayo ti kabaelam (ita {0} km)',
   'Centers within this distance count as near you.':
     'Dagiti sentro iti uneg daytoy a kaadayo ket maibilang nga asideg kenka.',
-  'Keep as it is': 'Saan a baliwan',
+  'Confirm': 'Kumpirmaren',
   'A related qualification within {0} km': 'Maysa a mainaig a kwalipikasion iti uneg ti {0} km',
   'Training for {0}': 'Panagsanay para iti {0}',
   'Assessment for {0}': 'Panagsukat para iti {0}',

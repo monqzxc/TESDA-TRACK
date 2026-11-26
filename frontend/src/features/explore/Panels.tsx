@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { qualificationsQuery } from '../../api/queries.ts'
-import { useEffect, useId, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
 import { Button, Switch, ToggleButton } from 'react-aria-components'
 import { Link, useNavigate } from 'react-router'
 import { FoldedProvenance } from '../../components/DataProvenance.tsx'
@@ -991,9 +991,10 @@ function NoCenterHelp({
 /**
  * "How far can you go?" as one control: Near me, Travel farther or Relocate, and the learner's own km under them. The
  * own km selects the answer it falls in (up to 10 km is Near me) and shows under it, so the answer and the distance
- * always agree. Relocate is any distance. The same in the results and under Filters on the map.
+ * always agree. Relocate is any distance. The same in the results and under Filters on the map. `action` (the results'
+ * Confirm) sits right under the answers, above the own km.
  */
-function ReachPicker({ compact = false }: { compact?: boolean }) {
+function ReachPicker({ compact = false, action }: { compact?: boolean; action?: ReactNode }) {
   const copy = useCopy().explore.results.range
   const rangeKm = useExploreStore((state) => state.rangeKm)
   const relocate = useExploreStore((state) => state.relocate)
@@ -1043,6 +1044,7 @@ function ReachPicker({ compact = false }: { compact?: boolean }) {
           </ToggleButton>
         ))}
       </div>
+      {action}
       <CustomKmField value={ownKm ? rangeKm : null} />
     </div>
   )
@@ -1075,16 +1077,20 @@ function CustomKmField({ value }: { value: number | null }) {
   }
   return (
     <form
-      className="flex flex-col gap-1"
+      className="mt-1 flex flex-col gap-2"
       noValidate
       onSubmit={(event) => {
         event.preventDefault()
         apply()
       }}
     >
-      <label htmlFor={inputId} className="text-12 font-semibold text-muted">
-        {copy.custom}
-      </label>
+      <div className="flex items-center gap-2">
+        <span aria-hidden="true" className="h-px flex-1 bg-border" />
+        <label htmlFor={inputId} className="text-12 font-semibold text-muted">
+          {copy.custom}
+        </label>
+        <span aria-hidden="true" className="h-px flex-1 bg-border" />
+      </div>
       <div className="flex items-center gap-2">
         <div className="relative min-w-0 flex-1">
           <input
@@ -1163,15 +1169,15 @@ function RangeStep() {
         </h3>
         <InfoPopover label={copy.info} paragraphs={copy.infoBody} />
       </div>
-      <ReachPicker />
-      {rangeChosen && (
-        <Button
-          className={cx(button({ variant: 'tertiary', height: 36, snug: true }), 'self-start')}
-          onPress={closeRange}
-        >
-          {copy.keep}
-        </Button>
-      )}
+      <ReachPicker
+        action={
+          rangeChosen && (
+            <Button className={button({ variant: 'primary', wide: true })} onPress={closeRange}>
+              {copy.keep}
+            </Button>
+          )
+        }
+      />
     </section>
   )
 }

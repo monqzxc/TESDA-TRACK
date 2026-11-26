@@ -1242,7 +1242,7 @@ export const pam: Record<string, string> = {
     'Sukyan me nung makanu kalayu ing agyu mu (ngeni {0} km)',
   'Centers within this distance count as near you.':
     'Deng sentro king lub ning kalayu a ini mibibilang lang malapit keka.',
-  'Keep as it is': 'E sukyan',
+  'Confirm': 'Kumpirman',
   'A related qualification within {0} km':
     'Metung a makaugnay a kwalipikasyun king lub ning {0} km',
   'Training for {0}': 'Pamag-aral para king {0}',

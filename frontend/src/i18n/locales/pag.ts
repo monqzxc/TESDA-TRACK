@@ -556,7 +556,7 @@ export const pag: Record<string, string> = {
   'Change how far you can go (now {0} km)': 'Baloen no pigay karayo so nayarian mo (natan {0} km)',
   'Centers within this distance count as near you.':
     'Saray sentro ed loob na sayan karayo et ibilang ya asingger ed sika.',
-  'Keep as it is': 'Ag baloen',
+  'Confirm': 'Kumpirmaen',
   'A related qualification within {0} km': 'Sakey a misiglaotan a kwalipikasyon ed loob na {0} km',
   'Training for {0}': 'Pansanay parad {0}',
   'Assessment for {0}': 'Panageksamin parad {0}',
