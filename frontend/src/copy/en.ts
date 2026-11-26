@@ -2561,8 +2561,6 @@ export const en = {
           'Relocate shows every center, at any distance, and adds regions with more jobs for this skill.',
           'Type your own distance under the choices, here or under Filters on the map.',
         ],
-        // Under the answers: closes the question with the answer picked.
-        keep: 'Confirm',
       },
       // Under a qualification with no center in range: a related one that has a center in range.
       related: {

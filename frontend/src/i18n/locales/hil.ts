@@ -563,7 +563,6 @@ export const hil: Record<string, string> = {
     'Baylohan kon ano kalayo ang masarangan mo (subong {0} km)',
   'Centers within this distance count as near you.':
     'Ang mga sentro sa sulod sang sini nga kalayuon ginakabig nga malapit sa imo.',
-  'Confirm': 'Kumpirmaha',
   'A related qualification within {0} km':
     'Isa ka may kaangtanan nga kwalipikasyon sa sulod sang {0} km',
   'Training for {0}': 'Pagbansay para sa {0}',

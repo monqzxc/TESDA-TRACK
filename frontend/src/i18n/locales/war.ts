@@ -557,7 +557,6 @@ export const war: Record<string, string> = {
     'Balyui kun ano kahirayo an masarangan mo (yana {0} km)',
   'Centers within this distance count as near you.':
     'An mga sentro ha sulod hini nga kahirayo ginkukonsiderar nga hirani ha imo.',
-  'Confirm': 'Kumpirmaha',
   'A related qualification within {0} km':
     'Usa nga may kalabotan nga kwalipikasyon ha sulod han {0} km',
   'Training for {0}': 'Pagbansay para ha {0}',

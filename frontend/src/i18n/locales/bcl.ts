@@ -563,7 +563,6 @@ export const bcl: Record<string, string> = {
     'Baguhon kun gurano kaharayo an kaya mo (ngonyan {0} km)',
   'Centers within this distance count as near you.':
     'An mga sentro sa laog kan kaharayong ini binibilang na harani saimo.',
-  'Confirm': 'Kumpirmaron',
   'A related qualification within {0} km': 'Sarong kaugnay na kwalipikasyon sa laog nin {0} km',
   'Training for {0}': 'Pag-adal para sa {0}',
   'Assessment for {0}': 'Pagtasa para sa {0}',

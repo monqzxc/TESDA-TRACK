@@ -567,7 +567,6 @@ export const ceb: Record<string, string> = {
     'Usba kung unsa ka layo ang imong maadtoan (karon {0} km)',
   'Centers within this distance count as near you.':
     'Ang mga sentro sulod niini nga gilay-on giisip nga duol nimo.',
-  'Confirm': 'Kumpirmahon',
   'A related qualification within {0} km': 'Usa ka may kalabotan nga kwalipikasyon sulod sa {0} km',
   'Training for {0}': 'Pagbansay para sa {0}',
   'Assessment for {0}': 'Pagsusi para sa {0}',

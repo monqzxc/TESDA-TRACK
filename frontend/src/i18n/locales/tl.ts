@@ -1744,7 +1744,6 @@ export const tl: Record<string, string> = {
   'Change how far you can go (now {0} km)': 'Baguhin kung gaano kalayo ang kaya mo (ngayon {0} km)',
   'Centers within this distance count as near you.':
     'Ang mga sentro sa loob ng layong ito ay itinuturing na malapit sa iyo.',
-  'Confirm': 'Kumpirmahin',
   'A related qualification within {0} km': 'Isang kaugnay na kwalipikasyon sa loob ng {0} km',
   'Training for {0}': 'Pagsasanay para sa {0}',
   'Assessment for {0}': 'Pagtatasa para sa {0}',
