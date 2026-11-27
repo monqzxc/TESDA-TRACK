@@ -3099,6 +3099,16 @@ export const en = {
       readAs: 'We read your search as these skills',
       views: 'Show',
       strength: { strong: 'Strong match', good: 'Good match', weak: 'Related' },
+      // The top of the list: the one place in demand, the one training center and the one assessment center to go.
+      best: {
+        heading: 'Best for you',
+        note: 'Highlighting the best option for you to decide.',
+        demand: 'Most in demand',
+        training: 'Best place to train',
+        assessment: 'Best place to get assessed',
+        analysis: 'Analysis',
+        close: 'Close the analysis',
+      },
       training: {
         heading: 'Training centers',
         note: 'New to this, or want to improve? Train at a center. Scholarships may cover the fee.',

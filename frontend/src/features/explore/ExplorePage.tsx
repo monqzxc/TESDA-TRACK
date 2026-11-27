@@ -696,6 +696,7 @@ export default function ExplorePage() {
           <SkillResults
             explore={explore}
             view={view}
+            onView={changeView}
             onSelect={(id, code) => select(id, { onMap: true, code })}
             onArea={(code) => {
               useDemandStore.getState().setRegion(code)

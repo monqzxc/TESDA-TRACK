@@ -5,7 +5,9 @@ Each term is scored with goal matching's own keyword rules and semantic band, an
 best of those single-term scores. How many terms point to it only orders equal scores and explains the match, so
 listing more terms can never raise a score above what its strongest term earns alone.
 """
+import re
 from collections.abc import Sequence
+from itertools import zip_longest
 from dataclasses import dataclass, field
 
 from sqlmodel import Session
@@ -16,6 +18,8 @@ from tesda_track.services.catalog import CatalogItem
 from tesda_track.services.embeddings import Embedder
 from tesda_track.services.recommendation_service import score_qualifications
 
+SKILLS = 6  # competencies shown as what the search was read as
+SKILL_SOURCES = 3  # from the strongest matches only
 LIMIT = 5  # a job title often fits several qualifications (a welder: SMAW, GMAW, FCAW ...)
 
 
@@ -108,3 +112,40 @@ def _reason(supporting: list[str], total: int) -> str:
     if total > 1:
         return f"Matched {len(supporting)} of your {total} skills or jobs: " + ", ".join(supporting)
     return "Matched your skill or job: " + ", ".join(supporting)
+
+
+_WORD = re.compile(r"[a-z0-9]+")
+_STOP = {"and", "the", "for", "with", "use", "using", "work", "job", "skill", "skills", "perform", "apply", "carry",
+         "out", "of", "in", "on", "to", "a", "an", "or", "at", "my", "i", "can", "know", "how"}
+
+
+def _words(text: str) -> set[str]:
+    return {w.removesuffix("s") for w in _WORD.findall(text.lower()) if len(w) > 2 and w not in _STOP}
+
+
+def _same(a: str, b: str) -> bool:
+    """cook against cookery, weld against welding: one word starting the other, four letters or more."""
+    short, long_ = sorted((a, b), key=len)
+    return short == long_ or (len(short) >= 4 and long_.startswith(short))
+
+
+def matched_skills(items: Sequence[CatalogItem], matches: Sequence[Match], text: str, limit: int = SKILLS) -> list[str]:
+    """The competencies of the strongest matches, as the skills the search was read as: first the ones the learner's
+    words name (strongest match first), then each match's CORE units in turn, so no one qualification fills the list.
+    Catalog titles, never the learner's own words."""
+    by_code = {item.code: item for item in items}
+    sources = [by_code[m.qualification.code].rules["competencies"] for m in matches[:SKILL_SOURCES]
+               if m.qualification.code in by_code]
+    words = _words(text)
+    named = [c["name"] for units in sources for c in units
+             if any(_same(w, u) for w in words for u in _words(c["name"]))]
+    cores = [[c["name"] for c in units if c["category"] == "Core"] for units in sources]
+    in_turn = [name for row in zip_longest(*cores) for name in row if name]
+    seen, skills = set(), []
+    for name in [*named, *in_turn]:
+        name = " ".join(name.split()).rstrip(".")
+        key = name.casefold()
+        if name and key not in seen:
+            seen.add(key)
+            skills.append(name[:1].upper() + name[1:])
+    return skills[:limit]

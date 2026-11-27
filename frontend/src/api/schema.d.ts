@@ -4406,6 +4406,11 @@ export interface components {
             eligible_qualification_codes?: string[] | null;
             /** @description Goal searches whose matches need telling apart */
             clarify?: components["schemas"]["Clarification"] | null;
+            /**
+             * Skills
+             * @description The matched qualifications' competencies the search reads as the learner's skills: those its words name first, then CORE units
+             */
+            skills?: string[] | null;
         };
         /**
          * MatchSummary

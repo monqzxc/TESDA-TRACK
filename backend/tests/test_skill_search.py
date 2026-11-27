@@ -3,6 +3,7 @@ import pytest
 from sqlmodel import select
 
 from tesda_track.models import RecommendationFeedback
+from tesda_track.services import skill_search
 
 MATCHES = "/api/v1/analysis/matches"
 # A list carries no goal sentence to read a profile from: the finder sends what the goal analysis gave.
@@ -162,3 +163,21 @@ def test_the_report_matches_the_skills_search_the_learner_saw(client):
     match = response.json()["match"]
     assert (match["strength"], match["rank"]) == ("named", 1)
     assert match["score"] == score_of(search(client, "welding, metal fabrication"), "SMAW-NC-II")
+
+
+def test_matched_skills_are_catalog_competencies_named_first_then_core_units_in_turn():
+    from types import SimpleNamespace
+
+    def item(code, units):
+        return SimpleNamespace(code=code, rules={"competencies": [{"name": n, "category": c} for n, c in units]})
+
+    def match(code):
+        return SimpleNamespace(qualification=SimpleNamespace(code=code))
+
+    items = [item("COOK", [("Participate in workplace communication", "Basic"), ("Prepare appetizers", "Core"),
+                           ("Clean and maintain kitchen premises", "Core"), ("Prepare salads", "Core")]),
+             item("BREAD", [("Prepare bakery products", "Core"), ("Prepare pastry products", "Core")])]
+    skills = skill_search.matched_skills(items, [match("COOK"), match("BREAD")], "cook, cleaning")
+    assert skills == ["Clean and maintain kitchen premises", "Prepare appetizers", "Prepare bakery products",
+                      "Prepare pastry products", "Prepare salads"]
+    assert skill_search.matched_skills(items, [], "cook") == []

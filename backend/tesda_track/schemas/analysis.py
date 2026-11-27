@@ -103,10 +103,14 @@ class MatchResult(BaseModel):
     search: SkillTerms | None = Field(default=None, description="Skills searches only")
     eligible_qualification_codes: list[str] | None = None
     clarify: Clarification | None = Field(default=None, description="Goal searches whose matches need telling apart")
+    skills: list[str] | None = Field(default=None, description="The matched qualifications' competencies the search "
+                                     "reads as the learner's skills: those its words name first, then CORE units")
 
     @model_serializer(mode="wrap")
     def preserve_goal_shape(self, handler):
         result = handler(self)
+        if self.skills is None:
+            result.pop("skills", None)
         if self.search is None:
             result.pop("search", None)
         if self.eligible_qualification_codes is None:

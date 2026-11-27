@@ -52,3 +52,17 @@ current default.
 
 On a Mac with Docker Desktop's 8 GB, `training.evaluate` and `training.round` run out of memory (exit 137) with
 fastembed's default batch of 256 passages. Run them with a smaller batch (16 works).
+
+**pop-v3** (26 November 2026, T4, 1,193 steps, full v6 replay; zip in `models/tesda-e5-small-pop-v3.zip`, private at
+`monqzxc/tesda-e5-small-pop-v3`). Dev calibration with `--min-rejection 0.9` chose 2.0/5.0/0.3/20, the same as
+v6-colab, and it passes `model_acceptance.json`. Pop held-out top-3 rose from 0.245 to 0.831 (seen characters) and
+from 0.205 to 0.460 (unseen), but only 0.313 and 0.167 are shown above z 2.86. It gains on dev and loses on
+test_v1:
+
+| | v6-colab | pop-v3 |
+| --- | ---: | ---: |
+| dev top-1 / top-3 / rejection | 0.852 / 0.929 / 0.970 | 0.863 / 0.935 / 0.975 |
+| dev Filipino top-1 | 0.737 | 0.769 |
+| test_v1 top-1 / top-3 / rejection | 0.848 / 0.949 / 0.952 | 0.818 / 0.929 / 0.905 |
+| test_v1 top-1 en / taglish / tl | 0.930 / 0.864 / 0.600 | 0.895 / 0.818 / 0.600 |
+| MVP probes top-1 / top-3 / rejection | 0.9 / 0.9 / 0.8 | 0.9 / 0.9 / 0.8 |

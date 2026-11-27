@@ -14101,6 +14101,21 @@
               }
             ],
             "description": "Goal searches whose matches need telling apart"
+          },
+          "skills": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Skills",
+            "description": "The matched qualifications' competencies the search reads as the learner's skills: those its words name first, then CORE units"
           }
         },
         "type": "object",

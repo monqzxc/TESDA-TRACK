@@ -10,7 +10,7 @@ from tesda_track.deps import OptionalLearner
 from tesda_track.schemas.analysis import (GoalAnalysis, GoalRequest, MatchRequest, MatchResult, PathwayRecommendation,
                                           PathwayRequest, ReadinessRequest, ReadinessResult, SuggestionRequest,
                                           SuggestionResult)
-from tesda_track.services import analysis, match_stats
+from tesda_track.services import analysis, catalog, match_stats, skill_search
 from tesda_track.services import learner_assessments, pathway_input
 from tesda_track.services.embeddings import EmbedderDep
 
@@ -39,15 +39,23 @@ def match_qualifications(request: MatchRequest, session: SessionDep, embedder: E
         # A list of skills or job titles: saved assessment answers describe a goal, so they don't apply.
         evidence = analysis.match_evidence(session, request.query, request.profile, embedder, mode="skills", region_code=request.region_code)
         background.add_task(match_stats.record, no_match=not evidence.matches)
-        return MatchResult(profile=evidence.profile, matches=evidence.matches, search=evidence.search,eligible_qualification_codes=evidence.eligible_codes)
+        return MatchResult(profile=evidence.profile, matches=evidence.matches, search=evidence.search,eligible_qualification_codes=evidence.eligible_codes,
+                           skills=_skills(session, evidence.matches, request.query))
     answers, _ = learner_assessments.resolve(session, learner, request)
     if answers is None and pathway_input.demand_preference(request.query):
         evidence=analysis.match_evidence(session,request.query,request.profile,embedder,region_code=request.region_code)
         background.add_task(match_stats.record,no_match=not evidence.matches)
-        return MatchResult(profile=evidence.profile,matches=evidence.matches,eligible_qualification_codes=evidence.eligible_codes)
+        return MatchResult(profile=evidence.profile,matches=evidence.matches,eligible_qualification_codes=evidence.eligible_codes,
+                           skills=_skills(session, evidence.matches, request.query))
     profile, matches = analysis.match(session, request.query, request.profile, embedder, answers)
     background.add_task(match_stats.record, no_match=not matches)
-    return MatchResult(profile=profile, matches=matches, clarify=analysis.clarification(request.query, matches))
+    return MatchResult(profile=profile, matches=matches, clarify=analysis.clarification(request.query, matches),
+                       skills=_skills(session, matches, request.query))
+
+
+def _skills(session, matches, query: str) -> list[str] | None:
+    """The matched qualifications' competencies, as the skills Explore says it read the search as; none without a match."""
+    return skill_search.matched_skills(catalog.snapshot(session).items, matches, query) or None
 
 
 @router.post("/suggestions", response_model=SuggestionResult, dependencies=[Depends(suggestions_enabled)],

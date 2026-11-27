@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
@@ -155,6 +155,21 @@ function renderPage() {
 const LONG = { timeout: 4000 }
 
 describe('skillTerms', () => {
+  it("shows the matched qualifications' competencies when the server sends them", () => {
+    const terms = skillTerms({
+      search: {
+        query: 'cook',
+        result: {
+          profile: { intent: 'unknown', existing_skills: [] },
+          search: { terms: ['cook'], unmatched: [] },
+          skills: ['Prepare stocks, sauces and soups', 'Prepare appetizers'],
+          matches: [{ qualification: COOKERY, score: 70, reason: 'Matched your words: cook' }],
+        },
+      },
+    } as never)
+    expect(terms).toEqual(['Prepare stocks, sauces and soups', 'Prepare appetizers'])
+  })
+
   it('reads the search terms, the profile and the match reasons, never the qualifications', () => {
     const terms = skillTerms({
       search: {
@@ -182,12 +197,11 @@ describe('the skills list', () => {
     // Skills, not qualification chips.
     expect(screen.queryByRole('group', { name: /Matched qualification/ })).toBeNull()
     expect(screen.getByRole('button', { name: 'All', pressed: true })).toBeInTheDocument()
+    const trainingHeading = await screen.findByRole('heading', { name: 'Training centers' }, LONG)
+    const training = within(trainingHeading.closest('section')!)
+    expect(training.getAllByText('Strong match').length).toBe(1)
     expect(
-      await screen.findByRole('heading', { name: 'Training centers' }, LONG),
-    ).toBeInTheDocument()
-    expect(screen.getAllByText('Strong match').length).toBe(1)
-    expect(
-      await screen.findByRole('button', { name: /Manila Welding Institute/ }, LONG),
+      await training.findByRole('button', { name: /Manila Welding Institute/ }, LONG),
     ).toBeInTheDocument()
     expect(
       screen.getByRole('heading', { name: 'Work: where your skills are in demand' }),
@@ -214,10 +228,46 @@ describe('the skills list', () => {
     expect(screen.getByRole('button', { name: 'Demand', pressed: true })).toBeInTheDocument()
   })
 
+  it('Best for you: the place hiring most and the best center, and its Analysis opens in a dialog', async () => {
+    const user = userEvent.setup()
+    renderPage()
+    const heading = await screen.findByRole('heading', { name: 'Best for you' }, LONG)
+    const best = within(heading.closest('section')!)
+    // The learner's own area is hiring, so it is the place to point at.
+    expect(
+      await best.findByRole('button', { name: 'National Capital Region: show on the map' }, LONG),
+    ).toBeInTheDocument()
+    expect(best.getByText('Most in demand')).toBeInTheDocument()
+    expect(best.getByText('Best place to train')).toBeInTheDocument()
+    expect(best.getByRole('button', { name: /Manila Welding Institute/ })).toBeInTheDocument()
+    // Only in All.
+    await user.click(screen.getByRole('button', { name: 'Train' }))
+    expect(screen.queryByRole('heading', { name: 'Best for you' })).toBeNull()
+    await user.click(screen.getByRole('button', { name: 'All' }))
+
+    const section = within(
+      screen.getByRole('heading', { name: 'Best for you' }).closest('section')!,
+    )
+    await user.click(await section.findByRole('button', { name: 'Analysis' }, LONG))
+    const dialog = await screen.findByRole('dialog')
+    expect(within(dialog).getByText('Welding in Metro Manila')).toBeInTheDocument()
+    // The dialog closes itself: no Back of the panel's.
+    expect(within(dialog).queryByRole('button', { name: 'Back to results' })).toBeNull()
+    await user.click(within(dialog).getByRole('button', { name: 'Close the analysis' }))
+    await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull())
+  })
+
   it('a center opens its preview: photo, flag, Overview and Qualifications', async () => {
     const user = userEvent.setup()
     renderPage()
-    await user.click(await screen.findByRole('button', { name: /Manila Welding Institute/ }, LONG))
+    const heading = await screen.findByRole('heading', { name: 'Training centers' }, LONG)
+    await user.click(
+      await within(heading.closest('section')!).findByRole(
+        'button',
+        { name: /Manila Welding Institute/ },
+        LONG,
+      ),
+    )
     const preview = await screen.findByRole('article', { name: 'Manila Welding Institute' })
     expect(preview).toBeInTheDocument()
     expect(screen.getByRole('img', { name: 'Sample image' })).toBeInTheDocument()

@@ -206,11 +206,14 @@ export function OutlookAnalysis({
   view,
   onView,
   onBack,
+  inModal = false,
 }: {
   explore: Explore
   view: View
   onView: (view: View) => void
   onBack: () => void
+  /** Opened from the list's Analysis button: the dialog has its own close button, so no Back. */
+  inModal?: boolean
 }) {
   const en = useCopy()
   const serverText = useServerText()
@@ -263,19 +266,21 @@ export function OutlookAnalysis({
 
   return (
     <article aria-label={copy.label} className="flex flex-col gap-3">
-      <Button
-        className={cx(
-          button({ variant: 'pill', height: 44, text: 14, snug: true }),
-          'group shadow-sm self-start motion-reduce:transition-none',
-        )}
-        onPress={onBack}
-      >
-        <Icon
-          name="arrowLeft"
-          className="transition-transform duration-200 group-data-hovered:-translate-x-0.5 motion-reduce:transform-none motion-reduce:transition-none"
-        />
-        {en.explore.card.back}
-      </Button>
+      {!inModal && (
+        <Button
+          className={cx(
+            button({ variant: 'pill', height: 44, text: 14, snug: true }),
+            'group shadow-sm self-start motion-reduce:transition-none',
+          )}
+          onPress={onBack}
+        >
+          <Icon
+            name="arrowLeft"
+            className="transition-transform duration-200 group-data-hovered:-translate-x-0.5 motion-reduce:transform-none motion-reduce:transition-none"
+          />
+          {en.explore.card.back}
+        </Button>
+      )}
 
       {/* The verdict first: what the numbers say for this qualification where the learner is. */}
       <div className={cx('overflow-hidden rounded-16 border border-border bg-surface', floating)}>
