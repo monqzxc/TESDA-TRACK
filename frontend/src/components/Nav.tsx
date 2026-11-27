@@ -17,6 +17,7 @@ type NavItem = { to: string; label: string; icon: IconName }
 // language. One sidebar, over the page from its burger on every page (Sidebar.tsx).
 
 export type NavProps = {
+  refreshed?: boolean
   /** Adds Reports, which only administrators see. */
   isAdmin?: boolean
   /** Adds the management workspace, which only full administrators see. */
@@ -107,15 +108,33 @@ export function MenuButton({
 }
 
 /** The name beside the burger, which returns Home. */
-export function SidebarTitle({ onNavigate }: { onNavigate?: () => void }) {
+export function SidebarTitle({
+  onNavigate,
+  refreshed = false,
+}: {
+  onNavigate?: () => void
+  refreshed?: boolean
+}) {
   const en = useCopy()
   return (
     <Link
       to={paths.home}
       onClick={onNavigate}
-      className="rounded-8 px-1.5 py-1 text-16 font-bold tracking-[0.01em] whitespace-nowrap text-navy no-underline hover:bg-soft focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus"
+      className={cx(
+        'rounded-8 px-1.5 py-1 text-16 font-bold tracking-[0.01em] whitespace-nowrap text-navy no-underline hover:bg-soft focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus',
+        refreshed && 'inline-flex min-w-0 items-center gap-2 font-text font-medium tracking-normal',
+      )}
     >
-      {en.nav.title}
+      {refreshed && (
+        <img
+          src="/img/landing/tesda-track-logo.png"
+          alt=""
+          width={32}
+          height={32}
+          className="size-8 flex-none object-contain"
+        />
+      )}
+      {refreshed ? en.brand.name : en.nav.title}
     </Link>
   )
 }
@@ -127,7 +146,12 @@ export function SidebarTitle({ onNavigate }: { onNavigate?: () => void }) {
  * With learner accounts turned back on, it's their own Sign in. Signing in leaves the sidebar open: the dialog opens
  * over it, and focus comes back to it.
  */
-export function SidebarContent({ isAdmin = false, canManage = false, onNavigate }: NavProps) {
+export function SidebarContent({
+  isAdmin = false,
+  canManage = false,
+  onNavigate,
+  refreshed = false,
+}: NavProps) {
   const en = useCopy()
   const { learner, openSignIn } = useAuth()
   const accountId = useId()
@@ -156,7 +180,7 @@ export function SidebarContent({ isAdmin = false, canManage = false, onNavigate 
           )}
         </div>
         <div className="px-1">
-          <LanguageSelector />
+          {refreshed ? <LanguageSelector header light /> : <LanguageSelector />}
         </div>
         {/* Every screen reaches the privacy policy from here, the Career Map too: it has no footer, and its own
             link sits in the results panel, out of reach while the panel is folded (QA BUG-08). */}

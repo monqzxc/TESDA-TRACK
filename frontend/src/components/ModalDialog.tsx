@@ -17,6 +17,8 @@ interface ModalDialogProps {
   role?: 'dialog' | 'alertdialog'
   /** Above the title, e.g. a way back to what was open before. */
   before?: ReactNode
+  /** The landing prototype's compact 420px card. Other dialogs retain the app styling. */
+  landing?: boolean
 }
 
 /**
@@ -34,6 +36,7 @@ export function ModalDialog({
   isPending = false,
   role = 'dialog',
   before,
+  landing = false,
 }: ModalDialogProps) {
   return (
     <ModalOverlay
@@ -46,15 +49,30 @@ export function ModalDialog({
       <Modal
         className={cx(
           'max-h-full overflow-y-auto overscroll-contain rounded-20 border border-border bg-surface shadow-dialog data-entering:animate-rise',
-          wide ? 'w-[min(40rem,100%)]' : 'w-[min(30rem,100%)]',
+          landing
+            ? 'landing w-[min(420px,100%)] rounded-[24px] bg-(--l-surface)'
+            : wide
+              ? 'w-[min(40rem,100%)]'
+              : 'w-[min(30rem,100%)]',
         )}
       >
         <Dialog
-          className="relative px-[1.6rem] pt-[1.6rem] pb-[1.4rem] focus:outline-none max-xs:px-[1.1rem] max-xs:pt-[1.2rem] max-xs:pb-[1.1rem]"
+          className={
+            landing
+              ? 'relative p-6 font-text text-(--l-ink) outline-none'
+              : 'relative px-[1.6rem] pt-[1.6rem] pb-[1.4rem] focus:outline-none max-xs:px-[1.1rem] max-xs:pt-[1.2rem] max-xs:pb-[1.1rem]'
+          }
           role={role}
         >
           {before}
-          <Heading slot="title" className="mr-12 mb-[0.6rem] text-[1.4rem] text-navy">
+          <Heading
+            slot="title"
+            className={
+              landing
+                ? 'mr-10 mb-4 text-[24px] font-semibold text-(--l-ink)'
+                : 'mr-12 mb-[0.6rem] text-[1.4rem] text-navy'
+            }
+          >
             {title}
           </Heading>
           <Button
@@ -63,6 +81,7 @@ export function ModalDialog({
               'absolute top-4 right-4 grid size-11 cursor-pointer place-items-center rounded-12 border border-border bg-surface text-navy max-xs:top-3 max-xs:right-3',
               'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:border-hover-border data-hovered:bg-soft',
               'data-disabled:cursor-default data-disabled:opacity-50',
+              landing && 'rounded-full border-transparent bg-(--l-panel) text-(--l-ink)',
             )}
             aria-label={closeLabel}
             isDisabled={isPending}

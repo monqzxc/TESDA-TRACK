@@ -26,9 +26,9 @@ async function openApp(path: string) {
 describe('guest-only', () => {
   it('offers only Sign in with TSP on Home, and not its section about what an account keeps', async () => {
     const { container } = await openApp('/')
-    // The top bar's and the hero's Sign in with TSP; no Sign in of TESDA-TRACK's own.
+    // The closing call's Sign in with TSP (the top bar's is inside Get started); no Sign in of TESDA-TRACK's own.
     const signIns = screen.getAllByRole('button', { name: /sign in/i })
-    expect(signIns).toHaveLength(2)
+    expect(signIns).toHaveLength(1)
     for (const button of signIns) expect(button).toHaveAccessibleName('Sign in with TSP')
     expect(container.querySelector('a[href="/#progress"]')).toBeNull()
     expect(container.querySelector('#progress')).toBeNull()

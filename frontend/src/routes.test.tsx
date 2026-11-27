@@ -13,7 +13,7 @@ const GOAL_TITLE = 'Your goal · Find my pathway · TESDA-TRACK'
 
 // Every address, its h1, the step it shows (the finder's h2), its document title, and whether it loads the catalog.
 const PAGES = [
-  ['/', 'Every career has a track. Find yours.', null, 'TESDA-TRACK · Your next step', false],
+  ['/', 'Your next TESDA step, on a map near you.', null, 'TESDA-TRACK · Your next step', false],
   [
     '/tsp/webview',
     'Find your TESDA qualification',
@@ -94,11 +94,11 @@ describe('routes', () => {
     expect(
       await screen.findByRole('heading', {
         level: 1,
-        name: 'Every career has a track. Find yours.',
+        name: 'Your next TESDA step, on a map near you.',
       }),
     ).toBeInTheDocument()
     expect(
-      screen.getByRole('heading', { level: 2, name: 'What would you like to achieve?' }),
+      screen.getByRole('heading', { level: 2, name: 'Ready for your next step?' }),
     ).toBeInTheDocument()
     expect(requests).toBe(0)
   })
@@ -113,9 +113,10 @@ describe('routes', () => {
       'href',
       '/#how',
     )
+    // Get started opens the two ways in (Sign in with TSP, Continue as guest), not a page.
     expect(
-      within(screen.getByRole('banner')).getByRole('link', { name: 'Get started' }),
-    ).toHaveAttribute('href', '/explore')
+      within(screen.getByRole('banner')).getByRole('button', { name: 'Get started' }),
+    ).toHaveAttribute('aria-haspopup', 'true')
     expect(screen.queryByRole('navigation', { name: 'Main' })).not.toBeInTheDocument()
 
     await router.navigate('/qualifications')
