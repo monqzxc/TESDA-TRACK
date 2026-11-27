@@ -24,6 +24,7 @@ import { MapAccount } from '../account/MapAccount.tsx'
 import { PageHeading } from '../../components/PageHeading.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
+import { prefersReducedMotion } from '../../lib/motion.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { GOAL_MAX_LENGTH } from '../finder/key.ts'
@@ -41,7 +42,7 @@ import { MapFilters } from './MapFilters.tsx'
 import { OutlookAnalysis, OutlookBrief } from './OutlookBrief.tsx'
 import { QualificationChips } from './QualificationChips.tsx'
 import { CenterCard, NearbyPanel, ResultsPanel, TspProfilePanel } from './Panels.tsx'
-import { useDemandStore, useExplore, useExploreStore } from './useExplore.ts'
+import { chosenSearch, useDemandStore, useExplore, useExploreStore } from './useExplore.ts'
 
 // The map comes down with its renderer the first time it's shown, as on Training & Assessment.
 const CenterMap = lazy(() => import('../training/CenterMap.tsx'))
@@ -102,12 +103,6 @@ function useTabletUp() {
 }
 
 /** With reduced motion nothing slides, so there's no transition's end to wait for. */
-function prefersReducedMotion() {
-  return (
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  )
-}
 
 /** The longest everything over the map stays folded away waiting for the route to finish drawing (directions can
  * be slow or fail, and then nothing draws), and how long the pieces then take to come back one by one (app.css: six
@@ -523,25 +518,18 @@ export default function ExplorePage() {
     const found = catalog.data?.find((item) => item.code === code)
     const { setDraft, setSearch } = useExploreStore.getState()
     setDraft(found?.name ?? name)
-    setSearch({
-      query: en.library.exploreGoal(found?.name ?? name),
-      chosen: true,
-      result: {
-        profile: { intent: 'training_recommendation' },
-        matches: [
-          {
-            qualification: {
-              code,
-              name: found?.name ?? name,
-              sector: found?.sector ?? '',
-              provenance: found?.provenance,
-            },
-            score: 100,
-            reason: copy.results.chosen,
-          },
-        ],
-      },
-    })
+    setSearch(
+      chosenSearch(
+        {
+          code,
+          name: found?.name ?? name,
+          sector: found?.sector ?? '',
+          provenance: found?.provenance,
+        },
+        en.library.exploreGoal(found?.name ?? name),
+        copy.results.chosen,
+      ),
+    )
     setMotion(null)
     setView('all')
     setCollapsed(false)

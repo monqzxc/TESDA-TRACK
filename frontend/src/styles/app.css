@@ -202,6 +202,8 @@
   /* The finder: each step slides in from the side the learner moved towards; its tab grows in and ticks. */
   --animate-enter-forward: enter-forward 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
   --animate-enter-back: enter-back 0.34s cubic-bezier(0.2, 0.7, 0.3, 1) backwards;
+  /* Explore's guided cards: each fades in and rises, one after another. */
+  --animate-guided-in: guided-in 250ms ease-out both;
   --animate-tab-in: tab-in 0.3s ease-out backwards;
   --animate-tick: tick 0.45s ease-out backwards;
   /* Center finder: the spinner in its location status while the browser finds the learner. */
@@ -272,6 +274,12 @@
     from {
       opacity: 0;
       transform: translateX(32px);
+    }
+  }
+  @keyframes guided-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
     }
   }
   @keyframes enter-back {

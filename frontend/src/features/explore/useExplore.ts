@@ -140,6 +140,22 @@ export type GuidedFocus =
       previous: { rangeKm: number; relocate: boolean }
     }
 
+/** A search for one qualification chosen by name (from the library, a card, or a suggestion), not read from words. */
+export function chosenSearch(
+  qualification: MatchResult['matches'][number]['qualification'],
+  query: string,
+  reason: string,
+): Search {
+  return {
+    query,
+    chosen: true,
+    result: {
+      profile: { intent: 'training_recommendation' },
+      matches: [{ qualification, score: 100, reason }],
+    },
+  } as Search
+}
+
 /** One search's identity for the reveal: its words and matched codes, whatever their order. Null without a search. */
 export function revealKey(search: Search | null): string | null {
   if (!search) return null

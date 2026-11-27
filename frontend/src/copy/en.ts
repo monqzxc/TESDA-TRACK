@@ -2993,6 +2993,72 @@ export const en = {
       results: 'About these results',
       times: 'About travel times',
     },
+    // The guided step between a search and the center list: TRACK's pick and three groups of cards, each saying why
+    // (docs/superpowers/specs/2026-11-27-explore-guided-cards-design.md). Never "job posts" for modelled demand.
+    guided: {
+      best: '★ Best fit for you',
+      pick: "TRACK's pick",
+      seeCenters: 'See centers',
+      near: {
+        yes: (km: number, place: string) => `Near you · ${place}, ${km} km`,
+        yesRelocate: (n: number) => `Centers recorded · ${n.toLocaleString()}`,
+        no: (range: number, km: number | null) =>
+          km === null ? `Nothing within ${range} km` : `Nothing within ${range} km · nearest ${km} km`,
+      },
+      demand: {
+        yes: (area: string, rank: number | null, of: number, sample: boolean) =>
+          rank === null
+            ? `In demand in ${area}${sample ? ' (modelled)' : ''}`
+            : `In demand · ${area} ranks #${rank} of ${of}${sample ? ' (modelled)' : ''}`,
+        no: (area: string) => `Not in demand in ${area}`,
+        unknown: 'Demand not known here',
+      },
+      fit: {
+        signedIn: 'Fits you · your Skill Passport',
+        guest: "Matches what you're looking for",
+        no: 'Not a strong match yet',
+      },
+      groups: {
+        near: (q: string) => `${q} near you`,
+        demand: (q: string) => `Where ${q} is in demand`,
+        consider: (area: string) => `In demand in ${area}`,
+        considerSub: 'You might consider',
+      },
+      widen: (km: number) => `Look up to ${km} km`,
+      noPlace: 'Share your location or type a place to see centers near you',
+      noneInRange: (range: number, km: number, town: string) =>
+        `Nothing within ${range} km. The nearest is ${km} km away, in ${town}.`,
+      nearCount: (n: number, range: number | null, km: number | null, min: number | null) =>
+        `${n.toLocaleString()} ${n === 1 ? 'center' : 'centers'}` +
+        (range === null ? '' : ` within ${range} km`) +
+        (km === null ? '' : ` · nearest ${km} km`) +
+        (min === null ? '' : ` (${min} min)`),
+      goodNews: (home: string, of: number, q: string) => `Good news: ${home} ranks #1 of ${of} for ${q}`,
+      posts: (n: number) => `${n.toLocaleString()} job posts`,
+      modelled: (n: number) => `${n.toLocaleString()} demand records (modelled)`,
+      sites: (t: number, a: number) => `${t} training · ${a} assessment centers there`,
+      about: (km: number) => `about ${km.toLocaleString()} km`,
+      balance: {
+        demand_only: 'Employers want it, but no center is recorded there',
+        more_demand: 'More demand than centers there',
+        more_supply: 'More centers than demand there',
+        balanced: 'Demand and centers about even',
+        supply_only: 'Centers there, few job records',
+        no_records: 'Few records there',
+      },
+      outlookFailed: "Couldn't load where this is in demand.",
+      considerFailed: "Couldn't load what else is in demand here.",
+      more: 'Show more',
+      loading: 'Loading…',
+      ready: (n: number) => `Results: ${n} ${n === 1 ? 'group' : 'groups'}`,
+      back: 'Back to suggestions',
+      sourcesLabel: 'Where this comes from',
+      sources: {
+        near: 'TESDA center records. Distances in a straight line; times estimated.',
+        posts: 'PhilJobNet posting records with a reviewed link.',
+        modelled: 'Modelled demand based on ABDD planning, not job posts.',
+      },
+    },
   },
   theme: {
     // The accessible name of the System / Light / Dark switch.
