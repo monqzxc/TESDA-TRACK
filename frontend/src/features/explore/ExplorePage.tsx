@@ -41,7 +41,7 @@ import { LocationPrompt } from './LocationPrompt.tsx'
 import { MapFilters } from './MapFilters.tsx'
 import { OutlookAnalysis, OutlookBrief } from './OutlookBrief.tsx'
 import { QualificationChips } from './QualificationChips.tsx'
-import { CenterCard, NearbyPanel, ResultsPanel, TspProfilePanel } from './Panels.tsx'
+import { CenterCard, NearbyPanel, ReachPill, ResultsPanel, TspProfilePanel } from './Panels.tsx'
 import { chosenSearch, useDemandStore, useExplore, useExploreStore } from './useExplore.ts'
 
 // The map comes down with its renderer the first time it's shown, as on Training & Assessment.
@@ -1118,6 +1118,10 @@ function SearchBox({
           </SearchField>
         </div>
         {account}
+      </div>
+      {/* How far the learner can go: the guided cards and the list follow it. */}
+      <div className="flex px-3 pb-2 md:-mt-1 md:pb-3">
+        <ReachPill />
       </div>
       {pending ? (
         <p role="status" className="m-0 px-4 pb-2.5 text-13 text-muted">

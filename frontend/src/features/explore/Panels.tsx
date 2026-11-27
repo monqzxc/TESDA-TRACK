@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { qualificationsQuery } from '../../api/queries.ts'
 import { useEffect, useId, useRef, useState } from 'react'
-import { Button, Switch, ToggleButton } from 'react-aria-components'
+import { Button, Dialog, DialogTrigger, Popover, Switch, ToggleButton } from 'react-aria-components'
 import { Link, useNavigate } from 'react-router'
 import { FoldedProvenance } from '../../components/DataProvenance.tsx'
 import { Icon, type IconName } from '../../components/Icon.tsx'
@@ -1046,6 +1046,54 @@ function ReachPicker({ compact = false }: { compact?: boolean }) {
       </div>
       <CustomKmField value={ownKm ? rangeKm : null} />
     </div>
+  )
+}
+
+/**
+ * "How far can you go?" as a pill in the search bar: the answer and its km ("Near me · 10 km"), opening the same
+ * picker in a popover. The guided cards follow it, so it is never a step of its own after a search.
+ */
+export function ReachPill({ className }: { className?: string }) {
+  const copy = useCopy().explore.results.range
+  const rangeKm = useExploreStore((state) => state.rangeKm)
+  const relocate = useExploreStore((state) => state.relocate)
+  const answers = useExploreStore((state) => state.rangeAnswers)
+  const [open, setOpen] = useState(false)
+  const [seen, setSeen] = useState(answers)
+  // An answer chosen in the popover closes it.
+  if (answers !== seen) {
+    setSeen(answers)
+    if (open) setOpen(false)
+  }
+  const current = reachOf(rangeKm, relocate)
+  const label = { near: copy.near, farther: copy.farther, relocate: copy.relocate }[current]
+  const hint = relocate ? copy.relocateHint : copy.option(rangeKm)
+  return (
+    <DialogTrigger isOpen={open} onOpenChange={setOpen}>
+      <Button
+        aria-label={`${copy.heading} ${label} · ${hint}`}
+        className={cx(
+          'inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-full border border-border bg-surface px-3 text-13 font-semibold text-navy',
+          'data-hovered:border-navy data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus',
+          className,
+        )}
+      >
+        <Icon name="distance" size="0.95rem" className="text-blue" />
+        <span>
+          {label} <span className="font-normal text-muted tabular-nums">· {hint}</span>
+        </span>
+        <Icon name="chevron" size="0.8rem" className="text-muted" />
+      </Button>
+      <Popover
+        placement="top"
+        offset={8}
+        className="w-[min(22rem,calc(100vw-1.5rem))] rounded-14 border border-border bg-surface p-3 shadow-[0_18px_40px_-10px_rgb(var(--track-shadow-rgb)/0.34)] outline-none"
+      >
+        <Dialog aria-label={copy.heading} className="flex flex-col gap-2 outline-none">
+          <ReachPicker compact />
+        </Dialog>
+      </Popover>
+    </DialogTrigger>
   )
 }
 

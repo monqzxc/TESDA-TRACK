@@ -169,6 +169,51 @@ describe('the guided step', () => {
     expect(screen.getByText('★ Best fit for you')).toBeInTheDocument()
   })
 
+  it('relocate from the pill puts the demand group first', async () => {
+    // A second match in Manila, so the near group has a card of its own beside the pick.
+    const pipefitting = {
+      ...weldingProgram,
+      id: 72,
+      qualification: { code: 'PIPE-NCII', name: 'Pipefitting NC II', sector: 'Metals and Engineering' },
+    }
+    server.use(
+      http.get('*/api/v1/training-programs', ({ request }) => {
+        const code = new URL(request.url).searchParams.get('qualification_code')
+        return HttpResponse.json(
+          [weldingProgram, pipefitting].filter((p) => !code || p.qualification.code === code),
+        )
+      }),
+    )
+    useExploreStore.getState().setSearch({
+      query: 'I can weld',
+      result: {
+        profile: { intent: 'training_recommendation' },
+        matches: [
+          { qualification: WELDING, score: 80, reason: 'Matched weld' },
+          { qualification: pipefitting.qualification, score: 70, reason: 'Matched pipe' },
+        ],
+      },
+    })
+    const user = userEvent.setup()
+    renderPage()
+    await screen.findByText('Pipefitting NC II', {}, LONG)
+    await user.click(screen.getByRole('button', { name: /^How far can you go\?/ }))
+    const picker = await screen.findByRole('dialog', { name: 'How far can you go?' })
+    await user.click(
+      Array.from(picker.querySelectorAll('button')).find((b) => b.textContent?.startsWith('Relocate'))!,
+    )
+    // Relocating asks for the outlook again; the groups come back in the new order.
+    await waitFor(
+      () => {
+        const labels = screen.getAllByRole('heading', { level: 3 }).map((node) => node.textContent)
+        const demand = labels.indexOf(`Where ${WELDING.name} is in demand`)
+        expect(demand).toBeGreaterThanOrEqual(0)
+        expect(demand).toBeLessThan(labels.indexOf(`${WELDING.name} near you`))
+      },
+      LONG,
+    )
+  })
+
   it('region card filters to the region and back clears it', async () => {
     const user = userEvent.setup()
     renderPage()
