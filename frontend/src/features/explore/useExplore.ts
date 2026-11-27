@@ -114,6 +114,37 @@ interface ExploreState {
   closeRange: () => void
   /** Clears the goal, results and range, e.g. on sign-out. */
   reset: () => void
+  /** The guided step's open card: a qualification's centers, or the query's centers in one region. Null: the cards. */
+  guidedFocus: GuidedFocus | null
+  /** The search to go back to after a "you might consider" card opened its own. */
+  guidedBack: Search | null
+  /** The reveal key whose staggered cards already played this visit (not kept across a refresh). */
+  revealedFor: string | null
+  /** Opens one matched qualification's centers. */
+  openQualification: (code: string) => void
+  /** Opens the query's centers in one region, at any distance; Back restores the learner's range. */
+  openRegion: (code: string, regionCode: string) => void
+  /** Opens a qualification that isn't among the matches as its own search, keeping this one to come back to. */
+  openConsidered: (search: Search) => void
+  /** Back to the cards: undoes whichever of the three opened. */
+  closeGuided: () => void
+  markRevealed: (key: string) => void
+}
+
+export type GuidedFocus =
+  | { kind: 'qualification'; code: string }
+  | {
+      kind: 'region'
+      code: string
+      regionCode: string
+      previous: { rangeKm: number; relocate: boolean }
+    }
+
+/** One search's identity for the reveal: its words and matched codes, whatever their order. Null without a search. */
+export function revealKey(search: Search | null): string | null {
+  if (!search) return null
+  const codes = search.result.matches.map((match) => match.qualification.code).sort()
+  return `${search.query}|${codes.join(',')}`
 }
 
 const EMPTY = {
@@ -125,6 +156,9 @@ const EMPTY = {
   askingRange: false,
   rangeAnswers: 0,
   picked: [] as string[],
+  guidedFocus: null,
+  guidedBack: null,
+  revealedFor: null,
 } satisfies Partial<ExploreState>
 
 export const useExploreStore = create<ExploreState>()(
@@ -167,18 +201,65 @@ export const useExploreStore = create<ExploreState>()(
         }
       },
       setSearch: (search) => {
-        set({ search, picked: [] })
+        set({ search, picked: [], guidedFocus: null, guidedBack: null })
         useDemandStore.getState().setCode(undefined)
       },
       reset: () => set(EMPTY),
+      openQualification: (code) => {
+        set({ picked: [code], guidedFocus: { kind: 'qualification', code } })
+        useDemandStore.getState().setCode(code)
+      },
+      openRegion: (code, regionCode) =>
+        set((state) => ({
+          relocate: true,
+          guidedFocus: {
+            kind: 'region',
+            code,
+            regionCode,
+            previous: { rangeKm: state.rangeKm, relocate: state.relocate },
+          },
+        })),
+      openConsidered: (search) => {
+        const code = search.result.matches[0]?.qualification.code
+        set((state) => ({
+          guidedBack: state.search,
+          search,
+          picked: [],
+          guidedFocus: code ? { kind: 'qualification', code } : null,
+        }))
+        useDemandStore.getState().setCode(undefined)
+      },
+      closeGuided: () => {
+        const { guidedFocus, guidedBack } = useExploreStore.getState()
+        set({
+          picked: [],
+          guidedFocus: null,
+          guidedBack: null,
+          ...(guidedFocus?.kind === 'region' ? guidedFocus.previous : {}),
+          ...(guidedBack ? { search: guidedBack } : {}),
+        })
+        useDemandStore.getState().setCode(undefined)
+      },
+      markRevealed: (key) => set({ revealedFor: key }),
     }),
     {
       name: EXPLORE_KEY,
       storage: createJSONStorage(() => sessionStore),
       version: 1,
       // "How far can you go?" being open is a moment, not work: a refresh closes it.
-      partialize: ({ draft, search, relocate, rangeKm, rangeChosen, picked }) => ({
+      partialize: ({
+        draft,
+        search,
+        relocate,
+        rangeKm,
+        rangeChosen,
         picked,
+        guidedFocus,
+        guidedBack,
+      }) => ({
+        picked,
+        guidedFocus,
+        guidedBack,
         draft,
         search,
         relocate,
