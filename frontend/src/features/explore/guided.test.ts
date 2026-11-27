@@ -97,7 +97,7 @@ const area = (code: string, name: string, posting_count: number, over: Partial<A
 const outlook = ({
   home = 'NCR',
   rank = 1,
-  level = 'high' as const,
+  level = 'high' as DemandSignal['level'],
   sample = false,
   areas = [] as Area[],
 } = {}): Outlook =>
