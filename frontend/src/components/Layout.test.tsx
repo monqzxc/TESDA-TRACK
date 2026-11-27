@@ -100,7 +100,7 @@ describe('the phone menu', () => {
 
 describe('Skip to content', () => {
   it.each([
-    ['/', 'Your next TESDA step, on a map near you.'],
+    ['/', 'Find where your skills can take you.'],
     ['/qualifications', 'Qualifications Library'],
   ])('is the first Tab stop on %s, and moves focus to the page', async (path, heading) => {
     const user = userEvent.setup()

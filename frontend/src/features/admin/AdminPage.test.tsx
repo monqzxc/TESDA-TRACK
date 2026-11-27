@@ -383,7 +383,7 @@ it('sends an account with no staff permissions back home', async () => {
   expect(
     await screen.findByRole('heading', {
       level: 1,
-      name: 'Your next TESDA step, on a map near you.',
+      name: 'Find where your skills can take you.',
     }),
   ).toBeInTheDocument()
   expect(screen.queryByRole('navigation', { name: 'Admin sections' })).not.toBeInTheDocument()

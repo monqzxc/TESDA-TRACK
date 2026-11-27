@@ -245,7 +245,7 @@ describe('pages that need an account', () => {
     expect(
       await screen.findByRole('heading', {
         level: 1,
-        name: 'Your next TESDA step, on a map near you.',
+        name: 'Find where your skills can take you.',
       }),
     ).toBeInTheDocument()
   })
