@@ -513,6 +513,12 @@ export default function ExplorePage() {
     useDemandStore.getState().setRegion(province.region_code)
     changeView('demand')
   }
+  const guidedFocus = useExploreStore((state) => state.guidedFocus)
+  // Back from a card's centers: a region card's filter goes with it.
+  const guidedBack = () => {
+    if (useExploreStore.getState().guidedFocus?.kind === 'region') setFilter('region', null)
+    useExploreStore.getState().closeGuided()
+  }
   // A qualification picked in the card is searched as one chosen from the library is.
   const chooseQualification = (code: string, name: string) => {
     const found = catalog.data?.find((item) => item.code === code)
@@ -755,7 +761,7 @@ export default function ExplorePage() {
               setCollapsed(false)
             }}
           />
-          {!selected && !analysisOpen && (
+          {!selected && !analysisOpen && guidedFocus && (
             <QualificationChips
               explore={explore}
               className="intro-piece mx-3 mt-2 rounded-12 max-md:bg-surface max-md:p-2 max-md:shadow-[0_6px_16px_-4px_rgb(var(--track-shadow-rgb)/0.24)] md:mt-0 md:mb-2"
@@ -889,6 +895,8 @@ export default function ExplorePage() {
                     view={view}
                     onView={setView}
                     onSelect={(id, code) => select(id, { onMap: true, code })}
+                    onRegion={(code) => setFilter('region', code)}
+                    onGuidedBack={guidedBack}
                   />
                 ) : (
                   <NearbyPanel
@@ -977,8 +985,7 @@ function SearchBox({
       const result = await matchPathway(query, regionCode, controller.signal)
       if (controller.signal.aborted) return
       setSearch({ query, result, feedbackScope: crypto.randomUUID() })
-      // Next: "How far can you go?", before the results.
-      useExploreStore.getState().changeRange()
+      // Next: the guided cards; the distance is the search bar's pill, not a step of its own.
       onSearched()
     } catch (failure) {
       if (!controller.signal.aborted) setError(failureMessage(failure))

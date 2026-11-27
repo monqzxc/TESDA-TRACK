@@ -14,6 +14,7 @@ import { useFinderStore } from '../finder/store.ts'
 import { CenterSuggestionFeedback } from '../suggestion-feedback/CenterSuggestionFeedback.tsx'
 import { SuggestionFeedback } from '../suggestion-feedback/SuggestionFeedback.tsx'
 import { DemandPanel } from './DemandPanel.tsx'
+import { GuidedResults } from './GuidedResults.tsx'
 import { PlaceField } from './PlaceField.tsx'
 import { offeringsQuery, type ClientConfig } from '../training/api.ts'
 import type { CenterKind } from '../training/address.ts'
@@ -1548,15 +1549,22 @@ export function ResultsPanel({
   view,
   onView,
   onSelect,
+  onRegion,
+  onGuidedBack,
 }: {
   explore: Explore
   view: View
   onView: (view: View) => void
   onSelect: (id: string, code?: string) => void
+  /** A "where it's in demand" card: the page filters the list to that region. */
+  onRegion: (regionCode: string) => void
+  /** Back from a card's centers to the guided cards. */
+  onGuidedBack: () => void
 }) {
   const en = useCopy()
   const copy = en.explore.results
   const asking = useExploreStore((state) => state.askingRange)
+  const guidedFocus = useExploreStore((state) => state.guidedFocus)
   const rangeLoading = useRangeLoader()
   const { search, matches, centers, reference } = explore
   if (!search) return null
@@ -1579,14 +1587,36 @@ export function ResultsPanel({
       </div>
     )
   }
+  // Back to the guided cards, first in the loader and the list alike, so the distance line after it stays put (and
+  // keeps a press that started on it) when the list replaces the loader.
+  const backToCards = guidedFocus && (
+    <Button
+      className={cx(button({ variant: 'tertiary', height: 36, snug: true }), 'self-start')}
+      onPress={onGuidedBack}
+    >
+      <Icon name="chevron" className="rotate-90" />
+      {en.explore.guided.back}
+    </Button>
+  )
   if ((explore.listingsLoading || rangeLoading) && view !== 'demand') {
     return (
       <div className="flex flex-col gap-3">
+        {backToCards}
         <RangeSummary />
         <ResultsLoader
           label={explore.listingsLoading ? en.training.results.loading : copy.updating}
         />
       </div>
+    )
+  }
+  // First the guided cards (TRACK's pick and why); a card opens the centers below, with Back to the cards.
+  if (!guidedFocus && view !== 'demand') {
+    return (
+      <GuidedResults
+        explore={explore}
+        onWiden={(km) => useExploreStore.getState().setRange(km)}
+        onRegion={onRegion}
+      />
     )
   }
 
@@ -1643,6 +1673,7 @@ export function ResultsPanel({
 
   return (
     <div className="flex flex-col gap-4">
+      {backToCards}
       {view !== 'demand' && <RangeSummary />}
       {/* An underlined tab row: icon and label sit on one line, the chosen view is navy with a bar beneath it.
           Labels never truncate; when the row is narrow the icons drop out first. */}

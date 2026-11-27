@@ -4,6 +4,7 @@ import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { renderWithAuth } from '../../test/account.tsx'
+import { openCenterList } from '../../test/explore.ts'
 import { server } from '../../test/server.ts'
 import { cebuCenter, cookeryProgram, manilaInstitute, REGIONS } from '../../test/training.ts'
 import type { CenterMapProps } from '../training/CenterMapTypes.ts'
@@ -47,6 +48,7 @@ beforeEach(() => {
       matches: [{ qualification: cookeryProgram.qualification, score: 90, reason: 'Matched cook' }],
     },
   })
+  openCenterList()
   useDemandStore.setState({
     region: undefined,
     scope: undefined,
