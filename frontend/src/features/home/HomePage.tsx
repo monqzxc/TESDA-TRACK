@@ -1,6 +1,7 @@
 import { useSectionJumps } from './hooks/useSectionJumps.ts'
 import { LandingHero } from './landing/LandingHero.tsx'
 import { About, Closing, HowItWorks, Perks } from './landing/LandingSections.tsx'
+import { useScrollReveals } from './landing/motion.ts'
 
 /**
  * Home, at /: the location-first landing page (2026 redesign, Figma "TESDA-Track Revamp"), between its own top bar
@@ -9,10 +10,11 @@ import { About, Closing, HowItWorks, Perks } from './landing/LandingSections.tsx
  */
 export default function HomePage() {
   const { ref, laidOut } = useSectionJumps<HTMLDivElement>()
+  useScrollReveals(ref)
   return (
     <div
       ref={ref}
-      className="landing overflow-x-clip bg-(--l-page) font-text text-16 leading-[1.6] text-(--l-body)"
+      className="landing landing-page overflow-x-clip bg-(--l-page) font-text text-16 leading-[1.6] text-(--l-body)"
       data-laid-out={laidOut || undefined}
     >
       <LandingHero />

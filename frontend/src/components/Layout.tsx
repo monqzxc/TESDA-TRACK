@@ -140,15 +140,21 @@ export function AppLayout() {
   const { canViewReports, canOpenAdmin, learner, openSignIn } = useAuth()
   // Signed out and guest-only: Sign in with TSP at the bar's right end, as on Home's bar and at the sidebar's foot.
   const offersTsp = !learner && !learnerAccounts()
-  const ownMenu = useCurrentPage() === 'explore'
+  const currentPage = useCurrentPage()
+  const ownMenu = currentPage === 'explore'
+  const privacyPage = currentPage === 'privacy'
   const open = useSidebarStore((state) => state.open)
   const menuButton = useRef<HTMLButtonElement>(null)
   return (
     <>
       <SkipLink />
-      <Sidebar isAdmin={canViewReports} canManage={canOpenAdmin} />
+      <Sidebar refreshed={privacyPage} isAdmin={canViewReports} canManage={canOpenAdmin} />
       <div
-        className={cx('flex min-w-0 flex-col', ownMenu ? 'h-dvh overflow-hidden' : 'min-h-screen')}
+        className={cx(
+          'flex min-w-0 flex-col',
+          ownMenu ? 'h-dvh overflow-hidden' : 'min-h-screen',
+          privacyPage && 'landing bg-(--l-panel) font-text text-(--l-body)',
+        )}
       >
         {!ownMenu && (
           <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-1 border-b border-border bg-surface px-3">
@@ -161,7 +167,7 @@ export function AppLayout() {
               turned={open}
               onPress={() => useSidebarStore.getState().openMenu(menuButton.current)}
             />
-            <SidebarTitle />
+            <SidebarTitle refreshed={privacyPage} />
             {offersTsp ? (
               <Button
                 onPress={() => openSignIn({ tsp: true })}
@@ -187,15 +193,17 @@ export function AppLayout() {
           id="main"
           tabIndex={-1}
           className={cx(
-            'w-full max-w-full flex-1 focus:outline-none',
+            'w-full flex-1 focus:outline-none',
             ownMenu
-              ? 'min-h-0'
-              : 'px-10 pt-9 pb-8 max-[1101px]:px-6 max-md:px-4 max-md:pt-6 max-md:pb-8',
+              ? 'min-h-0 max-w-full'
+              : privacyPage
+                ? 'mx-auto max-w-[1440px] px-[clamp(1.5rem,8.334vw,7.5rem)] py-12 max-sm:px-4 max-sm:py-6'
+                : 'max-w-full px-10 pt-9 pb-8 max-[1101px]:px-6 max-md:px-4 max-md:pt-6 max-md:pb-8',
           )}
         >
           <Outlet />
         </main>
-        {!ownMenu && <PageFooter />}
+        {!ownMenu && (privacyPage ? <HomeFooter /> : <PageFooter />)}
       </div>
     </>
   )

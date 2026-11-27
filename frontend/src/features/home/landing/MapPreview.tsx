@@ -1,6 +1,7 @@
 import { Icon } from '../../../components/Icon.tsx'
 import { useCopy } from '../../../i18n/copy.ts'
 import { LandingInfo } from './LandingInfo.tsx'
+import { useEffect, useRef, useState } from 'react'
 
 // Where the sample centers sit on the drawing (viewBox 0 0 520 440). Grey, as every center is until it is chosen.
 const PINS = [
@@ -37,8 +38,22 @@ function Pin({ x, y, selected = false }: { x: number; y: number; selected?: bool
  */
 export function MapPreview() {
   const copy = useCopy().landingPage.preview
+  const ref = useRef<HTMLElement>(null)
+  const [visible, setVisible] = useState(false)
+  useEffect(() => {
+    if (!ref.current || typeof IntersectionObserver === 'undefined') return
+    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), {
+      threshold: 0.1,
+    })
+    observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [])
   return (
-    <figure className="relative m-0 w-full max-w-[34rem] justify-self-end max-lg:justify-self-center">
+    <figure
+      ref={ref}
+      data-map-visible={visible}
+      className="landing-map-preview relative m-0 w-full max-w-[34rem] justify-self-end max-lg:justify-self-center"
+    >
       <div className="relative overflow-hidden rounded-[28px] border border-(--l-line) bg-(--l-map) shadow-[0_40px_80px_-40px_rgb(15_20_30/0.45)]">
         <svg
           viewBox="0 0 520 440"
@@ -80,6 +95,15 @@ export function MapPreview() {
             strokeWidth={3.5}
             strokeLinecap="round"
           />
+          <circle
+            cx={BEST[0]}
+            cy={BEST[1] - 18}
+            r={13}
+            fill="none"
+            className="landing-destination-ring stroke-(--l-navy)"
+            strokeWidth={2}
+            aria-hidden="true"
+          />
           <Pin x={BEST[0]} y={BEST[1]} selected />
           {/* The learner. */}
           <circle cx={YOU[0]} cy={YOU[1]} r={10} className="landing-pulse fill-(--l-navy)/35" />
@@ -104,7 +128,7 @@ export function MapPreview() {
         </span>
       </div>
       {/* The best-fit card, laid over the map's foot. */}
-      <figcaption className="relative z-1 mx-4 -mt-24 rounded-[20px] border-2 border-(--l-green) bg-(--l-surface) p-4 shadow-[0_24px_48px_-20px_rgb(15_20_30/0.35)] sm:mx-8">
+      <figcaption className="landing-map-card relative z-1 mx-4 -mt-24 rounded-[20px] border-2 border-(--l-green) bg-(--l-surface) p-4 shadow-[0_24px_48px_-20px_rgb(15_20_30/0.35)] sm:mx-8">
         <div className="flex items-start justify-between gap-3">
           <div className="min-w-0">
             <p className="text-12 font-semibold text-(--l-muted)">{copy.qualification}</p>

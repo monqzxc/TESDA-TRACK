@@ -87,21 +87,42 @@ export const en = {
   // The location-first landing page (2026 redesign, features/home/landing). Short labels, one line per fact; the
   // details sit behind each "i".
   landingPage: {
+    pauseAnimations: 'Pause animations',
+    resumeAnimations: 'Resume animations',
     sections: 'Sections',
     nav: { about: 'About', how: 'How it works', benefits: 'What’s in it for you' },
     getStarted: 'Get started',
     startMenu: 'Ways to start',
-    tsp: { title: 'Sign in with TSP', note: 'Uses your TESDA Skills Passport.' },
-    guest: { title: 'Continue as guest', note: 'No account needed.' },
+    tsp: {
+      title: 'Sign in with TSP',
+      note: 'Use your TSP account so your goal and matches are saved.',
+    },
+    guest: {
+      title: 'Continue as guest',
+      note: 'No account needed. Nothing is saved after you close the tab.',
+    },
     openMap: 'Open the Career Map',
     more: (topic: string) => `More about ${topic}`,
     hero: {
       kicker: 'TESDA training, assessment and jobs',
-      title: ['Your next TESDA step,', 'on a map near you.'],
-      lead: 'Type what you can do. See the qualification, the closest centers and local jobs.',
+      guestNote: 'No sign-in needed. Try it as a guest.',
+      previewTitle: 'Best path for you',
+      previewQuery: 'Marunong ako magluto',
+      previewRows: [
+        { title: 'Cookery NC II', detail: 'Matched your words: magluto', tag: 'Strong match' },
+        {
+          title: 'Commercial Cooking NC II',
+          detail: 'Matched your words: luto',
+          tag: 'Good match',
+        },
+        { title: 'Makati City', detail: 'Kitchen and food service', tag: 'High demand' },
+      ],
+      editingHint: 'Find your pathway to see matches for your goal.',
+      title: ['Find where your skills', 'can take you.'],
+      lead: 'Type what you want to do, in English, Filipino or Taglish. TESDA Track suggests the TESDA qualifications that fit, explains why each one fits, and shows the training and assessment centers that offer them.',
       label: 'What can you do?',
       placeholder: 'e.g. “marunong ako magluto”',
-      submit: 'Find my path',
+      submit: 'Find my pathway',
       empty: 'Type what you can do first.',
       privacy: 'Your search and rough location are used only to show nearby results.',
       privacyLink: 'Privacy notice',
@@ -119,51 +140,113 @@ export const en = {
       info: 'A center is the best fit when it meets all three: it offers your qualification, it is within the distance you chose, and it has a batch coming up.',
     },
     about: {
-      kicker: 'About',
-      title: 'One map for your next step.',
+      action: 'See how it works',
+      kicker: 'About TESDA Track',
+      title: 'Describe what you can do. We’ll map your next step.',
+      lead: 'TESDA Track is a map-based guide to TESDA qualifications. You don’t need to know the official qualification name or NC level. Describe what you want to do, and TESDA Track matches it to qualifications, then shows you where to train and where to get assessed.',
       items: [
         {
-          title: 'Training centers',
-          line: 'Where to learn it.',
+          title: 'Training Centers',
+          line: 'Find TESDA training centers near you that offer the qualification you picked.',
+          action: 'Find training near you',
           info: 'Providers registered with TESDA to train for the qualification you matched.',
         },
         {
-          title: 'Assessment centers',
-          line: 'Where to get certified.',
+          title: 'Assessment Centers',
+          line: 'Already have the skill? Find an accredited assessment center and get your National Certificate (NC).',
+          action: 'Find assessment centers',
           info: 'Accredited centers where you take the assessment for a National Certificate.',
         },
         {
-          title: 'Jobs in demand',
-          line: 'Where the work is.',
+          title: 'Skills Explorer',
+          line: 'Type skills or roles you’re interested in and see related occupations and qualifications, then find centers for one.',
+          action: 'See jobs in demand',
           info: 'Recorded job postings by region. A rough signal from dated records, not live openings.',
         },
       ],
     },
     howItWorks: {
       kicker: 'How it works',
-      title: 'Four steps. One map.',
+      title: 'From “I want to cook” to the right TESDA qualification, in four steps.',
+      lead: 'No qualification names or NC codes to memorize. Start with what you want to do, in your own words, and TESDA Track takes it from there.',
+      step: (number: number) => `Step ${number}`,
+      example: 'Illustrative example',
+      signedIn: 'Signed in with TSP',
+      sampleIdentity: 'Juan Dela Cruz · TSP 1234-5678-90',
+      sampleQuery: 'Marunong ako maghugas',
+      foundSkills: 'Skills we found in your search',
+      skills: ['Dishwashing', 'Laundry', 'Cleaning'],
+      matches: [
+        {
+          name: 'Housekeeping NC II',
+          detail: 'QC Skills Training Center',
+          strength: 'Strong match',
+        },
+        {
+          name: 'Food and Beverage Services NC II',
+          detail: 'Dishwashing, table service',
+          strength: 'Good match',
+        },
+        {
+          name: 'Commercial Cooking NC II',
+          detail: 'Kitchen and food prep',
+          strength: 'Good match',
+        },
+      ],
+      mapLabel: 'Illustration of training center pins on the Career Map',
       steps: [
-        { title: 'Start', line: 'As a guest, or with TSP.' },
-        { title: 'Say what you can do', line: 'In Filipino or English.' },
-        { title: 'Get your match', line: 'The closest TESDA qualification.' },
-        { title: 'Explore the map', line: 'Centers and jobs near you.' },
+        {
+          title: 'Describe your goal',
+          line: 'Type what you want to do in your own words, in English, Filipino or Taglish, or tap an example like “Become a welder”.',
+        },
+        {
+          title: 'Answer a few questions',
+          line: 'Optional questions about your experience and current certificate. You can skip them.',
+        },
+        {
+          title: 'See matching qualifications',
+          line: 'TESDA qualifications ranked by fit, each with a plain reason. Check your readiness: train first, or go for assessment.',
+        },
+        {
+          title: 'Find centers near you',
+          line: 'See training and assessment centers on a map or list. Filter by type, region, province or distance, then call, email or get directions.',
+        },
       ],
     },
     perks: {
       kicker: 'What’s in it for you',
-      title: 'Free, local, in your words.',
+      title: 'Your goal, your qualification, your next step.',
+      lead: 'Whether you want training or a National Certificate, TESDA Track puts the qualification and the centers that offer it in one place.',
       items: [
-        { title: 'Free to start', line: 'No sign-up needed.' },
-        { title: 'Your language', line: 'Nine languages.' },
-        { title: 'No job title needed', line: 'Describe the skill.' },
-        { title: 'Centers near you', line: 'Closest first.' },
-        { title: 'Jobs in demand', line: 'See where work is.' },
-        { title: 'One passport', line: 'Sign in with TSP.' },
+        {
+          title: 'Try it as a guest',
+          line: 'No account needed to start. Sign in with TSP if you want your goal and matches saved.',
+        },
+        {
+          title: 'Speaks your language',
+          line: 'Type your goal in English, Filipino or Taglish. Each match comes with a reason you can read.',
+        },
+        {
+          title: 'No qualification name needed',
+          line: 'Say what you want to do, like “gusto kong maging kusinero,” and get the TESDA qualifications that fit, each with a reason.',
+        },
+        {
+          title: 'Centers near you',
+          line: 'See the nearest training and assessment centers on one map, with an approximate distance to each.',
+        },
+        {
+          title: 'Know if you’re ready',
+          line: 'Rate your own skills for a qualification and get a suggested next step: train first, or go for assessment.',
+        },
+        {
+          title: 'All 319 qualifications',
+          line: 'Browse the Qualifications Library, open a qualification to see its skills and possible jobs, and start from there.',
+        },
       ],
     },
     closing: {
-      title: 'Ready for your next step?',
-      lead: 'Start as a guest, or sign in with TSP.',
+      title: 'Ready to find your next step?',
+      lead: 'Start as a guest, or sign in with TSP to save your progress.',
     },
     footer: {
       nav: 'Page links',
@@ -374,7 +457,7 @@ export const en = {
   pages: {
     home: {
       title: 'TESDA-TRACK · Your next step',
-      heading: 'Your next TESDA step, on a map near you.',
+      heading: 'Find where your skills can take you.',
     },
     tspWebview: {
       title: 'Find a TESDA pathway · TESDA-TRACK',

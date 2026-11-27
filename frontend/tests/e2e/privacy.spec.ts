@@ -1,5 +1,6 @@
 import { AxeBuilder } from '@axe-core/playwright'
 import { expect, test } from '@playwright/test'
+import { en } from '../../src/copy/en.ts'
 
 // The privacy notice on a first visit, and the links to the policy. Every other test opens as a browser that has
 // seen the notice (playwright.config.ts); these start without it.
@@ -87,9 +88,7 @@ test('"I understand" closes the notice for good', async ({ page }) => {
   await expect(page.getByRole('dialog')).toBeHidden()
 
   await page.reload()
-  await expect(
-    page.getByRole('heading', { level: 1, name: 'Your next TESDA step, on a map near you.' }),
-  ).toBeVisible()
+  await expect(page.getByRole('heading', { level: 1, name: en.pages.home.heading })).toBeVisible()
   await expect(page.getByRole('dialog')).toHaveCount(0)
 })
 
@@ -165,6 +164,8 @@ test.describe('the privacy link on every screen', () => {
     }) => {
       await page.setViewportSize(viewport)
       await page.goto('/explore')
+      // The current Career Map asks for location on each visit; decline before opening its menu.
+      await page.getByRole('button', { name: 'Not now', exact: true }).click()
       await page.getByRole('button', { name: 'Menu' }).first().click()
       await page
         .getByRole('dialog')
@@ -175,3 +176,52 @@ test.describe('the privacy link on every screen', () => {
     })
   }
 })
+
+for (const width of [1440, 390]) {
+  for (const colorScheme of ['light', 'dark'] as const) {
+    test(`refreshed privacy layout, sidebar and footer at ${width}px (${colorScheme})`, async ({
+      page,
+    }) => {
+      await page.setViewportSize({ width, height: 900 })
+      await page.emulateMedia({ colorScheme, reducedMotion: 'reduce' })
+      await page.addInitScript(() =>
+        localStorage.setItem('tesda-track.privacy-notice', '2026-11-24'),
+      )
+      await page.goto('/privacy')
+      await expect(page.getByRole('heading', { level: 1, name: 'Privacy policy' })).toBeVisible()
+      await expect(page.getByRole('banner').locator('img')).toHaveAttribute(
+        'src',
+        '/img/landing/tesda-track-logo.png',
+      )
+      await expect(page.getByRole('contentinfo').locator('img')).toHaveAttribute(
+        'src',
+        '/img/landing/tesda-track-logo.png',
+      )
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(
+        width,
+      )
+      expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
+      await page
+        .getByRole('navigation', { name: 'On this page' })
+        .getByRole('link', { name: 'Your rights' })
+        .click()
+      await expect(page.getByRole('heading', { name: 'Your rights', exact: true })).toBeInViewport()
+      await page.getByRole('button', { name: 'Menu', exact: true }).click()
+      const sidebar = page.getByRole('dialog', { name: 'Menu', exact: true })
+      await sidebar.getByRole('button', { name: /Language/ }).click()
+      await expect(page.getByRole('option')).toHaveCount(9)
+      await page.getByRole('option', { name: 'Tagalog', exact: true }).click()
+      await expect(page.locator('html')).toHaveAttribute('lang', 'tl')
+      await sidebar.getByRole('button', { name: /Language/ }).click()
+      await page.keyboard.press('Escape')
+      await expect(sidebar).toBeVisible()
+      await sidebar.getByRole('button', { name: /Language/ }).click()
+      await page.getByRole('option', { name: 'English', exact: true }).click()
+      await page.keyboard.press('Escape')
+      await expect(sidebar).toHaveCount(0)
+      await expect(
+        page.getByRole('contentinfo').getByRole('button', { name: /Language/ }),
+      ).toContainText('English')
+    })
+  }
+}

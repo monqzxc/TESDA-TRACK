@@ -1,15 +1,15 @@
 import { cx } from '../../../lib/style.ts'
 
 /** The landing page's shared pieces: its width, its section rhythm and its two buttons. */
-export const wrap = 'mx-auto w-full max-w-[1180px] px-[clamp(16px,4vw,40px)]'
+export const wrap = 'mx-auto w-full max-w-[1440px] px-[clamp(1.5rem,8.334vw,7.5rem)] max-sm:px-6'
 
-export const section = 'py-[clamp(4rem,9vw,7.5rem)]'
+export const section = 'py-[clamp(4rem,8.334vw,7.5rem)]'
 
 export const kicker =
-  'text-12 font-bold tracking-[0.14em] text-(--l-muted) uppercase [font-feature-settings:"ss01"]'
+  'text-12 leading-4 font-semibold tracking-[0.08em] text-[#123e80] dark:text-[#a9caff] uppercase'
 
 export const sectionTitle =
-  'mt-3 text-[clamp(2rem,1.4rem+2.4vw,3.25rem)] leading-[1.02] font-extrabold tracking-[-0.035em]'
+  'text-[clamp(2rem,3.056vw,2.75rem)] leading-[1.14] font-medium tracking-[-0.025em] [text-wrap:wrap]'
 
 /** Navy is for actions: the solid button. The quiet one is outlined in grey. */
 export function landingButton(kind: 'solid' | 'quiet' = 'solid') {

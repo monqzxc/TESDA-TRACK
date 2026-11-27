@@ -17,7 +17,15 @@ const focusable =
  * It stays in the page while closed, hidden (invisible and inert once it has slid out), so it slides both ways and
  * the account's own dialogs and menus keep their place in it. Signing in opens the dialog over it.
  */
-export function Sidebar({ isAdmin, canManage }: { isAdmin: boolean; canManage: boolean }) {
+export function Sidebar({
+  isAdmin,
+  canManage,
+  refreshed = false,
+}: {
+  isAdmin: boolean
+  canManage: boolean
+  refreshed?: boolean
+}) {
   const en = useCopy()
   const open = useSidebarStore((state) => state.open)
   const { closeMenu } = useSidebarStore.getState()
@@ -86,6 +94,7 @@ export function Sidebar({ isAdmin, canManage }: { isAdmin: boolean; canManage: b
         onKeyDown={onKeyDown}
         className={cx(
           'fixed top-0 left-0 z-[95] flex h-dvh w-[min(17rem,85vw)] flex-col overflow-y-auto overscroll-contain bg-surface px-2 pt-2.5 pb-[max(1rem,env(safe-area-inset-bottom))] shadow-dialog motion-reduce:transition-none',
+          refreshed && 'landing font-text',
           // In: the phone menu's slide. Out: a little quicker, and hidden only once it has slid out.
           open
             ? 'translate-x-0 transition-[translate] duration-[240ms] ease-[cubic-bezier(0.2,0.75,0.2,1)]'
@@ -99,9 +108,14 @@ export function Sidebar({ isAdmin, canManage }: { isAdmin: boolean; canManage: b
             turned={!open}
             onPress={() => closeMenu()}
           />
-          <SidebarTitle onNavigate={() => closeMenu()} />
+          <SidebarTitle refreshed={refreshed} onNavigate={() => closeMenu()} />
         </div>
-        <SidebarContent isAdmin={isAdmin} canManage={canManage} onNavigate={() => closeMenu()} />
+        <SidebarContent
+          refreshed={refreshed}
+          isAdmin={isAdmin}
+          canManage={canManage}
+          onNavigate={() => closeMenu()}
+        />
       </div>
     </>
   )

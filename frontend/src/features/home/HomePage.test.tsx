@@ -74,16 +74,17 @@ describe('Home', () => {
     const user = userEvent.setup()
     const { router } = await openHome()
 
-    await user.click(screen.getByRole('button', { name: copy.getStarted }))
-    const menu = await screen.findByRole('menu')
+    await user.click(screen.getAllByRole('button', { name: copy.getStarted })[0])
+    const menu = await screen.findByRole('dialog', { name: copy.getStarted })
     expect(
       within(menu)
-        .getAllByRole('menuitem')
+        .getAllByRole('button')
+        .filter((item) => item.textContent)
         .map((item) => item.textContent),
     ).toEqual([expect.stringContaining(copy.tsp.title), expect.stringContaining(copy.guest.title)])
     expect(within(menu).queryByText(/sign up|create an account/i)).toBeNull()
 
-    await user.click(within(menu).getByRole('menuitem', { name: new RegExp(copy.guest.title) }))
+    await user.click(within(menu).getByRole('button', { name: new RegExp(copy.guest.title) }))
     await waitFor(() => expect(router.state.location.pathname).toBe('/explore'))
     expect(router.state.location.state).toEqual({ focusSearch: true })
   })
@@ -147,12 +148,18 @@ describe('Home', () => {
     ).toHaveAttribute('href', '/privacy')
   })
 
-  it('marks the map preview as sample data, with the 3-of-3 best fit and its three checks', async () => {
+  it('labels the animated recommendations as illustrative and hides them when the learner types', async () => {
+    const user = userEvent.setup()
     await openHome()
-    const preview = screen.getByRole('figure')
-    expect(within(preview).getByRole('img', { name: copy.preview.label })).toBeInTheDocument()
-    expect(preview).toHaveTextContent(copy.preview.sample)
-    expect(preview).toHaveTextContent(`${copy.preview.bestFit} · ${copy.preview.fitCount}`)
-    for (const check of copy.preview.checks) expect(preview).toHaveTextContent(check)
+    const preview = screen.getByTestId('hero-match-preview')
+    expect(
+      within(preview).getByRole('img', { name: new RegExp(copy.howItWorks.example) }),
+    ).toBeInTheDocument()
+    for (const row of copy.hero.previewRows) expect(preview).toHaveTextContent(row.title)
+    await user.type(goalBox(), 'Welding')
+    expect(within(preview).queryByRole('img')).toBeNull()
+    expect(preview).toHaveTextContent(copy.hero.editingHint)
+    await user.clear(goalBox())
+    expect(within(preview).getByRole('img')).toBeInTheDocument()
   })
 })

@@ -110,22 +110,61 @@
 /* The location-first landing page (2026 redesign, features/home/landing). Navy is for actions and the selected item,
    green only marks the 3-of-3 "Best fit" card, and everything else is a grey. Set on the landing's root and on its top
    bar and footer, which sit outside it. */
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('/fonts/Inter-latin.woff2') format('woff2');
+}
+
 .landing {
-  --l-page: #f4f5f7;
+  --font-display: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-text: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --l-page: #ffffff;
   --l-surface: #ffffff;
-  --l-panel: #eceef2;
+  --l-panel: #f1f3f6;
   --l-line: #dfe2e8;
   --l-ink: #171c24; /* headings */
   --l-body: #3d4450; /* running text */
   --l-muted: #646b78; /* notes: 5.3:1 on the page */
   --l-faint: #9aa1ad; /* decoration only, never text */
-  --l-navy: #12306b; /* actions and the selected item */
+  --l-navy: #205fc1; /* actions and the selected item */
   --l-navy-hover: #0b2252;
   --l-navy-soft: #e7ecf6;
   --l-green: #15803d; /* only the 3-of-3 Best fit card */
   --l-green-soft: #e9f6ee;
   --l-map: #e9ebef;
   --l-map-line: #d3d7de;
+}
+
+/* The landing page uses Bricolage for titles while keeping Inter for running text. */
+.landing-page {
+  --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+}
+
+.landing-hero-map {
+  background-image: url('/img/simple-map-background.png');
+  background-size: cover;
+  background-position: center;
+}
+
+@keyframes landing-background-drift {
+  from {
+    transform: scale(1.02) translateX(-0.5%);
+  }
+  to {
+    transform: scale(1.07) translateX(0.5%);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .landing-hero-map {
+    animation: landing-background-drift 8s ease-in-out infinite alternate;
+  }
+  .landing[data-motion-paused] .landing-hero-map {
+    animation-play-state: paused;
+  }
 }
 
 :root[data-theme='dark'] .landing {
@@ -167,7 +206,7 @@
   scroll-margin-top: 76px;
 }
 
-/* The map preview's route draws itself once, then the "you" pin breathes. Still with reduced motion. */
+/* Recurring map illustration; all motion respects the page's pause control and device preferences. */
 @keyframes landing-route {
   from {
     stroke-dashoffset: 420;
@@ -192,15 +231,80 @@
   stroke-dasharray: 6 7;
 }
 
+@keyframes landing-route-cycle {
+  0%,
+  6% {
+    stroke-dashoffset: 420;
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  42%,
+  86% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+@keyframes landing-card-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .landing-route-draw {
     stroke-dasharray: 420;
-    animation: landing-route 1.6s 0.4s cubic-bezier(0.65, 0, 0.35, 1) both;
+    animation: landing-route-cycle 6s cubic-bezier(0.65, 0, 0.35, 1) infinite;
   }
 
   .landing-pulse {
     transform-box: fill-box;
     transform-origin: center;
     animation: landing-pulse 2.4s ease-out infinite;
+  }
+
+  .landing-destination-ring {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: landing-pulse 3s 1s ease-out infinite;
+  }
+
+  .landing-map-card {
+    animation: landing-card-float 6s ease-in-out infinite;
+  }
+
+  .landing [data-reveal] {
+    transition:
+      opacity 550ms ease-out var(--reveal-delay, 0ms),
+      transform 550ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms);
+  }
+  .landing [data-reveal='pending'] {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+  .landing [data-reveal='shown'],
+  .landing [data-reveal]:focus-within {
+    opacity: 1;
+    transform: none;
+  }
+
+  .landing[data-motion-paused] [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .landing[data-motion-paused] .landing-map-preview *,
+  .landing-map-preview[data-map-visible='false'] * {
+    animation-play-state: paused;
   }
 }
