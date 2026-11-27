@@ -4,6 +4,7 @@ import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { renderWithAuth } from '../../test/account.tsx'
+import { openCenterList } from '../../test/explore.ts'
 import { server } from '../../test/server.ts'
 import {
   cebuCenter,
@@ -37,12 +38,14 @@ const cookery = match(cookeryProgram.qualification, 90)
 const welding = match(weldingProgram.qualification, 85)
 
 let listingRequests = 0
-const searchFor = (matches: Match[], chosen?: boolean) =>
+const searchFor = (matches: Match[], chosen?: boolean) => {
   useExploreStore.getState().setSearch({
     query: 'skills',
     result: { profile: { intent: 'training_recommendation' }, matches },
     ...(chosen ? { chosen } : {}),
   })
+  openCenterList()
+}
 
 beforeEach(() => {
   localStorage.setItem('track.explore.locationAsked', 'no')

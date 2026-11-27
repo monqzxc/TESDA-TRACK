@@ -1,5 +1,5 @@
 import { keepPreviousData, useQueries, useQuery } from '@tanstack/react-query'
-import { useContext, useMemo } from 'react'
+import { useCallback, useContext, useMemo } from 'react'
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { qualificationsQuery, regionsQuery } from '../../api/queries.ts'
@@ -13,7 +13,13 @@ import {
   type QualificationFit,
 } from '../tsp/passport.ts'
 import { clientConfigQuery, listingsQuery, sitesQuery } from '../training/api.ts'
-import { buildCenters, philippineDay, sortCenters, withDistances } from '../training/centers.ts'
+import {
+  buildCenters,
+  type Center,
+  philippineDay,
+  sortCenters,
+  withDistances,
+} from '../training/centers.ts'
 import { gazetteer, resolvePlace } from '../training/places.ts'
 import { useTrainingStore } from '../training/state.ts'
 import type { Reference } from '../training/useCenters.ts'
@@ -42,6 +48,9 @@ import {
   regionalDemand,
   supplyCenters,
 } from './recommend.ts'
+
+/** A picked place with no center for the qualification lists this many nearest centers outside it. */
+export const OUTSIDE_LIMIT = 3
 
 export const useDemandStore = create<{
   region: string | null | undefined
@@ -114,6 +123,53 @@ interface ExploreState {
   closeRange: () => void
   /** Clears the goal, results and range, e.g. on sign-out. */
   reset: () => void
+  /** The guided step's open card: a qualification's centers, or the query's centers in one region. Null: the cards. */
+  guidedFocus: GuidedFocus | null
+  /** The search to go back to after a "you might consider" card opened its own. */
+  guidedBack: Search | null
+  /** The reveal key whose staggered cards already started playing: shown in place from then on, refreshes too. */
+  revealedFor: string | null
+  /** Opens one matched qualification's centers. */
+  openQualification: (code: string) => void
+  /** Opens the query's centers in one region, at any distance; Back restores the learner's range. */
+  openRegion: (code: string, regionCode: string) => void
+  /** Opens a qualification that isn't among the matches as its own search, keeping this one to come back to. */
+  openConsidered: (search: Search) => void
+  /** Back to the cards: undoes whichever of the three opened. */
+  closeGuided: () => void
+  markRevealed: (key: string) => void
+}
+
+export type GuidedFocus =
+  | { kind: 'qualification'; code: string }
+  | {
+      kind: 'region'
+      code: string
+      regionCode: string
+      previous: { rangeKm: number; relocate: boolean }
+    }
+
+/** A search for one qualification chosen by name (from the library, a card, or a suggestion), not read from words. */
+export function chosenSearch(
+  qualification: MatchResult['matches'][number]['qualification'],
+  query: string,
+  reason: string,
+): Search {
+  return {
+    query,
+    chosen: true,
+    result: {
+      profile: { intent: 'training_recommendation' },
+      matches: [{ qualification, score: 100, reason }],
+    },
+  } as Search
+}
+
+/** One search's identity for the reveal: its words and matched codes, whatever their order. Null without a search. */
+export function revealKey(search: Search | null): string | null {
+  if (!search) return null
+  const codes = search.result.matches.map((match) => match.qualification.code).sort()
+  return `${search.query}|${codes.join(',')}`
 }
 
 const EMPTY = {
@@ -125,6 +181,9 @@ const EMPTY = {
   askingRange: false,
   rangeAnswers: 0,
   picked: [] as string[],
+  guidedFocus: null,
+  guidedBack: null,
+  revealedFor: null,
 } satisfies Partial<ExploreState>
 
 export const useExploreStore = create<ExploreState>()(
@@ -167,18 +226,68 @@ export const useExploreStore = create<ExploreState>()(
         }
       },
       setSearch: (search) => {
-        set({ search, picked: [] })
+        set({ search, picked: [], guidedFocus: null, guidedBack: null })
         useDemandStore.getState().setCode(undefined)
       },
       reset: () => set(EMPTY),
+      openQualification: (code) => {
+        set({ picked: [code], guidedFocus: { kind: 'qualification', code } })
+        useDemandStore.getState().setCode(code)
+      },
+      openRegion: (code, regionCode) =>
+        set((state) => ({
+          relocate: true,
+          guidedFocus: {
+            kind: 'region',
+            code,
+            regionCode,
+            previous: { rangeKm: state.rangeKm, relocate: state.relocate },
+          },
+        })),
+      openConsidered: (search) => {
+        const code = search.result.matches[0]?.qualification.code
+        set((state) => ({
+          guidedBack: state.search,
+          search,
+          picked: [],
+          guidedFocus: code ? { kind: 'qualification', code } : null,
+        }))
+        useDemandStore.getState().setCode(undefined)
+      },
+      closeGuided: () => {
+        const { guidedFocus, guidedBack } = useExploreStore.getState()
+        set({
+          picked: [],
+          guidedFocus: null,
+          guidedBack: null,
+          ...(guidedFocus?.kind === 'region' ? guidedFocus.previous : {}),
+          ...(guidedBack ? { search: guidedBack } : {}),
+        })
+        useDemandStore.getState().setCode(undefined)
+      },
+      markRevealed: (key) => set({ revealedFor: key }),
     }),
     {
       name: EXPLORE_KEY,
       storage: createJSONStorage(() => sessionStore),
       version: 1,
       // "How far can you go?" being open is a moment, not work: a refresh closes it.
-      partialize: ({ draft, search, relocate, rangeKm, rangeChosen, picked }) => ({
+      partialize: ({
+        draft,
+        search,
+        relocate,
+        rangeKm,
+        rangeChosen,
         picked,
+        guidedFocus,
+        guidedBack,
+        revealedFor,
+      }) => ({
+        picked,
+        guidedFocus,
+        guidedBack,
+        // Kept across a refresh, so Back to the cards shows them in place rather than replaying them.
+        revealedFor,
         draft,
         search,
         relocate,
@@ -362,10 +471,18 @@ export function useExplore(
     )
     return nearest ? (nearest.regionCode === 'NCR' ? METRO_MANILA : nearest.province) : null
   }, [location, allCenters])
-  // The region and province filters narrow what the list and the map show. The supply analysis and the
-  // recommendations still count every center: a filter changes what is shown, not the evidence.
+  // The region and province filters narrow what the list and the map show, and the ranking and recommendations
+  // with them: a learner who picks a place asks what is there (docs/superpowers/specs/2026-11-27-explore-place-
+  // focus-design.md). The supply analysis still counts every center: a filter changes what is shown, not the evidence.
   const regionFilter = filters.region ?? null
   const provinceFilter = filters.province ?? null
+  const inPlace = useCallback(
+    (center: Center) =>
+      (!regionFilter || center.regionCode === regionFilter) &&
+      (!provinceFilter || center.province === provinceFilter),
+    [regionFilter, provinceFilter],
+  )
+  const placeFiltered = Boolean(regionFilter || provinceFilter)
   // Scholarships only: a training center stays when one of its programs listed here has a scholarship open (with a
   // search, the matched qualifications' programs). Assessment centers have no scholarships listed, so they stay.
   const scholarshipOnly = Boolean(filters.scholarship)
@@ -373,11 +490,10 @@ export function useExplore(
     () =>
       allCenters.filter(
         (center) =>
-          (!regionFilter || center.regionCode === regionFilter) &&
-          (!provinceFilter || center.province === provinceFilter) &&
+          inPlace(center) &&
           (!scholarshipOnly || center.kind !== 'training' || anyScholarship(center)),
       ),
-    [allCenters, regionFilter, provinceFilter, scholarshipOnly],
+    [allCenters, inPlace, scholarshipOnly],
   )
   const regionOptions = useMemo(() => {
     const seen = new Map<string, string>()
@@ -447,6 +563,22 @@ export function useExplore(
     () => (demandCode ? supplyCenters(allCenters, demandCode, outlook.data) : []),
     [allCenters, demandCode, outlook.data],
   )
+  // What the ranking and the recommendations choose from: the picked place's supply, or all of it.
+  const placeSupply = useMemo(
+    () => (placeFiltered ? supply.filter(inPlace) : supply),
+    [placeFiltered, supply, inPlace],
+  )
+  // A picked place with no center for the qualification: the nearest outside it, so the learner has somewhere to go.
+  const outsidePlace = useMemo(
+    () =>
+      placeFiltered && !placeSupply.length
+        ? supply
+            .filter((center) => !inPlace(center))
+            .sort((a, b) => (a.distanceKm ?? Infinity) - (b.distanceKm ?? Infinity))
+            .slice(0, OUTSIDE_LIMIT)
+        : [],
+    [placeFiltered, placeSupply, supply, inPlace],
+  )
   // Card 4: what the learner can do already (the search's skills and their Skill Passport) and what they chose or
   // hold, for the other qualifications in demand where they are.
   const fitSkills = useMemo(
@@ -512,7 +644,7 @@ export function useExplore(
     () =>
       demandCode
         ? rankCombinedCenters({
-            supply,
+            supply: placeSupply,
             code: demandCode,
             rangeKm,
             demandRegions,
@@ -523,16 +655,17 @@ export function useExplore(
             (item) => !scholarshipOnly || item.center.kind !== 'training' || item.scholarship,
           )
         : [],
-    [demandCode, supply, rangeKm, demandRegions, regionDemand, ready, scores, scholarshipOnly],
+    [demandCode, placeSupply, rangeKm, demandRegions, regionDemand, ready, scores, scholarshipOnly],
   )
   const recommendations = useMemo(
     () =>
       demandCode
         ? recommend({
-            supply,
-            homeRegion: automaticRegion,
-            relocate,
-            alternatives: alternatives ?? [],
+            supply: placeSupply,
+            // Judged from the picked region: its centers are "in the region", and no other region is suggested.
+            homeRegion: regionFilter ?? automaticRegion,
+            relocate: relocate && !placeFiltered,
+            alternatives: placeFiltered ? [] : (alternatives ?? []),
             nearKm: rangeKm,
             code: demandCode,
             demandRegions,
@@ -543,7 +676,9 @@ export function useExplore(
         : NO_RECOMMENDATIONS,
     [
       demandCode,
-      supply,
+      placeSupply,
+      regionFilter,
+      placeFiltered,
       automaticRegion,
       relocate,
       alternatives,
@@ -615,6 +750,12 @@ export function useExplore(
     summary,
     nearby,
     supply,
+    /** The picked region and province (the address's filters), or null for each. */
+    place: placeFiltered ? { regionCode: regionFilter, province: provinceFilter } : null,
+    /** The supply in the picked place: what the ranking and recommendations choose from. */
+    placeSupply,
+    /** A picked place without a center for the qualification: the nearest outside it, nearest first. */
+    outsidePlace,
     recommendations,
     recommendedIds,
     /** The centers for the qualification in focus, best first, each with its main reason (the list beside the map). */

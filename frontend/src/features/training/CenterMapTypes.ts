@@ -53,6 +53,8 @@ export interface CenterMapProps {
   onRoute: (centerId: string) => void
   onToggleSaved: (centerId: string) => void
   onLocate: () => void
+  /** A region picked on the page (a results card): outlined, framed, and its centers (the pins) drawn as heat. */
+  placeRegion?: string | null
   /** In the demand view, a province picked on the page: the map goes to its point while its region is selected. */
   demandFocus?: (Point & { regionCode: string }) | null
   /** Where the map's status line ends, from the map's top (0 without one): a page's card can sit below it. */

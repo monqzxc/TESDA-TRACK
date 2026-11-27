@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
@@ -86,7 +86,7 @@ describe('Career Map goal box', () => {
   })
 
   // The flow: the goal, then the qualification chips, then "How far can you go?", then the results.
-  it('asks how far the learner can go after a search, before the results', async () => {
+  it('shows the guided cards after a search, not a distance question; the list keeps Change', async () => {
     server.use(
       http.post('*/api/v1/analysis/goal', () =>
         HttpResponse.json({
@@ -108,22 +108,14 @@ describe('Career Map goal box', () => {
     const box = await screen.findByPlaceholderText(en.explore.search.placeholder)
     await user.type(box, 'I can weld{Enter}')
 
-    const step = await screen.findByRole('region', { name: 'How far can you go?' })
-    // Near me is the default, at about 10 km.
-    expect(within(step).getByRole('button', { name: /^Near me/, pressed: true })).toBeVisible()
-    expect(screen.queryByRole('group', { name: 'Show' })).not.toBeInTheDocument()
-
-    await user.click(within(step).getByRole('button', { name: /^Near me/ }))
+    // The guided cards come first; the distance stays at Near me, about 10 km, and isn't asked.
+    expect(await screen.findByText(/^Results: \d+ groups?$/, {}, { timeout: 4000 })).toBeInTheDocument()
     expect(screen.queryByRole('region', { name: 'How far can you go?' })).not.toBeInTheDocument()
-    expect(await screen.findByRole('group', { name: 'Show' })).toBeInTheDocument()
-    expect(useExploreStore.getState()).toMatchObject({
-      rangeKm: 10,
-      relocate: false,
-      rangeChosen: true,
-    })
+    expect(useExploreStore.getState()).toMatchObject({ rangeKm: 10, relocate: false, askingRange: false })
 
-    // The question folds to one line with the answer; Change opens it again.
-    expect(screen.getByText('Near me')).toBeVisible()
+    // A card's centers: the distance folds to one line there, and Change opens the question.
+    act(() => useExploreStore.getState().openQualification(weldingProgram.qualification.code))
+    expect(await screen.findByRole('group', { name: 'Show' })).toBeInTheDocument()
     await user.click(screen.getByRole('button', { name: 'Change how far you can go (now 10 km)' }))
     expect(await screen.findByRole('region', { name: 'How far can you go?' })).toBeVisible()
   })

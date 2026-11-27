@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { AuthContext, type Auth } from '../../auth/useAuth.ts'
 import { renderWithAuth } from '../../test/account.tsx'
+import { openCenterList } from '../../test/explore.ts'
 import { server } from '../../test/server.ts'
 import type { CenterMapProps } from '../training/CenterMapTypes.ts'
 import { useTrainingStore } from '../training/state.ts'
@@ -188,6 +189,7 @@ beforeEach(() => {
       },
     } as never,
   })
+  openCenterList()
   // The learner shared a location in Manila.
   useTrainingStore.setState({
     useLocation: true,

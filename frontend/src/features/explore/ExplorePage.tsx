@@ -24,6 +24,8 @@ import { MapAccount } from '../account/MapAccount.tsx'
 import { PageHeading } from '../../components/PageHeading.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
+import { prefersReducedMotion } from '../../lib/motion.ts'
+import { roundKm } from './explore.ts'
 import { paths } from '../../paths.ts'
 import { button } from '../../styles/buttons.ts'
 import { GOAL_MAX_LENGTH } from '../finder/key.ts'
@@ -40,8 +42,13 @@ import { LocationPrompt } from './LocationPrompt.tsx'
 import { MapFilters } from './MapFilters.tsx'
 import { OutlookAnalysis, OutlookBrief } from './OutlookBrief.tsx'
 import { QualificationChips } from './QualificationChips.tsx'
-import { CenterCard, NearbyPanel, ResultsPanel, TspProfilePanel } from './Panels.tsx'
-import { useDemandStore, useExplore, useExploreStore } from './useExplore.ts'
+import { SkillChips, SkillResults, ViewPills } from './SkillResults.tsx'
+import { CenterPreview } from './CenterPreview.tsx'
+import { ChatDock, type DockMode } from './ChatDock.tsx'
+import { layoutMode } from './layoutMode.ts'
+import { CenterCard, NearbyPanel, ReachPill, ResultsPanel, TspProfilePanel } from './Panels.tsx'
+import { plainIcon, ViewToggles } from './ViewToggles.tsx'
+import { chosenSearch, useDemandStore, useExplore, useExploreStore } from './useExplore.ts'
 
 // The map comes down with its renderer the first time it's shown, as on Training & Assessment.
 const CenterMap = lazy(() => import('../training/CenterMap.tsx'))
@@ -83,6 +90,10 @@ const TABLET_UP = '(min-width: 769px)'
 const ACCOUNT_ROOM = 56
 /** The Filters button under it, the same size and gap: the map's own buttons start below both. */
 const FILTERS_ROOM = 56
+// The guided layout's three view toggles under Filters: three 40px buttons, 8px apart, and 16px after.
+const VIEWS_ROOM = 3 * 40 + 2 * 8 + 16
+// The docked chat's bottom margin from a tablet up: 10% of the window (the user's layout, 2026-11-27).
+const DOCK_MARGIN = 0.1
 /** How far the floating "Around you" card stays above the window's bottom: clear of Help and Layers. */
 const AROUND_BOTTOM_CLEAR = 52 + 28 + 44 + 12
 const SHEET_DISMISS_DISTANCE = 48
@@ -102,12 +113,6 @@ function useTabletUp() {
 }
 
 /** With reduced motion nothing slides, so there's no transition's end to wait for. */
-function prefersReducedMotion() {
-  return (
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  )
-}
 
 /** The longest everything over the map stays folded away waiting for the route to finish drawing (directions can
  * be slow or fail, and then nothing draws), and how long the pieces then take to come back one by one (app.css: six
@@ -290,6 +295,13 @@ export default function ExplorePage() {
   const selectedCode = arrival?.exploreCenter?.code ?? null
   // Which way the panel last moved: a center slides in from the right, and the list comes back from the left.
   const [motion, setMotion] = useState<'forward' | 'back' | null>(null)
+  // The skills list (default), the guided chat layout (?layout=guided) or the classic panel with the guided cards
+  // (?layout=classic), chosen once per visit.
+  const [layout] = useState(() => layoutMode(location.search, import.meta.env.VITE_EXPLORE_LAYOUT))
+  const guided = layout === 'guided'
+  const list = layout === 'list'
+  const [dockMode, setDockMode] = useState<DockMode>('docked')
+  const [dockHeight, setDockHeight] = useState(0)
   const scroller = useRef<HTMLDivElement>(null)
   const listScroll = useRef(0)
   const [focus, setFocus] = useState(0)
@@ -390,6 +402,10 @@ export default function ExplorePage() {
     ? explore.outlook.data?.snapshot_dates
     : explore.demandMap.data?.snapshot_dates
   const selected = centers.find((center) => center.id === selectedId) ?? null
+  // The skills list from a tablet up: a center opens as a preview beside the list, which stays as it was.
+  const previewFloats = list && tabletUp && selected !== null
+  // What the panel itself shows open: a center's card, unless it floats beside the list.
+  const panelCenter = previewFloats ? null : selected
   // The analysis takes the panel as a center does; a center opened over it comes first, and Back returns to it.
   const analysisOpen = Boolean(arrival?.exploreAnalysis && focusCode && !selected)
   const showFilters = view !== 'demand'
@@ -427,18 +443,19 @@ export default function ExplorePage() {
     { onMap = false, code = null }: { onMap?: boolean; code?: string | null } = {},
   ) => {
     // Leaving the list, keep its place to come back to.
-    if (!selectedId && !analysisOpen) listScroll.current = scroller.current?.scrollTop ?? 0
+    if (!panelCenter && !analysisOpen) listScroll.current = scroller.current?.scrollTop ?? 0
     navigate(`${location.pathname}${location.search}${location.hash}`, {
       state: { ...arrival, exploreCenter: { id, code } },
       // Switching centers keeps one detail entry, so Back returns directly to the results.
       replace: Boolean(selectedId),
       preventScrollReset: true,
     })
-    // Opening a center draws the way there straight away, when the page can draw routes from somewhere.
-    store().showRoute(canRoute ? id : null)
+    // Opening a center only shows it: the way there is drawn when the learner asks, with Directions.
+    store().showRoute(null)
     setMotion('forward')
-    // A center picked on the map opens its card, so a folded panel opens with it.
+    // A center picked on the map opens its card, so a folded panel opens with it. The chat docks: the map shows the way.
     setCollapsed(false)
+    if (guided) setDockMode('docked')
     if (onMap) setFocus((n) => n + 1)
   }
   const back = () => {
@@ -476,9 +493,11 @@ export default function ExplorePage() {
   useLayoutEffect(() => {
     const body = scroller.current
     if (!body) return
+    // A preview beside the list leaves the list where it is.
+    if (previewFloats) return
     if (selectedId || analysisOpen) body.scrollTop = 0
     else body.scrollTop = listScroll.current
-  }, [selectedId, analysisOpen, motion])
+  }, [selectedId, analysisOpen, motion, previewFloats])
 
   // The "Around you" card (section 3 of markdowns/explore-map-first-visit-updates.md): over the map's top right from
   // a tablet up, and at the top of the results sheet on a phone. Not in the demand view, whose panel says the same.
@@ -518,30 +537,32 @@ export default function ExplorePage() {
     useDemandStore.getState().setRegion(province.region_code)
     changeView('demand')
   }
+  const guidedFocus = useExploreStore((state) => state.guidedFocus)
+  // A region card opened in the guided layout: from a tablet up its centers sit in a panel on the left, beside the
+  // docked chat, so the map stays in view (docs/superpowers/specs/2026-11-27-explore-place-focus-design.md).
+  const sidePanel = guided && tabletUp && guidedFocus?.kind === 'region'
+  // Back from a card's centers: a region card's filter goes with it.
+  const guidedBack = () => {
+    if (useExploreStore.getState().guidedFocus?.kind === 'region') setFilter('region', null)
+    useExploreStore.getState().closeGuided()
+  }
   // A qualification picked in the card is searched as one chosen from the library is.
   const chooseQualification = (code: string, name: string) => {
     const found = catalog.data?.find((item) => item.code === code)
     const { setDraft, setSearch } = useExploreStore.getState()
     setDraft(found?.name ?? name)
-    setSearch({
-      query: en.library.exploreGoal(found?.name ?? name),
-      chosen: true,
-      result: {
-        profile: { intent: 'training_recommendation' },
-        matches: [
-          {
-            qualification: {
-              code,
-              name: found?.name ?? name,
-              sector: found?.sector ?? '',
-              provenance: found?.provenance,
-            },
-            score: 100,
-            reason: copy.results.chosen,
-          },
-        ],
-      },
-    })
+    setSearch(
+      chosenSearch(
+        {
+          code,
+          name: found?.name ?? name,
+          sector: found?.sector ?? '',
+          provenance: found?.provenance,
+        },
+        en.library.exploreGoal(found?.name ?? name),
+        copy.results.chosen,
+      ),
+    )
     setMotion(null)
     setView('all')
     setCollapsed(false)
@@ -582,12 +603,138 @@ export default function ExplorePage() {
       />
     )
 
+  // The docked chat's bottom margin, in px, so the map can keep clear of it; and the tray's one line.
+  const dockBottom = tabletUp ? Math.round(window.innerHeight * DOCK_MARGIN) : 12 + 56
+  const regionName =
+    explore.regions.find((region) => region.code === explore.homeRegion)?.name ?? null
+  const placeName = reference
+    ? reference.mine
+      ? (regionName ?? copy.dock.here)
+      : reference.label
+    : null
+  const dockLine = selected
+    ? copy.dock.center(
+        selected.name,
+        selected.distanceKm === null ? null : roundKm(selected.distanceKm),
+      )
+    : search
+      ? copy.dock.results(search.query)
+      : placeName
+        ? copy.dock.around(placeName)
+        : copy.dock.aroundAnywhere
+
+  // The panel's body: in the classic panel, and in the guided layout's tray.
+  const panelBody = (
+    <>
+      {!search && view !== 'demand' && !panelCenter && (
+        <p className="m-0 text-13 leading-[1.5] text-muted">{copy.search.hint}</p>
+      )}
+      {config?.center_data === 'sample' && (
+        <p
+          role="note"
+          className="m-0 flex items-start gap-2 rounded-10 bg-warn-bg px-3 py-2 text-13 leading-[1.5] font-semibold text-warn-ink"
+        >
+          <Icon name="info" className="mt-0.5 flex-none" />
+          {copy.sampleCenters}
+        </p>
+      )}
+      {!panelCenter && !analysisOpen && <TspProfilePanel explore={explore} />}
+      {explore.failed && (
+        <div className="rounded-12 bg-warn-bg p-3 text-14 text-warn-ink">
+          <p role="alert" className="mt-0">
+            {en.training.loadFailed}
+          </p>
+          <Button
+            className={button({ variant: 'secondary', height: 36 })}
+            onPress={explore.retry}
+            isPending={explore.retrying}
+          >
+            <Icon name="refresh" />
+            {en.training.retryLoad}
+          </Button>
+        </div>
+      )}
+      {/* Keyed, so each move between the list and a center plays its slide again. */}
+      <div
+        key={panelCenter ? `center-${panelCenter.id}` : analysisOpen ? 'analysis' : 'list'}
+        className={cx(
+          (panelCenter || analysisOpen) &&
+            motion === 'forward' &&
+            'motion-safe:animate-enter-forward',
+          !panelCenter && !analysisOpen && motion === 'back' && 'motion-safe:animate-enter-back',
+        )}
+      >
+        {analysisOpen ? (
+          <OutlookAnalysis explore={explore} view={view} onView={setView} onBack={back} />
+        ) : panelCenter && list ? (
+          // On a phone the preview opens in the sheet.
+          <CenterPreview
+            center={panelCenter}
+            code={selectedCode}
+            codes={codes}
+            canRoute={canRoute}
+            routeFrom={route ? origin : null}
+            config={config}
+            onClose={back}
+            onRoute={() => store().showRoute(panelCenter.id)}
+            onHideRoute={() => store().showRoute(null)}
+          />
+        ) : panelCenter ? (
+          <CenterCard
+            center={panelCenter}
+            code={selectedCode}
+            codes={codes}
+            canRoute={canRoute}
+            routeFrom={route ? origin : null}
+            config={config}
+            onBack={back}
+            onRoute={() => store().showRoute(panelCenter.id)}
+            onHideRoute={() => store().showRoute(null)}
+          />
+        ) : explore.centerResultsUnavailable && view !== 'demand' ? null : search && list ? (
+          // The classic panel: one list, Training, Assessment, Both and Work (the UI/UX team's layout).
+          <SkillResults
+            explore={explore}
+            view={view}
+            onSelect={(id, code) => select(id, { onMap: true, code })}
+            onArea={(code) => {
+              useDemandStore.getState().setRegion(code)
+              changeView('demand')
+            }}
+          />
+        ) : search ? (
+          <ResultsPanel
+            explore={explore}
+            view={view}
+            onView={setView}
+            onSelect={(id, code) => select(id, { onMap: true, code })}
+            onRegion={(code) => {
+              setFilter('region', code)
+              if (guided) setDockMode('docked')
+            }}
+            onGuidedBack={guidedBack}
+          />
+        ) : (
+          <NearbyPanel
+            explore={explore}
+            view={view}
+            onSelect={(id) => select(id, { onMap: true })}
+          />
+        )}
+      </div>
+    </>
+  )
+
   return (
     // The window, edge to edge. Its own stacking context: what floats here is lifted over the map, not over the
     // page's dialogs.
     <div
       className="relative isolate h-dvh w-full overflow-hidden bg-map-water"
       data-route-intro={intro ?? undefined}
+      data-plain-controls={guided || undefined}
+      data-legend-top={guided || undefined}
+      // The classic layout keeps the map's own buttons in the bottom right corner.
+      data-controls-bottom={!guided || undefined}
     >
       <PageHeading className="sr-only">{en.pages.explore.heading}</PageHeading>
       {/* A learner whose TSP profile gives a home area isn't asked: it is the search location (US-0004). */}
@@ -608,15 +755,33 @@ export default function ExplorePage() {
         // And from the left, the open panel: 12px + 360px + 16px. Pins and the camera keep clear of all three.
         style={
           {
-            '--map-overlay-bottom': `${bottomReach}px`,
-            '--map-overlay-top': `${topReach}px`,
-            '--map-status-top': `${tabletUp ? 70 : topReach + 12}px`,
-            '--map-overlay-inset': tabletUp && !collapsed ? '388px' : '0px',
-            // The open "Around you" card beside the map's buttons: 70px + its 300px.
-            '--map-overlay-right': aroundFloats && aroundOpen ? '370px' : '0px',
-            // From a tablet up the account button takes the top of the map's button column (on a phone it sits in
-            // the search bar instead), then the Filters button: the rest move down under them.
-            '--map-controls-top': `${(tabletUp ? ACCOUNT_ROOM : 0) + (showFilters ? FILTERS_ROOM : 0)}px`,
+            ...(guided
+              ? {
+                  // The docked chat along the bottom; nothing on the left, the top or the right but the buttons.
+                  '--map-overlay-bottom': `${dockBottom + dockHeight}px`,
+                  '--map-overlay-top': '0px',
+                  '--map-status-top': '70px',
+                  '--map-overlay-inset': sidePanel ? '388px' : '0px',
+                  '--map-overlay-right': '0px',
+                  // The account button, Filters, and (from a tablet up) the view toggles, then the map's own.
+                  '--map-controls-top': `${ACCOUNT_ROOM + (showFilters ? FILTERS_ROOM : 0) + (tabletUp ? VIEWS_ROOM : 0)}px`,
+                }
+              : {
+                  '--map-overlay-bottom': `${bottomReach}px`,
+                  '--map-overlay-top': `${topReach}px`,
+                  '--map-status-top': `${tabletUp ? 70 : topReach + 12}px`,
+                  // With a center's preview beside it: 12px + 360px + 12px + 380px + 16px.
+                  '--map-overlay-inset': previewFloats
+                    ? '780px'
+                    : tabletUp && !collapsed
+                      ? '388px'
+                      : '0px',
+                  // The open "Around you" card beside the map's buttons: 70px + its 300px.
+                  '--map-overlay-right': aroundFloats && aroundOpen ? '370px' : '0px',
+                  // From a tablet up the account button takes the top of the map's button column (on a phone it
+                  // sits in the search bar instead), then the Filters button: the rest move down under them.
+                  '--map-controls-top': `${(tabletUp ? ACCOUNT_ROOM : 0) + (showFilters ? FILTERS_ROOM : 0)}px`,
+                }),
           } as CSSProperties
         }
       >
@@ -666,6 +831,7 @@ export default function ExplorePage() {
               }}
               onToggleSaved={toggleSaved}
               onLocate={() => store().locate()}
+              placeRegion={view === 'demand' ? null : regionFilter}
               demandFocus={
                 view === 'demand' && demandFocus?.regionCode === explore.demandRegion
                   ? demandFocus
@@ -680,27 +846,33 @@ export default function ExplorePage() {
       {/* Along the bottom, beside the open panel: the qualification in focus and its verdict for the learner's area,
           in one line, centered over the map and only as wide as it needs. Its button opens the full analysis in the
           panel. On a phone the results sheet takes its place while it's open. */}
-      <OutlookBrief
-        ref={briefRef}
-        explore={explore}
-        analysisOpen={analysisOpen}
-        onAnalysis={toggleAnalysis}
-        className={cx(
-          'intro-piece absolute right-3 bottom-3 left-3 [--intro-order:5] md:mx-auto md:w-fit',
-          !collapsed && 'max-md:hidden md:left-[388px]',
-        )}
-      />
+      {/* The skills list has its own Work section instead. */}
+      {!guided && !list && (
+        <OutlookBrief
+          ref={briefRef}
+          explore={explore}
+          analysisOpen={analysisOpen}
+          onAnalysis={toggleAnalysis}
+          className={cx(
+            'intro-piece absolute right-3 bottom-3 left-3 [--intro-order:5] md:mx-auto md:w-fit',
+            !collapsed && 'max-md:hidden md:left-[388px]',
+          )}
+        />
+      )}
 
-      <Chips
-        ref={chipsRef}
-        view={view}
-        onView={changeView}
-        className="intro-piece absolute top-3 right-[70px] left-[384px] z-[1000] hidden flex-wrap gap-3 [--intro-order:1] md:flex"
-      />
+      {!guided && (
+        <Chips
+          ref={chipsRef}
+          view={view}
+          onView={changeView}
+          // Beside the panel, or beside the center preview while it's open.
+          className={`intro-piece absolute top-3 right-[70px] z-[1000] hidden flex-wrap gap-3 [--intro-order:1] md:flex ${previewFloats ? 'left-[780px]' : 'left-[384px]'}`}
+        />
+      )}
 
       {/* The learner's icon and account menu, or Sign in, at the top of the map's button column (the chips and
           the status banner stop 70px from the right, clear of it). On a phone it is in the search bar. */}
-      {tabletUp && (
+      {(tabletUp || guided) && (
         <MapAccount
           placement="map"
           className="intro-piece absolute top-3.5 right-3.5 z-[1000] [--intro-order:2]"
@@ -730,210 +902,251 @@ export default function ExplorePage() {
             onScholarship: (on) => setFilter('scholarship', on ? '1' : null),
             onClear: clearFilters,
           }}
-        />
+        >
+          {guided && !tabletUp && <ViewToggles view={view} onView={changeView} vertical={false} />}
+        </MapFilters>
+      )}
+      {guided && tabletUp && (
+        <div
+          className="intro-piece absolute right-3.5 z-[1000] [--intro-order:3]"
+          style={{ top: 14 + ACCOUNT_ROOM + (showFilters ? FILTERS_ROOM : 0) }}
+        >
+          <ViewToggles view={view} onView={changeView} />
+        </div>
       )}
 
-      {aroundFloats && aroundCard('float')}
+      {aroundFloats && !guided && aroundCard('float')}
 
-      <section
-        aria-label={copy.search.label}
-        className={cx(
-          // On a phone, a frame over the whole map that takes no presses itself: the search bar at its top, and the
-          // results in a sheet at its bottom.
-          // Not an intro piece itself: the search bar stays put while a route draws, and only what is under it folds away.
-          'pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-[1000] flex flex-col',
-          // From a tablet up, one card at the top left. Folded, a slim search bar; open, the search row with the
-          // results under it. Only the body below the row scrolls.
-          'md:pointer-events-auto md:top-3 md:right-auto md:bottom-auto md:left-3 md:max-h-[calc(100%-1.5rem)] md:w-[360px] md:overflow-hidden md:rounded-12 md:border md:border-border md:bg-surface md:shadow-[0_8px_28px_-6px_rgb(var(--track-shadow-rgb)/0.22)]',
-          // Open, it runs the map's height. The height grows and shrinks with the body below (a min-height, since a
-          // height can't move to or from auto).
-          'motion-reduce:transition-none md:transition-[min-height] md:duration-300 md:ease-out',
-          folded ? 'md:min-h-0' : 'md:min-h-[calc(100%-1.5rem)]',
-        )}
-      >
-        <div ref={headerRef} className="min-w-0 shrink-0">
-          <SearchBox
-            regionCode={nearestRegion(reference, explore.regions)?.code ?? null}
-            inputRef={input}
-            autoRun={runSearch}
-            menuOpen={menuOpen}
-            menuRef={menuButton}
-            onMenu={() => useSidebarStore.getState().openMenu(menuButton.current)}
-            account={!tabletUp && <MapAccount placement="bar" />}
-            onOpen={() => setCollapsed(false)}
-            onSearched={() => {
-              setMotion(null)
-              setView('all')
-              setCollapsed(false)
-            }}
-          />
-          {!selected && !analysisOpen && (
-            <QualificationChips
-              explore={explore}
-              className="intro-piece mx-3 mt-2 rounded-12 max-md:bg-surface max-md:p-2 max-md:shadow-[0_6px_16px_-4px_rgb(var(--track-shadow-rgb)/0.24)] md:mt-0 md:mb-2"
-            />
+      {guided ? (
+        <>
+          {/* The sidebar's burger, alone at the top left. */}
+          <Button
+            ref={menuButton}
+            aria-label={en.nav.menu}
+            aria-haspopup="dialog"
+            aria-expanded={menuOpen}
+            onPress={() => useSidebarStore.getState().openMenu(menuButton.current)}
+            className={cx(plainIcon, 'absolute top-3.5 left-3.5 z-[1000] shadow-none')}
+          >
+            <Icon name="menu" size="1.1rem" />
+          </Button>
+          {sidePanel && (
+            <aside
+              aria-label={copy.search.label}
+              className="absolute top-16 bottom-3 left-3 z-[996] flex w-[360px] flex-col overflow-hidden rounded-12 border border-border bg-page shadow-[0_8px_28px_-6px_rgb(var(--track-shadow-rgb)/0.22)] motion-safe:animate-enter-forward"
+            >
+              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+                <div className="flex flex-col gap-3 p-3">{panelBody}</div>
+              </div>
+            </aside>
           )}
-          <Chips
-            view={view}
-            onView={changeView}
-            className="intro-piece mx-3 mt-2 grid grid-cols-3 gap-1.5 md:hidden"
+          <ChatDock
+            mode={dockMode}
+            onMode={setDockMode}
+            phone={!tabletUp}
+            onHeight={setDockHeight}
+            className={cx(
+              'absolute mx-auto w-[calc(100%-24px)]',
+              // Beside the left panel while it's open, centered over the rest of the map.
+              sidePanel
+                ? 'right-0 left-[372px] md:w-[min(720px,calc(100%-372px-48px))]'
+                : 'inset-x-0 md:w-[min(720px,calc(100%-144px))]',
+            )}
+            style={{
+              bottom: tabletUp
+                ? `${dockBottom}px`
+                : // Above the Help button in the window's bottom corner (52px, and a 4px gap).
+                  'calc(max(12px, env(safe-area-inset-bottom) + 12px) + 56px + var(--dock-keyboard, 0px))',
+            }}
+            line={<span className="min-w-0 truncate">{dockLine}</span>}
+            tray={
+              <div className="flex flex-col gap-3 pt-1">
+                {!search && aroundCard('sheet')}
+                {!sidePanel && panelBody}
+              </div>
+            }
+            composer={
+              <SearchBox
+                variant="chat"
+                regionCode={nearestRegion(reference, explore.regions)?.code ?? null}
+                inputRef={input}
+                autoRun={runSearch}
+                menuOpen={menuOpen}
+                menuRef={menuButton}
+                onMenu={() => useSidebarStore.getState().openMenu(menuButton.current)}
+                onOpen={() => setDockMode('focused')}
+                onSearched={() => {
+                  setMotion(null)
+                  setView('all')
+                  setDockMode('focused')
+                }}
+              />
+            }
           />
-        </div>
-        {/* The body slides open and shut: its one row grows from 0fr to 1fr, so it animates to its own height. On a
-            phone it is the sheet at the bottom of the screen. */}
-        <div
-          id={bodyId}
-          ref={sheetRef}
-          inert={folded}
-          onTransitionEnd={(event) => {
-            if (event.target === event.currentTarget && !collapsed) setOpened(true)
-          }}
+        </>
+      ) : (
+        <section
+          aria-label={copy.search.label}
           className={cx(
-            'intro-piece pointer-events-auto mt-auto grid min-h-0 transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none md:mt-0 md:flex-1',
-            'max-md:rounded-t-16 max-md:bg-surface max-md:shadow-[0_-6px_20px_rgb(var(--track-shadow-rgb)/0.18)]',
-            folded ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100',
+            // On a phone, a frame over the whole map that takes no presses itself: the search bar at its top, and the
+            // results in a sheet at its bottom.
+            // Not an intro piece itself: the search bar stays put while a route draws, and only what is under it folds away.
+            'pointer-events-none absolute top-0 right-0 bottom-0 left-0 z-[1000] flex flex-col',
+            // From a tablet up, one card at the top left. Folded, a slim search bar; open, the search row with the
+            // results under it. Only the body below the row scrolls.
+            'md:pointer-events-auto md:top-3 md:right-auto md:bottom-auto md:left-3 md:max-h-[calc(100%-1.5rem)] md:w-[360px] md:overflow-hidden md:rounded-12 md:border md:border-border md:bg-surface md:shadow-[0_8px_28px_-6px_rgb(var(--track-shadow-rgb)/0.22)]',
+            // Open, it runs the map's height. The height grows and shrinks with the body below (a min-height, since a
+            // height can't move to or from auto).
+            'motion-reduce:transition-none md:transition-[min-height] md:duration-300 md:ease-out',
+            folded ? 'md:min-h-0' : 'md:min-h-[calc(100%-1.5rem)]',
           )}
         >
-          {/* No padding on the clipped row itself: it would stay showing when the row is 0 tall. A phone's sheet
+          <div ref={headerRef} className="min-w-0 shrink-0">
+            <SearchBox
+              regionCode={nearestRegion(reference, explore.regions)?.code ?? null}
+              inputRef={input}
+              autoRun={runSearch}
+              menuOpen={menuOpen}
+              menuRef={menuButton}
+              onMenu={() => useSidebarStore.getState().openMenu(menuButton.current)}
+              account={!tabletUp && <MapAccount placement="bar" />}
+              // The skills list keeps the distance under Filters only.
+              reach={!list}
+              onOpen={() => setCollapsed(false)}
+              onSearched={() => {
+                setMotion(null)
+                setView('all')
+                setCollapsed(false)
+              }}
+            />
+            {/* After a search: the skills it was read as, then All | Assess | Train | Demand. */}
+            {list && search && !panelCenter && !analysisOpen && !folded && (
+              <div className="intro-piece mx-3 mt-2 flex flex-col gap-2.5 rounded-12 max-md:bg-surface max-md:p-2 max-md:shadow-[0_6px_16px_-4px_rgb(var(--track-shadow-rgb)/0.24)] md:mt-0 md:border-b md:border-rule md:pb-3">
+                <SkillChips explore={explore} />
+                <ViewPills view={view} onView={changeView} />
+              </div>
+            )}
+            {!list && !selected && !analysisOpen && guidedFocus && (
+              <QualificationChips
+                explore={explore}
+                className="intro-piece mx-3 mt-2 rounded-12 max-md:bg-surface max-md:p-2 max-md:shadow-[0_6px_16px_-4px_rgb(var(--track-shadow-rgb)/0.24)] md:mt-0 md:mb-2"
+              />
+            )}
+            {!(list && search) && (
+              <Chips
+                view={view}
+                onView={changeView}
+                className="intro-piece mx-3 mt-2 grid grid-cols-3 gap-1.5 md:hidden"
+              />
+            )}
+          </div>
+          {/* The body slides open and shut: its one row grows from 0fr to 1fr, so it animates to its own height. On a
+            phone it is the sheet at the bottom of the screen. */}
+          <div
+            id={bodyId}
+            ref={sheetRef}
+            inert={folded}
+            onTransitionEnd={(event) => {
+              if (event.target === event.currentTarget && !collapsed) setOpened(true)
+            }}
+            className={cx(
+              'intro-piece pointer-events-auto mt-auto grid min-h-0 transition-[grid-template-rows,opacity] duration-300 ease-out motion-reduce:transition-none md:mt-0 md:flex-1',
+              'max-md:rounded-t-16 max-md:bg-surface max-md:shadow-[0_-6px_20px_rgb(var(--track-shadow-rgb)/0.18)]',
+              folded ? 'grid-rows-[0fr] opacity-0' : 'grid-rows-[1fr] opacity-100',
+            )}
+          >
+            {/* No padding on the clipped row itself: it would stay showing when the row is 0 tall. A phone's sheet
               stops at about half the screen, so the map stays in sight above it. Relative, so the visually hidden
               inputs of radios and checkboxes in it (absolutely placed) scroll with it: placed against the page
               instead, they stay put while the sheet scrolls, and focusing one by a press scrolls the clipped page
               itself to reach it, pushing everything up. */}
-          <div
-            ref={scroller}
-            className={cx(
-              'relative min-h-0 overflow-hidden max-md:max-h-[52dvh]',
-              scrollable && 'overflow-y-auto',
-            )}
-          >
-            <div className="flex min-h-full flex-col gap-3 border-rule bg-page p-3 max-md:pt-2 md:border-t">
-              <button
-                type="button"
-                aria-label={copy.panel.closeSheet}
-                aria-controls={bodyId}
-                aria-expanded={!collapsed}
-                className="sticky top-0 z-10 -mx-3 -mt-2 -mb-2 grid h-11 flex-none cursor-grab touch-none place-items-center rounded-t-16 border-0 bg-page focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-blue active:cursor-grabbing md:hidden"
-                onPointerDown={(event) => {
-                  if (!event.isPrimary || event.button !== 0) return
-                  sheetDrag.current = { id: event.pointerId, x: event.clientX, y: event.clientY }
-                  event.currentTarget.setPointerCapture(event.pointerId)
-                }}
-                onPointerUp={(event) => {
-                  const start = sheetDrag.current
-                  if (!start || start.id !== event.pointerId) return
-                  sheetDrag.current = null
-                  const dx = Math.abs(event.clientX - start.x)
-                  const dy = event.clientY - start.y
-                  const tap = dx <= SHEET_TAP_TOLERANCE && Math.abs(dy) <= SHEET_TAP_TOLERANCE
-                  if (tap || (dy >= SHEET_DISMISS_DISTANCE && dy > dx)) {
-                    fold(event.pointerType !== 'touch')
-                  }
-                }}
-                onLostPointerCapture={() => {
-                  sheetDrag.current = null
-                }}
-                onClick={(event) => {
-                  if (event.detail === 0) fold()
-                }}
-              >
-                <span aria-hidden="true" className="h-1 w-9 rounded-full bg-dash" />
-              </button>
-              {/* On a phone the card is the sheet's first section, out of the way while a center is open. */}
-              {!tabletUp && !selected && !analysisOpen && aroundCard('sheet')}
-              {!search && view !== 'demand' && !selected && (
-                <p className="m-0 text-13 leading-[1.5] text-muted">{copy.search.hint}</p>
+            <div
+              ref={scroller}
+              className={cx(
+                'relative min-h-0 overflow-hidden max-md:max-h-[52dvh]',
+                scrollable && 'overflow-y-auto',
               )}
-              {config?.center_data === 'sample' && (
-                <p
-                  role="note"
-                  className="m-0 flex items-start gap-2 rounded-10 bg-warn-bg px-3 py-2 text-13 leading-[1.5] font-semibold text-warn-ink"
+            >
+              <div className="flex min-h-full flex-col gap-3 border-rule bg-page p-3 max-md:pt-2 md:border-t">
+                <button
+                  type="button"
+                  aria-label={copy.panel.closeSheet}
+                  aria-controls={bodyId}
+                  aria-expanded={!collapsed}
+                  className="sticky top-0 z-10 -mx-3 -mt-2 -mb-2 grid h-11 flex-none cursor-grab touch-none place-items-center rounded-t-16 border-0 bg-page focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-blue active:cursor-grabbing md:hidden"
+                  onPointerDown={(event) => {
+                    if (!event.isPrimary || event.button !== 0) return
+                    sheetDrag.current = { id: event.pointerId, x: event.clientX, y: event.clientY }
+                    event.currentTarget.setPointerCapture(event.pointerId)
+                  }}
+                  onPointerUp={(event) => {
+                    const start = sheetDrag.current
+                    if (!start || start.id !== event.pointerId) return
+                    sheetDrag.current = null
+                    const dx = Math.abs(event.clientX - start.x)
+                    const dy = event.clientY - start.y
+                    const tap = dx <= SHEET_TAP_TOLERANCE && Math.abs(dy) <= SHEET_TAP_TOLERANCE
+                    if (tap || (dy >= SHEET_DISMISS_DISTANCE && dy > dx)) {
+                      fold(event.pointerType !== 'touch')
+                    }
+                  }}
+                  onLostPointerCapture={() => {
+                    sheetDrag.current = null
+                  }}
+                  onClick={(event) => {
+                    if (event.detail === 0) fold()
+                  }}
                 >
-                  <Icon name="info" className="mt-0.5 flex-none" />
-                  {copy.sampleCenters}
-                </p>
-              )}
-              {!selected && !analysisOpen && <TspProfilePanel explore={explore} />}
-              {explore.failed && (
-                <div className="rounded-12 bg-warn-bg p-3 text-14 text-warn-ink">
-                  <p role="alert" className="mt-0">
-                    {en.training.loadFailed}
-                  </p>
-                  <Button
-                    className={button({ variant: 'secondary', height: 36 })}
-                    onPress={explore.retry}
-                    isPending={explore.retrying}
-                  >
-                    <Icon name="refresh" />
-                    {en.training.retryLoad}
-                  </Button>
-                </div>
-              )}
-              {/* Keyed, so each move between the list and a center plays its slide again. */}
-              <div
-                key={selected ? `center-${selected.id}` : analysisOpen ? 'analysis' : 'list'}
-                className={cx(
-                  (selected || analysisOpen) &&
-                    motion === 'forward' &&
-                    'motion-safe:animate-enter-forward',
-                  !selected &&
-                    !analysisOpen &&
-                    motion === 'back' &&
-                    'motion-safe:animate-enter-back',
-                )}
-              >
-                {analysisOpen ? (
-                  <OutlookAnalysis explore={explore} view={view} onView={setView} onBack={back} />
-                ) : selected ? (
-                  <CenterCard
-                    center={selected}
-                    code={selectedCode}
-                    codes={codes}
-                    canRoute={canRoute}
-                    routeFrom={route ? origin : null}
-                    config={config}
-                    onBack={back}
-                    onRoute={() => store().showRoute(selected.id)}
-                    onHideRoute={() => store().showRoute(null)}
-                  />
-                ) : explore.centerResultsUnavailable && view !== 'demand' ? null : search ? (
-                  <ResultsPanel
-                    explore={explore}
-                    view={view}
-                    onView={setView}
-                    onSelect={(id, code) => select(id, { onMap: true, code })}
-                  />
-                ) : (
-                  <NearbyPanel
-                    explore={explore}
-                    view={view}
-                    onSelect={(id) => select(id, { onMap: true })}
-                  />
-                )}
-              </div>
-              <Button
-                aria-controls={bodyId}
-                aria-expanded={!collapsed}
-                onPress={() => fold()}
-                className={cx(
-                  button({ variant: 'tertiary', height: 38, text: 14 }),
-                  'mx-auto mt-auto',
-                )}
-              >
-                <Icon name="chevron" className="rotate-180" />
-                {copy.panel.collapse}
-              </Button>
-              {/* The page has no footer under the map, so its two lines are here; the sidebar links to the policy
+                  <span aria-hidden="true" className="h-1 w-9 rounded-full bg-dash" />
+                </button>
+                {/* On a phone the card is the sheet's first section, out of the way while a center is open. */}
+                {!tabletUp && !selected && !analysisOpen && aroundCard('sheet')}
+                {panelBody}
+                <Button
+                  aria-controls={bodyId}
+                  aria-expanded={!collapsed}
+                  onPress={() => fold()}
+                  className={cx(
+                    button({ variant: 'tertiary', height: 38, text: 14 }),
+                    'mx-auto mt-auto',
+                  )}
+                >
+                  <Icon name="chevron" className="rotate-180" />
+                  {copy.panel.collapse}
+                </Button>
+                {/* The page has no footer under the map, so its two lines are here; the sidebar links to the policy
                   too, in reach while this panel is folded. */}
-              <p className="m-0 text-center text-12 leading-[1.5] text-muted">
-                {en.footer.copyright}{' '}
-                <NavLink to={paths.privacy} className="font-semibold text-blue underline-offset-4">
-                  {en.privacy.link}
-                </NavLink>
-              </p>
+                <p className="m-0 text-center text-12 leading-[1.5] text-muted">
+                  {en.footer.copyright}{' '}
+                  <NavLink
+                    to={paths.privacy}
+                    className="font-semibold text-blue underline-offset-4"
+                  >
+                    {en.privacy.link}
+                  </NavLink>
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
+
+      {/* The skills list's center preview, beside the panel from a tablet up. */}
+      {previewFloats && selected && (
+        <CenterPreview
+          key={selected.id}
+          center={selected}
+          code={selectedCode}
+          codes={codes}
+          canRoute={canRoute}
+          routeFrom={route ? origin : null}
+          config={config}
+          onClose={back}
+          onRoute={() => store().showRoute(selected.id)}
+          onHideRoute={() => store().showRoute(null)}
+          className="intro-piece absolute top-3 bottom-3 left-[384px] z-[1000] w-[380px] shadow-[0_8px_28px_-6px_rgb(var(--track-shadow-rgb)/0.22)] [--intro-order:2] motion-safe:animate-enter-forward"
+        />
+      )}
     </div>
   )
 }
@@ -949,6 +1162,8 @@ function SearchBox({
   account,
   onOpen,
   onSearched,
+  variant = 'panel',
+  reach = true,
 }: {
   regionCode: string | null
   inputRef: RefObject<HTMLInputElement | null>
@@ -963,7 +1178,12 @@ function SearchBox({
   /** Pressing in the box, or typing, opens the rest of the panel. Focus alone doesn't: Show less hands it back. */
   onOpen: () => void
   onSearched: () => void
+  /** panel: the classic panel's first row. chat: the guided layout's composer (no burger; distance and send below). */
+  variant?: 'panel' | 'chat'
+  /** The distance pill under the box (panel variant). */
+  reach?: boolean
 }) {
+  const chat = variant === 'chat'
   const en = useCopy()
   const copy = en.explore
   const draft = useExploreStore((state) => state.draft)
@@ -989,8 +1209,7 @@ function SearchBox({
       const result = await matchPathway(query, regionCode, controller.signal)
       if (controller.signal.aborted) return
       setSearch({ query, result, feedbackScope: crypto.randomUUID() })
-      // Next: "How far can you go?", before the results.
-      useExploreStore.getState().changeRange()
+      // Next: the guided cards; the distance is the search bar's pill, not a step of its own.
       onSearched()
     } catch (failure) {
       if (!controller.signal.aborted) setError(failureMessage(failure))
@@ -1049,45 +1268,62 @@ function SearchBox({
       onSubmit={run}
       className={cx(
         'pointer-events-auto flex flex-none flex-col',
-        // On a phone the bar is a card of its own across the top; from a tablet up it is the panel's first row.
-        'max-md:mx-3 max-md:mt-3 max-md:rounded-12 max-md:border max-md:border-border max-md:bg-surface max-md:shadow-[0_4px_16px_rgb(var(--track-shadow-rgb)/0.14)]',
+        // On a phone the bar is a card of its own across the top; from a tablet up it is the panel's first row. In
+        // the chat dock, the dock draws the card.
+        !chat &&
+          'max-md:mx-3 max-md:mt-3 max-md:rounded-12 max-md:border max-md:border-border max-md:bg-surface max-md:shadow-[0_4px_16px_rgb(var(--track-shadow-rgb)/0.14)]',
       )}
     >
       {/* The burger, then one bordered field: its leading magnifier submits, the clear button sits at its end. */}
-      <div className="flex min-h-11 items-center gap-1.5 px-1.5 py-1.5 md:px-3 md:py-3">
-        <Button
-          ref={menuRef}
-          data-tour="mobile-menu"
-          aria-label={en.nav.menu}
-          aria-haspopup="dialog"
-          aria-expanded={menuOpen}
-          onPress={onMenu}
-          className={iconButton}
-        >
-          <span
-            className="grid place-items-center transition-[rotate] duration-500 ease-in-out motion-reduce:transition-none"
-            style={{ rotate: menuOpen ? '180deg' : '0deg' }}
-          >
-            <Icon name="menu" size="1.15rem" />
-          </span>
-        </Button>
-        {/* One bordered field. The submit button sits outside the SearchField, whose own buttons all clear it. */}
-        <div className="flex h-11 min-w-0 flex-1 items-center gap-0.5 rounded-12 border border-border bg-page pr-1 pl-1 transition-[border-color,background-color,box-shadow] duration-150 has-[[data-invalid]]:border-warn-ink has-[[data-query]:focus]:border-blue has-[[data-query]:focus]:bg-surface has-[[data-query]:focus]:shadow-[0_0_0_3px_rgb(23_92_211/0.14)]">
+      <div
+        className={cx(
+          'flex min-h-11 items-center gap-1.5',
+          chat ? 'px-4 pt-3' : 'px-1.5 py-1.5 md:px-3 md:py-3',
+        )}
+      >
+        {!chat && (
           <Button
-            type="submit"
-            aria-label={copy.search.submit}
-            isPending={pending}
-            className="grid size-9 flex-none cursor-pointer place-items-center rounded-10 border-0 bg-transparent text-muted data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:text-blue data-pending:cursor-progress"
+            ref={menuRef}
+            data-tour="mobile-menu"
+            aria-label={en.nav.menu}
+            aria-haspopup="dialog"
+            aria-expanded={menuOpen}
+            onPress={onMenu}
+            className={iconButton}
           >
-            {pending ? (
-              <span
-                aria-hidden="true"
-                className="size-4 rounded-full border-2 border-blue border-t-transparent motion-safe:animate-spin"
-              />
-            ) : (
-              <Icon name="search" size="1.1rem" />
-            )}
+            <span
+              className="grid place-items-center transition-[rotate] duration-500 ease-in-out motion-reduce:transition-none"
+              style={{ rotate: menuOpen ? '180deg' : '0deg' }}
+            >
+              <Icon name="menu" size="1.15rem" />
+            </span>
           </Button>
+        )}
+        {/* One bordered field. The submit button sits outside the SearchField, whose own buttons all clear it. */}
+        <div
+          className={cx(
+            'flex h-11 min-w-0 flex-1 items-center gap-0.5',
+            !chat &&
+              'rounded-12 border border-border bg-page pr-1 pl-1 transition-[border-color,background-color,box-shadow] duration-150 has-[[data-invalid]]:border-warn-ink has-[[data-query]:focus]:border-blue has-[[data-query]:focus]:bg-surface has-[[data-query]:focus]:shadow-[0_0_0_3px_rgb(23_92_211/0.14)]',
+          )}
+        >
+          {!chat && (
+            <Button
+              type="submit"
+              aria-label={copy.search.submit}
+              isPending={pending}
+              className="grid size-9 flex-none cursor-pointer place-items-center rounded-10 border-0 bg-transparent text-muted data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:text-blue data-pending:cursor-progress"
+            >
+              {pending ? (
+                <span
+                  aria-hidden="true"
+                  className="size-4 rounded-full border-2 border-blue border-t-transparent motion-safe:animate-spin"
+                />
+              ) : (
+                <Icon name="search" size="1.1rem" />
+              )}
+            </Button>
+          )}
           <SearchField
             value={draft}
             onChange={(text) => {
@@ -1124,6 +1360,35 @@ function SearchBox({
         </div>
         {account}
       </div>
+      {/* How far the learner can go: the guided cards and the list follow it. In the chat, the send button is
+          beside it. */}
+      {chat ? (
+        <div className="flex items-center justify-end gap-2 px-3 pt-1 pb-3">
+          <ReachPill />
+          <Button
+            type="submit"
+            aria-label={copy.search.submit}
+            isPending={pending}
+            isDisabled={!draft.trim() && !pending}
+            className="grid size-9 flex-none cursor-pointer place-items-center rounded-full border-0 bg-fill text-white transition-opacity data-disabled:cursor-default data-disabled:opacity-40 data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:bg-fill-hover data-pending:cursor-progress"
+          >
+            {pending ? (
+              <span
+                aria-hidden="true"
+                className="size-4 rounded-full border-2 border-white border-t-transparent motion-safe:animate-spin"
+              />
+            ) : (
+              <Icon name="arrowRight" size="1.1rem" className="-rotate-90" />
+            )}
+          </Button>
+        </div>
+      ) : (
+        reach && (
+          <div className="flex px-3 pb-2 md:-mt-1 md:pb-3">
+            <ReachPill />
+          </div>
+        )
+      )}
       {pending ? (
         <p role="status" className="m-0 px-4 pb-2.5 text-13 text-muted">
           {copy.search.searching}

@@ -4,6 +4,7 @@ import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { renderWithAuth } from '../../test/account.tsx'
+import { openCenterList } from '../../test/explore.ts'
 import { server } from '../../test/server.ts'
 import { cebuCenter, cookeryProgram, manilaInstitute, REGIONS } from '../../test/training.ts'
 import type { CenterMapProps } from '../training/CenterMapTypes.ts'
@@ -47,6 +48,7 @@ beforeEach(() => {
       matches: [{ qualification: cookeryProgram.qualification, score: 90, reason: 'Matched cook' }],
     },
   })
+  openCenterList()
   useDemandStore.setState({
     region: undefined,
     scope: undefined,
@@ -97,36 +99,44 @@ const pinNames = () =>
     .queryAllByRole('listitem')
     .map((item) => item.textContent)
 
-describe('Explore: route on click', () => {
-  it('draws the route as soon as a center is opened', async () => {
-    renderPage()
-    const user = userEvent.setup()
+describe('Explore: route on Directions', () => {
+  const openManila = async (user: ReturnType<typeof userEvent.setup>) => {
     await user.click(await screen.findByRole('button', { name: /Manila Welding Institute/ }))
     await screen.findByRole('heading', { name: 'Manila Welding Institute' })
-    expect(useTrainingStore.getState().routeTo).not.toBeNull()
-    expect(screen.getByTestId('map')).toHaveAttribute('data-route', 'on')
-  })
+  }
 
-  it('shows only the routed center on the map', async () => {
+  it('opens a center without drawing a route', async () => {
     renderPage()
     const user = userEvent.setup()
-    const row = await screen.findByRole('button', { name: /Manila Welding Institute/ })
+    await openManila(user)
+    expect(useTrainingStore.getState().routeTo).toBeNull()
+    expect(screen.getByTestId('map')).toHaveAttribute('data-route', 'off')
+  })
+
+  it('draws the route, and shows only the routed center, when Directions is pressed', async () => {
+    renderPage()
+    const user = userEvent.setup()
+    await screen.findByRole('button', { name: /Manila Welding Institute/ })
     expect(pinNames().length).toBeGreaterThan(1)
-    await user.click(row)
-    await screen.findByRole('heading', { name: 'Manila Welding Institute' })
+    await openManila(user)
+    await user.click(screen.getByRole('button', { name: /^Directions$/ }))
+    expect(useTrainingStore.getState().routeTo).not.toBeNull()
+    expect(screen.getByTestId('map')).toHaveAttribute('data-route', 'on')
     expect(pinNames()).toEqual(['Manila Welding Institute'])
   })
 
   it('brings the other centers back when going back or hiding the route', async () => {
     renderPage()
     const user = userEvent.setup()
-    await user.click(await screen.findByRole('button', { name: /Manila Welding Institute/ }))
-    await screen.findByRole('heading', { name: 'Manila Welding Institute' })
+    await openManila(user)
+    await user.click(screen.getByRole('button', { name: /^Directions$/ }))
     await user.click(screen.getByRole('button', { name: /Back to results/ }))
     expect(useTrainingStore.getState().routeTo).toBeNull()
     expect(pinNames().length).toBeGreaterThan(1)
 
-    await user.click(await screen.findByRole('button', { name: /Manila Welding Institute/ }))
+    await openManila(user)
+    expect(useTrainingStore.getState().routeTo).toBeNull()
+    await user.click(screen.getByRole('button', { name: /^Directions$/ }))
     await user.click(await screen.findByRole('button', { name: /Hide route/ }))
     expect(useTrainingStore.getState().routeTo).toBeNull()
     expect(pinNames().length).toBeGreaterThan(1)
@@ -140,9 +150,9 @@ describe('Explore: route on click', () => {
     )
     renderPage()
     const user = userEvent.setup()
-    await user.click(await screen.findByRole('button', { name: /Manila Welding Institute/ }))
-    await screen.findByRole('heading', { name: 'Manila Welding Institute' })
+    await openManila(user)
     expect(useTrainingStore.getState().routeTo).toBeNull()
+    expect(screen.queryByRole('button', { name: /^Directions$/ })).toBeNull()
     expect(pinNames().length).toBeGreaterThan(1)
   })
 })
