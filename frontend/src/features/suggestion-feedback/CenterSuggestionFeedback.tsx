@@ -7,12 +7,14 @@ export function CenterSuggestionFeedback({
   goal,
   scope,
   compact,
+  onCancel,
 }: {
   center: Pick<Center, 'id' | 'kind' | 'name'>
   qualificationCode?: string
   goal?: string | null
   scope?: string
-  compact?: boolean | 'inset'
+  compact?: boolean | 'inset' | 'report'
+  onCancel?: () => void
 }) {
   return (
     <SuggestionFeedback
@@ -23,6 +25,7 @@ export function CenterSuggestionFeedback({
       goal={goal}
       scope={scope}
       compact={compact}
+      onCancel={onCancel}
     />
   )
 }

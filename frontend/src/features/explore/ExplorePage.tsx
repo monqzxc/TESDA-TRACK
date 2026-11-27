@@ -42,6 +42,8 @@ import { LocationPrompt } from './LocationPrompt.tsx'
 import { MapFilters } from './MapFilters.tsx'
 import { OutlookAnalysis, OutlookBrief } from './OutlookBrief.tsx'
 import { QualificationChips } from './QualificationChips.tsx'
+import { SkillChips, SkillResults, ViewPills } from './SkillResults.tsx'
+import { CenterPreview } from './CenterPreview.tsx'
 import { ChatDock, type DockMode } from './ChatDock.tsx'
 import { layoutMode } from './layoutMode.ts'
 import { CenterCard, NearbyPanel, ReachPill, ResultsPanel, TspProfilePanel } from './Panels.tsx'
@@ -293,9 +295,11 @@ export default function ExplorePage() {
   const selectedCode = arrival?.exploreCenter?.code ?? null
   // Which way the panel last moved: a center slides in from the right, and the list comes back from the left.
   const [motion, setMotion] = useState<'forward' | 'back' | null>(null)
-  // The guided chat layout (?layout=guided) or the classic panel, chosen once per visit.
+  // The skills list (default), the guided chat layout (?layout=guided) or the classic panel with the guided cards
+  // (?layout=classic), chosen once per visit.
   const [layout] = useState(() => layoutMode(location.search, import.meta.env.VITE_EXPLORE_LAYOUT))
   const guided = layout === 'guided'
+  const list = layout === 'list'
   const [dockMode, setDockMode] = useState<DockMode>('docked')
   const [dockHeight, setDockHeight] = useState(0)
   const scroller = useRef<HTMLDivElement>(null)
@@ -398,6 +402,10 @@ export default function ExplorePage() {
     ? explore.outlook.data?.snapshot_dates
     : explore.demandMap.data?.snapshot_dates
   const selected = centers.find((center) => center.id === selectedId) ?? null
+  // The skills list from a tablet up: a center opens as a preview beside the list, which stays as it was.
+  const previewFloats = list && tabletUp && selected !== null
+  // What the panel itself shows open: a center's card, unless it floats beside the list.
+  const panelCenter = previewFloats ? null : selected
   // The analysis takes the panel as a center does; a center opened over it comes first, and Back returns to it.
   const analysisOpen = Boolean(arrival?.exploreAnalysis && focusCode && !selected)
   const showFilters = view !== 'demand'
@@ -435,7 +443,7 @@ export default function ExplorePage() {
     { onMap = false, code = null }: { onMap?: boolean; code?: string | null } = {},
   ) => {
     // Leaving the list, keep its place to come back to.
-    if (!selectedId && !analysisOpen) listScroll.current = scroller.current?.scrollTop ?? 0
+    if (!panelCenter && !analysisOpen) listScroll.current = scroller.current?.scrollTop ?? 0
     navigate(`${location.pathname}${location.search}${location.hash}`, {
       state: { ...arrival, exploreCenter: { id, code } },
       // Switching centers keeps one detail entry, so Back returns directly to the results.
@@ -485,9 +493,11 @@ export default function ExplorePage() {
   useLayoutEffect(() => {
     const body = scroller.current
     if (!body) return
+    // A preview beside the list leaves the list where it is.
+    if (previewFloats) return
     if (selectedId || analysisOpen) body.scrollTop = 0
     else body.scrollTop = listScroll.current
-  }, [selectedId, analysisOpen, motion])
+  }, [selectedId, analysisOpen, motion, previewFloats])
 
   // The "Around you" card (section 3 of markdowns/explore-map-first-visit-updates.md): over the map's top right from
   // a tablet up, and at the top of the results sheet on a phone. Not in the demand view, whose panel says the same.
@@ -528,6 +538,9 @@ export default function ExplorePage() {
     changeView('demand')
   }
   const guidedFocus = useExploreStore((state) => state.guidedFocus)
+  // A region card opened in the guided layout: from a tablet up its centers sit in a panel on the left, beside the
+  // docked chat, so the map stays in view (docs/superpowers/specs/2026-11-27-explore-place-focus-design.md).
+  const sidePanel = guided && tabletUp && guidedFocus?.kind === 'region'
   // Back from a card's centers: a region card's filter goes with it.
   const guidedBack = () => {
     if (useExploreStore.getState().guidedFocus?.kind === 'region') setFilter('region', null)
@@ -613,7 +626,7 @@ export default function ExplorePage() {
   // The panel's body: in the classic panel, and in the guided layout's tray.
   const panelBody = (
     <>
-      {!search && view !== 'demand' && !selected && (
+      {!search && view !== 'demand' && !panelCenter && (
         <p className="m-0 text-13 leading-[1.5] text-muted">{copy.search.hint}</p>
       )}
       {config?.center_data === 'sample' && (
@@ -625,7 +638,7 @@ export default function ExplorePage() {
           {copy.sampleCenters}
         </p>
       )}
-      {!selected && !analysisOpen && <TspProfilePanel explore={explore} />}
+      {!panelCenter && !analysisOpen && <TspProfilePanel explore={explore} />}
       {explore.failed && (
         <div className="rounded-12 bg-warn-bg p-3 text-14 text-warn-ink">
           <p role="alert" className="mt-0">
@@ -643,33 +656,62 @@ export default function ExplorePage() {
       )}
       {/* Keyed, so each move between the list and a center plays its slide again. */}
       <div
-        key={selected ? `center-${selected.id}` : analysisOpen ? 'analysis' : 'list'}
+        key={panelCenter ? `center-${panelCenter.id}` : analysisOpen ? 'analysis' : 'list'}
         className={cx(
-          (selected || analysisOpen) && motion === 'forward' && 'motion-safe:animate-enter-forward',
-          !selected && !analysisOpen && motion === 'back' && 'motion-safe:animate-enter-back',
+          (panelCenter || analysisOpen) &&
+            motion === 'forward' &&
+            'motion-safe:animate-enter-forward',
+          !panelCenter && !analysisOpen && motion === 'back' && 'motion-safe:animate-enter-back',
         )}
       >
         {analysisOpen ? (
           <OutlookAnalysis explore={explore} view={view} onView={setView} onBack={back} />
-        ) : selected ? (
+        ) : panelCenter && list ? (
+          // On a phone the preview opens in the sheet.
+          <CenterPreview
+            center={panelCenter}
+            code={selectedCode}
+            codes={codes}
+            canRoute={canRoute}
+            routeFrom={route ? origin : null}
+            config={config}
+            onClose={back}
+            onRoute={() => store().showRoute(panelCenter.id)}
+            onHideRoute={() => store().showRoute(null)}
+          />
+        ) : panelCenter ? (
           <CenterCard
-            center={selected}
+            center={panelCenter}
             code={selectedCode}
             codes={codes}
             canRoute={canRoute}
             routeFrom={route ? origin : null}
             config={config}
             onBack={back}
-            onRoute={() => store().showRoute(selected.id)}
+            onRoute={() => store().showRoute(panelCenter.id)}
             onHideRoute={() => store().showRoute(null)}
           />
-        ) : explore.centerResultsUnavailable && view !== 'demand' ? null : search ? (
+        ) : explore.centerResultsUnavailable && view !== 'demand' ? null : search && list ? (
+          // The classic panel: one list, Training, Assessment, Both and Work (the UI/UX team's layout).
+          <SkillResults
+            explore={explore}
+            view={view}
+            onSelect={(id, code) => select(id, { onMap: true, code })}
+            onArea={(code) => {
+              useDemandStore.getState().setRegion(code)
+              changeView('demand')
+            }}
+          />
+        ) : search ? (
           <ResultsPanel
             explore={explore}
             view={view}
             onView={setView}
             onSelect={(id, code) => select(id, { onMap: true, code })}
-            onRegion={(code) => setFilter('region', code)}
+            onRegion={(code) => {
+              setFilter('region', code)
+              if (guided) setDockMode('docked')
+            }}
             onGuidedBack={guidedBack}
           />
         ) : (
@@ -691,6 +733,8 @@ export default function ExplorePage() {
       data-route-intro={intro ?? undefined}
       data-plain-controls={guided || undefined}
       data-legend-top={guided || undefined}
+      // The classic layout keeps the map's own buttons in the bottom right corner.
+      data-controls-bottom={!guided || undefined}
     >
       <PageHeading className="sr-only">{en.pages.explore.heading}</PageHeading>
       {/* A learner whose TSP profile gives a home area isn't asked: it is the search location (US-0004). */}
@@ -717,7 +761,7 @@ export default function ExplorePage() {
                   '--map-overlay-bottom': `${dockBottom + dockHeight}px`,
                   '--map-overlay-top': '0px',
                   '--map-status-top': '70px',
-                  '--map-overlay-inset': '0px',
+                  '--map-overlay-inset': sidePanel ? '388px' : '0px',
                   '--map-overlay-right': '0px',
                   // The account button, Filters, and (from a tablet up) the view toggles, then the map's own.
                   '--map-controls-top': `${ACCOUNT_ROOM + (showFilters ? FILTERS_ROOM : 0) + (tabletUp ? VIEWS_ROOM : 0)}px`,
@@ -726,7 +770,12 @@ export default function ExplorePage() {
                   '--map-overlay-bottom': `${bottomReach}px`,
                   '--map-overlay-top': `${topReach}px`,
                   '--map-status-top': `${tabletUp ? 70 : topReach + 12}px`,
-                  '--map-overlay-inset': tabletUp && !collapsed ? '388px' : '0px',
+                  // With a center's preview beside it: 12px + 360px + 12px + 380px + 16px.
+                  '--map-overlay-inset': previewFloats
+                    ? '780px'
+                    : tabletUp && !collapsed
+                      ? '388px'
+                      : '0px',
                   // The open "Around you" card beside the map's buttons: 70px + its 300px.
                   '--map-overlay-right': aroundFloats && aroundOpen ? '370px' : '0px',
                   // From a tablet up the account button takes the top of the map's button column (on a phone it
@@ -782,6 +831,7 @@ export default function ExplorePage() {
               }}
               onToggleSaved={toggleSaved}
               onLocate={() => store().locate()}
+              placeRegion={view === 'demand' ? null : regionFilter}
               demandFocus={
                 view === 'demand' && demandFocus?.regionCode === explore.demandRegion
                   ? demandFocus
@@ -796,7 +846,8 @@ export default function ExplorePage() {
       {/* Along the bottom, beside the open panel: the qualification in focus and its verdict for the learner's area,
           in one line, centered over the map and only as wide as it needs. Its button opens the full analysis in the
           panel. On a phone the results sheet takes its place while it's open. */}
-      {!guided && (
+      {/* The skills list has its own Work section instead. */}
+      {!guided && !list && (
         <OutlookBrief
           ref={briefRef}
           explore={explore}
@@ -814,7 +865,8 @@ export default function ExplorePage() {
           ref={chipsRef}
           view={view}
           onView={changeView}
-          className="intro-piece absolute top-3 right-[70px] left-[384px] z-[1000] hidden flex-wrap gap-3 [--intro-order:1] md:flex"
+          // Beside the panel, or beside the center preview while it's open.
+          className={`intro-piece absolute top-3 right-[70px] z-[1000] hidden flex-wrap gap-3 [--intro-order:1] md:flex ${previewFloats ? 'left-[780px]' : 'left-[384px]'}`}
         />
       )}
 
@@ -878,12 +930,28 @@ export default function ExplorePage() {
           >
             <Icon name="menu" size="1.1rem" />
           </Button>
+          {sidePanel && (
+            <aside
+              aria-label={copy.search.label}
+              className="absolute top-16 bottom-3 left-3 z-[996] flex w-[360px] flex-col overflow-hidden rounded-12 border border-border bg-page shadow-[0_8px_28px_-6px_rgb(var(--track-shadow-rgb)/0.22)] motion-safe:animate-enter-forward"
+            >
+              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain">
+                <div className="flex flex-col gap-3 p-3">{panelBody}</div>
+              </div>
+            </aside>
+          )}
           <ChatDock
             mode={dockMode}
             onMode={setDockMode}
             phone={!tabletUp}
             onHeight={setDockHeight}
-            className="absolute inset-x-0 mx-auto w-[calc(100%-24px)] md:w-[min(720px,calc(100%-144px))]"
+            className={cx(
+              'absolute mx-auto w-[calc(100%-24px)]',
+              // Beside the left panel while it's open, centered over the rest of the map.
+              sidePanel
+                ? 'right-0 left-[372px] md:w-[min(720px,calc(100%-372px-48px))]'
+                : 'inset-x-0 md:w-[min(720px,calc(100%-144px))]',
+            )}
             style={{
               bottom: tabletUp
                 ? `${dockBottom}px`
@@ -894,7 +962,7 @@ export default function ExplorePage() {
             tray={
               <div className="flex flex-col gap-3 pt-1">
                 {!search && aroundCard('sheet')}
-                {panelBody}
+                {!sidePanel && panelBody}
               </div>
             }
             composer={
@@ -942,6 +1010,8 @@ export default function ExplorePage() {
               menuRef={menuButton}
               onMenu={() => useSidebarStore.getState().openMenu(menuButton.current)}
               account={!tabletUp && <MapAccount placement="bar" />}
+              // The skills list keeps the distance under Filters only.
+              reach={!list}
               onOpen={() => setCollapsed(false)}
               onSearched={() => {
                 setMotion(null)
@@ -949,17 +1019,26 @@ export default function ExplorePage() {
                 setCollapsed(false)
               }}
             />
-            {!selected && !analysisOpen && guidedFocus && (
+            {/* After a search: the skills it was read as, then All | Assess | Train | Demand. */}
+            {list && search && !panelCenter && !analysisOpen && !folded && (
+              <div className="intro-piece mx-3 mt-2 flex flex-col gap-2.5 rounded-12 max-md:bg-surface max-md:p-2 max-md:shadow-[0_6px_16px_-4px_rgb(var(--track-shadow-rgb)/0.24)] md:mt-0 md:border-b md:border-rule md:pb-3">
+                <SkillChips explore={explore} />
+                <ViewPills view={view} onView={changeView} />
+              </div>
+            )}
+            {!list && !selected && !analysisOpen && guidedFocus && (
               <QualificationChips
                 explore={explore}
                 className="intro-piece mx-3 mt-2 rounded-12 max-md:bg-surface max-md:p-2 max-md:shadow-[0_6px_16px_-4px_rgb(var(--track-shadow-rgb)/0.24)] md:mt-0 md:mb-2"
               />
             )}
-            <Chips
-              view={view}
-              onView={changeView}
-              className="intro-piece mx-3 mt-2 grid grid-cols-3 gap-1.5 md:hidden"
-            />
+            {!(list && search) && (
+              <Chips
+                view={view}
+                onView={changeView}
+                className="intro-piece mx-3 mt-2 grid grid-cols-3 gap-1.5 md:hidden"
+              />
+            )}
           </div>
           {/* The body slides open and shut: its one row grows from 0fr to 1fr, so it animates to its own height. On a
             phone it is the sheet at the bottom of the screen. */}
@@ -1051,6 +1130,23 @@ export default function ExplorePage() {
           </div>
         </section>
       )}
+
+      {/* The skills list's center preview, beside the panel from a tablet up. */}
+      {previewFloats && selected && (
+        <CenterPreview
+          key={selected.id}
+          center={selected}
+          code={selectedCode}
+          codes={codes}
+          canRoute={canRoute}
+          routeFrom={route ? origin : null}
+          config={config}
+          onClose={back}
+          onRoute={() => store().showRoute(selected.id)}
+          onHideRoute={() => store().showRoute(null)}
+          className="intro-piece absolute top-3 bottom-3 left-[384px] z-[1000] w-[380px] shadow-[0_8px_28px_-6px_rgb(var(--track-shadow-rgb)/0.22)] [--intro-order:2] motion-safe:animate-enter-forward"
+        />
+      )}
     </div>
   )
 }
@@ -1067,6 +1163,7 @@ function SearchBox({
   onOpen,
   onSearched,
   variant = 'panel',
+  reach = true,
 }: {
   regionCode: string | null
   inputRef: RefObject<HTMLInputElement | null>
@@ -1083,6 +1180,8 @@ function SearchBox({
   onSearched: () => void
   /** panel: the classic panel's first row. chat: the guided layout's composer (no burger; distance and send below). */
   variant?: 'panel' | 'chat'
+  /** The distance pill under the box (panel variant). */
+  reach?: boolean
 }) {
   const chat = variant === 'chat'
   const en = useCopy()
@@ -1284,9 +1383,11 @@ function SearchBox({
           </Button>
         </div>
       ) : (
-        <div className="flex px-3 pb-2 md:-mt-1 md:pb-3">
-          <ReachPill />
-        </div>
+        reach && (
+          <div className="flex px-3 pb-2 md:-mt-1 md:pb-3">
+            <ReachPill />
+          </div>
+        )
       )}
       {pending ? (
         <p role="status" className="m-0 px-4 pb-2.5 text-13 text-muted">

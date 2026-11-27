@@ -38,6 +38,14 @@
   top: calc(var(--map-overlay-top, 0px) + var(--map-controls-top, 0px) + 60px);
 }
 
+/* A page that moves the map's buttons to the bottom right (data-controls-bottom): zoom at the bottom, above the Help
+   button's corner (--map-corner-clear) and anything along the bottom edge: Layers at the bottom (28px up, 44px tall),
+   zoom 8px above it, locate on top. */
+[data-controls-bottom] .center-map .leaflet-top.leaflet-right {
+  top: auto;
+  bottom: calc(var(--map-overlay-bottom, 0px) + var(--map-corner-clear, 0px) + 80px);
+}
+
 /* The credits ride above a card the page floats over the map's bottom edge (--map-overlay-bottom). */
 .center-map .leaflet-bottom {
   bottom: var(--map-overlay-bottom, 0px);

@@ -14,7 +14,11 @@ import { useDemandStore, useExploreStore } from './useExplore.ts'
 // The guided step on the Career Map: a search shows TRACK's pick and the card groups first; a card opens its
 // centers, and Back returns to the cards as they were.
 vi.mock('../training/CenterMap.tsx', () => ({
-  default: (props: CenterMapProps) => <ul data-testid="map">{props.centers.length}</ul>,
+  default: (props: CenterMapProps) => (
+    <ul data-testid="map" data-place={props.placeRegion ?? ''}>
+      {props.centers.length}
+    </ul>
+  ),
 }))
 
 const MAKATI = { latitude: 14.5547, longitude: 121.0244 }
@@ -83,7 +87,13 @@ beforeEach(() => {
       matches: [{ qualification: WELDING, score: 80, reason: 'Matched weld' }],
     },
   })
-  useDemandStore.setState({ region: undefined, scope: undefined, locality: null, code: undefined, offset: 0 })
+  useDemandStore.setState({
+    region: undefined,
+    scope: undefined,
+    locality: null,
+    code: undefined,
+    offset: 0,
+  })
   useTrainingStore.setState({
     useLocation: true,
     location: MAKATI,
@@ -99,9 +109,13 @@ beforeEach(() => {
     http.get('*/api/v1/training-providers', () => HttpResponse.json([manilaInstitute])),
     http.get('*/api/v1/training-programs', ({ request }) => {
       const code = new URL(request.url).searchParams.get('qualification_code')
-      return HttpResponse.json([weldingProgram].filter((p) => !code || p.qualification.code === code))
+      return HttpResponse.json(
+        [weldingProgram].filter((p) => !code || p.qualification.code === code),
+      )
     }),
-    http.get('*/api/v1/labor-market/outlook', ({ request }) => HttpResponse.json(outlook(new URL(request.url)))),
+    http.get('*/api/v1/labor-market/outlook', ({ request }) =>
+      HttpResponse.json(outlook(new URL(request.url))),
+    ),
     http.post('*/api/v1/labor-market/suggestions', () =>
       HttpResponse.json({
         region_code: 'NCR',
@@ -137,7 +151,9 @@ describe('the guided step', () => {
   it('search shows the guided cards, not the range question', async () => {
     renderPage()
     expect(await screen.findByText('★ Best fit for you', {}, LONG)).toBeInTheDocument()
-    expect(await screen.findByText('In demand in National Capital Region', {}, LONG)).toBeInTheDocument()
+    expect(
+      await screen.findByText('In demand in National Capital Region', {}, LONG),
+    ).toBeInTheDocument()
     expect(screen.queryByRole('heading', { name: 'How far can you go?' })).toBeNull()
     // The chips' job is done by the cards.
     expect(screen.queryByRole('group', { name: /Matched qualification/ })).toBeNull()
@@ -183,7 +199,11 @@ describe('the guided step', () => {
     const pipefitting = {
       ...weldingProgram,
       id: 72,
-      qualification: { code: 'PIPE-NCII', name: 'Pipefitting NC II', sector: 'Metals and Engineering' },
+      qualification: {
+        code: 'PIPE-NCII',
+        name: 'Pipefitting NC II',
+        sector: 'Metals and Engineering',
+      },
     }
     server.use(
       http.get('*/api/v1/training-programs', ({ request }) => {
@@ -209,18 +229,17 @@ describe('the guided step', () => {
     await user.click(screen.getByRole('button', { name: /^How far can you go\?/ }))
     const picker = await screen.findByRole('dialog', { name: 'How far can you go?' })
     await user.click(
-      Array.from(picker.querySelectorAll('button')).find((b) => b.textContent?.startsWith('Relocate'))!,
+      Array.from(picker.querySelectorAll('button')).find((b) =>
+        b.textContent?.startsWith('Relocate'),
+      )!,
     )
     // Relocating asks for the outlook again; the groups come back in the new order.
-    await waitFor(
-      () => {
-        const labels = screen.getAllByRole('heading', { level: 3 }).map((node) => node.textContent)
-        const demand = labels.indexOf(`Where ${WELDING.name} is in demand`)
-        expect(demand).toBeGreaterThanOrEqual(0)
-        expect(demand).toBeLessThan(labels.indexOf(`${WELDING.name} near you`))
-      },
-      LONG,
-    )
+    await waitFor(() => {
+      const labels = screen.getAllByRole('heading', { level: 3 }).map((node) => node.textContent)
+      const demand = labels.indexOf(`Where ${WELDING.name} is in demand`)
+      expect(demand).toBeGreaterThanOrEqual(0)
+      expect(demand).toBeLessThan(labels.indexOf(`${WELDING.name} near you`))
+    }, LONG)
   })
 
   it('region card filters to the region and back clears it', async () => {
@@ -233,5 +252,49 @@ describe('the guided step', () => {
     await user.click(await screen.findByRole('button', { name: 'Back to suggestions' }))
     expect(useExploreStore.getState().relocate).toBe(false)
     expect(await screen.findByRole('button', { name: /^Filters$/ })).toBeInTheDocument()
+  })
+
+  it('a region without a center narrows the recommendations, says so, and points outside', async () => {
+    const user = userEvent.setup()
+    renderPage()
+    await user.click(await screen.findByRole('button', { name: /Central Visayas/ }, LONG))
+    // The empty region says so, with its demand, and names the nearest center outside it.
+    const empty = await screen.findByTestId('place-empty', {}, LONG)
+    expect(empty).toHaveTextContent(
+      `No center for ${WELDING.name} is recorded in Central Visayas yet.`,
+    )
+    expect(empty).toHaveTextContent('Employers there want it: 9 job posts.')
+    expect(empty).toHaveTextContent('Nearest centers outside Central Visayas')
+    expect(empty).toHaveTextContent('Manila Welding Institute')
+    // The ranked list is the region's: empty, so the message above stands in for it.
+    expect(screen.queryByTestId('ranked-centers')).not.toBeInTheDocument()
+    // The map outlines the region and draws its heat.
+    expect(screen.getByTestId('map')).toHaveAttribute('data-place', 'VII')
+    await user.click(screen.getByRole('button', { name: 'Back to suggestions' }))
+    await waitFor(() => expect(screen.getByTestId('map')).toHaveAttribute('data-place', ''))
+  })
+
+  it('a region with centers recommends from them', async () => {
+    const user = userEvent.setup()
+    server.use(
+      http.get('*/api/v1/labor-market/outlook', ({ request }) =>
+        HttpResponse.json({
+          ...outlook(new URL(request.url)),
+          areas: [area('NCR', 'National Capital Region', 20), area('VII', 'Central Visayas', 9)],
+          home_demand: {
+            ...outlook(new URL(request.url)).home_demand,
+            region_code: 'VII',
+            name: 'Central Visayas',
+            rank: 2,
+          },
+        }),
+      ),
+    )
+    useTrainingStore.setState({ location: { latitude: 10.3157, longitude: 123.8854 } })
+    renderPage()
+    await user.click(await screen.findByRole('button', { name: /National Capital Region/ }, LONG))
+    const ranked = await screen.findByTestId('ranked-centers', {}, LONG)
+    await waitFor(() => expect(ranked).toHaveTextContent('Manila Welding Institute'), LONG)
+    expect(screen.queryByTestId('place-empty')).not.toBeInTheDocument()
   })
 })

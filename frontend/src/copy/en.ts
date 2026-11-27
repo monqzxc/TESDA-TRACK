@@ -2597,6 +2597,15 @@ export const en = {
       byCar: 'By car',
     },
     // The ranked list beside the map: the best centers for the qualification in focus, each with its reason.
+    // A region or province picked in the results that has no center for the qualification.
+    place: {
+      none: (qualification: string, place: string) =>
+        `No center for ${qualification} is recorded in ${place} yet.`,
+      demand: (count: number, sample: boolean) =>
+        `Employers there want it: ${count.toLocaleString()} ${sample ? 'demand records (modelled)' : 'job posts'}.`,
+      outside: (place: string) => `Nearest centers outside ${place}`,
+      noneOutside: 'No center lists it anywhere yet.',
+    },
     ranked: {
       heading: 'Recommended centers',
       for: (qualification: string) => `For ${qualification}, best first`,
@@ -2924,7 +2933,7 @@ export const en = {
       aiNote: 'Written by AI from the counts on this map.',
       numbers: 'Why',
       tag: 'Recommended',
-      none: 'No center lists this qualification yet.',
+      none: 'No center lists these qualifications yet.',
       needPlace: 'Share your location or type a city to get a recommended center.',
       // The analysis in the panel: the way from training to work, in three steps.
       journey: {
@@ -3012,7 +3021,9 @@ export const en = {
         yesRelocate: (n: number) => `Centers recorded · ${n.toLocaleString()}`,
         noneRecorded: 'No center recorded for it yet',
         no: (range: number, km: number | null) =>
-          km === null ? `Nothing within ${range} km` : `Nothing within ${range} km · nearest ${km} km`,
+          km === null
+            ? `Nothing within ${range} km`
+            : `Nothing within ${range} km · nearest ${km} km`,
       },
       demand: {
         yes: (area: string, rank: number | null, of: number, sample: boolean) =>
@@ -3042,7 +3053,8 @@ export const en = {
         (range === null ? '' : ` within ${range} km`) +
         (km === null ? '' : ` · nearest ${km} km`) +
         (min === null ? '' : ` (${min} min)`),
-      goodNews: (home: string, of: number, q: string) => `Good news: ${home} ranks #1 of ${of} for ${q}`,
+      goodNews: (home: string, of: number, q: string) =>
+        `Good news: ${home} ranks #1 of ${of} for ${q}`,
       posts: (n: number) => `${n.toLocaleString()} job posts`,
       modelled: (n: number) => `${n.toLocaleString()} demand records (modelled)`,
       sites: (t: number, a: number) => `${t} training · ${a} assessment centers there`,
@@ -3066,6 +3078,58 @@ export const en = {
         near: 'TESDA center records. Distances in a straight line; times estimated.',
         posts: 'PhilJobNet posting records with a reviewed link.',
         modelled: 'Modelled demand based on ABDD planning, not job posts.',
+      },
+    },
+    // A center opened from the skills list: photo, flag, then Overview and Qualifications.
+    preview: {
+      close: 'Close',
+      sampleImage: 'Sample image',
+      flag: 'Raise a concern about this center',
+      flagHint: 'Something wrong or out of date? Tell us and a reviewer will check it.',
+      tabs: 'About this center',
+      overview: 'Overview',
+      qualifications: (count: number) => (count ? `Qualifications (${count})` : 'Qualifications'),
+      information: 'Center information',
+      travel: 'Travel time',
+      noTravel: 'Share your location or type a place to see how far it is.',
+      noQualifications: 'This center has no qualifications listed yet.',
+    },
+    // The classic panel's list after a search (2026-11-27 UI/UX layout): skills, view pills, then sections.
+    skillList: {
+      readAs: 'We read your search as these skills',
+      views: 'Show',
+      strength: { strong: 'Strong match', good: 'Good match', weak: 'Related' },
+      training: {
+        heading: 'Training centers',
+        note: 'New to this, or want to improve? Train at a center. Scholarships may cover the fee.',
+      },
+      assessment: {
+        heading: 'Assessment centers',
+        note: 'Apply at an assessment center to test your skill and earn a National Certificate (NC).',
+      },
+      both: {
+        heading: 'Both training and assessment centers',
+        note: 'Learn the skills, then take your assessment at the same center.',
+      },
+      none: 'No center lists these qualifications yet.',
+      trip: (km: number | null, town: string | null) =>
+        [km === null ? null : `${km} km`, town].filter(Boolean).join(' · '),
+      work: {
+        heading: 'Work: where your skills are in demand',
+        note: 'Places hiring for jobs that match what you can do.',
+        tsp: 'Based on your TSP credentials.',
+        loading: 'Checking where these jobs are…',
+        failed: 'Couldn’t load job demand right now.',
+        empty: 'No job records for this yet.',
+        low: (place: string) => `Near you (${place}): low demand`,
+        lowBody: (jobs: string) =>
+          `Few openings for ${jobs} here. These places are hiring instead.`,
+        good: (place: string, level: string) => `Near you (${place}): ${level} demand`,
+        goodBody: (jobs: string) => `Openings for ${jobs} here, and in these places too.`,
+        level: { high: 'High demand', moderate: 'Some demand', low: 'Low demand' },
+        levelWord: { high: 'high', moderate: 'some', low: 'low', none: 'no' },
+        modelled: 'Modelled demand, not job posts.',
+        open: (place: string) => `${place}: show on the map`,
       },
     },
   },

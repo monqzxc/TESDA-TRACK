@@ -14,10 +14,11 @@ describe('layoutMode', () => {
     sessionStorage.setItem(LAYOUT_KEY, 'guided')
     expect(layoutMode('', undefined)).toBe('guided')
   })
-  it('fallback then classic', () => {
+  it('fallback then the list', () => {
     expect(layoutMode('', 'guided')).toBe('guided')
-    expect(layoutMode('', undefined)).toBe('classic')
-    expect(layoutMode('?layout=nonsense', 'nonsense')).toBe('classic')
+    expect(layoutMode('', undefined)).toBe('list')
+    expect(layoutMode('?layout=nonsense', 'nonsense')).toBe('list')
+    expect(layoutMode('?layout=list', 'classic')).toBe('list')
   })
   it('storage throwing falls back', () => {
     vi.spyOn(Storage.prototype, 'getItem').mockImplementation(() => {

@@ -78,6 +78,7 @@ import {
   SOURCES,
   accuracyArea,
   centerPoints,
+  heatPoints,
   radiusArea,
   referencePoint,
   withOverlays,
@@ -275,11 +276,25 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   // One qualification's supply and demand: the regions carry their balance, and its centers are pinned over them.
   const outlook = Boolean(demandAreas?.some((area) => area.balance))
   const recommendedIds = props.recommended
-  const demandBoundaries = useRegionBoundaries(demandAreas !== undefined)
+  // A place picked on the page (a region tapped in the results): outlined, framed, and its centers drawn as heat.
+  const placeRegion = props.placeRegion ?? null
+  const demandBoundaries = useRegionBoundaries(demandAreas !== undefined || placeRegion !== null)
   const heatmapData = useMemo(
     () => demandRegions(demandBoundaries.data, demandAreas, demandRegion),
     [demandBoundaries.data, demandAreas, demandRegion],
   )
+  const placeData = useMemo(
+    (): NonNullable<OverlayData['place']> => ({
+      type: 'FeatureCollection',
+      features: placeRegion
+        ? (demandBoundaries.data?.features ?? []).filter(
+            (feature) => feature.properties.region_code === placeRegion,
+          )
+        : [],
+    }),
+    [demandBoundaries.data, placeRegion],
+  )
+  const heatData = useMemo(() => heatPoints(placeRegion ? points : []), [placeRegion, points])
   const byId = useMemo(() => new Map(points.map((center) => [center.id, center])), [points])
   const radius = reference && radiusKm && radiusKm > 0 ? radiusKm : null
   const hasRoute = route !== null
@@ -706,6 +721,8 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
       radius: radiusData,
       routes: routesData,
       demand: heatmapData,
+      place: placeData,
+      heat: heatData,
     }
     const map = mapRef.current
     if (!ready || !map) return
@@ -718,6 +735,8 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     update(SOURCES.radius, radiusData)
     update(SOURCES.routes, routesData)
     update(SOURCES.demand, heatmapData)
+    update(SOURCES.place, placeData)
+    update(SOURCES.heat, heatData)
     // The route layers, and with them the router's credit, show only while there's a route.
     const visibility = routesData.features.length ? 'visible' : 'none'
     for (const layer of ROUTE_LAYERS) {
@@ -733,6 +752,8 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     radiusData,
     routesData,
     heatmapData,
+    placeData,
+    heatData,
   ])
 
   // The map stays on the Philippines: it can't be zoomed out past the view that shows the whole country in the part
@@ -830,7 +851,8 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
   const framed = useRef<{ key: string; inset: number; right: number } | null>(null)
   useEffect(() => {
     const map = mapRef.current
-    if (!ready || !map || hasRoute || props.demandAreas) return
+    // A picked place frames its own shape (below).
+    if (!ready || !map || hasRoute || props.demandAreas || placeRegion) return
     const previous = framed.current
     const changed = previous?.key !== frameKey
     if (
@@ -854,7 +876,33 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
     radius,
     reducedMotion,
     props.demandAreas,
+    placeRegion,
   ])
+
+  // A picked place fills the view: its whole shape, islands and all, clear of the page's panels. Once, when it is
+  // picked (or the panels move), so the learner can pan around it after.
+  const placeShapes = demandBoundaries.data
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map || !placeRegion || !placeShapes || hasRoute || props.demandAreas) return
+    const bounds = demandBounds(demandRegions(placeShapes, [], placeRegion), placeRegion)
+    if (!bounds) return
+    map.fitBounds(bounds, {
+      padding: {
+        top: latest.current.edges.top + 60,
+        bottom: latest.current.edges.bottom + 40,
+        left: inset + 40,
+        right: rightReach + 60,
+      },
+      maxZoom: 11,
+      ...motion(reducedMotion),
+    })
+    // Leaving the place frames the results again.
+    return () => {
+      framed.current = null
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, placeRegion, placeShapes, inset, rightReach, hasRoute])
 
   /** A region in words: with a qualification in focus, its postings, its centers and how the two compare. */
   const regionLabel = useCallback(
@@ -1389,7 +1437,9 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
 
       {/* Under any bar the page floats over the map's top edge (--map-overlay-top), and under anything it puts at
           the top of this column (--map-controls-top: the Career Map's account button). */}
-      <div className="intro-piece absolute top-[calc(var(--map-overlay-top,0px)_+_var(--map-controls-top,0px)_+_0.875rem)] right-3.5 z-800 flex flex-col items-end gap-2 [--intro-order:3]">
+      {/* A page can move the column to the bottom right instead (data-controls-bottom: Explore's classic layout), above
+          the Help button and anything along the bottom edge, with Layers first. */}
+      <div className="intro-piece absolute top-[calc(var(--map-overlay-top,0px)_+_var(--map-controls-top,0px)_+_0.875rem)] right-3.5 z-800 flex flex-col items-end gap-2 [--intro-order:3] [[data-controls-bottom]_&]:top-auto [[data-controls-bottom]_&]:bottom-[calc(var(--map-overlay-bottom,0px)_+_var(--map-corner-clear,0px)_+_0.875rem)]">
         <Button
           className={cx(controlButton, 'rounded-12')}
           aria-label={copy.locate}
@@ -1440,7 +1490,10 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
         )}
         <MenuTrigger>
           {/* In the column with the other controls, so the legend has the bottom of the map to itself. */}
-          <Button className={cx(controlButton, 'rounded-12')} aria-label={copy.layers}>
+          <Button
+            className={cx(controlButton, 'rounded-12 [[data-controls-bottom]_&]:order-first')}
+            aria-label={copy.layers}
+          >
             <Icon name="layers" size={18} />
           </Button>
           <Popover

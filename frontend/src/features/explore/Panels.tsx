@@ -161,7 +161,7 @@ function useOpenPathway() {
 }
 
 /** 10.1 km · 28 min · Manila (or 5 hr 30 min, farther away), each behind its icon; without the city where the place is shown already. */
-function TripMeta({
+export function TripMeta({
   center,
   className = 'text-muted',
   withPlace = true,
@@ -586,6 +586,59 @@ function CenterRow({
         scope={search?.feedbackScope}
       />
     </div>
+  )
+}
+
+/**
+ * A picked region or province without a center for the qualification in focus: says so, with the demand recorded
+ * there, and lists the nearest centers outside it so the learner still has somewhere to go.
+ */
+export function PlaceEmpty({
+  explore,
+  onSelect,
+}: {
+  explore: Explore
+  onSelect: (id: string, code?: string) => void
+}) {
+  const copy = useCopy().explore.place
+  const { place, demandCode: code, focusName } = explore
+  if (!place || !code || explore.placeSupply.length) return null
+  const region = place.regionCode
+    ? (explore.regions.find((item) => item.code === place.regionCode)?.name ?? place.regionCode)
+    : null
+  const where = place.province ?? region ?? ''
+  const outlook = explore.outlook.data
+  const area = outlook?.areas.find((item) => item.region_code === place.regionCode)
+  // Demand is recorded per region: said only for a region picked alone, and only with enough records to mean it.
+  const demand = !place.province && area && area.posting_count >= 3 ? area.posting_count : null
+  return (
+    <section
+      data-testid="place-empty"
+      className="flex flex-col gap-2 rounded-14 border border-border bg-surface p-3"
+    >
+      <p role="status" className="m-0 text-14 leading-[1.5] font-semibold text-navy">
+        {copy.none(focusName ?? code, where)}
+      </p>
+      {demand !== null && (
+        <p className="m-0 text-13 leading-[1.5] text-good-ink">
+          {copy.demand(demand, outlook?.demand_is_sample ?? false)}
+        </p>
+      )}
+      {explore.outsidePlace.length ? (
+        <>
+          <h3 className="m-0 mt-1 text-13 font-semibold text-muted">{copy.outside(where)}</h3>
+          <ul className="m-0 flex list-none flex-col gap-1.5 p-0">
+            {explore.outsidePlace.map((center) => (
+              <li key={center.id}>
+                <CenterRow center={center} code={code} onSelect={onSelect} />
+              </li>
+            ))}
+          </ul>
+        </>
+      ) : (
+        <p className="m-0 text-13 text-muted">{copy.noneOutside}</p>
+      )}
+    </section>
   )
 }
 
@@ -1074,7 +1127,7 @@ export function ReachPill({ className }: { className?: string }) {
         aria-label={`${copy.heading} ${label} · ${hint}`}
         className={cx(
           'inline-flex min-h-9 cursor-pointer items-center gap-1.5 rounded-full border border-border bg-surface px-3 text-13 font-semibold text-navy',
-          'data-hovered:border-navy data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus',
+          'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus data-hovered:border-navy',
           className,
         )}
       >
@@ -1775,8 +1828,10 @@ export function ResultsPanel({
         <p className="m-0 rounded-10 bg-tint px-3 py-2 text-13 text-navy">{copy.needPlace}</p>
       )}
 
-      {/* The ranked list comes first: the answer to "where should I go, and why?". */}
-      {view !== 'demand' && (
+      {view !== 'demand' && <PlaceEmpty explore={explore} onSelect={onSelect} />}
+      {/* The ranked list comes first: the answer to "where should I go, and why?". A picked place without a center
+          says so above instead. */}
+      {view !== 'demand' && !(explore.place && !explore.placeSupply.length) && (
         <RankedCenters
           explore={explore}
           kind={view === 'all' ? undefined : view}
@@ -1825,34 +1880,21 @@ export function ResultsPanel({
   )
 }
 
-/** The chosen center: where it is, what it was listed for, the readiness check, and how to get there or get in touch. */
-export function CenterCard({
-  center,
-  code,
-  codes,
-  canRoute,
-  routeFrom,
-  config,
-  onBack,
-  onRoute,
-  onHideRoute,
-}: {
-  center: Center
-  /** The qualification whose card it was opened from; from the map, none. */
-  code: string | null
-  codes: ReadonlySet<string>
-  canRoute: boolean
-  /** The learner's location, when routes by car, bike and on foot can be loaded from it. */
-  routeFrom: Point | null
-  config: ClientConfig | undefined
-  onBack: () => void
-  onRoute: () => void
-  /** Clears the drawn route, so every center is back on the map. */
-  onHideRoute: () => void
-}) {
-  const en = useCopy()
-  const copy = en.explore.card
-  const search = useExploreStore((state) => state.search)
+export interface CenterContact {
+  key: string
+  href: string
+  icon: IconName
+  label: string
+  value: string
+  external?: boolean
+}
+
+/**
+ * What a center's card and preview show: the qualifications it lists (those matching the search first), the one its
+ * readiness check is for, its point, whether a scholarship is open, and each way to get in touch.
+ */
+export function useCenterDetails(center: Center, code: string | null, codes: ReadonlySet<string>) {
+  const copy = useCopy().explore.card
   const openPathway = useOpenPathway()
   // The center's whole offering once it's loaded; until then (or if it fails) what the search already found.
   const offerings = useQuery(offeringsQuery(center)).data
@@ -1887,14 +1929,7 @@ export function CenterCard({
   )
   const scholarship = scholarships.length > 0
   // Each way to get in touch shows its number or address, as the map's popup does.
-  const contacts: {
-    key: string
-    href: string
-    icon: IconName
-    label: string
-    value: string
-    external?: boolean
-  }[] = []
+  const contacts: CenterContact[] = []
   // Each number listed gets its own row, so each one dials on its own.
   for (const phone of center.phone ? splitPhones(center.phone) : [])
     contacts.push({
@@ -1921,6 +1956,39 @@ export function CenterCard({
       value: center.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''),
       external: true,
     })
+  return { openPathway, listedFor, matches, readiness, point, scholarship, contacts }
+}
+
+/** The chosen center: where it is, what it was listed for, the readiness check, and how to get there or get in touch. */
+export function CenterCard({
+  center,
+  code,
+  codes,
+  canRoute,
+  routeFrom,
+  config,
+  onBack,
+  onRoute,
+  onHideRoute,
+}: {
+  center: Center
+  /** The qualification whose card it was opened from; from the map, none. */
+  code: string | null
+  codes: ReadonlySet<string>
+  canRoute: boolean
+  /** The learner's location, when routes by car, bike and on foot can be loaded from it. */
+  routeFrom: Point | null
+  config: ClientConfig | undefined
+  onBack: () => void
+  onRoute: () => void
+  /** Clears the drawn route, so every center is back on the map. */
+  onHideRoute: () => void
+}) {
+  const en = useCopy()
+  const copy = en.explore.card
+  const search = useExploreStore((state) => state.search)
+  const { openPathway, listedFor, matches, readiness, point, scholarship, contacts } =
+    useCenterDetails(center, code, codes)
   const directions = cx(button({ variant: 'primary', height: 44 }), 'w-full')
   // Keep the list's estimate visible; the route below explains its different method and rounded starting point.
   const routed = Boolean(routeFrom && point && config?.routing_enabled)

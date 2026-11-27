@@ -44,7 +44,13 @@ import {
 } from './CenterMapTypes.ts'
 import { CenterPopup } from './CenterPopup.tsx'
 import { DemandLegend, RECOMMENDED_COLOR } from './DemandLegend.tsx'
-import { BALANCE_MARKS, demandRegions, demandSymbol, useRegionBoundaries } from './demandMap.ts'
+import {
+  BALANCE_MARKS,
+  DEMAND_COLORS,
+  demandRegions,
+  demandSymbol,
+  useRegionBoundaries,
+} from './demandMap.ts'
 import { routeLabel } from './format.ts'
 import { homeView, homeWorldSize, zoomFor } from './mapLimits.ts'
 import { useOverlayEdges, useStatusReach, type OverlayEdges } from './overlayEdges.ts'
@@ -288,7 +294,10 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
             inset={inset}
           />
         )}
-        {!props.demandAreas && (
+        {!props.demandAreas && props.placeRegion && (
+          <PlaceFocus region={props.placeRegion} points={points} inset={inset} edges={edges} />
+        )}
+        {!props.demandAreas && !props.placeRegion && (
           <Framing
             points={points}
             reference={props.reference}
@@ -312,7 +321,7 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
       )}
       <Button
         className={cx(
-          'absolute top-[calc(var(--map-overlay-top,0px)_+_var(--map-controls-top,0px)_+_0.875rem)] right-3.5 z-800 grid size-10.5 cursor-pointer place-items-center rounded-12 border-0 bg-surface text-navy data-hovered:bg-soft',
+          'absolute top-[calc(var(--map-overlay-top,0px)_+_var(--map-controls-top,0px)_+_0.875rem)] right-3.5 z-800 grid size-10.5 cursor-pointer place-items-center rounded-12 border-0 bg-surface text-navy data-hovered:bg-soft [[data-controls-bottom]_&]:top-auto [[data-controls-bottom]_&]:bottom-[calc(var(--map-overlay-bottom,0px)_+_var(--map-corner-clear,0px)_+_172px)]',
           floating,
         )}
         aria-label={copy.locate}
@@ -390,6 +399,78 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
       </div>
     </div>
   )
+}
+
+/**
+ * A region picked on the page: framed, outlined, and its centers drawn as heat. Leaflet has no heat layer, so each
+ * center is a few soft rings fixed in screen size: where centers sit close, the rings stack and warm up.
+ */
+const HEAT_RINGS = [
+  { radius: 38, color: DEMAND_COLORS[1], opacity: 0.16 },
+  { radius: 24, color: DEMAND_COLORS[2], opacity: 0.2 },
+  { radius: 11, color: DEMAND_COLORS[3], opacity: 0.28 },
+] as const
+
+function PlaceFocus({
+  region,
+  points,
+  inset,
+  edges,
+}: {
+  region: string
+  points: Center[]
+  inset: number
+  edges: OverlayEdges
+}) {
+  const map = useMap()
+  const boundaries = useRegionBoundaries()
+  const shapes = boundaries.data
+  const reach = useRef(edges)
+  useEffect(() => {
+    reach.current = edges
+  })
+  const shape = useMemo(
+    () => (shapes?.features ?? []).filter((feature) => feature.properties.region_code === region),
+    [shapes, region],
+  )
+  // Outline and frame, once when the region is picked (or the panels move), so the learner can pan after.
+  useEffect(() => {
+    if (!shape.length) return
+    const outline = L.geoJSON(shape, {
+      interactive: false,
+      style: { color: '#175cd3', weight: 2.5, opacity: 0.85, dashArray: '6 4', fill: false },
+    }).addTo(map)
+    map.fitBounds(outline.getBounds(), {
+      paddingTopLeft: [inset + 40, reach.current.top + 60],
+      paddingBottomRight: [60, reach.current.bottom + 40],
+      maxZoom: 11,
+    })
+    return () => {
+      outline.remove()
+    }
+  }, [map, shape, inset])
+  const heatKey = points.map((center) => center.id).join()
+  useEffect(() => {
+    const heat = L.layerGroup(
+      points.flatMap((center) =>
+        HEAT_RINGS.map((ring) =>
+          L.circleMarker([center.latitude as number, center.longitude as number], {
+            radius: ring.radius,
+            stroke: false,
+            fillColor: ring.color,
+            fillOpacity: ring.opacity,
+            interactive: false,
+          }),
+        ),
+      ),
+    ).addTo(map)
+    return () => {
+      heat.remove()
+    }
+    // The heat follows the centers shown, not each new array of them.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map, heatKey])
+  return null
 }
 
 function DemandAreas({
