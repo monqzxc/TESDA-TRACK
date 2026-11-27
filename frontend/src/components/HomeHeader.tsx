@@ -1,135 +1,125 @@
-import { Button } from 'react-aria-components'
-import { Link } from 'react-router'
-import { learnerAccounts } from '../auth/accounts.ts'
+import { Button, Menu, MenuItem, MenuTrigger, Popover } from 'react-aria-components'
+import { Link, useNavigate } from 'react-router'
 import { useAuth } from '../auth/useAuth.ts'
+import { AccountControl } from '../features/account/AccountMenu.tsx'
 import { useCopy, useLanguage } from '../i18n/copy.ts'
 import { LanguageSelector } from '../i18n/LanguageSelector.tsx'
-import { AccountControl } from '../features/account/AccountMenu.tsx'
-import { accountButton } from '../features/account/styles.ts'
 import { cx } from '../lib/style.ts'
 import { paths } from '../paths.ts'
 import { logoSrc } from './Brand.tsx'
+import { Icon } from './Icon.tsx'
 import { TspBadge } from './TspBadge.tsx'
 import { useHomeBar } from './useHomeBar.ts'
 
-// The landing page's sections (classic/landing.html): links to Home's sections, by their ids. They're router links,
-// so each jump is a history entry of the router's own, and Back returns to where the page was before it. (A plain
-// link to #how would make an entry the router can't tell from the page's first load, and the browser scrolls before
-// the router hears of it, so the router would save the section's position as the page's.)
+// The landing page's sections, by their ids. They're router links, so each jump is a history entry of the router's
+// own, and Back returns to where the page was before it.
+const SECTIONS = ['about', 'how', 'benefits'] as const
 
-// After classic/landing.css's top bar. The landing page has its own navy band colors, kept here as it keeps them
-// (they aren't --track-* tokens). The bar is see-through over Home's hero, and turns solid once the page scrolls
-// (data-scrolled, from useHomeBar). Without a hero under it (Home still loading, or its error state) it's solid
-// navy from the start.
-const topbar = cx(
-  '[--band-accent:#6fe0d2] [--band-body:#cfdcf5] [--band:#0c2152] [--signal:#f5b83d] dark:[--band:#071740]',
-  'sticky top-0 z-20 bg-(--band) text-white transition-[background-color] duration-300 ease-[ease]',
-  // Scrolled, it's the plain navy bar, which the light sections pass under.
-  '[&:not([data-scrolled]):has(~main_[data-home-hero])]:bg-transparent',
-  '[&_:focus-visible]:rounded-6 [&_:focus-visible]:outline-3 [&_:focus-visible]:outline-offset-3 [&_:focus-visible]:outline-(--signal)',
-)
+const navyButton =
+  'inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full border-0 bg-(--l-navy) px-5 py-2 text-15 font-bold whitespace-nowrap text-white no-underline transition-[background-color,scale] duration-150 hovered:bg-(--l-navy-hover) pressed:scale-97 dark:text-[#0b1630]'
 
-const cta = cx(
-  'group inline-flex min-h-10 items-center gap-[0.55rem] rounded-full bg-(--signal) px-[1.1rem] py-[0.55rem] font-text text-[0.92rem] leading-none font-bold whitespace-nowrap text-[#0c2152] no-underline',
-  '[transition:background-color_0.2s,scale_0.15s_var(--ease-home)]',
-  'active:scale-97 hovered:bg-[#f8c968]',
-)
+const menuItem =
+  'flex cursor-pointer items-start gap-3 rounded-14 p-3 outline-none data-focused:bg-(--l-panel) data-pressed:bg-(--l-line)'
 
 /**
- * Home's own top bar, from the landing page: the brand, its section links, Sign in (or, signed out and guest-only,
- * Sign in with TSP) and Find my path.
- * It's see-through over Home's hero and turns solid once the page scrolls (useHomeBar).
- *
- * The brand pushes the rest to the right. On small phones the logo stands for the name, so Sign in and Find my path
- * keep to one line, and Sign in with TSP shows only its badge (its name stays for screen readers).
+ * Home's top bar (PO, 19 Nov 2026): TESDA-TRACK, the page's sections, the language and Get started. Get started opens
+ * the two ways in: Sign in with TSP, or Continue as guest to the Career Map. There's no sign-up. Signed in, the
+ * account menu takes its place and the button opens the Career Map. White, with a hairline once the page scrolls.
  */
 export function HomeHeader() {
   const language = useLanguage()
   const en = useCopy()
-  const copy = en.landing
+  const copy = en.landingPage
   const [first, second] = en.brand.wordmark
-  const SECTIONS = [
-    { hash: '#how', label: copy.how },
-    { hash: '#near', label: copy.near },
-    { hash: '#catalog', label: copy.catalog },
-    { hash: '#progress', label: copy.progress },
-  ] as const
-  // Guest-only, Home has no "My progress" section (it's about what an account keeps).
-  const { offersAccounts, learner, openSignIn } = useAuth()
-  const offersTsp = !learner && !learnerAccounts()
-  const sections = SECTIONS.filter(({ hash }) => offersAccounts || hash !== '#progress')
-
+  const labels = copy.nav
+  const { learner, openSignIn } = useAuth()
+  const navigate = useNavigate()
   const { ref, scrolled } = useHomeBar<HTMLElement>()
+
   return (
-    <header ref={ref} className={topbar} data-scrolled={scrolled || undefined}>
-      <div className="mx-auto flex min-h-17 w-full max-w-home flex-wrap items-center justify-end gap-x-5 gap-y-2 px-home-gutter py-[0.6rem] max-[761px]:gap-x-4 max-[431px]:gap-x-2">
+    <header
+      ref={ref}
+      data-scrolled={scrolled || undefined}
+      className="landing sticky top-0 z-20 border-b border-transparent bg-(--l-page)/85 backdrop-blur-md transition-[border-color,background-color] duration-200 data-scrolled:border-(--l-line) data-scrolled:bg-(--l-surface)/90"
+    >
+      <div className="mx-auto flex min-h-17 w-full max-w-[1180px] items-center gap-x-5 px-[clamp(16px,4vw,40px)] py-2.5">
         <Link
           to={paths.home}
-          className="mr-auto inline-flex items-center gap-[0.6rem] font-display text-[1.15rem] leading-none font-extrabold tracking-[0.01em] text-white no-underline"
+          className="mr-auto inline-flex items-center gap-2.5 font-display text-[1.15rem] leading-none font-extrabold tracking-[-0.01em] text-(--l-ink) no-underline"
           aria-label={en.brand.homeLink}
         >
           <img src={logoSrc} alt="" width={36} height={36} className="size-9 rounded-10" />
-          <span
-            className={language === 'en' ? 'max-[431px]:hidden' : 'max-[901px]:hidden'}
-            aria-hidden="true"
-          >
-            {first}
-            <b className="ml-[0.3em] font-normal text-(--band-accent)">{second}</b>
+          <span className="max-[431px]:hidden" aria-hidden="true">
+            {first}-{second}
           </span>
         </Link>
         <nav
-          className={cx(
-            'flex gap-[1.4rem] max-[1101px]:hidden',
-            language !== 'en' && 'max-[1451px]:hidden',
-          )}
           aria-label={copy.sections}
+          className={cx(
+            'flex gap-1 max-[961px]:hidden',
+            language !== 'en' && 'max-[1181px]:hidden',
+          )}
         >
-          {sections.map(({ hash, label }) => (
+          {SECTIONS.map((id) => (
             <Link
-              key={hash}
-              to={{ pathname: paths.home, hash }}
-              className="text-[0.95rem] font-semibold text-(--band-body) no-underline hovered:text-white"
+              key={id}
+              to={{ pathname: paths.home, hash: `#${id}` }}
+              className="rounded-full px-3.5 py-2 text-15 font-semibold text-(--l-body) no-underline transition-colors duration-150 hover:bg-(--l-panel) hover:text-(--l-ink)"
             >
-              {label}
+              {labels[id]}
             </Link>
           ))}
         </nav>
-        <LanguageSelector header />
-        {/* Signed out and guest-only, the account control would be empty: Sign in with TSP takes its place. */}
-        {offersTsp ? (
-          <Button
-            onPress={() => openSignIn({ tsp: true })}
-            className={cx(
-              accountButton.header,
-              'max-w-none px-[0.2rem] py-2 text-[0.95rem] font-bold whitespace-nowrap text-white hovered:text-(--band-accent)',
-            )}
-          >
-            <TspBadge small />
-            <span className="max-[481px]:sr-only">{en.account.tsp.signIn}</span>
-          </Button>
+        <LanguageSelector header light />
+        {learner ? (
+          <>
+            <AccountControl
+              variant="header"
+              buttonClassName="px-1 py-2 text-15 font-bold whitespace-nowrap text-(--l-ink) no-underline"
+            />
+            <Link to={paths.explore} state={{ focusSearch: true }} className={navyButton}>
+              {copy.openMap}
+            </Link>
+          </>
         ) : (
-          <AccountControl
-            variant="header"
-            buttonClassName="px-[0.2rem] py-2 text-[0.95rem] font-bold whitespace-nowrap text-white no-underline hovered:text-(--band-accent)"
-          />
+          <MenuTrigger>
+            <Button className={navyButton}>
+              {copy.getStarted}
+              <Icon name="chevron" size="1rem" className="max-[431px]:hidden" />
+            </Button>
+            <Popover
+              placement="bottom end"
+              offset={8}
+              className="landing w-[min(20rem,calc(100vw-2rem))] rounded-[20px] border border-(--l-line) bg-(--l-surface) p-1.5 shadow-[0_24px_48px_-16px_rgb(15_20_30/0.35)]"
+            >
+              <Menu
+                aria-label={copy.startMenu}
+                className="outline-none"
+                onAction={(key) => {
+                  if (key === 'tsp') openSignIn({ tsp: true })
+                  else void navigate(paths.explore, { state: { focusSearch: true } })
+                }}
+              >
+                <MenuItem id="tsp" textValue={copy.tsp.title} className={menuItem}>
+                  <TspBadge />
+                  <span className="flex flex-col">
+                    <span className="text-15 font-bold text-(--l-ink)">{copy.tsp.title}</span>
+                    <span className="text-13 text-(--l-muted)">{copy.tsp.note}</span>
+                  </span>
+                </MenuItem>
+                <MenuItem id="guest" textValue={copy.guest.title} className={menuItem}>
+                  <span className="grid size-8 flex-none place-items-center rounded-full bg-(--l-panel) text-(--l-ink)">
+                    <Icon name="person" size="1.1rem" />
+                  </span>
+                  <span className="flex flex-col">
+                    <span className="text-15 font-bold text-(--l-ink)">{copy.guest.title}</span>
+                    <span className="text-13 text-(--l-muted)">{copy.guest.note}</span>
+                  </span>
+                </MenuItem>
+              </Menu>
+            </Popover>
+          </MenuTrigger>
         )}
-        {/* Find my path opens the center finder with its search box ready to type in. */}
-        <Link to={paths.explore} state={{ focusSearch: true }} className={cta}>
-          {copy.findMyPath}
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2.4}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-            focusable="false"
-            className="size-4.5 transition-[translate] duration-250 ease-home group-hovered:translate-x-[3px] max-[481px]:hidden"
-          >
-            <path d="M5 12h14m-6-6 6 6-6 6" />
-          </svg>
-        </Link>
       </div>
     </header>
   )

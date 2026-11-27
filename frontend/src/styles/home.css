@@ -106,3 +106,101 @@
   content-visibility: auto;
   contain-intrinsic-size: auto 1000px;
 }
+
+/* The location-first landing page (2026 redesign, features/home/landing). Navy is for actions and the selected item,
+   green only marks the 3-of-3 "Best fit" card, and everything else is a grey. Set on the landing's root and on its top
+   bar and footer, which sit outside it. */
+.landing {
+  --l-page: #f4f5f7;
+  --l-surface: #ffffff;
+  --l-panel: #eceef2;
+  --l-line: #dfe2e8;
+  --l-ink: #171c24; /* headings */
+  --l-body: #3d4450; /* running text */
+  --l-muted: #646b78; /* notes: 5.3:1 on the page */
+  --l-faint: #9aa1ad; /* decoration only, never text */
+  --l-navy: #12306b; /* actions and the selected item */
+  --l-navy-hover: #0b2252;
+  --l-navy-soft: #e7ecf6;
+  --l-green: #15803d; /* only the 3-of-3 Best fit card */
+  --l-green-soft: #e9f6ee;
+  --l-map: #e9ebef;
+  --l-map-line: #d3d7de;
+}
+
+:root[data-theme='dark'] .landing {
+  --l-page: #111418;
+  --l-surface: #181c22;
+  --l-panel: #1f242b;
+  --l-line: #2c323b;
+  --l-ink: #f1f3f6;
+  --l-body: #c9ced6;
+  --l-muted: #9ca3ae;
+  --l-faint: #5e6570;
+  --l-navy: #8fb0f0;
+  --l-navy-hover: #b3c9f5;
+  --l-navy-soft: #1c2a45;
+  --l-green: #4ade80;
+  --l-green-soft: #12301f;
+  --l-map: #1b2027;
+  --l-map-line: #2a3039;
+}
+
+.landing :where(h1, h2, h3) {
+  margin: 0;
+  color: var(--l-ink);
+  font-family: var(--font-display);
+  text-wrap: balance;
+}
+
+.landing :where(p, ul, ol) {
+  margin: 0;
+}
+
+.landing :where(:focus-visible) {
+  outline: 3px solid var(--l-navy);
+  outline-offset: 3px;
+  border-radius: 8px;
+}
+
+.landing section[id] {
+  scroll-margin-top: 76px;
+}
+
+/* The map preview's route draws itself once, then the "you" pin breathes. Still with reduced motion. */
+@keyframes landing-route {
+  from {
+    stroke-dashoffset: 420;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes landing-pulse {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+.landing-route {
+  stroke-dasharray: 6 7;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .landing-route-draw {
+    stroke-dasharray: 420;
+    animation: landing-route 1.6s 0.4s cubic-bezier(0.65, 0, 0.35, 1) both;
+  }
+
+  .landing-pulse {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: landing-pulse 2.4s ease-out infinite;
+  }
+}

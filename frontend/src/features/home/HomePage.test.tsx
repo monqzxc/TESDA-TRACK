@@ -1,33 +1,30 @@
 import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
 import { en } from '../../copy/en.ts'
 import { renderApp, serveCatalog } from '../../test/app.tsx'
-import { mockIntersectionObserver } from '../../test/intersectionObserver.ts'
-import { mockMediaQueries } from '../../test/matchMedia.ts'
 import { useExploreStore } from '../explore/useExplore.ts'
-import { GOAL_MAX_LENGTH, useFinderStore } from '../finder/store.ts'
-import { CATALOG, REGIONS } from './data.ts'
+import { GOAL_MAX_LENGTH } from '../finder/store.ts'
 
-const REDUCE = '(prefers-reduced-motion: reduce)'
-const HEADING = 'Every career has a track. Find yours.'
+// The location-first landing page (Trello: "[UI/UX] Landing page redesign"). PO, 19 Nov 2026: every way in opens the
+// Career Map, Get started offers Sign in with TSP or Continue as guest (no sign-up), and the privacy notice and the
+// language selector stay.
 
-async function openHomeAt(path: string) {
-  const view = renderApp(path)
+const HEADING = en.pages.home.heading
+const copy = en.landingPage
+
+async function openHome() {
+  const view = renderApp('/')
   await screen.findByRole('heading', { level: 1, name: HEADING })
   return view
 }
 
-const openHome = () => openHomeAt('/')
-
-const goalBox = () => screen.getByRole('textbox', { name: 'Your goal' })
-const submit = () => screen.getByRole('button', { name: 'Get started' })
+const goalBox = () => screen.getByRole('textbox', { name: copy.hero.label })
+const findMyPath = () => screen.getByRole('button', { name: copy.hero.submit })
 
 afterEach(() => {
-  useFinderStore.getState().reset()
   useExploreStore.getState().setDraft('')
   window.sessionStorage.clear()
-  vi.unstubAllGlobals()
 })
 
 describe('Home', () => {
@@ -36,19 +33,24 @@ describe('Home', () => {
 
     expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1)
     expect(screen.getAllByRole('heading', { level: 2 }).map((h) => h.textContent)).toEqual([
-      'Four stops between a goal and a certificate.',
-      'Training and assessment near you.',
-      '319 qualifications',
-      'Save your path. Tick off each step.',
-      'What would you like to achieve?',
+      copy.about.title,
+      copy.howItWorks.title,
+      copy.perks.title,
+      copy.closing.title,
     ])
   })
 
   it("has a section for each of the top bar's links", async () => {
     await openHome()
-    const sections = screen.getByRole('navigation', { name: 'Sections' })
+    const bar = screen.getByRole('navigation', { name: copy.sections })
 
-    for (const link of within(sections).getAllByRole('link')) {
+    const links = within(bar).getAllByRole('link')
+    expect(links.map((link) => link.textContent)).toEqual([
+      copy.nav.about,
+      copy.nav.how,
+      copy.nav.benefits,
+    ])
+    for (const link of links) {
       const { pathname, hash } = new URL(link.getAttribute('href')!, 'http://localhost')
       expect(pathname).toBe('/')
       expect(document.getElementById(hash.slice(1))?.tagName).toBe('SECTION')
@@ -58,77 +60,42 @@ describe('Home', () => {
   it('takes a section link as a page change of its own, so Back returns to where the page was', async () => {
     const user = userEvent.setup()
     const { router } = await openHome()
-    const sections = screen.getByRole('navigation', { name: 'Sections' })
+    const bar = screen.getByRole('navigation', { name: copy.sections })
 
-    await user.click(within(sections).getByRole('link', { name: 'Qualifications' }))
+    await user.click(within(bar).getByRole('link', { name: copy.nav.how }))
 
-    await waitFor(() => expect(router.state.location.hash).toBe('#catalog'))
+    await waitFor(() => expect(router.state.location.hash).toBe('#how'))
     expect(router.state.historyAction).toBe('PUSH')
-    // An entry of the router's own: a plain link's entry has the page load's key, "default".
     expect(router.state.location.key).not.toBe('default')
   })
 
-  it("has its footer after the main region, as the page's contentinfo landmark", async () => {
-    await openHome()
-
-    const footer = screen.getByRole('contentinfo')
-    expect(footer).toHaveTextContent(en.home.footer)
-    expect(footer).toHaveTextContent(en.footer.copyright)
-    expect(screen.getByRole('main')).not.toContainElement(footer)
-  })
-
-  it("quotes the catalog's figures from data.ts", async () => {
-    await openHome()
-
-    expect(
-      screen.getByRole('link', { name: `Browse ${CATALOG.qualifications} qualifications` }),
-    ).toBeInTheDocument()
-    expect(
-      screen.getByRole('heading', { level: 2, name: `${CATALOG.qualifications} qualifications` }),
-    ).toBeInTheDocument()
-    expect(screen.getByText(`Search all ${REGIONS.length} regions`)).toBeInTheDocument()
-    expect(
-      screen.getByRole('img', {
-        name: en.home.near.mapLabel,
-      }),
-    ).toBeInTheDocument()
-    // The copy takes whatever the figures are.
-    expect(en.home.catalog.heading(1005)).toBe('1,005 qualifications')
-    expect(en.home.hero.notes(17)).toContain('Search all 17 regions')
-  })
-
-  it.each([
-    ['Browse 319 qualifications', '/qualifications'],
-    ['Find training near you', '/explore'],
-    ['Open the qualifications library', '/qualifications'],
-    ['Go to My progress', '/progress'],
-  ])('links "%s" to %s', async (name, path) => {
-    await openHome()
-
-    expect(screen.getByRole('link', { name })).toHaveAttribute('href', path)
-  })
-
-  it('opens the center finder from the hero, its search box ready to type in', async () => {
+  it('opens Get started with Sign in with TSP and Continue as guest, and no sign-up', async () => {
     serveCatalog()
     const user = userEvent.setup()
     const { router } = await openHome()
-    const hero = screen.getByRole('region', { name: HEADING })
 
-    await user.click(within(hero).getByRole('link', { name: 'Get started' }))
+    await user.click(screen.getByRole('button', { name: copy.getStarted }))
+    const menu = await screen.findByRole('menu')
+    expect(
+      within(menu)
+        .getAllByRole('menuitem')
+        .map((item) => item.textContent),
+    ).toEqual([expect.stringContaining(copy.tsp.title), expect.stringContaining(copy.guest.title)])
+    expect(within(menu).queryByText(/sign up|create an account/i)).toBeNull()
 
+    await user.click(within(menu).getByRole('menuitem', { name: new RegExp(copy.guest.title) }))
     await waitFor(() => expect(router.state.location.pathname).toBe('/explore'))
     expect(router.state.location.state).toEqual({ focusSearch: true })
-    expect(useFinderStore.getState().goal).toBe('')
   })
 
-  it('opens the Career Map with the goal in its search box and runs the search, out of the address', async () => {
+  it('opens the Career Map with the goal and runs its search, out of the address', async () => {
     serveCatalog()
     const user = userEvent.setup()
     const { router } = await openHome()
     const goal = 'Gusto kong maging <b>welder</b> sa Cebu'
 
     await user.type(goalBox(), goal)
-    await user.click(submit())
+    await user.click(findMyPath())
 
     await waitFor(() => expect(router.state.location.pathname).toBe('/explore'))
     const { search, hash, state } = router.state.location
@@ -144,110 +111,48 @@ describe('Home', () => {
     const { router } = await openHome()
 
     if (typed) await user.type(goalBox(), typed)
-    await user.click(submit())
+    await user.click(findMyPath())
 
     const box = goalBox()
     expect(box).toHaveAttribute('aria-invalid', 'true')
-    expect(box).toHaveAccessibleDescription(
-      expect.stringContaining('Describe your career goal or skills to get started.'),
-    )
+    expect(box).toHaveAccessibleDescription(expect.stringContaining(copy.hero.empty))
     expect(box).toHaveFocus()
     expect(router.state.location.pathname).toBe('/')
-    expect(useExploreStore.getState().draft).toBe('')
 
-    // Typing clears the instruction.
     await user.type(box, 'Welding')
     expect(box).not.toHaveAttribute('aria-invalid')
-    expect(screen.queryByText('Describe your career goal or skills to get started.')).toBeNull()
   })
 
-  it(`takes ${GOAL_MAX_LENGTH} characters at most, and counts them`, async () => {
-    serveCatalog()
-    const user = userEvent.setup()
-    const { router } = await openHome()
-    const box = goalBox()
-    expect(box).toHaveAccessibleDescription('0 of 500 characters')
-
-    await user.click(box)
-    await user.paste('a'.repeat(GOAL_MAX_LENGTH + 20))
-
-    expect(box).toHaveValue('a'.repeat(GOAL_MAX_LENGTH))
-    expect(box).toHaveAccessibleDescription('500 of 500 characters')
-    expect(screen.getByText('500/500')).toBeInTheDocument()
-
-    await user.click(submit())
-
-    await waitFor(() => expect(router.state.location.pathname).toBe('/explore'))
-    expect(useExploreStore.getState().draft).toHaveLength(GOAL_MAX_LENGTH)
-  })
-
-  it('scores the readiness check as it changes, and picks the route', async () => {
-    const user = userEvent.setup()
+  it(`takes ${GOAL_MAX_LENGTH} characters at most`, async () => {
     await openHome()
-    const check = screen.getByRole('group', { name: 'Barista NC II · core units' })
-    const routes = () =>
-      screen.getAllByRole('listitem').filter((item) => item.hasAttribute('aria-current'))
-
-    expect(check).toHaveAccessibleDescription('60% Moderate readiness')
-    expect(routes().map((route) => route.querySelector('strong')?.textContent)).toEqual([
-      'Take focused training, then the NC assessment',
-    ])
-
-    for (const unit of within(check).getAllByRole('radiogroup')) {
-      await user.click(within(unit).getByRole('radio', { name: 'Confident' }))
-    }
-
-    expect(check).toHaveAccessibleDescription('100% High readiness')
-    expect(routes().map((route) => route.querySelector('strong')?.textContent)).toEqual([
-      'Apply for the NC assessment',
-    ])
+    expect(goalBox()).toHaveAttribute('maxlength', String(GOAL_MAX_LENGTH))
   })
 
-  it('shows the example goal and its match in the hero', async () => {
-    mockMediaQueries({ [REDUCE]: true })
+  it('never links to the previous-version training page or to /find', async () => {
     await openHome()
-    const example = screen.getByRole('group', {
-      name: 'Example: a goal matched to a qualification',
-    })
-
-    expect(example).toHaveTextContent('Gusto kong maging welder.')
-    expect(example).toHaveTextContent('Manual Metal Arc Welding (MMAW) NC II')
-    expect(example).toHaveTextContent('92%')
+    const hrefs = screen.getAllByRole('link').map((link) => link.getAttribute('href'))
+    expect(
+      hrefs.filter((href) => href?.startsWith('/training') || href?.startsWith('/find')),
+    ).toEqual([])
   })
 
-  describe('scroll reveal', () => {
-    const page = () => document.querySelector('main > div')!
-    const revealed = () => [...document.querySelectorAll('[data-reveal]')]
+  it('keeps the privacy notice in reach, from the hero and the footer', async () => {
+    await openHome()
+    expect(screen.getByRole('link', { name: copy.hero.privacyLink })).toHaveAttribute(
+      'href',
+      '/privacy',
+    )
+    expect(
+      within(screen.getByRole('contentinfo')).getByRole('link', { name: en.privacy.link }),
+    ).toHaveAttribute('href', '/privacy')
+  })
 
-    it('waits for each part to scroll into view', async () => {
-      mockMediaQueries({ [REDUCE]: false })
-      const io = mockIntersectionObserver()
-      await openHome()
-
-      expect(page()).toHaveAttribute('data-motion')
-      const waiting = revealed()
-      expect(waiting.length).toBeGreaterThan(20)
-      expect(waiting.filter((part) => part.hasAttribute('data-in'))).toEqual([])
-
-      io.scrollIntoView(...io.observed())
-
-      expect(revealed().filter((part) => !part.hasAttribute('data-in'))).toEqual([])
-    })
-
-    it('shows everything at once with reduced motion', async () => {
-      mockMediaQueries({ [REDUCE]: true })
-      mockIntersectionObserver()
-      await openHome()
-
-      expect(page()).not.toHaveAttribute('data-motion')
-      expect(revealed().filter((part) => !part.hasAttribute('data-in'))).toEqual([])
-      // Figures are there from the start, and the example plan's first steps are ticked off.
-      expect(screen.getByText('319')).toBeInTheDocument()
-      const fact = screen.getByText('units of competency to rate yourself on').closest('li')!
-      expect(fact.querySelector('b')).toHaveTextContent('4,981')
-      const steps = [...document.querySelectorAll('ol > li')]
-      const state = (step: Element) => step.getAttribute('data-state')
-      expect(steps.map(state)).toEqual(['done', 'done', 'next', 'to-do'])
-    })
+  it('marks the map preview as sample data, with the 3-of-3 best fit and its three checks', async () => {
+    await openHome()
+    const preview = screen.getByRole('figure')
+    expect(within(preview).getByRole('img', { name: copy.preview.label })).toBeInTheDocument()
+    expect(preview).toHaveTextContent(copy.preview.sample)
+    expect(preview).toHaveTextContent(`${copy.preview.bestFit} · ${copy.preview.fitCount}`)
+    for (const check of copy.preview.checks) expect(preview).toHaveTextContent(check)
   })
 })

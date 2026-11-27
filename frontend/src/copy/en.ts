@@ -84,6 +84,93 @@ export const en = {
     signIn: 'Sign in',
     findMyPath: 'Get started',
   },
+  // The location-first landing page (2026 redesign, features/home/landing). Short labels, one line per fact; the
+  // details sit behind each "i".
+  landingPage: {
+    sections: 'Sections',
+    nav: { about: 'About', how: 'How it works', benefits: 'What’s in it for you' },
+    getStarted: 'Get started',
+    startMenu: 'Ways to start',
+    tsp: { title: 'Sign in with TSP', note: 'Uses your TESDA Skills Passport.' },
+    guest: { title: 'Continue as guest', note: 'No account needed.' },
+    openMap: 'Open the Career Map',
+    more: (topic: string) => `More about ${topic}`,
+    hero: {
+      kicker: 'TESDA training, assessment and jobs',
+      title: ['Your next TESDA step,', 'on a map near you.'],
+      lead: 'Type what you can do. See the qualification, the closest centers and local jobs.',
+      label: 'What can you do?',
+      placeholder: 'e.g. “marunong ako magluto”',
+      submit: 'Find my path',
+      empty: 'Type what you can do first.',
+      privacy: 'Your search and rough location are used only to show nearby results.',
+      privacyLink: 'Privacy notice',
+    },
+    preview: {
+      label: 'Example of the Career Map, with sample centers',
+      sample: 'Sample',
+      you: 'You',
+      qualification: 'Cookery NC II',
+      center: 'Sample Skills Training Center',
+      distance: '2.4 km · 8 min',
+      bestFit: 'Best fit',
+      fitCount: '3 of 3',
+      checks: ['Offers Cookery NC II', 'Within your range', 'Next batch open'],
+      info: 'A center is the best fit when it meets all three: it offers your qualification, it is within the distance you chose, and it has a batch coming up.',
+    },
+    about: {
+      kicker: 'About',
+      title: 'One map for your next step.',
+      items: [
+        {
+          title: 'Training centers',
+          line: 'Where to learn it.',
+          info: 'Providers registered with TESDA to train for the qualification you matched.',
+        },
+        {
+          title: 'Assessment centers',
+          line: 'Where to get certified.',
+          info: 'Accredited centers where you take the assessment for a National Certificate.',
+        },
+        {
+          title: 'Jobs in demand',
+          line: 'Where the work is.',
+          info: 'Recorded job postings by region. A rough signal from dated records, not live openings.',
+        },
+      ],
+    },
+    howItWorks: {
+      kicker: 'How it works',
+      title: 'Four steps. One map.',
+      steps: [
+        { title: 'Start', line: 'As a guest, or with TSP.' },
+        { title: 'Say what you can do', line: 'In Filipino or English.' },
+        { title: 'Get your match', line: 'The closest TESDA qualification.' },
+        { title: 'Explore the map', line: 'Centers and jobs near you.' },
+      ],
+    },
+    perks: {
+      kicker: 'What’s in it for you',
+      title: 'Free, local, in your words.',
+      items: [
+        { title: 'Free to start', line: 'No sign-up needed.' },
+        { title: 'Your language', line: 'Nine languages.' },
+        { title: 'No job title needed', line: 'Describe the skill.' },
+        { title: 'Centers near you', line: 'Closest first.' },
+        { title: 'Jobs in demand', line: 'See where work is.' },
+        { title: 'One passport', line: 'Sign in with TSP.' },
+      ],
+    },
+    closing: {
+      title: 'Ready for your next step?',
+      lead: 'Start as a guest, or sign in with TSP.',
+    },
+    footer: {
+      nav: 'Page links',
+      backToTop: 'Back to top',
+      note: 'A TESDA pilot. Matches are suggestions: confirm with the center.',
+    },
+  },
   // Home, the landing page (classic/landing.html). Names from TESDA's data (qualifications, jobs, units of
   // competency, regions) and the figures it shows are in features/home/data.ts; the lines that quote a figure take it
   // from there.
@@ -287,7 +374,7 @@ export const en = {
   pages: {
     home: {
       title: 'TESDA-TRACK · Your next step',
-      heading: 'Every career has a track. Find yours.',
+      heading: 'Your next TESDA step, on a map near you.',
     },
     tspWebview: {
       title: 'Find a TESDA pathway · TESDA-TRACK',

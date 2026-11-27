@@ -88,7 +88,7 @@ test('"I understand" closes the notice for good', async ({ page }) => {
 
   await page.reload()
   await expect(
-    page.getByRole('heading', { level: 1, name: 'Every career has a track. Find yours.' }),
+    page.getByRole('heading', { level: 1, name: 'Your next TESDA step, on a map near you.' }),
   ).toBeVisible()
   await expect(page.getByRole('dialog')).toHaveCount(0)
 })

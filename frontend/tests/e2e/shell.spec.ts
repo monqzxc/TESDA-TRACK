@@ -7,7 +7,7 @@ import { learnerAccounts } from './accounts.ts'
 
 // Find my pathway's goal step: the one box for a goal, skills or jobs.
 const GOAL_STEP = 'Where would you like to go?'
-const HOME = 'Every career has a track. Find yours.'
+const HOME = 'Your next TESDA step, on a map near you.'
 
 const PAGES = [
   { path: '/', heading: HOME },
@@ -276,10 +276,10 @@ test.describe('on a desktop', () => {
     await page.goto('/')
 
     await expect(
-      page.getByRole('heading', { level: 1, name: 'Every career has a track. Find yours.' }),
+      page.getByRole('heading', { level: 1, name: 'Your next TESDA step, on a map near you.' }),
     ).toBeVisible()
     await expect(
-      page.getByRole('heading', { level: 2, name: 'What would you like to achieve?' }),
+      page.getByRole('heading', { level: 2, name: 'Ready for your next step?' }),
     ).toBeAttached()
     expect(requests).toEqual([])
   })
@@ -294,7 +294,7 @@ test.describe('on a desktop', () => {
     await page.unroute(entry)
     await page.getByRole('link', { name: 'Reload the page' }).click()
     await expect(
-      page.getByRole('heading', { name: 'Every career has a track. Find yours.' }),
+      page.getByRole('heading', { name: 'Your next TESDA step, on a map near you.' }),
     ).toBeVisible()
     await expect(page).toHaveURL('/?check=startup')
   })
