@@ -1,4 +1,4 @@
-import { useState, type ComponentProps, type CSSProperties } from 'react'
+import { useState, type ComponentProps, type CSSProperties, type ReactNode } from 'react'
 import { Button, Dialog, DialogTrigger, Heading, Popover } from 'react-aria-components'
 import { Icon } from '../../components/Icon.tsx'
 import { useCopy } from '../../i18n/copy.ts'
@@ -19,6 +19,7 @@ export function MapFilters({
   tabletUp,
   className,
   style,
+  children,
 }: {
   explore: Explore
   filters: ComponentProps<typeof CenterFilters>
@@ -27,6 +28,8 @@ export function MapFilters({
   tabletUp: boolean
   className?: string
   style?: CSSProperties
+  /** Shown first in the popover: the guided layout's view toggles on a phone. */
+  children?: ReactNode
 }) {
   const copy = useCopy().explore.filters
   const [open, setOpen] = useState(false)
@@ -43,7 +46,7 @@ export function MapFilters({
       <Button
         aria-label={active ? copy.buttonActive(active) : copy.button}
         className={cx(
-          'grid size-10.5 cursor-pointer place-items-center rounded-12 border-0 bg-surface text-navy shadow-[0_4px_14px_rgb(var(--track-shadow-rgb)/0.12)]',
+          'map-control grid size-10.5 cursor-pointer place-items-center rounded-12 border-0 bg-surface text-navy shadow-[0_4px_14px_rgb(var(--track-shadow-rgb)/0.12)]',
           'transition-[transform,background-color,color] duration-150 ease-out data-hovered:bg-soft data-pressed:bg-chip motion-safe:data-pressed:scale-95',
           'data-focus-visible:outline-3 data-focus-visible:outline-offset-2 data-focus-visible:outline-focus',
           'aria-expanded:bg-navy aria-expanded:text-surface',
@@ -83,6 +86,7 @@ export function MapFilters({
                 </Button>
               </div>
               <div className="flex flex-col px-4 pb-3 [&>*+*]:mt-3 [&>*+*]:border-t [&>*+*]:border-rule [&>*+*]:pt-3">
+                {children}
                 <LocationRow explore={explore} />
                 <RadiusRow explore={explore} />
                 <CenterFilters {...filters} />

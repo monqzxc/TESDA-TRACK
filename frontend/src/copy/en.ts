@@ -2993,6 +2993,14 @@ export const en = {
       results: 'About these results',
       times: 'About travel times',
     },
+    // The guided layout's chat dock: the tray's one line while docked.
+    dock: {
+      results: (query: string) => `Results for “${query}”`,
+      around: (place: string) => `📍 ${place} · Around you`,
+      aroundAnywhere: '📍 Share your location · Around you',
+      here: 'Near you',
+      center: (name: string, km: number | null) => (km === null ? name : `${name} · ${km} km`),
+    },
     // The guided step between a search and the center list: TRACK's pick and three groups of cards, each saying why
     // (docs/superpowers/specs/2026-11-27-explore-guided-cards-design.md). Never "job posts" for modelled demand.
     guided: {

@@ -134,7 +134,8 @@ const PULSE_MS = 1400
 const TOUCH = '(pointer: coarse)'
 
 // The map's own controls float over it, as on the Leaflet map.
-const floating = 'shadow-[0_4px_14px_rgb(var(--track-shadow-rgb)/0.12)]'
+// "map-control": the guided Career Map draws these plain (app.css, [data-plain-controls]).
+const floating = 'map-control shadow-[0_4px_14px_rgb(var(--track-shadow-rgb)/0.12)]'
 const controlButton = cx(
   'grid size-10.5 cursor-pointer place-items-center border-0 bg-surface text-navy data-hovered:bg-soft',
   floating,

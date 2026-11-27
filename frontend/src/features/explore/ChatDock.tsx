@@ -27,6 +27,7 @@ export function ChatDock({
   phone,
   className,
   style,
+  onHeight,
 }: {
   mode: DockMode
   onMode: (mode: DockMode) => void
@@ -37,9 +38,15 @@ export function ChatDock({
   phone: boolean
   className?: string
   style?: CSSProperties
+  /** Hears the unit's height as it changes, for the room it takes over the map. */
+  onHeight?: (height: number) => void
 }) {
   const unit = useRef<HTMLDivElement>(null)
   const drag = useRef<number | null>(null)
+  const heard = useRef(onHeight)
+  useEffect(() => {
+    heard.current = onHeight
+  })
   // The unit's docked place and size. offsetTop and offsetHeight ignore transforms, so the move is always worked
   // out from where it rests, even mid-move.
   const [box, setBox] = useState({ top: 0, height: 0 })
@@ -70,6 +77,7 @@ export function ChatDock({
     const measure = () => {
       setBox({ top: node.offsetTop, height: node.offsetHeight })
       setViewport(window.innerHeight)
+      heard.current?.(node.offsetHeight)
     }
     measure()
     const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure)

@@ -398,3 +398,9 @@
     translate: 0 10px;
   }
 }
+
+/* The guided Career Map's map buttons: plain, one thin border and no shadow (Explore ?layout=guided). */
+[data-plain-controls] .map-control {
+  border: 1px solid var(--color-border);
+  box-shadow: none;
+}
