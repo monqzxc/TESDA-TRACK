@@ -4,11 +4,19 @@ import type {
   SourceSpecification,
   StyleSpecification,
 } from '@maplibre/maplibre-gl-style-spec'
-import type { Feature, FeatureCollection, LineString, Point, Polygon, Position } from 'geojson'
+import type {
+  Feature,
+  FeatureCollection,
+  LineString,
+  MultiPolygon,
+  Point,
+  Polygon,
+  Position,
+} from 'geojson'
 import type { CenterKind } from '../address.ts'
 import type { Center } from '../centers.ts'
 import type { Reference } from '../useCenters.ts'
-import type { DemandRegions } from '../demandMap.ts'
+import { DEMAND_COLORS, type DemandRegions } from '../demandMap.ts'
 import { PIN_TIP_BELOW, RECOMMENDED_TIP_BELOW, SELECTED_TIP_BELOW } from './markers.ts'
 import type { RouteProperties } from './routing.ts'
 import { FIRST_LABEL_LAYER, type Theme } from './styles.ts'
@@ -27,6 +35,10 @@ export const SOURCES = {
   radius: 'center-radius',
   routes: 'center-routes',
   demand: 'regional-demand',
+  /** The picked place's outline (a region tapped in the results). */
+  place: 'place-outline',
+  /** Where the picked place's centers cluster, as heat. */
+  heat: 'place-heat',
 } as const
 
 export const LAYERS = {
@@ -40,6 +52,8 @@ export const LAYERS = {
   radiusFill: 'center-radius-fill',
   demandFill: 'regional-demand-fill',
   demandLine: 'regional-demand-line',
+  placeLine: 'place-outline-line',
+  heat: 'place-heat',
   /** The routes' lines, which pick their travel mode when clicked. */
   routeLines: [
     'center-route-other-line',
@@ -96,6 +110,10 @@ export interface OverlayData {
   radius: FeatureCollection<Polygon>
   routes: FeatureCollection<LineString, RouteProperties>
   demand?: DemandRegions
+  /** The picked place's shape, outlined. */
+  place?: FeatureCollection<Polygon | MultiPolygon>
+  /** The picked place's centers, drawn as heat. Empty: no heat. */
+  heat?: FeatureCollection<Point>
 }
 
 const collection = <G extends Point | Polygon | LineString, P>(
@@ -108,6 +126,26 @@ export const EMPTY_OVERLAYS: OverlayData = {
   reference: collection(),
   radius: collection(),
   routes: collection(),
+}
+
+/** The centers as bare points for the heat layer: each weighs the same. */
+export function heatPoints(centers: readonly Center[]): FeatureCollection<Point> {
+  return collection(
+    centers.flatMap((center) =>
+      center.latitude === null || center.longitude === null
+        ? []
+        : [
+            {
+              type: 'Feature' as const,
+              properties: {},
+              geometry: {
+                type: 'Point' as const,
+                coordinates: [center.longitude, center.latitude],
+              },
+            },
+          ],
+    ),
+  )
 }
 
 /** The mapped centers as points, leaving out those drawn as selected (so a cluster doesn't count them too). */
@@ -208,6 +246,8 @@ export function overlaySources(data: OverlayData): Record<string, SourceSpecific
       data: data.demand ?? { type: 'FeatureCollection', features: [] },
       attribution: 'Boundaries: PSA / NAMRIA via OCHA · James Faeldon (CC BY-IGO / MIT)',
     },
+    [SOURCES.place]: { type: 'geojson', data: data.place ?? collection() },
+    [SOURCES.heat]: { type: 'geojson', data: data.heat ?? collection() },
     [SOURCES.radius]: { type: 'geojson', data: data.radius },
     // The routing service asks to be credited, with a way to report mistakes in the map it routes on. The credit
     // shows while the route layers do.
@@ -323,6 +363,47 @@ export function overlayLayers(
           'line-color': ['case', ['get', 'selected'], '#175cd3', '#6f6475'],
           'line-width': ['case', ['get', 'selected'], 3, 1],
           'line-opacity': 0.9,
+        },
+      },
+      // Where the picked place's centers cluster: warm where several sit close, fading out alone. Under the labels and
+      // the pins, so it reads as ground, not as markers. It fades as the map zooms in to street level, where the pins
+      // say it better.
+      {
+        id: LAYERS.heat,
+        type: 'heatmap',
+        source: SOURCES.heat,
+        maxzoom: 15,
+        paint: {
+          'heatmap-weight': 1,
+          'heatmap-intensity': ['interpolate', ['linear'], ['zoom'], 5, 0.6, 12, 1.6],
+          'heatmap-radius': ['interpolate', ['linear'], ['zoom'], 5, 18, 9, 34, 13, 60],
+          'heatmap-opacity': ['interpolate', ['linear'], ['zoom'], 12, 0.75, 15, 0],
+          'heatmap-color': [
+            'interpolate',
+            ['linear'],
+            ['heatmap-density'],
+            0,
+            'rgba(255,243,196,0)',
+            0.15,
+            DEMAND_COLORS[0],
+            0.4,
+            DEMAND_COLORS[1],
+            0.7,
+            DEMAND_COLORS[2],
+            1,
+            DEMAND_COLORS[3],
+          ],
+        },
+      },
+      {
+        id: LAYERS.placeLine,
+        type: 'line',
+        source: SOURCES.place,
+        paint: {
+          'line-color': '#175cd3',
+          'line-width': 2.5,
+          'line-opacity': 0.85,
+          'line-dasharray': [3, 2],
         },
       },
       {

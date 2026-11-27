@@ -4,6 +4,7 @@ import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { renderWithAuth } from '../../test/account.tsx'
+import { openCenterList } from '../../test/explore.ts'
 import { server } from '../../test/server.ts'
 import {
   cebuCenter,
@@ -79,6 +80,7 @@ beforeEach(() => {
       ],
     },
   })
+  openCenterList()
   useDemandStore.setState({
     region: undefined,
     scope: undefined,
@@ -127,6 +129,7 @@ describe('Explore center details', () => {
         ],
       },
     })
+    openCenterList()
     renderWithAuth(
       <MemoryRouter initialEntries={['/explore']}>
         <ExplorePage />

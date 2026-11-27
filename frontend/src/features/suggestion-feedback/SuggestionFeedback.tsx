@@ -26,9 +26,12 @@ interface Props {
   scope?: string
   /**
    * A slim strip that sits inside a card: the question, thumbs up and down, and a flag to report. It leaves out the
-   * "this is a suggestion" note, which the list around the cards then shows once.
+   * "this is a suggestion" note, which the list around the cards then shows once. 'report': the report form alone,
+   * open, as a flag button's popover shows it.
    */
-  compact?: boolean | 'inset'
+  compact?: boolean | 'inset' | 'report'
+  /** report: the form was cancelled. */
+  onCancel?: () => void
 }
 
 const receiptKey = (kind: string, key: string, scope?: string, code?: string) =>
@@ -84,12 +87,14 @@ function FeedbackForm({
   qualificationCode,
   goal,
   compact = false,
+  onCancel,
 }: Props & { storageKey: string }) {
+  const reportOnly = compact === 'report'
   const copy = useCopy().suggestionFeedback
   const heading = useId()
   const form = useId()
   const [receipt, setReceipt] = useState(() => readReceipt(storageKey))
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(reportOnly)
   const [reason, setReason] = useState<Reason | null>(null)
   const [consent, setConsent] = useState(false)
   useEffect(() => {
@@ -193,14 +198,22 @@ function FeedbackForm({
       aria-label={resultName}
       className={cx(
         'flex min-w-0 flex-col text-13 text-muted',
-        compact === 'inset'
-          ? 'gap-2 border-t border-rule pt-2.5'
-          : compact
-            ? 'gap-2 border-t border-rule bg-tint/40 px-3 py-2'
-            : 'gap-2 border-t border-rule pt-3',
+        reportOnly
+          ? 'gap-2'
+          : compact === 'inset'
+            ? 'gap-2 border-t border-rule pt-2.5'
+            : compact
+              ? 'gap-2 border-t border-rule bg-tint/40 px-3 py-2'
+              : 'gap-2 border-t border-rule pt-3',
       )}
     >
-      {compact ? (
+      {reportOnly ? (
+        receipt?.report ? (
+          <FeedbackSuccess>{copy.reported}</FeedbackSuccess>
+        ) : (
+          <span className="font-semibold text-ink">{copy.report}</span>
+        )
+      ) : compact ? (
         strip
       ) : (
         <>
@@ -284,10 +297,11 @@ function FeedbackForm({
               className={button({ height: 36, text: 13 })}
               isDisabled={mutation.isPending}
               onPress={() => {
-                setOpen(false)
+                setOpen(reportOnly)
                 setConsent(false)
                 setReason(null)
                 mutation.reset()
+                onCancel?.()
               }}
             >
               {copy.cancel}
