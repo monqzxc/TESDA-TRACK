@@ -9,8 +9,9 @@ describe('focusedOffset', () => {
     const offset = focusedOffset({ height: 600 }, { top: 300, height: 500 })
     expect(300 + offset).toBe(TOP_CLEAR)
   })
-  it('never moves the unit down', () => {
-    expect(focusedOffset({ height: 900 }, { top: 100, height: 200 })).toBe(0)
+  it('moves a tall unit down to the middle', () => {
+    // Docked, a tall open tray reaches near the top: centered, it comes down a little.
+    expect(focusedOffset({ height: 900 }, { top: 56, height: 754 })).toBe(17)
   })
   it('scales a little', () => {
     expect(FOCUS_SCALE).toBe(1.02)

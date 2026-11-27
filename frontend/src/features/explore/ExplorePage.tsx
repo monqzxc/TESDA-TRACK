@@ -591,7 +591,7 @@ export default function ExplorePage() {
     )
 
   // The docked chat's bottom margin, in px, so the map can keep clear of it; and the tray's one line.
-  const dockBottom = tabletUp ? Math.round(window.innerHeight * DOCK_MARGIN) : 12
+  const dockBottom = tabletUp ? Math.round(window.innerHeight * DOCK_MARGIN) : 12 + 56
   const regionName =
     explore.regions.find((region) => region.code === explore.homeRegion)?.name ?? null
   const placeName = reference
@@ -886,7 +886,8 @@ export default function ExplorePage() {
             style={{
               bottom: tabletUp
                 ? `${dockBottom}px`
-                : 'calc(max(12px, env(safe-area-inset-bottom) + 12px) + var(--dock-keyboard, 0px))',
+                : // Above the Help button in the window's bottom corner (52px, and a 4px gap).
+                  'calc(max(12px, env(safe-area-inset-bottom) + 12px) + 56px + var(--dock-keyboard, 0px))',
             }}
             line={<span className="min-w-0 truncate">{dockLine}</span>}
             tray={

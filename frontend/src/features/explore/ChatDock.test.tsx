@@ -9,10 +9,12 @@ function Harness({
   phone = false,
   start = 'docked' as DockMode,
   onSubmit = () => {},
+  onHeight,
 }: {
   phone?: boolean
   start?: DockMode
   onSubmit?: () => void
+  onHeight?: (height: number) => void
 }) {
   const [mode, setMode] = useState<DockMode>(start)
   return (
@@ -22,6 +24,7 @@ function Harness({
         mode={mode}
         onMode={setMode}
         phone={phone}
+        onHeight={onHeight}
         line={<span>7 results</span>}
         tray={
           <div data-testid="tray-scroll" style={{ overflow: 'auto' }}>
@@ -140,6 +143,20 @@ describe('ChatDock', () => {
       await vi.advanceTimersByTimeAsync(130)
     })
     expect(unit().style.transform).toMatch(/translateY\(-?\d/)
+  })
+
+  it('reports only its docked height, for the map', () => {
+    const docked = vi.fn()
+    render(<Harness onHeight={docked} />)
+    expect(docked).toHaveBeenCalled()
+    const focused = vi.fn()
+    render(<Harness start="focused" onHeight={focused} />)
+    expect(focused).not.toHaveBeenCalled()
+  })
+
+  it('focused, it sits above the map buttons', () => {
+    render(<Harness start="focused" />)
+    expect(unit().className).toContain('z-[1001]')
   })
 
   it('phone has no transform', () => {

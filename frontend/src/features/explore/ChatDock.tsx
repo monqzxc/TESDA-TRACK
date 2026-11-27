@@ -44,8 +44,10 @@ export function ChatDock({
   const unit = useRef<HTMLDivElement>(null)
   const drag = useRef<number | null>(null)
   const heard = useRef(onHeight)
+  const isOpen = useRef(mode === 'focused')
   useEffect(() => {
     heard.current = onHeight
+    isOpen.current = mode === 'focused'
   })
   // The unit's docked place and size. offsetTop and offsetHeight ignore transforms, so the move is always worked
   // out from where it rests, even mid-move.
@@ -77,7 +79,8 @@ export function ChatDock({
     const measure = () => {
       setBox({ top: node.offsetTop, height: node.offsetHeight })
       setViewport(window.innerHeight)
-      heard.current?.(node.offsetHeight)
+      // The map keeps clear of the docked unit only: open, it floats over a dimmed map.
+      if (!isOpen.current) heard.current?.(node.offsetHeight)
     }
     measure()
     const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(measure)
@@ -187,7 +190,12 @@ export function ChatDock({
         ref={unit}
         data-testid="chat-dock"
         data-mode={mode}
-        className={cx('pointer-events-auto z-[995] flex flex-col', className)}
+        // Open, above the map's buttons too (on a phone they would sit over the tray); docked, under them.
+        className={cx(
+          'pointer-events-auto flex flex-col',
+          focused ? 'z-[1001]' : 'z-[995]',
+          className,
+        )}
         style={{
           ...style,
           transform: transform || undefined,

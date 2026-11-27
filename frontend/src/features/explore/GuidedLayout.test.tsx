@@ -110,6 +110,13 @@ describe('the guided layout', () => {
     expect(screen.getByTestId('map')).toHaveAttribute('data-route', 'yes')
   })
 
+  it('on a phone the dock sits above the Help button', async () => {
+    mockMediaQueries({})
+    open('/explore?layout=guided')
+    const dock = await screen.findByTestId('chat-dock')
+    expect(dock.style.bottom).toContain('56px')
+  })
+
   it('classic is unchanged', async () => {
     open('/explore?layout=classic')
     expect(await screen.findByRole('button', { name: 'Show less' })).toBeInTheDocument()
