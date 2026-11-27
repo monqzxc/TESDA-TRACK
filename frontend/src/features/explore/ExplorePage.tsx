@@ -690,6 +690,7 @@ export default function ExplorePage() {
       className="relative isolate h-dvh w-full overflow-hidden bg-map-water"
       data-route-intro={intro ?? undefined}
       data-plain-controls={guided || undefined}
+      data-legend-top={guided || undefined}
     >
       <PageHeading className="sr-only">{en.pages.explore.heading}</PageHeading>
       {/* A learner whose TSP profile gives a home area isn't asked: it is the search location (US-0004). */}

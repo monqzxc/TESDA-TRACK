@@ -369,7 +369,7 @@ export default function CenterMapLeaflet(props: CenterMapProps) {
         </Popover>
       </MenuTrigger>
       <div
-        className="intro-piece absolute bottom-[calc(var(--map-overlay-bottom,0px)_+_0.875rem)] left-[calc(var(--map-overlay-inset,0px)_+_4px)] z-800 flex flex-wrap gap-[22px] rounded-14 bg-surface px-[18px] py-[11px] text-[12.5px] text-navy shadow-[0_4px_14px_rgb(var(--track-shadow-rgb)/0.1)] [--intro-order:6] max-sm:gap-3 max-sm:px-3 max-sm:py-[9px] max-sm:text-[11.5px]"
+        className="map-legend-box intro-piece absolute bottom-[calc(var(--map-overlay-bottom,0px)_+_0.875rem)] left-[calc(var(--map-overlay-inset,0px)_+_4px)] z-800 flex flex-wrap gap-[22px] rounded-14 bg-surface px-[18px] py-[11px] text-[12.5px] text-navy shadow-[0_4px_14px_rgb(var(--track-shadow-rgb)/0.1)] [--intro-order:6] max-sm:gap-3 max-sm:px-3 max-sm:py-[9px] max-sm:text-[11.5px]"
         aria-hidden={props.demandAreas ? undefined : true}
       >
         {props.demandAreas ? (

@@ -84,6 +84,10 @@
   --color-good-bg: var(--track-good-bg);
   --color-good-ink: var(--track-good-ink);
   --color-good-fill: var(--track-good-fill);
+  --color-pick: var(--track-pick);
+  --color-pick-bg: var(--track-pick-bg);
+  --color-pick-ink: var(--track-pick-ink);
+  --color-pick-on: var(--track-pick-on);
   --color-scholarship-fill: var(--track-scholarship-fill);
   --color-warn-bg: var(--track-warn-bg);
   --color-warn-ink: var(--track-warn-ink);
@@ -403,4 +407,11 @@
 [data-plain-controls] .map-control {
   border: 1px solid var(--color-border);
   box-shadow: none;
+}
+
+/* The guided Career Map keeps the legend at the top, beside the menu button, clear of the chat dock. */
+[data-legend-top] .map-legend-box {
+  top: 0.875rem;
+  bottom: auto;
+  left: 64px;
 }

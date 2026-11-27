@@ -1480,7 +1480,7 @@ export default function CenterMapLibre(props: CenterMapLibreProps) {
         {threeD && <NorthButton mapRef={mapRef} ready={ready} reducedMotion={reducedMotion} />}
       </div>
 
-      <div className="intro-piece absolute bottom-[calc(var(--map-overlay-bottom,0px)_+_0.875rem)] left-[calc(var(--map-overlay-inset,0px)_+_4px)] z-800 flex flex-col items-start gap-2 [--intro-order:6]">
+      <div className="map-legend-box intro-piece absolute bottom-[calc(var(--map-overlay-bottom,0px)_+_0.875rem)] left-[calc(var(--map-overlay-inset,0px)_+_4px)] z-800 flex flex-col items-start gap-2 [--intro-order:6]">
         {logo && (
           // MapTiler's free plan asks maps that use it to show its logo.
           <a

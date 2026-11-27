@@ -117,6 +117,12 @@ describe('the guided layout', () => {
     expect(dock.style.bottom).toContain('56px')
   })
 
+  it('moves the map legend to the top', async () => {
+    const { container } = open('/explore?layout=guided')
+    await screen.findByTestId('chat-dock')
+    expect(container.querySelector('[data-legend-top]')).not.toBeNull()
+  })
+
   it('classic is unchanged', async () => {
     open('/explore?layout=classic')
     expect(await screen.findByRole('button', { name: 'Show less' })).toBeInTheDocument()

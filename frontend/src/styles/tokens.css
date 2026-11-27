@@ -54,6 +54,10 @@
   --track-good-bg: #e3f5ee;
   --track-good-ink: #11664c;
   --track-good-fill: #12805c; /* solid tags under white text: Strong match */
+  --track-pick: #f5a524; /* TRACK's pick: the gold of a recommended center's star on the map */
+  --track-pick-bg: #fff7e6;
+  --track-pick-ink: #8a5a00;
+  --track-pick-on: #2b1d00; /* text on the solid gold badge */
   --track-scholarship-fill: #6248b3; /* solid tags under white text: Scholarship */
   --track-warn-bg: #fff5df;
   --track-warn-ink: #92601a;
@@ -127,6 +131,10 @@
   --track-good-bg: #0f3a35;
   --track-good-ink: #7be0c8;
   --track-good-fill: #17845f;
+  --track-pick: #f5a524;
+  --track-pick-bg: #33280f;
+  --track-pick-ink: #ffd27a;
+  --track-pick-on: #2b1d00;
   --track-scholarship-fill: #7258d0;
   --track-warn-bg: #3a2c10;
   --track-warn-ink: #f5cf7a;

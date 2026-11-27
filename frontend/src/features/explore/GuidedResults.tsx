@@ -103,7 +103,7 @@ function Check({ ok, best, children }: { ok: boolean; best: boolean; children: R
     <li className={cx('flex items-start gap-2 text-13 leading-[1.45]', ok ? 'text-ink' : 'text-muted')}>
       <span
         aria-hidden="true"
-        className={cx('w-4 flex-none font-bold', ok ? (best ? 'text-good-ink' : 'text-navy') : 'text-muted')}
+        className={cx('w-4 flex-none font-bold', ok ? (best ? 'text-good-ink' : 'text-pick-ink') : 'text-muted')}
       >
         {ok ? '✓' : '○'}
       </span>
@@ -132,8 +132,9 @@ function PickCard({
     <section
       aria-label={best ? copy.best : copy.pick}
       className={cx(
-        'flex flex-col gap-2 rounded-12 bg-surface p-3',
-        best ? 'border-2 border-good-fill' : 'border border-navy',
+        'flex flex-col gap-2 rounded-12 p-3',
+        // The best fit in the app's "strong match" green; TRACK's pick in the gold of its star on the map.
+        best ? 'border-2 border-good-fill bg-surface' : 'border-2 border-pick bg-pick-bg',
         enter.className,
       )}
       style={enter.style}
@@ -141,7 +142,7 @@ function PickCard({
       <span
         className={cx(
           'self-start rounded-full px-2 py-0.5 text-11 leading-tight font-bold',
-          best ? 'bg-good-fill text-white' : 'border border-navy text-navy',
+          best ? 'bg-good-fill text-white' : 'bg-pick text-pick-on',
         )}
       >
         {best ? copy.best : copy.pick}

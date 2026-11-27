@@ -101,6 +101,15 @@ describe('GuidedView', () => {
     expect(screen.getAllByRole('button', { name: 'Look up to 30 km' }).length).toBeGreaterThan(0)
   })
 
+  it('the pick has its own gold, like its star on the map; the best fit stays green', () => {
+    const { rerender } = render(<GuidedView {...props({ played: true })} />)
+    expect(screen.getByRole('region', { name: "TRACK's pick" }).className).toContain('border-pick')
+    rerender(<GuidedView {...props({ played: true, model: model({ pick: pick(true) }) })} />)
+    expect(screen.getByRole('region', { name: '★ Best fit for you' }).className).toContain(
+      'border-good-fill',
+    )
+  })
+
   it('pick becomes best without replaying', () => {
     const { rerender, container } = render(<GuidedView {...props({ played: true })} />)
     rerender(
