@@ -159,6 +159,12 @@ describe('ChatDock', () => {
     expect(unit().className).toContain('z-[1001]')
   })
 
+  it('on a phone the open tray fits above the keyboard', () => {
+    render(<Harness phone start="focused" />)
+    const scroller = screen.getByTestId('tray-scroll').closest('[data-dock-tray]') as HTMLElement
+    expect(scroller.className).toContain('--dock-keyboard')
+  })
+
   it('phone has no transform', () => {
     render(<Harness phone start="focused" />)
     expect(unit().style.transform).toBe('')

@@ -158,6 +158,15 @@ describe('the guided step', () => {
     expect(useExploreStore.getState().picked).toEqual([])
   })
 
+  it('an early tap, then Back, shows the cards in place without replaying', async () => {
+    const user = userEvent.setup()
+    renderPage()
+    // Tapped as soon as the pick shows, before the other groups have appeared.
+    await user.click(await screen.findByRole('button', { name: 'See centers' }, LONG))
+    await user.click(await screen.findByRole('button', { name: 'Back to suggestions' }))
+    expect(screen.getByText('In demand in National Capital Region')).toBeInTheDocument()
+  })
+
   it('back from a considered card', async () => {
     const user = userEvent.setup()
     renderPage()

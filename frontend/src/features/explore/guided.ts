@@ -93,8 +93,9 @@ export function demandSignal(outlook: Outlook | undefined): DemandSignal | null 
   }
 }
 
+// The count is checked too: an older API can still call a handful of records "high" without flagging it limited.
 const inDemand = (signal: DemandSignal | null) =>
-  signal !== null && IN_DEMAND.has(signal.level) && !signal.limited
+  signal !== null && IN_DEMAND.has(signal.level) && !signal.limited && signal.count >= MIN_RECORDS
 
 export function fitsYou(
   match: Match,

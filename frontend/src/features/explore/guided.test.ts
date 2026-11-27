@@ -124,6 +124,9 @@ describe('checksFor', () => {
   it('1-record high is not in demand', () => {
     expect(checksFor(candidate({ demand: { ...HIGH, limited: true, count: 1 } })).demand).toBe(false)
   })
+  it('a stale "high" from fewer than 3 records is not in demand', () => {
+    expect(checksFor(candidate({ demand: { ...HIGH, limited: false, count: 2 } })).demand).toBe(false)
+  })
   it('demand unknown is not in demand', () => {
     expect(checksFor(candidate({ demand: null })).demand).toBe(false)
   })

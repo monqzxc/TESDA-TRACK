@@ -231,9 +231,13 @@ export function ChatDock({
             )}
           >
             <div
+              data-dock-tray
               className={cx(
                 'min-h-0 overflow-y-auto overscroll-contain px-3',
-                phone ? 'max-h-[65dvh]' : 'max-h-[calc(100dvh-16rem)]',
+                // On a phone, what is left above the keyboard, the composer and the bottom margin.
+                phone
+                  ? 'max-h-[min(65dvh,calc(100dvh-var(--dock-keyboard,0px)-15rem))]'
+                  : 'max-h-[calc(100dvh-16rem)]',
               )}
             >
               <div className="pb-3">{tray}</div>

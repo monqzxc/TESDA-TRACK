@@ -76,14 +76,15 @@ describe('guided store', () => {
     expect(store().revealedFor).toBe('drive|DRIVING-NC-II')
   })
 
-  it('guidedBack survives persist, revealedFor does not', () => {
+  it('guidedBack and the played reveal survive persist', () => {
     store().setSearch(search('drive', ['DRIVING-NC-II']))
     store().openConsidered(search('Cookery', ['COOKERY-NC-II']))
     store().markRevealed('drive|DRIVING-NC-II')
     const saved = JSON.parse(sessionStorage.getItem(EXPLORE_KEY) ?? '{}').state
     expect(saved.guidedBack.query).toBe('drive')
     expect(saved.guidedFocus).toEqual({ kind: 'qualification', code: 'COOKERY-NC-II' })
-    expect(saved).not.toHaveProperty('revealedFor')
+    // Back after a refresh shows the cards in place, not a replay.
+    expect(saved.revealedFor).toBe('drive|DRIVING-NC-II')
   })
 })
 

@@ -1,4 +1,4 @@
-import { type CSSProperties, type ReactNode, useCallback } from 'react'
+import { type CSSProperties, type ReactNode, useCallback, useEffect, useState } from 'react'
 import { Button } from 'react-aria-components'
 import { useQuery } from '@tanstack/react-query'
 import { qualificationsQuery } from '../../api/queries.ts'
@@ -54,7 +54,7 @@ export function GuidedView(props: GuidedViewProps) {
   const { model, onRevealed } = props
   const steps: RevealId[] = ['pick', ...model.order]
   const ready: Record<RevealId, boolean> = {
-    pick: model.demand.status !== 'loading',
+    pick: model.pickReady,
     near: true,
     demand: model.demand.status !== 'loading',
     consider: model.consider.status !== 'loading',
@@ -66,11 +66,12 @@ export function GuidedView(props: GuidedViewProps) {
   return (
     <div className="flex flex-col gap-4">
       {shown.has('pick') && model.pick && <PickCard {...props} pick={model.pick} animate={animate} />}
+      {pending === 'pick' && <Skeleton />}
       {model.order.map((id) =>
         shown.has(id) ? (
           <Group key={id} id={id} {...props} animate={animate} />
         ) : pending === id ? (
-          <div key={id} aria-hidden="true" className="h-16 animate-pulse rounded-12 bg-soft" />
+          <Skeleton key={id} />
         ) : null,
       )}
       <p role="status" className="sr-only">
@@ -78,6 +79,11 @@ export function GuidedView(props: GuidedViewProps) {
       </p>
     </div>
   )
+}
+
+/** A loading row in the place of what comes next. */
+function Skeleton() {
+  return <div data-guided-skeleton aria-hidden="true" className="h-16 animate-pulse rounded-12 bg-soft" />
 }
 
 function hasContent(model: GuidedModel, id: RevealId): boolean {
@@ -147,7 +153,9 @@ function PickCard({
             ? relocating
               ? copy.near.yesRelocate(candidate.nearCount)
               : copy.near.yes(nearestKm ?? 0, candidate.nearestName ?? '')
-            : copy.near.no(rangeKm, nearestKm)}
+            : relocating
+              ? copy.near.noneRecorded
+              : copy.near.no(rangeKm, nearestKm)}
           {!checks.near && nearestKm !== null && !relocating && (
             <Button className={cx(smallButton, 'ml-2')} onPress={() => onWiden(widenKm(candidate.nearestKm ?? 0))}>
               {copy.widen(widenKm(candidate.nearestKm ?? 0))}
@@ -341,7 +349,19 @@ export function GuidedResults({
 }) {
   const en = useCopy()
   const model = useGuided(explore)
-  const played = useExploreStore((state) => model.key !== null && state.revealedFor === model.key)
+  // Whether this search's reveal already played, decided when its cards first show: it is marked as played as soon
+  // as it starts, so a remount (Back, a refresh, a distance change mid-reveal) shows the cards in place.
+  const [seenKey, setSeenKey] = useState(model.key)
+  const [played, setPlayed] = useState(
+    () => model.key !== null && useExploreStore.getState().revealedFor === model.key,
+  )
+  if (seenKey !== model.key) {
+    setSeenKey(model.key)
+    setPlayed(model.key !== null && useExploreStore.getState().revealedFor === model.key)
+  }
+  useEffect(() => {
+    if (model.key) useExploreStore.getState().markRevealed(model.key)
+  }, [model.key])
   const catalog = useQuery(qualificationsQuery)
   const onRevealed = useCallback((key: string) => useExploreStore.getState().markRevealed(key), [])
   const firstCode = explore.matches[0]?.qualification.code ?? ''

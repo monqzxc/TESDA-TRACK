@@ -118,7 +118,7 @@ interface ExploreState {
   guidedFocus: GuidedFocus | null
   /** The search to go back to after a "you might consider" card opened its own. */
   guidedBack: Search | null
-  /** The reveal key whose staggered cards already played this visit (not kept across a refresh). */
+  /** The reveal key whose staggered cards already started playing: shown in place from then on, refreshes too. */
   revealedFor: string | null
   /** Opens one matched qualification's centers. */
   openQualification: (code: string) => void
@@ -272,10 +272,13 @@ export const useExploreStore = create<ExploreState>()(
         picked,
         guidedFocus,
         guidedBack,
+        revealedFor,
       }) => ({
         picked,
         guidedFocus,
         guidedBack,
+        // Kept across a refresh, so Back to the cards shows them in place rather than replaying them.
+        revealedFor,
         draft,
         search,
         relocate,

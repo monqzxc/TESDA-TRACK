@@ -28,6 +28,8 @@ export interface GuidedModel {
     area: string | null
   }
   key: string | null
+  /** Every pick candidate's outlook has answered (or failed): the pick shows only then, so it never changes after. */
+  pickReady: boolean
 }
 
 /** The guided step's cards, worked out from what the page already asks for plus each pick candidate's outlook. */
@@ -86,5 +88,6 @@ export function useGuided(explore: Explore): GuidedModel {
     },
     consider: { status: considerStatus, items, area },
     key: revealKey(search),
+    pickReady: outlooks.every((result) => !result.isPending),
   }
 }

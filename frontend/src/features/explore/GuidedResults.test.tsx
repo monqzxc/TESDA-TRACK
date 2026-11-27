@@ -60,6 +60,7 @@ const model = (over: Partial<GuidedModel> = {}): GuidedModel => ({
   },
   consider: { status: 'ready', items: [suggestion], area: 'National Capital Region' },
   key: 'drive|DRIVING-NC-II',
+  pickReady: true,
   ...over,
 })
 
@@ -121,8 +122,10 @@ describe('GuidedView', () => {
 
   it('groups appear in order', async () => {
     vi.useFakeTimers()
+    // As useGuided reports while the outlook is on its way.
     const loading = model({
       demand: { ...model().demand, status: 'loading' },
+      pickReady: false,
     })
     const { rerender } = render(<GuidedView {...props({ model: loading })} />)
     await advance(0)
@@ -260,6 +263,33 @@ describe('GuidedView', () => {
     expect(onRegion).toHaveBeenCalledWith(region())
     await userEvent.click(screen.getByRole('button', { name: /Customer Services NC II/ }))
     expect(onConsider).toHaveBeenCalledWith(suggestion)
+  })
+
+  it('a skeleton holds the place while the pick waits', () => {
+    const { container } = render(
+      <GuidedView {...props({ model: model({ pickReady: false }) })} />,
+    )
+    expect(screen.queryByText("TRACK's pick")).toBeNull()
+    expect(container.querySelector('[data-guided-skeleton]')).not.toBeNull()
+  })
+
+  it('the pick waits for every candidate, so it never changes after it shows', async () => {
+    vi.useFakeTimers()
+    const { rerender } = render(<GuidedView {...props({ model: model({ pickReady: false }) })} />)
+    await advance(600)
+    expect(screen.queryByText("TRACK's pick")).toBeNull()
+    rerender(<GuidedView {...props()} />)
+    await advance(0)
+    expect(screen.getByText("TRACK's pick")).toBeInTheDocument()
+  })
+
+  it('relocating with no center recorded says so, not "Infinity km"', () => {
+    const none = model({
+      pick: { ...pick(false), candidate: { ...pick(false).candidate, nearestKm: null } },
+    })
+    render(<GuidedView {...props({ played: true, rangeKm: Infinity, model: none })} />)
+    expect(screen.getByText('No center recorded for it yet')).toBeInTheDocument()
+    expect(screen.queryByText(/Infinity/)).toBeNull()
   })
 
   it('relocate order puts demand first', () => {

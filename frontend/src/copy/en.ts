@@ -3010,6 +3010,7 @@ export const en = {
       near: {
         yes: (km: number, place: string) => `Near you · ${place}, ${km} km`,
         yesRelocate: (n: number) => `Centers recorded · ${n.toLocaleString()}`,
+        noneRecorded: 'No center recorded for it yet',
         no: (range: number, km: number | null) =>
           km === null ? `Nothing within ${range} km` : `Nothing within ${range} km · nearest ${km} km`,
       },
