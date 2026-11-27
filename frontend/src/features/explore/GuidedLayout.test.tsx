@@ -98,7 +98,7 @@ describe('the guided layout', () => {
     expect(dock).toHaveAttribute('data-mode', 'docked')
   })
 
-  it('a center tap docks and starts the route', async () => {
+  it('a center tap docks without starting the route', async () => {
     const user = userEvent.setup()
     open('/explore?layout=guided')
     const dock = await screen.findByTestId('chat-dock')
@@ -107,7 +107,7 @@ describe('the guided layout', () => {
     const [center] = await within(dock).findAllByRole('button', { name: /Manila Welding Institute/ })
     await user.click(center!)
     expect(dock).toHaveAttribute('data-mode', 'docked')
-    expect(screen.getByTestId('map')).toHaveAttribute('data-route', 'yes')
+    expect(screen.getByTestId('map')).toHaveAttribute('data-route', 'no')
   })
 
   it('on a phone the dock sits above the Help button', async () => {

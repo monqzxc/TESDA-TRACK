@@ -450,8 +450,8 @@ export default function ExplorePage() {
       replace: Boolean(selectedId),
       preventScrollReset: true,
     })
-    // Opening a center draws the way there straight away, when the page can draw routes from somewhere.
-    store().showRoute(canRoute ? id : null)
+    // Opening a center only shows it: the way there is drawn when the learner asks, with Directions.
+    store().showRoute(null)
     setMotion('forward')
     // A center picked on the map opens its card, so a folded panel opens with it. The chat docks: the map shows the way.
     setCollapsed(false)
