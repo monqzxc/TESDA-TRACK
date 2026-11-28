@@ -122,3 +122,63 @@ test('the demo repeats without a pause button and respects reduced motion', asyn
   await expect(box).toHaveAttribute('placeholder', copy.hero.previewQuery)
   await expect(page.locator('.landing-hero-map')).toHaveCSS('animation-name', 'none')
 })
+
+// UI-only session fixture: verify the wider signed-in controls without creating an account or using credentials.
+for (const viewport of [
+  { width: 1440, height: 1000 },
+  { width: 390, height: 844 },
+]) {
+  test(`signed-in navbar keeps navigation and controls separate at ${viewport.width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport)
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.addInitScript(() =>
+      localStorage.setItem('tesda-track.signed-in', 'navbar-layout-test'),
+    )
+    await page.route('**/api/v1/me', (route) =>
+      route.fulfill({
+        json: {
+          id: '6f1c2a52-8b7e-4d3a-9c51-2f0e7a1b3c4d',
+          full_name: 'Manuel Dela Cruz',
+          email: 'manuel@example.com',
+          role: 'learner',
+          created_at: '2026-10-01T08:00:00Z',
+        },
+      }),
+    )
+    await page.goto('/')
+    const header = page.getByRole('banner')
+    await expect(header.getByRole('button', { name: /Manuel/ })).toBeVisible()
+    await expect(header.getByRole('button', { name: copy.openMap, exact: true })).toBeVisible()
+    for (const width of viewport.width > 1000 ? [1440, 1366, 1282] : [390, 375, 320]) {
+      await page.setViewportSize({ width, height: viewport.height })
+      const layout = await header.evaluate((element) => {
+        const boxes = [...element.querySelector(':scope > div')!.children]
+          .map((child) => child.getBoundingClientRect())
+          .filter((box) => box.width && box.height)
+        let overlap = false
+        for (let i = 0; i < boxes.length; i++)
+          for (let j = i + 1; j < boxes.length; j++) {
+            const a = boxes[i],
+              b = boxes[j]
+            if (
+              Math.min(a.right, b.right) - Math.max(a.left, b.left) > 1 &&
+              Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 1
+            )
+              overlap = true
+          }
+        return { overlap, width: document.documentElement.scrollWidth }
+      })
+      expect(layout.overlap).toBe(false)
+      expect(layout.width).toBeLessThanOrEqual(width)
+    }
+    await header.getByRole('button', { name: /Language/ }).click()
+    await expect(page.getByRole('option')).toHaveCount(9)
+    await page.keyboard.press('Escape')
+    await header.getByRole('button', { name: /Manuel/ }).click()
+    await expect(page.getByRole('menu')).toBeVisible()
+    await page.keyboard.press('Escape')
+    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
+  })
+}

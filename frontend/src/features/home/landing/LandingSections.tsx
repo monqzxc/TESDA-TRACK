@@ -39,7 +39,7 @@ export function About() {
             copy.title
           ) : (
             <>
-              <span className="text-[#7b8492] dark:text-[#a2abb8]">
+              <span className="text-[#5a6270] dark:text-[#a2abb8]">
                 {copy.title.slice(0, split)}
               </span>
               {copy.title.slice(split)}

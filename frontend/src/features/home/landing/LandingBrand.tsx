@@ -8,7 +8,7 @@ export function LandingBrand({ compact = false }: { compact?: boolean }) {
     <Link
       to={paths.home}
       aria-label={copy.brand.homeLink}
-      className="mr-auto inline-flex flex-none items-center gap-2.5 text-18 font-medium text-(--l-ink) no-underline"
+      className="mr-auto inline-flex flex-none items-center gap-2.5 font-text text-17 leading-[1.4] font-extrabold tracking-[-0.005em] text-(--l-ink) no-underline"
     >
       <img
         src="/img/landing/tesda-track-logo.png"
@@ -18,7 +18,7 @@ export function LandingBrand({ compact = false }: { compact?: boolean }) {
         className="size-9 object-contain"
       />
       <span aria-hidden="true" className={compact ? 'max-[431px]:hidden' : undefined}>
-        TESDA Track
+        TESDA TRACK
       </span>
     </Link>
   )

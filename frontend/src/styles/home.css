@@ -138,9 +138,9 @@
   --l-map-line: #d3d7de;
 }
 
-/* The landing page uses Bricolage for titles while keeping Inter for running text. */
+/* The landing page uses Inter for both its titles and running text. */
 .landing-page {
-  --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Inter', 'Segoe UI', system-ui, sans-serif;
 }
 
 .landing-hero-map {

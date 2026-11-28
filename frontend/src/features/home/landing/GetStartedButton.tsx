@@ -12,10 +12,12 @@ export function GetStartedButton({
   className,
   arrow = true,
   tone = 'blue',
+  compactOnMobile = false,
 }: {
   className?: string
   arrow?: boolean
   tone?: 'blue' | 'white'
+  compactOnMobile?: boolean
 }) {
   const copy = useCopy()
   const [open, setOpen] = useState(false)
@@ -32,12 +34,16 @@ export function GetStartedButton({
         className={cx(
           'inline-flex min-h-11 flex-none cursor-pointer items-center justify-center gap-2 rounded-full border-0 px-5 py-2 text-center font-text text-14 leading-5 font-medium whitespace-nowrap no-underline hovered:brightness-95',
           tone === 'white' ? 'bg-white text-[#123e80]' : 'bg-[#205fc1] text-white',
+          compactOnMobile && learner && 'max-sm:size-11 max-sm:p-0',
           className,
         )}
       >
-        <span className="block leading-5">
+        <span className={cx('block leading-5', compactOnMobile && learner && 'max-sm:sr-only')}>
           {learner ? copy.landingPage.openMap : copy.landingPage.getStarted}
         </span>
+        {compactOnMobile && learner && (
+          <Icon name="map" size="1.2rem" className="hidden max-sm:block" />
+        )}
         {arrow && <Icon name="arrowRight" size="1rem" />}
       </Button>
       <ModalDialog
