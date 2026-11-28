@@ -66,10 +66,14 @@ export function About() {
         </ul>
         <Link
           to={{ pathname: paths.home, hash: '#how' }}
-          className="inline-flex min-h-11 items-center gap-2 self-start text-14 font-medium text-[#123e80] no-underline hover:underline dark:text-[#a9caff]"
+          className="group inline-flex min-h-11 items-center gap-2 self-start text-14 font-medium text-[#123e80] no-underline hover:underline dark:text-[#a9caff]"
         >
           {copy.action}
-          <Icon name="arrowRight" className="rotate-90" size="1rem" />
+          <Icon
+            name="arrowRight"
+            className="rotate-90 transition-transform duration-200 ease-out motion-safe:group-hover:translate-y-0.5"
+            size="1rem"
+          />
         </Link>
       </div>
     </section>
@@ -125,7 +129,7 @@ export function Perks() {
                 {isQualifications ? (
                   <Link
                     to={paths.qualifications}
-                    className="hover:shadow-lg block h-full rounded-[24px] p-8 text-inherit no-underline transition-shadow focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-focus"
+                    className="group hover:shadow-lg block h-full rounded-[24px] p-8 text-inherit no-underline transition-[box-shadow,translate] duration-300 ease-[cubic-bezier(0.2,0.75,0.2,1)] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-focus motion-safe:hover:-translate-y-1 motion-safe:active:translate-y-0 motion-safe:active:duration-75"
                   >
                     {content}
                   </Link>

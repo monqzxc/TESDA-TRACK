@@ -196,3 +196,58 @@ test('the closing banner offers one Get started action and opens the existing gu
   await dialog.getByRole('button', { name: /Continue as guest/ }).click()
   await expect(page).toHaveURL(/\/explore$/)
 })
+
+test('sections reveal as they scroll in, and the How it works rules draw in order, ending as drawn', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await page.goto('/')
+  const steps = page.locator('#how ol > li')
+  await expect(steps).toHaveCount(copy.howItWorks.steps.length)
+  await expect(steps.first()).toHaveAttribute('data-reveal', 'pending')
+  const delays = await steps.evaluateAll((items) =>
+    items.map((item) => parseInt(item.style.getPropertyValue('--reveal-delay'))),
+  )
+  expect(delays).toEqual([...delays].sort((a, b) => a - b))
+  expect(new Set(delays).size).toBe(delays.length)
+  await page.locator('#how ol').scrollIntoViewIfNeeded()
+  for (const step of await steps.all()) {
+    await expect(step).toHaveAttribute('data-reveal', 'shown')
+    await expect
+      .poll(() => step.evaluate((e) => getComputedStyle(e, '::before').transform))
+      .toMatch(/^(none|matrix\(1, 0, 0, 1, 0, 0\))$/)
+    await expect(step).toHaveCSS('opacity', '1')
+  }
+  await expect(page.locator('#about h2')).toHaveAttribute('data-reveal', /pending|shown/)
+})
+
+test('with reduced motion nothing waits to reveal and every step keeps its own rule', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/')
+  await expect(page.getByRole('heading', { level: 1, name: HEADING })).toBeVisible()
+  await expect(page.locator('[data-reveal]')).toHaveCount(0)
+  for (const step of await page.locator('#how ol > li').all()) {
+    await expect(step).toHaveCSS('border-top-color', 'rgb(32, 95, 193)')
+    expect(await step.evaluate((e) => getComputedStyle(e, '::before').content)).toBe('none')
+  }
+})
+
+for (const reducedMotion of ['no-preference', 'reduce'] as const) {
+  test(`the language menu opens and closes ${reducedMotion === 'reduce' ? 'without' : 'with'} motion`, async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion })
+    await page.goto('/')
+    await page
+      .getByRole('banner')
+      .getByRole('button', { name: /Language/ })
+      .click()
+    const menu = page.getByRole('listbox', { name: 'Language / Wika' }).locator('xpath=..')
+    await expect(menu).toBeVisible()
+    if (reducedMotion === 'reduce') await expect(menu).toHaveCSS('animation-name', 'none')
+    await page.keyboard.press('Escape')
+    await expect(page.getByRole('listbox')).toHaveCount(0)
+  })
+}

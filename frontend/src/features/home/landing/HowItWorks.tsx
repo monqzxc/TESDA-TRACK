@@ -17,7 +17,11 @@ export function HowItWorks() {
         </div>
         <ol className="grid list-none grid-cols-4 gap-8 p-0 max-lg:grid-cols-2 max-sm:grid-cols-1">
           {copy.steps.map((step, i) => (
-            <li key={step.title} className="border-0 border-t-2 border-solid border-[#205fc1] pt-6">
+            <li
+              key={step.title}
+              data-reveal-route
+              className="border-0 border-t-2 border-solid border-(--step-rule,#205fc1) pt-6"
+            >
               <span className="grid size-10 place-items-center rounded-full bg-[#e6eefb] text-14 font-medium text-[#123e80]">
                 {i + 1}
               </span>
