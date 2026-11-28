@@ -253,6 +253,22 @@ describe('the skills list', () => {
     expect(screen.queryByText('Fit pipes')).toBeNull()
   })
 
+  // QA-2026-11-28-NEW3 (US-0005 AC2, US-0011 AC4): without a place, no center is called best; the learner is asked
+  // for a place instead of getting the first center alphabetically.
+  it('Best for you asks for a place, and names no best center, until there is one', async () => {
+    useTrainingStore.setState({ location: null })
+    renderPage()
+    const heading = await screen.findByRole('heading', { name: 'Best for you' }, LONG)
+    const best = within(heading.closest('section')!)
+    expect(
+      best.getByText(
+        'Share your location or type a city to see your best place to train and get assessed.',
+      ),
+    ).toBeInTheDocument()
+    expect(best.queryByText('Best place to train')).toBeNull()
+    expect(best.queryByText('Best place to get assessed')).toBeNull()
+  })
+
   it('Best for you: the place hiring most and the best center, and its Analysis opens in a dialog', async () => {
     const user = userEvent.setup()
     renderPage()

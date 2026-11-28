@@ -3281,6 +3281,9 @@ export const en = {
         demand: 'Most in demand',
         training: 'Best place to train',
         assessment: 'Best place to get assessed',
+        // No place to measure from (US-0005 AC2): no center is called best, the learner is asked for a place.
+        needPlace:
+          'Share your location or type a city to see your best place to train and get assessed.',
         analysis: 'Analysis',
         close: 'Close the analysis',
         // The dialog behind the Analysis button: why each of the three cards was picked, from the same records.

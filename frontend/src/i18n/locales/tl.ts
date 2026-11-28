@@ -2246,4 +2246,6 @@ export const tl: Record<string, string> = {
     'Isang pilot ng TESDA. Mungkahi lamang ang mga tugma: kumpirmahin sa sentro.',
   'Your next TESDA step, on a map near you.':
     'Ang susunod mong hakbang sa TESDA, sa mapa, malapit sa iyo.',
+  'Share your location or type a city to see your best place to train and get assessed.':
+    'Ibahagi ang lokasyon mo o mag-type ng lungsod para makita ang pinakamainam na lugar para magsanay at magpatasa.',
 }

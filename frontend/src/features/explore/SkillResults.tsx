@@ -843,7 +843,9 @@ function BestSection({
   const [open, setOpen] = useState(false)
   const demand = topDemand(explore)
   const { regions, name } = demandPicture(explore)
-  if (!demand && !training && !assessment) return null
+  // Without a place there is nothing to measure from, so no center is called best (QA-2026-11-28-NEW3).
+  const needPlace = !explore.reference
+  if (!demand && !training && !assessment && !needPlace) return null
   const canAnalyse = Boolean(explore.demandCode && explore.outlook.data)
   return (
     <section className="flex flex-col gap-2">
@@ -858,6 +860,17 @@ function BestSection({
               pick={best.demand}
               onArea={onArea}
             />
+          </li>
+        )}
+        {needPlace && (
+          <li>
+            <p
+              role="status"
+              className="m-0 flex items-start gap-2 rounded-12 border border-border bg-surface p-3 text-13 leading-[1.5] text-ink"
+            >
+              <Icon name="pin" className="mt-0.5 flex-none text-blue" />
+              {best.needPlace}
+            </p>
           </li>
         )}
         {training && (
@@ -951,8 +964,8 @@ export function SkillResults({
       {view === 'all' && (
         <BestSection
           explore={explore}
-          training={training[0]}
-          assessment={assessment[0]}
+          training={explore.reference ? training[0] : undefined}
+          assessment={explore.reference ? assessment[0] : undefined}
           onSelect={onSelect}
           onArea={onArea}
         />
