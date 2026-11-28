@@ -136,11 +136,14 @@
   --l-green-soft: #e9f6ee;
   --l-map: #e9ebef;
   --l-map-line: #d3d7de;
+  /* Motion: things arriving settle quickly (ease-out); the route rule accelerates and eases in like a line drawn. */
+  --landing-ease-out: cubic-bezier(0.2, 0.75, 0.2, 1);
+  --landing-ease-route: cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* The landing page uses Bricolage for titles while keeping Inter for running text. */
+/* The landing page uses Inter for both its titles and running text. */
 .landing-page {
-  --font-display: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+  --font-display: 'Inter', 'Segoe UI', system-ui, sans-serif;
 }
 
 .landing-hero-map {
@@ -283,14 +286,16 @@
     animation: landing-card-float 6s ease-in-out infinite;
   }
 
+  /* Scroll reveals (useScrollReveals, features/home/landing/motion.ts): a short rise as each heading block and its
+     items come into view, siblings one after another (--reveal-delay). Anything focused shows at once. */
   .landing [data-reveal] {
     transition:
-      opacity 550ms ease-out var(--reveal-delay, 0ms),
-      transform 550ms cubic-bezier(0.2, 0.7, 0.2, 1) var(--reveal-delay, 0ms);
+      opacity 480ms var(--landing-ease-out) var(--reveal-delay, 0ms),
+      transform 620ms var(--landing-ease-out) var(--reveal-delay, 0ms);
   }
   .landing [data-reveal='pending'] {
     opacity: 0;
-    transform: translateY(22px);
+    transform: translateY(12px);
   }
   .landing [data-reveal='shown'],
   .landing [data-reveal]:focus-within {
@@ -298,8 +303,38 @@
     transform: none;
   }
 
+  /* How it works: each step's top rule draws from left to right, step after step, like a route being traced. The
+     rule is redrawn over the step's own 2px border, which waits in the grey line color (through --step-rule, since
+     the utilities outrank this layer), so once drawn the step looks exactly as it does without motion. */
+  .landing [data-reveal-route][data-reveal] {
+    position: relative;
+    --step-rule: var(--l-line);
+  }
+  .landing [data-reveal-route][data-reveal]::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #205fc1;
+    transform-origin: left center;
+    transition: transform 700ms var(--landing-ease-route) calc(var(--reveal-delay, 0ms) + 80ms);
+  }
+  .landing [data-reveal-route][data-reveal='pending']::before {
+    transform: scaleX(0);
+  }
+  .landing [data-reveal-route][data-reveal='shown']::before,
+  .landing [data-reveal-route][data-reveal]:focus-within::before {
+    transform: none;
+  }
+
   .landing[data-motion-paused] [data-reveal] {
     opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .landing[data-motion-paused] [data-reveal]::before {
     transform: none;
     transition: none;
   }

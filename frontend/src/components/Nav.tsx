@@ -122,7 +122,8 @@ export function SidebarTitle({
       onClick={onNavigate}
       className={cx(
         'rounded-8 px-1.5 py-1 text-16 font-bold tracking-[0.01em] whitespace-nowrap text-navy no-underline hover:bg-soft focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus',
-        refreshed && 'inline-flex min-w-0 items-center gap-2 font-text font-medium tracking-normal',
+        refreshed &&
+          'inline-flex min-w-0 items-center gap-2 font-text text-17 leading-[1.4] font-extrabold tracking-[-0.005em]',
       )}
     >
       {refreshed && (
@@ -134,7 +135,7 @@ export function SidebarTitle({
           className="size-8 flex-none object-contain"
         />
       )}
-      {refreshed ? en.brand.name : en.nav.title}
+      {refreshed ? en.brand.name.toUpperCase() : en.nav.title}
     </Link>
   )
 }

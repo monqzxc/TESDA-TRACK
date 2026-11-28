@@ -122,3 +122,132 @@ test('the demo repeats without a pause button and respects reduced motion', asyn
   await expect(box).toHaveAttribute('placeholder', copy.hero.previewQuery)
   await expect(page.locator('.landing-hero-map')).toHaveCSS('animation-name', 'none')
 })
+
+// UI-only session fixture: verify the wider signed-in controls without creating an account or using credentials.
+for (const viewport of [
+  { width: 1440, height: 1000 },
+  { width: 390, height: 844 },
+]) {
+  test(`signed-in navbar keeps navigation and controls separate at ${viewport.width}px`, async ({
+    page,
+  }) => {
+    await page.setViewportSize(viewport)
+    await page.emulateMedia({ reducedMotion: 'reduce' })
+    await page.addInitScript(() =>
+      localStorage.setItem('tesda-track.signed-in', 'navbar-layout-test'),
+    )
+    await page.route('**/api/v1/me', (route) =>
+      route.fulfill({
+        json: {
+          id: '6f1c2a52-8b7e-4d3a-9c51-2f0e7a1b3c4d',
+          full_name: 'Manuel Dela Cruz',
+          email: 'manuel@example.com',
+          role: 'learner',
+          created_at: '2026-10-01T08:00:00Z',
+        },
+      }),
+    )
+    await page.goto('/')
+    const header = page.getByRole('banner')
+    await expect(header.getByRole('button', { name: /Manuel/ })).toBeVisible()
+    await expect(header.getByRole('button', { name: copy.openMap, exact: true })).toBeVisible()
+    for (const width of viewport.width > 1000 ? [1440, 1366, 1282] : [390, 375, 320]) {
+      await page.setViewportSize({ width, height: viewport.height })
+      const layout = await header.evaluate((element) => {
+        const boxes = [...element.querySelector(':scope > div')!.children]
+          .map((child) => child.getBoundingClientRect())
+          .filter((box) => box.width && box.height)
+        let overlap = false
+        for (let i = 0; i < boxes.length; i++)
+          for (let j = i + 1; j < boxes.length; j++) {
+            const a = boxes[i],
+              b = boxes[j]
+            if (
+              Math.min(a.right, b.right) - Math.max(a.left, b.left) > 1 &&
+              Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > 1
+            )
+              overlap = true
+          }
+        return { overlap, width: document.documentElement.scrollWidth }
+      })
+      expect(layout.overlap).toBe(false)
+      expect(layout.width).toBeLessThanOrEqual(width)
+    }
+    await header.getByRole('button', { name: /Language/ }).click()
+    await expect(page.getByRole('option')).toHaveCount(9)
+    await page.keyboard.press('Escape')
+    await header.getByRole('button', { name: /Manuel/ }).click()
+    await expect(page.getByRole('menu')).toBeVisible()
+    await page.keyboard.press('Escape')
+    expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
+  })
+}
+
+test('the closing banner offers one Get started action and opens the existing guest flow', async ({
+  page,
+}) => {
+  await page.goto('/')
+  const banner = page.getByRole('region', { name: copy.closing.title, exact: true })
+  await expect(banner.getByRole('button')).toHaveCount(1)
+  await expect(banner.getByRole('link')).toHaveCount(0)
+  await banner.getByRole('button', { name: copy.getStarted, exact: true }).click()
+  const dialog = page.getByRole('dialog', { name: copy.getStarted, exact: true })
+  await expect(dialog.getByRole('button', { name: /Sign in with TSP/ })).toBeVisible()
+  await dialog.getByRole('button', { name: /Continue as guest/ }).click()
+  await expect(page).toHaveURL(/\/explore$/)
+})
+
+test('sections reveal as they scroll in, and the How it works rules draw in order, ending as drawn', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  await page.goto('/')
+  const steps = page.locator('#how ol > li')
+  await expect(steps).toHaveCount(copy.howItWorks.steps.length)
+  await expect(steps.first()).toHaveAttribute('data-reveal', 'pending')
+  const delays = await steps.evaluateAll((items) =>
+    items.map((item) => parseInt(item.style.getPropertyValue('--reveal-delay'))),
+  )
+  expect(delays).toEqual([...delays].sort((a, b) => a - b))
+  expect(new Set(delays).size).toBe(delays.length)
+  await page.locator('#how ol').scrollIntoViewIfNeeded()
+  for (const step of await steps.all()) {
+    await expect(step).toHaveAttribute('data-reveal', 'shown')
+    await expect
+      .poll(() => step.evaluate((e) => getComputedStyle(e, '::before').transform))
+      .toMatch(/^(none|matrix\(1, 0, 0, 1, 0, 0\))$/)
+    await expect(step).toHaveCSS('opacity', '1')
+  }
+  await expect(page.locator('#about h2')).toHaveAttribute('data-reveal', /pending|shown/)
+})
+
+test('with reduced motion nothing waits to reveal and every step keeps its own rule', async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/')
+  await expect(page.getByRole('heading', { level: 1, name: HEADING })).toBeVisible()
+  await expect(page.locator('[data-reveal]')).toHaveCount(0)
+  for (const step of await page.locator('#how ol > li').all()) {
+    await expect(step).toHaveCSS('border-top-color', 'rgb(32, 95, 193)')
+    expect(await step.evaluate((e) => getComputedStyle(e, '::before').content)).toBe('none')
+  }
+})
+
+for (const reducedMotion of ['no-preference', 'reduce'] as const) {
+  test(`the language menu opens and closes ${reducedMotion === 'reduce' ? 'without' : 'with'} motion`, async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion })
+    await page.goto('/')
+    await page
+      .getByRole('banner')
+      .getByRole('button', { name: /Language/ })
+      .click()
+    const menu = page.getByRole('listbox', { name: 'Language / Wika' }).locator('xpath=..')
+    await expect(menu).toBeVisible()
+    if (reducedMotion === 'reduce') await expect(menu).toHaveCSS('animation-name', 'none')
+    await page.keyboard.press('Escape')
+    await expect(page.getByRole('listbox')).toHaveCount(0)
+  })
+}

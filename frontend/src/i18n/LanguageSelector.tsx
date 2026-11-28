@@ -33,26 +33,26 @@ export function LanguageSelector({
         className="w-40 min-w-0 font-text max-[431px]:w-32"
       >
         <Label className="sr-only">Language / Wika</Label>
-        <Button className="group flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-full border border-(--l-line) bg-(--l-surface) px-3.5 py-2 text-left font-text text-14 leading-5 font-medium text-(--l-ink) transition-colors focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus hovered:border-(--l-navy) hovered:bg-(--l-panel)">
+        <Button className="group flex min-h-11 w-full cursor-pointer items-center gap-2 rounded-full border border-(--l-line) bg-(--l-surface) px-3.5 py-2 text-left font-text text-14 leading-5 font-medium text-(--l-ink) transition-colors duration-150 ease-out focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-focus hovered:border-(--l-navy) hovered:bg-(--l-panel)">
           <Icon name="globe" size="1.125rem" className="flex-none" />
           <SelectValue className="min-w-0 flex-1 truncate" />
           <Icon
             name="chevron"
             size="0.9rem"
-            className="flex-none transition-transform group-data-pressed:rotate-180"
+            className="flex-none transition-transform duration-200 ease-[cubic-bezier(0.2,0.75,0.2,1)] group-data-pressed:rotate-180 motion-reduce:transition-none"
           />
         </Button>
         <Popover
           placement="bottom end"
           offset={8}
-          className="landing z-100 max-h-[min(28rem,var(--available-height))] w-[208px] max-w-[calc(100vw-32px)] overflow-auto rounded-16 border border-(--l-line) bg-(--l-surface) p-1.5 font-text shadow-[0_12px_32px_-8px_rgb(15_30_55/0.24)]"
+          className="landing z-100 max-h-[min(28rem,var(--available-height))] w-[208px] max-w-[calc(100vw-32px)] origin-top-right overflow-auto rounded-16 border border-(--l-line) bg-(--l-surface) p-1.5 font-text shadow-[0_12px_32px_-8px_rgb(15_30_55/0.24)] motion-safe:data-entering:animate-pop motion-safe:data-exiting:animate-fade-out"
         >
           <ListBox aria-label="Language / Wika" className="outline-none" items={languages}>
             {({ code, name }) => (
               <ListBoxItem
                 id={code}
                 textValue={name.split(' / ')[0]}
-                className="flex min-h-11 cursor-pointer items-center justify-between gap-4 rounded-10 px-3 py-2 text-14 leading-5 text-(--l-ink) outline-none data-focus-visible:outline-2 data-focus-visible:-outline-offset-2 data-focus-visible:outline-focus data-focused:bg-(--l-panel) data-hovered:bg-(--l-panel) data-selected:bg-(--l-navy-soft) data-selected:font-semibold data-selected:text-(--l-navy)"
+                className="flex min-h-11 cursor-pointer items-center justify-between gap-4 rounded-10 px-3 py-2 text-14 leading-5 text-(--l-ink) transition-colors duration-100 ease-out outline-none data-focus-visible:outline-2 data-focus-visible:-outline-offset-2 data-focus-visible:outline-focus data-focused:bg-(--l-panel) data-hovered:bg-(--l-panel) data-selected:bg-(--l-navy-soft) data-selected:font-semibold data-selected:text-(--l-navy)"
               >
                 {({ isSelected }) => (
                   <>
