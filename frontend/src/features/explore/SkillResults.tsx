@@ -441,12 +441,62 @@ function AreaButton({
   )
 }
 
+/**
+ * Signed in: qualifications that fit the learner's Skill Passport skills (Kuya Manuel's Driving and Cooking) that the
+ * search did not show, each a search of its own on press. A guest has no passport, so nothing is shown.
+ */
+function SkillPicks({
+  explore,
+  onQualification,
+}: {
+  explore: Explore
+  onQualification: (code: string, name: string) => void
+}) {
+  const copy = useCopy().explore.skillList.work.also
+  if (explore.passportStatus !== 'loaded' || !explore.skillPicks.length) return null
+  return (
+    <div role="group" aria-label={copy.heading} className="flex flex-col gap-2 pt-1">
+      <p className="m-0 flex items-center gap-1.5 text-12 font-bold text-navy">
+        <Icon name="lightbulb" size="0.9rem" className={sectionTone.work.ink} />
+        {copy.heading}
+      </p>
+      <ul className="m-0 flex list-none flex-col gap-2 p-0">
+        {explore.skillPicks.map(({ skill, qualification }) => (
+          <li key={qualification.code}>
+            <Button
+              aria-label={copy.open(qualification.name)}
+              onPress={() => onQualification(qualification.code, qualification.name)}
+              className={cx(
+                'flex w-full cursor-pointer items-center justify-between gap-2 rounded-12 border border-dashed p-2.5 text-left',
+                'border-[#b45309]/40 bg-surface transition-colors duration-150 data-hovered:border-navy',
+                'data-focus-visible:outline-3 data-focus-visible:outline-focus',
+              )}
+            >
+              <span className="min-w-0">
+                <span className="block text-13 leading-[1.35] font-bold text-navy">
+                  {qualification.name}
+                </span>
+                <span className="block text-11 leading-[1.4] text-muted">
+                  {copy.because(skill)}
+                </span>
+              </span>
+              <Icon name="arrowRight" size="0.9rem" className="flex-none text-muted" />
+            </Button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
+}
+
 function WorkSection({
   explore,
   onArea,
+  onQualification,
 }: {
   explore: Explore
   onArea: (regionCode: string) => void
+  onQualification: (code: string, name: string) => void
 }) {
   const copy = useCopy().explore.skillList.work
   const outlook = explore.outlook
@@ -506,6 +556,7 @@ function WorkSection({
           {data.demand_is_sample && <p className="m-0 text-11 text-muted">{copy.modelled}</p>}
         </>
       )}
+      <SkillPicks explore={explore} onQualification={onQualification} />
     </section>
   )
 }
@@ -617,12 +668,15 @@ export function SkillResults({
   onView,
   onSelect,
   onArea,
+  onQualification,
 }: {
   explore: Explore
   view: View
   onView: (view: View) => void
   onSelect: (id: string, code: string) => void
   onArea: (regionCode: string) => void
+  /** A qualification suggested from the learner's skills, searched as one chosen from the library. */
+  onQualification: (code: string, name: string) => void
 }) {
   const copy = useCopy().explore.results
   const { matches, centers, search } = explore
@@ -657,7 +711,9 @@ export function SkillResults({
         <CenterSection tone="assessment" rows={assessment} onSelect={onSelect} />
       )}
       {view === 'all' && <CenterSection tone="both" rows={both} onSelect={onSelect} />}
-      {(view === 'all' || view === 'demand') && <WorkSection explore={explore} onArea={onArea} />}
+      {(view === 'all' || view === 'demand') && (
+        <WorkSection explore={explore} onArea={onArea} onQualification={onQualification} />
+      )}
     </div>
   )
 }

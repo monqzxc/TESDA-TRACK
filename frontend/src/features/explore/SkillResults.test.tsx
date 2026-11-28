@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { MemoryRouter } from 'react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { renderWithAuth } from '../../test/account.tsx'
+import { rememberSignIn, renderWithAuth, serveAccountApi } from '../../test/account.tsx'
 import { server } from '../../test/server.ts'
 import { manilaInstitute, REGIONS, weldingProgram } from '../../test/training.ts'
 import type { CenterMapProps } from '../training/CenterMapTypes.ts'
@@ -289,5 +289,70 @@ describe('the skills list', () => {
     await waitFor(() =>
       expect(screen.queryByRole('article', { name: 'Manila Welding Institute' })).toBeNull(),
     )
+  })
+})
+
+describe('based on your skills, you can also try', () => {
+  // Kuya Manuel (US-0004): his Skill Passport says Driving and Cooking, whatever he searched for.
+  const DRIVING = { code: 'DRV-NCII', name: 'Driving NC II', sector: 'Automotive' }
+  function serveManuel() {
+    rememberSignIn()
+    serveAccountApi({ signedIn: true })
+    server.use(
+      http.get('*/api/v1/auth/tsp/profile', () =>
+        HttpResponse.json({
+          skills: ['Driving', 'Cooking'],
+          experience: ['Jeepney driver'],
+          education: [],
+          qualifications: [],
+          credentials: [],
+          licenses: [],
+          municipality: 'Caloocan City',
+          province: 'Metro Manila',
+          region_code: 'NCR',
+          sample: true,
+        }),
+      ),
+      http.post('*/api/v1/analysis/matches', async ({ request }) => {
+        const { query } = (await request.json()) as { query: string }
+        // The search's own qualification comes first for Driving, so the next one is suggested.
+        const matches =
+          query === 'Driving'
+            ? [WELDING, DRIVING].map((qualification) => ({ qualification, score: 70, reason: '' }))
+            : [{ qualification: COOKERY, score: 75, reason: '' }]
+        return HttpResponse.json({ profile: { intent: 'training_recommendation' }, matches })
+      }),
+    )
+  }
+
+  it('signed in, suggests a qualification per Skill Passport skill that the search did not show', async () => {
+    const user = userEvent.setup()
+    serveManuel()
+    renderPage()
+    const group = within(
+      await screen.findByRole('group', { name: 'Based on your skills, you can also try' }, LONG),
+    )
+    expect(
+      await group.findByRole('button', { name: 'Cookery NC II: see centers and demand' }, LONG),
+    ).toBeInTheDocument()
+    expect(group.getByText('Because you can: Cooking')).toBeInTheDocument()
+    expect(
+      group.getByRole('button', { name: 'Driving NC II: see centers and demand' }),
+    ).toBeInTheDocument()
+    expect(group.queryByText(WELDING.name)).toBeNull()
+    await user.click(group.getByRole('button', { name: 'Cookery NC II: see centers and demand' }))
+    await waitFor(() =>
+      expect(useExploreStore.getState().search?.result.matches[0]?.qualification.code).toBe(
+        COOKERY.code,
+      ),
+    )
+  })
+
+  it('shows nothing for a guest', async () => {
+    renderPage()
+    await screen.findByText('Near you (National Capital Region): high demand', {}, LONG)
+    expect(
+      screen.queryByRole('group', { name: 'Based on your skills, you can also try' }),
+    ).toBeNull()
   })
 })

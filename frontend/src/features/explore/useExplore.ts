@@ -4,7 +4,7 @@ import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { qualificationsQuery, regionsQuery } from '../../api/queries.ts'
 import { AuthContext } from '../../auth/useAuth.ts'
-import type { MatchResult } from '../finder/api.ts'
+import { matchesQuery, type MatchResult } from '../finder/api.ts'
 import { sessionStore } from '../../lib/sessionStore.ts'
 import {
   ASSESS_FIRST,
@@ -148,6 +148,15 @@ export type GuidedFocus =
       regionCode: string
       previous: { rangeKm: number; relocate: boolean }
     }
+
+/** At most this many Skill Passport skills are matched for "you can also try". */
+const SKILL_PICKS = 3
+
+/** A qualification suggested from one of the learner's Skill Passport skills. */
+export interface SkillPick {
+  skill: string
+  qualification: MatchResult['matches'][number]['qualification']
+}
 
 /** A search for one qualification chosen by name (from the library, a card, or a suggestion), not read from words. */
 export function chosenSearch(
@@ -604,6 +613,43 @@ export function useExplore(
     enabled: Boolean(demandCode && automaticRegion),
     placeholderData: keepPreviousData,
   })
+  // "Based on your skills, you can also try": signed in, each Skill Passport skill matched on its own (Manuel's
+  // Driving and Cooking), whatever the search was, so the list is not only about the words typed. The best match per
+  // skill that the search did not already show and the learner does not already hold.
+  const passportSkills = useMemo(
+    () =>
+      [
+        ...new Set((passport.data?.skills ?? []).map((skill) => skill.trim()).filter(Boolean)),
+      ].slice(0, SKILL_PICKS),
+    [passport.data],
+  )
+  const skillPicks = useQueries({
+    queries: passportSkills.map((skill) => ({
+      ...matchesQuery(
+        skill,
+        { intent: 'training_recommendation', existing_skills: [skill] },
+        'skills',
+      ),
+      enabled: Boolean(search && learner && passport.data),
+    })),
+    combine: (results) => {
+      const shown = new Set(search?.result.matches.map((match) => match.qualification.code) ?? [])
+      const owned = new Set((passport.data?.qualifications ?? []).map((item) => item.toLowerCase()))
+      const picks: SkillPick[] = []
+      results.forEach((result, i) => {
+        const match = result.data?.matches.find(
+          ({ qualification }) =>
+            !shown.has(qualification.code) &&
+            !owned.has(qualification.code.toLowerCase()) &&
+            !owned.has(qualification.name.toLowerCase()) &&
+            !picks.some((pick) => pick.qualification.code === qualification.code),
+        )
+        if (match)
+          picks.push({ skill: passportSkills[i] as string, qualification: match.qualification })
+      })
+      return picks
+    },
+  })
   const alternatives = outlook.data?.alternatives
   // Strong demand moves a center up the ranking; while the outlook loads, the ranking is by trip alone.
   const outlookAreas = outlook.data?.qualification.code === demandCode ? outlook.data : undefined
@@ -749,6 +795,8 @@ export function useExplore(
     outlook,
     summary,
     nearby,
+    /** Signed in: one qualification per Skill Passport skill that the search did not show. */
+    skillPicks,
     supply,
     /** The picked region and province (the address's filters), or null for each. */
     place: placeFiltered ? { regionCode: regionFilter, province: provinceFilter } : null,

@@ -3310,6 +3310,12 @@ export const en = {
         levelWord: { high: 'high', moderate: 'some', low: 'low', none: 'no' },
         modelled: 'Modelled demand, not job posts.',
         open: (place: string) => `${place}: show on the map`,
+        // Signed in: one qualification per Skill Passport skill, beyond what was searched.
+        also: {
+          heading: 'Based on your skills, you can also try',
+          because: (skill: string) => `Because you can: ${skill}`,
+          open: (name: string) => `${name}: see centers and demand`,
+        },
       },
     },
   },

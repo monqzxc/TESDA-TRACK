@@ -702,6 +702,7 @@ export default function ExplorePage() {
               useDemandStore.getState().setRegion(code)
               changeView('demand')
             }}
+            onQualification={chooseQualification}
           />
         ) : search ? (
           <ResultsPanel
