@@ -1,12 +1,11 @@
-import { Button } from 'react-aria-components'
 import { Link } from 'react-router'
-import { useAuth } from '../../../auth/useAuth.ts'
 import { Icon } from '../../../components/Icon.tsx'
 import type { IconName } from '../../../components/icons.ts'
 import { useCopy } from '../../../i18n/copy.ts'
 import { paths } from '../../../paths.ts'
 import { cx } from '../../../lib/style.ts'
 import { wrap, section, kicker, sectionTitle } from './styles.ts'
+import { GetStartedButton } from './GetStartedButton.tsx'
 
 const ABOUT_ICONS: IconName[] = ['learn', 'award', 'briefcase']
 const CARD_ICONS = [
@@ -144,7 +143,6 @@ export function Perks() {
 
 export function Closing() {
   const copy = useCopy().landingPage
-  const { learner, openSignIn } = useAuth()
   return (
     <section aria-labelledby="closing-title" className={cx(section, 'bg-(--l-surface)')}>
       <div className={wrap}>
@@ -158,24 +156,7 @@ export function Closing() {
             </h2>
             <p className="mt-4 text-18 leading-[1.6] text-white/85">{copy.closing.lead}</p>
           </div>
-          <div className="flex flex-wrap gap-3">
-            <Link
-              to={paths.explore}
-              state={{ focusSearch: true }}
-              className="inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-5 py-3 text-14 text-[#123e80] no-underline"
-            >
-              {copy.hero.submit}
-              <Icon name="arrowRight" size="1rem" />
-            </Link>
-            {!learner && (
-              <Button
-                onPress={() => openSignIn({ tsp: true })}
-                className="min-h-11 cursor-pointer rounded-full border border-white/50 bg-transparent px-5 py-3 text-14 text-white hovered:bg-white/10"
-              >
-                {copy.tsp.title}
-              </Button>
-            )}
-          </div>
+          <GetStartedButton tone="white" arrow={false} label={copy.getStarted} />
         </div>
       </div>
     </section>

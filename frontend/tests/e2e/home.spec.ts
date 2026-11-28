@@ -182,3 +182,17 @@ for (const viewport of [
     expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([])
   })
 }
+
+test('the closing banner offers one Get started action and opens the existing guest flow', async ({
+  page,
+}) => {
+  await page.goto('/')
+  const banner = page.getByRole('region', { name: copy.closing.title, exact: true })
+  await expect(banner.getByRole('button')).toHaveCount(1)
+  await expect(banner.getByRole('link')).toHaveCount(0)
+  await banner.getByRole('button', { name: copy.getStarted, exact: true }).click()
+  const dialog = page.getByRole('dialog', { name: copy.getStarted, exact: true })
+  await expect(dialog.getByRole('button', { name: /Sign in with TSP/ })).toBeVisible()
+  await dialog.getByRole('button', { name: /Continue as guest/ }).click()
+  await expect(page).toHaveURL(/\/explore$/)
+})

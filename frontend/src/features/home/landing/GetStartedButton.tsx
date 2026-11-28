@@ -10,11 +10,13 @@ import { cx } from '../../../lib/style.ts'
 
 export function GetStartedButton({
   className,
+  label,
   arrow = true,
   tone = 'blue',
   compactOnMobile = false,
 }: {
   className?: string
+  label?: string
   arrow?: boolean
   tone?: 'blue' | 'white'
   compactOnMobile?: boolean
@@ -39,7 +41,7 @@ export function GetStartedButton({
         )}
       >
         <span className={cx('block leading-5', compactOnMobile && learner && 'max-sm:sr-only')}>
-          {learner ? copy.landingPage.openMap : copy.landingPage.getStarted}
+          {label ?? (learner ? copy.landingPage.openMap : copy.landingPage.getStarted)}
         </span>
         {compactOnMobile && learner && (
           <Icon name="map" size="1.2rem" className="hidden max-sm:block" />
