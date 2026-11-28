@@ -228,6 +228,31 @@ describe('the skills list', () => {
     expect(screen.getByRole('button', { name: 'Demand', pressed: true })).toBeInTheDocument()
   })
 
+  it('folds many skills to one row, with the rest a press away', async () => {
+    const skills = ['Weld plates', 'Cut metal', 'Read blueprints', 'Grind joints', 'Fit pipes']
+    useExploreStore.getState().setSearch({
+      query: 'I can weld',
+      result: {
+        profile: { intent: 'training_recommendation' },
+        skills,
+        matches: [{ qualification: WELDING, score: 80, reason: 'Matched your words: weld' }],
+      },
+    } as never)
+    const user = userEvent.setup()
+    renderPage()
+    expect(await screen.findByText('Weld plates')).toHaveAttribute('title', 'Weld plates')
+    expect(screen.getByText('Read blueprints')).toBeInTheDocument()
+    expect(screen.queryByText('Grind joints')).toBeNull()
+    const more = screen.getByRole('button', { name: 'Show 2 more skills' })
+    expect(more).toHaveAttribute('aria-expanded', 'false')
+    expect(more).toHaveTextContent('+2 more')
+    await user.click(more)
+    expect(screen.getByText('Grind joints')).toBeInTheDocument()
+    expect(screen.getByText('Fit pipes')).toBeInTheDocument()
+    await user.click(screen.getByRole('button', { name: 'Show fewer skills' }))
+    expect(screen.queryByText('Fit pipes')).toBeNull()
+  })
+
   it('Best for you: the place hiring most and the best center, and its Analysis opens in a dialog', async () => {
     const user = userEvent.setup()
     renderPage()
@@ -249,8 +274,28 @@ describe('the skills list', () => {
       screen.getByRole('heading', { name: 'Best for you' }).closest('section')!,
     )
     await user.click(await section.findByRole('button', { name: 'Analysis' }, LONG))
-    const dialog = await screen.findByRole('dialog')
-    expect(within(dialog).getByText('Welding in Metro Manila')).toBeInTheDocument()
+    const dialog = await screen.findByRole('dialog', { name: 'Why these are best for you' })
+    // The dialog explains the same cards the list shows, each with its reasons.
+    const demand = within(
+      within(dialog).getByRole('region', { name: 'Most in demand: National Capital Region' }),
+    )
+    expect(demand.getByText('20 job records')).toBeInTheDocument()
+    expect(demand.getByText('#1 of 2 regions')).toBeInTheDocument()
+    expect(
+      demand.getByText(/your own area \(National Capital Region\), and employers here are hiring/),
+    ).toBeInTheDocument()
+    expect(
+      demand.getByText('It holds 69% of all 29 posting records: #1 of 2 regions.'),
+    ).toBeInTheDocument()
+    const train = within(
+      within(dialog).getByRole('region', {
+        name: /^Best place to train: Manila Welding Institute/,
+      }),
+    )
+    expect(train.getByText(/It offers .+: a strong match for your search\./)).toBeInTheDocument()
+    expect(
+      train.getByText(/centers? of this kind listed for it, [\d.]+ km from you\./),
+    ).toBeInTheDocument()
     // The dialog closes itself: no Back of the panel's.
     expect(within(dialog).queryByRole('button', { name: 'Back to results' })).toBeNull()
     await user.click(within(dialog).getByRole('button', { name: 'Close the analysis' }))

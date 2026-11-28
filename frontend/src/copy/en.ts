@@ -3267,6 +3267,11 @@ export const en = {
     // The classic panel's list after a search (2026-11-27 UI/UX layout): skills, view pills, then sections.
     skillList: {
       readAs: 'We read your search as these skills',
+      // The skills fold to one row; this chip opens the rest, and closes them again.
+      moreSkills: (count: number) => `+${count} more`,
+      fewerSkills: 'Show less',
+      fewerSkillsLabel: 'Show fewer skills',
+      moreSkillsLabel: (count: number) => `Show ${count} more ${count === 1 ? 'skill' : 'skills'}`,
       views: 'Show',
       strength: { strong: 'Strong match', good: 'Good match', weak: 'Related' },
       // The top of the list: the one place in demand, the one training center and the one assessment center to go.
@@ -3278,6 +3283,59 @@ export const en = {
         assessment: 'Best place to get assessed',
         analysis: 'Analysis',
         close: 'Close the analysis',
+        // The dialog behind the Analysis button: why each of the three cards was picked, from the same records.
+        why: {
+          title: 'Why these are best for you',
+          intro: (name: string) =>
+            `How each card was picked for ${name}, from the job posting records and the centers we have listed.`,
+          reasons: 'Why this pick',
+          records: (count: number) => `${count} job ${count === 1 ? 'record' : 'records'}`,
+          rank: (rank: number, of: number) => `#${rank} of ${of} regions`,
+          sitesHere: (training: number, assessment: number) =>
+            `${training} training · ${assessment} assessment here`,
+          homeGood: (place: string, name: string) =>
+            `It’s your own area (${place}), and employers here are hiring for ${name}.`,
+          homeWeak: (place: string) =>
+            `Your area, ${place}, has few records for this, so we point to the region hiring most.`,
+          noHome: 'We don’t know your area yet, so this is the region with the most records.',
+          share: (percent: number, total: number, rank: number, of: number) =>
+            `It holds ${percent}% of all ${total} posting records: #${rank} of ${of} regions.`,
+          balance: {
+            demand_only: 'Employers want it here, but no center is listed in the region yet.',
+            more_demand: 'Demand is ahead of the centers here: less competition for the jobs.',
+            more_supply: 'There are more centers than job records here.',
+            balanced: 'Demand and centers here are about even.',
+            supply_only: 'There are centers here, but few job records.',
+            no_records: 'There are few records here yet.',
+          },
+          jobs: (titles: string) => `Most posted jobs here: ${titles}.`,
+          modelled: 'These numbers are modelled demand, not actual job posts.',
+          fits: (name: string, strength: string) =>
+            `It offers ${name}: a ${strength} for your search.`,
+          nextBest: (top: string) =>
+            `Your top match, ${top}, has no center of this kind listed, so this is your next best match with one.`,
+          nearest: (count: number, km: number) =>
+            count === 1
+              ? `It’s the only center of this kind listed for it, ${km} km from you.`
+              : `It’s the nearest of ${count} centers of this kind listed for it, ${km} km from you.`,
+          only: (count: number) =>
+            count === 1
+              ? 'It’s the only center of this kind listed for it.'
+              : `One of ${count} centers of this kind listed for it.`,
+          needPlace: 'Share your location or type a place to rank the centers by distance.',
+          scholarship: 'A scholarship is open for this program now.',
+          starts: (day: string) => `Next class starts ${day}.`,
+          hours: (hours: number) => `The program runs about ${hours} hours.`,
+          schedule: (day: string, seats: number) =>
+            `Next open assessment: ${day}, ${seats} ${seats === 1 ? 'seat' : 'seats'} left.`,
+          accredited:
+            'Accredited to assess this qualification. Ask the center for the next schedule.',
+          inDemand: (place: string) => `It’s in ${place}, the place most in demand.`,
+          samePlace:
+            'It’s the same place as your training center: train and get assessed in one trip.',
+          starred: 'It’s also starred as recommended on the map.',
+          done: 'See them on the map',
+        },
       },
       training: {
         heading: 'Training centers',

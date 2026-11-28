@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { Button, ToggleButton } from 'react-aria-components'
 import { Icon, type IconName } from '../../components/Icon.tsx'
 import { ModalDialog } from '../../components/ModalDialog.tsx'
@@ -7,11 +7,10 @@ import { cx } from '../../lib/style.ts'
 import { button } from '../../styles/buttons.ts'
 import type { Match } from '../finder/api.ts'
 import type { CenterKind } from '../training/address.ts'
-import type { Center } from '../training/centers.ts'
+import { friendlyDay, type Center } from '../training/centers.ts'
 import type { View } from './ExplorePage.tsx'
 import { offers, roundKm, strength } from './explore.ts'
 import { readable } from './jobDisplay.ts'
-import { OutlookAnalysis } from './OutlookBrief.tsx'
 import type { AreaOutlook, Outlook } from './outlookApi.ts'
 import type { Explore } from './useExplore.ts'
 
@@ -25,6 +24,8 @@ import type { Explore } from './useExplore.ts'
 const PER_SECTION = 3
 const PLACES = 4
 const MAX_SKILLS = 6
+/** Skills shown before "+N more": the search's own words come first, so these are the ones the learner typed. */
+const FOLDED_SKILLS = 3
 /** Training and assessment sites this close (km) are one place. */
 const SAME_PLACE_KM = 0.15
 /** Fewer records say nothing about demand (MIN_RECORDS in qualification_outlook.py). */
@@ -114,19 +115,55 @@ function bothRows(matches: readonly Match[], centers: readonly Center[]): Row[] 
 export function SkillChips({ explore, className }: { explore: Explore; className?: string }) {
   const copy = useCopy().explore.skillList
   const terms = skillTerms(explore)
+  // Opened for one search only: a new search starts folded again.
+  const [openFor, setOpenFor] = useState<string | null>(null)
   if (!terms.length) return null
+  const key = terms.join('|')
+  const open = openFor === key
+  const hidden = terms.length - FOLDED_SKILLS
+  const shown = open || hidden <= 0 ? terms : terms.slice(0, FOLDED_SKILLS)
+  const chip = 'rounded-full px-2.5 py-1 text-12 leading-tight font-semibold'
   return (
     <div className={cx('pointer-events-auto flex min-w-0 flex-col gap-1.5', className)}>
       <p className="m-0 text-12 text-muted">{copy.readAs}</p>
-      <ul className="m-0 flex list-none flex-wrap gap-1.5 p-0">
-        {terms.map((term) => (
+      {/* Folded, one row that never wraps: long names shrink to an ellipsis, the full name on hover. Opened, every
+          name in full. */}
+      <ul
+        className={cx(
+          'm-0 flex list-none gap-1.5 p-0',
+          open ? 'flex-wrap' : 'min-w-0 flex-nowrap overflow-hidden',
+        )}
+      >
+        {shown.map((term) => (
           <li
             key={term}
-            className="rounded-full bg-chip px-2.5 py-1 text-12 leading-tight font-semibold text-navy"
+            title={open ? undefined : term}
+            className={cx(
+              chip,
+              'bg-chip text-navy',
+              !open && 'max-w-[12rem] min-w-0 shrink truncate whitespace-nowrap',
+            )}
           >
             {term}
           </li>
         ))}
+        {hidden > 0 && (
+          <li className="flex-none">
+            <Button
+              aria-expanded={open}
+              aria-label={open ? copy.fewerSkillsLabel : copy.moreSkillsLabel(hidden)}
+              onPress={() => setOpenFor(open ? null : key)}
+              className={cx(
+                chip,
+                'cursor-pointer border border-border bg-surface whitespace-nowrap text-blue',
+                'transition-colors duration-150 data-hovered:border-navy',
+                'data-focus-visible:outline-3 data-focus-visible:outline-focus',
+              )}
+            >
+              {open ? copy.fewerSkills : copy.moreSkills(hidden)}
+            </Button>
+          </li>
+        )}
       </ul>
     </div>
   )
@@ -561,30 +598,239 @@ function WorkSection({
   )
 }
 
+/** One Best for you card, explained: what was picked, a few numbers, and the reasons, in its kind's color. */
+function WhyCard({
+  tone,
+  pick,
+  title,
+  subtitle,
+  facts,
+  reasons,
+}: {
+  tone: 'work' | 'training' | 'assessment'
+  pick: string
+  title: string
+  subtitle?: string | null
+  facts: string[]
+  reasons: string[]
+}) {
+  const copy = useCopy().explore.skillList.best.why
+  const { icon, ink } = sectionTone[tone]
+  return (
+    <section
+      aria-label={`${pick}: ${title}`}
+      className={cx('rounded-16 border p-3.5', pickCard, sectionTone[tone].card)}
+    >
+      <PickLabel tone={tone} label={pick} />
+      <h3 className="m-0 text-15 leading-[1.35] font-bold text-navy">{title}</h3>
+      {subtitle && <p className="m-0 mt-0.5 text-12 leading-[1.4] text-muted">{subtitle}</p>}
+      {facts.length > 0 && (
+        <ul className="m-0 mt-2 flex list-none flex-wrap gap-1.5 p-0">
+          {facts.map((fact) => (
+            <li
+              key={fact}
+              className="rounded-full bg-surface px-2.5 py-1 text-12 leading-tight font-semibold text-navy"
+            >
+              {fact}
+            </li>
+          ))}
+        </ul>
+      )}
+      <p className="m-0 mt-3 text-11 font-bold tracking-[0.04em] text-muted uppercase">
+        {copy.reasons}
+      </p>
+      <ul className="m-0 mt-1 flex list-none flex-col gap-1.5 p-0">
+        {reasons.map((reason) => (
+          <li key={reason} className="flex items-start gap-2 text-13 leading-[1.45] text-ink">
+            <Icon
+              name={icon as IconName}
+              size="0.85rem"
+              className={cx('mt-[3px] flex-none', ink)}
+            />
+            <span>{reason}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )
+}
+
+type SkillCopy = ReturnType<typeof useCopy>['explore']['skillList']
+
+/** Why a center is the pick: the qualification it serves, how near it is, and what it has on now. */
+function centerReasons(
+  kind: CenterKind,
+  row: Row,
+  explore: Explore,
+  demand: AreaOutlook | null,
+  all: SkillCopy,
+): { facts: string[]; reasons: string[] } {
+  const copy = all.best.why
+  const { match, center } = row
+  const code = match.qualification.code
+  const facts: string[] = []
+  const reasons: string[] = []
+  if (!center) return { facts, reasons }
+  const top = explore.matches[0]
+  reasons.push(copy.fits(match.qualification.name, all.strength[strength(match)].toLowerCase()))
+  if (top && top.qualification.code !== code) reasons.push(copy.nextBest(top.qualification.name))
+  const count = explore.centers.filter((c) => c.kind === kind && offers(c, code)).length
+  if (center.distanceKm != null) {
+    const km = roundKm(center.distanceKm)
+    facts.push(`${km} km`)
+    reasons.push(copy.nearest(count, km))
+  } else {
+    reasons.push(copy.only(count))
+    reasons.push(copy.needPlace)
+  }
+  if (kind === 'training') {
+    const programs = center.programs.filter((p) => p.qualification.code === code)
+    if (programs.some((p) => p.scholarship_open)) reasons.push(copy.scholarship)
+    const next = programs
+      .map((p) => p.start_date)
+      .filter((day): day is string => Boolean(day && day >= explore.today))
+      .sort()[0]
+    if (next) reasons.push(copy.starts(friendlyDay(next, explore.today)))
+    const hours = programs.find((p) => p.duration_hours)?.duration_hours
+    if (hours) reasons.push(copy.hours(hours))
+  } else {
+    const next = center.schedules
+      .filter(
+        (s) =>
+          s.qualification.code === code &&
+          s.status === 'open' &&
+          s.scheduled_at.slice(0, 10) >= explore.today,
+      )
+      .sort((a, b) => a.scheduled_at.localeCompare(b.scheduled_at))[0]
+    if (next)
+      reasons.push(
+        copy.schedule(friendlyDay(next.scheduled_at.slice(0, 10), explore.today), next.seats_left),
+      )
+    else if (center.accredited.includes(code)) reasons.push(copy.accredited)
+  }
+  if (demand && center.regionCode === demand.region_code) reasons.push(copy.inDemand(demand.name))
+  if (explore.recommendedIds.includes(center.id)) reasons.push(copy.starred)
+  return { facts, reasons }
+}
+
+/**
+ * The Analysis dialog of Best for you: the same three cards, each with the numbers and reasons that put it there, so
+ * what the dialog says always matches what the list shows.
+ */
+function BestAnalysis({
+  explore,
+  demand,
+  training,
+  assessment,
+  onDone,
+}: {
+  explore: Explore
+  demand: AreaOutlook | null
+  training: Row | undefined
+  assessment: Row | undefined
+  onDone: () => void
+}) {
+  const all = useCopy().explore.skillList
+  const best = all.best
+  const copy = best.why
+  const { data, home, regions, homeArea, name } = demandPicture(explore)
+  const cards: ReactNode[] = []
+
+  if (demand && data) {
+    const ranked = [...data.areas].sort((a, b) => b.posting_count - a.posting_count)
+    const rank = ranked.findIndex((area) => area.region_code === demand.region_code) + 1
+    const of = Math.max(regions, rank)
+    const total = data.totals.posting_count
+    const reasons: string[] = []
+    if (home && homeArea?.region_code === demand.region_code)
+      reasons.push(copy.homeGood(demand.name, name))
+    else if (home) reasons.push(copy.homeWeak(homeArea?.name ?? home.name))
+    else reasons.push(copy.noHome)
+    if (total > 0)
+      reasons.push(copy.share(Math.round((demand.posting_count / total) * 100), total, rank, of))
+    reasons.push(copy.balance[demand.balance])
+    if (demand.titles.length)
+      reasons.push(copy.jobs(demand.titles.slice(0, 3).map(readable).join(', ')))
+    if (data.demand_is_sample) reasons.push(copy.modelled)
+    cards.push(
+      <WhyCard
+        key="demand"
+        tone="work"
+        pick={best.demand}
+        title={demand.name}
+        subtitle={name}
+        facts={[
+          all.work.level[areaLevel(demand.demand_share, regions)],
+          copy.records(demand.posting_count),
+          copy.rank(rank, of),
+          copy.sitesHere(demand.training_sites, demand.assessment_sites),
+        ]}
+        reasons={reasons}
+      />,
+    )
+  }
+  for (const [kind, row, pick] of [
+    ['training', training, best.training],
+    ['assessment', assessment, best.assessment],
+  ] as const) {
+    if (!row?.center) continue
+    const { facts, reasons } = centerReasons(kind, row, explore, demand, all)
+    if (
+      kind === 'assessment' &&
+      training?.center &&
+      training.match.qualification.code === row.match.qualification.code &&
+      samePlace(training.center, row.center)
+    )
+      reasons.push(copy.samePlace)
+    const town = row.center.city ?? row.center.province ?? row.center.region
+    cards.push(
+      <WhyCard
+        key={kind}
+        tone={kind}
+        pick={pick}
+        title={row.center.name}
+        subtitle={[row.match.qualification.name, town].filter(Boolean).join(' · ')}
+        facts={[all.strength[strength(row.match)], ...facts]}
+        reasons={reasons}
+      />,
+    )
+  }
+
+  const focus = training?.match.qualification.name ?? assessment?.match.qualification.name ?? name
+  return (
+    <div className="flex flex-col gap-3">
+      <p className="m-0 text-13 leading-[1.5] text-muted">{copy.intro(name || focus)}</p>
+      {cards}
+      <Button
+        onPress={onDone}
+        className={cx(button({ variant: 'secondary', height: 44, text: 14 }), 'w-full')}
+      >
+        <Icon name="pin" />
+        {copy.done}
+      </Button>
+    </div>
+  )
+}
+
 /**
  * Best for you, at the top of All: the place hiring most for these skills, the best training center and the best
  * assessment center (the first of each section below), each card in its section's color. The Analysis button under them opens
- * the full supply and demand analysis in a dialog: the strip over the map that opens it is hidden on phones.
+ * a dialog that explains each of the three picks from the same records.
  */
 function BestSection({
   explore,
   training,
   assessment,
-  view,
-  onView,
   onSelect,
   onArea,
 }: {
   explore: Explore
   training: Row | undefined
   assessment: Row | undefined
-  view: View
-  onView: (view: View) => void
   onSelect: (id: string, code: string) => void
   onArea: (regionCode: string) => void
 }) {
-  const copy = useCopy().explore
-  const best = copy.skillList.best
+  const best = useCopy().explore.skillList.best
   const [open, setOpen] = useState(false)
   const demand = topDemand(explore)
   const { regions, name } = demandPicture(explore)
@@ -638,20 +884,17 @@ function BestSection({
       <ModalDialog
         isOpen={open}
         onOpenChange={setOpen}
-        title={copy.outlook.label}
+        title={best.why.title}
         closeLabel={best.close}
         wide
       >
-        <OutlookAnalysis
+        <BestAnalysis
           explore={explore}
-          view={view}
-          inModal
-          // Its buttons lead back to the map: the dialog gets out of the way.
-          onBack={() => setOpen(false)}
-          onView={(next) => {
-            setOpen(false)
-            onView(next)
-          }}
+          demand={demand}
+          training={training}
+          assessment={assessment}
+          // Back to the cards and the map: the dialog gets out of the way.
+          onDone={() => setOpen(false)}
         />
       </ModalDialog>
     </section>
@@ -665,14 +908,12 @@ function BestSection({
 export function SkillResults({
   explore,
   view,
-  onView,
   onSelect,
   onArea,
   onQualification,
 }: {
   explore: Explore
   view: View
-  onView: (view: View) => void
   onSelect: (id: string, code: string) => void
   onArea: (regionCode: string) => void
   /** A qualification suggested from the learner's skills, searched as one chosen from the library. */
@@ -698,8 +939,6 @@ export function SkillResults({
           explore={explore}
           training={training[0]}
           assessment={assessment[0]}
-          view={view}
-          onView={onView}
           onSelect={onSelect}
           onArea={onArea}
         />
