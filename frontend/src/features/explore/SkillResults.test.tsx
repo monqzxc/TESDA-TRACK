@@ -214,6 +214,55 @@ describe('the skills list', () => {
     ).toBeInTheDocument()
   })
 
+  // QA-2026-11-28-NEW2 (US-0011 AC1/AC2, US-0014 AC2): a ranked list of the centers in range, each with distance and
+  // travel time, not just the nearest; more open on request, and the center last opened is marked.
+  it('ranks every center in range for a qualification, nearest first, with distance and travel time', async () => {
+    const near = [1.2, 2.4, 3.1, 4.5, 6.2].map((km, i) => {
+      const provider = {
+        ...manilaInstitute,
+        id: 200 + i,
+        name: `Makati Center ${i + 1}`,
+        latitude: MAKATI.latitude + km / 111,
+        longitude: MAKATI.longitude,
+      }
+      const program = {
+        ...weldingProgram,
+        id: 900 + i,
+        provider: {
+          ...weldingProgram.provider,
+          id: provider.id,
+          name: provider.name,
+          latitude: provider.latitude,
+          longitude: provider.longitude,
+        },
+      }
+      return { provider, program }
+    })
+    server.use(
+      http.get('*/api/v1/training-providers', () => HttpResponse.json(near.map((n) => n.provider))),
+      http.get('*/api/v1/training-programs', () => HttpResponse.json(near.map((n) => n.program))),
+    )
+    const user = userEvent.setup()
+    renderPage()
+    const list = await screen.findByRole(
+      'list',
+      { name: `Centers for ${WELDING.name}, nearest first` },
+      LONG,
+    )
+    const entries = () => within(list).getAllByRole('button')
+    expect(entries().map((button) => button.textContent)).toEqual([
+      expect.stringMatching(/^1Makati Center 1.*km · about \d+ min/),
+      expect.stringMatching(/^2Makati Center 2/),
+      expect.stringMatching(/^3Makati Center 3/),
+    ])
+    await user.click(screen.getByRole('button', { name: 'Show 2 more centers' }))
+    expect(entries()).toHaveLength(5)
+    expect(screen.getByRole('button', { name: 'Show fewer centers' })).toHaveAttribute(
+      'aria-expanded',
+      'true',
+    )
+  })
+
   it('Train narrows the list, and a place hiring opens the demand view there', async () => {
     const user = userEvent.setup()
     renderPage()

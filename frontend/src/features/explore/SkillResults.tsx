@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Button, ToggleButton } from 'react-aria-components'
 import { Icon, type IconName } from '../../components/Icon.tsx'
 import { ModalDialog } from '../../components/ModalDialog.tsx'
@@ -9,7 +9,8 @@ import type { Match } from '../finder/api.ts'
 import type { CenterKind } from '../training/address.ts'
 import { friendlyDay, type Center } from '../training/centers.ts'
 import type { View } from './ExplorePage.tsx'
-import { offers, roundKm, strength } from './explore.ts'
+import { travelTime } from '../training/format.ts'
+import { countedCenters, estimateMinutes, offers, roundKm, strength } from './explore.ts'
 import { NoCenterSuggestion } from './NoCenterSuggestion.tsx'
 import { readable } from './jobDisplay.ts'
 import type { AreaOutlook, Outlook } from './outlookApi.ts'
@@ -23,6 +24,9 @@ import type { Explore } from './useExplore.ts'
 
 /** At most this many qualifications per section, and this many places hiring. */
 const PER_SECTION = 3
+// A qualification's list shows its nearest few, and opens to this many.
+const SHOWN_CENTERS = 3
+const MAX_RANKED = 20
 const PLACES = 4
 const MAX_SKILLS = 6
 /** Skills shown before "+N more": the search's own words come first, so these are the ones the learner typed. */
@@ -82,18 +86,30 @@ const samePlace = (a: Center, b: Center) => {
 interface Row {
   match: Match
   center: Center | null
+  /** Every center of the kind listing it, nearest first: within the learner's range when there is a place. */
+  ranked?: Center[]
 }
 
-/** Each qualification with its nearest center of the kind, strongest first; those without one are left out. */
-function rowsFor(kind: CenterKind, matches: readonly Match[], centers: readonly Center[]): Row[] {
+/**
+ * Each qualification with its centers of the kind, nearest first (QA-2026-11-28-NEW2, US-0011 AC1): within the range
+ * when there is a place, or all of them while none is in range. Strongest first; those without one are left out.
+ */
+function rowsFor(
+  kind: CenterKind,
+  matches: readonly Match[],
+  centers: readonly Center[],
+  rangeKm = Infinity,
+  hasPlace = false,
+): Row[] {
   return matches
-    .map((match) => ({
-      match,
-      center:
-        centers
-          .filter((center) => center.kind === kind && offers(center, match.qualification.code))
-          .sort(nearestFirst)[0] ?? null,
-    }))
+    .map((match) => {
+      const listed = centers
+        .filter((center) => center.kind === kind && offers(center, match.qualification.code))
+        .sort(nearestFirst)
+      const near = countedCenters(listed, hasPlace, rangeKm)
+      const ranked = (near.length ? near : listed).slice(0, MAX_RANKED)
+      return { match, center: ranked[0] ?? null, ranked }
+    })
     .filter((row) => row.center !== null)
     .slice(0, PER_SECTION)
 }
@@ -276,11 +292,81 @@ const strengthOnCard = {
   weak: 'bg-surface text-muted',
 } as const
 
+/** One center in a qualification's list: its name, then distance, travel time and town (US-0011 AC2). */
+function CenterEntry({
+  center,
+  code,
+  tone,
+  rank,
+  boxed,
+  highlighted,
+  onSelect,
+}: {
+  center: Center
+  code: string
+  tone: 'training' | 'assessment' | 'both'
+  /** Its place in the ranked list, from 1; none for a single pick. */
+  rank?: number
+  boxed: string
+  highlighted: boolean
+  onSelect: (id: string, code: string) => void
+}) {
+  const copy = useCopy().explore.skillList
+  const ref = useRef<HTMLButtonElement>(null)
+  // Back from the pin picked on the map, its entry is marked and brought into view (US-0014 AC2).
+  useEffect(() => {
+    if (highlighted) ref.current?.scrollIntoView({ block: 'nearest' })
+  }, [highlighted])
+  const town = center.city ?? center.province ?? center.region
+  const km = center.distanceKm == null ? null : roundKm(center.distanceKm)
+  const minutes = estimateMinutes(center.distanceKm)
+  const trip = [
+    km === null ? null : `${km} km`,
+    minutes === null ? null : copy.about(travelTime(minutes)),
+    town || null,
+  ]
+    .filter(Boolean)
+    .join(' · ')
+  return (
+    <Button
+      ref={ref}
+      onPress={() => onSelect(center.id, code)}
+      aria-current={highlighted || undefined}
+      className={cx(
+        'flex w-full cursor-pointer items-start gap-2 rounded-8 border-0 px-2 py-1.5 text-left',
+        boxed,
+        highlighted && 'ring-2 ring-navy ring-inset',
+        'transition-colors duration-150 data-hovered:bg-soft',
+        'data-focus-visible:outline-3 data-focus-visible:outline-focus',
+      )}
+    >
+      {rank === undefined ? (
+        <Icon name="pin" size="0.9rem" className={cx('mt-0.5 flex-none', sectionTone[tone].ink)} />
+      ) : (
+        <span
+          aria-hidden="true"
+          className={cx(
+            'mt-px grid size-4.5 flex-none place-items-center rounded-full text-[0.625rem] font-bold tabular-nums',
+            rank === 1 ? 'bg-navy text-surface' : 'bg-chip text-muted',
+          )}
+        >
+          {rank}
+        </span>
+      )}
+      <span className="min-w-0">
+        <span className="block text-12 leading-[1.35] font-semibold text-navy">{center.name}</span>
+        {trip && <span className="block text-11 text-muted">{trip}</span>}
+      </span>
+    </Button>
+  )
+}
+
 function QualificationRow({
   row,
   tone,
   first,
   pick,
+  highlightId = null,
   onSelect,
 }: {
   row: Row
@@ -288,14 +374,20 @@ function QualificationRow({
   first: boolean
   /** In Best for you: what the pick is, over the card, and the whole card in its kind's color. */
   pick?: string
+  /** The center last opened from the list or the map: its entry is marked. */
+  highlightId?: string | null
   onSelect: (id: string, code: string) => void
 }) {
   const copy = useCopy().explore.skillList
   const { match, center } = row
   const level = strength(match)
   const code = match.qualification.code
-  const town = center ? (center.city ?? center.province ?? center.region) : null
-  const km = center?.distanceKm == null ? null : roundKm(center.distanceKm)
+  // In a section (not a pick), the qualification's centers as a ranked list, nearest first (US-0011 AC1).
+  const ranked = !pick && row.ranked && row.ranked.length > 1 ? row.ranked : null
+  const highlightAt = ranked ? ranked.findIndex((item) => item.id === highlightId) : -1
+  const [open, setOpen] = useState(false)
+  const expanded = open || highlightAt >= SHOWN_CENTERS
+  const shown = ranked ? (expanded ? ranked : ranked.slice(0, SHOWN_CENTERS)) : []
   return (
     <li
       className={cx(
@@ -321,30 +413,47 @@ function QualificationRow({
       {match.reason && (
         <p className="m-0 mt-0.5 text-12 leading-[1.4] text-muted">{match.reason}</p>
       )}
-      {center ? (
-        <Button
-          onPress={() => onSelect(center.id, code)}
-          className={cx(
-            'mt-2 flex w-full cursor-pointer items-start gap-2 rounded-8 border-0 px-2 py-1.5 text-left',
-            pick ? 'bg-surface' : first ? sectionTone[tone].box : 'bg-transparent',
-            'transition-colors duration-150 data-hovered:bg-soft',
-            'data-focus-visible:outline-3 data-focus-visible:outline-focus',
+      {ranked ? (
+        <>
+          <ol
+            aria-label={copy.rankedLabel(match.qualification.name)}
+            className="m-0 mt-2 flex list-none flex-col gap-0.5 p-0"
+          >
+            {shown.map((item, index) => (
+              <li key={item.id}>
+                <CenterEntry
+                  center={item}
+                  code={code}
+                  tone={tone}
+                  rank={index + 1}
+                  boxed={index === 0 && first ? sectionTone[tone].box : 'bg-transparent'}
+                  highlighted={item.id === highlightId}
+                  onSelect={onSelect}
+                />
+              </li>
+            ))}
+          </ol>
+          {ranked.length > SHOWN_CENTERS && highlightAt < SHOWN_CENTERS && (
+            <Button
+              onPress={() => setOpen(!open)}
+              aria-expanded={open}
+              className="mt-1 cursor-pointer rounded-8 border-0 bg-transparent px-2 py-1 text-12 font-semibold text-blue data-focus-visible:outline-3 data-focus-visible:outline-focus data-hovered:underline"
+            >
+              {open ? copy.fewerCenters : copy.moreCenters(ranked.length - SHOWN_CENTERS)}
+            </Button>
           )}
-        >
-          <Icon
-            name="pin"
-            size="0.9rem"
-            className={cx('mt-0.5 flex-none', sectionTone[tone].ink)}
+        </>
+      ) : center ? (
+        <div className="mt-2">
+          <CenterEntry
+            center={center}
+            code={code}
+            tone={tone}
+            boxed={pick ? 'bg-surface' : first ? sectionTone[tone].box : 'bg-transparent'}
+            highlighted={!pick && center.id === highlightId}
+            onSelect={onSelect}
           />
-          <span className="min-w-0">
-            <span className="block text-12 leading-[1.35] font-semibold text-navy">
-              {center.name}
-            </span>
-            {(km !== null || town) && (
-              <span className="block text-11 text-muted">{copy.trip(km, town)}</span>
-            )}
-          </span>
-        </Button>
+        </div>
       ) : (
         <p className="m-0 mt-1.5 text-12 text-muted">{copy.none}</p>
       )}
@@ -356,10 +465,12 @@ function CenterSection({
   tone,
   rows,
   nowhere,
+  highlightId,
   onSelect,
 }: {
   tone: 'training' | 'assessment' | 'both'
   rows: Row[]
+  highlightId?: string | null
   /** No center of either kind lists the top match: the section suggests how to widen the search. */
   nowhere?: Match
   onSelect: (id: string, code: string) => void
@@ -384,6 +495,7 @@ function CenterSection({
             row={row}
             tone={tone}
             first={index === 0}
+            highlightId={highlightId}
             onSelect={onSelect}
           />
         ))}
@@ -933,6 +1045,7 @@ export function SkillResults({
   onSelect,
   onArea,
   onQualification,
+  highlightId = null,
 }: {
   explore: Explore
   view: View
@@ -940,6 +1053,8 @@ export function SkillResults({
   onArea: (regionCode: string) => void
   /** A qualification suggested from the learner's skills, searched as one chosen from the library. */
   onQualification: (code: string, name: string) => void
+  /** The center last opened from the list or the map (US-0014 AC2). */
+  highlightId?: string | null
 }) {
   const copy = useCopy().explore.results
   const { matches, centers, search } = explore
@@ -951,8 +1066,9 @@ export function SkillResults({
       </p>
     )
   }
-  const training = rowsFor('training', matches, centers)
-  const assessment = rowsFor('assessment', matches, centers)
+  const hasPlace = explore.reference !== null
+  const training = rowsFor('training', matches, centers, explore.rangeKm, hasPlace)
+  const assessment = rowsFor('assessment', matches, centers, explore.rangeKm, hasPlace)
   const both = bothRows(matches, centers)
   // No center of either kind lists any match (once centers have loaded): say so once, with ways to widen the search.
   const nowhere =
@@ -971,13 +1087,20 @@ export function SkillResults({
         />
       )}
       {(view === 'all' || view === 'training') && (
-        <CenterSection tone="training" rows={training} nowhere={nowhere} onSelect={onSelect} />
+        <CenterSection
+          tone="training"
+          rows={training}
+          nowhere={nowhere}
+          highlightId={highlightId}
+          onSelect={onSelect}
+        />
       )}
       {(view === 'all' || view === 'assessment') && (
         <CenterSection
           tone="assessment"
           rows={assessment}
           nowhere={view === 'assessment' ? nowhere : undefined}
+          highlightId={highlightId}
           onSelect={onSelect}
         />
       )}

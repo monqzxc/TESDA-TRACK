@@ -2248,4 +2248,8 @@ export const tl: Record<string, string> = {
     'Ang susunod mong hakbang sa TESDA, sa mapa, malapit sa iyo.',
   'Share your location or type a city to see your best place to train and get assessed.':
     'Ibahagi ang lokasyon mo o mag-type ng lungsod para makita ang pinakamainam na lugar para magsanay at magpatasa.',
+  'Show {0} more centers': 'Ipakita ang {0} pang sentro',
+  'Show {0} more center': 'Ipakita ang {0} pang sentro',
+  'Show fewer centers': 'Ipakita ang mas kaunting sentro',
+  'Centers for {0}, nearest first': 'Mga sentro para sa {0}, pinakamalapit muna',
 }

@@ -308,6 +308,7 @@ export default function ExplorePage() {
   // The panel opens folded down to its search row, so the map has the room; pressing in the box (or typing) opens
   // the rest, and Show less folds it again. With results to show (a search kept from earlier in the visit, or one
   // linked from a qualification's page), it starts open.
+  const [lastCenter, setLastCenter] = useState<string | null>(null)
   const [collapsed, setCollapsed] = useState(
     () => view !== 'demand' && !linked && !useExploreStore.getState().search,
   )
@@ -442,6 +443,8 @@ export default function ExplorePage() {
     id: string,
     { onMap = false, code = null }: { onMap?: boolean; code?: string | null } = {},
   ) => {
+    // Back on the list, this center's entry is marked (US-0014 AC2), whether it was picked there or on the map.
+    setLastCenter(id)
     // Leaving the list, keep its place to come back to.
     if (!panelCenter && !analysisOpen) listScroll.current = scroller.current?.scrollTop ?? 0
     navigate(`${location.pathname}${location.search}${location.hash}`, {
@@ -702,6 +705,7 @@ export default function ExplorePage() {
               changeView('demand')
             }}
             onQualification={chooseQualification}
+            highlightId={lastCenter}
           />
         ) : search ? (
           <ResultsPanel

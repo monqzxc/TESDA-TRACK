@@ -3355,6 +3355,11 @@ export const en = {
       none: 'No center lists these qualifications yet.',
       trip: (km: number | null, town: string | null) =>
         [km === null ? null : `${km} km`, town].filter(Boolean).join(' · '),
+      // A center in a qualification's ranked list (US-0011 AC1, AC2): its distance, travel time and town.
+      about: (time: string) => `about ${time}`,
+      moreCenters: (count: number) => `Show ${count} more ${count === 1 ? 'center' : 'centers'}`,
+      fewerCenters: 'Show fewer centers',
+      rankedLabel: (name: string) => `Centers for ${name}, nearest first`,
       work: {
         heading: 'Work: where your skills are in demand',
         note: 'Places hiring for jobs that match what you can do.',
