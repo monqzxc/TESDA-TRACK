@@ -2109,25 +2109,29 @@ export function CenterCard({
             </div>
           )}
 
-          {/* Directions are drawn on this map; Google Maps only when there is nowhere to route from. */}
-          {point &&
-            (canRoute && config?.routing_enabled ? (
-              <Button className={directions} onPress={routed ? onHideRoute : onRoute}>
-                <Icon name={routed ? 'close' : 'directions'} />
-                {routed ? copy.hideRoute : copy.directions}
-              </Button>
-            ) : (
-              <a
-                className={directions}
-                href={googleMapsDirections(point)}
-                target="_blank"
-                rel="noopener noreferrer"
-                title={en.training.center.googleMapsHelp}
-              >
-                <Icon name="directions" />
-                {copy.directions}
-              </a>
-            ))}
+          {/* Directions hand off to Google Maps, or the phone's map app, in a new tab (US-0001 AC3,
+              QA-2026-11-23-EXP8). The route drawn on this map is its own button under it. */}
+          {point && (
+            <a
+              className={directions}
+              href={googleMapsDirections(point)}
+              target="_blank"
+              rel="noopener noreferrer"
+              title={en.training.center.googleMapsHelp}
+            >
+              <Icon name="directions" />
+              {copy.directions}
+            </a>
+          )}
+          {point && canRoute && config?.routing_enabled && (
+            <Button
+              className={cx(button({ variant: 'secondary', height: 44 }), 'w-full')}
+              onPress={routed ? onHideRoute : onRoute}
+            >
+              <Icon name={routed ? 'close' : 'route'} />
+              {routed ? copy.hideRoute : copy.route}
+            </Button>
+          )}
 
           {readiness && openPathway && (
             <Button

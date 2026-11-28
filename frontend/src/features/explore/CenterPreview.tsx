@@ -247,24 +247,28 @@ export function CenterPreview({
             ) : (
               <p className="m-0 text-12 leading-[1.5] text-muted">{copy.noTravel}</p>
             )}
-            {point &&
-              (canRoute && config?.routing_enabled ? (
-                <Button className={directions} onPress={routed ? onHideRoute : onRoute}>
-                  <Icon name={routed ? 'close' : 'directions'} />
-                  {routed ? card.hideRoute : card.directions}
-                </Button>
-              ) : (
-                <a
-                  className={directions}
-                  href={googleMapsDirections(point)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={en.training.center.googleMapsHelp}
-                >
-                  <Icon name="directions" />
-                  {card.directions}
-                </a>
-              ))}
+            {/* Directions hand off to Google Maps in a new tab (US-0001 AC3); the drawn route is its own button. */}
+            {point && (
+              <a
+                className={directions}
+                href={googleMapsDirections(point)}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={en.training.center.googleMapsHelp}
+              >
+                <Icon name="directions" />
+                {card.directions}
+              </a>
+            )}
+            {point && canRoute && config?.routing_enabled && (
+              <Button
+                className={cx(button({ variant: 'secondary', height: 38, text: 13 }), 'w-full')}
+                onPress={routed ? onHideRoute : onRoute}
+              >
+                <Icon name={routed ? 'close' : 'route'} />
+                {routed ? card.hideRoute : card.route}
+              </Button>
+            )}
           </section>
         </TabPanel>
 

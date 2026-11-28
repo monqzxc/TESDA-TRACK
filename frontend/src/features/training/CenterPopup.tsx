@@ -98,23 +98,28 @@ export function CenterPopup({
         </p>
       )}
       <div className="col-span-full flex items-center gap-2.5 pt-0.5">
-        {/* Directions are drawn on this map; Google Maps only when there is nowhere to route from. */}
-        {canRoute ? (
-          <button type="button" className={routeButton} onClick={() => onRoute(center.id)}>
-            <Icon name="directions" size={18} />
-            {en.training.center.directions}
-          </button>
-        ) : (
-          <a
-            className={cx(routeButton, 'text-white! no-underline')}
-            href={googleMapsDirections(point)}
-            target="_blank"
-            rel="noopener noreferrer"
-            title={en.training.center.googleMapsHelp}
+        {/* Get directions hands off to Google Maps, or the phone's map app, in a new tab (US-0001 AC3,
+            QA-2026-11-23-EXP8). The route drawn on this map is a button of its own beside it. */}
+        <a
+          className={cx(routeButton, 'text-white! no-underline')}
+          href={googleMapsDirections(point)}
+          target="_blank"
+          rel="noopener noreferrer"
+          title={en.training.center.googleMapsHelp}
+        >
+          <Icon name="directions" size={18} />
+          {en.training.center.directions}
+        </a>
+        {canRoute && (
+          <button
+            type="button"
+            className={iconButton()}
+            aria-label={en.training.center.getRoute}
+            title={en.training.center.getRoute}
+            onClick={() => onRoute(center.id)}
           >
-            <Icon name="directions" size={18} />
-            {en.training.center.directions}
-          </a>
+            <Icon name="route" size={18} />
+          </button>
         )}
         <button
           type="button"
