@@ -1,12 +1,11 @@
-import { Button } from 'react-aria-components'
 import { Link } from 'react-router'
-import { useAuth } from '../../../auth/useAuth.ts'
 import { Icon } from '../../../components/Icon.tsx'
 import type { IconName } from '../../../components/icons.ts'
 import { useCopy } from '../../../i18n/copy.ts'
 import { paths } from '../../../paths.ts'
 import { cx } from '../../../lib/style.ts'
 import { wrap, section, kicker, sectionTitle } from './styles.ts'
+import { GetStartedButton } from './GetStartedButton.tsx'
 
 const ABOUT_ICONS: IconName[] = ['learn', 'award', 'briefcase']
 const CARD_ICONS = [
@@ -39,7 +38,7 @@ export function About() {
             copy.title
           ) : (
             <>
-              <span className="text-[#7b8492] dark:text-[#a2abb8]">
+              <span className="text-[#5a6270] dark:text-[#a2abb8]">
                 {copy.title.slice(0, split)}
               </span>
               {copy.title.slice(split)}
@@ -67,10 +66,14 @@ export function About() {
         </ul>
         <Link
           to={{ pathname: paths.home, hash: '#how' }}
-          className="inline-flex min-h-11 items-center gap-2 self-start text-14 font-medium text-[#123e80] no-underline hover:underline dark:text-[#a9caff]"
+          className="group inline-flex min-h-11 items-center gap-2 self-start text-14 font-medium text-[#123e80] no-underline hover:underline dark:text-[#a9caff]"
         >
           {copy.action}
-          <Icon name="arrowRight" className="rotate-90" size="1rem" />
+          <Icon
+            name="arrowRight"
+            className="rotate-90 transition-transform duration-200 ease-out motion-safe:group-hover:translate-y-0.5"
+            size="1rem"
+          />
         </Link>
       </div>
     </section>
@@ -126,7 +129,7 @@ export function Perks() {
                 {isQualifications ? (
                   <Link
                     to={paths.qualifications}
-                    className="hover:shadow-lg block h-full rounded-[24px] p-8 text-inherit no-underline transition-shadow focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-focus"
+                    className="group hover:shadow-lg block h-full rounded-[24px] p-8 text-inherit no-underline transition-[box-shadow,translate] duration-300 ease-[cubic-bezier(0.2,0.75,0.2,1)] focus-visible:outline-3 focus-visible:outline-offset-4 focus-visible:outline-focus motion-safe:hover:-translate-y-1 motion-safe:active:translate-y-0 motion-safe:active:duration-75"
                   >
                     {content}
                   </Link>
@@ -144,7 +147,6 @@ export function Perks() {
 
 export function Closing() {
   const copy = useCopy().landingPage
-  const { learner, openSignIn } = useAuth()
   return (
     <section aria-labelledby="closing-title" className={cx(section, 'bg-(--l-surface)')}>
       <div className={wrap}>
@@ -158,24 +160,7 @@ export function Closing() {
             </h2>
             <p className="mt-4 text-18 leading-[1.6] text-white/85">{copy.closing.lead}</p>
           </div>
-          <div className="flex flex-wrap gap-3">
-            <Link
-              to={paths.explore}
-              state={{ focusSearch: true }}
-              className="inline-flex min-h-11 items-center gap-2 rounded-full bg-white px-5 py-3 text-14 text-[#123e80] no-underline"
-            >
-              {copy.hero.submit}
-              <Icon name="arrowRight" size="1rem" />
-            </Link>
-            {!learner && (
-              <Button
-                onPress={() => openSignIn({ tsp: true })}
-                className="min-h-11 cursor-pointer rounded-full border border-white/50 bg-transparent px-5 py-3 text-14 text-white hovered:bg-white/10"
-              >
-                {copy.tsp.title}
-              </Button>
-            )}
-          </div>
+          <GetStartedButton tone="white" arrow={false} label={copy.getStarted} />
         </div>
       </div>
     </section>

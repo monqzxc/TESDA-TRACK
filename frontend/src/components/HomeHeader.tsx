@@ -22,11 +22,11 @@ export function HomeHeader() {
       data-scrolled={scrolled || undefined}
       className="landing sticky top-0 z-20 border-b border-transparent bg-(--l-surface)/95 backdrop-blur-md data-scrolled:border-(--l-line)"
     >
-      <div className="relative mx-auto flex min-h-[79px] w-full max-w-[1440px] items-center gap-3 px-[clamp(1rem,8.334vw,7.5rem)] py-3 max-sm:gap-2 max-sm:px-4 max-[360px]:flex-wrap sm:gap-5">
+      <div className="relative mx-auto flex min-h-[79px] w-full max-w-[1440px] flex-wrap items-center gap-3 px-[clamp(1rem,8.334vw,7.5rem)] py-3 max-sm:gap-2 max-sm:px-4 max-[360px]:flex-wrap sm:gap-5">
         <LandingBrand compact />
         <nav
           aria-label={copy.sections}
-          className="absolute left-1/2 flex -translate-x-1/2 gap-7 max-[1281px]:hidden"
+          className="flex flex-none items-center gap-6 max-[1281px]:hidden"
         >
           {(['about', 'how', 'benefits'] as const).map((id) => (
             <Link
@@ -38,37 +38,42 @@ export function HomeHeader() {
             </Link>
           ))}
         </nav>
-        <LanguageSelector header light />
-        <Button
-          aria-label={resolved === 'dark' ? en.theme.light : en.theme.dark}
-          onPress={() => setChoice(resolved === 'dark' ? 'light' : 'dark')}
-          className="grid size-10 flex-none cursor-pointer place-items-center rounded-full border border-(--l-line) bg-(--l-surface) text-(--l-ink) hovered:bg-(--l-panel)"
-        >
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.7"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
+        <div className="ml-auto flex min-w-0 flex-wrap items-center justify-end gap-3 max-sm:gap-2 sm:gap-4">
+          <LanguageSelector header light />
+          <Button
+            aria-label={resolved === 'dark' ? en.theme.light : en.theme.dark}
+            onPress={() => setChoice(resolved === 'dark' ? 'light' : 'dark')}
+            className="grid size-10 flex-none cursor-pointer place-items-center rounded-full border border-(--l-line) bg-(--l-surface) text-(--l-ink) hovered:bg-(--l-panel)"
           >
-            {resolved === 'dark' ? (
-              <>
-                <circle cx="12" cy="12" r="4" />
-                <path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5" />
-              </>
-            ) : (
-              <path d="M20.8 13.2A9 9 0 0 1 10.8 3.2a9 9 0 1 0 10 10Z" />
-            )}
-          </svg>
-        </Button>
-        {learner && (
-          <AccountControl variant="header" buttonClassName="px-1 py-2 text-14 text-(--l-ink)" />
-        )}
-        <GetStartedButton arrow={false} />
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              {resolved === 'dark' ? (
+                <>
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5" />
+                </>
+              ) : (
+                <path d="M20.8 13.2A9 9 0 0 1 10.8 3.2a9 9 0 1 0 10 10Z" />
+              )}
+            </svg>
+          </Button>
+          {learner && (
+            <AccountControl
+              variant="header"
+              buttonClassName="max-w-[8rem] rounded-full px-1 py-2 text-14 text-(--l-ink) max-sm:size-11 max-sm:justify-center max-sm:p-0 max-sm:[&>span]:sr-only"
+            />
+          )}
+          <GetStartedButton arrow={false} compactOnMobile />
+        </div>
       </div>
     </header>
   )
