@@ -661,6 +661,8 @@ function WorkSection({
   const signedIn = explore.passportStatus === 'loaded'
   const { data, home, regions, places, homeArea, name, weak } = demandPicture(explore)
   const homeName = home ? (homeArea?.name ?? home.name) : null
+  // No records where the learner is: "Demand not available", never a level (QA-2026-11-28 retest of QA-2026-11-23-W).
+  const noData = Boolean(home && (home.level === 'none' || !home.posting_count))
 
   return (
     <section className="flex flex-col gap-2">
@@ -685,16 +687,30 @@ function WorkSection({
             <div
               className={cx(
                 'flex items-start gap-2 rounded-12 px-3 py-2.5',
-                weak ? 'bg-warn-bg text-warn-ink' : 'bg-good-bg text-good-ink',
+                noData
+                  ? 'bg-panel text-ink'
+                  : weak
+                    ? 'bg-warn-bg text-warn-ink'
+                    : 'bg-good-bg text-good-ink',
               )}
             >
               <Icon name="info" size="0.95rem" className="mt-0.5 flex-none" />
               <div className="min-w-0">
                 <p className="m-0 text-12 leading-[1.4] font-bold">
-                  {weak ? copy.low(homeName) : copy.good(homeName, copy.levelWord[home.level])}
+                  {noData
+                    ? copy.none(homeName)
+                    : weak
+                      ? copy.low(homeName)
+                      : copy.good(homeName, copy.levelWord[home.level])}
                 </p>
                 <p className="m-0 mt-0.5 text-12 leading-[1.4]">
-                  {(weak ? copy.lowBody : copy.goodBody)(jobsLine(homeArea?.titles ?? [], name))}
+                  {noData
+                    ? places.length
+                      ? copy.noneBody
+                      : copy.noneAlone
+                    : (weak ? (places.length ? copy.lowBody : copy.lowAlone) : copy.goodBody)(
+                        jobsLine(homeArea?.titles ?? [], name),
+                      )}
                 </p>
               </div>
             </div>

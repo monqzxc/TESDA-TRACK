@@ -263,6 +263,30 @@ describe('the skills list', () => {
     )
   })
 
+  // QA-2026-11-28 retest of QA-2026-11-23-W (US-0018 AC5): no records where the learner is reads "Demand not
+  // available", never "low demand", and "hiring instead" only shows when places follow.
+  it('says "Demand not available" for an area with no records, without a level or empty "hiring instead"', async () => {
+    server.use(
+      http.get('*/api/v1/labor-market/outlook', ({ request }) => {
+        const base = outlook(new URL(request.url))
+        return HttpResponse.json({
+          ...base,
+          areas: [area('NCR', 'National Capital Region', 0), area('IV-B', 'MIMAROPA', 2)],
+          home_demand: { ...base.home_demand, posting_count: 0, level: 'none', rank: null },
+        })
+      }),
+    )
+    renderPage()
+    expect(
+      await screen.findByText('Near you (National Capital Region): Demand not available', {}, LONG),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('No job records here yet: missing data, not low demand.'),
+    ).toBeInTheDocument()
+    expect(screen.queryByText(/low demand$/)).toBeNull()
+    expect(screen.queryByText(/hiring instead/)).toBeNull()
+  })
+
   it('Train narrows the list, and a place hiring opens the demand view there', async () => {
     const user = userEvent.setup()
     renderPage()

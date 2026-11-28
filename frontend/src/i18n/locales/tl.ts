@@ -2252,4 +2252,10 @@ export const tl: Record<string, string> = {
   'Show {0} more center': 'Ipakita ang {0} pang sentro',
   'Show fewer centers': 'Ipakita ang mas kaunting sentro',
   'Centers for {0}, nearest first': 'Mga sentro para sa {0}, pinakamalapit muna',
+  'Near you ({0}): Demand not available': 'Malapit sa iyo ({0}): Hindi available ang demand',
+  'No job records here yet: missing data, not low demand. These places have records:':
+    'Wala pang tala ng trabaho rito: kulang na datos, hindi mababang demand. May tala ang mga lugar na ito:',
+  'No job records here yet: missing data, not low demand.':
+    'Wala pang tala ng trabaho rito: kulang na datos, hindi mababang demand.',
+  'Few openings for {0} here.': 'Kaunti ang bakante para sa {0} dito.',
 }

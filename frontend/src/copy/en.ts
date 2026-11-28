@@ -3370,6 +3370,12 @@ export const en = {
         low: (place: string) => `Near you (${place}): low demand`,
         lowBody: (jobs: string) =>
           `Few openings for ${jobs} here. These places are hiring instead.`,
+        lowAlone: (jobs: string) => `Few openings for ${jobs} here.`,
+        // No records for the area (US-0018 AC5, the PO's exact words, 23 Nov 2026): no level is guessed.
+        none: (place: string) => `Near you (${place}): Demand not available`,
+        noneBody:
+          'No job records here yet: missing data, not low demand. These places have records:',
+        noneAlone: 'No job records here yet: missing data, not low demand.',
         good: (place: string, level: string) => `Near you (${place}): ${level} demand`,
         goodBody: (jobs: string) => `Openings for ${jobs} here, and in these places too.`,
         level: { high: 'High demand', moderate: 'Some demand', low: 'Low demand' },
