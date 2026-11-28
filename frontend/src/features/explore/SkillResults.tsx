@@ -10,6 +10,7 @@ import type { CenterKind } from '../training/address.ts'
 import { friendlyDay, type Center } from '../training/centers.ts'
 import type { View } from './ExplorePage.tsx'
 import { offers, roundKm, strength } from './explore.ts'
+import { NoCenterSuggestion } from './NoCenterSuggestion.tsx'
 import { readable } from './jobDisplay.ts'
 import type { AreaOutlook, Outlook } from './outlookApi.ts'
 import type { Explore } from './useExplore.ts'
@@ -354,10 +355,13 @@ function QualificationRow({
 function CenterSection({
   tone,
   rows,
+  nowhere,
   onSelect,
 }: {
   tone: 'training' | 'assessment' | 'both'
   rows: Row[]
+  /** No center of either kind lists the top match: the section suggests how to widen the search. */
+  nowhere?: Match
   onSelect: (id: string, code: string) => void
 }) {
   const all = useCopy().explore.skillList
@@ -367,7 +371,12 @@ function CenterSection({
   return (
     <section className="flex flex-col gap-2">
       <SectionHead tone={tone} heading={copy.heading} note={copy.note} />
-      {!rows.length && <p className="m-0 text-12 text-muted">{all.none}</p>}
+      {!rows.length &&
+        (nowhere ? (
+          <NoCenterSuggestion match={nowhere} />
+        ) : (
+          <p className="m-0 text-12 text-muted">{all.none}</p>
+        ))}
       <ul className="m-0 flex list-none flex-col gap-2 p-0">
         {rows.map((row, index) => (
           <QualificationRow
@@ -932,6 +941,11 @@ export function SkillResults({
   const training = rowsFor('training', matches, centers)
   const assessment = rowsFor('assessment', matches, centers)
   const both = bothRows(matches, centers)
+  // No center of either kind lists any match (once centers have loaded): say so once, with ways to widen the search.
+  const nowhere =
+    centers.length > 0 && !training.length && !assessment.length
+      ? [...matches].sort((x, y) => y.score - x.score)[0]
+      : undefined
   return (
     <div className="flex flex-col gap-5">
       {view === 'all' && (
@@ -944,10 +958,15 @@ export function SkillResults({
         />
       )}
       {(view === 'all' || view === 'training') && (
-        <CenterSection tone="training" rows={training} onSelect={onSelect} />
+        <CenterSection tone="training" rows={training} nowhere={nowhere} onSelect={onSelect} />
       )}
       {(view === 'all' || view === 'assessment') && (
-        <CenterSection tone="assessment" rows={assessment} onSelect={onSelect} />
+        <CenterSection
+          tone="assessment"
+          rows={assessment}
+          nowhere={view === 'assessment' ? nowhere : undefined}
+          onSelect={onSelect}
+        />
       )}
       {view === 'all' && <CenterSection tone="both" rows={both} onSelect={onSelect} />}
       {(view === 'all' || view === 'demand') && (

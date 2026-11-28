@@ -48,9 +48,7 @@ const center = ({
   phone: null,
   website: null,
   programs:
-    kind === 'training'
-      ? ([{ qualification: { code } }] as unknown as Center['programs'])
-      : [],
+    kind === 'training' ? ([{ qualification: { code } }] as unknown as Center['programs']) : [],
   schedules: [],
   accredited: kind === 'assessment' ? [code] : [],
   distanceKm: km,
@@ -122,10 +120,14 @@ const CALOOCAN = { latitude: 14.65, longitude: 120.98 }
 
 describe('checksFor', () => {
   it('1-record high is not in demand', () => {
-    expect(checksFor(candidate({ demand: { ...HIGH, limited: true, count: 1 } })).demand).toBe(false)
+    expect(checksFor(candidate({ demand: { ...HIGH, limited: true, count: 1 } })).demand).toBe(
+      false,
+    )
   })
   it('a stale "high" from fewer than 3 records is not in demand', () => {
-    expect(checksFor(candidate({ demand: { ...HIGH, limited: false, count: 2 } })).demand).toBe(false)
+    expect(checksFor(candidate({ demand: { ...HIGH, limited: false, count: 2 } })).demand).toBe(
+      false,
+    )
   })
   it('demand unknown is not in demand', () => {
     expect(checksFor(candidate({ demand: null })).demand).toBe(false)
@@ -245,8 +247,29 @@ describe('nearGroup', () => {
     expect(group.cards[0]?.nearestMinutes).toBeGreaterThan(0)
   })
   it('an excluded-only match leaves an empty card list, not a none-in-range', () => {
-    const group = nearGroup([match('A', 80)], [center({ code: 'A', km: 3 })], 10, true, new Set(['A']))
+    const group = nearGroup(
+      [match('A', 80)],
+      [center({ code: 'A', km: 3 })],
+      10,
+      true,
+      new Set(['A']),
+    )
     expect(group).toEqual({ kind: 'cards', cards: [] })
+  })
+  // QA-2026-11-28-NEW4 (US-0014 AC5): with no center for any match anywhere, say so instead of hiding the group,
+  // with or without a place.
+  it('no center anywhere, with or without a place', () => {
+    const others = [center({ code: 'OTHER-NC-II', km: 3 })]
+    const air = match('AIR-DUCT-SERVICING-NC-II', 80)
+    for (const hasPlace of [true, false]) {
+      expect(nearGroup([match('B', 40), air], others, 10, hasPlace, new Set())).toEqual({
+        kind: 'none-anywhere',
+        match: air,
+      })
+    }
+  })
+  it('still waits for a place while the centers have not loaded', () => {
+    expect(nearGroup([match('A', 80)], [], 10, false, new Set())).toEqual({ kind: 'no-place' })
   })
 })
 
@@ -260,7 +283,12 @@ describe('demandGroup', () => {
   it('leaves out home and thin regions', () => {
     const group = demandGroup(outlook({ areas }), CALOOCAN)
     expect(group.cards.map((card) => card.regionCode)).toEqual(['III', 'VII'])
-    expect(group.cards[0]).toMatchObject({ count: 45, training: 1, assessment: 1, titles: ['Driver'] })
+    expect(group.cards[0]).toMatchObject({
+      count: 45,
+      training: 1,
+      assessment: 1,
+      titles: ['Driver'],
+    })
     expect(group.cards[0]?.km).toBeGreaterThan(0)
   })
   it('good news when home is #1', () => {

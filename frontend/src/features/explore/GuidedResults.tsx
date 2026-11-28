@@ -6,6 +6,7 @@ import { InfoPopover } from '../../components/InfoPopover.tsx'
 import { useCopy } from '../../i18n/copy.ts'
 import { cx } from '../../lib/style.ts'
 import { roundKm } from './explore.ts'
+import { NoCenterSuggestion } from './NoCenterSuggestion.tsx'
 import { type DemandRegionCard, type Pick, widenKm } from './guided.ts'
 import type { NearbySuggestion } from './outlookApi.ts'
 import { chosenSearch, type Explore, useExploreStore } from './useExplore.ts'
@@ -65,7 +66,9 @@ export function GuidedView(props: GuidedViewProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      {shown.has('pick') && model.pick && <PickCard {...props} pick={model.pick} animate={animate} />}
+      {shown.has('pick') && model.pick && (
+        <PickCard {...props} pick={model.pick} animate={animate} />
+      )}
       {pending === 'pick' && <Skeleton />}
       {model.order.map((id) =>
         shown.has(id) ? (
@@ -83,7 +86,13 @@ export function GuidedView(props: GuidedViewProps) {
 
 /** A loading row in the place of what comes next. */
 function Skeleton() {
-  return <div data-guided-skeleton aria-hidden="true" className="h-16 animate-pulse rounded-12 bg-soft" />
+  return (
+    <div
+      data-guided-skeleton
+      aria-hidden="true"
+      className="animate-pulse h-16 rounded-12 bg-soft"
+    />
+  )
 }
 
 function hasContent(model: GuidedModel, id: RevealId): boolean {
@@ -94,16 +103,25 @@ function hasContent(model: GuidedModel, id: RevealId): boolean {
       model.demand.group.cards.length > 0 ||
       model.demand.group.goodNews !== null
     )
-  if (id === 'consider') return model.consider.status === 'ready' || model.consider.status === 'error'
+  if (id === 'consider')
+    return model.consider.status === 'ready' || model.consider.status === 'error'
   return true
 }
 
 function Check({ ok, best, children }: { ok: boolean; best: boolean; children: ReactNode }) {
   return (
-    <li className={cx('flex items-start gap-2 text-13 leading-[1.45]', ok ? 'text-ink' : 'text-muted')}>
+    <li
+      className={cx(
+        'flex items-start gap-2 text-13 leading-[1.45]',
+        ok ? 'text-ink' : 'text-muted',
+      )}
+    >
       <span
         aria-hidden="true"
-        className={cx('w-4 flex-none font-bold', ok ? (best ? 'text-good-ink' : 'text-pick-ink') : 'text-muted')}
+        className={cx(
+          'w-4 flex-none font-bold',
+          ok ? (best ? 'text-good-ink' : 'text-pick-ink') : 'text-muted',
+        )}
       >
         {ok ? '✓' : '○'}
       </span>
@@ -158,14 +176,22 @@ function PickCard({
               ? copy.near.noneRecorded
               : copy.near.no(rangeKm, nearestKm)}
           {!checks.near && nearestKm !== null && !relocating && (
-            <Button className={cx(smallButton, 'ml-2')} onPress={() => onWiden(widenKm(candidate.nearestKm ?? 0))}>
+            <Button
+              className={cx(smallButton, 'ml-2')}
+              onPress={() => onWiden(widenKm(candidate.nearestKm ?? 0))}
+            >
               {copy.widen(widenKm(candidate.nearestKm ?? 0))}
             </Button>
           )}
         </Check>
         <Check ok={checks.demand} best={best}>
           {checks.demand && candidate.demand
-            ? copy.demand.yes(area, candidate.demand.rank, candidate.demand.rankedOf, candidate.demand.sample)
+            ? copy.demand.yes(
+                area,
+                candidate.demand.rank,
+                candidate.demand.rankedOf,
+                candidate.demand.sample,
+              )
             : candidate.demand
               ? copy.demand.no(area)
               : copy.demand.unknown}
@@ -231,6 +257,7 @@ function Group({
     return (
       <GroupFrame title={copy.groups.near(query)} source={copy.sources.near} animate={animate}>
         {near.kind === 'no-place' && <p className={cx(card, line)}>{copy.noPlace}</p>}
+        {near.kind === 'none-anywhere' && <NoCenterSuggestion match={near.match} />}
         {near.kind === 'none-in-range' && (
           <div className={card}>
             <p className={line}>
@@ -251,7 +278,9 @@ function Group({
                 style={enter.style}
                 onPress={() => onQualification(item.match.qualification.code)}
               >
-                <span className="text-14 font-semibold text-navy">{item.match.qualification.name}</span>
+                <span className="text-14 font-semibold text-navy">
+                  {item.match.qualification.name}
+                </span>
                 <span className={muted}>
                   {copy.nearCount(
                     item.nearCount,
@@ -293,7 +322,9 @@ function Group({
             >
               <span className="flex w-full flex-wrap items-baseline justify-between gap-x-2">
                 <span className="text-14 font-semibold text-navy">{item.name}</span>
-                {item.km !== null && <span className={cx(muted, 'text-12')}>{copy.about(item.km)}</span>}
+                {item.km !== null && (
+                  <span className={cx(muted, 'text-12')}>{copy.about(item.km)}</span>
+                )}
               </span>
               <span className={line}>
                 {item.sample ? copy.modelled(item.count) : copy.posts(item.count)}

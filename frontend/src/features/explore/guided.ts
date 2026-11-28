@@ -55,6 +55,8 @@ export type NearGroup =
   | { kind: 'cards'; cards: NearCard[] }
   | { kind: 'none-in-range'; nearestKm: number; town: string; widenTo: number }
   | { kind: 'no-place' }
+  // No center lists any match, anywhere (US-0014 AC5): a wider range can't help, so the card suggests what can.
+  | { kind: 'none-anywhere'; match: Match }
 
 export interface DemandRegionCard {
   regionCode: string
@@ -102,7 +104,8 @@ export function fitsYou(
   fit: PersonalFit | null | undefined,
   signedIn: boolean,
 ): boolean {
-  if (signedIn) return fit != null && (ASSESS_FIRST.has(fit.next_step) || fit.next_step === 'gap_training')
+  if (signedIn)
+    return fit != null && (ASSESS_FIRST.has(fit.next_step) || fit.next_step === 'gap_training')
   return strength(match) === 'strong'
 }
 
@@ -139,7 +142,8 @@ export function checksFor(candidate: PickCandidate): Checks {
   return { near: candidate.nearCount > 0, demand: inDemand(candidate.demand), fit: candidate.fit }
 }
 
-const trueCount = (checks: Checks) => Number(checks.near) + Number(checks.demand) + Number(checks.fit)
+const trueCount = (checks: Checks) =>
+  Number(checks.near) + Number(checks.demand) + Number(checks.fit)
 
 export function choosePick(candidates: readonly PickCandidate[]): Pick | null {
   const scored = candidates
@@ -168,6 +172,14 @@ export function nearGroup(
   hasPlace: boolean,
   exclude: ReadonlySet<string>,
 ): NearGroup {
+  // Checked before the place: with no center for any match anywhere, a place or a wider range won't change that.
+  const best = [...matches].sort((a, b) => b.score - a.score)[0]
+  if (
+    best &&
+    centers.length &&
+    !centers.some((center) => matches.some((match) => offers(center, match.qualification.code)))
+  )
+    return { kind: 'none-anywhere', match: best }
   if (!hasPlace) return { kind: 'no-place' }
   const cards: NearCard[] = []
   // A match left out because it's shown elsewhere (the pick) still means something is in range.
@@ -205,7 +217,9 @@ export function demandGroup(outlook: Outlook | undefined, reference: Point | nul
   if (!outlook) return { goodNews: null, cards: [] }
   const sample = outlook.demand_is_sample ?? false
   const cards = outlook.areas
-    .filter((area) => area.region_code !== outlook.home_region_code && area.posting_count >= MIN_RECORDS)
+    .filter(
+      (area) => area.region_code !== outlook.home_region_code && area.posting_count >= MIN_RECORDS,
+    )
     .sort((a, b) => b.posting_count - a.posting_count)
     .slice(0, GROUP_LIMIT)
     .map((area) => ({

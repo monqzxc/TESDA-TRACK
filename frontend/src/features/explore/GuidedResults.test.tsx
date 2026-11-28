@@ -1,5 +1,6 @@
 import { act, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+import { MemoryRouter } from 'react-router'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { mockMediaQueries } from '../../test/matchMedia.ts'
 import type { Match } from '../finder/api.ts'
@@ -113,12 +114,12 @@ describe('GuidedView', () => {
   it('pick becomes best without replaying', () => {
     const { rerender, container } = render(<GuidedView {...props({ played: true })} />)
     rerender(
-      <GuidedView
-        {...props({ played: true, rangeKm: 30, model: model({ pick: pick(true) }) })}
-      />,
+      <GuidedView {...props({ played: true, rangeKm: 30, model: model({ pick: pick(true) }) })} />,
     )
     expect(screen.getByText('★ Best fit for you')).toBeInTheDocument()
-    expect(screen.getByText('Near you · Malolos Skills and Driving Academy, 27 km')).toBeInTheDocument()
+    expect(
+      screen.getByText('Near you · Malolos Skills and Driving Academy, 27 km'),
+    ).toBeInTheDocument()
     expect(container.querySelector('[style*="animation-delay"]')).toBeNull()
   })
 
@@ -246,6 +247,36 @@ describe('GuidedView', () => {
     expect(screen.queryByText(/about \d+ km/)).toBeNull()
   })
 
+  // QA-2026-11-28-NEW4 (US-0014 AC5): no center lists the qualification anywhere, so the card says so and suggests
+  // where to widen the search instead of leaving the learner at a dead end.
+  it('says when no center offers the qualification anywhere, and suggests what to try', () => {
+    const air = {
+      ...match('AIR-DUCT-SERVICING-NC-II', 'Air Duct Servicing NC II'),
+      qualification: {
+        code: 'AIR-DUCT-SERVICING-NC-II',
+        name: 'Air Duct Servicing NC II',
+        sector: 'Heating, Ventilation, Airconditioning and Refrigeration',
+      },
+    } as Match
+    const nowhere = model({ pick: null, near: { kind: 'none-anywhere', match: air } })
+    render(
+      <MemoryRouter>
+        <GuidedView {...props({ played: true, model: nowhere })} />
+      </MemoryRouter>,
+    )
+    const help = screen.getByTestId('none-anywhere')
+    expect(help).toHaveTextContent('No center lists Air Duct Servicing NC II yet, anywhere.')
+    expect(
+      screen.getByRole('link', {
+        name: /Browse other Heating, Ventilation, Airconditioning and Refrigeration qualifications/,
+      }),
+    ).toHaveAttribute(
+      'href',
+      '/qualifications?sector=Heating%2C%20Ventilation%2C%20Airconditioning%20and%20Refrigeration',
+    )
+    expect(help).toHaveTextContent('Ask the TESDA provincial or district office')
+  })
+
   it('near cards say how many centers and how near', async () => {
     const onQualification = vi.fn()
     const near = model({
@@ -257,7 +288,9 @@ describe('GuidedView', () => {
     })
     render(<GuidedView {...props({ played: true, model: near, onQualification })} />)
     expect(screen.getByText('2 centers within 10 km · nearest 4.2 km (12 min)')).toBeInTheDocument()
-    await userEvent.click(screen.getByRole('button', { name: /Driving \(Articulated Vehicle\) NC III/ }))
+    await userEvent.click(
+      screen.getByRole('button', { name: /Driving \(Articulated Vehicle\) NC III/ }),
+    )
     expect(onQualification).toHaveBeenCalledWith('DRIVING-NC-III')
   })
 
@@ -275,9 +308,7 @@ describe('GuidedView', () => {
   })
 
   it('a skeleton holds the place while the pick waits', () => {
-    const { container } = render(
-      <GuidedView {...props({ model: model({ pickReady: false }) })} />,
-    )
+    const { container } = render(<GuidedView {...props({ model: model({ pickReady: false }) })} />)
     expect(screen.queryByText("TRACK's pick")).toBeNull()
     expect(container.querySelector('[data-guided-skeleton]')).not.toBeNull()
   })
