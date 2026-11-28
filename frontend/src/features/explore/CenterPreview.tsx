@@ -17,6 +17,7 @@ import { CenterSuggestionFeedback } from '../suggestion-feedback/CenterSuggestio
 import type { ClientConfig } from '../training/api.ts'
 import { googleMapsDirections, RoutePanel } from '../training/CenterDetail.tsx'
 import { placeLabel, type Center, type Point } from '../training/centers.ts'
+import { ScholarshipSampleNote } from '../training/ScholarshipSampleNote.tsx'
 import { TripMeta, useCenterDetails } from './Panels.tsx'
 import { useExploreStore } from './useExplore.ts'
 
@@ -139,10 +140,31 @@ export function CenterPreview({
   const en = useCopy()
   const copy = en.explore.preview
   const card = en.explore.card
-  const { openPathway, listedFor, matches, readiness, point, scholarship, contacts } =
-    useCenterDetails(center, code, codes)
+  const { openPathway, listedFor, matches, readiness, point, contacts } = useCenterDetails(
+    center,
+    code,
+    codes,
+  )
   const routed = Boolean(routeFrom && point && config?.routing_enabled)
   const directions = cx(button({ variant: 'primary', height: 38, text: 13 }), 'w-full')
+  const scholarshipPrograms = center.programs.filter(
+    (program) =>
+      program.scholarship_open &&
+      (code
+        ? program.qualification.code === code
+        : !codes.size || codes.has(program.qualification.code)),
+  )
+  const scholarship = scholarshipPrograms.length > 0
+  const scholarshipDates = [
+    ...new Map(
+      scholarshipPrograms
+        .filter((program) => program.scholarship_closes_on)
+        .map((program) => [
+          `${program.qualification.code}:${program.scholarship_closes_on}`,
+          program,
+        ]),
+    ).values(),
+  ]
 
   return (
     <article
@@ -214,6 +236,20 @@ export function CenterPreview({
               <p className="m-0 text-12 font-semibold text-good-ink">
                 {center.kind === 'assessment' ? card.leadsToNc : en.explore.results.scholarship}
               </p>
+            )}
+            {center.kind === 'training' && scholarship && (
+              <div className="flex flex-col gap-1 text-12 text-muted">
+                <ScholarshipSampleNote programs={scholarshipPrograms} />
+                {scholarshipDates.map((program) => (
+                  <p
+                    key={`${program.qualification.code}:${program.scholarship_closes_on}`}
+                    className="m-0"
+                  >
+                    {program.qualification.name} ·{' '}
+                    {en.training.programs.scholarshipCloses(program.scholarship_closes_on!)}
+                  </p>
+                ))}
+              </div>
             )}
             <p className="m-0 flex items-start gap-2 text-12 leading-[1.5] text-ink">
               <Icon name="pin" className="mt-0.5 flex-none text-muted" label={card.address} />

@@ -1,5 +1,6 @@
 /** Filipino interface copy. Product names and official qualification names stay unchanged. */
 export const tl: Record<string, string> = {
+  'Scholarship closes {0}': 'Magsasara ang scholarship sa {0}',
   'Your skills. Your next chapter.': 'Ang iyong kakayahan. Ang susunod mong kabanata.',
   'TESDA Track home': 'Home ng TESDA Track',
   'Skip to content': 'Lumaktaw sa nilalaman',

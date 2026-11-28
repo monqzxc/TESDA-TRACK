@@ -144,9 +144,9 @@ beforeEach(() => {
   )
 })
 
-function renderPage() {
+function renderPage(path = '/explore?layout=list') {
   return renderWithAuth(
-    <MemoryRouter initialEntries={['/explore?layout=list']}>
+    <MemoryRouter initialEntries={[path]}>
       <ExplorePage />
     </MemoryRouter>,
   )
@@ -189,6 +189,54 @@ describe('skillTerms', () => {
 })
 
 describe('the skills list', () => {
+  it('shows sample scholarship dates only for open scholarships in the center preview', async () => {
+    server.use(
+      http.get('*/api/v1/training-programs', () =>
+        HttpResponse.json([
+          { ...weldingProgram, scholarship_is_sample: true, scholarship_closes_on: '2099-12-31' },
+          {
+            ...weldingProgram,
+            id: 999,
+            scholarship_open: false,
+            scholarship_is_sample: true,
+            scholarship_closes_on: '2020-01-01',
+          },
+        ]),
+      ),
+    )
+    const user = userEvent.setup()
+    renderPage()
+    const section = (
+      await screen.findByRole('heading', { name: 'Training centers' }, LONG)
+    ).closest('section')!
+    await user.click(
+      await within(section).findByRole('button', { name: /Manila Welding Institute/ }, LONG),
+    )
+    const preview = await screen.findByRole('article', { name: 'Manila Welding Institute' })
+    expect(
+      within(preview).getByText('Sample scholarship data for the December 2 demo.'),
+    ).toBeVisible()
+    expect(preview).toHaveTextContent('Scholarship closes 2099-12-31')
+    expect(preview).not.toHaveTextContent('2020-01-01')
+  })
+
+  it('explains outside-range scholarship options without calling them the best place', async () => {
+    useExploreStore.setState({ rangeKm: 1 })
+    const user = userEvent.setup()
+    renderPage('/explore?layout=list&scholarship=1')
+    const section = (await screen.findByRole('heading', { name: 'Best for you' }, LONG)).closest(
+      'section',
+    )!
+    await waitFor(
+      () => expect(section).toHaveTextContent('Nearest, though outside your 1 km range'),
+      LONG,
+    )
+    expect(within(section).queryByText('Best place to train')).not.toBeInTheDocument()
+    expect(section).toHaveTextContent(/No center within 1 km\. The closest is/)
+    await user.click(screen.getByRole('button', { name: /^Train$/ }))
+    expect(await screen.findByText(/No center within 1 km\. The closest is/)).toBeVisible()
+  })
+
   it('shows the skills, the pills, the centers by kind and where the skills are in demand', async () => {
     renderPage()
     expect(await screen.findByText('We read your search as these skills')).toBeInTheDocument()

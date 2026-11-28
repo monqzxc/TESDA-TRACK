@@ -88,6 +88,8 @@ interface Row {
   center: Center | null
   /** Every center of the kind listing it, nearest first: within the learner's range when there is a place. */
   ranked?: Center[]
+  /** The nearest available options are all beyond this selected range. */
+  outsideRange?: number
 }
 
 /**
@@ -108,7 +110,15 @@ function rowsFor(
         .sort(nearestFirst)
       const near = countedCenters(listed, hasPlace, rangeKm)
       const ranked = (near.length ? near : listed).slice(0, MAX_RANKED)
-      return { match, center: ranked[0] ?? null, ranked }
+      return {
+        match,
+        center: ranked[0] ?? null,
+        ranked,
+        outsideRange:
+          hasPlace && Number.isFinite(rangeKm) && !near.length && listed.length
+            ? rangeKm
+            : undefined,
+      }
     })
     .filter((row) => row.center !== null)
     .slice(0, PER_SECTION)
@@ -378,7 +388,8 @@ function QualificationRow({
   highlightId?: string | null
   onSelect: (id: string, code: string) => void
 }) {
-  const copy = useCopy().explore.skillList
+  const en = useCopy()
+  const copy = en.explore.skillList
   const { match, center } = row
   const level = strength(match)
   const code = match.qualification.code
@@ -395,7 +406,16 @@ function QualificationRow({
         pick ? [pickCard, sectionTone[tone].card].join(' ') : 'border-border bg-surface',
       )}
     >
-      {pick && <PickLabel tone={tone} label={pick} />}
+      {pick && (
+        <PickLabel
+          tone={tone}
+          label={
+            row.outsideRange === undefined
+              ? pick
+              : en.explore.ranked.reasons.outside(row.outsideRange)
+          }
+        />
+      )}
       <div className="flex items-start justify-between gap-2">
         <p className="m-0 min-w-0 text-13 leading-[1.35] font-bold text-navy">
           {match.qualification.name}
@@ -412,6 +432,14 @@ function QualificationRow({
       </div>
       {match.reason && (
         <p className="m-0 mt-0.5 text-12 leading-[1.4] text-muted">{match.reason}</p>
+      )}
+      {row.outsideRange !== undefined && center?.distanceKm != null && (
+        <p
+          role="status"
+          className="m-0 mt-2 rounded-8 bg-warn-bg p-2 text-12 leading-[1.45] text-ink"
+        >
+          {en.explore.results.noneNear(row.outsideRange, roundKm(center.distanceKm))}
+        </p>
       )}
       {ranked ? (
         <>

@@ -1296,6 +1296,7 @@ export const en = {
       fit: (score: number) => `${score}% fit`,
       scholarship: 'Scholarship open',
       sampleScholarship: 'Sample scholarship data for the December 2 demo.',
+      scholarshipCloses: (day: string) => `Scholarship closes ${day}`,
       why: 'Why this program?',
       whyNote: 'Fit considers your goal, location, start date and preferences.',
       hours: (n: number) => `${figure(n)} hours`,
